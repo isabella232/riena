@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+  <extension
+         point="org.eclipse.riena.config.managedService">
+      <config
+            servicepid="org.eclipse.riena.config.symbols">
+         <property
+               name="company"
+               value="compeople ag">
+         </property>
+      </config>
+   </extension>
+   <extension
+         point="org.eclipse.riena.config.managedService">
+      <config
+            servicepid="org.eclipse.riena.business.pid">
+         <property
+               name="name"
+               value="christian campo ${company}">
+         </property>
+      </config>
+   </extension>
+      <extension-point id="core.test.extpoint" name="core test extensionpoint" schema="schema/core.test.extpoint.exsd"/>
+   <extension
+         point="core.test.extpoint">
+      <test
+            boolean="true"
+            executable="java.lang.String"
+            string="test1">
+      </test>
+   </extension>
+</plugin>
