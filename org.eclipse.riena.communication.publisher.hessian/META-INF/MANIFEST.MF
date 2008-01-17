@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Riena Communication Publisher Hessian (Incubation)
+Bundle-SymbolicName: org.eclipse.riena.communication.publisher.hessian;singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: org.eclipse.riena.internal.communication.publisher.hessian.Activator
+Require-Bundle: org.eclipse.equinox.http.registry,
+ org.eclipse.equinox.http.servlet,
+ org.eclipse.riena.communication.core
+Import-Package: com.caucho.hessian.io,
+ com.caucho.hessian.server,
+ javax.servlet;version="2.4.0",
+ javax.servlet.http;version="2.4.0",
+ org.osgi.framework;version="1.4.0"
+Eclipse-BuddyPolicy: registered
