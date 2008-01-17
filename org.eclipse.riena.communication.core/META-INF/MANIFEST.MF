@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Riena Communication Core (Incubation)
+Bundle-SymbolicName: org.eclipse.riena.communication.core;singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: org.eclipse.riena.internal.communication.core.Activator
+Import-Package: javax.servlet.http;version="2.4.0",
+ org.osgi.framework;version="1.4.0"
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.riena.communication.core,
+ org.eclipse.riena.communication.core.factory,
+ org.eclipse.riena.communication.core.hooks,
+ org.eclipse.riena.communication.core.publisher,
+ org.eclipse.riena.communication.core.util
+Eclipse-BuddyPolicy: registered
+Eclipse-RegisterBuddy: com.caucho.hessian
+Require-Bundle: org.eclipse.osgi.services,
+ org.junit;resolution:=optional,
+ org.eclipse.core.runtime,
+ com.caucho.hessian,
+ org.eclipse.riena.core

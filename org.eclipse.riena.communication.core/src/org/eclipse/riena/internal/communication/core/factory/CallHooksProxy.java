@@ -1,0 +1,95 @@
+/*******************************************************************************
+ * Copyright (c) 2007 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.riena.internal.communication.core.factory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+
+import javax.security.auth.Subject;
+
+import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.communication.core.hooks.AbstractHooksProxy;
+import org.eclipse.riena.communication.core.hooks.CallContext;
+import org.eclipse.riena.communication.core.hooks.ICallHook;
+import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
+import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.internal.communication.core.Activator;
+
+public class CallHooksProxy extends AbstractHooksProxy {
+
+	private HashSet<ICallHook> callHooks = new HashSet<ICallHook>();
+	private ServiceInjector si;
+	private RemoteServiceDescription rsd;
+	private ICallMessageContextAccessor mca;
+
+	public CallHooksProxy(Object proxiedInstance) {
+		super(proxiedInstance);
+		si = new ServiceInjector(Activator.getContext(), ICallHook.ID, this, "addCallHook", "removeCallHook");
+		si.start();
+	}
+
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		ICallMessageContext mc = null;
+		if (mca != null) {
+			mc = mca.createMessageContext(getProxiedInstance());
+		}
+
+		CallContext context = null;
+		// only create context (might be expensive), if you have callHooks
+		if (callHooks.size() > 0) {
+			context = new CallContext(rsd, method.getName(), mc);
+
+			// call before service hook
+			for (ICallHook sHook : callHooks) {
+				sHook.beforeCall(context);
+			}
+		}
+
+		try {
+			return super.invoke(proxy, method, args);
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		} finally {
+			// context might be null and callHooks were injected during invoke
+			if (context != null) {
+				for (ICallHook sHook : callHooks) {
+					sHook.afterCall(context);
+				}
+			}
+		}
+	}
+
+	public void addCallHook(ICallHook serviceHook) {
+		callHooks.add(serviceHook);
+	}
+
+	public void removeCallHook(ICallHook serviceHook) {
+		callHooks.remove(serviceHook);
+	}
+
+	public Object getCallProxy() {
+		return getProxiedInstance();
+	}
+
+	public void setRemoteServiceDescription(RemoteServiceDescription rsd) {
+		this.rsd = rsd;
+	}
+
+	public void setMessageContextAccessor(ICallMessageContextAccessor mca) {
+		this.mca = mca;
+	}
+
+	public Subject getSubject() {
+		return null;
+	}
+}
