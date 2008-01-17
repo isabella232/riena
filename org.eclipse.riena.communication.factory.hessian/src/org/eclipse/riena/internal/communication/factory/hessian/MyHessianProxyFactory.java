@@ -26,6 +26,7 @@ import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.caucho.hessian.io.SerializerFactory;
 
 public class MyHessianProxyFactory extends HessianProxyFactory implements ManagedService {
 
@@ -58,6 +59,13 @@ public class MyHessianProxyFactory extends HessianProxyFactory implements Manage
 		}
 		connections.set((HttpURLConnection) connection);
 		return connection;
+	}
+
+	@Override
+	public SerializerFactory getSerializerFactory() {
+		SerializerFactory serializerFactory = super.getSerializerFactory();
+		serializerFactory.setAllowNonSerializable(true);
+		return serializerFactory;
 	}
 
 	public void setCallMessageContextAccessor(ICallMessageContextAccessor mca) {
