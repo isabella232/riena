@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.security.services.itest;
 
-import java.io.IOException;
-
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.TextOutputCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
 
 public class MyCallbackHandler implements CallbackHandler {
 
@@ -29,47 +26,38 @@ public class MyCallbackHandler implements CallbackHandler {
 		this.password = password;
 	}
 
-	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+	public void handle(Callback[] callbacks) {
 		for (int i = 0; i < callbacks.length; i++) {
 			if (callbacks[i] instanceof TextOutputCallback) {
-
-				// display the message according to the specified type
 				TextOutputCallback toc = (TextOutputCallback) callbacks[i];
+				String typeAsString;
+				// detect textoutput message type and translate it to string
 				switch (toc.getMessageType()) {
 				case TextOutputCallback.INFORMATION:
-					System.out.println(toc.getMessage());
+					typeAsString = "information";
 					break;
 				case TextOutputCallback.ERROR:
-					System.out.println("ERROR: " + toc.getMessage());
+					typeAsString = "error";
 					break;
 				case TextOutputCallback.WARNING:
-					System.out.println("WARNING: " + toc.getMessage());
+					typeAsString = "warning";
 					break;
 				default:
-					throw new IOException("Unsupported message type: " + toc.getMessageType());
+					typeAsString = "unknown";
+					break;
 				}
-
-			} else if (callbacks[i] instanceof NameCallback) {
-				// prompt the user for a username
-				NameCallback nc = (NameCallback) callbacks[i];
-
-				// System.err.print(nc.getPrompt());
-				// System.err.flush();
-				// nc.setName((new BufferedReader(new
-				// InputStreamReader(System.in))).readLine());
-				nc.setName(name);
-
-			} else if (callbacks[i] instanceof PasswordCallback) {
-
-				// prompt the user for sensitive information
-				PasswordCallback pc = (PasswordCallback) callbacks[i];
-				// System.err.print(pc.getPrompt());
-				// System.err.flush();
-				// pc.setPassword((new BufferedReader(new
-				// InputStreamReader(System.in))).readLine().toCharArray());
-				pc.setPassword(password.toCharArray());
+				System.out.println(typeAsString + " " + toc.getMessage());
+			} else {
+				if (callbacks[i] instanceof NameCallback) {
+					NameCallback nc = (NameCallback) callbacks[i];
+					nc.setName(name);
+				} else {
+					if (callbacks[i] instanceof PasswordCallback) {
+						PasswordCallback pc = (PasswordCallback) callbacks[i];
+						pc.setPassword(password.toCharArray());
+					}
+				}
 			}
-
 		}
 	}
 }
