@@ -16,15 +16,18 @@ import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-
 /**
- * The Ping Pong sample shows to config a "remote" OSGi Services on the base of service end point parameters.
+ * The Ping Pong sample shows to config a "remote" OSGi Services on the base of
+ * service end point parameters.
  * 
- * This sample Activator registers manually the remote PingPong end point as remote OSGi Service into the
- * ServiceRegistry. This is reached by a simple way using the Riena communication RemoteServiceFactory. #createAndRegisterProxy
- * creates a proxy references for the end point and registers the proxy references as RemoteServiceReference into the
- * Riena communication IRemoteServiceRegistry OSGi Service. The IRemoteServiceRegistry itself registers and manages the
- * RemoteServiceReferences as remote OSGi service within the ServiceRegistry.
+ * This sample Activator registers manually the remote PingPong end point as
+ * remote OSGi Service into the ServiceRegistry. This is reached by a simple way
+ * using the Riena communication RemoteServiceFactory. #createAndRegisterProxy
+ * creates a proxy references for the end point and registers the proxy
+ * references as RemoteServiceReference into the Riena communication
+ * IRemoteServiceRegistry OSGi Service. The IRemoteServiceRegistry itself
+ * registers and manages the RemoteServiceReferences as remote OSGi service
+ * within the ServiceRegistry.
  * 
  * @author Alexander Ziegler
  * @author Christian Campo
@@ -32,37 +35,39 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator implements BundleActivator {
 
-    private IRemoteServiceRegistration pingPongReg;
-    private IRemoteServiceRegistration pingPongRegXFire;
+	private IRemoteServiceRegistration pingPongReg;
+	private IRemoteServiceRegistration pingPongRegXFire;
 
-    /**
-     * Creates a RemoteServiceReferences based on Hessian protocol and registers this as "remote" OSGi Service
-     */
-    public void start(BundleContext context) throws Exception {
-        // register hessian proxy for nyote remote service
-        RemoteServiceFactory rsf = new RemoteServiceFactory();
-        Class<?> serviceInterface = IPingPong.class;
-        String url = "http://${localhost}/hessian/PingPongWS";
-        String protocol = "hessian";
+	/**
+	 * Creates a RemoteServiceReferences based on Hessian protocol and registers
+	 * this as "remote" OSGi Service
+	 */
+	public void start(BundleContext context) throws Exception {
+		// register hessian proxy for nyote remote service
+		RemoteServiceFactory rsf = new RemoteServiceFactory();
+		Class<?> serviceInterface = IPingPong.class;
+		String url = "http://${localhost}/hessian/PingPongWS";
+		String protocol = "hessian";
 
-        pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, "de.compeople.pingpong.config");
+		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, "de.compeople.pingpong.config");
 
-        // register xfire proxy for nyote remote service
-        url = "http://${localhost}/xfire/PingPongXFireWS";
-        protocol = "xfire";
+		// register xfire proxy for nyote remote service
+		// url = "http://${localhost}/xfire/PingPongXFireWS";
+		// protocol = "xfire";
 
-        // pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol);
+		// pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url,
+		// protocol);
 
-    }
+	}
 
-    /**
-     * unregister end release the "remote" OSGi Service
-     */
-    public void stop(BundleContext context) throws Exception {
-        if (pingPongReg != null) {
-            pingPongReg.unregister();
-            pingPongReg = null;
-        }
-    }
+	/**
+	 * unregister end release the "remote" OSGi Service
+	 */
+	public void stop(BundleContext context) throws Exception {
+		if (pingPongReg != null) {
+			pingPongReg.unregister();
+			pingPongReg = null;
+		}
+	}
 
 }
