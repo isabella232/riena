@@ -46,7 +46,7 @@ public class Activator implements BundleActivator {
 		// register hessian proxy for nyote remote service
 		RemoteServiceFactory rsf = new RemoteServiceFactory();
 		Class<?> serviceInterface = IPingPong.class;
-		String url = "http://${localhost}/hessian/PingPongWS";
+		String url = "http://${hostname}/hessian/PingPongWS";
 		String protocol = "hessian";
 
 		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, "de.compeople.pingpong.config");

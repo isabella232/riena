@@ -6,8 +6,8 @@
       <config
             servicepid="org.eclipse.riena.config.symbols">
          <property
-               name="localhost"
-               value="127.0.0.1">
+               name="hostname"
+               value="127.0.0.1:8080">
          </property>
       </config>
    </extension>
