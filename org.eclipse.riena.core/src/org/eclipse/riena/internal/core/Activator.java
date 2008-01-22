@@ -17,6 +17,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.LogUtil;
 import org.eclipse.riena.internal.core.config.ConfigFromExtensions;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
@@ -45,16 +46,33 @@ public class Activator extends Plugin {
 		plugin = this;
 		CONTEXT = context;
 
+		Bundle[] bundles = context.getBundles();
+		for (Bundle bundle : bundles) {
+			String forceStart = (String) bundle.getHeaders().get("Riena-ForceStart");
+			if (forceStart != null && forceStart.equals("true")) {
+				if (bundle.getState() == Bundle.RESOLVED) {
+					bundle.start();
+					System.out.println(bundle.getSymbolicName() + " forced autostart successfully");
+				} else {
+					if (bundle.getState() == Bundle.INSTALLED) {
+						System.err.println(bundle.getSymbolicName() + " has Riena-ForceStart but is only in state INSTALLED (not RESOLVED).");
+					} else {
+						if (bundle.getState() == Bundle.ACTIVE) {
+							System.out.println(bundle.getSymbolicName() + " no forced autostart. Bundle is already ACTIVE.");
+						}
+					}
+				}
+			}
+		}
+
 		// register ConfigSymbolReplace that replaces symbols in config strings
 		ConfigSymbolReplace csr = new ConfigSymbolReplace();
 		Hashtable<String, String> ht = new Hashtable<String, String>();
 		ht.put(Constants.SERVICE_PID, "org.eclipse.riena.config.symbols");
 		// register as configurable osgi service
-		configSymbolReplace = context.registerService(ManagedService.class
-				.getName(), csr, ht);
+		configSymbolReplace = context.registerService(ManagedService.class.getName(), csr, ht);
 		// register as config admin configuration plugin
-		configurationPlugin = context.registerService(ConfigurationPlugin.class
-				.getName(), csr, null);
+		configurationPlugin = context.registerService(ConfigurationPlugin.class.getName(), csr, null);
 		// execute the class that reads through the extensions and executes them
 		// as config admin packages
 		new ConfigFromExtensions(context).doConfig();

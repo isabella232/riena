@@ -9,3 +9,4 @@ Import-Package: com.caucho.hessian.client,
  org.osgi.framework;version="1.4.0"
 Require-Bundle: org.eclipse.riena.communication.core,
  org.eclipse.osgi.services
+Riena-ForceStart: true

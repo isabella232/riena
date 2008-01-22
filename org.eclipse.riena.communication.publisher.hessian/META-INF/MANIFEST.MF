@@ -13,3 +13,4 @@ Import-Package: com.caucho.hessian.io,
  javax.servlet.http;version="2.4.0",
  org.osgi.framework;version="1.4.0"
 Eclipse-BuddyPolicy: registered
+Riena-ForceStart: true
