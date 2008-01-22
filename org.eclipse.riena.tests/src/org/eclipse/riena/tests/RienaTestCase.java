@@ -52,17 +52,15 @@ public class RienaTestCase extends TestCase {
 
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles) {
-			if (truePat.matcher(bundle.getSymbolicName()).matches() && !(falsePat.matcher(bundle.getSymbolicName()).matches())
-					&& (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING) /*
-																										 * &&
-																										 * !(bundle
-																										 * instanceof
-																										 * BundleFragment)
-																										 */) {
-				bundle.start();
+			if (truePat.matcher(bundle.getSymbolicName()).matches() && !(falsePat.matcher(bundle.getSymbolicName()).matches())) {
+				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING /* STARTING==LAZY */) {
+					bundle.start();
+				} else {
+					if (bundle.getState() == Bundle.INSTALLED) {
+						throw new RuntimeException("can't start required bundle because it is not RESOLVED but only INSTALLED : " + bundle.getSymbolicName());
+					}
+				}
 			}
 		}
-
 	}
-
 }
