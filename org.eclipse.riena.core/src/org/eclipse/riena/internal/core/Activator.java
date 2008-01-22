@@ -50,7 +50,8 @@ public class Activator extends Plugin {
 		for (Bundle bundle : bundles) {
 			String forceStart = (String) bundle.getHeaders().get("Riena-ForceStart");
 			if (forceStart != null && forceStart.equals("true")) {
-				if (bundle.getState() == Bundle.RESOLVED) {
+				// STARTING == LAZY, so start that also
+				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING) {
 					bundle.start();
 					System.out.println(bundle.getSymbolicName() + " forced autostart successfully");
 				} else {
