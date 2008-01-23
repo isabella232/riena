@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Caucho Hessian Plug-in (Incubation)
+Bundle-Vendor: hessian created by caucho.com / plugin created for Riena
+Bundle-SymbolicName: com.caucho.hessian;singleton:=true
+Bundle-Version: 3.1.3
+Eclipse-LazyStart: false
+Eclipse-BuddyPolicy: registered
+Bundle-ClassPath: .,
+ lib/hessian-3.1.3.jar
+Export-Package: com.caucho.hessian.client;
+  uses:="com.caucho.services.client,
+   javax.naming,
+   javax.naming.spi,
+   com.caucho.hessian.io",
+ com.caucho.hessian.io;uses:="org.w3c.dom",
+ com.caucho.hessian.server;uses:="com.caucho.services.server,javax.servlet,com.caucho.hessian.io"
+Import-Package: org.osgi.framework;version="1.4.0"
