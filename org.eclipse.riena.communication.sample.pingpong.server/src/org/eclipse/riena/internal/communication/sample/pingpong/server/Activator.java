@@ -28,7 +28,9 @@ import org.osgi.framework.ServiceRegistration;
  * 
  */
 public class Activator implements BundleActivator {
-	private ServiceRegistration pingPongReg;
+	private ServiceRegistration pingPongRegHessian;
+
+	// private ServiceRegistration pingPongRegXFire;
 
 	public void start(BundleContext context) throws Exception {
 		// create hessian service
@@ -39,26 +41,27 @@ public class Activator implements BundleActivator {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/PingPongWS");
 
-		pingPongReg = context.registerService(IPingPong.ID, pingPong,
-				properties);
+		pingPongRegHessian = context.registerService(IPingPong.ID, pingPong, properties);
 
 		// create xfire service
-		pingPong = new PingPong();
-		properties = new Hashtable<String, String>(3);
-
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "xfire");
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
-				"/PingPongXFireWS");
-
-		pingPongReg = context.registerService(IPingPong.ID, pingPong,
-				properties);
+		// pingPong = new PingPong();
+		// properties = new Hashtable<String, String>(3);
+		//
+		// properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		// properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "xfire");
+		// properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
+		// "/PingPongXFireWS");
+		//
+		// pingPongRegXFire = context.registerService(IPingPong.ID, pingPong,
+		// properties);
 
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		pingPongReg.unregister();
-		pingPongReg = null;
+		pingPongRegHessian.unregister();
+		pingPongRegHessian = null;
+		// pingPongRegXFire.unregister();
+		// pingPongRegXFire = null;
 	}
 
 }
