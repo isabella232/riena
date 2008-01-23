@@ -19,7 +19,6 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.log.LogService;
 
 /**
  * Wrapper to access the existing Logger.
@@ -40,6 +39,7 @@ public class LogUtil {
 	public Logger getLogger(String name) {
 		if (!initialized) {
 			init();
+			initialized = true;
 		}
 		if (logService != null) {
 			return logService.getLogger(name);
@@ -61,7 +61,7 @@ public class LogUtil {
 				if (event.getType() == ServiceEvent.REGISTERED) {
 					logServiceReference = event.getServiceReference();
 					logService = (ExtendedLogService) Activator.getDefault().getContext().getService(logServiceReference);
-					getLogger("Campo").log(LogService.LOG_INFO, "Stefan");
+					// getLogger("Campo").log(LogService.LOG_INFO, "Stefan");
 				} else if (event.getType() == ServiceEvent.UNREGISTERING) {
 					context.ungetService(logServiceReference);
 					logServiceReference = null;
