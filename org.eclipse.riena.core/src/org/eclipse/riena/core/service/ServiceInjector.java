@@ -111,7 +111,7 @@ public class ServiceInjector {
 	}
 
 	public boolean methodExists(Object target, String methodName) {
-		Method[] methods = target.getClass().getDeclaredMethods();
+		Method[] methods = target.getClass().getMethods();
 		for (Method method : methods) {
 			if (method.getName().equals(methodName)) {
 				return true;
