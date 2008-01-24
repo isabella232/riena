@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.exception;
 
-import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -362,32 +361,33 @@ public abstract class Failure extends RuntimeException {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
-
-		StringBuilder failureText = new StringBuilder(this.getClass().getName());
-		failureText.append(":\n  - serverMsg \t\t\t= ");
-		failureText.append(getServerMsg());
-		failureText.append("\n  - cause \t\t\t\t= ");
-		failureText.append(getCauseClassName());
-		failureText.append("\n  - id \t\t\t\t\t= ");
-		failureText.append(getId());
-		failureText.append("\n  - timestamp \t\t\t= ");
-		failureText.append(DateFormat.getInstance().format(timestamp));
-		failureText.append("\n  - callerClassName \t= ");
-		failureText.append(getCallerClassName());
-		failureText.append("\n  - callerClassVersion \t= ");
-		failureText.append(getCallerClassVersion());
-		failureText.append("\n  - callerMethodName \t= ");
-		failureText.append(getCallerMethodName());
-		failureText.append("\n  - nativeErrorCode \t= ");
-		failureText.append(getNativeErrorCode());
-		failureText.append("\n  - clientMsg \t\t\t= ");
-		failureText.append(getClientMsg());
-		failureText.append("\n  - javaVersion \t\t= ");
-		failureText.append(getJavaVersion());
-		return failureText.toString();
-	}
-
+	// commented out so that we see the toString from Throwable until we have a
+	// decent implementation TODO
+	// public String toString() {
+	//
+	// StringBuilder failureText = new StringBuilder(this.getClass().getName());
+	// failureText.append(":\n - serverMsg \t\t\t= ");
+	// failureText.append(getServerMsg());
+	// failureText.append("\n - cause \t\t\t\t= ");
+	// failureText.append(getCauseClassName());
+	// failureText.append("\n - id \t\t\t\t\t= ");
+	// failureText.append(getId());
+	// failureText.append("\n - timestamp \t\t\t= ");
+	// failureText.append(DateFormat.getInstance().format(timestamp));
+	// failureText.append("\n - callerClassName \t= ");
+	// failureText.append(getCallerClassName());
+	// failureText.append("\n - callerClassVersion \t= ");
+	// failureText.append(getCallerClassVersion());
+	// failureText.append("\n - callerMethodName \t= ");
+	// failureText.append(getCallerMethodName());
+	// failureText.append("\n - nativeErrorCode \t= ");
+	// failureText.append(getNativeErrorCode());
+	// failureText.append("\n - clientMsg \t\t\t= ");
+	// failureText.append(getClientMsg());
+	// failureText.append("\n - javaVersion \t\t= ");
+	// failureText.append(getJavaVersion());
+	// return failureText.toString();
+	// }
 	private String getCauseClassName() {
 		if (getCause() != null) {
 			return getCause().getClass().getName();
