@@ -28,5 +28,6 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.security.authorizationservice,org.eclipse.riena.security.authorizationservice"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.tests,org.eclipse.riena.tests"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.security.services.config,org.eclipse.riena.security.services.config"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.releng,org.eclipse.riena.releng"/>
 </provider>
 </psf>
