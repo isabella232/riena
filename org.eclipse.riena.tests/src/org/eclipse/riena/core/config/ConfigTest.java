@@ -36,6 +36,9 @@ public class ConfigTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 	}
 
+	/**
+	 * test that config is set in business class
+	 */
 	public void testConfigBusinessClass() {
 		// create new business class instance
 		final BusinessClass bc = new BusinessClass();
@@ -44,7 +47,8 @@ public class ConfigTest extends RienaTestCase {
 		assertTrue(bc.getName().equals("default"));
 
 		// wrap with proxy
-		new ConfigUtility(Activator.getContext()).createConfigProxy(bc, "org.eclipse.riena.business.pid");
+		ConfigUtility cu = new ConfigUtility(Activator.getContext());
+		cu.createConfigProxy(bc, "org.eclipse.riena.business.pid");
 
 		Thread t = new Thread() {
 			@Override
@@ -70,6 +74,49 @@ public class ConfigTest extends RienaTestCase {
 			e.printStackTrace();
 		}
 
+		cu.removeConfigProxy();
+		assertTrue(status.isTestSuccesfull());
+	}
+
+	/**
+	 * test that config is also set in a derived business class (=subclass)
+	 */
+	public void testConfigDerivedBusinessClass() {
+		// create new business class instance
+		final DerivedBusinessClass bc = new DerivedBusinessClass();
+		final ErrorStatus status = new ErrorStatus();
+
+		assertTrue(bc.getName().equals("default"));
+
+		// wrap with proxy
+		ConfigUtility cu = new ConfigUtility(Activator.getContext());
+		cu.createConfigProxy(bc, "org.eclipse.riena.business.pid");
+
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				try {
+					// wait a short time until config is applied
+					Thread.sleep(200);
+					// invoke the business call method
+					bc.invoke("first call");
+					assertTrue(bc.getName().equals("christian campo compeople ag"));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (AssertionFailedError e) {
+					status.setTestSuccesfull(false);
+				}
+			}
+
+		};
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		cu.removeConfigProxy();
 		assertTrue(status.isTestSuccesfull());
 	}
 
