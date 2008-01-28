@@ -31,5 +31,7 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.releng,org.eclipse.riena.releng"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.sample.app.common,org.eclipse.riena.sample.app.common"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.sample.app.server,org.eclipse.riena.sample.app.server"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.build,org.eclipse.riena.build"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.build.feature,org.eclipse.riena.build.feature"/>
 </provider>
 </psf>
