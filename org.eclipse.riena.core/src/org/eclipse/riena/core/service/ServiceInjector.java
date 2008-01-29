@@ -43,6 +43,8 @@ public class ServiceInjector {
 	private String unbindMethod;
 	private String filter;
 	private String serviceId;
+	private boolean onlyInjectHighestRanking;
+	public final static String DEFAULT_RANKING = "-100";
 
 	/**
 	 * public constructor for ServiceInjector. only used for testing
@@ -95,11 +97,11 @@ public class ServiceInjector {
 		this.serviceId = serviceId;
 		this.filter = filter;
 		if (!methodExists(target, bindMethod)) {
-			System.out.println("bindMethod '" + bindMethod + "' does not exist");
+			System.out.println("bindMethod '" + bindMethod + "' does not exist in target class: " + target.getClass().getName());
 			throw new AssertionError("bindMethod does not exist");
 		}
 		if (!methodExists(target, unbindMethod)) {
-			System.out.println("unbindMethod '" + unbindMethod + "' does not exist");
+			System.out.println("unbindMethod '" + unbindMethod + "' does not exist in target class: " + target.getClass().getName());
 			throw new AssertionError("unbindMethod does not exist");
 		}
 		this.bindMethod = bindMethod;
@@ -127,13 +129,17 @@ public class ServiceInjector {
 		try {
 			// try to find the service initial
 			ServiceReference[] serviceRefs = context.getServiceReferences(serviceId, filter);
+			// add an service listener for register or unregister
+			// register the service listener before we go through the reference
+			// list since its very more likely that no service is registered
+			// between getServiceReferences and addServiceListener
+			context.addServiceListener(serviceListner, filter);
+			// then go through the list of references
 			if (serviceRefs != null) {
 				for (ServiceReference serviceRef : serviceRefs) {
 					bind(serviceRef);
 				}
 			}
-			// add an service listener for register or unregister
-			context.addServiceListener(serviceListner, filter);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
