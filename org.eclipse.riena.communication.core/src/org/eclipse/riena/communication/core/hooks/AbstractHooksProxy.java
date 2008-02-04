@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 				Class<?>[] paramTypes = tmpMethod.getParameterTypes();
 				int i = 0;
 				boolean found = true;
-				for (Class param : paramTypes) {
+				for (Class<?> param : paramTypes) {
 					if (!param.isAssignableFrom(args[i].getClass())) {
 						found = false;
 						break;
@@ -87,7 +88,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 			}
 		}
 		if (proxyMethod == null) {
-			throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + args);
+			throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args));
 		}
 		Subject subject = getSubject();
 		if (subject == null) {
