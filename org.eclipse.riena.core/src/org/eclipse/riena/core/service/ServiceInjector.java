@@ -156,7 +156,7 @@ public class ServiceInjector {
 
 			// copy list to array so that I iterate through array and still
 			// remove entries from List concurrently
-			ServiceReference[] serviceRefs = trackedServiceRefs.toArray(new ServiceReference[0]);
+			ServiceReference[] serviceRefs = trackedServiceRefs.toArray(new ServiceReference[trackedServiceRefs.size()]);
 			for (ServiceReference serviceRef : serviceRefs) {
 				unbind(serviceRef);
 			}
