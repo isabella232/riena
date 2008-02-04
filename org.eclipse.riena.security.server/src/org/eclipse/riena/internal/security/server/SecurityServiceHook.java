@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.security.server;
 
 import java.security.Principal;
-import java.util.HashMap;
 
 import javax.security.auth.Subject;
 import javax.servlet.http.Cookie;
@@ -59,7 +58,7 @@ public class SecurityServiceHook implements IServiceHook {
 	private ISubjectHolderService subjectHolderService;
 	private ISessionHolderService sessionHolderService;
 
-	private HashMap<String, Boolean> freeHivemindWebservices = new HashMap<String, Boolean>();
+//	private HashMap<String, Boolean> freeHivemindWebservices = new HashMap<String, Boolean>();
 	private boolean requiresSSOIDbyDefault = false;
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SecurityServiceHook.class.getName());
