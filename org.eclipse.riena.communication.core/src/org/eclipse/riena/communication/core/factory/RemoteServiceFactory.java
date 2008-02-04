@@ -18,6 +18,7 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.RienaStartupStatus;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
 import org.osgi.framework.BundleContext;
@@ -46,10 +47,10 @@ import org.osgi.service.cm.ConfigurationPlugin;
  * IRemoteServiceFactory is available.
  * <p>
  * <b>NOTE</b><br>
- * The Riena communication bundle content includes generic class loading and object
- * instantiation or delegates this behavior to other Riena communication bundles. Riena
- * supports Eclipse-BuddyPolicy concept. For further information about Riena
- * class loading and instanciation please read /readme.txt.
+ * The Riena communication bundle content includes generic class loading and
+ * object instantiation or delegates this behavior to other Riena communication
+ * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
+ * about Riena class loading and instanciation please read /readme.txt.
  * 
  * @author Alexander Ziegler
  * @author Christian Campo
@@ -96,11 +97,8 @@ public class RemoteServiceFactory {
 	 * @return the registration object or <code>null</code>
 	 * 
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(
-			Class<?> interfaceClass, String url, String protocol,
-			String configid) {
-		return createAndRegisterProxy(interfaceClass, url, protocol, configid,
-				HOST_ID);
+	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol, String configid) {
+		return createAndRegisterProxy(interfaceClass, url, protocol, configid, HOST_ID);
 	}
 
 	/**
@@ -120,11 +118,8 @@ public class RemoteServiceFactory {
 	 * @param hostId
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(
-			Class<?> interfaceClass, String url, String protocol,
-			String configid, String hostId) {
-		RemoteServiceDescription rsd = createDescription(interfaceClass, url,
-				protocol, configid);
+	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol, String configid, String hostId) {
+		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol, configid);
 		return createAndRegisterProxy(rsd);
 	}
 
@@ -139,8 +134,7 @@ public class RemoteServiceFactory {
 	 * @param rsDesc
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(
-			RemoteServiceDescription rsDesc) {
+	public IRemoteServiceRegistration createAndRegisterProxy(RemoteServiceDescription rsDesc) {
 		return createAndRegisterProxy(rsDesc, HOST_ID);
 	}
 
@@ -159,42 +153,34 @@ public class RemoteServiceFactory {
 	 * @param hostId
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(
-			RemoteServiceDescription rsDesc, String hostId) {
+	public IRemoteServiceRegistration createAndRegisterProxy(RemoteServiceDescription rsDesc, String hostId) {
 		// create proxy first
 		final IRemoteServiceReference rsRef = createProxy(rsDesc);
 		if (rsRef == null) {
-			System.out
-					.println("Riena::RemoteServiceFactory::could not create proxy for "
-							+ rsDesc);
+			System.out.println("Riena::RemoteServiceFactory::could not create proxy for " + rsDesc);
 			return null;
 		}
 		rsRef.setHostId(hostId);
 		// get registry and register directly
-		ServiceReference refRegistry = context
-				.getServiceReference(IRemoteServiceRegistry.ID);
+		ServiceReference refRegistry = context.getServiceReference(IRemoteServiceRegistry.ID);
 		if (refRegistry != null) {
-			IRemoteServiceRegistry registry = (IRemoteServiceRegistry) context
-					.getService(refRegistry);
+			IRemoteServiceRegistry registry = (IRemoteServiceRegistry) context.getService(refRegistry);
 			if (registry != null) {
-				IRemoteServiceRegistration reg = registry
-						.registerService(rsRef);
+				IRemoteServiceRegistration reg = registry.registerService(rsRef);
 				return reg;
 			}
 		}
 		ServiceListener sl = new ServiceListener() {
 			public void serviceChanged(ServiceEvent event) {
 				ServiceReference refRegistry = event.getServiceReference();
-				IRemoteServiceRegistry registry = (IRemoteServiceRegistry) Activator
-						.getContext().getService(refRegistry);
+				IRemoteServiceRegistry registry = (IRemoteServiceRegistry) Activator.getContext().getService(refRegistry);
 				if (registry != null) {
 					registry.registerService(rsRef);
 				}
 			}
 		};
 		try {
-			Activator.getContext().addServiceListener(sl,
-					"(objectClass=" + IRemoteServiceRegistry.ID + ")");
+			Activator.getContext().addServiceListener(sl, "(objectClass=" + IRemoteServiceRegistry.ID + ")");
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
@@ -213,15 +199,12 @@ public class RemoteServiceFactory {
 	 * @param protocol
 	 * @return the proxy references or <code>null</code>
 	 */
-	public IRemoteServiceReference createProxy(Class<?> interfaceClass,
-			String url, String protocol, String configid) {
-		RemoteServiceDescription rsd = createDescription(interfaceClass, url,
-				protocol, configid);
+	public IRemoteServiceReference createProxy(Class<?> interfaceClass, String url, String protocol, String configid) {
+		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol, configid);
 		return createProxy(rsd);
 	}
 
-	private RemoteServiceDescription createDescription(Class<?> interfaceClass,
-			String url, String protocol, String configid) {
+	private RemoteServiceDescription createDescription(Class<?> interfaceClass, String url, String protocol, String configid) {
 		RemoteServiceDescription rsd = new RemoteServiceDescription();
 		rsd.setServiceInterfaceClass(interfaceClass);
 		rsd.setServiceInterfaceClassName(interfaceClass.getName());
@@ -241,17 +224,17 @@ public class RemoteServiceFactory {
 	 * @return the proxy references or <code>null</code>
 	 */
 	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
+		if (!RienaStartupStatus.getInstance().isStarted()) {
+			System.out.println("WARN riena.core is not started. This will probably not work.");
+		}
 		// consult ConfigurationPlugins for URL
 		try {
-			ServiceReference[] pluginRefs = Activator.getContext()
-					.getServiceReferences(ConfigurationPlugin.class.getName(),
-							null);
+			ServiceReference[] pluginRefs = Activator.getContext().getServiceReferences(ConfigurationPlugin.class.getName(), null);
 			Hashtable<String, String> props = new Hashtable<String, String>();
 			props.put(RSDPublisherProperties.PROP_URL, rsd.getURL());
 			if (pluginRefs != null) {
 				for (ServiceReference pluginRef : pluginRefs) {
-					ConfigurationPlugin plugin = (ConfigurationPlugin) Activator
-							.getContext().getService(pluginRef);
+					ConfigurationPlugin plugin = (ConfigurationPlugin) Activator.getContext().getService(pluginRef);
 					if (plugin != null) {
 						plugin.modifyConfiguration(null, props);
 					}
@@ -266,20 +249,16 @@ public class RemoteServiceFactory {
 			return null;
 		}
 		// find a factory for this specific protocol
-		String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "="
-				+ rsd.getProtocol() + ")";
+		String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")";
 		try {
-			references = context.getServiceReferences(IRemoteServiceFactory.ID,
-					filter);
+			references = context.getServiceReferences(IRemoteServiceFactory.ID, filter);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 			return null;
 		}
 		// no factory for this protocol
 		if (references == null) {
-			System.out
-					.println("Riena::RemoteServiceFactory:: WARN no IRemoteServiceFactory serviceRef available protocol ["
-							+ rsd.getProtocol() + "]");
+			System.out.println("Riena::RemoteServiceFactory:: WARN no IRemoteServiceFactory serviceRef available protocol [" + rsd.getProtocol() + "]");
 			return null;
 		}
 
@@ -295,29 +274,20 @@ public class RemoteServiceFactory {
 
 		// could not get instance for existing reference
 		if (factory == null) {
-			System.out
-					.println("Riena::RemoteServiceFactory:: WARN no IRemoteServiceFactory service available protocol ["
-							+ rsd.getProtocol()
-							+ "] id ["
-							+ rsd.getServiceInterfaceClassName() + "]");
+			System.out.println("Riena::RemoteServiceFactory:: WARN no IRemoteServiceFactory service available protocol [" + rsd.getProtocol() + "] id ["
+					+ rsd.getServiceInterfaceClassName() + "]");
 			return null;
 		}
-		System.out
-				.println("Riena::RemoteServiceFactory:: DEBUG IRemoteServiceFactory found protocol ["
-						+ rsd.getProtocol() + "] " + factory);
+		System.out.println("Riena::RemoteServiceFactory:: DEBUG IRemoteServiceFactory found protocol [" + rsd.getProtocol() + "] " + factory);
 
 		// ask factory to create a proxy for me, and intercept the calls with a
 		// CallHooksProxy instance
 		try {
 			IRemoteServiceReference rsr = factory.createProxy(rsd);
-			CallHooksProxy callHooksProxy = new CallHooksProxy(rsr
-					.getServiceInstance());
+			CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
 			callHooksProxy.setRemoteServiceDescription(rsd);
-			callHooksProxy.setMessageContextAccessor(factory
-					.getMessageContextAccessor());
-			rsr.setServiceInstance(Proxy.newProxyInstance(rsd
-					.getServiceInterfaceClass().getClassLoader(),
-					new Class[] { rsd.getServiceInterfaceClass() },
+			callHooksProxy.setMessageContextAccessor(factory.getMessageContextAccessor());
+			rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(), new Class[] { rsd.getServiceInterfaceClass() },
 					callHooksProxy));
 			return rsr;
 		} finally {
@@ -342,8 +312,7 @@ public class RemoteServiceFactory {
 	 * 
 	 * @throws ClassNotFoundException
 	 */
-	public Class<?> loadClass(String interfaceClassName)
-			throws ClassNotFoundException {
+	public Class<?> loadClass(String interfaceClassName) throws ClassNotFoundException {
 
 		return getClass().getClassLoader().loadClass(interfaceClassName);
 	}
