@@ -81,7 +81,7 @@ public class ExtensionUtility {
                         if (retType.equals(String.class)) {
                             return config.getAttribute(name);
                         } else if (retType.equals(Boolean.TYPE)) {
-                            return new Boolean(config.getAttribute(name));
+                            return Boolean.valueOf(config.getAttribute(name));
                         } else if (retType.isInterface()) {
                             IConfigurationElement cfgElement = config.getChildren(name)[0];
                             if (cfgElement == null) {
