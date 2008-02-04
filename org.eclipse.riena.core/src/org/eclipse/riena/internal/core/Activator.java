@@ -14,6 +14,7 @@ import java.util.Hashtable;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.RienaStartupStatus;
 import org.eclipse.riena.core.logging.LogUtil;
 import org.eclipse.riena.internal.core.config.ConfigFromExtensions;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
@@ -77,6 +78,7 @@ public class Activator extends Plugin {
 		// execute the class that reads through the extensions and executes them
 		// as config admin packages
 		new ConfigFromExtensions(context).doConfig();
+		RienaStartupStatus.getInstance().setStarted(true);
 	}
 
 	/*
