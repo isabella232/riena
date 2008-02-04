@@ -84,7 +84,7 @@ public class RemoteServiceDescription {
      * @param serviceRef
      * @param service
      */
-    public RemoteServiceDescription(ServiceReference serviceRef, Object service, Class serverInterface) {
+    public RemoteServiceDescription(ServiceReference serviceRef, Object service, Class<?> serverInterface) {
         this();
         this.serviceRef = serviceRef;
         this.service = service;
