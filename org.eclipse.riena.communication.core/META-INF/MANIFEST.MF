@@ -15,7 +15,6 @@ Export-Package: org.eclipse.riena.communication.core,
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: com.caucho.hessian
 Require-Bundle: org.eclipse.osgi.services,
- org.junit;resolution:=optional,
  org.eclipse.core.runtime,
  com.caucho.hessian,
  org.eclipse.riena.core
