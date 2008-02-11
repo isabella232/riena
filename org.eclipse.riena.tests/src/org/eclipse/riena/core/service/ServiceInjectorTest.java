@@ -12,6 +12,7 @@ package org.eclipse.riena.core.service;
 
 import junit.framework.TestCase;
 
+@Deprecated
 public class ServiceInjectorTest extends TestCase {
 
 	public void testValidateMethod() {
