@@ -15,6 +15,7 @@ import java.util.Date;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
+import org.osgi.service.log.LogService;
 
 public class SysoLogListener implements LogListener {
 
@@ -22,9 +23,29 @@ public class SysoLogListener implements LogListener {
 		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
-		buffer.append(eEntry.getLevel()).append(' ');
+		String level;
+		switch (eEntry.getLevel()) {
+		case LogService.LOG_DEBUG:
+			level = "DEBUG";
+			break;
+		case LogService.LOG_WARNING:
+			level = "WARNING";
+			break;
+		case LogService.LOG_ERROR:
+			level = "ERROR";
+			break;
+		case LogService.LOG_INFO:
+			level = "INFO";
+			break;
+		default:
+			level = "UNKNOWN";
+			break;
+		}
+		buffer.append(level).append(' ');
 		buffer.append(eEntry.getLoggerName()).append(' ');
-		buffer.append(eEntry.getContext()).append(' ');
+		if (eEntry.getContext() != null) {
+			buffer.append(eEntry.getContext()).append(' ');
+		}
 		buffer.append(entry.getMessage());
 		System.out.println(buffer.toString());
 		if (eEntry.getException() != null) {

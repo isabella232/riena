@@ -23,9 +23,9 @@ import org.osgi.service.log.LogService;
  */
 public class LogUtil {
 
-	private ExtendedLogService logService;
+	private static ExtendedLogService logService;
 	private ExtendedLogReaderService logReaderService;
-	private boolean initialized = false;
+	private static boolean initialized = false;
 	private BundleContext context;
 
 	public LogUtil(BundleContext context) {
@@ -50,8 +50,8 @@ public class LogUtil {
 	 * 
 	 * @param logService
 	 */
-	public void bindLogService(LogService logService) {
-		this.logService = (ExtendedLogService) logService;
+	public void bindLogService(LogService logServiceParm) {
+		logService = (ExtendedLogService) logServiceParm;
 	}
 
 	/**
@@ -59,9 +59,9 @@ public class LogUtil {
 	 * 
 	 * @param logService
 	 */
-	public void unbindLogService(LogService logService) {
-		if (this.logService == logService) {
-			this.logService = null;
+	public void unbindLogService(LogService logServiceParm) {
+		if (logService == logServiceParm) {
+			logService = null;
 		}
 	}
 

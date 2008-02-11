@@ -50,6 +50,10 @@ public class Activator extends Plugin {
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles) {
 			String forceStart = (String) bundle.getHeaders().get("Riena-ForceStart");
+			if (bundle.getSymbolicName().equals("org.eclipse.equinox.cm")
+					|| bundle.getSymbolicName().equals("org.eclipse.equinox.log")) {
+				forceStart = "true";
+			}
 			if (forceStart != null && forceStart.equals("true")) {
 				// STARTING == LAZY, so start that also
 				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING) {
@@ -57,10 +61,12 @@ public class Activator extends Plugin {
 					System.out.println(bundle.getSymbolicName() + " forced autostart successfully");
 				} else {
 					if (bundle.getState() == Bundle.INSTALLED) {
-						System.err.println(bundle.getSymbolicName() + " has Riena-ForceStart but is only in state INSTALLED (not RESOLVED).");
+						System.err.println(bundle.getSymbolicName()
+								+ " has Riena-ForceStart but is only in state INSTALLED (not RESOLVED).");
 					} else {
 						if (bundle.getState() == Bundle.ACTIVE) {
-							System.out.println(bundle.getSymbolicName() + " no forced autostart. Bundle is already ACTIVE.");
+							System.out.println(bundle.getSymbolicName()
+									+ " no forced autostart. Bundle is already ACTIVE.");
 						}
 					}
 				}
