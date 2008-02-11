@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import org.eclipse.riena.internal.core.Activator;
+import org.osgi.framework.Bundle;
+import org.osgi.service.log.LogService;
+
 public class ContainerModel {
 
 	private static final int CLIENT = 1;
@@ -20,6 +24,16 @@ public class ContainerModel {
 		String s = System.getProperty("riena.container.model");
 		if (s != null && s.equals("server")) {
 			containerModel = SERVER;
+		}
+		Bundle[] bundles = Activator.getContext().getBundles();
+		for (Bundle bundle : bundles) {
+			if (bundle.getSymbolicName().startsWith("org.eclipse.equinox.http")) {
+				containerModel = SERVER;
+			}
+		}
+		if (containerModel == SERVER) {
+			Activator.getDefault().getLogger(ContainerModel.class.getName()).log(LogService.LOG_INFO,
+					"!!! Riena is running in SERVERMODEL !!!");
 		}
 	}
 

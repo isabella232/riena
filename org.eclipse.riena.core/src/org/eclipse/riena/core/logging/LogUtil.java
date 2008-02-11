@@ -72,6 +72,7 @@ public class LogUtil {
 	 */
 	public void bindLogReaderService(LogReaderService logReaderService) {
 		this.logReaderService = (ExtendedLogReaderService) logReaderService;
+		// TODO remove SysoLogListener if we have Log4jLogListener
 		this.logReaderService.addLogListener(new SysoLogListener(), new AlwaysFilter());
 		this.logReaderService.addLogListener(new Log4jLogListener(), new AlwaysFilter());
 	}
