@@ -13,6 +13,7 @@ package org.eclipse.riena.communication.core.factory;
 import java.lang.reflect.Proxy;
 import java.util.Hashtable;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -27,6 +28,7 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationPlugin;
+import org.osgi.service.log.LogService;
 
 /**
  * The IRemoteServiceFactory creates {@link IRemoteServiceReference} for given
@@ -60,6 +62,7 @@ public class RemoteServiceFactory {
 
 	private static final String HOST_ID = RemoteServiceFactory.class.getName();
 	private BundleContext context;
+	private Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceFactory.class.getName());
 
 	/**
 	 * Creates a RemoteServiceFactory instance with the default bundle context.
@@ -97,7 +100,8 @@ public class RemoteServiceFactory {
 	 * @return the registration object or <code>null</code>
 	 * 
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol, String configid) {
+	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
+			String configid) {
 		return createAndRegisterProxy(interfaceClass, url, protocol, configid, HOST_ID);
 	}
 
@@ -118,7 +122,8 @@ public class RemoteServiceFactory {
 	 * @param hostId
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol, String configid, String hostId) {
+	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
+			String configid, String hostId) {
 		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol, configid);
 		return createAndRegisterProxy(rsd);
 	}
@@ -157,7 +162,7 @@ public class RemoteServiceFactory {
 		// create proxy first
 		final IRemoteServiceReference rsRef = createProxy(rsDesc);
 		if (rsRef == null) {
-			System.out.println("Riena::RemoteServiceFactory::could not create proxy for " + rsDesc);
+			LOGGER.log(LogService.LOG_ERROR, "Riena::RemoteServiceFactory::could not create proxy for " + rsDesc);
 			return null;
 		}
 		rsRef.setHostId(hostId);
@@ -173,7 +178,8 @@ public class RemoteServiceFactory {
 		ServiceListener sl = new ServiceListener() {
 			public void serviceChanged(ServiceEvent event) {
 				ServiceReference refRegistry = event.getServiceReference();
-				IRemoteServiceRegistry registry = (IRemoteServiceRegistry) Activator.getContext().getService(refRegistry);
+				IRemoteServiceRegistry registry = (IRemoteServiceRegistry) Activator.getContext().getService(
+						refRegistry);
 				if (registry != null) {
 					registry.registerService(rsRef);
 				}
@@ -204,7 +210,8 @@ public class RemoteServiceFactory {
 		return createProxy(rsd);
 	}
 
-	private RemoteServiceDescription createDescription(Class<?> interfaceClass, String url, String protocol, String configid) {
+	private RemoteServiceDescription createDescription(Class<?> interfaceClass, String url, String protocol,
+			String configid) {
 		RemoteServiceDescription rsd = new RemoteServiceDescription();
 		rsd.setServiceInterfaceClass(interfaceClass);
 		rsd.setServiceInterfaceClassName(interfaceClass.getName());
@@ -225,11 +232,12 @@ public class RemoteServiceFactory {
 	 */
 	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
 		if (!RienaStartupStatus.getInstance().isStarted()) {
-			System.out.println("WARN riena.core is not started. This will probably not work.");
+			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This will probably not work.");
 		}
 		// consult ConfigurationPlugins for URL
 		try {
-			ServiceReference[] pluginRefs = Activator.getContext().getServiceReferences(ConfigurationPlugin.class.getName(), null);
+			ServiceReference[] pluginRefs = Activator.getContext().getServiceReferences(
+					ConfigurationPlugin.class.getName(), null);
 			Hashtable<String, String> props = new Hashtable<String, String>();
 			props.put(RSDPublisherProperties.PROP_URL, rsd.getURL());
 			if (pluginRefs != null) {
@@ -258,7 +266,9 @@ public class RemoteServiceFactory {
 		}
 		// no factory for this protocol
 		if (references == null) {
-			System.out.println("Riena::RemoteServiceFactory:: WARN no IRemoteServiceFactory serviceRef available protocol [" + rsd.getProtocol() + "]");
+			LOGGER.log(LogService.LOG_WARNING,
+					"Riena::RemoteServiceFactory:: no IRemoteServiceFactory serviceRef available protocol ["
+							+ rsd.getProtocol() + "]");
 			return null;
 		}
 
@@ -274,11 +284,13 @@ public class RemoteServiceFactory {
 
 		// could not get instance for existing reference
 		if (factory == null) {
-			System.out.println("Riena::RemoteServiceFactory:: WARN no IRemoteServiceFactory service available protocol [" + rsd.getProtocol() + "] id ["
-					+ rsd.getServiceInterfaceClassName() + "]");
+			LOGGER.log(LogService.LOG_WARNING,
+					"Riena::RemoteServiceFactory:: no IRemoteServiceFactory service available protocol ["
+							+ rsd.getProtocol() + "] id [" + rsd.getServiceInterfaceClassName() + "]");
 			return null;
 		}
-		System.out.println("Riena::RemoteServiceFactory:: DEBUG IRemoteServiceFactory found protocol [" + rsd.getProtocol() + "] " + factory);
+		LOGGER.log(LogService.LOG_INFO, "Riena::RemoteServiceFactory:: IRemoteServiceFactory found protocol ["
+				+ rsd.getProtocol() + "] " + factory);
 
 		// ask factory to create a proxy for me, and intercept the calls with a
 		// CallHooksProxy instance
@@ -287,8 +299,8 @@ public class RemoteServiceFactory {
 			CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
 			callHooksProxy.setRemoteServiceDescription(rsd);
 			callHooksProxy.setMessageContextAccessor(factory.getMessageContextAccessor());
-			rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(), new Class[] { rsd.getServiceInterfaceClass() },
-					callHooksProxy));
+			rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
+					new Class[] { rsd.getServiceInterfaceClass() }, callHooksProxy));
 			return rsr;
 		} finally {
 			context.ungetService(refFactory);
