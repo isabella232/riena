@@ -22,7 +22,12 @@ public class SysoLogListener implements LogListener {
 	public void logged(LogEntry entry) {
 		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
+		long time = eEntry.getTime();
+		if (time == 0) {
+			buffer.append(new Date().toString()).append(' ');
+		} else {
+			buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
+		}
 		String level;
 		switch (eEntry.getLevel()) {
 		case LogService.LOG_DEBUG:
@@ -42,6 +47,7 @@ public class SysoLogListener implements LogListener {
 			break;
 		}
 		buffer.append(level).append(' ');
+		buffer.append("[Thread-" + eEntry.getThreadID() + "] ");
 		buffer.append(eEntry.getLoggerName()).append(' ');
 		if (eEntry.getContext() != null) {
 			buffer.append(eEntry.getContext()).append(' ');
