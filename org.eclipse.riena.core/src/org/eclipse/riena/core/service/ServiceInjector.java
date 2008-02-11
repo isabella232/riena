@@ -32,7 +32,10 @@ import org.osgi.framework.ServiceReference;
  * ServiceInjector tracks the specified OSGi Service after calls
  * {@link #start()} and stop tracks after calls {@link #stop()}.
  * 
+ * @deprecated please use instead <code>ServiceId</code> and
+ *             <code>Injector</code>
  */
+@Deprecated
 public class ServiceInjector {
 	private boolean started = false;
 	private List<ServiceReference> trackedServiceRefs;
@@ -69,7 +72,8 @@ public class ServiceInjector {
 	 * @param unbindMethod
 	 *            to call at target after the OSGi Service becomes unregistered
 	 */
-	public ServiceInjector(BundleContext context, String serviceId, Object target, String bindMethod, String unbindMethod) {
+	public ServiceInjector(BundleContext context, String serviceId, Object target, String bindMethod,
+			String unbindMethod) {
 		this(context, serviceId, "(objectClass=" + serviceId + ")", target, bindMethod, unbindMethod);
 	}
 
@@ -91,17 +95,20 @@ public class ServiceInjector {
 	 * @param unbindMethod
 	 *            to call at target after the OSGi Service becomes unregistered
 	 */
-	public ServiceInjector(BundleContext context, String serviceId, String filter, Object target, String bindMethod, String unbindMethod) {
+	public ServiceInjector(BundleContext context, String serviceId, String filter, Object target, String bindMethod,
+			String unbindMethod) {
 		super();
 		this.context = context;
 		this.serviceId = serviceId;
 		this.filter = filter;
 		if (!methodExists(target, bindMethod)) {
-			System.out.println("bindMethod '" + bindMethod + "' does not exist in target class: " + target.getClass().getName());
+			System.out.println("bindMethod '" + bindMethod + "' does not exist in target class: "
+					+ target.getClass().getName());
 			throw new AssertionError("bindMethod does not exist");
 		}
 		if (!methodExists(target, unbindMethod)) {
-			System.out.println("unbindMethod '" + unbindMethod + "' does not exist in target class: " + target.getClass().getName());
+			System.out.println("unbindMethod '" + unbindMethod + "' does not exist in target class: "
+					+ target.getClass().getName());
 			throw new AssertionError("unbindMethod does not exist");
 		}
 		this.bindMethod = bindMethod;
@@ -156,7 +163,8 @@ public class ServiceInjector {
 
 			// copy list to array so that I iterate through array and still
 			// remove entries from List concurrently
-			ServiceReference[] serviceRefs = trackedServiceRefs.toArray(new ServiceReference[trackedServiceRefs.size()]);
+			ServiceReference[] serviceRefs = trackedServiceRefs
+					.toArray(new ServiceReference[trackedServiceRefs.size()]);
 			for (ServiceReference serviceRef : serviceRefs) {
 				unbind(serviceRef);
 			}
