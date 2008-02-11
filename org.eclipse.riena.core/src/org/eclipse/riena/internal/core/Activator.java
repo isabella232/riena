@@ -50,8 +50,9 @@ public class Activator extends Plugin {
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles) {
 			String forceStart = (String) bundle.getHeaders().get("Riena-ForceStart");
-			if (bundle.getSymbolicName().equals("org.eclipse.equinox.cm")
-					|| bundle.getSymbolicName().equals("org.eclipse.equinox.log")) {
+			if (bundle.getState() != Bundle.ACTIVE
+					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals(
+							"org.eclipse.equinox.log"))) {
 				forceStart = "true";
 			}
 			if (forceStart != null && forceStart.equals("true")) {
