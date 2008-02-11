@@ -13,21 +13,17 @@ package org.eclipse.riena.core.logging;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.core.service.ServiceInjector;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogReaderService;
+import org.osgi.service.log.LogService;
 
 /**
  * Wrapper to access the existing Logger.
  */
 public class LogUtil {
 
-	private ServiceReference logServiceReference;
 	private ExtendedLogService logService;
-	private ServiceReference logReaderServiceReference;
 	private ExtendedLogReaderService logReaderService;
 	private boolean initialized = false;
 	private BundleContext context;
@@ -49,65 +45,55 @@ public class LogUtil {
 
 	}
 
+	/**
+	 * Bind ExtendedLogService
+	 * 
+	 * @param logService
+	 */
+	public void bindLogService(LogService logService) {
+		this.logService = (ExtendedLogService) logService;
+	}
+
+	/**
+	 * Unbind ExtendedLogService
+	 * 
+	 * @param logService
+	 */
+	public void unbindLogService(LogService logService) {
+		if (this.logService == logService) {
+			this.logService = null;
+		}
+	}
+
+	/**
+	 * Bind ExtendedLogReaderService
+	 * 
+	 * @param logReaderService
+	 */
+	public void bindLogReaderService(LogReaderService logReaderService) {
+		this.logReaderService = (ExtendedLogReaderService) logReaderService;
+		this.logReaderService.addLogListener(new SysoLogListener(), new AlwaysFilter());
+		this.logReaderService.addLogListener(new Log4jLogListener(), new AlwaysFilter());
+	}
+
+	/**
+	 * Unbind ExtendedLogReaderService
+	 * 
+	 * @param logReaderService
+	 */
+	public void unbindLogReaderService(ExtendedLogReaderService logReaderService) {
+		if (this.logReaderService == logReaderService) {
+			this.logReaderService = null;
+		}
+	}
+
+	/**
+	 * initialize LogUtil
+	 */
 	public void init() {
-		logServiceReference = context.getServiceReference(ExtendedLogService.class.getName());
-		if (logServiceReference != null) {
-			logService = (ExtendedLogService) Activator.getDefault().getContext().getService(logServiceReference);
-		}
-
-		ServiceListener logServiceListener = new ServiceListener() {
-
-			public void serviceChanged(ServiceEvent event) {
-				if (event.getType() == ServiceEvent.REGISTERED) {
-					logServiceReference = event.getServiceReference();
-					logService = (ExtendedLogService) Activator.getDefault().getContext().getService(logServiceReference);
-					// getLogger("Campo").log(LogService.LOG_INFO, "Stefan");
-				} else if (event.getType() == ServiceEvent.UNREGISTERING) {
-					context.ungetService(logServiceReference);
-					logServiceReference = null;
-					logService = null;
-				}
-			}
-
-		};
-
-		logReaderServiceReference = context.getServiceReference(ExtendedLogReaderService.class.getName());
-		if (logReaderServiceReference != null) {
-			logReaderService = (ExtendedLogReaderService) Activator.getDefault().getContext().getService(logReaderServiceReference);
-		}
-
-		try {
-			context.addServiceListener(logServiceListener, "(objectClass=" + ExtendedLogService.class.getName() + ")");
-		} catch (InvalidSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		ServiceListener logReaderServiceListener = new ServiceListener() {
-
-			public void serviceChanged(ServiceEvent event) {
-				if (event.getType() == ServiceEvent.REGISTERED) {
-					logReaderServiceReference = event.getServiceReference();
-					logReaderService = (ExtendedLogReaderService) Activator.getDefault().getContext().getService(logReaderServiceReference);
-				} else if (event.getType() == ServiceEvent.UNREGISTERING) {
-					context.ungetService(logReaderServiceReference);
-					logReaderServiceReference = null;
-					logReaderService = null;
-				}
-			}
-
-		};
-		if (logReaderService != null) {
-			logReaderService.addLogListener(new SysoLogListener(), new AlwaysFilter());
-			logReaderService.addLogListener(new Log4jLogListener(), new AlwaysFilter());
-		}
-
-		try {
-			context.addServiceListener(logReaderServiceListener, "(objectClass=" + ExtendedLogReaderService.class.getName() + ")");
-		} catch (InvalidSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		new ServiceInjector(context, ExtendedLogService.class.getName(), this, "bindLogService", "unbindLogService")
+				.start();
+		new ServiceInjector(context, ExtendedLogReaderService.class.getName(), this, "bindLogReaderService",
+				"unbindLogReaderService").start();
 	}
 }
