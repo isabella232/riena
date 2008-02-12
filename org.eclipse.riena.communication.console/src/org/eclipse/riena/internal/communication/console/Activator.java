@@ -18,7 +18,8 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.logging.LogUtil;
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.Injector;
+import org.eclipse.riena.core.service.ServiceId;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -26,8 +27,8 @@ import org.osgi.framework.ServiceRegistration;
 public class Activator implements BundleActivator {
 
 	private ServiceRegistration consoleReg;
-	private ServiceInjector publisherInjector;
-	private ServiceInjector registryInjector;
+	private Injector publisherInjector;
+	private Injector registryInjector;
 	private LogUtil logUtil;
 	private static BundleContext CONTEXT;
 	private static Activator plugin;
@@ -45,15 +46,11 @@ public class Activator implements BundleActivator {
 		// the filter applies only if the service is living in this container
 		// e.g. server.
 		String filter = "(" + RSDPublisherProperties.PROP_IS_REMOTE + "=true)";
-		publisherInjector = new ServiceInjector(context, IServicePublishEventDispatcher.ID, filter, console,
-				"bindServicePublisher", "unbindServicePublisher");
-		publisherInjector.start();
-		registryInjector = new ServiceInjector(context, IRemoteServiceRegistry.ID, console, "bindServiceRegistry",
-				"unbindServiceRegistry");
-		registryInjector.start();
+		publisherInjector = new ServiceId(IServicePublishEventDispatcher.ID).useFilter(filter).injectInto(console)
+				.start(context);
+		registryInjector = new ServiceId(IRemoteServiceRegistry.ID).injectInto(console).start(context);
 
 		consoleReg = context.registerService(CommandProvider.class.getName(), console, new Hashtable<String, String>());
-
 	}
 
 	/*
@@ -62,9 +59,9 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		publisherInjector.dispose();
+		publisherInjector.stop();
 		publisherInjector = null;
-		registryInjector.dispose();
+		registryInjector.stop();
 		registryInjector = null;
 		consoleReg.unregister();
 		consoleReg = null;

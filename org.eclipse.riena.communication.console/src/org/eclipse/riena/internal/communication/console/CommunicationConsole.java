@@ -89,7 +89,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param servicePublisher
 	 *            the servicePublisher to bind
 	 */
-	public void bindServicePublisher(IServicePublishEventDispatcher servicePublisher) {
+	public void bind(IServicePublishEventDispatcher servicePublisher) {
 		this.servicePublisher = servicePublisher;
 	}
 
@@ -97,7 +97,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param servicePublisher
 	 *            the servicePublisher to unbind
 	 */
-	public void unbindServicePublisher(IServicePublishEventDispatcher servicePublisher) {
+	public void unbind(IServicePublishEventDispatcher servicePublisher) {
 		this.servicePublisher = null;
 	}
 
@@ -105,7 +105,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param serviceRegistry
 	 *            the serviceRegistry to bind
 	 */
-	public void bindServiceRegistry(IRemoteServiceRegistry serviceRegistry) {
+	public void bind(IRemoteServiceRegistry serviceRegistry) {
 		this.serviceRegistry = serviceRegistry;
 	}
 
@@ -113,7 +113,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param serviceRegistry
 	 *            the serviceRegistry to unbind
 	 */
-	public void unbindServiceRegistry(IRemoteServiceRegistry serviceRegistry) {
+	public void unbind(IRemoteServiceRegistry serviceRegistry) {
 		this.serviceRegistry = null;
 	}
 
