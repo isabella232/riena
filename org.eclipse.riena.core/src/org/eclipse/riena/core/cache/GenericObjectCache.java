@@ -100,9 +100,10 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#get(java.lang.Object)
 	 */
 	public Object get(Object key) {
-		// PreCondition.assertTrue("get with single parameter cannot be used for
+		// Assert.isTrue(!isGlobalCache(),"get with single parameter cannot be
+		// used for
 		// global caches. use two parameter
-		// version ", !isGlobalCache());
+		// version ");
 		return get(key, GenericObjectCache.class);
 	}
 
@@ -186,15 +187,15 @@ public class GenericObjectCache implements IGenericObjectCache {
 	private void printStat() {
 		statDisplayCount++;
 		if (statDisplayCount > 100) {
-			LOGGER
-					.log(LogService.LOG_INFO, name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statMiss + " / "
-							+ statTimeout);
+			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound
+					+ " / " + statMiss + " / " + statTimeout);
 			statDisplayCount = 0;
 		}
 	}
 
 	public String getStatistic() {
-		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statMiss + " / " + statTimeout;
+		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statMiss + " / "
+				+ statTimeout;
 	}
 
 	private void touchValue(Object value) {
@@ -214,9 +215,9 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 *      java.lang.Object)
 	 */
 	public void put(Object key, Object value) {
-		// PreCondition.assertTrue("objects in global caches must be
-		// serializable", (!globalCache) || value instanceof
-		// Serializable);
+		// Assert.isTrue((!globalCache) || value instanceof
+		// Serializable,"objects in global caches must be
+		// serializable" );
 		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + " , " + value + "");
 		processQueue();
 		ICacheEntry entry;

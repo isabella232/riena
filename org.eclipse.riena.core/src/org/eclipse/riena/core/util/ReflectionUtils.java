@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
-import org.eclipse.riena.core.contract.PreCondition;
+import org.eclipse.core.runtime.Assert;
 
 /**
  * The <code>ReflectionUtils</code> class is a collection of usefull helpers
@@ -48,12 +48,13 @@ public final class ReflectionUtils {
 	 * @pre className != null
 	 */
 	public static Object newInstance(String className, Object... args) {
-		PreCondition.assertNotNull("className must be given!", className);
+		Assert.isNotNull(className, "className must be given!");
 
 		try {
 			return newInstance(Class.forName(className), args);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating instance for " + className + "with parameters " + Arrays.asList(args) + "!", e);
+			throw new ReflectionFailure("Error creating instance for " + className + "with parameters "
+					+ Arrays.asList(args) + "!", e);
 		}
 	}
 
@@ -69,14 +70,15 @@ public final class ReflectionUtils {
 	 * @pre clazz != null
 	 */
 	public static <T> T newInstance(Class<T> clazz, Object... args) {
-		PreCondition.assertNotNull("clazz must be given!", clazz);
+		Assert.isNotNull(clazz, "clazz must be given!");
 
 		try {
 			Class<?>[] clazzes = classesFromObjects(args);
 			Constructor<T> constructor = findMatchingConstructor(clazz, clazzes);
 			return constructor.newInstance(args);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + "with parameters " + Arrays.asList(args) + "!", e);
+			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + "with parameters "
+					+ Arrays.asList(args) + "!", e);
 		}
 	}
 
@@ -92,9 +94,8 @@ public final class ReflectionUtils {
 	 * @pre invocationHandler != null
 	 */
 	public static Object newInstance(String interfaceName, InvocationHandler invocationHandler) {
-		PreCondition.assertNotNull("interfaceName must be given!", interfaceName);
-		PreCondition.assertNotNull("invocationHandler must be given!", invocationHandler);
-
+		Assert.isNotNull(interfaceName, "interfaceName must be given!");
+		Assert.isNotNull(invocationHandler, "invocationHandler must be given!");
 		try {
 			return newInstance(Class.forName(interfaceName), invocationHandler);
 		} catch (Exception e) {
@@ -115,8 +116,8 @@ public final class ReflectionUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(Class<T> interfaze, InvocationHandler invocationHandler) {
-		PreCondition.assertNotNull("interfaceName must be given!", interfaze);
-		PreCondition.assertNotNull("invocationHandler must be given!", invocationHandler);
+		Assert.isNotNull(interfaze, "interfaceName must be given");
+		Assert.isNotNull(invocationHandler, "invocationHandler must be given");
 
 		Class proxyClass = Proxy.getProxyClass(interfaze.getClassLoader(), new Class<?>[] { interfaze });
 		try {
@@ -185,8 +186,9 @@ public final class ReflectionUtils {
 	 * @pre expectedException != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Throwable> Object invoke(Object instance, String methodName, Class<T> expectedException, Object... args) throws T {
-		PreCondition.assertNotNull("expectedException should not be null!", expectedException);
+	public static <T extends Throwable> Object invoke(Object instance, String methodName, Class<T> expectedException,
+			Object... args) throws T {
+		Assert.isNotNull(expectedException, "expectedException should not be null!");
 
 		try {
 			return invoke(instance, methodName, args);
@@ -216,8 +218,9 @@ public final class ReflectionUtils {
 	 * @pre expectedException != null
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Throwable> Object invokeHidden(Object instance, String methodName, Class<T> expectedException, Object... args) throws T {
-		PreCondition.assertNotNull("expectedException should not be null!", expectedException);
+	public static <T extends Throwable> Object invokeHidden(Object instance, String methodName,
+			Class<T> expectedException, Object... args) throws T {
+		Assert.isNotNull(expectedException, "expectedException should not be null!");
 
 		try {
 			return invokeHidden(instance, methodName, args);
@@ -247,8 +250,8 @@ public final class ReflectionUtils {
 	 * @pre methodName != null
 	 */
 	private static Object invoke(boolean open, Object instance, String methodName, Object... args) {
-		PreCondition.assertNotNull("instance must be given!", instance);
-		PreCondition.assertNotNull("methodName must be given!", methodName);
+		Assert.isNotNull(instance, "instance must be given!");
+		Assert.isNotNull(methodName, "methodName must be given!");
 
 		Class<?> clazz = getClass(instance);
 		Class<?>[] clazzes = classesFromObjects(args);
@@ -261,7 +264,8 @@ public final class ReflectionUtils {
 				try {
 					return method.invoke(instance, args);
 				} catch (InvocationTargetException ite) {
-					throw new InvocationTargetFailure("Calling #" + methodName + " on " + instance + " failed.", ite.getTargetException());
+					throw new InvocationTargetFailure("Calling #" + methodName + " on " + instance + " failed.", ite
+							.getTargetException());
 				} catch (IllegalArgumentException e) {
 					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e);
 				} catch (IllegalAccessException e) {
@@ -271,7 +275,8 @@ public final class ReflectionUtils {
 			clazz = clazz.getSuperclass();
 		}
 
-		throw new ReflectionFailure("Could not invoke hidden method " + methodName + " on " + instance.getClass().getName() + "!");
+		throw new ReflectionFailure("Could not invoke hidden method " + methodName + " on "
+				+ instance.getClass().getName() + "!");
 	}
 
 	/**
@@ -291,9 +296,9 @@ public final class ReflectionUtils {
 	 * @pre value != null
 	 */
 	public static void setHidden(Object instance, String fieldName, Object value) {
-		PreCondition.assertNotNull("instance must be given!", instance);
-		PreCondition.assertNotNull("fieldName must be given!", fieldName);
-		PreCondition.assertNotNull("value must be given!", value);
+		Assert.isNotNull(instance, "instance must be given!");
+		Assert.isNotNull(fieldName, "fieldName must be given!");
+		Assert.isNotNull(value, "value must be given!");
 
 		Class<?> clazz = getClass(instance);
 		try {
@@ -319,8 +324,8 @@ public final class ReflectionUtils {
 	 * @pre fieldName != null
 	 */
 	public static Object getHidden(Object instance, String fieldName) {
-		PreCondition.assertNotNull("instance must be given!", instance);
-		PreCondition.assertNotNull("fieldName must be given!", fieldName);
+		Assert.isNotNull(instance, "instance must be given!");
+		Assert.isNotNull(fieldName, "fieldName must be given!");
 
 		Class<?> clazz = getClass(instance);
 		try {

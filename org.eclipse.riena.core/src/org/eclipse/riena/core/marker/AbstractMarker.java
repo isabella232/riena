@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.riena.core.contract.PreCondition;
+import org.eclipse.core.runtime.Assert;
 
 /**
  * An abstract implementation of the {@link IMarker IMarker}interface which
@@ -26,13 +26,14 @@ import org.eclipse.riena.core.contract.PreCondition;
 public abstract class AbstractMarker implements IMarker {
 
 	private Map<String, Object> attributeMap = new HashMap<String, Object>(0, 1.0f);
-	private Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(1, 1.0f);
+	private Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(
+			1, 1.0f);
 
 	/**
 	 * @see IMarker#getAttribute(String)
 	 */
 	public Object getAttribute(String name) {
-		PreCondition.assertNotNullAndNotZeroLength("name", name);
+		Assert.isNotNull(name, "name must not be null");
 		return attributeMap.get(name);
 	}
 
@@ -58,7 +59,7 @@ public abstract class AbstractMarker implements IMarker {
 	 * @see IMarker#setAttribute(String, Object)
 	 */
 	public void setAttribute(String name, Object value) {
-		PreCondition.assertNotNullAndNotZeroLength("name", name);
+		Assert.isNotNull(name, "name must not be null");
 		Object oldValue = attributeMap.get(name);
 		if ((value != null && !value.equals(oldValue)) || (value == null && oldValue != null)) {
 			attributeMap.put(name, value);

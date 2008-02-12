@@ -20,9 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.riena.core.contract.PostConditionException;
-import org.eclipse.riena.core.contract.PreCondition;
-import org.eclipse.riena.core.contract.PreConditionException;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.AssertionFailedException;
 
 /**
  * This class provides several static methods needed by the exception handling
@@ -199,7 +198,8 @@ public final class ExceptionHelper {
 		StringBuilder buffer = new StringBuilder();
 		for (int i = throwables.size() - 1; i > -1; i--) {
 			throwable = throwables.get(i);
-			buffer.append("Exception: ").append(throwable.getClass().getName()).append(": ").append(throwable.getMessage());
+			buffer.append("Exception: ").append(throwable.getClass().getName()).append(": ").append(
+					throwable.getMessage());
 
 			StackTraceElement[] trace = throwable.getStackTrace();
 
@@ -219,8 +219,8 @@ public final class ExceptionHelper {
 							className = steClassName;
 						}
 					}
-					buffer.append(LINE_SEPARATOR).append(className).append(DOT_STR).append(ste.getMethodName()).append("()").append(",").append(
-							ste.getLineNumber()).append(pkgName);
+					buffer.append(LINE_SEPARATOR).append(className).append(DOT_STR).append(ste.getMethodName()).append(
+							"()").append(",").append(ste.getLineNumber()).append(pkgName);
 				}
 			}
 			buffer.append(LINE_SEPARATOR);
@@ -318,7 +318,8 @@ public final class ExceptionHelper {
 		Constructor<?> constructor;
 
 		try {
-			constructor = StackTraceElement.class.getDeclaredConstructor(new Class[] { String.class, String.class, String.class, int.class });
+			constructor = StackTraceElement.class.getDeclaredConstructor(new Class[] { String.class, String.class,
+					String.class, int.class });
 		} catch (NoSuchMethodException e) {
 			throw new ExceptionFailure("Could not get the constructor of StackTraceElement.", e);
 		}
@@ -326,7 +327,8 @@ public final class ExceptionHelper {
 		try {
 
 			// initialize the return vector
-			StackTraceElement[] resultStackTrace = (StackTraceElement[]) Array.newInstance(StackTraceElement.class, stackTraceElements.length);
+			StackTraceElement[] resultStackTrace = (StackTraceElement[]) Array.newInstance(StackTraceElement.class,
+					stackTraceElements.length);
 
 			// fill stacktrace for each available line
 			for (int i = 0; i < stackTraceElements.length; i++) {
@@ -345,7 +347,8 @@ public final class ExceptionHelper {
 				int lineNumber = Integer.parseInt(items[3]);
 
 				// create a new instance for the array
-				resultStackTrace[i] = (StackTraceElement) constructor.newInstance(new Object[] { declaringClass, methodName, fileName, lineNumber });
+				resultStackTrace[i] = (StackTraceElement) constructor.newInstance(new Object[] { declaringClass,
+						methodName, fileName, lineNumber });
 			}
 
 			return resultStackTrace;
@@ -362,7 +365,7 @@ public final class ExceptionHelper {
 	 * @pre map != null
 	 */
 	public static Object[] createArrayFromMap(Map<String, ? extends Object> map) {
-		PreCondition.assertNotNull("map should not be null!", map);
+		Assert.isNotNull(map, "map should not be null");
 
 		String[] messagePartNames = Failure.getMessagePartNames();
 		Object[] args = new Object[messagePartNames.length];
@@ -383,10 +386,8 @@ public final class ExceptionHelper {
 	public static Failure toFailure(Throwable t) {
 		if (!(t instanceof Failure)) {
 			String msgText = null;
-			if (t instanceof PreConditionException) {
-				msgText = "PreCondition violated";
-			} else if (t instanceof PostConditionException) {
-				msgText = "PostCondition violated";
+			if (t instanceof AssertionFailedException) {
+				msgText = "Assertion violated";
 			} else {
 				msgText = "Unexpected exception occurred";
 			}
