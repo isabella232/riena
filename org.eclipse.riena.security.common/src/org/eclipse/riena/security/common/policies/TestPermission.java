@@ -21,9 +21,7 @@ public class TestPermission extends Permission {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof TestPermission) {
-			if (((TestPermission) obj).getName() == this.getName()) {
-				return true;
-			}
+			return ((TestPermission) obj).getName().equals(this.getName());
 		}
 		return false;
 	}
