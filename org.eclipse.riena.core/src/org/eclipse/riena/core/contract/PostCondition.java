@@ -15,6 +15,7 @@ package org.eclipse.riena.core.contract;
  * contract conventions.
  * 
  */
+@Deprecated
 public final class PostCondition {
 
 	/**
@@ -42,6 +43,7 @@ public final class PostCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PostConditionException
 	 */
+	@Deprecated
 	public static void assertTrue(String message, boolean condition) {
 		if (!condition) {
 			throw new PostConditionException(message);
@@ -70,6 +72,7 @@ public final class PostCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PostConditionException
 	 */
+	@Deprecated
 	public static <T> T assertTrueAndReturn(String message, boolean condition, T returnValue) {
 		assertTrue(message, condition);
 		return returnValue;
@@ -139,6 +142,7 @@ public final class PostCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PostConditionException
 	 */
+	@Deprecated
 	public static void assertNotNull(String objectName, Object objectToCheck) {
 		// Optimized in order to concatenate Strings only if necessary.
 		// See problem #278
@@ -165,6 +169,7 @@ public final class PostCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PostConditionException
 	 */
+	@Deprecated
 	public static <T> T assertNotNullAndReturn(String objectName, T objectToCheck) {
 		assertNotNull(objectName, objectToCheck);
 		return objectToCheck;
@@ -186,6 +191,7 @@ public final class PostCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PostConditionException
 	 */
+	@Deprecated
 	public static void assertNotNullAndNotZeroLength(String objectName, String objectToCheck) {
 		// Optimized in order to concatenate Strings only if necessary.
 		// See problem #278
@@ -214,6 +220,7 @@ public final class PostCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PostConditionException
 	 */
+	@Deprecated
 	public static String assertNotNullAndNotZeroLengthAndReturn(String objectName, String objectToCheck) {
 		assertNotNullAndNotZeroLength(objectName, objectToCheck);
 		return objectToCheck;

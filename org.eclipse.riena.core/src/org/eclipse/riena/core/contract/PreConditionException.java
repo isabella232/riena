@@ -14,6 +14,7 @@ package org.eclipse.riena.core.contract;
  * Runtime exception which indicates pre condition violation.
  * 
  */
+@Deprecated
 public class PreConditionException extends RuntimeException {
 
 	/**
@@ -27,6 +28,7 @@ public class PreConditionException extends RuntimeException {
 	 * @param msgText
 	 *            the message text.
 	 */
+	@Deprecated
 	public PreConditionException(String msgText) {
 		super(msgText);
 	}

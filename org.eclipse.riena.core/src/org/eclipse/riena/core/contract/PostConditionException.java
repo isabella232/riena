@@ -14,6 +14,7 @@ package org.eclipse.riena.core.contract;
  * Runtime exception which indicates post condition violation.
  * 
  */
+@Deprecated
 public class PostConditionException extends RuntimeException {
 
 	/**
@@ -27,6 +28,7 @@ public class PostConditionException extends RuntimeException {
 	 * @param msgText
 	 *            the message text.
 	 */
+	@Deprecated
 	public PostConditionException(String msgText) {
 		super(msgText);
 	}

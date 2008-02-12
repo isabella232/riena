@@ -15,6 +15,7 @@ package org.eclipse.riena.core.contract;
  * contract conventions.
  * 
  */
+@Deprecated
 public final class PreCondition {
 
 	/**
@@ -42,6 +43,7 @@ public final class PreCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PreConditionException
 	 */
+	@Deprecated
 	public static void assertTrue(String message, boolean condition) {
 		if (!condition) {
 			throw new PreConditionException(message);
@@ -64,6 +66,7 @@ public final class PreCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PreConditionException
 	 */
+	@Deprecated
 	public static void assertNotNull(String objectName, Object objectToCheck) {
 		// Optimized in order to concatenate Strings only if necessary.
 		// See problem #278
@@ -88,6 +91,7 @@ public final class PreCondition {
 	 * 
 	 * @see de.compeople.spirit.core.base.contract.PreConditionException
 	 */
+	@Deprecated
 	public static void assertNotNullAndNotZeroLength(String objectName, String objectToCheck) {
 		// Optimized in order to concatenate Strings only if necessary.
 		// See problem #278
