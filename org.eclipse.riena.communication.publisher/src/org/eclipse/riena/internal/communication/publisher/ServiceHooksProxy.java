@@ -23,20 +23,18 @@ import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.ServiceId;
 
 public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationHandler {
 
 	private HashSet<IServiceHook> serviceHooks = new HashSet<IServiceHook>();
-	private ServiceInjector si;
 	private RemoteServiceDescription rsd;
 	private IServiceMessageContextAccessor mca;
 	private Subject subject;
 
 	public ServiceHooksProxy(Object serviceInstance) {
 		super(serviceInstance);
-		si = new ServiceInjector(Activator.getContext(), IServiceHook.ID, this, "addServiceHook", "removeServiceHook");
-		si.start();
+		new ServiceId(IServiceHook.ID).injectInto(this).start(Activator.getContext());
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -75,11 +73,11 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		}
 	}
 
-	public void addServiceHook(IServiceHook serviceHook) {
+	public void bind(IServiceHook serviceHook) {
 		serviceHooks.add(serviceHook);
 	}
 
-	public void removeServiceHook(IServiceHook serviceHook) {
+	public void unbind(IServiceHook serviceHook) {
 		serviceHooks.remove(serviceHook);
 	}
 

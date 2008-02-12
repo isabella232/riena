@@ -21,109 +21,106 @@ import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispat
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.Injector;
+import org.eclipse.riena.core.service.ServiceId;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
-
 public class Activator implements BundleActivator {
 
-    private ServicePublishEventDispatcher dispachter;
-    private ServiceInjector publisherInjector;
-    private UpdateNotifierRemoteService updateNotifierRemoteService;
-    private static BundleContext context;
+	private ServicePublishEventDispatcher dispatcher;
+	private Injector publisherInjector;
+	private UpdateNotifierRemoteService updateNotifierRemoteService;
+	private static BundleContext context;
 
-    /*
-     * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-     */
-    public void start(BundleContext context) throws Exception {
-        Activator.context = context;
+	/*
+	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 */
+	public void start(BundleContext context) throws Exception {
+		Activator.context = context;
 
-        dispachter = new ServicePublishEventDispatcher(context);
-        publisherInjector = new ServiceInjector(context, IServicePublisher.ID, dispachter, "addServicePublisher", "removeServicePublisher");
-        publisherInjector.start();
+		dispatcher = new ServicePublishEventDispatcher(context);
+		publisherInjector = new ServiceId(IServicePublisher.ID).injectInto(dispatcher).start(context);
 
-        // register as OSGi service, the start will pick up the OSGi service and
-        // publish it
-        Dictionary<String, Object> properties = new Hashtable<String, Object>(3);
-        properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
-        properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
-        properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");
+		// register as OSGi service, the start will pick up the OSGi service and
+		// publish it
+		Dictionary<String, Object> properties = new Hashtable<String, Object>(3);
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");
 
-        context.registerService(IServicePublishEventDispatcher.ID, dispachter, properties);
+		context.registerService(IServicePublishEventDispatcher.ID, dispatcher, properties);
 
-        dispachter.start();
+		dispatcher.start();
 
-        // register UpdateNotified so all services trigger the
-        // servicePublishEventDispatcher
-        updateNotifierRemoteService = new UpdateNotifierRemoteService(dispachter);
-        context.addServiceListener(updateNotifierRemoteService);
-        context.registerService(IServiceHook.ID, new IServiceHook() {
+		// register UpdateNotified so all services trigger the
+		// servicePublishEventDispatcher
+		updateNotifierRemoteService = new UpdateNotifierRemoteService(dispatcher);
+		context.addServiceListener(updateNotifierRemoteService);
+		context.registerService(IServiceHook.ID, new IServiceHook() {
 
-            public void afterService(ServiceContext context) {
-                System.out.println("after service (in hook)");
-                context.getMessageContext().addResponseHeader("Set-Cookie", "x-scpserver-test-sessionid=11");
-            }
+			public void afterService(ServiceContext context) {
+				System.out.println("after service (in hook)");
+				context.getMessageContext().addResponseHeader("Set-Cookie", "x-scpserver-test-sessionid=11");
+			}
 
-            public void beforeService(ServiceContext context) {
-                System.out.println("before service (in hook)");
-                Map<String, List<String>> headers = context.getMessageContext().listRequestHeaders();
-                for (String hName : headers.keySet()) {
-                    StringBuffer sb = new StringBuffer();
-                    for (String hValue : headers.get(hName)) {
-                        sb.append(hValue + ", ");
-                    }
-                    System.out.println("header: name:" + hName + " value:" + sb);
-                }
-            }
-        }, null);
-    }
+			public void beforeService(ServiceContext context) {
+				System.out.println("before service (in hook)");
+				Map<String, List<String>> headers = context.getMessageContext().listRequestHeaders();
+				for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+					System.out.println("header: name:" + entry.getKey() + " value: " + entry.getValue());
+				}
+			}
+		}, null);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-     */
-    public void stop(BundleContext context) throws Exception {
-        context.removeServiceListener(updateNotifierRemoteService);
-        dispachter.stop();
-        dispachter = null;
-        publisherInjector.dispose();
-        publisherInjector = null;
-        updateNotifierRemoteService = null;
-        Activator.context = null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 */
+	public void stop(BundleContext context) throws Exception {
+		context.removeServiceListener(updateNotifierRemoteService);
+		dispatcher.stop();
+		dispatcher = null;
+		publisherInjector.stop();
+		publisherInjector = null;
+		updateNotifierRemoteService = null;
+		Activator.context = null;
+	}
 
-    public static BundleContext getContext() {
-        return context;
-    }
+	public static BundleContext getContext() {
+		return context;
+	}
 
-    class UpdateNotifierRemoteService implements ServiceListener {
-        ServicePublishEventDispatcher dispatcher;
+	class UpdateNotifierRemoteService implements ServiceListener {
+		ServicePublishEventDispatcher dispatcher;
 
-        UpdateNotifierRemoteService(ServicePublishEventDispatcher dispatcher) {
-            this.dispatcher = dispatcher;
-        }
+		UpdateNotifierRemoteService(ServicePublishEventDispatcher dispatcher) {
+			this.dispatcher = dispatcher;
+		}
 
-        public void serviceChanged(ServiceEvent event) {
-            ServiceReference serviceRef = event.getServiceReference();
+		public void serviceChanged(ServiceEvent event) {
+			ServiceReference serviceRef = event.getServiceReference();
 
-            // check if we are getting the event for a new remote service
-            String isRemote = CommunicationUtil.accessProperty(serviceRef.getProperty(RSDPublisherProperties.PROP_IS_REMOTE), null);
-            String remoteType = CommunicationUtil.accessProperty(serviceRef.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
-            if (remoteType == null || remoteType.length() == 0) {
-                return;
-            }
-            if ("true".equals(isRemote)) {
-                if (event.getType() == ServiceEvent.UNREGISTERING) {
-                    dispatcher.unpublish(event.getServiceReference());
-                } else if (event.getType() == ServiceEvent.REGISTERED) {
-                    dispatcher.publish(event.getServiceReference());
-                }
-            }
-        }
-    }
+			// check if we are getting the event for a new remote service
+			String isRemote = CommunicationUtil.accessProperty(serviceRef
+					.getProperty(RSDPublisherProperties.PROP_IS_REMOTE), null);
+			String remoteType = CommunicationUtil.accessProperty(serviceRef
+					.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
+			if (remoteType == null || remoteType.length() == 0) {
+				return;
+			}
+			if ("true".equals(isRemote)) {
+				if (event.getType() == ServiceEvent.UNREGISTERING) {
+					dispatcher.unpublish(event.getServiceReference());
+				} else if (event.getType() == ServiceEvent.REGISTERED) {
+					dispatcher.publish(event.getServiceReference());
+				}
+			}
+		}
+	}
 }
