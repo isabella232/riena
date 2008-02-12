@@ -13,10 +13,8 @@ package org.eclipse.riena.core.logging;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.ServiceId;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.log.LogReaderService;
-import org.osgi.service.log.LogService;
 
 /**
  * Wrapper to access the existing Logger.
@@ -50,8 +48,8 @@ public class LogUtil {
 	 * 
 	 * @param logService
 	 */
-	public void bindLogService(LogService logServiceParm) {
-		logService = (ExtendedLogService) logServiceParm;
+	public void bind(ExtendedLogService logServiceParm) {
+		logService = logServiceParm;
 	}
 
 	/**
@@ -59,10 +57,8 @@ public class LogUtil {
 	 * 
 	 * @param logService
 	 */
-	public void unbindLogService(LogService logServiceParm) {
-		if (logService == logServiceParm) {
-			logService = null;
-		}
+	public void unbind(ExtendedLogService logServiceParm) {
+		logService = null;
 	}
 
 	/**
@@ -70,8 +66,8 @@ public class LogUtil {
 	 * 
 	 * @param logReaderService
 	 */
-	public void bindLogReaderService(LogReaderService logReaderService) {
-		this.logReaderService = (ExtendedLogReaderService) logReaderService;
+	public void bind(ExtendedLogReaderService logReaderService) {
+		this.logReaderService = logReaderService;
 		// TODO remove SysoLogListener if we have Log4jLogListener
 		this.logReaderService.addLogListener(new SysoLogListener(), new AlwaysFilter());
 		this.logReaderService.addLogListener(new Log4jLogListener(), new AlwaysFilter());
@@ -83,18 +79,14 @@ public class LogUtil {
 	 * @param logReaderService
 	 */
 	public void unbindLogReaderService(ExtendedLogReaderService logReaderService) {
-		if (this.logReaderService == logReaderService) {
-			this.logReaderService = null;
-		}
+		this.logReaderService = null;
 	}
 
 	/**
 	 * initialize LogUtil
 	 */
 	public void init() {
-		new ServiceInjector(context, ExtendedLogService.class.getName(), this, "bindLogService", "unbindLogService")
-				.start();
-		new ServiceInjector(context, ExtendedLogReaderService.class.getName(), this, "bindLogReaderService",
-				"unbindLogReaderService").start();
+		new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).start(context);
+		new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).start(context);
 	}
 }
