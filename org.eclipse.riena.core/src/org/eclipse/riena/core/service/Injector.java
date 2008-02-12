@@ -44,7 +44,7 @@ public class Injector {
 	private boolean started = false;
 	private BundleContext context = null;
 	private List<ServiceReference> trackedServiceRefs = null;
-	private ServiceListener serviceListner;
+	private ServiceListener serviceListener;
 
 	private RuntimeException lastError;
 
@@ -81,7 +81,7 @@ public class Injector {
 		if (unbindMethodName == null)
 			unbindMethodName = DEFAULT_UNBIND_METHOD_NAME;
 		assertMethod("Unbind method", unbindMethodName);
-		serviceListner = new InjectorServiceListener();
+		serviceListener = new InjectorServiceListener();
 		trackedServiceRefs = new ArrayList<ServiceReference>(1);
 		start();
 		if (lastError != null)
@@ -95,7 +95,7 @@ public class Injector {
 	public void stop() {
 		if (!started)
 			return;
-		context.removeServiceListener(serviceListner);
+		context.removeServiceListener(serviceListener);
 
 		// copy list to array so that I iterate through array and still
 		// remove entries from List concurrently
@@ -105,6 +105,8 @@ public class Injector {
 		}
 		for (ServiceReference serviceRef : serviceRefs)
 			unbind(serviceRef);
+		serviceListener = null;
+		trackedServiceRefs = null;
 		started = false;
 	}
 
@@ -172,7 +174,7 @@ public class Injector {
 			// register the service listener before we go through the reference
 			// list since its very more likely that no service is registered
 			// between getServiceReferences and addServiceListener
-			context.addServiceListener(serviceListner, serviceId.getFilter());
+			context.addServiceListener(serviceListener, serviceId.getFilter());
 			// then go through the list of references
 			if (serviceRefs != null)
 				for (ServiceReference serviceRef : serviceRefs)
