@@ -56,8 +56,12 @@ public class Activator extends Plugin {
 				forceStart = "true";
 			}
 			if (forceStart != null && forceStart.equals("true")) {
-				// STARTING == LAZY, so start that also
-				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING) {
+				// TODO STARTING == LAZY, so start that also, STARTING is
+				// disabled, bundles with forceStart should not be LAZY
+				if (bundle.getState() == Bundle.RESOLVED/*
+				 * || bundle.getState() ==
+				 * Bundle.STARTING
+				 */) {
 					bundle.start();
 					System.out.println(bundle.getSymbolicName() + " forced autostart successfully");
 				} else {
