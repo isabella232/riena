@@ -35,192 +35,199 @@ import org.osgi.framework.ServiceReference;
  */
 public class ServicePublishEventDispatcher implements IServicePublishEventDispatcher {
 
-    public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")";
+	public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
-    private Map<String, RemoteServiceDescription> rsDescs;
-    private Map<String, IServicePublisher> servicePublishers;
+	private Map<String, RemoteServiceDescription> rsDescs;
+	private Map<String, IServicePublisher> servicePublishers;
 
-    private BundleContext context;
+	private BundleContext context;
 
-    public ServicePublishEventDispatcher(BundleContext context) {
-        super();
-        this.context = context;
-        rsDescs = new HashMap<String, RemoteServiceDescription>();
-        servicePublishers = new HashMap<String, IServicePublisher>(3);
-    }
+	public ServicePublishEventDispatcher(BundleContext context) {
+		super();
+		this.context = context;
+		rsDescs = new HashMap<String, RemoteServiceDescription>();
+		servicePublishers = new HashMap<String, IServicePublisher>(3);
+	}
 
-    public void start() {
-        update();
-    }
+	public void start() {
+		update();
+	}
 
-    protected synchronized void update() {
-        ServiceReference[] serviceReferences = null;
-        try {
-            serviceReferences = context.getAllServiceReferences(null, FILTER_REMOTE);
-        } catch (InvalidSyntaxException e) {
-            e.printStackTrace();
-        }
-        if (serviceReferences != null) {
+	protected synchronized void update() {
+		ServiceReference[] serviceReferences = null;
+		try {
+			serviceReferences = context.getAllServiceReferences(null, FILTER_REMOTE);
+		} catch (InvalidSyntaxException e) {
+			e.printStackTrace();
+		}
+		if (serviceReferences != null) {
 
-            for (ServiceReference serviceReference : serviceReferences) {
-                if (!isPublished(serviceReference)) {
-                    publish(serviceReference);
-                }
-            }
-        }
-    }
+			for (ServiceReference serviceReference : serviceReferences) {
+				if (!isPublished(serviceReference)) {
+					publish(serviceReference);
+				}
+			}
+		}
+	}
 
-    private boolean isPublished(ServiceReference serviceRef) {
-        String remoteType = CommunicationUtil.accessProperty(serviceRef.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
-        String path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
-        RemoteServiceDescription rsDesc = rsDescs.get(remoteType + "::" + path);
-        if (rsDesc == null) {
-            return false;
-        }
-        return rsDesc.getType() == RemoteServiceDescription.STATUS_REGISTERED;
-    }
+	private boolean isPublished(ServiceReference serviceRef) {
+		String remoteType = CommunicationUtil.accessProperty(serviceRef
+				.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
+		String path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
+		RemoteServiceDescription rsDesc = rsDescs.get(remoteType + "::" + path);
+		if (rsDesc == null) {
+			return false;
+		}
+		return rsDesc.getType() == RemoteServiceDescription.STATUS_REGISTERED;
+	}
 
-    public void addServicePublisher(IServicePublisher publisher) {
-        servicePublishers.put(publisher.getProtocol(), publisher);
-        System.out.println("Riena::UpdatServicePublishEventDispatcher: DEBUG servicePublish=" + publisher.getProtocol()
-                + " REGISTER...publishing all services that were waiting for him");
-        // check for services which are missing a publisher
+	public void bind(IServicePublisher publisher) {
+		servicePublishers.put(publisher.getProtocol(), publisher);
+		System.out.println("Riena::UpdatServicePublishEventDispatcher: DEBUG servicePublish=" + publisher.getProtocol()
+				+ " REGISTER...publishing all services that were waiting for him");
+		// check for services which are missing a publisher
 
-        update();
-    }
+		update();
+	}
 
-    public void removeServicePublisher(IServicePublisher publisher) {
-        String protocol = publisher.getProtocol();
-        System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG servicePublish=" + publisher.getProtocol()
-                + " UNREGISTER...unpublishing all its services");
-        // unregister all web services for this type
+	public void unbind(IServicePublisher publisher) {
+		String protocol = publisher.getProtocol();
+		System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG servicePublish=" + publisher.getProtocol()
+				+ " UNREGISTER...unpublishing all its services");
+		// unregister all web services for this type
 
-        for (RemoteServiceDescription rsDesc : rsDescs.values()) {
-            if (protocol.equals(rsDesc.getProtocol())) {
-                unpublish(rsDesc);
-            }
-        }
-        servicePublishers.remove(protocol);
-    }
+		for (RemoteServiceDescription rsDesc : rsDescs.values()) {
+			if (protocol.equals(rsDesc.getProtocol())) {
+				unpublish(rsDesc);
+			}
+		}
+		servicePublishers.remove(protocol);
+	}
 
-    protected void publish(ServiceReference serviceRef) {
-        if (servicePublishers.size() == 0) {
-            return;
-        }
-        synchronized (rsDescs) {
-            try {
-                Object service = context.getService(serviceRef);
-                ServiceHooksProxy handler = new ServiceHooksProxy(service);
-                // create remote service description
-                String[] interfaces = (String[]) serviceRef.getProperty("objectClass");
-                assert interfaces.length == 1 : "OSGi only with one interface supported";
-                String interfaceName = interfaces[0];
-                Class interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
-                service = Proxy.newProxyInstance(interfaceClazz.getClassLoader(), new Class[] { interfaceClazz }, handler);
-                RemoteServiceDescription rsDesc = new RemoteServiceDescription(serviceRef, service, interfaceClazz);
-                handler.setRemoteServiceDescription(rsDesc);
-                RemoteServiceDescription rsDescFound = rsDescs.get(rsDesc.getProtocol() + "::" + rsDesc.getPath());
-                if (rsDescFound != null && rsDescFound.getType() == RemoteServiceDescription.STATUS_REGISTERED) {
-                    System.out.println("Riena::ServicePublishEventDispatcher:: WARN: A service endpoint with path=[" + rsDesc.getPath() + "] and remoteType=["
-                            + rsDesc.getProtocol() + "] already published... ignored");
-                    return;
-                }
+	protected void publish(ServiceReference serviceRef) {
+		if (servicePublishers.size() == 0) {
+			return;
+		}
+		synchronized (rsDescs) {
+			try {
+				Object service = context.getService(serviceRef);
+				ServiceHooksProxy handler = new ServiceHooksProxy(service);
+				// create remote service description
+				String[] interfaces = (String[]) serviceRef.getProperty("objectClass");
+				assert interfaces.length == 1 : "OSGi only with one interface supported";
+				String interfaceName = interfaces[0];
+				Class interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
+				service = Proxy.newProxyInstance(interfaceClazz.getClassLoader(), new Class[] { interfaceClazz },
+						handler);
+				RemoteServiceDescription rsDesc = new RemoteServiceDescription(serviceRef, service, interfaceClazz);
+				handler.setRemoteServiceDescription(rsDesc);
+				RemoteServiceDescription rsDescFound = rsDescs.get(rsDesc.getProtocol() + "::" + rsDesc.getPath());
+				if (rsDescFound != null && rsDescFound.getType() == RemoteServiceDescription.STATUS_REGISTERED) {
+					System.out.println("Riena::ServicePublishEventDispatcher:: WARN: A service endpoint with path=["
+							+ rsDesc.getPath() + "] and remoteType=[" + rsDesc.getProtocol()
+							+ "] already published... ignored");
+					return;
+				}
 
-                if (rsDescFound == null) {
-                    if (rsDesc.getPath() == null) {
-                        System.out.println("Riena::ServicePublishEventDispatcher:: WARN: no path for service: " + service.toString()
-                                + " Service not published remote");
-                        return;
-                    }
-                    if (!servicePublishers.containsKey(rsDesc.getProtocol())) {
-                        System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG: no publisher found for protocol " + rsDesc.getProtocol());
-                        return;
-                    }
-                    rsDescs.put(rsDesc.getProtocol() + "::" + rsDesc.getPath(), rsDesc);
-                    System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG: service endpoints count: " + rsDescs.size());
+				if (rsDescFound == null) {
+					if (rsDesc.getPath() == null) {
+						System.out.println("Riena::ServicePublishEventDispatcher:: WARN: no path for service: "
+								+ service.toString() + " Service not published remote");
+						return;
+					}
+					if (!servicePublishers.containsKey(rsDesc.getProtocol())) {
+						System.out
+								.println("Riena::ServicePublishEventDispatcher:: DEBUG: no publisher found for protocol "
+										+ rsDesc.getProtocol());
+						return;
+					}
+					rsDescs.put(rsDesc.getProtocol() + "::" + rsDesc.getPath(), rsDesc);
+					System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG: service endpoints count: "
+							+ rsDescs.size());
 
-                } else if (rsDescFound.getType() == RemoteServiceDescription.STATUS_UNREGISTERED) {
-                    rsDesc = rsDescFound;
-                }
+				} else if (rsDescFound.getType() == RemoteServiceDescription.STATUS_UNREGISTERED) {
+					rsDesc = rsDescFound;
+				}
 
-                publish(rsDesc, handler);
-            } catch (ClassNotFoundException e) {
-                System.out.println(e);
-            }
-        }
+				publish(rsDesc, handler);
+			} catch (ClassNotFoundException e) {
+				System.out.println(e);
+			}
+		}
 
-    }
+	}
 
-    private void publish(RemoteServiceDescription rsDesc, ServiceHooksProxy handler) {
-        IServicePublisher publisher = servicePublishers.get(rsDesc.getProtocol());
-        if (publisher == null) {
-            return;
-        }
-        String url = publisher.publishService(rsDesc);
-        // set full URL under which the service is available
-        rsDesc.setURL(url);
-        handler.setMessageContextAccessor(publisher.getMessageContextAccessor());
+	private void publish(RemoteServiceDescription rsDesc, ServiceHooksProxy handler) {
+		IServicePublisher publisher = servicePublishers.get(rsDesc.getProtocol());
+		if (publisher == null) {
+			return;
+		}
+		String url = publisher.publishService(rsDesc);
+		// set full URL under which the service is available
+		rsDesc.setURL(url);
+		handler.setMessageContextAccessor(publisher.getMessageContextAccessor());
 
-        rsDesc.setType(RemoteServiceDescription.STATUS_REGISTERED);
+		rsDesc.setType(RemoteServiceDescription.STATUS_REGISTERED);
 
-    }
+	}
 
-    // @remote
-    public RemoteServiceDescription[] getAllServices() {
-        RemoteServiceDescription[] result = new RemoteServiceDescription[rsDescs.size()];
-        synchronized (rsDescs) {
-            rsDescs.values().toArray(result);
-        }
-        return result;
-    }
+	// @remote
+	public RemoteServiceDescription[] getAllServices() {
+		RemoteServiceDescription[] result = new RemoteServiceDescription[rsDescs.size()];
+		synchronized (rsDescs) {
+			rsDescs.values().toArray(result);
+		}
+		return result;
+	}
 
-    protected void unpublish(ServiceReference serviceRef) {
-        synchronized (rsDescs) {
-            try {
+	protected void unpublish(ServiceReference serviceRef) {
+		synchronized (rsDescs) {
+			try {
 
-                String path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
-                String remoteType = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
-                RemoteServiceDescription toRemove = null;
-                for (RemoteServiceDescription rsDesc : rsDescs.values()) {
-                    if (rsDesc.getPath().equals(path) && rsDesc.getProtocol().equals(remoteType)) {
-                        toRemove = rsDesc;
-                        break;
-                    }
-                }
-                if (toRemove != null) {
-                    rsDescs.remove(remoteType + "::" + path);
-                    if (servicePublishers.containsKey(toRemove.getProtocol())) {
-                        unpublish(toRemove);
-                    }
-                    // TODO notify all discovery services about this
-                }
-            } finally {
-                context.ungetService(serviceRef);
-            }
-            System.out.println("Riena::ServicePublisherHessian:: DEBUG: service endpoints count: " + rsDescs.size());
-        }
-    }
+				String path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
+				String remoteType = CommunicationUtil
+						.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
+				RemoteServiceDescription toRemove = null;
+				for (RemoteServiceDescription rsDesc : rsDescs.values()) {
+					if (rsDesc.getPath().equals(path) && rsDesc.getProtocol().equals(remoteType)) {
+						toRemove = rsDesc;
+						break;
+					}
+				}
+				if (toRemove != null) {
+					rsDescs.remove(remoteType + "::" + path);
+					if (servicePublishers.containsKey(toRemove.getProtocol())) {
+						unpublish(toRemove);
+					}
+					// TODO notify all discovery services about this
+				}
+			} finally {
+				context.ungetService(serviceRef);
+			}
+			System.out.println("Riena::ServicePublisherHessian:: DEBUG: service endpoints count: " + rsDescs.size());
+		}
+	}
 
-    private void unpublish(RemoteServiceDescription rsDesc) {
-        IServicePublisher publisher = servicePublishers.get(rsDesc.getProtocol());
-        if (publisher == null) {
-            return;
-        }
+	private void unpublish(RemoteServiceDescription rsDesc) {
+		IServicePublisher publisher = servicePublishers.get(rsDesc.getProtocol());
+		if (publisher == null) {
+			return;
+		}
 
-        publisher.unpublishService(rsDesc.getPath());
+		publisher.unpublishService(rsDesc.getPath());
 
-        rsDesc.setType(RemoteServiceDescription.STATUS_UNREGISTERED);
-    }
+		rsDesc.setType(RemoteServiceDescription.STATUS_UNREGISTERED);
+	}
 
-    public void stop() {
-        synchronized (rsDescs) {
-            for (RemoteServiceDescription rsDesc : rsDescs.values()) {
-                if (servicePublishers.containsKey(rsDesc.getProtocol())) {
-                    unpublish(rsDesc);
-                }
-                rsDesc.dispose();
-            }
-            rsDescs.clear();
-        }
-    }
+	public void stop() {
+		synchronized (rsDescs) {
+			for (RemoteServiceDescription rsDesc : rsDescs.values()) {
+				if (servicePublishers.containsKey(rsDesc.getProtocol())) {
+					unpublish(rsDesc);
+				}
+				rsDesc.dispose();
+			}
+			rsDescs.clear();
+		}
+	}
 }
