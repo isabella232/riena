@@ -20,8 +20,10 @@ import java.security.Policy;
 import java.security.Principal;
 import java.security.ProtectionDomain;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.service.ServiceInjector;
 import org.eclipse.riena.internal.security.common.Activator;
+import org.osgi.service.log.LogService;
 
 import sun.security.provider.PolicyFile;
 
@@ -32,10 +34,12 @@ public class RienaPolicy extends Policy {
 
 	private static Policy defaultPolicy;
 	private IPermissionCache permCache;
+	private Logger LOGGER = Activator.getDefault().getLogger(RienaPolicy.class.getName());
 
 	public RienaPolicy() {
 		super();
-		new ServiceInjector(Activator.getContext(), IPermissionCache.ID, this, "bindPermCache", "unbindPermCache").start();
+		new ServiceInjector(Activator.getContext(), IPermissionCache.ID, this, "bindPermCache", "unbindPermCache")
+				.start();
 	}
 
 	public void bindPermCache(IPermissionCache permCache) {
@@ -58,7 +62,8 @@ public class RienaPolicy extends Policy {
 		if (true)
 			return;
 		try {
-			Class<?> clz = RienaPolicy.class.getClassLoader().getSystemClassLoader().loadClass("org.eclipse.riena.security.common.policyproxy.PolicyProxy");
+			Class<?> clz = RienaPolicy.class.getClassLoader().getSystemClassLoader().loadClass(
+					"org.eclipse.riena.security.common.policyproxy.PolicyProxy");
 			Method method = clz.getMethod("setRealPolicy", Policy.class);
 			method.invoke(clz, rp);
 		} catch (ClassNotFoundException e) {
@@ -91,7 +96,8 @@ public class RienaPolicy extends Policy {
 	 */
 	@Override
 	public PermissionCollection getPermissions(CodeSource codesource) {
-		System.out.println("rienapolicy: codesource: getPermissions codesource=" + codesource.getLocation());
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: codesource: getPermissions codesource="
+				+ codesource.getLocation());
 		return null;
 	}
 
@@ -102,19 +108,21 @@ public class RienaPolicy extends Policy {
 	 */
 	@Override
 	public void refresh() {
-		System.out.println("rienapolicy: refresh");
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: refresh");
 	}
 
 	@Override
 	public PermissionCollection getPermissions(ProtectionDomain domain) {
-		System.out.println("rienapolicy: domain: getPermissions domain=" + domain.getCodeSource().getLocation());
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: domain: getPermissions domain="
+				+ domain.getCodeSource().getLocation());
 		return super.getPermissions(domain);
 	}
 
 	@Override
 	public boolean implies(ProtectionDomain domain, Permission permission) {
-		System.out.print("(Y)");
-		if (/* permission instanceof AuthPermission && */domain.getCodeSource().getLocation().toString().contains("/org.eclipse.riena.security.common/")) {
+		// System.out.print("(Y)");
+		if (/* permission instanceof AuthPermission && */domain.getCodeSource().getLocation().toString().contains(
+				"/org.eclipse.riena.security.common/")) {
 			return true;
 		}
 
@@ -122,17 +130,18 @@ public class RienaPolicy extends Policy {
 		if (domain.getPrincipals() == null || domain.getPrincipals().length == 0) {
 			boolean result = defaultPolicy.implies(domain, permission);
 			if (!result) {
-				System.err.println("no right to do " + permission + " for " + domain.getCodeSource().getLocation() + " no principal");
+				LOGGER.log(LogService.LOG_WARNING, "no right to do " + permission + " for "
+						+ domain.getCodeSource().getLocation() + " no principal");
 			}
 			return result;
 		}
 
 		// this branch is entered if there is at least one principal
-		System.out.print("rienapolicy: implies ");
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: implies ");
 		for (Principal p : domain.getPrincipals()) {
-			System.out.print(p);
+			LOGGER.log(LogService.LOG_DEBUG, p.toString());
 		}
-		System.out.println(" " + permission);
+		LOGGER.log(LogService.LOG_DEBUG, " " + permission);
 		boolean result;
 		if (permCache == null) {
 			result = defaultPolicy.implies(domain, permission);
@@ -145,7 +154,8 @@ public class RienaPolicy extends Policy {
 			}
 		}
 		if (!result) {
-			System.err.println("no right to do " + permission + " for " + domain.getCodeSource().getLocation() + " with principal");
+			LOGGER.log(LogService.LOG_ERROR, "no right to do " + permission + " for "
+					+ domain.getCodeSource().getLocation() + " with principal");
 		}
 		return result;
 	}

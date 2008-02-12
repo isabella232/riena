@@ -24,6 +24,7 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.cm.ManagedService;
+import org.osgi.service.log.LogService;
 
 public class Activator extends Plugin {
 
@@ -46,6 +47,7 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 		CONTEXT = context;
+		Logger LOGGER = getLogger(Activator.class.getName());
 
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles) {
@@ -59,18 +61,18 @@ public class Activator extends Plugin {
 				// TODO STARTING == LAZY, so start that also, STARTING is
 				// disabled, bundles with forceStart should not be LAZY
 				if (bundle.getState() == Bundle.RESOLVED/*
-				 * || bundle.getState() ==
-				 * Bundle.STARTING
-				 */) {
+														 * || bundle.getState() ==
+														 * Bundle.STARTING
+														 */) {
 					bundle.start();
-					System.out.println(bundle.getSymbolicName() + " forced autostart successfully");
+					LOGGER.log(LogService.LOG_INFO, bundle.getSymbolicName() + " forced autostart successfully");
 				} else {
 					if (bundle.getState() == Bundle.INSTALLED) {
 						System.err.println(bundle.getSymbolicName()
 								+ " has Riena-ForceStart but is only in state INSTALLED (not RESOLVED).");
 					} else {
 						if (bundle.getState() == Bundle.ACTIVE) {
-							System.out.println(bundle.getSymbolicName()
+							LOGGER.log(LogService.LOG_INFO, bundle.getSymbolicName()
 									+ " no forced autostart. Bundle is already ACTIVE.");
 						}
 					}
