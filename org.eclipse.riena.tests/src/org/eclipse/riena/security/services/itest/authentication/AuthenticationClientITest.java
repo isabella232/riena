@@ -11,6 +11,7 @@
 package org.eclipse.riena.security.services.itest.authentication;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 import javax.security.auth.Subject;
 
@@ -47,10 +48,11 @@ public class AuthenticationClientITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
-		sessionServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class, "http://localhost:8080/hessian/SessionService",
-				"hessian", "org.eclipse.riena.sessionservice");
-		authenticationServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", "hessian", "org.eclipse.riena.authenticationservice");
+		sessionServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
+				"http://localhost:8080/hessian/SessionService", "hessian", "org.eclipse.riena.sessionservice");
+		authenticationServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(
+				IAuthenticationService.class, "http://localhost:8080/hessian/AuthenticationService", "hessian",
+				"org.eclipse.riena.authenticationservice");
 
 	}
 
@@ -81,7 +83,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 		PasswordCredential pc = new PasswordCredential("password: ", false);
 		pc.setPassword("christian".toCharArray());
 		creds[1] = pc;
-		trace("Add credential: " + creds);
+		trace("Add credential: " + Arrays.toString(creds));
 
 		AuthenticationTicket ticket = authenticationService.login("Test", creds);
 
@@ -103,7 +105,8 @@ public class AuthenticationClientITest extends RienaTestCase {
 
 		try {
 			ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-			IAuthenticationService authenticationService = (IAuthenticationService) Activator.getContext().getService(ref);
+			IAuthenticationService authenticationService = (IAuthenticationService) Activator.getContext().getService(
+					ref);
 			AbstractCredential[] creds = new AbstractCredential[2];
 			NameCredential nc = new NameCredential("username: ", "xx");
 			nc.setName("john");
