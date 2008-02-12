@@ -38,6 +38,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		CONTEXT = context;
+		plugin = this;
 		context.registerService(ICallHook.ID, new ICallHook() {
 
 			public void afterCall(CallContext context) {
@@ -71,6 +72,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		CONTEXT = null;
+		plugin = null;
 	}
 
 	public static BundleContext getContext() {
