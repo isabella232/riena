@@ -22,7 +22,7 @@ import javax.security.auth.Subject;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.GenericObjectCache;
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.ServiceId;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
@@ -48,14 +48,14 @@ public class PermissionCache implements IPermissionCache {
 			permCache.setMinimumSize(100);
 			permCache.setTimeout(360000);
 		}
-		new ServiceInjector(Activator.getContext(), IAuthorizationService.ID, this, "bindAuthService", "unbindAuthService").start();
+		new ServiceId(IAuthorizationService.ID).injectInto(this).start(Activator.getContext());
 	}
 
-	public void bindAuthService(IAuthorizationService authService) {
+	public void bind(IAuthorizationService authService) {
 		this.authService = authService;
 	}
 
-	public void unbindAuthService(IAuthorizationService authService) {
+	public void unbind(IAuthorizationService authService) {
 		if (authService == this.authService) {
 			this.authService = null;
 		}

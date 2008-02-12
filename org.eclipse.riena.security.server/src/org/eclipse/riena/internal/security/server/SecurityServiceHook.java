@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.security.server;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 import javax.security.auth.Subject;
 import javax.servlet.http.Cookie;
@@ -19,11 +20,9 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
-import org.eclipse.riena.core.service.ServiceInjector;
-import org.eclipse.riena.security.common.ISubjectHolder;
+import org.eclipse.riena.core.service.ServiceId;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
-import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
@@ -58,7 +57,8 @@ public class SecurityServiceHook implements IServiceHook {
 	private ISubjectHolderService subjectHolderService;
 	private ISessionHolderService sessionHolderService;
 
-//	private HashMap<String, Boolean> freeHivemindWebservices = new HashMap<String, Boolean>();
+	// private HashMap<String, Boolean> freeHivemindWebservices = new
+	// HashMap<String, Boolean>();
 	private boolean requiresSSOIDbyDefault = false;
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SecurityServiceHook.class.getName());
@@ -68,11 +68,11 @@ public class SecurityServiceHook implements IServiceHook {
 	 */
 	public SecurityServiceHook() {
 		super();
-		new ServiceInjector(Activator.getContext(), IGenericObjectCache.ID, "(cache.type=PrincipalCache)", this, "bindPrincipalCache", "unbindPrincipalCache")
-				.start();
-		new ServiceInjector(Activator.getContext(), ISessionService.ID, this, "bindSessionService", "unbindSessionService").start();
-		new ServiceInjector(Activator.getContext(), ISubjectHolderService.ID, this, "bindSubjectHolderService", "unbindSubjectHolderService").start();
-		new ServiceInjector(Activator.getContext(), ISessionHolderService.ID, this, "bindSessionHolderService", "unbindSessionHolderService").start();
+		new ServiceId(IGenericObjectCache.ID).useFilter("(cache.type=PrincipalCache)").injectInto(this).start(
+				Activator.getContext());
+		new ServiceId(ISessionService.ID).injectInto(this).start(Activator.getContext());
+		new ServiceId(ISubjectHolderService.ID).injectInto(this).start(Activator.getContext());
+		new ServiceId(ISessionHolderService.ID).injectInto(this).start(Activator.getContext());
 
 		// List<UnsecureWebservice> tempList =
 		// RegistryAccessor.fetchRegistry().getConfiguration(UNSECURE_WEBSERVICES_ID);
@@ -113,45 +113,46 @@ public class SecurityServiceHook implements IServiceHook {
 		// }
 
 		if (!requiresSSOIDbyDefault) {
-			LOGGER.log(LogService.LOG_INFO, appName + ": defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is not required).");
+			LOGGER.log(LogService.LOG_INFO, appName
+					+ ": defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is not required).");
 		}
 	}
 
-	public void bindPrincipalCache(IGenericObjectCache principalCache) {
+	public void bind(IGenericObjectCache principalCache) {
 		this.principalCache = principalCache;
 	}
 
-	public void unbindPrincipalCache(IGenericObjectCache principalCache) {
+	public void unbind(IGenericObjectCache principalCache) {
 		if (this.principalCache == principalCache) {
 			this.principalCache = null;
 		}
 	}
 
-	public void bindSessionService(ISessionService sessionService) {
+	public void bind(ISessionService sessionService) {
 		this.sessionService = sessionService;
 	}
 
-	public void unbindSessionService(ISessionService sessionService) {
+	public void unbind(ISessionService sessionService) {
 		if (this.sessionService == sessionService) {
 			this.sessionService = null;
 		}
 	}
 
-	public void bindSubjectHolderService(ISubjectHolderService subjectHolderService) {
+	public void bind(ISubjectHolderService subjectHolderService) {
 		this.subjectHolderService = subjectHolderService;
 	}
 
-	public void unbindSubjectHolderService(ISubjectHolderService subjectHolderService) {
+	public void unbind(ISubjectHolderService subjectHolderService) {
 		if (this.subjectHolderService == subjectHolderService) {
 			this.subjectHolderService = null;
 		}
 	}
 
-	public void bindSessionHolderService(ISessionHolderService ISessionHolderService) {
+	public void bind(ISessionHolderService ISessionHolderService) {
 		this.sessionHolderService = ISessionHolderService;
 	}
 
-	public void unbindSessionHolderService(ISessionHolderService ISessionHolderService) {
+	public void unbind(ISessionHolderService ISessionHolderService) {
 		if (this.sessionHolderService == ISessionHolderService) {
 			this.sessionHolderService = null;
 		}
@@ -169,8 +170,6 @@ public class SecurityServiceHook implements IServiceHook {
 		// requiresSSOID = false;
 		// }
 		// }
-		ISessionHolder sessionHolder = null;
-		ISubjectHolder subjectHolder = null;
 
 		// first extract the cookies
 		Cookie[] cookies = callback.getCookies();
@@ -192,8 +191,10 @@ public class SecurityServiceHook implements IServiceHook {
 		if (ssoid == null && requiresSSOID) {
 			LOGGER.log(LogService.LOG_ERROR, "error in call to webservice {" + callback.getInterfaceName()
 					+ "} since it is not in the list of webservices that do not require a session but SSOID=null !!!");
-			if (System.getProperty("spirit.secure.webservices") == null || System.getProperty("spirit.secure.webservices").equals("true")) {
-				throw new NotAuthorizedFailure("call to webservice " + callback.getInterfaceName() + " failed, no valid session was given but is required.");
+			if (System.getProperty("spirit.secure.webservices") == null
+					|| System.getProperty("spirit.secure.webservices").equals("true")) {
+				throw new NotAuthorizedFailure("call to webservice " + callback.getInterfaceName()
+						+ " failed, no valid session was given but is required.");
 			}
 		}
 
@@ -204,16 +205,17 @@ public class SecurityServiceHook implements IServiceHook {
 			Principal[] principals = (Principal[]) principalCache.get(ssoid, SecurityServiceHook.class);
 			if (principals == null) {
 				principals = sessionService.findPrincipals(new Session(ssoid));
-				LOGGER.log(LogService.LOG_DEBUG, "sessionService found principal = " + principals);
+				LOGGER.log(LogService.LOG_DEBUG, "sessionService found principal = " + Arrays.toString(principals));
 				if (principals == null && requiresSSOID) {
-					LOGGER.log(LogService.LOG_ERROR, "ssoid {" + ssoid + "} found in request but SessionService could not find a Principal.");
+					LOGGER.log(LogService.LOG_ERROR, "ssoid {" + ssoid
+							+ "} found in request but SessionService could not find a Principal.");
 					throw new NotAuthorizedFailure("call to webservice with invalid ssoid");
 				}
 				if (principals != null) {
 					principalCache.put(ssoid, principals);
 				}
 			} else {
-				LOGGER.log(LogService.LOG_DEBUG, "found principal in cache = " + principals);
+				LOGGER.log(LogService.LOG_DEBUG, "found principal in cache = " + Arrays.toString(principals));
 			}
 			if (principals != null) {
 				Subject subject = new Subject();
@@ -245,10 +247,13 @@ public class SecurityServiceHook implements IServiceHook {
 			ssoid = afterSession.getSessionId();
 		}
 		if (beforeSession != null) {
-			LOGGER.log(LogService.LOG_DEBUG, "afterService after_ssoid=" + ssoid + " before_ssoid=" + beforeSession.getSessionId());
+			LOGGER.log(LogService.LOG_DEBUG, "afterService after_ssoid=" + ssoid + " before_ssoid="
+					+ beforeSession.getSessionId());
 		}
-		LOGGER.log(LogService.LOG_DEBUG, "afterService compare session instance before=" + beforeSession + " after=" + afterSession);
-		if (beforeSession != afterSession || (beforeSession != null && afterSession != null && !(beforeSession.getSessionId().equals(ssoid)))) {
+		LOGGER.log(LogService.LOG_DEBUG, "afterService compare session instance before=" + beforeSession + " after="
+				+ afterSession);
+		if (beforeSession != afterSession
+				|| (beforeSession != null && afterSession != null && !(beforeSession.getSessionId().equals(ssoid)))) {
 			if (ssoid == null || ssoid.equals("0")) {
 				// delete cookie
 				Cookie cookie = new Cookie(SSOID, "");
@@ -260,7 +265,8 @@ public class SecurityServiceHook implements IServiceHook {
 				cookie.setPath("/");
 				context.addCookie(cookie);
 				if (beforeSession != null && !(beforeSession.getSessionId().equals("0"))) {
-					LOGGER.log(LogService.LOG_WARNING, "CHANGING cookie setting from '" + beforeSession.getSessionId() + "' to '" + ssoid + "'");
+					LOGGER.log(LogService.LOG_WARNING, "CHANGING cookie setting from '" + beforeSession.getSessionId()
+							+ "' to '" + ssoid + "'");
 				} else {
 					LOGGER.log(LogService.LOG_DEBUG, "setting cookie to '" + ssoid + "'");
 				}

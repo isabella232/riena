@@ -17,7 +17,7 @@ import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.login.LoginException;
 
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.ServiceId;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
@@ -37,25 +37,25 @@ public class ClientLogin {
 		super();
 		this.loginContext = loginContext;
 		this.subject = subject;
-		new ServiceInjector(Activator.getContext(), IAuthenticationService.ID, this, "bindAuthenticationService", "unbindAuthenticationService").start();
-		new ServiceInjector(Activator.getContext(), ISubjectHolderService.ID, this, "bindSubjectHolderService", "unbindSubjectHolderService").start();
+		new ServiceId(IAuthenticationService.ID).injectInto(this).start(Activator.getContext());
+		new ServiceId(ISubjectHolderService.ID).injectInto(this).start(Activator.getContext());
 	}
 
-	public void bindAuthenticationService(IAuthenticationService authenticationService) {
+	public void bind(IAuthenticationService authenticationService) {
 		this.authenticationService = authenticationService;
 	}
 
-	public void unbindAuthenticationService(IAuthenticationService subHolderService) {
+	public void unbind(IAuthenticationService authenticationService) {
 		if (this.authenticationService == authenticationService) {
 			authenticationService = null;
 		}
 	}
 
-	public void bindSubjectHolderService(ISubjectHolderService subjectHolderService) {
+	public void bind(ISubjectHolderService subjectHolderService) {
 		this.subjectHolderService = subjectHolderService;
 	}
 
-	public void unbindSubjectHolderService(ISubjectHolderService subjectHolderService) {
+	public void unbind(ISubjectHolderService subjectHolderService) {
 		if (this.subjectHolderService == subjectHolderService) {
 			this.subjectHolderService = null;
 		}

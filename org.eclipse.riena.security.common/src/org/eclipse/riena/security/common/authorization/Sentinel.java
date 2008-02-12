@@ -15,7 +15,7 @@ import java.security.Permissions;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.service.ServiceId;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.ISubjectHolderService;
@@ -34,25 +34,25 @@ public class Sentinel {
 
 	private Sentinel() {
 		super();
-		new ServiceInjector(Activator.getContext(), IPermissionCache.ID, this, "bindPermCache", "unbindPermCache").start();
-		new ServiceInjector(Activator.getContext(), ISubjectHolderService.ID, this, "bindSubjectHolderService", "unbindSubjectHolderService").start();
+		new ServiceId(IPermissionCache.ID).injectInto(this).start(Activator.getContext());
+		new ServiceId(ISubjectHolderService.ID).injectInto(this).start(Activator.getContext());
 	}
 
-	public void bindPermCache(IPermissionCache permCache) {
+	public void bind(IPermissionCache permCache) {
 		this.permCache = permCache;
 	}
 
-	public void unbindPermCache(IPermissionCache permCache) {
+	public void unbind(IPermissionCache permCache) {
 		if (permCache == this.permCache) {
 			this.permCache = null;
 		}
 	}
 
-	public void bindSubjectHolderService(ISubjectHolderService subjectHolderService) {
+	public void bind(ISubjectHolderService subjectHolderService) {
 		this.subjectHolderService = subjectHolderService;
 	}
 
-	public void unbindSubjectHolderService(ISubjectHolderService subjectHolderService) {
+	public void unbind(ISubjectHolderService subjectHolderService) {
 		if (subjectHolderService == this.subjectHolderService) {
 			this.subjectHolderService = null;
 		}
