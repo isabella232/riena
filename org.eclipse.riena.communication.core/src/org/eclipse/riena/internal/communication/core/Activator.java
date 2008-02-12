@@ -45,12 +45,8 @@ public class Activator implements BundleActivator {
 				System.out.println("after call (in hook) method=" + context.getMethodName());
 				Map<String, List<String>> headers = context.getMessageContext().listResponseHeaders();
 				if (headers != null) {
-					for (String hName : headers.keySet()) {
-						StringBuffer sb = new StringBuffer();
-						for (String hValue : headers.get(hName)) {
-							sb.append(hValue + ", ");
-						}
-						System.out.println("header: name:" + hName + " value:" + sb);
+					for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+						System.out.println("header: name:" + entry.getKey() + " value: " + entry.getValue());
 					}
 				}
 			}
