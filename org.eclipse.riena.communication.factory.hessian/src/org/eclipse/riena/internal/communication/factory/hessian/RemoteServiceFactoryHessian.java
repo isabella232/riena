@@ -51,7 +51,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			uri = "http://localhost/" + PROTOCOL + endpoint.getPath();
 		}
 		try {
-			MyHessianProxyFactory mhpf = new MyHessianProxyFactory();
+			RienaHessianProxyFactory mhpf = new RienaHessianProxyFactory();
 
 			mhpf.setCallMessageContextAccessor(mca);
 			Object proxy = mhpf.create(endpoint.getServiceInterfaceClass(), uri);
@@ -117,7 +117,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			}
 
 			public Map<String, List<String>> listResponseHeaders() {
-				HttpURLConnection httpUrlConnection = MyHessianProxyFactory.getHttpURLConnection();
+				HttpURLConnection httpUrlConnection = RienaHessianProxyFactory.getHttpURLConnection();
 				if (httpUrlConnection == null) {
 					return null;
 				}

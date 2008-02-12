@@ -28,13 +28,13 @@ import org.osgi.service.cm.ManagedService;
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.SerializerFactory;
 
-public class MyHessianProxyFactory extends HessianProxyFactory implements ManagedService {
+public class RienaHessianProxyFactory extends HessianProxyFactory implements ManagedService {
 
 	private ICallMessageContextAccessor mca;
 	private static ThreadLocal<HttpURLConnection> connections = new ThreadLocal<HttpURLConnection>();
 	private URL url;
 
-	public MyHessianProxyFactory() {
+	public RienaHessianProxyFactory() {
 		super();
 	}
 
@@ -49,10 +49,10 @@ public class MyHessianProxyFactory extends HessianProxyFactory implements Manage
 		ICallMessageContext mc = mca.getMessageContext();
 		Map<String, List<String>> headers = mc.listRequestHeaders();
 		if (headers != null) {
-			for (String hName : headers.keySet()) {
+			for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
 				// System.out.println("size:" + headers.get(hName).size());
-				for (String hValue : headers.get(hName)) {
-					connection.addRequestProperty(hName, hValue);
+				for (String hValue : entry.getValue()) {
+					connection.addRequestProperty(entry.getKey(), hValue);
 					// System.out.println(">>>" + hName + ":" + hValue);
 				}
 			}
