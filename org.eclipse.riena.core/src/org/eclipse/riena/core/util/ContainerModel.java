@@ -14,6 +14,16 @@ import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
 
+/**
+ * This class can be used by other to find out whether the container they are
+ * running in is a Riena client or a Riena server container. The consequence can
+ * be things like storing objects in a singleton (for client) vs storing them in
+ * a ThreadLocal (server) or others. The class can be driven be the
+ * system.property "riena.container.model" that can be set to "client" or
+ * "server". The ContainerModel also checks to see whether there is a bundle
+ * called org.eclipse.equinox.http in which case it assumes a server model. In
+ * any case, it creates a LOG_INFO entry to post what it has chosen.
+ */
 public class ContainerModel {
 
 	private static final int CLIENT = 1;
@@ -22,13 +32,16 @@ public class ContainerModel {
 	private static int containerModel = CLIENT;
 	static {
 		String s = System.getProperty("riena.container.model");
-		if (s != null && s.equals("server")) {
-			containerModel = SERVER;
-		}
-		Bundle[] bundles = Activator.getContext().getBundles();
-		for (Bundle bundle : bundles) {
-			if (bundle.getSymbolicName().startsWith("org.eclipse.equinox.http")) {
+		if (s != null) {
+			if (s.equals("server")) {
 				containerModel = SERVER;
+			}
+		} else {
+			Bundle[] bundles = Activator.getContext().getBundles();
+			for (Bundle bundle : bundles) {
+				if (bundle.getSymbolicName().startsWith("org.eclipse.equinox.http")) {
+					containerModel = SERVER;
+				}
 			}
 		}
 		if (containerModel == SERVER) {
