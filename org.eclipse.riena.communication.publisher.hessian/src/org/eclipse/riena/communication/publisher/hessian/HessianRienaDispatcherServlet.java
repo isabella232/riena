@@ -74,7 +74,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 			if (httpReq.getMethod().equals("GET")) {
 				if (httpReq.getRemoteHost().equals("127.0.0.1")) {
 					PrintWriter pw = new PrintWriter(res.getOutputStream());
-					pw.write(new String("no webservices available"));
+					pw.write("no webservices available");
 					pw.flush();
 					return;
 				} else {
@@ -99,7 +99,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 				if (rsd == null) {
 					pw.write("call received from browser, no remote service registered with this URL");
 				} else {
-					pw.write(new String("calls ") + rsd);
+					pw.write("calls " + rsd);
 				}
 				pw.flush();
 				return;
