@@ -80,7 +80,7 @@ public class ConfigProxy implements ManagedService {
 					if (m != null) {
 						m.invoke(bObject, oValue);
 					} else {
-						LOGGER.log(LogService.LOG_WARNING, "method" + m.getName() + "does not exist");
+						LOGGER.log(LogService.LOG_WARNING, "method" + methodName + "does not exist");
 					}
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
