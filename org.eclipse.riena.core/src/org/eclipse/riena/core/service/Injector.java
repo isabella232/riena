@@ -15,8 +15,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
@@ -275,26 +276,30 @@ public class Injector {
 			return null;
 
 		// find most specific method
-		Class<?> superType;
-		for (Method method : targetedMethods)
-			while ((superType = parameterType.getSuperclass()) != null)
+		Class<?> superType = parameterType;
+		while (superType != null) {
+			for (Method method : targetedMethods)
 				if (!method.getParameterTypes()[0].isAssignableFrom(superType))
 					return method;
+			superType = superType.getSuperclass();
+		}
 
 		return targetedMethods.get(0);
 	}
 
 	class InjectorServiceListener implements ServiceListener {
 		public void serviceChanged(ServiceEvent event) {
-			if (serviceId != null) {
-				Object property = event.getServiceReference().getProperty("objectClass");
-				String objectClass = PropertiesUtils.accessProperty(property, null);
-				// if serviceId set than only handle this event if id is equal.
-				if (objectClass.equals(serviceId.getServiceId()))
+			int eventType = event.getType();
+			if (eventType != ServiceEvent.REGISTERED && eventType != ServiceEvent.UNREGISTERING)
+				return;
+			Object value = event.getServiceReference().getProperty(Constants.OBJECTCLASS);
+			Assert.isTrue(value instanceof String[], "Contract vioaltion: property ´objectClass´ is not a String[]");
+			String[] types = (String[]) value;
+			for (String type : types)
+				if (type.equals(serviceId.getServiceId())) {
 					handleEvent(event);
-			} else
-				// if no serviceId set handle any event
-				handleEvent(event);
+					return;
+				}
 		}
 	}
 
