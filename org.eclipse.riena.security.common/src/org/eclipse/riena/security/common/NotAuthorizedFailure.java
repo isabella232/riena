@@ -10,56 +10,55 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common;
 
-import org.eclipse.riena.core.exception.Failure;
 
-public class NotAuthorizedFailure extends Failure {
+public class NotAuthorizedFailure extends SecurityFailure {
 
-    /**
-     * @param msg
-     * @param args
-     * @param cause
-     */
-    public NotAuthorizedFailure(String msg, Object[] args, Throwable cause) {
-        super(msg, args, cause);
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @param msg
+	 * @param args
+	 * @param cause
+	 */
+	public NotAuthorizedFailure(String msg, Object[] args, Throwable cause) {
+		super(msg, args, cause);
+		// TODO Auto-generated constructor stub
+	}
 
-    /**
-     * @param msg
-     */
-    public NotAuthorizedFailure(String msg) {
-        super(msg);
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @param msg
+	 */
+	public NotAuthorizedFailure(String msg) {
+		super(msg);
+		// TODO Auto-generated constructor stub
+	}
 
-    /**
-     * @param msg
-     * @param cause
-     */
-    public NotAuthorizedFailure(String msg, Throwable cause) {
-        super(msg, cause);
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @param msg
+	 * @param cause
+	 */
+	public NotAuthorizedFailure(String msg, Throwable cause) {
+		super(msg, cause);
+		// TODO Auto-generated constructor stub
+	}
 
-    /**
-     * @param msg
-     * @param arg1
-     * @param cause
-     */
-    public NotAuthorizedFailure(String msg, Object arg1, Throwable cause) {
-        super(msg, arg1, cause);
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @param msg
+	 * @param arg1
+	 * @param cause
+	 */
+	public NotAuthorizedFailure(String msg, Object arg1, Throwable cause) {
+		super(msg, arg1, cause);
+		// TODO Auto-generated constructor stub
+	}
 
-    /**
-     * @param msg
-     * @param arg1
-     * @param arg2
-     * @param cause
-     */
-    public NotAuthorizedFailure(String msg, Object arg1, Object arg2, Throwable cause) {
-        super(msg, arg1, arg2, cause);
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @param msg
+	 * @param arg1
+	 * @param arg2
+	 * @param cause
+	 */
+	public NotAuthorizedFailure(String msg, Object arg1, Object arg2, Throwable cause) {
+		super(msg, arg1, arg2, cause);
+		// TODO Auto-generated constructor stub
+	}
 
 }
