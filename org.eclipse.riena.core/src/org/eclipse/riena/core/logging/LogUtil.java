@@ -15,8 +15,6 @@ import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.service.ServiceId;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.log.LogReaderService;
-import org.osgi.service.log.LogService;
 
 /**
  * Wrapper to access the existing Logger.
@@ -88,11 +86,7 @@ public class LogUtil {
 	 * initialize LogUtil
 	 */
 	public void init() {
-		// new
-		// ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).start(context);
-		// new
-		// ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).start(context);
-		new ServiceId(LogService.class.getName()).useRanking().injectInto(this).start(context);
-		new ServiceId(LogReaderService.class.getName()).useRanking().injectInto(this).start(context);
+		new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).start(context);
+		new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).start(context);
 	}
 }
