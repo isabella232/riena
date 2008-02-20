@@ -24,59 +24,66 @@ public class Target {
 	private IRanking ranking;
 
 	public void bind(DepOne dep) {
-		System.out.print("bind:");
+		called("bind", DepOne.class, dep);
 		add("bind", DepOne.class);
 	}
 
 	public void unbind(DepOne dep) {
-		System.out.print("unbind:");
+		called("unbind", DepOne.class, dep);
 		remove("bind", DepOne.class);
 	}
 
 	public void bind(DepTwo dep) {
-		System.out.print("bind:");
+		called("bind", DepTwo.class, dep);
 		add("bind", DepTwo.class);
 	}
 
 	public void unbind(DepTwo dep) {
-		System.out.print("unbind:");
+		called("unbind", DepTwo.class, dep);
 		remove("bind", DepTwo.class);
 	}
 
 	public void binde(DepOne dep) {
-		System.out.print("binde:");
+		called("binde", DepOne.class, dep);
 		add("binde", DepOne.class);
 	}
 
 	public void entbinde(DepOne dep) {
-		System.out.print("entbinde:");
+		called("entbinde", DepOne.class, dep);
 		remove("binde", DepOne.class);
 	}
 
-	public void bind(IRanking ranking) {
-		System.out.print("bind:");
+	public void bind(IRanking dep) {
+		called("bind", IRanking.class, dep);
 		add("bind", IRanking.class);
-		this.ranking = ranking;
+		this.ranking = dep;
 	}
 
-	public void unbind(IRanking ranking) {
-		System.out.print("unbind:");
+	public void unbind(IRanking dep) {
+		called("unbind", IRanking.class, dep);
 		remove("bind", IRanking.class);
 	}
 
 	public void bind(DepOneOne dep) {
-		System.out.print("bind:");
+		called("bind", DepOneOne.class, dep);
 		add("bind", DepOneOne.class);
 	}
 
 	public void unbind(DepOneOne dep) {
-		System.out.print("unbind:");
+		called("unbind", DepOneOne.class, dep);
 		remove("bind", DepOneOne.class);
 	}
 
+	/**
+	 * @param string
+	 * @param object
+	 */
+	private void called(String methodName, Class<?> type, Object object) {
+		System.out.println(methodName + "(" + type.getSimpleName() + ") -> " + object.getClass().getSimpleName());
+	}
+
 	public int count(String method, Class<?> clazz) {
-		method = method + "(" + clazz.getName() + ")";
-		List<Class<?>> deps4method = deps.get(method);
+		List<Class<?>> deps4method = deps.get(key(method, clazz));
 		if (deps4method != null)
 			return deps4method.size();
 		return 0;
@@ -87,22 +94,21 @@ public class Target {
 	}
 
 	private void add(String method, Class<?> depClass) {
-		method = method + "(" + depClass.getName() + ")";
-		List<Class<?>> deps4method = deps.get(method);
+		List<Class<?>> deps4method = deps.get(key(method, depClass));
 		if (deps4method == null) {
 			deps4method = new ArrayList<Class<?>>();
-			deps.put(method, deps4method);
+			deps.put(key(method, depClass), deps4method);
 		}
 		deps4method.add(depClass);
-		System.out.println(" " + method + " " + depClass.getName());
 	}
 
 	private void remove(String method, Class<?> depClass) {
-		method = method + "(" + depClass.getName() + ")";
-		List<Class<?>> deps4method = deps.get(method);
+		List<Class<?>> deps4method = deps.get(key(method, depClass));
 		if (deps4method != null)
 			deps4method.remove(depClass);
-		System.out.println(" " + method + " " + depClass.getName());
 	}
 
+	private String key(String methodKey, Class<?> type) {
+		return methodKey + "(" + type.getName() + ")";
+	}
 }

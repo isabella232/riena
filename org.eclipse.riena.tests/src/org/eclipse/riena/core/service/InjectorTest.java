@@ -42,9 +42,9 @@ public class InjectorTest extends TestCase {
 	public void scribble() {
 		Object target = null;
 
-		new ServiceId("serviceId").injectInto(target).start(context);
-		new ServiceId("serviceId").injectInto(target).bind("bind").unbind("unbind").start(context);
-		new ServiceId("serviceId").useFilter("").injectInto(target).bind("bind").unbind("unbind").start(context);
+		new ServiceId("serviceId").injectInto(target).andStart(context);
+		new ServiceId("serviceId").injectInto(target).bind("bind").unbind("unbind").andStart(context);
+		new ServiceId("serviceId").useFilter("").injectInto(target).bind("bind").unbind("unbind").andStart(context);
 	}
 
 	public void testInjectDepOneObviousBindUnbindError() {
@@ -55,7 +55,7 @@ public class InjectorTest extends TestCase {
 		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
 
 		try {
-			new ServiceId(DepOne.class.getName()).injectInto(target).bind("baind").start(context);
+			new ServiceId(DepOne.class.getName()).injectInto(target).bind("baind").andStart(context);
 			fail("Well, that should not have happended");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
@@ -72,7 +72,7 @@ public class InjectorTest extends TestCase {
 		ServiceRegistration reg = context.registerService(DepTwo.class.getName(), depTwo, null);
 
 		try {
-			new ServiceId(DepOne.class.getName()).injectInto(target).bind("binde").unbind("entbinde").start(context);
+			new ServiceId(DepOne.class.getName()).injectInto(target).bind("binde").unbind("entbinde").andStart(context);
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -87,7 +87,7 @@ public class InjectorTest extends TestCase {
 		DepOne depOne = new DepOne();
 		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
 
-		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).start(context);
+		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(context);
 		assertEquals(1, target.count("bind", DepOne.class));
 
 		shot.stop();
@@ -103,10 +103,10 @@ public class InjectorTest extends TestCase {
 		DepOne depOne = new DepOne();
 		ServiceRegistration reg1 = context.registerService(DepOne.class.getName(), depOne, null);
 
-		Injector shot1 = new ServiceId(DepOne.class.getName()).injectInto(target).start(context);
+		Injector shot1 = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(context);
 		assertEquals(1, target.count("bind", DepOne.class));
 
-		Injector shot2 = new ServiceId(DepTwo.class.getName()).injectInto(target).start(context);
+		Injector shot2 = new ServiceId(DepTwo.class.getName()).injectInto(target).andStart(context);
 
 		DepTwo depTwo = new DepTwo();
 		ServiceRegistration reg2 = context.registerService(DepTwo.class.getName(), depTwo, null);
@@ -131,7 +131,7 @@ public class InjectorTest extends TestCase {
 		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
 
 		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).bind("binde").unbind("entbinde")
-				.start(context);
+				.andStart(context);
 		assertEquals(1, target.count("binde", DepOne.class));
 
 		shot.stop();
@@ -140,8 +140,8 @@ public class InjectorTest extends TestCase {
 		reg.unregister();
 	}
 
-	public void testInjectRankedServices() {
-		System.out.println("testInjectRankedServices:");
+	public void testInjectRankedServicesServicesRegisteredBefore() {
+		System.out.println("testInjectRankedServicesServicesRegisteredBefore:");
 		Target target = new Target();
 
 		IRanking rank1 = new RankingOne(0);
@@ -152,7 +152,7 @@ public class InjectorTest extends TestCase {
 		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(100));
 		ServiceRegistration reg2 = context.registerService(IRanking.class.getName(), rank2, dict);
 
-		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).start(context);
+		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).andStart(context);
 		assertEquals(1, target.count("bind", IRanking.class));
 
 		assertEquals(100, target.getDepRanking());
@@ -164,6 +164,45 @@ public class InjectorTest extends TestCase {
 		reg2.unregister();
 	}
 
+	public void testInjectRankedServicesServicesRegisteredOnTheRun() {
+		System.out.println("testInjectRankedServicesServicesRegisteredOnTheRun:");
+		Target target = new Target();
+
+		IRanking rank1 = new RankingOne(0);
+		ServiceRegistration reg1 = context.registerService(IRanking.class.getName(), rank1, null);
+
+		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).andStart(context);
+		assertEquals(1, target.count("bind", IRanking.class));
+		assertEquals(0, target.getDepRanking());
+
+		IRanking rank2 = new RankingTwo(100);
+		Dictionary<String, Object> dict = new Hashtable<String, Object>();
+		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(100));
+		ServiceRegistration reg2 = context.registerService(IRanking.class.getName(), rank2, dict);
+
+		assertEquals(1, target.count("bind", IRanking.class));
+
+		assertEquals(100, target.getDepRanking());
+
+		reg2.unregister();
+
+		assertEquals(1, target.count("bind", IRanking.class));
+
+		assertEquals(0, target.getDepRanking());
+
+		ServiceRegistration reg3 = context.registerService(IRanking.class.getName(), rank2, dict);
+
+		assertEquals(1, target.count("bind", IRanking.class));
+
+		assertEquals(100, target.getDepRanking());
+
+		shot.stop();
+		assertEquals(0, target.count("bind", IRanking.class));
+
+		reg1.unregister();
+		reg3.unregister();
+	}
+
 	public void testInjectMostSpecifBindMethod() {
 		System.out.println("testInjectMostSpecifBindMethod:");
 		Target target = new Target();
@@ -171,7 +210,7 @@ public class InjectorTest extends TestCase {
 		DepOne depOne = new DepOneOne();
 		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
 
-		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).start(context);
+		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(context);
 		assertEquals(1, target.count("bind", DepOneOne.class));
 		assertEquals(0, target.count("bind", DepOne.class));
 
