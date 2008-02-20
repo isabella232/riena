@@ -38,7 +38,7 @@ public class RienaPolicy extends Policy {
 
 	public RienaPolicy() {
 		super();
-		new ServiceId(IPermissionCache.ID).injectInto(this).start(Activator.getContext());
+		new ServiceId(IPermissionCache.ID).injectInto(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IPermissionCache permCache) {

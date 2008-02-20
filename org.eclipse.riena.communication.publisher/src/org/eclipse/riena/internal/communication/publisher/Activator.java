@@ -43,7 +43,7 @@ public class Activator implements BundleActivator {
 		Activator.context = context;
 
 		dispatcher = new ServicePublishEventDispatcher(context);
-		publisherInjector = new ServiceId(IServicePublisher.ID).injectInto(dispatcher).start(context);
+		publisherInjector = new ServiceId(IServicePublisher.ID).injectInto(dispatcher).andStart(context);
 
 		// register as OSGi service, the start will pick up the OSGi service and
 		// publish it

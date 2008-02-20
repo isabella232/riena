@@ -86,7 +86,7 @@ public class LogUtil {
 	 * initialize LogUtil
 	 */
 	public void init() {
-		new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).start(context);
-		new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).start(context);
+		new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).andStart(context);
+		new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).andStart(context);
 	}
 }

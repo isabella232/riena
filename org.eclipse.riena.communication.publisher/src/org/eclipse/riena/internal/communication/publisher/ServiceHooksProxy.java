@@ -34,7 +34,7 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 
 	public ServiceHooksProxy(Object serviceInstance) {
 		super(serviceInstance);
-		new ServiceId(IServiceHook.ID).injectInto(this).start(Activator.getContext());
+		new ServiceId(IServiceHook.ID).injectInto(this).andStart(Activator.getContext());
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

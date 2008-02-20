@@ -40,6 +40,6 @@ public class ConfigFromExtensions {
 	 * described in the classes javadoc.
 	 */
 	public void doConfig() {
-		new ServiceId(ConfigurationAdmin.class.getName()).injectInto(new ConfigAdminHandler(context)).start(context);
+		new ServiceId(ConfigurationAdmin.class.getName()).injectInto(new ConfigAdminHandler(context)).andStart(context);
 	}
 }
