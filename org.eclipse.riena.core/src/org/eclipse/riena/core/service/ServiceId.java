@@ -20,22 +20,22 @@ package org.eclipse.riena.core.service;
  * unregistered.
  * <p>
  * The service injector tracks the specified OSGi Service after calls
- * {@link #start()} and stop tracks after calls {@link #stop()}.
+ * {@link #doStart()} and stop tracks after calls {@link #stop()}.
  * <p>
  * The ServiceId and Injector are implemented as a ´fluent interface´ allowing
  * constructs like:
  * <ol>
- * <li>new ServiceId("id1").injectInto(target).start(context)</li>
+ * <li>new ServiceId("id1").injectInto(target).andStart(context)</li>
  * <li>new
- * ServiceId("id2").useFilter(filter).injectInto(target).bind("register").unbind("unregister").start(context)</li>
+ * ServiceId("id2").useFilter(filter).injectInto(target).bind("register").unbind("unregister").andStart(context)</li>
  * <li>new
- * ServiceId("id3").useRanking().injectInto(target).bind("register").unbind("unregister").start(context)</li>
+ * ServiceId("id3").useRanking().injectInto(target).bind("register").unbind("unregister").andStart(context)</li>
  * <li>..</li>
  * </ol>
  * <p>
- * This fluent interface make a few presumptions (defaults) that makes writing
- * service injectors short and expressive , e.g. number one the list, means use
- * no service ranking, no filter, and the bind method name is "bind" and the
+ * This fluent interface makes a few assumptions (defaults) that makes writing
+ * service injectors short and expressive , e.g. item one the list, means use no
+ * service ranking, no filter, and the bind method name is "bind" and the
  * un-bind method name is "unbind".
  * <p>
  * A service or services may be injected into the target by either specifying
@@ -45,7 +45,7 @@ package org.eclipse.riena.core.service;
  * The bind and un-bind method that get called by the injector can be
  * polymorphic, i.e. the target can have multiple bind/un-bind methods with the
  * same name but with different signatures. The injector takes responsibility
- * for choosing the appropriate methods.
+ * for choosing the appropriate bind/unbind methods.
  */
 public class ServiceId {
 
@@ -102,7 +102,7 @@ public class ServiceId {
 		if (target == null)
 			throw new IllegalArgumentException("target may not be null.");
 
-		return new Injector(this, target);
+		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
 	}
 
 	private void assertState() {
@@ -117,13 +117,6 @@ public class ServiceId {
 	 */
 	String getServiceId() {
 		return serviceId;
-	}
-
-	/**
-	 * @return the useRanking
-	 */
-	boolean usesRanking() {
-		return ranking;
 	}
 
 	/**

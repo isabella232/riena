@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
@@ -24,9 +23,11 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
 /**
- * The is the service injector. See {@link ServiceId} for explanation and usage.
+ * The is the abstract base class for the specialized service injectors. See
+ * {@link ServiceId} for explanation and usage. It provides common functionality
+ * for the ranking injector and the filtering injector.
  */
-public class Injector {
+public abstract class Injector {
 
 	/**
 	 * Default ´bind´ method name.
@@ -39,15 +40,15 @@ public class Injector {
 	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind";
 
 	private ServiceId serviceId;
+	private BundleContext context = null;
+	private String filter;
 	private Object target;
 	private String bindMethodName = null;
+	private List<Method> bindMethodProspects = null;
 	private String unbindMethodName = null;
+	private List<Method> unbindMethodProspects = null;
 	private boolean started = false;
-	private BundleContext context = null;
-	private List<ServiceReference> trackedServiceRefs = null;
 	private ServiceListener serviceListener;
-
-	private RuntimeException lastError;
 
 	/**
 	 * Constructor for the <code>injectInto()</code> of <code>ServiceId</code>.
@@ -58,6 +59,11 @@ public class Injector {
 	Injector(ServiceId serviceId, Object target) {
 		this.serviceId = serviceId;
 		this.target = target;
+		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append(
+				serviceId.getServiceId()).append(")");
+		if (serviceId.getFilter() != null)
+			bob.append(serviceId.getFilter());
+		this.filter = bob.toString();
 	}
 
 	/**
@@ -70,25 +76,27 @@ public class Injector {
 	 * @param context
 	 * @return this injector
 	 */
-	public Injector start(BundleContext context) {
+	public Injector andStart(BundleContext context) {
 		if (started)
 			throw new IllegalStateException("Injector already started!");
 		started = true;
-		lastError = null;
 		this.context = context;
 		if (bindMethodName == null)
 			bindMethodName = DEFAULT_BIND_METHOD_NAME;
-		assertMethod("Bind method", bindMethodName);
+		bindMethodProspects = collectMethods("Bind method", bindMethodName);
 		if (unbindMethodName == null)
 			unbindMethodName = DEFAULT_UNBIND_METHOD_NAME;
-		assertMethod("Unbind method", unbindMethodName);
-		serviceListener = new InjectorServiceListener();
-		trackedServiceRefs = new ArrayList<ServiceReference>(1);
-		start();
-		if (lastError != null)
-			throw lastError;
+		unbindMethodProspects = collectMethods("Unbind method", unbindMethodName);
+
+		doStart();
+		// for sure
+		registerServiceListener();
+
+		started = true;
 		return this;
 	}
+
+	protected abstract void doStart();
 
 	/**
 	 * Stops tracking the specified service
@@ -96,20 +104,14 @@ public class Injector {
 	public void stop() {
 		if (!started)
 			return;
-		context.removeServiceListener(serviceListener);
-
-		// copy list to array so that I iterate through array and still
-		// remove entries from List concurrently
-		ServiceReference[] serviceRefs;
-		synchronized (trackedServiceRefs) {
-			serviceRefs = trackedServiceRefs.toArray(new ServiceReference[trackedServiceRefs.size()]);
-		}
-		for (ServiceReference serviceRef : serviceRefs)
-			unbind(serviceRef);
-		serviceListener = null;
-		trackedServiceRefs = null;
+		unregisterServiceListener();
+		doStop();
+		bindMethodProspects = null;
+		unbindMethodProspects = null;
 		started = false;
 	}
+
+	protected abstract void doStop();
 
 	/**
 	 * Specify the bind method. If not specified
@@ -143,128 +145,133 @@ public class Injector {
 		return this;
 	}
 
-	public Throwable getLastError() {
-		return lastError;
+	/**
+	 * Registers the listener for service events. Can be called by subclasses
+	 * within their {@link #doStart()} method for be timely closer to some other
+	 * actions. However, if this is not done it will be called by this base
+	 * class.
+	 */
+	protected void registerServiceListener() {
+		if (serviceListener == null)
+			serviceListener = new InjectorServiceListener();
+		try {
+			context.addServiceListener(serviceListener, filter);
+		} catch (InvalidSyntaxException e) {
+			throw new IllegalArgumentException("The specified filter has syntax errors.", e);
+		}
 	}
 
-	private void assertMethod(String message, String methodName) {
+	/**
+	 * Unregisters the listener for service events.
+	 */
+	private void unregisterServiceListener() {
+		if (serviceListener == null)
+			return;
+		context.removeServiceListener(serviceListener);
+		serviceListener = null;
+	}
+
+	private List<Method> collectMethods(String message, String methodName) {
+		List<Method> prospects = new ArrayList<Method>();
 		Method[] methods = target.getClass().getMethods();
 		for (Method method : methods)
-			if (method.getName().equals(methodName))
-				return;
+			if (method.getName().equals(methodName) && method.getParameterTypes().length == 1)
+				prospects.add(method);
+
+		if (prospects.size() != 0)
+			return prospects;
 
 		throw new IllegalArgumentException(message + " '" + methodName + "' does not exist in target class '"
 				+ target.getClass().getName());
 	}
 
-	/**
-	 * Starts to track the specified OSGi Service
-	 */
-	private void start() {
-		try {
-			ServiceReference[] serviceRefs = null;
-			// try to find the service initially
-			if (serviceId.usesRanking()) {
-				ServiceReference serviceRef = context.getServiceReference(serviceId.getServiceId());
-				if (serviceRef != null)
-					serviceRefs = new ServiceReference[] { serviceRef };
-			} else
-				serviceRefs = context.getServiceReferences(serviceId.getServiceId(), serviceId.getFilter());
-
-			// add an service listener for register or unregister
-			// register the service listener before we go through the reference
-			// list since its very more likely that no service is registered
-			// between getServiceReferences and addServiceListener
-			context.addServiceListener(serviceListener, serviceId.getFilter());
-			// then go through the list of references
-			if (serviceRefs != null)
-				for (ServiceReference serviceRef : serviceRefs)
-					bind(serviceRef);
-		} catch (InvalidSyntaxException e) {
-			e.printStackTrace();
-		}
-		started = true;
-	}
-
 	protected void handleEvent(ServiceEvent event) {
 		switch (event.getType()) {
 		case ServiceEvent.REGISTERED:
-			bind(event.getServiceReference());
+			doBind(event.getServiceReference());
 			break;
 		case ServiceEvent.UNREGISTERING:
-			unbind(event.getServiceReference());
+			doUnbind(event.getServiceReference());
 			break;
 		}
 	}
 
-	private void bind(ServiceReference serviceRef) {
-		synchronized (trackedServiceRefs) {
-			if (trackedServiceRefs.contains(serviceRef))
-				return;
+	protected abstract void doBind(ServiceReference serviceRef);
 
-			Object service = context.getService(serviceRef);
-			if (service != null) {
-				Method method = findMatchingMethod(target.getClass(), bindMethodName, service.getClass());
-				invoke(method, service);
-			}
-			trackedServiceRefs.add(serviceRef);
-		}
-	}
+	protected abstract void doUnbind(ServiceReference serviceRef);
 
-	private void unbind(ServiceReference serviceRef) {
-		synchronized (trackedServiceRefs) {
-			if (!trackedServiceRefs.contains(serviceRef))
-				return;
-
-			Object service = context.getService(serviceRef);
-			if (service != null) {
-				Method method = findMatchingMethod(target.getClass(), unbindMethodName, service.getClass());
-				invoke(method, service);
-			}
-			trackedServiceRefs.remove(serviceRef);
-			context.ungetService(serviceRef);
+	/**
+	 * Get all service references for the service.
+	 * 
+	 * @return array of service references
+	 */
+	protected ServiceReference[] getServiceReferences() {
+		try {
+			return context.getServiceReferences(serviceId.getServiceId(), filter);
+		} catch (InvalidSyntaxException e) {
+			throw new IllegalArgumentException("The specified filter has syntax errors.", e);
 		}
 	}
 
 	/**
-	 * @param method
+	 * Find the matching bind method for the specified service reference.
+	 * 
 	 * @param service
+	 * @return the bind method
 	 */
-	private void invoke(Method method, Object service) {
-		if (method == null) {
-			lastError = new IllegalArgumentException("Bind/Unbind method '" + method
-					+ "' does not exist in target class '" + target.getClass().getName());
-			// TODO logging
+	protected void invokeBindMethod(ServiceReference serviceRef) {
+		if (serviceRef == null)
 			return;
-		}
-		try {
-			method.invoke(target, service);
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		// increments service use count
+		Object service = context.getService(serviceRef);
+		if (service == null)
+			return;
+		invokeMethod(bindMethodProspects, service);
 	}
 
-	private static Method findMatchingMethod(Class<?> targetType, String methodName, Class<?> parameterType) {
-		assert targetType != null;
-		assert methodName != null;
-		assert parameterType != null;
+	/**
+	 * Find the matching unbind method for the specified service reference.
+	 * 
+	 * @param service
+	 * @return the unbind method
+	 */
+	protected void invokeUnbindMethod(ServiceReference serviceRef) {
+		if (serviceRef == null)
+			return;
+		// need to get the service object, increments the use count
+		Object service = context.getService(serviceRef);
+		if (service == null)
+			return;
+		invokeMethod(unbindMethodProspects, service);
+		// decrement the use count from prior getService()
+		context.ungetService(serviceRef);
+		// decrement the use count from from prior bind
+		context.ungetService(serviceRef);
+	}
 
+	private void invokeMethod(List<Method> methods, Object service /*
+																	 * ServiceReference
+																	 * serviceRef
+																	 */) {
+		// if (serviceRef == null)
+		// return;
+		// Object service = context.getService(serviceRef);
+		// if (service == null)
+		// return;
+		Method method = findMatchingMethod(methods, service);
+		if (method == null)
+			return;
+		invoke(method, service);
+	}
+
+	private static Method findMatchingMethod(List<Method> methods, Object service) {
+		assert methods != null;
+		assert service != null;
+
+		Class<?> parameterType = service.getClass();
 		List<Method> targetedMethods = new ArrayList<Method>(1);
-		Method[] methods = targetType.getMethods();
 		for (Method method : methods) {
-			if (!method.getName().equals(methodName))
-				continue;
-
 			Class<?>[] parameterTypes = method.getParameterTypes();
-			if (parameterTypes.length != 1)
-				continue;
-
 			if (parameterTypes[0].isAssignableFrom(parameterType))
 				targetedMethods.add(method);
 		}
@@ -287,19 +294,38 @@ public class Injector {
 		return targetedMethods.get(0);
 	}
 
+	/**
+	 * @param method
+	 * @param service
+	 */
+	private void invoke(Method method, Object service) {
+		if (method == null) {
+			// TODO logging
+			throw new IllegalArgumentException("Bind/Unbind method '" + method + "' does not exist in target class '"
+					+ target.getClass().getName() + "'.");
+		}
+		try {
+			method.invoke(target, service);
+		} catch (SecurityException e) {
+			// TODO How to handle this and the following
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * The service listener for this injector.
+	 */
 	class InjectorServiceListener implements ServiceListener {
 		public void serviceChanged(ServiceEvent event) {
 			int eventType = event.getType();
-			if (eventType != ServiceEvent.REGISTERED && eventType != ServiceEvent.UNREGISTERING)
-				return;
-			Object value = event.getServiceReference().getProperty(Constants.OBJECTCLASS);
-			Assert.isTrue(value instanceof String[], "Contract vioaltion: property ´objectClass´ is not a String[]");
-			String[] types = (String[]) value;
-			for (String type : types)
-				if (type.equals(serviceId.getServiceId())) {
-					handleEvent(event);
-					return;
-				}
+			if (eventType == ServiceEvent.REGISTERED || eventType == ServiceEvent.UNREGISTERING)
+				handleEvent(event);
 		}
 	}
 
