@@ -51,13 +51,13 @@ public class Activator extends Plugin {
 
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles) {
-			String forceStart = (String) bundle.getHeaders().get("Riena-ForceStart");
+			boolean forceStart = Boolean.parseBoolean((String) bundle.getHeaders().get("Riena-ForceStart"));
 			if (bundle.getState() != Bundle.ACTIVE
 					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals(
 							"org.eclipse.equinox.log"))) {
-				forceStart = "true";
+				forceStart = true;
 			}
-			if (forceStart != null && forceStart.equals("true")) {
+			if (forceStart) {
 				// TODO STARTING == LAZY, so start that also, STARTING is
 				// disabled, bundles with forceStart should not be LAZY
 				if (bundle.getState() == Bundle.RESOLVED/*
@@ -120,7 +120,7 @@ public class Activator extends Plugin {
 		return CONTEXT;
 	}
 
-	public Logger getLogger(String name) {
+	public synchronized Logger getLogger(String name) {
 		if (logUtil == null) {
 			logUtil = new LogUtil(CONTEXT);
 		}
