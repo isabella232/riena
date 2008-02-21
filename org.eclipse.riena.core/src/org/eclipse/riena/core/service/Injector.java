@@ -249,22 +249,16 @@ public abstract class Injector {
 		context.ungetService(serviceRef);
 	}
 
-	private void invokeMethod(List<Method> methods, Object service /*
-																	 * ServiceReference
-																	 * serviceRef
-																	 */) {
-		// if (serviceRef == null)
-		// return;
-		// Object service = context.getService(serviceRef);
-		// if (service == null)
-		// return;
+	private void invokeMethod(List<Method> methods, Object service) {
+		assert service != null;
+
 		Method method = findMatchingMethod(methods, service);
 		if (method == null)
 			return;
 		invoke(method, service);
 	}
 
-	private static Method findMatchingMethod(List<Method> methods, Object service) {
+	private Method findMatchingMethod(List<Method> methods, Object service) {
 		assert methods != null;
 		assert service != null;
 
@@ -279,9 +273,11 @@ public abstract class Injector {
 		if (targetedMethods.size() == 1)
 			return targetedMethods.get(0);
 
-		if (targetedMethods.isEmpty())
+		if (targetedMethods.isEmpty()) {
+			log("Could not find a matching Bind/Unbind method from '" + methods + "' for target class '"
+					+ target.getClass().getName() + "'.", null);
 			return null;
-
+		}
 		// find most specific method
 		Class<?> superType = parameterType;
 		while (superType != null) {
@@ -299,23 +295,26 @@ public abstract class Injector {
 	 * @param service
 	 */
 	private void invoke(Method method, Object service) {
-		if (method == null) {
-			// TODO logging
-			throw new IllegalArgumentException("Bind/Unbind method '" + method + "' does not exist in target class '"
-					+ target.getClass().getName() + "'.");
-		}
+		assert method != null;
+		assert service != null;
+
 		try {
 			method.invoke(target, service);
 		} catch (SecurityException e) {
-			// TODO How to handle this and the following
-			e.printStackTrace();
+			log("Security exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			log("Illegal argument exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			log("Illegal access exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			log("Invocation target exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
 		}
+	}
+
+	private void log(String message, Throwable throwable) {
+		System.err.println("ServiceInjector error: " + message + throwable.getMessage());
+		if (throwable != null)
+			throwable.printStackTrace(System.err);
 	}
 
 	/**
