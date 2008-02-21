@@ -77,7 +77,7 @@ public class Activator implements BundleActivator {
 		return CONTEXT;
 	}
 
-	public Logger getLogger(String name) {
+	public synchronized Logger getLogger(String name) {
 		if (logUtil == null) {
 			logUtil = new LogUtil(CONTEXT);
 		}

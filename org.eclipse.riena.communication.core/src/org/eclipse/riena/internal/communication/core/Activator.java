@@ -79,7 +79,7 @@ public class Activator implements BundleActivator {
 		return plugin;
 	}
 
-	public Logger getLogger(String name) {
+	public synchronized Logger getLogger(String name) {
 		if (logUtil == null) {
 			logUtil = new LogUtil(CONTEXT);
 		}
