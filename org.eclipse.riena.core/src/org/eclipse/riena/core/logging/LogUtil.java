@@ -12,8 +12,10 @@ package org.eclipse.riena.core.logging;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
+import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.service.ServiceId;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -21,26 +23,26 @@ import org.osgi.framework.BundleContext;
  */
 public class LogUtil {
 
-	private static ExtendedLogService logService;
+	private ExtendedLogService logService;
 	private ExtendedLogReaderService logReaderService;
-	private static boolean initialized = false;
+	private boolean initialized = false;
 	private BundleContext context;
 
 	public LogUtil(BundleContext context) {
 		this.context = context;
 	}
 
+	/**
+	 * Get the logger for the specified category.<br>
+	 * <b>Note:</b> Use the log levels defined in
+	 * {@link org.osgi.service.log.LogService}
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public Logger getLogger(String name) {
-		if (!initialized) {
-			init();
-			initialized = true;
-		}
-		if (logService != null) {
-			return logService.getLogger(name);
-		} else {
-			return new NullLogger();
-		}
-
+		init();
+		return logService == null ? new NullLogger() : logService.getLogger(name);
 	}
 
 	/**
@@ -48,8 +50,8 @@ public class LogUtil {
 	 * 
 	 * @param logService
 	 */
-	public void bind(ExtendedLogService logServiceParm) {
-		logService = logServiceParm;
+	public void bind(ExtendedLogService logService) {
+		this.logService = logService;
 	}
 
 	/**
@@ -57,8 +59,8 @@ public class LogUtil {
 	 * 
 	 * @param logService
 	 */
-	public void unbind(ExtendedLogService logServiceParm) {
-		logService = null;
+	public void unbind(ExtendedLogService logService) {
+		this.logService = null;
 	}
 
 	/**
@@ -69,8 +71,8 @@ public class LogUtil {
 	public void bind(ExtendedLogReaderService logReaderService) {
 		this.logReaderService = logReaderService;
 		// TODO remove SysoLogListener if we have Log4jLogListener
-		this.logReaderService.addLogListener(new SysoLogListener(), new AlwaysFilter());
-		this.logReaderService.addLogListener(new Log4jLogListener(), new AlwaysFilter());
+		this.logReaderService.addLogListener(new SysoLogListener(), new LogAlwaysFilter());
+		this.logReaderService.addLogListener(new Log4jLogListener(), new LogAlwaysFilter());
 	}
 
 	/**
@@ -85,8 +87,17 @@ public class LogUtil {
 	/**
 	 * initialize LogUtil
 	 */
-	public void init() {
+	private synchronized void init() {
+		if (initialized)
+			return;
 		new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).andStart(context);
 		new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).andStart(context);
+		initialized = true;
+	}
+
+	private static final class LogAlwaysFilter implements LogFilter {
+		public boolean isLoggable(Bundle b, String loggerName, int logLevel) {
+			return true;
+		}
 	}
 }
