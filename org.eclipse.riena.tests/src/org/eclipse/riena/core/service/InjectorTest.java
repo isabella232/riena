@@ -219,4 +219,22 @@ public class InjectorTest extends TestCase {
 
 		reg.unregister();
 	}
+
+	public void testFilterTest() {
+		System.out.println("testFilterTest");
+		Target target = new Target();
+
+		DepOne depOne = new DepOneOne();
+		Hashtable<String, String> ht = new Hashtable<String, String>();
+		ht.put("x", "y");
+		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, ht);
+
+		Injector shot = new ServiceId(DepOne.class.getName()).useFilter("(x=y)").injectInto(target).andStart(context);
+		assertEquals(1, target.count("bind", DepOneOne.class));
+
+		shot.stop();
+		assertEquals(0, target.count("bind", DepOneOne.class));
+
+		reg.unregister();
+	}
 }
