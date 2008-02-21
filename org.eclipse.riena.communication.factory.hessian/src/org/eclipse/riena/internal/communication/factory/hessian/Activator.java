@@ -35,8 +35,8 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		LOGGER = getLogger(this.getClass().getName());
 		CONTEXT = context;
+		LOGGER = getLogger(this.getClass().getName());
 		LOGGER.log(LogService.LOG_INFO, "start hessian support on client");
 		factory = new RemoteServiceFactoryHessian();
 		Hashtable<String, Object> properties = new Hashtable<String, Object>(1);
