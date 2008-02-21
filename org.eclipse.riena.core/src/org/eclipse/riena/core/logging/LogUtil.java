@@ -78,7 +78,7 @@ public class LogUtil {
 	 * 
 	 * @param logReaderService
 	 */
-	public void unbindLogReaderService(ExtendedLogReaderService logReaderService) {
+	public void unbind(ExtendedLogReaderService logReaderService) {
 		this.logReaderService = null;
 	}
 
