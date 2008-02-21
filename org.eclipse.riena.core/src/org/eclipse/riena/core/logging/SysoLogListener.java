@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,8 @@ public class SysoLogListener implements LogListener {
 
 	public void logged(LogEntry entry) {
 		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
-		StringBuffer buffer = new StringBuffer();
-		long time = eEntry.getTime();
-		if (time == 0) {
-			buffer.append(new Date().toString()).append(' ');
-		} else {
-			buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
-		}
+		StringBuilder buffer = new StringBuilder();
+		buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
 		String level;
 		switch (eEntry.getLevel()) {
 		case LogService.LOG_DEBUG:
