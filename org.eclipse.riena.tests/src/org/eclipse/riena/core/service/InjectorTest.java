@@ -221,13 +221,13 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testFilterTest() {
-		System.out.println("testFilterTest");
+		System.out.println("testFilterTest:");
 		Target target = new Target();
 
 		DepOne depOne = new DepOneOne();
-		Hashtable<String, String> ht = new Hashtable<String, String>();
-		ht.put("x", "y");
-		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, ht);
+		Hashtable<String, String> props = new Hashtable<String, String>();
+		props.put("x", "y");
+		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, props);
 
 		Injector shot = new ServiceId(DepOne.class.getName()).useFilter("(x=y)").injectInto(target).andStart(context);
 		assertEquals(1, target.count("bind", DepOneOne.class));
