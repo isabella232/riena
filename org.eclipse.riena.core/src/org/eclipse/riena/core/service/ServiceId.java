@@ -38,8 +38,8 @@ package org.eclipse.riena.core.service;
  * service ranking, no filter, and the bind method name is "bind" and the
  * un-bind method name is "unbind".
  * <p>
- * A service or services may be injected into the target by either specifying
- * <code>useRanking</code> or by specifying a filter expression with
+ * A service or services may be injected into the target by specifying
+ * <code>useRanking</code> and/or by specifying a filter expression with
  * <code>userFilter("filter")</code>.
  * <p>
  * The bind and un-bind method that get called by the injector can be
@@ -67,11 +67,12 @@ public class ServiceId {
 	 * service(s) to inject.
 	 * 
 	 * @throws IllegalStateException
-	 *             if a filter has already been set or if ranking is activated
+	 *             if a filter has already been set.
 	 * @return this service id
 	 */
 	public ServiceId useFilter(String filter) {
-		assertState();
+		if (this.filter != null)
+			throw new IllegalStateException("Filter has already been set!");
 		this.filter = filter;
 		return this;
 	}
@@ -81,11 +82,12 @@ public class ServiceId {
 	 * picking the tracked service to inject.
 	 * 
 	 * @throws IllegalStateException
-	 *             if ranking is already activated or a filter has been set
+	 *             if ranking has already been activated
 	 * @return this service id
 	 */
 	public ServiceId useRanking() {
-		assertState();
+		if (ranking)
+			throw new IllegalStateException("Ranking has already been set!");
 		ranking = true;
 		return this;
 	}
@@ -103,13 +105,6 @@ public class ServiceId {
 			throw new IllegalArgumentException("target may not be null.");
 
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
-	}
-
-	private void assertState() {
-		if (filter != null)
-			throw new IllegalStateException("Filter is already set!");
-		if (ranking)
-			throw new IllegalStateException("Ranking is already set!");
 	}
 
 	/**
