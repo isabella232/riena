@@ -15,12 +15,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogService;
 
 /**
  * The is the abstract base class for the specialized service injectors. See
@@ -50,6 +53,8 @@ public abstract class Injector {
 	private boolean started = false;
 	private ServiceListener serviceListener;
 
+	private final static Logger LOGGER = new ConsoleLogger(Injector.class.getName());
+
 	/**
 	 * Constructor for the <code>injectInto()</code> of <code>ServiceId</code>.
 	 * 
@@ -61,8 +66,11 @@ public abstract class Injector {
 		this.target = target;
 		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append(
 				serviceId.getServiceId()).append(")");
-		if (serviceId.getFilter() != null)
+		if (serviceId.getFilter() != null) {
+			bob.insert(0, "(&");
 			bob.append(serviceId.getFilter());
+			bob.append(')');
+		}
 		this.filter = bob.toString();
 	}
 
@@ -274,8 +282,8 @@ public abstract class Injector {
 			return targetedMethods.get(0);
 
 		if (targetedMethods.isEmpty()) {
-			log("Could not find a matching Bind/Unbind method from '" + methods + "' for target class '"
-					+ target.getClass().getName() + "'.", null);
+			LOGGER.log(LogService.LOG_ERROR, "Could not find a matching Bind/Unbind method from '" + methods
+					+ "' for target class '" + target.getClass().getName() + "'.");
 			return null;
 		}
 		// find most specific method
@@ -301,20 +309,18 @@ public abstract class Injector {
 		try {
 			method.invoke(target, service);
 		} catch (SecurityException e) {
-			log("Security exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Security exception on invoking '" + method + "' on '"
+					+ target.getClass().getName() + "'.", e);
 		} catch (IllegalArgumentException e) {
-			log("Illegal argument exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Illegal argument exception on invoking '" + method + "' on '"
+					+ target.getClass().getName() + "'.", e);
 		} catch (IllegalAccessException e) {
-			log("Illegal access exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Illegal access exception on invoking '" + method + "' on '"
+					+ target.getClass().getName() + "'.", e);
 		} catch (InvocationTargetException e) {
-			log("Invocation target exception on invoking '" + method + "' on '" + target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Invocation target exception on invoking '" + method + "' on '"
+					+ target.getClass().getName() + "'.", e);
 		}
-	}
-
-	private void log(String message, Throwable throwable) {
-		System.err.println("ServiceInjector error: " + message + throwable.getMessage());
-		if (throwable != null)
-			throwable.printStackTrace(System.err);
 	}
 
 	/**
