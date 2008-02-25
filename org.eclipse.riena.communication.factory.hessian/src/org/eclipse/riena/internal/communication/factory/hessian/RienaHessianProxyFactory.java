@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.Principal;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,11 @@ import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.caucho.hessian.io.AbstractSerializerFactory;
+import com.caucho.hessian.io.Deserializer;
+import com.caucho.hessian.io.HessianProtocolException;
+import com.caucho.hessian.io.JavaDeserializer;
+import com.caucho.hessian.io.Serializer;
 import com.caucho.hessian.io.SerializerFactory;
 
 public class RienaHessianProxyFactory extends HessianProxyFactory implements ManagedService {
@@ -36,6 +42,20 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	public RienaHessianProxyFactory() {
 		super();
+		getSerializerFactory().addFactory(new AbstractSerializerFactory() {
+			@Override
+			public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
+				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) {
+					return new JavaDeserializer(cl);
+				}
+				return null;
+			}
+
+			@Override
+			public Serializer getSerializer(Class cl) throws HessianProtocolException {
+				return null;
+			}
+		});
 	}
 
 	@Override

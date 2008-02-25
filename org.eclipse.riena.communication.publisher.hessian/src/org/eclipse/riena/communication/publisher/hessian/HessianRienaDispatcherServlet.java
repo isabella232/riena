@@ -12,6 +12,7 @@ package org.eclipse.riena.communication.publisher.hessian;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Principal;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -28,9 +29,14 @@ import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
 
 import com.caucho.hessian.io.AbstractHessianOutput;
+import com.caucho.hessian.io.AbstractSerializerFactory;
+import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.HessianOutput;
+import com.caucho.hessian.io.HessianProtocolException;
+import com.caucho.hessian.io.JavaDeserializer;
+import com.caucho.hessian.io.Serializer;
 import com.caucho.hessian.io.SerializerFactory;
 import com.caucho.hessian.server.HessianSkeleton;
 
@@ -48,6 +54,20 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		super.init(config);
 		serializerFactory = new SerializerFactory();
 		serializerFactory.setAllowNonSerializable(true);
+		serializerFactory.addFactory(new AbstractSerializerFactory() {
+			@Override
+			public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
+				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) {
+					return new JavaDeserializer(cl);
+				}
+				return null;
+			}
+
+			@Override
+			public Serializer getSerializer(Class cl) throws HessianProtocolException {
+				return null;
+			}
+		});
 		log("HessianRienaDispatcherServlet:: DEBUG initialized");
 	}
 
