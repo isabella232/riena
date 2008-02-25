@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
@@ -17,15 +20,17 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.service.ServiceId;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.log.LogListener;
 
 /**
  * Wrapper to access the existing Logger.
  */
 public class LogUtil {
 
-	private ExtendedLogService logService;
-	private ExtendedLogReaderService logReaderService;
-	private boolean initialized = false;
+	private static ExtendedLogService logService;
+	private static ExtendedLogReaderService logReaderService;
+	private List<LogListener> logListeners = new ArrayList<LogListener>();
+	private static boolean initialized = false;
 	private BundleContext context;
 
 	public LogUtil(BundleContext context) {
@@ -51,7 +56,7 @@ public class LogUtil {
 	 * @param logService
 	 */
 	public void bind(ExtendedLogService logService) {
-		this.logService = logService;
+		LogUtil.logService = logService;
 	}
 
 	/**
@@ -60,7 +65,7 @@ public class LogUtil {
 	 * @param logService
 	 */
 	public void unbind(ExtendedLogService logService) {
-		this.logService = null;
+		LogUtil.logService = null;
 	}
 
 	/**
@@ -69,10 +74,9 @@ public class LogUtil {
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
-		this.logReaderService = logReaderService;
-		// TODO remove SysoLogListener if we have Log4jLogListener
-		this.logReaderService.addLogListener(new SysoLogListener(), new LogAlwaysFilter());
-		this.logReaderService.addLogListener(new Log4jLogListener(), new LogAlwaysFilter());
+		LogUtil.logReaderService = logReaderService;
+		for (LogListener logListener : logListeners)
+			LogUtil.logReaderService.addLogListener(logListener, new LogAlwaysFilter());
 	}
 
 	/**
@@ -81,18 +85,27 @@ public class LogUtil {
 	 * @param logReaderService
 	 */
 	public void unbind(ExtendedLogReaderService logReaderService) {
-		this.logReaderService = null;
+		for (LogListener logListener : logListeners)
+			LogUtil.logReaderService.removeLogListener(logListener);
+
+		LogUtil.logReaderService = null;
 	}
 
 	/**
 	 * initialize LogUtil
 	 */
-	private synchronized void init() {
-		if (initialized)
-			return;
-		new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).andStart(context);
-		new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).andStart(context);
-		initialized = true;
+	private void init() {
+		synchronized (LogUtil.class) {
+			if (initialized)
+				return;
+			// TODO remove SysoLogListener if we have Log4jLogListener
+			logListeners.add(new SysoLogListener());
+			logListeners.add(new Log4jLogListener());
+
+			new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).andStart(context);
+			new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).andStart(context);
+			initialized = true;
+		}
 	}
 
 	private static final class LogAlwaysFilter implements LogFilter {
