@@ -53,7 +53,7 @@ public final class ReflectionUtils {
 		try {
 			return newInstance(Class.forName(className), args);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating instance for " + className + "with parameters "
+			throw new ReflectionFailure("Error creating instance for " + className + " with parameters "
 					+ Arrays.asList(args) + "!", e);
 		}
 	}
@@ -77,7 +77,7 @@ public final class ReflectionUtils {
 			Constructor<T> constructor = findMatchingConstructor(clazz, clazzes);
 			return constructor.newInstance(args);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + "with parameters "
+			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters "
 					+ Arrays.asList(args) + "!", e);
 		}
 	}
