@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,55 +15,76 @@ import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
 
 /**
- * This class can be used by other to find out whether the container they are
- * running in is a Riena client or a Riena server container. The consequence can
- * be things like storing objects in a singleton (for client) vs storing them in
- * a ThreadLocal (server) or others. The class can be driven be the
- * system.property "riena.container.model" that can be set to "client" or
- * "server". The ContainerModel also checks to see whether there is a bundle
- * called org.eclipse.equinox.http in which case it assumes a server model. In
- * any case, it creates a LOG_INFO entry to post what it has chosen.
+ * This class can be used by other to find out whether the container we are
+ * running in is a Riena client or a Riena server. <br>
+ * This information may be useful to components that need to behave differently
+ * on client and server, e.g. storing objects in a singleton (for client) versa
+ * storing them in a ThreadLocal (server). <br>
+ * The class can be driven be the system.property "riena.container.model" that
+ * can be set to "client" or "server". The ContainerModel also checks to see
+ * whether there is a bundle called org.eclipse.equinox.http in which case it
+ * assumes a server model. In any case, it creates a LOG_INFO entry to post what
+ * it has chosen.
  */
 public class ContainerModel {
 
-	private static final int CLIENT = 1;
-	private static final int SERVER = 2;
+	/**
+	 * System property defining the container type.
+	 */
+	public static final String RIENA_CONTAINER_TYPE = "riena.container.type"; //$NON-NLS-1$
 
-	private static int containerModel = CLIENT;
+	/**
+	 * 
+	 */
+	public static final String ORG_ECLIPSE_EQUINOX_HTTP = "org.eclipse.equinox.http"; //$NON-NLS-1$
+
+	private enum Type {
+		CLIENT, SERVER
+	};
+
+	private static Type containerType;
+
 	static {
-		String s = System.getProperty("riena.container.model");
+		// This makes the init code available for testing!!
+		initialize();
+	}
+
+	/**
+	 * Are we running on the client?
+	 * 
+	 * @return
+	 */
+	public static boolean isClient() {
+		return containerType == Type.CLIENT;
+	}
+
+	/**
+	 * Are we running on the server?
+	 * 
+	 * @return
+	 */
+	public static boolean isServer() {
+		return containerType == Type.SERVER;
+	}
+
+	private static void initialize() {
+		String s = System.getProperty(RIENA_CONTAINER_TYPE);
+		containerType = Type.CLIENT;
 		if (s != null) {
-			if (s.equals("server")) {
-				containerModel = SERVER;
+			if (s.equals("server")) { //$NON-NLS-1$
+				containerType = Type.SERVER;
 			}
 		} else {
-			Bundle[] bundles = Activator.getContext().getBundles();
+			Bundle[] bundles = Activator.getDefault().getContext().getBundles();
 			for (Bundle bundle : bundles) {
-				if (bundle.getSymbolicName().startsWith("org.eclipse.equinox.http")) {
-					containerModel = SERVER;
+				if (bundle.getSymbolicName().startsWith(ORG_ECLIPSE_EQUINOX_HTTP)) {
+					containerType = Type.SERVER;
+					break;
 				}
 			}
 		}
-		if (containerModel == SERVER) {
-			Activator.getDefault().getLogger(ContainerModel.class.getName()).log(LogService.LOG_INFO,
-					"!!! Riena is running in SERVERMODEL !!!");
-		}
-	}
+		Activator.getDefault().getLogger(ContainerModel.class.getName()).log(LogService.LOG_INFO,
+				"!!! Riena is running in " + containerType + " mode !!!");
 
-	public static boolean isClient() {
-		if (containerModel == CLIENT) {
-			return true;
-		} else {
-			return false;
-		}
 	}
-
-	public static boolean isServer() {
-		if (containerModel == SERVER) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }
