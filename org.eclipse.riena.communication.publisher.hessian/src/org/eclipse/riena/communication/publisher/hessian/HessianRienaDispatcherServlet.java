@@ -22,11 +22,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
 import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
+import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializerFactory;
@@ -49,6 +52,8 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 
 	private SerializerFactory serializerFactory = null;
 
+	private final static Logger logger = new ConsoleLogger(HessianRienaDispatcherServlet.class.getName());
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -68,16 +73,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 				return null;
 			}
 		});
-		log("HessianRienaDispatcherServlet:: DEBUG initialized");
-	}
-
-	@Override
-	public void log(String message) {
-		System.out.println(message);
-	}
-
-	public void log(String message, Exception e) {
-		System.out.println(message + "(" + e.getMessage() + ")");
+		logger.log(LogService.LOG_DEBUG, "initialized");
 	}
 
 	@Override
