@@ -12,10 +12,9 @@ package org.eclipse.riena.internal.core;
 
 import java.util.Hashtable;
 
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.RienaStartupStatus;
-import org.eclipse.riena.core.logging.LogUtil;
 import org.eclipse.riena.internal.core.config.ConfigFromExtensions;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
 import org.osgi.framework.Bundle;
@@ -26,15 +25,14 @@ import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
-public class Activator extends Plugin {
+public class Activator extends RienaPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.core";
 
 	// The shared instance
 	private static Activator plugin;
-	private static BundleContext CONTEXT;
-	private LogUtil logUtil;
+
 	private ServiceRegistration configSymbolReplace;
 	private ServiceRegistration configurationPlugin;
 
@@ -45,8 +43,8 @@ public class Activator extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+
 		plugin = this;
-		CONTEXT = context;
 		Logger LOGGER = getLogger(Activator.class.getName());
 
 		Bundle[] bundles = context.getBundles();
@@ -91,20 +89,19 @@ public class Activator extends Plugin {
 		// execute the class that reads through the extensions and executes them
 		// as config admin packages
 		new ConfigFromExtensions(context).doConfig();
-		RienaStartupStatus.getInstance().setStarted(true);
+		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
+		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(false);
 		configSymbolReplace.unregister();
 		configurationPlugin.unregister();
 		plugin = null;
-		CONTEXT = null;
+
+		super.stop(context);
 	}
 
 	/**
@@ -116,14 +113,4 @@ public class Activator extends Plugin {
 		return plugin;
 	}
 
-	public static BundleContext getContext() {
-		return CONTEXT;
-	}
-
-	public synchronized Logger getLogger(String name) {
-		if (logUtil == null) {
-			logUtil = new LogUtil(CONTEXT);
-		}
-		return logUtil.getLogger(name);
-	}
 }
