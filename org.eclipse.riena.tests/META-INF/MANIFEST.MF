@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.communication.core,
  org.eclipse.riena.security.server,
  org.eclipse.riena.exceptionmanager
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.security.authorizationservice,
  org.eclipse.riena.security.services.itest.module,
