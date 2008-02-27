@@ -18,14 +18,17 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogService;
 
 /**
  * 
@@ -41,6 +44,9 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 	private Map<String, IServicePublisher> servicePublishers;
 
 	private BundleContext context;
+
+	private final static Logger LOGGER = Activator.getDefault()
+			.getLogger(ServicePublishEventDispatcher.class.getName());
 
 	public ServicePublishEventDispatcher(BundleContext context) {
 		super();
@@ -83,7 +89,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 
 	public void bind(IServicePublisher publisher) {
 		servicePublishers.put(publisher.getProtocol(), publisher);
-		System.out.println("Riena::UpdatServicePublishEventDispatcher: DEBUG servicePublish=" + publisher.getProtocol()
+		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol()
 				+ " REGISTER...publishing all services that were waiting for him");
 		// check for services which are missing a publisher
 
@@ -92,7 +98,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 
 	public void unbind(IServicePublisher publisher) {
 		String protocol = publisher.getProtocol();
-		System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG servicePublish=" + publisher.getProtocol()
+		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol()
 				+ " UNREGISTER...unpublishing all its services");
 		// unregister all web services for this type
 
@@ -113,7 +119,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 				Object service = context.getService(serviceRef);
 				ServiceHooksProxy handler = new ServiceHooksProxy(service);
 				// create remote service description
-				String[] interfaces = (String[]) serviceRef.getProperty("objectClass");
+				String[] interfaces = (String[]) serviceRef.getProperty(Constants.OBJECTCLASS);
 				assert interfaces.length == 1 : "OSGi only with one interface supported";
 				String interfaceName = interfaces[0];
 				Class interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
@@ -123,27 +129,23 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 				handler.setRemoteServiceDescription(rsDesc);
 				RemoteServiceDescription rsDescFound = rsDescs.get(rsDesc.getProtocol() + "::" + rsDesc.getPath());
 				if (rsDescFound != null && rsDescFound.getType() == RemoteServiceDescription.STATUS_REGISTERED) {
-					System.out.println("Riena::ServicePublishEventDispatcher:: WARN: A service endpoint with path=["
-							+ rsDesc.getPath() + "] and remoteType=[" + rsDesc.getProtocol()
-							+ "] already published... ignored");
+					LOGGER.log(LogService.LOG_WARNING, "A service endpoint with path=[" + rsDesc.getPath()
+							+ "] and remoteType=[" + rsDesc.getProtocol() + "] already published... ignored");
 					return;
 				}
 
 				if (rsDescFound == null) {
 					if (rsDesc.getPath() == null) {
-						System.out.println("Riena::ServicePublishEventDispatcher:: WARN: no path for service: "
-								+ service.toString() + " Service not published remote");
+						LOGGER.log(LogService.LOG_WARNING, "no path for service: " + service.toString()
+								+ " Service not published remote");
 						return;
 					}
 					if (!servicePublishers.containsKey(rsDesc.getProtocol())) {
-						System.out
-								.println("Riena::ServicePublishEventDispatcher:: DEBUG: no publisher found for protocol "
-										+ rsDesc.getProtocol());
+						LOGGER.log(LogService.LOG_DEBUG, "no publisher found for protocol " + rsDesc.getProtocol());
 						return;
 					}
 					rsDescs.put(rsDesc.getProtocol() + "::" + rsDesc.getPath(), rsDesc);
-					System.out.println("Riena::ServicePublishEventDispatcher:: DEBUG: service endpoints count: "
-							+ rsDescs.size());
+					LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size());
 
 				} else if (rsDescFound.getType() == RemoteServiceDescription.STATUS_UNREGISTERED) {
 					rsDesc = rsDescFound;
@@ -151,7 +153,8 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 
 				publish(rsDesc, handler);
 			} catch (ClassNotFoundException e) {
-				System.out.println(e);
+				LOGGER.log(LogService.LOG_DEBUG,
+						"Could not load class for remote service interface for service reference " + serviceRef, e);
 			}
 		}
 
@@ -204,7 +207,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 			} finally {
 				context.ungetService(serviceRef);
 			}
-			System.out.println("Riena::ServicePublisherHessian:: DEBUG: service endpoints count: " + rsDescs.size());
+			LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size());
 		}
 	}
 

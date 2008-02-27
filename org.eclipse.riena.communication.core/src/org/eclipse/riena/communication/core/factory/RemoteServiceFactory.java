@@ -162,7 +162,7 @@ public class RemoteServiceFactory {
 		// create proxy first
 		final IRemoteServiceReference rsRef = createProxy(rsDesc);
 		if (rsRef == null) {
-			LOGGER.log(LogService.LOG_ERROR, "Riena::RemoteServiceFactory::could not create proxy for " + rsDesc);
+			LOGGER.log(LogService.LOG_ERROR, "could not create proxy for " + rsDesc);
 			return null;
 		}
 		rsRef.setHostId(hostId);
@@ -266,9 +266,8 @@ public class RemoteServiceFactory {
 		}
 		// no factory for this protocol
 		if (references == null) {
-			LOGGER.log(LogService.LOG_WARNING,
-					"Riena::RemoteServiceFactory:: no IRemoteServiceFactory serviceRef available protocol ["
-							+ rsd.getProtocol() + "]");
+			LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory serviceRef available protocol ["
+					+ rsd.getProtocol() + "]");
 			return null;
 		}
 
@@ -284,13 +283,11 @@ public class RemoteServiceFactory {
 
 		// could not get instance for existing reference
 		if (factory == null) {
-			LOGGER.log(LogService.LOG_WARNING,
-					"Riena::RemoteServiceFactory:: no IRemoteServiceFactory service available protocol ["
-							+ rsd.getProtocol() + "] id [" + rsd.getServiceInterfaceClassName() + "]");
+			LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory service available protocol ["
+					+ rsd.getProtocol() + "] id [" + rsd.getServiceInterfaceClassName() + "]");
 			return null;
 		}
-		LOGGER.log(LogService.LOG_INFO, "Riena::RemoteServiceFactory:: IRemoteServiceFactory found protocol ["
-				+ rsd.getProtocol() + "] " + factory);
+		LOGGER.log(LogService.LOG_INFO, "found protocol [" + rsd.getProtocol() + "] " + factory);
 
 		// ask factory to create a proxy for me, and intercept the calls with a
 		// CallHooksProxy instance

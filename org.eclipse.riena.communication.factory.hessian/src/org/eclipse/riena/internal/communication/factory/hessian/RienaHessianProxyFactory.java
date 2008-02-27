@@ -20,11 +20,13 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
+import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractSerializerFactory;
@@ -39,6 +41,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 	private ICallMessageContextAccessor mca;
 	private static ThreadLocal<HttpURLConnection> connections = new ThreadLocal<HttpURLConnection>();
 	private URL url;
+	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianProxyFactory.class.getName());
 
 	public RienaHessianProxyFactory() {
 		super();
@@ -98,17 +101,16 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	@SuppressWarnings("unchecked")
 	public void updated(Dictionary properties) throws ConfigurationException {
-		if (properties == null) {
+		if (properties == null)
 			return;
-		}
 		String urlStr = (String) properties.get(RSDPublisherProperties.PROP_REMOTE_PATH);
-		if (urlStr != null) {
-			try {
-				URL tmpUrl = new URL(urlStr);
-				this.url = tmpUrl;
-			} catch (MalformedURLException e) {
-				System.out.println("invalid url " + urlStr + e);
-			}
+		if (urlStr == null)
+			return;
+
+		try {
+			this.url = new URL(urlStr);
+		} catch (MalformedURLException e) {
+			LOGGER.log(LogService.LOG_ERROR, "invalid url " + urlStr, e);
 		}
 
 	}
