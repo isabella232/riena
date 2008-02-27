@@ -47,7 +47,7 @@ public class LogUtil {
 	 */
 	public Logger getLogger(String name) {
 		init();
-		return logService == null ? new NullLogger() : logService.getLogger(name);
+		return logService == null ? new ConsoleLogger(name) : logService.getLogger(name);
 	}
 
 	/**
@@ -113,4 +113,5 @@ public class LogUtil {
 			return true;
 		}
 	}
+
 }
