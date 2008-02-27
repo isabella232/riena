@@ -75,7 +75,7 @@ public class ContainerModel {
 				containerType = Type.SERVER;
 			}
 		} else {
-			Bundle[] bundles = Activator.getDefault().getContext().getBundles();
+			Bundle[] bundles = Activator.getContext().getBundles();
 			for (Bundle bundle : bundles) {
 				if (bundle.getSymbolicName().startsWith(ORG_ECLIPSE_EQUINOX_HTTP)) {
 					containerType = Type.SERVER;
@@ -85,6 +85,5 @@ public class ContainerModel {
 		}
 		Activator.getDefault().getLogger(ContainerModel.class.getName()).log(LogService.LOG_INFO,
 				"!!! Riena is running in " + containerType + " mode !!!");
-
 	}
 }
