@@ -35,12 +35,12 @@ public abstract class Injector {
 	/**
 	 * Default ´bind´ method name.
 	 */
-	public static final String DEFAULT_BIND_METHOD_NAME = "bind";
+	public static final String DEFAULT_BIND_METHOD_NAME = "bind"; //$NON-NLS-1$
 
 	/**
 	 * Default ´unbind´ method name.
 	 */
-	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind";
+	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind"; //$NON-NLS-1$
 
 	private ServiceId serviceId;
 	private BundleContext context = null;
@@ -64,10 +64,10 @@ public abstract class Injector {
 	Injector(ServiceId serviceId, Object target) {
 		this.serviceId = serviceId;
 		this.target = target;
-		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append(
-				serviceId.getServiceId()).append(")");
+		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
+				serviceId.getServiceId()).append(")"); //$NON-NLS-1$
 		if (serviceId.getFilter() != null) {
-			bob.insert(0, "(&");
+			bob.insert(0, "(&"); //$NON-NLS-1$
 			bob.append(serviceId.getFilter());
 			bob.append(')');
 		}
@@ -230,7 +230,7 @@ public abstract class Injector {
 	protected void invokeBindMethod(ServiceReference serviceRef) {
 		if (serviceRef == null)
 			return;
-		// increments service use count
+		// increments service use count, now it is ´1´
 		Object service = context.getService(serviceRef);
 		if (service == null)
 			return;
@@ -246,14 +246,15 @@ public abstract class Injector {
 	protected void invokeUnbindMethod(ServiceReference serviceRef) {
 		if (serviceRef == null)
 			return;
-		// need to get the service object, increments the use count
+		// need to get the service object, increments the use count, now it is
+		// ´2´
 		Object service = context.getService(serviceRef);
 		if (service == null)
 			return;
 		invokeMethod(unbindMethodProspects, service);
-		// decrement the use count from prior getService()
+		// decrement the use count from prior getService(), now it is ´1´
 		context.ungetService(serviceRef);
-		// decrement the use count from from prior bind
+		// decrement the use count from from prior bind, now it is ´0´
 		context.ungetService(serviceRef);
 	}
 
