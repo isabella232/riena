@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.core.service;
 
+import java.util.Hashtable;
+
+import org.osgi.framework.Constants;
+
 /**
  * ServiceId and Injector simplify finding of OSGi Services and injects them
  * into a target object. To do so the Injector contains a service tracker
@@ -105,6 +109,20 @@ public class ServiceId {
 			throw new IllegalArgumentException("target may not be null.");
 
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
+	}
+
+	/**
+	 * Get almost empty service properties but set with the default ranking for
+	 * riena services, i.e. the riena default ranking is lower than the (OSGi)
+	 * default ranking so that service created with (OSGi) default ranking will
+	 * override services with riena default ranking.
+	 * 
+	 * @return default service properties
+	 */
+	public static Hashtable<String, Object> newDefaultServiceProperties() {
+		Hashtable<String, Object> props = new Hashtable<String, Object>();
+		props.put(Constants.SERVICE_RANKING, DEFAULT_RANKING);
+		return props;
 	}
 
 	/**
