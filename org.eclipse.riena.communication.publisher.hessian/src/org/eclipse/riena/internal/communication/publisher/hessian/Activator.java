@@ -12,64 +12,64 @@ package org.eclipse.riena.internal.communication.publisher.hessian;
 
 import java.util.Hashtable;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
-import org.osgi.framework.BundleActivator;
+import org.eclipse.riena.core.RienaActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-
+import org.osgi.service.log.LogService;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator implements BundleActivator {
-    private static BundleContext CONTEXT;
-    private ServiceRegistration publisherReg;
-    private static HessianRemoteServicePublisher publisher;
+public class Activator extends RienaActivator {
+	private ServiceRegistration publisherReg;
+	private static HessianRemoteServicePublisher publisher;
+	private static Activator plugin;
+	private static Logger logger;
 
-    /**
-     * The constructor
-     */
-    public Activator() {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 */
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-     */
-    public void start(BundleContext context) throws Exception {
-        CONTEXT = context;
-        System.out.println("start hessian support on server");
+		logger = getLogger(Activator.class.getName());
+		logger.log(LogService.LOG_INFO, "start hessian support on server");
 
-        publisher = new HessianRemoteServicePublisher();
-        Hashtable<String, Object> properties = new Hashtable<String, Object>(1);
-        properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());
-        publisherReg = context.registerService(IServicePublisher.ID, publisher, properties);
-    }
+		publisher = new HessianRemoteServicePublisher();
+		Hashtable<String, Object> properties = new Hashtable<String, Object>(1);
+		properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());
+		publisherReg = context.registerService(IServicePublisher.ID, publisher, properties);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-     */
-    public void stop(BundleContext context) throws Exception {
-        publisherReg.unregister();
-        publisherReg = null;
-        publisher = null;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 */
+	public void stop(BundleContext context) throws Exception {
+		publisherReg.unregister();
+		publisherReg = null;
+		publisher = null;
+		plugin = null;
 
-        CONTEXT = null;
-        System.out.println("stop hessian support on server");
-    }
+		logger.log(LogService.LOG_INFO, "stop hessian support on server");
+		super.stop(context);
+	}
 
-    public static BundleContext getContext() {
-        return CONTEXT;
-    }
+	public static Activator getDefault() {
+		return plugin;
+	}
 
-    /**
-     * 
-     * @return the publisher or null if the bundle is stopped
-     */
-    public static HessianRemoteServicePublisher getPublisher() {
-        return publisher;
-    }
+	/**
+	 * 
+	 * @return the publisher or null if the bundle is stopped
+	 */
+	public static HessianRemoteServicePublisher getPublisher() {
+		return publisher;
+	}
 }

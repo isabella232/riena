@@ -14,30 +14,27 @@ import java.util.Hashtable;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
-import org.eclipse.riena.core.logging.LogUtil;
-import org.osgi.framework.BundleActivator;
+import org.eclipse.riena.core.RienaActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
-public class Activator implements BundleActivator {
+public class Activator extends RienaActivator {
 
 	private ServiceRegistration regFactory;
 	private RemoteServiceFactoryHessian factory;
-	private LogUtil logUtil;
-	private Logger LOGGER = null;
+	private Logger logger = null;
 
-	private static BundleContext CONTEXT;
+	private static Activator plugin;
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see org.eclipse.riena.core.RienaActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		CONTEXT = context;
-		LOGGER = getLogger(this.getClass().getName());
-		LOGGER.log(LogService.LOG_INFO, "start hessian support on client");
+		super.start(context);
+		plugin = this;
+		logger = getLogger(this.getClass().getName());
+		logger.log(LogService.LOG_INFO, "start hessian support on client");
 		factory = new RemoteServiceFactoryHessian();
 		Hashtable<String, Object> properties = new Hashtable<String, Object>(1);
 		properties.put(IRemoteServiceFactory.PROP_PROTOCOL, factory.getProtocol());
@@ -55,24 +52,13 @@ public class Activator implements BundleActivator {
 		regFactory = null;
 
 		factory.dispose();
-		CONTEXT = null;
-		LOGGER.log(LogService.LOG_INFO, "stop hessian support on client");
+		logger.log(LogService.LOG_INFO, "stop hessian support on client");
+		plugin = null;
+		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static BundleContext getContext() {
-		return CONTEXT;
-	}
-
-	public synchronized Logger getLogger(String name) {
-		if (logUtil == null) {
-			logUtil = new LogUtil(CONTEXT);
-		}
-		return logUtil.getLogger(name);
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

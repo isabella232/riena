@@ -15,40 +15,45 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
+import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.service.Injector;
 import org.eclipse.riena.core.service.ServiceId;
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.log.LogService;
 
-public class Activator implements BundleActivator {
+public class Activator extends RienaActivator {
 
 	private ServicePublishEventDispatcher dispatcher;
 	private Injector publisherInjector;
 	private UpdateNotifierRemoteService updateNotifierRemoteService;
-	private static BundleContext context;
+	private static Activator plugin;
+	private static Logger logger;
 
 	/*
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		Activator.context = context;
+		super.start(context);
+		plugin = this;
 
+		logger = getLogger(Activator.class.getName());
 		dispatcher = new ServicePublishEventDispatcher(context);
 		publisherInjector = new ServiceId(IServicePublisher.ID).injectInto(dispatcher).andStart(context);
 
 		// register as OSGi service, the start will pick up the OSGi service and
 		// publish it
 		Dictionary<String, Object> properties = new Hashtable<String, Object>(3);
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");
 
@@ -63,15 +68,15 @@ public class Activator implements BundleActivator {
 		context.registerService(IServiceHook.ID, new IServiceHook() {
 
 			public void afterService(ServiceContext context) {
-				System.out.println("after service (in hook)");
+				logger.log(LogService.LOG_DEBUG, "after service (in hook)");
 				context.getMessageContext().addResponseHeader("Set-Cookie", "x-scpserver-test-sessionid=11");
 			}
 
 			public void beforeService(ServiceContext context) {
-				System.out.println("before service (in hook)");
+				logger.log(LogService.LOG_DEBUG, "before service (in hook)");
 				Map<String, List<String>> headers = context.getMessageContext().listRequestHeaders();
 				for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-					System.out.println("header: name:" + entry.getKey() + " value: " + entry.getValue());
+					logger.log(LogService.LOG_DEBUG, "header: name:" + entry.getKey() + " value: " + entry.getValue());
 				}
 			}
 		}, null);
@@ -89,11 +94,13 @@ public class Activator implements BundleActivator {
 		publisherInjector.stop();
 		publisherInjector = null;
 		updateNotifierRemoteService = null;
-		Activator.context = null;
+		plugin = null;
+
+		super.stop(context);
 	}
 
-	public static BundleContext getContext() {
-		return context;
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 	class UpdateNotifierRemoteService implements ServiceListener {
@@ -114,7 +121,7 @@ public class Activator implements BundleActivator {
 			if (remoteType == null || remoteType.length() == 0) {
 				return;
 			}
-			if ("true".equals(isRemote)) {
+			if (Boolean.parseBoolean(isRemote)) {
 				if (event.getType() == ServiceEvent.UNREGISTERING) {
 					dispatcher.unpublish(event.getServiceReference());
 				} else if (event.getType() == ServiceEvent.REGISTERED) {

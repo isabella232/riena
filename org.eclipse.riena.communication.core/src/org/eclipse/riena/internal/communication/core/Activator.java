@@ -16,19 +16,17 @@ import java.util.Map;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
-import org.eclipse.riena.core.logging.LogUtil;
-import org.osgi.framework.BundleActivator;
+import org.eclipse.riena.core.RienaActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.log.LogService;
 
 /**
  * @author Alexander Ziegler
  * @author Christian Campo
  * 
  */
-public class Activator implements BundleActivator {
+public class Activator extends RienaActivator {
 
-	private static BundleContext CONTEXT;
-	private LogUtil logUtil;
 	private static Activator plugin;
 
 	/*
@@ -37,23 +35,26 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		CONTEXT = context;
+		super.start(context);
 		plugin = this;
+
+		final Logger logger = getLogger(Activator.class.getName());
 		context.registerService(ICallHook.ID, new ICallHook() {
 
 			public void afterCall(CallContext context) {
-				System.out.println("after call (in hook) method=" + context.getMethodName());
+				logger.log(LogService.LOG_DEBUG, "after call (in hook) method=" + context.getMethodName());
 				Map<String, List<String>> headers = context.getMessageContext().listResponseHeaders();
 				if (headers != null) {
 					for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-						System.out.println("header: name:" + entry.getKey() + " value: " + entry.getValue());
+						logger.log(LogService.LOG_DEBUG, "header: name:" + entry.getKey() + " value: "
+								+ entry.getValue());
 					}
 				}
 			}
 
 			public void beforeCall(CallContext context) {
 				context.getMessageContext().addRequestHeader("Cookie", "x-scpclient-test-sessionid=222");
-				System.out.println("before call (in hook) method=" + context.getMethodName());
+				logger.log(LogService.LOG_DEBUG, "before call (in hook) method=" + context.getMethodName());
 			}
 		}, null);
 
@@ -67,23 +68,12 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		CONTEXT = null;
 		plugin = null;
-	}
-
-	public static BundleContext getContext() {
-		return CONTEXT;
+		super.stop(context);
 	}
 
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	public synchronized Logger getLogger(String name) {
-		if (logUtil == null) {
-			logUtil = new LogUtil(CONTEXT);
-		}
-		return logUtil.getLogger(name);
 	}
 
 }
