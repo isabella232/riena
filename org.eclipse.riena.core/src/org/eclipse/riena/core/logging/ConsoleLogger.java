@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,11 +30,18 @@ import org.osgi.service.log.LogService;
  */
 public class ConsoleLogger implements Logger {
 
-	private String name;
-	private String nameAndHost = null;
+	/**
+	 * The system property key to set the logging level for the console logger.
+	 * Values should be integers corresponding to
+	 * {@link org.osgi.service.log.LogService}.
+	 */
+	public static final String CONSOLELOGGER_LEVEL_SYSTEM_PROPERTY = "org.eclipse.riena.consoleloggerlevel"; //$NON-NLS-1$
 
-	public ConsoleLogger(String name) {
-		this.name = name;
+	private String name;
+	private static String nameAndHost;
+	private static DateFormat formatter;
+
+	static {
 		String user = System.getProperty("user.name", "?"); //$NON-NLS-1$ //$NON-NLS-2$
 		String host;
 		try {
@@ -44,6 +52,12 @@ public class ConsoleLogger implements Logger {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(user).append('@').append(host);
 		nameAndHost = buffer.toString();
+
+		formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z"); //$NON-NLS-1$
+	}
+
+	public ConsoleLogger(String name) {
+		this.name = name;
 	}
 
 	/*
@@ -57,7 +71,7 @@ public class ConsoleLogger implements Logger {
 	 * @see org.eclipse.equinox.log.Logger#isLoggable(int)
 	 */
 	public boolean isLoggable(int level) {
-		return true;
+		return level <= Integer.getInteger(CONSOLELOGGER_LEVEL_SYSTEM_PROPERTY, LogService.LOG_WARNING);
 	}
 
 	/*
@@ -109,9 +123,11 @@ public class ConsoleLogger implements Logger {
 
 	private void log(int level, Object context, ServiceReference sr, String message, Throwable throwable) {
 		StringBuilder bob = new StringBuilder();
-		bob.append(SimpleDateFormat.getInstance().format(new Date()));
+		bob.append(formatter.format(new Date()));
 		bob.append(' ');
 		bob.append(nameAndHost);
+		bob.append(' ');
+		bob.append(getLevel(level));
 		bob.append(' ');
 		bob.append('[');
 		bob.append(Thread.currentThread().getName());
@@ -124,10 +140,8 @@ public class ConsoleLogger implements Logger {
 			bob.append(sr);
 		}
 		bob.append("] "); //$NON-NLS-1$
-		bob.append(getLevel(level));
-		bob.append(' ');
 		bob.append(name);
-		bob.append(": "); //$NON-NLS-1$
+		bob.append(' ');
 		bob.append(message);
 		if (throwable != null) {
 			StringWriter stringWriter = new StringWriter();
