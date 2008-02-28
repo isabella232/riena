@@ -16,6 +16,8 @@ public interface ITest {
 
 	boolean getBoolean();
 
+	boolean isBoolean();
+
 	Object createExecutable();
 
 }

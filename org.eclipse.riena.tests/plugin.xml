@@ -29,5 +29,18 @@
             executable="java.lang.String"
             string="test1">
       </test>
+      <test
+            boolean="false"
+            executable="java.util.HashMap"
+            string="test2">
+      </test>
+   </extension>
+   <extension
+         point="core.test.extpoint">
+      <test
+            boolean="true"
+            executable="java.util.ArrayList"
+            string="test3">
+      </test>
    </extension>
 </plugin>
