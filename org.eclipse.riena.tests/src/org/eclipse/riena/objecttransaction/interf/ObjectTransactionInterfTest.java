@@ -17,7 +17,7 @@ import org.eclipse.riena.tests.RienaTestCase;
  * 
  * @author Christian Campo
  */
-public class ObjectTransactionTest extends RienaTestCase {
+public class ObjectTransactionInterfTest extends RienaTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();

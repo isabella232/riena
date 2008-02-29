@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.tests;
+package org.eclipse.riena;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -24,6 +24,7 @@ public class AllTests extends TestCase {
 		suite.addTest(org.eclipse.riena.core.AllTests.suite());
 		suite.addTest(org.eclipse.riena.exceptionmanager.AllTests.suite());
 		suite.addTest(org.eclipse.riena.security.AllTests.suite());
+		suite.addTest(org.eclipse.riena.objecttransaction.AllTests.suite());
 		return suite;
 	}
 }
