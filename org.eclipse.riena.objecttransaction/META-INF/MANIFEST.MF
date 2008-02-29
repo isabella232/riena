@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Objecttransaction Plug-in (Incubation)
+Bundle-SymbolicName: org.eclipse.riena.objecttransaction
+Bundle-Version: 1.0.0.M2
+Bundle-Activator: org.eclipse.riena.internal.objecttransaction.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.riena.core
+Eclipse-LazyStart: true
+Import-Package: org.eclipse.equinox.log,
+ org.osgi.service.log;version="1.3.0"
+Export-Package: org.eclipse.riena.internal.objecttransaction.impl;x-friends:="de.compeople.scp.tests",
+ org.eclipse.riena.objecttransaction,
+ org.eclipse.riena.objecttransaction.context,
+ org.eclipse.riena.objecttransaction.delta,
+ org.eclipse.riena.objecttransaction.state
