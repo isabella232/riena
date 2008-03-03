@@ -37,7 +37,7 @@ public class Activator implements BundleActivator {
 		PingPong pingPong = new PingPong();
 		Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/PingPongWS");
 
