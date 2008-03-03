@@ -44,11 +44,11 @@ public class ExtensionUtility {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		IExtensionPoint extPoint = registry.getExtensionPoint(extensionPoint);
 		if (extPoint == null) {
-			return null;
+			throw new IllegalArgumentException("extension point " + extensionPoint + " does not exist");
 		}
 		IExtension[] cfgExtensions = extPoint.getExtensions();
 		if (cfgExtensions.length == 0) {
-			return null;
+			return (T[]) Array.newInstance(interf, 0);
 		}
 		ArrayList<Object> list = new ArrayList<Object>();
 		for (IExtension cfgExt : cfgExtensions) {

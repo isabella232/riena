@@ -43,4 +43,11 @@ public class ExtensionUtilTest extends RienaTestCase {
 			}
 		}
 	}
+
+	public void testExceptionUtil2() {
+		ITest[] tests = ExtensionUtility.readExtensions("core.test.extpoint2", ITest.class);
+		assertFalse(tests == null);
+		assertTrue(tests instanceof ITest[]);
+		assertTrue(tests.length == 0);
+	}
 }
