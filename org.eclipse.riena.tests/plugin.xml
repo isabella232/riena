@@ -22,6 +22,7 @@
       </config>
    </extension>
       <extension-point id="core.test.extpoint" name="core test extensionpoint" schema="schema/core.test.extpoint.exsd"/>
+      <extension-point id="core.test.extpoint2" name="core test extensionpoint" schema="schema/core.test.extpoint.exsd"/>
    <extension
          point="core.test.extpoint">
       <test
