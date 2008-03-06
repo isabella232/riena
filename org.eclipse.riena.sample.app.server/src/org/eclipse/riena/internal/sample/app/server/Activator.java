@@ -86,7 +86,7 @@ public class Activator extends Plugin {
 
 		Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomerSearchWS");
 
@@ -103,7 +103,7 @@ public class Activator extends Plugin {
 
 		Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomersWS");
 
@@ -120,7 +120,7 @@ public class Activator extends Plugin {
 
 		Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/HelloWorldServiceWS");
 

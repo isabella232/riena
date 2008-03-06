@@ -47,7 +47,8 @@ public class Activator implements BundleActivator {
 		// pingPong = new PingPong();
 		// properties = new Hashtable<String, String>(3);
 		//
-		// properties.put(RSDPublisherProperties.PROP_IS_REMOTE, "true");
+		// properties.put(RSDPublisherProperties.PROP_IS_REMOTE,
+		// Boolean.TRUE.toString());
 		// properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "xfire");
 		// properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
 		// "/PingPongXFireWS");
