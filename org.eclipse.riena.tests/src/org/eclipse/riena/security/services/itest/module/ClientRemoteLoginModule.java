@@ -70,7 +70,8 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 *      javax.security.auth.callback.CallbackHandler, java.util.Map,
 	 *      java.util.Map)
 	 */
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
+			Map<String, ?> options) {
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
 		this.sharedState = sharedState;
@@ -78,7 +79,7 @@ public class ClientRemoteLoginModule implements LoginModule {
 		this.clientLogin = new ClientLogin("Test", subject);
 
 		// initialize any configured options
-		debug = "true".equalsIgnoreCase((String) options.get("debug"));
+		debug = Boolean.valueOf((String) options.get("debug"));
 	}
 
 	/*

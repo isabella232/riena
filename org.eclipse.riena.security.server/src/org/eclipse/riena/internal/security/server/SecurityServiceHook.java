@@ -192,7 +192,7 @@ public class SecurityServiceHook implements IServiceHook {
 			LOGGER.log(LogService.LOG_ERROR, "error in call to webservice {" + callback.getInterfaceName()
 					+ "} since it is not in the list of webservices that do not require a session but SSOID=null !!!");
 			if (System.getProperty("spirit.secure.webservices") == null
-					|| System.getProperty("spirit.secure.webservices").equals("true")) {
+					|| Boolean.getBoolean("spirit.secure.webservices")) {
 				throw new NotAuthorizedFailure("call to webservice " + callback.getInterfaceName()
 						+ " failed, no valid session was given but is required.");
 			}
