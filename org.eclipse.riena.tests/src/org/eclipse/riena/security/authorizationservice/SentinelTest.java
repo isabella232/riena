@@ -14,12 +14,13 @@ import java.io.InputStream;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.security.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.Sentinel;
+import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -43,14 +44,15 @@ public class SentinelTest extends RienaTestCase {
 		// activate RienaPolicy
 		// I need to add a FilePermissionStore so that it can read the
 		// permissions for this test TODO
-		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml");
+		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
 		fileStoreReg = Activator.getContext().registerService(IPermissionStore.ID, store, null);
 		ServiceReference ref = Activator.getContext().getServiceReference(IAuthorizationService.ID);
 		if (ref != null) {
 			ref.getBundle().stop();
 		}
-		authorizationServiceReg = Activator.getContext().registerService(IAuthorizationService.ID, new AuthorizationService(), null);
+		authorizationServiceReg = Activator.getContext().registerService(IAuthorizationService.ID,
+				new AuthorizationService(), null);
 	}
 
 	/*

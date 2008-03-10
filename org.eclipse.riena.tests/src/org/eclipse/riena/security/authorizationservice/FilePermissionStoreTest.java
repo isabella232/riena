@@ -22,13 +22,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.security.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
+import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.xml.sax.SAXException;
 
 public class FilePermissionStoreTest extends TestCase {
 
-	public void testReadPermission() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
+	public void testReadPermission() throws FileNotFoundException, SAXException, IOException,
+			ParserConfigurationException {
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml");
 		FilePermissionStore permStore = new FilePermissionStore(inputStream);
 		Permissions perms = permStore.loadPermissions(new SimplePrincipal("christian"));

@@ -64,6 +64,9 @@ public class ClientLogin {
 	public boolean login(Callback[] callbacks) throws LoginException {
 		try {
 			AbstractCredential[] creds = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+			if (authenticationService == null) {
+				throw new AuthenticationFailure("no authentication service");
+			}
 			ticket = authenticationService.login(loginContext, creds);
 			return true;
 		} catch (AuthenticationFailure failure) {

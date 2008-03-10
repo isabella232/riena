@@ -215,6 +215,9 @@ public abstract class Injector {
 	 */
 	protected ServiceReference[] getServiceReferences() {
 		try {
+			if (context == null) {
+				System.out.println(context);
+			}
 			return context.getServiceReferences(serviceId.getServiceId(), filter);
 		} catch (InvalidSyntaxException e) {
 			throw new IllegalArgumentException("The specified filter has syntax errors.", e);

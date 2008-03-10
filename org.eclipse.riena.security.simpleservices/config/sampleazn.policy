@@ -1,0 +1,59 @@
+/** Java 2 Access Control Policy for the JAAS Sample Application **/
+
+/* grant the sample LoginModule permissions */
+
+/*grant signedBy "Eclipse Foundation, Inc." {
+    permission java.security.AllPermission;
+};*/
+
+/*grant codeBase "file:/C:/develop/RCPLabs-Runtime/Eclipse-3.3/-" {
+    permission java.security.AllPermission;
+};*/
+
+grant {
+    permission javax.security.auth.AuthPermission "modifyPrincipals";
+/*    permission java.security.AllPermission;*/
+    permission java.io.FilePermission "<<ALL FILES>>", "read";
+    permission java.io.FilePermission "C:\\projekte\\riena2\\.metadata\\-", "read,write,delete";
+    permission java.io.FilePermission "C:\\projekte\\riena2\\.metadata", "read,write";
+    permission java.io.FilePermission "C:\\develop\\RCPLabs-Runtime\\Eclipse-3.3","read,write,delete";
+    permission java.io.FilePermission "C:\\develop\\RCPLabs-Runtime\\Eclipse-3.3\\-","read,write,delete";
+    permission java.io.FilePermission "C:\\develop\\eclipse-3.3\\workspace\\.metadata", "read,write";
+    permission java.io.FilePermission "C:\\develop\\eclipse-3.3\\workspace\\.metadata\\-", "read,write";
+    permission java.io.FilePermission "C:\\develop\\-", "read,write";
+    permission org.osgi.framework.AdminPermission;
+    permission java.lang.RuntimePermission "*";
+/*    permission java.lang.RuntimePermission "createClassLoader";
+    permission java.lang.RuntimePermission "getClassLoader";
+    permission java.lang.RuntimePermission "shutdownHooks";
+    permission java.lang.RuntimePermission "accessDeclaredMembers";
+    */
+    permission org.osgi.framework.ServicePermission "*","register,get";
+    permission java.net.SocketPermission "*", "accept,listen,connect,resolve";
+    permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+    permission java.net.NetPermission "specifyStreamHandler";
+    permission java.security.SecurityPermission "getPolicy";
+    permission org.eclipse.riena.securityimplementation.server.internal.TestPermission "salary","*";
+    permission org.osgi.framework.PackagePermission "*","export,import";
+    permission org.osgi.framework.BundlePermission "*","provide,require";
+    permission java.security.SecurityPermission "setPolicy";
+};
+
+grant {
+
+   permission javax.security.auth.AuthPermission "createLoginContext.Test";
+   permission javax.security.auth.AuthPermission "createLoginContext.Remote";
+   permission javax.security.auth.AuthPermission "doAsPrivileged";
+   permission java.util.PropertyPermission "*", "read,write";
+};
+
+/** User-Based Access Control Policy for the SampleAction class
+ ** instantiated by SampleAzn 
+ **/
+
+/*grant Principal org.eclipse.riena.security.common.authentication.SimplePrincipal "testuser" {
+
+   permission java.util.PropertyPermission "java.home", "read";
+   permission java.util.PropertyPermission "user.home", "read";
+   permission java.io.FilePermission "foo.txt", "read,write";
+};*/

@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.communication.publisher;
 
 import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +51,7 @@ public class Activator extends RienaActivator {
 
 		// register as OSGi service, the start will pick up the OSGi service and
 		// publish it
-		Dictionary<String, Object> properties = new Hashtable<String, Object>(3);
+		Dictionary<String, Object> properties = ServiceId.newDefaultServiceProperties();
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");

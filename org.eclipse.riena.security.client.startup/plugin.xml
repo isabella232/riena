@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.riena.config.managedService">
+      <config
+            servicepid="org.eclipse.riena.config.symbols">
+         <property
+               name="securityhost"
+               value="localhost:8080">
+         </property>
+      </config>
+   </extension>
+
+</plugin>
