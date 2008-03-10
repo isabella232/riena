@@ -34,8 +34,8 @@ public class Sentinel {
 
 	private Sentinel() {
 		super();
-		new ServiceId(IPermissionCache.ID).injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISubjectHolderService.ID).injectInto(this).andStart(Activator.getContext());
+		new ServiceId(IPermissionCache.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISubjectHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IPermissionCache permCache) {

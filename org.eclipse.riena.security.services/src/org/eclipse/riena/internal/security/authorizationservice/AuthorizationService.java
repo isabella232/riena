@@ -24,7 +24,7 @@ public class AuthorizationService implements IAuthorizationService {
 
 	public AuthorizationService() {
 		super();
-		new ServiceId(IPermissionStore.ID).injectInto(this).andStart(Activator.getContext());
+		new ServiceId(IPermissionStore.ID).useRanking().injectInto(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IPermissionStore permStore) {

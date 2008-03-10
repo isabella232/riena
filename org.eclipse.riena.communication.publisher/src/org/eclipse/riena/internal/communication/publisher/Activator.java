@@ -47,7 +47,7 @@ public class Activator extends RienaActivator {
 
 		logger = getLogger(Activator.class.getName());
 		dispatcher = new ServicePublishEventDispatcher(context);
-		publisherInjector = new ServiceId(IServicePublisher.ID).injectInto(dispatcher).andStart(context);
+		publisherInjector = new ServiceId(IServicePublisher.ID).useRanking().injectInto(dispatcher).andStart(context);
 
 		// register as OSGi service, the start will pick up the OSGi service and
 		// publish it

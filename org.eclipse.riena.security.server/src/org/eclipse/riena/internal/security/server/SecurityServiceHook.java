@@ -70,9 +70,9 @@ public class SecurityServiceHook implements IServiceHook {
 		super();
 		new ServiceId(IGenericObjectCache.ID).useFilter("(cache.type=PrincipalCache)").injectInto(this).andStart(
 				Activator.getContext());
-		new ServiceId(ISessionService.ID).injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISubjectHolderService.ID).injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISessionHolderService.ID).injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISessionService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISubjectHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISessionHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
 
 		// List<UnsecureWebservice> tempList =
 		// RegistryAccessor.fetchRegistry().getConfiguration(UNSECURE_WEBSERVICES_ID);

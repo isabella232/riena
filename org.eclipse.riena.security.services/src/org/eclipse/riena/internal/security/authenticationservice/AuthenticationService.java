@@ -72,11 +72,11 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public AuthenticationService() {
 		super();
-		new ServiceId(ISessionService.ID).injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISubjectHolderService.ID).injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISessionService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISubjectHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
 		// new
 		// ServiceId(IAuthenticationModule.ID).injectInto(this).start(Activator.getContext());
-		new ServiceId(ISessionHolderService.ID).injectInto(this).andStart(Activator.getContext());
+		new ServiceId(ISessionHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
 	}
 
 	public void bind(ISessionService sessionService) {

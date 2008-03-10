@@ -46,9 +46,9 @@ public class Activator implements BundleActivator {
 		// the filter applies only if the service is living in this container
 		// e.g. server.
 		String filter = "(" + RSDPublisherProperties.PROP_IS_REMOTE + "=true)";
-		publisherInjector = new ServiceId(IServicePublishEventDispatcher.ID).useFilter(filter).injectInto(console)
-				.andStart(context);
-		registryInjector = new ServiceId(IRemoteServiceRegistry.ID).injectInto(console).andStart(context);
+		publisherInjector = new ServiceId(IServicePublishEventDispatcher.ID).useRanking().useFilter(filter).injectInto(
+				console).andStart(context);
+		registryInjector = new ServiceId(IRemoteServiceRegistry.ID).useRanking().injectInto(console).andStart(context);
 
 		consoleReg = context.registerService(CommandProvider.class.getName(), console, new Hashtable<String, String>());
 	}
