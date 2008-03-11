@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.osgi.framework.BundleContext;
@@ -77,16 +78,16 @@ public abstract class Injector {
 	/**
 	 * Start the binding/un-binding/tracking for the target.
 	 * 
-	 * @throws IllegalStateException
+	 * @throws some_kind_of_unchecked_exception
 	 *             if injector has already been started.
-	 * @throws IllegalArgumentException
+	 * @throws some_kind_of_unchecked_exception
 	 *             if the bind/un-bind methods are wrong
 	 * @param context
 	 * @return this injector
 	 */
 	public Injector andStart(BundleContext context) {
-		if (started)
-			throw new IllegalStateException("Injector already started!");
+		Assert.isNotNull(context, "Bundle context must be not null.");
+		Assert.isTrue(!started, "Injector already started!");
 		started = true;
 		this.context = context;
 		if (bindMethodName == null)
@@ -125,14 +126,13 @@ public abstract class Injector {
 	 * Specify the bind method. If not specified
 	 * {@link #DEFAULT_BIND_METHOD_NAME} will be used.
 	 * 
-	 * @throws IllegalStateException
+	 * @throws some_kind_of_unchecked_exception
 	 *             if the the injector had already been started
 	 * @param bindMethodName
 	 * @return this injector
 	 */
 	public Injector bind(String bindMethodName) {
-		if (started)
-			throw new IllegalStateException("Injector already started!");
+		Assert.isTrue(!started, "Injector already started!");
 		this.bindMethodName = bindMethodName;
 		return this;
 	}
@@ -141,14 +141,13 @@ public abstract class Injector {
 	 * Specify the un-bind method. If not specified
 	 * {@link #DEFAULT_UNBIND_METHOD_NAME} will be used.
 	 * 
-	 * @throws IllegalStateException
+	 * @throws some_kind_of_unchecked_exception
 	 *             if the the injector had already been started
 	 * @param unbindMethodName
 	 * @return this injector
 	 */
 	public synchronized Injector unbind(String unbindMethodName) {
-		if (started)
-			throw new IllegalStateException("Injector already started!");
+		Assert.isTrue(!started, "Injector already started!");
 		this.unbindMethodName = unbindMethodName;
 		return this;
 	}
@@ -215,9 +214,6 @@ public abstract class Injector {
 	 */
 	protected ServiceReference[] getServiceReferences() {
 		try {
-			if (context == null) {
-				System.out.println(context);
-			}
 			return context.getServiceReferences(serviceId.getServiceId(), filter);
 		} catch (InvalidSyntaxException e) {
 			throw new IllegalArgumentException("The specified filter has syntax errors.", e);

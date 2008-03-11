@@ -12,6 +12,7 @@ package org.eclipse.riena.core.service;
 
 import java.util.Hashtable;
 
+import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.Constants;
 
 /**
@@ -62,7 +63,15 @@ public class ServiceId {
 	private boolean ranking;
 	private String filter;
 
+	/**
+	 * Create a service id.
+	 * 
+	 * @throws some_kind_of_unchecked_exception
+	 *             if service id is null.
+	 * @param serviceId
+	 */
 	public ServiceId(String serviceId) {
+		Assert.isNotNull(serviceId, "Service id must not be null.");
 		this.serviceId = serviceId;
 	}
 
@@ -70,13 +79,13 @@ public class ServiceId {
 	 * Use filtering {@link org.osgi.framework.Filter} for picking the tracked
 	 * service(s) to inject.
 	 * 
-	 * @throws IllegalStateException
+	 * @throws some_kind_of_unchecked_exception
 	 *             if a filter has already been set.
 	 * @return this service id
 	 */
 	public ServiceId useFilter(String filter) {
-		if (this.filter != null)
-			throw new IllegalStateException("Filter has already been set!");
+		Assert.isTrue(this.filter == null, "Filter has already been set!");
+		Assert.isNotNull(filter, "Filter must not be null.");
 		this.filter = filter;
 		return this;
 	}
@@ -85,13 +94,12 @@ public class ServiceId {
 	 * Use service ranking {@link org.osgi.framework.Constants#SERVICE_RANKING}
 	 * picking the tracked service to inject.
 	 * 
-	 * @throws IllegalStateException
+	 * @throws some_kind_of_unchecked_exception
 	 *             if ranking has already been activated
 	 * @return this service id
 	 */
 	public ServiceId useRanking() {
-		if (ranking)
-			throw new IllegalStateException("Ranking has already been set!");
+		Assert.isTrue(!ranking, "Ranking has already been set!");
 		ranking = true;
 		return this;
 	}
@@ -100,14 +108,12 @@ public class ServiceId {
 	 * Inject this service id into the specified target.
 	 * 
 	 * @param target
-	 * @throws IllegalArgumentException
+	 * @throws some_kind_of_unchecked_exception
 	 *             on target == null
 	 * @return the injector responsible for tracking this service id
 	 */
 	public Injector injectInto(Object target) {
-		if (target == null)
-			throw new IllegalArgumentException("target may not be null.");
-
+		Assert.isNotNull(target, "Target must not be null.");
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
 	}
 
