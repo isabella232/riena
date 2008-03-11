@@ -18,10 +18,12 @@ import java.util.regex.Pattern;
 import junit.framework.TestCase;
 
 import org.eclipse.core.internal.registry.ExtensionRegistry;
+import org.eclipse.core.runtime.ContributorFactoryOSGi;
+import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.core.runtime.spi.RegistryContributor;
 import org.eclipse.riena.internal.tests.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -87,7 +89,7 @@ public abstract class RienaTestCase extends TestCase {
 	protected void addPluginXml(Class<?> forLoad, String pluginResource) {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
-		RegistryContributor contributor = new RegistryContributor("4711", "org.eclipse.riena.tests", null, null);
+		IContributor contributor = ContributorFactoryOSGi.createContributor(Activator.getDefault().getBundle());
 		assertTrue(registry.addContribution(inputStream, contributor, false, null, null, ((ExtensionRegistry) registry)
 				.getTemporaryUserToken()));
 	}
@@ -102,6 +104,19 @@ public abstract class RienaTestCase extends TestCase {
 		IExtension extension = registry.getExtension(extensionId);
 		assertNotNull(extension);
 		assertTrue(registry.removeExtension(extension, ((ExtensionRegistry) registry).getTemporaryUserToken()));
+	}
+
+	/**
+	 * Remove the given extension from the extension registry.
+	 * 
+	 * @param extensionPointId
+	 */
+	protected void removeExtensionPoint(String extensionPointId) {
+		IExtensionRegistry registry = RegistryFactory.getRegistry();
+		IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointId);
+		assertNotNull(extensionPoint);
+		assertTrue(registry
+				.removeExtensionPoint(extensionPoint, ((ExtensionRegistry) registry).getTemporaryUserToken()));
 	}
 
 	/**
