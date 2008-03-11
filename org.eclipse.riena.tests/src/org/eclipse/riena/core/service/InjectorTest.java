@@ -13,9 +13,8 @@ package org.eclipse.riena.core.service;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import junit.framework.TestCase;
-
 import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
@@ -23,7 +22,7 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * 
  */
-public class InjectorTest extends TestCase {
+public class InjectorTest extends RienaTestCase {
 
 	private BundleContext context;
 
@@ -48,7 +47,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectDepOneObviousBindUnbindError() {
-		System.out.println("testInjectDepOneObviousBindUnbindError:");
+		printTestName();
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
@@ -65,7 +64,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectDepOneNotSoObviousBindUnbindError() {
-		System.out.println("testInjectDepOneNotSoObviousBindUnbindError:");
+		printTestName();
 		Target target = new Target();
 
 		DepTwo depTwo = new DepTwo();
@@ -81,7 +80,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectDepOneDefaultBindUnbind() {
-		System.out.println("testInjectDepOneDefaultBindUnbind:");
+		printTestName();
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
@@ -97,7 +96,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectDepOneAndDepTwoDefaultBindUnbind() {
-		System.out.println("testInjectDepOneAndDepTwoDefaultBindUnbind:");
+		printTestName();
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
@@ -124,7 +123,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectDepOneBindeEntbinde() {
-		System.out.println("testInjectDepOneBindeEntbinde:");
+		printTestName();
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
@@ -141,7 +140,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectRankedServicesServicesRegisteredBefore() {
-		System.out.println("testInjectRankedServicesServicesRegisteredBefore:");
+		printTestName();
 		Target target = new Target();
 
 		IRanking rank1 = new RankingOne(0);
@@ -165,7 +164,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectRankedServicesServicesRegisteredOnTheRun() {
-		System.out.println("testInjectRankedServicesServicesRegisteredOnTheRun:");
+		printTestName();
 		Target target = new Target();
 
 		IRanking rank1 = new RankingOne(0);
@@ -204,7 +203,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testInjectMostSpecifBindMethod() {
-		System.out.println("testInjectMostSpecifBindMethod:");
+		printTestName();
 		Target target = new Target();
 
 		DepOne depOne = new DepOneOne();
@@ -221,7 +220,7 @@ public class InjectorTest extends TestCase {
 	}
 
 	public void testFilterTest() {
-		System.out.println("testFilterTest:");
+		printTestName();
 		Target target = new Target();
 
 		DepOne depOne = new DepOneOne();

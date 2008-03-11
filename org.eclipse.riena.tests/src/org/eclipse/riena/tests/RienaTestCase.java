@@ -80,6 +80,16 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
+	 * Print the current test´s name.
+	 */
+	protected void printTestName() {
+		System.out.println(getName());
+		for (int i = 0; i < getName().length(); i++)
+			System.out.print('-');
+		System.out.println();
+	}
+
+	/**
 	 * Add an extension/extension point defined within the ´plugin.xml´ given
 	 * with the <code>pluginResource</code> to the extension registry.
 	 * 
