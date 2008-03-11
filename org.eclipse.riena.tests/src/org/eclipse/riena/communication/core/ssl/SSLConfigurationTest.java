@@ -23,7 +23,7 @@ import org.osgi.framework.BundleException;
 public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testZeroConfiguration() throws BundleException {
-
+		printTestName();
 		startBundle("org.eclipse.riena.communication.core");
 
 		SSLConfiguration config = getService(SSLConfiguration.class);
@@ -33,7 +33,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 	}
 
 	public void testOneConfiguration() throws BundleException {
-
+		printTestName();
 		addPluginXml(SSLConfigurationTest.class, "plugin.xml");
 		startBundle("org.eclipse.riena.communication.core");
 
@@ -45,6 +45,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 	}
 
 	public void testLocateKeystoreJreCacerts() {
+		printTestName();
 		ISSLProperties properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit");
 		SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
@@ -52,6 +53,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 	}
 
 	public void testLocateKeystoreFile() {
+		printTestName();
 		String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
 		File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts");
 
@@ -62,6 +64,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 	}
 
 	public void testLocateKeystoreResource() {
+		printTestName();
 		ISSLProperties properties = new SSLProperties("TLSv1", "/org/eclipse/riena/communication/core/ssl/cacerts",
 				"changeit");
 		SSLConfiguration config = new SSLConfiguration();
@@ -70,6 +73,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 	}
 
 	public void testLocateKeystoreUrl() throws IOException {
+		printTestName();
 		String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
 		File cacertDir = new File(new File(new File(jreDir), "lib"), "security");
 		TestServer nano = new TestServer(8888, cacertDir);
