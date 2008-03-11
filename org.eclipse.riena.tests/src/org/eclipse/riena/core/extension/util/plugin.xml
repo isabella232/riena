@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="core.test.extpoint" name="core test extensionpoint" schema="extpoint.exsd"/>
+   <extension-point id="core.test.extpoint2" name="core test extensionpoint" schema="extpoint.exsd"/>
+   <extension
+         point="core.test.extpoint">
+      <test
+            boolean="true"
+            executable="java.lang.String"
+            string="test1">
+      </test>
+      <test
+            boolean="false"
+            executable="java.util.HashMap"
+            string="test2">
+      </test>
+   </extension>
+   <extension
+         point="core.test.extpoint">
+      <test
+            boolean="true"
+            executable="java.util.ArrayList"
+            string="test3">
+      </test>
+   </extension>
+</plugin>

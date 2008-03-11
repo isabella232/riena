@@ -18,7 +18,8 @@ import org.eclipse.riena.tests.RienaTestCase;
 public class ExtensionUtilTest extends RienaTestCase {
 
 	public void testExceptionUtil1() {
-		System.out.println("test");
+		printTestName();
+		addPluginXml(ExtensionUtilTest.class, "plugin.xml");
 		ITest[] tests = ExtensionUtility.readExtensions("core.test.extpoint", ITest.class);
 		assertNotNull(tests);
 		assertTrue("tests.length should be 3 but is " + tests.length, tests.length == 3);
@@ -42,12 +43,16 @@ public class ExtensionUtilTest extends RienaTestCase {
 				}
 			}
 		}
+		removeExtensionPoint("core.test.extpoint");
 	}
 
 	public void testExceptionUtil2() {
+		printTestName();
+		addPluginXml(ExtensionUtilTest.class, "plugin.xml");
 		ITest[] tests = ExtensionUtility.readExtensions("core.test.extpoint2", ITest.class);
 		assertFalse(tests == null);
 		assertTrue(tests instanceof ITest[]);
 		assertTrue(tests.length == 0);
+		removeExtensionPoint("core.test.extpoint");
 	}
 }
