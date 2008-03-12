@@ -16,6 +16,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -23,6 +25,13 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.cm.ConfigurationPlugin;
+import org.osgi.service.log.LogService;
 
 /**
  * ExtensionReader maps Extensions to Interfaces. Extension properties can then
@@ -34,14 +43,19 @@ import org.eclipse.core.runtime.RegistryFactory;
  */
 public class ExtensionReader {
 
+	private final static Logger LOGGER = new ConsoleLogger(ExtensionReader.class.getName());
+
 	/**
 	 * Static method to read extensions
 	 * 
-	 * @param extensionPoint
+	 * @param <T>
+	 * @param context
+	 *            if not null, symbol replacement occurs (ConfigurationPlugin)
+	 * @param extensionPointId
 	 * @param interfaceType
 	 * @return
 	 */
-	public static <T> T[] read(String extensionPointId, Class<T> interfaceType) {
+	public static <T> T[] read(BundleContext context, String extensionPointId, Class<T> interfaceType) {
 		IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionPointId);
 		if (extensionPoint == null)
@@ -54,8 +68,7 @@ public class ExtensionReader {
 		List<Object> list = new ArrayList<Object>();
 		for (IExtension extension : extensions)
 			for (IConfigurationElement element : extension.getConfigurationElements())
-				list.add(Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType },
-						new InterfaceInvocationHandler(element)));
+				list.add(InterfaceBean.newInstance(context, interfaceType, element));
 
 		T[] objects = (T[]) Array.newInstance(interfaceType, list.size());
 		return list.toArray(objects);
@@ -66,18 +79,34 @@ public class ExtensionReader {
 	 * proxy mapping
 	 * 
 	 */
-	private static class InterfaceInvocationHandler implements InvocationHandler {
+	private static class InterfaceBean implements InvocationHandler {
 
+		/**
+		 * 
+		 */
 		private IConfigurationElement configurationElement;
+		private BundleContext context;
 		private static final String CREATE_METHOD_PREFIX = "create"; //$NON-NLS-1$
 		private static final String IS_METHOD_PREFIX = "is"; //$NON-NLS-1$
 		private static final String GETTER_METHOD_PREFIX = "get"; //$NON-NLS-1$
 		private static final String[] ALLOWED_PREFIXES = { GETTER_METHOD_PREFIX, IS_METHOD_PREFIX, CREATE_METHOD_PREFIX };
+		private static final String MAGIC_KEY = "$magic$"; //$NON-NLS-1$
 
-		InterfaceInvocationHandler(IConfigurationElement configurationElement) {
-			this.configurationElement = configurationElement;
+		static Object newInstance(BundleContext context, Class<?> interfaceType,
+				IConfigurationElement configurationElement) {
+			return Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType },
+					new InterfaceBean(context, configurationElement));
 		}
 
+		InterfaceBean(BundleContext context, IConfigurationElement configurationElement) {
+			this.configurationElement = configurationElement;
+			this.context = context;
+		}
+
+		/*
+		 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
+		 *      java.lang.reflect.Method, java.lang.Object[])
+		 */
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (method.getName().startsWith(GETTER_METHOD_PREFIX) || method.getName().startsWith(IS_METHOD_PREFIX)) {
 				Class<?> returnType = method.getReturnType();
@@ -85,24 +114,24 @@ public class ExtensionReader {
 						GETTER_METHOD_PREFIX) : getAttributeName(method, IS_METHOD_PREFIX);
 
 				if (returnType == String.class)
-					return intercept(configurationElement.getAttribute(name));
+					return modify(configurationElement.getAttribute(name));
 				if (returnType.isPrimitive())
-					return coerce(returnType, intercept(configurationElement.getAttribute(name)));
+					return coerce(returnType, modify(configurationElement.getAttribute(name)));
 				if (returnType.isInterface()) {
 					IConfigurationElement cfgElement = configurationElement.getChildren(name)[0];
 					if (cfgElement == null) {
 						return null;
 					}
 					return Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { returnType },
-							new InterfaceInvocationHandler(cfgElement));
+							new InterfaceBean(context, cfgElement));
 				}
-				throw new UnsupportedOperationException("property for method " + method.getName() + " not found.");
+				throw new UnsupportedOperationException("property for method " + method.getName() + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if (method.getName().startsWith(CREATE_METHOD_PREFIX)) {
 				String name = getAttributeName(method, CREATE_METHOD_PREFIX);
 				return configurationElement.createExecutableExtension(name);
 			}
-			throw new UnsupportedOperationException("Only " + Arrays.toString(ALLOWED_PREFIXES) + " are supported.");
+			throw new UnsupportedOperationException("Only " + Arrays.toString(ALLOWED_PREFIXES) + " are supported."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		private String getAttributeName(Method method, String prefix) {
@@ -130,9 +159,30 @@ public class ExtensionReader {
 			return value;
 		}
 
-		private String intercept(String value) {
-			// TODO Place to intercept the values with ConfigurationPlugin
-			return value;
+		private String modify(String value) {
+			if (context == null)
+				return value;
+
+			Dictionary<Object, Object> properties = new Hashtable<Object, Object>();
+			properties.put(MAGIC_KEY, value);
+			try {
+				ServiceReference[] references = context.getServiceReferences(ConfigurationPlugin.class.getName(), null);
+				for (ServiceReference reference : references) {
+					ConfigurationPlugin translator = (ConfigurationPlugin) context.getService(reference);
+					if (translator == null)
+						continue;
+					try {
+						translator.modifyConfiguration(null, properties);
+					} catch (Throwable throwable) {
+						LOGGER.log(LogService.LOG_ERROR, "Configuration plugin " + reference //$NON-NLS-1$
+								+ " failed when modifying " + properties + ".", throwable); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+					context.ungetService(reference);
+				}
+			} catch (InvalidSyntaxException e) {
+				// Should never occur because no filter is set.
+			}
+			return (String) properties.get(MAGIC_KEY);
 		}
 	}
 
