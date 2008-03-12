@@ -24,8 +24,8 @@ import org.osgi.framework.Constants;
  * modified. Injector calls the unbind method when the specified service becomes
  * unregistered.
  * <p>
- * The service injector tracks the specified OSGi Service after calls
- * {@link #doStart()} and stop tracks after calls {@link #stop()}.
+ * The service injector tracks the specified OSGi Service with {@link #start()}
+ * and stops tracking with {@link #stop()}.
  * <p>
  * The ServiceId and Injector are implemented as a ´fluent interface´ allowing
  * constructs like:
