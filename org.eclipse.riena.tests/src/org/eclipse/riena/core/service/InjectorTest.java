@@ -13,9 +13,7 @@ package org.eclipse.riena.core.service;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 
@@ -24,26 +22,23 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class InjectorTest extends RienaTestCase {
 
-	private BundleContext context;
-
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		context = Activator.getContext();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		context = null;
 		super.tearDown();
 	}
 
 	public void scribble() {
 		Object target = null;
 
-		new ServiceId("serviceId").injectInto(target).andStart(context);
-		new ServiceId("serviceId").injectInto(target).bind("bind").unbind("unbind").andStart(context);
-		new ServiceId("serviceId").useFilter("").injectInto(target).bind("bind").unbind("unbind").andStart(context);
+		new ServiceId("serviceId").injectInto(target).andStart(getContext());
+		new ServiceId("serviceId").injectInto(target).bind("bind").unbind("unbind").andStart(getContext());
+		new ServiceId("serviceId").useFilter("").injectInto(target).bind("bind").unbind("unbind")
+				.andStart(getContext());
 	}
 
 	public void testInjectDepOneObviousBindUnbindError() {
@@ -51,10 +46,10 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
-		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
+		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 
 		try {
-			new ServiceId(DepOne.class.getName()).injectInto(target).bind("baind").andStart(context);
+			new ServiceId(DepOne.class.getName()).injectInto(target).bind("baind").andStart(getContext());
 			fail("Well, that should not have happended");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
@@ -68,10 +63,11 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		DepTwo depTwo = new DepTwo();
-		ServiceRegistration reg = context.registerService(DepTwo.class.getName(), depTwo, null);
+		ServiceRegistration reg = getContext().registerService(DepTwo.class.getName(), depTwo, null);
 
 		try {
-			new ServiceId(DepOne.class.getName()).injectInto(target).bind("binde").unbind("entbinde").andStart(context);
+			new ServiceId(DepOne.class.getName()).injectInto(target).bind("binde").unbind("entbinde").andStart(
+					getContext());
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -84,9 +80,9 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
-		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
+		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 
-		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(context);
+		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(getContext());
 		assertEquals(1, target.count("bind", DepOne.class));
 
 		shot.stop();
@@ -100,15 +96,15 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
-		ServiceRegistration reg1 = context.registerService(DepOne.class.getName(), depOne, null);
+		ServiceRegistration reg1 = getContext().registerService(DepOne.class.getName(), depOne, null);
 
-		Injector shot1 = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(context);
+		Injector shot1 = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(getContext());
 		assertEquals(1, target.count("bind", DepOne.class));
 
-		Injector shot2 = new ServiceId(DepTwo.class.getName()).injectInto(target).andStart(context);
+		Injector shot2 = new ServiceId(DepTwo.class.getName()).injectInto(target).andStart(getContext());
 
 		DepTwo depTwo = new DepTwo();
-		ServiceRegistration reg2 = context.registerService(DepTwo.class.getName(), depTwo, null);
+		ServiceRegistration reg2 = getContext().registerService(DepTwo.class.getName(), depTwo, null);
 
 		assertEquals(1, target.count("bind", DepTwo.class));
 
@@ -127,10 +123,10 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		DepOne depOne = new DepOne();
-		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
+		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 
 		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).bind("binde").unbind("entbinde")
-				.andStart(context);
+				.andStart(getContext());
 		assertEquals(1, target.count("binde", DepOne.class));
 
 		shot.stop();
@@ -144,14 +140,14 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		IRanking rank1 = new RankingOne(0);
-		ServiceRegistration reg1 = context.registerService(IRanking.class.getName(), rank1, null);
+		ServiceRegistration reg1 = getContext().registerService(IRanking.class.getName(), rank1, null);
 
 		IRanking rank2 = new RankingTwo(100);
 		Dictionary<String, Object> dict = new Hashtable<String, Object>();
 		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(100));
-		ServiceRegistration reg2 = context.registerService(IRanking.class.getName(), rank2, dict);
+		ServiceRegistration reg2 = getContext().registerService(IRanking.class.getName(), rank2, dict);
 
-		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).andStart(context);
+		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).andStart(getContext());
 		assertEquals(1, target.count("bind", IRanking.class));
 
 		assertEquals(100, target.getDepRanking());
@@ -168,16 +164,16 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		IRanking rank1 = new RankingOne(0);
-		ServiceRegistration reg1 = context.registerService(IRanking.class.getName(), rank1, null);
+		ServiceRegistration reg1 = getContext().registerService(IRanking.class.getName(), rank1, null);
 
-		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).andStart(context);
+		Injector shot = new ServiceId(IRanking.class.getName()).useRanking().injectInto(target).andStart(getContext());
 		assertEquals(1, target.count("bind", IRanking.class));
 		assertEquals(0, target.getDepRanking());
 
 		IRanking rank2 = new RankingTwo(100);
 		Dictionary<String, Object> dict = new Hashtable<String, Object>();
 		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(100));
-		ServiceRegistration reg2 = context.registerService(IRanking.class.getName(), rank2, dict);
+		ServiceRegistration reg2 = getContext().registerService(IRanking.class.getName(), rank2, dict);
 
 		assertEquals(1, target.count("bind", IRanking.class));
 
@@ -189,7 +185,7 @@ public class InjectorTest extends RienaTestCase {
 
 		assertEquals(0, target.getDepRanking());
 
-		ServiceRegistration reg3 = context.registerService(IRanking.class.getName(), rank2, dict);
+		ServiceRegistration reg3 = getContext().registerService(IRanking.class.getName(), rank2, dict);
 
 		assertEquals(1, target.count("bind", IRanking.class));
 
@@ -207,9 +203,9 @@ public class InjectorTest extends RienaTestCase {
 		Target target = new Target();
 
 		DepOne depOne = new DepOneOne();
-		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, null);
+		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 
-		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(context);
+		Injector shot = new ServiceId(DepOne.class.getName()).injectInto(target).andStart(getContext());
 		assertEquals(1, target.count("bind", DepOneOne.class));
 		assertEquals(0, target.count("bind", DepOne.class));
 
@@ -226,9 +222,10 @@ public class InjectorTest extends RienaTestCase {
 		DepOne depOne = new DepOneOne();
 		Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("x", "y");
-		ServiceRegistration reg = context.registerService(DepOne.class.getName(), depOne, props);
+		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, props);
 
-		Injector shot = new ServiceId(DepOne.class.getName()).useFilter("(x=y)").injectInto(target).andStart(context);
+		Injector shot = new ServiceId(DepOne.class.getName()).useFilter("(x=y)").injectInto(target).andStart(
+				getContext());
 		assertEquals(1, target.count("bind", DepOneOne.class));
 
 		shot.stop();

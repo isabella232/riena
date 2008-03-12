@@ -13,10 +13,9 @@ package org.eclipse.riena.core.logging;
 import java.io.IOException;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -25,7 +24,7 @@ import org.osgi.service.log.LogService;
 /**
  * 
  */
-public class ConsoleLoggerTest extends TestCase {
+public class ConsoleLoggerTest extends RienaTestCase {
 
 	private Logger logger;
 
@@ -57,7 +56,7 @@ public class ConsoleLoggerTest extends TestCase {
 
 	public void testWithServiceReference() throws InvalidSyntaxException {
 		String stringService = "Very simple service";
-		ServiceRegistration sr = Activator.getContext().registerService(String.class.getName(), stringService, null);
+		ServiceRegistration sr = getContext().registerService(String.class.getName(), stringService, null);
 		Assert.assertTrue(sr.getReference() != null);
 		logger.log(sr.getReference(), LogService.LOG_INFO, "Message with context.");
 		sr.unregister();

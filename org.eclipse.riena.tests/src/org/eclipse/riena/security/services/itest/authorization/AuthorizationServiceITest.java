@@ -16,7 +16,6 @@ import javax.security.auth.login.LoginContext;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
@@ -42,11 +41,13 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", "hessian", "org.eclipse.riena.authenticationservice");
+				"http://localhost:8080/hessian/AuthenticationService", "hessian",
+				"org.eclipse.riena.authenticationservice");
 		authorizationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class,
-				"http://localhost:8080/hessian/AuthorizationService", "hessian", "org.eclipse.riena.authorizationservice");
-		customerService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class, "http://localhost:8080/hessian/CustomerSearchWS", "hessian",
-				"org.eclipse.riena.customersearchservice");
+				"http://localhost:8080/hessian/AuthorizationService", "hessian",
+				"org.eclipse.riena.authorizationservice");
+		customerService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
+				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", "org.eclipse.riena.customersearchservice");
 	}
 
 	@Override
@@ -61,15 +62,16 @@ public class AuthorizationServiceITest extends RienaTestCase {
 	public void testLoginWithUserWithRights() throws Exception {
 		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser", "testpass"));
 		lc.login();
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-		IAuthenticationService as = (IAuthenticationService) Activator.getContext().getService(ref);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + lc.getSubject());
 		System.out.println("login in sucessful");
-		ISessionHolderService shs = (ISessionHolderService) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ISessionHolderService.ID));
+		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
+				getContext().getServiceReference(ISessionHolderService.ID));
 
 		// call the customerService
-		ICustomerSearch cs = (ICustomerSearch) Activator.getContext().getService(Activator.getContext().getServiceReference(ICustomerSearch.ID));
+		ICustomerSearch cs = (ICustomerSearch) getContext().getService(
+				getContext().getServiceReference(ICustomerSearch.ID));
 		Customer cust = new Customer();
 		cust.setLastName("Solo");
 		cust.setFirstName("Han");
@@ -86,16 +88,17 @@ public class AuthorizationServiceITest extends RienaTestCase {
 	public void testLoginWithUserWithoutRights() throws Exception {
 		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser2", "testpass2"));
 		lc.login();
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-		IAuthenticationService as = (IAuthenticationService) Activator.getContext().getService(ref);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + lc.getSubject());
 		System.out.println("login in sucessful");
-		ISessionHolderService shs = (ISessionHolderService) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ISessionHolderService.ID));
+		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
+				getContext().getServiceReference(ISessionHolderService.ID));
 
 		try {
 			// call the customerService
-			ICustomerSearch cs = (ICustomerSearch) Activator.getContext().getService(Activator.getContext().getServiceReference(ICustomerSearch.ID));
+			ICustomerSearch cs = (ICustomerSearch) getContext().getService(
+					getContext().getServiceReference(ICustomerSearch.ID));
 			Customer cust = new Customer();
 			cust.setLastName("Solo");
 			cust.setFirstName("Han");

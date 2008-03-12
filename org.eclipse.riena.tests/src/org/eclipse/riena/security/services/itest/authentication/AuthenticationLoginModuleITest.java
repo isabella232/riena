@@ -15,7 +15,6 @@ import javax.security.auth.login.LoginException;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.services.itest.MyCallbackHandler;
@@ -37,7 +36,8 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", "hessian", "org.eclipse.riena.authenticationservice");
+				"http://localhost:8080/hessian/AuthenticationService", "hessian",
+				"org.eclipse.riena.authenticationservice");
 	}
 
 	@Override
@@ -56,12 +56,12 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 	public void testRemoteLogin() throws LoginException {
 		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser", "testpass"));
 		lc.login();
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-		IAuthenticationService as = (IAuthenticationService) Activator.getContext().getService(ref);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + lc.getSubject());
 		System.out.println("login in sucessful");
-		ISessionHolderService shs = (ISessionHolderService) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ISessionHolderService.ID));
+		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
+				getContext().getServiceReference(ISessionHolderService.ID));
 		as.logout(shs.fetchSessionHolder().getSession());
 		System.out.println("logoff sucessful");
 	}

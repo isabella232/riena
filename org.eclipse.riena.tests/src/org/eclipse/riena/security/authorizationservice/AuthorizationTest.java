@@ -15,7 +15,6 @@ import java.security.PrivilegedAction;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.RienaPolicy;
@@ -36,13 +35,13 @@ public class AuthorizationTest extends RienaTestCase {
 		// permissions for this test TODO
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		fileStoreReg = Activator.getContext().registerService(IPermissionStore.ID, store, null);
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthorizationService.ID);
+		fileStoreReg = getContext().registerService(IPermissionStore.ID, store, null);
+		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.ID);
 		// if (ref != null) {
 		// ref.getBundle().stop();
 		// }
 		// authorizationServiceReg =
-		// Activator.getContext().registerService(IAuthorizationService.ID,
+		// getContext().registerService(IAuthorizationService.ID,
 		// new AuthorizationService(), null);
 
 		RienaPolicy.init();

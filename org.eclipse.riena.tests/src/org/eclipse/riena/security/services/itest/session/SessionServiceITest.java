@@ -13,13 +13,11 @@ package org.eclipse.riena.security.services.itest.session;
 import java.security.Principal;
 
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.ServiceReference;
-
 
 /**
  * Tests the SessionService with single user. There is also a disabled multiuser
@@ -47,8 +45,8 @@ public class SessionServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
-		new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class, "http://localhost:8080/hessian/SessionService", "hessian",
-				"org.eclipse.riena.sessionservice");
+		new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
+				"http://localhost:8080/hessian/SessionService", "hessian", "org.eclipse.riena.sessionservice");
 	}
 
 	/*
@@ -62,8 +60,8 @@ public class SessionServiceITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testController1() throws Exception {
-		ServiceReference ref = Activator.getContext().getServiceReference(ISessionService.ID);
-		ISessionService sessionService = (ISessionService) Activator.getContext().getService(ref);
+		ServiceReference ref = getContext().getServiceReference(ISessionService.ID);
+		ISessionService sessionService = (ISessionService) getContext().getService(ref);
 		assertNotNull("SessionControllerAccessor returns null", sessionService);
 		Session session = sessionService.generateSession(new Principal[] { new SimplePrincipal("testuid") });
 		assertNotNull("generateSession returns null", session);
@@ -126,8 +124,8 @@ public class SessionServiceITest extends RienaTestCase {
 		private int loopCounter;
 
 		Threader(int loopCounter) {
-			ServiceReference ref = Activator.getContext().getServiceReference(ISessionService.ID);
-			sessionService = (ISessionService) Activator.getContext().getService(ref);
+			ServiceReference ref = getContext().getServiceReference(ISessionService.ID);
+			sessionService = (ISessionService) getContext().getService(ref);
 			this.loopCounter = loopCounter;
 			assertNotNull("SessionServiceAccessor returns null", sessionService);
 		}
@@ -141,12 +139,14 @@ public class SessionServiceITest extends RienaTestCase {
 				assertNotNull("generateSession returns null", session);
 
 				Principal[] principals = sessionService.findPrincipals(session);
-				assertTrue("returned userid is not equal to the correct one", principals == null || principals[0].getName().equals("testuid"));
+				assertTrue("returned userid is not equal to the correct one", principals == null
+						|| principals[0].getName().equals("testuid"));
 
 				sessionService.invalidateSession(session);
 
 				Principal[] temp = sessionService.findPrincipals(session);
-				assertTrue("no user should be found for invalid session", temp == null || temp[0].getName().equals("testuid"));
+				assertTrue("no user should be found for invalid session", temp == null
+						|| temp[0].getName().equals("testuid"));
 			}
 			// SessionServiceITest.this.trace("K");
 		}

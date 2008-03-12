@@ -15,7 +15,6 @@ import java.io.InputStream;
 import javax.security.auth.Subject;
 
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
@@ -46,13 +45,13 @@ public class SentinelTest extends RienaTestCase {
 		// permissions for this test TODO
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		fileStoreReg = Activator.getContext().registerService(IPermissionStore.ID, store, null);
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthorizationService.ID);
+		fileStoreReg = getContext().registerService(IPermissionStore.ID, store, null);
+		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.ID);
 		if (ref != null) {
 			ref.getBundle().stop();
 		}
-		authorizationServiceReg = Activator.getContext().registerService(IAuthorizationService.ID,
-				new AuthorizationService(), null);
+		authorizationServiceReg = getContext().registerService(IAuthorizationService.ID, new AuthorizationService(),
+				null);
 	}
 
 	/*
@@ -74,8 +73,8 @@ public class SentinelTest extends RienaTestCase {
 	public void testValidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
-		ISubjectHolderService subjectHolderService = (ISubjectHolderService) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ISubjectHolderService.ID));
+		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+				getContext().getServiceReference(ISubjectHolderService.ID));
 		subjectHolderService.fetchSubjectHolder().setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
@@ -85,8 +84,8 @@ public class SentinelTest extends RienaTestCase {
 	public void testValidUserMissingPermissions() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
-		ISubjectHolderService subjectHolderService = (ISubjectHolderService) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ISubjectHolderService.ID));
+		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+				getContext().getServiceReference(ISubjectHolderService.ID));
 		subjectHolderService.fetchSubjectHolder().setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));

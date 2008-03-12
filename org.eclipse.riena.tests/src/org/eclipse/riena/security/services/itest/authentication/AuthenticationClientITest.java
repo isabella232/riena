@@ -71,8 +71,8 @@ public class AuthenticationClientITest extends RienaTestCase {
 	public void testLogin() throws Exception {
 		trace("Looking up Authentication Service...: ");
 
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-		IAuthenticationService authenticationService = (IAuthenticationService) Activator.getContext().getService(ref);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 
 		trace("Service looked up: " + authenticationService.getClass().getName());
 
@@ -104,9 +104,8 @@ public class AuthenticationClientITest extends RienaTestCase {
 	public void testInvalidLogin() throws Exception {
 
 		try {
-			ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-			IAuthenticationService authenticationService = (IAuthenticationService) Activator.getContext().getService(
-					ref);
+			ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+			IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 			AbstractCredential[] creds = new AbstractCredential[2];
 			NameCredential nc = new NameCredential("username: ", "xx");
 			nc.setName("john");
@@ -122,8 +121,8 @@ public class AuthenticationClientITest extends RienaTestCase {
 	}
 
 	public void testSubjectLogin() throws Exception {
-		ServiceReference ref = Activator.getContext().getServiceReference(IAuthenticationService.ID);
-		IAuthenticationService authenticationService = (IAuthenticationService) Activator.getContext().getService(ref);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 
 		trace("Service looked up: " + authenticationService.getClass().getName());
 
@@ -142,8 +141,8 @@ public class AuthenticationClientITest extends RienaTestCase {
 		for (Principal p : ticket.getPrincipals()) {
 			subject.getPrincipals().add(p);
 		}
-		ServiceReference ref2 = Activator.getContext().getServiceReference(ISubjectHolderService.ID);
-		ISubjectHolderService subHolderService = (ISubjectHolderService) Activator.getContext().getService(ref2);
+		ServiceReference ref2 = getContext().getServiceReference(ISubjectHolderService.ID);
+		ISubjectHolderService subHolderService = (ISubjectHolderService) getContext().getService(ref2);
 		subHolderService.fetchSubjectHolder().setSubject(subject);
 
 		assertTrue(subHolderService.fetchSubjectHolder().getSubject() == subject);

@@ -12,7 +12,6 @@ package org.eclipse.riena.core.config;
 
 import junit.framework.AssertionFailedError;
 
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 
 /**
@@ -47,7 +46,7 @@ public class ConfigTest extends RienaTestCase {
 		assertTrue(bc.getName().equals("default"));
 
 		// wrap with proxy
-		ConfigUtility cu = new ConfigUtility(Activator.getContext());
+		ConfigUtility cu = new ConfigUtility(getContext());
 		cu.createConfigProxy(bc, "org.eclipse.riena.business.pid");
 
 		Thread t = new Thread() {
@@ -89,7 +88,7 @@ public class ConfigTest extends RienaTestCase {
 		assertTrue(bc.getName().equals("default"));
 
 		// wrap with proxy
-		ConfigUtility cu = new ConfigUtility(Activator.getContext());
+		ConfigUtility cu = new ConfigUtility(getContext());
 		cu.createConfigProxy(bc, "org.eclipse.riena.business.pid");
 
 		Thread t = new Thread() {
