@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension id="core.test.extpoint.id4" point="core.test.extpoint">
+      <test
+            boolean="true"
+            executable="java.util.ArrayList"
+            string="test4"
+            short="1"
+	        integer="123"
+            long="1234567890"
+			float="3.14159"
+            double="2.7182818284590452"
+            character="#"
+            byte="32">
+     </test>                       
+   </extension>
+</plugin>
