@@ -18,7 +18,8 @@ Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.core.logging,
  org.eclipse.riena.core.marker,
  org.eclipse.riena.core.service,
- org.eclipse.riena.core.util
+ org.eclipse.riena.core.util,
+ org.eclipse.riena.internal.core.config;x-friends:="org.eclipse.riena.tests"
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.eclipse.equinox.log,
