@@ -11,9 +11,43 @@
 package org.eclipse.riena.core.extension;
 
 import org.eclipse.core.runtime.Assert;
+import org.osgi.framework.BundleContext;
 
 /**
- * 
+ * ExtnesionId and ExtensionInjector simplify locating configuration
+ * (extensions) and injects them into a target object. To do so the
+ * ExtensionInjector can (but must not) track the extension registry for changes
+ * of appearing and disappearing extensions and injects them into the target. A
+ * target object defines a named and typed bind (update) method. The
+ * ExtensionInjector calls the bind method when the specified extension/point
+ * was registered or modified.<br>
+ * The type of the bind method can be either of type array of <i>interface type</i>
+ * or just <i>interface type</i>. The <i>interface type</i> is just a simple
+ * java interface with getters where their name corresponds to attributes of an
+ * extension.
+ * <p>
+ * The extension injector tracks the specified extension with {@link #start()}
+ * or {@link #start(BundleContext)}. It stops tracking with {@link #stop()}.<br>
+ * If {@link #start(BundleContext)} is used configuration modifications as
+ * defined by <code>ConfigurationPlugin</code> will be applied applied.
+ * <p>
+ * The ExtensionId and ExtensionInjector are implemented as a ´fluent interface´
+ * allowing constructs like:
+ * <ol>
+ * <li>new ExtensionId("id1").injectInto(target).andStart(context)</li>
+ * <li>new
+ * ExtensionId("id2").useType(interface).injectInto(target).bind("configure").andStart(context)</li>
+ * <li>new ExtensionId("id3").expectExactly(1).injectInto(target).andStart()</li>
+ * <li>..</li>
+ * </ol>
+ * <p>
+ * This fluent interface makes a few assumptions (defaults) that makes writing
+ * extension injectors short and expressive , e.g. item one the list, means try
+ * to retrieve <i>interface type</i> by reflection, expect zero to ´unbound´
+ * occurrences of extensions and the bind method name is "update".
+ * <p>
+ * The expected cardinality of extensions (min/max occurrences) can be specified
+ * with <code>expectingMinMax()</code> or with <code>expectingExactly()</code>.
  */
 public class ExtensionId {
 
@@ -26,19 +60,22 @@ public class ExtensionId {
 
 	/**
 	 * @param extensionPointId
-	 * @param interfaceType
 	 */
-	public ExtensionId(String extensionPointId, Class<?> interfaceType) {
+	public ExtensionId(String extensionPointId) {
 		Assert.isNotNull(extensionPointId, "The extension id must not be null."); //$NON-NLS-1$
 		this.extensionPointId = extensionPointId;
-		this.interfaceType = interfaceType;
 	}
 
 	/**
-	 * @param extension
+	 * @param interfaceType
+	 * @return
 	 */
-	public ExtensionId(String extension) {
-		this(extension, null);
+	public ExtensionId useType(Class<?> interfaceType) {
+		Assert.isNotNull(interfaceType, "Interface type must not be null."); //$NON-NLS-1$
+		Assert.isTrue(interfaceType.isInterface(), "Interface type must be an interface."); //$NON-NLS-1$
+		Assert.isTrue(this.interfaceType == null, "Interface type has already been set."); //$NON-NLS-1$
+		this.interfaceType = interfaceType;
+		return this;
 	}
 
 	/**
@@ -55,9 +92,9 @@ public class ExtensionId {
 	 * @return
 	 */
 	public ExtensionId expectingMinMax(int min, int max) {
-		Assert.isLegal(max >= min, "min must not be greater than max.");
-		Assert.isLegal(min >= 0, "min must be greater or equal than zero.");
-		Assert.isLegal(max > 0, "min must be greater than zero.");
+		Assert.isLegal(max >= min, "min must not be greater than max."); //$NON-NLS-1$
+		Assert.isLegal(min >= 0, "min must be greater or equal than zero."); //$NON-NLS-1$
+		Assert.isLegal(max > 0, "max must be greater than zero."); //$NON-NLS-1$
 		this.minOccurences = min;
 		this.maxOccurences = max;
 		return this;
@@ -99,6 +136,9 @@ public class ExtensionId {
 		return maxOccurences;
 	}
 
+	/**
+	 * @return
+	 */
 	boolean requiresArrayUpdateMethod() {
 		return minOccurences > 1 || maxOccurences > 1;
 	}
