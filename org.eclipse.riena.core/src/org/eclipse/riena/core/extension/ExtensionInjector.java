@@ -24,15 +24,18 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
 /**
- * 
+ * The is the extension injectors.<br>
+ * See {@link ExtensionId} for explanation and usage.
  */
 public class ExtensionInjector {
 
 	private ExtensionId extensionId;
 	private Object target;
+	private BundleContext context;
 	private boolean started;
 	private boolean track = true;
 	private String updateMethodName = "update"; //$NON-NLS-1$
@@ -52,14 +55,18 @@ public class ExtensionInjector {
 		this.target = target;
 	}
 
+	public ExtensionInjector andStart() {
+		return andStart(null);
+	}
+
 	/**
 	 * 
 	 * @param context
 	 */
-	public ExtensionInjector andStart() {
+	public ExtensionInjector andStart(BundleContext context) {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
 		started = true;
-
+		this.context = context;
 		updateMethod = findUpdateMethod();
 		Class<?> paramaterType = updateMethod.getParameterTypes()[0];
 		isArray = paramaterType.isArray();
@@ -206,7 +213,7 @@ public class ExtensionInjector {
 	}
 
 	void populateInterfaceBeans() {
-		Object[] beans = ExtensionReader.read(extensionId.getExtensionPointId(), componentType);
+		Object[] beans = ExtensionReader.read(context, extensionId.getExtensionPointId(), componentType);
 		if (!matchesExtensionPointConstraint(beans.length))
 			LOGGER.log(LogService.LOG_ERROR, "Number of extensions does not fullfil the extenion point´s constraints.");
 		try {
