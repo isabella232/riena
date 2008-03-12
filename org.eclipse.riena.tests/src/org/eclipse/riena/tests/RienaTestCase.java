@@ -41,6 +41,7 @@ public abstract class RienaTestCase extends TestCase {
 
 	// Keep track of services and and corresponding service references.
 	private Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
+	private BundleContext context = Activator.getContext();
 
 	/**
 	 * 
@@ -72,11 +73,20 @@ public abstract class RienaTestCase extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		for (ServiceReference reference : services.values())
-			Activator.getContext().ungetService(reference);
+			context.ungetService(reference);
 
 		services.clear();
 
 		super.tearDown();
+	}
+
+	/**
+	 * Return the bundle context.
+	 * 
+	 * @return
+	 */
+	protected BundleContext getContext() {
+		return context;
 	}
 
 	/**
@@ -138,10 +148,10 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	protected <T> T getService(Class<T> serviceClass) {
-		ServiceReference reference = Activator.getContext().getServiceReference(serviceClass.getName());
+		ServiceReference reference = context.getServiceReference(serviceClass.getName());
 		if (reference == null)
 			return null;
-		Object service = Activator.getContext().getService(reference);
+		Object service = context.getService(reference);
 		if (service == null)
 			return null;
 		services.put(service, reference);
@@ -157,7 +167,7 @@ public abstract class RienaTestCase extends TestCase {
 		ServiceReference reference = services.get(service);
 		if (reference == null)
 			return;
-		Activator.getContext().ungetService(reference);
+		context.ungetService(reference);
 	}
 
 	/**
@@ -252,7 +262,6 @@ public abstract class RienaTestCase extends TestCase {
 		}
 		Pattern inlcude = Pattern.compile(includePattern);
 		Pattern exclude = Pattern.compile(excludePattern);
-		BundleContext context = Activator.getContext();
 
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles)
