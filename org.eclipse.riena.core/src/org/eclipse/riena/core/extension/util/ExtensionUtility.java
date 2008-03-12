@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.RegistryFactory;
  * extension and the interface match.
  * 
  */
+@Deprecated
 public class ExtensionUtility {
 
 	/**
@@ -40,6 +41,7 @@ public class ExtensionUtility {
 	 * @param interf
 	 * @return
 	 */
+	@Deprecated
 	public static <T> T[] readExtensions(String extensionPoint, Class<T> interf) {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		IExtensionPoint extPoint = registry.getExtensionPoint(extensionPoint);
