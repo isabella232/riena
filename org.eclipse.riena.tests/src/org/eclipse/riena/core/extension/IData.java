@@ -18,6 +18,20 @@ public interface IData {
 
 	boolean isBoolean();
 
+	short getShort();
+
+	int getInteger();
+
+	long getLong();
+
+	float getFloat();
+
+	double getDouble();
+
+	char getCharacter();
+
+	byte getByte();
+
 	Object createExecutable();
 
 }
