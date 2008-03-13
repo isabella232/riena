@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionDelta;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IRegistryEventListener;
+import org.eclipse.core.runtime.IRegistryChangeEvent;
+import org.eclipse.core.runtime.IRegistryChangeListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
@@ -28,10 +28,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
 /**
- * The is the extension injectors.<br>
+ * This is the extension injectors.<br>
  * See {@link ExtensionId} for explanation and usage.
  */
 public class ExtensionInjector {
+
+	// TODO When 3.4 is released we switch to IRegistryEventListener. This is
+	// the code in comments! PLEASE, DO NOT REMOVE IT!
 
 	private ExtensionId extensionId;
 	private Object target;
@@ -40,8 +43,10 @@ public class ExtensionInjector {
 	private boolean track = true;
 	private String updateMethodName = "update"; //$NON-NLS-1$
 	private Method updateMethod;
-	private IRegistryEventListener injectorListener;
+	// TODO 3.4: private IRegistryEventListener injectorListener;
+	private IRegistryChangeListener injectorListener;
 	private boolean isArray;
+
 	private Class<?> componentType;
 
 	private final static Logger LOGGER = new ConsoleLogger(ExtensionInjector.class.getName());
@@ -81,7 +86,9 @@ public class ExtensionInjector {
 						"For some reason the extension registry has not been created. Tracking is not possible.");
 			else {
 				injectorListener = new InjectorListener();
-				extensionRegistry.addListener(injectorListener, extensionId.getExtensionPointId());
+				// TODO 3.4: extensionRegistry.addListener(injectorListener,
+				// extensionId.getExtensionPointId());
+				extensionRegistry.addRegistryChangeListener(injectorListener);
 			}
 		}
 		return this;
@@ -120,7 +127,8 @@ public class ExtensionInjector {
 				// TODO Is this an error for that we should throw an exception?
 				LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created.");
 			else
-				extensionRegistry.removeListener(injectorListener);
+				// TODO 3.4: extensionRegistry.removeListener(injectorListener);
+				extensionRegistry.removeRegistryChangeListener(injectorListener);
 		}
 		extensionId = null;
 		injectorListener = null;
@@ -129,17 +137,12 @@ public class ExtensionInjector {
 	/**
 	 */
 	private Method findUpdateMethod() {
-		if (extensionId.getInterfaceType() == null) {
-			// determine interface type (array?) and method from update method
-			// name
-			return findUpdateMethodForUnkownType();
-		} else {
-			// determine method from update method name
-			return findUpdateMethodForKownType();
-		}
+		return extensionId.getInterfaceType() == null ? findUpdateMethodForUnkownType() : findUpdateMethodForKownType();
 	}
 
 	/**
+	 * Determine method from update method name and known type
+	 * 
 	 * @return
 	 */
 	private Method findUpdateMethodForKownType() {
@@ -165,6 +168,12 @@ public class ExtensionInjector {
 
 	}
 
+	/**
+	 * Determine method from update method name and also determine interface
+	 * type (array?)
+	 * 
+	 * @return
+	 */
 	private Method findUpdateMethodForUnkownType() {
 		List<Method> candidates = new ArrayList<Method>();
 		Method[] methods = target.getClass().getMethods();
@@ -235,37 +244,59 @@ public class ExtensionInjector {
 		return occurence >= extensionId.getMinOccurences() && occurence <= extensionId.getMaxOccurences();
 	}
 
+	// TODO 3.4: /**
+	// *
+	// */
+	// private class InjectorListener implements IRegistryEventListener {
+	//
+	// /*
+	// * @see
+	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
+	// */
+	// public void added(IExtension[] extensions) {
+	// populateInterfaceBeans();
+	// }
+	//
+	// /*
+	// * @see
+	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
+	// */
+	// public void added(IExtensionPoint[] extensionPoints) {
+	// populateInterfaceBeans();
+	// }
+	//
+	// /*
+	// * @see
+	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
+	// */
+	// public void removed(IExtension[] extensions) {
+	// populateInterfaceBeans();
+	// }
+	//
+	// /*
+	// * @see
+	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
+	// */
+	// public void removed(IExtensionPoint[] extensionPoints) {
+	// populateInterfaceBeans();
+	// }
+	//
+	// }
+
 	/**
 	 * 
 	 */
-	private class InjectorListener implements IRegistryEventListener {
+	private class InjectorListener implements IRegistryChangeListener {
 
 		/*
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
+		 * @see org.eclipse.core.runtime.IRegistryChangeListener#registryChanged(org.eclipse.core.runtime.IRegistryChangeEvent)
 		 */
-		public void added(IExtension[] extensions) {
-			populateInterfaceBeans();
-		}
-
-		/*
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void added(IExtensionPoint[] extensionPoints) {
-			populateInterfaceBeans();
-		}
-
-		/*
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
-		 */
-		public void removed(IExtension[] extensions) {
-			populateInterfaceBeans();
-		}
-
-		/*
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void removed(IExtensionPoint[] extensionPoints) {
-			populateInterfaceBeans();
+		public void registryChanged(IRegistryChangeEvent event) {
+			for (IExtensionDelta delta : event.getExtensionDeltas())
+				if (delta.getExtensionPoint().getUniqueIdentifier().equals(extensionId.getExtensionPointId())) {
+					populateInterfaceBeans();
+					return;
+				}
 		}
 
 	}
