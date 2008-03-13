@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="de.compeople.scp.core.tests" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.riena.tests" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.compeople.scp.core.tests" id="core.test.extpoint" name="extpoint"/>
+         <meta.schema plugin="org.eclipse.riena.tests" id="core.test.extpoint" name="extpoint"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
