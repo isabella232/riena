@@ -59,6 +59,8 @@ public class ExtensionId {
 	public static final int UNBOUNDED = Integer.MAX_VALUE;
 
 	/**
+	 * Create an extension id for the given extension point id.
+	 * 
 	 * @param extensionPointId
 	 */
 	public ExtensionId(String extensionPointId) {
@@ -67,6 +69,10 @@ public class ExtensionId {
 	}
 
 	/**
+	 * Define the interface type used as a bean for injecting. <br>
+	 * If not defined the extension injector tries to figure it out by
+	 * reflection and the name of the ´bind´ method.
+	 * 
 	 * @param interfaceType
 	 * @return
 	 */
@@ -79,6 +85,8 @@ public class ExtensionId {
 	}
 
 	/**
+	 * Inject the ´extensions´ into the specified target object.
+	 * 
 	 * @param target
 	 */
 	public ExtensionInjector injectInto(Object target) {
@@ -87,6 +95,11 @@ public class ExtensionId {
 	}
 
 	/**
+	 * Defines the minimum and the maximum occurrences of extensions allowed for
+	 * the extension point. These values should correspond to the definitions
+	 * within the extension point schema.<br>
+	 * Future implementations might retrieve these values from the schema.
+	 * 
 	 * @param min
 	 * @param max
 	 * @return
@@ -101,6 +114,9 @@ public class ExtensionId {
 	}
 
 	/**
+	 * Defines that the minimum and the maximum occurrences of extensions is the
+	 * same.
+	 * 
 	 * @param exactly
 	 * @return
 	 */

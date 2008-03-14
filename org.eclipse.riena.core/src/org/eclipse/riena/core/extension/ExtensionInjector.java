@@ -60,11 +60,21 @@ public class ExtensionInjector {
 		this.target = target;
 	}
 
+	/**
+	 * Start the extension injector.<br>
+	 * Started with this the extension injector will NOT modify the values with
+	 * ConfigurationPlugin.
+	 * 
+	 * @return
+	 */
 	public ExtensionInjector andStart() {
 		return andStart(null);
 	}
 
 	/**
+	 * Start the extension injector.<br>
+	 * Started with this the extension injector WILL modify the values with
+	 * ConfigurationPlugin.
 	 * 
 	 * @param context
 	 */
@@ -95,7 +105,10 @@ public class ExtensionInjector {
 	}
 
 	/**
-	 * @param updateMethodName
+	 * Define the bind method name.<br>
+	 * If not given ´update´ will be assumed.
+	 * 
+	 * @param bindMethodName
 	 */
 	public ExtensionInjector bind(String bindMethodName) {
 		Assert.isNotNull(bindMethodName, "Bind method name must not be null");
@@ -105,6 +118,8 @@ public class ExtensionInjector {
 	}
 
 	/**
+	 * Explicitly forbid tracking of changes of the extensions.
+	 * 
 	 * @return
 	 */
 	public ExtensionInjector doNotTrack() {
@@ -115,7 +130,7 @@ public class ExtensionInjector {
 	}
 
 	/**
-	 * 
+	 * Stop the extension injector.
 	 */
 	public void stop() {
 		if (!started)
