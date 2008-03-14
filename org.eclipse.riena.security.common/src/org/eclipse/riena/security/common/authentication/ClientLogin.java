@@ -68,6 +68,11 @@ public class ClientLogin {
 				throw new AuthenticationFailure("no authentication service");
 			}
 			ticket = authenticationService.login(loginContext, creds);
+			subject = new Subject();
+			for (Principal principal : ticket.getPrincipals()) {
+				subject.getPrincipals().add(principal);
+			}
+			subjectHolderService.fetchSubjectHolder().setSubject(subject);
 			return true;
 		} catch (AuthenticationFailure failure) {
 			throw new LoginException(failure.getMessage());
