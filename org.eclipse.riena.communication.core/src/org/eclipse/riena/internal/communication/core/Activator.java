@@ -13,14 +13,14 @@ package org.eclipse.riena.internal.communication.core;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.extension.util.ExtensionUtility;
+import org.eclipse.riena.core.extension.ExtensionId;
+import org.eclipse.riena.core.extension.ExtensionInjector;
 import org.eclipse.riena.core.service.ServiceId;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -36,6 +36,7 @@ public class Activator extends RienaActivator {
 	private static Activator plugin;
 
 	private ServiceReference sslConfigServiceReference;
+	private ExtensionInjector sslInjector;
 
 	/*
 	 * (non-Javadoc)
@@ -72,13 +73,12 @@ public class Activator extends RienaActivator {
 		// SSL configuration
 		context.registerService(SSLConfiguration.class.getName(), new SSLConfiguration(), ServiceId
 				.newDefaultServiceProperties());
-		ISSLProperties[] sslProperties = ExtensionUtility.readExtensions(ISSLProperties.EXTENSION_POINT_ID,
-				ISSLProperties.class);
-		Assert.isTrue(sslProperties.length < 2, "SSL properties either 0 or 1"); //$NON-NLS-1$
-		if (sslProperties.length == 1) {
-			sslConfigServiceReference = context.getServiceReference(SSLConfiguration.class.getName());
-			SSLConfiguration config = (SSLConfiguration) context.getService(sslConfigServiceReference);
-			config.configure(sslProperties[0]);
+		sslConfigServiceReference = context.getServiceReference(SSLConfiguration.class.getName());
+		SSLConfiguration config = (SSLConfiguration) context.getService(sslConfigServiceReference);
+		if (config != null) {
+			sslInjector = new ExtensionId(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).injectInto(config)
+					.bind("configure");
+			sslInjector.andStart();
 		}
 	}
 
@@ -88,6 +88,8 @@ public class Activator extends RienaActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		if (sslInjector != null)
+			sslInjector.stop();
 		if (sslConfigServiceReference != null)
 			context.ungetService(sslConfigServiceReference);
 		plugin = null;
