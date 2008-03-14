@@ -60,9 +60,9 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			// set the create proxy as service instance
 			serviceReference.setServiceInstance(service);
 			// the hessian proxy factory also implements ManagedService
-			if (endpoint.getConfigid() != null) {
+			if (endpoint.getConfigPID() != null) {
 				serviceReference.setConfigServiceInstance(mhpf);
-				serviceReference.setConfigServicePID(endpoint.getConfigid());
+				serviceReference.getDescription().setConfigPID(endpoint.getConfigPID());
 			}
 			return serviceReference;
 		} catch (MalformedURLException e) {
