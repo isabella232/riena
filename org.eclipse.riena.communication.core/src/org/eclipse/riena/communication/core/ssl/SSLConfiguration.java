@@ -64,13 +64,17 @@ public class SSLConfiguration {
 	public void configure(ISSLProperties properties) {
 		configured = false;
 
-		protocol = properties.getProtocol();
-		keystore = properties.getKeystore();
-		password = properties.getPassword();
-
 		LOGGER
 				.log(LogService.LOG_INFO, "Configuring SSL protocol '" + protocol + "' with keystore '" + keystore
 						+ "'.");
+
+		if (properties == null) {
+			LOGGER.log(LogService.LOG_INFO, "No configuration given!.");
+			return;
+		}
+		protocol = properties.getProtocol();
+		keystore = properties.getKeystore();
+		password = properties.getPassword();
 
 		// Check protocol & keystore
 		if (keystore == null || keystore.length() == 0 || protocol == null || protocol.length() == 0) {
