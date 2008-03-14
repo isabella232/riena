@@ -113,7 +113,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 * @return string representation of object
 	 */
 	public String toString() {
-		return "(" + this.getClass().getName() + ":" + name + ")";
+		return "(" + this.getClass().getSimpleName() + ":" + name + ")";
 	}
 
 }
