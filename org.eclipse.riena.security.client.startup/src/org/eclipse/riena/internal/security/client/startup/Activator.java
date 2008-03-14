@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends RienaActivator {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.security.client.startup";
+	public static final String PLUGIN_ID = "org.eclipse.riena.security.client.startup"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -36,10 +36,12 @@ public class Activator extends RienaActivator {
 		plugin = this;
 
 		authenticationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://${securityhost}/hessian/AuthenticationService", "hessian", "org.eclipse.riena.security.authentication.config");
+				"http://${securityhost}/hessian/AuthenticationService", "hessian", //$NON-NLS-1$ //$NON-NLS-2$
+				"org.eclipse.riena.security.authentication.config"); //$NON-NLS-1$
 
-		authorizationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class, "hessian",
-				"http://${securityhost}/hessian/AuthorizazionServiceWS", "org.eclipse.riena.security.authorizationservice.config");
+		authorizationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class, "hessian", //$NON-NLS-1$
+				"http://${securityhost}/hessian/AuthorizazionServiceWS", //$NON-NLS-1$
+				"org.eclipse.riena.security.authorizationservice.config"); //$NON-NLS-1$
 	}
 
 	/*
