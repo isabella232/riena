@@ -25,7 +25,6 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	private ServiceRegistration serviceRegistration;
 	private RemoteServiceDescription description;
 	private ManagedService configServiceInstance;
-	private String configServicePID;
 	private ServiceRegistration configServiceRegistration;
 	private String hostId;
 
@@ -139,22 +138,13 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 		return configServiceInstance;
 	}
 
-	/**
-	 * @param configServiceInstance
-	 *            Service Instance of the ManagedService that can handle this
-	 *            remote service reference
-	 */
-	public void setConfigServiceInstance(ManagedService configServiceInstance) {
-		this.configServiceInstance = configServiceInstance;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getConfigServicePID()
+	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#setConfigServiceInstance(org.osgi.service.cm.ManagedService)
 	 */
-	public String getConfigServicePID() {
-		return configServicePID;
+	public void setConfigServiceInstance(ManagedService configServiceInstance) {
+		this.configServiceInstance = configServiceInstance;
 	}
 
 	/*
@@ -173,14 +163,6 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 */
 	public void setConfigServiceRegistration(ServiceRegistration configServiceRegistration) {
 		this.configServiceRegistration = configServiceRegistration;
-	}
-
-	/**
-	 * @param configServicePID
-	 *            sets the ServicePID for the ManagedService entry
-	 */
-	public void setConfigServicePID(String configServicePID) {
-		this.configServicePID = configServicePID;
 	}
 
 	@Override

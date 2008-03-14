@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.core;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.ssl.ISSLProperties;
@@ -22,8 +24,10 @@ import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.extension.ExtensionId;
 import org.eclipse.riena.core.extension.ExtensionInjector;
 import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
 /**
@@ -34,6 +38,8 @@ import org.osgi.service.log.LogService;
 public class Activator extends RienaActivator {
 
 	private static Activator plugin;
+	private RemoteServiceRegistry serviceRegistry;
+	private ServiceRegistration regServiceRegistry;
 
 	private ServiceReference sslConfigServiceReference;
 	private ExtensionInjector sslInjector;
@@ -46,6 +52,12 @@ public class Activator extends RienaActivator {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		serviceRegistry = new RemoteServiceRegistry();
+		serviceRegistry.start();
+
+		Hashtable<String, Object> properties = ServiceId.newDefaultServiceProperties();
+		regServiceRegistry = context.registerService(IRemoteServiceRegistry.ID, serviceRegistry, properties);
 
 		final Logger logger = getLogger(Activator.class.getName());
 		context.registerService(ICallHook.ID, new ICallHook() {
@@ -92,6 +104,13 @@ public class Activator extends RienaActivator {
 			sslInjector.stop();
 		if (sslConfigServiceReference != null)
 			context.ungetService(sslConfigServiceReference);
+
+		regServiceRegistry.unregister();
+		regServiceRegistry = null;
+
+		serviceRegistry.stop();
+		serviceRegistry = null;
+
 		plugin = null;
 
 		super.stop(context);

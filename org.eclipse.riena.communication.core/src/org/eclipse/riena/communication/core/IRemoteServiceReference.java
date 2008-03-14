@@ -101,9 +101,11 @@ public interface IRemoteServiceReference {
 	ManagedService getConfigServiceInstance();
 
 	/**
-	 * @return the ServicePID for the ConfigService Instance
+	 * @param configServiceInstance
+	 *            Service Instance of the ManagedService that can handle this
+	 *            remote service reference
 	 */
-	String getConfigServicePID();
+	void setConfigServiceInstance(ManagedService configServiceInstance);
 
 	/**
 	 * @param configServiceRegistration

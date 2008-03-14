@@ -299,11 +299,11 @@ public class RemoteServiceDescription {
 		this.url = url;
 	}
 
-	public String getConfigid() {
+	public String getConfigPID() {
 		return configid;
 	}
 
-	public void setConfigid(String configid) {
+	public void setConfigPID(String configid) {
 		this.configid = configid;
 	}
 
