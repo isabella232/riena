@@ -122,20 +122,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.riena.security.authenticationservice"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.M1"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.riena.security.authorizationservice"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.M1"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.riena.security.common"
          download-size="0"
          install-size="0"
@@ -151,20 +137,6 @@
 
    <plugin
          id="org.eclipse.riena.security.server"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.M1"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.riena.security.services.config"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.M1"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.riena.security.sessionservice"
          download-size="0"
          install-size="0"
          version="1.0.0.M1"
@@ -216,7 +188,21 @@
          id="org.eclipse.riena.objecttransaction"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.M1"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.security.services"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.M1"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.security.simpleservices"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.M1"
          unpack="false"/>
 
 </feature>
