@@ -123,7 +123,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		Assert.isNotNull(object, "object must not be null");
 		// objects can only be registered once, so check if is already
 		// registered
-		Assert.isTrue((object.getObjectId() != null && !isRegistered(object)) || object.getObjectId() == null, "object cannot be registered a second time");
+		Assert.isTrue((object.getObjectId() != null && !isRegistered(object)) || object.getObjectId() == null,
+				"object cannot be registered a second time");
 		if (isInvalid()) {
 			throw new InvalidTransactionFailure("object transaction is invalid");
 		}
@@ -200,7 +201,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 					if (child instanceof IObjectId) {
 						child = lookupObjectById((IObjectId) child);
 					}
-					if (child instanceof ITransactedObject && !(extract.contains(((ITransactedObject) child).getObjectId()))) {
+					if (child instanceof ITransactedObject
+							&& !(extract.contains(((ITransactedObject) child).getObjectId()))) {
 						extract.addCleanTransactedObject((ITransactedObject) child);
 					}
 				} else {
@@ -220,7 +222,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 							}
 						}
 					} else {
-						throw new ObjectTransactionFailure("unknown change typ (not single and not multi reference change)");
+						throw new ObjectTransactionFailure(
+								"unknown change typ (not single and not multi reference change)");
 					}
 				}
 			}
@@ -279,7 +282,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 						}
 					}
 					if (!isRegistered) {
-						throw new InvalidTransactionFailure("reference target object " + child + " must be registered before import");
+						throw new InvalidTransactionFailure("reference target object " + child
+								+ " must be registered before import");
 					}
 				} else {
 					if (change instanceof MultipleChange) {
@@ -297,11 +301,13 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 								}
 							}
 							if (!isRegistered) {
-								throw new InvalidTransactionFailure("reference target object " + mChild + " must be registered before import");
+								throw new InvalidTransactionFailure("reference target object " + mChild
+										+ " must be registered before import");
 							}
 						}
 					} else {
-						throw new ObjectTransactionFailure("unknown change typ (not single and not multi reference change)");
+						throw new ObjectTransactionFailure(
+								"unknown change typ (not single and not multi reference change)");
 					}
 				}
 			}
@@ -334,7 +340,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (preRegisteredCleanObjects != null && preRegisteredCleanObjects.size() > 0) {
 			for (ITransactedObject object : preRegisteredCleanObjects) {
 				if (object.getObjectId() != null) {
-					throw new InvalidTransactionFailure("internal error, preregistered object found with ObjectId " + object);
+					throw new InvalidTransactionFailure("internal error, preregistered object found with ObjectId "
+							+ object);
 				} else {
 					throw new InvalidTransactionFailure("missing object id for object " + object);
 				}
@@ -343,7 +350,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 
 	}
 
-	private void importExtractInternal(IObjectTransactionExtract extract, boolean importClean) throws InvalidTransactionFailure {
+	private void importExtractInternal(IObjectTransactionExtract extract, boolean importClean)
+			throws InvalidTransactionFailure {
 		if (isInvalid()) {
 			throw new InvalidTransactionFailure("object transaction is invalid");
 		}
@@ -374,7 +382,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 					versionChange = (String) delta.getSingleRefObject("sys::version");
 				}
 				if (this.involvedTransactedObjects.get(objectId) == null) {
-					throw new ObjectTransactionFailure("ObjectIds for all imported deltas must exist in objectTransaction, not found=" + delta);
+					throw new ObjectTransactionFailure(
+							"ObjectIds for all imported deltas must exist in objectTransaction, not found=" + delta);
 				} else {
 					if (newObjectId != null) {
 						changeObjectId(objectId, newObjectId);
@@ -386,7 +395,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 					}
 					// copy involved objects from this transaction and add
 					// deltas to subtransaction
-					tempSubTransaction.involvedTransactedObjects.put(objectId, this.involvedTransactedObjects.get(objectId));
+					tempSubTransaction.involvedTransactedObjects.put(objectId, this.involvedTransactedObjects
+							.get(objectId));
 					tempSubTransaction.changesInTransaction.put(objectId, delta);
 				}
 			}
@@ -474,7 +484,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	public void setReference(ITransactedObject object, String refName, Object newValue) {
 		Assert.isNotNull(object, "object must not be null");
 		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
-		Assert.isTrue(!(newValue instanceof ITransactedObject), "setReference for Object must not pass a \"hidden\" ITransactedObject");
+		Assert.isTrue(!(newValue instanceof ITransactedObject),
+				"setReference for Object must not pass a \"hidden\" ITransactedObject");
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
 			Assert.isTrue(isRegistered(object), "object must be registered");
@@ -508,7 +519,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	public Object getReference(ITransactedObject object, String refName, Object defaultValue) {
 		Assert.isNotNull(object, "object must not be null");
 		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
-		Assert.isTrue(!(defaultValue instanceof ITransactedObject), "getReference for Object must not pass a \"hidden\" ITransactedObject for defaultValue");
+		Assert.isTrue(!(defaultValue instanceof ITransactedObject),
+				"getReference for Object must not pass a \"hidden\" ITransactedObject for defaultValue");
 		checkPreRegisteredClean();
 		if (isCleanModus() || (!isStrictModus() && !isRegistered(object))) {
 			return defaultValue;
@@ -554,7 +566,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
 			Assert.isTrue(isRegistered(object), "object must be registered");
-			Assert.isTrue(refObject == null || (refObject.getObjectId() != null && isRegistered(refObject)), "invalid refObject");
+			Assert.isTrue(refObject == null || (refObject.getObjectId() != null && isRegistered(refObject)),
+					"invalid refObject");
 		}
 
 		if (isInvalid()) {
@@ -593,7 +606,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      java.lang.String,
 	 *      org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
-	public ITransactedObject getReference(ITransactedObject object, String relationName, ITransactedObject defaultRefObject) {
+	public ITransactedObject getReference(ITransactedObject object, String relationName,
+			ITransactedObject defaultRefObject) {
 		Assert.isNotNull(object, "object must not be null");
 		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
 		checkPreRegisteredClean();
@@ -601,7 +615,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 			return defaultRefObject;
 		}
 		Assert.isTrue(isRegistered(object), "object must be registered");
-		Assert.isTrue(defaultRefObject == null || (defaultRefObject.getObjectId() != null && isRegistered(defaultRefObject)),
+		Assert.isTrue(defaultRefObject == null
+				|| (defaultRefObject.getObjectId() != null && isRegistered(defaultRefObject)),
 				"invalid defaultRefObject (is null, has no ObjectId or is not registered)");
 		if (isInvalid()) {
 			throw new InvalidTransactionFailure("object transaction is invalid");
@@ -996,7 +1011,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 			ITransactedObject object = preRegisteredCleanObjects.get(i);
 			if (object.getObjectId() != null) {
 				preRegisteredCleanObjects.remove(object);
-				changesInTransaction.put(object.getObjectId(), new TransactionDelta(object.getObjectId(), State.CLEAN, object.getVersion()));
+				changesInTransaction.put(object.getObjectId(), new TransactionDelta(object.getObjectId(), State.CLEAN,
+						object.getVersion()));
 				keepReferenceOf(object);
 				i = i - 1;
 			}
@@ -1058,8 +1074,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		for (ITransactedObject transObject : involvedTransactedObjects.values()) {
 			if (!(parentTransaction.involvedTransactedObjects.get(transObject.getObjectId()) != null)) {
 				parentTransaction.involvedTransactedObjects.put(transObject.getObjectId(), transObject);
-				parentTransaction.changesInTransaction.put(transObject.getObjectId(), new TransactionDelta(transObject.getObjectId(), State.CLEAN, transObject
-						.getVersion()));
+				parentTransaction.changesInTransaction.put(transObject.getObjectId(), new TransactionDelta(transObject
+						.getObjectId(), State.CLEAN, transObject.getVersion()));
 			}
 		}
 		for (TransactionDelta delta : changesInTransaction.values()) {
@@ -1071,16 +1087,17 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 			}
 			for (AbstractBaseChange cEntry : delta.getChanges().values()) {
 				if (cEntry instanceof SingleChange) {
-					parentTransaction.setReference(usedObject, ((SingleChange) cEntry).getRelationName(), ((SingleChange) cEntry).getChildObject());
+					parentTransaction.setReference(usedObject, ((SingleChange) cEntry).getRelationName(),
+							((SingleChange) cEntry).getChildObject());
 				} else {
 					List<MultipleChangeEntry> changes = ((MultipleChange) cEntry).getEntries();
 					for (MultipleChangeEntry singleEntry : changes) {
 						if (singleEntry.getState().equals(State.ADDED)) {
-							parentTransaction.addReference(usedObject, ((MultipleChange) cEntry).getRelationName(), lookupObjectById((IObjectId) singleEntry
-									.getChildObject()));
+							parentTransaction.addReference(usedObject, ((MultipleChange) cEntry).getRelationName(),
+									lookupObjectById((IObjectId) singleEntry.getChildObject()));
 						} else if (singleEntry.getState().equals(State.REMOVED)) {
-							parentTransaction.removeReference(usedObject, ((MultipleChange) cEntry).getRelationName(), lookupObjectById((IObjectId) singleEntry
-									.getChildObject()));
+							parentTransaction.removeReference(usedObject, ((MultipleChange) cEntry).getRelationName(),
+									lookupObjectById((IObjectId) singleEntry.getChildObject()));
 						} else {
 							throw new InvalidTransactionFailure("state is not ADD and not REMOVED for " + singleEntry);
 						}
@@ -1088,7 +1105,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 				}
 			}
 			if (!(delta.getState().equals(State.CLEAN))) {
-				parentTransaction.setObjectState(usedObject, StateMachine.mergeStates(parentTransaction.getObjectState(usedObject), delta.getState()));
+				parentTransaction.setObjectState(usedObject, StateMachine.mergeStates(parentTransaction
+						.getObjectState(usedObject), delta.getState()));
 			}
 		}
 	}
@@ -1140,7 +1158,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (!superClass.equals(Object.class)) {
 			return findMethod(superClass, name, methodPrefix, arg);
 		}
-		throw new ObjectTransactionFailure("ITransactedObject " + clazz + " must have method " + methodName + " but lookup fails.");
+		throw new ObjectTransactionFailure("ITransactedObject " + clazz + " must have method " + methodName
+				+ " but lookup fails.");
 	}
 
 	/**
@@ -1190,9 +1209,11 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 						setMethod.invoke(usedObject, new Object[] { value });
 						cleanModus = false;
 					} catch (IllegalAccessException e) {
-						throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object " + usedObject, e);
+						throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object "
+								+ usedObject, e);
 					} catch (InvocationTargetException e2) {
-						throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName + " in object " + usedObject, e2);
+						throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName
+								+ " in object " + usedObject, e2);
 					}
 
 				} else {
@@ -1220,9 +1241,11 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 						}
 						cleanModus = false;
 					} catch (IllegalAccessException e) {
-						throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object " + usedObject, e);
+						throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object "
+								+ usedObject, e);
 					} catch (InvocationTargetException e2) {
-						throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName + " in object " + usedObject, e2);
+						throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName
+								+ " in object " + usedObject, e2);
 					}
 				}
 			}
@@ -1241,8 +1264,12 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 
 		// only clear the delta changes, keep the referenced transacted objects
 		changesInTransaction = new HashMap<IObjectId, TransactionDelta>();
-		for (ITransactedObject object : involvedTransactedObjects.values()) {
-			setObjectState(object, State.CLEAN);
+		Collection<ITransactedObject> transactedObject = involvedTransactedObjects.values();
+		if (transactedObject != null) {
+			ITransactedObject[] arrayValues = transactedObject.toArray(new ITransactedObject[transactedObject.size()]);
+			for (ITransactedObject object : arrayValues) {
+				setObjectState(object, State.CLEAN);
+			}
 		}
 	}
 
@@ -1294,10 +1321,13 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public void replaceRegisteredObject(IObjectId objectId, ITransactedObject transactedObject) {
-		Assert.isTrue(objectId.equals(transactedObject.getObjectId()), "oldObjectId and new transactedobject must have the an 'equal' OID");
+		Assert.isTrue(objectId.equals(transactedObject.getObjectId()),
+				"oldObjectId and new transactedobject must have the an 'equal' OID");
 		ITransactedObject tObject = involvedTransactedObjects.get(objectId);
-		Assert.isTrue(transactedObject != tObject,
-				"object instances of the existing registered transacted object and the new object must not be the same or this call is meaningless");
+		Assert
+				.isTrue(
+						transactedObject != tObject,
+						"object instances of the existing registered transacted object and the new object must not be the same or this call is meaningless");
 		if (tObject != null) {
 			involvedTransactedObjects.put(tObject.getObjectId(), transactedObject);
 		}
