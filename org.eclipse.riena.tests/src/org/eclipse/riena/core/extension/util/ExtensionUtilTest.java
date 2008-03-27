@@ -43,6 +43,8 @@ public class ExtensionUtilTest extends RienaTestCase {
 				}
 			}
 		}
+		removeExtension("core.test.extpoint.id1");
+		removeExtension("core.test.extpoint.id2");
 		removeExtensionPoint("core.test.extpoint");
 	}
 
@@ -53,6 +55,8 @@ public class ExtensionUtilTest extends RienaTestCase {
 		assertFalse(tests == null);
 		assertTrue(tests instanceof ITest[]);
 		assertTrue(tests.length == 0);
+		removeExtension("core.test.extpoint.id1");
+		removeExtension("core.test.extpoint.id2");
 		removeExtensionPoint("core.test.extpoint");
 	}
 }
