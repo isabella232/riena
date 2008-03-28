@@ -100,7 +100,9 @@ public class LogUtil {
 				return;
 			// TODO remove SysoLogListener if we have Log4jLogListener
 			logListeners.add(new SysoLogListener());
-			logListeners.add(new Log4jLogListener());
+			// TODO this is commented until we resolved the problem with build
+			// with log4j
+			// logListeners.add(new Log4jLogListener());
 
 			new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).andStart(context);
 			new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).andStart(context);
