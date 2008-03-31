@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.sample;
 
-import org.eclipse.riena.sample.app.common.model.CustomersPermission;
-
 import junit.framework.TestCase;
+
+import org.eclipse.riena.sample.app.common.model.CustomersPermission;
 
 /**
  * @author christian

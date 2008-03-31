@@ -20,8 +20,6 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.core.util.Iter;
-
 /**
  * Test the Iter class
  */

@@ -11,8 +11,6 @@
 package org.eclipse.riena.core.exception;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.exception.IExceptionHandler;
-import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
 
 
