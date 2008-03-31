@@ -17,9 +17,9 @@ import org.eclipse.osgi.framework.console.CommandProvider;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.logging.LogUtil;
-import org.eclipse.riena.core.service.Injector;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.service.ServiceInjector;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -27,8 +27,8 @@ import org.osgi.framework.ServiceRegistration;
 public class Activator implements BundleActivator {
 
 	private ServiceRegistration consoleReg;
-	private Injector publisherInjector;
-	private Injector registryInjector;
+	private ServiceInjector publisherInjector;
+	private ServiceInjector registryInjector;
 	private LogUtil logUtil;
 	private static BundleContext CONTEXT;
 	private static Activator plugin;
@@ -46,9 +46,9 @@ public class Activator implements BundleActivator {
 		// the filter applies only if the service is living in this container
 		// e.g. server.
 		String filter = "(" + RSDPublisherProperties.PROP_IS_REMOTE + "=true)";
-		publisherInjector = new ServiceId(IServicePublishEventDispatcher.ID).useRanking().useFilter(filter).injectInto(
+		publisherInjector = Inject.service(IServicePublishEventDispatcher.ID).useRanking().useFilter(filter).into(
 				console).andStart(context);
-		registryInjector = new ServiceId(IRemoteServiceRegistry.ID).useRanking().injectInto(console).andStart(context);
+		registryInjector = Inject.service(IRemoteServiceRegistry.ID).useRanking().into(console).andStart(context);
 
 		consoleReg = context.registerService(CommandProvider.class.getName(), console, new Hashtable<String, String>());
 	}

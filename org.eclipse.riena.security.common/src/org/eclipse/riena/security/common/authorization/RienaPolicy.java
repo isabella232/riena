@@ -21,7 +21,7 @@ import java.security.Principal;
 import java.security.ProtectionDomain;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.osgi.service.log.LogService;
 
@@ -38,7 +38,7 @@ public class RienaPolicy extends Policy {
 
 	public RienaPolicy() {
 		super();
-		new ServiceId(IPermissionCache.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		Inject.service(IPermissionCache.ID).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IPermissionCache permCache) {

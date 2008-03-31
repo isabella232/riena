@@ -21,9 +21,9 @@ import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.extension.ExtensionId;
 import org.eclipse.riena.core.extension.ExtensionInjector;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -56,7 +56,7 @@ public class Activator extends RienaActivator {
 		serviceRegistry = new RemoteServiceRegistry();
 		serviceRegistry.start();
 
-		Hashtable<String, Object> properties = ServiceId.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		regServiceRegistry = context.registerService(IRemoteServiceRegistry.ID, serviceRegistry, properties);
 
 		final Logger logger = getLogger(Activator.class.getName());
@@ -83,13 +83,13 @@ public class Activator extends RienaActivator {
 		// SymbolConfigPlugin(), null);
 
 		// SSL configuration
-		context.registerService(SSLConfiguration.class.getName(), new SSLConfiguration(), ServiceId
+		context.registerService(SSLConfiguration.class.getName(), new SSLConfiguration(), ServiceDescriptor
 				.newDefaultServiceProperties());
 		sslConfigServiceReference = context.getServiceReference(SSLConfiguration.class.getName());
 		SSLConfiguration config = (SSLConfiguration) context.getService(sslConfigServiceReference);
 		if (config != null) {
-			sslInjector = new ExtensionId(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).injectInto(config)
-					.bind("configure");
+			sslInjector = Inject.extension(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).into(config).bind(
+					"configure");
 			sslInjector.andStart();
 		}
 	}

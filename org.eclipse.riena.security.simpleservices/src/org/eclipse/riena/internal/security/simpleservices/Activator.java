@@ -3,7 +3,7 @@ package org.eclipse.riena.internal.security.simpleservices;
 import java.io.InputStream;
 
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.security.authorizationservice.IPermissionStore;
 import org.eclipse.riena.security.sessionservice.ISessionStore;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
@@ -39,12 +39,12 @@ public class Activator extends RienaActivator {
 		super.start(context);
 		plugin = this;
 		// bring up a simple in memory session store
-		memoryStore = getContext().registerService(ISessionStore.ID, new MemoryStore(), ServiceId.newDefaultServiceProperties());
+		memoryStore = getContext().registerService(ISessionStore.ID, new MemoryStore(), ServiceDescriptor.newDefaultServiceProperties());
 
 		// bring up a simple authorization store for permissions
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def.xml");
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		filepermissionstore = context.registerService(IPermissionStore.ID, store, ServiceId.newDefaultServiceProperties());
+		filepermissionstore = context.registerService(IPermissionStore.ID, store, ServiceDescriptor.newDefaultServiceProperties());
 
 	}
 

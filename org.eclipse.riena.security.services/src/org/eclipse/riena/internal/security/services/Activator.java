@@ -3,7 +3,7 @@ package org.eclipse.riena.internal.security.services;
 import java.util.Hashtable;
 
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.security.authenticationservice.AuthenticationService;
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.security.sessionservice.SessionService;
@@ -47,28 +47,28 @@ public class Activator extends RienaActivator {
 		plugin = this;
 
 		// register AuthenticationService
-		Hashtable<String, Object> properties = ServiceId.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
 		properties.put("riena.remote.protocol", "hessian");
 		properties.put("riena.remote.path", IAuthenticationService.WS_ID);
 		authenticationService = getContext().registerService(IAuthenticationService.ID, new AuthenticationService(), properties);
 
 		// register SessionService
-		properties = ServiceId.newDefaultServiceProperties();
+		properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
 		properties.put("riena.remote.protocol", "hessian");
 		properties.put("riena.remote.path", ISessionService.WS_ID);
 		sessionService = getContext().registerService(ISessionService.ID, new SessionService(), properties);
 
 		// register AuthorizationService
-		properties = ServiceId.newDefaultServiceProperties();
+		properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
 		properties.put("riena.remote.protocol", "hessian");
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID);
 		authorizationService = getContext().registerService(IAuthorizationService.ID, new AuthorizationService(), properties);
 
 		// register SessionProvider
-		sessionProvider = getContext().registerService(ISessionProvider.ID, new SessionProvider(), ServiceId.newDefaultServiceProperties());
+		sessionProvider = getContext().registerService(ISessionProvider.ID, new SessionProvider(), ServiceDescriptor.newDefaultServiceProperties());
 
 	}
 

@@ -22,8 +22,9 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.service.Injector;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.service.ServiceDescriptor;
+import org.eclipse.riena.core.service.ServiceInjector;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
@@ -33,7 +34,7 @@ import org.osgi.service.log.LogService;
 public class Activator extends RienaActivator {
 
 	private ServicePublishEventDispatcher dispatcher;
-	private Injector publisherInjector;
+	private ServiceInjector publisherInjector;
 	private UpdateNotifierRemoteService updateNotifierRemoteService;
 	private static Activator plugin;
 	private static Logger logger;
@@ -47,11 +48,11 @@ public class Activator extends RienaActivator {
 
 		logger = getLogger(Activator.class.getName());
 		dispatcher = new ServicePublishEventDispatcher(context);
-		publisherInjector = new ServiceId(IServicePublisher.ID).useRanking().injectInto(dispatcher).andStart(context);
+		publisherInjector = Inject.service(IServicePublisher.ID).useRanking().into(dispatcher).andStart(context);
 
 		// register as OSGi service, the start will pick up the OSGi service and
 		// publish it
-		Dictionary<String, Object> properties = ServiceId.newDefaultServiceProperties();
+		Dictionary<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");

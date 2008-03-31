@@ -22,7 +22,7 @@ import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.core.Activator;
 
 public class CallHooksProxy extends AbstractHooksProxy {
@@ -33,7 +33,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 
 	public CallHooksProxy(Object proxiedInstance) {
 		super(proxiedInstance);
-		new ServiceId(ICallHook.ID).injectInto(this).andStart(Activator.getContext());
+		Inject.service(ICallHook.ID).into(this).andStart(Activator.getContext());
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

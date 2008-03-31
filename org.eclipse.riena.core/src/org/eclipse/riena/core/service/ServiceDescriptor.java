@@ -16,25 +16,23 @@ import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.Constants;
 
 /**
- * ServiceId and Injector simplify finding of OSGi Services and injects them
- * into a target object. To do so the Injector contains a service tracker
- * listening to appearing and disappearing services and injects them into the
- * target. A target object defines named and typed bind and unbind methods. The
- * Injector calls the bind method when the specified service was registered or
- * modified. Injector calls the unbind method when the specified service becomes
- * unregistered.
+ * ServiceDescriptor and ServiceInjector simplify finding of OSGi Services and
+ * injects them into a target object. To do so the ServiceInjector contains a
+ * service tracker listening to appearing and disappearing services and injects
+ * them into the target. A target object defines named and typed bind and unbind
+ * methods. The ServiceInjector calls the bind method when the specified service
+ * was registered or modified. ServiceInjector calls the unbind method when the
+ * specified service becomes unregistered.
  * <p>
  * The service injector tracks the specified OSGi Service with {@link #start()}
  * and stops tracking with {@link #stop()}.
  * <p>
- * The ServiceId and Injector are implemented as a ´fluent interface´ allowing
- * constructs like:
+ * The ServiceDescriptor and ServiceInjector are implemented as a ´fluent
+ * interface´ allowing constructs like:
  * <ol>
- * <li>new ServiceId("id1").injectInto(target).andStart(context)</li>
- * <li>new
- * ServiceId("id2").useFilter(filter).injectInto(target).bind("register").unbind("unregister").andStart(context)</li>
- * <li>new
- * ServiceId("id3").useRanking().injectInto(target).bind("register").unbind("unregister").andStart(context)</li>
+ * <li>Inject.service("id1").into(target).andStart(context)</li>
+ * <li>Inject.service("id2").useFilter(filter).into(target).bind("register").unbind("unregister").andStart(context)</li>
+ * <li>Inject.service("id3").useRanking().into(target).bind("register").unbind("unregister").andStart(context)</li>
  * <li>..</li>
  * </ol>
  * <p>
@@ -52,27 +50,27 @@ import org.osgi.framework.Constants;
  * same name but with different signatures. The injector takes responsibility
  * for choosing the appropriate bind/unbind methods.
  */
-public class ServiceId {
+public class ServiceDescriptor {
 
 	/**
 	 * Default service ranking for all riena services.
 	 */
 	public final static Integer DEFAULT_RANKING = -100;
 
-	private String serviceId;
+	private String clazz;
 	private boolean ranking;
 	private String filter;
 
 	/**
-	 * Create a service id.
+	 * Create a service descriptor.
 	 * 
 	 * @throws some_kind_of_unchecked_exception
-	 *             if service id is null.
-	 * @param serviceId
+	 *             if service descriptor is null.
+	 * @param clazz
 	 */
-	public ServiceId(String serviceId) {
-		Assert.isNotNull(serviceId, "Service id must not be null.");
-		this.serviceId = serviceId;
+	public ServiceDescriptor(String clazz) {
+		Assert.isNotNull(clazz, "Service clazz must not be null.");
+		this.clazz = clazz;
 	}
 
 	/**
@@ -81,9 +79,9 @@ public class ServiceId {
 	 * 
 	 * @throws some_kind_of_unchecked_exception
 	 *             if a filter has already been set.
-	 * @return this service id
+	 * @return this service descriptor
 	 */
-	public ServiceId useFilter(String filter) {
+	public ServiceDescriptor useFilter(String filter) {
 		Assert.isTrue(this.filter == null, "Filter has already been set!");
 		Assert.isNotNull(filter, "Filter must not be null.");
 		this.filter = filter;
@@ -96,23 +94,23 @@ public class ServiceId {
 	 * 
 	 * @throws some_kind_of_unchecked_exception
 	 *             if ranking has already been activated
-	 * @return this service id
+	 * @return this service descriptor
 	 */
-	public ServiceId useRanking() {
+	public ServiceDescriptor useRanking() {
 		Assert.isTrue(!ranking, "Ranking has already been set!");
 		ranking = true;
 		return this;
 	}
 
 	/**
-	 * Inject this service id into the specified target.
+	 * Inject this service descriptor into the specified target.
 	 * 
 	 * @param target
 	 * @throws some_kind_of_unchecked_exception
 	 *             on target == null
-	 * @return the injector responsible for tracking this service id
+	 * @return the injector responsible for tracking this service descriptor
 	 */
-	public Injector injectInto(Object target) {
+	public ServiceInjector into(Object target) {
 		Assert.isNotNull(target, "Target must not be null.");
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
 	}
@@ -134,8 +132,8 @@ public class ServiceId {
 	/**
 	 * @return
 	 */
-	String getServiceId() {
-		return serviceId;
+	String getServiceClazz() {
+		return clazz;
 	}
 
 	/**

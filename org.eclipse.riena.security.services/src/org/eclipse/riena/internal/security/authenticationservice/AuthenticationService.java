@@ -28,7 +28,7 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
@@ -72,11 +72,11 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public AuthenticationService() {
 		super();
-		new ServiceId(ISessionService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISubjectHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		Inject.service(ISessionService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISubjectHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
 		// new
-		// ServiceId(IAuthenticationModule.ID).injectInto(this).start(Activator.getContext());
-		new ServiceId(ISessionHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		// ServiceDescriptor(IAuthenticationModule.ID).injectInto(this).start(Activator.getContext());
+		Inject.service(ISessionHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(ISessionService sessionService) {
@@ -125,7 +125,8 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see org.eclipse.riena.security.common.authentication.IAuthenticationService#login(java.lang.String,
 	 *      org.eclipse.riena.security.common.authentication.credentials.AbstractCredential[])
 	 */
-	public AuthenticationTicket login(String loginContext, AbstractCredential[] credentials) throws AuthenticationFailure {
+	public AuthenticationTicket login(String loginContext, AbstractCredential[] credentials)
+			throws AuthenticationFailure {
 		try {
 			Callback[] callbacks = Callback2CredentialConverter.credentials2Callbacks(credentials);
 			// create login context and login
@@ -187,13 +188,16 @@ class MyCallbackHandler implements CallbackHandler {
 							}
 						} else {
 							if (cb instanceof ConfirmationCallback) {
-								if (((ConfirmationCallback) cb).getPrompt().equals(((ConfirmationCallback) rcb).getPrompt())) {
-									((ConfirmationCallback) cb).setSelectedIndex(((ConfirmationCallback) rcb).getSelectedIndex());
+								if (((ConfirmationCallback) cb).getPrompt().equals(
+										((ConfirmationCallback) rcb).getPrompt())) {
+									((ConfirmationCallback) cb).setSelectedIndex(((ConfirmationCallback) rcb)
+											.getSelectedIndex());
 									break;
 								}
 							} else {
 								if (cb instanceof TextInputCallback) {
-									if (((TextInputCallback) cb).getPrompt().equals(((TextInputCallback) rcb).getPrompt())) {
+									if (((TextInputCallback) cb).getPrompt().equals(
+											((TextInputCallback) rcb).getPrompt())) {
 										((TextInputCallback) cb).setText(((TextInputCallback) rcb).getText());
 									}
 								} else {
@@ -206,11 +210,14 @@ class MyCallbackHandler implements CallbackHandler {
 											break;
 										} else {
 											if (cb instanceof ChoiceCallback) {
-												if (((ChoiceCallback) cb).getPrompt().equals(((ChoiceCallback) rcb).getPrompt())) {
-													((ChoiceCallback) cb).setSelectedIndexes(((ChoiceCallback) rcb).getSelectedIndexes());
+												if (((ChoiceCallback) cb).getPrompt().equals(
+														((ChoiceCallback) rcb).getPrompt())) {
+													((ChoiceCallback) cb).setSelectedIndexes(((ChoiceCallback) rcb)
+															.getSelectedIndexes());
 
 												} else {
-													throw new UnsupportedOperationException("unsupported authentication callback type");
+													throw new UnsupportedOperationException(
+															"unsupported authentication callback type");
 												}
 											}
 										}

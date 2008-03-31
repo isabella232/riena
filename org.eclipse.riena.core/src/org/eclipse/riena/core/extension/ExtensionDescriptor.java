@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
 
 /**
- * ExtnesionId and ExtensionInjector simplify locating configuration
+ * ExtensionDescriptor and ExtensionInjector simplify locating configuration
  * (extensions) and injects them into a target object. To do so the
  * ExtensionInjector can (but must not) track the extension registry for changes
  * of appearing and disappearing extensions and injects them into the target. A
@@ -31,13 +31,12 @@ import org.osgi.framework.BundleContext;
  * If {@link #start(BundleContext)} is used configuration modifications as
  * defined by <code>ConfigurationPlugin</code> will be applied applied.
  * <p>
- * The ExtensionId and ExtensionInjector are implemented as a ´fluent interface´
- * allowing constructs like:
+ * The ExtensionDescriptor and ExtensionInjector are implemented as a ´fluent
+ * interface´ allowing constructs like:
  * <ol>
- * <li>new ExtensionId("id1").injectInto(target).andStart(context)</li>
- * <li>new
- * ExtensionId("id2").useType(interface).injectInto(target).bind("configure").andStart(context)</li>
- * <li>new ExtensionId("id3").expectExactly(1).injectInto(target).andStart()</li>
+ * <li>Inject.extension("id1").into(target).andStart(context)</li>
+ * <li>Inject.extension("id2").useType(interface).into(target).bind("configure").andStart(context)</li>
+ * <li>Inject.extension("id3").expectExactly(1).into(target).andStart()</li>
  * <li>..</li>
  * </ol>
  * <p>
@@ -49,7 +48,7 @@ import org.osgi.framework.BundleContext;
  * The expected cardinality of extensions (min/max occurrences) can be specified
  * with <code>expectingMinMax()</code> or with <code>expectingExactly()</code>.
  */
-public class ExtensionId {
+public class ExtensionDescriptor {
 
 	private String extensionPointId;
 	private Class<?> interfaceType;
@@ -59,11 +58,11 @@ public class ExtensionId {
 	public static final int UNBOUNDED = Integer.MAX_VALUE;
 
 	/**
-	 * Create an extension id for the given extension point id.
+	 * Create an extension descriptor for the given extension point id.
 	 * 
 	 * @param extensionPointId
 	 */
-	public ExtensionId(String extensionPointId) {
+	public ExtensionDescriptor(String extensionPointId) {
 		Assert.isNotNull(extensionPointId, "The extension id must not be null."); //$NON-NLS-1$
 		this.extensionPointId = extensionPointId;
 	}
@@ -76,7 +75,7 @@ public class ExtensionId {
 	 * @param interfaceType
 	 * @return
 	 */
-	public ExtensionId useType(Class<?> interfaceType) {
+	public ExtensionDescriptor useType(Class<?> interfaceType) {
 		Assert.isNotNull(interfaceType, "Interface type must not be null."); //$NON-NLS-1$
 		Assert.isTrue(interfaceType.isInterface(), "Interface type must be an interface."); //$NON-NLS-1$
 		Assert.isTrue(this.interfaceType == null, "Interface type has already been set."); //$NON-NLS-1$
@@ -89,7 +88,7 @@ public class ExtensionId {
 	 * 
 	 * @param target
 	 */
-	public ExtensionInjector injectInto(Object target) {
+	public ExtensionInjector into(Object target) {
 		Assert.isNotNull(target, "The target must not be null."); //$NON-NLS-1$
 		return new ExtensionInjector(this, target);
 	}
@@ -104,7 +103,7 @@ public class ExtensionId {
 	 * @param max
 	 * @return
 	 */
-	public ExtensionId expectingMinMax(int min, int max) {
+	public ExtensionDescriptor expectingMinMax(int min, int max) {
 		Assert.isLegal(max >= min, "min must not be greater than max."); //$NON-NLS-1$
 		Assert.isLegal(min >= 0, "min must be greater or equal than zero."); //$NON-NLS-1$
 		Assert.isLegal(max > 0, "max must be greater than zero."); //$NON-NLS-1$
@@ -120,7 +119,7 @@ public class ExtensionId {
 	 * @param exactly
 	 * @return
 	 */
-	public ExtensionId expectingExactly(int exactly) {
+	public ExtensionDescriptor expectingExactly(int exactly) {
 		return expectingMinMax(exactly, exactly);
 	}
 

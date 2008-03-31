@@ -18,7 +18,7 @@ import org.osgi.framework.ServiceReference;
 /**
  * The specialized ranking implementation.
  */
-public class RankingInjector extends Injector {
+public class RankingInjector extends ServiceInjector {
 
 	private ServiceReference trackedServiceRef = null;
 
@@ -26,12 +26,12 @@ public class RankingInjector extends Injector {
 	 * @param serviceId
 	 * @param target
 	 */
-	RankingInjector(ServiceId serviceId, Object target) {
+	RankingInjector(ServiceDescriptor serviceId, Object target) {
 		super(serviceId, target);
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#doStart()
+	 * @see org.eclipse.riena.core.service.ServiceInjector#doStart()
 	 */
 	@Override
 	protected void doStart() {
@@ -41,7 +41,7 @@ public class RankingInjector extends Injector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#doStop()
+	 * @see org.eclipse.riena.core.service.ServiceInjector#doStop()
 	 */
 	@Override
 	protected void doStop() {
@@ -50,7 +50,7 @@ public class RankingInjector extends Injector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#bind(org.osgi.framework.ServiceReference)
+	 * @see org.eclipse.riena.core.service.ServiceInjector#bind(org.osgi.framework.ServiceReference)
 	 */
 	@Override
 	protected void doBind(ServiceReference serviceRef) {
@@ -65,7 +65,7 @@ public class RankingInjector extends Injector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#unbind(org.osgi.framework.ServiceReference)
+	 * @see org.eclipse.riena.core.service.ServiceInjector#unbind(org.osgi.framework.ServiceReference)
 	 */
 	@Override
 	protected void doUnbind(ServiceReference serviceRef) {

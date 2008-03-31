@@ -18,7 +18,7 @@ import org.osgi.framework.ServiceReference;
 /**
  * The specialized filter injector implementation.
  */
-public class FilterInjector extends Injector {
+public class FilterInjector extends ServiceInjector {
 
 	private List<ServiceReference> trackedServiceRefs = null;
 
@@ -26,12 +26,12 @@ public class FilterInjector extends Injector {
 	 * @param serviceId
 	 * @param target
 	 */
-	FilterInjector(ServiceId serviceId, Object target) {
+	FilterInjector(ServiceDescriptor serviceId, Object target) {
 		super(serviceId, target);
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#doStart()
+	 * @see org.eclipse.riena.core.service.ServiceInjector#doStart()
 	 */
 	@Override
 	protected void doStart() {
@@ -48,7 +48,7 @@ public class FilterInjector extends Injector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#doStop()
+	 * @see org.eclipse.riena.core.service.ServiceInjector#doStop()
 	 */
 	@Override
 	protected void doStop() {
@@ -64,7 +64,7 @@ public class FilterInjector extends Injector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#doBind(org.osgi.framework.ServiceReference)
+	 * @see org.eclipse.riena.core.service.ServiceInjector#doBind(org.osgi.framework.ServiceReference)
 	 */
 	@Override
 	protected void doBind(ServiceReference serviceRef) {
@@ -77,7 +77,7 @@ public class FilterInjector extends Injector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.Injector#doUnbind(org.osgi.framework.ServiceReference)
+	 * @see org.eclipse.riena.core.service.ServiceInjector#doUnbind(org.osgi.framework.ServiceReference)
 	 */
 	@Override
 	protected void doUnbind(ServiceReference serviceRef) {

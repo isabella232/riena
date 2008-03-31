@@ -20,7 +20,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
@@ -68,11 +68,11 @@ public class SecurityServiceHook implements IServiceHook {
 	 */
 	public SecurityServiceHook() {
 		super();
-		new ServiceId(IGenericObjectCache.ID).useFilter("(cache.type=PrincipalCache)").injectInto(this).andStart(
+		Inject.service(IGenericObjectCache.ID).useFilter("(cache.type=PrincipalCache)").into(this).andStart(
 				Activator.getContext());
-		new ServiceId(ISessionService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISubjectHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISessionHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		Inject.service(ISessionService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISubjectHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISessionHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
 
 		// List<UnsecureWebservice> tempList =
 		// RegistryAccessor.fetchRegistry().getConfiguration(UNSECURE_WEBSERVICES_ID);

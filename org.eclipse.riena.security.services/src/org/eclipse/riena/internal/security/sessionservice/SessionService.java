@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.security.sessionservice;
 
 import java.security.Principal;
 
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
@@ -36,8 +36,8 @@ public class SessionService implements ISessionService {
 	 */
 	public SessionService() {
 		super();
-		new ServiceId(ISessionStore.ID).injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISessionProvider.ID).injectInto(this).andStart(Activator.getContext());
+		Inject.service(ISessionStore.ID).into(this).andStart(Activator.getContext());
+		Inject.service(ISessionProvider.ID).into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(ISessionStore store) {

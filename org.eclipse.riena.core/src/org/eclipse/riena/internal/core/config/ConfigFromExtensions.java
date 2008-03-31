@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.config;
 
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationAdmin;
 
@@ -40,6 +40,6 @@ public class ConfigFromExtensions {
 	 * described in the classes javadoc.
 	 */
 	public void doConfig() {
-		new ServiceId(ConfigurationAdmin.class.getName()).injectInto(new ConfigAdminHandler(context)).andStart(context);
+		Inject.service(ConfigurationAdmin.class.getName()).into(new ConfigAdminHandler(context)).andStart(context);
 	}
 }

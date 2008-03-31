@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.security.authorizationservice;
 import java.security.Permissions;
 import java.security.Principal;
 
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.authorizationservice.IPermissionStore;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
@@ -24,7 +24,7 @@ public class AuthorizationService implements IAuthorizationService {
 
 	public AuthorizationService() {
 		super();
-		new ServiceId(IPermissionStore.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		Inject.service(IPermissionStore.ID).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IPermissionStore permStore) {

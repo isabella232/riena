@@ -29,14 +29,14 @@ import org.osgi.service.log.LogService;
 
 /**
  * This is the extension injectors.<br>
- * See {@link ExtensionId} for explanation and usage.
+ * See {@link ExtensionDescriptor} for explanation and usage.
  */
 public class ExtensionInjector {
 
 	// TODO When 3.4 is released we switch to IRegistryEventListener. This is
 	// the code in comments! PLEASE, DO NOT REMOVE IT!
 
-	private ExtensionId extensionId;
+	private ExtensionDescriptor extensionId;
 	private Object target;
 	private BundleContext context;
 	private boolean started;
@@ -55,7 +55,7 @@ public class ExtensionInjector {
 	 * @param extensionId
 	 * @param target
 	 */
-	ExtensionInjector(ExtensionId extensionId, Object target) {
+	ExtensionInjector(ExtensionDescriptor extensionId, Object target) {
 		this.extensionId = extensionId;
 		this.target = target;
 	}

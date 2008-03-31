@@ -28,10 +28,10 @@ import org.osgi.service.log.LogService;
 
 /**
  * The is the abstract base class for the specialized service injectors. See
- * {@link ServiceId} for explanation and usage. It provides common functionality
- * for the ranking injector and the filtering injector.
+ * {@link ServiceDescriptor} for explanation and usage. It provides common
+ * functionality for the ranking injector and the filtering injector.
  */
-public abstract class Injector {
+public abstract class ServiceInjector {
 
 	/**
 	 * Default ´bind´ method name.
@@ -43,7 +43,7 @@ public abstract class Injector {
 	 */
 	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind"; //$NON-NLS-1$
 
-	private ServiceId serviceId;
+	private ServiceDescriptor serviceDesc;
 	private BundleContext context = null;
 	private String filter;
 	private Object target;
@@ -54,22 +54,23 @@ public abstract class Injector {
 	private boolean started = false;
 	private ServiceListener serviceListener;
 
-	private final static Logger LOGGER = new ConsoleLogger(Injector.class.getName());
+	private final static Logger LOGGER = new ConsoleLogger(ServiceInjector.class.getName());
 
 	/**
-	 * Constructor for the <code>injectInto()</code> of <code>ServiceId</code>.
+	 * Constructor for the <code>injectInto()</code> of
+	 * <code>ServiceDescriptor</code>.
 	 * 
-	 * @param serviceId
+	 * @param serviceDesc
 	 * @param target
 	 */
-	Injector(ServiceId serviceId, Object target) {
-		this.serviceId = serviceId;
+	ServiceInjector(ServiceDescriptor serviceDesc, Object target) {
+		this.serviceDesc = serviceDesc;
 		this.target = target;
 		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
-				serviceId.getServiceId()).append(")"); //$NON-NLS-1$
-		if (serviceId.getFilter() != null) {
+				serviceDesc.getServiceClazz()).append(")"); //$NON-NLS-1$
+		if (serviceDesc.getFilter() != null) {
 			bob.insert(0, "(&"); //$NON-NLS-1$
-			bob.append(serviceId.getFilter());
+			bob.append(serviceDesc.getFilter());
 			bob.append(')');
 		}
 		this.filter = bob.toString();
@@ -85,9 +86,9 @@ public abstract class Injector {
 	 * @param context
 	 * @return this injector
 	 */
-	public Injector andStart(BundleContext context) {
+	public ServiceInjector andStart(BundleContext context) {
 		Assert.isNotNull(context, "Bundle context must be not null.");
-		Assert.isTrue(!started, "Injector already started!");
+		Assert.isTrue(!started, "ServiceInjector already started!");
 		started = true;
 		this.context = context;
 		if (bindMethodName == null)
@@ -131,8 +132,8 @@ public abstract class Injector {
 	 * @param bindMethodName
 	 * @return this injector
 	 */
-	public Injector bind(String bindMethodName) {
-		Assert.isTrue(!started, "Injector already started!");
+	public ServiceInjector bind(String bindMethodName) {
+		Assert.isTrue(!started, "ServiceInjector already started!");
 		this.bindMethodName = bindMethodName;
 		return this;
 	}
@@ -146,8 +147,8 @@ public abstract class Injector {
 	 * @param unbindMethodName
 	 * @return this injector
 	 */
-	public synchronized Injector unbind(String unbindMethodName) {
-		Assert.isTrue(!started, "Injector already started!");
+	public synchronized ServiceInjector unbind(String unbindMethodName) {
+		Assert.isTrue(!started, "ServiceInjector already started!");
 		this.unbindMethodName = unbindMethodName;
 		return this;
 	}
@@ -214,7 +215,7 @@ public abstract class Injector {
 	 */
 	protected ServiceReference[] getServiceReferences() {
 		try {
-			return context.getServiceReferences(serviceId.getServiceId(), filter);
+			return context.getServiceReferences(serviceDesc.getServiceClazz(), filter);
 		} catch (InvalidSyntaxException e) {
 			throw new IllegalArgumentException("The specified filter has syntax errors.", e);
 		}

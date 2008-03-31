@@ -17,7 +17,7 @@ import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
@@ -104,8 +104,8 @@ public class LogUtil {
 			// with log4j
 			// logListeners.add(new Log4jLogListener());
 
-			new ServiceId(ExtendedLogService.class.getName()).useRanking().injectInto(this).andStart(context);
-			new ServiceId(ExtendedLogReaderService.class.getName()).useRanking().injectInto(this).andStart(context);
+			Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
+			Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
 			initialized = true;
 		}
 	}

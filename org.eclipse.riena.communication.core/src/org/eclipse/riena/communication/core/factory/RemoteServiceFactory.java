@@ -22,7 +22,7 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.RienaStartupStatus;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
 import org.osgi.framework.BundleContext;
@@ -78,7 +78,7 @@ public class RemoteServiceFactory {
 	 */
 	public RemoteServiceFactory() {
 		this(Activator.getContext());
-		new ServiceId(IRemoteServiceRegistry.ID).injectInto(this).andStart(Activator.getContext());
+		Inject.service(IRemoteServiceRegistry.ID).into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IRemoteServiceRegistry registry) {
@@ -320,7 +320,7 @@ public class RemoteServiceFactory {
 
 			LazyProxyBuilder proxyBuilder = new LazyProxyBuilder(rsd, ref, lazyProxyHandler);
 			String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			new ServiceId(IRemoteServiceFactory.class.getName()).useFilter(filter).injectInto(proxyBuilder).andStart(
+			Inject.service(IRemoteServiceFactory.class.getName()).useFilter(filter).into(proxyBuilder).andStart(
 					Activator.getContext());
 			return ref;
 		} catch (ClassNotFoundException e) {

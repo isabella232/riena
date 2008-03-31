@@ -17,7 +17,7 @@ import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.login.LoginException;
 
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
@@ -37,8 +37,8 @@ public class ClientLogin {
 		super();
 		this.loginContext = loginContext;
 		this.subject = subject;
-		new ServiceId(IAuthenticationService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
-		new ServiceId(ISubjectHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		Inject.service(IAuthenticationService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISubjectHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IAuthenticationService authenticationService) {

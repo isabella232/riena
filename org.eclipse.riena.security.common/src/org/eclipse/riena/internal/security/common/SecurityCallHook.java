@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
-import org.eclipse.riena.core.service.ServiceId;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
@@ -32,7 +32,7 @@ public class SecurityCallHook implements ICallHook {
 
 	public SecurityCallHook() {
 		super();
-		new ServiceId(ISessionHolderService.ID).useRanking().injectInto(this).andStart(Activator.getContext());
+		Inject.service(ISessionHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(ISessionHolderService shService) {
