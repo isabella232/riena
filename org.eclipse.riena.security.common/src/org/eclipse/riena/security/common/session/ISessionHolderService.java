@@ -12,11 +12,6 @@ package org.eclipse.riena.security.common.session;
 
 public interface ISessionHolderService {
 
-    /**
-     * Service ID
-     */
-    String ID = ISessionHolderService.class.getName();
-
-    ISessionHolder fetchSessionHolder();
+	ISessionHolder fetchSessionHolder();
 
 }

@@ -62,16 +62,16 @@ public class AuthorizationServiceITest extends RienaTestCase {
 	public void testLoginWithUserWithRights() throws Exception {
 		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser", "testpass"));
 		lc.login();
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + lc.getSubject());
 		System.out.println("login in sucessful");
 		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
-				getContext().getServiceReference(ISessionHolderService.ID));
+				getContext().getServiceReference(ISessionHolderService.class.getName()));
 
 		// call the customerService
 		ICustomerSearch cs = (ICustomerSearch) getContext().getService(
-				getContext().getServiceReference(ICustomerSearch.ID));
+				getContext().getServiceReference(ICustomerSearch.class.getName()));
 		Customer cust = new Customer();
 		cust.setLastName("Solo");
 		cust.setFirstName("Han");
@@ -88,17 +88,17 @@ public class AuthorizationServiceITest extends RienaTestCase {
 	public void testLoginWithUserWithoutRights() throws Exception {
 		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser2", "testpass2"));
 		lc.login();
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + lc.getSubject());
 		System.out.println("login in sucessful");
 		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
-				getContext().getServiceReference(ISessionHolderService.ID));
+				getContext().getServiceReference(ISessionHolderService.class.getName()));
 
 		try {
 			// call the customerService
 			ICustomerSearch cs = (ICustomerSearch) getContext().getService(
-					getContext().getServiceReference(ICustomerSearch.ID));
+					getContext().getServiceReference(ICustomerSearch.class.getName()));
 			Customer cust = new Customer();
 			cust.setLastName("Solo");
 			cust.setFirstName("Han");

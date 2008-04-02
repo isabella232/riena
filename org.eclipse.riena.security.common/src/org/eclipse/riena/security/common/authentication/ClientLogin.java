@@ -37,8 +37,8 @@ public class ClientLogin {
 		super();
 		this.loginContext = loginContext;
 		this.subject = subject;
-		Inject.service(IAuthenticationService.ID).useRanking().into(this).andStart(Activator.getContext());
-		Inject.service(ISubjectHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(IAuthenticationService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IAuthenticationService authenticationService) {

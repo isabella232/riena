@@ -16,11 +16,6 @@ package org.eclipse.riena.sample.app.common.model;
 public interface IHelloWorldService {
 
 	/**
-	 * Service ID
-	 */
-	String ID = IHelloWorldService.class.getName();
-
-	/**
 	 * Receive a message from server.
 	 * 
 	 * @return the message.

@@ -32,7 +32,7 @@ public class SecurityCallHook implements ICallHook {
 
 	public SecurityCallHook() {
 		super();
-		Inject.service(ISessionHolderService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(ISessionHolderService shService) {

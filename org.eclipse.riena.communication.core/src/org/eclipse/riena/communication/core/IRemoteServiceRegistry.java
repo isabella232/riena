@@ -16,25 +16,32 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 
 /**
- * The IRemoteServiceRegistry adds the ability to register, unregister and manage "remote services" as OSGi Services
- * within an OSGi runtime (called client container). A "remote service" could be an OSGi Services which is hosted within
- * another OSGi runtime (called server container). A "remote service" is represented by a
- * {@link IRemoteServiceReference} within the client container. A IRemoteServiceReference holds a proxy reference which
+ * The IRemoteServiceRegistry adds the ability to register, unregister and
+ * manage "remote services" as OSGi Services within an OSGi runtime (called
+ * client container). A "remote service" could be an OSGi Services which is
+ * hosted within another OSGi runtime (called server container). A "remote
+ * service" is represented by a {@link IRemoteServiceReference} within the
+ * client container. A IRemoteServiceReference holds a proxy reference which
  * points the service end point.
  * <p>
- * A IRemoteServiceReferences becomes registered as "remote" OSGi Service within the client container by call
- * {@link #registerService(IRemoteServiceReference)} . #registerService returns a registration object
- * {@link IRemoteServiceRegistration} which points the registered "remote" OSGi service. Call
- * {@link #unregisterService(IRemoteServiceReference)} or {@link IRemoteServiceRegistration#unregister()} to unregister
- * a "remote" OSGi Service
+ * A IRemoteServiceReferences becomes registered as "remote" OSGi Service within
+ * the client container by call
+ * {@link #registerService(IRemoteServiceReference)} . #registerService returns
+ * a registration object {@link IRemoteServiceRegistration} which points the
+ * registered "remote" OSGi service. Call
+ * {@link #unregisterService(IRemoteServiceReference)} or
+ * {@link IRemoteServiceRegistration#unregister()} to unregister a "remote" OSGi
+ * Service
  * <p>
- * The RemoteServiceRegistry is available as OSGi Service. The registration name is {@link #ID}.
+ * The RemoteServiceRegistry is available as OSGi Service. The registration name
+ * is {@link #ID}.
  * <p>
- * The {@link IRemoteServiceFactory} can use to create a IRemoteServiceReference by given end points parameters and to
- * register a IRemoteServiceReference into the IRemoteServiceRegistry.
+ * The {@link IRemoteServiceFactory} can use to create a IRemoteServiceReference
+ * by given end points parameters and to register a IRemoteServiceReference into
+ * the IRemoteServiceRegistry.
  * <p>
- * OSGi Service could be published as service end point from a server container by the
- * {@link IServicePublishEventDispatcher}
+ * OSGi Service could be published as service end point from a server container
+ * by the {@link IServicePublishEventDispatcher}
  * 
  * @author Alexander Ziegler
  * 
@@ -45,44 +52,41 @@ import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispat
  */
 public interface IRemoteServiceRegistry {
 
-    /**
-     * Service ID
-     */
-    String ID = IRemoteServiceRegistry.class.getName();
+	/**
+	 * Registers the given reference as OSGi Service. Answers a
+	 * {@link IRemoteServiceRegistration} object which points the registered
+	 * reference. A registered reference becomes automatically registered as
+	 * "remote" OSGi Service within the local OSGi container.
+	 * <p>
+	 * To unregister a reference from the Remote Service Registry call
+	 * {@link #unregisterService(IRemoteServiceReference)} or
+	 * {@link IRemoteServiceRegistration#unregister()}
+	 * 
+	 * @param reference
+	 * @return the RemoteServiceRegistration object
+	 * 
+	 * @see #unregisterService(IRemoteServiceReference)
+	 * @see IRemoteServiceRegistration#unregister()
+	 */
+	IRemoteServiceRegistration registerService(IRemoteServiceReference reference);
 
-    /**
-     * Registers the given reference as OSGi Service. Answers a {@link IRemoteServiceRegistration} object which points
-     * the registered reference. A registered reference becomes automatically registered as "remote" OSGi Service within the
-     * local OSGi container.
-     * <p>
-     * To unregister a reference from the Remote Service Registry call
-     * {@link #unregisterService(IRemoteServiceReference)} or {@link IRemoteServiceRegistration#unregister()}
-     * 
-     * @param reference
-     * @return the RemoteServiceRegistration object
-     * 
-     * @see #unregisterService(IRemoteServiceReference)
-     * @see IRemoteServiceRegistration#unregister()
-     */
-    IRemoteServiceRegistration registerService(IRemoteServiceReference reference);
+	/**
+	 * Unregisters the given reference from the Remote Service Registry. The
+	 * associated "remote" OSGi Service become automatically unregistered.
+	 * 
+	 * @param reference
+	 *            to unregister
+	 * 
+	 * @see #registerService(IRemoteServiceReference)
+	 */
+	void unregisterService(IRemoteServiceReference reference);
 
-    /**
-     * Unregisters the given reference from the Remote Service Registry. The associated "remote" OSGi Service become
-     * automatically unregistered.
-     * 
-     * @param reference
-     *            to unregister
-     * 
-     * @see #registerService(IRemoteServiceReference)
-     */
-    void unregisterService(IRemoteServiceReference reference);
-
-    /**
-     * Answers a list of {@link IRemoteServiceRegistration} objects for all registered "remote" OSGi Services for the
-     * given hostId
-     * 
-     * @param hostId
-     * @return a list of IRemoteServiceRegistration objects
-     */
-    List<IRemoteServiceRegistration> registeredServices(String hostId);
+	/**
+	 * Answers a list of {@link IRemoteServiceRegistration} objects for all
+	 * registered "remote" OSGi Services for the given hostId
+	 * 
+	 * @param hostId
+	 * @return a list of IRemoteServiceRegistration objects
+	 */
+	List<IRemoteServiceRegistration> registeredServices(String hostId);
 }

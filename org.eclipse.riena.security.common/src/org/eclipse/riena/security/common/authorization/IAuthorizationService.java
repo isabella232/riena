@@ -15,7 +15,6 @@ import java.security.Principal;
 
 public interface IAuthorizationService {
 
-	public String ID = IAuthorizationService.class.getName();
 	String WS_ID = "/AuthorizationService";
 
 	public Permissions[] getPermissions(Principal[] principals);

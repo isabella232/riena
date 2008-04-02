@@ -36,8 +36,8 @@ public class SessionService implements ISessionService {
 	 */
 	public SessionService() {
 		super();
-		Inject.service(ISessionStore.ID).into(this).andStart(Activator.getContext());
-		Inject.service(ISessionProvider.ID).into(this).andStart(Activator.getContext());
+		Inject.service(ISessionStore.class.getName()).into(this).andStart(Activator.getContext());
+		Inject.service(ISessionProvider.class.getName()).into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(ISessionStore store) {

@@ -31,7 +31,7 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 	public void testGetManager() {
 		BundleContext context = getContext();
 
-		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.ID);
+		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.class.getName());
 		Assert.assertNotNull(managerRef);
 
 		IExceptionHandlerManager manager = (IExceptionHandlerManager) context.getService(managerRef);
@@ -45,9 +45,9 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 		test.name = "test.scp.handler1";
 
 		Hashtable<String, String> properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandler.ID, test, properties);
+		context.registerService(IExceptionHandler.class.getName(), test, properties);
 
-		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.ID);
+		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.class.getName());
 		Assert.assertNotNull(managerRef);
 
 		IExceptionHandlerManager manager = (IExceptionHandlerManager) context.getService(managerRef);
@@ -65,7 +65,7 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 		test1.name = "test.scp.handler1";
 
 		Hashtable<String, String> properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandler.ID, test1, properties);
+		context.registerService(IExceptionHandler.class.getName(), test1, properties);
 
 		TestExceptionHandler test2 = new TestExceptionHandler();
 		test2.name = "test.scp.handler2";
@@ -73,9 +73,9 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 		test2.action = IExceptionHandlerManager.Action.Ok;
 
 		properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandler.ID, test2, properties);
+		context.registerService(IExceptionHandler.class.getName(), test2, properties);
 
-		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.ID);
+		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.class.getName());
 		Assert.assertNotNull(managerRef);
 
 		IExceptionHandlerManager manager = (IExceptionHandlerManager) context.getService(managerRef);

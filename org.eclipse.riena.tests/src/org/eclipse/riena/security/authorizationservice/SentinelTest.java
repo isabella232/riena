@@ -45,13 +45,13 @@ public class SentinelTest extends RienaTestCase {
 		// permissions for this test TODO
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		fileStoreReg = getContext().registerService(IPermissionStore.ID, store, null);
-		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.ID);
+		fileStoreReg = getContext().registerService(IPermissionStore.class.getName(), store, null);
+		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
 		if (ref != null) {
 			ref.getBundle().stop();
 		}
-		authorizationServiceReg = getContext().registerService(IAuthorizationService.ID, new AuthorizationService(),
-				null);
+		authorizationServiceReg = getContext().registerService(IAuthorizationService.class.getName(),
+				new AuthorizationService(), null);
 	}
 
 	/*
@@ -74,7 +74,7 @@ public class SentinelTest extends RienaTestCase {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
 		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-				getContext().getServiceReference(ISubjectHolderService.ID));
+				getContext().getServiceReference(ISubjectHolderService.class.getName()));
 		subjectHolderService.fetchSubjectHolder().setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
@@ -85,7 +85,7 @@ public class SentinelTest extends RienaTestCase {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
 		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-				getContext().getServiceReference(ISubjectHolderService.ID));
+				getContext().getServiceReference(ISubjectHolderService.class.getName()));
 		subjectHolderService.fetchSubjectHolder().setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));

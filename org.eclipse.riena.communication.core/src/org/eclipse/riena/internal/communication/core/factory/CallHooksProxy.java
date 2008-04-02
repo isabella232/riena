@@ -33,7 +33,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 
 	public CallHooksProxy(Object proxiedInstance) {
 		super(proxiedInstance);
-		Inject.service(ICallHook.ID).into(this).andStart(Activator.getContext());
+		Inject.service(ICallHook.class.getName()).into(this).andStart(Activator.getContext());
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

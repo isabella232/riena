@@ -51,24 +51,28 @@ public class Activator extends RienaActivator {
 		properties.put("riena.remote", Boolean.TRUE.toString());
 		properties.put("riena.remote.protocol", "hessian");
 		properties.put("riena.remote.path", IAuthenticationService.WS_ID);
-		authenticationService = getContext().registerService(IAuthenticationService.ID, new AuthenticationService(), properties);
+		authenticationService = getContext().registerService(IAuthenticationService.class.getName(),
+				new AuthenticationService(), properties);
 
 		// register SessionService
 		properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
 		properties.put("riena.remote.protocol", "hessian");
 		properties.put("riena.remote.path", ISessionService.WS_ID);
-		sessionService = getContext().registerService(ISessionService.ID, new SessionService(), properties);
+		sessionService = getContext()
+				.registerService(ISessionService.class.getName(), new SessionService(), properties);
 
 		// register AuthorizationService
 		properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
 		properties.put("riena.remote.protocol", "hessian");
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID);
-		authorizationService = getContext().registerService(IAuthorizationService.ID, new AuthorizationService(), properties);
+		authorizationService = getContext().registerService(IAuthorizationService.class.getName(),
+				new AuthorizationService(), properties);
 
 		// register SessionProvider
-		sessionProvider = getContext().registerService(ISessionProvider.ID, new SessionProvider(), ServiceDescriptor.newDefaultServiceProperties());
+		sessionProvider = getContext().registerService(ISessionProvider.class.getName(), new SessionProvider(),
+				ServiceDescriptor.newDefaultServiceProperties());
 
 	}
 

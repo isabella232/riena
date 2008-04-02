@@ -24,7 +24,6 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface ISessionService {
 
-	String ID = ISessionService.class.getName();
 	String WS_ID = "/SessionService";
 
 	/**

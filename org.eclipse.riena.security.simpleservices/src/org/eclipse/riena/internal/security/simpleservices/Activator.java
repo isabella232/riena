@@ -39,12 +39,14 @@ public class Activator extends RienaActivator {
 		super.start(context);
 		plugin = this;
 		// bring up a simple in memory session store
-		memoryStore = getContext().registerService(ISessionStore.ID, new MemoryStore(), ServiceDescriptor.newDefaultServiceProperties());
+		memoryStore = getContext().registerService(ISessionStore.class.getName(), new MemoryStore(),
+				ServiceDescriptor.newDefaultServiceProperties());
 
 		// bring up a simple authorization store for permissions
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def.xml");
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		filepermissionstore = context.registerService(IPermissionStore.ID, store, ServiceDescriptor.newDefaultServiceProperties());
+		filepermissionstore = context.registerService(IPermissionStore.class.getName(), store, ServiceDescriptor
+				.newDefaultServiceProperties());
 
 	}
 

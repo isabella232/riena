@@ -17,100 +17,100 @@ import org.eclipse.equinox.log.Logger;
  */
 public interface IExceptionHandlerManager {
 
-    /**
-     * Service ID
-     */
-    String ID = IExceptionHandlerManager.class.getName();
+	/**
+	 * Defines actions how to process after the exception was handled.
+	 */
+	public enum Action {
 
-    /**
-     * Defines actions how to process after the exception was handled.
-     */
-    public enum Action {
+		NotHandled,
 
-        NotHandled,
+		Ok,
 
-        Ok,
+		Retry,
 
-        Retry,
+		Cancel
+	}
 
-        Cancel
-    }
+	/**
+	 * Check if the exception passed can be handled and return an {@link Action}
+	 * how might to process. This method should be used anywhere where an
+	 * exceptions is catched directly.
+	 * 
+	 * @pre t != null
+	 * @post result != null
+	 * 
+	 * @param t
+	 *            exception to be handled
+	 * @return the Action how to process
+	 */
+	Action handleCaught(Throwable t);
 
-    /**
-     * Check if the exception passed can be handled and return an {@link Action} how might to process. This method
-     * should be used anywhere where an exceptions is catched directly.
-     * 
-     * @pre t != null
-     * @post result != null
-     * 
-     * @param t
-     *            exception to be handled
-     * @return the Action how to process
-     */
-    Action handleCaught(Throwable t);
+	/**
+	 * Check if the exception passed can be handled and return an {@link Action}
+	 * how might to process. This method should be used anywhere where an
+	 * exceptions is catched directly.
+	 * 
+	 * @pre t != null
+	 * @post result != null
+	 * 
+	 * @param t
+	 *            exception to be handled
+	 * @param logger
+	 *            to be used for logging
+	 * @return the Action how to process
+	 */
+	Action handleCaught(Throwable t, Logger logger);
 
-    /**
-     * Check if the exception passed can be handled and return an {@link Action} how might to process. This method
-     * should be used anywhere where an exceptions is catched directly.
-     * 
-     * @pre t != null
-     * @post result != null
-     * 
-     * @param t
-     *            exception to be handled
-     * @param logger
-     *            to be used for logging
-     * @return the Action how to process
-     */
-    Action handleCaught(Throwable t, Logger logger);
+	/**
+	 * Check if the exception passed can be handled and return an {@link Action}
+	 * how might to process. This method should be used anywhere where an
+	 * exceptions is catched directly.
+	 * 
+	 * @pre t != null
+	 * @post result != null
+	 * 
+	 * @param t
+	 *            exception to be handled
+	 * @param msg
+	 *            an optional message
+	 * @return the Action how to process
+	 */
+	Action handleCaught(Throwable t, String msg);
 
-    /**
-     * Check if the exception passed can be handled and return an {@link Action} how might to process. This method
-     * should be used anywhere where an exceptions is catched directly.
-     * 
-     * @pre t != null
-     * @post result != null
-     * 
-     * @param t
-     *            exception to be handled
-     * @param msg
-     *            an optional message
-     * @return the Action how to process
-     */
-    Action handleCaught(Throwable t, String msg);
+	/**
+	 * Check if the exception passed can be handled and return an {@link Action}
+	 * how might to process. This method should be used anywhere where an
+	 * exceptions is catched directly.
+	 * 
+	 * @pre t != null
+	 * @post result != null
+	 * 
+	 * @param t
+	 *            exception to be handled
+	 * @param msg
+	 *            an optional message
+	 * @param logger
+	 *            to be used for logging
+	 * @return the Action how to process
+	 */
+	Action handleCaught(Throwable t, String msg, Logger logger);
 
-    /**
-     * Check if the exception passed can be handled and return an {@link Action} how might to process. This method
-     * should be used anywhere where an exceptions is catched directly.
-     * 
-     * @pre t != null
-     * @post result != null
-     * 
-     * @param t
-     *            exception to be handled
-     * @param msg
-     *            an optional message
-     * @param logger
-     *            to be used for logging
-     * @return the Action how to process
-     */
-    Action handleCaught(Throwable t, String msg, Logger logger);
-
-    /**
-     * Check if the exception passed can be handled and return an {@link Action} how might to process. This method
-     * should only be called in top level catch blocks like main, ui thread etc... From other locations inside a catch
-     * block use handleCaught(..)
-     * 
-     * @pre t != null
-     * @post result != null
-     * 
-     * @param t
-     *            exception to be handled
-     * @param msg
-     *            an optional message
-     * @param logger
-     *            to be used for logging
-     * @return the Action how to process
-     */
-    Action handleUncaught(Throwable t, String msg, Logger logger);
+	/**
+	 * Check if the exception passed can be handled and return an {@link Action}
+	 * how might to process. This method should only be called in top level
+	 * catch blocks like main, ui thread etc... From other locations inside a
+	 * catch block use handleCaught(..)
+	 * 
+	 * @pre t != null
+	 * @post result != null
+	 * 
+	 * @param t
+	 *            exception to be handled
+	 * @param msg
+	 *            an optional message
+	 * @param logger
+	 *            to be used for logging
+	 * @return the Action how to process
+	 */
+	Action handleUncaught(Throwable t, String msg, Logger logger);
 }

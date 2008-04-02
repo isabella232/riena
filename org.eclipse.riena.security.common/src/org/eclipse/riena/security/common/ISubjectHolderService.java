@@ -12,11 +12,6 @@ package org.eclipse.riena.security.common;
 
 public interface ISubjectHolderService {
 
-    /**
-     * Service ID
-     */
-    String ID = ISubjectHolderService.class.getName();
-
-    ISubjectHolder fetchSubjectHolder();
+	ISubjectHolder fetchSubjectHolder();
 
 }

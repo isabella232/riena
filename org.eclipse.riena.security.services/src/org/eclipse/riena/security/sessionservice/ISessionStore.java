@@ -20,8 +20,6 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface ISessionStore {
 
-	String ID = ISessionStore.class.getName();
-
 	/** <code>SESSION_STORE_ID</code> */
 	String SESSION_STORE_ID = "spirit.securityimplementation.server.SessionStore";
 

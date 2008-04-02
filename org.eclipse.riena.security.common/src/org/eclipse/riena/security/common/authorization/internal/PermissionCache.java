@@ -48,7 +48,7 @@ public class PermissionCache implements IPermissionCache {
 			permCache.setMinimumSize(100);
 			permCache.setTimeout(360000);
 		}
-		Inject.service(IAuthorizationService.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(IAuthorizationService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IAuthorizationService authService) {

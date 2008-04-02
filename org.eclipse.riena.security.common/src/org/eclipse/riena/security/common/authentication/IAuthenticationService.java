@@ -19,7 +19,6 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface IAuthenticationService {
 
-	String ID = IAuthenticationService.class.getName();
 	String WS_ID = "/AuthenticationService";
 
 	/**

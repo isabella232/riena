@@ -41,7 +41,7 @@ public class Activator implements BundleActivator {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/PingPongWS");
 
-		pingPongRegHessian = context.registerService(IPingPong.ID, pingPong, properties);
+		pingPongRegHessian = context.registerService(IPingPong.class.getName(), pingPong, properties);
 
 		// create xfire service
 		// pingPong = new PingPong();

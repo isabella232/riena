@@ -16,8 +16,6 @@ package org.eclipse.riena.sample.app.common.model;
  */
 public interface ICustomerSearch {
 
-	String ID = ICustomerSearch.class.getName();
-
 	/**
 	 * Retrieves customers from the database. For the query the given customer
 	 * is use as an example (Query by Example (QBE))

@@ -44,7 +44,7 @@ public class Activator extends RienaActivator {
 		publisher = new HessianRemoteServicePublisher();
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());
-		publisherReg = context.registerService(IServicePublisher.ID, publisher, properties);
+		publisherReg = context.registerService(IServicePublisher.class.getName(), publisher, properties);
 	}
 
 	/*

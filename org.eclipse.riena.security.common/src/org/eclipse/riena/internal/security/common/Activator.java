@@ -56,11 +56,12 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 		CONTEXT = context;
-		sessionHolderService = CONTEXT
-				.registerService(ISessionHolderService.ID, new SimpleSessionHolderService(), null);
-		securityCallHook = CONTEXT.registerService(ICallHook.ID, new SecurityCallHook(), null);
-		principalHolderService = CONTEXT.registerService(ISubjectHolderService.ID, new SubjectHolderService(), null);
-		permissionCache = CONTEXT.registerService(IPermissionCache.ID, new PermissionCache(), null);
+		sessionHolderService = CONTEXT.registerService(ISessionHolderService.class.getName(),
+				new SimpleSessionHolderService(), null);
+		securityCallHook = CONTEXT.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
+		principalHolderService = CONTEXT.registerService(ISubjectHolderService.class.getName(),
+				new SubjectHolderService(), null);
+		permissionCache = CONTEXT.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
 		RienaPolicy.init();
 	}
 

@@ -17,8 +17,6 @@ import javax.security.auth.Subject;
 
 public interface IPermissionCache {
 
-	public String ID = IPermissionCache.class.getName();
-
 	public Permissions getPermissions(Subject subject);
 
 	public Permissions getPermissions(Principal[] principals);

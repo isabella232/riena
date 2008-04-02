@@ -55,8 +55,9 @@ public class Activator extends Plugin {
 		principalCache.setName("principalCache");
 		Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("cache.type", "PrincipalCache");
-		principalCacheRegistration = CONTEXT.registerService(IGenericObjectCache.ID, principalCache, props);
-		securityServiceHook = CONTEXT.registerService(IServiceHook.ID, new SecurityServiceHook(), null);
+		principalCacheRegistration = CONTEXT
+				.registerService(IGenericObjectCache.class.getName(), principalCache, props);
+		securityServiceHook = CONTEXT.registerService(IServiceHook.class.getName(), new SecurityServiceHook(), null);
 	}
 
 	/*

@@ -18,8 +18,6 @@ import java.security.Principal;
  */
 public interface IPermissionStore {
 
-	public static String ID = IPermissionStore.class.getName();
-
 	/**
 	 * Loads the permissions for one principal
 	 * 

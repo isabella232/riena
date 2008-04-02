@@ -71,7 +71,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 	public void testLogin() throws Exception {
 		trace("Looking up Authentication Service...: ");
 
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 
 		trace("Service looked up: " + authenticationService.getClass().getName());
@@ -104,7 +104,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 	public void testInvalidLogin() throws Exception {
 
 		try {
-			ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+			ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 			IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 			AbstractCredential[] creds = new AbstractCredential[2];
 			NameCredential nc = new NameCredential("username: ", "xx");
@@ -121,7 +121,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 	}
 
 	public void testSubjectLogin() throws Exception {
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 
 		trace("Service looked up: " + authenticationService.getClass().getName());
@@ -141,7 +141,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 		for (Principal p : ticket.getPrincipals()) {
 			subject.getPrincipals().add(p);
 		}
-		ServiceReference ref2 = getContext().getServiceReference(ISubjectHolderService.ID);
+		ServiceReference ref2 = getContext().getServiceReference(ISubjectHolderService.class.getName());
 		ISubjectHolderService subHolderService = (ISubjectHolderService) getContext().getService(ref2);
 		subHolderService.fetchSubjectHolder().setSubject(subject);
 

@@ -18,17 +18,12 @@ package org.eclipse.riena.communication.sample.pingpong.common;
  */
 public interface IPingPong {
 
-    /**
-     * Service ID
-     */
-    String ID = IPingPong.class.getName();
-
-    /**
-     * Receives the given ping and answers a pong
-     * 
-     * @param ping
-     * @return pong
-     */
-    Pong ping(Ping ping);
+	/**
+	 * Receives the given ping and answers a pong
+	 * 
+	 * @param ping
+	 * @return pong
+	 */
+	Pong ping(Ping ping);
 
 }

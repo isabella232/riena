@@ -12,8 +12,6 @@ package org.eclipse.riena.communication.core.hooks;
 
 public interface ICallHook {
 
-	String ID = ICallHook.class.getName();
-
 	void beforeCall(CallContext context);
 
 	void afterCall(CallContext context);

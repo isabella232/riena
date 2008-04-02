@@ -24,7 +24,7 @@ public class AuthorizationService implements IAuthorizationService {
 
 	public AuthorizationService() {
 		super();
-		Inject.service(IPermissionStore.ID).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(IPermissionStore.class.getName()).useRanking().into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IPermissionStore permStore) {

@@ -15,8 +15,6 @@ package org.eclipse.riena.sample.app.common.model;
  */
 public interface ICustomers {
 
-	String ID = ICustomers.class.getName();
-
 	Integer getNextUniqueCustomerNumber();
 
 	void store(Customer customer);

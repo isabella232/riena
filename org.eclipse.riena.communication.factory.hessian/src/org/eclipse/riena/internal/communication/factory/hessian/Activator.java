@@ -40,7 +40,7 @@ public class Activator extends RienaActivator {
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put(IRemoteServiceFactory.PROP_PROTOCOL, factory.getProtocol());
 
-		regFactory = context.registerService(IRemoteServiceFactory.ID, factory, properties);
+		regFactory = context.registerService(IRemoteServiceFactory.class.getName(), factory, properties);
 	}
 
 	/*

@@ -12,8 +12,6 @@ package org.eclipse.riena.communication.core.hooks;
 
 public interface IServiceHook {
 
-	String ID = IServiceHook.class.getName();
-
 	void beforeService(ServiceContext context);
 
 	void afterService(ServiceContext context);

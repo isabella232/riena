@@ -57,10 +57,11 @@ public class Activator extends RienaActivator {
 		serviceRegistry.start();
 
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
-		regServiceRegistry = context.registerService(IRemoteServiceRegistry.ID, serviceRegistry, properties);
+		regServiceRegistry = context.registerService(IRemoteServiceRegistry.class.getName(), serviceRegistry,
+				properties);
 
 		final Logger logger = getLogger(Activator.class.getName());
-		context.registerService(ICallHook.ID, new ICallHook() {
+		context.registerService(ICallHook.class.getName(), new ICallHook() {
 
 			public void afterCall(CallContext context) {
 				logger.log(LogService.LOG_DEBUG, "after call (in hook) method=" + context.getMethodName()); //$NON-NLS-1$

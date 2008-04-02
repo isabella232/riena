@@ -31,8 +31,6 @@ import java.util.HashMap;
  */
 public interface IGenericObjectCache {
 
-	String ID = IGenericObjectCache.class.getName();
-
 	/**
 	 * returns true if this is a global cache
 	 * 

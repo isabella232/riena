@@ -48,7 +48,8 @@ public class Activator extends RienaActivator {
 
 		logger = getLogger(Activator.class.getName());
 		dispatcher = new ServicePublishEventDispatcher(context);
-		publisherInjector = Inject.service(IServicePublisher.ID).useRanking().into(dispatcher).andStart(context);
+		publisherInjector = Inject.service(IServicePublisher.class.getName()).useRanking().into(dispatcher).andStart(
+				context);
 
 		// register as OSGi service, the start will pick up the OSGi service and
 		// publish it
@@ -57,7 +58,7 @@ public class Activator extends RienaActivator {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");
 
-		context.registerService(IServicePublishEventDispatcher.ID, dispatcher, properties);
+		context.registerService(IServicePublishEventDispatcher.class.getName(), dispatcher, properties);
 
 		dispatcher.start();
 
@@ -65,7 +66,7 @@ public class Activator extends RienaActivator {
 		// servicePublishEventDispatcher
 		updateNotifierRemoteService = new UpdateNotifierRemoteService(dispatcher);
 		context.addServiceListener(updateNotifierRemoteService);
-		context.registerService(IServiceHook.ID, new IServiceHook() {
+		context.registerService(IServiceHook.class.getName(), new IServiceHook() {
 
 			public void afterService(ServiceContext context) {
 				logger.log(LogService.LOG_DEBUG, "after service (in hook)");

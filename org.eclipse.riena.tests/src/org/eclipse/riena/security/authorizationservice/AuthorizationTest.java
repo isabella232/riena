@@ -35,8 +35,8 @@ public class AuthorizationTest extends RienaTestCase {
 		// permissions for this test TODO
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		fileStoreReg = getContext().registerService(IPermissionStore.ID, store, null);
-		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.ID);
+		fileStoreReg = getContext().registerService(IPermissionStore.class.getName(), store, null);
+		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
 		// if (ref != null) {
 		// ref.getBundle().stop();
 		// }

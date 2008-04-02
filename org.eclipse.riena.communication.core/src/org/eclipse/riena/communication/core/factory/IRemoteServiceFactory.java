@@ -17,11 +17,14 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 
 /**
- * The IRemoteServiceFactory creates {@link IRemoteServiceReference} for given protocol specifically service end point
- * description. The IRemoteServiceReference holds a proxy reference instance to the service end point.
+ * The IRemoteServiceFactory creates {@link IRemoteServiceReference} for given
+ * protocol specifically service end point description. The
+ * IRemoteServiceReference holds a proxy reference instance to the service end
+ * point.
  * <p>
- * An implementation of an IRemoteServiceFactory is responsible for a protocol (e.g. Hessian). The implementation has be
- * registered as OSGi Service and set with follow property (see also {@link IRemoteServiceProtocol}):<br>
+ * An implementation of an IRemoteServiceFactory is responsible for a protocol
+ * (e.g. Hessian). The implementation has be registered as OSGi Service and set
+ * with follow property (see also {@link IRemoteServiceProtocol}):<br>
  * 
  * <p>
  * Code sample:<br>
@@ -37,9 +40,10 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
  * <p>
  * 
  * <b>NOTE</b><br>
- * The Riena communication bundle content includes generic class loading and object instantiation or delegates this behavior to other
- * Riena communication bundles. Riena supports Eclipse-BuddyPolicy concept. For further information about Riena class loading and
- * instanciation please read /readme.txt.
+ * The Riena communication bundle content includes generic class loading and
+ * object instantiation or delegates this behavior to other Riena communication
+ * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
+ * about Riena class loading and instanciation please read /readme.txt.
  * 
  * 
  * @author Alexander Ziegler
@@ -52,19 +56,14 @@ import org.eclipse.riena.communication.core.publisher.IServicePublisher;
  */
 public interface IRemoteServiceFactory extends IRemoteServiceProtocol {
 
-    /**
-     * The OSGi Service name
-     */
-    String ID = IRemoteServiceFactory.class.getName();
+	/**
+	 * Creates a protocol specifically IRemoteServcieRefernce for the given end
+	 * point description. Answers the IRemoteServiceReference.
+	 * 
+	 * @param remoteServiceDesc
+	 * @return the remote service references
+	 */
+	IRemoteServiceReference createProxy(RemoteServiceDescription remoteServiceDesc);
 
-    /**
-     * Creates a protocol specifically IRemoteServcieRefernce for the given end point description. Answers the
-     * IRemoteServiceReference.
-     * 
-     * @param remoteServiceDesc
-     * @return the remote service references
-     */
-    IRemoteServiceReference createProxy(RemoteServiceDescription remoteServiceDesc);
-
-    ICallMessageContextAccessor getMessageContextAccessor();
+	ICallMessageContextAccessor getMessageContextAccessor();
 }

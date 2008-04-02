@@ -90,7 +90,7 @@ public class Activator extends Plugin {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomerSearchWS");
 
-		regCustomerSearch = context.registerService(ICustomerSearch.ID, customers, properties);
+		regCustomerSearch = context.registerService(ICustomerSearch.class.getName(), customers, properties);
 	}
 
 	public void stopCustomerSearch() {
@@ -107,7 +107,7 @@ public class Activator extends Plugin {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomersWS");
 
-		regCustomers = context.registerService(ICustomers.ID, customers, properties);
+		regCustomers = context.registerService(ICustomers.class.getName(), customers, properties);
 	}
 
 	public void stopCustomers() {
@@ -124,7 +124,8 @@ public class Activator extends Plugin {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/HelloWorldServiceWS");
 
-		regHelloWorldService = context.registerService(IHelloWorldService.ID, helloWorldService, properties);
+		regHelloWorldService = context.registerService(IHelloWorldService.class.getName(), helloWorldService,
+				properties);
 	}
 
 	public void stopHelloWorldService() {

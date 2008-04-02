@@ -16,10 +16,12 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 
 /**
- * Implementations of IServicePublisher publish OSGi services as service end points.
+ * Implementations of IServicePublisher publish OSGi services as service end
+ * points.
  * 
- * An implementation is responsible for a specifically protocol (e.g. Hessian). The implementation has be registered as
- * OSGi Service and set with follow key/value property (see also {@link IRemoteServiceProtocol}):<br>
+ * An implementation is responsible for a specifically protocol (e.g. Hessian).
+ * The implementation has be registered as OSGi Service and set with follow
+ * key/value property (see also {@link IRemoteServiceProtocol}):<br>
  * 
  * 'riena.protocol'=[aProtocol] (e.g. for aProtocol set 'hessian')<br>
  * <p>
@@ -36,9 +38,10 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor
  * <p>
  * 
  * <b>NOTE</b><br>
- * The Riena communication bundle content includes generic class loading and object instantiation or delegates this behavior to other
- * Riena communication bundles. Riena supports Eclipse-BuddyPolicy concept. For further information about Riena class loading and
- * instanciation please read /readme.txt.
+ * The Riena communication bundle content includes generic class loading and
+ * object instantiation or delegates this behavior to other Riena communication
+ * bundles. Riena supports Eclipse-BuddyPolicy concept. For further information
+ * about Riena class loading and instanciation please read /readme.txt.
  * 
  * 
  * @author Alexander Ziegler
@@ -51,12 +54,10 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor
  */
 public interface IServicePublisher extends IRemoteServiceProtocol {
 
-    String ID = IServicePublisher.class.getName();
+	String publishService(RemoteServiceDescription rsd);
 
-    String publishService(RemoteServiceDescription rsd);
+	void unpublishService(String path);
 
-    void unpublishService(String path);
-
-    IServiceMessageContextAccessor getMessageContextAccessor();
+	IServiceMessageContextAccessor getMessageContextAccessor();
 
 }

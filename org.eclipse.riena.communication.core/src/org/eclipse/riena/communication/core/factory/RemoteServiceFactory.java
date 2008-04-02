@@ -78,7 +78,7 @@ public class RemoteServiceFactory {
 	 */
 	public RemoteServiceFactory() {
 		this(Activator.getContext());
-		Inject.service(IRemoteServiceRegistry.ID).into(this).andStart(Activator.getContext());
+		Inject.service(IRemoteServiceRegistry.class.getName()).into(this).andStart(Activator.getContext());
 	}
 
 	public void bind(IRemoteServiceRegistry registry) {
@@ -262,7 +262,7 @@ public class RemoteServiceFactory {
 		// find a factory for this specific protocol
 		String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		try {
-			references = context.getServiceReferences(IRemoteServiceFactory.ID, filter);
+			references = context.getServiceReferences(IRemoteServiceFactory.class.getName(), filter);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 			return null;

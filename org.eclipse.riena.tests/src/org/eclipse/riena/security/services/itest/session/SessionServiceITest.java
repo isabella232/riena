@@ -60,7 +60,7 @@ public class SessionServiceITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testController1() throws Exception {
-		ServiceReference ref = getContext().getServiceReference(ISessionService.ID);
+		ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
 		ISessionService sessionService = (ISessionService) getContext().getService(ref);
 		assertNotNull("SessionControllerAccessor returns null", sessionService);
 		Session session = sessionService.generateSession(new Principal[] { new SimplePrincipal("testuid") });
@@ -124,7 +124,7 @@ public class SessionServiceITest extends RienaTestCase {
 		private int loopCounter;
 
 		Threader(int loopCounter) {
-			ServiceReference ref = getContext().getServiceReference(ISessionService.ID);
+			ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
 			sessionService = (ISessionService) getContext().getService(ref);
 			this.loopCounter = loopCounter;
 			assertNotNull("SessionServiceAccessor returns null", sessionService);

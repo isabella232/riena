@@ -56,12 +56,12 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 	public void testRemoteLogin() throws LoginException {
 		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser", "testpass"));
 		lc.login();
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.ID);
+		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + lc.getSubject());
 		System.out.println("login in sucessful");
 		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
-				getContext().getServiceReference(ISessionHolderService.ID));
+				getContext().getServiceReference(ISessionHolderService.class.getName()));
 		as.logout(shs.fetchSessionHolder().getSession());
 		System.out.println("logoff sucessful");
 	}
