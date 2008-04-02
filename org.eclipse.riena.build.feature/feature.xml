@@ -27,119 +27,119 @@
          id="org.eclipse.riena.communication.console"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.core"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.discovery"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.factory.hessian"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.publisher"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.publisher.hessian"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.sample.pingpong.client"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.sample.pingpong.client.config"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.sample.pingpong.common"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.communication.sample.pingpong.server"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.core"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.exceptionhandler"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.exceptionmanager"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.security.common"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.security.common.bootpolicy"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.security.server"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.tests"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
@@ -167,35 +167,35 @@
          id="org.eclipse.riena.sample.app.common"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.sample.app.server"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.objecttransaction"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.security.services"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.security.simpleservices"
          download-size="0"
          install-size="0"
-         version="1.0.0.M1"
+         version="1.0.0.M2"
          unpack="false"/>
 
 </feature>
