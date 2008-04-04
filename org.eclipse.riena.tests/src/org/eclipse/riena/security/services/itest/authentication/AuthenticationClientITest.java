@@ -47,7 +47,6 @@ public class AuthenticationClientITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.equinox\\.log.*", null);
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
-		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		sessionServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
 				"http://localhost:8080/hessian/SessionService", "hessian", "org.eclipse.riena.sessionservice");
 		authenticationServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(
