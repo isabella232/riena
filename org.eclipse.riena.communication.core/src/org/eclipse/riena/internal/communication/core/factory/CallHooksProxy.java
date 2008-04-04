@@ -16,6 +16,7 @@ import java.util.HashSet;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.AbstractHooksProxy;
 import org.eclipse.riena.communication.core.hooks.CallContext;
@@ -56,7 +57,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (InvocationTargetException e) {
-			throw e.getTargetException();
+			throw new RemoteFailure("error while invoke remote service", e.getTargetException()); //$NON-NLS-1$
 		} finally {
 			// context might be null and callHooks were injected during invoke
 			if (context != null) {
