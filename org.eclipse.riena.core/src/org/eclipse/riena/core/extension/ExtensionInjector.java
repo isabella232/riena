@@ -28,7 +28,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
 /**
- * This is the extension injectors.<br>
+ * This is the extension injector.<br>
  * See {@link ExtensionDescriptor} for explanation and usage.
  */
 public class ExtensionInjector {
