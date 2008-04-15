@@ -17,10 +17,10 @@ import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.security.common.BasicAuthenticationCallHook;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
-import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.ServiceRegistration;
 
@@ -29,7 +29,7 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class BasicAuthenticationITest extends RienaTestCase {
 
-	private IRemoteServiceRegistration sessionServiceRegistration;
+	private IRemoteServiceRegistration customerSearchRegistration;
 
 	private final static String TESTURL = "http://localhost:8080/junit/protected";
 
@@ -41,14 +41,14 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null); //$NON-NLS-1$
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null); //$NON-NLS-1$
 
-		sessionServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class, TESTURL,
+		customerSearchRegistration = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class, TESTURL,
 				"hessian", null); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		sessionServiceRegistration.unregister();
+		customerSearchRegistration.unregister();
 	}
 
 	/**
@@ -56,10 +56,10 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testNoCallHook() {
 		try {
-			ISessionService sessionService = (ISessionService) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ISessionService.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
+					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-			sessionService.isValidSession(null);
+			customerSearch.findCustomer(null);
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
 		} catch (RemoteFailure e) {
 			assertTrue(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
@@ -71,13 +71,13 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookNoAuthorization() {
 		try {
-			ISessionService sessionService = (ISessionService) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ISessionService.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
+					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
 
 			ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
-			sessionService.isValidSession(null);
+			customerSearch.findCustomer(null);
 
 			serviceReg.unregister();
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
@@ -92,8 +92,8 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithInvalidAuthorization() {
 		try {
-			ISessionService sessionService = (ISessionService) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ISessionService.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
+					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
 
 			ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
@@ -106,7 +106,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 			subject.getPrivateCredentials().add("password");
 			subjectHolderService.fetchSubjectHolder().setSubject(subject);
 
-			sessionService.isValidSession(null);
+			customerSearch.findCustomer(null);
 
 			serviceReg.unregister();
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
@@ -121,8 +121,8 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithValidAuthorization() {
 		try {
-			ISessionService sessionService = (ISessionService) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ISessionService.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
+					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
 
 			ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
@@ -135,15 +135,56 @@ public class BasicAuthenticationITest extends RienaTestCase {
 			subject.getPrivateCredentials().add("scptestpassword"); //$NON-NLS-1$
 			subjectHolderService.fetchSubjectHolder().setSubject(subject);
 
-			sessionService.isValidSession(null);
+			customerSearch.findCustomer(null);
 
 			serviceReg.unregister();
 			fail("RemoteFailure with Protocol Error expected"); //$NON-NLS-1$
-			// ok()
 		} catch (RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
-			assertTrue(e.getCause().getCause().getMessage().contains("expected boolean")); //$NON-NLS-1$
+			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
+					"unknown code")); //$NON-NLS-1$
 		}
 
 	}
+
+	public void testWithCallHookWithMultipleValidAuthorization() {
+		ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
+				Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
+
+		ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
+				new BasicAuthenticationCallHook(), null);
+
+		ISubjectHolderService subjectHolderService = (ISubjectHolderService) Activator.getContext().getService(
+				Activator.getContext().getServiceReference(ISubjectHolderService.class.getName()));
+
+		Subject subject = new Subject();
+		subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$
+		subject.getPrivateCredentials().add("scptestpassword"); //$NON-NLS-1$
+		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+
+		// first call
+		try {
+			customerSearch.findCustomer(null);
+
+			fail("RemoteFailure with Protocol Error expected"); //$NON-NLS-1$
+		} catch (RemoteFailure e) {
+			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
+			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
+					"unknown code")); //$NON-NLS-1$
+		}
+
+		// second call
+		try {
+			customerSearch.findCustomer(null);
+
+			fail("RemoteFailure with Protocol Error expected"); //$NON-NLS-1$
+		} catch (RemoteFailure e) {
+			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
+			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
+					"unknown code")); //$NON-NLS-1$
+		}
+
+		serviceReg.unregister();
+	}
+
 }
