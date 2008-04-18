@@ -198,4 +198,10 @@
          version="1.0.0.M2"
          unpack="false"/>
 
+   <plugin
+         id="org.junit"
+         download-size="0"
+         install-size="0"
+         version="3.8.2.v200706111738"/>
+
 </feature>
