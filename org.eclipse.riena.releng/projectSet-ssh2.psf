@@ -34,5 +34,7 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.security.services,org.eclipse.riena.security.services"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.security.simpleservices,org.eclipse.riena.security.simpleservices"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.security.client.startup,org.eclipse.riena.security.client.startup"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.client,org.eclipse.riena.client"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/technology,org.eclipse.riena/org.eclipse.riena.server,org.eclipse.riena.server"/>
 </provider>
 </psf>

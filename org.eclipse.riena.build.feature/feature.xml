@@ -204,4 +204,18 @@
          install-size="0"
          version="3.8.2.v200706111738"/>
 
+   <plugin
+         id="org.eclipse.riena.client"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.server"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
 </feature>
