@@ -36,10 +36,9 @@ public class ServiceInjectorTest extends RienaTestCase {
 	public void scribble() {
 		Object target = null;
 
-		Inject.service("serviceId").into(target).andStart(getContext());
-		Inject.service("serviceId").into(target).bind("bind").unbind("unbind").andStart(getContext());
-		Inject.service("serviceId").useFilter("").into(target).bind("bind").unbind("unbind")
-				.andStart(getContext());
+		Inject.service("serviceClazz").into(target).andStart(getContext());
+		Inject.service("serviceClazz").into(target).bind("bind").unbind("unbind").andStart(getContext());
+		Inject.service("serviceClazz").useFilter("").into(target).bind("bind").unbind("unbind").andStart(getContext());
 	}
 
 	public void testInjectDepOneObviousBindUnbindError() {
@@ -67,8 +66,7 @@ public class ServiceInjectorTest extends RienaTestCase {
 		ServiceRegistration reg = getContext().registerService(DepTwo.class.getName(), depTwo, null);
 
 		try {
-			Inject.service(DepOne.class.getName()).into(target).bind("binde").unbind("entbinde").andStart(
-					getContext());
+			Inject.service(DepOne.class.getName()).into(target).bind("binde").unbind("entbinde").andStart(getContext());
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -148,7 +146,8 @@ public class ServiceInjectorTest extends RienaTestCase {
 		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(100));
 		ServiceRegistration reg2 = getContext().registerService(IRanking.class.getName(), rank2, dict);
 
-		ServiceInjector shot = Inject.service(IRanking.class.getName()).useRanking().into(target).andStart(getContext());
+		ServiceInjector shot = Inject.service(IRanking.class.getName()).useRanking().into(target)
+				.andStart(getContext());
 		assertEquals(1, target.count("bind", IRanking.class));
 
 		assertEquals(100, target.getDepRanking());
@@ -167,7 +166,8 @@ public class ServiceInjectorTest extends RienaTestCase {
 		IRanking rank1 = new RankingOne(0);
 		ServiceRegistration reg1 = getContext().registerService(IRanking.class.getName(), rank1, null);
 
-		ServiceInjector shot = Inject.service(IRanking.class.getName()).useRanking().into(target).andStart(getContext());
+		ServiceInjector shot = Inject.service(IRanking.class.getName()).useRanking().into(target)
+				.andStart(getContext());
 		assertEquals(1, target.count("bind", IRanking.class));
 		assertEquals(0, target.getDepRanking());
 
