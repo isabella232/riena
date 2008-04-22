@@ -91,7 +91,7 @@ public class Activator extends RienaActivator {
 		if (config != null) {
 			sslInjector = Inject.extension(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).into(config).bind(
 					"configure");
-			sslInjector.andStart();
+			sslInjector.andStart(context);
 		}
 	}
 

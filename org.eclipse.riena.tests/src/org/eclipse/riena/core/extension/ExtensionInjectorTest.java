@@ -15,10 +15,12 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import org.eclipse.core.internal.registry.osgi.Activator;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ConfigurationPlugin;
@@ -35,9 +37,9 @@ public class ExtensionInjectorTest extends RienaTestCase {
 
 	public void scribble() {
 		BundleContext context = null;
-		Inject.extension("").useType(Object.class).expectingMinMax(0, 1).into(this).andStart();
-		Inject.extension("").useType(Object.class).expectingExactly(1).into(this).bind("update").andStart();
-		Inject.extension("").into(this).doNotTrack().andStart().stop();
+		Inject.extension("").useType(Object.class).expectingMinMax(0, 1).into(this).andStart(context);
+		Inject.extension("").useType(Object.class).expectingExactly(1).into(this).bind("update").andStart(context);
+		Inject.extension("").into(this).doNotTrack().useTranslation().andStart(context).stop();
 	}
 
 	public void testConstructorConstraints() {
@@ -107,8 +109,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
 		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
-				.andStart();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				Activator.getContext());
 		assertEquals(3, target.getData().length);
 		removeExtension("core.test.extpoint.id1");
 		removeExtension("core.test.extpoint.id2");
@@ -124,7 +126,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
 		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).andStart();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).andStart(
+				Activator.getContext());
 		assertEquals(3, target.getData().length);
 		removeExtension("core.test.extpoint.id1");
 		removeExtension("core.test.extpoint.id2");
@@ -139,7 +142,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
-				.into(target).bind("configure").andStart();
+				.into(target).bind("configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getBoolean());
 		assertTrue(target.getData().isBoolean());
@@ -156,7 +159,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
-				"configure").andStart();
+				"configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
 		assertFalse(target.getData().getBoolean());
 		assertFalse(target.getData().isBoolean());
@@ -173,7 +176,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext4.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
-				"configure").andStart();
+				"configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getBoolean());
 		assertEquals("test4", target.getData().getString());
@@ -200,8 +203,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		printTestName();
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
-				.andStart();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				Activator.getContext());
 		assertEquals(0, target.getData().length);
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		Thread.sleep(SLEEP_TIME);
@@ -225,21 +228,28 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
-	public void testModifyWithUnknownTypeAndSingleData() throws ConfigurationException {
+	public void testModifyWithUnknownTypeAndSingleData() throws ConfigurationException, InvalidSyntaxException {
 		printTestName();
-		ServiceReference reference = getContext().getServiceReference(ConfigurationPlugin.class.getName());
-		Object service = getContext().getService(reference);
-		assertTrue("Ok, test needs rework!", service instanceof ConfigSymbolReplace);
-		ConfigSymbolReplace config = (ConfigSymbolReplace) service;
-		Dictionary properties = new Hashtable();
-		properties.put("true", "true");
-		config.updated(properties);
-		getContext().ungetService(reference);
+		ServiceReference[] references = getContext().getServiceReferences(ConfigurationPlugin.class.getName(), null);
+		boolean configSymbolReplace = false;
+		for (ServiceReference reference : references) {
+			Object service = getContext().getService(reference);
+			if (service instanceof ConfigSymbolReplace) {
+				ConfigSymbolReplace config = (ConfigSymbolReplace) service;
+				Dictionary properties = new Hashtable();
+				properties.put("true", "true");
+				config.updated(properties);
+				configSymbolReplace = true;
+			}
+		}
+		assertTrue("Ok, test needs rework - expected ConfigSymbolReplace is not registered!", configSymbolReplace);
+		for (ServiceReference reference : references)
+			getContext().ungetService(reference);
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext5.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
-				"configure").andStart(getContext());
+				"configure").useTranslation().andStart(getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getBoolean());
 		assertEquals("test5", target.getData().getString());
