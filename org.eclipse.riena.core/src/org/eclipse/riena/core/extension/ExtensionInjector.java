@@ -41,6 +41,7 @@ public class ExtensionInjector {
 	private BundleContext context;
 	private boolean started;
 	private boolean track = true;
+	private boolean translate;
 	private String updateMethodName = "update"; //$NON-NLS-1$
 	private Method updateMethod;
 	// TODO 3.4: private IRegistryEventListener injectorListener;
@@ -62,21 +63,9 @@ public class ExtensionInjector {
 
 	/**
 	 * Start the extension injector.<br>
-	 * Started with this the extension injector will NOT modify the values with
-	 * ConfigurationPlugin.
-	 * 
-	 * @return
-	 */
-	public ExtensionInjector andStart() {
-		return andStart(null);
-	}
-
-	/**
-	 * Start the extension injector.<br>
-	 * Started with this the extension injector WILL modify the values with
-	 * ConfigurationPlugin.
 	 * 
 	 * @param context
+	 * @return itself
 	 */
 	public ExtensionInjector andStart(BundleContext context) {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
@@ -109,6 +98,7 @@ public class ExtensionInjector {
 	 * If not given ´update´ will be assumed.
 	 * 
 	 * @param bindMethodName
+	 * @return itself
 	 */
 	public ExtensionInjector bind(String bindMethodName) {
 		Assert.isNotNull(bindMethodName, "Bind method name must not be null");
@@ -120,12 +110,24 @@ public class ExtensionInjector {
 	/**
 	 * Explicitly forbid tracking of changes of the extensions.
 	 * 
-	 * @return
+	 * @return itself
 	 */
 	public ExtensionInjector doNotTrack() {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
 		Assert.isTrue(!this.track, "Not tracking is already set.");
 		track = false;
+		return this;
+	}
+
+	/**
+	 * Modify the values with ConfigurationPlugin.
+	 * 
+	 * @return itself
+	 */
+	public ExtensionInjector useTranslation() {
+		Assert.isTrue(!started, "ExtensionInjector already started.");
+		Assert.isTrue(!this.translate, "Translation is already set.");
+		translate = true;
 		return this;
 	}
 
