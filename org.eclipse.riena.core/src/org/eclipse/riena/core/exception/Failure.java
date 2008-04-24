@@ -13,9 +13,6 @@ package org.eclipse.riena.core.exception;
 import java.text.MessageFormat;
 import java.util.Date;
 
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.internal.core.Activator;
-
 /**
  * Exception for handling of non-recoverable errors/problems (resource
  * unavailability, runtime exceptions and other system errors). This class
@@ -52,15 +49,8 @@ public abstract class Failure extends RuntimeException {
 	private static final int HEX_BASE = 16;
 
 	// package protected for unit test!!
-	static final String[] MESSAGE_PART_NAMES = { "serverMsg", "cause", "id", "timestamp", "callerClassName", "callerClassVersion", "callerMethodName",
-			"nativeErrorCode", "clientMsg", "javaVersion", "stacktrace" };
-
-	/*
-	 * Note: The usage of the standard logger has been completly removed,
-	 * because creating the logger via hivemind caused in some situations
-	 * throwing an ExceptionInInitializerError!!!
-	 */
-	private static final Logger LOGGER = Activator.getDefault().getLogger(Failure.class.getName());
+	static final String[] MESSAGE_PART_NAMES = { "serverMsg", "cause", "id", "timestamp", "callerClassName",
+			"callerClassVersion", "callerMethodName", "nativeErrorCode", "clientMsg", "javaVersion", "stacktrace" };
 
 	/**
 	 * constructor.
