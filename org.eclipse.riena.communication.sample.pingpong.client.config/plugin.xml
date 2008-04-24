@@ -7,7 +7,7 @@
             servicepid="org.eclipse.riena.config.symbols">
          <property
                name="hostname"
-               value="localhost:9080/pingpong">
+               value="localhost:8080">
          </property>
       </config>
    </extension>
