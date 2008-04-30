@@ -208,21 +208,21 @@
          id="org.eclipse.riena.client"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.server"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.0.M2"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.riena.security.client.startup"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.M2"
          unpack="false"/>
 
 </feature>
