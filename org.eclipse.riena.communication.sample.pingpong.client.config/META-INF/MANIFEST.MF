@@ -6,6 +6,6 @@ Bundle-Version: 1.0.0.M2
 Bundle-Activator: org.eclipse.riena.internal.communication.sample.pingpong.client.config.Activator
 Eclipse-LazyStart: true
 Import-Package: org.osgi.framework;version="1.4.0"
-Require-Bundle: org.eclipse.riena.communication.core,
- org.eclipse.riena.communication.sample.pingpong.common,
- org.eclipse.riena.core
+Require-Bundle: org.eclipse.riena.communication.sample.pingpong.common,
+ org.eclipse.riena.core,
+ org.eclipse.riena.client;bundle-version="1.0.0"
