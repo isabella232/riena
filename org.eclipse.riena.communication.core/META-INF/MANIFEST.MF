@@ -21,4 +21,4 @@ Eclipse-RegisterBuddy: com.caucho.hessian
 Require-Bundle: org.eclipse.core.runtime,
  com.caucho.hessian,
  org.eclipse.riena.core,
- org.eclipse.equinox.log
+ org.eclipse.equinox.log;bundle-version="1.1.0"

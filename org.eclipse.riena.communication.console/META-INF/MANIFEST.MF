@@ -9,4 +9,4 @@ Import-Package: org.osgi.framework;version="1.4.0",
 Require-Bundle: org.eclipse.riena.communication.core,
  org.eclipse.osgi,
  org.eclipse.riena.core,
- org.eclipse.equinox.log
+ org.eclipse.equinox.log;bundle-version="1.1.0"
