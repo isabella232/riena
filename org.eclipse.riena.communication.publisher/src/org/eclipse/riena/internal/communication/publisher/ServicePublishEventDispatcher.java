@@ -120,7 +120,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 				ServiceHooksProxy handler = new ServiceHooksProxy(service);
 				// create remote service description
 				String[] interfaces = (String[]) serviceRef.getProperty(Constants.OBJECTCLASS);
-				assert interfaces.length == 1 : "OSGi only with one interface supported";
+				assert interfaces.length == 1 : "OSGi service registrations only with one interface supported";
 				String interfaceName = interfaces[0];
 				Class interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
 				service = Proxy.newProxyInstance(interfaceClazz.getClassLoader(), new Class[] { interfaceClazz },
