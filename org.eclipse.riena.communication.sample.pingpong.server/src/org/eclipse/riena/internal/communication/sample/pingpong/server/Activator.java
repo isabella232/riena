@@ -43,26 +43,11 @@ public class Activator implements BundleActivator {
 
 		pingPongRegHessian = context.registerService(IPingPong.class.getName(), pingPong, properties);
 
-		// create xfire service
-		// pingPong = new PingPong();
-		// properties = new Hashtable<String, String>(3);
-		//
-		// properties.put(RSDPublisherProperties.PROP_IS_REMOTE,
-		// Boolean.TRUE.toString());
-		// properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "xfire");
-		// properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
-		// "/PingPongXFireWS");
-		//
-		// pingPongRegXFire = context.registerService(IPingPong.ID, pingPong,
-		// properties);
-
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		pingPongRegHessian.unregister();
 		pingPongRegHessian = null;
-		// pingPongRegXFire.unregister();
-		// pingPongRegXFire = null;
 	}
 
 }
