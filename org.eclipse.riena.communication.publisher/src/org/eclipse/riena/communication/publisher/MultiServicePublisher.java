@@ -11,31 +11,62 @@
 package org.eclipse.riena.communication.publisher;
 
 import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_IS_REMOTE;
+import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PATH;
 import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PROTOCOL;
 
+import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.communication.core.util.CommunicationUtil;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.publisher.Activator;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
 /**
- * This class listens for new services and checks whether they have properties
- * that are requiring them to be published. If starts publication using
- * RemoteServicePublisher.
  * 
- * @see RemoteServicePublisher
  */
-public class ServicePublishingDaemon {
+public class MultiServicePublisher {
+
+	private String filter;
+	private BundleContext context;
+	private String url;
+	private String protocol;
+
+	private IServicePublishBinder binder;
 
 	public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
-	public ServicePublishingDaemon() {
+	public MultiServicePublisher() {
 		super();
+		Inject.service(IServicePublishBinder.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+	}
+
+	public MultiServicePublisher filter(String filter) {
+		this.filter = filter;
+		return this;
+	}
+
+	public MultiServicePublisher usingUrl(String url) {
+		this.url = url;
+		return this;
+	}
+
+	public MultiServicePublisher withProtocol(String protocol) {
+		this.protocol = protocol;
+		return this;
+	}
+
+	public void andStart(BundleContext context) {
+		this.context = context;
+
 		try {
 			ServiceReference[] refs = Activator.getContext().getServiceReferences(null, FILTER_REMOTE);
-			for (ServiceReference ref : refs) {
-				publish(ref);
+			if (refs != null) {
+				for (ServiceReference ref : refs) {
+					publish(ref);
+				}
 			}
 		} catch (InvalidSyntaxException e1) {
 			e1.printStackTrace();
@@ -57,14 +88,28 @@ public class ServicePublishingDaemon {
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
+
+		return;
+	}
+
+	public void bind(IServicePublishBinder binder) {
+		this.binder = binder;
+	}
+
+	public void unbind(IServicePublishBinder binder) {
+		this.binder = null;
 	}
 
 	private void publish(ServiceReference serviceReference) {
+		String protocol = CommunicationUtil.accessProperty(serviceReference
+				.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
+		String path = CommunicationUtil.accessProperty(serviceReference.getProperty(PROP_REMOTE_PATH), null);
+		binder.publish(serviceReference, path, protocol);
 
 	}
 
 	private void unpublish(ServiceReference serviceReference) {
-
+		binder.unpublish(serviceReference);
 	}
 
 }

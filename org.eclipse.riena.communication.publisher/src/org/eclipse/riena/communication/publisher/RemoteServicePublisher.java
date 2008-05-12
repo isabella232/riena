@@ -16,6 +16,7 @@ import org.eclipse.riena.internal.communication.publisher.Activator;
 
 /**
  * Publishes OSGi Service as Webservice Endpoint
+ * 
  */
 public class RemoteServicePublisher {
 
