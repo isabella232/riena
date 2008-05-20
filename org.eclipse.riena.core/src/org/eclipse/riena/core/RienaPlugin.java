@@ -25,26 +25,31 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class RienaPlugin extends Plugin {
 
-	// The shared instance
-	private static BundleContext context;
 	private LogUtil logUtil;
 
+	// The shared instance
+	private static BundleContext context;
+	private static RienaPlugin plugin;
+
 	/*
-	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		RienaPlugin.context = context;
+		RienaPlugin.plugin = this;
 	}
 
 	/*
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		RienaPlugin.context = null;
-
+		RienaPlugin.plugin = null;
 		super.stop(context);
 	}
 
@@ -58,10 +63,20 @@ public abstract class RienaPlugin extends Plugin {
 	}
 
 	/**
-	 * Get a logger for the specified name.
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static RienaPlugin getDefault() {
+		return plugin;
+	}
+
+	/**
+	 * Get a logger for the specified name.<br> <b>Hint:</b>The log levels are
+	 * defined in <code>LogService</code>.
 	 * 
 	 * @param name
-	 * @return
+	 * @return the logger
 	 */
 	public synchronized Logger getLogger(String name) {
 		if (logUtil == null)

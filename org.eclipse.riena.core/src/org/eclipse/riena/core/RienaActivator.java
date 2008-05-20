@@ -25,22 +25,29 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class RienaActivator implements BundleActivator {
 
-	// The shared instance
-	private static BundleContext context;
 	private LogUtil logUtil;
 
+	// The shared instance
+	private static BundleContext context;
+	private static RienaActivator activator;
+
 	/*
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
+	 * )
 	 */
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		RienaActivator.context = context;
+		RienaActivator.activator = this;
 	}
 
 	/*
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		RienaActivator.context = null;
+		RienaActivator.activator = null;
 	}
 
 	/**
@@ -53,10 +60,20 @@ public abstract class RienaActivator implements BundleActivator {
 	}
 
 	/**
-	 * Get a logger for the specified name.
+	 * Get the activator instance.
+	 * 
+	 * @return
+	 */
+	public static RienaActivator getDefault() {
+		return activator;
+	}
+
+	/**
+	 * Get a logger for the specified name.<br> <b>Hint:</b>The log levels are
+	 * defined in <code>LogService</code>.
 	 * 
 	 * @param name
-	 * @return
+	 * @return the logger
 	 */
 	public synchronized Logger getLogger(String name) {
 		if (logUtil == null)
