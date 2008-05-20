@@ -10,21 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.config;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.IValueVariable;
+import org.eclipse.core.variables.VariablesPlugin;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.cm.ManagedService;
+import org.osgi.service.log.LogService;
 
 /**
  * This <code>ConfigurationPlugin</code> gets notified for each and every
@@ -38,63 +37,33 @@ import org.osgi.service.cm.ManagedService;
  */
 public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService {
 
-	private HashMap<String, String> symbols = new HashMap<String, String>();
+	private IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 
-	private static final char VARIBALE_POSTFIX = '}';
-	private static final String VARIABLE_PREFIX = "${"; //$NON-NLS-1$
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ConfigSymbolReplace.class.getName());
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.service.cm.ConfigurationPlugin#modifyConfiguration(org.osgi.framework.ServiceReference,
-	 *      java.util.Dictionary)
+	 * @see
+	 * org.osgi.service.cm.ConfigurationPlugin#modifyConfiguration(org.osgi.
+	 * framework.ServiceReference, java.util.Dictionary)
 	 */
 	public void modifyConfiguration(ServiceReference reference, Dictionary properties) {
 		// don't do symbol source replace for configurations of myself
-		if (reference != null && Activator.getContext().getService(reference) == this) {
+		if (reference != null && Activator.getContext().getService(reference) == this)
 			return;
-		}
-		Enumeration<?> enumeration = properties.keys();
-		while (enumeration.hasMoreElements()) {
-			Object key = enumeration.nextElement();
+
+		for (Object key : Iter.able(properties.keys())) {
 			Object value = properties.get(key);
-			if (value instanceof String && ((String) value).contains(VARIABLE_PREFIX)) {
-				properties.put(key, replaceSymbol((String) value));
+			if (value.getClass() != String.class)
+				continue;
+			try {
+				properties.put(key, variableManager.performStringSubstitution((String) value));
+			} catch (CoreException e) {
+				// TODO maybe more specific exception type here
+				throw new RuntimeException("Error while modifying (" + key + "," + value + ").", e);
 			}
 		}
-	}
-
-	/**
-	 * looks for symbols in a specific property value
-	 * 
-	 * @param value
-	 * @return
-	 */
-	private String replaceSymbol(final String value) {
-		StringBuilder sb = new StringBuilder(value);
-		int i;
-		while ((i = sb.indexOf(VARIABLE_PREFIX)) > -1) {
-			int x = sb.substring(i).indexOf(VARIBALE_POSTFIX);
-			if (x > 0) {
-				String key = sb.substring(i + 2, i + x);
-				sb.replace(i, i + x + 1, lookupSymbol(key));
-			} else
-				throw new RuntimeException("Incomplete symbol within " + sb + ". The closeing brace '}' is missing.");
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * looks up a symbol in its table
-	 * 
-	 * @param symbol
-	 * @return
-	 */
-	private String lookupSymbol(String symbol) {
-		String value = symbols.get(symbol);
-		if (value != null)
-			return value;
-		throw new RuntimeException("symbol " + symbol + " not found.");
 	}
 
 	/*
@@ -103,68 +72,29 @@ public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService 
 	 * @see org.osgi.service.cm.ManagedService#updated(java.util.Dictionary)
 	 */
 	public void updated(Dictionary properties) throws ConfigurationException {
-		if (properties == null) {
+		if (properties == null)
 			return;
-		}
-		// TODO Is it really necessary to create a copy? The interface says that
-		// there is already a copy passed in!
-		HashMap<String, String> tempSymbols = new HashMap<String, String>(properties.size());
-		Enumeration<String> enumeration = properties.keys();
-		while (enumeration.hasMoreElements()) {
-			String key = enumeration.nextElement();
-			String value = (String) properties.get(key);
-			tempSymbols.put(key, value);
-		}
-		assertLoopFreeness(tempSymbols);
-		this.symbols = tempSymbols;
-	}
 
-	/**
-	 * @param tempSymbols
-	 */
-	private static void assertLoopFreeness(Map<String, String> dictionary) {
-		for (String symbol : dictionary.keySet()) {
-			Set<String> walked = new HashSet<String>();
-			walkAlong(symbol, dictionary, walked);
+		// We could also create an array with all values, but with that we were
+		// not be able to ignore doubled defined keys but with equal values.
+		IValueVariable[] variables = new IValueVariable[1];
+		for (Object key : Iter.able(properties.keys())) {
+			if (key.getClass() != String.class)
+				continue;
+			Object value = properties.get(key);
+			if (value.getClass() != String.class)
+				continue;
+			variables[0] = variableManager.newValueVariable((String) key, null, true, (String) value);
+			try {
+				variableManager.addVariables(variables);
+			} catch (CoreException e) {
+				IValueVariable existingValue = variableManager.getValueVariable((String) key);
+				if (existingValue.getValue().equals(value))
+					LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")");
+				else
+					throw new ConfigurationException((String) key, "Could not add a value variable " + variables[0]
+							+ " to variable manager.", e);
+			}
 		}
-	}
-
-	/**
-	 * @param symbol
-	 * @param dictionary
-	 * @param walked
-	 */
-	private static void walkAlong(String symbol, Map<String, String> dictionary, Set<String> walked) {
-		if (walked.contains(symbol))
-			throw new RuntimeException("There is a loop " + walked + " within the dictionary " + dictionary
-					+ "  referencing back to " + symbol + ".");
-		walked.add(symbol);
-		List<String> symbolsForSymbol = getSymbolsForSymbol(dictionary.get(symbol));
-		for (String deeperSymbol : symbolsForSymbol) {
-			walkAlong(deeperSymbol, dictionary, walked);
-		}
-	}
-
-	/**
-	 * @param string
-	 * @return
-	 */
-	private static List<String> getSymbolsForSymbol(String string) {
-		int i = string.indexOf(VARIABLE_PREFIX);
-		if (i == -1)
-			return Collections.emptyList();
-		List<String> symbols = new ArrayList<String>();
-		int x = 0;
-		while (i > -1) {
-			x = string.substring(i).indexOf(VARIBALE_POSTFIX);
-			if (x > 0) {
-				String key = string.substring(i + 2, i + x);
-				symbols.add(key);
-			} else
-				throw new RuntimeException("Incomplete symbol within " + string
-						+ " from the dictionary. The closeing brace '}' is missing.");
-			i = string.indexOf(VARIABLE_PREFIX, i + x);
-		}
-		return symbols;
 	}
 }
