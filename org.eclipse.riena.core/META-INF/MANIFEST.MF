@@ -24,4 +24,5 @@ Export-Package: org.eclipse.riena.core,
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.eclipse.equinox.log;bundle-version="1.1.0",
- org.eclipse.equinox.cm
+ org.eclipse.equinox.cm,
+ org.eclipse.core.variables;bundle-version="3.2.100"
