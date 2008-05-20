@@ -44,7 +44,7 @@ public class SampleLoginModule implements LoginModule {
 	String username;
 	String password;
 
-	private Logger LOGGER = Activator.getDefault().getLogger(SampleLoginModule.class.getName());
+	private static final Logger LOGGER = Activator.getDefault().getLogger(SampleLoginModule.class.getName());
 
 	/*
 	 * (non-Javadoc)
@@ -69,11 +69,13 @@ public class SampleLoginModule implements LoginModule {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject,
-	 *      javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 *      java.util.Map)
+	 * @see
+	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
+	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
+	 * java.util.Map)
 	 */
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
+			Map<String, ?> options) {
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
 		this.sharedState = sharedState;
