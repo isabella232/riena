@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.security.common;
 
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
-import org.eclipse.riena.core.logging.LogUtil;
+import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.security.common.authorization.RienaPolicy;
@@ -26,15 +24,10 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class Activator extends RienaPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.security.common";
-
-	// The shared instance
-	private static Activator plugin;
-	private static BundleContext CONTEXT;
-	private LogUtil logUtil;
 
 	private ServiceRegistration sessionHolderService;
 	private ServiceRegistration securityCallHook;
@@ -50,53 +43,31 @@ public class Activator extends Plugin {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
-		CONTEXT = context;
-		sessionHolderService = CONTEXT.registerService(ISessionHolderService.class.getName(),
+		sessionHolderService = context.registerService(ISessionHolderService.class.getName(),
 				new SimpleSessionHolderService(), null);
-		securityCallHook = CONTEXT.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
-		principalHolderService = CONTEXT.registerService(ISubjectHolderService.class.getName(),
+		securityCallHook = context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
+		principalHolderService = context.registerService(ISubjectHolderService.class.getName(),
 				new SubjectHolderService(), null);
-		permissionCache = CONTEXT.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
+		permissionCache = context.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
 		RienaPolicy.init();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
 		sessionHolderService.unregister();
 		securityCallHook.unregister();
 		principalHolderService.unregister();
-		plugin = null;
-		CONTEXT = null;
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	public static BundleContext getContext() {
-		return CONTEXT;
-	}
-
-	public synchronized Logger getLogger(String name) {
-		if (logUtil == null) {
-			logUtil = new LogUtil(CONTEXT);
-		}
-		return logUtil.getLogger(name);
+		super.stop(context);
 	}
 
 }

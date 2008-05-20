@@ -12,8 +12,8 @@ package org.eclipse.riena.internal.sample.app.server;
 
 import java.util.Hashtable;
 
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
@@ -23,12 +23,9 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class Activator extends RienaPlugin {
 
 	private static final String REMOTE_PROTOCOL_HESSIAN = "hessian";
-
-	// The shared instance
-	private static Activator plugin;
 
 	private Customers customers;
 	private ServiceRegistration regCustomerSearch;
@@ -40,9 +37,7 @@ public class Activator extends Plugin {
 	 * The constructor
 	 */
 	public Activator() {
-
 		super();
-
 		customers = new Customers();
 		helloWorldService = new HelloWorldService();
 	}
@@ -50,11 +45,13 @@ public class Activator extends Plugin {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
-
+		super.start(context);
 		startCustomerSearch(context);
 		startCustomers(context);
 		startHelloWorldService(context);
@@ -63,23 +60,15 @@ public class Activator extends Plugin {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-
 		stopCustomerSearch();
 		stopCustomers();
 		stopHelloWorldService();
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
+		super.stop(context);
 	}
 
 	private void startCustomerSearch(BundleContext context) {

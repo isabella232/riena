@@ -70,7 +70,8 @@ public class PermissionCache implements IPermissionCache {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.security.common.authorization.IPermissionCache#getPermissions(javax.security.auth.Subject)
+	 * @seeorg.eclipse.riena.security.common.authorization.IPermissionCache#
+	 * getPermissions(javax.security.auth.Subject)
 	 */
 	public Permissions getPermissions(Principal[] principals) {
 		Permissions allPerms = new Permissions();
