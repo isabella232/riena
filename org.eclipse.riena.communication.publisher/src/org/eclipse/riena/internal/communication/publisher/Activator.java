@@ -36,15 +36,15 @@ public class Activator extends RienaActivator {
 	private ServicePublishEventDispatcher dispatcher;
 	private ServiceInjector publisherInjector;
 	private UpdateNotifierRemoteService updateNotifierRemoteService;
-	private static Activator plugin;
 	private static Logger logger;
 
 	/*
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
 
 		logger = getLogger(Activator.class.getName());
 		dispatcher = new ServicePublishEventDispatcher(context);
@@ -86,7 +86,8 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		context.removeServiceListener(updateNotifierRemoteService);
@@ -95,13 +96,8 @@ public class Activator extends RienaActivator {
 		publisherInjector.stop();
 		publisherInjector = null;
 		updateNotifierRemoteService = null;
-		plugin = null;
 
 		super.stop(context);
-	}
-
-	public static Activator getDefault() {
-		return plugin;
 	}
 
 	class UpdateNotifierRemoteService implements ServiceListener {

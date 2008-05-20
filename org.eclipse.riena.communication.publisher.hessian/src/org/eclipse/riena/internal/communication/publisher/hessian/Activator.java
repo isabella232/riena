@@ -26,17 +26,17 @@ import org.osgi.service.log.LogService;
 public class Activator extends RienaActivator {
 	private ServiceRegistration publisherReg;
 	private static HessianRemoteServicePublisher publisher;
-	private static Activator plugin;
+
 	private static Logger logger;
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
 
 		logger = getLogger(Activator.class.getName());
 		logger.log(LogService.LOG_INFO, "start hessian support on server");
@@ -50,20 +50,16 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		publisherReg.unregister();
 		publisherReg = null;
 		publisher = null;
-		plugin = null;
 
 		logger.log(LogService.LOG_INFO, "stop hessian support on server");
 		super.stop(context);
-	}
-
-	public static Activator getDefault() {
-		return plugin;
 	}
 
 	/**
