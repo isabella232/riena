@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.config;
 
+import java.lang.reflect.Field;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.eclipse.core.internal.variables.StringVariableManager;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.service.cm.ConfigurationException;
 
@@ -24,9 +26,18 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	private Dictionary<String, String> dictionary;
 	private ConfigSymbolReplace translator;
 	private Dictionary<String, String> book;
-
+	private static Field fgManager;
 	private static final String REF_KEY = "ref";
 	private static final String WWW_ECLIPSE_ORG = "www.eclipse.org";
+
+	static {
+		try {
+			fgManager = StringVariableManager.class.getDeclaredField("fgManager");
+			fgManager.setAccessible(true);
+		} catch (Throwable e) {
+			fail("Could not access field ´fgManager´ from StringVariableManager!");
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -39,25 +50,27 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 		dictionary = new Hashtable<String, String>();
 		book = new Hashtable<String, String>();
 		translator = new ConfigSymbolReplace();
+		// Need every time a fresh manager
+		fgManager.set(null, null);
 	}
 
 	public void testUpdatedWrongKey() throws ConfigurationException {
 		dictionary.put("host", "${host");
-		try {
-			translator.updated(dictionary);
-			fail();
-		} catch (RuntimeException e) {
-			assertTrue(e.getMessage().contains("Incomplete"));
-		}
+		translator.updated(dictionary);
+		book.put(REF_KEY, "${host}");
+		translator.modifyConfiguration(null, book);
+		assertEquals("${host", book.get(REF_KEY));
 	}
 
 	public void testUpdatedRecursiveKeyDirectly() throws ConfigurationException {
 		dictionary.put("host", "${host}");
 		try {
 			translator.updated(dictionary);
+			book.put(REF_KEY, "${host}");
+			translator.modifyConfiguration(null, book);
 			fail();
 		} catch (RuntimeException e) {
-			assertTrue(e.getMessage().contains("[host]"));
+			assertTrue(e.getMessage().contains("${host}"));
 		}
 	}
 
@@ -66,9 +79,11 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 		dictionary.put("b", "${a}");
 		try {
 			translator.updated(dictionary);
+			book.put(REF_KEY, "${a}");
+			translator.modifyConfiguration(null, book);
 			fail();
 		} catch (RuntimeException e) {
-			assertTrue(e.getMessage().contains("loop"));
+			assertTrue(e.getMessage().contains("${a}"));
 		}
 	}
 
@@ -78,9 +93,11 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 		dictionary.put("c", "${a}");
 		try {
 			translator.updated(dictionary);
+			book.put(REF_KEY, "${a}");
+			translator.modifyConfiguration(null, book);
 			fail();
 		} catch (RuntimeException e) {
-			assertTrue(e.getMessage().contains("loop"));
+			assertTrue(e.getMessage().contains("${a}"));
 		}
 	}
 
@@ -89,12 +106,8 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 		translator.updated(dictionary);
 
 		book.put(REF_KEY, "${host");
-		try {
-			translator.modifyConfiguration(null, book);
-			fail();
-		} catch (RuntimeException e) {
-			assertTrue(e.getMessage().contains("${host"));
-		}
+		translator.modifyConfiguration(null, book);
+		assertEquals("${host", book.get(REF_KEY));
 	}
 
 	public void testModifyEmptyKey() throws ConfigurationException {
