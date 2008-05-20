@@ -12,35 +12,31 @@ package org.eclipse.riena.internal.communication.console;
 
 import java.util.Hashtable;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.osgi.framework.console.CommandProvider;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.logging.LogUtil;
 import org.eclipse.riena.core.service.ServiceInjector;
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-public class Activator implements BundleActivator {
+public class Activator extends RienaActivator {
 
 	private ServiceRegistration consoleReg;
 	private ServiceInjector publisherInjector;
 	private ServiceInjector registryInjector;
-	private LogUtil logUtil;
-	private static BundleContext CONTEXT;
-	private static Activator plugin;
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
-		CONTEXT = context;
-		plugin = this;
+		super.start(context);
 		// register new OSGi command interpreter
 		CommunicationConsole console = new CommunicationConsole();
 		// the filter applies only if the service is living in this container
@@ -57,7 +53,8 @@ public class Activator implements BundleActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		publisherInjector.stop();
@@ -66,22 +63,7 @@ public class Activator implements BundleActivator {
 		registryInjector = null;
 		consoleReg.unregister();
 		consoleReg = null;
-		CONTEXT = null;
-		plugin = null;
+		super.stop(context);
 	}
 
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	public static BundleContext getContext() {
-		return CONTEXT;
-	}
-
-	public synchronized Logger getLogger(String name) {
-		if (logUtil == null) {
-			logUtil = new LogUtil(CONTEXT);
-		}
-		return logUtil.getLogger(name);
-	}
 }

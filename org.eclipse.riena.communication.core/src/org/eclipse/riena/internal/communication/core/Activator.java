@@ -37,7 +37,6 @@ import org.osgi.service.log.LogService;
  */
 public class Activator extends RienaActivator {
 
-	private static Activator plugin;
 	private RemoteServiceRegistry serviceRegistry;
 	private ServiceRegistration regServiceRegistry;
 
@@ -47,12 +46,12 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
-
 		serviceRegistry = new RemoteServiceRegistry();
 		serviceRegistry.start();
 
@@ -98,7 +97,8 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		if (sslInjector != null)
@@ -112,13 +112,7 @@ public class Activator extends RienaActivator {
 		serviceRegistry.stop();
 		serviceRegistry = null;
 
-		plugin = null;
-
 		super.stop(context);
-	}
-
-	public static Activator getDefault() {
-		return plugin;
 	}
 
 }
