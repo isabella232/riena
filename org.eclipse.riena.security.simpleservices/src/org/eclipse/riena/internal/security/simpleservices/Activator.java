@@ -19,8 +19,6 @@ public class Activator extends RienaActivator {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.security.simpleservices.simple.services";
 
-	// The shared instance
-	private static Activator plugin;
 	private ServiceRegistration memoryStore;
 	private ServiceRegistration filepermissionstore;
 
@@ -33,11 +31,11 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
 		// bring up a simple in memory session store
 		memoryStore = getContext().registerService(ISessionStore.class.getName(), new MemoryStore(),
 				ServiceDescriptor.newDefaultServiceProperties());
@@ -53,22 +51,13 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		memoryStore.unregister();
 		filepermissionstore.unregister();
 		super.stop(context);
-		plugin = null;
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
 	}
 
 }

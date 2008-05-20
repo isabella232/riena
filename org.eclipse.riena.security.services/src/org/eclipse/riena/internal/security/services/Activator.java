@@ -23,8 +23,6 @@ public class Activator extends RienaActivator {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.security.services";
 
-	// The shared instance
-	private static Activator plugin;
 	private ServiceRegistration authenticationService;
 	private ServiceRegistration sessionService;
 	private ServiceRegistration sessionProvider;
@@ -40,12 +38,11 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
-
 		// register AuthenticationService
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
@@ -79,24 +76,15 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
 		authenticationService.unregister();
 		authorizationService.unregister();
 		sessionService.unregister();
 		sessionProvider.unregister();
-		plugin = null;
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
+		super.stop(context);
 	}
 
 }
