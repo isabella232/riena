@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.objecttransaction;bundle-version="1.0.0",
  org.eclipse.riena.security.simpleservices;bundle-version="1.0.0",
  org.eclipse.riena.security.services;bundle-version="1.0.0",
- org.eclipse.core.variables;bundle-version="3.2.100"
+ org.eclipse.core.variables
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.security.authorizationservice,
