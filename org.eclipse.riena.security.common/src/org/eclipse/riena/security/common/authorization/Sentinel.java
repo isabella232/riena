@@ -34,8 +34,10 @@ public class Sentinel {
 
 	private Sentinel() {
 		super();
-		Inject.service(IPermissionCache.class.getName()).useRanking().into(this).andStart(Activator.getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(IPermissionCache.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
+		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	public void bind(IPermissionCache permCache) {
@@ -76,7 +78,7 @@ public class Sentinel {
 	 * allowed for this subject
 	 * 
 	 * @param permission
-	 *            permission to be checked
+	 * 		permission to be checked
 	 * @return
 	 */
 	public static boolean checkAccess(Permission permission) {

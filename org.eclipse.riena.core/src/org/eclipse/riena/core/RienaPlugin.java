@@ -26,10 +26,7 @@ import org.osgi.framework.BundleContext;
 public abstract class RienaPlugin extends Plugin {
 
 	private LogUtil logUtil;
-
-	// The shared instance
-	private static BundleContext context;
-	private static RienaPlugin plugin;
+	private BundleContext context;
 
 	/*
 	 * @see
@@ -38,8 +35,7 @@ public abstract class RienaPlugin extends Plugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		RienaPlugin.context = context;
-		RienaPlugin.plugin = this;
+		this.context = context;
 	}
 
 	/*
@@ -48,8 +44,7 @@ public abstract class RienaPlugin extends Plugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		RienaPlugin.context = null;
-		RienaPlugin.plugin = null;
+		this.context = null;
 		super.stop(context);
 	}
 
@@ -58,17 +53,8 @@ public abstract class RienaPlugin extends Plugin {
 	 * 
 	 * @return
 	 */
-	public static BundleContext getContext() {
+	public BundleContext getContext() {
 		return context;
-	}
-
-	/**
-	 * Get the plugin instance.
-	 * 
-	 * @return
-	 */
-	public static RienaPlugin getDefault() {
-		return plugin;
 	}
 
 	/**

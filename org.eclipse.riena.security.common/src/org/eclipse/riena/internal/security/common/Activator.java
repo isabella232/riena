@@ -34,6 +34,9 @@ public class Activator extends RienaPlugin {
 	private ServiceRegistration principalHolderService;
 	private ServiceRegistration permissionCache;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -48,6 +51,7 @@ public class Activator extends RienaPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		sessionHolderService = context.registerService(ISessionHolderService.class.getName(),
 				new SimpleSessionHolderService(), null);
 		securityCallHook = context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
@@ -67,7 +71,16 @@ public class Activator extends RienaPlugin {
 		sessionHolderService.unregister();
 		securityCallHook.unregister();
 		principalHolderService.unregister();
+		Activator.plugin = null;
 		super.stop(context);
 	}
 
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
+	}
 }

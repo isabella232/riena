@@ -36,7 +36,10 @@ public class Activator extends RienaActivator {
 	private ServicePublishEventDispatcher dispatcher;
 	private ServiceInjector publisherInjector;
 	private UpdateNotifierRemoteService updateNotifierRemoteService;
-	private static Logger logger;
+	private Logger logger;
+
+	// The shared instance
+	private static Activator plugin;
 
 	/*
 	 * @see
@@ -46,6 +49,7 @@ public class Activator extends RienaActivator {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 
+		Activator.plugin = this;
 		logger = getLogger(Activator.class.getName());
 		dispatcher = new ServicePublishEventDispatcher(context);
 		publisherInjector = Inject.service(IServicePublisher.class.getName()).useRanking().into(dispatcher).andStart(
@@ -97,6 +101,7 @@ public class Activator extends RienaActivator {
 		publisherInjector = null;
 		updateNotifierRemoteService = null;
 
+		Activator.plugin = null;
 		super.stop(context);
 	}
 
@@ -126,5 +131,14 @@ public class Activator extends RienaActivator {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 }

@@ -33,11 +33,15 @@ public class Activator extends RienaPlugin {
 	private HelloWorldService helloWorldService;
 	private ServiceRegistration regHelloWorldService;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
 	public Activator() {
 		super();
+		Activator.plugin = this;
 		customers = new Customers();
 		helloWorldService = new HelloWorldService();
 	}
@@ -68,7 +72,17 @@ public class Activator extends RienaPlugin {
 		stopCustomerSearch();
 		stopCustomers();
 		stopHelloWorldService();
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 	private void startCustomerSearch(BundleContext context) {

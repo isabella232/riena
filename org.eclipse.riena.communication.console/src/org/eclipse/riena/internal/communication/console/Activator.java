@@ -28,6 +28,9 @@ public class Activator extends RienaActivator {
 	private ServiceInjector publisherInjector;
 	private ServiceInjector registryInjector;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -37,6 +40,7 @@ public class Activator extends RienaActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		// register new OSGi command interpreter
 		CommunicationConsole console = new CommunicationConsole();
 		// the filter applies only if the service is living in this container
@@ -63,7 +67,17 @@ public class Activator extends RienaActivator {
 		registryInjector = null;
 		consoleReg.unregister();
 		consoleReg = null;
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

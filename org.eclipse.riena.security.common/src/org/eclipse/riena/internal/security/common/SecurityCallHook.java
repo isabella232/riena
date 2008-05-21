@@ -32,7 +32,8 @@ public class SecurityCallHook implements ICallHook {
 
 	public SecurityCallHook() {
 		super();
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	public void bind(ISessionHolderService shService) {
@@ -46,7 +47,8 @@ public class SecurityCallHook implements ICallHook {
 	}
 
 	/**
-	 * @see de.compeople.spirit.communication.base.hook.ICallHook#beforeCall(de.compeople.spirit.communication.base.hook.ICallContext)
+	 * @see de.compeople.spirit.communication.base.hook.ICallHook#beforeCall(de.
+	 * 	compeople.spirit.communication.base.hook.ICallContext)
 	 */
 	public void beforeCall(CallContext callback) {
 		ISessionHolder sessionHolder = shService.fetchSessionHolder();
@@ -58,7 +60,8 @@ public class SecurityCallHook implements ICallHook {
 	}
 
 	/**
-	 * @see de.compeople.spirit.communication.base.hook.ICallHook#afterCall(de.compeople.spirit.communication.base.hook.ICallContext)
+	 * @see de.compeople.spirit.communication.base.hook.ICallHook#afterCall(de.
+	 * 	compeople.spirit.communication.base.hook.ICallContext)
 	 */
 	public void afterCall(CallContext callback) {
 		ISessionHolder sessionHolder = shService.fetchSessionHolder();

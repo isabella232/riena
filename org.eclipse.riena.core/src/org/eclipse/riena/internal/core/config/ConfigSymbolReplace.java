@@ -50,7 +50,7 @@ public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService 
 	 */
 	public void modifyConfiguration(ServiceReference reference, Dictionary properties) {
 		// don't do symbol source replace for configurations of myself
-		if (reference != null && Activator.getContext().getService(reference) == this)
+		if (reference != null && Activator.getDefault().getContext().getService(reference) == this)
 			return;
 
 		for (Object key : Iter.able(properties.keys())) {

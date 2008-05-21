@@ -22,6 +22,9 @@ public class Activator extends RienaActivator {
 	private ServiceRegistration memoryStore;
 	private ServiceRegistration filepermissionstore;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -36,6 +39,7 @@ public class Activator extends RienaActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		// bring up a simple in memory session store
 		memoryStore = getContext().registerService(ISessionStore.class.getName(), new MemoryStore(),
 				ServiceDescriptor.newDefaultServiceProperties());
@@ -57,7 +61,16 @@ public class Activator extends RienaActivator {
 	public void stop(BundleContext context) throws Exception {
 		memoryStore.unregister();
 		filepermissionstore.unregister();
+		Activator.plugin = null;
 		super.stop(context);
 	}
 
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
+	}
 }

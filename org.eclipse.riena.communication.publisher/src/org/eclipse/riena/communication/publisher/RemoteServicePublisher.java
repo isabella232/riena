@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.communication.publisher.Activator;
 public class RemoteServicePublisher {
 
 	public void publish(String name, String url, String protocol) {
-		Inject.service(name).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(name).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void unpublish(String name) {

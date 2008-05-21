@@ -28,6 +28,9 @@ public class Activator extends RienaActivator {
 	private ServiceRegistration sessionProvider;
 	private ServiceRegistration authorizationService;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -43,6 +46,7 @@ public class Activator extends RienaActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		// register AuthenticationService
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString());
@@ -84,7 +88,17 @@ public class Activator extends RienaActivator {
 		authorizationService.unregister();
 		sessionService.unregister();
 		sessionProvider.unregister();
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

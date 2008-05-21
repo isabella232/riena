@@ -30,6 +30,9 @@ public class Activator extends RienaPlugin {
 	private ServiceRegistration principalCacheRegistration;
 	private ServiceRegistration securityServiceHook;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -44,6 +47,7 @@ public class Activator extends RienaPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		GenericObjectCache principalCache = new GenericObjectCache();
 		principalCache.setName("principalCache");
 		Hashtable<String, String> props = new Hashtable<String, String>();
@@ -62,7 +66,17 @@ public class Activator extends RienaPlugin {
 	public void stop(BundleContext context) throws Exception {
 		principalCacheRegistration.unregister();
 		securityServiceHook.unregister();
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

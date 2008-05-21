@@ -40,7 +40,8 @@ public class MultiServicePublisher {
 
 	public MultiServicePublisher() {
 		super();
-		Inject.service(IServicePublishBinder.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(IServicePublishBinder.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	public MultiServicePublisher filter(String filter) {
@@ -62,7 +63,7 @@ public class MultiServicePublisher {
 		this.context = context;
 
 		try {
-			ServiceReference[] refs = Activator.getContext().getServiceReferences(null, FILTER_REMOTE);
+			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(null, FILTER_REMOTE);
 			if (refs != null) {
 				for (ServiceReference ref : refs) {
 					publish(ref);
@@ -84,7 +85,7 @@ public class MultiServicePublisher {
 			}
 		};
 		try {
-			Activator.getContext().addServiceListener(listener, FILTER_REMOTE);
+			Activator.getDefault().getContext().addServiceListener(listener, FILTER_REMOTE);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}

@@ -39,7 +39,8 @@ public class SingleServicePublisher {
 	public SingleServicePublisher(String name) {
 		super();
 		this.serviceName = name;
-		Inject.service(IServicePublishBinder.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(IServicePublishBinder.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	public SingleServicePublisher filter(String filter) {
@@ -61,7 +62,7 @@ public class SingleServicePublisher {
 		this.context = context;
 
 		try {
-			ServiceReference[] refs = Activator.getContext().getServiceReferences(null, FILTER_REMOTE);
+			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(null, FILTER_REMOTE);
 			for (ServiceReference ref : refs) {
 				publish(ref);
 			}
@@ -81,7 +82,7 @@ public class SingleServicePublisher {
 			}
 		};
 		try {
-			Activator.getContext().addServiceListener(listener, FILTER_REMOTE);
+			Activator.getDefault().getContext().addServiceListener(listener, FILTER_REMOTE);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}

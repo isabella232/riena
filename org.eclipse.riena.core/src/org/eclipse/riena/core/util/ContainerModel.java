@@ -75,7 +75,7 @@ public class ContainerModel {
 				containerType = Type.SERVER;
 			}
 		} else {
-			Bundle[] bundles = Activator.getContext().getBundles();
+			Bundle[] bundles = Activator.getDefault().getContext().getBundles();
 			for (Bundle bundle : bundles) {
 				if (bundle.getSymbolicName().startsWith(ORG_ECLIPSE_EQUINOX_HTTP)) {
 					containerType = Type.SERVER;

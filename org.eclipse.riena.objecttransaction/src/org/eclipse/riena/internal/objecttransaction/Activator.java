@@ -21,6 +21,9 @@ public class Activator extends RienaPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.objecttransaction";
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -35,6 +38,7 @@ public class Activator extends RienaPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 	}
 
 	/*
@@ -44,7 +48,17 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

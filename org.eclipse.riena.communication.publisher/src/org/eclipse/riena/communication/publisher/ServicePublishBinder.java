@@ -86,8 +86,9 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.publisher.IServicePublishBinder#publish(org.osgi.framework.ServiceReference,
-	 *      java.lang.String, java.lang.String)
+	 * @see
+	 * org.eclipse.riena.communication.publisher.IServicePublishBinder#publish
+	 * (org.osgi.framework.ServiceReference, java.lang.String, java.lang.String)
 	 */
 	public void publish(ServiceReference ref, String url, String protocol) {
 		String[] interfaces = (String[]) ref.getProperty(Constants.OBJECTCLASS);
@@ -111,9 +112,9 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		RemoteServiceDescription rsd;
 		try {
 			Class<?> interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
-			rsd = new RemoteServiceDescription(serviceRef, Activator.getContext().getService(serviceRef),
+			rsd = new RemoteServiceDescription(serviceRef, Activator.getDefault().getContext().getService(serviceRef),
 					interfaceClazz);
-			rsd.setService(Activator.getContext().getService(serviceRef));
+			rsd.setService(Activator.getDefault().getContext().getService(serviceRef));
 			publish(rsd);
 		} catch (ClassNotFoundException e) {
 			LOGGER.log(LogService.LOG_WARNING,

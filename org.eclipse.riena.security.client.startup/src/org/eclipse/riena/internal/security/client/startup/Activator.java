@@ -18,6 +18,9 @@ public class Activator extends RienaActivator {
 	private IRemoteServiceRegistration authenticationReg;
 	private IRemoteServiceRegistration authorizationReg;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/**
 	 * The constructor
 	 */
@@ -32,6 +35,7 @@ public class Activator extends RienaActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 
 		authenticationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
 				"http://${securityhost}/hessian/AuthenticationService", "hessian", //$NON-NLS-1$ //$NON-NLS-2$
@@ -55,7 +59,17 @@ public class Activator extends RienaActivator {
 		if (authorizationReg != null) {
 			authorizationReg.unregister();
 		}
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

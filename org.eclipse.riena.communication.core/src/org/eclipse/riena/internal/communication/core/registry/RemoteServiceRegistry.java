@@ -59,7 +59,9 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistry#registerService(org.eclipse.riena.communication.core.IRemoteServiceReference)
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#registerService
+	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference) {
 
@@ -67,7 +69,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 		if (pid != null) {
 			ServiceReference[] refs;
 			try {
-				refs = Activator.getContext().getServiceReferences(ManagedService.class.getName(),
+				refs = Activator.getDefault().getContext().getServiceReferences(ManagedService.class.getName(),
 						"(" + Constants.SERVICE_PID + "=" + pid + ")");
 				if (refs != null && refs.length > 0) {
 					LOGGER.log(LogService.LOG_ERROR, "duplicate configuration " + Constants.SERVICE_PID + " = "
@@ -88,14 +90,14 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 				Properties props = new Properties();
 				props.put("service.url", url);
 				props.put("service.protocol", reference.getDescription().getProtocol());
-				ServiceRegistration serviceRegistration = Activator.getContext().registerService(
+				ServiceRegistration serviceRegistration = Activator.getDefault().getContext().registerService(
 						reference.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
 				reference.setServiceRegistration(serviceRegistration);
 
 				if (reference.getConfigServiceInstance() != null && pid != null) {
 					Hashtable<String, String> ht = new Hashtable<String, String>();
 					ht.put(Constants.SERVICE_PID, pid);
-					reference.setConfigServiceRegistration(Activator.getContext().registerService(
+					reference.setConfigServiceRegistration(Activator.getDefault().getContext().registerService(
 							ManagedService.class.getName(), reference.getConfigServiceInstance(), ht));
 				}
 
@@ -118,7 +120,9 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistry#unregisterService(org.eclipse.riena.communication.core.IRemoteServiceReference)
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#unregisterService
+	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public void unregisterService(IRemoteServiceReference reference) {
 		assert reference != null : "RemoteServiceReference must not be null";
@@ -138,7 +142,8 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistry#registeredServices(java.lang.String)
+	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceRegistry#
+	 * registeredServices(java.lang.String)
 	 */
 	public List<IRemoteServiceRegistration> registeredServices(String hostId) {
 		synchronized (registeredServices) {

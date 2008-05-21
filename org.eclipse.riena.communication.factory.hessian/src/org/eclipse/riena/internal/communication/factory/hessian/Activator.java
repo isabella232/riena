@@ -26,6 +26,9 @@ public class Activator extends RienaActivator {
 	private RemoteServiceFactoryHessian factory;
 	private Logger logger = null;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/*
 	 * @see
 	 * org.eclipse.riena.core.RienaActivator#start(org.osgi.framework.BundleContext
@@ -33,6 +36,7 @@ public class Activator extends RienaActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		logger = getLogger(this.getClass().getName());
 		logger.log(LogService.LOG_INFO, "start hessian support on client");
 		factory = new RemoteServiceFactoryHessian();
@@ -54,7 +58,17 @@ public class Activator extends RienaActivator {
 
 		factory.dispose();
 		logger.log(LogService.LOG_INFO, "stop hessian support on client");
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }

@@ -161,7 +161,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 	 * @return the publisher
 	 */
 	protected HessianRemoteServicePublisher getPublisher() {
-		return Activator.getPublisher();
+		return Activator.getDefault().getPublisher();
 	}
 
 }

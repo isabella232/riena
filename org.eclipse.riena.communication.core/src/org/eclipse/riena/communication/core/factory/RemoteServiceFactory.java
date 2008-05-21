@@ -39,8 +39,8 @@ import org.osgi.service.log.LogService;
  * serviceInstance reference instance to the service end point. The
  * RemoteService Factory can register an IRemoteServiceReference into the
  * {@link IRemoteServiceRegistry}. To create a {@link IRemoteServiceReference}
- * call {@link #createProxy(..)}. To create and register a "remote" OSGi
- * Service in one step call {@link #createAndRegisterProxy(..)}
+ * call {@link #createProxy(..)}. To create and register a "remote" OSGi Service
+ * in one step call {@link #createAndRegisterProxy(..)}
  * <p>
  * This RemoteServiceFactory do not create IRemoteServiceReference itself. This
  * RemoteServiceFactory delegates the behaviour to a protocol specifically
@@ -77,8 +77,8 @@ public class RemoteServiceFactory {
 	 * 
 	 */
 	public RemoteServiceFactory() {
-		this(Activator.getContext());
-		Inject.service(IRemoteServiceRegistry.class.getName()).into(this).andStart(Activator.getContext());
+		this(Activator.getDefault().getContext());
+		Inject.service(IRemoteServiceRegistry.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(IRemoteServiceRegistry registry) {
@@ -199,9 +199,8 @@ public class RemoteServiceFactory {
 	/**
 	 * Creates a protocol specifically serviceInstance reference
 	 * (IRemoteServcieRefernce) with given end point parameters. Answers the
-	 * IRemoteServiceReference. If no protocol specific
-	 * {@link IRemoteServiceFactory} OSGI Service available answers
-	 * <code>null</code>.
+	 * IRemoteServiceReference. If no protocol specific {@link
+	 * IRemoteServiceFactory} OSGI Service available answers <code>null</code>.
 	 * 
 	 * @param serviceClass
 	 * @param url
@@ -239,13 +238,14 @@ public class RemoteServiceFactory {
 		}
 		// consult ConfigurationPlugins for URL
 		try {
-			ServiceReference[] pluginRefs = Activator.getContext().getServiceReferences(
+			ServiceReference[] pluginRefs = Activator.getDefault().getContext().getServiceReferences(
 					ConfigurationPlugin.class.getName(), null);
 			Hashtable<String, String> props = new Hashtable<String, String>();
 			props.put(RSDPublisherProperties.PROP_URL, rsd.getURL());
 			if (pluginRefs != null) {
 				for (ServiceReference pluginRef : pluginRefs) {
-					ConfigurationPlugin plugin = (ConfigurationPlugin) Activator.getContext().getService(pluginRef);
+					ConfigurationPlugin plugin = (ConfigurationPlugin) Activator.getDefault().getContext().getService(
+							pluginRef);
 					if (plugin != null) {
 						plugin.modifyConfiguration(null, props);
 					}
@@ -321,7 +321,7 @@ public class RemoteServiceFactory {
 			LazyProxyBuilder proxyBuilder = new LazyProxyBuilder(rsd, ref, lazyProxyHandler);
 			String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			Inject.service(IRemoteServiceFactory.class.getName()).useFilter(filter).into(proxyBuilder).andStart(
-					Activator.getContext());
+					Activator.getDefault().getContext());
 			return ref;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

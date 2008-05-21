@@ -16,7 +16,6 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
-import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.security.common.BasicAuthenticationCallHook;
 import org.eclipse.riena.security.common.ISubjectHolderService;
@@ -56,8 +55,8 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testNoCallHook() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
 			customerSearch.findCustomer(null);
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
@@ -71,10 +70,10 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookNoAuthorization() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-			ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
+			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
 			customerSearch.findCustomer(null);
@@ -92,14 +91,14 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithInvalidAuthorization() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-			ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
+			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
-			ISubjectHolderService subjectHolderService = (ISubjectHolderService) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ISubjectHolderService.class.getName()));
+			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+					getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
 			Subject subject = new Subject();
 			subject.getPrincipals().add(new SimplePrincipal("christian"));
@@ -121,14 +120,14 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithValidAuthorization() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
+			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-			ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
+			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
-			ISubjectHolderService subjectHolderService = (ISubjectHolderService) Activator.getContext().getService(
-					Activator.getContext().getServiceReference(ISubjectHolderService.class.getName()));
+			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+					getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
 			Subject subject = new Subject();
 			subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$
@@ -148,14 +147,14 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	}
 
 	public void testWithCallHookWithMultipleValidAuthorization() {
-		ICustomerSearch customerSearch = (ICustomerSearch) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ICustomerSearch.class.getName()));
+		ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+				getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-		ServiceRegistration serviceReg = Activator.getContext().registerService(ICallHook.class.getName(),
+		ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 				new BasicAuthenticationCallHook(), null);
 
-		ISubjectHolderService subjectHolderService = (ISubjectHolderService) Activator.getContext().getService(
-				Activator.getContext().getServiceReference(ISubjectHolderService.class.getName()));
+		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
+				getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$

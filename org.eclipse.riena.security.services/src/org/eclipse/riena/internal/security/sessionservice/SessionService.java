@@ -36,8 +36,8 @@ public class SessionService implements ISessionService {
 	 */
 	public SessionService() {
 		super();
-		Inject.service(ISessionStore.class.getName()).into(this).andStart(Activator.getContext());
-		Inject.service(ISessionProvider.class.getName()).into(this).andStart(Activator.getContext());
+		Inject.service(ISessionStore.class.getName()).into(this).andStart(Activator.getDefault().getContext());
+		Inject.service(ISessionProvider.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(ISessionStore store) {
@@ -73,9 +73,9 @@ public class SessionService implements ISessionService {
 
 	/**
 	 * @see de.compeople.spirit.security.server.session.ISessionService#
-	 *      generateSession(java.security.Principal,
-	 *      org.eclipse.riena.security.common.IPrincipalLocation,
-	 *      de.compeople.spirit.security.base.authentication.Credentials)
+	 * 	generateSession(java.security.Principal,
+	 * 	org.eclipse.riena.security.common.IPrincipalLocation,
+	 * 	de.compeople.spirit.security.base.authentication.Credentials)
 	 * @pre principal!=null
 	 */
 	public Session generateSession(Principal[] principals) {
@@ -93,7 +93,9 @@ public class SessionService implements ISessionService {
 	}
 
 	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#registerSession(de.compeople.spirit.security.base.authentication.ISecurityTicket)
+	 * @see de.compeople.spirit.security.server.session.ISessionService#
+	 * 	registerSession
+	 * 	(de.compeople.spirit.security.base.authentication.ISecurityTicket)
 	 */
 	// public boolean registerSession(ISecurityTicket ticket) {
 	// SessionEntry entry = new SessionEntry(ticket.getSession(),
@@ -102,7 +104,8 @@ public class SessionService implements ISessionService {
 	// return true;
 	// }
 	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#findPrincipals(org.eclipse.riena.security.common.session.ISession)
+	 * @see de.compeople.spirit.security.server.session.ISessionService#
+	 * 	findPrincipals(org.eclipse.riena.security.common.session.ISession)
 	 * @pre session!=null
 	 */
 	public Principal[] findPrincipals(Session session) {
@@ -115,7 +118,8 @@ public class SessionService implements ISessionService {
 	}
 
 	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#isValidSession(Session)
+	 * @see de.compeople.spirit.security.server.session.ISessionService#
+	 * 	isValidSession(Session)
 	 */
 	public boolean isValidSession(Session session) {
 		SessionEntry entry = store.read(session);
@@ -123,7 +127,9 @@ public class SessionService implements ISessionService {
 	}
 
 	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#hasSession(Session)
+	 * @see
+	 * 	de.compeople.spirit.security.server.session.ISessionService#hasSession
+	 * 	(Session)
 	 */
 	public boolean hasSession(Session session) {
 		SessionEntry entry = store.read(session);
@@ -131,7 +137,8 @@ public class SessionService implements ISessionService {
 	}
 
 	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#invalidateSession(Session)
+	 * @see de.compeople.spirit.security.server.session.ISessionService#
+	 * 	invalidateSession(Session)
 	 */
 	public void invalidateSession(Session session) {
 		store.delete(session);

@@ -33,6 +33,9 @@ public class Activator extends RienaPlugin {
 	private ServiceRegistration configSymbolReplace;
 	private ServiceRegistration configurationPlugin;
 
+	// The shared instance
+	private static Activator plugin;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -42,6 +45,7 @@ public class Activator extends RienaPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		Activator.plugin = this;
 		Logger LOGGER = getLogger(Activator.class.getName());
 
 		Bundle[] bundles = context.getBundles();
@@ -97,6 +101,16 @@ public class Activator extends RienaPlugin {
 		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(false);
 		configSymbolReplace.unregister();
 		configurationPlugin.unregister();
+		Activator.plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Get the plugin instance.
+	 * 
+	 * @return
+	 */
+	public static Activator getDefault() {
+		return plugin;
 	}
 }

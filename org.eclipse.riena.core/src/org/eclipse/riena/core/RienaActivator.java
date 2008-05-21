@@ -26,10 +26,7 @@ import org.osgi.framework.BundleContext;
 public abstract class RienaActivator implements BundleActivator {
 
 	private LogUtil logUtil;
-
-	// The shared instance
-	private static BundleContext context;
-	private static RienaActivator activator;
+	private BundleContext context;
 
 	/*
 	 * @see
@@ -37,8 +34,7 @@ public abstract class RienaActivator implements BundleActivator {
 	 * )
 	 */
 	public void start(final BundleContext context) throws Exception {
-		RienaActivator.context = context;
-		RienaActivator.activator = this;
+		this.context = context;
 	}
 
 	/*
@@ -46,8 +42,7 @@ public abstract class RienaActivator implements BundleActivator {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(final BundleContext context) throws Exception {
-		RienaActivator.context = null;
-		RienaActivator.activator = null;
+		this.context = null;
 	}
 
 	/**
@@ -55,17 +50,8 @@ public abstract class RienaActivator implements BundleActivator {
 	 * 
 	 * @return
 	 */
-	public static BundleContext getContext() {
+	public BundleContext getContext() {
 		return context;
-	}
-
-	/**
-	 * Get the activator instance.
-	 * 
-	 * @return
-	 */
-	public static RienaActivator getDefault() {
-		return activator;
 	}
 
 	/**

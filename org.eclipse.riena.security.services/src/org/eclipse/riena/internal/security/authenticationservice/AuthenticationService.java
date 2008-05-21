@@ -72,11 +72,15 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public AuthenticationService() {
 		super();
-		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
+		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 		// new
-		// ServiceDescriptor(IAuthenticationModule.class.getName()).injectInto(this).start(Activator.getContext());
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		// ServiceDescriptor(IAuthenticationModule.class.getName()).injectInto(
+		// this).start(Activator.getDefault().getContext());
+		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	public void bind(ISessionService sessionService) {
@@ -122,8 +126,11 @@ public class AuthenticationService implements IAuthenticationService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.security.common.authentication.IAuthenticationService#login(java.lang.String,
-	 *      org.eclipse.riena.security.common.authentication.credentials.AbstractCredential[])
+	 * @see
+	 * org.eclipse.riena.security.common.authentication.IAuthenticationService
+	 * #login(java.lang.String,
+	 * org.eclipse.riena.security.common.authentication.
+	 * credentials.AbstractCredential[])
 	 */
 	public AuthenticationTicket login(String loginContext, AbstractCredential[] credentials)
 			throws AuthenticationFailure {

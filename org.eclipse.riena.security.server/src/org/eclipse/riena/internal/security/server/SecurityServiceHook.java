@@ -69,19 +69,23 @@ public class SecurityServiceHook implements IServiceHook {
 	public SecurityServiceHook() {
 		super();
 		Inject.service(IGenericObjectCache.class.getName()).useFilter("(cache.type=PrincipalCache)").into(this)
-				.andStart(Activator.getContext());
-		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
+		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
+		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 
 		// List<UnsecureWebservice> tempList =
-		// RegistryAccessor.fetchRegistry().getConfiguration(UNSECURE_WEBSERVICES_ID);
+		// RegistryAccessor.fetchRegistry().getConfiguration(
+		// UNSECURE_WEBSERVICES_ID);
 		String appName = "???appname??????";// RuntimeInfo.getApplicationName();
 		if (appName == null) {
 			appName = "<unknown>";
 		}
 		// if (tempList.size() == 0) {
-		// LOGGER.log(LogService.LOG_INFO, appName + ": no unsecureWebservices
+		// LOGGER.log(LogService.LOG_INFO, appName +" : no unsecureWebservices
 		// defined");
 		// }
 		// for (int i = 0; i < tempList.size(); i++) {
@@ -92,23 +96,24 @@ public class SecurityServiceHook implements IServiceHook {
 		// }
 		// if (freeWS.getServiceId().equals("*")) {
 		// LOGGER.log(LogService.LOG_INFO, appName
-		// + ": defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is
+		// +" : defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is
 		// not required). definition * for
 		// UnsecureServices found.");
 		// } else {
 		// LOGGER.log(LogService.LOG_INFO, appName + ": defining a Webservice "
-		// + freeWS.getServiceId() + " as unsecure
+		// + freeWS.getServiceId() +" as unsecure
 		// (SSOID not required).");
 		// }
 		// }
 
 		// String preferenceValue =
-		// PreferencesAccessor.fetchPreferences().getSystemPreference("spirit.security.server.UnsecureWebservices").getString("All");
+		// PreferencesAccessor.fetchPreferences().getSystemPreference(
+		// "spirit.security.server.UnsecureWebservices").getString("All");
 		// if (preferenceValue.equalsIgnoreCase("true")) {
 		// requiresSSOIDbyDefault = false;
-		// LOGGER.log(LogService.LOG_INFO, "ALL WEBSERVICES are defined as
+		// LOGGER.log(LogService.LOG_INFO," ALL WEBSERVICES are defined as
 		// unsecure in webapp:" + appName
-		// + " using SystemPreference
+		// +" using SystemPreference
 		// spirit.security.server.UnsecureWebservices.");
 		// }
 
@@ -159,7 +164,9 @@ public class SecurityServiceHook implements IServiceHook {
 	}
 
 	/**
-	 * @see de.compeople.spirit.communication.server.hook.IServiceHook#beforeService(de.compeople.spirit.communication.server.hook.IServiceContext)
+	 * @see
+	 * 	de.compeople.spirit.communication.server.hook.IServiceHook#beforeService
+	 * 	(de.compeople.spirit.communication.server.hook.IServiceContext)
 	 */
 	public void beforeService(ServiceContext callback) {
 		boolean requiresSSOID = requiresSSOIDbyDefault;
@@ -237,7 +244,9 @@ public class SecurityServiceHook implements IServiceHook {
 	}
 
 	/**
-	 * @see de.compeople.spirit.communication.server.hook.IServiceHook#afterService(de.compeople.spirit.communication.server.hook.IServiceContext)
+	 * @see
+	 * 	de.compeople.spirit.communication.server.hook.IServiceHook#afterService
+	 * 	(de.compeople.spirit.communication.server.hook.IServiceContext)
 	 */
 	public void afterService(ServiceContext context) {
 		Session afterSession = sessionHolderService.fetchSessionHolder().getSession();

@@ -41,7 +41,7 @@ public abstract class RienaTestCase extends TestCase {
 
 	// Keep track of services and and corresponding service references.
 	private Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
-	private BundleContext context = Activator.getContext();
+	private BundleContext context = Activator.getDefault().getContext();
 
 	/**
 	 * 
@@ -142,7 +142,8 @@ public abstract class RienaTestCase extends TestCase {
 	/**
 	 * Get the service for the specified <code>serviceClass</code>.
 	 * 
-	 * @param <T>
+	 * @param <
+	 * 		T>
 	 * @param serviceClass
 	 * @return
 	 */
@@ -181,9 +182,9 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Starts all bundles that match the <code>includePattern</code> but not
-	 * the <code>excludePattern</code>. The <code>excludePattern</code> may
-	 * be <code>null</code>.
+	 * Starts all bundles that match the <code>includePattern</code> but not the
+	 * <code>excludePattern</code>. The <code>excludePattern</code> may be
+	 * <code>null</code>.
 	 * 
 	 * @param includePattern
 	 * @param excludePattern
@@ -193,7 +194,10 @@ public abstract class RienaTestCase extends TestCase {
 		doWithBundles(includePattern, excludePattern, new IClosure() {
 
 			public void execute(Bundle bundle) throws BundleException {
-				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING /* STARTING==LAZY */) {
+				if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING /*
+																								 * STARTING==
+																								 * LAZY
+																								 */) {
 					bundle.start();
 				} else {
 					if (bundle.getState() == Bundle.INSTALLED) {
@@ -217,9 +221,9 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Stops all bundles that match the <code>includePattern</code> but not
-	 * the <code>excludePattern</code>. The <code>excludePattern</code> may
-	 * be <code>null</code>.
+	 * Stops all bundles that match the <code>includePattern</code> but not the
+	 * <code>excludePattern</code>. The <code>excludePattern</code> may be
+	 * <code>null</code>.
 	 * 
 	 * @param includePattern
 	 * @param excludePattern
@@ -243,8 +247,8 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * IClosure with all bundles that match the <code>includePattern</code>
-	 * but not the <code>excludePattern</code> what is specified within the
+	 * IClosure with all bundles that match the <code>includePattern</code> but
+	 * not the <code>excludePattern</code> what is specified within the
 	 * <code>closure</code>. The <code>excludePattern</code> may be
 	 * <code>null</code>.
 	 * 

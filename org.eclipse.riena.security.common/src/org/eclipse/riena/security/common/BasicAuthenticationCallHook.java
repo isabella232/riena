@@ -30,7 +30,8 @@ public class BasicAuthenticationCallHook implements ICallHook {
 
 	public BasicAuthenticationCallHook() {
 		super();
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(Activator.getContext());
+		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	public void bind(ISubjectHolderService subjectHolderService) {
@@ -44,7 +45,9 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.hooks.ICallHook#afterCall(org.eclipse.riena.communication.core.hooks.CallContext)
+	 * @see
+	 * org.eclipse.riena.communication.core.hooks.ICallHook#afterCall(org.eclipse
+	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void afterCall(CallContext context) {
 		// TODO Auto-generated method stub
@@ -53,7 +56,9 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.hooks.ICallHook#beforeCall(org.eclipse.riena.communication.core.hooks.CallContext)
+	 * @see
+	 * org.eclipse.riena.communication.core.hooks.ICallHook#beforeCall(org.eclipse
+	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void beforeCall(CallContext context) {
 		ISubjectHolder subjectHolder = subjectHolderService.fetchSubjectHolder();
