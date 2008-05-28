@@ -84,6 +84,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
 			viewer.setInput(getRowObservables());
+
 			applyComparator();
 
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
@@ -152,7 +153,8 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	public void updateFromModel() {
 		super.updateFromModel();
 		if (viewer != null) {
-			viewer.getList().setRedraw(false); // prevent flicker during update
+			viewer.getControl().setRedraw(false); // prevent flicker during
+			// update
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			try {
 				IObservable model = getRowObservables();
@@ -162,7 +164,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 				viewer.refresh(true);
 			} finally {
 				viewer.setSelection(currentSelection);
-				viewer.getList().setRedraw(true);
+				viewer.getControl().setRedraw(true);
 			}
 		}
 	}
@@ -205,7 +207,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	 * This method is not supported by this ridget.
 	 * 
 	 * @throws UnsupportedOperationException
-	 *             this is not supported by this ridget
+	 * 		this is not supported by this ridget
 	 */
 	public final void setColumnSortable(int columnIndex, boolean sortable) {
 		throw new UnsupportedOperationException();
@@ -233,7 +235,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	 * 
 	 * @see #setComparator(int, Comparator)
 	 * @throws UnsupportedOperationException
-	 *             this is not supported by this ridget
+	 * 		this is not supported by this ridget
 	 * 
 	 */
 	public final void setSortedColumn(int columnIndex) {
