@@ -8,6 +8,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -18,8 +19,10 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.swt.SWT;
@@ -31,6 +34,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 
 public class TableRidget extends AbstractSelectableRidget implements ITableRidget {
 
@@ -40,19 +44,9 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private TableViewer viewer;
+	private ViewerComparator comparator;
 	private String[] renderingMethods;
-
-	//
-	// private IObservableList modelOV;
-	// // model info
-	// private Object model;
-	// private String listProperty;
-	//
-	// private DataBindingContext dataBindingContext;
-	//
-	// private IObservableValue uiSingleSelectionOV;
-	//
-	// private String toolTip = null;
+	private String[] columnHeaders;
 
 	public TableRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -75,7 +69,9 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
 			viewer.setInput(getRowObservables());
-			// TODO [ev] applyComparator();
+
+			applyTableColumns(control);
+			applyComparator();
 
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
@@ -114,45 +110,12 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		return (Table) super.getUIControl();
 	}
 
-	// private class SelectionObservable extends AbstractObservableValue {
-	//
-	// private IStructuredSelection selection;
-	//
-	// public SelectionObservable(TableViewer tv) {
-	// tv.addSelectionChangedListener(new SelectionListener());
-	// }
-	//
-	// private class SelectionListener implements ISelectionChangedListener {
-	//
-	// public void selectionChanged(SelectionChangedEvent event) {
-	// IStructuredSelection newSelection = (IStructuredSelection)
-	// event.getSelection();
-	// fireValueChange(Diffs.createValueDiff(selection, newSelection));
-	// selection = newSelection;
-	// }
-	// }
-	//
-	// @Override
-	// protected Object doGetValue() {
-	// return selection;
-	// }
-	//
-	// public Object getValueType() {
-	// return null;
-	// }
-	// }
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.AbstractRidget#updateFromModel()
-	 */
-	public void updateFromModel() {
-		super.updateFromModel();
-		// if (modelOV != null) {
-		// modelOV.clear();
-		// modelOV.addAll(new ArrayList((Collection)
-		// BeansObservables.observeValue(model, listProperty).getValue()));
-		// tableViewer.refresh();
-		// }
+	public void addDoubleClickListener(IActionListener listener) {
+		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
+		if (doubleClickListeners == null) {
+			doubleClickListeners = new ArrayList<IActionListener>();
+		}
+		doubleClickListeners.add(listener);
 	}
 
 	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
@@ -162,7 +125,8 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		// ObservableListContentProvider();
 		// tableViewer.setContentProvider(viewerContentProvider);
 		// IObservableMap[] attributeMaps =
-		// BeansObservables.observeMaps(viewerContentProvider.getKnownElements(),
+		// BeansObservables.observeMaps(viewerContentProvider.getKnownElements()
+		// ,
 		// rowBeanClass, columnPropertyNames);
 		// tableViewer.setLabelProvider(new
 		// ObservableMapLabelProvider(attributeMaps));
@@ -175,6 +139,13 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		renderingMethods = new String[columnPropertyNames.length];
 		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);
 		setRowObservables(listObservableValue);
+
+		if (columnHeaders != null) {
+			this.columnHeaders = new String[columnHeaders.length];
+			System.arraycopy(columnHeaders, 0, this.columnHeaders, 0, this.columnHeaders.length);
+		} else {
+			this.columnHeaders = null;
+		}
 
 		bindUIControl();
 	}
@@ -192,17 +163,33 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		bindToModel(listObservableValue, rowBeanClass, columnPropertyNames, columnHeaders);
 	}
 
-	public IObservableList getObservableList() {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateFromModel() {
+		super.updateFromModel();
+		if (viewer != null) {
+			viewer.getControl().setRedraw(false); // prevent flicker during
+			// update
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			try {
+				IObservable model = getRowObservables();
+				if (model instanceof IUnboundPropertyObservable) {
+					((UnboundPropertyWritableList) model).updateFromBean();
+				}
+				viewer.refresh(true);
+			} finally {
+				viewer.setSelection(currentSelection);
+				viewer.getControl().setRedraw(true);
+			}
+		}
+		// if (modelOV != null) {
+		// modelOV.clear();
+		// modelOV.addAll(new ArrayList((Collection)
+		// BeansObservables.observeValue(model, listProperty).getValue()));
+		// tableViewer.refresh();
+		// }
 	}
 
-	public void addDoubleClickListener(IActionListener listener) {
-		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
-		if (doubleClickListeners == null) {
-			doubleClickListeners = new ArrayList<IActionListener>();
-		}
-		doubleClickListeners.add(listener);
+	public IObservableList getObservableList() {
+		return getRowObservables();
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
@@ -211,46 +198,86 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		}
 	}
 
-	public int[] getSelectionIndices() {
+	public void setComparator(int columnIndex, Comparator<Object> compi) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int indexOfOption(Object option) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public boolean isSortedAscending() {
-		return false;
-	}
-
-	public void setSortedAscending(boolean ascending) {
 	}
 
 	public int getSortedColumn() {
+		// TODO Auto-generated method stub
 		return -1;
 	}
 
-	public void setSortedColumn(int columnIndex) {
-	}
-
 	public boolean isColumnSortable(int columnIndex) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public void setComparator(int columnIndex, Comparator<Object> compi) {
+	public boolean isSortedAscending() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void setColumnSortable(int columnIndex, boolean sortable) {
+		// TODO Auto-generated method stub
+	}
+
+	public void setSortedAscending(boolean ascending) {
+		// TODO Auto-generated method stub
+	}
+
+	public void setSortedColumn(int columnIndex) {
+		// TODO Auto-generated method stub
 	}
 
 	public int getSelectionIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		Table control = getUIControl();
+		return control == null ? -1 : control.getSelectionIndex();
+	}
+
+	public int[] getSelectionIndices() {
+		Table control = getUIControl();
+		return control == null ? new int[0] : control.getSelectionIndices();
+	}
+
+	public int indexOfOption(Object option) {
+		Table control = getUIControl();
+		if (control != null) {
+			int optionCount = control.getItemCount();
+			for (int i = 0; i < optionCount; i++) {
+				if (viewer.getElementAt(i).equals(option)) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 	// helping methods
+	// ////////////////
+
+	private void applyTableColumns(Table control) {
+		boolean headersVisible = columnHeaders != null;
+		control.setHeaderVisible(headersVisible);
+		if (headersVisible) {
+			TableColumn[] columns = control.getColumns();
+			for (int i = 0; i < columns.length; i++) {
+				if (i < columnHeaders.length) {
+					String columnHeader = String.valueOf(columnHeaders[i]);
+					columns[i].setText(columnHeader);
+				} else {
+					columns[i].setText(""); //$NON-NLS-1$
+				}
+			}
+		}
+	}
+
+	private void applyComparator() {
+		if (viewer != null) {
+			viewer.setComparator(this.comparator);
+		}
+	}
+
+	// helping classes
 	// ////////////////
 
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
