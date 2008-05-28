@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core Plug-in
+Bundle-SymbolicName: org.eclipse.riena.ui.core
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.riena.internal.ui.core.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.riena.core,
+ org.eclipse.equinox.log;bundle-version="1.1.0"
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.riena.ui.core.marker,
+ org.eclipse.riena.ui.core.resource,
+ org.eclipse.riena.ui.core.resource.internal,
+ org.eclipse.riena.ui.core.uiprocess,
+ org.eclipse.riena.ui.core.util
+Import-Package: org.osgi.service.log;version="1.3.0"

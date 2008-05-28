@@ -1,0 +1,73 @@
+package org.eclipse.riena.sample.app.client.helloworld.views;
+
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloServerSubModuleController;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+
+public class HelloServerSubModuleView extends SubModuleNodeView<HelloServerSubModuleController> {
+
+	public final static String ID = "org.eclipse.riena.sample.app.client.helloserver";
+
+	@Override
+	public void basicCreatePartControl(Composite parent) {
+		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		FormLayout layout = new FormLayout();
+		parent.setLayout(layout);
+
+		Button messageButton = new Button(parent, SWT.PUSH);
+		messageButton.setText("Get Message");
+		addUIControl(messageButton, "actionFacade");
+
+		Text messageText = new Text(parent, SWT.NONE);
+		messageText.setBackground(new Color(parent.getDisplay(), new RGB(135, 206, 235)));
+		addUIControl(messageText, "textFacade");
+
+		Label info = new Label(parent, SWT.None);
+		info.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		info.setEnabled(false);
+		info.setText("This sample demonstrates usage of riena communication in a view.");
+		info.setSize(300, 200);
+
+		// layout
+		FormData data1 = new FormData();
+		data1.height = 20;
+		data1.width = 90;
+		data1.top = new FormAttachment(0, 25);
+		data1.left = new FormAttachment(0, 5);
+		messageButton.setLayoutData(data1);
+
+		FormData data2 = new FormData();
+		data2.height = 20;
+		data2.width = 215;
+		data2.top = new FormAttachment(0, 25);
+		data2.left = new FormAttachment(messageButton, 5);
+		messageText.setLayoutData(data2);
+
+		FormData data3 = new FormData();
+		data3.height = 20;
+		data3.width = 400;
+		data3.top = new FormAttachment(messageButton, 25);
+		info.setLayoutData(data3);
+
+	}
+
+	@Override
+	public void setFocus() {
+	}
+
+	@Override
+	protected HelloServerSubModuleController createController(ISubModuleNode subModuleNode) {
+		return new HelloServerSubModuleController(subModuleNode);
+	}
+
+}

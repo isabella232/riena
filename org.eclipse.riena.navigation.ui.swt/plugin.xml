@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.navigation.ui.swt.views.NavigationTreeView"
+            id="org.eclipse.riena.navigation.ui.navigationtree"
+            name="NavigationTreeView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.navigation.ui.swt.views.ApplicationSwitchViewPart"
+            id="org.eclipse.riena.navigation.ui.swt.applicationSwicther"
+            name="org.eclipse.riena.navigation.ui.swt.applicationSwicther">
+      </view>
+   </extension>
+   
+</plugin>

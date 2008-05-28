@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui Plug-in
+Bundle-SymbolicName: org.eclipse.riena.navigation.ui
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.riena.internal.navigation.ui.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.riena.ui.ridgets,
+ org.eclipse.riena.navigation,
+ org.eclipse.riena.core,
+ org.eclipse.riena.ui.core
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.riena.navigation.ui.application,
+ org.eclipse.riena.navigation.ui.controllers,
+ org.eclipse.riena.navigation.ui.ridgets
