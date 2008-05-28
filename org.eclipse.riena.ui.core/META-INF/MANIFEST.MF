@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Plug-in
-Bundle-SymbolicName: org.eclipse.riena.ui.core
+Bundle-SymbolicName: org.eclipse.riena.ui.core;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.riena.internal.ui.core.Activator
 Require-Bundle: org.eclipse.core.runtime,

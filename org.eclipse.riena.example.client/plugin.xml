@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<plugin>
+<plugin>   
    <extension
          id="org.eclipse.riena.example.client.application"
          name="org.eclipse.riena.example.client.application"
@@ -75,6 +75,12 @@
             id="org.eclipse.riena.example.client.views.MarkerView"
             name="org.eclipse.riena.example.client.views.MarkerView">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SystemPropertiesView"
+            id="org.eclipse.riena.example.client.views.SystemPropertiesView"
+            name="org.eclipse.riena.example.client.views.SystemPropertiesView">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
@@ -120,5 +126,4 @@
          </actionSet>
       </perspectiveExtension>
    </extension>
-
 </plugin>

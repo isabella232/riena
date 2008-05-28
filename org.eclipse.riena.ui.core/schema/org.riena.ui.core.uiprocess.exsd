@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.riena.example.client" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.riena.ui.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.example.client" id="org.riena.ui.core.uiprocess" name="org.riena.ui.core.uiprocess"/>
+         <meta.schema plugin="org.eclipse.riena.ui.core" id="org.riena.ui.core.uiprocess" name="org.riena.ui.core.uiprocess"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -12,6 +12,9 @@
 
    <element name="extension">
       <complexType>
+         <sequence>
+            <element ref="uisynchronizer"/>
+         </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -37,9 +40,9 @@
             </annotation>
          </attribute>
       </complexType>
-    </element>
-    
-	<element name="uisynchronizer">
+   </element>
+
+   <element name="uisynchronizer">
       <complexType>
          <attribute name="class" type="string">
             <annotation>
@@ -53,8 +56,6 @@
          </attribute>
       </complexType>
    </element>
-
-
 
    <annotation>
       <appinfo>
