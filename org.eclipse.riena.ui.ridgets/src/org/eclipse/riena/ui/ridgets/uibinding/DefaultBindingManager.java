@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
@@ -38,7 +39,16 @@ public class DefaultBindingManager implements IBindingManager {
 	private IBindingPropertyLocator propertyStrategy;
 	private IControlRidgetMapper mapper;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(DefaultBindingManager.class.getName());
+	private static final Logger LOGGER;
+
+	static {
+		Activator activator = Activator.getDefault();
+		if (activator != null) {
+			LOGGER = activator.getLogger(DefaultBindingManager.class.getName());
+		} else {
+			LOGGER = new ConsoleLogger(DefaultBindingManager.class.getName());
+		}
+	}
 
 	/**
 	 * Creates the managers of all bindings of a view.
