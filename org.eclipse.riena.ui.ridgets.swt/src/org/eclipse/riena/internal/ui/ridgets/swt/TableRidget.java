@@ -3,6 +3,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
@@ -19,8 +21,10 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -36,7 +40,12 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+/**
+ * Ridget for SWT {@link Table} widgets.
+ */
 public class TableRidget extends AbstractSelectableRidget implements ITableRidget {
+
+	private static final String SORTABILITY_SUFFIX = " \u2195"; //$NON-NLS-1$
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
@@ -48,10 +57,19 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	private String[] renderingMethods;
 	private String[] columnHeaders;
 
+	private boolean isSortedAscending;
+	private int sortedColumn;
+	private final Map<Integer, Boolean> sortableColumnsMap;
+	private final Map<Integer, Comparator<Object>> comparatorMap;
+
 	public TableRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
 		sortListener = new ColumnSortListener();
+		isSortedAscending = true;
+		sortedColumn = -1;
+		sortableColumnsMap = new HashMap<Integer, Boolean>();
+		comparatorMap = new HashMap<Integer, Comparator<Object>>();
 	}
 
 	@Override
@@ -154,8 +172,8 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	public void updateFromModel() {
 		super.updateFromModel();
 		if (viewer != null) {
-			viewer.getControl().setRedraw(false); // prevent flicker during
-			// update
+			// prevent flicker during update
+			viewer.getControl().setRedraw(false);
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			try {
 				IObservable model = getRowObservables();
@@ -181,7 +199,16 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	}
 
 	public void setComparator(int columnIndex, Comparator<Object> compi) {
-		// TODO Auto-generated method stub
+		checkColumnRange(columnIndex);
+		Integer key = Integer.valueOf(columnIndex);
+		if (compi != null) {
+			comparatorMap.put(key, compi);
+		} else {
+			comparatorMap.remove(key);
+		}
+		if (columnIndex == sortedColumn) {
+			applyComparator();
+		}
 	}
 
 	public int getSortedColumn() {
@@ -197,33 +224,60 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	}
 
 	public boolean isColumnSortable(int columnIndex) {
-		// TODO Auto-generated method stub
-		return true;
+		checkColumnRange(columnIndex);
+		boolean result = false;
+		Integer key = Integer.valueOf(columnIndex);
+		Boolean sortable = sortableColumnsMap.get(columnIndex);
+		if (sortable == null || Boolean.TRUE.equals(sortable)) {
+			result = comparatorMap.get(key) != null;
+		}
+		return result;
 	}
 
 	public boolean isSortedAscending() {
 		boolean result = false;
 		Table table = getUIControl();
 		if (table != null) {
-			TableColumn column = table.getSortColumn();
 			int sortDirection = table.getSortDirection();
-			result = (column != null) && (sortDirection == SWT.DOWN);
+			result = (sortDirection == SWT.DOWN);
 		}
 		return result;
 	}
 
 	public void setColumnSortable(int columnIndex, boolean sortable) {
-		// cache and apply
+		checkColumnRange(columnIndex);
+		Integer key = Integer.valueOf(columnIndex);
+		Boolean newValue = Boolean.valueOf(sortable);
+		Boolean oldValue = sortableColumnsMap.put(key, newValue);
+		Table control = getUIControl();
+		if (control != null) {
+			applyTableColumnHeaders(control);
+		}
+		if (oldValue == null) {
+			oldValue = Boolean.TRUE;
+		}
+		if (!newValue.equals(oldValue)) {
+			firePropertyChange(ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, columnIndex);
+		}
 	}
 
 	public void setSortedAscending(boolean ascending) {
-		// TODO Auto-generated method stub
-		// cache and apply
+		if (isSortedAscending != ascending) {
+			boolean oldSortedAscending = isSortedAscending;
+			isSortedAscending = ascending;
+			applyComparator();
+			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
+		}
 	}
 
 	public void setSortedColumn(int columnIndex) {
-		// TODO Auto-generated method stub
-		// cache and apply
+		checkColumnRange(columnIndex);
+		if (sortedColumn != columnIndex) {
+			int oldSortedColumn = sortedColumn;
+			sortedColumn = columnIndex;
+			applyComparator();
+			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
+		}
 	}
 
 	public int getSelectionIndex() {
@@ -239,6 +293,7 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	public int indexOfOption(Object option) {
 		Table control = getUIControl();
 		if (control != null) {
+			// implies viewer != null
 			int optionCount = control.getItemCount();
 			for (int i = 0; i < optionCount; i++) {
 				if (viewer.getElementAt(i).equals(option)) {
@@ -258,24 +313,49 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		}
 	}
 
+	private void applyComparator() {
+		if (viewer != null) {
+			Table table = viewer.getTable();
+			Integer key = Integer.valueOf(sortedColumn);
+			Comparator<Object> compi = comparatorMap.get(key);
+			if (compi != null) {
+				SortableComparator sortableComparator = new SortableComparator(compi);
+				viewer.setComparator(new ViewerComparator(sortableComparator));
+				TableColumn column = table.getColumn(sortedColumn);
+				table.setSortColumn(column);
+			} else {
+				viewer.setComparator(null);
+				table.setSortColumn(null);
+			}
+			int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
+			table.setSortDirection(direction);
+		}
+	}
+
 	private void applyTableColumnHeaders(Table control) {
 		boolean headersVisible = columnHeaders != null;
 		control.setHeaderVisible(headersVisible);
 		if (headersVisible) {
 			TableColumn[] columns = control.getColumns();
 			for (int i = 0; i < columns.length; i++) {
+				String columnHeader = ""; //$NON-NLS-1$
 				if (i < columnHeaders.length) {
-					String columnHeader = String.valueOf(columnHeaders[i]);
-					columns[i].setText(columnHeader);
-				} else {
-					columns[i].setText(""); //$NON-NLS-1$
+					columnHeader = String.valueOf(columnHeaders[i]);
 				}
+				if (i != sortedColumn && isColumnSortable(i)) {
+					columnHeader += SORTABILITY_SUFFIX;
+				}
+				columns[i].setText(columnHeader);
 			}
 		}
 	}
 
-	private void applyComparator() {
-		// TODO [ev] implement
+	private void checkColumnRange(int columnIndex) {
+		Table table = getUIControl(); // table may be null if unbound
+		int range = table.getColumnCount();
+		String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
+		Assert.isLegal(-1 < columnIndex, msg);
+		Assert.isLegal(columnIndex < range, msg);
 	}
 
 	private static int getColumnIndex(TableColumn column) {
@@ -331,35 +411,37 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		}
 	}
 
+	/**
+	 * Changes the result of the given <tt>comparator</tt> according to the
+	 * <tt>sortedAscending</tt> setting in the ridget.
+	 */
+	private final class SortableComparator implements Comparator<Object> {
+
+		private final Comparator<Object> orgComparator;
+
+		SortableComparator(Comparator<Object> comparator) {
+			orgComparator = comparator;
+		}
+
+		public int compare(Object o1, Object o2) {
+			int result = orgComparator.compare(o1, o2);
+			return isSortedAscending ? result : result * -1;
+		}
+	}
+
+	/**
+	 * Selection listener for table headers that changes the sort order of a
+	 * column according to the information stored in the ridget.
+	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		public void widgetSelected(SelectionEvent e) {
 			TableColumn column = (TableColumn) e.widget;
 			int columnIndex = getColumnIndex(column);
-			if (isColumnSortable(columnIndex)) {
-				handleColumnSort(column);
-			}
-		}
-
-		private void handleColumnSort(TableColumn newSortColumn) {
-			Table table = newSortColumn.getParent();
-			TableColumn sortColumn = table.getSortColumn();
-			if (sortColumn != newSortColumn) {
-				table.setSortColumn(newSortColumn);
-				if (table.getSortDirection() == SWT.NONE) {
-					table.setSortDirection(SWT.DOWN);
-				}
-			} else {
-				switch (table.getSortDirection()) {
-				case SWT.UP:
-					table.setSortDirection(SWT.NONE);
-					break;
-				case SWT.DOWN:
-					table.setSortDirection(SWT.UP);
-					break;
-				case SWT.NONE:
-					table.setSortDirection(SWT.DOWN);
-					break;
-				}
+			if (columnIndex == sortedColumn) {
+				setSortedAscending(!isSortedAscending);
+			} else if (isColumnSortable(columnIndex)) {
+				setSortedColumn(columnIndex);
+				applyTableColumnHeaders(column.getParent());
 			}
 		}
 	}
