@@ -43,7 +43,7 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(1, false));
 
-		Group group1 = createListGroup(parent);
+		Group group1 = createTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
 
 		Group group2 = createEditGroup(parent);
@@ -58,7 +58,7 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 	// helping methods
 	// ////////////////
 
-	private Group createListGroup(Composite parent) {
+	private Group createTableGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "&System Properties:");
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
@@ -80,12 +80,12 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		UIControlsFactory.createLabel(group, "&Key:");
 		Text textKey = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textKey);
-		// addUIControl(textKey, "textKey");
+		addUIControl(textKey, "textKey");
 
 		UIControlsFactory.createLabel(group, "&Value:");
 		Text textValue = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textValue);
-		// addUIControl(textValue, "textValue");
+		addUIControl(textValue, "textValue");
 
 		Button buttonSave = UIControlsFactory.createButton(group);
 		buttonSave.setText("&Save");
@@ -121,6 +121,8 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 				handleColumnSort(columnValue);
 			}
 		});
+
+		addUIControl(tableProperties, "tableProperties"); //$NON-NLS-1$
 
 		TableColumnLayout layout = new TableColumnLayout();
 		layout.setColumnData(columnKey, new ColumnWeightData(30));

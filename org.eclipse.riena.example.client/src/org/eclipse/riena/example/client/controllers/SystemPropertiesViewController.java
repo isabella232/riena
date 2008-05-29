@@ -13,19 +13,59 @@ package org.eclipse.riena.example.client.controllers;
 import java.util.Comparator;
 
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
+import org.eclipse.riena.internal.example.client.beans.PersonFactory;
+import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.util.beans.Person;
+import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 
 /**
  * Controller for the {@link SystemPropertiesView} example.
  */
 public class SystemPropertiesViewController extends SubModuleNodeViewController {
 
+	private ITableRidget tableProperties;
+	private ITextFieldRidget textKey;
+	private ITextFieldRidget textValue;
+
+	/** Manages a collection of persons. */
+	private final PersonManager manager; // TODO [ev] ex
+	/** Holds editable data for a person. */
+	private final PersonModificationBean value; // TODO [ev] ex
+
 	public SystemPropertiesViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
-		// manager = new PersonManager(PersonFactory.createPersonList());
-		// manager.setSelectedPerson(manager.getPersons().iterator().next());
-		// value = new PersonModificationBean();
+		manager = new PersonManager(PersonFactory.createPersonList());
+		manager.setSelectedPerson(manager.getPersons().iterator().next());
+		value = new PersonModificationBean();
+	}
+
+	public ITableRidget getTableProperties() {
+		return tableProperties;
+	}
+
+	public void setTableProperties(ITableRidget tableProperties) {
+		this.tableProperties = tableProperties;
+	}
+
+	public ITextFieldRidget getTextKey() {
+		return textKey;
+	}
+
+	public void setTextKey(ITextFieldRidget textKey) {
+		this.textKey = textKey;
+	}
+
+	public ITextFieldRidget getTextValue() {
+		return textValue;
+	}
+
+	public void setTextValue(ITextFieldRidget textValue) {
+		this.textValue = textValue;
 	}
 
 	public void afterBind() {
@@ -37,23 +77,21 @@ public class SystemPropertiesViewController extends SubModuleNodeViewController 
 	 * Binds and updates the ridgets.
 	 */
 	private void initRidgets() {
-		// listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		// listPersons.setComparator(0, new StringComparator());
-		// listPersons.bindToModel(manager, "persons", Person.class, new
-		// String[] {
-		// "listEntry" }, new String[] { "" });
-		// //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		// listPersons.updateFromModel();
+		tableProperties.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		tableProperties.setComparator(0, new StringComparator());
+		tableProperties.bindToModel(manager, "persons", Person.class, new String[] { "lastname", "firstname" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+				new String[] { "Last Name", "First Name" });
+		tableProperties.updateFromModel();
+
+		tableProperties.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);
+
+		textKey.bindToModel(value, "firstName"); //$NON-NLS-1$
+		textKey.updateFromModel();
+		textValue.bindToModel(value, "lastName"); //$NON-NLS-1$
+		textValue.updateFromModel();
 		//
-		// listPersons.bindSingleSelectionToModel(manager,
-		// PersonManager.PROPERTY_SELECTED_PERSON);
-		//
-		// textFirst.bindToModel(value, "firstName"); //$NON-NLS-1$
-		// textFirst.updateFromModel();
-		// textLast.bindToModel(value, "lastName"); //$NON-NLS-1$
-		// textLast.updateFromModel();
-		//
-		// listPersons.addPropertyChangeListener(ITableRidget.PROPERTY_SINGLE_SELECTION,
+		// listPersons.addPropertyChangeListener(ITableRidget.
+		// PROPERTY_SINGLE_SELECTION,
 		// new PropertyChangeListener() {
 		// public void propertyChange(PropertyChangeEvent evt) {
 		// value.setPerson(manager.getSelectedPerson());
