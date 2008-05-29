@@ -19,8 +19,8 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -40,17 +40,18 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
+	private final ColumnSortListener sortListener;
 
 	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private TableViewer viewer;
-	private ViewerComparator comparator;
 	private String[] renderingMethods;
 	private String[] columnHeaders;
 
 	public TableRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
+		sortListener = new ColumnSortListener();
 	}
 
 	@Override
@@ -68,10 +69,12 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 					renderingMethods);
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
-			viewer.setInput(getRowObservables());
 
-			applyTableColumns(control);
+			applyColumnsMoveable(control);
+			applyTableColumnHeaders(control);
 			applyComparator();
+
+			viewer.setInput(getRowObservables());
 
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
@@ -86,6 +89,9 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 
 			viewer.setSelection(currentSelection);
 
+			for (TableColumn column : control.getColumns()) {
+				column.addSelectionListener(sortListener);
+			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
 		}
@@ -99,6 +105,9 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		}
 		Table control = getUIControl();
 		if (control != null) {
+			for (TableColumn column : control.getColumns()) {
+				column.removeSelectionListener(sortListener);
+			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
 		}
@@ -120,20 +129,6 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 
 	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		// this.modelOV = observableRowBeansList;
-		// ObservableListContentProvider viewerContentProvider = new
-		// ObservableListContentProvider();
-		// tableViewer.setContentProvider(viewerContentProvider);
-		// IObservableMap[] attributeMaps =
-		// BeansObservables.observeMaps(viewerContentProvider.getKnownElements()
-		// ,
-		// rowBeanClass, columnPropertyNames);
-		// tableViewer.setLabelProvider(new
-		// ObservableMapLabelProvider(attributeMaps));
-		// tableViewer.setInput(modelOV);
-		// dataBindingContext.bindValue(new SelectionObservable(tableViewer),
-		// new
-		// WritableValue(), null, null);
 		unbindUIControl();
 
 		renderingMethods = new String[columnPropertyNames.length];
@@ -152,13 +147,6 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 
 	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		// this.model = rowBeansBean;
-		// this.listProperty = rowBeansPropertyName;
-		// bindToModel(new WritableList(new ArrayList((List)
-		// BeansObservables.observeValue(model, rowBeansPropertyName)
-		// .getValue()), rowBeanClass), rowBeanClass, columnPropertyNames, new
-		// String[]
-		// {});
 		IObservableList listObservableValue = new UnboundPropertyWritableList(listBean, listPropertyName);
 		bindToModel(listObservableValue, rowBeanClass, columnPropertyNames, columnHeaders);
 	}
@@ -180,12 +168,6 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 				viewer.getControl().setRedraw(true);
 			}
 		}
-		// if (modelOV != null) {
-		// modelOV.clear();
-		// modelOV.addAll(new ArrayList((Collection)
-		// BeansObservables.observeValue(model, listProperty).getValue()));
-		// tableViewer.refresh();
-		// }
 	}
 
 	public IObservableList getObservableList() {
@@ -203,30 +185,45 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	}
 
 	public int getSortedColumn() {
-		// TODO Auto-generated method stub
-		return -1;
+		int result = -1;
+		Table table = getUIControl();
+		if (table != null) {
+			TableColumn column = table.getSortColumn();
+			if (column != null) {
+				result = getColumnIndex(column);
+			}
+		}
+		return result;
 	}
 
 	public boolean isColumnSortable(int columnIndex) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public boolean isSortedAscending() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = false;
+		Table table = getUIControl();
+		if (table != null) {
+			TableColumn column = table.getSortColumn();
+			int sortDirection = table.getSortDirection();
+			result = (column != null) && (sortDirection == SWT.DOWN);
+		}
+		return result;
 	}
 
 	public void setColumnSortable(int columnIndex, boolean sortable) {
-		// TODO Auto-generated method stub
+		// cache and apply
 	}
 
 	public void setSortedAscending(boolean ascending) {
 		// TODO Auto-generated method stub
+		// cache and apply
 	}
 
 	public void setSortedColumn(int columnIndex) {
 		// TODO Auto-generated method stub
+		// cache and apply
 	}
 
 	public int getSelectionIndex() {
@@ -255,7 +252,13 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	// helping methods
 	// ////////////////
 
-	private void applyTableColumns(Table control) {
+	private static void applyColumnsMoveable(Table control) {
+		for (TableColumn column : control.getColumns()) {
+			column.setMoveable(true);
+		}
+	}
+
+	private void applyTableColumnHeaders(Table control) {
 		boolean headersVisible = columnHeaders != null;
 		control.setHeaderVisible(headersVisible);
 		if (headersVisible) {
@@ -272,14 +275,28 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	}
 
 	private void applyComparator() {
-		if (viewer != null) {
-			viewer.setComparator(this.comparator);
+		// TODO [ev] implement
+	}
+
+	private static int getColumnIndex(TableColumn column) {
+		Table table = column.getParent();
+		TableColumn[] columns = table.getColumns();
+		int result = -1;
+		for (int i = 0; result == -1 && i < columns.length; i++) {
+			if (columns[i] == column) {
+				result = i;
+			}
 		}
+		return result;
 	}
 
 	// helping classes
 	// ////////////////
 
+	/**
+	 * Disallows multiple selection is the selection type of the ridget is
+	 * {@link ISelectableRidget.SelectionType#SINGLE}.
+	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
@@ -309,6 +326,39 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 			if (doubleClickListeners != null) {
 				for (IActionListener listener : doubleClickListeners) {
 					listener.callback();
+				}
+			}
+		}
+	}
+
+	private final class ColumnSortListener extends SelectionAdapter {
+		public void widgetSelected(SelectionEvent e) {
+			TableColumn column = (TableColumn) e.widget;
+			int columnIndex = getColumnIndex(column);
+			if (isColumnSortable(columnIndex)) {
+				handleColumnSort(column);
+			}
+		}
+
+		private void handleColumnSort(TableColumn newSortColumn) {
+			Table table = newSortColumn.getParent();
+			TableColumn sortColumn = table.getSortColumn();
+			if (sortColumn != newSortColumn) {
+				table.setSortColumn(newSortColumn);
+				if (table.getSortDirection() == SWT.NONE) {
+					table.setSortDirection(SWT.DOWN);
+				}
+			} else {
+				switch (table.getSortDirection()) {
+				case SWT.UP:
+					table.setSortDirection(SWT.NONE);
+					break;
+				case SWT.DOWN:
+					table.setSortDirection(SWT.UP);
+					break;
+				case SWT.NONE:
+					table.setSortDirection(SWT.DOWN);
+					break;
 				}
 			}
 		}

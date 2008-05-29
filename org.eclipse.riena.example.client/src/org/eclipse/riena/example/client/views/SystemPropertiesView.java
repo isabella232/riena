@@ -20,8 +20,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -103,26 +101,10 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		final Table tableProperties = new Table(tableComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		tableProperties.setLinesVisible(true);
 		tableProperties.setHeaderVisible(true);
+		addUIControl(tableProperties, "tableProperties"); //$NON-NLS-1$
 
 		final TableColumn columnKey = new TableColumn(tableProperties, SWT.LEFT);
-		columnKey.setText("Key");
-		columnKey.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				handleColumnSort(columnKey);
-			}
-		});
-
 		final TableColumn columnValue = new TableColumn(tableProperties, SWT.LEFT);
-		columnValue.setText("Value");
-		columnValue.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				handleColumnSort(columnValue);
-			}
-		});
-
-		addUIControl(tableProperties, "tableProperties"); //$NON-NLS-1$
 
 		TableColumnLayout layout = new TableColumnLayout();
 		layout.setColumnData(columnKey, new ColumnWeightData(30));
@@ -151,26 +133,4 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		return buttonComposite;
 	}
 
-	private void handleColumnSort(TableColumn newSortColumn) {
-		Table table = newSortColumn.getParent();
-		TableColumn sortColumn = table.getSortColumn();
-		if (sortColumn != newSortColumn) {
-			table.setSortColumn(newSortColumn);
-			if (table.getSortDirection() == SWT.NONE) {
-				table.setSortDirection(SWT.DOWN);
-			}
-		} else {
-			switch (table.getSortDirection()) {
-			case SWT.UP:
-				table.setSortDirection(SWT.NONE);
-				break;
-			case SWT.DOWN:
-				table.setSortDirection(SWT.UP);
-				break;
-			case SWT.NONE:
-				table.setSortDirection(SWT.DOWN);
-				break;
-			}
-		}
-	}
 }
