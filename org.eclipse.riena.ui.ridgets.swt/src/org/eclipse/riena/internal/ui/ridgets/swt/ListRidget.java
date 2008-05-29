@@ -59,13 +59,13 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	private DataBindingContext dbc;
 	private ListViewer viewer;
 	private ViewerComparator comparator;
-	private boolean sortedAscending;
+	private boolean isSortedAscending;
 	private String renderingMethod;
 
 	public ListRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
-		sortedAscending = true;
+		isSortedAscending = true;
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	}
 
 	public boolean isSortedAscending() {
-		return sortedAscending;
+		return isSortedAscending;
 	}
 
 	/**
@@ -214,13 +214,13 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	}
 
 	public void setSortedAscending(boolean ascending) {
-		if (ascending != this.sortedAscending) {
-			boolean oldSortedAscending = this.sortedAscending;
-			this.sortedAscending = ascending;
+		if (ascending != isSortedAscending) {
+			boolean oldSortedAscending = isSortedAscending;
+			isSortedAscending = ascending;
 			if (viewer != null) {
 				viewer.refresh();
 			}
-			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, this.sortedAscending);
+			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
 		}
 	}
 
@@ -332,7 +332,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 
 		public int compare(Object o1, Object o2) {
 			int result = orgComparator.compare(o1, o2);
-			return sortedAscending ? result : result * -1;
+			return isSortedAscending ? result : result * -1;
 		}
 	}
 
