@@ -78,19 +78,18 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		UIControlsFactory.createLabel(group, "&Key:");
 		Text textKey = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textKey);
-		addUIControl(textKey, "textKey");
+		addUIControl(textKey, "textKey"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "&Value:");
 		Text textValue = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textValue);
-		addUIControl(textValue, "textValue");
+		addUIControl(textValue, "textValue"); //$NON-NLS-1$
 
 		Button buttonSave = UIControlsFactory.createButton(group);
-		buttonSave.setText("&Save");
 		int widthHint = UIControlsFactory.getWidthHint(buttonSave);
 		GridDataFactory.fillDefaults().align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT).span(2, 1).applyTo(
 				buttonSave);
-		// addUIControl(buttonSave, "buttonSave");
+		addUIControl(buttonSave, "buttonSave"); //$NON-NLS-1$
 
 		return group;
 	}
@@ -118,17 +117,15 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonNew = UIControlsFactory.createButton(buttonComposite);
-		buttonNew.setText("&New");
-		int widthHint = UIControlsFactory.getWidthHint(buttonNew);
+		Button buttonAdd = UIControlsFactory.createButton(buttonComposite);
+		int widthHint = UIControlsFactory.getWidthHint(buttonAdd);
 		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
-				.applyTo(buttonNew);
+				.applyTo(buttonAdd);
+		addUIControl(buttonAdd, "buttonAdd"); //$NON-NLS-1$
 
-		Button checkEnableDoubleClick = UIControlsFactory.createButtonToggle(buttonComposite);
-		checkEnableDoubleClick.setText("With &double click");
-		widthHint = UIControlsFactory.getWidthHint(checkEnableDoubleClick);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT).applyTo(
-				checkEnableDoubleClick);
+		Button toggleDoubleClick = UIControlsFactory.createButtonToggle(buttonComposite);
+		widthHint = UIControlsFactory.getWidthHint(toggleDoubleClick);
+		addUIControl(toggleDoubleClick, "toggleDoubleClick"); //$NON-NLS-1$
 
 		return buttonComposite;
 	}
