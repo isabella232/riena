@@ -441,9 +441,11 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 			int columnIndex = getColumnIndex(column);
 			if (columnIndex == sortedColumn) {
 				setSortedAscending(!isSortedAscending);
+				column.getParent().showSelection();
 			} else if (isColumnSortable(columnIndex)) {
 				setSortedColumn(columnIndex);
 				applyTableColumnHeaders(column.getParent());
+				column.getParent().showSelection();
 			}
 		}
 	}
