@@ -28,7 +28,6 @@ import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -56,6 +55,7 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	private TableViewer viewer;
 	private String[] renderingMethods;
 	private String[] columnHeaders;
+	private Class<?> rowBeanClass;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -83,7 +83,7 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		if (control != null && getRowObservables() != null) {
 			viewer = new TableViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
-			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), Person.class,
+			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					renderingMethods);
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
@@ -148,6 +148,8 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		unbindUIControl();
+
+		this.rowBeanClass = rowBeanClass;
 
 		renderingMethods = new String[columnPropertyNames.length];
 		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);

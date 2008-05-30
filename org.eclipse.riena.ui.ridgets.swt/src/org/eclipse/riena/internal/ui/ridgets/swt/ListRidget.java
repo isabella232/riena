@@ -36,7 +36,6 @@ import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -61,6 +60,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	private ViewerComparator comparator;
 	private boolean isSortedAscending;
 	private String renderingMethod;
+	private Class<?> rowBeanClass;
 
 	public ListRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -79,7 +79,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 		if (control != null && getRowObservables() != null) {
 			viewer = new ListViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
-			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), Person.class,
+			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					new String[] { renderingMethod });
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
@@ -137,6 +137,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 
 		unbindUIControl();
 
+		this.rowBeanClass = rowBeanClass;
 		renderingMethod = columnPropertyNames[0];
 		setRowObservables(listObservableValue);
 
