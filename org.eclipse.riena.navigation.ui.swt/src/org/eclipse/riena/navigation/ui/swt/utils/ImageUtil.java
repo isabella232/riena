@@ -12,13 +12,14 @@ package org.eclipse.riena.navigation.ui.swt.utils;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
 
 public class ImageUtil {
 
 	public static Image getImage(String fullPath) {
-		if (fullPath == null) {
+		if (StringUtils.isEmpty(fullPath)) {
 			return null;
 		}
 		ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();

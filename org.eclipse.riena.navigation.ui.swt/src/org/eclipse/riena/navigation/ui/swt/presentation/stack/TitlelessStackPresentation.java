@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -23,6 +22,11 @@ import org.eclipse.ui.presentations.StackDropResult;
 import org.eclipse.ui.presentations.StackPresentation;
 
 public class TitlelessStackPresentation extends StackPresentation {
+
+	private final static int PADDING_LEFT = 2;
+	private final static int PADDING_RIGHT = 2;
+	private final static int PADDING_TOP = 10;
+	private final static int PADDING_BOTTOM = 2;
 
 	public static String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
 
@@ -44,6 +48,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	private Composite parent;
 
+	private SubModuleViewRenderer renderer;
+
 	public TitlelessStackPresentation(Composite parent, IStackPresentationSite stackSite) {
 		super(stackSite);
 		createContentArea(parent);
@@ -55,36 +61,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 		parent.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent e) {
-				if (current != null && current.isVisible()) {
-					int spaceBorderFill = 2;
-					int vspaceText = 2;
-					int hspaceText = 20;
-					GC gc = e.gc;
-					gc.setAntialias(SWT.ON);
-					gc.setAdvanced(true);
-					gc.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-					gc.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_RED));
-					gc.setLineWidth(1);
-					int i = (int) (parent.getBounds().width * NAVIGATION_WIDTH_FACTOR) + 1;
 
-					gc.drawRoundRectangle(i, APPLICATION_SWITCHER_HEIGHT + TOP_V_SPACE, parent.getBounds().width - i
-							- 6, parent.getBounds().height - (APPLICATION_SWITCHER_HEIGHT + TOP_V_SPACE) - 5, 5, 5);
-					gc.setBackground(new Color(parent.getDisplay(), 30, 144, 255));
-					gc.fillRoundRectangle(i + spaceBorderFill, APPLICATION_SWITCHER_HEIGHT + TOP_V_SPACE
-							+ spaceBorderFill, parent.getBounds().width - i - 5 - 2 * spaceBorderFill, 18, 5, 5);
-					String[] txt = parts.get(current).getPane().getCompoundId().split(":"); //$NON-NLS-1$
-					SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(txt[0], txt[1],
-							SubModuleNode.class);
-					gc.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-					gc.drawText(node.getLabel(), i + hspaceText, APPLICATION_SWITCHER_HEIGHT + TOP_V_SPACE
-							+ spaceBorderFill + vspaceText);
-					String icon = node.getIcon();
-					if (icon != null) {
-						Image image = ImageUtil.getImage(icon);
-						if (image != null) {
-							gc.drawImage(image, i + 4, APPLICATION_SWITCHER_HEIGHT + TOP_V_SPACE + spaceBorderFill
-									+ vspaceText);
-						}
+				if (current != null && current.isVisible()) {
+					if (getRenderer() != null) {
+						String[] txt = parts.get(current).getPane().getCompoundId().split(":"); //$NON-NLS-1$
+						SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(txt[0],
+								txt[1], SubModuleNode.class);
+						getRenderer().setBounds(e.x + PADDING_LEFT, e.y + PADDING_TOP,
+								e.width - PADDING_LEFT - PADDING_RIGHT, e.height - PADDING_TOP - PADDING_BOTTOM);
+						getRenderer().paint(e.gc, node);
 					}
 				}
 			}
@@ -97,7 +82,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		if (getRenderer() != null) {
+			getRenderer().dispose();
+		}
 	}
 
 	@Override
@@ -158,10 +145,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	private Rectangle calcOpenPartBounds() {
-		return new Rectangle((int) (parent.getBounds().width * NAVIGATION_WIDTH_FACTOR + 15),
-				APPLICATION_SWITCHER_HEIGHT + SUB_MODULE_HEADER_HIGHT + 5,
+		Rectangle outerBounds = new Rectangle((int) (parent.getBounds().width * NAVIGATION_WIDTH_FACTOR + 15),
+				APPLICATION_SWITCHER_HEIGHT + PADDING_TOP,
 				(int) (parent.getBounds().width * (1 - NAVIGATION_WIDTH_FACTOR)) - 25 - 5, parent.getBounds().height
 						- APPLICATION_SWITCHER_HEIGHT - 50);
+		GC gc = new GC(current);
+		Rectangle innerBounds = getRenderer().computeInnerBounds(gc, outerBounds);
+		return innerBounds;
 	}
 
 	@Override
@@ -194,14 +184,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 			ctrl.setBounds(bounds);
 		}
 		ctrl.setVisible(true);
-
 	}
 
 	@Override
 	public void setBounds(Rectangle bounds) {
 		parent.setBounds(bounds);
 		updateBounds();
-
 	}
 
 	@Override
@@ -225,6 +213,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 	public void showSystemMenu() {
 		// TODO Auto-generated method stub
 
+	}
+
+	private SubModuleViewRenderer getRenderer() {
+		if (renderer == null) {
+			renderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer("SubModuleView.renderer");
+		}
+		return renderer;
 	}
 
 }
