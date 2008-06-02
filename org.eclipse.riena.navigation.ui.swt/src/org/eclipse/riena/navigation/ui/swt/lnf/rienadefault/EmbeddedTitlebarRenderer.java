@@ -47,10 +47,20 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 	}
 
+	/**
+	 * Computes the size (height) of the title bar.
+	 * 
+	 * @param gc -
+	 *            <code>GC</code> of the component <code>Control</code>
+	 * @param wHint -
+	 *            the width hint
+	 * @param hHint -
+	 *            the height hint
+	 * @return a Point representing the size of the title bar
+	 */
 	public Point computeSize(GC gc, int wHint, int hHint) {
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Font font = lnf.getFont("EmbeddedTitlebar.font");
+		Font font = getTitlebarFont();
 		gc.setFont(font);
 		FontMetrics fontMetrics = gc.getFontMetrics();
 
@@ -65,6 +75,17 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
+	 * Returns the font of the title bar.
+	 * 
+	 * @return font
+	 */
+	private Font getTitlebarFont() {
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		Font font = lnf.getFont("EmbeddedTitlebar.font"); //$NON-NLS-1$
+		return font;
+	}
+
+	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
@@ -73,17 +94,16 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		gc.setAdvanced(true);
 		gc.setAntialias(SWT.OFF);
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Font font = lnf.getFont("EmbeddedTitlebar.font");
+		Font font = getTitlebarFont();
 		gc.setFont(font);
-		FontMetrics fontMetrics = gc.getFontMetrics();
 
 		// Background
-		Color startColor = lnf.getColor("EmbeddedTitlebar.passiveBackgroundStartColor");
-		Color endColor = lnf.getColor("EmbeddedTitlebar.passiveBackgroundEndColor");
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		Color startColor = lnf.getColor("EmbeddedTitlebar.passiveBackgroundStartColor"); //$NON-NLS-1$
+		Color endColor = lnf.getColor("EmbeddedTitlebar.passiveBackgroundEndColor"); //$NON-NLS-1$
 		if (isActive()) {
-			startColor = lnf.getColor("EmbeddedTitlebar.activeBackgroundStartColor");
-			endColor = lnf.getColor("EmbeddedTitlebar.activeBackgroundEndColor");
+			startColor = lnf.getColor("EmbeddedTitlebar.activeBackgroundStartColor"); //$NON-NLS-1$
+			endColor = lnf.getColor("EmbeddedTitlebar.activeBackgroundEndColor"); //$NON-NLS-1$
 		}
 		gc.setForeground(startColor);
 		gc.setBackground(endColor);
@@ -98,9 +118,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Border
-		Color borderColor = lnf.getColor("EmbeddedTitlebar.passiveBorderColor");
+		Color borderColor = lnf.getColor("EmbeddedTitlebar.passiveBorderColor"); //$NON-NLS-1$
 		if (isActive()) {
-			borderColor = lnf.getColor("EmbeddedTitlebar.activeBorderColor");
+			borderColor = lnf.getColor("EmbeddedTitlebar.activeBorderColor"); //$NON-NLS-1$
 		}
 		gc.setForeground(borderColor);
 		// - top
@@ -134,7 +154,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			text = (String) value;
 		}
 		if (!StringUtils.isEmpty(text)) {
-			gc.setForeground(lnf.getColor("EmbeddedTitlebar.foreground"));
+			gc.setForeground(lnf.getColor("EmbeddedTitlebar.foreground")); //$NON-NLS-1$
 
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			if ((getHeight() - gc.getFontMetrics().getHeight()) % 2 != 0) {

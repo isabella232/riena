@@ -14,21 +14,33 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
+/**
+ * Renderer of the active sub module
+ */
 public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
 	private EmbeddedTitlebarRenderer titlebarRenderer;
 	private EmbeddedBorderRenderer borderRenderer;
 
+	/**
+	 * Creates an new instance of <code>SubModuleViewRenderer</code> and sets
+	 * the renderer of the border and the titlebar.
+	 */
 	public SubModuleViewRenderer() {
 		super();
-		setBorderRenderer(new EmbeddedBorderRenderer());
-		setTitlebarRenderer(new EmbeddedTitlebarRenderer());
+		setBorderRenderer(getLnfBorderRenderer());
+		setTitlebarRenderer(getLnfTitlebarRenderer());
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
+	 *      java.lang.Object)
+	 */
 	@Override
 	public void paint(GC gc, Object value) {
 
@@ -52,12 +64,19 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * Returns the text of the title bar.
+	 * 
+	 * @param node -
+	 *            node of active sub module
+	 * @return title
+	 */
 	private String getTitle(SubModuleNode node) {
 
 		StringBuilder titleBuilder = new StringBuilder(node.getLabel());
 		INavigationNode<?> parent = node.getParent();
 		while ((parent != null) && !(parent instanceof ModuleGroupNode)) {
-			titleBuilder = titleBuilder.insert(0, " - ");
+			titleBuilder = titleBuilder.insert(0, " - "); //$NON-NLS-1$
 			titleBuilder = titleBuilder.insert(0, parent.getLabel());
 			parent = parent.getParent();
 		}
@@ -66,7 +85,11 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
+	 */
 	public void dispose() {
+		getBorderRenderer().dispose();
 		getTitlebarRenderer().dispose();
 	}
 
@@ -86,13 +109,44 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 		this.borderRenderer = borderRenderer;
 	}
 
+	/**
+	 * Computes the size of the space inside the outer bounds.
+	 * 
+	 * @param gc -
+	 *            <code>GC</code>
+	 * @param outerBounds -
+	 *            outer bounds
+	 * @return inner bounds
+	 */
 	public Rectangle computeInnerBounds(GC gc, Rectangle outerBounds) {
 
-		Rectangle borderInnerBounds = getBorderRenderer().computeInnerBounds(gc, outerBounds);
+		Rectangle borderInnerBounds = getBorderRenderer().computeInnerBounds(outerBounds);
 		Point titlebarSize = getTitlebarRenderer().computeSize(gc, outerBounds.width - 2, 0);
 
 		return new Rectangle(borderInnerBounds.x, borderInnerBounds.y + titlebarSize.y, borderInnerBounds.width,
 				borderInnerBounds.height - titlebarSize.y);
+
+	}
+
+	private EmbeddedBorderRenderer getLnfBorderRenderer() {
+
+		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
+				"SubModuleViewRenderer.borderRenderer"); //$NON-NLS-1$
+		if (renderer == null) {
+			renderer = new EmbeddedBorderRenderer();
+		}
+		return renderer;
+
+	}
+
+	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
+
+		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
+				"SubModuleViewRenderer.titlebarRenderer"); //$NON-NLS-1$
+		if (renderer == null) {
+			renderer = new EmbeddedTitlebarRenderer();
+		}
+		return renderer;
 
 	}
 

@@ -36,9 +36,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	private static final int APPLICATION_SWITCHER_HEIGHT = 65;
 
-	private static final int SUB_MODULE_HEADER_HIGHT = 25;
+	// private static final int SUB_MODULE_HEADER_HIGHT = 25;
 
-	private static final int TOP_V_SPACE = 10;
+	// private static final int TOP_V_SPACE = 10;
 
 	private Control current;
 
@@ -217,7 +217,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	private SubModuleViewRenderer getRenderer() {
 		if (renderer == null) {
-			renderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer("SubModuleView.renderer");
+			renderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer("SubModuleView.renderer"); //$NON-NLS-1$
 		}
 		return renderer;
 	}

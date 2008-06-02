@@ -18,10 +18,11 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
- * 
+ * Renderer of the an embedded border.
  */
 public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 
+	private final static int BORDER_WIDTH = 2;
 	private boolean active;
 
 	/**
@@ -37,24 +38,24 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		// Border
-		Color borderColor = lnf.getColor("EmbeddedTitlebar.passiveBorderColor");
+		Color borderColor = lnf.getColor("EmbeddedTitlebar.passiveBorderColor"); //$NON-NLS-1$
 		if (isActive()) {
-			borderColor = lnf.getColor("EmbeddedTitlebar.activeBorderColor");
+			borderColor = lnf.getColor("EmbeddedTitlebar.activeBorderColor"); //$NON-NLS-1$
 		}
 		gc.setForeground(borderColor);
 		// -outer
 		// --top
-		int x = getBounds().x + 2;
+		int x = getBounds().x + BORDER_WIDTH;
 		int y = getBounds().y;
-		int w = getWidth() - 4;
+		int w = getWidth() - BORDER_WIDTH * 2;
 		gc.drawLine(x, y, x + w, y);
 		// --bottom
 		y = getBounds().y + getHeight();
 		gc.drawLine(x, y, x + w, y);
 		// --left
 		x = getBounds().x;
-		y = getBounds().y + 2;
-		int h = getHeight() - 4;
+		y = getBounds().y + BORDER_WIDTH;
+		int h = getHeight() - BORDER_WIDTH * 2;
 		gc.drawLine(x, y, x, y + h);
 		// --right
 		x = getBounds().x + getWidth();
@@ -102,8 +103,16 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		return getBounds().width - 1;
 	}
 
-	public Rectangle computeInnerBounds(GC gc, Rectangle outerBounds) {
-		return new Rectangle(outerBounds.x + 2, outerBounds.y + 2, outerBounds.width - 4, outerBounds.height - 4);
+	/**
+	 * Computes the size inside the given outer border.
+	 * @param outerBounds -
+	 *            bounds of the outer border
+	 * 
+	 * @return bounds of the inner border
+	 */
+	public Rectangle computeInnerBounds(Rectangle outerBounds) {
+		return new Rectangle(outerBounds.x + BORDER_WIDTH, outerBounds.y + BORDER_WIDTH, outerBounds.width
+				- BORDER_WIDTH * 2, outerBounds.height - BORDER_WIDTH * 2);
 	}
 
 }

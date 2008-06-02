@@ -39,7 +39,7 @@ public class LnfManager {
 				setLnf(DEFAULT_LNF_CLASSNAME);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new Error("can't load " + DEFAULT_LNF_CLASSNAME);
+				throw new Error("can't load " + DEFAULT_LNF_CLASSNAME); //$NON-NLS-1$
 			}
 		}
 
