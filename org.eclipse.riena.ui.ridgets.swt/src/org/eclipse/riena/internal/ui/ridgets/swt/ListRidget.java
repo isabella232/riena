@@ -57,15 +57,18 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private ListViewer viewer;
-	private ViewerComparator comparator;
-	private boolean isSortedAscending;
 	private String renderingMethod;
 	private Class<?> rowBeanClass;
+
+	private boolean isSortedAscending;
+	private int sortedColumn;
+	private ViewerComparator comparator;
 
 	public ListRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
 		isSortedAscending = true;
+		sortedColumn = -1;
 	}
 
 	@Override
@@ -192,7 +195,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	}
 
 	public int getSortedColumn() {
-		return comparator != null ? 0 : -1;
+		return comparator != null && sortedColumn == 0 ? 0 : -1;
 	}
 
 	public boolean isColumnSortable(int columnIndex) {
@@ -225,22 +228,15 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 		}
 	}
 
-	/**
-	 * <p>
-	 * This method is not supported by this ridget.
-	 * </p>
-	 * <p>
-	 * Use {@link #setComparator(int, Comparator)} to enable / disable sorting
-	 * for column-0.
-	 * </p>
-	 * 
-	 * @see #setComparator(int, Comparator)
-	 * @throws UnsupportedOperationException
-	 * 		this is not supported by this ridget
-	 * 
-	 */
 	public final void setSortedColumn(int columnIndex) {
-		throw new UnsupportedOperationException();
+		String msg = "columnIndex out of range (-1 - 0): " + columnIndex; //$NON-NLS-1$
+		Assert.isLegal(columnIndex >= -1 && columnIndex <= 0, msg);
+		if (sortedColumn != columnIndex) {
+			int oldSortedColumn = sortedColumn;
+			sortedColumn = columnIndex;
+			applyComparator();
+			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
+		}
 	}
 
 	@Override
@@ -269,12 +265,30 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 		return -1;
 	}
 
+	public final boolean hasMoveableColumns() {
+		return false;
+	}
+
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 * 		this is not supported by this ridget
+	 */
+	public final void setMoveableColumns(boolean moveableColumns) {
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
 	// helping methods
 	// ////////////////
 
 	private void applyComparator() {
 		if (viewer != null) {
-			viewer.setComparator(this.comparator);
+			if (sortedColumn == 0) {
+				viewer.setComparator(this.comparator);
+			} else {
+				viewer.setComparator(null);
+			}
 		}
 	}
 

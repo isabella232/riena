@@ -44,8 +44,6 @@ import org.eclipse.swt.widgets.TableColumn;
  */
 public class TableRidget extends AbstractSelectableRidget implements ITableRidget {
 
-	private static final String SORTABILITY_SUFFIX = " \u2195"; //$NON-NLS-1$
-
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
 	private final ColumnSortListener sortListener;
@@ -61,6 +59,8 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	private int sortedColumn;
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
+
+	private boolean moveableColumns;
 
 	public TableRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -147,6 +147,10 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 
 	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
+		if (columnHeaders != null) {
+			String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
+			Assert.isLegal(columnPropertyNames.length == columnHeaders.length, msg);
+		}
 		unbindUIControl();
 
 		this.rowBeanClass = rowBeanClass;
@@ -273,7 +277,9 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 	}
 
 	public void setSortedColumn(int columnIndex) {
-		checkColumnRange(columnIndex);
+		if (columnIndex != -1) {
+			checkColumnRange(columnIndex);
+		}
 		if (sortedColumn != columnIndex) {
 			int oldSortedColumn = sortedColumn;
 			sortedColumn = columnIndex;
@@ -306,31 +312,49 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		return -1;
 	}
 
+	public boolean hasMoveableColumns() {
+		return moveableColumns;
+	}
+
+	public void setMoveableColumns(boolean moveableColumns) {
+		if (this.moveableColumns != moveableColumns) {
+			this.moveableColumns = moveableColumns;
+			Table control = getUIControl();
+			if (control != null) {
+				applyColumnsMoveable(control);
+			}
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
-	private static void applyColumnsMoveable(Table control) {
+	private void applyColumnsMoveable(Table control) {
 		for (TableColumn column : control.getColumns()) {
-			column.setMoveable(true);
+			column.setMoveable(moveableColumns);
 		}
 	}
 
 	private void applyComparator() {
 		if (viewer != null) {
 			Table table = viewer.getTable();
-			Integer key = Integer.valueOf(sortedColumn);
-			Comparator<Object> compi = comparatorMap.get(key);
+			Comparator<Object> compi = null;
+			if (sortedColumn != -1) {
+				Integer key = Integer.valueOf(sortedColumn);
+				compi = comparatorMap.get(key);
+			}
 			if (compi != null) {
 				SortableComparator sortableComparator = new SortableComparator(compi);
 				viewer.setComparator(new ViewerComparator(sortableComparator));
 				TableColumn column = table.getColumn(sortedColumn);
 				table.setSortColumn(column);
+				int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
+				table.setSortDirection(direction);
 			} else {
 				viewer.setComparator(null);
 				table.setSortColumn(null);
+				table.setSortDirection(SWT.NONE);
 			}
-			int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
-			table.setSortDirection(direction);
 		}
 	}
 
@@ -341,11 +365,8 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 			TableColumn[] columns = control.getColumns();
 			for (int i = 0; i < columns.length; i++) {
 				String columnHeader = ""; //$NON-NLS-1$
-				if (i < columnHeaders.length) {
-					columnHeader = String.valueOf(columnHeaders[i]);
-				}
-				if (i != sortedColumn && isColumnSortable(i)) {
-					columnHeader += SORTABILITY_SUFFIX;
+				if (i < columnHeaders.length && columnHeaders[i] != null) {
+					columnHeader = columnHeaders[i];
 				}
 				columns[i].setText(columnHeader);
 			}
@@ -439,14 +460,20 @@ public class TableRidget extends AbstractSelectableRidget implements ITableRidge
 		public void widgetSelected(SelectionEvent e) {
 			TableColumn column = (TableColumn) e.widget;
 			int columnIndex = getColumnIndex(column);
+			int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
-				setSortedAscending(!isSortedAscending);
-				column.getParent().showSelection();
+				if (direction == SWT.DOWN) {
+					setSortedAscending(false);
+				} else if (direction == SWT.UP) {
+					setSortedColumn(-1);
+				}
 			} else if (isColumnSortable(columnIndex)) {
 				setSortedColumn(columnIndex);
-				applyTableColumnHeaders(column.getParent());
-				column.getParent().showSelection();
+				if (direction == SWT.NONE) {
+					setSortedAscending(true);
+				}
 			}
+			column.getParent().showSelection();
 		}
 	}
 

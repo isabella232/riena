@@ -73,8 +73,9 @@ public interface ISortableByColumn {
 	 * Fires a {@link #PROPERTY_SORTED_COLUMN} event.
 	 * 
 	 * @param columnIndex
-	 * 		a columnIndex in the allowed range (0 &le; columnIndex &lt;
-	 * 		numColumns)
+	 * 		a columnIndex in the allowed range (-1 &le; columnIndex &lt;
+	 * 		numColumns). A value of -1 indicates that no column should be
+	 * 		sorted.
 	 * @throws RuntimeException
 	 * 		if <code>columnIndex</code> is out of range
 	 */

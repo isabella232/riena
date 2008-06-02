@@ -120,6 +120,7 @@ public class SystemPropertiesViewController extends SubModuleNodeViewController 
 		tableProperties.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		tableProperties.setComparator(0, new StringComparator());
 		tableProperties.setComparator(1, new StringComparator());
+		tableProperties.setMoveableColumns(true);
 
 		Set<Object> keys = System.getProperties().keySet();
 		for (Object key : keys) {
@@ -160,7 +161,6 @@ public class SystemPropertiesViewController extends SubModuleNodeViewController 
 				properties.add(bean);
 				tableProperties.updateFromModel();
 				tableProperties.setSelection(bean);
-				// TODO [ev] discuss
 				((Table) tableProperties.getUIControl()).showSelection();
 			}
 		});
