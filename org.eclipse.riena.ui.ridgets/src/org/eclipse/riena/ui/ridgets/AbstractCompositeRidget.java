@@ -15,6 +15,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -27,6 +28,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	private PropertyChangeListener propertyChangeListener;
 	protected boolean visible;
 	private String toolTip = null;
+	private boolean blocked;
 
 	/**
 	 * Constructor
@@ -136,6 +138,12 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
 	 */
 	public void setFocusable(boolean focusable) {
+		Collection r = getRidgets();
+		for (Iterator iterator = r.iterator(); iterator.hasNext();) {
+			IRidget object = (IRidget) iterator.next();
+			object.setFocusable(focusable);
+
+		}
 	}
 
 	/**
@@ -174,6 +182,27 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;
+
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+
+		Collection r = getRidgets();
+		for (Iterator iterator = r.iterator(); iterator.hasNext();) {
+			IRidget object = (IRidget) iterator.next();
+			object.setBlocked(blocked);
+
+		}
 
 	}
 }

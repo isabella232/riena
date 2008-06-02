@@ -55,4 +55,6 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	void afterDisposed(S source);
 
 	void stateChanged(S source, State oldState, State newState);
+
+	void block(S source, boolean block);
 }

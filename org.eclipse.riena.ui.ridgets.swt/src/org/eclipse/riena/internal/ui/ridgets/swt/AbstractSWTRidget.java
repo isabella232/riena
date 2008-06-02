@@ -24,6 +24,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	private boolean visible;
 	private boolean focusable;
 	private String toolTip = null;
+	private boolean blocked;
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -157,5 +158,24 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		if (uiControl != null) {
 			uiControl.setToolTipText(toolTip);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+
 	}
 }

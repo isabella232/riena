@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -254,5 +255,39 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 
 	public void setUICallbackDispatcherFactory(IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory) {
 		this.uiprocessCallBackDispatcherFactory = uiprocessCallBackDispatcherFactory;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+		if (getNavigationNode() != null) {
+			getNavigationNode().setBlocked(blocked);
+		}
+		Collection ridgets = getRidgets();
+		blockRidgets(ridgets, blocked);
+
+	}
+
+	/**
+	 * @param ridgets2
+	 * @param blocked
+	 */
+	private void blockRidgets(Collection ridgets, boolean blocked) {
+		for (Iterator iterator = ridgets.iterator(); iterator.hasNext();) {
+			IRidget object = (IRidget) iterator.next();
+			object.setBlocked(blocked);
+			if (object instanceof IRidgetContainer) {
+				blockRidgets(((IRidgetContainer) object).getRidgets(), blocked);
+			}
+		}
+
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return getNavigationNode() != null && getNavigationNode().isBlocked();
 	}
 }

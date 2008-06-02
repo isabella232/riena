@@ -188,4 +188,18 @@ public interface IRidget {
 	 */
 	void setToolTipText(String toolTipText);
 
+	/**
+	 * Blocks of unblocks the user input for the ridget.
+	 * 
+	 * @param blocked
+	 */
+	public void setBlocked(boolean blocked);
+
+	/**
+	 * Returns true if user input for the ridgetis blocked.
+	 * 
+	 * @return true if input is blocked for the ridget
+	 */
+	public boolean isBlocked();
+
 }

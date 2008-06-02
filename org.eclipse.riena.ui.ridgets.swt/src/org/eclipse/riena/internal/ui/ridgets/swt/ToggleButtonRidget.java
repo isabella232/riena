@@ -33,6 +33,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	private Binding controlBinding;
 	private String text;
 	private boolean selected;
+	private boolean blocked;
 
 	public ToggleButtonRidget() {
 		this(null);
@@ -141,6 +142,25 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 			String buttonText = text == null ? "" : text; //$NON-NLS-1$
 			button.setText(buttonText);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+
 	}
 
 }

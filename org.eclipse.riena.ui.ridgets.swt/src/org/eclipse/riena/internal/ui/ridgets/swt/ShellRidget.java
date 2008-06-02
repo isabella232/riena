@@ -26,6 +26,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 	private Shell shell;
 	private String toolTip = null;
+	private boolean blocked;
 
 	public ShellRidget() {
 	}
@@ -158,6 +159,24 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		if (shell != null) {
 			shell.setToolTipText(toolTip);
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+		if (this.blocked != blocked) {
+			this.blocked = blocked;
+
+		}
+
 	}
 
 }

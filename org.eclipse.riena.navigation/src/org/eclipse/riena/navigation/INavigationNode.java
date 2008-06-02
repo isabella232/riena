@@ -344,4 +344,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @return the parent node of type <code>clazz</code>.
 	 */
 	<N extends INavigationNode<?>> N getParentOfType(Class<N> clazz);
+
+	/**
+	 * Sets set blocked state of this NavigationNode. If true, the view which
+	 * presents the node is blocked for all user input.
+	 * 
+	 * @param blocked
+	 *            true blocks user input
+	 */
+
+	void setBlocked(boolean blocked);
+
+	/**
+	 * Returns the blocked state of this NagigationNode. True means that user
+	 * input is blocked for the view which presents the node.
+	 * 
+	 * @return true if input is blocked, false otherwise
+	 */
+	boolean isBlocked();
 }

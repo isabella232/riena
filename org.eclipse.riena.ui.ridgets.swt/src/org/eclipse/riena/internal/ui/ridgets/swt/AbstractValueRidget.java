@@ -22,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 public abstract class AbstractValueRidget extends AbstractMarkableRidget implements IValueRidget {
 
 	private ValueBindingSupport valueBindingSupport;
+	private boolean blocked;
 
 	public AbstractValueRidget() {
 		valueBindingSupport = new ValueBindingSupport(this.getRidgetObservable());
@@ -70,6 +71,25 @@ public abstract class AbstractValueRidget extends AbstractMarkableRidget impleme
 
 	protected final ValueBindingSupport getValueBindingSupport() {
 		return valueBindingSupport;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+
 	}
 
 }

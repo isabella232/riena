@@ -142,4 +142,12 @@ public class NavigationNodeAdapter<S extends INavigationNode<C>, C extends INavi
 	 */
 	public void stateChanged(S source, State oldState, State newState) {
 	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNodeListener#block(org.eclipse.riena.navigation.INavigationNode,
+	 *      boolean)
+	 */
+	public void block(S source, boolean block) {
+
+	}
 }

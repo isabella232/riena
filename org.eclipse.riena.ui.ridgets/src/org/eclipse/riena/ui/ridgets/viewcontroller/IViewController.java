@@ -26,4 +26,20 @@ public interface IViewController extends IRidgetContainer {
 	void afterBind();
 
 	void setUICallbackDispatcherFactory(IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory);
+
+	/**
+	 * Blocks of unblocks the user input for the view to which this controller
+	 * is bound.
+	 * 
+	 * @param blocked
+	 */
+	public void setBlocked(boolean blocked);
+
+	/**
+	 * Returns true if user input for the view to which this controller is bound
+	 * is blocked.
+	 * 
+	 * @return true if input is blocked for the view
+	 */
+	public boolean isBlocked();
 }

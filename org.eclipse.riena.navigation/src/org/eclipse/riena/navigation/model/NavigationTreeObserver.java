@@ -19,6 +19,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleGroupNodeListener;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.IModuleNodeListener;
+import org.eclipse.riena.navigation.INavigationNodeListener;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -288,6 +289,15 @@ public class NavigationTreeObserver {
 			}
 		}
 
+		@Override
+		public void block(IApplicationModel source, boolean block) {
+
+			super.block(source, block);
+			for (IApplicationModelListener next : getApplicationModelListeners()) {
+				next.block(source, block);
+			}
+		}
+
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
@@ -482,6 +492,14 @@ public class NavigationTreeObserver {
 			super.activated(source);
 			for (ISubApplicationListener next : getSubApplicationListeners()) {
 				next.activated(source);
+			}
+		}
+
+		@Override
+		public void block(ISubApplication source, boolean block) {
+			super.block(source, block);
+			for (INavigationNodeListener next : getSubApplicationListeners()) {
+				next.block(source, block);
 			}
 		}
 
@@ -693,6 +711,14 @@ public class NavigationTreeObserver {
 			}
 		}
 
+		@Override
+		public void block(IModuleGroupNode source, boolean block) {
+			super.block(source, block);
+			for (INavigationNodeListener next : getModuleGroupNodeListeners()) {
+				next.block(source, block);
+			}
+		}
+
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
@@ -900,6 +926,14 @@ public class NavigationTreeObserver {
 			}
 		}
 
+		@Override
+		public void block(IModuleNode source, boolean block) {
+			super.block(source, block);
+			for (INavigationNodeListener next : getModuleNodeListeners()) {
+				next.block(source, block);
+			}
+		}
+
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
@@ -1095,6 +1129,14 @@ public class NavigationTreeObserver {
 	}
 
 	private class SubModuleNodeListener extends SubModuleNodeAdapter {
+
+		@Override
+		public void block(ISubModuleNode source, boolean block) {
+			super.block(source, block);
+			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+				next.block(source, block);
+			}
+		}
 
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)

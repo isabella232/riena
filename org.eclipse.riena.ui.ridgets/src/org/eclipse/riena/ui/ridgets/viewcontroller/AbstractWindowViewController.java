@@ -25,6 +25,7 @@ public abstract class AbstractWindowViewController implements IViewController {
 
 	private IWindowRidget windowRidget;
 	private Map<String, IRidget> ridgets;
+	private boolean blocked;
 
 	public AbstractWindowViewController() {
 
@@ -77,5 +78,20 @@ public abstract class AbstractWindowViewController implements IViewController {
 	 */
 	public void setUICallbackDispatcherFactory(IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory) {
 		// do nothing by default
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+		// TODO: ausimplementieren
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return this.blocked;
 	}
 }

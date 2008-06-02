@@ -68,7 +68,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
 		// TODO: scp How can we use IIconManager.DEFAULT_ICON
-		//icon = "0044";
+		// icon = "0044";
 	}
 
 	/**
@@ -144,6 +144,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.activated((S) this);
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -158,6 +159,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.afterActivated((S) this);
 		}
+		notifyBlockedChanged();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -165,6 +167,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.deactivated((S) this);
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -179,6 +182,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.afterDeactivated((S) this);
 		}
+		notifyBlockedChanged();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -327,6 +331,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	private INavigationNode<?> parent;
+	private boolean blocked;
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#getParent()
@@ -720,6 +725,31 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public boolean isDisposed() {
 		return getState() == State.DISPOSED;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#isBlocked()
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#setBlocked(boolean)
+	 */
+	public void setBlocked(boolean blocked) {
+
+		this.blocked = blocked;
+		notifyBlockedChanged();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private void notifyBlockedChanged() {
+		for (L next : getListeners()) {
+			next.block((S) this, isBlocked() && isActivated());
+		}
+
 	}
 
 	/**
