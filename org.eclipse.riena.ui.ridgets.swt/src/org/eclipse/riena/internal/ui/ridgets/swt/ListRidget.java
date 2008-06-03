@@ -88,7 +88,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 			viewer.setContentProvider(viewerCP);
 			viewer.setInput(getRowObservables());
 
-			applyComparator();
+			updateComparator();
 
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
@@ -191,7 +191,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 		} else {
 			this.comparator = null;
 		}
-		applyComparator();
+		updateComparator();
 	}
 
 	public int getSortedColumn() {
@@ -234,7 +234,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 		if (sortedColumn != columnIndex) {
 			int oldSortedColumn = sortedColumn;
 			sortedColumn = columnIndex;
-			applyComparator();
+			updateComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
 		}
 	}
@@ -282,7 +282,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	// helping methods
 	// ////////////////
 
-	private void applyComparator() {
+	private void updateComparator() {
 		if (viewer != null) {
 			if (sortedColumn == 0) {
 				viewer.setComparator(this.comparator);
