@@ -273,7 +273,7 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 * @param ridgets2
 	 * @param blocked
 	 */
-	private void blockRidgets(Collection ridgets, boolean blocked) {
+	protected void blockRidgets(Collection ridgets, boolean blocked) {
 		for (Iterator iterator = ridgets.iterator(); iterator.hasNext();) {
 			IRidget object = (IRidget) iterator.next();
 			object.setBlocked(blocked);
