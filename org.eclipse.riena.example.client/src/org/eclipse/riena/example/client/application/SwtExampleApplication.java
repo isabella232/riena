@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.application;
 
 import org.eclipse.riena.example.client.views.ComboView;
+import org.eclipse.riena.example.client.views.FocusableView;
 import org.eclipse.riena.example.client.views.ListView;
 import org.eclipse.riena.example.client.views.MarkerView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
@@ -44,7 +45,9 @@ public class SwtExampleApplication extends SwtApplication {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#createApplicationViewController(org.eclipse.riena.navigation.IApplicationModel)
+	 * @seeorg.eclipse.riena.navigation.ui.swt.application.SwtApplication#
+	 * createApplicationViewController
+	 * (org.eclipse.riena.navigation.IApplicationModel)
 	 */
 	@Override
 	protected ApplicationViewController createApplicationViewController(IApplicationModel model) {
@@ -179,6 +182,11 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(MarkerView.ID, false);
 		presentation.present(markerSubModule, MarkerView.ID);
 		playgroundModule.addChild(markerSubModule);
+
+		ISubModuleNode focusableSubModule = new SubModuleNode("Focusable");
+		presentation.registerView(FocusableView.ID, false);
+		presentation.present(focusableSubModule, FocusableView.ID);
+		playgroundModule.addChild(focusableSubModule);
 
 		ISubModuleNode systemPropertiesSubModule = new SubModuleNode("System Properties");
 		presentation.registerView(SystemPropertiesView.ID, false);

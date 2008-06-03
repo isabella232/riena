@@ -77,6 +77,12 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.FocusableView"
+            id="org.eclipse.riena.example.client.views.FocusableView"
+            name="org.eclipse.riena.example.client.views.FocusableView">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.SystemPropertiesView"
             id="org.eclipse.riena.example.client.views.SystemPropertiesView"
             name="org.eclipse.riena.example.client.views.SystemPropertiesView">

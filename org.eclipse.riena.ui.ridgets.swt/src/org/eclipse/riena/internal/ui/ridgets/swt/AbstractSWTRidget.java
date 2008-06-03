@@ -12,6 +12,10 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
@@ -19,6 +23,8 @@ import org.eclipse.swt.widgets.Widget;
  * Ridget for an SWT control.
  */
 public abstract class AbstractSWTRidget extends AbstractRidget {
+
+	private static final FocusListener FOCUS_MANAGER = new FocusManager();
 
 	private Control uiControl;
 	private boolean visible;
@@ -30,11 +36,11 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 * Checks that the given uiControl is assignable to the the given type.
 	 * 
 	 * @param uiControl
-	 *            a uiControl, may be null
+	 * 		a uiControl, may be null
 	 * @param type
-	 *            a class instance (non-null)
+	 * 		a class instance (non-null)
 	 * @throws BindingException
-	 *             if the uiControl is not of the given type
+	 * 		if the uiControl is not of the given type
 	 */
 	public static void assertType(Object uiControl, Class<?> type) {
 		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
@@ -56,7 +62,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		this.uiControl = (Control) uiControl;
 		updateVisible();
 		updateToolTip();
-		// updateFocusable();
+		updateFocusable();
 		bindUIControl();
 	}
 
@@ -86,7 +92,10 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	}
 
 	public final void setFocusable(boolean focusable) {
-		this.focusable = focusable;
+		if (this.focusable != focusable) {
+			this.focusable = focusable;
+			updateFocusable();
+		}
 	}
 
 	public final boolean isVisible() {
@@ -109,19 +118,27 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		return toolTip;
 	}
 
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}
+
 	/**
 	 * <p>
 	 * Performs checks on the control about to be bound by this ridget.
 	 * </p>
 	 * <p>
-	 * Implementors must make sure the given <tt>uiControl</tt> has the
-	 * expected type.
+	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
+	 * type.
 	 * </p>
 	 * 
 	 * @param uiControl
-	 *            a {@link Widget} instance or null
+	 * 		a {@link Widget} instance or null
 	 * @throws BindingException
-	 *             if the <tt>uiControl</tt> fails the check
+	 * 		if the <tt>uiControl</tt> fails the check
 	 */
 	abstract protected void checkUIControl(Object uiControl);
 
@@ -148,6 +165,9 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 */
 	abstract protected void unbindUIControl();
 
+	// helping methods
+	// ////////////////
+
 	private void updateVisible() {
 		if (uiControl != null) {
 			uiControl.setVisible(visible);
@@ -160,22 +180,70 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
-	 */
-	public boolean isBlocked() {
-		return blocked;
+	private void updateFocusable() {
+		if (uiControl != null) {
+			// ensure the listener is only added once
+			uiControl.removeFocusListener(FOCUS_MANAGER);
+			if (!isFocusable()) {
+				uiControl.addFocusListener(FOCUS_MANAGER);
+			}
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Prevents the widget corresponding to this ridget from getting the UI
+	 * focus.
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 * @see AbstractSWTRidget#setFocusable(boolean).
 	 */
-	public void setBlocked(boolean blocked) {
-		this.blocked = blocked;
+	private final static class FocusManager extends FocusAdapter {
 
-	}
+		public void focusGained(FocusEvent e) {
+			Control control = (Control) e.widget;
+			Composite parent = control.getParent();
+			Control[] tabList = parent.getTabList();
+			int i = findNextElement(control, tabList);
+			if (i != -1) {
+				Control nextFocusControl = tabList[i];
+				nextFocusControl.setFocus();
+			} else { // no suitable control found, try one level up
+				Composite pParent = parent.getParent();
+				if (pParent != null) {
+					tabList = pParent.getTabList();
+					i = findNextElement(parent, tabList);
+					if (i != -1) {
+						Control nextFocusControl = tabList[i];
+						nextFocusControl.setFocus();
+					}
+				}
+			}
+		}
+
+		private int findNextElement(Control control, Control[] controls) {
+			int myIndex = -1;
+			// find index for control
+			for (int i = 0; myIndex == -1 && i < controls.length; i++) {
+				if (controls[i] == control) {
+					myIndex = i;
+				}
+			}
+			// find next possible control
+			int result = -1;
+			for (int i = myIndex + 1; result == -1 && i < controls.length; i++) {
+				Control candidate = controls[i];
+				if (candidate.isEnabled() && candidate.isVisible()) {
+					result = i;
+				}
+			}
+			// find previous possible control
+			for (int i = 0; result == -1 && i < myIndex; i++) {
+				Control candidate = controls[i];
+				if (candidate.isEnabled() && candidate.isVisible()) {
+					result = i;
+				}
+			}
+			return result;
+		}
+	};
+
 }

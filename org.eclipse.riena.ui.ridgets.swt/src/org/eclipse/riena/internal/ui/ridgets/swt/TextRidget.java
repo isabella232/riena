@@ -160,10 +160,12 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	 */
 	private final class FocusManager implements FocusListener {
 		public void focusGained(FocusEvent e) {
-			Text text = (Text) e.getSource();
-			// if not multi line text field
-			if ((text.getStyle() & SWT.MULTI) == 0) {
-				text.selectAll();
+			if (isFocusable()) {
+				Text text = (Text) e.getSource();
+				// if not multi line text field
+				if ((text.getStyle() & SWT.MULTI) == 0) {
+					text.selectAll();
+				}
 			}
 		}
 
