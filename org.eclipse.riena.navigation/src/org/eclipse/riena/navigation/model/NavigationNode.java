@@ -159,7 +159,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.afterActivated((S) this);
 		}
-		notifyBlockedChanged();
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -182,7 +182,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.afterDeactivated((S) this);
 		}
-		notifyBlockedChanged();
+
 	}
 
 	@SuppressWarnings("unchecked")
