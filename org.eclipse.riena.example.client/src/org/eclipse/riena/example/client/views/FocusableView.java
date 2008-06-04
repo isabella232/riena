@@ -16,7 +16,7 @@ import org.eclipse.riena.example.client.controllers.FocusableViewController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,7 +26,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * SWT {@link ITableRidget} sample.
+ * Example for the setFocusable property.
+ * 
+ * @see IRidget#setFocusable(boolean)
  */
 public class FocusableView extends SubModuleNodeView<FocusableViewController> {
 
@@ -40,8 +42,6 @@ public class FocusableView extends SubModuleNodeView<FocusableViewController> {
 		createVisibilityGroup(parent);
 		createGroup(parent, "A", 5);
 		createGroup(parent, "B", 1);
-		// createGroup(parent, "C", 2);
-		// createGroup(parent, "D", 3);
 	}
 
 	@Override

@@ -11,7 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.example.client.views.SystemPropertiesView;
+import org.eclipse.riena.example.client.views.FocusableView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
- * Controller for the {@link SystemPropertiesView} example.
+ * Controller for the {@link FocusableView} example.
  */
 public class FocusableViewController extends SubModuleNodeViewController {
 
@@ -30,11 +30,6 @@ public class FocusableViewController extends SubModuleNodeViewController {
 	private IToggleButtonRidget buttonA3;
 	private IToggleButtonRidget buttonA4;
 	private IToggleButtonRidget buttonB0;
-	private IToggleButtonRidget buttonC0;
-	private IToggleButtonRidget buttonC1;
-	private IToggleButtonRidget buttonD0;
-	private IToggleButtonRidget buttonD1;
-	private IToggleButtonRidget buttonD2;
 
 	private ITextFieldRidget textA0;
 	private ITextFieldRidget textA1;
@@ -42,14 +37,13 @@ public class FocusableViewController extends SubModuleNodeViewController {
 	private ITextFieldRidget textA3;
 	private ITextFieldRidget textA4;
 	private ITextFieldRidget textB0;
-	private ITextFieldRidget textC0;
-	private ITextFieldRidget textC1;
-	private ITextFieldRidget textD0;
-	private ITextFieldRidget textD1;
-	private ITextFieldRidget textD2;
 
 	private IToggleButtonRidget[] checkButtons;
 	private ITextFieldRidget[] textRidgets;
+
+	public FocusableViewController(ISubModuleNode navigationNode) {
+		super(navigationNode);
+	}
 
 	public IToggleButtonRidget getCheckVisible() {
 		return checkVisible;
@@ -107,46 +101,6 @@ public class FocusableViewController extends SubModuleNodeViewController {
 		this.buttonB0 = buttonB0;
 	}
 
-	public IToggleButtonRidget getButtonC0() {
-		return buttonC0;
-	}
-
-	public void setButtonC0(IToggleButtonRidget buttonC0) {
-		this.buttonC0 = buttonC0;
-	}
-
-	public IToggleButtonRidget getButtonC1() {
-		return buttonC1;
-	}
-
-	public void setButtonC1(IToggleButtonRidget buttonC1) {
-		this.buttonC1 = buttonC1;
-	}
-
-	public IToggleButtonRidget getButtonD0() {
-		return buttonD0;
-	}
-
-	public void setButtonD0(IToggleButtonRidget buttonD0) {
-		this.buttonD0 = buttonD0;
-	}
-
-	public IToggleButtonRidget getButtonD1() {
-		return buttonD1;
-	}
-
-	public void setButtonD1(IToggleButtonRidget buttonD1) {
-		this.buttonD1 = buttonD1;
-	}
-
-	public IToggleButtonRidget getButtonD2() {
-		return buttonD2;
-	}
-
-	public void setButtonD2(IToggleButtonRidget buttonD2) {
-		this.buttonD2 = buttonD2;
-	}
-
 	public ITextFieldRidget getTextA0() {
 		return textA0;
 	}
@@ -195,50 +149,6 @@ public class FocusableViewController extends SubModuleNodeViewController {
 		this.textB0 = textB0;
 	}
 
-	public ITextFieldRidget getTextC0() {
-		return textC0;
-	}
-
-	public void setTextC0(ITextFieldRidget textC0) {
-		this.textC0 = textC0;
-	}
-
-	public ITextFieldRidget getTextC1() {
-		return textC1;
-	}
-
-	public void setTextC1(ITextFieldRidget textC1) {
-		this.textC1 = textC1;
-	}
-
-	public ITextFieldRidget getTextD0() {
-		return textD0;
-	}
-
-	public void setTextD0(ITextFieldRidget textD0) {
-		this.textD0 = textD0;
-	}
-
-	public ITextFieldRidget getTextD1() {
-		return textD1;
-	}
-
-	public void setTextD1(ITextFieldRidget textD1) {
-		this.textD1 = textD1;
-	}
-
-	public ITextFieldRidget getTextD2() {
-		return textD2;
-	}
-
-	public void setTextD2(ITextFieldRidget textD2) {
-		this.textD2 = textD2;
-	}
-
-	public FocusableViewController(ISubModuleNode navigationNode) {
-		super(navigationNode);
-	}
-
 	public void afterBind() {
 		super.afterBind();
 		initRidgets();
@@ -250,12 +160,6 @@ public class FocusableViewController extends SubModuleNodeViewController {
 	private void initRidgets() {
 		checkButtons = new IToggleButtonRidget[] { buttonA0, buttonA1, buttonA2, buttonA3, buttonA4, buttonB0 };
 		textRidgets = new ITextFieldRidget[] { textA0, textA1, textA2, textA3, textA4, textB0 };
-		// checkButtons = new IToggleButtonRidget[] { buttonA0, buttonA1,
-		// buttonA2, buttonA3, buttonA4, buttonB0,
-		// buttonC0, buttonC1, buttonD0, buttonD1, buttonD2, };
-		// textRidgets = new ITextFieldRidget[] { textA0, textA1, textA2, textA3
-		// , textA4, textB0, textC0, textC1, textD0,
-		// textD1, textD2, };
 
 		checkVisible.setText("show checkboxes");
 		checkVisible.setSelected(true);
