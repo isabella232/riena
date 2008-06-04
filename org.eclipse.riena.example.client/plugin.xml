@@ -83,6 +83,12 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ValidationView"
+            id="org.eclipse.riena.example.client.views.ValidationView"
+            name="org.eclipse.riena.example.client.views.ValidationView">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.SystemPropertiesView"
             id="org.eclipse.riena.example.client.views.SystemPropertiesView"
             name="org.eclipse.riena.example.client.views.SystemPropertiesView">

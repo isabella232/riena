@@ -19,6 +19,7 @@ import org.eclipse.riena.example.client.views.SharedViewDemoView;
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
 import org.eclipse.riena.example.client.views.TextView;
 import org.eclipse.riena.example.client.views.UiProcessDemoView;
+import org.eclipse.riena.example.client.views.ValidationView;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.IApplicationModel;
@@ -187,6 +188,11 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(FocusableView.ID, false);
 		presentation.present(focusableSubModule, FocusableView.ID);
 		playgroundModule.addChild(focusableSubModule);
+
+		ISubModuleNode validationSubModule = new SubModuleNode("Validation");
+		presentation.registerView(ValidationView.ID, false);
+		presentation.present(validationSubModule, ValidationView.ID);
+		playgroundModule.addChild(validationSubModule);
 
 		ISubModuleNode systemPropertiesSubModule = new SubModuleNode("System Properties");
 		presentation.registerView(SystemPropertiesView.ID, false);
