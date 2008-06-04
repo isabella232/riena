@@ -17,7 +17,10 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
+import org.eclipse.riena.ui.ridgets.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Abstract implementation of an {@link IEditableRidget} for SWT.
@@ -75,13 +78,16 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 							} catch (InterruptedException e) {
 								// ignore
 							} finally {
-								// TODO [ev] guard for NPE with getUIControl ?
-								getUIControl().getDisplay().asyncExec(new Runnable() {
-									public void run() {
-										setErrorMarked(oldErrorMarked);
-										isFlashInProgress = false;
-									}
-								});
+								Control control = getUIControl();
+								if (control != null && !control.isDisposed()) {
+									Display display = control.getDisplay();
+									display.asyncExec(new Runnable() {
+										public void run() {
+											setErrorMarked(oldErrorMarked);
+											isFlashInProgress = false;
+										}
+									});
+								}
 							}
 						}
 					};
