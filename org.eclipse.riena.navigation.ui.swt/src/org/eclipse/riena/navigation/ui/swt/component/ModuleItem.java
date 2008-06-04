@@ -15,20 +15,23 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-public class ModuleWidget {
+public class ModuleItem {
 
-	private int itemHEIGHT = 20;
 	private Composite parent;
 	private Composite body;
 	private String text;
 	private ModuleNavigationComponent moduleCmp;
 	private Tree subModuleTree;
+	private boolean pressed;
+	private boolean hover;
 
 	private SubModuleNode activeSubModule;
 	private String iconPath;
 
-	public ModuleWidget(Composite parent, int style, ModuleNavigationComponent moduleCmp) {
+	public ModuleItem(Composite parent, ModuleNavigationComponent moduleCmp) {
 		this.moduleCmp = moduleCmp;
+		pressed = false;
+		hover = false;
 		construct(parent);
 	}
 
@@ -87,7 +90,7 @@ public class ModuleWidget {
 		return activeSubModule;
 	}
 
-	protected IModuleNode getModuleNode() {
+	public IModuleNode getModuleNode() {
 		return moduleCmp.getModelNode();
 	}
 
@@ -126,30 +129,10 @@ public class ModuleWidget {
 		return text;
 	}
 
-	protected int calcDepth() {
-		IModuleNode moduleNode = getModuleNode();
-		int sum = 0;
-		for (INavigationNode<?> child : moduleNode.getChildren()) {
-			sum += calcDepth(child);
-		}
-		return sum;
-
-	}
-
-	protected int calcDepth(INavigationNode<?> node) {
-		int depth = 1;
-
-		if (node.isExpanded()) {
-			for (INavigationNode<?> child : node.getChildren()) {
-				depth += calcDepth(child);
-			}
-		}
-
-		return depth;
-	}
-
 	public int getOpenHeight() {
-		return calcDepth() * itemHEIGHT;
+		IModuleNode moduleNode = getModuleNode();
+		int itemHeight = subModuleTree.getItemHeight();
+		return moduleNode.calcDepth() * itemHeight + 1;
 	}
 
 	public Tree getTree() {
@@ -257,6 +240,42 @@ public class ModuleWidget {
 		hwnd = getTree().handle;
 		OS.ShowScrollBar(hwnd, OS.SB_HORZ, false);
 
+	}
+
+	/**
+	 * @return the pressed
+	 */
+	public boolean isPressed() {
+		return pressed;
+	}
+
+	/**
+	 * @param pressed
+	 *            the pressed to set
+	 */
+	public void setPressed(boolean pressed) {
+		if (this.pressed != pressed) {
+			this.pressed = pressed;
+			parent.redraw();
+		}
+	}
+
+	/**
+	 * @return the hover
+	 */
+	public boolean isHover() {
+		return hover;
+	}
+
+	/**
+	 * @param hover
+	 *            the hover to set
+	 */
+	public void setHover(boolean hover) {
+		if (this.hover != hover) {
+			this.hover = hover;
+			parent.redraw();
+		}
 	}
 
 }

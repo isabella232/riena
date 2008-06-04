@@ -20,6 +20,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
 /**
@@ -67,7 +68,9 @@ public class RienaDefaultLnf {
 	protected void initWidgetRendererDefaults() {
 		getRendererTable().put("SubModuleViewRenderer.borderRenderer", new EmbeddedBorderRenderer()); //$NON-NLS-1$
 		getRendererTable().put("SubModuleViewRenderer.titlebarRenderer", new EmbeddedTitlebarRenderer()); //$NON-NLS-1$
+		getRendererTable().put("SubModuleViewRenderer.hoverBorderRenderer", new HoverBorderRenderer()); //$NON-NLS-1$
 		getRendererTable().put("SubModuleView.renderer", new SubModuleViewRenderer()); //$NON-NLS-1$
+		getRendererTable().put("ModuleGroup.renderer", new ModuleGroupRenderer()); //$NON-NLS-1$
 	}
 
 	/**
@@ -76,6 +79,7 @@ public class RienaDefaultLnf {
 	protected void initResourceDefaults() {
 		initColorDefaults();
 		initFontDefaults();
+		initImageDefaults();
 	}
 
 	/**
@@ -93,6 +97,15 @@ public class RienaDefaultLnf {
 	protected void initFontDefaults() {
 		if (getTheme() != null) {
 			getTheme().addCustomFonts(getResourceTable());
+		}
+	}
+
+	/**
+	 * Puts the images to resource table.
+	 */
+	protected void initImageDefaults() {
+		if (getTheme() != null) {
+			getTheme().addCustomImages(getResourceTable());
 		}
 	}
 
@@ -161,6 +174,23 @@ public class RienaDefaultLnf {
 	}
 
 	/**
+	 * Returns the image for the given key.
+	 * 
+	 * @param key -
+	 *            key whose associated image is to be returned.
+	 * @return the image to which this map maps the specified key, or
+	 *         <code>null</code> if the map contains no mapping for this key.
+	 */
+	public Image getImage(String key) {
+		Resource value = getResource(key);
+		if (value instanceof Image) {
+			return (Image) value;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Returns the renderer for the given key.
 	 * 
 	 * @param key -
@@ -221,7 +251,6 @@ public class RienaDefaultLnf {
 		}
 	}
 
-	// getIcon
 	// getWidgetRenderer
 
 }

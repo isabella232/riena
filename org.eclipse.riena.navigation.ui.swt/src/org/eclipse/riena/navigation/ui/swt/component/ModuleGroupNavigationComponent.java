@@ -85,7 +85,7 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 
 	@Override
 	protected void initUI() {
-		ui = new ModuleGroupWidget(getParentComposite(), SWT.NONE);
+		ui = new ModuleGroupWidget(getParentComposite(), SWT.NONE, getModelNode());
 		ui.addMouseListener(new WidgetSelectionListener());
 		ui.setBackground(ui.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 	}

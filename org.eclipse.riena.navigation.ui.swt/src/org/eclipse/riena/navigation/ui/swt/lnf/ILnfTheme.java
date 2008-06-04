@@ -18,7 +18,7 @@ import java.util.Map;
 public interface ILnfTheme {
 
 	/**
-	 * Adds colors resources to the given table.
+	 * Adds color resources to the given table.
 	 * 
 	 * @param table -
 	 *            table with the resources of the look and feel
@@ -26,11 +26,19 @@ public interface ILnfTheme {
 	void addCustomColors(Map<String, ILnfResource> table);
 
 	/**
-	 * Adds fonts resources to the given table.
+	 * Adds font resources to the given table.
 	 * 
 	 * @param table -
 	 *            table with the resources of the look and feel
 	 */
 	void addCustomFonts(Map<String, ILnfResource> table);
+
+	/**
+	 * Adds image resources to the given table.
+	 * 
+	 * @param table -
+	 *            table with the resources of the look and feel
+	 */
+	void addCustomImages(Map<String, ILnfResource> table);
 
 }

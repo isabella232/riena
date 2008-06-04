@@ -3,81 +3,58 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
-import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ModuleGroupRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 public class ModuleGroupWidget extends Canvas {
 
-	private static final int ITEM_WIDTH = 165;
-	private static final int BORDER_WIDTH = 1;
+	private List<ModuleItem> items;
 
-	private List<ModuleWidget> items;
+	private int itemHeight;
 
-	private int itemHeight = 26;
+	private IModuleGroupNode moduleGroupNode;
+	private ModuleItem openItem;
 
-	private ModuleWidget openItem;
+	private ModuleGroupRenderer renderer;
 
-	protected INavigationResizer navigationResizer;
-
-	public ModuleGroupWidget(Composite parent, int style) {
+	public ModuleGroupWidget(Composite parent, int style, IModuleGroupNode moduleGroupNode) {
 		super(parent, style);
-		items = new ArrayList<ModuleWidget>();
+		this.moduleGroupNode = moduleGroupNode;
+		itemHeight = computeItemHeight();
+		items = new ArrayList<ModuleItem>();
 		addListeners();
 	}
 
+	private int computeItemHeight() {
+		GC gc = new GC(this);
+		int h = getRenderer().computeItemHeight(gc);
+		gc.dispose();
+		return h;
+	}
+
 	protected void addListeners() {
-		addPaintDelegation();
-		addMouseListeners();
-	}
-
-	public void setNavigationResizer(INavigationResizer view) {
-		this.navigationResizer = view;
-	}
-
-	protected void addMouseListeners() {
-		addMouseListener(new SelectionListener());
-	}
-
-	private class SelectionListener implements MouseListener {
-		private ModuleWidget mouseDownItem;
-
-		public void mouseUp(MouseEvent e) {
-			ModuleWidget item = getItem(new Point(1, e.y));
-			if ((item) == null) {
-				return;
-			}
-			if (item == mouseDownItem) {
-				openItem(item);
-				fireModuleNodeSelected(item.getData());
-			}
-
-		}
-
-		public void mouseDown(MouseEvent e) {
-			mouseDownItem = getItem(new Point(1, e.y));
-		}
-
-		public void mouseDoubleClick(MouseEvent arg0) {
-		}
-	}
-
-	protected void addPaintDelegation() {
 		addPaintListener(new PaintDelegation());
+		SelectionListener selectionListener = new SelectionListener();
+		addMouseListener(selectionListener);
+		addMouseTrackListener(selectionListener);
+		addMouseMoveListener(selectionListener);
 	}
 
 	public int calcBounds(int hint) {
@@ -97,7 +74,7 @@ public class ModuleGroupWidget extends Canvas {
 		return hint;
 	}
 
-	protected void openItem(ModuleWidget item) {
+	protected void openItem(ModuleItem item) {
 		hidePrevious();
 		if (item != openItem) {
 			openItem = item;
@@ -131,117 +108,58 @@ public class ModuleGroupWidget extends Canvas {
 
 	}
 
-	protected ModuleWidget getItem(Point point) {
+	protected ModuleItem getItem(Point point) {
 
-		int ys = 0;
+		int itemWidth = getRenderer().getItemWidth();
+		int xs = (getBounds().width - itemWidth) / 2;
+		int xe = xs + itemWidth;
+		if (point.x < xs || point.x > xe) {
+			return null;
+		}
+
+		int ys = 2;
 		int ye = 0;
-
-		for (ModuleWidget item : getItems()) {
-			ye += itemHeight;
-			if (item == openItem) {
-				ye += calcCurrentOpenSize();
-			}
+		for (ModuleItem item : getItems()) {
+			ye = ys + itemHeight - 2;
 			if (point.y >= ys && point.y <= ye) {
 				return item;
 			}
+			ye += 4;
+			if (item == openItem) {
+				ye += openItem.getOpenHeight();
+			}
+			ys = ye;
 		}
 		return null;
+
 	}
 
-	protected List<ModuleWidget> getItems() {
+	protected List<ModuleItem> getItems() {
 		return items;
 	}
 
-	private class PaintDelegation implements PaintListener {
-
-		public void paintControl(PaintEvent e) {
-			onPaint(e);
-		}
-	}
-
-	private static int SPACER = 1;
-
 	protected void onPaint(PaintEvent e) {
-		GC gc = e.gc;
-		if (gc.getAdvanced()) {
-			gc.setTextAntialias(SWT.ON);
-		}
-		gc.setInterpolation(SWT.HIGH);
-		gc.setAntialias(SWT.ON);
-		Color unselectedBackGroundColor = new Color(getParent().getDisplay(), 189, 206, 212);
-		Color selectedBackGroundColor = new Color(getParent().getDisplay(), 143, 214, 107);
-		Color unselectedForeGroundColor = new Color(getParent().getDisplay(), 219, 230, 233);
-		Color selectedForeGroundColor = new Color(getParent().getDisplay(), 186, 226, 156);
-		Color unselectedGroupBorderColor = new Color(getParent().getDisplay(), 171, 207, 208);
-		Color selectedGroupBorderColor = new Color(getParent().getDisplay(), 80, 170, 29);
-		Color unselectedTitleBorderColor = new Color(getParent().getDisplay(), 89, 146, 154);
-		Color selectedTitleBorderColor = new Color(getParent().getDisplay(), 78, 167, 20);
-		Color unselectedTextColor = new Color(getParent().getDisplay(), 26, 80, 81);
-		Color selectedTextColor = new Color(getParent().getDisplay(), 57, 106, 38);
-		int borderThickness = 2;
-		int inset = 4;
 
-		int y = 0;
-		for (ModuleWidget item : getItems()) {
-			gc.setBackground(item == openItem ? selectedBackGroundColor : unselectedBackGroundColor);
-			gc.setForeground(item == openItem ? selectedForeGroundColor : unselectedForeGroundColor);
-			gc.fillRoundRectangle(0 + inset, y + inset, ITEM_WIDTH - 1 - inset * 2, itemHeight - inset * 2, 5, 5);
-			gc.setForeground(item == openItem ? selectedTitleBorderColor : unselectedTitleBorderColor);
-			gc.drawRoundRectangle(0 + inset - 1, y + inset - 1, ITEM_WIDTH - 1 - inset * 2 + 1, itemHeight - inset * 2
-					+ 1, 5, 5);
-			gc.setForeground(item == openItem ? selectedTextColor : unselectedTextColor);
-			if (item.getText() != null) {
-				int textPosX = 30;
-				int textPosY = y + 5;
-				String text = item.getText();
-				text = SwtUtilities.clipText(gc, text, ITEM_WIDTH - textPosX);
-				gc.drawText(text, textPosX, textPosY, true);
-			}
-			if (item.getIcon() != null) {
-				Image image = ImageUtil.getImage(item.getIcon());
-				if (image != null) {
-					gc.drawImage(image, 5, y + 5);
-				}
-			}
+		getRenderer().setItems(items);
+		Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
+		getRenderer().setBounds(0, 0, size.x, size.y);
+		getRenderer().paint(e.gc, getModuleGroupNode());
 
-			int y1 = y;
-
-			y += itemHeight;
-
-			if (item == openItem) {
-				item.getBody().layout();
-				item.getBody().setBounds(BORDER_WIDTH + 1, y, ITEM_WIDTH - 2 * BORDER_WIDTH - 2,
-						calcCurrentOpenSize() - 1);
-				item.getBody().setVisible(true);
-				y += calcCurrentOpenSize();
-			}
-			gc.setLineWidth(1);
-			gc.setForeground(item == openItem ? selectedGroupBorderColor : unselectedGroupBorderColor);
-			for (int i = 0; i < borderThickness; i++) {
-				gc.drawRoundRectangle(i, y1 + i, ITEM_WIDTH - 1 - i * 2, y - y1 - 1 - i * 2, 5, 5);
-			}
-			if (item != getItems().get(getItems().size() - 1)) {
-				y += SPACER;
-			}
-		}
 	}
 
-	private int calcCurrentOpenSize() {
-		return openItem.getOpenHeight();
-	}
-
-	protected void registerItem(ModuleWidget navigationItem) {
+	protected void registerItem(ModuleItem navigationItem) {
 		getItems().add(navigationItem);
 		redraw();
 	}
 
 	@Override
 	public Point computeSize(int wHint, int hHint) {
-		int height = itemHeight * getItems().size() + SPACER * (getItems().size() - 1);
-		if (openItem != null) {
-			height += calcCurrentOpenSize();
-		}
-		return new Point(ITEM_WIDTH + 4, height + 4);
+
+		GC gc = new GC(Display.getCurrent());
+		getRenderer().setItems(getItems());
+		Point size = getRenderer().computeSize(gc, wHint, hHint);
+		gc.dispose();
+		return size;
 
 	}
 
@@ -254,13 +172,6 @@ public class ModuleGroupWidget extends Canvas {
 
 	}
 
-	public void sizeNavigation() {
-		ModuleWidget old = openItem;
-		openItem = null;
-		openItem(old);
-		navigationResizer.sizeNavigation();
-	}
-
 	private List<IGroupListener> groupListeners = new ArrayList<IGroupListener>();
 
 	public void addGroupListener(IGroupListener listener) {
@@ -271,6 +182,116 @@ public class ModuleGroupWidget extends Canvas {
 	protected void fireModuleNodeSelected(IModuleNode node) {
 		for (IGroupListener listener : groupListeners) {
 			listener.moduleSelected(node);
+		}
+	}
+
+	private ModuleGroupRenderer getRenderer() {
+		if (renderer == null) {
+			renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer("ModuleGroup.renderer"); //$NON-NLS-1$
+		}
+		return renderer;
+	}
+
+	/**
+	 * @return the moduleGroupNode
+	 */
+	private IModuleGroupNode getModuleGroupNode() {
+		return moduleGroupNode;
+	}
+
+	private class SelectionListener implements MouseListener, MouseTrackListener, MouseMoveListener {
+
+		private ModuleItem mouseDownItem;
+		private ModuleItem mouseHoverItem;
+
+		public void mouseUp(MouseEvent e) {
+			ModuleItem item = getItem(new Point(e.x, e.y));
+			if (item == null) {
+				return;
+			}
+			if (item == mouseDownItem) {
+				openItem(item);
+				fireModuleNodeSelected(item.getData());
+			}
+			setMouseNotDown();
+
+		}
+
+		public void mouseDown(MouseEvent e) {
+			mouseDownItem = getItem(new Point(e.x, e.y));
+			if (mouseDownItem != null) {
+				mouseDownItem.setPressed(true);
+			}
+		}
+
+		public void mouseDoubleClick(MouseEvent e) {
+
+		}
+
+		private void setMouseNotDown() {
+			if (mouseDownItem != null) {
+				mouseDownItem.setPressed(false);
+			}
+			mouseDownItem = null;
+		}
+
+		private void setMouseNotHover() {
+			if (mouseHoverItem != null) {
+				mouseHoverItem.setHover(false);
+			}
+			mouseHoverItem = null;
+		}
+
+		private void hoverOrNot(int x, int y) {
+
+			ModuleItem item = getItem(new Point(x, y));
+			if ((item == null) || (item != mouseDownItem)) {
+				setMouseNotDown();
+			}
+			if ((item == null) || (item != mouseHoverItem)) {
+				setMouseNotHover();
+				mouseHoverItem = item;
+				if (mouseHoverItem != null) {
+					mouseHoverItem.setHover(true);
+				}
+			}
+
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseEnter(MouseEvent e) {
+			hoverOrNot(e.x, e.y);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseExit(MouseEvent e) {
+			hoverOrNot(e.x, e.y);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseHover(MouseEvent e) {
+			hoverOrNot(e.x, e.y);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseMove(MouseEvent e) {
+			hoverOrNot(e.x, e.y);
+		}
+
+	}
+
+	private class PaintDelegation implements PaintListener {
+
+		public void paintControl(PaintEvent e) {
+			onPaint(e);
 		}
 	}
 

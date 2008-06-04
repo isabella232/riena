@@ -12,7 +12,7 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 
 	private Map<ISubModuleNode, SubModuleNavigationComponent> subModuleNodeComponents;
 	private ModuleNodeObserver observer;
-	private ModuleWidget ui;
+	private ModuleItem ui;
 	private ModuleGroupNavigationComponent groupComponent;
 
 	public ModuleNavigationComponent(IModuleNode node, ModuleGroupNavigationComponent groupComponent) {
@@ -62,7 +62,7 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 	@Override
 	protected void initUI() {
 		initializeSMNodeMapping();
-		ui = new ModuleWidget(getGroupComponent().getUI(), 0, this);
+		ui = new ModuleItem(getGroupComponent().getUI(), this);
 		((ModuleGroupWidget) getGroupComponent().getUI()).registerItem(ui);
 	}
 

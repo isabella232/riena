@@ -29,13 +29,25 @@ import org.eclipse.swt.graphics.Point;
 public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	private final static int TITLEBAR_LABEL_PADDING_LEFT = 5;
-	private final static int TITLEBAR_LABEL_PADDING = 3;
+	private final static int TITLEBAR_LABEL_PADDING = 4;
 	private final static int TITLEBAR_ICON_TEXT_GAP = 4;
 
+	private HoverBorderRenderer hoverBorderRenderer;
 	private Image image;
 	private String icon;
 	private boolean active;
 	private boolean pressed;
+	private boolean hover;
+
+	public EmbeddedTitlebarRenderer() {
+		super();
+		setHoverBorderRenderer(getLnfBorderRenderer());
+		image = null;
+		icon = ""; //$NON-NLS-1$
+		active = false;
+		pressed = false;
+		hover = false;
+	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
@@ -65,10 +77,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		FontMetrics fontMetrics = gc.getFontMetrics();
 
 		int h = fontMetrics.getHeight() + TITLEBAR_LABEL_PADDING * 2;
-		if (getImage() != null) {
-			int imageH = getImage().getBounds().height + TITLEBAR_LABEL_PADDING * 2;
-			h = Math.max(h, imageH);
-		}
 
 		return new Point(wHint, h);
 
@@ -86,6 +94,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
+	 * @param value -
+	 *            title text
+	 * 
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
@@ -109,8 +120,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		gc.setBackground(endColor);
 		int x = getBounds().x;
 		int y = getBounds().y;
-		int w = getWidth();
-		int h = getHeight();
+		int w = getBounds().width;
+		int h = getBounds().height;
 		if (isPressed()) {
 			gc.fillRectangle(x, y, w, h);
 		} else {
@@ -166,6 +177,16 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			gc.drawText(text, x, y, true);
 		}
 
+		// Hover border
+		if (isHover() && !isPressed()) {
+			x = getBounds().x;
+			y = getBounds().y;
+			w = getBounds().width;
+			h = getHeight();
+			getHoverBorderRenderer().setBounds(x, y, w, h);
+			getHoverBorderRenderer().paint(gc, null);
+		}
+
 	}
 
 	public String getIcon() {
@@ -193,6 +214,14 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		this.pressed = pressed;
 	}
 
+	public boolean isHover() {
+		return hover;
+	}
+
+	public void setHover(boolean hover) {
+		this.hover = hover;
+	}
+
 	private Image getImage() {
 		return image;
 	}
@@ -207,6 +236,32 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	private int getWidth() {
 		return getBounds().width - 1;
+	}
+
+	/**
+	 * @return the hoverBorderRenderer
+	 */
+	public HoverBorderRenderer getHoverBorderRenderer() {
+		return hoverBorderRenderer;
+	}
+
+	/**
+	 * @param hoverBorderRenderer
+	 *            the hoverBorderRenderer to set
+	 */
+	public void setHoverBorderRenderer(HoverBorderRenderer hoverBorderRenderer) {
+		this.hoverBorderRenderer = hoverBorderRenderer;
+	}
+
+	private HoverBorderRenderer getLnfBorderRenderer() {
+
+		HoverBorderRenderer renderer = (HoverBorderRenderer) LnfManager.getLnf().getRenderer(
+				"SubModuleViewRenderer.hoverBorderRenderer"); //$NON-NLS-1$
+		if (renderer == null) {
+			renderer = new HoverBorderRenderer();
+		}
+		return renderer;
+
 	}
 
 }

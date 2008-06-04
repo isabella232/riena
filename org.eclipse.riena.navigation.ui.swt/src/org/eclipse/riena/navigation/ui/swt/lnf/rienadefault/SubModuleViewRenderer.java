@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
@@ -44,13 +44,14 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
-		assert value instanceof SubModuleNode;
+		assert value instanceof ISubModuleNode;
 
-		SubModuleNode node = (SubModuleNode) value;
+		ISubModuleNode node = (ISubModuleNode) value;
 
 		// titlebar
-		getTitlebarRenderer().setActive(true);
+		getTitlebarRenderer().setActive(node.isActivated());
 		getTitlebarRenderer().setPressed(false);
+		getTitlebarRenderer().setHover(false);
 		getTitlebarRenderer().setIcon(node.getIcon());
 		Point titlebarSize = getTitlebarRenderer().computeSize(gc, getBounds().width - 2, 0);
 		Rectangle titlebarBounds = new Rectangle(getBounds().x + 1, getBounds().y + 1, titlebarSize.x, titlebarSize.y);
@@ -58,7 +59,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 		getTitlebarRenderer().paint(gc, getTitle(node));
 
 		// border
-		getBorderRenderer().setActive(true);
+		getBorderRenderer().setActive(node.isActivated());
 		getBorderRenderer().setBounds(getBounds());
 		getBorderRenderer().paint(gc, null);
 
@@ -71,7 +72,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 *            node of active sub module
 	 * @return title
 	 */
-	private String getTitle(SubModuleNode node) {
+	private String getTitle(ISubModuleNode node) {
 
 		StringBuilder titleBuilder = new StringBuilder(node.getLabel());
 		INavigationNode<?> parent = node.getParent();

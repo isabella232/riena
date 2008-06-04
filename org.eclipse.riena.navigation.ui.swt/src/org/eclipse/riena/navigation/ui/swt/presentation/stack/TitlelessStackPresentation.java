@@ -151,6 +151,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 						- APPLICATION_SWITCHER_HEIGHT - 50);
 		GC gc = new GC(current);
 		Rectangle innerBounds = getRenderer().computeInnerBounds(gc, outerBounds);
+		gc.dispose();
 		return innerBounds;
 	}
 
