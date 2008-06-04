@@ -13,7 +13,8 @@ package org.eclipse.riena.navigation;
 /**
  * this is a node containing sub module nodes
  */
-public interface IModuleNode extends INavigationNode<ISubModuleNode>, INavigationNodeListenerable<IModuleNode, ISubModuleNode, IModuleNodeListener> {
+public interface IModuleNode extends INavigationNode<ISubModuleNode>,
+		INavigationNodeListenerable<IModuleNode, ISubModuleNode, IModuleNodeListener> {
 
 	/**
 	 * @return true if a single sub module should be shown
@@ -33,5 +34,12 @@ public interface IModuleNode extends INavigationNode<ISubModuleNode>, INavigatio
 	 * @return true, if the submodule should be presented
 	 */
 	boolean isPresentSubModules();
+
+	/**
+	 * Calculates the number of the visible and expanded children.
+	 * 
+	 * @return number of children
+	 */
+	int calcDepth();
 
 }

@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.IModuleNodeListener;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
@@ -74,6 +75,47 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 
 	public boolean isPresentSubModules() {
 		return isPresentSingleSubModule() || !(getChildren().size() == 1 && getChild(0).getChildren().isEmpty());
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.IModuleNode#calcDepth()
+	 */
+	public int calcDepth() {
+
+		if (!isPresentSubModules()) {
+			return 0;
+		}
+
+		int depth = 0;
+		for (INavigationNode<?> child : getChildren()) {
+			depth++;
+			depth += calcDepth(child);
+		}
+
+		return depth;
+
+	}
+
+	/**
+	 * Calculates the number of the visible and expanded children below the
+	 * given node.
+	 * 
+	 * @param node -
+	 *            start node
+	 * @return number of children
+	 */
+	private int calcDepth(INavigationNode<?> node) {
+
+		int depth = 0;
+		if (node.isExpanded()) {
+			for (INavigationNode<?> child : node.getChildren()) {
+				depth++;
+				depth += calcDepth(child);
+			}
+		}
+
+		return depth;
+
 	}
 
 }
