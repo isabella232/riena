@@ -24,7 +24,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 
 	/**
 	 * @return The converter used when updating from the UI-control to the
-	 *         model.
+	 * 	model.
 	 */
 	IConverter getUIControlToModelConverter();
 
@@ -32,7 +32,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * Sets the converter used when updating from the UI-control to the model.
 	 * 
 	 * @param converter
-	 *            The new converter.
+	 * 		The new converter.
 	 */
 	void setUIControlToModelConverter(IConverter converter);
 
@@ -54,7 +54,9 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * @see IValidationRuleStatus
 	 * 
 	 * @param validationRule
-	 *            The validation rule to add.
+	 * 		The validation rule to add (non-null).
+	 * @throws RuntimeException
+	 * 		if validationRule is null.
 	 */
 	void addValidationRule(IValidator validationRule);
 
@@ -62,7 +64,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * Removes a validator.
 	 * 
 	 * @param validationRule
-	 *            The validation rule to remove.
+	 * 		The validation rule to remove.
 	 */
 	void removeValidationRule(IValidator validationRule);
 

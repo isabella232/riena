@@ -12,7 +12,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -21,6 +23,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -33,6 +37,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private final FocusListener focusListener;
 	private final KeyListener crKeyListener;
 	private final ModifyListener modifyListener;
+	private final VerifyListener verifyListener;
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 
@@ -40,6 +45,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		crKeyListener = new CRKeyListener();
 		focusListener = new FocusManager();
 		modifyListener = new SyncModifyListener();
+		verifyListener = new ValidationListener();
 		isDirectWriting = false;
 	}
 
@@ -65,6 +71,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 			control.addKeyListener(crKeyListener);
 			control.addFocusListener(focusListener);
 			control.addModifyListener(modifyListener);
+			control.addVerifyListener(verifyListener);
 		}
 	}
 
@@ -75,6 +82,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 			control.removeKeyListener(crKeyListener);
 			control.removeFocusListener(focusListener);
 			control.removeModifyListener(modifyListener);
+			control.removeVerifyListener(verifyListener);
 		}
 	}
 
@@ -109,9 +117,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	// helping methods
 	// ////////////////
 
+	private IStatus checkRules(String newValue) {
+		ValidatorCollection onEditValidators = getValueBindingSupport().getOnEditValidators();
+		IStatus result = onEditValidators.validate(newValue);
+		validationRulesChecked(result);
+		return result;
+	}
+
 	private void setText(String newValue, boolean updateWidget) {
 		String oldValue = textValue;
 		textValue = newValue;
+		checkRules(textValue);
 		if (updateWidget) {
 			setTextToControl(textValue);
 		}
@@ -183,6 +199,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 				updateTextValue();
 			}
 		}
+	}
+
+	/**
+	 * TODO [ev] javadocs
+	 */
+	private final class ValidationListener implements VerifyListener {
+		public void verifyText(VerifyEvent e) {
+			IStatus status = checkRules(e.text);
+			e.doit = status.isOK();
+		}
+
 	}
 
 }

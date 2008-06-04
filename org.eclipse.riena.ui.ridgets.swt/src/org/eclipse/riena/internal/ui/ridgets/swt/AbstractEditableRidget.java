@@ -14,44 +14,80 @@ import java.util.Collection;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 
 /**
  * Abstract implementation of an {@link IEditableRidget} for SWT.
  */
 public abstract class AbstractEditableRidget extends AbstractValueRidget implements IEditableRidget {
 
+	private boolean isFlashInProgress = false;
+
 	public void addValidationRule(IValidator validationRule) {
-		boolean onEditValidatorsChanged = getValueBindingSupport().addValidationRule(validationRule);
-		if (onEditValidatorsChanged) {
-			// TODO updateValidationRulesToUIControl();
-		}
+		Assert.isNotNull(validationRule);
+		getValueBindingSupport().addValidationRule(validationRule);
 	}
 
 	public IConverter getUIControlToModelConverter() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return getValueBindingSupport().getUIControlToModelConverter();
 	}
 
 	public Collection<IValidator> getValidationRules() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return getValueBindingSupport().getValidationRules();
 	}
 
 	public void removeValidationRule(IValidator validationRule) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		getValueBindingSupport().removeValidationRule(validationRule);
 	}
 
 	public void setUIControlToModelConverter(IConverter converter) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		getValueBindingSupport().setUIControlToModelConverter(converter);
 	}
 
+	/**
+	 * Subclasses should call this method to update validation state of the
+	 * ridget.
+	 * 
+	 * @see IValidationCallback#validationRulesChecked(IStatus)
+	 * 
+	 * @param status
+	 * 		The result of validation.
+	 */
 	public void validationRulesChecked(IStatus status) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
+		if (status.isOK()) {
+			setErrorMarked(false);
+		} else {
+			if (status.getCode() != IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+				setErrorMarked(true);
+			} else {
+				if (!isFlashInProgress) {
+					isFlashInProgress = true;
+					final boolean oldErrorMarked = isErrorMarked();
+					setErrorMarked(!oldErrorMarked);
 
+					Runnable op = new Runnable() {
+						public void run() {
+							try {
+								Thread.sleep(300);
+							} catch (InterruptedException e) {
+								// ignore
+							} finally {
+								// TODO [ev] guard for NPE with getUIControl ?
+								getUIControl().getDisplay().asyncExec(new Runnable() {
+									public void run() {
+										setErrorMarked(oldErrorMarked);
+										isFlashInProgress = false;
+									}
+								});
+							}
+						}
+					};
+					new Thread(op).start();
+				}
+			}
+		}
+	}
 }
