@@ -264,16 +264,19 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 		if (getNavigationNode() != null) {
 			getNavigationNode().setBlocked(blocked);
 		}
-		Collection ridgets = getRidgets();
-		blockRidgets(ridgets, blocked);
 
 	}
 
 	/**
-	 * @param ridgets2
+	 * Sets the blocked state of all contained ridgets. A blocked ridgets must
+	 * not accept any user input an must not be fucusable.
+	 * 
+	 * @param ridgets
+	 *            the Ridgets to be blocked
 	 * @param blocked
+	 *            the blocked state
 	 */
-	protected void blockRidgets(Collection ridgets, boolean blocked) {
+	public void blockRidgets(Collection ridgets, boolean blocked) {
 		for (Iterator iterator = ridgets.iterator(); iterator.hasNext();) {
 			IRidget object = (IRidget) iterator.next();
 			object.setBlocked(blocked);
