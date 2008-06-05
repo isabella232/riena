@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,27 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.example.client.application;
 
-import org.eclipse.swt.graphics.Resource;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * Wrapper for resources of look and feel.
+ * 
  */
-public interface ILnfResource {
+public class TestLnf extends RienaDefaultLnf {
 
-	/**
-	 * Disposes the wrapped resource.
-	 */
-	void dispose();
-
-	/**
-	 * Returns the wrapped resource.
-	 * 
-	 * @return resource
-	 */
-	Resource getResource();
-
-	Resource createResource();
+	public TestLnf() {
+		super();
+		setTheme(new TestTheme());
+	}
 
 }

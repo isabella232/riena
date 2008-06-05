@@ -5,7 +5,6 @@ import org.eclipse.riena.navigation.ISubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
@@ -116,9 +115,9 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		treeItem.setText(getModelNode().getLabel());
 		treeItem.setData(getModelNode());
 		Image image = null;
-		if (getModelNode().getIcon() != null) {
-			image = ImageUtil.getImage(getModelNode().getIcon());
-		}
+		// if (getModelNode().getIcon() != null) {
+		// image = ImageUtil.getImage(getModelNode().getIcon());
+		// }
 		if (image == null) {
 			image = lnf.getImage("treeDocumentLeaf.icon"); //$NON-NLS-1$
 		}

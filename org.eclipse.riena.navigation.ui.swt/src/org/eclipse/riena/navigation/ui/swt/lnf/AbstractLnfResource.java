@@ -20,16 +20,6 @@ public abstract class AbstractLnfResource implements ILnfResource {
 	private Resource resource;
 
 	/**
-	 * Creates a new instance.
-	 * 
-	 * @param resource -
-	 *            resource to wrap
-	 */
-	protected AbstractLnfResource(Resource resource) {
-		this.resource = resource;
-	}
-
-	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#dispose()
 	 */
 	public void dispose() {
@@ -40,6 +30,9 @@ public abstract class AbstractLnfResource implements ILnfResource {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#getResource()
 	 */
 	public Resource getResource() {
+		if ((resource == null) || (resource.isDisposed())) {
+			resource = createResource();
+		}
 		return resource;
 	}
 

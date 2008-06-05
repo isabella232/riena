@@ -8,7 +8,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.model.SubApplicationAdapter;
-import org.eclipse.swt.SWT;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -44,14 +44,25 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 
 	protected void addMapping(IModuleGroupNode node, ModuleGroupNavigationComponent cmp) {
 		moduleGroupComponents.put(node, cmp);
+		cmp.addComponentUpdateListener(getUpdateListener());
+	}
+
+	private ModuleGroupNavigationComponent getMapping(IModuleGroupNode node) {
+		return moduleGroupComponents.get(node);
 	}
 
 	protected void removeMapping(IModuleGroupNode node) {
+		getMapping(node).removeComponentUpdateListener(getUpdateListener());
+		getMapping(node).getUI().dispose();
 		moduleGroupComponents.remove(node);
+
 	}
 
 	private final class ComponentUpdateListener implements IComponentUpdateListener {
 
+		/**
+		 * @see org.eclipse.riena.navigation.ui.swt.component.IComponentUpdateListener#update(org.eclipse.riena.navigation.INavigationNode)
+		 */
 		public void update(INavigationNode node) {
 			closeInactive((IModuleGroupNode) node);
 			sizeNavigation();
@@ -64,6 +75,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 		public void childAdded(ISubApplication source, IModuleGroupNode child) {
 			addModuleGroupComponent(child);
 		}
+
 	}
 
 	protected void initObserver() {
@@ -86,8 +98,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	}
 
 	protected void addModuleGroupComponent(IModuleGroupNode mgNode) {
-		ModuleGroupNavigationComponent mgCmp = new ModuleGroupNavigationComponent(mgNode, getParentComposite());
-		mgCmp.addComponentUpdateListener(getUpdateListener());
+		ModuleGroupNavigationComponent mgCmp = new ModuleGroupNavigationComponent(mgNode, getParentComposite(), this);
 		addMapping(mgNode, mgCmp);
 	}
 
@@ -111,14 +122,13 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 
 	@Override
 	protected void initUI() {
-		getParentComposite().setBackground(getParentComposite().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		getParentComposite().setBackground(LnfManager.getLnf().getColor("SubApplication.background")); //$NON-NLS-1$
 		FormLayout formLayout = new FormLayout();
 		getParentComposite().setLayout(formLayout);
 	}
 
 	@Override
 	Composite getUI() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

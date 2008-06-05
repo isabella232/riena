@@ -32,7 +32,11 @@ abstract public class AbstractNavigationComponent<T extends INavigationNode<?>> 
 
 	public void addComponentUpdateListener(IComponentUpdateListener listener) {
 		updateListeners.add(listener);
-	};
+	}
+
+	public void removeComponentUpdateListener(IComponentUpdateListener listener) {
+		updateListeners.remove(listener);
+	}
 
 	protected void updated() {
 		for (IComponentUpdateListener listener : updateListeners) {

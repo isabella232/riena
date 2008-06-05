@@ -42,4 +42,18 @@ public interface IModuleNode extends INavigationNode<ISubModuleNode>,
 	 */
 	int calcDepth();
 
+	/**
+	 * Indicates whether the user should have an opportunity to close the
+	 * module.
+	 * 
+	 * @return false if the module should never be closed; by default is true.
+	 */
+	boolean isCloseable();
+
+	/**
+	 * @param closeable
+	 *            false if the module should never be closed.
+	 */
+	void setCloseable(boolean closeable);
+
 }

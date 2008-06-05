@@ -7,6 +7,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNodeAdapter;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -17,11 +18,14 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 	private Map<IModuleNode, ModuleNavigationComponent> moduleNodeComponents;
 	private ModuleGroupNodeObserver nodeObserver;
 	private IComponentUpdateListener moduleUpdateObserver;
+	private SubApplicationNavigationComponent subAppComponent;
 
 	private ModuleGroupWidget ui;
 
-	public ModuleGroupNavigationComponent(IModuleGroupNode mgNode, Composite parent) {
+	public ModuleGroupNavigationComponent(IModuleGroupNode mgNode, Composite parent,
+			SubApplicationNavigationComponent subAppComponent) {
 		super(mgNode, parent);
+		this.subAppComponent = subAppComponent;
 		initializeMNodeMapping();
 		initUI();
 		buildInitialTree();
@@ -36,8 +40,14 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 		moduleNodeComponents.put(node, cmp);
 	}
 
+	protected ModuleNavigationComponent getMapping(IModuleNode node) {
+		return moduleNodeComponents.get(node);
+	}
+
 	protected void removeMapping(IModuleNode node) {
+		ModuleNavigationComponent moduleComponent = getMapping(node);
 		moduleNodeComponents.remove(node);
+		ui.unregisterItem(moduleComponent.getModuleItem());
 	}
 
 	@Override
@@ -73,6 +83,15 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 			updateActivityToUi();
 		}
 
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void disposed(IModuleGroupNode groupNode) {
+			super.disposed(groupNode);
+			subAppComponent.removeMapping(groupNode);
+		}
+
 	}
 
 	private final class WidgetSelectionListener extends MouseAdapter {
@@ -87,7 +106,7 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 	protected void initUI() {
 		ui = new ModuleGroupWidget(getParentComposite(), SWT.NONE, getModelNode());
 		ui.addMouseListener(new WidgetSelectionListener());
-		ui.setBackground(ui.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		ui.setBackground(LnfManager.getLnf().getColor("ModuleGroupWidget.background"));
 	}
 
 	@Override
@@ -121,6 +140,12 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 
 	public int recalculate(int hint) {
 		return ui.calcBounds(hint);
+	}
+
+	public void dispose() {
+		if ((getUI() == null) && !getUI().isDisposed()) {
+			getUI().dispose();
+		}
 	}
 
 }

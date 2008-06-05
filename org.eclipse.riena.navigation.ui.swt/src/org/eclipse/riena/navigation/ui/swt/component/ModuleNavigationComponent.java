@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Composite;
 public class ModuleNavigationComponent extends AbstractNavigationComponent<IModuleNode> {
 
 	private Map<ISubModuleNode, SubModuleNavigationComponent> subModuleNodeComponents;
-	private ModuleNodeObserver observer;
 	private ModuleItem ui;
 	private ModuleGroupNavigationComponent groupComponent;
 
@@ -40,21 +39,35 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 
 	@Override
 	protected void initObserver() {
-		this.observer = new ModuleNodeObserver();
-		getModelNode().addListener(this.observer);
+		getModelNode().addListener(new ModuleNodeObserver());
 	}
 
 	private final class ModuleNodeObserver extends ModuleNodeAdapter {
-		@Override
+
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 *      org.eclipse.riena.navigation.INavigationNode)
+		 */
 		public void childAdded(IModuleNode source, ISubModuleNode child) {
 			createSubModuleComponent(child);
 		}
 
-		@Override
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 */
 		public void activated(IModuleNode source) {
 			super.activated(source);
 			((ModuleGroupWidget) groupComponent.getUI()).openItem(ui);
 			groupComponent.updated();
+		}
+
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void disposed(IModuleNode node) {
+			super.disposed(node);
+			groupComponent.removeMapping(node);
 		}
 
 	}
@@ -82,6 +95,10 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 	@Override
 	Composite getUI() {
 		return ui.getBody();
+	}
+
+	protected ModuleItem getModuleItem() {
+		return ui;
 	}
 
 	protected void activateIn(ModuleGroupWidget groupUI) {

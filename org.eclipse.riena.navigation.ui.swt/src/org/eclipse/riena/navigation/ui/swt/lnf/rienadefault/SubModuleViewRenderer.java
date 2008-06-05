@@ -33,8 +33,6 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 */
 	public SubModuleViewRenderer() {
 		super();
-		setBorderRenderer(getLnfBorderRenderer());
-		setTitlebarRenderer(getLnfTitlebarRenderer());
 	}
 
 	/**
@@ -50,6 +48,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
 		// titlebar
 		getTitlebarRenderer().setActive(node.isActivated());
+		getTitlebarRenderer().setCloseable(false);
 		getTitlebarRenderer().setPressed(false);
 		getTitlebarRenderer().setHover(false);
 		getTitlebarRenderer().setIcon(node.getIcon());
@@ -95,6 +94,9 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	}
 
 	public EmbeddedTitlebarRenderer getTitlebarRenderer() {
+		if (titlebarRenderer == null) {
+			setTitlebarRenderer(getLnfTitlebarRenderer());
+		}
 		return titlebarRenderer;
 	}
 
@@ -103,6 +105,9 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	}
 
 	public EmbeddedBorderRenderer getBorderRenderer() {
+		if (borderRenderer == null) {
+			setBorderRenderer(getLnfBorderRenderer());
+		}
 		return borderRenderer;
 	}
 

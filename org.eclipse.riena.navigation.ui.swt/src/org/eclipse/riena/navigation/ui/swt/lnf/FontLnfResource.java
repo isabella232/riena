@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 
@@ -18,6 +19,8 @@ import org.eclipse.swt.widgets.Display;
  * Wrapper for resource font.
  */
 public class FontLnfResource extends AbstractLnfResource {
+
+	private FontData fontData;
 
 	/**
 	 * @param name -
@@ -29,15 +32,16 @@ public class FontLnfResource extends AbstractLnfResource {
 	 *            ITALIC)
 	 */
 	public FontLnfResource(String name, int height, int style) {
-		super(new Font(Display.getCurrent(), name, height, style));
+		this(new FontData(name, height, style));
 	}
 
 	/**
 	 * @param font -
 	 *            font to wrap
 	 */
-	public FontLnfResource(Font font) {
-		super(font);
+	public FontLnfResource(FontData fontData) {
+		super();
+		this.fontData = fontData;
 	}
 
 	/**
@@ -46,6 +50,13 @@ public class FontLnfResource extends AbstractLnfResource {
 	@Override
 	public Resource getResource() {
 		return (Font) super.getResource();
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
+	 */
+	public Resource createResource() {
+		return new Font(Display.getCurrent(), fontData);
 	}
 
 }

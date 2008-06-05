@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.ui.internal.util.BundleUtility;
+import org.osgi.framework.Bundle;
 
 /**
  * <code>LnfManager</code> manages the current look and feel of the riena
@@ -19,6 +22,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 public class LnfManager {
 
 	private final static String DEFAULT_LNF_CLASSNAME = RienaDefaultLnf.class.getName();
+	private static String lnfClassName;
 
 	private static RienaDefaultLnf lnf;
 
@@ -35,11 +39,13 @@ public class LnfManager {
 	public static RienaDefaultLnf getLnf() {
 
 		if (lnf == null) {
+			String className = getLnfClassName();
 			try {
-				setLnf(DEFAULT_LNF_CLASSNAME);
+				RienaDefaultLnf lnf = createLnf(className);
+				setLnf(lnf);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new Error("can't load " + DEFAULT_LNF_CLASSNAME); //$NON-NLS-1$
+				throw new Error("can't load " + className); //$NON-NLS-1$
 			}
 		}
 
@@ -57,16 +63,31 @@ public class LnfManager {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static void setLnf(String lnfClassName) throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
-		setLnf(createLnf(lnfClassName));
+	public static void setLnf(String newLnfClassName) {
+		lnfClassName = newLnfClassName;
 	}
 
 	private static RienaDefaultLnf createLnf(String lnfClassName) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
-		ClassLoader classLoader = LnfManager.class.getClassLoader();
-		Class<?> lnfClass = classLoader.loadClass(lnfClassName);
+
+		Class<?> lnfClass = null;
+		if (lnfClassName.contains(":")) { //$NON-NLS-1$
+			String parts[] = lnfClassName.split(":"); //$NON-NLS-1$
+			String pluginID = parts[0];
+			String classPath = parts[1];
+			Bundle bundle = Platform.getBundle(pluginID);
+			if (!BundleUtility.isReady(bundle)) {
+				return null;
+			}
+			lnfClass = bundle.loadClass(classPath);
+
+		} else {
+
+			ClassLoader classLoader = LnfManager.class.getClassLoader();
+			lnfClass = classLoader.loadClass(lnfClassName);
+		}
 		return (RienaDefaultLnf) lnfClass.newInstance();
+
 	}
 
 	/**
@@ -76,7 +97,7 @@ public class LnfManager {
 	 * @param newLnf -
 	 *            new look and feel to install.
 	 */
-	public static void setLnf(RienaDefaultLnf newLnf) {
+	private static void setLnf(RienaDefaultLnf newLnf) {
 
 		RienaDefaultLnf oldLnf = lnf;
 
@@ -89,6 +110,17 @@ public class LnfManager {
 			oldLnf.uninitialize();
 		}
 
+	}
+
+	/**
+	 * @return the lnfClassName
+	 */
+	public static String getLnfClassName() {
+		String className = lnfClassName;
+		if (className == null) {
+			className = DEFAULT_LNF_CLASSNAME;
+		}
+		return className;
 	}
 
 	/**

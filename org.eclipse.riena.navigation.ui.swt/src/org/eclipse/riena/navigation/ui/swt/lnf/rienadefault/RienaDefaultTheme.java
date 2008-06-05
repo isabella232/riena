@@ -17,13 +17,9 @@ import org.eclipse.riena.navigation.ui.swt.lnf.FontLnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.navigation.ui.swt.lnf.ImageLnfResource;
-import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Default theme of Riena used by the default Look and Feel,
@@ -33,6 +29,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	private static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
 	private static final String PATH_ICONS = "org.eclipse.riena.navigation.ui.swt:" + PATH_SEPARATOR + "icons"; //$NON-NLS-1$ //$NON-NLS-2$
+	private static final String IMAGE_FOLDER = PATH_ICONS + PATH_SEPARATOR + "fldr_obj.gif"; //$NON-NLS-1$
 	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "folder_closed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
 	private static final String IMAGE_THIN_CLOSE = PATH_ICONS + PATH_SEPARATOR + "thin_close_view.gif"; //$NON-NLS-1$
@@ -55,6 +52,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put("EmbeddedTitlebar.hoverBorderStartColor", new ColorLnfResource(255, 207, 32)); //$NON-NLS-1$
 		table.put("EmbeddedTitlebar.hoverBorderEndColor", new ColorLnfResource(255, 176, 1)); //$NON-NLS-1$
 
+		table.put("SubModuleTree.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+		table.put("ModuleGroupWidget.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+		table.put("SubApplication.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomFonts(Map<String, ILnfResource> table) {
 
-		table.put("EmbeddedTitlebar.font", new FontLnfResource(getSystemFont().getName(), 10, SWT.NORMAL)); //$NON-NLS-1$
+		table.put("EmbeddedTitlebar.font", new FontLnfResource("Arial", 9, SWT.NORMAL)); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -71,53 +72,34 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomImages(Map<String, ILnfResource> table) {
 
-		table.put("treeDocumentLeaf.icon", getImageResource(IMAGE_EMPTY_DOCUMENT)); //$NON-NLS-1$
-		table.put("treeFolderClosed.icon", getImageResource(IMAGE_FOLDER_CLOSED)); //$NON-NLS-1$
-		table.put("treeFolderOpen.icon", getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.close", getImageResource(IMAGE_THIN_CLOSE)); //$NON-NLS-1$
+		table.put("treeDocumentLeaf.icon", new ImageLnfResource(IMAGE_EMPTY_DOCUMENT)); //$NON-NLS-1$
+		table.put("treeFolderClosed.icon", new ImageLnfResource(IMAGE_FOLDER_CLOSED)); //$NON-NLS-1$
+		// table.put("treeFolderOpen.icon",
+		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER)); //$NON-NLS-1$
+		table.put("treeFolderOpen.icon", new ImageLnfResource(IMAGE_FOLDER)); //$NON-NLS-1$
+		table.put("EmbeddedTitlebar.close", new ImageLnfResource(IMAGE_THIN_CLOSE)); //$NON-NLS-1$
 
 	}
 
-	/**
-	 * Loads the image and returns a wrapper for it.
-	 * 
-	 * @param imagePath -
-	 *            path of the image to load.
-	 * @return wrapper
-	 */
-	protected ImageLnfResource getImageResource(String imagePath) {
-		return getImageResource(ImageUtil.getImage(imagePath));
-	}
+	// /**
+	// * Wraps and returns the image for the given name.
+	// *
+	// * @param symbolicName -
+	// * symbolic name of the image.
+	// * @return wrapper
+	// */
+	// protected ImageLnfResource getSharedImageResource(String symbolicName) {
+	// Image image =
+	// PlatformUI.getWorkbench().getSharedImages().getImage(symbolicName);
+	// return new ImageLnfResource(image);
+	// }
 
 	/**
-	 * Returns a wrapper for the given image.
-	 * 
-	 * @param image -
-	 *            image to wrap.
-	 * @return wrapper
-	 */
-	protected ImageLnfResource getImageResource(Image image) {
-		return new ImageLnfResource(image);
-	}
-
-	/**
-	 * Wraps and returns the image for the given name.
-	 * 
-	 * @param symbolicName -
-	 *            symbolic name of the image.
-	 * @return wrapper
-	 */
-	protected ImageLnfResource getSharedImageResource(String symbolicName) {
-		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(symbolicName);
-		return new ImageLnfResource(image);
-	}
-
-	/**
-	 * Retruns the data of the system font.
+	 * Returns the data of the system font.
 	 * 
 	 * @return system font data
 	 */
-	private FontData getSystemFont() {
+	protected FontData getSystemFont() {
 		FontData[] data = Display.getCurrent().getSystemFont().getFontData();
 		if (data.length > 0) {
 			return data[0];

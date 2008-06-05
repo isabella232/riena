@@ -3,6 +3,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -19,14 +20,12 @@ public class ModuleItem {
 
 	private Composite parent;
 	private Composite body;
-	private String text;
 	private ModuleNavigationComponent moduleCmp;
 	private Tree subModuleTree;
 	private boolean pressed;
 	private boolean hover;
 
 	private SubModuleNode activeSubModule;
-	private String iconPath;
 
 	public ModuleItem(Composite parent, ModuleNavigationComponent moduleCmp) {
 		this.moduleCmp = moduleCmp;
@@ -37,7 +36,7 @@ public class ModuleItem {
 
 	protected void createSubModuleTree() {
 		this.subModuleTree = new Tree(getBody(), SWT.NONE);
-		this.subModuleTree.setBackground(this.subModuleTree.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		this.subModuleTree.setBackground(LnfManager.getLnf().getColor("SubModuleTree.background")); //$NON-NLS-1$
 		this.subModuleTree.setLinesVisible(false);
 		this.subModuleTree.addListener(SWT.Selection, new Listener() {
 
@@ -99,39 +98,20 @@ public class ModuleItem {
 		body = new Composite(parent, SWT.None);
 		body.setLayout(new FillLayout());
 		createBodyContent(parent);
-		setText(getModuleNode().getLabel());
-		setIcon(getModuleNode().getIcon());
-	}
-
-	public void setIcon(String icon) {
-		this.iconPath = icon;
-	}
-
-	public String getIcon() {
-		return iconPath;
 	}
 
 	protected void createBodyContent(final Composite parent) {
 		createSubModuleTree();
-		subModuleTree.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		// getTree().setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 	}
 
 	public Composite getBody() {
 		return body;
 	}
 
-	public void setText(String string) {
-		this.text = string;
-		parent.redraw();
-	}
-
-	public String getText() {
-		return text;
-	}
-
 	public int getOpenHeight() {
 		IModuleNode moduleNode = getModuleNode();
-		int itemHeight = subModuleTree.getItemHeight();
+		int itemHeight = getTree().getItemHeight();
 		return moduleNode.calcDepth() * itemHeight + 1;
 	}
 
@@ -256,7 +236,9 @@ public class ModuleItem {
 	public void setPressed(boolean pressed) {
 		if (this.pressed != pressed) {
 			this.pressed = pressed;
-			parent.redraw();
+			if (!parent.isDisposed()) {
+				parent.redraw();
+			}
 		}
 	}
 
@@ -274,8 +256,19 @@ public class ModuleItem {
 	public void setHover(boolean hover) {
 		if (this.hover != hover) {
 			this.hover = hover;
-			parent.redraw();
+			if (!parent.isDisposed()) {
+				parent.redraw();
+			}
 		}
+	}
+
+	/**
+	 * Disposes this module item.<br>
+	 * 
+	 */
+	public void dispose() {
+		getBody().dispose();
+		getTree().dispose();
 	}
 
 }

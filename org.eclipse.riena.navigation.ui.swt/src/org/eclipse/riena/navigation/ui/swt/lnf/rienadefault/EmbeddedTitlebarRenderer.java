@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * Renderer of the title bar of an embedded view.
@@ -38,15 +39,16 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private boolean active;
 	private boolean pressed;
 	private boolean hover;
+	private boolean closeable;
 
 	public EmbeddedTitlebarRenderer() {
 		super();
-		setHoverBorderRenderer(getLnfBorderRenderer());
 		image = null;
 		icon = ""; //$NON-NLS-1$
 		active = false;
 		pressed = false;
 		hover = false;
+		closeable = false;
 	}
 
 	/**
@@ -151,6 +153,18 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		x = getBounds().x + getWidth();
 		gc.drawLine(x, y, x, y + h);
 
+		// Close icon
+		Rectangle closeBounds = computeCloseButtonBounds();
+		if (isCloseable()) {
+			Image closeImage = lnf.getImage("EmbeddedTitlebar.close"); //$NON-NLS-1$
+			gc.drawImage(closeImage, closeBounds.x, closeBounds.y);
+		} else {
+			closeBounds.x = 0;
+			closeBounds.y = 0;
+			closeBounds.width = 0;
+			closeBounds.height = 0;
+		}
+
 		// Icon
 		x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
 		if (getImage() != null) {
@@ -173,6 +187,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			}
 			y = getBounds().y + y2;
 			int maxWidth = getWidth() - (x - getBounds().x) - TITLEBAR_LABEL_PADDING;
+			if (closeBounds.width > 0) {
+				maxWidth = maxWidth - closeBounds.width - TITLEBAR_LABEL_PADDING;
+			}
 			text = SwtUtilities.clipText(gc, text, maxWidth);
 			gc.drawText(text, x, y, true);
 		}
@@ -242,6 +259,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @return the hoverBorderRenderer
 	 */
 	public HoverBorderRenderer getHoverBorderRenderer() {
+		if (hoverBorderRenderer == null) {
+			setHoverBorderRenderer(getLnfBorderRenderer());
+		}
 		return hoverBorderRenderer;
 	}
 
@@ -261,6 +281,41 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			renderer = new HoverBorderRenderer();
 		}
 		return renderer;
+
+	}
+
+	/**
+	 * @return the closeable
+	 */
+	public boolean isCloseable() {
+		return closeable;
+	}
+
+	/**
+	 * @param closeable
+	 *            the closeable to set
+	 */
+	public void setCloseable(boolean closeable) {
+		this.closeable = closeable;
+	}
+
+	/**
+	 * Computes the bounds of the close "button".
+	 * 
+	 * @return bounds
+	 */
+	public Rectangle computeCloseButtonBounds() {
+
+		Rectangle bounds = new Rectangle(0, 0, 0, 0);
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		Image closeImage = lnf.getImage("EmbeddedTitlebar.close"); //$NON-NLS-1$
+		bounds.width = closeImage.getImageData().width;
+		bounds.height = closeImage.getImageData().height;
+		bounds.x = getBounds().x + getWidth() - bounds.width - TITLEBAR_LABEL_PADDING;
+		bounds.y = getBounds().y + (getHeight() - bounds.height) / 2;
+
+		return bounds;
 
 	}
 

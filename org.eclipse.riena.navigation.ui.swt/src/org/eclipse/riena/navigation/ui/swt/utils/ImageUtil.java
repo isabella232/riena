@@ -24,35 +24,21 @@ public class ImageUtil {
 		}
 		ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
 		Image image = imageRegistry.get(fullPath);
-		if (image == null) {
+		if ((image == null) || (image.isDisposed())) {
 			ImageDescriptor descriptor = null;
 			String parts[] = fullPath.split(":"); //$NON-NLS-1$
 			if (parts.length < 2) {
 				return null;
-				// image = getImageWithClassLoader(fullPath);
-				// descriptor = ImageDescriptor.createFromImage(image);
 			} else {
 				String pluginID = parts[0];
 				String iconPath = parts[1];
 				descriptor = Activator.imageDescriptorFromPlugin(pluginID, iconPath);
 				image = descriptor.createImage();
 			}
+			imageRegistry.remove(fullPath);
 			imageRegistry.put(fullPath, descriptor);
 		}
 		return image;
 	}
-	//
-	// private static Image getImageWithClassLoader(String fullPath) {
-	//
-	// Bundle bundle =
-	// Platform.getBundle("org.eclipse.riena.navigation.ui.swt");
-	// URL url = bundle.getResource(fullPath);
-	// System.out.println(url);
-	//
-	// // Image image = new Image(Display.getCurrent(), fullPath);
-	// // return image;
-	// return null;
-	//
-	// }
 
 }

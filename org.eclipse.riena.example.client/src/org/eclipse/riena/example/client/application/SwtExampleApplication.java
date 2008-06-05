@@ -43,12 +43,16 @@ import org.osgi.framework.Bundle;
  */
 public class SwtExampleApplication extends SwtApplication {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.ui.swt.application.SwtApplication#
-	 * createApplicationViewController
-	 * (org.eclipse.riena.navigation.IApplicationModel)
+	public SwtExampleApplication() {
+		super();
+		// LnfManager.setLnf("org.eclipse.riena.example.client:" +
+		// TestLnf.class.getName());
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#
+	 *      createApplicationViewController
+	 *      (org.eclipse.riena.navigation.IApplicationModel)
 	 */
 	@Override
 	protected ApplicationViewController createApplicationViewController(IApplicationModel model) {
@@ -101,7 +105,7 @@ public class SwtExampleApplication extends SwtApplication {
 		subModule = new SubModuleNode("SubModule 1.1.1.2");
 		presentation.present(subModule, "customerDetailView");
 		module.addChild(subModule);
-		module = new ModuleNode("Module 1.1.2");
+		module = new ModuleNode("Module 1.1.2 (closeable)");
 		module.setIcon(createIconPath(IExampleIcons.ICON_HOMEFOLDER));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode("SubModule 1.1.2.1");
@@ -114,7 +118,8 @@ public class SwtExampleApplication extends SwtApplication {
 		moduleGroup = new ModuleGroupNode("Group 1.2");
 		moduleGroup.setPresentWithSingleModule(false);
 		subApplication.addChild(moduleGroup);
-		module = new ModuleNode("Module 1.2.1");
+		module = new ModuleNode("Module 1.2.1 (not closeable)");
+		module.setCloseable(false);
 		module.setIcon(createIconPath(IExampleIcons.ICON_RED_LED));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode("SubModule 1.2.1.1");
@@ -206,4 +211,5 @@ public class SwtExampleApplication extends SwtApplication {
 	protected Bundle getBundle() {
 		return Activator.getDefault().getBundle();
 	}
+
 }

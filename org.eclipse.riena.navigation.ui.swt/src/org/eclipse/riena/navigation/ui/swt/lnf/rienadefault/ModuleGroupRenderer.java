@@ -72,6 +72,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 			// titlebar
 			titlebarRenderer.setActive(moduleNode.isActivated());
+			titlebarRenderer.setCloseable(moduleNode.isCloseable());
 			titlebarRenderer.setPressed(module.isPressed());
 			titlebarRenderer.setHover(module.isHover());
 			titlebarRenderer.setIcon(moduleNode.getIcon());
@@ -140,6 +141,31 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	public int getItemWidth() {
 		return MODULE_WIDTH;
+	}
+
+	/**
+	 * Returns the bounds of the close "button" of the titlebar.<br>
+	 * <i><b>Note:</b> only x and width values are correct. Maybe y and height
+	 * are not always correct.</i>
+	 * 
+	 * @return bounds of close "button".
+	 */
+	public Rectangle computeCloseButtonBounds(GC gc) {
+
+		Point size = computeSize(gc, getBounds().width, 0);
+		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
+		borderRenderer.setBounds(0, 0, getBounds().width, size.y);
+		Rectangle innerBorder = borderRenderer.computeInnerBounds(borderRenderer.getBounds());
+		int x = innerBorder.x + MODULE_GROUP_PADDING;
+		int y = innerBorder.y + MODULE_GROUP_PADDING;
+		int w = innerBorder.width - MODULE_GROUP_PADDING * 2;
+
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		Point titlebarSize = titlebarRenderer.computeSize(gc, getBounds().width, 0);
+		titlebarRenderer.setBounds(x, y, w, titlebarSize.y);
+		Rectangle bounds = titlebarRenderer.computeCloseButtonBounds();
+		return bounds;
+
 	}
 
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {

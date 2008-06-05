@@ -21,12 +21,14 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IModuleNodeListener> implements IModuleNode {
 
 	private boolean presentSingleSubModule;
+	private boolean closeable;
 
 	/**
 	 * 
 	 */
 	public ModuleNode() {
 		super();
+		initialize();
 	}
 
 	/**
@@ -34,6 +36,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 */
 	public ModuleNode(ISubModuleNode... children) {
 		super(children);
+		initialize();
 	}
 
 	/**
@@ -42,6 +45,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 */
 	public ModuleNode(String label, ISubModuleNode... children) {
 		super(label, children);
+		initialize();
 	}
 
 	/**
@@ -49,6 +53,15 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 */
 	public ModuleNode(String label) {
 		super(label);
+		initialize();
+	}
+
+	/**
+	 * Initializes the properties of the module.
+	 */
+	private void initialize() {
+		presentSingleSubModule = false;
+		closeable = true;
 	}
 
 	/**
@@ -116,6 +129,20 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 
 		return depth;
 
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.IModuleNode#isCloseable()
+	 */
+	public boolean isCloseable() {
+		return closeable;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.IModuleNode#setCloseable(boolean)
+	 */
+	public void setCloseable(boolean closeable) {
+		this.closeable = closeable;
 	}
 
 }

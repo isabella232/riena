@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf;
 
+import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
@@ -18,12 +19,15 @@ import org.eclipse.swt.graphics.Resource;
  */
 public class ImageLnfResource extends AbstractLnfResource {
 
+	private String imagePath;
+
 	/**
 	 * @param image -
 	 *            image to wrap
 	 */
-	public ImageLnfResource(Image image) {
-		super(image);
+	public ImageLnfResource(String imagePath) {
+		super();
+		this.imagePath = imagePath;
 	}
 
 	/**
@@ -32,6 +36,13 @@ public class ImageLnfResource extends AbstractLnfResource {
 	@Override
 	public Resource getResource() {
 		return (Image) super.getResource();
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
+	 */
+	public Resource createResource() {
+		return ImageUtil.getImage(imagePath);
 	}
 
 }
