@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.ValidationViewController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
@@ -20,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -57,6 +59,13 @@ public class ValidationView extends SubModuleNodeView<ValidationViewController> 
 		Text txtNumbersOnlyDW = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnlyDW, "txtNumbersOnlyDW"); //$NON-NLS-1$
 
+		UIControlsFactory.createLabel(group, "Lowercase only:");
+		Text txtLowercase = UIControlsFactory.createText(group);
+		addUIControl(txtLowercase, "txtLowercase"); //$NON-NLS-1$
+
+		Label label = UIControlsFactory.createLabel(group, "--- stuff below is work in progress ---");
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(label);
+
 		UIControlsFactory.createLabel(group, "Numeric Range 18 to 80:");
 		Text txtRange18to80 = UIControlsFactory.createTextNumeric(group);
 		addUIControl(txtRange18to80, "txtRange18to80"); //$NON-NLS-1$
@@ -64,10 +73,6 @@ public class ValidationView extends SubModuleNodeView<ValidationViewController> 
 		UIControlsFactory.createLabel(group, "Length between 5 and 10:");
 		Text txtLength5to10 = UIControlsFactory.createText(group);
 		addUIControl(txtLength5to10, "txtLength5to10"); //$NON-NLS-1$
-
-		UIControlsFactory.createLabel(group, "Lowercase only:");
-		Text txtLowercase = UIControlsFactory.createText(group);
-		addUIControl(txtLowercase, "txtLowercase"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Valid email:");
 		Text txtEmail = UIControlsFactory.createText(group);
