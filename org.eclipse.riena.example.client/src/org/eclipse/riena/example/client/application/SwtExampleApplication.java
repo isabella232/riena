@@ -45,8 +45,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 	public SwtExampleApplication() {
 		super();
-		// LnfManager.setLnf("org.eclipse.riena.example.client:" +
-		// TestLnf.class.getName());
+		// LnfManager.setLnf(new ExampleLnf());
 	}
 
 	/**

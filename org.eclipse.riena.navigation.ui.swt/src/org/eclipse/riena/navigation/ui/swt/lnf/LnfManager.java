@@ -48,6 +48,7 @@ public class LnfManager {
 				throw new Error("can't load " + className); //$NON-NLS-1$
 			}
 		}
+		lnf.initialize();
 
 		return lnf;
 
@@ -97,18 +98,9 @@ public class LnfManager {
 	 * @param newLnf -
 	 *            new look and feel to install.
 	 */
-	private static void setLnf(RienaDefaultLnf newLnf) {
-
-		RienaDefaultLnf oldLnf = lnf;
+	public static void setLnf(RienaDefaultLnf newLnf) {
 
 		lnf = newLnf;
-
-		if (newLnf != null) {
-			newLnf.initialize();
-		}
-		if (oldLnf != null) {
-			oldLnf.uninitialize();
-		}
 
 	}
 
@@ -127,7 +119,7 @@ public class LnfManager {
 	 * Disposes (uninitializes) the current look and feel.
 	 */
 	public static void dispose() {
-		setLnf((RienaDefaultLnf) null);
+		getLnf().uninitialize();
 	}
 
 }

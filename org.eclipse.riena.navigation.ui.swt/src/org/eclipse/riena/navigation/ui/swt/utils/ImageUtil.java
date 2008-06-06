@@ -22,6 +22,9 @@ public class ImageUtil {
 		if (StringUtils.isEmpty(fullPath)) {
 			return null;
 		}
+		if (Activator.getDefault() == null) {
+			return null;
+		}
 		ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
 		Image image = imageRegistry.get(fullPath);
 		if ((image == null) || (image.isDisposed())) {

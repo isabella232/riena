@@ -33,6 +33,7 @@ public class RienaDefaultLnf {
 	private Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
 	private Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
 	private ILnfTheme theme;
+	private boolean initialized;
 
 	private Map<String, ILnfResource> getResourceTable() {
 		return resourceTable;
@@ -47,9 +48,12 @@ public class RienaDefaultLnf {
 	 * renderers.
 	 */
 	public void initialize() {
-		uninitialize();
-		initWidgetRendererDefaults();
-		initResourceDefaults();
+		if (!isInitialized()) {
+			uninitialize();
+			setInitialized(true);
+			initWidgetRendererDefaults();
+			initResourceDefaults();
+		}
 	}
 
 	/**
@@ -60,6 +64,7 @@ public class RienaDefaultLnf {
 		disposeAllResources();
 		getResourceTable().clear();
 		getRendererTable().clear();
+		setInitialized(false);
 	}
 
 	/**
@@ -234,6 +239,9 @@ public class RienaDefaultLnf {
 				throw new Error("can't load " + DEFAULT_THEME_CLASSNAME); //$NON-NLS-1$
 			}
 		}
+		if (!isInitialized()) {
+			initialize();
+		}
 		return theme;
 	}
 
@@ -245,10 +253,24 @@ public class RienaDefaultLnf {
 	 */
 	public void setTheme(ILnfTheme newTheme) {
 		if (theme != newTheme) {
-			uninitialize();
 			theme = newTheme;
-			initialize();
+			setInitialized(false);
 		}
+	}
+
+	/**
+	 * @return the initialize
+	 */
+	private boolean isInitialized() {
+		return initialized;
+	}
+
+	/**
+	 * @param initialize
+	 *            the initialize to set
+	 */
+	private void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}
 
 	// getWidgetRenderer

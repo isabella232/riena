@@ -23,7 +23,9 @@ public abstract class AbstractLnfResource implements ILnfResource {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#dispose()
 	 */
 	public void dispose() {
-		getResource().dispose();
+		if (getResource() != null) {
+			getResource().dispose();
+		}
 	}
 
 	/**

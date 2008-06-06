@@ -63,7 +63,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomFonts(Map<String, ILnfResource> table) {
 
-		table.put("EmbeddedTitlebar.font", new FontLnfResource("Arial", 9, SWT.NORMAL)); //$NON-NLS-1$ //$NON-NLS-2$
+		table.put("EmbeddedTitlebar.font", new FontLnfResource(getSystemFont().getName(), 9, SWT.NORMAL)); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -81,6 +81,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	}
 
+	//
 	// /**
 	// * Wraps and returns the image for the given name.
 	// *
@@ -100,9 +101,11 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 * @return system font data
 	 */
 	protected FontData getSystemFont() {
-		FontData[] data = Display.getCurrent().getSystemFont().getFontData();
-		if (data.length > 0) {
-			return data[0];
+		if (Display.getCurrent() != null) {
+			FontData[] data = Display.getCurrent().getSystemFont().getFontData();
+			if (data.length > 0) {
+				return data[0];
+			}
 		}
 		return new FontData("Arial", 10, SWT.NORMAL); //$NON-NLS-1$
 	}

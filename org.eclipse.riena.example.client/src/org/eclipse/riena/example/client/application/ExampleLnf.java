@@ -13,13 +13,14 @@ package org.eclipse.riena.example.client.application;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * 
+ * Look and Feel (Lnf) of the example application.<br>
+ * The Lnf uses its own theme.
  */
-public class TestLnf extends RienaDefaultLnf {
+public class ExampleLnf extends RienaDefaultLnf {
 
-	public TestLnf() {
+	public ExampleLnf() {
 		super();
-		setTheme(new TestTheme());
+		setTheme(new ExampleTheme());
 	}
 
 }

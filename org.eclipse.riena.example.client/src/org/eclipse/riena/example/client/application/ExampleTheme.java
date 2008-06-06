@@ -20,9 +20,9 @@ import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme;
 import org.eclipse.swt.SWT;
 
 /**
- * 
+ * Theme of the Look and Feel (Lnf) of the example application.
  */
-public class TestTheme extends RienaDefaultTheme {
+public class ExampleTheme extends RienaDefaultTheme {
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomColors(java.util.Map)
@@ -48,7 +48,7 @@ public class TestTheme extends RienaDefaultTheme {
 	@Override
 	public void addCustomFonts(Map<String, ILnfResource> table) {
 		super.addCustomFonts(table);
-		table.put("EmbeddedTitlebar.font", new FontLnfResource("Arial", 10, SWT.BOLD)); //$NON-NLS-1$ //$NON-NLS-2$
+		table.put("EmbeddedTitlebar.font", new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -57,9 +57,9 @@ public class TestTheme extends RienaDefaultTheme {
 	@Override
 	public void addCustomImages(Map<String, ILnfResource> table) {
 		super.addCustomImages(table);
-		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png";
+		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put("treeDocumentLeaf.icon", new ImageLnfResource(imagePath)); //$NON-NLS-1$
-		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png";
+		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put("treeFolderClosed.icon", new ImageLnfResource(imagePath)); //$NON-NLS-1$
 		table.put("treeFolderOpen.icon", new ImageLnfResource(imagePath)); //$NON-NLS-1$
 	}
