@@ -80,6 +80,7 @@ public class ModuleNodeViewController extends NavigationNodeViewController<IModu
 
 		super.afterBind();
 
+		setCloseable(getNavigationNode().isCloseable());
 		updateLabel();
 		updateIcon();
 	}

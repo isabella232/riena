@@ -17,7 +17,18 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.objecttransaction;bundle-version="1.0.0",
  org.eclipse.riena.security.simpleservices;bundle-version="1.0.0",
  org.eclipse.riena.security.services;bundle-version="1.0.0",
- org.eclipse.core.variables;bundle-version="3.2.0"
+ org.eclipse.core.variables;bundle-version="3.2.0",
+ org.eclipse.core.databinding,
+ com.ibm.icu,
+ org.eclipse.core.databinding.beans,
+ org.eclipse.riena.navigation.ui.swt,
+ org.eclipse.riena.ui.core,
+ org.eclipse.riena.ui.ridgets,
+ org.eclipse.riena.ui.ridgets.swt,
+ org.eclipse.swt,
+ org.eclipse.riena.navigation.ui,
+ org.eclipse.riena.navigation,
+ org.easymock
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.security.authorizationservice,

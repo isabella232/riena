@@ -8,32 +8,29 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core;
+package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.core.config.ConfigTest;
-import org.eclipse.riena.core.exception.ExceptionHandlerManagerTest;
-import org.eclipse.riena.core.extension.ExtensionInjectorTest;
-import org.eclipse.riena.core.extension.util.ExtensionUtilTest;
-import org.eclipse.riena.core.service.ServiceInjectorTest;
-
 /**
  * Tests all test cases within package:
- * 
- * org.eclipse.riena.core
+ * <code>org.eclipse.riena.ui.ridgets.swt</code>
  */
 public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(ConfigTest.class);
-		suite.addTestSuite(ExceptionHandlerManagerTest.class);
-		suite.addTestSuite(ExtensionUtilTest.class);
-		suite.addTestSuite(ServiceInjectorTest.class);
-		suite.addTestSuite(ExtensionInjectorTest.class);
+		suite.addTestSuite(ActionRidgetTest.class);
+		suite.addTestSuite(ComboRidgetTest.class);
+		suite.addTestSuite(LabelRidgetTest.class);
+		suite.addTestSuite(ListRidgetTest.class);
+		suite.addTestSuite(MarkableRidgetTest.class);
+		suite.addTestSuite(TableRidgetTest.class);
+		suite.addTestSuite(TextRidgetTest.class);
+		suite.addTestSuite(TextRidgetTest2.class);
+		suite.addTestSuite(ToggleButtonRidgetTest.class);
 		return suite;
 	}
 

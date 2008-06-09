@@ -76,6 +76,10 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
+	public String getTitle() {
+		return shell.getText();
+	}
+
 	public void setIcon(String iconName) {
 		// TODO
 		// shell.setImage();
