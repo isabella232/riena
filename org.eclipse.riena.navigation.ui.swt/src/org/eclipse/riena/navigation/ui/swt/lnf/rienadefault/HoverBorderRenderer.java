@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 
 /**
- * 
+ * Renderer of the border that is displayed when the mouse is over the module.
  */
 public class HoverBorderRenderer extends AbstractLnfRenderer {
 

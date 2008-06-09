@@ -65,6 +65,7 @@ public class LnfManager {
 	 * @throws IllegalAccessException
 	 */
 	public static void setLnf(String newLnfClassName) {
+		dispose();
 		lnfClassName = newLnfClassName;
 	}
 
@@ -99,9 +100,7 @@ public class LnfManager {
 	 *            new look and feel to install.
 	 */
 	public static void setLnf(RienaDefaultLnf newLnf) {
-
 		lnf = newLnf;
-
 	}
 
 	/**
@@ -119,7 +118,10 @@ public class LnfManager {
 	 * Disposes (uninitializes) the current look and feel.
 	 */
 	public static void dispose() {
-		getLnf().uninitialize();
+		if (lnf != null) {
+			lnf.uninitialize();
+			lnf = null;
+		}
 	}
 
 }

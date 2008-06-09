@@ -105,6 +105,17 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		// nothing to do.
 	}
 
+	/**
+	 * Computes the size of the module group.
+	 * 
+	 * @param gc -
+	 *            <code>GC</code> of the component <code>Control</code>
+	 * @param wHint -
+	 *            the width hint
+	 * @param hHint -
+	 *            the height hint
+	 * @return a Point representing the size of the module group
+	 */
 	public Point computeSize(GC gc, int wHint, int hHint) {
 
 		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
@@ -133,9 +144,17 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * Computes the height of a module item (titlebar height and gap between to
+	 * modules).
+	 * 
+	 * @param gc -
+	 *            <code>GC</code> of the component <code>Control</code>
+	 * @return height of module item
+	 */
 	public int computeItemHeight(GC gc) {
 		int h = getLnfTitlebarRenderer().computeSize(gc, 10, 0).y;
-		h += MODULE_GROUP_PADDING;
+		h += MODULE_MODULE_GAP;
 		return h;
 	}
 
