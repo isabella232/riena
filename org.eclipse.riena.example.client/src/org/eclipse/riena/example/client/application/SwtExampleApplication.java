@@ -34,6 +34,7 @@ import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.osgi.framework.Bundle;
@@ -45,7 +46,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 	public SwtExampleApplication() {
 		super();
-		// LnfManager.setLnf(new ExampleLnf());
+		LnfManager.setLnf(new ExampleLnf());
 	}
 
 	/**
@@ -74,6 +75,7 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		// sub application 1
 		subApplication = new SubApplication("Navigation");
+		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "subapplication.1");
 		applicationModel.addChild(subApplication);
 		IAction closeAction = new IAction() {
@@ -130,6 +132,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		// Playground
 		subApplication = new SubApplication("Playground");
+		subApplication.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2");
 		applicationModel.addChild(subApplication);
 

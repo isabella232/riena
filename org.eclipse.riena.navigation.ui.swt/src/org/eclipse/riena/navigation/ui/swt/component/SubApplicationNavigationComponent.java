@@ -8,6 +8,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.model.SubApplicationAdapter;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -122,7 +123,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 
 	@Override
 	protected void initUI() {
-		getParentComposite().setBackground(LnfManager.getLnf().getColor("SubApplication.background")); //$NON-NLS-1$
+		getParentComposite().setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_APPLICATION_BACKGROUND)); //$NON-NLS-1$
 		FormLayout formLayout = new FormLayout();
 		getParentComposite().setLayout(formLayout);
 	}

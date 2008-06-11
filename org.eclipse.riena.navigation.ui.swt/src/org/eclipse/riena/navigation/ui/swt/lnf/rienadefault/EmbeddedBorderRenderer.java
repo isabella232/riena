@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -41,9 +42,9 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		// Border
-		Color borderColor = lnf.getColor("EmbeddedTitlebar.passiveBorderColor"); //$NON-NLS-1$
+		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
 		if (isActive()) {
-			borderColor = lnf.getColor("EmbeddedTitlebar.activeBorderColor"); //$NON-NLS-1$
+			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
 		// -outer

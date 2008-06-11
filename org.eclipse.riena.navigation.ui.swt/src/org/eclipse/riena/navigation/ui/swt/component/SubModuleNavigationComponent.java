@@ -3,6 +3,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.SWT;
@@ -119,7 +120,7 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		// image = ImageUtil.getImage(getModelNode().getIcon());
 		// }
 		if (image == null) {
-			image = lnf.getImage("treeDocumentLeaf.icon"); //$NON-NLS-1$
+			image = lnf.getImage(ILnfKeyConstants.TREE_DOCUMENT_LEAF_ICON);
 		}
 		treeItem.setImage(image);
 	}
@@ -143,9 +144,9 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		if (item.getItemCount() > 0) {
-			String folderIcon = "treeFolderClosed.icon"; //$NON-NLS-1$
+			String folderIcon = ILnfKeyConstants.TREE_FOLDER_CLOSED_ICON;
 			if (expanded) {
-				folderIcon = "treeFolderOpen.icon"; //$NON-NLS-1$
+				folderIcon = ILnfKeyConstants.TREE_FOLDER_OPEN_ICON;
 			}
 			Image image = lnf.getImage(folderIcon);
 			item.setImage(image);

@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ModuleGroupRenderer;
 import org.eclipse.swt.SWT;
@@ -28,8 +29,6 @@ public class ModuleGroupWidget extends Canvas {
 
 	private List<ModuleItem> items;
 
-	private int itemHeight;
-
 	private IModuleGroupNode moduleGroupNode;
 	private ModuleItem openItem;
 
@@ -40,18 +39,10 @@ public class ModuleGroupWidget extends Canvas {
 	private SelectionListener selectionListener;
 
 	public ModuleGroupWidget(Composite parent, int style, IModuleGroupNode moduleGroupNode) {
-		super(parent, style);
+		super(parent, style | SWT.DOUBLE_BUFFERED);
 		this.moduleGroupNode = moduleGroupNode;
-		itemHeight = computeItemHeight();
 		items = new ArrayList<ModuleItem>();
 		addListeners();
-	}
-
-	private int computeItemHeight() {
-		GC gc = new GC(this);
-		int h = getRenderer().computeItemHeight(gc);
-		gc.dispose();
-		return h;
 	}
 
 	protected void addListeners() {
@@ -128,10 +119,13 @@ public class ModuleGroupWidget extends Canvas {
 	 */
 	protected ModuleItem getItem(Point point) {
 
-		int itemWidth = getRenderer().getItemWidth();
-		int xs = (getBounds().width - itemWidth) / 2;
-		int xe = xs + itemWidth;
-		return getItem(point, xs, xe);
+		for (ModuleItem item : getItems()) {
+			if (item.getBounds().contains(point)) {
+				return item;
+			}
+		}
+
+		return null;
 
 	}
 
@@ -145,52 +139,26 @@ public class ModuleGroupWidget extends Canvas {
 	 */
 	protected ModuleItem getClosingItem(Point point) {
 
+		ModuleItem item = null;
+
 		getRenderer().setBounds(getBounds());
 		GC gc = new GC(this);
 		Rectangle closeBounds = getRenderer().computeCloseButtonBounds(gc);
 		int xs = closeBounds.x;
 		int xe = xs + closeBounds.width;
-		ModuleItem item = getItem(point, xs, xe);
-		if (item != null) {
-			IModuleNode moduleNode = item.getModuleNode();
-			if (!moduleNode.isCloseable()) {
-				item = null;
+
+		if (point.x >= xs && point.x <= xe) {
+			item = getItem(point);
+			if (item != null) {
+				IModuleNode moduleNode = item.getModuleNode();
+				if (!moduleNode.isCloseable()) {
+					item = null;
+				}
 			}
 		}
+
 		gc.dispose();
 		return item;
-
-	}
-
-	/**
-	 * Returns the module at the given point.
-	 * 
-	 * @param point -
-	 *            point over module item
-	 * @param xs -
-	 * @param xe -
-	 * @return module item; or null, if not item was found
-	 */
-	private ModuleItem getItem(Point point, int xs, int xe) {
-
-		if (point.x < xs || point.x > xe) {
-			return null;
-		}
-
-		int ys = 2;
-		int ye = 0;
-		for (ModuleItem item : getItems()) {
-			ye = ys + itemHeight - 2;
-			if (point.y >= ys && point.y <= ye) {
-				return item;
-			}
-			ye += 4;
-			if (item.getBody().isVisible()) {
-				ye += item.getOpenHeight();
-			}
-			ys = ye;
-		}
-		return null;
 
 	}
 
@@ -246,7 +214,7 @@ public class ModuleGroupWidget extends Canvas {
 
 	private ModuleGroupRenderer getRenderer() {
 		if (renderer == null) {
-			renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer("ModuleGroup.renderer"); //$NON-NLS-1$
+			renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
 		}
 		return renderer;
 	}

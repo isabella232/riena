@@ -14,6 +14,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -137,7 +138,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
 		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				"SubModuleViewRenderer.borderRenderer"); //$NON-NLS-1$
+				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedBorderRenderer();
 		}
@@ -148,7 +149,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
 		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				"SubModuleViewRenderer.titlebarRenderer"); //$NON-NLS-1$
+				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedTitlebarRenderer();
 		}

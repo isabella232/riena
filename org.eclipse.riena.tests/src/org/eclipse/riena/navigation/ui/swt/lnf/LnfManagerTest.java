@@ -62,11 +62,11 @@ public class LnfManagerTest extends TestCase {
 	public void testDispose() throws Exception {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		assertNotNull(lnf.getRenderer("SubModuleViewRenderer.borderRenderer"));
-		assertNotNull(lnf.getColor("EmbeddedTitlebar.foreground"));
+		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 		LnfManager.dispose();
-		assertNull(lnf.getRenderer("SubModuleViewRenderer.borderRenderer"));
-		assertNull(lnf.getColor("EmbeddedTitlebar.foreground"));
+		assertNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
 

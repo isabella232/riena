@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleItem;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -81,6 +82,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			titlebarRenderer.setBounds(titlebarBounds);
 			titlebarRenderer.paint(gc, moduleNode.getLabel());
 
+			module.setBounds(new Rectangle(x, y, w, titlebarSize.y));
+
 			y += titlebarSize.y;
 
 			if (moduleNode.isActivated()) {
@@ -102,7 +105,9 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		// nothing to do.
+		for (ModuleItem item : getItems()) {
+			item.dispose();
+		}
 	}
 
 	/**
@@ -144,20 +149,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	}
 
-	/**
-	 * Computes the height of a module item (titlebar height and gap between to
-	 * modules).
-	 * 
-	 * @param gc -
-	 *            <code>GC</code> of the component <code>Control</code>
-	 * @return height of module item
-	 */
-	public int computeItemHeight(GC gc) {
-		int h = getLnfTitlebarRenderer().computeSize(gc, 10, 0).y;
-		h += MODULE_MODULE_GAP;
-		return h;
-	}
-
 	public int getItemWidth() {
 		return MODULE_WIDTH;
 	}
@@ -190,7 +181,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
 		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				"SubModuleViewRenderer.borderRenderer"); //$NON-NLS-1$
+				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedBorderRenderer();
 		}
@@ -201,7 +192,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
 		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				"SubModuleViewRenderer.titlebarRenderer"); //$NON-NLS-1$
+				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedTitlebarRenderer();
 		}

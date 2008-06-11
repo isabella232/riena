@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.FontLnfResource;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.navigation.ui.swt.lnf.ImageLnfResource;
@@ -33,28 +34,52 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "folder_closed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
 	private static final String IMAGE_THIN_CLOSE = PATH_ICONS + PATH_SEPARATOR + "thin_close_view.gif"; //$NON-NLS-1$
+	private FontLnfResource primaryFont;
+	private ColorLnfResource primaryBackground;
+	private ColorLnfResource primaryForeground;
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
 	 */
 	public void addCustomColors(Map<String, ILnfResource> table) {
 
-		table.put("EmbeddedTitlebar.foreground", new ColorLnfResource(68, 70, 74)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.activeBackgroundStartColor", new ColorLnfResource(196, 225, 244)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.activeBackgroundEndColor", new ColorLnfResource(100, 153, 186)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.activeBorderColor", new ColorLnfResource(171, 171, 174)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.passiveBackgroundStartColor", new ColorLnfResource(244, 244, 245)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.passiveBackgroundEndColor", new ColorLnfResource(220, 220, 220)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.passiveBorderColor", new ColorLnfResource(213, 213, 216)); //$NON-NLS-1$
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND, getPrimaryForeground());
+		table
+				.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196, 225,
+						244));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(100, 153, 186));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR,
+				new ColorLnfResource(244, 244, 245));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(220, 220, 220));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
 
-		table.put("EmbeddedTitlebar.hoverBorderTopColor", new ColorLnfResource(251, 233, 168)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.hoverBorderBottomColor", new ColorLnfResource(192, 151, 1)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.hoverBorderStartColor", new ColorLnfResource(255, 207, 32)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.hoverBorderEndColor", new ColorLnfResource(255, 176, 1)); //$NON-NLS-1$
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR, new ColorLnfResource(251, 233, 168));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR, new ColorLnfResource(192, 151, 1));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR, new ColorLnfResource(255, 207, 32));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR, new ColorLnfResource(255, 176, 1));
 
-		table.put("SubModuleTree.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
-		table.put("ModuleGroupWidget.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
-		table.put("SubApplication.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.SUB_APPLICATION_BACKGROUND, getPrimaryBackground());
+
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND, getPrimaryForeground());
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132, 191));
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(255,
+				255, 255));
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(255, 255,
+				255));
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(245,
+				245, 245));
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(229,
+				229, 229));
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR, new ColorLnfResource(245, 245, 245));
+		table
+				.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR, new ColorLnfResource(206, 206,
+						206));
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR, new ColorLnfResource(183, 183,
+				183));
 
 	}
 
@@ -63,7 +88,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomFonts(Map<String, ILnfResource> table) {
 
-		table.put("EmbeddedTitlebar.font", new FontLnfResource(getSystemFont().getName(), 9, SWT.NORMAL)); //$NON-NLS-1$ //$NON-NLS-2$
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
 
 	}
 
@@ -72,12 +98,22 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomImages(Map<String, ILnfResource> table) {
 
-		table.put("treeDocumentLeaf.icon", new ImageLnfResource(IMAGE_EMPTY_DOCUMENT)); //$NON-NLS-1$
-		table.put("treeFolderClosed.icon", new ImageLnfResource(IMAGE_FOLDER_CLOSED)); //$NON-NLS-1$
-		// table.put("treeFolderOpen.icon",
-		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER)); //$NON-NLS-1$
-		table.put("treeFolderOpen.icon", new ImageLnfResource(IMAGE_FOLDER)); //$NON-NLS-1$
-		table.put("EmbeddedTitlebar.close", new ImageLnfResource(IMAGE_THIN_CLOSE)); //$NON-NLS-1$
+		table.put(ILnfKeyConstants.TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
+		table.put(ILnfKeyConstants.TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
+		// table.put(ILnfKeyConstants."treeFolderOpen.icon",
+		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
+		table.put(ILnfKeyConstants.TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
+
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
+	 */
+	public void addCustomSettings(Map<String, Object> table) {
+
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
 
 	}
 
@@ -108,6 +144,42 @@ public class RienaDefaultTheme implements ILnfTheme {
 			}
 		}
 		return new FontData("Arial", 10, SWT.NORMAL); //$NON-NLS-1$
+	}
+
+	/**
+	 * Returns the color used for the foreground of widgets.
+	 * 
+	 * @return foreground color
+	 */
+	protected ColorLnfResource getPrimaryForeground() {
+		if (primaryForeground == null) {
+			primaryForeground = new ColorLnfResource(68, 70, 74);
+		}
+		return primaryForeground;
+	}
+
+	/**
+	 * Returns the color used for the background of widgets.
+	 * 
+	 * @return background color
+	 */
+	protected ColorLnfResource getPrimaryBackground() {
+		if (primaryBackground == null) {
+			primaryBackground = new ColorLnfResource(255, 255, 255);
+		}
+		return primaryBackground;
+	}
+
+	/**
+	 * Returns the font used for widgets.
+	 * 
+	 * @return font
+	 */
+	protected FontLnfResource getPrimaryFont() {
+		if (primaryFont == null) {
+			primaryFont = new FontLnfResource(getSystemFont().getName(), 9, SWT.NORMAL);
+		}
+		return primaryFont;
 	}
 
 }

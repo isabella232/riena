@@ -5,10 +5,10 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.navigation.ui.swt.win32.SwtOsUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.internal.win32.OS;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -24,10 +24,12 @@ public class ModuleItem {
 	private Tree subModuleTree;
 	private boolean pressed;
 	private boolean hover;
+	private Rectangle bounds;
 
 	private SubModuleNode activeSubModule;
 
 	public ModuleItem(Composite parent, ModuleNavigationComponent moduleCmp) {
+		this.parent = parent;
 		this.moduleCmp = moduleCmp;
 		pressed = false;
 		hover = false;
@@ -93,8 +95,7 @@ public class ModuleItem {
 		return moduleCmp.getModelNode();
 	}
 
-	private void construct(final Composite parent) {
-		this.parent = parent;
+	private void construct(Composite parent) {
 		body = new Composite(parent, SWT.None);
 		body.setLayout(new FillLayout());
 		createBodyContent(parent);
@@ -117,10 +118,6 @@ public class ModuleItem {
 
 	public Tree getTree() {
 		return subModuleTree;
-	}
-
-	public IModuleNode getData() {
-		return getModuleNode();
 	}
 
 	/**
@@ -185,40 +182,7 @@ public class ModuleItem {
 			clipSubModuleTexts(gc, item);
 		}
 
-		hiddeSrollBars();
-
-	}
-
-	/**
-	 * Hiddes the vertical and horizontal scroll bar of the tree.<br>
-	 * <i>TODO tsc@11.02.2008 - To hidde the scroll bar you have two options.
-	 * Both solutions are not perfect.</i>
-	 */
-	private void hiddeSrollBars() {
-
-		// 1. Solution
-		// Hide scroll bars without OS
-		// Problem: in some cases (e.g. collapse) this solution works not
-		// correct
-
-		// Rectangle treeBounds = getTree().getBounds();
-		// int width = treeBounds.width;
-		// int height = treeBounds.height;
-		// if ((width < Integer.MAX_VALUE) || (height < Integer.MAX_VALUE)) {
-		// getTree().setBounds(treeBounds.x, treeBounds.y, Integer.MAX_VALUE,
-		// Integer.MAX_VALUE);
-		// }
-
-		// 2. Solution
-		// Hide scroll bars with OS
-		// Problem: OS is not accessible in some cases (operation system is not
-		// windows?)
-
-		int hwnd = getTree().handle;
-		OS.ShowScrollBar(hwnd, OS.SB_VERT, false);
-
-		hwnd = getTree().handle;
-		OS.ShowScrollBar(hwnd, OS.SB_HORZ, false);
+		SwtOsUtilities.hiddeSrollBars(getTree());
 
 	}
 
@@ -263,12 +227,30 @@ public class ModuleItem {
 	}
 
 	/**
-	 * Disposes this module item.<br>
-	 * 
+	 * Disposes this module item.
 	 */
 	public void dispose() {
 		getBody().dispose();
 		getTree().dispose();
+	}
+
+	/**
+	 * Returns a rectangle describing the size and location of this module item.
+	 * 
+	 * @return the bounds
+	 */
+	public Rectangle getBounds() {
+		return bounds;
+	}
+
+	/**
+	 * Sets a rectangle describing the size and location of this module item.
+	 * 
+	 * @param bounds
+	 *            the bounds to set
+	 */
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
 	}
 
 }

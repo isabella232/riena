@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
@@ -35,6 +36,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	private HoverBorderRenderer hoverBorderRenderer;
 	private Image image;
+	private Color edgeColor;
 	private String icon;
 	private boolean active;
 	private boolean pressed;
@@ -58,6 +60,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		if (getImage() != null) {
 			getImage().dispose();
 			setImage(null);
+		}
+		if (edgeColor != null) {
+			edgeColor.dispose();
+			edgeColor = null;
 		}
 	}
 
@@ -91,7 +97,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	private Font getTitlebarFont() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Font font = lnf.getFont("EmbeddedTitlebar.font"); //$NON-NLS-1$
+		Font font = lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
 		return font;
 	}
 
@@ -112,11 +118,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		// Background
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Color startColor = lnf.getColor("EmbeddedTitlebar.passiveBackgroundStartColor"); //$NON-NLS-1$
-		Color endColor = lnf.getColor("EmbeddedTitlebar.passiveBackgroundEndColor"); //$NON-NLS-1$
+		Color startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR);
+		Color endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR);
 		if (isActive()) {
-			startColor = lnf.getColor("EmbeddedTitlebar.activeBackgroundStartColor"); //$NON-NLS-1$
-			endColor = lnf.getColor("EmbeddedTitlebar.activeBackgroundEndColor"); //$NON-NLS-1$
+			startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR);
+			endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR);
 		}
 		gc.setForeground(startColor);
 		gc.setBackground(endColor);
@@ -131,9 +137,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Border
-		Color borderColor = lnf.getColor("EmbeddedTitlebar.passiveBorderColor"); //$NON-NLS-1$
+		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
 		if (isActive()) {
-			borderColor = lnf.getColor("EmbeddedTitlebar.activeBorderColor"); //$NON-NLS-1$
+			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
 		// - top
@@ -153,10 +159,28 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		x = getBounds().x + getWidth();
 		gc.drawLine(x, y, x, y + h);
 
+		// Edges
+		if ((edgeColor == null) || (edgeColor.isDisposed())) {
+			edgeColor = SwtUtilities.makeBrighter(borderColor, 1.15f);
+		}
+		gc.setForeground(edgeColor);
+		x = getBounds().x;
+		y = getBounds().y;
+		gc.drawPoint(x, y);
+		x = getBounds().x + getWidth();
+		y = getBounds().y;
+		gc.drawPoint(x, y);
+		x = getBounds().x;
+		y = getBounds().y + getHeight();
+		gc.drawPoint(x, y);
+		x = getBounds().x + getWidth();
+		y = getBounds().y + getHeight();
+		gc.drawPoint(x, y);
+
 		// Close icon
 		Rectangle closeBounds = computeCloseButtonBounds();
 		if (isCloseable()) {
-			Image closeImage = lnf.getImage("EmbeddedTitlebar.close"); //$NON-NLS-1$
+			Image closeImage = lnf.getImage(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON);
 			gc.drawImage(closeImage, closeBounds.x, closeBounds.y);
 		} else {
 			closeBounds.x = 0;
@@ -179,12 +203,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			text = (String) value;
 		}
 		if (!StringUtils.isEmpty(text)) {
-			gc.setForeground(lnf.getColor("EmbeddedTitlebar.foreground")); //$NON-NLS-1$
+			gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
-			if ((getHeight() - gc.getFontMetrics().getHeight()) % 2 != 0) {
-				y2++;
-			}
 			y = getBounds().y + y2;
 			int maxWidth = getWidth() - (x - getBounds().x) - TITLEBAR_LABEL_PADDING;
 			if (closeBounds.width > 0) {
@@ -309,7 +330,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		Rectangle bounds = new Rectangle(0, 0, 0, 0);
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Image closeImage = lnf.getImage("EmbeddedTitlebar.close"); //$NON-NLS-1$
+		Image closeImage = lnf.getImage(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON);
 		bounds.width = closeImage.getImageData().width;
 		bounds.height = closeImage.getImageData().height;
 		bounds.x = getBounds().x + getWidth() - bounds.width - TITLEBAR_LABEL_PADDING;

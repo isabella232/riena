@@ -7,6 +7,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNodeAdapter;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -104,9 +105,9 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 
 	@Override
 	protected void initUI() {
-		ui = new ModuleGroupWidget(getParentComposite(), SWT.DOUBLE_BUFFERED, getModelNode());
+		ui = new ModuleGroupWidget(getParentComposite(), SWT.NONE, getModelNode());
 		ui.addMouseListener(new WidgetSelectionListener());
-		ui.setBackground(LnfManager.getLnf().getColor("ModuleGroupWidget.background"));
+		ui.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 	}
 
 	@Override

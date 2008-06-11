@@ -14,6 +14,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
@@ -54,13 +55,13 @@ public class RienaDefaultLnfTest extends TestCase {
 
 		lnf.uninitialize();
 
-		assertNull(lnf.getRenderer("SubModuleViewRenderer.borderRenderer"));
-		assertNull(lnf.getColor("EmbeddedTitlebar.foreground"));
+		assertNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 		lnf.initialize();
 
-		assertNotNull(lnf.getRenderer("SubModuleViewRenderer.borderRenderer"));
-		assertNotNull(lnf.getColor("EmbeddedTitlebar.foreground"));
+		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
 
@@ -72,15 +73,15 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	public void testUninitialize() throws Exception {
 
-		assertNotNull(lnf.getRenderer("SubModuleViewRenderer.borderRenderer"));
-		Color color = lnf.getColor("EmbeddedTitlebar.foreground");
+		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		Color color = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
 		assertNotNull(color);
 
 		lnf.uninitialize();
 
 		assertTrue(color.isDisposed());
-		assertNull(lnf.getRenderer("SubModuleViewRenderer.borderRenderer"));
-		assertNull(lnf.getColor("EmbeddedTitlebar.foreground"));
+		assertNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
 
@@ -93,8 +94,8 @@ public class RienaDefaultLnfTest extends TestCase {
 	public void testGetColor() throws Exception {
 
 		lnf.initialize();
-		assertNotNull(lnf.getColor("EmbeddedTitlebar.foreground"));
-		assertNull(lnf.getColor("EmbeddedTitlebar.font"));
+		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertNull(lnf.getColor("dummy"));
 
 	}
@@ -108,8 +109,8 @@ public class RienaDefaultLnfTest extends TestCase {
 	public void testGetFont() throws Exception {
 
 		lnf.initialize();
-		assertNull(lnf.getFont("EmbeddedTitlebar.foreground"));
-		assertNotNull(lnf.getFont("EmbeddedTitlebar.font"));
+		assertNull(lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNotNull(lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertNull(lnf.getFont("dummy"));
 
 	}
@@ -123,7 +124,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	public void testGetRenderer() throws Exception {
 
 		lnf.initialize();
-		assertNotNull(lnf.getRenderer("SubModuleView.renderer"));
+		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER));
 		assertNull(lnf.getFont("dummy"));
 
 	}
@@ -151,7 +152,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	public void testSetTheme() throws Exception {
 
-		Color color = lnf.getColor("EmbeddedTitlebar.foreground");
+		Color color = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
 		assertNotNull(color);
 
 		lnf.setTheme(new DummyTheme());
@@ -178,8 +179,12 @@ public class RienaDefaultLnfTest extends TestCase {
 		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
 		 */
 		public void addCustomImages(Map<String, ILnfResource> table) {
-			// TODO Auto-generated method stub
+		}
 
+		/**
+		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
+		 */
+		public void addCustomSettings(Map<String, Object> table) {
 		}
 
 	}

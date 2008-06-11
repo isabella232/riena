@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.utils;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.RGB;
 
 /**
  * A collection of utility methods for SWT.
@@ -100,6 +102,40 @@ public final class SwtUtilities {
 			width += gc.getAdvanceWidth(text.charAt(i));
 		}
 		return width;
+
+	}
+
+	/**
+	 * Creates a new instance of <code>Color</code> that is a brighter version
+	 * of the given color.
+	 * 
+	 * @param color
+	 *            the color to make brighter.
+	 * @param f
+	 *            the factor.
+	 * @return a new <code>Color</code> object that is a brighter version of
+	 *         this given color.
+	 * 
+	 * @pre color != null;
+	 */
+	public static Color makeBrighter(Color color, float f) {
+
+		assert color != null;
+		assert f >= 0.0;
+
+		float[] hsb = color.getRGB().getHSB();
+		float h = hsb[0];
+		float s = hsb[1];
+		float b = hsb[2];
+
+		b = b * f;
+		if (b > 1.0f) {
+			b = 1.0f;
+		}
+
+		RGB rgb = new RGB(h, s, b);
+
+		return new Color(color.getDevice(), rgb);
 
 	}
 

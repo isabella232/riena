@@ -14,6 +14,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
@@ -29,8 +30,8 @@ import org.eclipse.swt.graphics.Resource;
 public class RienaDefaultLnf {
 
 	private final static String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
-
 	private Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
+	private Map<String, Object> settingTable = new Hashtable<String, Object>();
 	private Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
 	private ILnfTheme theme;
 	private boolean initialized;
@@ -41,6 +42,10 @@ public class RienaDefaultLnf {
 
 	private Map<String, ILnfRenderer> getRendererTable() {
 		return rendererTable;
+	}
+
+	private Map<String, Object> getSettingTable() {
+		return settingTable;
 	}
 
 	/**
@@ -64,6 +69,7 @@ public class RienaDefaultLnf {
 		disposeAllResources();
 		getResourceTable().clear();
 		getRendererTable().clear();
+		getSettingTable().clear();
 		setInitialized(false);
 	}
 
@@ -71,11 +77,16 @@ public class RienaDefaultLnf {
 	 * Initializes the table with the renderers.
 	 */
 	protected void initWidgetRendererDefaults() {
-		getRendererTable().put("SubModuleViewRenderer.borderRenderer", new EmbeddedBorderRenderer()); //$NON-NLS-1$
-		getRendererTable().put("SubModuleViewRenderer.titlebarRenderer", new EmbeddedTitlebarRenderer()); //$NON-NLS-1$
-		getRendererTable().put("SubModuleViewRenderer.hoverBorderRenderer", new HoverBorderRenderer()); //$NON-NLS-1$
-		getRendererTable().put("SubModuleView.renderer", new SubModuleViewRenderer()); //$NON-NLS-1$
-		getRendererTable().put("ModuleGroup.renderer", new ModuleGroupRenderer()); //$NON-NLS-1$
+
+		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER, new EmbeddedBorderRenderer());
+		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER, new EmbeddedTitlebarRenderer());
+		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER, new HoverBorderRenderer());
+		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER, new SubModuleViewRenderer());
+		getRendererTable().put(ILnfKeyConstants.MODULE_GROUP_RENDERER, new ModuleGroupRenderer());
+		getRendererTable()
+				.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER, new SubApplicationSwitcherRenderer());
+		getRendererTable().put(ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER, new SubApplicationSwitcherRenderer());
+
 	}
 
 	/**
@@ -85,6 +96,7 @@ public class RienaDefaultLnf {
 		initColorDefaults();
 		initFontDefaults();
 		initImageDefaults();
+		initSettingsDefaults();
 	}
 
 	/**
@@ -111,6 +123,15 @@ public class RienaDefaultLnf {
 	protected void initImageDefaults() {
 		if (getTheme() != null) {
 			getTheme().addCustomImages(getResourceTable());
+		}
+	}
+
+	/**
+	 * Puts settings to the table.
+	 */
+	protected void initSettingsDefaults() {
+		if (getTheme() != null) {
+			getTheme().addCustomSettings(getSettingTable());
 		}
 	}
 
@@ -199,12 +220,58 @@ public class RienaDefaultLnf {
 	 * Returns the renderer for the given key.
 	 * 
 	 * @param key -
-	 *            key whose associated rendere is to be returned.
-	 * @return the rendere to which this renderer maps the specified key, or
+	 *            key whose associated renderer is to be returned.
+	 * @return the renderer to which this renderer maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
 	public ILnfRenderer getRenderer(String key) {
 		return getRendererTable().get(key);
+	}
+
+	/**
+	 * Returns the setting for the given key
+	 * 
+	 * @param key -
+	 *            key whose associated setting is to be returned.
+	 * @return the setting to which this setting maps the specified key, or
+	 *         <code>null</code> if the map contains no mapping for this key.
+	 */
+	public Object getSetting(String key) {
+		return getSettingTable().get(key);
+	}
+
+	/**
+	 * Returns the integer value of the setting for the given key
+	 * 
+	 * @param key -
+	 *            key whose associated setting is to be returned.
+	 * @return the setting to which this setting maps the specified key, or
+	 *         <code>null</code> if the map contains no mapping for this key.
+	 */
+	public Integer getIntegerSetting(String key) {
+		Object value = getSetting(key);
+		if (value instanceof Integer) {
+			return (Integer) value;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the boolean value of the setting for the given key
+	 * 
+	 * @param key -
+	 *            key whose associated setting is to be returned.
+	 * @return the setting to which this setting maps the specified key, or
+	 *         <code>false</code> if the map contains no mapping for this key.
+	 */
+	public Boolean getBooleanSetting(String key) {
+		Object value = getSetting(key);
+		if (value instanceof Boolean) {
+			return (Boolean) value;
+		} else {
+			return false;
+		}
 	}
 
 	/**

@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -38,7 +39,7 @@ public class EmbeddedTitlebarRendererTest extends TestCase {
 		int hHint = 24;
 		Point size = renderer.computeSize(gc, wHint, hHint);
 		assertEquals(wHint, size.x);
-		Font font = LnfManager.getLnf().getFont("EmbeddedTitlebar.font");
+		Font font = LnfManager.getLnf().getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
 		gc.setFont(font);
 		int expectedHeight = gc.getFontMetrics().getHeight() + 8;
 		assertEquals(expectedHeight, size.y);

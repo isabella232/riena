@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf;
 import java.util.Map;
 
 /**
- * Theme (colors, fonts) of a look and feel.
+ * Theme (colors, fonts, etc.) of a look and feel.
  */
 public interface ILnfTheme {
 
@@ -40,5 +40,13 @@ public interface ILnfTheme {
 	 *            table with the resources of the look and feel
 	 */
 	void addCustomImages(Map<String, ILnfResource> table);
+
+	/**
+	 * Adds settings to the given table.
+	 * 
+	 * @param table -
+	 *            table with the settings of the look and feel
+	 */
+	void addCustomSettings(Map<String, Object> table);
 
 }
