@@ -80,7 +80,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			Point titlebarSize = titlebarRenderer.computeSize(gc, getBounds().width, 0);
 			Rectangle titlebarBounds = new Rectangle(x, y, w, titlebarSize.y);
 			titlebarRenderer.setBounds(titlebarBounds);
-			titlebarRenderer.paint(gc, moduleNode.getLabel());
+			String label = moduleNode.getLabel();
+			titlebarRenderer.paint(gc, label);
 
 			module.setBounds(new Rectangle(x, y, w, titlebarSize.y));
 
@@ -96,6 +97,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			}
 
 			y += MODULE_MODULE_GAP;
+
+			computeTextBounds(gc, module);
 
 		}
 
@@ -154,27 +157,55 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns the bounds of the close "button" of the titlebar.<br>
-	 * <i><b>Note:</b> only x and width values are correct. Maybe y and height
-	 * are not always correct.</i>
+	 * Returns the bounds of the close "button" of the titlebar for the given
+	 * module item.
 	 * 
+	 * @param item -
+	 *            module item
 	 * @return bounds of close "button".
 	 */
-	public Rectangle computeCloseButtonBounds(GC gc) {
+	public Rectangle computeCloseButtonBounds(GC gc, ModuleItem item) {
 
-		Point size = computeSize(gc, getBounds().width, 0);
-		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
-		borderRenderer.setBounds(0, 0, getBounds().width, size.y);
-		Rectangle innerBorder = borderRenderer.computeInnerBounds(borderRenderer.getBounds());
-		int x = innerBorder.x + MODULE_GROUP_PADDING;
-		int y = innerBorder.y + MODULE_GROUP_PADDING;
-		int w = innerBorder.width - MODULE_GROUP_PADDING * 2;
+		if (!item.getModuleNode().isCloseable()) {
+			return new Rectangle(0, 0, 0, 0);
+		}
 
 		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
-		Point titlebarSize = titlebarRenderer.computeSize(gc, getBounds().width, 0);
-		titlebarRenderer.setBounds(x, y, w, titlebarSize.y);
-		Rectangle bounds = titlebarRenderer.computeCloseButtonBounds();
-		return bounds;
+		titlebarRenderer.setBounds(item.getBounds());
+		Rectangle closeBounds = titlebarRenderer.computeCloseButtonBounds();
+
+		return closeBounds;
+
+	}
+
+	/**
+	 * Returns the bounds of the text of the titlebar for the given module item.
+	 * 
+	 * @param item -
+	 *            module item
+	 * @return bounds of text.
+	 */
+	public Rectangle computeTextBounds(GC gc, ModuleItem item) {
+
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		titlebarRenderer.setBounds(item.getBounds());
+		Rectangle textBounds = titlebarRenderer.computeTextBounds(gc);
+
+		Rectangle closeBounds = computeCloseButtonBounds(gc, item);
+		textBounds.width -= closeBounds.width;
+
+		return textBounds;
+
+	}
+
+	public boolean isTextClipped(GC gc, ModuleItem item) {
+
+		String text = item.getModuleNode().getLabel();
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		titlebarRenderer.setBounds(item.getBounds());
+		String clippedText = titlebarRenderer.getClippedText(gc, text);
+
+		return !text.equals(clippedText);
 
 	}
 

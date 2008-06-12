@@ -11,36 +11,36 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
-/**
- * ToolTip for the tree items in the tree of the sub-modules.<br>
- * ToolTip is only displayed if the text of the tree item was clipped.
- */
-public class SubModuleToolTip extends DefaultToolTip {
+class ModuleGroupToolTip extends DefaultToolTip {
 
-	private Tree tree;
+	private ModuleGroupWidget moduleGroupWidget;
+	private ModuleGroupRenderer renderer;
 
 	/**
-	 * Creates new instance which add TooltipSupport to the tree.
+	 * Creates new instance which add TooltipSupport to the control.
 	 * 
-	 * @param tree -
-	 *            the tree on whose action the tooltip is shown
+	 * @param moduleGroupWidget2
+	 *            TODO
+	 * 
+	 * @param control -
+	 *            the control on whose action the tooltip is shown
 	 */
-	public SubModuleToolTip(Tree tree) {
-		super(tree);
-		setTree(tree);
+	public ModuleGroupToolTip(ModuleGroupWidget moduleGroupWidget) {
+		super(moduleGroupWidget);
+		setModuleGroupWidget(moduleGroupWidget);
 		setShift(new Point(0, 0));
 		initLookAndFeel();
 	}
@@ -53,23 +53,30 @@ public class SubModuleToolTip extends DefaultToolTip {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		Integer delay = lnf.getIntegerSetting(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY);
+		Integer delay = lnf.getIntegerSetting(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
 		if (delay != null) {
 			setPopupDelay(delay);
 		}
-		Color color = lnf.getColor(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND);
+		Color color = lnf.getColor(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND);
 		if (color != null) {
 			setForegroundColor(color);
 		}
-		color = lnf.getColor(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND);
+		color = lnf.getColor(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND);
 		if (color != null) {
 			setBackgroundColor(color);
 		}
-		Font font = lnf.getFont(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT);
+		Font font = lnf.getFont(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
 		if (color != null) {
 			setFont(font);
 		}
 
+	}
+
+	private ModuleGroupRenderer getRenderer() {
+		if (renderer == null) {
+			renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
+		}
+		return renderer;
 	}
 
 	/**
@@ -97,7 +104,10 @@ public class SubModuleToolTip extends DefaultToolTip {
 			label.setFont(font);
 		}
 
-		label.setText(getItemLongText(event));
+		ModuleItem item = getItem(event);
+		if (item != null) {
+			label.setText(item.getModuleNode().getLabel());
+		}
 
 		return label;
 
@@ -112,9 +122,14 @@ public class SubModuleToolTip extends DefaultToolTip {
 		boolean should = super.shouldCreateToolTip(event);
 
 		if (should) {
-			String text = getItemText(event);
-			String longText = getItemLongText(event);
-			should = !text.equals(longText);
+			ModuleItem item = getItem(event);
+			if (item != null) {
+				GC gc = new GC(getModuleGroupWidget());
+				should = getRenderer().isTextClipped(gc, item);
+				gc.dispose();
+			} else {
+				should = false;
+			}
 		}
 
 		return should;
@@ -129,9 +144,12 @@ public class SubModuleToolTip extends DefaultToolTip {
 	public Point getLocation(Point tipSize, Event event) {
 
 		Point location = super.getLocation(tipSize, event);
-		TreeItem item = getTreeItem(event);
+		ModuleItem item = getItem(event);
 		if (item != null) {
-			location = getTree().toDisplay(item.getBounds().x, item.getBounds().y);
+			GC gc = new GC(getModuleGroupWidget());
+			Rectangle textBounds = getRenderer().computeTextBounds(gc, item);
+			gc.dispose();
+			location = getModuleGroupWidget().toDisplay(textBounds.x, textBounds.y);
 		}
 
 		return location;
@@ -139,73 +157,41 @@ public class SubModuleToolTip extends DefaultToolTip {
 	}
 
 	/**
-	 * @return the tree
+	 * @return the moduleGroupWidget
 	 */
-	private Tree getTree() {
-		return tree;
+	private ModuleGroupWidget getModuleGroupWidget() {
+		return moduleGroupWidget;
 	}
 
 	/**
-	 * @param tree
-	 *            the tree to set
+	 * @param moduleGroupWidget
+	 *            the moduleGroupWidget to set
 	 */
-	private void setTree(Tree tree) {
-		this.tree = tree;
+	private void setModuleGroupWidget(ModuleGroupWidget moduleGroupWidget) {
+		this.moduleGroupWidget = moduleGroupWidget;
 	}
 
 	/**
-	 * Returns original (not clipped) text of the item at the given point (<code>event.x</code>
-	 * and <code>event.x</code>) or null if no such item exists.
+	 * Returns the module at the given point.
 	 * 
-	 * @param event -
-	 *            event with the x- and y-position of the mouse pointer
-	 * @return original (not clipped) item text
+	 * @param point -
+	 *            point over module item
+	 * @return module item; or null, if not item was found
 	 */
-	protected String getItemLongText(Event event) {
-
-		TreeItem item = getTreeItem(event);
-		String longText = ""; //$NON-NLS-1$
-		if (item != null) {
-			ISubModuleNode subModule = (ISubModuleNode) item.getData();
-			longText = subModule.getLabel();
-		}
-
-		return longText;
-
-	}
-
-	/**
-	 * Returns text of the item at the given point (<code>event.x</code> and
-	 * <code>event.x</code>) or null if no such item exists.
-	 * 
-	 * @param event -
-	 *            event with the x- and y-position of the mouse pointer
-	 * @return item text
-	 */
-	protected String getItemText(Event event) {
-
-		String text = ""; //$NON-NLS-1$
-		TreeItem item = getTreeItem(event);
-		if (item != null) {
-			text = item.getText();
-		}
-		return text;
-
-	}
-
-	/**
-	 * Returns the item at the given point (<code>event.x</code> and
-	 * <code>event.x</code>) or null if no such item exists.
-	 * 
-	 * @param event -
-	 *            event with the x- and y-position of the mouse pointer
-	 * @return the item at the given point, or null if the point is not in a
-	 *         selectable item
-	 */
-	protected TreeItem getTreeItem(Event event) {
+	protected ModuleItem getItem(Event event) {
 
 		Point point = new Point(event.x, event.y);
-		return getTree().getItem(point);
+
+		for (ModuleItem item : getModuleGroupWidget().getItems()) {
+			GC gc = new GC(getModuleGroupWidget());
+			Rectangle textBounds = getRenderer().computeTextBounds(gc, item);
+			gc.dispose();
+			if (textBounds.contains(point)) {
+				return item;
+			}
+		}
+
+		return null;
 
 	}
 

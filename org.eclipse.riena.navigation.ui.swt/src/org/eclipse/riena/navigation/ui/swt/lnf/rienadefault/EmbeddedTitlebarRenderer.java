@@ -204,14 +204,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 		if (!StringUtils.isEmpty(text)) {
 			gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
-
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			y = getBounds().y + y2;
-			int maxWidth = getWidth() - (x - getBounds().x) - TITLEBAR_LABEL_PADDING;
-			if (closeBounds.width > 0) {
-				maxWidth = maxWidth - closeBounds.width - TITLEBAR_LABEL_PADDING;
-			}
-			text = SwtUtilities.clipText(gc, text, maxWidth);
+			text = getClippedText(gc, text);
 			gc.drawText(text, x, y, true);
 		}
 
@@ -327,16 +322,58 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	public Rectangle computeCloseButtonBounds() {
 
-		Rectangle bounds = new Rectangle(0, 0, 0, 0);
+		Rectangle closeBounds = new Rectangle(0, 0, 0, 0);
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		Image closeImage = lnf.getImage(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON);
-		bounds.width = closeImage.getImageData().width;
-		bounds.height = closeImage.getImageData().height;
-		bounds.x = getBounds().x + getWidth() - bounds.width - TITLEBAR_LABEL_PADDING;
-		bounds.y = getBounds().y + (getHeight() - bounds.height) / 2;
+		closeBounds.width = closeImage.getImageData().width;
+		closeBounds.height = closeImage.getImageData().height;
+		closeBounds.x = getBounds().x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING;
+		closeBounds.y = getBounds().y + (getHeight() - closeBounds.height) / 2;
 
-		return bounds;
+		return closeBounds;
+
+	}
+
+	/**
+	 * Computes the bounds of the text.
+	 * 
+	 * @return bounds
+	 */
+	public Rectangle computeTextBounds(GC gc) {
+
+		Rectangle textBounds = new Rectangle(0, 0, 0, 0);
+
+		textBounds.x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
+		if (getImage() != null) {
+			textBounds.x += getImage().getImageData().width + TITLEBAR_ICON_TEXT_GAP;
+		}
+
+		textBounds.width = getWidth() - (textBounds.x - getBounds().x) - TITLEBAR_LABEL_PADDING;
+
+		Font font = getTitlebarFont();
+		gc.setFont(font);
+		FontMetrics fontMetrics = gc.getFontMetrics();
+
+		textBounds.height = fontMetrics.getHeight();
+		textBounds.y = getBounds().y + (getBounds().height - textBounds.height) / 2;
+
+		return textBounds;
+
+	}
+
+	public String getClippedText(GC gc, String text) {
+
+		Rectangle textBounds = computeTextBounds(gc);
+		int maxWidth = textBounds.width;
+		if (isCloseable()) {
+			Rectangle closeBounds = computeCloseButtonBounds();
+			maxWidth -= closeBounds.width;
+		}
+
+		Font font = getTitlebarFont();
+		gc.setFont(font);
+		return SwtUtilities.clipText(gc, text, maxWidth);
 
 	}
 

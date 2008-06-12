@@ -82,6 +82,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 				183));
 
 		table.put(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 
 	}
 
@@ -92,6 +93,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
+		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
 	}
 
@@ -117,6 +119,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
 		table.put(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
+		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);
 
 	}
 

@@ -43,6 +43,7 @@ public class ModuleGroupWidget extends Canvas {
 		this.moduleGroupNode = moduleGroupNode;
 		items = new ArrayList<ModuleItem>();
 		addListeners();
+		new ModuleGroupToolTip(this);
 	}
 
 	protected void addListeners() {
@@ -139,25 +140,17 @@ public class ModuleGroupWidget extends Canvas {
 	 */
 	protected ModuleItem getClosingItem(Point point) {
 
-		ModuleItem item = null;
+		ModuleItem item = getItem(point);
 
-		getRenderer().setBounds(getBounds());
-		GC gc = new GC(this);
-		Rectangle closeBounds = getRenderer().computeCloseButtonBounds(gc);
-		int xs = closeBounds.x;
-		int xe = xs + closeBounds.width;
-
-		if (point.x >= xs && point.x <= xe) {
-			item = getItem(point);
-			if (item != null) {
-				IModuleNode moduleNode = item.getModuleNode();
-				if (!moduleNode.isCloseable()) {
-					item = null;
-				}
+		if (item != null) {
+			GC gc = new GC(this);
+			Rectangle closeBounds = getRenderer().computeCloseButtonBounds(gc, item);
+			if (!closeBounds.contains(point)) {
+				item = null;
 			}
+			gc.dispose();
 		}
 
-		gc.dispose();
 		return item;
 
 	}
