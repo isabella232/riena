@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.FocusableViewController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
@@ -39,9 +40,16 @@ public class FocusableView extends SubModuleNodeView<FocusableViewController> {
 		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(1, false));
 
-		createVisibilityGroup(parent);
-		createGroup(parent, "A", 5);
-		createGroup(parent, "B", 1);
+		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
+
+		Group groupVisibility = createVisibilityGroup(parent);
+		fillFactory.applyTo(groupVisibility);
+
+		Group groupA = createGroup(parent, "A", 5);
+		fillFactory.applyTo(groupA);
+
+		Group groupB = createGroup(parent, "B", 1);
+		fillFactory.applyTo(groupB);
 	}
 
 	@Override
@@ -52,12 +60,14 @@ public class FocusableView extends SubModuleNodeView<FocusableViewController> {
 	// helping methods
 	// ////////////////
 
-	private void createVisibilityGroup(Composite parent) {
+	private Group createVisibilityGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:");
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		Button checkVisible = UIControlsFactory.createButtonCheck(group);
 		addUIControl(checkVisible, "checkVisible"); //$NON-NLS-1$
+
+		return group;
 	}
 
 	private Group createGroup(Composite parent, String groupCaption, int numElements) {
