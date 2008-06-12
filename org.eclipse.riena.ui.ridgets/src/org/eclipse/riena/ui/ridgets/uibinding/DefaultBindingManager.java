@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionFailure;
@@ -167,6 +168,7 @@ public class DefaultBindingManager implements IBindingManager {
 				String bindingProperty = propertyStrategy.locateBindingProperty(control);
 				if (bindingProperty != null) {
 					IRidget ridget = getRidget(bindingProperty, controller);
+					Assert.isNotNull(ridget, "Null ridget for property: " + bindingProperty); //$NON-NLS-1$
 					bindRidget(ridget, control, unbind);
 				}
 			}
