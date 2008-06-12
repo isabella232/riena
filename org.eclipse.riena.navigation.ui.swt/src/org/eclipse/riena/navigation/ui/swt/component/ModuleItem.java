@@ -2,6 +2,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
@@ -73,6 +74,8 @@ public class ModuleItem {
 			}
 
 		});
+
+		new SubModuleToolTip(subModuleTree);
 
 	}
 
@@ -157,14 +160,14 @@ public class ModuleItem {
 		boolean clipped = false;
 
 		Rectangle bodyBounds = getBody().getBounds();
-		SubModuleNode data = (SubModuleNode) item.getData();
-		String label = data.getLabel();
+		ISubModuleNode subModule = (ISubModuleNode) item.getData();
+		String longText = subModule.getLabel();
 		Rectangle itemBounds = item.getBounds();
 		int maxWidth = bodyBounds.width - itemBounds.x - 5;
-		label = SwtUtilities.clipText(gc, label, maxWidth);
-		item.setText(label);
+		String text = SwtUtilities.clipText(gc, longText, maxWidth);
+		item.setText(text);
 
-		clipped = !data.getLabel().equals(label);
+		clipped = !longText.equals(text);
 		return clipped;
 
 	}
