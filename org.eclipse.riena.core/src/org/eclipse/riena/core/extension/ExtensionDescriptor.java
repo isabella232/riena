@@ -16,15 +16,15 @@ import org.osgi.framework.BundleContext;
 /**
  * ExtensionDescriptor and ExtensionInjector simplify locating configuration
  * (extensions) and injects them into a target object. To do so the
- * ExtensionInjector can (but must not) track the extension registry for changes
- * of appearing and disappearing extensions and injects them into the target. A
- * target object defines a named and typed bind (update) method. The
- * ExtensionInjector calls the bind method when the specified extension/point
- * was registered or modified.<br>
- * The type of the bind method can be either of type array of <i>interface type</i>
- * or just <i>interface type</i>. The <i>interface type</i> is just a simple
- * java interface with getters where their name corresponds to attributes of an
- * extension.
+ * ExtensionInjector may track the extension registry for changes of appearing
+ * and disappearing extensions and injects them into the target. A target object
+ * defines a named and typed bind (update) method. The ExtensionInjector calls
+ * the bind method when the specified extension/point was registered or
+ * modified.<br>
+ * The type of the bind method can be either of type array of <i>interface
+ * type</i> or just <i>interface type</i>. The <i>interface type</i> is just a
+ * simple java interface with getters where their name corresponds to attributes
+ * of an extension.
  * <p>
  * The extension injector tracks the specified extension with {@link #start()}
  * or {@link #start(BundleContext)}. It stops tracking with {@link #stop()}.<br>
@@ -35,7 +35,9 @@ import org.osgi.framework.BundleContext;
  * interface´ allowing constructs like:
  * <ol>
  * <li>Inject.extension("id1").into(target).andStart(context)</li>
- * <li>Inject.extension("id2").useType(interface).into(target).bind("configure").andStart(context)</li>
+ * <li>
+ * Inject.extension("id2").useType(interface).into(target).bind("configure").
+ * andStart(context)</li>
  * <li>Inject.extension("id3").expectExactly(1).into(target).andStart()</li>
  * <li>..</li>
  * </ol>
