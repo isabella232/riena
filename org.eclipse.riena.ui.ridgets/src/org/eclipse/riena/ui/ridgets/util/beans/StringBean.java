@@ -17,7 +17,7 @@ public class StringBean extends AbstractBean {
 	/**
 	 * Key for the value property (PROP_VALUE = "value").
 	 */
-	private static final String PROP_VALUE = "value"; //$NON-NLS-1$
+	public static final String PROP_VALUE = "value"; //$NON-NLS-1$
 
 	private String value;
 
