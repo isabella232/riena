@@ -15,7 +15,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.example.client.views.ValidationView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
@@ -45,16 +44,16 @@ public class ValidationViewController extends SubModuleNodeViewController {
 	private ITextFieldRidget txtDate;
 	private ITextFieldRidget txtEmail;
 
-	private ILabelRidget lblNumbersOnly;
-	private ILabelRidget lblNumbersOnlyDW;
-	private ILabelRidget lblCharactersOnly;
-	private ILabelRidget lblExpression;
-	private ILabelRidget lblLengthLessThan5;
-	private ILabelRidget lblRequiredLowercase;
-	private ILabelRidget lblRange18to80;
-	private ILabelRidget lblLength5to10;
-	private ILabelRidget lblDate;
-	private ILabelRidget lblEmail;
+	private ITextFieldRidget lblNumbersOnly;
+	private ITextFieldRidget lblNumbersOnlyDW;
+	private ITextFieldRidget lblCharactersOnly;
+	private ITextFieldRidget lblExpression;
+	private ITextFieldRidget lblLengthLessThan5;
+	private ITextFieldRidget lblRequiredLowercase;
+	private ITextFieldRidget lblRange18to80;
+	private ITextFieldRidget lblLength5to10;
+	private ITextFieldRidget lblDate;
+	private ITextFieldRidget lblEmail;
 
 	public ValidationViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -132,75 +131,75 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		this.txtEmail = txtEmail;
 	}
 
-	public ILabelRidget getLblNumbersOnly() {
+	public ITextFieldRidget getLblNumbersOnly() {
 		return lblNumbersOnly;
 	}
 
-	public void setLblNumbersOnly(ILabelRidget lblNumbersOnly) {
+	public void setLblNumbersOnly(ITextFieldRidget lblNumbersOnly) {
 		this.lblNumbersOnly = lblNumbersOnly;
 	}
 
-	public ILabelRidget getLblNumbersOnlyDW() {
+	public ITextFieldRidget getLblNumbersOnlyDW() {
 		return lblNumbersOnlyDW;
 	}
 
-	public void setLblNumbersOnlyDW(ILabelRidget lblNumbersOnlyDW) {
+	public void setLblNumbersOnlyDW(ITextFieldRidget lblNumbersOnlyDW) {
 		this.lblNumbersOnlyDW = lblNumbersOnlyDW;
 	}
 
-	public ILabelRidget getLblCharactersOnly() {
+	public ITextFieldRidget getLblCharactersOnly() {
 		return lblCharactersOnly;
 	}
 
-	public void setLblCharactersOnly(ILabelRidget lblCharactersOnly) {
+	public void setLblCharactersOnly(ITextFieldRidget lblCharactersOnly) {
 		this.lblCharactersOnly = lblCharactersOnly;
 	}
 
-	public ILabelRidget getLblExpression() {
+	public ITextFieldRidget getLblExpression() {
 		return lblExpression;
 	}
 
-	public void setLblExpression(ILabelRidget lblExpression) {
+	public void setLblExpression(ITextFieldRidget lblExpression) {
 		this.lblExpression = lblExpression;
 	}
 
-	public ILabelRidget getLblLengthLessThan5() {
+	public ITextFieldRidget getLblLengthLessThan5() {
 		return lblLengthLessThan5;
 	}
 
-	public void setLblLengthLessThan5(ILabelRidget lblLengthLessThan5) {
+	public void setLblLengthLessThan5(ITextFieldRidget lblLengthLessThan5) {
 		this.lblLengthLessThan5 = lblLengthLessThan5;
 	}
 
-	public ILabelRidget getLblRange18to80() {
+	public ITextFieldRidget getLblRange18to80() {
 		return lblRange18to80;
 	}
 
-	public void setLblRange18to80(ILabelRidget lblRange18to80) {
+	public void setLblRange18to80(ITextFieldRidget lblRange18to80) {
 		this.lblRange18to80 = lblRange18to80;
 	}
 
-	public ILabelRidget getLblLength5to10() {
+	public ITextFieldRidget getLblLength5to10() {
 		return lblLength5to10;
 	}
 
-	public void setLblLength5to10(ILabelRidget lblLength5to10) {
+	public void setLblLength5to10(ITextFieldRidget lblLength5to10) {
 		this.lblLength5to10 = lblLength5to10;
 	}
 
-	public ILabelRidget getLblDate() {
+	public ITextFieldRidget getLblDate() {
 		return lblDate;
 	}
 
-	public void setLblDate(ILabelRidget lblDate) {
+	public void setLblDate(ITextFieldRidget lblDate) {
 		this.lblDate = lblDate;
 	}
 
-	public ILabelRidget getLblEmail() {
+	public ITextFieldRidget getLblEmail() {
 		return lblEmail;
 	}
 
-	public void setLblEmail(ILabelRidget lblEmail) {
+	public void setLblEmail(ITextFieldRidget lblEmail) {
 		this.lblEmail = lblEmail;
 	}
 
@@ -212,11 +211,11 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		this.txtRequiredLowercase = txtRequiredLowercase;
 	}
 
-	public ILabelRidget getLblRequiredLowercase() {
+	public ITextFieldRidget getLblRequiredLowercase() {
 		return lblRequiredLowercase;
 	}
 
-	public void setLblRequiredLowercase(ILabelRidget lblRequiredLowercase) {
+	public void setLblRequiredLowercase(ITextFieldRidget lblRequiredLowercase) {
 		this.lblRequiredLowercase = lblRequiredLowercase;
 	}
 
@@ -233,13 +232,11 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		// on edit validation
 
 		txtNumbersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS));
-		txtNumbersOnly.setText("abc");
 		txtNumbersOnly.bindToModel(getTextValue(lblNumbersOnly));
 
 		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS));
 		txtNumbersOnlyDW.setDirectWriting(true);
 		txtNumbersOnlyDW.bindToModel(getTextValue(lblNumbersOnlyDW));
-		lblNumbersOnlyDW.setText("acme");
 		txtNumbersOnlyDW.updateFromModel();
 
 		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER));
@@ -247,10 +244,11 @@ public class ValidationViewController extends SubModuleNodeViewController {
 
 		txtExpression.addValidationRule(new ValidExpression("^PDX[0-9]{2}$")); //$NON-NLS-1$
 		txtExpression.bindToModel(getTextValue(lblExpression));
-		txtExpression.setText("PDX97");
+		txtExpression.setText("PDX97"); //$NON-NLS-1$
 
 		txtLengthLessThan5.addValidationRule(new MaxLength(5));
 		txtLengthLessThan5.bindToModel(getTextValue(lblLengthLessThan5));
+		txtLengthLessThan5.setText("too long");
 
 		txtRequiredLowercase.addValidationRule(new RequiredField());
 		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE));
@@ -258,6 +256,7 @@ public class ValidationViewController extends SubModuleNodeViewController {
 
 		// on update validation
 
+		txtRange18to80.addValidationRule(new RequiredField());
 		txtRange18to80.addValidationRule(new ValidRange(18, 80));
 		lblRange18to80.setText("10");
 		txtRange18to80.bindToModel(getTextValue(lblRange18to80));
@@ -266,20 +265,21 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		txtLength5to10.addValidationRule(new MinLength(5));
 		txtLength5to10.addValidationRule(new MaxLength(10));
 		txtLength5to10.bindToModel(getTextValue(lblLength5to10));
-		txtLength5to10.setText("tiny");
+
+		// complex validation
 
 		txtDate.addValidationRule(new ValidIntermediateDate(DATE_PATTERN));
 		txtDate.addValidationRule(new ValidDate(DATE_PATTERN));
-		txtDate.setText("25.18.2008");
+		txtDate.setText("25.12.2008"); //$NON-NLS-1$
 		txtDate.bindToModel(getTextValue(lblDate));
 
 		txtEmail.addValidationRule(new ValidEmailAddress());
 		txtEmail.bindToModel(getTextValue(lblEmail));
-		txtEmail.setText("elmer@acme.com");
+		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
 	}
 
-	private IObservableValue getTextValue(ILabelRidget bean) {
-		return BeansObservables.observeValue(bean, ILabelRidget.PROPERTY_TEXT);
+	private IObservableValue getTextValue(ITextFieldRidget bean) {
+		return BeansObservables.observeValue(bean, ITextFieldRidget.PROPERTY_TEXT);
 	}
 
 }

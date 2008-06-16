@@ -42,18 +42,19 @@ public final class UIControlsFactory {
 		return label;
 	}
 
-	public static Label createLabelOutput(Composite parent) {
-		Label label = new Label(parent, SWT.BORDER);
-		label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-		return label;
-	}
-
 	public static Text createText(Composite parent) {
 		return new Text(parent, SWT.SINGLE | SWT.BORDER);
 	}
 
 	public static Text createTextNumeric(Composite parent) {
 		return new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+	}
+
+	public static Text createTextOutput(Composite parent) {
+		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
+		text.setEditable(false);
+		text.setEnabled(false);
+		return text;
 	}
 
 	public static Text createTextMulti(Composite parent, boolean hScroll, boolean vScroll) {
