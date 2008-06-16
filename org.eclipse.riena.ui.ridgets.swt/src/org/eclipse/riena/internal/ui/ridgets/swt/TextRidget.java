@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -37,7 +38,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private final FocusListener focusListener;
 	private final KeyListener crKeyListener;
 	private final ModifyListener modifyListener;
-	private final VerifyListener verifyListener;
+	private final ValidationListener verifyListener;
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 
@@ -95,8 +96,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		return textValue;
 	}
 
-	public void setText(String text) {
-		setText(text, true);
+	public synchronized void setText(String text) {
+		// checkAllRules(text);
+		String oldValue = textValue;
+		textValue = text;
+		setTextToControl(textValue);
+		getValueBindingSupport().updateFromTarget();
+		firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
 	}
 
 	public boolean isDirectWriting() {
@@ -109,37 +115,35 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		}
 	}
 
-	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-	}
-
 	// helping methods
 	// ////////////////
 
-	private IStatus checkRules(String newValue) {
-		ValidatorCollection onEditValidators = getValueBindingSupport().getOnEditValidators();
-		IStatus result = onEditValidators.validate(newValue);
-		validationRulesChecked(result);
-		return result;
-	}
-
-	private void setText(String newValue, boolean updateWidget) {
-		String oldValue = textValue;
-		textValue = newValue;
-		checkRules(textValue);
-		if (updateWidget) {
-			setTextToControl(textValue);
+	/*
+	 * @throws RuntimeException if one of the validation rules fails
+	 */
+	private void checkAllRules(String newValue) {
+		System.out.println("TextRidget.checkAllRules()");
+		ValueBindingSupport vbs = getValueBindingSupport();
+		IStatus result = vbs.getOnEditValidators().validate(newValue);
+		if (!result.isOK()) {
+			throw new IllegalArgumentException(result.getMessage());
 		}
-		getValueBindingSupport().updateFromTarget();
-		firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
+		result = vbs.getAfterGetValidators().validate(newValue);
+		if (!result.isOK()) {
+			throw new IllegalArgumentException(result.getMessage());
+		}
 	}
 
 	private void setTextToControl(String newValue) {
-		Text control = getUIControl();
-		if (control != null) {
-			control.setText(newValue);
-			control.setSelection(0, 0);
+		verifyListener.setEnabled(false);
+		try {
+			Text control = getUIControl();
+			if (control != null) {
+				control.setText(newValue);
+				control.setSelection(0, 0);
+			}
+		} finally {
+			verifyListener.setEnabled(true);
 		}
 	}
 
@@ -202,12 +206,46 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	}
 
 	/**
-	 * TODO [ev] javadocs
+	 * Validation listener that checks 'on edit' validation rules when the text
+	 * widget's contents are modified by the user. If the next text value does
+	 * not pass the test, the change will be rejected.
 	 */
 	private final class ValidationListener implements VerifyListener {
-		public void verifyText(VerifyEvent e) {
-			IStatus status = checkRules(e.text);
-			e.doit = status.isOK();
+
+		private volatile boolean isEnabled = true;
+
+		public synchronized void verifyText(VerifyEvent e) {
+			if (isEnabled) {
+				String newText = getText(e);
+				IStatus status = checkOnEditRules(newText);
+				e.doit = status.isOK();
+			}
+		}
+
+		synchronized void setEnabled(boolean isEnabled) {
+			this.isEnabled = isEnabled;
+		}
+
+		// TODO [ev] tests
+		private String getText(VerifyEvent e) {
+			Text widget = (Text) e.widget;
+			String oldText = widget.getText();
+			String newText;
+			// deletion
+			if (e.keyCode == 127 || e.keyCode == 8) {
+				newText = oldText.substring(0, e.start) + oldText.substring(e.end);
+			} else { // addition / replace
+				newText = oldText.substring(0, e.start) + e.text + oldText.substring(e.end);
+			}
+			return newText;
+		}
+
+		private IStatus checkOnEditRules(String newValue) {
+			ValueBindingSupport vbs = getValueBindingSupport();
+			ValidatorCollection onEditValidators = vbs.getOnEditValidators();
+			IStatus result = onEditValidators.validate(newValue);
+			validationRulesChecked(result);
+			return result;
 		}
 
 	}

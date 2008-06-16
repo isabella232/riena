@@ -75,11 +75,15 @@ public class ValueBindingSupport {
 		return onEditValidators;
 	}
 
+	public ValidatorCollection getAfterGetValidators() {
+		return afterGetValidators;
+	}
+
 	/**
 	 * Adds a validation rule.
 	 * 
 	 * @param validationRule
-	 *            The validation rule to add
+	 * 		The validation rule to add
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
@@ -97,7 +101,7 @@ public class ValueBindingSupport {
 	 * Removes a validation rule.
 	 * 
 	 * @param validationRule
-	 *            The validation rule to remove
+	 * 		The validation rule to remove
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
@@ -120,7 +124,9 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core.databinding.observable.value.IObservableValue)
+	 * @see
+	 * 	org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core
+	 * 	.databinding.observable.value.IObservableValue)
 	 */
 	public void bindToModel(IObservableValue observableValue) {
 		modelOV = observableValue;
@@ -128,8 +134,9 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
-	 *      java.lang.String)
+	 * @see
+	 * 	org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
+	 * 	java.lang.String)
 	 */
 	public void bindToModel(Object bean, String propertyName) {
 		modelOV = BeansObservables.observeValue(bean, propertyName);
