@@ -10,20 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.publisher;
 
-import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
-import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
+import org.eclipse.riena.communication.publisher.IServicePublishBinder;
+import org.eclipse.riena.communication.publisher.Publish;
+import org.eclipse.riena.communication.publisher.ServicePublishBinder;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.core.service.ServiceInjector;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
@@ -48,28 +48,45 @@ public class Activator extends RienaActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-
+		
 		Activator.plugin = this;
 		logger = getLogger(Activator.class.getName());
-		dispatcher = new ServicePublishEventDispatcher(context);
-		publisherInjector = Inject.service(IServicePublisher.class.getName()).useRanking().into(dispatcher).andStart(
-				context);
+		
+		IServicePublishBinder binder = new ServicePublishBinder();
+		context.registerService(IServicePublishBinder.class.getName(), binder, null);
+		Inject.service(IServicePublisher.class.getName()).useRanking().into(binder).andStart(context);
 
-		// register as OSGi service, the start will pick up the OSGi service and
-		// publish it
-		Dictionary<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
-		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "hessian");
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/ServicePublisherWS");
+		
+		
+		Publish.allServices().filter("(&(riena.remote=true)(riena.protocol=*))").andStart(context); //$NON-NLS-1$
 
-		context.registerService(IServicePublishEventDispatcher.class.getName(), dispatcher, properties);
+		// dispatcher = new ServicePublishEventDispatcher(context);
+		// publisherInjector =
+		// Inject.service(IServicePublisher.class.getName()).useRanking().into(dispatcher).andStart(
+		// context);
+		//
+		// // register as OSGi service, the start will pick up the OSGi service
+		// and
+		// // publish it
+		// Dictionary<String, Object> properties =
+		// ServiceDescriptor.newDefaultServiceProperties();
+		// properties.put(RSDPublisherProperties.PROP_IS_REMOTE,
+		// Boolean.TRUE.toString());
+		// properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL,
+		// "hessian");
+		// properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
+		// "/ServicePublisherWS");
+		//
+		// context.registerService(IServicePublishEventDispatcher.class.getName(),
+		// dispatcher, properties);
 
-		dispatcher.start();
+		// dispatcher.start();
 
 		// register UpdateNotified so all services trigger the
 		// servicePublishEventDispatcher
-		updateNotifierRemoteService = new UpdateNotifierRemoteService(dispatcher);
-		context.addServiceListener(updateNotifierRemoteService);
+
+		// register a service hook which is called then for every webservice
+
 		context.registerService(IServiceHook.class.getName(), new IServiceHook() {
 
 			public void afterService(ServiceContext context) {
