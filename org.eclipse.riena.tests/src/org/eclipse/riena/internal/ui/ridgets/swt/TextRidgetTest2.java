@@ -16,17 +16,20 @@ import java.util.Date;
 
 import org.easymock.EasyMock;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.util.beans.DateBean;
+import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
+import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
-import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -486,9 +489,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		bean.setProperty(TEXT_ONE);
 		ridget.updateFromModel();
+
 		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 
-		ridget.setText("xy");
+		bean.setProperty("xy");
+		ridget.updateFromModel();
 
 		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 
@@ -553,6 +558,98 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("41.01.1970", control.getText());
 		assertEquals("01.01.1970", ridget.getText());
 		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
+	}
+
+	public void testValidateOnSetTextWithOnEditRule() {
+		ITextFieldRidget ridget = getRidget();
+
+		IValidationRule onEditRule = new MaxLength(5);
+
+		assertEquals(IValidationRule.ValidationTime.ON_UI_CONTROL_EDITED, onEditRule.getValidationTime());
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.setText("old");
+		ridget.addValidationRule(onEditRule);
+
+		try {
+			ridget.setText("too long");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("old", ridget.getText());
+
+		ridget.setText("short");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("short", ridget.getText());
+	}
+
+	public void testValidateOnSetTextWithOnUpdateRule() {
+		ITextFieldRidget ridget = getRidget();
+
+		IValidationRule onUpdateRule = new MinLength(10);
+
+		assertEquals(IValidationRule.ValidationTime.ON_UPDATE_TO_MODEL, onUpdateRule.getValidationTime());
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.setText("this is long enough");
+		ridget.addValidationRule(onUpdateRule);
+
+		try {
+			ridget.setText("tiny");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("this is long enough", ridget.getText());
+
+		ridget.setText("this is not too short");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("this is not too short", ridget.getText());
+	}
+
+	public void testValidationOnUpdateFromModel() {
+		ITextFieldRidget ridget = getRidget();
+		StringBean model = new StringBean();
+		ridget.bindToModel(model, StringBean.PROP_VALUE);
+
+		IValidationRule onEditRule = new MaxLength(5);
+
+		assertEquals(IValidationRule.ValidationTime.ON_UI_CONTROL_EDITED, onEditRule.getValidationTime());
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.addValidationRule(onEditRule);
+		model.setValue("too long");
+		ridget.updateFromModel();
+
+		assertTrue(ridget.isErrorMarked());
+
+		model.setValue("short");
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.removeValidationRule(onEditRule);
+		IValidationRule onUpdateRule = new MinLength(10);
+
+		assertEquals(IValidationRule.ValidationTime.ON_UPDATE_TO_MODEL, onUpdateRule.getValidationTime());
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.addValidationRule(onUpdateRule);
+		model.setValue("tiny");
+		ridget.updateFromModel();
+
+		assertTrue(ridget.isErrorMarked());
+
+		model.setValue("this is not too short");
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
 	}
 
 }
