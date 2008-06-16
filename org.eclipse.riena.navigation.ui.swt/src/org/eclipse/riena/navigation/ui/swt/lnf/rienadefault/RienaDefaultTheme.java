@@ -84,6 +84,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOREGROUND, getPrimaryForeground());
+
 	}
 
 	/**
@@ -102,11 +105,11 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomImages(Map<String, ILnfResource> table) {
 
-		table.put(ILnfKeyConstants.TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
-		table.put(ILnfKeyConstants.TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 		// table.put(ILnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
-		table.put(ILnfKeyConstants.TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
 
 	}
@@ -183,7 +186,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	protected FontLnfResource getPrimaryFont() {
 		if (primaryFont == null) {
-			primaryFont = new FontLnfResource(getSystemFont().getName(), 9, SWT.NORMAL);
+			String name = getSystemFont().getName();
+			int height = getSystemFont().getHeight() + 1;
+			primaryFont = new FontLnfResource(name, height, SWT.NORMAL);
 		}
 		return primaryFont;
 	}

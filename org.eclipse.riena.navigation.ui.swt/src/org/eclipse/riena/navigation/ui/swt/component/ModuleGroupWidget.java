@@ -32,8 +32,6 @@ public class ModuleGroupWidget extends Canvas {
 	private IModuleGroupNode moduleGroupNode;
 	private ModuleItem openItem;
 
-	private ModuleGroupRenderer renderer;
-
 	private PaintDelegation paintDelegation;
 
 	private SelectionListener selectionListener;
@@ -161,6 +159,7 @@ public class ModuleGroupWidget extends Canvas {
 
 	protected void onPaint(PaintEvent e) {
 
+		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 		getRenderer().setItems(getItems());
 		Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
 		getRenderer().setBounds(0, 0, size.x, size.y);
@@ -206,10 +205,7 @@ public class ModuleGroupWidget extends Canvas {
 	}
 
 	private ModuleGroupRenderer getRenderer() {
-		if (renderer == null) {
-			renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
-		}
-		return renderer;
+		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
 	}
 
 	/**

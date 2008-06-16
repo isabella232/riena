@@ -53,10 +53,10 @@ public class ExampleTheme extends RienaDefaultTheme {
 	public void addCustomImages(Map<String, ILnfResource> table) {
 		super.addCustomImages(table);
 		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put("treeDocumentLeaf.icon", new ImageLnfResource(imagePath)); //$NON-NLS-1$
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath)); //$NON-NLS-1$
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put(ILnfKeyConstants.TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
-		table.put(ILnfKeyConstants.TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
 	}
 
 	/**
@@ -90,4 +90,5 @@ public class ExampleTheme extends RienaDefaultTheme {
 	protected FontLnfResource getPrimaryFont() {
 		return new FontLnfResource("Arial", 11, SWT.BOLD); //$NON-NLS-1$
 	}
+
 }

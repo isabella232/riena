@@ -6,9 +6,13 @@ import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationNavigationComponent;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
@@ -108,6 +112,12 @@ public class NavigationTreeView extends ViewPart {
 
 	private Composite initLayoutParts(Composite parent) {
 		Composite c = new Composite(parent, SWT.None);
+		c.addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent e) {
+				Composite paintComposite = (Composite) e.widget;
+				paintComposite.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_APPLICATION_BACKGROUND));
+			}
+		});
 		c.setLayout(new FillLayout());
 		return c;
 	}

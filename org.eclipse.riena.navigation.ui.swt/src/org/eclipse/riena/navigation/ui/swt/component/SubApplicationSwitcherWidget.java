@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Composite;
 public class SubApplicationSwitcherWidget extends Canvas {
 
 	private List<SubApplicationItem> items;
-	private SubApplicationSwitcherRenderer renderer;
 	private IApplicationModel applicationModel;
 
 	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationModel applicationModel) {
@@ -116,11 +115,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	}
 
 	private SubApplicationSwitcherRenderer getRenderer() {
-		if (renderer == null) {
-			renderer = (SubApplicationSwitcherRenderer) LnfManager.getLnf().getRenderer(
-					ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER);
-		}
-		return renderer;
+		return (SubApplicationSwitcherRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER);
 	}
 
 }

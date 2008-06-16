@@ -81,6 +81,7 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 
 	@Override
 	protected void buildInitialTree() {
+		ui.getTree().removeAll();
 		for (ISubModuleNode subNode : getModelNode().getChildren()) {
 			createSubModuleComponent(subNode);
 		}

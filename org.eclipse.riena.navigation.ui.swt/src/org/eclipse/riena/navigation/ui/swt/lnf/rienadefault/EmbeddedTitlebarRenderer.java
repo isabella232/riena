@@ -34,7 +34,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private final static int TITLEBAR_LABEL_PADDING = 4;
 	private final static int TITLEBAR_ICON_TEXT_GAP = 4;
 
-	private HoverBorderRenderer hoverBorderRenderer;
 	private Image image;
 	private Color edgeColor;
 	private String icon;
@@ -271,33 +270,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		return getBounds().width - 1;
 	}
 
-	/**
-	 * @return the hoverBorderRenderer
-	 */
-	public HoverBorderRenderer getHoverBorderRenderer() {
-		if (hoverBorderRenderer == null) {
-			setHoverBorderRenderer(getLnfBorderRenderer());
-		}
-		return hoverBorderRenderer;
-	}
-
-	/**
-	 * @param hoverBorderRenderer
-	 *            the hoverBorderRenderer to set
-	 */
-	public void setHoverBorderRenderer(HoverBorderRenderer hoverBorderRenderer) {
-		this.hoverBorderRenderer = hoverBorderRenderer;
-	}
-
-	private HoverBorderRenderer getLnfBorderRenderer() {
-
-		HoverBorderRenderer renderer = (HoverBorderRenderer) LnfManager.getLnf().getRenderer(
-				"SubModuleViewRenderer.hoverBorderRenderer"); //$NON-NLS-1$
-		if (renderer == null) {
-			renderer = new HoverBorderRenderer();
-		}
-		return renderer;
-
+	protected HoverBorderRenderer getHoverBorderRenderer() {
+		return (HoverBorderRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER);
 	}
 
 	/**

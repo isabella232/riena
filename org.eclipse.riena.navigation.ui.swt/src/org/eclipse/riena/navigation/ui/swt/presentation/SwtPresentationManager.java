@@ -60,8 +60,7 @@ public class SwtPresentationManager {
 			SwtViewId sourceId = views.get(source);
 			for (INavigationNode<?> node : views.keySet()) {
 				if (views.get(node) == sourceId) {
-					ISubModuleNode subNode = node
-							.getTypecastedAdapter(ISubModuleNode.class);
+					ISubModuleNode subNode = node.getTypecastedAdapter(ISubModuleNode.class);
 					if (subNode != null) {
 						activated.put(subNode, subNode == source);
 					}
@@ -74,8 +73,7 @@ public class SwtPresentationManager {
 		if (viewCounter.get(pViewId) == null) {
 			viewCounter.put(pViewId, 0);
 		}
-		ISubModuleNode subNode = pNode
-				.getTypecastedAdapter(ISubModuleNode.class);
+		ISubModuleNode subNode = pNode.getTypecastedAdapter(ISubModuleNode.class);
 		if (subNode != null) {
 			boolean shared = isViewShared(pViewId);
 			if (shared) {
@@ -96,8 +94,7 @@ public class SwtPresentationManager {
 					viewCounter.put(pViewId, 1);
 				} else {
 					// view has been referenced already
-					SwtViewId id = views.get(getNavigationNode(pViewId, null,
-							ISubModuleNode.class, true));
+					SwtViewId id = views.get(getNavigationNode(pViewId, null, ISubModuleNode.class, true));
 					views.put(pNode, id);
 				}
 				return;
@@ -105,8 +102,7 @@ public class SwtPresentationManager {
 		}
 		// classic way with one view per node
 		viewCounter.put(pViewId, viewCounter.get(pViewId) + 1);
-		views.put(pNode, new SwtViewId(pViewId, String.valueOf(viewCounter
-				.get(pViewId))));
+		views.put(pNode, new SwtViewId(pViewId, String.valueOf(viewCounter.get(pViewId))));
 	}
 
 	public void registerView(String viewId, boolean shared) {
@@ -136,26 +132,22 @@ public class SwtPresentationManager {
 		return null;
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(String pId,
-			Class<N> pClass) {
+	public <N extends INavigationNode<?>> N getNavigationNode(String pId, Class<N> pClass) {
 		return getNavigationNode(pId, null, pClass);
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(String pId,
-			String secondary, Class<N> pClass) {
+	public <N extends INavigationNode<?>> N getNavigationNode(String pId, String secondary, Class<N> pClass) {
 		return getNavigationNode(pId, secondary, pClass, false);
 
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(String pId,
-			String secondary, Class<N> pClass, boolean ignoreSharedState) {
+	public <N extends INavigationNode<?>> N getNavigationNode(String pId, String secondary, Class<N> pClass,
+			boolean ignoreSharedState) {
 		for (INavigationNode<?> next : views.keySet()) {
 			SwtViewId nextViewId = views.get(next);
 			if (nextViewId.getId().equals(pId) && //
-					(secondary == null || secondary.equals(nextViewId
-							.getSecondary()))) {
-				if (ignoreSharedState || !isViewShared(pId)
-						|| activated.get(next)) {
+					(secondary == null || secondary.equals(nextViewId.getSecondary()))) {
+				if (ignoreSharedState || !isViewShared(pId) || activated.get(next)) {
 					return next.getTypecastedAdapter(pClass);
 				}
 			}

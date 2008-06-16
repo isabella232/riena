@@ -21,7 +21,6 @@ import org.eclipse.riena.example.client.views.TextView;
 import org.eclipse.riena.example.client.views.UiProcessDemoView;
 import org.eclipse.riena.example.client.views.ValidationView;
 import org.eclipse.riena.internal.example.client.Activator;
-import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -78,15 +77,6 @@ public class SwtExampleApplication extends SwtApplication {
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "subapplication.1");
 		applicationModel.addChild(subApplication);
-		IAction closeAction = new IAction() {
-
-			public void run() {
-				applicationModel.dispose();
-			}
-
-		};
-		applicationModel.addAction(closeAction);
-		presentation.present(closeAction, "closeAction");
 		subApplication.setSelected(true);
 
 		moduleGroup = new ModuleGroupNode("Group 1.1");

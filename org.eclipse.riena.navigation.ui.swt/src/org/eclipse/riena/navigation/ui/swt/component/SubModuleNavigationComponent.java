@@ -114,13 +114,15 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 			treeItem = new TreeItem(getTree(), SWT.BORDER);
 		}
 		treeItem.setText(getModelNode().getLabel());
+		treeItem.setForeground(lnf.getColor(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOREGROUND));
+		treeItem.setBackground(lnf.getColor(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_BACKGROUND));
 		treeItem.setData(getModelNode());
 		Image image = null;
 		// if (getModelNode().getIcon() != null) {
 		// image = ImageUtil.getImage(getModelNode().getIcon());
 		// }
 		if (image == null) {
-			image = lnf.getImage(ILnfKeyConstants.TREE_DOCUMENT_LEAF_ICON);
+			image = lnf.getImage(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON);
 		}
 		treeItem.setImage(image);
 	}
@@ -144,9 +146,9 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		if (item.getItemCount() > 0) {
-			String folderIcon = ILnfKeyConstants.TREE_FOLDER_CLOSED_ICON;
+			String folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON;
 			if (expanded) {
-				folderIcon = ILnfKeyConstants.TREE_FOLDER_OPEN_ICON;
+				folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON;
 			}
 			Image image = lnf.getImage(folderIcon);
 			item.setImage(image);

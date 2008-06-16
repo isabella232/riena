@@ -25,9 +25,6 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
-	private EmbeddedTitlebarRenderer titlebarRenderer;
-	private EmbeddedBorderRenderer borderRenderer;
-
 	/**
 	 * Creates an new instance of <code>SubModuleViewRenderer</code> and sets
 	 * the renderer of the border and the titlebar.
@@ -95,25 +92,11 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	}
 
 	public EmbeddedTitlebarRenderer getTitlebarRenderer() {
-		if (titlebarRenderer == null) {
-			setTitlebarRenderer(getLnfTitlebarRenderer());
-		}
-		return titlebarRenderer;
-	}
-
-	public void setTitlebarRenderer(EmbeddedTitlebarRenderer titlebarRenderer) {
-		this.titlebarRenderer = titlebarRenderer;
+		return getLnfTitlebarRenderer();
 	}
 
 	public EmbeddedBorderRenderer getBorderRenderer() {
-		if (borderRenderer == null) {
-			setBorderRenderer(getLnfBorderRenderer());
-		}
-		return borderRenderer;
-	}
-
-	public void setBorderRenderer(EmbeddedBorderRenderer borderRenderer) {
-		this.borderRenderer = borderRenderer;
+		return getLnfBorderRenderer();
 	}
 
 	/**

@@ -42,7 +42,6 @@ public class SubModuleToolTip extends DefaultToolTip {
 		super(tree);
 		setTree(tree);
 		setShift(new Point(0, 0));
-		initLookAndFeel();
 	}
 
 	/**
@@ -112,6 +111,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 		boolean should = super.shouldCreateToolTip(event);
 
 		if (should) {
+			initLookAndFeel();
 			String text = getItemText(event);
 			String longText = getItemLongText(event);
 			should = !text.equals(longText);

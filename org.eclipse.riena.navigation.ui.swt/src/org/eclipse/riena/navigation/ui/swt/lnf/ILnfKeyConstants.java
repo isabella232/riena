@@ -51,6 +51,9 @@ public class ILnfKeyConstants {
 	public static final String MODULE_ITEM_TOOLTIP_BACKGROUND = "ModuleItemToolTip.background"; //$NON-NLS-1$
 	public static final String MODULE_ITEM_TOOLTIP_FOREGROUND = "ModuleItemToolTip.foreground"; //$NON-NLS-1$
 
+	public static final String SUB_MODULE_TREE_ITEM_BACKGROUND = "subModuleTreeItem.background"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_ITEM_FOREGROUND = "subModuleTreeItem.foreground"; //$NON-NLS-1$
+
 	/**
 	 * Font keys
 	 */
@@ -65,9 +68,9 @@ public class ILnfKeyConstants {
 	/**
 	 * Icon keys
 	 */
-	public static final String TREE_FOLDER_OPEN_ICON = "treeFolderOpen.icon"; //$NON-NLS-1$
-	public static final String TREE_FOLDER_CLOSED_ICON = "treeFolderClosed.icon"; //$NON-NLS-1$
-	public static final String TREE_DOCUMENT_LEAF_ICON = "treeDocumentLeaf.icon"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 

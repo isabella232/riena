@@ -24,10 +24,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
-class ModuleGroupToolTip extends DefaultToolTip {
+public class ModuleGroupToolTip extends DefaultToolTip {
 
 	private ModuleGroupWidget moduleGroupWidget;
-	private ModuleGroupRenderer renderer;
 
 	/**
 	 * Creates new instance which add TooltipSupport to the control.
@@ -42,7 +41,6 @@ class ModuleGroupToolTip extends DefaultToolTip {
 		super(moduleGroupWidget);
 		setModuleGroupWidget(moduleGroupWidget);
 		setShift(new Point(0, 0));
-		initLookAndFeel();
 	}
 
 	/**
@@ -73,10 +71,9 @@ class ModuleGroupToolTip extends DefaultToolTip {
 	}
 
 	private ModuleGroupRenderer getRenderer() {
-		if (renderer == null) {
-			renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
-		}
-		return renderer;
+
+		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
+
 	}
 
 	/**
@@ -122,6 +119,7 @@ class ModuleGroupToolTip extends DefaultToolTip {
 		boolean should = super.shouldCreateToolTip(event);
 
 		if (should) {
+			initLookAndFeel();
 			ModuleItem item = getItem(event);
 			if (item != null) {
 				GC gc = new GC(getModuleGroupWidget());
