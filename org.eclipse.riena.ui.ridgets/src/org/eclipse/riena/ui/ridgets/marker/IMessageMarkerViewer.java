@@ -8,35 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.marker;
 
 /**
- * window event.
+ *
  */
-public class WindowEvent {
-	private Object source;
+public interface IMessageMarkerViewer {
 
-	/**
-	 * constructor.
-	 * 
-	 * @param source
-	 *            the event source.
-	 */
-	public WindowEvent(Object source) {
-		this.source = source;
-	}
-
-	/**
-	 * @return event source
-	 */
-	public Object getSource() {
-		return source;
-	}
-
-	/**
-	 * @param source
-	 */
-	public void setSource(Object source) {
-		this.source = source;
-	}
 }
