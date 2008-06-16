@@ -97,12 +97,16 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	}
 
 	public synchronized void setText(String text) {
-		// checkAllRules(text);
 		String oldValue = textValue;
 		textValue = text;
 		setTextToControl(textValue);
-		getValueBindingSupport().updateFromTarget();
-		firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
+		if (checkOnEditRules(text).isOK()) {// && checkOnUpdateRules(text)
+			// .isOK()) {
+			// System.out.println("accept " + text);
+			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
+		} else {
+			// System.out.println("reject " + text);
+		}
 	}
 
 	public boolean isDirectWriting() {
@@ -118,20 +122,20 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	// helping methods
 	// ////////////////
 
-	/*
-	 * @throws RuntimeException if one of the validation rules fails
-	 */
-	private void checkAllRules(String newValue) {
-		System.out.println("TextRidget.checkAllRules()");
+	private IStatus checkOnEditRules(String newValue) {
 		ValueBindingSupport vbs = getValueBindingSupport();
-		IStatus result = vbs.getOnEditValidators().validate(newValue);
-		if (!result.isOK()) {
-			throw new IllegalArgumentException(result.getMessage());
-		}
-		result = vbs.getAfterGetValidators().validate(newValue);
-		if (!result.isOK()) {
-			throw new IllegalArgumentException(result.getMessage());
-		}
+		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
+		IStatus result = onEditValidators.validate(newValue);
+		validationRulesChecked(result);
+		return result;
+	}
+
+	private IStatus checkOnUpdateRules(String newValue) {
+		ValueBindingSupport vbs = getValueBindingSupport();
+		ValidatorCollection onEditValidators = vbs.getAfterGetValidators();
+		IStatus result = onEditValidators.validate(newValue);
+		validationRulesChecked(result);
+		return result;
 	}
 
 	private void setTextToControl(String newValue) {
@@ -239,15 +243,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 			}
 			return newText;
 		}
-
-		private IStatus checkOnEditRules(String newValue) {
-			ValueBindingSupport vbs = getValueBindingSupport();
-			ValidatorCollection onEditValidators = vbs.getOnEditValidators();
-			IStatus result = onEditValidators.validate(newValue);
-			validationRulesChecked(result);
-			return result;
-		}
-
 	}
 
 }
