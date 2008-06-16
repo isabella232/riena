@@ -1,26 +1,24 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004-2005 compeople AG                         *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.util;
 
 /**
  * Define key constants for accelerators.
- * 
- * @author Frank Schepp
  */
 public interface IAcceleratorConstants {
 
 	/*
-	 * Key constants to define accelerators using keys other than 0-9, A-Z
-	 * and a-z. When adding new constants, avoid:
-	 *   0x00 = char default value
-	 *   0x30-0x39 = '0'-'9'
-	 *   0x41-0x5A = 'A'-'Z'
-	 *   0x61-0x7A = 'a'-'z'
+	 * Key constants to define accelerators using keys other than 0-9, A-Z and
+	 * a-z. When adding new constants, avoid: 0x00 = char default value
+	 * 0x30-0x39 = '0'-'9' 0x41-0x5A = 'A'-'Z' 0x61-0x7A = 'a'-'z'
 	 */
 	/** Key PageUp */
 	char KEY_PAGE_UP = (char) 0x01;
@@ -83,7 +81,8 @@ public interface IAcceleratorConstants {
 	 */
 	int SHIFT_MASK = 1 << 0;
 	/**
-	 * This flag indicates that the Control key was down when the event occurred.
+	 * This flag indicates that the Control key was down when the event
+	 * occurred.
 	 */
 	int CTRL_MASK = 1 << 1;
 	/**

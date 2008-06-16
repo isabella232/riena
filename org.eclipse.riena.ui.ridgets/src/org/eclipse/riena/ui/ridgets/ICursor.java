@@ -1,16 +1,17 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004-2005 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
 /**
  * The state of the mouse cursor.
- *
- * @author Carsten Drossel
  */
 public interface ICursor {
 
@@ -42,8 +43,8 @@ public interface ICursor {
 	int CURSOR_HAND = 16;
 
 	/**
-	 * Background activity cursor. Indicates that some background activity
-	 * is going on but that the UI is still responsive.
+	 * Background activity cursor. Indicates that some background activity is
+	 * going on but that the UI is still responsive.
 	 */
 	int CURSOR_BACKGROUND_ACTIVITY = 32;
 

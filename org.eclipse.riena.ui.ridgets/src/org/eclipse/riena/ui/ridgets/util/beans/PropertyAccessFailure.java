@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.util.beans;
 
 import java.beans.PropertyDescriptor;
@@ -44,7 +47,8 @@ public final class PropertyAccessFailure extends PropertyFailure {
 	 *            the Throwable that caused this exception
 	 * @return an exception that describes a read access problem
 	 */
-	public static PropertyAccessFailure createReadAccessException(Object bean, PropertyDescriptor propertyDescriptor, Throwable cause) {
+	public static PropertyAccessFailure createReadAccessException(Object bean, PropertyDescriptor propertyDescriptor,
+			Throwable cause) {
 
 		String beanType;
 		if (bean == null) {
@@ -52,8 +56,9 @@ public final class PropertyAccessFailure extends PropertyFailure {
 		} else {
 			beanType = bean.getClass().getName();
 		}
-		String message = "Failed to read an adapted Java Bean property." + "\nbean     =" + bean + "\nbean type=" + beanType + "\nproperty name  ="
-				+ propertyDescriptor.getName() + "\nproperty type  =" + propertyDescriptor.getPropertyType().getName() + "\nproperty reader="
+		String message = "Failed to read an adapted Java Bean property." + "\nbean     =" + bean + "\nbean type="
+				+ beanType + "\nproperty name  =" + propertyDescriptor.getName() + "\nproperty type  ="
+				+ propertyDescriptor.getPropertyType().getName() + "\nproperty reader="
 				+ propertyDescriptor.getReadMethod();
 
 		return new PropertyAccessFailure(message, cause);
@@ -74,7 +79,8 @@ public final class PropertyAccessFailure extends PropertyFailure {
 	 *            the Throwable that caused this exception
 	 * @return an exception that describes a write access problem
 	 */
-	public static PropertyAccessFailure createWriteAccessException(Object bean, Object value, PropertyDescriptor propertyDescriptor, Throwable cause) {
+	public static PropertyAccessFailure createWriteAccessException(Object bean, Object value,
+			PropertyDescriptor propertyDescriptor, Throwable cause) {
 
 		String beanType;
 		if (bean == null) {
@@ -89,9 +95,10 @@ public final class PropertyAccessFailure extends PropertyFailure {
 			valueType = value.getClass().getName();
 		}
 
-		String message = "Failed to set an adapted Java Bean property." + "\nbean      =" + bean + "\nbean type =" + beanType + "\nvalue     =" + value
-				+ "\nvalue type=" + valueType + "\nproperty name  =" + propertyDescriptor.getName() + "\nproperty type  ="
-				+ propertyDescriptor.getPropertyType().getName() + "\nproperty setter=" + propertyDescriptor.getWriteMethod();
+		String message = "Failed to set an adapted Java Bean property." + "\nbean      =" + bean + "\nbean type ="
+				+ beanType + "\nvalue     =" + value + "\nvalue type=" + valueType + "\nproperty name  ="
+				+ propertyDescriptor.getName() + "\nproperty type  =" + propertyDescriptor.getPropertyType().getName()
+				+ "\nproperty setter=" + propertyDescriptor.getWriteMethod();
 
 		return new PropertyAccessFailure(message, cause);
 	}
