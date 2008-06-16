@@ -1,35 +1,34 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.core.marker;
 
 import org.eclipse.riena.core.marker.IMarker;
 
-
 /**
- * This interface identifies all Marker able to work als MessageMarker.
- * Thes interface is necessary since a message marker can be at the same time an error marker,
- * or a mandatory marker.
- * Some implementations of an IMessageMarkerViewer correspond to this
- * interface an check if the classes to be shown implements this interface.
- *
- * @author SST
+ * A marker that supplies a message explaining it. While the marker only effects
+ * the UI widget bound to the Ridget to which it the marker is added the message
+ * can be displayed by some other part of the UI. An example is a descriptive
+ * message about a textfield which is marked as error or as mandatory that is
+ * shown in the statusbar when the textfield is focused.
  */
 public interface IMessageMarker extends IMarker {
 
 	/**
-	 * Content of the Message
+	 * Name of the marker attribute that holds the message.
 	 */
 	String MESSAGE = "message";
-	
+
 	/**
-	 * @return the Message in this Marker
+	 * @return A message explaining the marker.
 	 */
 	String getMessage();
-	
-	
+
 }

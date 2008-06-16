@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.core.resource.internal;
 
 import java.util.HashMap;
@@ -14,8 +17,6 @@ import org.eclipse.riena.ui.core.resource.IIconManager;
 
 /**
  * Maintains the icons used by the application.
- * 
- * @author Carsten Drossel
  */
 public final class IconManager implements IIconManager {
 
@@ -31,8 +32,8 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IIconManager#getIconID(java.lang.String,
-	 *      de.compeople.spirit.core.client.uibinding.IconSize)
+	 * @see org.eclipse.riena.ui.core.resource#getIconID(java.lang.String,
+	 *      org.eclipse.riena.ui.core.resource.internal.IconSize)
 	 */
 	public String getIconID(String name, IconSize size) {
 
@@ -40,9 +41,9 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IIconManager#getIconID(java.lang.String,
-	 *      de.compeople.spirit.core.client.uibinding.IconSize,
-	 *      de.compeople.spirit.core.client.uibinding.IconState)
+	 * @see org.eclipse.riena.ui.core.resource#getIconID(java.lang.String,
+	 *      org.eclipse.riena.ui.core.resource.internal.IconSize,
+	 *      org.eclipse.riena.ui.core.resource.internal.IconState)
 	 */
 	public String getIconID(String name, IconSize size, IconState state) {
 
@@ -59,7 +60,7 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IIconManager#getName(java.lang.String)
+	 * @see org.eclipse.riena.ui.core.resource.IIconManager#getName(java.lang.String)
 	 */
 	public String getName(String iconID) {
 
@@ -72,7 +73,7 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IIconManager#getSize(java.lang.String)
+	 * @see org.eclipse.riena.ui.core.resource.IIconManager#getSize(java.lang.String)
 	 */
 	public IconSize getSize(String iconID) {
 
@@ -85,7 +86,7 @@ public final class IconManager implements IIconManager {
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IIconManager#getState(java.lang.String)
+	 * @see org.eclipse.riena.ui.core.resource.IIconManager#getState(java.lang.String)
 	 */
 	public IconState getState(String iconID) {
 

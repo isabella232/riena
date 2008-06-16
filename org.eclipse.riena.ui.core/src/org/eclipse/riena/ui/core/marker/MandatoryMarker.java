@@ -1,18 +1,19 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.core.marker;
 
 import org.eclipse.riena.core.marker.AbstractMarker;
 
 /**
  * Marks an adapter, resp. its associated UI control, as mandatory.
- *
- * @author Ralf Stuckert
  */
 public class MandatoryMarker extends AbstractMarker implements IIconizableMarker {
 
@@ -25,15 +26,15 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	 * @see Object#toString()
 	 */
 	public String toString() {
-		StringBuilder buffer = new StringBuilder( "MandatoryMarker[" );
-		buffer.append( "attributes=" );
-		buffer.append( getAttributes() );
-		buffer.append( "]" );
+		StringBuilder buffer = new StringBuilder("MandatoryMarker[");
+		buffer.append("attributes=");
+		buffer.append(getAttributes());
+		buffer.append("]");
 		return buffer.toString();
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.marker.IIconizableMarker#getIconConfiguationKey()
+	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
 	 */
 	public String getIconConfiguationKey() {
 		return "MandatoryMarker";
@@ -41,25 +42,26 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 
 	/**
 	 * Returns the disabled state.
-	 *
+	 * 
 	 * @return true, if the marker is disabled, false otherwise.
 	 */
 	public boolean isDisabled() {
-		Object attributeDisabled = getAttribute( ATTRIBUTE_DISABLED );
-		return ( attributeDisabled != null && attributeDisabled.equals( Boolean.TRUE ) );
+		Object attributeDisabled = getAttribute(ATTRIBUTE_DISABLED);
+		return (attributeDisabled != null && attributeDisabled.equals(Boolean.TRUE));
 	}
 
 	/**
 	 * Sets the disabled state.
-	 *
-	 * @param disabled The new disabled state: true, to disable the marker; false, to
-	 *                 enable it.
+	 * 
+	 * @param disabled
+	 *            The new disabled state: true, to disable the marker; false, to
+	 *            enable it.
 	 */
-	public void setDisabled( boolean disabled ) {
-		if ( disabled ) {
-			setAttribute( ATTRIBUTE_DISABLED, Boolean.TRUE );
+	public void setDisabled(boolean disabled) {
+		if (disabled) {
+			setAttribute(ATTRIBUTE_DISABLED, Boolean.TRUE);
 		} else {
-			setAttribute( ATTRIBUTE_DISABLED, null );
+			setAttribute(ATTRIBUTE_DISABLED, null);
 		}
 	}
 
