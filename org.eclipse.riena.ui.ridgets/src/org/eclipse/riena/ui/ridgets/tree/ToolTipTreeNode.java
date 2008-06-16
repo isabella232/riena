@@ -1,16 +1,17 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
 /**
  * Tree node providing a tooltip.
- * 
- * @author Frank Schepp
  */
 public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip {
 
@@ -19,13 +20,16 @@ public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip
 	private boolean dropOk;
 
 	/**
-	 * Constructor. Creates a tree node with no parent, no children and initializes it with the specified user object.
+	 * Constructor. Creates a tree node with no parent, no children and
+	 * initializes it with the specified user object.
 	 * 
-	 * @param userObject - an Object provided by the user that constitutes the node's data.
+	 * @param userObject -
+	 *            an Object provided by the user that constitutes the node's
+	 *            data.
 	 */
-	public ToolTipTreeNode( Object userObject ) {
+	public ToolTipTreeNode(Object userObject) {
 
-		super( userObject );
+		super(userObject);
 	}
 
 	/**
@@ -39,7 +43,7 @@ public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeNodeToolTip#setToolTipText(java.lang.String)
 	 */
-	public void setToolTipText( String toolTipText ) {
+	public void setToolTipText(String toolTipText) {
 
 		this.toolTipText = toolTipText;
 	}
@@ -55,7 +59,7 @@ public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeNodeToolTip#setSelectedAsDropTarget(boolean)
 	 */
-	public void setSelectedAsDropTarget( boolean selectedAsDropTarget ) {
+	public void setSelectedAsDropTarget(boolean selectedAsDropTarget) {
 
 		this.selectedAsDropTarget = selectedAsDropTarget;
 	}
@@ -71,7 +75,7 @@ public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeNodeToolTip#setDropOk(boolean)
 	 */
-	public void setDropOk( boolean dropOk ) {
+	public void setDropOk(boolean dropOk) {
 
 		this.dropOk = dropOk;
 	}

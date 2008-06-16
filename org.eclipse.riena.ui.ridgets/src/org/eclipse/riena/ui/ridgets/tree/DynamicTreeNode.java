@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
 import java.util.Collection;
@@ -14,33 +17,34 @@ import java.util.List;
 
 /**
  * A node of a tree that is dynamic.
- *
- * @author Thorsten Schenkel
- * @author Carsten Drossel
  */
 public class DynamicTreeNode extends DefaultTreeNode {
 
 	private Iterator<? extends Collection<? extends IUserTreeElement>> unloadedChildren;
 
 	/**
-	 * Constructor. Creates a tree node with the given parent and initializes it with the specified user element.
-	 *
-	 * @param parent - the parent of the tree element.
-	 * @param userElement - an element provided by the user that constitutes the data of the tree element.
+	 * Constructor. Creates a tree node with the given parent and initializes it
+	 * with the specified user element.
+	 * 
+	 * @param parent -
+	 *            the parent of the tree element.
+	 * @param userElement -
+	 *            an element provided by the user that constitutes the data of
+	 *            the tree element.
 	 */
-	public DynamicTreeNode( DynamicTreeNode parent, IUserTreeElement userElement ) {
+	public DynamicTreeNode(DynamicTreeNode parent, IUserTreeElement userElement) {
 
-		super( parent, userElement );
+		super(parent, userElement);
 	}
 
 	/**
 	 * Returns whether the user object is loaded or not.
-	 *
-	 * @return true if user object is loaded, false if it is not loaded or in the
-	 *              process of being loaded.
+	 * 
+	 * @return true if user object is loaded, false if it is not loaded or in
+	 *         the process of being loaded.
 	 */
 	public boolean isLoaded() {
-		return !( getUserObject() instanceof PlaceholderUserTreeElement );
+		return !(getUserObject() instanceof PlaceholderUserTreeElement);
 	}
 
 	/**
@@ -52,14 +56,14 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	 */
 	ValueTreeNode getLoadedSubTreeValues() {
 
-		ValueTreeNode loadedSubTreeRoot = new ValueTreeNode( toString() );
+		ValueTreeNode loadedSubTreeRoot = new ValueTreeNode(toString());
 
-		for ( int i = 0; i < getChildCount(); i++ ) {
-			DynamicTreeNode childNode = ( (DynamicTreeNode) children.get( i ) );
-			if ( childNode.isLoaded() ) {
+		for (int i = 0; i < getChildCount(); i++) {
+			DynamicTreeNode childNode = ((DynamicTreeNode) children.get(i));
+			if (childNode.isLoaded()) {
 				ValueTreeNode childLoadedSubTreeValues = childNode.getLoadedSubTreeValues();
-				if ( childLoadedSubTreeValues != null ) {
-					loadedSubTreeRoot.add( childLoadedSubTreeValues );
+				if (childLoadedSubTreeValues != null) {
+					loadedSubTreeRoot.add(childLoadedSubTreeValues);
 				}
 			}
 		}
@@ -71,8 +75,8 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeNode#setUserObject(java.lang.Object)
 	 */
 	@Override
-	public void setUserObject( Object userObject ) {
-		super.setUserObject( userObject );
+	public void setUserObject(Object userObject) {
+		super.setUserObject(userObject);
 
 		resetChildIterator();
 	}
@@ -81,7 +85,7 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	 * Resets the iterator of unloaded children.
 	 */
 	void resetChildIterator() {
-		if ( getUserObject() instanceof IUserTreeElement ) {
+		if (getUserObject() instanceof IUserTreeElement) {
 			unloadedChildren = getUserTreeElement().getChildren();
 		}
 	}
@@ -89,10 +93,11 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	/**
 	 * Checks whether there is another unloaded child to load.
 	 * 
-	 * @return true if the iterator of unloaded children has more, false otherwise.
+	 * @return true if the iterator of unloaded children has more, false
+	 *         otherwise.
 	 */
 	boolean hasNextChildUserTreeElements() {
-		if ( unloadedChildren != null ) {
+		if (unloadedChildren != null) {
 			return unloadedChildren.hasNext();
 		} else {
 			return false;
@@ -100,13 +105,13 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	}
 
 	/**
-	 * Loads the next child tree user element by retrieving it from the iterator of
-	 * unloaded children.
+	 * Loads the next child tree user element by retrieving it from the iterator
+	 * of unloaded children.
 	 * 
 	 * @return The user tree element of the next unloaded child.
 	 */
 	Collection<? extends IUserTreeElement> getNextChildUserTreeElements() {
-		if ( unloadedChildren != null ) {
+		if (unloadedChildren != null) {
 			return unloadedChildren.next();
 		} else {
 			return null;
@@ -118,7 +123,7 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	}
 
 	protected DynamicTreeNode createChildNode() {
-		return new DynamicTreeNode( this, null );
+		return new DynamicTreeNode(this, null);
 	}
 
 	/**
@@ -129,12 +134,12 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	}
 
 	private IUserTreeElement getUserTreeElement() {
-		return ( (IUserTreeElement) getUserObject() );
+		return ((IUserTreeElement) getUserObject());
 	}
 
 	/**
-	 * A user tree element that is used as the placeholder for the next user tree
-	 * element to be retrieved from the iterator of unloaded children.
+	 * A user tree element that is used as the placeholder for the next user
+	 * tree element to be retrieved from the iterator of unloaded children.
 	 */
 	protected class PlaceholderUserTreeElement implements IUserTreeElement {
 
@@ -165,8 +170,8 @@ public class DynamicTreeNode extends DefaultTreeNode {
 			return getUserTreeElement().getLoadingChildValue();
 		}
 
-		public void setFilter( IUserTreeElementFilter filter ) {
-		// ignore
+		public void setFilter(IUserTreeElementFilter filter) {
+			// ignore
 		}
 
 		public IUserTreeElementFilter getFilter() {

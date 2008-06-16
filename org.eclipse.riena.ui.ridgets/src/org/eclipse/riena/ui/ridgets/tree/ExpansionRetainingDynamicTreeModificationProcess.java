@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004-2005 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
 import java.util.ArrayList;
@@ -23,8 +26,6 @@ import org.eclipse.riena.ui.ridgets.obsolete.ITreeAdapter;
  * elements), resets the children of the root element and then attempts to
  * restore the expansion by the values of the nodes previously expanded. Nodes
  * that no longer exist due to the model change cannot be expanded.
- * 
- * @author Carsten Drossel
  */
 class ExpansionRetainingDynamicTreeModificationProcess extends DynamicTreeModificationProcess {
 

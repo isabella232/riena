@@ -1,16 +1,17 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
 /**
  * Use for tree nodes which provide a tool tip.
- * 
- * @author Frank Schepp
  */
 public interface ITreeNodeToolTip {
 
@@ -20,9 +21,10 @@ public interface ITreeNodeToolTip {
 	String getToolTipText();
 
 	/**
-	 * @param toolTipText The toolTipText to set.
+	 * @param toolTipText
+	 *            The toolTipText to set.
 	 */
-	void setToolTipText( String toolTipText );
+	void setToolTipText(String toolTipText);
 
 	/**
 	 * @return
@@ -32,7 +34,7 @@ public interface ITreeNodeToolTip {
 	/**
 	 * @param selectedAsDropTarget
 	 */
-	void setSelectedAsDropTarget( boolean selectedAsDropTarget );
+	void setSelectedAsDropTarget(boolean selectedAsDropTarget);
 
 	/**
 	 * @return
@@ -42,5 +44,5 @@ public interface ITreeNodeToolTip {
 	/**
 	 * @param dropOk
 	 */
-	void setDropOk( boolean dropOk );
+	void setDropOk(boolean dropOk);
 }

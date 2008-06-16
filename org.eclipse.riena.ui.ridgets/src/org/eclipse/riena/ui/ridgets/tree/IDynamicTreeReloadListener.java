@@ -1,25 +1,27 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
 import java.util.EventListener;
 
 /**
  * Defines an object which listens for <code>DynamicTreeReloadEvent</code> 's.
- * 
- * @author Thorsten Schenkel
  */
 public interface IDynamicTreeReloadListener extends EventListener {
 
 	/**
 	 * Invoked when reload of tree elements has started or stopped.
 	 * 
-	 * @param e a <code>DynamicTreeReloadEvent</code> object.
+	 * @param e
+	 *            a <code>DynamicTreeReloadEvent</code> object.
 	 */
-	void reload( DynamicTreeReloadEvent e );
+	void reload(DynamicTreeReloadEvent e);
 } // end interface
