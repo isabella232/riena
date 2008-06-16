@@ -35,9 +35,9 @@ public final class UITestHelper {
 	 * Send a key event with the given keycode.
 	 * 
 	 * @param display
-	 *            a non-null {@link Display} instance
+	 * 		a non-null {@link Display} instance
 	 * @param keyCode
-	 *            a SWT key code
+	 * 		a SWT key code
 	 */
 	public static void sendKeyAction(Display display, int keyCode) {
 		EventSender sender = new EventSender(display, keyCode);
@@ -50,9 +50,9 @@ public final class UITestHelper {
 	 * Send the give message as a series of key events
 	 * 
 	 * @param display
-	 *            a non-null {@link Display} instance
+	 * 		a non-null {@link Display} instance
 	 * @param message
-	 *            a non-null String
+	 * 		a non-null String
 	 */
 	public static void sendString(Display display, String message) {
 		EventSender sender = new EventSender(display, message);
@@ -64,7 +64,7 @@ public final class UITestHelper {
 	private static void waitAndDispatch(Display display, Thread thread) {
 		Shell shell = display.getActiveShell();
 		while (!shell.isDisposed() && thread.isAlive()) {
-			while (!display.readAndDispatch()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
