@@ -42,6 +42,12 @@ public final class UIControlsFactory {
 		return label;
 	}
 
+	public static Label createLabelOutput(Composite parent) {
+		Label label = new Label(parent, SWT.BORDER);
+		label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		return label;
+	}
+
 	public static Text createText(Composite parent) {
 		return new Text(parent, SWT.SINGLE | SWT.BORDER);
 	}
