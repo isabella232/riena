@@ -100,13 +100,15 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		String oldValue = textValue;
 		textValue = text;
 		setTextToControl(textValue);
-		if (checkOnEditRules(text).isOK()) {// && checkOnUpdateRules(text)
-			// .isOK()) {
-			// System.out.println("accept " + text);
+		if (checkOnEditRules(text).isOK()) {
 			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
-		} else {
-			// System.out.println("reject " + text);
 		}
+	}
+
+	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+		setErrorMarked(hasError());
 	}
 
 	public boolean isDirectWriting() {
@@ -126,20 +128,25 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		ValueBindingSupport vbs = getValueBindingSupport();
 		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
 		IStatus result = onEditValidators.validate(newValue);
-		validationRulesChecked(result);
 		return result;
 	}
 
 	private IStatus checkOnUpdateRules(String newValue) {
 		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection onEditValidators = vbs.getAfterGetValidators();
-		IStatus result = onEditValidators.validate(newValue);
-		validationRulesChecked(result);
+		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
+		IStatus result = afterGetValidators.validate(newValue);
+		return result;
+	}
+
+	private boolean hasError() {
+		IStatus onUpdate = checkOnUpdateRules(textValue);
+		IStatus onEdit = checkOnEditRules(textValue);
+		boolean result = !onUpdate.isOK() || !onEdit.isOK();
 		return result;
 	}
 
 	private void setTextToControl(String newValue) {
-		verifyListener.setEnabled(false);
+		verifyListener.setBlockInvalidInput(false);
 		try {
 			Text control = getUIControl();
 			if (control != null) {
@@ -147,7 +154,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 				control.setSelection(0, 0);
 			}
 		} finally {
-			verifyListener.setEnabled(true);
+			verifyListener.setBlockInvalidInput(true);
 		}
 	}
 
@@ -216,18 +223,19 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	 */
 	private final class ValidationListener implements VerifyListener {
 
-		private volatile boolean isEnabled = true;
+		private volatile boolean isBlocking = true;
 
 		public synchronized void verifyText(VerifyEvent e) {
-			if (isEnabled) {
-				String newText = getText(e);
-				IStatus status = checkOnEditRules(newText);
+			String newText = getText(e);
+			IStatus status = checkOnEditRules(newText);
+			validationRulesChecked(status);
+			if (isBlocking) {
 				e.doit = status.isOK();
 			}
 		}
 
-		synchronized void setEnabled(boolean isEnabled) {
-			this.isEnabled = isEnabled;
+		synchronized void setBlockInvalidInput(boolean isBlocking) {
+			this.isBlocking = isBlocking;
 		}
 
 		// TODO [ev] tests

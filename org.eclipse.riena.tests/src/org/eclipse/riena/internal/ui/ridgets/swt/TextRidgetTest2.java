@@ -576,7 +576,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.addValidationRule(onEditRule);
 		ridget.setText("too long");
 
-		// TODO [ev] assertTrue(ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 		assertEquals("too long", ridget.getText());
 		assertEquals("too long", getUIControl().getText());
 		assertEquals("tiny", model.getValue());
@@ -603,7 +603,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.addValidationRule(onUpdateRule);
 		ridget.setText("tiny");
 
-		// TODO [ev] assertTrue(ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 		assertEquals("tiny", ridget.getText());
 		assertEquals("tiny", getUIControl().getText());
 		assertEquals("this is long enough", model.getValue());
@@ -631,7 +631,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		model.setValue("too long");
 		ridget.updateFromModel();
 
-		// TODO [ev] assertTrue(ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 		assertEquals("too long", ridget.getText());
 		assertEquals("too long", getUIControl().getText());
 		assertEquals("too long", model.getValue());
@@ -660,7 +660,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		model.setValue("tiny");
 		ridget.updateFromModel();
 
-		// TODO [ev] assertTrue(ridget.isErrorMarked());
+		assertTrue(ridget.isErrorMarked());
 		assertEquals("tiny", ridget.getText());
 		assertEquals("tiny", getUIControl().getText());
 		assertEquals("tiny", model.getValue());
