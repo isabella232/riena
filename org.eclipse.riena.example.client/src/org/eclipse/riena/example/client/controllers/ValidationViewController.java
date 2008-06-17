@@ -237,7 +237,6 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS));
 		txtNumbersOnlyDW.setDirectWriting(true);
 		txtNumbersOnlyDW.bindToModel(getTextValue(lblNumbersOnlyDW));
-		txtNumbersOnlyDW.updateFromModel();
 
 		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER));
 		txtCharactersOnly.bindToModel(getTextValue(lblCharactersOnly));
@@ -248,7 +247,6 @@ public class ValidationViewController extends SubModuleNodeViewController {
 
 		txtLengthLessThan5.addValidationRule(new MaxLength(5));
 		txtLengthLessThan5.bindToModel(getTextValue(lblLengthLessThan5));
-		txtLengthLessThan5.setText("too long");
 
 		txtRequiredLowercase.addValidationRule(new RequiredField());
 		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE));
@@ -258,9 +256,7 @@ public class ValidationViewController extends SubModuleNodeViewController {
 
 		txtRange18to80.addValidationRule(new RequiredField());
 		txtRange18to80.addValidationRule(new ValidRange(18, 80));
-		lblRange18to80.setText("10");
 		txtRange18to80.bindToModel(getTextValue(lblRange18to80));
-		txtRange18to80.updateFromModel();
 
 		txtLength5to10.addValidationRule(new MinLength(5));
 		txtLength5to10.addValidationRule(new MaxLength(10));
