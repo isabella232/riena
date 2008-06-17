@@ -493,11 +493,14 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 		assertEquals(TEXT_ONE, ridget.getText());
 
-		ridget.setText("xy");
+		// ridget.setText("xy");
+		control.selectAll();
+		UITestHelper.sendString(control.getDisplay(), "xy\t");
 
 		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 		assertEquals("xy", ridget.getText());
 
+		control.setFocus();
 		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
 		UITestHelper.sendString(control.getDisplay(), "z");
 
@@ -574,11 +577,17 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setText("tiny");
 		ridget.addValidationRule(onEditRule);
-		ridget.setText("too long");
 
-		assertTrue(ridget.isErrorMarked());
-		assertEquals("too long", ridget.getText());
-		assertEquals("too long", getUIControl().getText());
+		try {
+			ridget.setText("too long");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("tiny", ridget.getText());
+		assertEquals("tiny", getUIControl().getText());
 		assertEquals("tiny", model.getValue());
 
 		ridget.setText("short");
@@ -601,11 +610,17 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setText("this is long enough");
 		ridget.addValidationRule(onUpdateRule);
-		ridget.setText("tiny");
 
-		assertTrue(ridget.isErrorMarked());
-		assertEquals("tiny", ridget.getText());
-		assertEquals("tiny", getUIControl().getText());
+		try {
+			ridget.setText("tiny");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("this is long enough", ridget.getText());
+		assertEquals("this is long enough", getUIControl().getText());
 		assertEquals("this is long enough", model.getValue());
 
 		ridget.setText("this is not too short");
@@ -629,11 +644,17 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setText("tiny");
 		ridget.addValidationRule(onEditRule);
 		model.setValue("too long");
-		ridget.updateFromModel();
 
-		assertTrue(ridget.isErrorMarked());
-		assertEquals("too long", ridget.getText());
-		assertEquals("too long", getUIControl().getText());
+		try {
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("tiny", ridget.getText());
+		assertEquals("tiny", getUIControl().getText());
 		assertEquals("too long", model.getValue());
 
 		model.setValue("short");
@@ -658,11 +679,17 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setText("something long");
 		ridget.addValidationRule(onUpdateRule);
 		model.setValue("tiny");
-		ridget.updateFromModel();
 
-		assertTrue(ridget.isErrorMarked());
-		assertEquals("tiny", ridget.getText());
-		assertEquals("tiny", getUIControl().getText());
+		try {
+			ridget.updateFromModel();
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("something long", ridget.getText());
+		assertEquals("something long", getUIControl().getText());
 		assertEquals("tiny", model.getValue());
 
 		model.setValue("this is not too short");

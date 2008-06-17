@@ -42,12 +42,19 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 
+	/* True indicates that an updateFromModel() is in progress */
+	private boolean isUpdatingFromModel = false;
+	/* True indicates that setText was aborted because the value was illegal */
+	private boolean setTextAborted = false;
+
 	public TextRidget() {
 		crKeyListener = new CRKeyListener();
 		focusListener = new FocusManager();
 		modifyListener = new SyncModifyListener();
 		verifyListener = new ValidationListener();
 		isDirectWriting = false;
+		isUpdatingFromModel = false;
+		setTextAborted = false;
 	}
 
 	/**
@@ -97,18 +104,32 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	}
 
 	public synchronized void setText(String text) {
-		String oldValue = textValue;
-		textValue = text;
-		setTextToControl(textValue);
-		if (checkOnEditRules(text).isOK()) {
+		if (hasErrors(text)) {
+			if (isUpdatingFromModel) {
+				setTextAborted = true;
+			} else {
+				throw new IllegalArgumentException("Invalid text:" + text); //$NON-NLS-1$
+			}
+		} else {
+			String oldValue = textValue;
+			textValue = text;
+			setTextToControl(textValue);
 			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
 		}
 	}
 
 	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-		setErrorMarked(hasError());
+	public synchronized void updateFromModel() {
+		isUpdatingFromModel = true;
+		try {
+			super.updateFromModel();
+			if (setTextAborted) {
+				throw new IllegalArgumentException("Invalid text in model"); //$NON-NLS-1$
+			}
+		} finally {
+			isUpdatingFromModel = false;
+			setTextAborted = false;
+		}
 	}
 
 	public boolean isDirectWriting() {
@@ -138,23 +159,18 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		return result;
 	}
 
-	private boolean hasError() {
-		IStatus onUpdate = checkOnUpdateRules(textValue);
-		IStatus onEdit = checkOnEditRules(textValue);
+	private boolean hasErrors(String newValue) {
+		IStatus onUpdate = checkOnUpdateRules(newValue);
+		IStatus onEdit = checkOnEditRules(newValue);
 		boolean result = !onUpdate.isOK() || !onEdit.isOK();
 		return result;
 	}
 
 	private void setTextToControl(String newValue) {
-		verifyListener.setBlockInvalidInput(false);
-		try {
-			Text control = getUIControl();
-			if (control != null) {
-				control.setText(newValue);
-				control.setSelection(0, 0);
-			}
-		} finally {
-			verifyListener.setBlockInvalidInput(true);
+		Text control = getUIControl();
+		if (control != null) {
+			control.setText(newValue);
+			control.setSelection(0, 0);
 		}
 	}
 
@@ -223,22 +239,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	 */
 	private final class ValidationListener implements VerifyListener {
 
-		private volatile boolean isBlocking = true;
-
 		public synchronized void verifyText(VerifyEvent e) {
 			String newText = getText(e);
 			IStatus status = checkOnEditRules(newText);
 			validationRulesChecked(status);
-			if (isBlocking) {
-				e.doit = status.isOK();
-			}
+			e.doit = status.isOK();
 		}
 
-		synchronized void setBlockInvalidInput(boolean isBlocking) {
-			this.isBlocking = isBlocking;
-		}
-
-		// TODO [ev] tests
 		private String getText(VerifyEvent e) {
 			Text widget = (Text) e.widget;
 			String oldText = widget.getText();
