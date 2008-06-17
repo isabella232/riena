@@ -124,7 +124,6 @@ public class SystemPropertiesView extends SubModuleNodeView<SystemPropertiesView
 		addUIControl(buttonAdd, "buttonAdd"); //$NON-NLS-1$
 
 		Button toggleDoubleClick = UIControlsFactory.createButtonToggle(buttonComposite);
-		widthHint = UIControlsFactory.getWidthHint(toggleDoubleClick);
 		addUIControl(toggleDoubleClick, "toggleDoubleClick"); //$NON-NLS-1$
 
 		return buttonComposite;
