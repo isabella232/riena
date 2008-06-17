@@ -64,9 +64,7 @@ public final class UITestHelper {
 	private static void waitAndDispatch(Display display, Thread thread) {
 		Shell shell = display.getActiveShell();
 		while (!shell.isDisposed() && thread.isAlive()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
+			display.readAndDispatch();
 		}
 	}
 
