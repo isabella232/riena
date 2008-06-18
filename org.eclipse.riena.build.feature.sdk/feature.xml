@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.riena.build.feature.sdk"
       label="Riena Sdk Feature"
-      version="1.0.0.M2">
+      version="1.0.0.M3">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -19,6 +19,7 @@
    <includes
          id="org.eclipse.riena.build.feature"
          version="0.0.0"/>
+
    <includes
          id="org.eclipse.riena.build.feature.source"
          version="0.0.0"/>
