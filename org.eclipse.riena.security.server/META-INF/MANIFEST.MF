@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Security Server Plug-in
 Bundle-SymbolicName: org.eclipse.riena.security.server
-Bundle-Version: 1.0.0.M2
+Bundle-Version: 1.0.0.M3
 Bundle-Activator: org.eclipse.riena.internal.security.server.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.security.common,
