@@ -131,8 +131,11 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 		addMapping(node, moduleCmp);
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.component.AbstractNavigationComponent#getUI()
+	 */
 	@Override
-	Composite getUI() {
+	ModuleGroupWidget getUI() {
 		return ui;
 	}
 

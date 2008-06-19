@@ -37,9 +37,8 @@ public class ModuleItem {
 	 * 
 	 * @param parent -
 	 *            module group which will be the parent of the new instance
-	 * @param moduleCmp
 	 */
-	public ModuleItem(Composite parent, ModuleNavigationComponent moduleCmp) {
+	public ModuleItem(ModuleGroupWidget parent, ModuleNavigationComponent moduleCmp) {
 
 		this.parent = parent;
 		this.moduleCmp = moduleCmp;
@@ -280,7 +279,9 @@ public class ModuleItem {
 	 */
 	public void dispose() {
 		getBody().dispose();
+		body = null;
 		getTree().dispose();
+		subModuleTree = null;
 	}
 
 	/**

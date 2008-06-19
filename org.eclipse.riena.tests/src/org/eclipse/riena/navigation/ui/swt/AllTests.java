@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapperTest;
+import org.eclipse.riena.navigation.ui.swt.component.ModuleItemTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResourceTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManagerTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.EmbeddedBorderRendererTest;
@@ -38,6 +39,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(EmbeddedTitlebarRendererTest.class);
 		suite.addTestSuite(RienaDefaultLnfTest.class);
 		suite.addTestSuite(SwtViewIdTest.class);
+		suite.addTestSuite(ModuleItemTest.class);
 		return suite;
 	}
 

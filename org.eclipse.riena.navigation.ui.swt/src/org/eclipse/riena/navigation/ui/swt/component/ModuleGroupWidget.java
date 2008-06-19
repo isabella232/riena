@@ -247,7 +247,7 @@ public class ModuleGroupWidget extends Canvas {
 	/**
 	 * @return the moduleGroupNode
 	 */
-	private IModuleGroupNode getModuleGroupNode() {
+	public IModuleGroupNode getModuleGroupNode() {
 		return moduleGroupNode;
 	}
 
