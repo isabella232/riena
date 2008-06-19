@@ -12,12 +12,16 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
@@ -35,6 +39,7 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	private Shell shell;
 	private Control control;
 	private IRidget ridget;
+	private Text otherControl;
 	private PropertyChangeListener propertyChangeListenerMock;
 
 	@Override
@@ -51,7 +56,10 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		propertyChangeListenerMock = EasyMock.createMock(PropertyChangeListener.class);
 		ridget.addPropertyChangeListener(propertyChangeListenerMock);
 
-		shell.setSize(100, 100);
+		otherControl = new Text(shell, SWT.SINGLE);
+		otherControl.setText("other focusable widget");
+
+		shell.setSize(130, 100);
 		shell.setLocation(0, 0);
 		shell.open();
 	}
@@ -61,6 +69,8 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		ridget = null;
 		control.dispose();
 		control = null;
+		otherControl.dispose();
+		otherControl = null;
 		shell.dispose();
 		shell = null;
 		realm.dispose();
@@ -156,25 +166,74 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	public void testSetFocusable() {
 		IRidget ridget = getRidget();
 		Control control = getUIControl();
-		Control firstControl = new Text(getShell(), SWT.SINGLE);
-		firstControl.moveAbove(control);
+		otherControl.moveAbove(control);
 
 		control.setFocus();
 		if (control.isFocusControl()) { // skip if control cannot receive focus
 
 			ridget.setFocusable(false);
-			firstControl.setFocus();
+			otherControl.setFocus();
 
-			assertTrue(firstControl.isFocusControl());
+			assertTrue(otherControl.isFocusControl());
 
-			UITestHelper.sendString(control.getDisplay(), "\t");
+			UITestHelper.sendString(otherControl.getDisplay(), "\t");
 
 			assertFalse(control.isFocusControl());
 
 			ridget.setFocusable(true);
-			UITestHelper.sendString(control.getDisplay(), "\t");
+
+			otherControl.setFocus();
+			UITestHelper.sendString(otherControl.getDisplay(), "\t");
 
 			assertTrue(control.isFocusControl());
+		}
+	}
+
+	public void testRequestFocus() throws Exception {
+
+		control.setFocus();
+		if (control.isFocusControl()) { // skip if control cannot receive focus
+			assertTrue(otherControl.setFocus());
+
+			assertFalse(control.isFocusControl());
+			assertFalse(ridget.hasFocus());
+
+			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
+			final List<FocusEvent> focusLostEvents = new ArrayList<FocusEvent>();
+			IFocusListener focusListener = new IFocusListener() {
+				public void focusGained(FocusEvent event) {
+					focusGainedEvents.add(event);
+				}
+
+				public void focusLost(FocusEvent event) {
+					focusLostEvents.add(event);
+				}
+			};
+			ridget.addFocusListener(focusListener);
+
+			ridget.requestFocus();
+
+			assertTrue(control.isFocusControl());
+			assertTrue(ridget.hasFocus());
+			assertEquals(1, focusGainedEvents.size());
+			assertEquals(ridget, focusGainedEvents.get(0).getNewFocusOwner());
+			assertEquals(0, focusLostEvents.size());
+
+			assertTrue(otherControl.setFocus());
+
+			assertFalse(control.isFocusControl());
+			assertFalse(ridget.hasFocus());
+			assertEquals(1, focusGainedEvents.size());
+			assertEquals(1, focusLostEvents.size());
+			assertEquals(ridget, focusLostEvents.get(0).getOldFocusOwner());
+
+			ridget.removeFocusListener(focusListener);
+
+			ridget.requestFocus();
+			assertTrue(otherControl.setFocus());
+
+			assertEquals(1, focusGainedEvents.size());
+			assertEquals(1, focusLostEvents.size());
 		}
 	}
 

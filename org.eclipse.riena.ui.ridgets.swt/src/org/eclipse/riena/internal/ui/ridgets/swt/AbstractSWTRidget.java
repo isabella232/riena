@@ -24,8 +24,7 @@ import org.eclipse.swt.widgets.Widget;
  */
 public abstract class AbstractSWTRidget extends AbstractRidget {
 
-	private static final FocusListener FOCUS_MANAGER = new FocusManager();
-
+	private FocusListener focusManager = new FocusManager();
 	private Control uiControl;
 	private boolean visible;
 	private boolean focusable;
@@ -36,11 +35,11 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 * Checks that the given uiControl is assignable to the the given type.
 	 * 
 	 * @param uiControl
-	 * 		a uiControl, may be null
+	 *            a uiControl, may be null
 	 * @param type
-	 * 		a class instance (non-null)
+	 *            a class instance (non-null)
 	 * @throws BindingException
-	 * 		if the uiControl is not of the given type
+	 *             if the uiControl is not of the given type
 	 */
 	public static void assertType(Object uiControl, Class<?> type) {
 		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
@@ -58,12 +57,13 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 
 	public void setUIControl(Object uiControl) {
 		checkUIControl(uiControl);
+		uninstallListeners();
 		unbindUIControl();
 		this.uiControl = (Control) uiControl;
 		updateVisible();
 		updateToolTip();
-		updateFocusable();
 		bindUIControl();
+		installListeners();
 	}
 
 	public Control getUIControl() {
@@ -94,7 +94,6 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	public final void setFocusable(boolean focusable) {
 		if (this.focusable != focusable) {
 			this.focusable = focusable;
-			updateFocusable();
 		}
 	}
 
@@ -131,14 +130,14 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 * Performs checks on the control about to be bound by this ridget.
 	 * </p>
 	 * <p>
-	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
-	 * type.
+	 * Implementors must make sure the given <tt>uiControl</tt> has the
+	 * expected type.
 	 * </p>
 	 * 
 	 * @param uiControl
-	 * 		a {@link Widget} instance or null
+	 *            a {@link Widget} instance or null
 	 * @throws BindingException
-	 * 		if the <tt>uiControl</tt> fails the check
+	 *             if the <tt>uiControl</tt> fails the check
 	 */
 	abstract protected void checkUIControl(Object uiControl);
 
@@ -165,6 +164,26 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 */
 	abstract protected void unbindUIControl();
 
+	/**
+	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
+	 * ridget.
+	 */
+	protected void installListeners() {
+		if (uiControl != null) {
+			uiControl.addFocusListener(focusManager);
+		}
+	}
+
+	/**
+	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
+	 * unbound from the ridget.
+	 */
+	protected void uninstallListeners() {
+		if (uiControl != null) {
+			uiControl.removeFocusListener(focusManager);
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -180,42 +199,46 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		}
 	}
 
-	private void updateFocusable() {
-		if (uiControl != null) {
-			// ensure the listener is only added once
-			uiControl.removeFocusListener(FOCUS_MANAGER);
-			if (!isFocusable()) {
-				uiControl.addFocusListener(FOCUS_MANAGER);
-			}
-		}
-	}
-
 	/**
-	 * Prevents the widget corresponding to this ridget from getting the UI
-	 * focus.
+	 * Focus listener that also prevents the widget corresponding to this ridget
+	 * from getting the UI focus when the ridget is not focusable.
 	 * 
 	 * @see AbstractSWTRidget#setFocusable(boolean).
 	 */
-	private final static class FocusManager extends FocusAdapter {
+	private final class FocusManager extends FocusAdapter {
 
 		public void focusGained(FocusEvent e) {
-			Control control = (Control) e.widget;
-			Composite parent = control.getParent();
-			Control[] tabList = parent.getTabList();
-			int i = findNextElement(control, tabList);
-			if (i != -1) {
-				Control nextFocusControl = tabList[i];
-				nextFocusControl.setFocus();
-			} else { // no suitable control found, try one level up
-				Composite pParent = parent.getParent();
-				if (pParent != null) {
-					tabList = pParent.getTabList();
-					i = findNextElement(parent, tabList);
-					if (i != -1) {
-						Control nextFocusControl = tabList[i];
-						nextFocusControl.setFocus();
+			if (focusable) {
+				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, AbstractSWTRidget.this));
+			} else {
+				Control control = (Control) e.widget;
+				Composite parent = control.getParent();
+				Control[] tabList = parent.getTabList();
+				int i = findNextElement(control, tabList);
+				if (i != -1) {
+					Control nextFocusControl = tabList[i];
+					nextFocusControl.setFocus();
+				} else { // no suitable control found, try one level up
+					Composite pParent = parent.getParent();
+					if (pParent != null) {
+						tabList = pParent.getTabList();
+						i = findNextElement(parent, tabList);
+						if (i != -1) {
+							Control nextFocusControl = tabList[i];
+							nextFocusControl.setFocus();
+						}
 					}
 				}
+			}
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.events.FocusEvent)
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (focusable) {
+				fireFocusLost(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(AbstractSWTRidget.this, null));
 			}
 		}
 
