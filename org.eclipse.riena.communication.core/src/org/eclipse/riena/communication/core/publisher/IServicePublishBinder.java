@@ -8,8 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.communication.publisher;
+package org.eclipse.riena.communication.core.publisher;
 
+import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -20,5 +21,7 @@ public interface IServicePublishBinder {
 	public abstract void publish(ServiceReference ref, String url, String protocol);
 
 	public abstract void unpublish(ServiceReference serviceReference);
+
+	public RemoteServiceDescription[] getAllServices();
 
 }

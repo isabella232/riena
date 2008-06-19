@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_IS_REMOTE;
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PROTOCOL;
-
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
@@ -34,7 +34,9 @@ public class SingleServicePublisher {
 
 	private IServicePublishBinder binder;
 
-	public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")";
+	// public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE +
+	// "=true)("
+	// + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
 	public SingleServicePublisher(String name) {
 		super();
@@ -44,27 +46,35 @@ public class SingleServicePublisher {
 	}
 
 	public SingleServicePublisher filter(String filter) {
+		Assert.isNotNull(filter);
 		this.filter = filter;
 		return this;
 	}
 
 	public SingleServicePublisher usingUrl(String url) {
+		Assert.isNotNull(url);
 		this.url = url;
 		return this;
 	}
 
 	public SingleServicePublisher withProtocol(String protocol) {
+		Assert.isNotNull(protocol);
 		this.protocol = protocol;
 		return this;
 	}
 
 	public void andStart(BundleContext context) {
 		this.context = context;
+		Assert.isNotNull(filter);
+		Assert.isNotNull(url);
+		Assert.isNotNull(protocol);
 
 		try {
-			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(null, FILTER_REMOTE);
-			for (ServiceReference ref : refs) {
-				publish(ref);
+			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(serviceName, filter);
+			if (refs != null) {
+				for (ServiceReference ref : refs) {
+					publish(ref);
+				}
 			}
 		} catch (InvalidSyntaxException e1) {
 			e1.printStackTrace();
@@ -72,17 +82,19 @@ public class SingleServicePublisher {
 
 		ServiceListener listener = new ServiceListener() {
 			public void serviceChanged(ServiceEvent event) {
-				if (event.getType() == ServiceEvent.REGISTERED) {
-					publish(event.getServiceReference());
-				} else {
-					if (event.getType() == ServiceEvent.UNREGISTERING) {
-						unpublish(event.getServiceReference());
+				if (event.getServiceReference().getProperty(Constants.OBJECTCLASS).equals(serviceName)) {
+					if (event.getType() == ServiceEvent.REGISTERED) {
+						publish(event.getServiceReference());
+					} else {
+						if (event.getType() == ServiceEvent.UNREGISTERING) {
+							unpublish(event.getServiceReference());
+						}
 					}
 				}
 			}
 		};
 		try {
-			Activator.getDefault().getContext().addServiceListener(listener, FILTER_REMOTE);
+			Activator.getDefault().getContext().addServiceListener(listener, filter);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}

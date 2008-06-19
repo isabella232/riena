@@ -16,10 +16,10 @@ import java.util.Map;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
+import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
-import org.eclipse.riena.communication.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.communication.publisher.ServicePublishBinder;
 import org.eclipse.riena.core.RienaActivator;
@@ -42,23 +42,19 @@ public class Activator extends RienaActivator {
 	private static Activator plugin;
 
 	/*
-	 * @see
-	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
-	 * )
+	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		
+
 		Activator.plugin = this;
 		logger = getLogger(Activator.class.getName());
-		
+
 		IServicePublishBinder binder = new ServicePublishBinder();
 		context.registerService(IServicePublishBinder.class.getName(), binder, null);
 		Inject.service(IServicePublisher.class.getName()).useRanking().into(binder).andStart(context);
 
-		
-		
-		Publish.allServices().filter("(&(riena.remote=true)(riena.protocol=*))").andStart(context); //$NON-NLS-1$
+		Publish.allServices().filter("(&(riena.remote=true)(riena.remote.protocol=*))").andStart(context); //$NON-NLS-1$
 
 		// dispatcher = new ServicePublishEventDispatcher(context);
 		// publisherInjector =
@@ -107,8 +103,7 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		context.removeServiceListener(updateNotifierRemoteService);

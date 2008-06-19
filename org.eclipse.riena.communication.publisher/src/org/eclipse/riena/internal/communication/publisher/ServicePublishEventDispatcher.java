@@ -35,6 +35,7 @@ import org.osgi.service.log.LogService;
  * @author Alexander Ziegler
  * @author Christian Campo
  * 
+ * @deprecated
  */
 public class ServicePublishEventDispatcher implements IServicePublishEventDispatcher {
 

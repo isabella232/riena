@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.eclipse.riena.internal.communication.publisher.ServiceHooksProxy;
@@ -26,6 +27,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
 /**
+ * The class publishes all services that are existing as life services in the
+ * OSGi Registry as web service endpoints.
  * 
  */
 public class ServicePublishBinder implements IServicePublishBinder {
@@ -86,9 +89,9 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.communication.publisher.IServicePublishBinder#publish
-	 * (org.osgi.framework.ServiceReference, java.lang.String, java.lang.String)
+	 * @see org.eclipse.riena.communication.publisher.IServicePublishBinder#publish
+	 *      (org.osgi.framework.ServiceReference, java.lang.String,
+	 *      java.lang.String)
 	 */
 	public void publish(ServiceReference ref, String url, String protocol) {
 		String[] interfaces = (String[]) ref.getProperty(Constants.OBJECTCLASS);
@@ -160,6 +163,14 @@ public class ServicePublishBinder implements IServicePublishBinder {
 
 		}
 
+	}
+
+	public RemoteServiceDescription[] getAllServices() {
+		RemoteServiceDescription[] result = new RemoteServiceDescription[rsDescs.size()];
+		synchronized (rsDescs) {
+			rsDescs.values().toArray(result);
+		}
+		return result;
 	}
 
 }

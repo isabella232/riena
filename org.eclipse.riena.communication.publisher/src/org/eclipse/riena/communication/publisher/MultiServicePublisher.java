@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_IS_REMOTE;
 import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PATH;
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PROTOCOL;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
 import org.eclipse.riena.core.injector.Inject;
@@ -36,7 +36,8 @@ public class MultiServicePublisher {
 
 	private IServicePublishBinder binder;
 
-	public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")";
+	// public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)("
+	// + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
 	public MultiServicePublisher() {
 		super();
@@ -45,25 +46,23 @@ public class MultiServicePublisher {
 	}
 
 	public MultiServicePublisher filter(String filter) {
+		Assert.isNotNull(filter);
 		this.filter = filter;
 		return this;
 	}
 
-	public MultiServicePublisher usingUrl(String url) {
-		this.url = url;
-		return this;
-	}
-
 	public MultiServicePublisher withProtocol(String protocol) {
+		Assert.isNotNull(protocol);
 		this.protocol = protocol;
 		return this;
 	}
 
 	public void andStart(BundleContext context) {
+		Assert.isNotNull(filter);
 		this.context = context;
 
 		try {
-			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(null, FILTER_REMOTE);
+			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(null, filter);
 			if (refs != null) {
 				for (ServiceReference ref : refs) {
 					publish(ref);
@@ -85,7 +84,7 @@ public class MultiServicePublisher {
 			}
 		};
 		try {
-			Activator.getDefault().getContext().addServiceListener(listener, FILTER_REMOTE);
+			Activator.getDefault().getContext().addServiceListener(listener, filter);
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
@@ -102,10 +101,15 @@ public class MultiServicePublisher {
 	}
 
 	private void publish(ServiceReference serviceReference) {
-		String protocol = CommunicationUtil.accessProperty(serviceReference
-				.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
+		String usedProtocol;
+		if (protocol != null) {
+			usedProtocol = protocol;
+		} else {
+			usedProtocol = CommunicationUtil.accessProperty(serviceReference
+					.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
+		}
 		String path = CommunicationUtil.accessProperty(serviceReference.getProperty(PROP_REMOTE_PATH), null);
-		binder.publish(serviceReference, path, protocol);
+		binder.publish(serviceReference, path, usedProtocol);
 
 	}
 

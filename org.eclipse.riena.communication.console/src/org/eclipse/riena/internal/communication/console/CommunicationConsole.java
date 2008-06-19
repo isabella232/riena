@@ -18,10 +18,10 @@ import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
-import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
+import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 
 public class CommunicationConsole implements CommandProvider {
-	IServicePublishEventDispatcher servicePublisher;
+	IServicePublishBinder servicePublisher;
 	IRemoteServiceRegistry serviceRegistry;
 
 	public String getHelp() {
@@ -89,7 +89,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param servicePublisher
 	 *            the servicePublisher to bind
 	 */
-	public void bind(IServicePublishEventDispatcher servicePublisher) {
+	public void bind(IServicePublishBinder servicePublisher) {
 		this.servicePublisher = servicePublisher;
 	}
 
@@ -97,7 +97,7 @@ public class CommunicationConsole implements CommandProvider {
 	 * @param servicePublisher
 	 *            the servicePublisher to unbind
 	 */
-	public void unbind(IServicePublishEventDispatcher servicePublisher) {
+	public void unbind(IServicePublishBinder servicePublisher) {
 		this.servicePublisher = null;
 	}
 
