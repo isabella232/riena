@@ -10,9 +10,47 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.marker;
 
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+
 /**
- *
+ * Visualizes certain types of message markers of certain Ridgets.
+ * 
+ * @see org.eclipse.riena.ui.core.marker.IMessageMarker
  */
 public interface IMessageMarkerViewer {
+
+	/**
+	 * Adds a Ridget to the list of Ridgets being observed for message markers.
+	 * 
+	 * @param markableRidget
+	 *            A Ridget whose message markers should be visualized.
+	 */
+	void addRidget(IMarkableRidget markableRidget);
+
+	/**
+	 * Removes a Ridget from the list of Ridgets being observed for message
+	 * markers.
+	 * 
+	 * @param markableRidget
+	 *            A Ridget whose message markers should be visualized no more.
+	 */
+	void removeRidget(IMarkableRidget markableRidget);
+
+	/**
+	 * Adds a type of marker to the list of markers to be visualized.
+	 * 
+	 * @param markerClass
+	 *            A type of marker to visualize.
+	 */
+	void addMarkerType(Class<? extends IMessageMarker> markerClass);
+
+	/**
+	 * Removed a type of marker to the list of markers to be visualized.
+	 * 
+	 * @param markerClass
+	 *            A type of marker to visualize no more.
+	 */
+	void removeMarkerType(Class<? extends IMessageMarker> markerClass);
 
 }
