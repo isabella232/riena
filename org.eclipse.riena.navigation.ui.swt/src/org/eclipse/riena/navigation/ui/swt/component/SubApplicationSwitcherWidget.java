@@ -28,40 +28,82 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * Control to switch between sub-applications.
+ */
 public class SubApplicationSwitcherWidget extends Canvas {
 
 	private List<SubApplicationItem> items;
-	private IApplicationModel applicationModel;
+	private TabSelector tabSelector;
+	private PaintDelegation paintDelegation;
 
+	/**
+	 * Creates a new widget.
+	 * 
+	 * @param parent -
+	 *            a composite control which will be the parent of the new
+	 *            instance
+	 * @param style -
+	 *            the style of control to construct
+	 * @param applicationModel -
+	 *            the model of the application
+	 */
 	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationModel applicationModel) {
 
 		super(parent, style | SWT.DOUBLE_BUFFERED);
-		this.applicationModel = applicationModel;
 		items = new ArrayList<SubApplicationItem>();
-		registerItems();
+		registerItems(applicationModel);
 
-		addMouseListener(new TabSelector());
-		addPaintListener(new PaintListener() {
+		addListeners();
 
-			/**
-			 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-			 */
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				getRenderer().setBounds(getParent().getBounds());
-				getRenderer().setItems(getItems());
-				getRenderer().paint(gc, null);
-			}
-
-		});
 	}
 
 	/**
-	 * Prototype for riena subApplicationTabs
+	 * Adds listeners to the widget.
+	 */
+	private void addListeners() {
+		tabSelector = new TabSelector();
+		addMouseListener(tabSelector);
+		paintDelegation = new PaintDelegation();
+		addPaintListener(paintDelegation);
+	}
+
+	/**
+	 * Removes all the listeners form the widget.
+	 */
+	private void removeListeners() {
+		removePaintListener(paintDelegation);
+		removeMouseListener(tabSelector);
+	}
+
+	/**
+	 * This listener pay attention that this control is paint correct.
+	 */
+	private class PaintDelegation implements PaintListener {
+
+		/**
+		 * Passes the bounds of the parent and the sub-application items to the
+		 * renderer and paints the widget.
+		 * 
+		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
+		 */
+		public void paintControl(PaintEvent e) {
+			GC gc = e.gc;
+			getRenderer().setBounds(getParent().getBounds());
+			getRenderer().setItems(getItems());
+			getRenderer().paint(gc, null);
+		}
+
+	}
+
+	/**
+	 * After the selection of a sub-application it will be activated.
 	 */
 	private class TabSelector extends MouseAdapter {
 
 		/**
+		 * Activates the selected sub-application
+		 * 
 		 * @see org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
 		@Override
@@ -96,13 +138,25 @@ public class SubApplicationSwitcherWidget extends Canvas {
 
 	}
 
+	/**
+	 * Returns the list of every registered item of a sub-application.
+	 * 
+	 * @return list of items.
+	 */
 	private List<SubApplicationItem> getItems() {
 		return items;
 	}
 
-	private void registerItems() {
+	/**
+	 * Creates for every sub-application of the given application an item and
+	 * registers it.
+	 * 
+	 * @param applicationModel -
+	 *            model of the application
+	 */
+	private void registerItems(IApplicationModel applicationModel) {
 
-		List<ISubApplication> subApps = getApplicationModel().getChildren();
+		List<ISubApplication> subApps = applicationModel.getChildren();
 		for (ISubApplication subApp : subApps) {
 			SubApplicationItem item = new SubApplicationItem(this, subApp);
 			getItems().add(item);
@@ -110,13 +164,23 @@ public class SubApplicationSwitcherWidget extends Canvas {
 
 	}
 
-	private IApplicationModel getApplicationModel() {
-		return applicationModel;
-	}
-
+	/**
+	 * Returns the renderer of the switcher of the sub-applications.
+	 * 
+	 * @return renderer of switcher of sub-applications
+	 */
 	private SubApplicationSwitcherRenderer getRenderer() {
 		return (SubApplicationSwitcherRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER);
+	}
+
+	/**
+	 * @see org.eclipse.swt.widgets.Widget#dispose()
+	 */
+	@Override
+	public void dispose() {
+		removeListeners();
+		super.dispose();
 	}
 
 }

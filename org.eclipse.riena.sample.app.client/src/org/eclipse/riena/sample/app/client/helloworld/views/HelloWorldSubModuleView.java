@@ -11,7 +11,6 @@
 package org.eclipse.riena.sample.app.client.helloworld.views;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SWTBindingPropertyLocator;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloWorldSubModuleController;
 import org.eclipse.swt.SWT;
@@ -44,8 +43,7 @@ public class HelloWorldSubModuleView extends SubModuleNodeView<HelloWorldSubModu
 
 		FormLayout layout = new FormLayout();
 		parent.setLayout(layout);
-		helloLabel.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "labelRidget");
-		addUIControl(helloLabel);
+		addUIControl(helloLabel, "labelRidget");
 
 		// layout
 		FormData data = new FormData();

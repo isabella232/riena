@@ -6,6 +6,7 @@ import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
@@ -108,7 +109,7 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		if (getParentTreeItem() != null) {
 			treeItem = new TreeItem(getParentTreeItem(), SWT.BORDER);
 			if (getParentTreeItem().getItemCount() == 1) {
-				updateFolderImage(getParentTreeItem(), false);
+				updateItemImage(getParentTreeItem());
 			}
 		} else {
 			treeItem = new TreeItem(getTree(), SWT.BORDER);
@@ -117,14 +118,25 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		treeItem.setForeground(lnf.getColor(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOREGROUND));
 		treeItem.setBackground(lnf.getColor(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_BACKGROUND));
 		treeItem.setData(getModelNode());
+		updateItemImage(treeItem);
+	}
+
+	/**
+	 * Sets the image of the sub-module for the given tree item
+	 * 
+	 * @param item -
+	 *            tree item
+	 */
+	private void setSubModuleImage(TreeItem item) {
+
 		Image image = null;
-		// if (getModelNode().getIcon() != null) {
-		// image = ImageUtil.getImage(getModelNode().getIcon());
-		// }
-		if (image == null) {
-			image = lnf.getImage(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON);
+		if (getModelNode().getIcon() != null) {
+			image = ImageUtil.getImage(getModelNode().getIcon());
+			if (image == null) {
+				item.setImage(image);
+			}
 		}
-		treeItem.setImage(image);
+
 	}
 
 	public void nodeSelected() {
@@ -142,17 +154,34 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 	 * @param item -
 	 *            item to be updated.
 	 */
-	private void updateFolderImage(TreeItem item, boolean expanded) {
+	public void updateItemImage(TreeItem item) {
+
+		updateItemImage(item, item.getExpanded());
+
+	}
+
+	/**
+	 * Updates the image of a folder in the tree.
+	 * 
+	 * @param item -
+	 *            item to be updated.
+	 */
+	public void updateItemImage(TreeItem item, boolean expanded) {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
+		String folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON;
 		if (item.getItemCount() > 0) {
-			String folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON;
+			folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON;
 			if (expanded) {
 				folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON;
 			}
-			Image image = lnf.getImage(folderIcon);
-			item.setImage(image);
+		} else {
+			folderIcon = ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON;
 		}
+		Image image = lnf.getImage(folderIcon);
+		item.setImage(image);
+
+		// setSubModuleImage(item);
 
 	}
 
@@ -166,14 +195,14 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		 * @see org.eclipse.swt.events.TreeListener#treeCollapsed(org.eclipse.swt.events.TreeEvent)
 		 */
 		public void treeCollapsed(TreeEvent e) {
-			updateFolderImage((TreeItem) e.item, false);
+			updateItemImage((TreeItem) e.item, false);
 		}
 
 		/**
 		 * @see org.eclipse.swt.events.TreeListener#treeExpanded(org.eclipse.swt.events.TreeEvent)
 		 */
 		public void treeExpanded(TreeEvent e) {
-			updateFolderImage((TreeItem) e.item, true);
+			updateItemImage((TreeItem) e.item, true);
 		}
 
 	}

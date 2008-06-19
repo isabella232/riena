@@ -17,6 +17,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+/**
+ * An item of a module, used by the module group.
+ */
 public class ModuleItem {
 
 	private Composite parent;
@@ -29,19 +32,52 @@ public class ModuleItem {
 
 	private SubModuleNode activeSubModule;
 
+	/**
+	 * Constructs a new instance of this class.
+	 * 
+	 * @param parent -
+	 *            module group which will be the parent of the new instance
+	 * @param moduleCmp
+	 */
 	public ModuleItem(Composite parent, ModuleNavigationComponent moduleCmp) {
+
 		this.parent = parent;
 		this.moduleCmp = moduleCmp;
 		pressed = false;
 		hover = false;
+
 		construct(parent);
+
 	}
 
+	private void construct(Composite parent) {
+		body = new Composite(parent, SWT.None);
+		body.setLayout(new FillLayout());
+		createSubModuleTree();
+	}
+
+	/**
+	 * Creates the tree for the sub-modules.
+	 */
 	protected void createSubModuleTree() {
-		this.subModuleTree = new Tree(getBody(), SWT.NONE);
-		this.subModuleTree.setBackground(LnfManager.getLnf().getColor("SubModuleTree.background")); //$NON-NLS-1$
-		this.subModuleTree.setLinesVisible(false);
-		this.subModuleTree.addListener(SWT.Selection, new Listener() {
+
+		subModuleTree = new Tree(getBody(), SWT.NONE);
+		subModuleTree.setLinesVisible(false);
+
+		addListeners();
+
+		new SubModuleToolTip(subModuleTree);
+
+		redraw();
+
+	}
+
+	/**
+	 * Adds listeners to the sub-module tree.
+	 */
+	private void addListeners() {
+
+		getTree().addListener(SWT.Selection, new Listener() {
 
 			public void handleEvent(Event event) {
 				TreeItem[] selection = getTree().getSelection();
@@ -51,7 +87,7 @@ public class ModuleItem {
 
 		});
 
-		this.subModuleTree.addListener(SWT.Paint, new Listener() {
+		getTree().addListener(SWT.Paint, new Listener() {
 
 			public void handleEvent(Event event) {
 				onTreePaint(event.gc);
@@ -59,7 +95,7 @@ public class ModuleItem {
 
 		});
 
-		this.subModuleTree.addListener(SWT.Expand, new Listener() {
+		getTree().addListener(SWT.Expand, new Listener() {
 
 			public void handleEvent(Event event) {
 				handleExpandCollapse(event, true);
@@ -67,16 +103,13 @@ public class ModuleItem {
 
 		});
 
-		this.subModuleTree.addListener(SWT.Collapse, new Listener() {
+		getTree().addListener(SWT.Collapse, new Listener() {
 
 			public void handleEvent(Event event) {
 				handleExpandCollapse(event, false);
 			}
 
 		});
-
-		new SubModuleToolTip(subModuleTree);
-
 	}
 
 	private void handleExpandCollapse(Event event, boolean expand) {
@@ -98,34 +131,32 @@ public class ModuleItem {
 		return moduleCmp.getModelNode();
 	}
 
-	private void construct(Composite parent) {
-		body = new Composite(parent, SWT.None);
-		body.setLayout(new FillLayout());
-		createBodyContent(parent);
-	}
-
-	protected void createBodyContent(final Composite parent) {
-		createSubModuleTree();
-		// getTree().setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-	}
-
 	public Composite getBody() {
 		return body;
 	}
 
+	/**
+	 * Returns the height of the open item.
+	 * 
+	 * @return height.
+	 */
 	public int getOpenHeight() {
 		IModuleNode moduleNode = getModuleNode();
 		int itemHeight = getTree().getItemHeight();
 		return moduleNode.calcDepth() * itemHeight + 1;
 	}
 
+	/**
+	 * Returns the tree with the sub-module items.
+	 * 
+	 * @return tree
+	 */
 	public Tree getTree() {
 		return subModuleTree;
 	}
 
 	/**
-	 * Clipps (if necessary) the text of the given tree item and all child
-	 * items.
+	 * Clips (if necessary) the text of the given tree item and all child items.
 	 * 
 	 * @param gc
 	 * @param item -
@@ -148,7 +179,7 @@ public class ModuleItem {
 	}
 
 	/**
-	 * Clipps (if necessary) the text of the given tree item.
+	 * Clips (if necessary) the text of the given tree item.
 	 * 
 	 * @param gc
 	 * @param item -
@@ -173,7 +204,7 @@ public class ModuleItem {
 	}
 
 	/**
-	 * Clipps (if necessary) the text of the tree items and hiddes the scroll
+	 * Clips (if necessary) the text of the tree items and hides the scroll
 	 * bars.
 	 * 
 	 * @param gc
@@ -190,15 +221,22 @@ public class ModuleItem {
 	}
 
 	/**
-	 * @return the pressed
+	 * Returns if the module item is pressed or not.
+	 * 
+	 * @param pressed -
+	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
 	public boolean isPressed() {
 		return pressed;
 	}
 
 	/**
-	 * @param pressed
-	 *            the pressed to set
+	 * Sets if the module item is pressed or not.<br>
+	 * If the given state differs from the current state, the parent of item is
+	 * redrawn.
+	 * 
+	 * @param pressed -
+	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
 	public void setPressed(boolean pressed) {
 		if (this.pressed != pressed) {
@@ -210,15 +248,23 @@ public class ModuleItem {
 	}
 
 	/**
-	 * @return the hover
+	 * Returns if the module item is highlighted, because the mouse hovers over
+	 * the item.
+	 * 
+	 * @return true, if mouse over the module; otherwise false.
 	 */
 	public boolean isHover() {
 		return hover;
 	}
 
 	/**
-	 * @param hover
-	 *            the hover to set
+	 * Sets if the module item is highlighted, because the mouse hovers over the
+	 * item.<br>
+	 * If the given hover state differs from the current state, the parent of
+	 * item is redrawn.
+	 * 
+	 * @param hover -
+	 *            true, if mouse over the module; otherwise false.
 	 */
 	public void setHover(boolean hover) {
 		if (this.hover != hover) {
@@ -254,6 +300,13 @@ public class ModuleItem {
 	 */
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
+	}
+
+	/**
+	 * Redraws the tree with the sub-module items.
+	 */
+	public void redraw() {
+		subModuleTree.setBackground(LnfManager.getLnf().getColor("SubModuleTree.background")); //$NON-NLS-1$
 	}
 
 }

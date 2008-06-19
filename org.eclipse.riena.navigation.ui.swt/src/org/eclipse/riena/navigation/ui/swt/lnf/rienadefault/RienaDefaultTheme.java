@@ -59,12 +59,13 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR, new ColorLnfResource(255, 207, 32));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR, new ColorLnfResource(255, 176, 1));
 
-		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BACKGROUND, getPrimaryBackground());
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.NAVIGATION_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND, getPrimaryBackground());
-		table.put(ILnfKeyConstants.SUB_APPLICATION_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.SUB_MODULE_BACKGROUND, getPrimaryBackground());
 
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND, getPrimaryForeground());
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132, 191));
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(255,
 				255, 255));

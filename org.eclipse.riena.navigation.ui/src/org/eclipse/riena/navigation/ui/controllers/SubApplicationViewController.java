@@ -76,11 +76,11 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 	 *            the navigationTree to set
 	 */
 	public void setNavigationTree(INavigationTreeRidget pNavigationTree) {
-		if (navigationTree != null) {
-			navigationTree.removeListener(navigationTreeRidgetListener);
+		if (getNavigationTree() != null) {
+			getNavigationTree().removeListener(navigationTreeRidgetListener);
 		}
 		this.navigationTree = pNavigationTree;
-		navigationTree.addListener(navigationTreeRidgetListener);
+		getNavigationTree().addListener(navigationTreeRidgetListener);
 	}
 
 	private class NavigationTreeRidgetListener extends NavigationTreeRidgetAdapter {
@@ -101,7 +101,9 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		getNavigationTree().showRoot(getNavigationNode());
+		if (getNavigationTree() != null) {
+			getNavigationTree().showRoot(getNavigationNode());
+		}
 	}
 
 	private class SubModuleNodeListener extends SubModuleNodeAdapter {
@@ -112,7 +114,9 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		@Override
 		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			navigationTree.childAdded(childAdded);
+			if (getNavigationTree() != null) {
+				getNavigationTree().childAdded(childAdded);
+			}
 		}
 
 	}
@@ -152,7 +156,9 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		@Override
 		public void childAdded(ISubApplication source, IModuleGroupNode childAdded) {
 			super.childAdded(source, childAdded);
-			navigationTree.childAdded(childAdded);
+			if (getNavigationTree() != null) {
+				getNavigationTree().childAdded(childAdded);
+			}
 		}
 
 	}
@@ -165,7 +171,9 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		@Override
 		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			navigationTree.childAdded(childAdded);
+			if (getNavigationTree() != null) {
+				getNavigationTree().childAdded(childAdded);
+			}
 		}
 
 	}
@@ -179,7 +187,9 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode childAdded) {
 			super.childAdded(source, childAdded);
-			navigationTree.childAdded(childAdded);
+			if (getNavigationTree() != null) {
+				getNavigationTree().childAdded(childAdded);
+			}
 		}
 
 	}

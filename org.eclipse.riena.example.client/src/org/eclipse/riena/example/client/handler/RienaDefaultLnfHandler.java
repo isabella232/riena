@@ -5,7 +5,11 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.navigation.ui.swt.views.NavigationTreeViewPart;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /*******************************************************************************
@@ -31,6 +35,16 @@ public class RienaDefaultLnfHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		LnfManager.setLnf(getNewLnf());
+
+		IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getViewReferences();
+		for (IViewReference viewReference : viewRefs) {
+			IViewPart viewPart = viewReference.getView(true);
+			if (viewPart instanceof NavigationTreeViewPart) {
+				((NavigationTreeViewPart) viewPart).rebuild();
+				break;
+			}
+		}
 
 		Shell shell = HandlerUtil.getActiveShell(event);
 		shell.setRedraw(false);

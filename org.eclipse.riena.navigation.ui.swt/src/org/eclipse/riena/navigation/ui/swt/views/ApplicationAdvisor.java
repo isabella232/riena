@@ -24,12 +24,18 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 		this.controller = controller;
 	}
 
+	/**
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor(org.eclipse.ui.application.IWorkbenchWindowConfigurer)
+	 */
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		TitlelessStackPresentationFactory workbenchPresentationFactory = new TitlelessStackPresentationFactory();
 		configurer.setPresentationFactory(workbenchPresentationFactory);
 		return new ApplicationViewAdvisor(configurer, controller);
 	}
 
+	/**
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
+	 */
 	public String getInitialWindowPerspectiveId() {
 		return null;
 	}

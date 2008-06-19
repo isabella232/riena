@@ -15,7 +15,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * 
+ * An item of a sub-application, used by the sub-application switcher.
  */
 public class SubApplicationItem {
 
@@ -23,6 +23,15 @@ public class SubApplicationItem {
 	private ISubApplication subApplicationNode;
 	private Rectangle bounds;
 
+	/**
+	 * Constructs a new instance of this class.
+	 * 
+	 * @param parent -
+	 *            switcher for sub-applications which will be the parent of the
+	 *            new instance
+	 * @param subApplicationNode -
+	 *            node of the sub-application (model)
+	 */
 	public SubApplicationItem(Composite parent, ISubApplication subApplicationNode) {
 		this.parent = parent;
 		this.subApplicationNode = subApplicationNode;
@@ -32,6 +41,7 @@ public class SubApplicationItem {
 	 * Disposes this sub application item.
 	 */
 	public void dispose() {
+		// nothing to do
 	}
 
 	/**
@@ -42,11 +52,10 @@ public class SubApplicationItem {
 	}
 
 	/**
-	 * @param subApplicationNode
-	 *            the subApplicationNode to set
+	 * @return the parent
 	 */
-	public void setSubApplicationNode(ISubApplication subApplicationNode) {
-		this.subApplicationNode = subApplicationNode;
+	public Composite getParent() {
+		return parent;
 	}
 
 	/**

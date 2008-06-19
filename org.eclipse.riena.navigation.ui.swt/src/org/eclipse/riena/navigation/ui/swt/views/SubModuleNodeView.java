@@ -23,7 +23,7 @@ import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager.SwtViewId;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;

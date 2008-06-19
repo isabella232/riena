@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ModuleGroupRenderer;
@@ -25,26 +24,48 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * Control of one module group.
+ */
 public class ModuleGroupWidget extends Canvas {
 
-	private List<ModuleItem> items;
+	/**
+	 * Gap between to module groups.
+	 */
+	private static final int MODULE_GROUP_GAP = 3;
 
+	private List<ModuleItem> items;
 	private IModuleGroupNode moduleGroupNode;
 	private ModuleItem openItem;
-
 	private PaintDelegation paintDelegation;
-
 	private SelectionListener selectionListener;
 
+	/**
+	 * Creates a new widget.
+	 * 
+	 * @param parent -
+	 *            a composite control which will be the parent of the new
+	 *            instance
+	 * @param style -
+	 *            the style of control to construct
+	 * @param moduleGroupNode -
+	 *            node of the module group
+	 */
 	public ModuleGroupWidget(Composite parent, int style, IModuleGroupNode moduleGroupNode) {
+
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		this.moduleGroupNode = moduleGroupNode;
 		items = new ArrayList<ModuleItem>();
+
 		addListeners();
 		new ModuleGroupToolTip(this);
+
 	}
 
-	protected void addListeners() {
+	/**
+	 * Adds listeners to the widget.
+	 */
+	private void addListeners() {
 		paintDelegation = new PaintDelegation();
 		addPaintListener(paintDelegation);
 		selectionListener = new SelectionListener();
@@ -53,6 +74,9 @@ public class ModuleGroupWidget extends Canvas {
 		addMouseMoveListener(selectionListener);
 	}
 
+	/**
+	 * Removes all the listeners form the widget.
+	 */
 	private void removeListeners() {
 		removePaintListener(paintDelegation);
 		removeMouseListener(selectionListener);
@@ -61,47 +85,50 @@ public class ModuleGroupWidget extends Canvas {
 	}
 
 	public int calcBounds(int hint) {
+
 		Point p = computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, hint);
-		fd.left = new FormAttachment(0, 10);
+		fd.left = new FormAttachment(0, 0);
 		hint += p.y;
 		fd.width = p.x;
 		fd.bottom = new FormAttachment(0, hint);
 		setLayoutData(fd);
 		layout();
 		update();
-		hint += 3;
+		hint += MODULE_GROUP_GAP;
 		return hint;
+
 	}
 
+	/**
+	 * Opens the given item.
+	 * 
+	 * @param item -
+	 *            item to open
+	 */
 	protected void openItem(ModuleItem item) {
+
 		hidePrevious();
 		if (item != openItem) {
 			openItem = item;
 		} else if (allowsDeactivate()) {
 			openItem = null;
 		}
-
 		redraw();
-		// wrong place???
-		item.getModuleNode().activate();
-	}
 
-	protected void selectActive() {
-		if (openItem != null) {
-			ISubModuleNode sm = openItem.getSelection();
-			if (sm != null) {
-				sm.activate();
-			}
-		}
+		item.getModuleNode().activate();
+
 	}
 
 	protected boolean allowsDeactivate() {
 		return false;
 	}
 
-	protected void hidePrevious() {
+	/**
+	 * Hides the current open item.
+	 */
+	private void hidePrevious() {
 		if (openItem != null) {
 			openItem.getBody().setBounds(0, 0, 0, 0);
 			openItem.getBody().setVisible(false);
@@ -157,27 +184,28 @@ public class ModuleGroupWidget extends Canvas {
 		return items;
 	}
 
-	protected void onPaint(PaintEvent e) {
-
-		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
-		getRenderer().setItems(getItems());
-		Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
-		getRenderer().setBounds(0, 0, size.x, size.y);
-		getRenderer().paint(e.gc, getModuleGroupNode());
-
-	}
-
-	protected void registerItem(ModuleItem navigationItem) {
-		getItems().add(navigationItem);
+	/**
+	 * Adds the given item and redraws the widget of the module group.
+	 * 
+	 * @param navigationItem
+	 */
+	protected void registerItem(ModuleItem item) {
+		getItems().add(item);
 		redraw();
 	}
 
-	protected void unregisterItem(ModuleItem navigationItem) {
-		getItems().remove(navigationItem);
-		if (navigationItem == openItem) {
+	/**
+	 * Removes the given item and redraws the widget of the module group.<br>
+	 * 
+	 * 
+	 * @param navigationItem
+	 */
+	protected void unregisterItem(ModuleItem item) {
+		getItems().remove(item);
+		if (item == openItem) {
 			closeCurrent();
 		}
-		navigationItem.getBody().dispose();
+		item.getBody().dispose();
 		redraw();
 	}
 
@@ -195,6 +223,9 @@ public class ModuleGroupWidget extends Canvas {
 
 	}
 
+	/**
+	 * Closes the current item. (Hides the tree with the sub-module nodes)
+	 */
 	public void closeCurrent() {
 		if (openItem != null) {
 			hidePrevious();
@@ -204,6 +235,11 @@ public class ModuleGroupWidget extends Canvas {
 
 	}
 
+	/**
+	 * Returns the renderer of the module group.
+	 * 
+	 * @return module group renderer
+	 */
 	private ModuleGroupRenderer getRenderer() {
 		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
 	}
@@ -341,10 +377,22 @@ public class ModuleGroupWidget extends Canvas {
 
 	}
 
+	/**
+	 * This listener pay attention that this control is paint correct.
+	 */
 	private class PaintDelegation implements PaintListener {
 
+		/**
+		 * Computes the size of the widget of the module group and paints it.
+		 * 
+		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
+		 */
 		public void paintControl(PaintEvent e) {
-			onPaint(e);
+			setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
+			getRenderer().setItems(getItems());
+			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
+			getRenderer().setBounds(0, 0, size.x, size.y);
+			getRenderer().paint(e.gc, getModuleGroupNode());
 		}
 	}
 

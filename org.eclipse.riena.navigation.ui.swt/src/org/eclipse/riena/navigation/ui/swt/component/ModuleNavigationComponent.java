@@ -7,6 +7,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNodeAdapter;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeItem;
 
 public class ModuleNavigationComponent extends AbstractNavigationComponent<IModuleNode> {
 
@@ -104,6 +105,29 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 
 	protected void activateIn(ModuleGroupWidget groupUI) {
 		groupUI.openItem(this.ui);
+	}
+
+	/**
+	 * Rebuilds the tree items of the sub-modules.
+	 */
+	public void rebuild() {
+		TreeItem[] treeItems = getModuleItem().getTree().getItems();
+		updateItems(treeItems);
+	}
+
+	private void updateItems(TreeItem[] treeItems) {
+
+		for (TreeItem treeItem : treeItems) {
+			ISubModuleNode subNode = (ISubModuleNode) treeItem.getData();
+			SubModuleNavigationComponent subCmp = subModuleNodeComponents.get(subNode);
+			if (subCmp != null) {
+				subCmp.updateItemImage(treeItem);
+			}
+			if (treeItem.getItemCount() > 0) {
+				updateItems(treeItem.getItems());
+			}
+		}
+
 	}
 
 }

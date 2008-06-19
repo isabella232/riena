@@ -3,7 +3,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.riena.example.client.controllers.SharedViewDemo;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SWTBindingPropertyLocator;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.swt.SWT;
@@ -38,8 +37,7 @@ public class SharedViewDemoView extends SubModuleNodeView<SharedViewDemo> {
 		parent.setLayout(layout);
 		ILabelRidget labelFacade = new LabelRidget();
 		labelFacade.setUIControl(helloLabel);
-		helloLabel.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "labelFacade"); //$NON-NLS-1$
-		addUIControl(helloLabel);
+		addUIControl(helloLabel, "labelFacade"); //$NON-NLS-1$
 		// getController().setLabelFacade(labelFacade);
 
 		Label someText = new Label(parent, SWT.LEFT);
@@ -57,8 +55,7 @@ public class SharedViewDemoView extends SubModuleNodeView<SharedViewDemo> {
 		fd.width = FIELD_WIDTH;
 		someData.setLayoutData(fd);
 		// ta = new TextFieldRidget(someData);
-		someData.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "textFacade"); //$NON-NLS-1$
-		addUIControl(someData);
+		addUIControl(someData, "textFacade"); //$NON-NLS-1$
 		// getController().setTextFacade(ta);
 		// layout
 		FormData data = new FormData();

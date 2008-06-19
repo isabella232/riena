@@ -14,12 +14,12 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationPerspectiveFactory"
             id="subapplication.1"
             name="subapplication.1">
       </perspective>
       <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationPerspectiveFactory"
             id="subapplication.2"
             name="subapplication.2">
       </perspective>
@@ -145,8 +145,8 @@
             name="Example">
       </command>
       <command
-            id="org.eclipse.riena.example.client.customerCommand"
-            name="Customer">
+            id="org.eclipse.riena.example.client.certainViewCommand"
+            name="Certain View">
       </command>
    </extension>
    <extension
@@ -184,11 +184,11 @@
                label="Context menu"
                mnemonic="x">
             <command
-                  commandId="org.eclipse.riena.example.client.customerCommand"
+                  commandId="org.eclipse.riena.example.client.certainViewCommand"
                   hoverIcon="icons/ledlightgreen.png"
                   icon="icons/ledred.png"
-                  id="org.eclipse.riena.example.client.customerMenuItem"
-                  mnemonic="C">
+                  id="org.eclipse.riena.example.client.certainViewMenuItem"
+                  mnemonic="V">
             </command>
          </menu>
       </menuContribution>
@@ -208,8 +208,8 @@
             commandId="org.eclipse.riena.example.client.exampleLnfCommand">
       </handler>
       <handler
-            class="org.eclipse.riena.example.client.handler.CustomerHandler"
-            commandId="org.eclipse.riena.example.client.customerCommand">
+            class="org.eclipse.riena.example.client.handler.CertainViewHandler"
+            commandId="org.eclipse.riena.example.client.certainViewCommand">
          <enabledWhen>
             <with
                   variable="activePartId">

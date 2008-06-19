@@ -33,7 +33,6 @@ import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.osgi.framework.Bundle;
@@ -42,11 +41,6 @@ import org.osgi.framework.Bundle;
  * Define the model of the application
  */
 public class SwtExampleApplication extends SwtApplication {
-
-	public SwtExampleApplication() {
-		super();
-		LnfManager.setLnf(new ExampleLnf());
-	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#

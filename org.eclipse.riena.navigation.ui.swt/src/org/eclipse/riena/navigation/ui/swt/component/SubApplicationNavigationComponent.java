@@ -8,15 +8,12 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.model.SubApplicationAdapter;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This class manages the navigation of a SubApplicationNode.
  */
-
 public class SubApplicationNavigationComponent extends AbstractNavigationComponent<ISubApplication> {
 
 	private Map<IModuleGroupNode, ModuleGroupNavigationComponent> moduleGroupComponents;
@@ -114,7 +111,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 
 	public void sizeNavigation() {
 		ISubApplication root = getModelNode();
-		int yPos = 10;
+		int yPos = 0;
 		for (IModuleGroupNode moduleGroup : root.getChildren()) {
 			yPos = moduleGroupComponents.get(moduleGroup).recalculate(yPos);
 		}
@@ -123,7 +120,6 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 
 	@Override
 	protected void initUI() {
-		getParentComposite().setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_APPLICATION_BACKGROUND)); //$NON-NLS-1$
 		FormLayout formLayout = new FormLayout();
 		getParentComposite().setLayout(formLayout);
 	}
@@ -131,6 +127,17 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	@Override
 	Composite getUI() {
 		return null;
+	}
+
+	/**
+	 * Rebuilds the tree items of the sub-modules.
+	 */
+	public void rebuild() {
+		ISubApplication root = getModelNode();
+		for (IModuleGroupNode moduleGroup : root.getChildren()) {
+			moduleGroupComponents.get(moduleGroup).rebuild();
+		}
+
 	}
 
 }

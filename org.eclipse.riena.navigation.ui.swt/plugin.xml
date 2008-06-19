@@ -5,13 +5,13 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.navigation.ui.swt.views.NavigationTreeView"
+            class="org.eclipse.riena.navigation.ui.swt.views.NavigationTreeViewPart"
             id="org.eclipse.riena.navigation.ui.navigationtree"
             name="NavigationTreeView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.navigation.ui.swt.views.ApplicationSwitchViewPart"
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationSwitcherViewPart"
             id="org.eclipse.riena.navigation.ui.swt.applicationSwicther"
             name="org.eclipse.riena.navigation.ui.swt.applicationSwicther">
       </view>

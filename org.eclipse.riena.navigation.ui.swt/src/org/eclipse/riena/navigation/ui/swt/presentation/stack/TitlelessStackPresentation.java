@@ -1,12 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.presentation.stack;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -21,65 +34,138 @@ import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackDropResult;
 import org.eclipse.ui.presentations.StackPresentation;
 
+/**
+ * <pre>
+ * +-----------------------------------------------------------------+
+ * |                                                                 |
+ * |               *1 +---------+---------+                          |
+ * |                  | SubApp1 | SubApp2 |                          |
+ * +-----------------------------------------------------------------+
+ * | *2           *3                                                 |
+ * | +---------+  +------------------------------------------------+ |
+ * | | Module1 |  | Module1 - Sub1                                 | |
+ * | +---------+  +------------------------------------------------+ |
+ * | | o Sub1  |  |                                                | |
+ * | | o Sub2  |  | *4                                             | |
+ * | +---------+  |                                                | |
+ * | | Module2 |  |                                                | |
+ * | +---------+  |                                                | |
+ * | +---------+  |                                                | |
+ * | | Module2 |  |                                                | |
+ * | +---------+  |                                                | |
+ * |              |                                                | |
+ * |              |                                                | |
+ * |              +------------------------------------------------+ |
+ * +-----------------------------------------------------------------+
+ * 
+ * legend: *1 - sub-application switcher
+ *         *2 - navigation
+ *         *3 - sub-module view (with title bar and border)
+ *         *4 - content area of the sub-module view
+ * </pre>
+ */
 public class TitlelessStackPresentation extends StackPresentation {
 
-	private final static int PADDING_LEFT = 2;
-	private final static int PADDING_RIGHT = 2;
-	private final static int PADDING_TOP = 10;
-	private final static int PADDING_BOTTOM = 2;
+	/**
+	 * Left padding of the navigation.<br>
+	 * Gap between left shell border and navigation.
+	 */
+	private static final int PADDING_LEFT = 10;
+	/**
+	 * Right padding of the sub-module view.<br>
+	 * Gap between right shell border and sub-module view.
+	 */
+	private static final int PADDING_RIGHT = 2;
+	/**
+	 * Top padding of the sub-module view.<br>
+	 * Gap between application switcher and sub-module view.
+	 */
+	private static final int PADDING_TOP = 10;
+	/**
+	 * Bottom padding of the navigation/the sub-module view.<br>
+	 * Gap between bottom shell border and sub-module view.
+	 */
+	private static final int PADDING_BOTTOM = 2;
+	/**
+	 * Gap between navigation and sub-module view
+	 */
+	private static final int NAVIGATION_SUB_MODULE_GAP = 10;
+	/**
+	 * Height of the sub-application switcher
+	 */
+	private static final int SUB_APPLICATION_SWITCHER_HEIGHT = 65;
 
-	public static String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
-
-	public static String PROPERTY_APPLICATION = "applications"; //$NON-NLS-1$
-
-	private static double NAVIGATION_WIDTH_FACTOR = 0.25;
-
-	private static final int APPLICATION_SWITCHER_HEIGHT = 65;
-
-	// private static final int SUB_MODULE_HEADER_HIGHT = 25;
-
-	// private static final int TOP_V_SPACE = 10;
+	/**
+	 * Property to distinguish the view of the navigation.
+	 */
+	public static final String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
+	/**
+	 * Property to distinguish the view of the sub-application switcher.
+	 */
+	public static final String PROPERTY_SUB_APPLICATION_SWITCHER = "subApplicationSwitcher"; //$NON-NLS-1$
 
 	private Control current;
-
 	private Control navigation;
-
-	private Control applications;
-
+	private Control subApplicationSwitcher;
 	private Composite parent;
-
 	private SubModuleViewRenderer renderer;
+
+	private Map<Control, SwtViewId> parts = new HashMap<Control, SwtViewId>();
 
 	public TitlelessStackPresentation(Composite parent, IStackPresentationSite stackSite) {
 		super(stackSite);
-		createContentArea(parent);
+		this.parent = parent;
+		createSubModuleViewArea();
 	}
 
-	private void createContentArea(final Composite parent) {
-		this.parent = parent;
-		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+	/**
+	 * Creates the area within witch the view of the current active sub-module
+	 * is displayed.
+	 */
+	private void createSubModuleViewArea() {
+
+		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.addPaintListener(new PaintListener() {
 
+			/**
+			 * Paints the border and the title bar of the current active
+			 * sub-module.
+			 */
 			public void paintControl(PaintEvent e) {
 
-				if (current != null && current.isVisible()) {
+				if (!isCurrentDisposed() && current.isVisible()) {
 					if (getRenderer() != null) {
-						String[] txt = parts.get(current).getPane().getCompoundId().split(":"); //$NON-NLS-1$
-						SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(txt[0],
-								txt[1], SubModuleNode.class);
-						getRenderer().setBounds(e.x + PADDING_LEFT, e.y + PADDING_TOP,
-								e.width - PADDING_LEFT - PADDING_RIGHT, e.height - PADDING_TOP - PADDING_BOTTOM);
+						getRenderer().setBounds(calcSubModuleOuterBounds());
+						SwtViewId viewId = parts.get(current);
+						SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(
+								viewId.getId(), viewId.getSecondary(), SubModuleNode.class);
 						getRenderer().paint(e.gc, node);
 					}
 				}
+
 			}
 		});
+
 	}
 
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#addPart(org.eclipse.ui.presentations.IPresentablePart,
+	 *      java.lang.Object)
+	 */
 	@Override
 	public void addPart(IPresentablePart newPart, Object cookie) {
 	}
 
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#removePart(org.eclipse.ui.presentations.IPresentablePart)
+	 */
+	@Override
+	public void removePart(IPresentablePart oldPart) {
+	}
+
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#dispose()
+	 */
 	@Override
 	public void dispose() {
 		if (getRenderer() != null) {
@@ -87,116 +173,216 @@ public class TitlelessStackPresentation extends StackPresentation {
 		}
 	}
 
+	/**
+	 * This presentation does not support drag and drop.
+	 * 
+	 * @see org.eclipse.ui.presentations.StackPresentation#dragOver(org.eclipse.swt.widgets.Control,
+	 *      org.eclipse.swt.graphics.Point)
+	 */
 	@Override
 	public StackDropResult dragOver(Control currentControl, Point location) {
 		return null;
 	}
 
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#getControl()
+	 */
 	@Override
 	public Control getControl() {
 		return parent;
 	}
 
+	/**
+	 * This presentation has no tabs.
+	 * 
+	 * @see org.eclipse.ui.presentations.StackPresentation#getTabList(org.eclipse.ui.presentations.IPresentablePart)
+	 */
 	@Override
 	public Control[] getTabList(IPresentablePart part) {
 		return null;
 	}
 
-	@Override
-	public void removePart(IPresentablePart oldPart) {
-		// TODO Auto-generated method stub
-	}
-
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#selectPart(org.eclipse.ui.presentations.IPresentablePart)
+	 */
 	@Override
 	public void selectPart(IPresentablePart toSelect) {
-		if (toSelect == current) {
+		if (toSelect.getControl() == current) {
 			return;
 		}
 		if (toSelect.getPartProperty(PROPERTY_NAVIGATION) != null) {
 			// show navigation tree
 			navigation = toSelect.getControl();
-		} else if (toSelect.getPartProperty(PROPERTY_APPLICATION) != null) {
+		} else if (toSelect.getPartProperty(PROPERTY_SUB_APPLICATION_SWITCHER) != null) {
 			// show applications
-			applications = toSelect.getControl();
+			subApplicationSwitcher = toSelect.getControl();
 		} else {
-			if (current != null) {
+			if (!isCurrentDisposed()) {
 				current.setVisible(false);
 			}
 			current = toSelect.getControl();
-			parts.put(current, (PresentablePart) toSelect);
+			parts.put(current, getViewId((PresentablePart) toSelect));
 		}
 		updateBounds();
 	}
 
-	private Map<Control, PresentablePart> parts = new HashMap<Control, PresentablePart>();
+	/**
+	 * Creates the <code>SwtViewId</code> for the given part.
+	 * 
+	 * @param part
+	 * @return ID of a SWT view.
+	 */
+	private SwtViewId getViewId(PresentablePart part) {
 
+		String compoundId = part.getPane().getCompoundId();
+		return new SwtViewId(compoundId);
+
+	}
+
+	/**
+	 * Updates the bounds of all three parts (controls) of this navigation.
+	 */
 	private void updateBounds() {
-		if (current != null) {
-			updateControl(current, calcOpenPartBounds());
+
+		if (!isCurrentDisposed()) {
+			GC gc = new GC(current);
+			Rectangle innerBounds = getRenderer().computeInnerBounds(gc, calcSubModuleOuterBounds());
+			gc.dispose();
+			updateControl(current, innerBounds);
 		}
 		if (navigation != null) {
-			updateControl(navigation, new Rectangle(0, APPLICATION_SWITCHER_HEIGHT,
-					(int) (parent.getBounds().width * NAVIGATION_WIDTH_FACTOR), parent.getBounds().height
-							- APPLICATION_SWITCHER_HEIGHT));
+			updateControl(navigation, calcNavigationBounds());
 		}
-		if (applications != null) {
-			updateControl(applications, new Rectangle(0, 0, parent.getBounds().width, APPLICATION_SWITCHER_HEIGHT));
+		if (subApplicationSwitcher != null) {
+			updateControl(subApplicationSwitcher, calcSubApplicationSwitcherBounds());
 		}
+
 	}
 
-	private Rectangle calcOpenPartBounds() {
-		Rectangle outerBounds = new Rectangle((int) (parent.getBounds().width * NAVIGATION_WIDTH_FACTOR + 15),
-				APPLICATION_SWITCHER_HEIGHT + PADDING_TOP,
-				(int) (parent.getBounds().width * (1 - NAVIGATION_WIDTH_FACTOR)) - 25 - 5, parent.getBounds().height
-						- APPLICATION_SWITCHER_HEIGHT - 50);
-		GC gc = new GC(current);
-		Rectangle innerBounds = getRenderer().computeInnerBounds(gc, outerBounds);
+	/**
+	 * Calculates the (outer) bounds of the sub-module view.
+	 * 
+	 * @return outer bounds sub-module view
+	 */
+	private Rectangle calcSubModuleOuterBounds() {
+
+		Rectangle naviBounds = calcNavigationBounds();
+
+		int x = naviBounds.x + naviBounds.width + NAVIGATION_SUB_MODULE_GAP;
+		int y = naviBounds.y;
+		int width = parent.getBounds().width - x - PADDING_RIGHT;
+		int height = naviBounds.height;
+		Rectangle outerBounds = new Rectangle(x, y, width, height);
+
+		return outerBounds;
+
+	}
+
+	/**
+	 * Calculates the bounds of the navigation on the left side.
+	 * 
+	 * @return bounds of navigation
+	 */
+	private Rectangle calcNavigationBounds() {
+
+		GC gc = new GC(parent);
+		Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 		gc.dispose();
-		return innerBounds;
+
+		int x = PADDING_LEFT;
+		int y = SUB_APPLICATION_SWITCHER_HEIGHT + PADDING_TOP;
+		int width = size.x;
+		int height = parent.getBounds().height - SUB_APPLICATION_SWITCHER_HEIGHT - PADDING_BOTTOM - PADDING_TOP;
+
+		return new Rectangle(x, y, width, height);
+
 	}
 
+	/**
+	 * Calculates the bounds of the switcher of the sub-applications.
+	 * 
+	 * @return bounds of switcher of sub-applications
+	 */
+	private Rectangle calcSubApplicationSwitcherBounds() {
+
+		int x = 0;
+		int y = 0;
+		int width = parent.getBounds().width;
+		int height = SUB_APPLICATION_SWITCHER_HEIGHT;
+
+		return new Rectangle(x, y, width, height);
+
+	}
+
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#setActive(int)
+	 */
 	@Override
 	public void setActive(int newState) {
-		if (newState != 0) {
+
+		if (newState != AS_INACTIVE) {
 			parent.setVisible(true);
 			updateBounds();
-			return;
+		} else {
+			hideAll();
 		}
-		hideAll();
+
 	}
 
+	/**
+	 * Hides all controls of this presentation.
+	 */
 	private void hideAll() {
-		if (current != null) {
+
+		if (!isCurrentDisposed()) {
 			current.setVisible(false);
 		}
 		if (navigation != null) {
 			navigation.setVisible(false);
 		}
-
-		if (applications != null) {
-			applications.setVisible(false);
+		if (subApplicationSwitcher != null) {
+			subApplicationSwitcher.setVisible(false);
 		}
 		parent.setVisible(false);
+
 	}
 
+	/**
+	 * Updates the bounds of the given control.<br>
+	 * 
+	 * @param ctrl -
+	 *            control
+	 * @param bounds -
+	 *            new bounds
+	 */
 	private void updateControl(Control ctrl, Rectangle bounds) {
-		ctrl.setVisible(false);
+
 		if (!ctrl.getBounds().equals(bounds)) {
+			ctrl.setVisible(false);
 			ctrl.setBounds(bounds);
 		}
 		ctrl.setVisible(true);
+
 	}
 
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#setBounds(org.eclipse.swt.graphics.Rectangle)
+	 */
 	@Override
 	public void setBounds(Rectangle bounds) {
 		parent.setBounds(bounds);
 		updateBounds();
 	}
 
+	/**
+	 * The state (minimized, maximized or restored) is not relevant for the
+	 * <code>TitlelessStackPresentation</code>.
+	 * 
+	 * @see org.eclipse.ui.presentations.StackPresentation#setState(int)
+	 */
 	@Override
 	public void setState(int state) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
@@ -206,21 +392,43 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	@Override
 	public void showPaneMenu() {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void showSystemMenu() {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
+	/**
+	 * Returns the renderer of the sub-module view.<br>
+	 * Renderer renders the border and the title of the sub-module view and not
+	 * the content of the view.
+	 * 
+	 * @return renderer of sub-module view
+	 */
 	private SubModuleViewRenderer getRenderer() {
 		if (renderer == null) {
 			renderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer("SubModuleView.renderer"); //$NON-NLS-1$
 		}
 		return renderer;
+	}
+
+	/**
+	 * Returns the renderer of a module group.
+	 * 
+	 * @return renderer of module group
+	 */
+	private ModuleGroupRenderer getModuleGroupRenderer() {
+		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
+	}
+
+	private boolean isCurrentDisposed() {
+		if (current != null) {
+			return current.isDisposed();
+		} else {
+			return true;
+		}
 	}
 
 }

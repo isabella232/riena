@@ -146,4 +146,14 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 		}
 	}
 
+	/**
+	 * Rebuilds the tree items of the sub-modules.
+	 */
+	public void rebuild() {
+		IModuleGroupNode mgNode = getModelNode();
+		for (IModuleNode mNode : mgNode.getChildren()) {
+			moduleNodeComponents.get(mNode).rebuild();
+		}
+	}
+
 }

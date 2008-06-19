@@ -41,9 +41,10 @@ public class ILnfKeyConstants {
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR = "EmbeddedTitlebar.hoverBorderBottomColor"; //$NON-NLS-1$
 	public static final String EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR = "EmbeddedTitlebar.hoverBorderTopColor"; //$NON-NLS-1$
 
-	public static final String SUB_APPLICATION_BACKGROUND = "SubApplication.background"; //$NON-NLS-1$
+	public static final String NAVIGATION_BACKGROUND = "Navigation.background"; //$NON-NLS-1$
 	public static final String MODULE_GROUP_WIDGET_BACKGROUND = "ModuleGroupWidget.background"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_BACKGROUND = "SubModuleTree.background"; //$NON-NLS-1$
+	public static final String SUB_MODULE_BACKGROUND = "SubModule.background"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_ITEM_TOOLTIP_BACKGROUND = "SubModuleItemToolTip.background"; //$NON-NLS-1$
 	public static final String SUB_MODULE_ITEM_TOOLTIP_FOREGROUND = "SubModuleItemToolTip.foreground"; //$NON-NLS-1$

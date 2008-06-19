@@ -12,7 +12,6 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.riena.example.client.controllers.UIProcessDemoController;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SWTBindingPropertyLocator;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -26,14 +25,13 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class UiProcessDemoView extends SubModuleNodeView<UIProcessDemoController> {
 
-	public final static String ID = "org.eclipse.riena.sample.app.client.uiprocessdemoview";
+	public final static String ID = "org.eclipse.riena.sample.app.client.uiprocessdemoview"; //$NON-NLS-1$
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		Button button = new Button(parent, SWT.None);
 		button.setText("Start UIProcess");
-		button.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "actionRidget");
-		addUIControl(button);
+		addUIControl(button, "actionRidget"); //$NON-NLS-1$
 
 		// layout
 		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
