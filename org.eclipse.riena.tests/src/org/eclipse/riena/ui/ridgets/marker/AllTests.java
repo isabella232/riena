@@ -21,7 +21,8 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.eclipse.riena.ui.ridgets.marker");
 		// $JUnit-BEGIN$
-		suite.addTestSuite(StatusbarViewerTest.class);
+		suite.addTestSuite(StatusbarMessageMarkerViewerTest.class);
+		suite.addTestSuite(TooltipMessageMarkerViewerTest.class);
 		// $JUnit-END$
 		return suite;
 	}

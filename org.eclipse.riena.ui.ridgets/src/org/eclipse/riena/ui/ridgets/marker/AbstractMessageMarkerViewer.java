@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.marker;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,12 +26,30 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewer {
 
 	private HashSet<Class<? extends IMessageMarker>> markerTypes = new LinkedHashSet<Class<? extends IMessageMarker>>();
+	private Collection<IMarkableRidget> ridgets = new ArrayList<IMarkableRidget>();
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 */
+	public void addRidget(IMarkableRidget markableRidget) {
+		ridgets.add(markableRidget);
+		showMessages(markableRidget);
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#removeRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 */
+	public void removeRidget(IMarkableRidget markableRidget) {
+		ridgets.remove(markableRidget);
+		hideMessages(markableRidget);
+	}
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#addMarkerType(java.lang.Class)
 	 */
 	public void addMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.add(markerClass);
+		showMessages();
 	}
 
 	/**
@@ -38,7 +57,18 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	 */
 	public void removeMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.remove(markerClass);
+		showMessages();
 	}
+
+	private void showMessages() {
+		for (IMarkableRidget ridget : ridgets) {
+			showMessages(ridget);
+		}
+	}
+
+	protected abstract void showMessages(IMarkableRidget ridget);
+
+	protected abstract void hideMessages(IMarkableRidget ridget);
 
 	protected Collection<IMessageMarker> getMessageMarker(IMarkableRidget markableRidget) {
 		return getMessageMarker(markableRidget, false);

@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  * Visualizes certain types of message markers by displaying the message in the
  * statusbar.
  */
-public class StatusbarViewer extends AbstractMessageMarkerViewer {
+public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private String statusbarMessage;
 	private String originalStatusbarMessage;
@@ -37,38 +37,39 @@ public class StatusbarViewer extends AbstractMessageMarkerViewer {
 
 	/**
 	 * @param statusbarRidget
+	 *            The statusbar.
 	 */
-	public StatusbarViewer(IStatusbarRidget statusbarRidget) {
+	public StatusbarMessageMarkerViewer(IStatusbarRidget statusbarRidget) {
 		this.statusbar = statusbarRidget;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.ridgets.marker.AbstractMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
 	 */
+	@Override
 	public void addRidget(IMarkableRidget markableRidget) {
+		super.addRidget(markableRidget);
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 		markableRidget.addFocusListener(ridgetFocusListener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#removeRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
-	 */
-	public void removeRidget(IMarkableRidget markableRidget) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void showMessages(IMarkableRidget pMarkableAdapter) {
+	protected void showMessages(IMarkableRidget markableRidget) {
 		// if (this.isVisible()) {
-		Collection messageMarker = this.getMessageMarker(pMarkableAdapter);
+		Collection messageMarker = this.getMessageMarker(markableRidget);
 		String message = constructMessage(messageMarker).trim();
 		// show the message only if there is something to show
 		if (message.length() > 0) {
 			setStatusbarMessage(message);
 		} else {
-			resetStatusbarMessage();
+			hideMessages(markableRidget);
 		}
 		// }
+	}
+
+	protected void hideMessages(IMarkableRidget ridget) {
+		if (ridget.hasFocus()) {
+			resetStatusbarMessage();
+		}
 	}
 
 	private void setStatusbarMessage(String message) {
