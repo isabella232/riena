@@ -35,6 +35,7 @@ public class SubApplicationItem {
 	public SubApplicationItem(Composite parent, ISubApplication subApplicationNode) {
 		this.parent = parent;
 		this.subApplicationNode = subApplicationNode;
+		bounds = new Rectangle(0, 0, 0, 0);
 	}
 
 	/**
