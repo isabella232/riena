@@ -25,7 +25,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
- * 
+ * This controller adds dynamically nodes to the navigation.
  */
 public class NavigationSubModuleViewController extends SubModuleNodeViewController {
 
@@ -155,6 +155,11 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 		this.addModuleGroupBtn = addModuleGroupBtn;
 	}
 
+	/**
+	 * Creates a new module group and adds a new module to the group.
+	 * 
+	 * @return module group
+	 */
 	private IModuleGroupNode createModuleGroupNode() {
 
 		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode("Added child Module Group to SubApplication"); //$NON-NLS-1$
@@ -164,6 +169,11 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 		return newModuleGroupNode;
 	}
 
+	/**
+	 * Creates a new module and adds a new sub-module to the module.
+	 * 
+	 * @return module
+	 */
 	private IModuleNode createModuleNode() {
 
 		IModuleNode newModuleNode = new ModuleNode("Added child Module to Module Group"); //$NON-NLS-1$
@@ -173,10 +183,20 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 		return newModuleNode;
 	}
 
+	/**
+	 * Creates a new sub-module with the given label.
+	 * 
+	 * @param label -
+	 *            label of the sub-module
+	 * @return sub-module
+	 */
 	private ISubModuleNode createSubModuleNode(String label) {
+
 		ISubModuleNode newSubModuleNode = new SubModuleNode(label);
 		SwtPresentationManagerAccessor.getManager().present(newSubModuleNode, NavigationSubModuleView.ID);
+
 		return newSubModuleNode;
+
 	}
 
 }
