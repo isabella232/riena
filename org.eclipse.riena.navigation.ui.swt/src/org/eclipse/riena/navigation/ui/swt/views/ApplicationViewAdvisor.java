@@ -59,10 +59,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
+	@Override
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 		return new ApplicationActionAdvisor(configurer, controller);
 	}
 
+	@Override
 	public void preWindowOpen() {
 		configureView();
 	}

@@ -49,16 +49,19 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
+		@Override
 		public void childAdded(IModuleNode source, ISubModuleNode child) {
 			createSubModuleComponent(child);
+			groupComponent.updated();
 		}
 
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
+		@Override
 		public void activated(IModuleNode source) {
 			super.activated(source);
-			((ModuleGroupWidget) groupComponent.getUI()).openItem(ui);
+			groupComponent.getUI().openItem(ui);
 			groupComponent.updated();
 		}
 
@@ -77,7 +80,7 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 	protected void initUI() {
 		initializeSMNodeMapping();
 		ui = new ModuleItem(getGroupComponent().getUI(), this);
-		((ModuleGroupWidget) getGroupComponent().getUI()).registerItem(ui);
+		getGroupComponent().getUI().registerItem(ui);
 	}
 
 	@Override

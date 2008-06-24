@@ -78,7 +78,6 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		public void childAdded(ISubModuleNode source, ISubModuleNode child) {
 			createSubModuleComponent(child);
 		}
-
 	}
 
 	private final class TreeUIObserver implements Listener {
@@ -132,7 +131,7 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		Image image = null;
 		if (getModelNode().getIcon() != null) {
 			image = ImageUtil.getImage(getModelNode().getIcon());
-			if (image == null) {
+			if (image != null) {
 				item.setImage(image);
 			}
 		}

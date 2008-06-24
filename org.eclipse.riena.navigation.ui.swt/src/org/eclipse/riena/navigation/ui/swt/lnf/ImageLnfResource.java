@@ -34,7 +34,7 @@ public class ImageLnfResource extends AbstractLnfResource {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResource#getResource()
 	 */
 	@Override
-	public Resource getResource() {
+	public Image getResource() {
 		return (Image) super.getResource();
 	}
 

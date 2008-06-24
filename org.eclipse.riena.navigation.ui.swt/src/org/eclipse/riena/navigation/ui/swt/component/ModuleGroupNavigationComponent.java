@@ -75,20 +75,12 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
 			addModuleComponent(child);
+			updated();
 		}
 
 		@Override
 		public void activated(IModuleGroupNode source) {
 			updateActivityToUi();
-		}
-
-		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void disposed(IModuleGroupNode groupNode) {
-			super.disposed(groupNode);
-			subAppComponent.removeMapping(groupNode);
 		}
 
 	}

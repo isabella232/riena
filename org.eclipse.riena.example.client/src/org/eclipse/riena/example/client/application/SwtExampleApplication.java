@@ -14,6 +14,7 @@ import org.eclipse.riena.example.client.views.ComboView;
 import org.eclipse.riena.example.client.views.FocusableView;
 import org.eclipse.riena.example.client.views.ListView;
 import org.eclipse.riena.example.client.views.MarkerView;
+import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoView;
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
@@ -96,8 +97,10 @@ public class SwtExampleApplication extends SwtApplication {
 		subModule = new SubModuleNode("SubModule 1.1.2.1");
 		presentation.present(subModule, "customerDetailView");
 		module.addChild(subModule);
-		subModule = new SubModuleNode("SubModule 1.1.2.2");
-		presentation.present(subModule, "customerDetailView");
+		/* NEW */
+		subModule = new SubModuleNode("Navigation");
+		presentation.registerView(NavigationSubModuleView.ID, false);
+		presentation.present(subModule, NavigationSubModuleView.ID);
 		module.addChild(subModule);
 
 		moduleGroup = new ModuleGroupNode("Group 1.2");

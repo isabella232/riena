@@ -27,6 +27,11 @@ import org.osgi.framework.Bundle;
  */
 public abstract class SwtApplication extends AbstractApplication {
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#createView(org.eclipse.equinox.app.IApplicationContext,
+	 *      org.eclipse.riena.navigation.IApplicationModel)
+	 */
+	@Override
 	public Object createView(IApplicationContext context, IApplicationModel pModel) {
 		Display display = PlatformUI.createDisplay();
 		try {

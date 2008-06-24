@@ -48,7 +48,7 @@ public class FontLnfResource extends AbstractLnfResource {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResource#getResource()
 	 */
 	@Override
-	public Resource getResource() {
+	public Font getResource() {
 		return (Font) super.getResource();
 	}
 

@@ -78,9 +78,6 @@ public class SwtPresentationManager {
 			boolean shared = isViewShared(pViewId);
 			if (shared) {
 				// only shared views for subModuleNodes
-				if (subNode == null) {
-					return;
-				}
 				activated.put(subNode, false);
 				subNode.addListener(subModuleNodeObserver);
 
@@ -89,7 +86,7 @@ public class SwtPresentationManager {
 				// id
 				if (viewCounter.get(pViewId) == 0) {
 					// first node with this view
-					SwtViewId id = new SwtViewId(pViewId, "shared");
+					SwtViewId id = new SwtViewId(pViewId, "shared"); //$NON-NLS-1$
 					views.put(pNode, id);
 					viewCounter.put(pViewId, 1);
 				} else {

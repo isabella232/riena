@@ -107,6 +107,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
+	@Override
 	public void paint(GC gc, Object value) {
 
 		gc.setAdvanced(true);

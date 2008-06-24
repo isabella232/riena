@@ -27,6 +27,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	/**
 	 * @see org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor(org.eclipse.ui.application.IWorkbenchWindowConfigurer)
 	 */
+	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		TitlelessStackPresentationFactory workbenchPresentationFactory = new TitlelessStackPresentationFactory();
 		configurer.setPresentationFactory(workbenchPresentationFactory);
@@ -36,6 +37,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	/**
 	 * @see org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
 	 */
+	@Override
 	public String getInitialWindowPerspectiveId() {
 		return null;
 	}

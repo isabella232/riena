@@ -84,7 +84,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 				return mapping.getRidgetClazz();
 			}
 		}
-		throw new BindingException("No ridget found for " + controlClazz.getSimpleName());
+		throw new BindingException("No ridget found for " + controlClazz.getSimpleName()); //$NON-NLS-1$
 	}
 
 	/**
@@ -186,9 +186,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addSpecialMapping(java.lang.String,
 	 *      java.lang.Class)
 	 */

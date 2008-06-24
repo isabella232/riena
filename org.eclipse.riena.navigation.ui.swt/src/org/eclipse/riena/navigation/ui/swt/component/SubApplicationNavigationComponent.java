@@ -25,10 +25,10 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 		initializeMgNodeMapping();
 		initUI();
 		buildInitialTree();
-		initObserver();
 	}
 
 	protected ISubApplicationListener getModuleGroupObserver() {
+		System.out.println(moduleGroupObserver.toString());
 		return moduleGroupObserver;
 	}
 
@@ -41,8 +41,10 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	}
 
 	protected void addMapping(IModuleGroupNode node, ModuleGroupNavigationComponent cmp) {
-		moduleGroupComponents.put(node, cmp);
-		cmp.addComponentUpdateListener(getUpdateListener());
+		if (!moduleGroupComponents.containsKey(node)) {
+			moduleGroupComponents.put(node, cmp);
+			cmp.addComponentUpdateListener(getUpdateListener());
+		}
 	}
 
 	private ModuleGroupNavigationComponent getMapping(IModuleGroupNode node) {
@@ -50,9 +52,11 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	}
 
 	protected void removeMapping(IModuleGroupNode node) {
-		getMapping(node).removeComponentUpdateListener(getUpdateListener());
-		getMapping(node).getUI().dispose();
-		moduleGroupComponents.remove(node);
+		if (moduleGroupComponents.containsKey(node)) {
+			getMapping(node).removeComponentUpdateListener(getUpdateListener());
+			getMapping(node).getUI().dispose();
+			moduleGroupComponents.remove(node);
+		}
 
 	}
 
@@ -67,26 +71,49 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 		}
 	}
 
+	/**
+	 * This observer resizes the navigation after a child was added or removed.<br>
+	 * 
+	 */
 	private final class ModuleGroupObserver extends SubApplicationAdapter {
 
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 *      org.eclipse.riena.navigation.INavigationNode)
+		 */
 		@Override
 		public void childAdded(ISubApplication source, IModuleGroupNode child) {
+			super.childAdded(source, child);
 			addModuleGroupComponent(child);
+			sizeNavigation();
+		}
+
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 *      org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void childRemoved(ISubApplication source, IModuleGroupNode child) {
+			super.childRemoved(source, child);
+			removeMapping(child);
+			sizeNavigation();
 		}
 
 	}
 
+	@Override
 	protected void initObserver() {
 		this.componentUpdateListener = new ComponentUpdateListener();
 		this.moduleGroupObserver = new ModuleGroupObserver();
 		getModelNode().addListener(getModuleGroupObserver());
 	}
 
-	/*
+	/**
 	 * As we register to the subApplication long after it has been created we
 	 * might have missed some ModuleGroups(events). So we have to create the
 	 * basic tree structure manually.
 	 */
+	@Override
 	protected void buildInitialTree() {
 		ISubApplication root = getModelNode();
 		for (IModuleGroupNode mgNode : root.getChildren()) {
@@ -103,8 +130,8 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	public void closeInactive(IModuleGroupNode selected) {
 		for (IModuleGroupNode mg : getModelNode().getChildren()) {
 			if (mg != selected) {
-				ModuleGroupNavigationComponent w = (ModuleGroupNavigationComponent) moduleGroupComponents.get(mg);
-				((ModuleGroupWidget) w.getUI()).closeCurrent();
+				ModuleGroupNavigationComponent w = moduleGroupComponents.get(mg);
+				w.getUI().closeCurrent();
 			}
 		}
 	}
