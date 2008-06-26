@@ -14,12 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
 
 /**
- * A job can be presented by several instances of {@link ProgressProvider}.
- * This one delegates to those providers.
+ * A job can be presented by several instances of {@link ProgressProvider}. This
+ * one delegates to those providers.
  */
 public class ProgressProviderBridge extends ProgressProvider {
 
@@ -58,7 +59,16 @@ public class ProgressProviderBridge extends ProgressProvider {
 		if (factoriesAvailable()) {
 			return buildDefaultDispatchingProvider(job);
 		}
-		return null;
+		return new DefaultProgressProvider();
+	}
+
+	private class DefaultProgressProvider extends ProgressProvider {
+
+		@Override
+		public IProgressMonitor createMonitor(Job job) {
+			return new NullProgressMonitor();
+		}
+
 	}
 
 	private boolean factoriesAvailable() {
