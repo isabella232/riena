@@ -14,8 +14,6 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.ui.swt.utils.extpoint.ISwtUtililityExtPoint;
 import org.eclipse.riena.navigation.ui.swt.utils.extpoint.ISwtUtility;
-
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Control;
 
 /**
@@ -33,8 +31,12 @@ public class SwtOsUtilities {
 	}
 
 	public void setSwtUtilExtension(ISwtUtililityExtPoint[] swtUtilArray) {
-		Assert.isNotNull(swtUtilArray);
-		Assert.isTrue(swtUtilArray.length == 1);
+		if (swtUtilArray.length == 0) {
+			swtUtility = null;
+			return;
+		}
+		// Assert.isNotNull(swtUtilArray);
+		// Assert.isTrue(swtUtilArray.length == 1);
 		swtUtility = swtUtilArray[0].createImplementation();
 	}
 
@@ -44,7 +46,7 @@ public class SwtOsUtilities {
 	public void hideSrollBars(Control control) {
 
 		if (swtUtility != null) {
-			swtUtility.hideSrollBars(control);
+			swtUtility.hideScrollBars(control);
 		}
 	}
 }

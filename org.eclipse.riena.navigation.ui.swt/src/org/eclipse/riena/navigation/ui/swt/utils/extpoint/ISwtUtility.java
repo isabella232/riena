@@ -17,6 +17,6 @@ import org.eclipse.swt.widgets.Control;
  */
 public interface ISwtUtility {
 
-	void hideSrollBars(Control control);
+	void hideScrollBars(Control control);
 
 }
