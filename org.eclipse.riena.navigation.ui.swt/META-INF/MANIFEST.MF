@@ -23,5 +23,4 @@ Export-Package: org.eclipse.riena.navigation.ui.swt.application,
  org.eclipse.riena.navigation.ui.swt.lnf.rienadefault,
  org.eclipse.riena.navigation.ui.swt.presentation,
  org.eclipse.riena.navigation.ui.swt.views
-Bundle-ClassPath: lib/org.eclipse.riena.navigation.ui.swt.win32.jar,
- .
+Bundle-ClassPath: .
