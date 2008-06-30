@@ -12,10 +12,12 @@ package org.eclipse.riena.ui.ridgets.marker;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Vector;
+import java.util.List;
 
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -98,7 +100,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	protected Collection<IMessageMarker> getMessageMarker(IMarkableRidget markableRidget, boolean pRemove) {
-		Collection<IMessageMarker> result = new Vector<IMessageMarker>();
+		List<IMessageMarker> result = new ArrayList<IMessageMarker>();
 		for (Class<? extends IMessageMarker> nextMessageMarkerType : markerTypes) {
 			Collection<? extends IMessageMarker> nextMessageMarkers = markableRidget
 					.getMarkersOfType(nextMessageMarkerType);
@@ -111,7 +113,19 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 				markableRidget.removeMarker((IMessageMarker) j.next());
 			}
 		}
+		Collections.sort(result, new MessageMarkerComparator());
 		return result;
+	}
+
+	private class MessageMarkerComparator implements Comparator<IMessageMarker> {
+
+		/**
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		public int compare(IMessageMarker o1, IMessageMarker o2) {
+			return o1.getMessage().compareTo(o2.getMessage());
+		}
+
 	}
 
 }
