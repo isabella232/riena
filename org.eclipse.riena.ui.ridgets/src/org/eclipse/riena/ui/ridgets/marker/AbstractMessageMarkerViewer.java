@@ -25,8 +25,16 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
  */
 public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewer {
 
-	private HashSet<Class<? extends IMessageMarker>> markerTypes = new LinkedHashSet<Class<? extends IMessageMarker>>();
-	private Collection<IMarkableRidget> ridgets = new ArrayList<IMarkableRidget>();
+	private HashSet<Class<? extends IMessageMarker>> markerTypes;
+	private Collection<IMarkableRidget> ridgets;
+	private boolean visible;
+
+	public AbstractMessageMarkerViewer() {
+		markerTypes = new LinkedHashSet<Class<? extends IMessageMarker>>();
+		ridgets = new ArrayList<IMarkableRidget>();
+		visible = true;
+		markerTypes.add(ValidationMessageMarker.class);
+	}
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
@@ -57,6 +65,21 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	 */
 	public void removeMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.remove(markerClass);
+		showMessages();
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#isVisible()
+	 */
+	public boolean isVisible() {
+		return visible;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#setVisible(boolean)
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 		showMessages();
 	}
 

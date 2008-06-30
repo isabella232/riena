@@ -48,7 +48,7 @@ public class ValidEmailAddress implements IValidationRule {
 		if (toBeChecked.length() == 0 || GenericValidator.isEmail(toBeChecked)) {
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(true, "String '" + toBeChecked + "' is no valid email address");
+		return ValidationRuleStatus.error(true, "String '" + toBeChecked + "' is no valid email address", this);
 	}
 
 }

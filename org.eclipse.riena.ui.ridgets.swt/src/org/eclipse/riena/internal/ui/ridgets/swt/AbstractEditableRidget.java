@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 import org.eclipse.riena.ui.ridgets.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
@@ -57,9 +58,10 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @see IValidationCallback#validationRulesChecked(IStatus)
 	 * 
 	 * @param status
-	 * 		The result of validation.
+	 *            The result of validation.
 	 */
 	public void validationRulesChecked(IStatus status) {
+		getValueBindingSupport().validationRulesChecked(status);
 		if (status.isOK()) {
 			setErrorMarked(false);
 		} else {
@@ -96,4 +98,37 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 			}
 		}
 	}
+
+	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+		getValueBindingSupport().addValidationMessage(messageMarker, validationRule);
+	}
+
+	public void addValidationMessage(IMessageMarker messageMarker) {
+		getValueBindingSupport().addValidationMessage(messageMarker);
+	}
+
+	public void addValidationMessage(String message, IValidator validationRule) {
+		getValueBindingSupport().addValidationMessage(message, validationRule);
+	}
+
+	public void addValidationMessage(String message) {
+		getValueBindingSupport().addValidationMessage(message);
+	}
+
+	public void removeValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+		getValueBindingSupport().removeValidationMessage(messageMarker, validationRule);
+	}
+
+	public void removeValidationMessage(IMessageMarker messageMarker) {
+		getValueBindingSupport().removeValidationMessage(messageMarker);
+	}
+
+	public void removeValidationMessage(String message, IValidator validationRule) {
+		getValueBindingSupport().removeValidationMessage(message, validationRule);
+	}
+
+	public void removeValidationMessage(String message) {
+		getValueBindingSupport().removeValidationMessage(message);
+	}
+
 }

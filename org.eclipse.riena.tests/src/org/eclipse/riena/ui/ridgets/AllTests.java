@@ -39,6 +39,7 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
+		suite.addTestSuite(ValueBindingSupportTest.class);
 		suite.addTestSuite(GregorianCalendarToStringConverterTest.class);
 		suite.addTestSuite(StringToGregorianCalendarConverterTest.class);
 		suite.addTestSuite(RidgetUpdateValueStrategyTest.class);

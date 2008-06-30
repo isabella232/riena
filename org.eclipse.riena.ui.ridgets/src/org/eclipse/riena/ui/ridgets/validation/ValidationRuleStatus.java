@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -21,8 +22,15 @@ import org.eclipse.riena.internal.ui.ridgets.Activator;
  */
 public class ValidationRuleStatus extends Status implements IValidationRuleStatus {
 
-	private ValidationRuleStatus(int severity, int code, String message) {
+	private IValidator source;
+
+	private ValidationRuleStatus(int severity, int code, String message, IValidator source) {
 		super(severity, Activator.PLUGIN_ID, code, message, null);
+		this.source = source;
+	}
+
+	public IValidator getSource() {
+		return source;
 	}
 
 	/**
@@ -43,14 +51,16 @@ public class ValidationRuleStatus extends Status implements IValidationRuleStatu
 	 *            blocked.
 	 * @param message
 	 *            A message.
+	 * @param source
+	 *            The validation rule that failed.
 	 * @return An ERROR status.
 	 */
-	public static IStatus error(boolean blocker, String message) {
+	public static IStatus error(boolean blocker, String message, IValidator source) {
 		int code = ERROR_ALLOW_WITH_MESSAGE;
 		if (blocker) {
 			code = ERROR_BLOCK_WITH_FLASH;
 		}
-		return new ValidationRuleStatus(IStatus.ERROR, code, message);
+		return new ValidationRuleStatus(IStatus.ERROR, code, message, source);
 	}
 
 	/**

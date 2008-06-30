@@ -65,7 +65,8 @@ public abstract class AbstractValidDate implements IValidationRule {
 			}
 			final String string = (String) value;
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
-				return ValidationRuleStatus.error(false, "Invalid date (must match the pattern " + pattern + ").");
+				return ValidationRuleStatus
+						.error(false, "Invalid date (must match the pattern " + pattern + ").", this);
 			}
 		}
 		return ValidationRuleStatus.ok();

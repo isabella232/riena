@@ -30,7 +30,7 @@ public class MinLength implements IValidationRule {
 		if (value == null) {
 			if (minLength > 0) {
 				return ValidationRuleStatus.error(false, "rule treats null as a blank string, which is shorter than "
-						+ minLength + " characters.");
+						+ minLength + " characters.", this);
 			}
 			return ValidationRuleStatus.ok();
 		}
@@ -40,7 +40,7 @@ public class MinLength implements IValidationRule {
 				return ValidationRuleStatus.ok();
 			}
 			return ValidationRuleStatus.error(false, "String ''" + string + "' is less than " + minLength
-					+ " characters long.");
+					+ " characters long.", this);
 		}
 		throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 				+ String.class.getName());

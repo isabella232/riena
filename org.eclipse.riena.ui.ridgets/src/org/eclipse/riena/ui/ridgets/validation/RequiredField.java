@@ -65,7 +65,7 @@ public class RequiredField implements IValidationRule {
 	 */
 	public IStatus validate(final Object value) {
 		if (value == null) {
-			return ValidationRuleStatus.error(true, "Value is null.");
+			return ValidationRuleStatus.error(true, "Value is null.", this);
 		}
 		if (!(value instanceof String)) {
 			throw new ValidationFailure(getClass().getSimpleName() + " can only validate objects of type "
@@ -79,6 +79,6 @@ public class RequiredField implements IValidationRule {
 				return ValidationRuleStatus.ok();
 			}
 		}
-		return ValidationRuleStatus.error(true, "'String must not be blank.");
+		return ValidationRuleStatus.error(true, "'String must not be blank.", this);
 	}
 }

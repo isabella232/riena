@@ -38,7 +38,7 @@ public class MaxLength implements IValidationRule {
 
 			if (length > maxLength) {
 				return ValidationRuleStatus.error(true, "'" + string + "' must not be longer than " + maxLength
-						+ " characters.");
+						+ " characters.", this);
 			}
 			return ValidationRuleStatus.ok();
 		} else {

@@ -53,4 +53,19 @@ public interface IMessageMarkerViewer {
 	 */
 	void removeMarkerType(Class<? extends IMessageMarker> markerClass);
 
+	/**
+	 * Indicates whether the visualization of the message markers is visible.
+	 * 
+	 * @return The visible state.
+	 */
+	boolean isVisible();
+
+	/**
+	 * Sets the visibility of the visualization of the message markers.
+	 * 
+	 * @param visible
+	 *            The new visible state.
+	 */
+	void setVisible(boolean visible);
+
 }

@@ -89,26 +89,26 @@ public class ValidDecimal implements IValidationRule {
 				if (!partialCheckSupported) {
 					if (scanned.decimalSeperatorIndex < 0) {
 						return ValidationRuleStatus.error(true, "no decimal separator '"
-								+ symbols.getDecimalSeparator() + "' in String '" + string + '\'');
+								+ symbols.getDecimalSeparator() + "' in String '" + string + '\'', this);
 					}
 					// test if grouping character is behind decimal separator:
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
 						return ValidationRuleStatus.error(true, "grouping-separator '" + symbols.getGroupingSeparator()
 								+ "' behind decimal-seperator '" + symbols.getDecimalSeparator() + "' in string '"
-								+ string + '\'');
+								+ string + '\'', this);
 					}
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
 					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter
-							+ "' in string '" + string + '\'');
+							+ "' in string '" + string + '\'', this);
 				}
 				try {
 					synchronized (format) {// NumberFormat not threadsafe!
 						format.parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.");
+					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this);
 				}
 			}
 		}

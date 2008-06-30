@@ -61,10 +61,6 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		super.tearDown();
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
 	public void testSetMessage() throws Exception {
 
 		assertNull(ridget.getToolTipText());
@@ -78,10 +74,6 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		assertNull(ridget.getToolTipText());
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
 	public void testSetMessageExistingTooltip() throws Exception {
 
 		String existingTooltip = "TestExistingTooltip";
@@ -97,10 +89,6 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		assertEquals(existingTooltip, ridget.getToolTipText());
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
 	public void testAddRidgetWithMarker() throws Exception {
 
 		TextRidget anotherRidget = new TextRidget();
@@ -115,11 +103,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		assertNull(anotherRidget.getToolTipText());
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
-	public void testAddMarkerType() throws Exception {
+	public void testAddAndRemoveMarkerType() throws Exception {
 
 		TextRidget anotherRidget = new TextRidget();
 		String anotherMessage = "TestAnotherMessage";
@@ -137,6 +121,41 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		tooltipMessageMarkerViewer.removeMarkerType(MessageMarker.class);
 
 		assertNull(anotherRidget.getToolTipText());
+	}
+
+	public void testVisible() throws Exception {
+
+		ridget.addMarker(errorMessageMarker);
+
+		tooltipMessageMarkerViewer.setVisible(false);
+
+		assertNull(ridget.getToolTipText());
+
+		tooltipMessageMarkerViewer.setVisible(true);
+
+		assertEquals(errorMessage, ridget.getToolTipText());
+	}
+
+	public void testSetMessageTwoMarkers() throws Exception {
+
+		assertNull(ridget.getToolTipText());
+
+		ridget.addMarker(errorMessageMarker);
+		String secondMessage = "TestASecondMarker";
+		MessageMarker secondMarker = new MessageMarker(secondMessage);
+		tooltipMessageMarkerViewer.addMarkerType(MessageMarker.class);
+		ridget.addMarker(secondMarker);
+
+		assertEquals(errorMessage + "; " + secondMessage, ridget.getToolTipText());
+
+		ridget.removeMarker(errorMessageMarker);
+
+		assertEquals(secondMessage, ridget.getToolTipText());
+
+		ridget.removeMarker(secondMarker);
+
+		assertEquals(null, ridget.getToolTipText());
+		assertNull(ridget.getToolTipText());
 	}
 
 }

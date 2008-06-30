@@ -12,12 +12,16 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.Date;
 
 import org.easymock.EasyMock;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
@@ -30,6 +34,8 @@ import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
+import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -699,6 +705,59 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("this is not too short", ridget.getText());
 		assertEquals("this is not too short", getUIControl().getText());
 		assertEquals("this is not too short", model.getValue());
+	}
+
+	public void testValidationMessage() throws Exception {
+		Text control = getUIControl();
+		ITextFieldRidget ridget = getRidget();
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.addValidationRule(new EvenNumberOfCharacters());
+		ridget.setDirectWriting(true);
+
+		ridget.addValidationMessage("TestTextTooShortMessage");
+
+		assertEquals(0, ridget.getMarkers().size());
+
+		UITestHelper.sendString(control.getDisplay(), "a");
+
+		assertEquals(2, ridget.getMarkers().size());
+		assertEquals("TestTextTooShortMessage", getMessageMarker(ridget.getMarkers()).getMessage());
+
+		UITestHelper.sendString(control.getDisplay(), "b");
+
+		assertEquals(0, ridget.getMarkers().size());
+	}
+
+	private IMessageMarker getMessageMarker(Collection<? extends IMarker> markers) {
+		for (IMarker marker : markers) {
+			if (marker instanceof IMessageMarker) {
+				return (IMessageMarker) marker;
+			}
+		}
+		return null;
+	}
+
+	private class EvenNumberOfCharacters implements IValidationRule {
+
+		public IStatus validate(final Object value) {
+			if (value == null) {
+				return ValidationRuleStatus.ok();
+			}
+			if (value instanceof String) {
+				final String string = (String) value;
+				if (string.length() % 2 == 0) {
+					return ValidationRuleStatus.ok();
+				}
+				return ValidationRuleStatus.error(false, "Odd number of characters.", this);
+			}
+			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
+					+ String.class.getName());
+		}
+
+		public ValidationTime getValidationTime() {
+			return ValidationTime.ON_UPDATE_TO_MODEL;
+		}
+
 	}
 
 }

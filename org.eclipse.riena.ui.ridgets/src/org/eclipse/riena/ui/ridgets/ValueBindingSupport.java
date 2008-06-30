@@ -15,16 +15,21 @@ import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
+import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Helper class for Ridgets to delegate their value binding issues to.
  */
-public class ValueBindingSupport {
+public class ValueBindingSupport implements IValidationCallback {
 
 	private DataBindingContext context;
 	private IObservableValue targetOV;
@@ -37,6 +42,8 @@ public class ValueBindingSupport {
 
 	private ErrorMarker errorMarker = new ErrorMarker();
 	private IMarkable markable;
+	private Collection<ValidationMessageMarker> validationMessageMarkers = new ArrayList<ValidationMessageMarker>(0);
+	private IStatus lastValidationStatus;
 
 	public ValueBindingSupport(IObservableValue target) {
 		bindToTarget(target);
@@ -83,7 +90,7 @@ public class ValueBindingSupport {
 	 * Adds a validation rule.
 	 * 
 	 * @param validationRule
-	 * 		The validation rule to add
+	 *            The validation rule to add
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
@@ -101,7 +108,7 @@ public class ValueBindingSupport {
 	 * Removes a validation rule.
 	 * 
 	 * @param validationRule
-	 * 		The validation rule to remove
+	 *            The validation rule to remove
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
@@ -124,9 +131,8 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * @see
-	 * 	org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core
-	 * 	.databinding.observable.value.IObservableValue)
+	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core
+	 *      .databinding.observable.value.IObservableValue)
 	 */
 	public void bindToModel(IObservableValue observableValue) {
 		modelOV = observableValue;
@@ -134,9 +140,8 @@ public class ValueBindingSupport {
 	}
 
 	/**
-	 * @see
-	 * 	org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
-	 * 	java.lang.String)
+	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
+	 *      java.lang.String)
 	 */
 	public void bindToModel(Object bean, String propertyName) {
 		modelOV = BeansObservables.observeValue(bean, propertyName);
@@ -180,6 +185,7 @@ public class ValueBindingSupport {
 				} else {
 					markable.addMarker(errorMarker);
 				}
+				updateValidationMessageMarkers(newStatus);
 			}
 		});
 	}
@@ -218,6 +224,97 @@ public class ValueBindingSupport {
 	private boolean isValidateOnEdit(IValidator validationRule) {
 		return validationRule instanceof IValidationRule
 				&& ((IValidationRule) validationRule).getValidationTime() == IValidationRule.ValidationTime.ON_UI_CONTROL_EDITED;
+	}
+
+	private void updateValidationMessageMarkers(IStatus status) {
+		lastValidationStatus = status;
+		for (ValidationMessageMarker validationMessageMarker : validationMessageMarkers) {
+			removeValidationMessageMarker(validationMessageMarker);
+
+			if (!status.isOK()) {
+				addValidationMessageMarker(validationMessageMarker);
+			}
+		}
+	}
+
+	public void validationRulesChecked(IStatus status) {
+		updateValidationMessageMarkers(status);
+	}
+
+	public void addValidationMessage(String message) {
+		addValidationMessage(new MessageMarker(message));
+	}
+
+	public void addValidationMessage(IMessageMarker messageMarker) {
+		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker);
+		validationMessageMarkers.add(validationMessageMarker);
+		if (isErrorMarked()) {
+			addValidationMessageMarker(validationMessageMarker);
+		}
+	}
+
+	public void addValidationMessage(String message, IValidator validationRule) {
+		addValidationMessage(new MessageMarker(message), validationRule);
+	}
+
+	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
+		validationMessageMarkers.add(validationMessageMarker);
+		if (isErrorMarked()) {
+			addValidationMessageMarker(validationMessageMarker);
+		}
+	}
+
+	public void removeValidationMessage(String message) {
+		removeValidationMessage(new MessageMarker(message));
+	}
+
+	public void removeValidationMessage(IMessageMarker messageMarker) {
+		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker);
+		validationMessageMarkers.remove(validationMessageMarker);
+		if (isErrorMarked()) {
+			removeValidationMessageMarker(validationMessageMarker);
+		}
+	}
+
+	public void removeValidationMessage(String message, IValidator validationRule) {
+		removeValidationMessage(new MessageMarker(message), validationRule);
+	}
+
+	public void removeValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
+		validationMessageMarkers.remove(validationMessageMarker);
+		if (isErrorMarked()) {
+			removeValidationMessageMarker(validationMessageMarker);
+		}
+	}
+
+	private boolean isErrorMarked() {
+		return markable.getMarkers().contains(errorMarker);
+	}
+
+	private void addValidationMessageMarker(ValidationMessageMarker validationMessageMarker) {
+		if (validationMessageMarker.getValidationRule() == null
+				|| isSourceOf(validationMessageMarker.getValidationRule(), lastValidationStatus)) {
+			markable.addMarker(validationMessageMarker);
+		}
+	}
+
+	private boolean isSourceOf(IValidator validationRule, IStatus status) {
+		if (status instanceof ValidationRuleStatus) {
+			return validationRule.equals(((ValidationRuleStatus) status).getSource());
+		} else if (status instanceof MultiStatus) {
+			for (IStatus childStatus : ((MultiStatus) status).getChildren()) {
+				if (isSourceOf(validationRule, childStatus)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void removeValidationMessageMarker(ValidationMessageMarker validationMessageMarker) {
+		markable.removeMarker(validationMessageMarker);
 	}
 
 }

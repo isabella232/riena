@@ -37,13 +37,13 @@ public class ValidatorCollectionTest extends TestCase {
 
 	private static final IValidator ALWAYS_FAIL_1 = new IValidator() {
 		public IStatus validate(final Object value) {
-			return ValidationRuleStatus.error(false, "always fails");
+			return ValidationRuleStatus.error(false, "always fails", this);
 		}
 	};
 
 	private static final IValidator ALWAYS_FAIL_2 = new IValidator() {
 		public IStatus validate(final Object value) {
-			return ValidationRuleStatus.error(false, "always fails");
+			return ValidationRuleStatus.error(false, "always fails", this);
 		}
 	};
 

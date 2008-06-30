@@ -114,7 +114,8 @@ public class ValidExpression implements IValidationRule {
 		if (matcher.match("/" + pattern + "/" + options, string)) { //$NON-NLS-1$//$NON-NLS-2$
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(true, "'String '" + string + "' does not match regex '" + pattern + "'.");
+		return ValidationRuleStatus.error(true, "'String '" + string + "' does not match regex '" + pattern + "'.",
+				this);
 	}
 
 }

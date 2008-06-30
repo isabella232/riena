@@ -105,14 +105,15 @@ public class ValidRange extends ValidDecimal {
 					} catch (final ParseException e) {
 						// should never occur, as super.validate(Object) will
 						// make this method return earlier
-						return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.");
+						return ValidationRuleStatus
+								.error(true, "cannot parse string '" + string + "' to number.", this);
 					}
 				}
 			}
 		}
 		if (currentValue.compareTo(min) < 0 || currentValue.compareTo(max) > 0) {
 			return ValidationRuleStatus.error(true, "value " + currentValue + "' out of range: [" + min + ".." + max
-					+ "].");
+					+ "].", this);
 		}
 		return ValidationRuleStatus.ok();
 	}

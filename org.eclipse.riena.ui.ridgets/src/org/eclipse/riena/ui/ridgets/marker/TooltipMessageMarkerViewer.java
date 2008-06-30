@@ -28,7 +28,8 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
-	private HashMap<IMarkableRidget, String> oldMessage = new LinkedHashMap<IMarkableRidget, String>();
+	private HashMap<IMarkableRidget, String> tooltipMessage = new LinkedHashMap<IMarkableRidget, String>();
+	private HashMap<IMarkableRidget, String> originalTooltipMessage = new LinkedHashMap<IMarkableRidget, String>();
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.marker.AbstractMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
@@ -40,30 +41,34 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	protected void showMessages(IMarkableRidget markableRidget) {
-		// if (this.isVisible()) {
 		Collection messageMarker = this.getMessageMarker(markableRidget);
 		String message = constructMessage(messageMarker).trim();
 		// show the message only if there is something to show
-		if (message.length() > 0) {
-			String tooltiptext = markableRidget.getToolTipText();
-			if (tooltiptext != null) {
-				if (message.equals(tooltiptext.trim())) {
-					// do nothing old Message wird nicht überschrieben
-				} else {
-					oldMessage.put(markableRidget, tooltiptext.trim());
-				}
-			} else {
-				oldMessage.put(markableRidget, null);
-			}
-			markableRidget.setToolTipText(message);
+		if (message.length() > 0 && isVisible()) {
+			showMessages(markableRidget, message);
 		} else {
 			hideMessages(markableRidget);
 		}
-		// }
+	}
+
+	private void showMessages(IMarkableRidget markableRidget, String message) {
+		if (tooltipMessage.get(markableRidget) == null) {
+			String tooltiptext = markableRidget.getToolTipText();
+			if (tooltiptext != null) {
+				if (!message.equals(tooltiptext.trim())) {
+					originalTooltipMessage.put(markableRidget, tooltiptext.trim());
+				}
+			} else {
+				originalTooltipMessage.put(markableRidget, null);
+			}
+		}
+		markableRidget.setToolTipText(message);
+		tooltipMessage.put(markableRidget, message);
 	}
 
 	protected void hideMessages(IMarkableRidget markableRidget) {
-		markableRidget.setToolTipText(oldMessage.get(markableRidget));
+		markableRidget.setToolTipText(originalTooltipMessage.get(markableRidget));
+		tooltipMessage.put(markableRidget, null);
 	}
 
 	private String constructMessage(Collection messageMarker) {

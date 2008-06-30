@@ -54,16 +54,16 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	protected void showMessages(IMarkableRidget markableRidget) {
-		// if (this.isVisible()) {
-		Collection messageMarker = this.getMessageMarker(markableRidget);
-		String message = constructMessage(messageMarker).trim();
-		// show the message only if there is something to show
-		if (message.length() > 0) {
-			setStatusbarMessage(message);
-		} else {
-			hideMessages(markableRidget);
+		if (markableRidget.hasFocus()) {
+			Collection messageMarker = this.getMessageMarker(markableRidget);
+			String message = constructMessage(messageMarker).trim();
+			// show the message only if there is something to show
+			if (message.length() > 0 && isVisible()) {
+				setStatusbarMessage(message);
+			} else {
+				hideMessages(markableRidget);
+			}
 		}
-		// }
 	}
 
 	protected void hideMessages(IMarkableRidget ridget) {

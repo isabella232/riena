@@ -91,17 +91,17 @@ public class ValidInteger extends ValidDecimal {
 				final ScanResult scanned = scan(string);
 				if (scanned.decimalSeperatorIndex >= 0) {
 					return ValidationRuleStatus.error(true, "no integer: decimal separator '"
-							+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\'');
+							+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\'', this);
 				}
 				// test if sign present
 				if (!signed && scanned.minusSignIndex > -1) {
 					return ValidationRuleStatus.error(true, "minus sign present at position '" + scanned.minusSignIndex
-							+ "' in string '" + string + "' where an unsigned integer was expected.");
+							+ "' in string '" + string + "' where an unsigned integer was expected.", this);
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
 					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter
-							+ "' in string '" + string + '\'');
+							+ "' in string '" + string + '\'', this);
 				}
 				try {
 					final DecimalFormat format = getFormat();
@@ -109,7 +109,7 @@ public class ValidInteger extends ValidDecimal {
 						format.parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.");
+					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this);
 				}
 			}
 		}
