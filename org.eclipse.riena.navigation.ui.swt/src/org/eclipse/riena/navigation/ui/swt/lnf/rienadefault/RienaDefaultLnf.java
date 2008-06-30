@@ -78,7 +78,9 @@ public class RienaDefaultLnf {
 	 */
 	protected void initWidgetRendererDefaults() {
 
+		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_RENDERER, new ShellRenderer());
 		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER, new ShellBorderRenderer());
+		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER, new ShellLogoRenderer());
 
 		getRendererTable()
 				.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER, new SubApplicationSwitcherRenderer());
@@ -271,6 +273,9 @@ public class RienaDefaultLnf {
 	 */
 	public Boolean getBooleanSetting(String key) {
 		Object value = getSetting(key);
+		if (value == null) {
+			return false;
+		}
 		if (value instanceof Boolean) {
 			return (Boolean) value;
 		} else {

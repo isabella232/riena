@@ -23,6 +23,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
@@ -30,6 +31,8 @@ import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -106,13 +109,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
 		addUIControl(shell);
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
-		shell.addPaintListener(new PaintListener() {
-
-			public void paintControl(PaintEvent e) {
-				onPaint(e);
-			}
-
-		});
+		shell.addPaintListener(new TitlelessPaintListener());
+		shell.addShellListener(new TitlelessShellListener());
 
 		// see WorkbenchWindow.createDefaultContents
 
@@ -263,37 +261,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
-	private void onPaint(PaintEvent e) {
-
-		if (e.getSource() instanceof Shell) {
-
-			Rectangle bounds = new Rectangle(0, 0, e.width, e.height);
-
-			// muss in den Renderer
-			GC gc = e.gc;
-			gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
-			Image logo = getBackgroundImage();
-			if (logo != null) {
-				int y = logo.getImageData().height;
-				int h = bounds.height - y;
-				gc.fillRectangle(0, y, bounds.width, h);
-			}
-
-			ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-					ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-			borderRenderer.setBounds(bounds);
-			borderRenderer.paint(gc, null);
-
-		}
-
-	}
-
 	private Image getBackgroundImage() {
 		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
-	}
-
-	private Image getLogoImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_LOGO);
 	}
 
 	/**
@@ -385,49 +354,99 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * Returns the vertical position of the logo inside the shell.
-	 * 
-	 * @return horizontal position (SWT.TOP, SWT.CENTER, SWT.BOTTOM)
+	 * This listener paints the shell.
 	 */
-	private int getVerticalLogoPosition() {
+	private class TitlelessPaintListener implements PaintListener {
 
-		Integer hPos = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION);
-		if (hPos == null) {
-			hPos = SWT.TOP;
+		/**
+		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
+		 */
+		public void paintControl(PaintEvent e) {
+			onPaint(e);
 		}
-		return hPos;
+
+		/**
+		 * Paints the border, title, buttons and background of the (titleless)
+		 * shell.
+		 * 
+		 * @param e -
+		 *            event
+		 */
+		private void onPaint(PaintEvent e) {
+
+			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+
+				Shell shell = (Shell) e.getSource();
+
+				Rectangle bounds = new Rectangle(0, 0, e.width, e.height);
+
+				GC gc = e.gc;
+
+				ILnfRenderer shellRenderer = LnfManager.getLnf().getRenderer(ILnfKeyConstants.TITLELESS_SHELL_RENDERER);
+				shellRenderer.setBounds(bounds);
+				shellRenderer.paint(gc, shell);
+
+				ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
+						ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+				borderRenderer.setBounds(bounds);
+				borderRenderer.paint(gc, null);
+
+			}
+
+		}
 
 	}
 
 	/**
-	 * Returns the horizontal margin of the logo image.<br>
-	 * Gap between the shell border an the image.
-	 * 
-	 * @return horizontal margin
+	 * When the state of the shell is changed a redraw maybe necessary.
 	 */
-	private Integer getHorizontalLogoMargin() {
+	private class TitlelessShellListener implements ShellListener {
 
-		Integer margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN);
-		if (margin == null) {
-			margin = 0;
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt.events.ShellEvent)
+		 */
+		public void shellActivated(ShellEvent e) {
+			onStatechanged(e);
 		}
-		return margin;
 
-	}
-
-	/**
-	 * Returns the vertical margin of the logo image.<br>
-	 * Gap between the shell border an the image.
-	 * 
-	 * @return horizontal margin
-	 */
-	private Integer getVerticalLogoMargin() {
-
-		Integer margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN);
-		if (margin == null) {
-			margin = 0;
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.events.ShellEvent)
+		 */
+		public void shellClosed(ShellEvent e) {
 		}
-		return margin;
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt.events.ShellEvent)
+		 */
+		public void shellDeactivated(ShellEvent e) {
+			onStatechanged(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt.events.ShellEvent)
+		 */
+		public void shellDeiconified(ShellEvent e) {
+			onStatechanged(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt.events.ShellEvent)
+		 */
+		public void shellIconified(ShellEvent e) {
+		}
+
+		/**
+		 * Redraws the shell.
+		 * 
+		 * @param e -
+		 *            event
+		 */
+		private void onStatechanged(ShellEvent e) {
+			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+				Shell shell = (Shell) e.getSource();
+				shell.redraw();
+			}
+		}
 
 	}
 
@@ -444,52 +463,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		/**
-		 * Paints the image of the logo.
+		 * Paints the image of the logo.<br>
+		 * TODO ShellLogoRenderer !?
 		 * 
 		 * @param e -
 		 *            an event containing information about the paint
 		 */
 		private void onPaint(PaintEvent e) {
 
-			GC gc = e.gc;
-
-			Image logo = getLogoImage();
-			if (logo == null) {
-				return;
-			}
-			int logoWidth = logo.getImageData().width;
-			int logoHeight = logo.getImageData().height;
-			int hMargin = getHorizontalLogoMargin();
-			int vMargin = getVerticalLogoMargin();
-
-			int x = 0;
-			Integer hPos = getHorizontalLogoPosition();
-			switch (hPos) {
-			case SWT.CENTER:
-				x = e.width / 2 - logoWidth / 2;
-				break;
-			case SWT.RIGHT:
-				x = e.width - logoWidth - hMargin;
-				break;
-			default:
-				x = hMargin;
-				break;
-			}
-			int y = 0;
-			Integer vPos = getVerticalLogoPosition();
-			switch (vPos) {
-			case SWT.CENTER:
-				y = e.height / 2 - logoHeight / 2;
-				break;
-			case SWT.BOTTOM:
-				y = e.height - logoHeight - vMargin;
-				break;
-			default:
-				y = vMargin;
-				break;
-			}
-
-			gc.drawImage(logo, x, y);
+			ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
+					ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
+			renderer.setBounds(e.x, e.y, e.width, e.height);
+			renderer.paint(e.gc, null);
 
 		}
 

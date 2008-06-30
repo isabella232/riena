@@ -55,6 +55,9 @@ public class ColorLnfResource extends AbstractLnfResource {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
 	 */
 	public Resource createResource() {
+		if (rgb == null) {
+			return null;
+		}
 		return new Color(Display.getCurrent(), rgb);
 	}
 

@@ -28,6 +28,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomColors(java.util.Map)
 	 */
+	@Override
 	public void addCustomColors(Map<String, ILnfResource> table) {
 		super.addCustomColors(table);
 
@@ -64,6 +65,18 @@ public class ExampleTheme extends RienaDefaultTheme {
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
+
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomFonts(java.util.Map)
+	 */
+	@Override
+	public void addCustomFonts(Map<String, ILnfResource> table) {
+
+		super.addCustomFonts(table);
+
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial Narrow", 12, SWT.BOLD));
 
 	}
 

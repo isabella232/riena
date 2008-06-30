@@ -64,6 +64,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	public void addCustomColors(Map<String, ILnfResource> table) {
 
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(25, 88, 129));
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));

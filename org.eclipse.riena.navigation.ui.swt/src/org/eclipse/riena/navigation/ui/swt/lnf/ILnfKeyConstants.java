@@ -19,6 +19,7 @@ public class ILnfKeyConstants {
 	 * Color keys
 	 */
 	public static final String TITLELESS_SHELL_FOREGROUND = "TitlelessShell.foreground"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_PASSIVE_FOREGROUND = "TitlelessShell.passiveForeground"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_BACKGROUND = "TitlelessShell.background"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR = "TitlelessShell.bottomRightColor"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR = "TitlelessShell.borderTopLeftColor"; //$NON-NLS-1$
@@ -80,22 +81,22 @@ public class ILnfKeyConstants {
 	 */
 	public static final String TITLELESS_SHELL_BACKGROUND_IMAGE = "TitlelessShell.backgroundImage"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_LOGO = "TitlelessShell.logo"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_CLOSE_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_CLOSE_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_CLOSE_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MAX_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MAX_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MAX_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MIN_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MIN_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_MIN_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_RESTORE_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_RESTORE_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
-	public static final String TITLELESS_SHELL_RESTORE_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_ICON = "TitlelessShell.closeIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_HOVER_ICON = "TitlelessShell.closeHoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON = "TitlelessShell.closeHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_INACTIVE_ICON = "TitlelessShell.closeInactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_ICON = "TitlelessShell.maxIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_HOVER_ICON = "TitlelessShell.maxHoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON = "TitlelessShell.maxHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_INACTIVE_ICON = "TitlelessShell.maxInactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_ICON = "TitlelessShell.minIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_HOVER_ICON = "TitlelessShell.minHoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON = "TitlelessShell.minHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_INACTIVE_ICON = "TitlelessShell.minInactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_ICON = "TitlelessShell.restoreIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_HOVER_ICON = "TitlelessShell.restoreHoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON = "TitlelessShell.restoreHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_INACTIVE_ICON = "TitlelessShell.restoreInactiveIcon"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
@@ -126,7 +127,9 @@ public class ILnfKeyConstants {
 	/**
 	 * Renderer keys
 	 */
+	public static final String TITLELESS_SHELL_RENDERER = "TitlelessShell.renderer"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_BORDER_RENDERER = "TitlelessShell.borderRenderer"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_LOGO_RENDERER = "TitlelessShell.logoRenderer"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_TAB_RENDERER = "SubApplication.tabRenderer"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_RENDERER = "SubApplication.switcherRenderer"; //$NON-NLS-1$
