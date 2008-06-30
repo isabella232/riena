@@ -43,6 +43,11 @@ import org.osgi.framework.Bundle;
  */
 public class SwtExampleApplication extends SwtApplication {
 
+	public SwtExampleApplication() {
+		super();
+		// LnfManager.setLnf(new ExampleLnf());
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#
 	 *      createApplicationViewController

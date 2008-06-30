@@ -28,6 +28,7 @@ import org.eclipse.swt.graphics.Point;
  */
 public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
+	public final static int ACTIVE_Y_OFFSET = 2;
 	private final static int BORDER_TOP_WIDTH = 3;
 	private final static int BORDER_BOTTOM_WIDTH = 1;
 	private final static int BORDER_LEFT_WIDTH = 2;
@@ -196,7 +197,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 			gc.setForeground(getSelectionStartColor());
 			gc.setBackground(getSelectionEndColor());
 			x = getBounds().x + BORDER_LEFT_WIDTH - leftInset;
-			y = getBounds().y - 2;
+			y = getBounds().y - ACTIVE_Y_OFFSET;
 			w = getWidth() - BORDER_LEFT_WIDTH - BORDER_RIGHT_WIDTH + 1 + rightInset + leftInset;
 			h = 4;
 			gc.fillGradientRectangle(x, y, w, h, true);

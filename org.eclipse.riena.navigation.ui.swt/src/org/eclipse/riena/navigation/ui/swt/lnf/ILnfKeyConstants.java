@@ -18,6 +18,13 @@ public class ILnfKeyConstants {
 	/**
 	 * Color keys
 	 */
+	public static final String TITLELESS_SHELL_FOREGROUND = "TitlelessShell.foreground"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_BACKGROUND = "TitlelessShell.background"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR = "TitlelessShell.bottomRightColor"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR = "TitlelessShell.borderTopLeftColor"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR = "TitlelessShell.innerBorderBottomRightColor"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR = "TitlelessShell.innerBorderTopLeftColor"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = "SubApplicationSwitcher.foreground"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BACKGROUND = "SubApplicationSwitcher.background"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR = "SubApplicationSwitcher.borderBottomLeftColor"; //$NON-NLS-1$
@@ -58,17 +65,38 @@ public class ILnfKeyConstants {
 	/**
 	 * Font keys
 	 */
+	public static final String TITLELESS_SHELL_FONT = "TitlelessShell.font"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_FONT = "SubApplicationSwitcher.font"; //$NON-NLS-1$
 
-	public static final String EMBEDDED_TITLEBAR_FONT = "EmbeddedTitlebar.font"; //$NON-NLS-1$
+	public static final String MODULE_ITEM_TOOLTIP_FONT = "ModuleItemToolTip.font"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_ITEM_TOOLTIP_FONT = "SubModuleItemToolTip.font"; //$NON-NLS-1$
 
-	public static final String MODULE_ITEM_TOOLTIP_FONT = "ModuleItemToolTip.font"; //$NON-NLS-1$
+	public static final String EMBEDDED_TITLEBAR_FONT = "EmbeddedTitlebar.font"; //$NON-NLS-1$
 
 	/**
 	 * Icon keys
 	 */
+	public static final String TITLELESS_SHELL_BACKGROUND_IMAGE = "TitlelessShell.backgroundImage"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_LOGO = "TitlelessShell.logo"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_CLOSE_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MAX_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_MIN_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_ICON = "TitlelessShell.icon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_HOVER_ICON = "TitlelessShell.hoverIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON = "TitlelessShell.hoverSelectedIcon"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESTORE_INACTIVE_ICON = "TitlelessShell.inactiveIcon"; //$NON-NLS-1$
+
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
@@ -78,6 +106,16 @@ public class ILnfKeyConstants {
 	/**
 	 * Setting keys
 	 */
+	public static final String TITLELESS_SHELL_PADDING = "TitlelessShell.padding"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION = "TitlelessShell.horizontalLogoPosition"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_VERTICAL_LOGO_POSITION = "TitlelessShell.verticalLogoPosition"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN = "TitlelessShell.horizontalLogoMargin"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_VERTICAL_LOGO_MARGIN = "TitlelessShell.verticalLogoMargin"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_HORIZONTAL_TEXT_POSITION = "TitlelessShell.horizontalTextPosition"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_SHOW_MAX = "TitlelessShell.showMax"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_SHOW_MIN = "TitlelessShell.showMin"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_SHOW_CLOSE = "TitlelessShell.showClose"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION = "SubApplicationSwitcher.horizontalTabPosition"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON = "SubApplicationSwitcher.tabShowIcon"; //$NON-NLS-1$
 
@@ -88,8 +126,10 @@ public class ILnfKeyConstants {
 	/**
 	 * Renderer keys
 	 */
-	public static final String SUB_APPLICATION_TAB_RENDERER = "SubApplicationTabRenderer"; //$NON-NLS-1$
-	public static final String SUB_APPLICATION_SWITCHER_RENDERER = "SubApplicationSwitcher.renderer"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_BORDER_RENDERER = "TitlelessShell.borderRenderer"; //$NON-NLS-1$
+
+	public static final String SUB_APPLICATION_TAB_RENDERER = "SubApplication.tabRenderer"; //$NON-NLS-1$
+	public static final String SUB_APPLICATION_SWITCHER_RENDERER = "SubApplication.switcherRenderer"; //$NON-NLS-1$
 
 	public static final String MODULE_GROUP_RENDERER = "ModuleGroup.renderer"; //$NON-NLS-1$
 

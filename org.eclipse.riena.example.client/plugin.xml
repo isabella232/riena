@@ -168,6 +168,7 @@
                   mnemonic="x">
             </command>
          </menu>
+         <!--
          <menu
                label="Preferences"
                mnemonic="P">
@@ -186,6 +187,7 @@
                </command>
             </menu>
          </menu>
+         -->
          <menu
                label="Context menu"
                mnemonic="x">

@@ -78,14 +78,18 @@ public class RienaDefaultLnf {
 	 */
 	protected void initWidgetRendererDefaults() {
 
+		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER, new ShellBorderRenderer());
+
+		getRendererTable()
+				.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER, new SubApplicationSwitcherRenderer());
+		getRendererTable().put(ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER, new SubApplicationTabRenderer());
+
+		getRendererTable().put(ILnfKeyConstants.MODULE_GROUP_RENDERER, new ModuleGroupRenderer());
+
 		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER, new EmbeddedBorderRenderer());
 		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER, new EmbeddedTitlebarRenderer());
 		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER, new HoverBorderRenderer());
 		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER, new SubModuleViewRenderer());
-		getRendererTable().put(ILnfKeyConstants.MODULE_GROUP_RENDERER, new ModuleGroupRenderer());
-		getRendererTable()
-				.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER, new SubApplicationSwitcherRenderer());
-		getRendererTable().put(ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER, new SubApplicationSwitcherRenderer());
 
 	}
 

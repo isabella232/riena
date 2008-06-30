@@ -16,20 +16,16 @@ import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 
 /**
- * Renderer of an embedded border.
+ * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar))
+ * shell.
  */
-public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
+public class ShellBorderRenderer extends AbstractLnfRenderer {
 
 	private final static int BORDER_WIDTH = 2;
-	private boolean active;
 
 	/**
-	 * @param value -
-	 *            is ignored
-	 * 
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
@@ -42,46 +38,61 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		// Border
-		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
-		if (isActive()) {
-			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
-		}
-		gc.setForeground(borderColor);
+
 		// -outer
 		// --top
-		int x = getBounds().x + BORDER_WIDTH;
+		Color borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
+		gc.setForeground(borderColor);
+		int x = getBounds().x;
 		int y = getBounds().y;
-		int w = getWidth() - BORDER_WIDTH * 2;
+		int w = getWidth();
 		gc.drawLine(x, y, x + w, y);
 		// --bottom
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
+		gc.setForeground(borderColor);
 		y = getBounds().y + getHeight();
 		gc.drawLine(x, y, x + w, y);
 		// --left
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
+		gc.setForeground(borderColor);
 		x = getBounds().x;
-		y = getBounds().y + BORDER_WIDTH;
-		int h = getHeight() - BORDER_WIDTH * 2;
+		y = getBounds().y;
+		int h = getHeight();
 		gc.drawLine(x, y, x, y + h);
 		// --right
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
+		gc.setForeground(borderColor);
 		x = getBounds().x + getWidth();
 		gc.drawLine(x, y, x, y + h);
 
 		// -inner
 		// --top
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
+		gc.setForeground(borderColor);
 		x = getBounds().x + 1;
 		y = getBounds().y + 1;
 		w = getWidth() - 2;
 		gc.drawLine(x, y, x + w, y);
 		// --bottom
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
+		gc.setForeground(borderColor);
 		y = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x + w, y);
 		// --left
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
+		gc.setForeground(borderColor);
 		x = getBounds().x + 1;
 		y = getBounds().y + 1;
 		h = getHeight() - 2;
 		gc.drawLine(x, y, x, y + h);
 		// --right
+		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
+		gc.setForeground(borderColor);
 		x = getBounds().x + getWidth() - 1;
+		y = getBounds().y + 2;
+		h = getHeight() - 4;
 		gc.drawLine(x, y, x, y + h);
+
 	}
 
 	/**
@@ -89,14 +100,6 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 */
 	public void dispose() {
 		// nothing to do
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	private int getHeight() {
@@ -108,40 +111,33 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Computes the size inside the given outer border.
+	 * Returns the width of the border (including padding)
 	 * 
-	 * @param outerBounds -
-	 *            bounds of the outer border
-	 * 
-	 * @return bounds of the inner border
+	 * @return border width
 	 */
-	public Rectangle computeInnerBounds(Rectangle outerBounds) {
-		return new Rectangle(outerBounds.x + BORDER_WIDTH, outerBounds.y + BORDER_WIDTH, outerBounds.width
-				- BORDER_WIDTH * 2, outerBounds.height - BORDER_WIDTH * 2);
+	public int getCompelteBorderWidth() {
+
+		int width = BORDER_WIDTH;
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		Integer padding = lnf.getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_PADDING);
+		if (padding != null) {
+			width += padding;
+		}
+
+		return width;
+
 	}
 
 	/**
-	 * Computes the outside height of the border.
+	 * Returns the width of the border.
 	 * 
-	 * @param innerHeight -
-	 *            the inner height of the border
-	 * 
-	 * @return outer border height
+	 * @return border width
 	 */
-	public int computeOuterHeight(int innerHeight) {
-		return innerHeight + BORDER_WIDTH * 2;
-	}
+	public int getBorderWidth() {
 
-	/**
-	 * Computes the outside width of the border.
-	 * 
-	 * @param innerWidth -
-	 *            the inner width of the border
-	 * 
-	 * @return outer border width
-	 */
-	public int computeOuterWidth(int innerWidth) {
-		return innerWidth + BORDER_WIDTH * 2;
+		return BORDER_WIDTH;
+
 	}
 
 }

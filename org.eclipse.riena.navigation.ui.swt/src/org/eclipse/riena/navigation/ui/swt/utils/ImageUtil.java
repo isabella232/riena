@@ -15,16 +15,33 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+/**
+ * Utility class to manage images.
+ */
 public class ImageUtil {
 
+	private ImageUtil() {
+		// utility class
+	}
+
+	/**
+	 * Returns the image for the given path
+	 * 
+	 * @param fullPath -
+	 *            path of the image
+	 * @return image or <code>null</code> if no image was found.
+	 */
 	public static Image getImage(String fullPath) {
+
 		if (StringUtils.isEmpty(fullPath)) {
 			return null;
 		}
 		if (Activator.getDefault() == null) {
 			return null;
 		}
+
 		ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
 		Image image = imageRegistry.get(fullPath);
 		if ((image == null) || (image.isDisposed())) {
@@ -35,13 +52,19 @@ public class ImageUtil {
 			} else {
 				String pluginID = parts[0];
 				String iconPath = parts[1];
+				descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(pluginID, iconPath);
 				descriptor = Activator.imageDescriptorFromPlugin(pluginID, iconPath);
+				if (descriptor == null) {
+					return null;
+				}
 				image = descriptor.createImage();
 			}
 			imageRegistry.remove(fullPath);
 			imageRegistry.put(fullPath, descriptor);
 		}
+
 		return image;
+
 	}
 
 }

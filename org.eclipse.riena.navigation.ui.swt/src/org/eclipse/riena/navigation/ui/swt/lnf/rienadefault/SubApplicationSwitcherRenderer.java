@@ -39,10 +39,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		gc.setBackground(lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BACKGROUND));
-		gc.fillRectangle(getBounds());
-
-		SubApplicationTabRenderer tabRenderer = new SubApplicationTabRenderer();
+		SubApplicationTabRenderer tabRenderer = getRenderer();
 
 		// calculate width of all tab items
 		int allTabWidth = 0;
@@ -127,6 +124,16 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 */
 	public void setItems(List<SubApplicationItem> items) {
 		this.items = items;
+	}
+
+	/**
+	 * Returns the renderer of a tab
+	 * 
+	 * @return renderer of tab
+	 */
+	private SubApplicationTabRenderer getRenderer() {
+		return (SubApplicationTabRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER);
 	}
 
 }

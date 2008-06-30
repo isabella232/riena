@@ -51,18 +51,33 @@ public class ExampleTheme extends RienaDefaultTheme {
 	 */
 	@Override
 	public void addCustomImages(Map<String, ILnfResource> table) {
+
 		super.addCustomImages(table);
-		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath)); //$NON-NLS-1$
+
+		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/background.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
+		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/logo.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
+
+		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath));
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
+
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
 	 */
+	@Override
 	public void addCustomSettings(Map<String, Object> table) {
+
+		super.addCustomSettings(table);
+
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 0);
+
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.LEFT);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
 	}

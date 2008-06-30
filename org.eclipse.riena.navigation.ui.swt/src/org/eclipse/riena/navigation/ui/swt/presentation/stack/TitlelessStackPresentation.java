@@ -13,10 +13,14 @@ package org.eclipse.riena.navigation.ui.swt.presentation.stack;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.model.NavigationProcessor;
+import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.SubApplicationTabRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -28,6 +32,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.internal.presentations.PresentablePart;
 import org.eclipse.ui.presentations.IPresentablePart;
 import org.eclipse.ui.presentations.IStackPresentationSite;
@@ -80,7 +85,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Top padding of the sub-module view.<br>
 	 * Gap between application switcher and sub-module view.
 	 */
-	private static final int PADDING_TOP = 10;
+	public static final int PADDING_TOP = 10;
 	/**
 	 * Bottom padding of the navigation/the sub-module view.<br>
 	 * Gap between bottom shell border and sub-module view.
@@ -288,13 +293,41 @@ public class TitlelessStackPresentation extends StackPresentation {
 		GC gc = new GC(parent);
 		Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 		gc.dispose();
+		int tabHeight = calcTabHeight();
 
 		int x = PADDING_LEFT;
-		int y = SUB_APPLICATION_SWITCHER_HEIGHT + PADDING_TOP;
+		// int y = SUB_APPLICATION_SWITCHER_HEIGHT + PADDING_TOP;
+		int y = tabHeight + PADDING_TOP;
 		int width = size.x;
-		int height = parent.getBounds().height - SUB_APPLICATION_SWITCHER_HEIGHT - PADDING_BOTTOM - PADDING_TOP;
+		int height = parent.getBounds().height - tabHeight - PADDING_BOTTOM - PADDING_TOP;
 
 		return new Rectangle(x, y, width, height);
+
+	}
+
+	/**
+	 * Returns the height of a tab.
+	 * 
+	 * @return tab height.
+	 */
+	public static int calcTabHeight() {
+
+		GC gc = new GC(Display.getCurrent());
+
+		// Create a active dummy-sub-application
+		ISubApplication subApp = new SubApplication(""); //$NON-NLS-1$
+		subApp.setNavigationProcessor(new NavigationProcessor());
+		subApp.activate();
+
+		// Get the renderer of tab
+		SubApplicationTabRenderer renderer = (SubApplicationTabRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER);
+
+		int tabHeight = renderer.computeSize(gc, subApp).y;
+		tabHeight += SubApplicationTabRenderer.ACTIVE_Y_OFFSET;
+		gc.dispose();
+
+		return tabHeight;
 
 	}
 
@@ -308,7 +341,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		int x = 0;
 		int y = 0;
 		int width = parent.getBounds().width;
-		int height = SUB_APPLICATION_SWITCHER_HEIGHT;
+		int height = calcTabHeight();
 
 		return new Rectangle(x, y, width, height);
 
