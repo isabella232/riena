@@ -5,8 +5,8 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.utils.SwtOsUtilities;
 import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
-import org.eclipse.riena.navigation.ui.swt.win32.SwtOsUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -32,11 +32,13 @@ public class ModuleItem {
 
 	private SubModuleNode activeSubModule;
 
+	private static SwtOsUtilities swtOsUtility = new SwtOsUtilities();
+
 	/**
 	 * Constructs a new instance of this class.
 	 * 
-	 * @param parent -
-	 *            module group which will be the parent of the new instance
+	 * @param parent
+	 *            - module group which will be the parent of the new instance
 	 */
 	public ModuleItem(ModuleGroupWidget parent, ModuleNavigationComponent moduleCmp) {
 
@@ -158,8 +160,8 @@ public class ModuleItem {
 	 * Clips (if necessary) the text of the given tree item and all child items.
 	 * 
 	 * @param gc
-	 * @param item -
-	 *            tree item
+	 * @param item
+	 *            - tree item
 	 * @return true: some text was clipped; false: no text was clipped
 	 */
 	private boolean clipSubModuleTexts(GC gc, TreeItem item) {
@@ -181,8 +183,8 @@ public class ModuleItem {
 	 * Clips (if necessary) the text of the given tree item.
 	 * 
 	 * @param gc
-	 * @param item -
-	 *            tree item
+	 * @param item
+	 *            - tree item
 	 * @return true: text was clipped; false: text was not clipped
 	 */
 	private boolean clipSubModuleText(GC gc, TreeItem item) {
@@ -215,15 +217,15 @@ public class ModuleItem {
 			clipSubModuleTexts(gc, item);
 		}
 
-		SwtOsUtilities.hiddeSrollBars(getTree());
+		swtOsUtility.hideSrollBars(getTree());
 
 	}
 
 	/**
 	 * Returns if the module item is pressed or not.
 	 * 
-	 * @param pressed -
-	 *            true, if mouse over the module and pressed; otherwise false.
+	 * @param pressed
+	 *            - true, if mouse over the module and pressed; otherwise false.
 	 */
 	public boolean isPressed() {
 		return pressed;
@@ -234,8 +236,8 @@ public class ModuleItem {
 	 * If the given state differs from the current state, the parent of item is
 	 * redrawn.
 	 * 
-	 * @param pressed -
-	 *            true, if mouse over the module and pressed; otherwise false.
+	 * @param pressed
+	 *            - true, if mouse over the module and pressed; otherwise false.
 	 */
 	public void setPressed(boolean pressed) {
 		if (this.pressed != pressed) {
@@ -262,8 +264,8 @@ public class ModuleItem {
 	 * If the given hover state differs from the current state, the parent of
 	 * item is redrawn.
 	 * 
-	 * @param hover -
-	 *            true, if mouse over the module; otherwise false.
+	 * @param hover
+	 *            - true, if mouse over the module; otherwise false.
 	 */
 	public void setHover(boolean hover) {
 		if (this.hover != hover) {
