@@ -16,6 +16,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.core.logging.ConsoleLogger;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtensionDelta;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -23,7 +25,6 @@ import org.eclipse.core.runtime.IRegistryChangeEvent;
 import org.eclipse.core.runtime.IRegistryChangeListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
@@ -95,7 +96,7 @@ public class ExtensionInjector {
 
 	/**
 	 * Define the bind method name.<br>
-	 * If not given ´update´ will be assumed.
+	 * If not given 'update' will be assumed.
 	 * 
 	 * @param bindMethodName
 	 * @return itself
@@ -178,9 +179,9 @@ public class ExtensionInjector {
 			}
 
 		} catch (SecurityException e) {
-			throw new IllegalStateException("Could not find a ´bind´ method.", e);
+			throw new IllegalStateException("Could not find a 'bind' method.", e);
 		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException("Could not find a ´bind´ method.", e);
+			throw new IllegalStateException("Could not find a 'bind' method.", e);
 		}
 
 	}
@@ -200,7 +201,7 @@ public class ExtensionInjector {
 				candidates.add(method);
 
 		if (candidates.size() == 0)
-			throw new IllegalStateException("No suitable ´bind´ method found.");
+			throw new IllegalStateException("No suitable 'bind' method found.");
 
 		if (candidates.size() == 1)
 			if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0]))
@@ -210,7 +211,7 @@ public class ExtensionInjector {
 						+ " does not match extension point constraints.");
 
 		if (candidates.size() > 2)
-			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for ´bind´ method.");
+			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method.");
 
 		if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0]))
 			return candidates.get(0);
@@ -218,7 +219,7 @@ public class ExtensionInjector {
 		if (matchesExtensionPointConstraint(candidates.get(1).getParameterTypes()[0]))
 			return candidates.get(1);
 
-		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for ´bind´ method.");
+		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method.");
 	}
 
 	/**
@@ -241,7 +242,7 @@ public class ExtensionInjector {
 	void populateInterfaceBeans() {
 		Object[] beans = ExtensionReader.read(context, extensionId.getExtensionPointId(), componentType);
 		if (!matchesExtensionPointConstraint(beans.length))
-			LOGGER.log(LogService.LOG_ERROR, "Number of extensions does not fullfil the extenion point´s constraints.");
+			LOGGER.log(LogService.LOG_ERROR, "Number of extensions does not fullfil the extenion point's constraints.");
 		try {
 			if (isArray) {
 				updateMethod.invoke(target, new Object[] { beans });
@@ -249,11 +250,11 @@ public class ExtensionInjector {
 				updateMethod.invoke(target, new Object[] { beans.length > 0 ? beans[0] : null });
 			}
 		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Calling ´bind´ method fails.", e);
+			throw new IllegalStateException("Calling 'bind' method fails.", e);
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Calling ´bind´ method fails.", e);
+			throw new IllegalStateException("Calling 'bind' method fails.", e);
 		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling ´bind´ method fails.", e);
+			throw new IllegalStateException("Calling 'bind' method fails.", e);
 		}
 	}
 
@@ -268,7 +269,8 @@ public class ExtensionInjector {
 	//
 	// /*
 	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
+	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.
+	// runtime.IExtension[])
 	// */
 	// public void added(IExtension[] extensions) {
 	// populateInterfaceBeans();
@@ -276,7 +278,8 @@ public class ExtensionInjector {
 	//
 	// /*
 	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
+	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.
+	// runtime.IExtensionPoint[])
 	// */
 	// public void added(IExtensionPoint[] extensionPoints) {
 	// populateInterfaceBeans();
@@ -284,7 +287,8 @@ public class ExtensionInjector {
 	//
 	// /*
 	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
+	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.
+	// runtime.IExtension[])
 	// */
 	// public void removed(IExtension[] extensions) {
 	// populateInterfaceBeans();
@@ -292,7 +296,8 @@ public class ExtensionInjector {
 	//
 	// /*
 	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
+	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.
+	// runtime.IExtensionPoint[])
 	// */
 	// public void removed(IExtensionPoint[] extensionPoints) {
 	// populateInterfaceBeans();
@@ -306,7 +311,9 @@ public class ExtensionInjector {
 	private class InjectorListener implements IRegistryChangeListener {
 
 		/*
-		 * @see org.eclipse.core.runtime.IRegistryChangeListener#registryChanged(org.eclipse.core.runtime.IRegistryChangeEvent)
+		 * @see
+		 * org.eclipse.core.runtime.IRegistryChangeListener#registryChanged(
+		 * org.eclipse.core.runtime.IRegistryChangeEvent)
 		 */
 		public void registryChanged(IRegistryChangeEvent event) {
 			for (IExtensionDelta delta : event.getExtensionDeltas())
