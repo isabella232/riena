@@ -95,6 +95,12 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.TreeView"
+            id="org.eclipse.riena.example.client.views.TreeView"
+            name="org.eclipse.riena.example.client.views.TreeView">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">

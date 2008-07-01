@@ -12,6 +12,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.swt.SWT;
@@ -21,10 +22,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * Default implementation of {@link IControlRidgetMapper}} for SWT.
+ * Default implementation of {@link IControlRidgetMapper} for SWT.
  */
 public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widget> {
 
@@ -49,6 +51,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Shell.class, ShellRidget.class);
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
+		addMapping(Tree.class, TreeRidget.class);
 	}
 
 	/**
@@ -63,12 +66,12 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	/**
 	 * Adds a mapping of a UI control-class to a ridget-class
 	 * 
-	 * @param controlClazz -
-	 *            the class of the UI control (<code>Widget</code>)
-	 * @param ridgetClazz -
-	 *            the class of the ridget
-	 * @param swtStyle -
-	 *            SWT style of the UI control (<code>Widget</code>)
+	 * @param controlClazz
+	 *            - the class of the UI control (<code>Widget</code>)
+	 * @param ridgetClazz
+	 *            - the class of the ridget
+	 * @param swtStyle
+	 *            - SWT style of the UI control (<code>Widget</code>)
 	 */
 	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int swtStyle) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, swtStyle);
@@ -111,10 +114,10 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Create a new mapping of UI control and ridget.
 		 * 
-		 * @param controlClazz -
-		 *            the class of the UI control
-		 * @param ridgetClazz -
-		 *            the class of the ridget
+		 * @param controlClazz
+		 *            - the class of the UI control
+		 * @param ridgetClazz
+		 *            - the class of the ridget
 		 */
 		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			this(controlClazz, ridgetClazz, IGNOR_SWT_STYLE);
@@ -123,12 +126,12 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Create a new mapping of UI control and ridget.
 		 * 
-		 * @param controlClazz -
-		 *            the class of the UI control
-		 * @param ridgetClazz -
-		 *            the class of the ridget
-		 * @param controlStyle -
-		 *            the SWT style of the UI control
+		 * @param controlClazz
+		 *            - the class of the UI control
+		 * @param ridgetClazz
+		 *            - the class of the ridget
+		 * @param controlStyle
+		 *            - the SWT style of the UI control
 		 */
 		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle) {
 			this.controlClazz = controlClazz;
@@ -139,8 +142,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Checks if this mapping is for given UI control.
 		 * 
-		 * @param control -
-		 *            the UI control-class
+		 * @param control
+		 *            - the UI control-class
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Class<? extends Widget> controlClazz) {
@@ -154,8 +157,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Checks if this mapping is for given UI control.
 		 * 
-		 * @param control -
-		 *            the UI control
+		 * @param control
+		 *            - the UI control
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Widget control) {

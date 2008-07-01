@@ -19,6 +19,7 @@ import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoView;
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
 import org.eclipse.riena.example.client.views.TextView;
+import org.eclipse.riena.example.client.views.TreeView;
 import org.eclipse.riena.example.client.views.UiProcessDemoView;
 import org.eclipse.riena.example.client.views.ValidationView;
 import org.eclipse.riena.internal.example.client.Activator;
@@ -197,6 +198,11 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(SystemPropertiesView.ID, false);
 		presentation.present(systemPropertiesSubModule, SystemPropertiesView.ID);
 		playgroundModule.addChild(systemPropertiesSubModule);
+
+		ISubModuleNode treeSubModule = new SubModuleNode("Tree");
+		presentation.registerView(TreeView.ID, false);
+		presentation.present(treeSubModule, TreeView.ID);
+		playgroundModule.addChild(treeSubModule);
 
 		return applicationModel;
 	}
