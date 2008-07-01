@@ -53,7 +53,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_RESTORE_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_restore_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR
 			+ "mb_restore_hover_selected.gif"; //$NON-NLS-1$
-	private static final String IMAGE_RESTORE_INACTIVE_ICON = "mb_restore_inactive.gif"; //$NON-NLS-1$
+	private static final String IMAGE_RESTORE_INACTIVE_ICON = PATH_ICONS + PATH_SEPARATOR + "mb_restore_inactive.gif"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;

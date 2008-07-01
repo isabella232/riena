@@ -40,19 +40,24 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	private boolean pressed;
 	private boolean hover;
 	private boolean active;
+	private boolean maximized;
 	private Rectangle[] btnBounds = new Rectangle[BTN_COUNT];
 	private String[] btnShowKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE,
 			ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN };
 	private String[] btnImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_ICON };
+			ILnfKeyConstants.TITLELESS_SHELL_MAX_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_ICON,
+			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
 	private String[] btnHoverSelectedImageKeys = new String[] {
 			ILnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
 			ILnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON };
+			ILnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON,
+			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
 	private String[] btnHoverImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON };
+			ILnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON,
+			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
 	private String[] btnInactiveImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON };
+			ILnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
+			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
 
 	/**
 	 * Creates a new instance of <code>ShellRenderer</code> and initializes
@@ -83,6 +88,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		assert value instanceof Shell;
 		Shell shell = (Shell) value;
 		setActive(shell == shell.getDisplay().getActiveShell());
+		setMaximized(shell.getMaximized());
 
 		gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		Image logo = getBackgroundImage();
@@ -108,16 +114,20 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		Image image = null;
 
 		if (LnfManager.getLnf().getBooleanSetting(btnShowKeys[btnIndex])) {
+			int index = btnIndex;
+			if ((index == 1) && isMaximized()) {
+				index = 3;
+			}
 			if (isActive()) {
 				if (isPressed()) {
-					image = LnfManager.getLnf().getImage(btnHoverSelectedImageKeys[btnIndex]);
+					image = LnfManager.getLnf().getImage(btnHoverSelectedImageKeys[index]);
 				} else if (isHover()) {
-					image = LnfManager.getLnf().getImage(btnHoverImageKeys[btnIndex]);
+					image = LnfManager.getLnf().getImage(btnHoverImageKeys[index]);
 				} else {
-					image = LnfManager.getLnf().getImage(btnImageKeys[btnIndex]);
+					image = LnfManager.getLnf().getImage(btnImageKeys[index]);
 				}
 			} else {
-				image = LnfManager.getLnf().getImage(btnInactiveImageKeys[btnIndex]);
+				image = LnfManager.getLnf().getImage(btnInactiveImageKeys[index]);
 			}
 		}
 
@@ -258,6 +268,21 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	 */
 	private void setActive(boolean active) {
 		this.active = active;
+	}
+
+	/**
+	 * @return the maximized
+	 */
+	private boolean isMaximized() {
+		return maximized;
+	}
+
+	/**
+	 * @param maximiz
+	 *            the maximized to set
+	 */
+	private void setMaximized(boolean maximized) {
+		this.maximized = maximized;
 	}
 
 }
