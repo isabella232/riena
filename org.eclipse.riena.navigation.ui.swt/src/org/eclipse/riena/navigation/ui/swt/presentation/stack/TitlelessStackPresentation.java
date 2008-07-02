@@ -142,6 +142,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 					if (getRenderer() != null) {
 						getRenderer().setBounds(calcSubModuleOuterBounds());
 						SwtViewId viewId = parts.get(current);
+						current.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 						SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(
 								viewId.getId(), viewId.getSecondary(), SubModuleNode.class);
 						getRenderer().paint(e.gc, node);
@@ -296,7 +297,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		int tabHeight = calcTabHeight();
 
 		int x = PADDING_LEFT;
-		// int y = SUB_APPLICATION_SWITCHER_HEIGHT + PADDING_TOP;
 		int y = tabHeight + PADDING_TOP;
 		int width = size.x;
 		int height = parent.getBounds().height - tabHeight - PADDING_BOTTOM - PADDING_TOP;

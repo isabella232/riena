@@ -46,6 +46,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	private boolean[] hover = new boolean[BTN_COUNT];
 	private boolean active;
 	private boolean maximized;
+	private Rectangle textBounds;
 	private Rectangle[] btnBounds = new Rectangle[BTN_COUNT];
 	private String[] btnShowKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE,
 			ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN };
@@ -72,17 +73,18 @@ public class ShellRenderer extends AbstractLnfRenderer {
 
 		super();
 
-		resetButtonBounds();
+		resetBounds();
 
 	}
 
 	/**
-	 * Resets the bounds of the buttons.
+	 * Resets the bounds of the buttons and the text.
 	 */
-	private void resetButtonBounds() {
+	private void resetBounds() {
 		for (int i = 0; i < btnBounds.length; i++) {
 			btnBounds[i] = new Rectangle(0, 0, 0, 0);
 		}
+		textBounds = new Rectangle(0, 0, 0, 0);
 	}
 
 	/**
@@ -106,14 +108,15 @@ public class ShellRenderer extends AbstractLnfRenderer {
 			gc.fillRectangle(0, y, getBounds().width, h);
 		}
 
-		// buttons
-		resetButtonBounds();
-		for (int i = 0; i < BTN_COUNT; i++) {
-			paintButton(gc, i);
+		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+			// buttons
+			resetBounds();
+			for (int i = 0; i < BTN_COUNT; i++) {
+				paintButton(gc, i);
+			}
+			// paint title
+			paintTitle(gc, shell);
 		}
-
-		// paint title
-		paintTitle(gc, shell);
 
 	}
 
@@ -192,8 +195,9 @@ public class ShellRenderer extends AbstractLnfRenderer {
 			btnHeight = Math.max(btnHeight, btnBounds[i].height);
 		}
 		int y = TOP_BUTTON_GAP;
-		if (btnHeight > gc.getFontMetrics().getHeight()) {
-			y = (btnHeight - gc.getFontMetrics().getHeight()) / 2;
+		int textHeight = gc.getFontMetrics().getHeight();
+		if (btnHeight > textHeight) {
+			y = (btnHeight - textHeight) / 2;
 		}
 
 		int x = getBounds().x + getBounds().width;
@@ -216,6 +220,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 			break;
 		}
 
+		textBounds = new Rectangle(x, y, textWidth, textHeight);
 		gc.drawText(shell.getText(), x, y, true);
 
 	}
@@ -358,6 +363,49 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	 */
 	private boolean isInsideButton(Point pt, int btnIndex) {
 		return btnBounds[btnIndex].contains(pt);
+	}
+
+	/**
+	 * Returns <code>true</code> if the given point is inside the bounds of
+	 * the move area, and <code>false</code> otherwise.<br>
+	 * The move area is the area of the shell less the bounds of the buttons.
+	 * 
+	 * @param pt -
+	 *            the point to test
+	 * @return <code>true</code> if the move area bounds contains the point
+	 *         and <code>false</code> otherwise
+	 */
+	public boolean isInsideMoveArea(Point pt) {
+		Rectangle moveArea = new Rectangle(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
+		int minX = getBounds().x + getBounds().width;
+		int maxHeight = textBounds.y + textBounds.height;
+		for (int i = 0; i < btnBounds.length; i++) {
+			minX = Math.min(minX, btnBounds[i].x);
+			maxHeight = Math.max(maxHeight, btnBounds[i].y + btnBounds[i].height);
+		}
+		int width = minX - getBounds().x;
+		if (width < 0) {
+			width = 0;
+		}
+		moveArea.width = width;
+		return moveArea.contains(pt);
+	}
+
+	public void moveArea(GC gc, Point pt) {
+		Rectangle moveArea = new Rectangle(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
+		int minX = getBounds().x + getBounds().width;
+		int maxHeight = textBounds.y + textBounds.height;
+		for (int i = 0; i < btnBounds.length; i++) {
+			minX = Math.min(minX, btnBounds[i].x);
+			maxHeight = Math.max(maxHeight, btnBounds[i].y + btnBounds[i].height);
+		}
+		int width = minX - getBounds().x;
+		if (width < 0) {
+			width = 0;
+		}
+		moveArea.width = width;
+		gc.setForeground(LnfManager.getLnf().getColor("red"));
+		gc.drawRectangle(moveArea.x, moveArea.y, moveArea.width, maxHeight);
 	}
 
 	/**

@@ -23,7 +23,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -40,7 +39,6 @@ public class MarkerView extends SubModuleNodeView<MarkerViewController> {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(2, false));
 
 		Group group1 = createMarkerOptionsGroup(parent);

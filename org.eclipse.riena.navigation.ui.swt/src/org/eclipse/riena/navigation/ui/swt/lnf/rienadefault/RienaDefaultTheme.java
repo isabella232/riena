@@ -63,7 +63,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomColors(Map<String, ILnfResource> table) {
 
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(25, 88, 129));
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255, 255, 255));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
@@ -195,6 +195,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomSettings(Map<String, Object> table) {
 
+		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, true);
+
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.CENTER);
@@ -205,6 +207,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
 
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 30);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
 

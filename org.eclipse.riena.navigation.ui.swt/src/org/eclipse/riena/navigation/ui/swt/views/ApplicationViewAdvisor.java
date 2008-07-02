@@ -30,6 +30,8 @@ import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPres
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -48,6 +50,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Decorations;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -59,6 +62,11 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.WorkbenchWindow;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
+
+	/**
+	 * 
+	 */
+	private static final Point APPLICATION_SIZE = new Point(800, 600);
 
 	enum BtnState {
 		NONE, HOVER, HOVER_SELECTED;
@@ -106,25 +114,26 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowStatusLine(false);
 		configurer.setShowCoolBar(false);
 		configurer.setTitle(controller.getNavigationNode().getLabel());
-		configurer.setInitialSize(new Point(800, 600));
-		// configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
+		configurer.setInitialSize(APPLICATION_SIZE);
+		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
+		}
 	}
 
+	/**
+	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#createWindowContents(org.eclipse.swt.widgets.Shell)
+	 */
 	@Override
 	public void createWindowContents(final Shell shell) {
 
+		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
+		addUIControl(shell);
 		Image image = LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 		shell.setBackgroundImage(image);
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
-		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
-		addUIControl(shell);
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
-		shell.addPaintListener(new TitlelessPaintListener());
-		shell.addShellListener(new TitlelessShellListener());
-		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
-		shell.addMouseListener(mouseListener);
-		shell.addMouseMoveListener(mouseListener);
-		shell.addMouseTrackListener(mouseListener);
+		shell.setMinimumSize(APPLICATION_SIZE);
+		addListeners(shell);
 
 		// see WorkbenchWindow.createDefaultContents
 
@@ -148,7 +157,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int padding = borderRenderer.getCompelteBorderWidth();
-		Composite mainComposite = new Composite(shell, SWT.NONE);
+		Composite mainComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
 		mainComposite.setLayout(new FillLayout());
 		FormData mainData = new FormData();
 		mainData.top = new FormAttachment(0, getTopMargin());
@@ -231,6 +240,26 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
+	 * Adds all necessary to the given shell.
+	 * 
+	 * @param shell
+	 */
+	private void addListeners(final Shell shell) {
+
+		shell.addPaintListener(new TitlelessPaintListener());
+
+		TitlelessShellListener shellListener = new TitlelessShellListener();
+		shell.addShellListener(shellListener);
+		shell.addControlListener(shellListener);
+
+		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
+		shell.addMouseListener(mouseListener);
+		shell.addMouseMoveListener(mouseListener);
+		shell.addMouseTrackListener(mouseListener);
+
+	}
+
+	/**
 	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowOpen()
 	 */
 	@Override
@@ -281,22 +310,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	/**
 	 * Returns the margin between the top of the shell and the widget with the
-	 * sub-application switchers.<br>
-	 * The margin depends on the height of the background image.
+	 * sub-application switchers.
 	 * 
-	 * @return margin.
+	 * @return margin
 	 */
 	private int getTopMargin() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_PADDING);
-
-		Image bgImage = getBackgroundImage();
-		if (bgImage != null) {
-			int tabHeight = TitlelessStackPresentation.calcTabHeight();
-			int logoMargin = bgImage.getImageData().height - tabHeight;
-			margin = Math.max(margin, logoMargin);
-		}
-
+		int margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
 
 	}
@@ -336,12 +356,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			break;
 		}
 
-		Image bgImage = getBackgroundImage();
-		int height = 0;
-		if (bgImage != null) {
-			height = bgImage.getImageData().height - 1;
-		}
-		Composite topLeftComposite = new Composite(parent, SWT.NONE);
+		int height = TitlelessStackPresentation.calcTabHeight() + getTopMargin() - 1;
+		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
 		logoData.top = new FormAttachment(0, borderWidth);
 		logoData.bottom = new FormAttachment(0, height);
@@ -425,7 +441,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	/**
 	 * When the state of the shell is changed a redraw maybe necessary.
 	 */
-	private class TitlelessShellListener implements ShellListener {
+	private class TitlelessShellListener implements ShellListener, ControlListener {
+
+		private Rectangle moveBounds;
 
 		/**
 		 * @see org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt.events.ShellEvent)
@@ -473,6 +491,63 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			}
 		}
 
+		/**
+		 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt.events.ControlEvent)
+		 */
+		public void controlMoved(ControlEvent e) {
+			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+				Shell shell = (Shell) e.getSource();
+				Display display = shell.getDisplay();
+				if ((moveBounds == null) || (!displaySurrounds(display, moveBounds))) {
+					shell.setRedraw(false);
+					shell.setRedraw(true);
+					shell.redraw();
+				}
+				moveBounds = shell.getBounds();
+			}
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse.swt.events.ControlEvent)
+		 */
+		public void controlResized(ControlEvent e) {
+			// noting to do ?
+		}
+
+		/**
+		 * Returns <code>true</code> if the given bounds are is inside the
+		 * area of the display, and <code>false</code> otherwise.
+		 * 
+		 * @param display -
+		 *            display
+		 * @param bounds -
+		 *            bounds to test for containment
+		 * @return <code>true</code> if the rectangle contains the bounds and
+		 *         <code>false</code> otherwise
+		 */
+		private boolean displaySurrounds(Display display, Rectangle bounds) {
+
+			// top left
+			if (!display.getBounds().contains(bounds.x, bounds.y)) {
+				return false;
+			}
+			// top right
+			if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y)) {
+				return false;
+			}
+			// bottom left
+			if (!display.getBounds().contains(bounds.x, bounds.y + bounds.height)) {
+				return false;
+			}
+			// bottom right
+			if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y + bounds.height)) {
+				return false;
+			}
+
+			return true;
+
+		}
+
 	}
 
 	/**
@@ -515,11 +590,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		private final static int MAX_BTN_INDEX = 1;
 		private final static int MIN_BTN_INDEX = 2;
 		private BtnState[] btnStates = new BtnState[BTN_COUNT];
-		private boolean mouseDown;
+		private boolean mouseDownOnButton;
+		private boolean move;
+		private Point moveStartPoint;
 
 		public TitlelessShellMouseListener() {
 			resetBtnStates();
-			mouseDown = false;
+			mouseDownOnButton = false;
+			move = false;
 		}
 
 		/**
@@ -578,21 +656,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			resetBtnStates();
 			if (getShellRenderer().isInsideCloseButton(pointer)) {
-				if (mouseDown) {
+				if (mouseDownOnButton) {
 					changeBtnState(BtnState.HOVER_SELECTED, CLOSE_BTN_INDEX);
 				} else {
 					changeBtnState(BtnState.HOVER, CLOSE_BTN_INDEX);
 				}
 				insideAButton = true;
 			} else if (getShellRenderer().isInsideMaximizeButton(pointer)) {
-				if (mouseDown) {
+				if (mouseDownOnButton) {
 					changeBtnState(BtnState.HOVER_SELECTED, MAX_BTN_INDEX);
 				} else {
 					changeBtnState(BtnState.HOVER, MAX_BTN_INDEX);
 				}
 				insideAButton = true;
 			} else if (getShellRenderer().isInsideMinimizeButton(pointer)) {
-				if (mouseDown) {
+				if (mouseDownOnButton) {
 					changeBtnState(BtnState.HOVER_SELECTED, MIN_BTN_INDEX);
 				} else {
 					changeBtnState(BtnState.HOVER, MIN_BTN_INDEX);
@@ -600,13 +678,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				insideAButton = true;
 			}
 			if (!insideAButton) {
-				mouseDown = false;
+				mouseDownOnButton = false;
 			}
 
 			boolean redraw = false;
 			for (int i = 0; i < btnStates.length; i++) {
 				boolean hover = btnStates[i] == BtnState.HOVER;
-				boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDown;
+				boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDownOnButton;
 				switch (i) {
 				case CLOSE_BTN_INDEX:
 					if (getShellRenderer().isCloseButtonHover() != hover) {
@@ -659,8 +737,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseDown(MouseEvent e) {
-			mouseDown = true;
+			mouseDownOnButton = true;
 			updateButtonStates(e);
+			if (!mouseDownOnButton) {
+				Point pointer = new Point(e.x, e.y);
+				if (getShellRenderer().isInsideMoveArea(pointer)) {
+					move = true;
+					moveStartPoint = pointer;
+					GC gc = new GC(getShell(e));
+					getShellRenderer().moveArea(gc, pointer);
+					gc.dispose();
+				} else {
+					move = false;
+				}
+			}
 		}
 
 		/**
@@ -670,7 +760,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			Point pointer = new Point(e.x, e.y);
 
-			if (mouseDown && (getShell(e) != null)) {
+			if (mouseDownOnButton && (getShell(e) != null)) {
 				if (getShellRenderer().isInsideCloseButton(pointer)) {
 					if (btnStates[CLOSE_BTN_INDEX] == BtnState.HOVER_SELECTED) {
 						getShell(e).close();
@@ -687,8 +777,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				}
 			}
 
-			mouseDown = false;
+			mouseDownOnButton = false;
 			updateButtonStates(e);
+			move = false;
 
 		}
 
@@ -697,6 +788,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		public void mouseEnter(MouseEvent e) {
 			updateButtonStates(e);
+			move = false;
 		}
 
 		/**
@@ -704,6 +796,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		public void mouseExit(MouseEvent e) {
 			updateButtonStates(e);
+			move = false;
 		}
 
 		/**
@@ -717,6 +810,25 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		public void mouseMove(MouseEvent e) {
 			updateButtonStates(e);
+			if (move) {
+				Point pointer = new Point(e.x, e.y);
+				if (!getShellRenderer().isInsideMoveArea(pointer)) {
+					move = false;
+				}
+				if (move) {
+					move(e);
+				}
+			}
+		}
+
+		private void move(MouseEvent e) {
+			Point moveEndPoint = new Point(e.x, e.y);
+			Shell shell = getShell(e);
+			int xMove = moveStartPoint.x - moveEndPoint.x;
+			int yMove = moveStartPoint.y - moveEndPoint.y;
+			int x = shell.getLocation().x - xMove;
+			int y = shell.getLocation().y - yMove;
+			shell.setLocation(x, y);
 		}
 
 	}

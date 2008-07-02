@@ -32,6 +32,12 @@ public class ExampleTheme extends RienaDefaultTheme {
 	public void addCustomColors(Map<String, ILnfResource> table) {
 		super.addCustomColors(table);
 
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_FOREGROUND, getPrimaryForeground());
+
+		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
+
+		table.put(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
+
 		table
 				.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(234, 231,
 						158));
@@ -41,9 +47,6 @@ public class ExampleTheme extends RienaDefaultTheme {
 				new ColorLnfResource(222, 224, 240));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(186, 193, 225));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(151, 150, 180));
-
-		table.put(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
-		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
 
 	}
 

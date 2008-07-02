@@ -22,7 +22,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
@@ -37,7 +36,6 @@ public class FocusableView extends SubModuleNodeView<FocusableViewController> {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new GridLayout(1, false));
 
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();

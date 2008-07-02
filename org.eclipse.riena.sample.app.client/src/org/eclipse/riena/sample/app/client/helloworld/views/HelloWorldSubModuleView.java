@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Label;
  */
 public class HelloWorldSubModuleView extends SubModuleNodeView<HelloWorldSubModuleController> {
 
-	public static final String ID = "org.eclipse.riena.sample.app.client.HelloWorldSubModuleView";
+	public static final String ID = "org.eclipse.riena.sample.app.client.HelloWorldSubModuleView"; //$NON-NLS-1$
 
 	/**
 	 * Add a label with the text "Hello World!" to the view.
@@ -37,13 +37,11 @@ public class HelloWorldSubModuleView extends SubModuleNodeView<HelloWorldSubModu
 	 */
 	@Override
 	public void basicCreatePartControl(Composite parent) {
-		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		final Label helloLabel = new Label(parent, SWT.CENTER);
-		helloLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		FormLayout layout = new FormLayout();
 		parent.setLayout(layout);
-		addUIControl(helloLabel, "labelRidget");
+		addUIControl(helloLabel, "labelRidget"); //$NON-NLS-1$
 
 		// layout
 		FormData data = new FormData();

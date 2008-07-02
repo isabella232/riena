@@ -14,8 +14,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.NavigationSubModuleViewController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -36,7 +34,6 @@ public class NavigationSubModuleView extends SubModuleNodeView<NavigationSubModu
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
 		Button addSubModuleToModuleBtn = UIControlsFactory.createButton(parent);
