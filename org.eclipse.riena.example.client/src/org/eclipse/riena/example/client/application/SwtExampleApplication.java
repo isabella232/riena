@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.ComboView;
 import org.eclipse.riena.example.client.views.FocusableView;
 import org.eclipse.riena.example.client.views.ListView;
@@ -35,6 +36,8 @@ import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
+import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.osgi.framework.Bundle;
@@ -44,9 +47,26 @@ import org.osgi.framework.Bundle;
  */
 public class SwtExampleApplication extends SwtApplication {
 
+	/**
+	 * Creates a new instance of <code>SwtExampleApplication</code> and set
+	 * the look and feel, if a class for the look and feel is given.
+	 */
 	public SwtExampleApplication() {
+
 		super();
-		// LnfManager.setLnf(new ExampleLnf());
+
+		String lnfClassName = System.getProperty("riena.lnf", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!StringUtils.isEmpty(lnfClassName)) {
+			try {
+				Class lnfClass = this.getBundle().loadClass(lnfClassName);
+				RienaDefaultLnf lnf;
+				lnf = (RienaDefaultLnf) lnfClass.newInstance();
+				LnfManager.setLnf(lnf);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**

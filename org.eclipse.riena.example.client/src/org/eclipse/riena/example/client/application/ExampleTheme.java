@@ -79,7 +79,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomFonts(table);
 
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial Narrow", 12, SWT.BOLD));
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 
 	}
 
@@ -91,11 +91,15 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomSettings(table);
 
+		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, true);
+
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 3);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 0);
 
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.LEFT);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
+
 	}
 
 	/**
