@@ -82,7 +82,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return horizontal margin
 	 */
-	private Integer getHorizontalLogoMargin() {
+	public static Integer getHorizontalLogoMargin() {
 
 		Integer margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN);
 		if (margin == null) {

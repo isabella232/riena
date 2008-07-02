@@ -205,7 +205,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	@Override
 	public Control[] getTabList(IPresentablePart part) {
-		return null;
+		return new Control[] {};
 	}
 
 	/**

@@ -17,14 +17,12 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 	private Map<IModuleNode, ModuleNavigationComponent> moduleNodeComponents;
 	private ModuleGroupNodeObserver nodeObserver;
 	private IComponentUpdateListener moduleUpdateObserver;
-	private SubApplicationNavigationComponent subAppComponent;
 
 	private ModuleGroupWidget ui;
 
 	public ModuleGroupNavigationComponent(IModuleGroupNode mgNode, Composite parent,
 			SubApplicationNavigationComponent subAppComponent) {
 		super(mgNode, parent);
-		this.subAppComponent = subAppComponent;
 		initializeMNodeMapping();
 		initUI();
 		buildInitialTree();

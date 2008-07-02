@@ -304,10 +304,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
-	private Image getBackgroundImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
-	}
-
 	/**
 	 * Returns the margin between the top of the shell and the widget with the
 	 * sub-application switchers.
@@ -331,41 +327,35 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		assert parent.getLayout() instanceof FormLayout;
 
+		FormData logoData = new FormData();
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int borderWidth = borderRenderer.getBorderWidth();
-		int leftNumerator = 0;
-		int rightNumerator = 33;
-		int leftOffset = 0;
-		int rightOffset = 0;
+		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		logoData.top = new FormAttachment(0, borderWidth);
+		int height = TitlelessStackPresentation.calcTabHeight() + getTopMargin() - 1;
+		logoData.bottom = new FormAttachment(0, height);
+		logoData.width = getLogoImage().getImageData().width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
 		Integer hPos = getHorizontalLogoPosition();
 		switch (hPos) {
 		case SWT.CENTER:
-			leftNumerator = 34;
-			rightNumerator = 66;
+			logoData.left = new FormAttachment(50, -logoData.width / 2);
 			break;
 		case SWT.RIGHT:
-			leftNumerator = 67;
-			rightNumerator = 100;
-			rightOffset = -borderWidth;
+			logoData.right = new FormAttachment(100, -borderWidth);
 			break;
 		default:
-			leftNumerator = 0;
-			rightNumerator = 33;
-			leftOffset = borderWidth;
+			logoData.left = new FormAttachment(0, borderWidth);
 			break;
 		}
 
-		int height = TitlelessStackPresentation.calcTabHeight() + getTopMargin() - 1;
-		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		FormData logoData = new FormData();
-		logoData.top = new FormAttachment(0, borderWidth);
-		logoData.bottom = new FormAttachment(0, height);
-		logoData.left = new FormAttachment(leftNumerator, leftOffset);
-		logoData.right = new FormAttachment(rightNumerator, rightOffset);
 		topLeftComposite.setLayoutData(logoData);
 		topLeftComposite.addPaintListener(new LogoPaintListener());
 
+	}
+
+	private Image getLogoImage() {
+		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_LOGO);
 	}
 
 	/**
@@ -441,7 +431,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	/**
 	 * When the state of the shell is changed a redraw maybe necessary.
 	 */
-	private class TitlelessShellListener implements ShellListener, ControlListener {
+	private static class TitlelessShellListener implements ShellListener, ControlListener {
 
 		private Rectangle moveBounds;
 
@@ -553,7 +543,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	/**
 	 * This listener paints the logo.
 	 */
-	private class LogoPaintListener implements PaintListener {
+	private static class LogoPaintListener implements PaintListener {
 
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
@@ -563,8 +553,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		/**
-		 * Paints the image of the logo.<br>
-		 * TODO ShellLogoRenderer !?
+		 * Paints the image of the logo.
 		 * 
 		 * @param e -
 		 *            an event containing information about the paint
@@ -744,9 +733,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				if (getShellRenderer().isInsideMoveArea(pointer)) {
 					move = true;
 					moveStartPoint = pointer;
-					GC gc = new GC(getShell(e));
-					getShellRenderer().moveArea(gc, pointer);
-					gc.dispose();
 				} else {
 					move = false;
 				}

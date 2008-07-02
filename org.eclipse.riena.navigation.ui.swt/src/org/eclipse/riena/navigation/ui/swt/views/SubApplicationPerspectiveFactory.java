@@ -59,7 +59,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
-	private class SubModuleNodeListener extends SubModuleNodeAdapter {
+	private static class SubModuleNodeListener extends SubModuleNodeAdapter {
 
 		private boolean navigationUp = false;
 

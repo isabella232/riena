@@ -195,7 +195,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomSettings(Map<String, Object> table) {
 
-		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, true);
+		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, false);
 
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);

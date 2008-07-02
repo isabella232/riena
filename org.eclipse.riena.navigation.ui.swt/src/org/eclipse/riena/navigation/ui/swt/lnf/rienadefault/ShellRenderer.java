@@ -391,23 +391,6 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		return moveArea.contains(pt);
 	}
 
-	public void moveArea(GC gc, Point pt) {
-		Rectangle moveArea = new Rectangle(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
-		int minX = getBounds().x + getBounds().width;
-		int maxHeight = textBounds.y + textBounds.height;
-		for (int i = 0; i < btnBounds.length; i++) {
-			minX = Math.min(minX, btnBounds[i].x);
-			maxHeight = Math.max(maxHeight, btnBounds[i].y + btnBounds[i].height);
-		}
-		int width = minX - getBounds().x;
-		if (width < 0) {
-			width = 0;
-		}
-		moveArea.width = width;
-		gc.setForeground(LnfManager.getLnf().getColor("red"));
-		gc.drawRectangle(moveArea.x, moveArea.y, moveArea.width, maxHeight);
-	}
-
 	/**
 	 * @return the pressed
 	 */
