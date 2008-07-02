@@ -13,11 +13,12 @@ package org.eclipse.riena.core.logging;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.core.injector.Inject;
+
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.injector.Inject;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
@@ -98,11 +99,9 @@ public class LogUtil {
 		synchronized (LogUtil.class) {
 			if (initialized)
 				return;
-			// TODO remove SysoLogListener if we have Log4jLogListener
+			// TODO remove SysoLogListener if we have Log4jLogListener working
 			logListeners.add(new SysoLogListener());
-			// TODO this is commented until we resolved the problem with build
-			// with log4j
-			// logListeners.add(new Log4jLogListener());
+			logListeners.add(new Log4jLogListener());
 
 			Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
 			Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
