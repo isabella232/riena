@@ -14,7 +14,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="Mail Perspective"
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationPerspectiveFactory"
             id="rcp.mail.perspective">
       </perspective>
    </extension>
