@@ -24,11 +24,16 @@ import org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellLogoRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.ShellEvent;
@@ -55,7 +60,12 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
+	enum BtnState {
+		NONE, HOVER, HOVER_SELECTED;
+	}
+
 	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
+
 	private ApplicationViewController controller;
 	private ISubApplicationListener subApplicationListener;
 	private NavigationTreeObserver navigationTreeObserver;
@@ -111,6 +121,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
 		shell.addPaintListener(new TitlelessPaintListener());
 		shell.addShellListener(new TitlelessShellListener());
+		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
+		shell.addMouseListener(mouseListener);
+		shell.addMouseMoveListener(mouseListener);
+		shell.addMouseTrackListener(mouseListener);
 
 		// see WorkbenchWindow.createDefaultContents
 
@@ -354,6 +368,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
+	 * Returns the renderer of the shell.
+	 * 
+	 * @return renderer
+	 */
+	private ShellRenderer getShellRenderer() {
+		ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.TITLELESS_SHELL_RENDERER);
+		return shellRenderer;
+	}
+
+	/**
 	 * This listener paints the shell.
 	 */
 	private class TitlelessPaintListener implements PaintListener {
@@ -382,7 +407,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 				GC gc = e.gc;
 
-				ILnfRenderer shellRenderer = LnfManager.getLnf().getRenderer(ILnfKeyConstants.TITLELESS_SHELL_RENDERER);
+				ILnfRenderer shellRenderer = getShellRenderer();
 				shellRenderer.setBounds(bounds);
 				shellRenderer.paint(gc, shell);
 
@@ -406,7 +431,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @see org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt.events.ShellEvent)
 		 */
 		public void shellActivated(ShellEvent e) {
-			onStatechanged(e);
+			onStateChanged(e);
 		}
 
 		/**
@@ -419,14 +444,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @see org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt.events.ShellEvent)
 		 */
 		public void shellDeactivated(ShellEvent e) {
-			onStatechanged(e);
+			onStateChanged(e);
 		}
 
 		/**
 		 * @see org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt.events.ShellEvent)
 		 */
 		public void shellDeiconified(ShellEvent e) {
-			onStatechanged(e);
+			onStateChanged(e);
 		}
 
 		/**
@@ -441,7 +466,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @param e -
 		 *            event
 		 */
-		private void onStatechanged(ShellEvent e) {
+		private void onStateChanged(ShellEvent e) {
 			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
 				Shell shell = (Shell) e.getSource();
 				shell.redraw();
@@ -476,6 +501,222 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			renderer.setBounds(e.x, e.y, e.width, e.height);
 			renderer.paint(e.gc, null);
 
+		}
+
+	}
+
+	/**
+	 * After any mouse operation a method of this listener is called.
+	 */
+	private class TitlelessShellMouseListener implements MouseListener, MouseTrackListener, MouseMoveListener {
+
+		private final static int BTN_COUNT = 3;
+		private final static int CLOSE_BTN_INDEX = 0;
+		private final static int MAX_BTN_INDEX = 1;
+		private final static int MIN_BTN_INDEX = 2;
+		private BtnState[] btnStates = new BtnState[BTN_COUNT];
+		private boolean mouseDown;
+
+		public TitlelessShellMouseListener() {
+			resetBtnStates();
+			mouseDown = false;
+		}
+
+		/**
+		 * Returns the shell on which the event initially occurred.
+		 * 
+		 * @param e -
+		 *            mouse event
+		 * @return shell or <code>null</code> if source is not a shell.
+		 */
+		private Shell getShell(MouseEvent e) {
+
+			if (e.getSource() == null) {
+				return null;
+			}
+			if (!(e.getSource() instanceof Shell)) {
+				return null;
+			}
+			return (Shell) e.getSource();
+
+		}
+
+		/**
+		 * Resets the states of the buttons.
+		 */
+		private void resetBtnStates() {
+			for (int i = 0; i < btnStates.length; i++) {
+				changeBtnState(BtnState.NONE, i);
+			}
+		}
+
+		/**
+		 * Sets the state of a button (and resets the others).
+		 * 
+		 * @param newState -
+		 *            state to set
+		 * @param btnIndex -
+		 *            button index
+		 */
+		private void changeBtnState(BtnState newState, int btnIndex) {
+			if (newState != BtnState.NONE) {
+				resetBtnStates();
+			}
+			btnStates[btnIndex] = newState;
+		}
+
+		/**
+		 * Updates the states of the buttons.
+		 * 
+		 * @param e -
+		 *            mouse event
+		 */
+		private void updateButtonStates(MouseEvent e) {
+
+			Point pointer = new Point(e.x, e.y);
+			boolean insideAButton = false;
+
+			resetBtnStates();
+			if (getShellRenderer().isInsideCloseButton(pointer)) {
+				if (mouseDown) {
+					changeBtnState(BtnState.HOVER_SELECTED, CLOSE_BTN_INDEX);
+				} else {
+					changeBtnState(BtnState.HOVER, CLOSE_BTN_INDEX);
+				}
+				insideAButton = true;
+			} else if (getShellRenderer().isInsideMaximizeButton(pointer)) {
+				if (mouseDown) {
+					changeBtnState(BtnState.HOVER_SELECTED, MAX_BTN_INDEX);
+				} else {
+					changeBtnState(BtnState.HOVER, MAX_BTN_INDEX);
+				}
+				insideAButton = true;
+			} else if (getShellRenderer().isInsideMinimizeButton(pointer)) {
+				if (mouseDown) {
+					changeBtnState(BtnState.HOVER_SELECTED, MIN_BTN_INDEX);
+				} else {
+					changeBtnState(BtnState.HOVER, MIN_BTN_INDEX);
+				}
+				insideAButton = true;
+			}
+			if (!insideAButton) {
+				mouseDown = false;
+			}
+
+			boolean redraw = false;
+			for (int i = 0; i < btnStates.length; i++) {
+				boolean hover = btnStates[i] == BtnState.HOVER;
+				boolean pressed = btnStates[i] == BtnState.HOVER_SELECTED && mouseDown;
+				switch (i) {
+				case CLOSE_BTN_INDEX:
+					if (getShellRenderer().isCloseButtonHover() != hover) {
+						getShellRenderer().setCloseButtonHover(hover);
+						redraw = true;
+					}
+					if (getShellRenderer().isCloseButtonPressed() != pressed) {
+						getShellRenderer().setCloseButtonPressed(pressed);
+						redraw = true;
+					}
+					break;
+				case MAX_BTN_INDEX:
+					if (getShellRenderer().isMaximizedButtonHover() != hover) {
+						getShellRenderer().setMaximizedButtonHover(hover);
+						redraw = true;
+					}
+					if (getShellRenderer().isMaximizedButtonPressed() != pressed) {
+						getShellRenderer().setMaximizedButtonPressed(pressed);
+						redraw = true;
+					}
+					break;
+				case MIN_BTN_INDEX:
+					if (getShellRenderer().isMinimizedButtonHover() != hover) {
+						getShellRenderer().setMinimizedButtonHover(hover);
+						redraw = true;
+					}
+					if (getShellRenderer().isMinimizedButtonPressed() != pressed) {
+						getShellRenderer().setMinimizedButtonPressed(pressed);
+						redraw = true;
+					}
+					break;
+				}
+			}
+
+			if (redraw) {
+				Shell shell = getShell(e);
+				shell.setRedraw(false);
+				shell.setRedraw(true);
+			}
+
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseDoubleClick(MouseEvent e) {
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseDown(MouseEvent e) {
+			mouseDown = true;
+			updateButtonStates(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseUp(MouseEvent e) {
+
+			Point pointer = new Point(e.x, e.y);
+
+			if (mouseDown && (getShell(e) != null)) {
+				if (getShellRenderer().isInsideCloseButton(pointer)) {
+					if (btnStates[CLOSE_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+						getShell(e).close();
+					}
+				} else if (getShellRenderer().isInsideMaximizeButton(pointer)) {
+					if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+						boolean maximized = getShell(e).getMaximized();
+						getShell(e).setMaximized(!maximized);
+					}
+				} else if (getShellRenderer().isInsideMinimizeButton(pointer)) {
+					if (btnStates[MIN_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+						getShell(e).setMinimized(true);
+					}
+				}
+			}
+
+			mouseDown = false;
+			updateButtonStates(e);
+
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseEnter(MouseEvent e) {
+			updateButtonStates(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseExit(MouseEvent e) {
+			updateButtonStates(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseHover(MouseEvent e) {
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseMove(MouseEvent e) {
+			updateButtonStates(e);
 		}
 
 	}

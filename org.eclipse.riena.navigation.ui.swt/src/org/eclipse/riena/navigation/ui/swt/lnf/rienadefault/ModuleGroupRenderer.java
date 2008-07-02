@@ -157,7 +157,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns the bounds of the close "button" of the titlebar for the given
+	 * Returns the bounds of the close "button" of the title bar for the given
 	 * module item.
 	 * 
 	 * @param item -

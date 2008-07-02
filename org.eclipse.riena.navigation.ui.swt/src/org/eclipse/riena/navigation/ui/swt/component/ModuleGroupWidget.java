@@ -365,7 +365,6 @@ public class ModuleGroupWidget extends Canvas {
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseHover(MouseEvent e) {
-			hoverOrNot(e.x, e.y);
 		}
 
 		/**

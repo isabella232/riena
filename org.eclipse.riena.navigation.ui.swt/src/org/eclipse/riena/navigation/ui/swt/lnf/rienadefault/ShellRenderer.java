@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 
@@ -36,9 +37,13 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	 */
 	private final static int TITLE_MARGIN = 5;
 	private final static int BTN_COUNT = 3;
+	private final static int CLOSE_BTN_INDEX = 0;
+	private final static int MAX_BTN_INDEX = 1;
+	private final static int MIN_BTN_INDEX = 2;
+	private final static int RESTORE_BTN_INDEX = 3;
 
-	private boolean pressed;
-	private boolean hover;
+	private boolean[] pressed = new boolean[BTN_COUNT];
+	private boolean[] hover = new boolean[BTN_COUNT];
 	private boolean active;
 	private boolean maximized;
 	private Rectangle[] btnBounds = new Rectangle[BTN_COUNT];
@@ -71,8 +76,11 @@ public class ShellRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * Resets the bounds of the buttons.
+	 */
 	private void resetButtonBounds() {
-		for (int i = 0; i < BTN_COUNT; i++) {
+		for (int i = 0; i < btnBounds.length; i++) {
 			btnBounds[i] = new Rectangle(0, 0, 0, 0);
 		}
 	}
@@ -109,19 +117,27 @@ public class ShellRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * Sets the bounds for a button and paints it.
+	 * 
+	 * @param gc -
+	 *            graphics context
+	 * @param btnIndex -
+	 *            index of the button
+	 */
 	private void paintButton(GC gc, int btnIndex) {
 
 		Image image = null;
 
 		if (LnfManager.getLnf().getBooleanSetting(btnShowKeys[btnIndex])) {
 			int index = btnIndex;
-			if ((index == 1) && isMaximized()) {
-				index = 3;
+			if ((index == MAX_BTN_INDEX) && isMaximized()) {
+				index = RESTORE_BTN_INDEX;
 			}
 			if (isActive()) {
-				if (isPressed()) {
+				if (isPressed(btnIndex)) {
 					image = LnfManager.getLnf().getImage(btnHoverSelectedImageKeys[index]);
-				} else if (isHover()) {
+				} else if (isHover(btnIndex)) {
 					image = LnfManager.getLnf().getImage(btnHoverImageKeys[index]);
 				} else {
 					image = LnfManager.getLnf().getImage(btnImageKeys[index]);
@@ -150,6 +166,11 @@ public class ShellRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * @param gc -
+	 *            graphics context
+	 * @param shell
+	 */
 	private void paintTitle(GC gc, Shell shell) {
 
 		String title = shell.getText();
@@ -167,7 +188,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		gc.setFont(font);
 
 		int btnHeight = 0;
-		for (int i = 0; i < BTN_COUNT; i++) {
+		for (int i = 0; i < btnBounds.length; i++) {
 			btnHeight = Math.max(btnHeight, btnBounds[i].height);
 		}
 		int y = TOP_BUTTON_GAP;
@@ -176,7 +197,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		}
 
 		int x = getBounds().x + getBounds().width;
-		for (int i = 0; i < BTN_COUNT; i++) {
+		for (int i = 0; i < btnBounds.length; i++) {
 			if (btnBounds[i].x > 0) {
 				x = Math.min(x, btnBounds[i].x);
 			}
@@ -228,31 +249,31 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	/**
 	 * @return the pressed
 	 */
-	public boolean isPressed() {
-		return pressed;
+	private boolean isPressed(int btnIndex) {
+		return pressed[btnIndex];
 	}
 
 	/**
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	public void setPressed(boolean pressed) {
-		this.pressed = pressed;
+	private void setPressed(int btnIndex, boolean pressed) {
+		this.pressed[btnIndex] = pressed;
 	}
 
 	/**
 	 * @return the hover
 	 */
-	public boolean isHover() {
-		return hover;
+	private boolean isHover(int btnIndex) {
+		return hover[btnIndex];
 	}
 
 	/**
 	 * @param hover
 	 *            the hover to set
 	 */
-	public void setHover(boolean hover) {
-		this.hover = hover;
+	private void setHover(int btnIndex, boolean hover) {
+		this.hover[btnIndex] = hover;
 	}
 
 	/**
@@ -283,6 +304,150 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	 */
 	private void setMaximized(boolean maximized) {
 		this.maximized = maximized;
+	}
+
+	/**
+	 * Returns <code>true</code> if the given point is inside the bounds of
+	 * the close button, and <code>false</code> otherwise.
+	 * 
+	 * @param pt -
+	 *            the point to test
+	 * @return <code>true</code> if the close button bounds contains the point
+	 *         and <code>false</code> otherwise
+	 */
+	public boolean isInsideCloseButton(Point pt) {
+		return isInsideButton(pt, CLOSE_BTN_INDEX);
+	}
+
+	/**
+	 * Returns <code>true</code> if the given point is inside the bounds of
+	 * the minimize button, and <code>false</code> otherwise.
+	 * 
+	 * @param pt -
+	 *            the point to test
+	 * @return <code>true</code> if the minimize button bounds contains the
+	 *         point and <code>false</code> otherwise
+	 */
+	public boolean isInsideMinimizeButton(Point pt) {
+		return isInsideButton(pt, MIN_BTN_INDEX);
+	}
+
+	/**
+	 * Returns <code>true</code> if the given point is inside the bounds of
+	 * the maximize/restore button, and <code>false</code> otherwise.
+	 * 
+	 * @param pt -
+	 *            the point to test
+	 * @return <code>true</code> if the maximize/restore button bounds
+	 *         contains the point and <code>false</code> otherwise
+	 */
+	public boolean isInsideMaximizeButton(Point pt) {
+		return isInsideButton(pt, MAX_BTN_INDEX);
+	}
+
+	/**
+	 * Returns <code>true</code> if the given point is inside the bounds of
+	 * the button, and <code>false</code> otherwise.
+	 * 
+	 * @param pt -
+	 *            the point to test
+	 * @param btnIndex -
+	 *            index of button
+	 * @return <code>true</code> if the button bounds contains the point and
+	 *         <code>false</code> otherwise
+	 */
+	private boolean isInsideButton(Point pt, int btnIndex) {
+		return btnBounds[btnIndex].contains(pt);
+	}
+
+	/**
+	 * @return the pressed
+	 */
+	public boolean isCloseButtonPressed() {
+		return isPressed(CLOSE_BTN_INDEX);
+	}
+
+	/**
+	 * @param pressed
+	 *            the pressed to set
+	 */
+	public void setCloseButtonPressed(boolean pressed) {
+		setPressed(CLOSE_BTN_INDEX, pressed);
+	}
+
+	/**
+	 * @return the hover
+	 */
+	public boolean isCloseButtonHover() {
+		return isHover(CLOSE_BTN_INDEX);
+	}
+
+	/**
+	 * @param hover
+	 *            the hover to set
+	 */
+	public void setCloseButtonHover(boolean hover) {
+		setHover(CLOSE_BTN_INDEX, hover);
+	}
+
+	/**
+	 * @return the pressed
+	 */
+	public boolean isMaximizedButtonPressed() {
+		return isPressed(MAX_BTN_INDEX);
+	}
+
+	/**
+	 * @param pressed
+	 *            the pressed to set
+	 */
+	public void setMaximizedButtonPressed(boolean pressed) {
+		setPressed(MAX_BTN_INDEX, pressed);
+	}
+
+	/**
+	 * @return the hover
+	 */
+	public boolean isMaximizedButtonHover() {
+		return isHover(MAX_BTN_INDEX);
+	}
+
+	/**
+	 * @param hover
+	 *            the hover to set
+	 */
+	public void setMaximizedButtonHover(boolean hover) {
+		setHover(MAX_BTN_INDEX, hover);
+	}
+
+	/**
+	 * @return the pressed
+	 */
+	public boolean isMinimizedButtonPressed() {
+		return isPressed(MIN_BTN_INDEX);
+	}
+
+	/**
+	 * @param pressed
+	 *            the pressed to set
+	 */
+	public void setMinimizedButtonPressed(boolean pressed) {
+		setPressed(MIN_BTN_INDEX, pressed);
+	}
+
+	/**
+	 * @return the hover
+	 */
+	public boolean isMinimizedButtonHover() {
+		return isHover(MIN_BTN_INDEX);
+	}
+
+	/**
+	 * @param hover
+	 *            the hover to set
+	 */
+	public void setMinimizedButtonHover(boolean hover) {
+		setHover(MIN_BTN_INDEX, hover);
 	}
 
 }

@@ -21,7 +21,8 @@ public interface ILnfRenderer {
 	/**
 	 * Paints the widget.
 	 * 
-	 * @param gc
+	 * @param gc -
+	 *            graphics context
 	 * @param value
 	 */
 	void paint(GC gc, Object value);
