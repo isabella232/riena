@@ -88,6 +88,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		tree.bindToModel(createTreeModel());
 		tree.updateFromModel();
+		// TODO [ev] tree.setSelection(0);
 
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.addListener(new IActionListener() {
@@ -119,7 +120,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 	}
 
 	private IObservableTreeModel createTreeModel() {
-		DefaultObservableTreeNode root = new DefaultObservableTreeNode();
+		DefaultObservableTreeNode root = new DefaultObservableTreeNode("root");
 
 		DefaultObservableTreeNode groupA = new DefaultObservableTreeNode("group a");
 		groupA.addChild(new DefaultObservableTreeNode("a_child_1"));
