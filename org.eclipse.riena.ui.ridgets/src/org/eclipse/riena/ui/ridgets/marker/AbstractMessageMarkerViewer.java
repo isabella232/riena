@@ -28,7 +28,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewer {
 
 	private HashSet<Class<? extends IMessageMarker>> markerTypes;
-	private Collection<IMarkableRidget> ridgets;
+	protected Collection<IMarkableRidget> ridgets;
 	private boolean visible;
 
 	public AbstractMessageMarkerViewer() {
@@ -117,7 +117,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		return result;
 	}
 
-	private class MessageMarkerComparator implements Comparator<IMessageMarker> {
+	protected class MessageMarkerComparator implements Comparator<IMessageMarker> {
 
 		/**
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
