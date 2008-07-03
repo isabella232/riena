@@ -17,8 +17,10 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -81,11 +83,9 @@ public class ExtensionReader {
 	 */
 	private static class InterfaceBean implements InvocationHandler {
 
-		/**
-		 * 
-		 */
 		private IConfigurationElement configurationElement;
 		private BundleContext context;
+		private Map<Method, Object> resolved;
 		private static final String CREATE_METHOD_PREFIX = "create"; //$NON-NLS-1$
 		private static final String IS_METHOD_PREFIX = "is"; //$NON-NLS-1$
 		private static final String GETTER_METHOD_PREFIX = "get"; //$NON-NLS-1$
@@ -101,37 +101,62 @@ public class ExtensionReader {
 		InterfaceBean(BundleContext context, IConfigurationElement configurationElement) {
 			this.configurationElement = configurationElement;
 			this.context = context;
+			this.resolved = new HashMap<Method, Object>();
 		}
 
 		/*
 		 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-		 *      java.lang.reflect.Method, java.lang.Object[])
+		 * java.lang.reflect.Method, java.lang.Object[])
 		 */
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (method.getName().startsWith(GETTER_METHOD_PREFIX) || method.getName().startsWith(IS_METHOD_PREFIX)) {
-				Class<?> returnType = method.getReturnType();
-				String name = method.getName().startsWith(GETTER_METHOD_PREFIX) ? getAttributeName(method,
-						GETTER_METHOD_PREFIX) : getAttributeName(method, IS_METHOD_PREFIX);
-
-				if (returnType == String.class)
-					return modify(configurationElement.getAttribute(name));
-				if (returnType.isPrimitive())
-					return coerce(returnType, modify(configurationElement.getAttribute(name)));
-				if (returnType.isInterface()) {
-					IConfigurationElement cfgElement = configurationElement.getChildren(name)[0];
-					if (cfgElement == null) {
-						return null;
+				// those results will be cached
+				synchronized (resolved) {
+					Object result = resolved.get(method);
+					if (result == null) {
+						result = invokeNonCached(method);
+						resolved.put(method, result);
 					}
-					return Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { returnType },
-							new InterfaceBean(context, cfgElement));
+					return result;
 				}
-				throw new UnsupportedOperationException("property for method " + method.getName() + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if (method.getName().startsWith(CREATE_METHOD_PREFIX)) {
+				// obviously those will NOT be cached
 				String name = getAttributeName(method, CREATE_METHOD_PREFIX);
 				return configurationElement.createExecutableExtension(name);
 			}
 			throw new UnsupportedOperationException("Only " + Arrays.toString(ALLOWED_PREFIXES) + " are supported."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		private Object invokeNonCached(Method method) {
+			Class<?> returnType = method.getReturnType();
+			String name = getAttributeName(method,
+					method.getName().startsWith(GETTER_METHOD_PREFIX) ? GETTER_METHOD_PREFIX : IS_METHOD_PREFIX);
+			if (returnType == String.class)
+				return modify(configurationElement.getAttribute(name));
+			if (returnType.isPrimitive())
+				return coerce(returnType, modify(configurationElement.getAttribute(name)));
+			if (returnType.isInterface()) {
+				IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
+				if (cfgElements.length == 0)
+					return null;
+				if (cfgElements.length == 1)
+					return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
+							new InterfaceBean(context, cfgElements[0]));
+				throw new IllegalStateException(
+						"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for: " + method); //$NON-NLS-1$
+			}
+			if (returnType.isArray() && returnType.getComponentType().isInterface()) {
+				IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
+				Object[] result = (Object[]) Array.newInstance(returnType.getComponentType(), cfgElements.length);
+				for (int i = 0; i < cfgElements.length; i++) {
+					result[i] = Proxy.newProxyInstance(returnType.getComponentType().getClassLoader(),
+							new Class[] { returnType.getComponentType() }, new InterfaceBean(context, cfgElements[i]));
+				}
+				return result;
+			}
+
+			throw new UnsupportedOperationException("property for method " + method.getName() + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		private String getAttributeName(Method method, String prefix) {
@@ -160,7 +185,7 @@ public class ExtensionReader {
 		}
 
 		private String modify(String value) {
-			if (context == null)
+			if (context == null || value == null)
 				return value;
 
 			Dictionary<Object, Object> properties = new Hashtable<Object, Object>();
