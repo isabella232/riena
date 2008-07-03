@@ -3,9 +3,9 @@
 <plugin>
    <extension id="core.test.extpoint.id2" point="core.test.extpoint">
       <test
-            boolean="false"
-            executable="java.util.HashMap"
-            string="test2">
+            required="false"
+            objectType="java.util.HashMap"
+            text="test2">
       </test>
    </extension>
 </plugin>

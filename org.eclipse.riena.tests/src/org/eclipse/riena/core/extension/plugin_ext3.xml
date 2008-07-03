@@ -3,9 +3,9 @@
 <plugin>
    <extension id="core.test.extpoint.id3" point="core.test.extpoint">
       <test
-            boolean="true"
-            executable="java.util.ArrayList"
-            string="test3">
+            required="true"
+            objectType="java.util.ArrayList"
+            text="test3">
       </test>
    </extension>
 </plugin>

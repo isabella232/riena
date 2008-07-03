@@ -3,9 +3,9 @@
 <plugin>
    <extension id="core.test.extpoint.id5" point="core.test.extpoint">
       <test
-            boolean="${true}"
-            executable="java.lang.String"
-            string="test5">
+            required="${true}"
+            objectType="java.lang.String"
+            text="test5">
       </test>
    </extension>
 </plugin>
