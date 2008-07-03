@@ -12,26 +12,29 @@ package org.eclipse.riena.core.extension;
 
 public interface IData {
 
-	String getString();
+	String getText();
 
-	boolean getBoolean();
+	boolean getRequired();
 
-	boolean isBoolean();
+	boolean isRequired();
 
-	short getShort();
+	short getShortNumber();
 
-	int getInteger();
+	int getIntegerNumber();
 
-	long getLong();
+	long getLongNumber();
 
-	float getFloat();
+	float getFloatNumber();
 
-	double getDouble();
+	double getDoubleNumber();
 
-	char getCharacter();
+	char getDelimCharacter();
 
-	byte getByte();
+	byte getJustAByte();
 
-	Object createExecutable();
+	Object createObjectType();
 
+	IData2 getData();
+
+	IData3[] getMoreData();
 }
