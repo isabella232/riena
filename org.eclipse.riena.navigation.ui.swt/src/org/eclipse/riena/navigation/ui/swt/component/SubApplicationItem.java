@@ -22,6 +22,8 @@ public class SubApplicationItem {
 	private Composite parent;
 	private ISubApplication subApplicationNode;
 	private Rectangle bounds;
+	private String label;
+	private String icon;
 
 	/**
 	 * Constructs a new instance of this class.
@@ -78,6 +80,43 @@ public class SubApplicationItem {
 	 */
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
+	}
+
+	/**
+	 * @return the activated
+	 */
+	public boolean isActivated() {
+		return getSubApplicationNode().isActivated();
+	}
+
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * @param label
+	 *            the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon
+	 *            the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 }

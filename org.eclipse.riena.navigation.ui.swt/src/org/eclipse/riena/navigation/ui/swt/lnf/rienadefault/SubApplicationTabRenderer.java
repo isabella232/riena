@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 
-import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
-import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -46,6 +45,8 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private Color selEndColor;
 	private Image image;
 	private String icon;
+	private String label;
+	private boolean activated;
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -54,16 +55,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
-		assert value instanceof ISubApplication;
-
-		ISubApplication subAppNode = (ISubApplication) value;
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		int leftInset = 0;
-		if (subAppNode.isActivated()) {
+		if (isActivated()) {
 			leftInset = ACTIVE_LEFT_INSET;
 		}
 		int rightInset = 0;
-		if (subAppNode.isActivated()) {
+		if (isActivated()) {
 			rightInset = ACTIVE_RIGHT_INSET;
 		}
 		Font font = getTabFont();
@@ -72,13 +70,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Background
 		Color backgroundStartColor = lnf
 				.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR);
-		if (subAppNode.isActivated()) {
+		if (isActivated()) {
 			backgroundStartColor = lnf
 					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR);
 		}
 		gc.setForeground(backgroundStartColor);
 		Color backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR);
-		if (subAppNode.isActivated()) {
+		if (isActivated()) {
 			backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR);
 		}
 		gc.setBackground(backgroundEndColor);
@@ -99,7 +97,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		int y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
 		Color innerBorderColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
-		if (!subAppNode.isActivated()) {
+		if (!isActivated()) {
 			gc.setForeground(innerBorderColor);
 			x += 1;
 			x2 += 1;
@@ -141,14 +139,14 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		x2 = x;
 		y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
-		if (!subAppNode.isActivated()) {
+		if (!isActivated()) {
 			gc.setForeground(innerBorderColor);
 			x -= 1;
 			x2 -= 1;
 			gc.drawLine(x, y, x2, y2);
 		}
 		// - bottom
-		if (!subAppNode.isActivated()) {
+		if (!isActivated()) {
 			gc.setForeground(borderBottomLeftColor);
 		} else {
 			gc.setForeground(backgroundEndColor);
@@ -174,11 +172,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		Color foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND);
 		gc.setForeground(foreground);
 		y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
-		String text = getLabel(subAppNode);
-		gc.drawText(text, x, y, true);
+		gc.drawText(getLabel(), x, y, true);
 
 		// Selection
-		if (subAppNode.isActivated()) {
+		if (isActivated()) {
 			Color selColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			gc.setForeground(selColor);
 			gc.setBackground(selColor);
@@ -243,16 +240,11 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	public Point computeSize(GC gc, Object value) {
 
-		assert value instanceof ISubApplication;
-
-		ISubApplication subAppNode = (ISubApplication) value;
-		String text = getLabel(subAppNode);
-
 		Font font = getTabFont();
 		gc.setFont(font);
 		FontMetrics fontMetrics = gc.getFontMetrics();
 
-		int width = SwtUtilities.calcTextWidth(gc, text);
+		int width = SwtUtilities.calcTextWidth(gc, getLabel());
 		width = width + BORDER_LEFT_WIDTH + BORDER_RIGHT_WIDTH + TEXT_LEFT_INSET + TEXT_RIGHT_INSET;
 		// Icon
 		if (getImage() != null) {
@@ -261,28 +253,11 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		int height = fontMetrics.getHeight();
 		height = height + BORDER_TOP_WIDTH + BORDER_BOTTOM_WIDTH + TEXT_TOP_INSET + TEXT_BOTTOM_INSET;
-		if (subAppNode.isActivated()) {
+		if (isActivated()) {
 			height += ACTIVE_BOTTOM_INSET;
 		}
 
 		return new Point(width, height);
-
-	}
-
-	/**
-	 * Returns the label of the given sub-application.
-	 * 
-	 * @param subAppNode -
-	 *            node of a sub-application
-	 * @return label
-	 */
-	private String getLabel(ISubApplication subAppNode) {
-
-		String text = subAppNode.getLabel();
-		if (text == null) {
-			text = ""; //$NON-NLS-1$
-		}
-		return text;
 
 	}
 
@@ -325,6 +300,39 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	private void setImage(Image image) {
 		this.image = image;
+	}
+
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		if (label == null) {
+			label = ""; //$NON-NLS-1$
+		}
+		return label;
+	}
+
+	/**
+	 * @param label
+	 *            the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @return the activated
+	 */
+	public boolean isActivated() {
+		return activated;
+	}
+
+	/**
+	 * @param activated
+	 *            the activated to set
+	 */
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
 
 }

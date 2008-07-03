@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.utils;
+package org.eclipse.riena.ui.swt.utils;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;

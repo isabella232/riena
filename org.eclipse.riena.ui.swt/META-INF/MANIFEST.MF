@@ -9,4 +9,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.riena.ui.core
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.riena.ui.swt.uiprocess
+Export-Package: org.eclipse.riena.ui.swt.uiprocess,
+ org.eclipse.riena.ui.swt.utils

@@ -389,9 +389,10 @@ public class ModuleGroupWidget extends Canvas {
 		public void paintControl(PaintEvent e) {
 			setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 			getRenderer().setItems(getItems());
+			getRenderer().setActivated(getModuleGroupNode().isActivated());
 			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
 			getRenderer().setBounds(0, 0, size.x, size.y);
-			getRenderer().paint(e.gc, getModuleGroupNode());
+			getRenderer().paint(e.gc, null);
 		}
 	}
 

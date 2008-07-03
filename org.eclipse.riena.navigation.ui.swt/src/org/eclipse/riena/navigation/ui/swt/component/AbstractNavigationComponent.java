@@ -38,7 +38,7 @@ abstract public class AbstractNavigationComponent<T extends INavigationNode<?>> 
 		updateListeners.remove(listener);
 	}
 
-	protected void updated() {
+	public void updated() {
 		for (IComponentUpdateListener listener : updateListeners) {
 			listener.update(getModelNode());
 		}

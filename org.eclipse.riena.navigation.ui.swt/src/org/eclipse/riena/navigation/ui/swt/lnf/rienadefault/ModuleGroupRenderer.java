@@ -13,8 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleItem;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
@@ -34,6 +32,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private static final int MODULE_WIDTH = 165;
 
 	private List<ModuleItem> items;
+	private boolean activated;
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -41,10 +40,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
-
-		assert value instanceof IModuleGroupNode;
-
-		IModuleGroupNode node = (IModuleGroupNode) value;
 
 		// if (gc.getAdvanced()) {
 		// gc.setTextAntialias(SWT.ON);
@@ -58,7 +53,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		Point size = computeSize(gc, getBounds().width, 0);
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, size.y);
-		borderRenderer.setActive(node.isActivated());
+		borderRenderer.setActive(isActivated());
 		borderRenderer.paint(gc, null);
 
 		// modules
@@ -69,25 +64,23 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		List<ModuleItem> modules = getItems();
 		for (ModuleItem module : modules) {
 
-			IModuleNode moduleNode = module.getModuleNode();
-
-			// titlebar
-			titlebarRenderer.setActive(moduleNode.isActivated());
-			titlebarRenderer.setCloseable(moduleNode.isCloseable());
+			// title bar
+			titlebarRenderer.setActive(module.isActivated());
+			titlebarRenderer.setCloseable(module.isCloseable());
 			titlebarRenderer.setPressed(module.isPressed());
 			titlebarRenderer.setHover(module.isHover());
-			titlebarRenderer.setIcon(moduleNode.getIcon());
+			titlebarRenderer.setIcon(module.getIcon());
 			Point titlebarSize = titlebarRenderer.computeSize(gc, getBounds().width, 0);
 			Rectangle titlebarBounds = new Rectangle(x, y, w, titlebarSize.y);
 			titlebarRenderer.setBounds(titlebarBounds);
-			String label = moduleNode.getLabel();
+			String label = module.getLabel();
 			titlebarRenderer.paint(gc, label);
 
 			module.setBounds(new Rectangle(x, y, w, titlebarSize.y));
 
 			y += titlebarSize.y;
 
-			if (moduleNode.isActivated()) {
+			if (module.isActivated()) {
 				// body (normally: tree) of module
 				module.getBody().layout();
 				module.getBody().setBounds(x, y, w, module.getOpenHeight() - 1);
@@ -137,8 +130,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		List<ModuleItem> modules = getItems();
 		int h = MODULE_GROUP_PADDING;
 		for (ModuleItem module : modules) {
-			IModuleNode moduleNode = module.getModuleNode();
-			titlebarRenderer.setIcon(moduleNode.getIcon());
+			titlebarRenderer.setIcon(module.getIcon());
 			Point titlebarSize = titlebarRenderer.computeSize(gc, wHint, 0);
 			h += titlebarSize.y;
 			if (module.getModuleNode().isActivated()) {
@@ -247,6 +239,21 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 */
 	public void setItems(List<ModuleItem> items) {
 		this.items = items;
+	}
+
+	/**
+	 * @return the activated
+	 */
+	public boolean isActivated() {
+		return activated;
+	}
+
+	/**
+	 * @param activated
+	 *            the activated to set
+	 */
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
 
 }

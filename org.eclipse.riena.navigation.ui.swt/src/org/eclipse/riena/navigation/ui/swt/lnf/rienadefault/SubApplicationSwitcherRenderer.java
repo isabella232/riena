@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
@@ -44,8 +43,9 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		// calculate width of all tab items
 		int allTabWidth = 0;
 		for (SubApplicationItem item : getItems()) {
-			ISubApplication subAppNode = item.getSubApplicationNode();
-			Point size = tabRenderer.computeSize(gc, subAppNode);
+			tabRenderer.setLabel(item.getLabel());
+			tabRenderer.setActivated(item.isActivated());
+			Point size = tabRenderer.computeSize(gc, null);
 			allTabWidth += size.x;
 		}
 
@@ -70,13 +70,14 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		}
 		x = xPosition;
 		for (SubApplicationItem item : getItems()) {
-			ISubApplication subAppNode = item.getSubApplicationNode();
-			tabRenderer.setIcon(subAppNode.getIcon());
-			Point size = tabRenderer.computeSize(gc, subAppNode);
+			tabRenderer.setLabel(item.getLabel());
+			tabRenderer.setIcon(item.getIcon());
+			tabRenderer.setActivated(item.isActivated());
+			Point size = tabRenderer.computeSize(gc, null);
 			y = getBounds().height - size.y;
 			tabRenderer.setBounds(x, y, size.x, size.y);
-			if (!subAppNode.isActivated()) {
-				tabRenderer.paint(gc, subAppNode);
+			if (!item.isActivated()) {
+				tabRenderer.paint(gc, null);
 				item.setBounds(tabRenderer.getBounds());
 			}
 			x += size.x;
@@ -85,13 +86,14 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		// active tab item
 		x = xPosition;
 		for (SubApplicationItem item : getItems()) {
-			ISubApplication subAppNode = item.getSubApplicationNode();
-			tabRenderer.setIcon(subAppNode.getIcon());
-			Point size = tabRenderer.computeSize(gc, subAppNode);
-			if (subAppNode.isActivated()) {
+			tabRenderer.setLabel(item.getLabel());
+			tabRenderer.setIcon(item.getIcon());
+			tabRenderer.setActivated(item.isActivated());
+			Point size = tabRenderer.computeSize(gc, null);
+			if (item.isActivated()) {
 				y = getBounds().height - size.y;
 				tabRenderer.setBounds(x, y, size.x, size.y);
-				tabRenderer.paint(gc, subAppNode);
+				tabRenderer.paint(gc, null);
 				item.setBounds(tabRenderer.getBounds());
 			}
 			x += size.x;

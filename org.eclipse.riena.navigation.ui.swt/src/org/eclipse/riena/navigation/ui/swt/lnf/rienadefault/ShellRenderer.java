@@ -14,7 +14,7 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;

@@ -13,9 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.presentation.stack;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.navigation.ISubApplication;
-import org.eclipse.riena.navigation.model.NavigationProcessor;
-import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
@@ -314,16 +311,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 		GC gc = new GC(Display.getCurrent());
 
-		// Create a active dummy-sub-application
-		ISubApplication subApp = new SubApplication(""); //$NON-NLS-1$
-		subApp.setNavigationProcessor(new NavigationProcessor());
-		subApp.activate();
-
 		// Get the renderer of tab
 		SubApplicationTabRenderer renderer = (SubApplicationTabRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER);
 
-		int tabHeight = renderer.computeSize(gc, subApp).y;
+		renderer.setActivated(true);
+		int tabHeight = renderer.computeSize(gc, null).y;
 		tabHeight += SubApplicationTabRenderer.ACTIVE_Y_OFFSET;
 		gc.dispose();
 

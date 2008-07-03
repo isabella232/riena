@@ -6,7 +6,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.utils.SwtOsUtilities;
-import org.eclipse.riena.navigation.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -28,7 +28,10 @@ public class ModuleItem {
 	private Tree subModuleTree;
 	private boolean pressed;
 	private boolean hover;
+	private boolean closeable;
 	private Rectangle bounds;
+	private String icon;
+	private String label;
 
 	private SubModuleNode activeSubModule;
 
@@ -37,8 +40,8 @@ public class ModuleItem {
 	/**
 	 * Constructs a new instance of this class.
 	 * 
-	 * @param parent
-	 *            - module group which will be the parent of the new instance
+	 * @param parent -
+	 *            module group which will be the parent of the new instance
 	 */
 	public ModuleItem(ModuleGroupWidget parent, ModuleNavigationComponent moduleCmp) {
 
@@ -46,6 +49,9 @@ public class ModuleItem {
 		this.moduleCmp = moduleCmp;
 		pressed = false;
 		hover = false;
+		icon = getModuleNode().getIcon();
+		closeable = getModuleNode().isCloseable();
+		label = getModuleNode().getLabel();
 
 		construct(parent);
 
@@ -160,8 +166,8 @@ public class ModuleItem {
 	 * Clips (if necessary) the text of the given tree item and all child items.
 	 * 
 	 * @param gc
-	 * @param item
-	 *            - tree item
+	 * @param item -
+	 *            tree item
 	 * @return true: some text was clipped; false: no text was clipped
 	 */
 	private boolean clipSubModuleTexts(GC gc, TreeItem item) {
@@ -183,8 +189,8 @@ public class ModuleItem {
 	 * Clips (if necessary) the text of the given tree item.
 	 * 
 	 * @param gc
-	 * @param item
-	 *            - tree item
+	 * @param item -
+	 *            tree item
 	 * @return true: text was clipped; false: text was not clipped
 	 */
 	private boolean clipSubModuleText(GC gc, TreeItem item) {
@@ -224,8 +230,8 @@ public class ModuleItem {
 	/**
 	 * Returns if the module item is pressed or not.
 	 * 
-	 * @param pressed
-	 *            - true, if mouse over the module and pressed; otherwise false.
+	 * @param pressed -
+	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
 	public boolean isPressed() {
 		return pressed;
@@ -236,8 +242,8 @@ public class ModuleItem {
 	 * If the given state differs from the current state, the parent of item is
 	 * redrawn.
 	 * 
-	 * @param pressed
-	 *            - true, if mouse over the module and pressed; otherwise false.
+	 * @param pressed -
+	 *            true, if mouse over the module and pressed; otherwise false.
 	 */
 	public void setPressed(boolean pressed) {
 		if (this.pressed != pressed) {
@@ -264,8 +270,8 @@ public class ModuleItem {
 	 * If the given hover state differs from the current state, the parent of
 	 * item is redrawn.
 	 * 
-	 * @param hover
-	 *            - true, if mouse over the module; otherwise false.
+	 * @param hover -
+	 *            true, if mouse over the module; otherwise false.
 	 */
 	public void setHover(boolean hover) {
 		if (this.hover != hover) {
@@ -310,6 +316,58 @@ public class ModuleItem {
 	 */
 	public void redraw() {
 		subModuleTree.setBackground(LnfManager.getLnf().getColor("SubModuleTree.background")); //$NON-NLS-1$
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon
+	 *            the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	/**
+	 * @return the activated
+	 */
+	public boolean isActivated() {
+		return getModuleNode().isActivated();
+	}
+
+	/**
+	 * @return the closeable
+	 */
+	public boolean isCloseable() {
+		return closeable;
+	}
+
+	/**
+	 * @param closeable
+	 *            the closeable to set
+	 */
+	public void setCloseable(boolean closeable) {
+		this.closeable = closeable;
+	}
+
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * @param label
+	 *            the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 }

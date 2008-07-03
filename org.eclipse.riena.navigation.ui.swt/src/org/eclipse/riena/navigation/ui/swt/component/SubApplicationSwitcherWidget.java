@@ -159,6 +159,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		List<ISubApplication> subApps = applicationModel.getChildren();
 		for (ISubApplication subApp : subApps) {
 			SubApplicationItem item = new SubApplicationItem(this, subApp);
+			item.setIcon(subApp.getIcon());
+			item.setLabel(subApp.getLabel());
 			getItems().add(item);
 		}
 
