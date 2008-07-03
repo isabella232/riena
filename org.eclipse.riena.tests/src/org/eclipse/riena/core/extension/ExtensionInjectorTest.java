@@ -43,6 +43,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	}
 
 	public void testConstructorConstraints() {
+		printTestName();
 		try {
 			Inject.extension(null);
 			fail("That should not happen!");
@@ -52,6 +53,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	}
 
 	public void testUseTypeConstraints() {
+		printTestName();
 		try {
 			Inject.extension("id").useType(null);
 			fail("That should not happen!");
@@ -73,6 +75,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	}
 
 	public void testExpectingConstraints() {
+		printTestName();
 		try {
 			Inject.extension("id").expectingMinMax(2, 1);
 			fail("That should not happen!");
@@ -94,6 +97,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	}
 
 	public void testInjectIntoConstraints() {
+		printTestName();
 		try {
 			Inject.extension("id").into(null);
 			fail("That should not happen!");
@@ -144,10 +148,27 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
 				.into(target).bind("configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
-		assertTrue(target.getData().getBoolean());
-		assertTrue(target.getData().isBoolean());
-		assertEquals("test1", target.getData().getString());
-		assertEquals(String.class, target.getData().createExecutable().getClass());
+		assertTrue(target.getData().getRequired());
+		assertTrue(target.getData().isRequired());
+		assertEquals("test1", target.getData().getText());
+		assertEquals(String.class, target.getData().createObjectType().getClass());
+		removeExtension("core.test.extpoint.id1");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testNonCachingOfCreateWithKnownTypeAndSingleData() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
+		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
+				.into(target).bind("configure").andStart(Activator.getContext());
+		assertNotNull(target.getData());
+		String created1 = (String) target.getData().createObjectType();
+		String created2 = (String) target.getData().createObjectType();
+		assertNotSame(created1, created2);
+
 		removeExtension("core.test.extpoint.id1");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
@@ -161,10 +182,10 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
 				"configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
-		assertFalse(target.getData().getBoolean());
-		assertFalse(target.getData().isBoolean());
-		assertEquals("test2", target.getData().getString());
-		assertEquals(HashMap.class, target.getData().createExecutable().getClass());
+		assertFalse(target.getData().getRequired());
+		assertFalse(target.getData().isRequired());
+		assertEquals("test2", target.getData().getText());
+		assertEquals(HashMap.class, target.getData().createObjectType().getClass());
 		removeExtension("core.test.extpoint.id2");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
@@ -178,16 +199,16 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
 				"configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
-		assertTrue(target.getData().getBoolean());
-		assertEquals("test4", target.getData().getString());
-		assertEquals(ArrayList.class, target.getData().createExecutable().getClass());
-		assertEquals(0x20, target.getData().getByte());
-		assertEquals(2.7182818284590452d, target.getData().getDouble());
-		assertEquals(3.14159f, target.getData().getFloat());
-		assertEquals(123, target.getData().getInteger());
-		assertEquals(1234567890l, target.getData().getLong());
-		assertEquals(1, target.getData().getShort());
-		assertEquals('#', target.getData().getCharacter());
+		assertTrue(target.getData().getRequired());
+		assertEquals("test4", target.getData().getText());
+		assertEquals(ArrayList.class, target.getData().createObjectType().getClass());
+		assertEquals(0x2A, target.getData().getJustAByte());
+		assertEquals(2.7182818284590452d, target.getData().getDoubleNumber());
+		assertEquals(3.14159f, target.getData().getFloatNumber());
+		assertEquals(123, target.getData().getIntegerNumber());
+		assertEquals(1234567890l, target.getData().getLongNumber());
+		assertEquals(1, target.getData().getShortNumber());
+		assertEquals('#', target.getData().getDelimCharacter());
 
 		removeExtension("core.test.extpoint.id4");
 		removeExtensionPoint("core.test.extpoint");
@@ -251,11 +272,67 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
 				"configure").useTranslation().andStart(getContext());
 		assertNotNull(target.getData());
-		assertTrue(target.getData().getBoolean());
-		assertEquals("test5", target.getData().getString());
-		assertEquals(String.class, target.getData().createExecutable().getClass());
+		assertTrue(target.getData().getRequired());
+		assertEquals("test5", target.getData().getText());
+		assertEquals(String.class, target.getData().createObjectType().getClass());
 
 		removeExtension("core.test.extpoint.id5");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testWithUnknownTypeAndSingleDataAndOneNestedSingleElementAndTwoNestedMultipleElements() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext6.xml");
+		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+				"configure").andStart(Activator.getContext());
+		assertNotNull(target.getData());
+		assertFalse(target.getData().getRequired());
+		assertFalse(target.getData().isRequired());
+		assertEquals("test6", target.getData().getText());
+		assertEquals(String.class, target.getData().createObjectType().getClass());
+
+		IData2 data2 = target.getData().getData();
+		assertNotNull(data2);
+		assertEquals("rmation", data2.getInfo());
+
+		IData3[] data3 = target.getData().getMoreData();
+		assertNotNull(data3);
+		assertEquals(2, data3.length);
+		assertEquals("more-one", data3[0].getId());
+		assertEquals("Hugo", data3[0].getName());
+		assertEquals("more-two", data3[1].getId());
+		assertEquals("Hella", data3[1].getName());
+
+		removeExtension("core.test.extpoint.id6");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testCachingWithUnknownTypeAndSingleDataAndOneNestedSingleElementAndTwoNestedMultipleElements() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext6.xml");
+		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+				"configure").andStart(Activator.getContext());
+		assertNotNull(target.getData());
+		assertFalse(target.getData().getRequired());
+		assertFalse(target.getData().isRequired());
+		assertEquals("test6", target.getData().getText());
+		assertEquals(String.class, target.getData().createObjectType().getClass());
+
+		IData2 data21 = target.getData().getData();
+		IData2 data22 = target.getData().getData();
+		assertSame(data21, data22);
+
+		IData3[] data31 = target.getData().getMoreData();
+		IData3[] data32 = target.getData().getMoreData();
+		assertSame(data31, data32);
+
+		removeExtension("core.test.extpoint.id6");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 	}
