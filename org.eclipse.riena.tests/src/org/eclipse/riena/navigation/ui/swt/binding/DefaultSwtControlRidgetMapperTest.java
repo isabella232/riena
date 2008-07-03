@@ -50,10 +50,11 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 	/**
 	 * Tests the method
-	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> )</code>.
+	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> )</code>
+	 * .
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testAddMapping() throws Exception {
 
@@ -67,10 +68,11 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 	/**
 	 * Tests the method
-	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> , int )</code>.
+	 * <code>addMapping(Class<? extends Widget> , Class<? extends IRidget> , int )</code>
+	 * .
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testAddMappingSwtStyle() throws Exception {
 
@@ -92,8 +94,8 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 	/**
 	 * Tests the method <code>getRidgetClass(Class<? extends Widget>)</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testGetRidgetClass() throws Exception {
 
@@ -112,8 +114,8 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 	/**
 	 * Tests the method <code>getRidgetClass(Widget)</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testGetRidgetClassWidget() throws Exception {
 
@@ -137,15 +139,15 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 	/**
 	 * Tests the method <code>isMatching(Class<? extends Widget>)</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testIsMatching() throws Exception {
 
-		Mapping mapping = mapper.new Mapping(MockComposite.class, MockRidget.class);
+		Mapping mapping = new Mapping(MockComposite.class, MockRidget.class);
 		assertTrue(mapping.isMatching(MockComposite.class));
 		assertFalse(mapping.isMatching(MockComposite2.class));
-		mapping = mapper.new Mapping(MockComposite.class, MockRidget.class, SWT.CHECK);
+		mapping = new Mapping(MockComposite.class, MockRidget.class, SWT.CHECK);
 		assertFalse(mapping.isMatching(MockComposite.class));
 		assertFalse(mapping.isMatching(MockComposite2.class));
 
@@ -154,12 +156,12 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 	/**
 	 * Tests the method <code>isMatching(Widget>)</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testIsMatchingWidget() throws Exception {
 
-		Mapping mapping = mapper.new Mapping(MockComposite.class, MockRidget.class);
+		Mapping mapping = new Mapping(MockComposite.class, MockRidget.class);
 		MockComposite comp = new MockComposite(shell, SWT.DEFAULT);
 		assertTrue(mapping.isMatching(comp));
 		comp.dispose();
@@ -167,7 +169,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		assertFalse(mapping.isMatching(comp2));
 		comp2.dispose();
 
-		mapping = mapper.new Mapping(MockComposite.class, MockRidget.class, SWT.ABORT);
+		mapping = new Mapping(MockComposite.class, MockRidget.class, SWT.ABORT);
 		comp = new MockComposite(shell, SWT.ALPHA);
 		assertFalse(mapping.isMatching(comp));
 		comp.dispose();
