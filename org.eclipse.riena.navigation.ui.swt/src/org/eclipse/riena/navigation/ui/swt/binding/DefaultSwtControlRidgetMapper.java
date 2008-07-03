@@ -66,12 +66,12 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	/**
 	 * Adds a mapping of a UI control-class to a ridget-class
 	 * 
-	 * @param controlClazz -
-	 *            the class of the UI control (<code>Widget</code>)
-	 * @param ridgetClazz -
-	 *            the class of the ridget
-	 * @param swtStyle -
-	 *            SWT style of the UI control (<code>Widget</code>)
+	 * @param controlClazz
+	 *            - the class of the UI control (<code>Widget</code>)
+	 * @param ridgetClazz
+	 *            - the class of the ridget
+	 * @param swtStyle
+	 *            - SWT style of the UI control (<code>Widget</code>)
 	 */
 	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int swtStyle) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, swtStyle);
@@ -105,7 +105,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	/**
 	 * Mapping of UI control and ridget.
 	 */
-	private final static class Mapping {
+	public final static class Mapping {
 
 		private Class<? extends Widget> controlClazz;
 		private Class<? extends IRidget> ridgetClazz;
@@ -114,10 +114,10 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Create a new mapping of UI control and ridget.
 		 * 
-		 * @param controlClazz -
-		 *            the class of the UI control
-		 * @param ridgetClazz -
-		 *            the class of the ridget
+		 * @param controlClazz
+		 *            - the class of the UI control
+		 * @param ridgetClazz
+		 *            - the class of the ridget
 		 */
 		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			this(controlClazz, ridgetClazz, IGNOR_SWT_STYLE);
@@ -126,12 +126,12 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Create a new mapping of UI control and ridget.
 		 * 
-		 * @param controlClazz -
-		 *            the class of the UI control
-		 * @param ridgetClazz -
-		 *            the class of the ridget
-		 * @param controlStyle -
-		 *            the SWT style of the UI control
+		 * @param controlClazz
+		 *            - the class of the UI control
+		 * @param ridgetClazz
+		 *            - the class of the ridget
+		 * @param controlStyle
+		 *            - the SWT style of the UI control
 		 */
 		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle) {
 			this.controlClazz = controlClazz;
@@ -142,8 +142,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Checks if this mapping is for given UI control.
 		 * 
-		 * @param control -
-		 *            the UI control-class
+		 * @param control
+		 *            - the UI control-class
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Class<? extends Widget> controlClazz) {
@@ -157,8 +157,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		/**
 		 * Checks if this mapping is for given UI control.
 		 * 
-		 * @param control -
-		 *            the UI control
+		 * @param control
+		 *            - the UI control
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Widget control) {
