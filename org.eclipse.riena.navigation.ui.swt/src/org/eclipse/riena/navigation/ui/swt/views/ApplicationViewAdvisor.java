@@ -40,10 +40,13 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -64,21 +67,22 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	/**
-	 * 
+	 * The default and the minimum size of the application.
 	 */
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
+	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
 
 	enum BtnState {
 		NONE, HOVER, HOVER_SELECTED;
 	}
 
-	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
-
 	private ApplicationViewController controller;
 	private ISubApplicationListener subApplicationListener;
 	private NavigationTreeObserver navigationTreeObserver;
-
 	private List<Object> uiControls;
+	private Cursor handCursor;
+	private Cursor grabCursor;
+	private Cursor defaultCursor;
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationViewController pController) {
 		super(configurer);
@@ -117,6 +121,31 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setInitialSize(APPLICATION_SIZE);
 		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
+		}
+	}
+
+	/**
+	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		disposeResource(handCursor);
+		disposeResource(grabCursor);
+		disposeResource(defaultCursor);
+	}
+
+	/**
+	 * Disposes the given resource, if the the resource is not null and isn't
+	 * already disposed.
+	 * 
+	 * @param resource -
+	 *            resouce to dispose
+	 */
+	private void disposeResource(Resource resource) {
+		if ((resource != null) && (!resource.isDisposed())) {
+			resource.dispose();
+			resource = null;
 		}
 	}
 
@@ -279,6 +308,81 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
 	}
 
+	/**
+	 * Creates a cursor there for the corresponding image of the look and feel
+	 * is used.
+	 * 
+	 * @param shell
+	 * @param lnfKey -
+	 *            look and feel key of the cursor image
+	 * @return cursor
+	 */
+	private Cursor createCursor(Shell shell, String lnfKey) {
+
+		Cursor cursor = null;
+
+		Image cursorImage = LnfManager.getLnf().getImage(lnfKey);
+		if (cursorImage != null) {
+			ImageData imageData = cursorImage.getImageData();
+			int x = imageData.width / 2;
+			int y = imageData.height / 2;
+			cursor = new Cursor(shell.getDisplay(), imageData, x, y);
+		}
+		return cursor;
+
+	}
+
+	/**
+	 * Sets the hand cursor for the given shell.
+	 * 
+	 * @param shell
+	 */
+	private void showHandCursor(Shell shell) {
+		if (handCursor == null) {
+			handCursor = createCursor(shell, ILnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE);
+		}
+		setCursor(shell, handCursor);
+	}
+
+	/**
+	 * Sets the grab cursor for the given shell.
+	 * 
+	 * @param shell
+	 */
+	private void showGrabCursor(Shell shell) {
+		if (grabCursor == null) {
+			grabCursor = createCursor(shell, ILnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE);
+		}
+		setCursor(shell, grabCursor);
+
+	}
+
+	/**
+	 * Sets the default cursor for the given shell.
+	 * 
+	 * @param shell
+	 */
+	private void showDefaultCursor(Shell shell) {
+		if (defaultCursor == null) {
+			defaultCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW);
+		}
+		setCursor(shell, defaultCursor);
+	}
+
+	/**
+	 * Sets the given cursor for the shell
+	 * 
+	 * @param shell
+	 * @param cursor -
+	 *            new cursor
+	 */
+	private void setCursor(Shell shell, Cursor cursor) {
+		if ((cursor != null) && (shell.getCursor() != cursor)) {
+			shell.setCursor(cursor);
+		}
+
+	}
+
 	private class SubApplicationListener extends SubApplicationAdapter {
 
 		/**
@@ -354,6 +458,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
+	/**
+	 * Returns the image of the logo.
+	 * 
+	 * @return logo image
+	 */
 	private Image getLogoImage() {
 		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_LOGO);
 	}
@@ -580,6 +689,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		private final static int MIN_BTN_INDEX = 2;
 		private BtnState[] btnStates = new BtnState[BTN_COUNT];
 		private boolean mouseDownOnButton;
+		private boolean moveInside;
 		private boolean move;
 		private Point moveStartPoint;
 
@@ -716,6 +826,23 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		}
 
+		private void updateCursor(MouseEvent e) {
+
+			Shell shell = getShell(e);
+
+			Point pointer = new Point(e.x, e.y);
+			if (moveInside && getShellRenderer().isInsideMoveArea(pointer)) {
+				if (move) {
+					showGrabCursor(shell);
+				} else {
+					showHandCursor(shell);
+				}
+			} else {
+				showDefaultCursor(shell);
+			}
+
+		}
+
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
 		 */
@@ -737,6 +864,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 					move = false;
 				}
 			}
+			updateCursor(e);
 		}
 
 		/**
@@ -766,6 +894,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			mouseDownOnButton = false;
 			updateButtonStates(e);
 			move = false;
+			updateCursor(e);
 
 		}
 
@@ -774,7 +903,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		public void mouseEnter(MouseEvent e) {
 			updateButtonStates(e);
+			moveInside = true;
 			move = false;
+			updateCursor(e);
 		}
 
 		/**
@@ -782,7 +913,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		public void mouseExit(MouseEvent e) {
 			updateButtonStates(e);
+			moveInside = false;
 			move = false;
+			updateCursor(e);
 		}
 
 		/**
@@ -805,6 +938,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 					move(e);
 				}
 			}
+			updateCursor(e);
 		}
 
 		private void move(MouseEvent e) {

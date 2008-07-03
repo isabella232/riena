@@ -388,6 +388,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 			width = 0;
 		}
 		moveArea.width = width;
+		moveArea.height = maxHeight;
 		return moveArea.contains(pt);
 	}
 
