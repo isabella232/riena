@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**

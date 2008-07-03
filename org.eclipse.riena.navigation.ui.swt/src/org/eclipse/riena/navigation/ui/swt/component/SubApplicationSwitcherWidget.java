@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.SubApplicationSwitcherRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;

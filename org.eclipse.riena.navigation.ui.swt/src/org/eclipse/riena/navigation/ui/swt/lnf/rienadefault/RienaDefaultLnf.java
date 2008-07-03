@@ -19,6 +19,16 @@ import org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.HoverBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationTabRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -36,15 +46,15 @@ public class RienaDefaultLnf {
 	private ILnfTheme theme;
 	private boolean initialized;
 
-	private Map<String, ILnfResource> getResourceTable() {
+	protected Map<String, ILnfResource> getResourceTable() {
 		return resourceTable;
 	}
 
-	private Map<String, ILnfRenderer> getRendererTable() {
+	protected Map<String, ILnfRenderer> getRendererTable() {
 		return rendererTable;
 	}
 
-	private Map<String, Object> getSettingTable() {
+	protected Map<String, Object> getSettingTable() {
 		return settingTable;
 	}
 

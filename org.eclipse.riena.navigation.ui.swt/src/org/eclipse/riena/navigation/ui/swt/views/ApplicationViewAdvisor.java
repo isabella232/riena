@@ -22,9 +22,9 @@ import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellBorderRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellLogoRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.ShellRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
@@ -380,7 +380,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if ((cursor != null) && (shell.getCursor() != cursor)) {
 			shell.setCursor(cursor);
 		}
-
 	}
 
 	private class SubApplicationListener extends SubApplicationAdapter {
