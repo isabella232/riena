@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.communication.publisher;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
@@ -25,6 +24,8 @@ import org.eclipse.riena.communication.publisher.ServicePublishBinder;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.service.ServiceInjector;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
@@ -42,7 +43,9 @@ public class Activator extends RienaActivator {
 	private static Activator plugin;
 
 	/*
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext )
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -52,13 +55,14 @@ public class Activator extends RienaActivator {
 
 		IServicePublishBinder binder = new ServicePublishBinder();
 		context.registerService(IServicePublishBinder.class.getName(), binder, null);
-		Inject.service(IServicePublisher.class.getName()).useRanking().into(binder).andStart(context);
+		Inject.service(IServicePublisher.class.getName()).into(binder).andStart(context);
 
 		Publish.allServices().filter("(&(riena.remote=true)(riena.remote.protocol=*))").andStart(context); //$NON-NLS-1$
 
 		// dispatcher = new ServicePublishEventDispatcher(context);
 		// publisherInjector =
-		// Inject.service(IServicePublisher.class.getName()).useRanking().into(dispatcher).andStart(
+		// Inject.service(IServicePublisher.class.getName()).useRanking().into(
+		// dispatcher).andStart(
 		// context);
 		//
 		// // register as OSGi service, the start will pick up the OSGi service
@@ -73,7 +77,8 @@ public class Activator extends RienaActivator {
 		// properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
 		// "/ServicePublisherWS");
 		//
-		// context.registerService(IServicePublishEventDispatcher.class.getName(),
+		//context.registerService(IServicePublishEventDispatcher.class.getName()
+		// ,
 		// dispatcher, properties);
 
 		// dispatcher.start();
@@ -103,7 +108,8 @@ public class Activator extends RienaActivator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		context.removeServiceListener(updateNotifierRemoteService);

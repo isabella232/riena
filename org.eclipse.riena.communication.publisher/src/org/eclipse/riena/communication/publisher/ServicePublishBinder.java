@@ -16,12 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.eclipse.riena.internal.communication.publisher.ServiceHooksProxy;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
@@ -54,10 +55,16 @@ public class ServicePublishBinder implements IServicePublishBinder {
 
 	public void bind(IServicePublisher publisher) {
 		servicePublishers.put(publisher.getProtocol(), publisher);
-		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
-				+ " REGISTER...publishing all services that were waiting for him"); //$NON-NLS-1$
-		// check for services which are missing a publisher
+		if (unpublishedServices.size() > 0) {
+			LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
+					+ " REGISTER...publishing all services that were waiting for him"); //$NON-NLS-1$
+		} else {
+			LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
+					+ " REGISTER...no unpublished services waiting for this protocol"); //$NON-NLS-1$
 
+		}
+
+		// check for services which are missing a publisher
 		checkUnpublishedServices(publisher.getProtocol());
 	}
 
@@ -89,9 +96,9 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.publisher.IServicePublishBinder#publish
-	 *      (org.osgi.framework.ServiceReference, java.lang.String,
-	 *      java.lang.String)
+	 * @see
+	 * org.eclipse.riena.communication.publisher.IServicePublishBinder#publish
+	 * (org.osgi.framework.ServiceReference, java.lang.String, java.lang.String)
 	 */
 	public void publish(ServiceReference ref, String url, String protocol) {
 		String[] interfaces = (String[]) ref.getProperty(Constants.OBJECTCLASS);
@@ -151,7 +158,8 @@ public class ServicePublishBinder implements IServicePublishBinder {
 
 			IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
 			if (servicePublisher == null) {
-				LOGGER.log(LogService.LOG_DEBUG, "no publisher found for protocol " + rsd.getProtocol()); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_INFO, "no publisher found for protocol " + rsd.getProtocol()); //$NON-NLS-1$
+				unpublishedServices.add(rsd);
 				return;
 			}
 			String url = servicePublisher.publishService(rsd);

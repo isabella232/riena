@@ -38,6 +38,13 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		if (method.getName().equals("equals") || method.getName().equals("hashCode")) {
+			return new UnsupportedOperationException("method :" + method.getName() + " not supported for "
+					+ this.getServiceInstance());
+		}
+		if (method.getName().equals("toString")) {
+			return this.getServiceInstance().toString();
+		}
 		IServiceMessageContext mc = null;
 		if (mca != null) {
 			mc = mca.getMessageContext();
