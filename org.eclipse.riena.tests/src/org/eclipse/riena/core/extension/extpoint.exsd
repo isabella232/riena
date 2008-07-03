@@ -11,6 +11,11 @@
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
             <element ref="test"/>
@@ -44,21 +49,25 @@
 
    <element name="test">
       <complexType>
-         <attribute name="string" type="string">
+         <sequence>
+            <element ref="data" minOccurs="0" maxOccurs="1"/>
+            <element ref="moreData" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="text" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="boolean" type="boolean">
+         <attribute name="required" type="boolean">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="executable" type="string">
+         <attribute name="objectType" type="string">
             <annotation>
                <documentation>
                   
@@ -66,6 +75,37 @@
                <appinfo>
                   <meta.attribute kind="java"/>
                </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="data">
+      <complexType>
+         <attribute name="info" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="moreData">
+      <complexType>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
@@ -97,7 +137,6 @@
          [Enter API information here.]
       </documentation>
    </annotation>
-
 
    <annotation>
       <appinfo>
