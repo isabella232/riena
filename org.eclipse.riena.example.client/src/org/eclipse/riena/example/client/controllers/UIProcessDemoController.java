@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
-import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -30,7 +29,6 @@ public class UIProcessDemoController extends SubModuleNodeViewController {
 
 	public UIProcessDemoController(ISubModuleNode navigationNode) {
 		super(navigationNode);
-		Job.getJobManager().setProgressProvider(ProgressProviderBridge.instance());
 	}
 
 	public void setActionRidget(IActionRidget actionRidget) {
