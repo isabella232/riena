@@ -310,14 +310,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.riena.navigation.ui.swt.macosx"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.riena.navigation.ui.swt.win32"
          download-size="0"
          install-size="0"
