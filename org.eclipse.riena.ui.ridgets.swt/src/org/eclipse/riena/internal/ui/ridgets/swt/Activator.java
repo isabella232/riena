@@ -63,9 +63,12 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @param imageKey
 	 *            a non-null String; see {@link SharedImages} for valid keys
-	 * @return a non-null Image instnace
+	 * @return a non-null Image instance
 	 */
 	public static Image getSharedImage(final String imageKey) {
+		if (getDefault() == null) {
+			return null; // for unit testing only
+		}
 		return getDefault().getImageRegistry().get(imageKey);
 	}
 

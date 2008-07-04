@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -46,6 +47,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
+	/* a flat list of all "model" values from all nodes */
+	private final WritableList observableValues;
 
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
@@ -55,6 +58,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
+		observableValues = new WritableList();
 	}
 
 	@Override
@@ -111,7 +115,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			viewer.setLabelProvider(new TreeNodeLabelProvider(viewer));
 			viewer.setContentProvider(new TreeModelContentProvider());
 			viewer.setInput(observableTreeModel);
-			control.addMouseListener(doubleClickForwarder);
+			if (observableTreeModel.getRoot() instanceof ITreeNode) {
+				expand((ITreeNode) observableTreeModel.getRoot());
+			}
 
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
@@ -166,6 +172,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public void bindToModel(IObservableTreeModel observableTreeModel) {
 		unbindUIControl();
 		this.observableTreeModel = observableTreeModel;
+		observableValues.clear();
+		// TODO [ex] fill OVS?
+		setRowObservables(observableValues);
 		bindUIControl();
 	}
 
@@ -174,6 +183,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Tree control = getUIControl();
 			control.setRedraw(false);
 			viewer.collapseToLevel(node, 1);
+			viewer.update(node, null); // update icon
 			control.setRedraw(true);
 		}
 	}
@@ -183,6 +193,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Tree control = getUIControl();
 			control.setRedraw(false);
 			viewer.collapseAll();
+			viewer.refresh(); // update icons
 			control.setRedraw(true);
 		}
 	}
@@ -192,6 +203,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Tree control = getUIControl();
 			control.setRedraw(false);
 			viewer.expandToLevel(node, 1);
+			viewer.update(node, null); // update icon
 			control.setRedraw(true);
 		}
 	}
@@ -201,6 +213,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Tree control = getUIControl();
 			control.setRedraw(false);
 			viewer.expandAll();
+			viewer.refresh(); // update icons
 			control.setRedraw(true);
 		}
 	}
