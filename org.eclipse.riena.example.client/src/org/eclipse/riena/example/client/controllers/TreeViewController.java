@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.riena.example.client.views.TreeView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
@@ -20,6 +26,9 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree.DefaultObservableTreeModel;
 import org.eclipse.riena.ui.ridgets.tree.DefaultObservableTreeNode;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
+import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Controller for the {@link TreeView} example.
@@ -93,30 +102,71 @@ public class TreeViewController extends SubModuleNodeViewController {
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("addSibling");
+				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
+						.getValue();
+				if (node != null) {
+					DefaultObservableTreeNode parent = (DefaultObservableTreeNode) node.getParent();
+					if (parent != null) { // make sure its not the root node
+						parent.addChild(new DefaultObservableTreeNode("NEW_SIBLING"));
+					}
+				}
 			}
 		});
 
 		buttonAddChild.setText("Add &Child");
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("addChild");
+				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
+						.getValue();
+				if (node != null) {
+					node.addChild(new DefaultObservableTreeNode("NEW_CHILD"));
+				}
 			}
 		});
 
 		buttonRename.setText("&Rename");
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("rename");
+				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
+						.getValue();
+				if (node != null) {
+					String newValue = getNewValue(node.getUserObject());
+					if (newValue != null) {
+						node.getModel().setUserObject(node, newValue);
+					}
+				}
 			}
 		});
 
 		buttonDelete.setText("&Delete");
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("delete");
+				// TODO [ev] xxx why not an interface?
+				// TODO [ev] xxx cleanup DefaultTreeNode; DefaultTreeModel?
+				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
+						.getValue();
+				if (node != null) {
+					DefaultObservableTreeNode parent = (DefaultObservableTreeNode) node.getParent();
+					if (parent != null) { // make sure it's not the root node
+						parent.removeChild(node);
+					}
+				}
 			}
 		});
+
+		WritableValue singleSelection = new WritableValue();
+		singleSelection.addValueChangeListener(new IValueChangeListener() {
+			public void handleValueChange(ValueChangeEvent event) {
+				Object selectedValue = event.getObservableValue().getValue();
+				boolean isTreeNode = selectedValue instanceof ITreeNode;
+				boolean hasParent = isTreeNode && ((ITreeNode) selectedValue).getParent() != null;
+				buttonAddChild.setEnabled(isTreeNode);
+				buttonAddSibling.setEnabled(hasParent);
+				buttonDelete.setEnabled(hasParent);
+				buttonRename.setEnabled(isTreeNode);
+			}
+		});
+		tree.bindSingleSelectionToModel(singleSelection);
 	}
 
 	private IObservableTreeModel createTreeModel() {
@@ -141,5 +191,25 @@ public class TreeViewController extends SubModuleNodeViewController {
 		root.addChild(groupC);
 
 		return new DefaultObservableTreeModel(root);
+	}
+
+	private String getNewValue(Object oldValue) {
+		String newValue = null;
+		if (oldValue != null) {
+			Shell shell = ((Button) buttonRename.getUIControl()).getShell();
+			IInputValidator validator = new IInputValidator() {
+				public String isValid(String newText) {
+					boolean isValid = newText.trim().length() > 0;
+					return isValid ? null : "Name cannot be empty!";
+				}
+			};
+			InputDialog dialog = new InputDialog(shell, "Rename", "Enter a new name:", String.valueOf(oldValue),
+					validator);
+			int result = dialog.open();
+			if (result == Window.OK) {
+				newValue = dialog.getValue();
+			}
+		}
+		return newValue;
 	}
 }
