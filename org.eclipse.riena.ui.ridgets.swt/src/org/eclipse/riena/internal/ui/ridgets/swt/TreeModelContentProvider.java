@@ -21,7 +21,14 @@ import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree.TreeModelEvent;
 
 /**
- * TODO [ev] docs
+ * Tree content provider for ITreeModel inputs.
+ * <p>
+ * If the supplied tree model is an IObservableTreeModel (extends of ITreeModel)
+ * the content provider will take care of refreshing/updating the tree
+ * automatically when the model is changed.
+ * 
+ * @see ITreeModel
+ * @see IObservableTreeModel
  */
 final class TreeModelContentProvider implements ITreeContentProvider, ITreeModelListener {
 
