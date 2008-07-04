@@ -48,8 +48,8 @@ import org.osgi.framework.Bundle;
 public class SwtExampleApplication extends SwtApplication {
 
 	/**
-	 * Creates a new instance of <code>SwtExampleApplication</code> and set
-	 * the look and feel, if a class for the look and feel is given.
+	 * Creates a new instance of <code>SwtExampleApplication</code> and set the
+	 * look and feel, if a class for the look and feel is given.
 	 */
 	public SwtExampleApplication() {
 
@@ -166,11 +166,11 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.present(sharedViewSm2, SharedViewDemoView.ID);
 		sharedViewModule.addChild(sharedViewSm2);
 
-		// ui process demo
-		IModuleNode uiProcessModule = new ModuleNode("UI-Process");
+		// uiProcess demo
+		IModuleNode uiProcessModule = new ModuleNode("UIProcess"); //$NON-NLS-1$
 		moduleGroup.addChild(uiProcessModule);
 
-		ISubModuleNode uiPSubModule = new SubModuleNode("UI-Process");
+		ISubModuleNode uiPSubModule = new SubModuleNode("Demo"); //$NON-NLS-1$
 		presentation.registerView(UiProcessDemoView.ID, false);
 		presentation.present(uiPSubModule, UiProcessDemoView.ID);
 		uiProcessModule.addChild(uiPSubModule);
