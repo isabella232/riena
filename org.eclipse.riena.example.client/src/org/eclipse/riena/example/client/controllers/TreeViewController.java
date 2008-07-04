@@ -141,8 +141,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		buttonDelete.setText("&Delete");
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				// TODO [ev] xxx why not an interface?
-				// TODO [ev] xxx cleanup DefaultTreeNode; DefaultTreeModel?
 				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
 						.getValue();
 				if (node != null) {
