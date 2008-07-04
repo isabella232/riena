@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.UIProcessDemoController;
+import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 
 public class UiProcessDemoView extends SubModuleNodeView<UIProcessDemoController> {
 
@@ -26,30 +27,27 @@ public class UiProcessDemoView extends SubModuleNodeView<UIProcessDemoController
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		Button startUIProcess = new Button(parent, SWT.None);
+		parent.setLayout(new GridLayout(1, true));
+		Group group = createUIProcessGroup(parent);
+		GridDataFactory.fillDefaults().applyTo(group);
+
+	}
+
+	private Group createUIProcessGroup(Composite parent) {
+		Group group = UIControlsFactory.createGroup(parent, "&UIProcess visualization:"); //$NON-NLS-1$
+		group.setLayout(new GridLayout(1, true));
+
+		Button startUIProcess = UIControlsFactory.createButton(group);
+		int xHint = UIControlsFactory.getWidthHint(startUIProcess) + 10;
+		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startUIProcess);
 		addUIControl(startUIProcess, "actionRidget"); //$NON-NLS-1$
 
-		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		FormLayout layout = new FormLayout();
-		parent.setLayout(layout);
-
-		FormData fd = new FormData();
-		fd.height = 20;
-		fd.width = 90;
-		fd.top = new FormAttachment(0, 25);
-		fd.left = new FormAttachment(0, 15);
-		startUIProcess.setLayoutData(fd);
-
-		fd = new FormData();
-		fd.height = 20;
-		fd.width = 90;
-		fd.top = new FormAttachment(startUIProcess, 20);
-		fd.left = new FormAttachment(0, 15);
-
-		Button startJob = new Button(parent, SWT.None);
+		Button startJob = UIControlsFactory.createButton(group);
+		xHint = UIControlsFactory.getWidthHint(startJob);
+		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startJob);
 		addUIControl(startJob, "actionRidgetJob"); //$NON-NLS-1$
-		startJob.setLayoutData(fd);
 
+		return group;
 	}
 
 	@Override
