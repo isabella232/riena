@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -50,6 +52,23 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	@Override
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		SharedImages.initializeImageRegistry(reg);
+	}
+
+	/**
+	 * Return a "shared" image instance using the given colorKey. Shared images
+	 * are managed automatically and must not be disposed by client code.
+	 * 
+	 * @param imageKey
+	 *            a non-null String; see {@link SharedImages} for valid keys
+	 * @return a non-null Image instnace
+	 */
+	public static Image getSharedImage(final String imageKey) {
+		return getDefault().getImageRegistry().get(imageKey);
+	}
+
 	/**
 	 * Return a "shared" color instance using the given colorKey. Shared colors
 	 * are managed automatically and must not be disposed by client code.
@@ -58,7 +77,7 @@ public class Activator extends AbstractUIPlugin {
 	 *            a non-null String; see {@link SharedColors} for valid keys
 	 * @return a non-null Color instance
 	 */
-	public static Color getSharedColor(final String colorKey) {
+	public static Color getSharedColor(String colorKey) {
 		if (getDefault() == null) {
 			return null; // for unit testing only
 		}
