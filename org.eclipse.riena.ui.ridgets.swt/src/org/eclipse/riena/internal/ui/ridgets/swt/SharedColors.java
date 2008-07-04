@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Display;
  * Color color = Activator.getSharedColor(SharedColors.COLOR_MANDATORY);
  * control.setBackground(color);
  * </pre>
+ * 
+ * @see Activator
  */
 public final class SharedColors {
 
