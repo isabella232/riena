@@ -97,9 +97,9 @@ public class TreeViewController extends SubModuleNodeViewController {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		tree.bindToModel(createTreeModel());
 		tree.updateFromModel();
-		// TODO [ev] tree.setSelection(0);
 
 		buttonAddSibling.setText("Add &Sibling");
+		buttonAddSibling.setEnabled(false);
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
 				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
@@ -114,6 +114,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonAddChild.setText("Add &Child");
+		buttonAddChild.setEnabled(false);
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
 				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
@@ -125,6 +126,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonRename.setText("&Rename");
+		buttonRename.setEnabled(false);
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
 				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
@@ -139,6 +141,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonDelete.setText("&Delete");
+		buttonDelete.setEnabled(false);
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
 				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
