@@ -14,30 +14,46 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateListStrategy;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * TODO [ev] docs
+ * Ridget for SWT {@link Tree} widgets.
  */
 public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget {
 
+	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
 
+	private DataBindingContext dbc;
 	private TreeViewer viewer;
-	private IObservableTreeModel treeModel;
+	private IObservableTreeModel observableTreeModel;
 	private Collection<IActionListener> doubleClickListeners;
 
 	public TreeRidget() {
+		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
 	}
 
@@ -71,18 +87,46 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	@Override
 	public int indexOfOption(Object option) {
-		// TODO Auto-generated method stub
-		return -1;
+		int result = -1;
+		Tree control = getUIControl();
+		if (control != null) {
+			TreeItem[] items = control.getItems();
+			for (int i = 0; result == -1 && i < items.length; i++) {
+				TreeItem item = items[i];
+				// SWT impl detail; option is stored in item.getData();
+				Object data = item.getData();
+				if (data == option) {
+					result = control.indexOf(item);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
 	protected void bindUIControl() {
 		Tree control = getUIControl();
-		if (control != null && treeModel != null) {
+		if (control != null && observableTreeModel != null) {
 			viewer = new TreeViewer(control);
-			viewer.setLabelProvider(new LabelProvider());
+			viewer.setLabelProvider(new TreeNodeLabelProvider(viewer));
 			viewer.setContentProvider(new TreeModelContentProvider());
-			viewer.setInput(treeModel);
+			viewer.setInput(observableTreeModel);
+			control.addMouseListener(doubleClickForwarder);
+
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+
+			dbc = new DataBindingContext();
+			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
+			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+			IObservableList viewerSelections = new SelectionProviderMultipleSelectionObservableList(dbc
+					.getValidationRealm(), viewer, Object.class);
+			dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+
+			viewer.setSelection(currentSelection);
+
+			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
 		}
 	}
@@ -94,8 +138,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	@Override
 	protected void unbindUIControl() {
+		if (dbc != null) {
+			dbc.dispose();
+			dbc = null;
+		}
 		Tree control = getUIControl();
 		if (control != null) {
+			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
 		}
 		viewer = null;
@@ -116,7 +165,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	public void bindToModel(IObservableTreeModel observableTreeModel) {
 		unbindUIControl();
-		treeModel = observableTreeModel;
+		this.observableTreeModel = observableTreeModel;
 		bindUIControl();
 	}
 
@@ -157,8 +206,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	public IObservableTreeModel getRidgetObservable() {
-		// TODO Auto-generated method stub
-		return null;
+		return observableTreeModel;
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
@@ -169,6 +217,47 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	// helping classes
 	// ////////////////
+
+	/**
+	 * Disallows multiple selection is the selection type of the ridget is
+	 * {@link ISelectableRidget.SelectionType#SINGLE}.
+	 */
+	private final class SelectionTypeEnforcer extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if (SelectionType.SINGLE.equals(getSelectionType())) {
+				Tree control = (Tree) e.widget;
+				if (control.getSelectionCount() > 1) {
+					// ignore this event
+					e.doit = false;
+					// set selection to most recent item
+					TreeItem firstItem = findFirstItem(control);
+					control.setSelection(firstItem);
+					// fire event
+					Event event = new Event();
+					event.type = SWT.Selection;
+					event.doit = true;
+					control.notifyListeners(SWT.Selection, event);
+				}
+			}
+		}
+
+		private TreeItem findFirstItem(Tree control) {
+			TreeItem result = null;
+			int minIndex = Integer.MAX_VALUE;
+
+			TreeItem[] selectedItems = control.getSelection();
+			Assert.isLegal(selectedItems.length > 0);
+			for (TreeItem item : selectedItems) {
+				int index = control.indexOf(item);
+				if (index < minIndex) {
+					minIndex = index;
+					result = item;
+				}
+			}
+			return result;
+		}
+	}
 
 	/**
 	 * Notifies doubleClickListeners when the bound widget is double clicked.

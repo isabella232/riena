@@ -12,16 +12,23 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 import org.eclipse.riena.ui.ridgets.tree.ITreeModel;
+import org.eclipse.riena.ui.ridgets.tree.ITreeModelListener;
 import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
+import org.eclipse.riena.ui.ridgets.tree.TreeModelEvent;
 
 /**
  * TODO [ev] docs
  */
-public class TreeModelContentProvider implements ITreeContentProvider {
+final class TreeModelContentProvider implements ITreeContentProvider, ITreeModelListener {
 
-	// TODO [ev] support for IVisibleTreeNode
+	private StructuredViewer viewer;
+
+	// ITreeContentProvider methods
+	// /////////////////////////////
 
 	public Object[] getChildren(Object element) {
 		ITreeNode node = (ITreeNode) element;
@@ -46,6 +53,10 @@ public class TreeModelContentProvider implements ITreeContentProvider {
 	public Object[] getElements(Object inputElement) {
 		Assert.isLegal(inputElement instanceof ITreeModel);
 		ITreeModel model = (ITreeModel) inputElement;
+		if (model instanceof IObservableTreeModel) {
+			model.removeTreeModelListener(this);
+			model.addTreeModelListener(this);
+		}
 		return new Object[] { model.getRoot() };
 	}
 
@@ -54,8 +65,31 @@ public class TreeModelContentProvider implements ITreeContentProvider {
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-	    // TODO [ev] ex or use
-		System.out.println("TreeModelContentProvider.inputChanged()");
+		Assert.isLegal(viewer instanceof StructuredViewer);
+		this.viewer = (StructuredViewer) viewer;
+	}
+
+	// ITreeModelListener methods
+	// ///////////////////////////
+
+	public void treeNodesChanged(TreeModelEvent e) {
+		ITreeNode element = e.getNode();
+		viewer.update(element, null);
+	}
+
+	public void treeNodesInserted(TreeModelEvent e) {
+		ITreeNode element = e.getNode();
+		viewer.refresh(element, true);
+	}
+
+	public void treeNodesRemoved(TreeModelEvent e) {
+		ITreeNode element = e.getNode();
+		viewer.refresh(element, true);
+	}
+
+	public void treeStructureChanged(TreeModelEvent e) {
+		ITreeNode element = e.getNode();
+		viewer.refresh(element, true);
 	}
 
 }
