@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
-import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
@@ -48,34 +47,6 @@ abstract class DynamicTreeModificationProcess extends UIProcess {
 	DynamicTreeModificationProcess(final DynamicLoadTreeModel treeModel, final String name) {
 		// super constructor requires extension point
 		super(name);
-		this.treeModel = treeModel;
-	}
-
-	/**
-	 * Constructor. Uses the name of this class (not of its subclass).
-	 * 
-	 * @param treeModel
-	 *            The tree model.
-	 * @param syncher
-	 *            the class so synchronize UI events (different for STW/Swing)
-	 */
-	DynamicTreeModificationProcess(final DynamicLoadTreeModel treeModel, final IUISynchronizer syncher) {
-		this(treeModel, DynamicTreeModificationProcess.class.getSimpleName(), syncher);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param treeModel
-	 *            The tree model.
-	 * @param name
-	 *            the name of the process
-	 * @param syncher
-	 *            the class so synchronize UI events (different for STW/Swing)
-	 */
-	DynamicTreeModificationProcess(final DynamicLoadTreeModel treeModel, final String name,
-			final IUISynchronizer syncher) {
-		super(name, syncher);
 		this.treeModel = treeModel;
 	}
 

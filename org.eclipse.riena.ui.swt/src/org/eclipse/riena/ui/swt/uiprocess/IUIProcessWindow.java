@@ -8,9 +8,38 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.core.uiprocess;
+package org.eclipse.riena.ui.swt.uiprocess;
 
-public interface IUICallbackDispatcherFactory {
+import org.eclipse.swt.widgets.ProgressBar;
 
-	IProgressVisualizer getProgressVisualizer();
+/**
+ * 
+ */
+public interface IUIProcessWindow {
+
+	/**
+	 * opens the window
+	 */
+	void openWindow();
+
+	/**
+	 * closes the window
+	 */
+	void closeWindow();
+
+	/**
+	 * sets the desription of the uiProcess
+	 * 
+	 * @param description
+	 */
+	void setDescrition(String description);
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	void addProcessWindowListener(IProcessWindowListener listener);
+
+	ProgressBar getProgressBar();
+
 }

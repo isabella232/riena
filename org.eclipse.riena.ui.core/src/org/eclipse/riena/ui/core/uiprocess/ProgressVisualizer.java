@@ -28,9 +28,11 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	 */
 	public void finalUpdateUI() {
 		Collection<IProgressVisualizerObserver> currentObservers = new ArrayList<IProgressVisualizerObserver>(observers);
-		for (IProgressVisualizerObserver anObserver : currentObservers) {
-			anObserver.finalUpdateUI(this);
-			anObserver.removeProgressVisualizer(this);
+		if (currentObservers.size() > 0) {
+			for (IProgressVisualizerObserver anObserver : currentObservers) {
+				anObserver.finalUpdateUI(this);
+				anObserver.removeProgressVisualizer(this);
+			}
 		}
 	}
 
@@ -91,7 +93,9 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer#addObserver(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver)
+	 * @see
+	 * org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer#addObserver(org
+	 * .eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver)
 	 */
 	public void addObserver(IProgressVisualizerObserver anObserver) {
 		observers.add(anObserver);
@@ -128,7 +132,9 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUIMonitor#acceptState(org.eclipse.riena.ui.core.uiprocess.IUIMonitorContainer)
+	 * @see
+	 * org.eclipse.riena.ui.core.uiprocess.IUIMonitor#acceptState(org.eclipse
+	 * .riena.ui.core.uiprocess.IUIMonitorContainer)
 	 */
 	public boolean isActive(IUIMonitorContainer container) {
 		return container.isVisualizing();

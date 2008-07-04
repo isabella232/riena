@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree;
 
-import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
@@ -30,19 +29,6 @@ class ResetRootChildrenProcess extends DynamicTreeModificationProcess {
 	 */
 	ResetRootChildrenProcess(final DynamicLoadTreeModel treeModel) {
 		super(treeModel, ResetRootChildrenProcess.class.getSimpleName());
-		this.root = (DynamicTreeNode) treeModel.getRoot();
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param treeModel
-	 *            The tree model.
-	 * @param syncher
-	 *            the class so synchronize UI events (different for STW/Swing)
-	 */
-	ResetRootChildrenProcess(final DynamicLoadTreeModel treeModel, final IUISynchronizer syncher) {
-		super(treeModel, ResetRootChildrenProcess.class.getSimpleName(), syncher);
 		this.root = (DynamicTreeNode) treeModel.getRoot();
 	}
 

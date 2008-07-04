@@ -8,9 +8,33 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.core.uiprocess;
+package org.eclipse.riena.ui.swt.uiprocess;
 
-public interface IUICallbackDispatcherFactory {
+/**
+ * 
+ */
+public interface IProgressControl {
 
-	IProgressVisualizer getProgressVisualizer();
+	/**
+	 * start showing progress/process
+	 */
+	void start();
+
+	/**
+	 * stop showing progress/process
+	 */
+	void stop();
+
+	void showProcessing();
+
+	void showProgress(int value, int maxValue);
+
+	void setDescription(String text);
+
+	void setTitle(String text);
+
+	void addCancelListener(ICancelListener listener);
+
+	void removeCancelListener(ICancelListener listener);
+
 }

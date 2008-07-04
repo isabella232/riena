@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
 
@@ -53,31 +52,24 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	private ProgressProvider queryProgressProvider(Job job) {
 		UIProcess uiprocess = jobUiProcess.get(job);
-		if (uiprocess != null) {
-			return (ProgressProvider) uiprocess.getAdapter(UICallbackDispatcher.class);
+		if (uiprocess == null) {
+			uiprocess = createDefaultUIProcess(job);
 		}
+		UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
 		if (factoriesAvailable()) {
-			return buildDefaultDispatchingProvider(job);
+			// TODO is User?
+			dispatcher.addUIMonitor(currentUICallbackFactory.getProgressVisualizer());
 		}
-		return new DefaultProgressProvider();
+
+		return dispatcher;
 	}
 
-	private class DefaultProgressProvider extends ProgressProvider {
-
-		@Override
-		public IProgressMonitor createMonitor(Job job) {
-			return new NullProgressMonitor();
-		}
-
+	private UIProcess createDefaultUIProcess(Job job) {
+		return new UIProcess(job);
 	}
 
 	private boolean factoriesAvailable() {
 		return currentUICallbackFactory != null;
-	}
-
-	private ProgressProvider buildDefaultDispatchingProvider(final Job job) {
-		UIProcess p = new UIProcess(job, currentUICallbackFactory.createCallbackDispatcher());
-		return (ProgressProvider) p.getAdapter(UICallbackDispatcher.class);
 	}
 
 	public void registerMapping(Job job, UIProcess process) {

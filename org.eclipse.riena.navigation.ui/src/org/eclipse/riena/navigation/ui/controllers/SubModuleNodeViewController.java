@@ -19,7 +19,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
-import org.eclipse.riena.ui.core.uiprocess.IUIMonitorContainer;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -41,12 +40,19 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 
 	public SubModuleNodeViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
+
+		if (isActivated()) {
+			registerDispatcherBuilder();
+		}
+
 		getNavigationNode().addListener(new SubModuleNodeAdapter() {
 
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+			 * @see
+			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
+			 * (org.eclipse.riena.navigation.INavigationNode)
 			 */
 			@Override
 			public void labelChanged(ISubModuleNode subModuleNode) {
@@ -56,22 +62,35 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged(org.eclipse.riena.navigation.INavigationNode)
+			 * @see
+			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
+			 * (org.eclipse.riena.navigation.INavigationNode)
 			 */
 			@Override
 			public void iconChanged(ISubModuleNode source) {
 				updateIcon();
 			}
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated
+			 * (org.eclipse.riena.navigation.INavigationNode)
+			 */
+			@Override
+			public void activated(ISubModuleNode source) {
+				super.activated(source);
+				registerDispatcherBuilder();
+			}
 		});
 	}
 
-	protected IUIMonitorContainer createProgressProvider(IProgressVisualizer visualizer) {
-
-		// UICallbackDispatcher provider =
-		// providerFactory.createCallbackDispatcher();
-		UICallbackDispatcher provider = createCallbackDispatcher();
-		provider.addUIMonitor(visualizer);
-		return provider;
+	public UICallbackDispatcher createCallbackDispatcher() {
+		// UICallbackDispatcher dispatcher = new UICallbackDispatcher(n);
+		// dispatcher.addUIMonitor(getProgressVisualizer());
+		// return dispatcher;
+		return null;
 	}
 
 	/**
@@ -92,7 +111,9 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeViewController#afterBind()
+	 * @see
+	 * org.eclipse.riena.navigation.ui.controllers.NavigationNodeViewController
+	 * #afterBind()
 	 */
 	@Override
 	public void afterBind() {
@@ -145,20 +166,17 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 		updateIcon(windowRidget);
 	}
 
-	public UICallbackDispatcher createCallbackDispatcher() {
-		UICallbackDispatcher dispatcher = getCallbackDispatcherfactory().createCallbackDispatcher();
-		dispatcher.addUIMonitor(getProgressVisualizer());
-		return dispatcher;
-	}
-
 	public IProgressVisualizer getProgressVisualizer() {
 		INavigationNode<?> aNode = getSubApplication(getNavigationNode());
 		if (aNode != null) {
 			IProgressVisualizer aVisualizer = new ProgressVisualizer();
 			aVisualizer.addObserver(((SubApplicationViewController) aNode.getPresentation()).getProgressBoxRidget());
 			for (INavigationNode<?> aSubApplicationNode : getSubApplications()) {
-				aVisualizer.addObserver(((SubApplicationViewController) aSubApplicationNode.getPresentation())
-						.getStatusbarRidget().getStatusBarProcessRidget());
+				if (aSubApplicationNode.getPresentation() != null
+						&& ((SubApplicationViewController) aSubApplicationNode.getPresentation()).getStatusbarRidget() != null) {
+					aVisualizer.addObserver(((SubApplicationViewController) aSubApplicationNode.getPresentation())
+							.getStatusbarRidget().getStatusBarProcessRidget());
+				}
 			}
 			return aVisualizer;
 		}

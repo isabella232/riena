@@ -171,9 +171,9 @@ public class ValueBindingSupport implements IValidationCallback {
 				modelToUIControlStrategy.setConverter(modelToUIControlConverter);
 			}
 		}
-		if (modelBinding != null) {
-			modelBinding.dispose();
-		}
+		// if (modelBinding != null) {
+		// // modelBinding.dispose();
+		// }
 		modelBinding = getContext().bindValue(targetOV, modelOV, uiControlToModelStrategy, modelToUIControlStrategy);
 		AggregateValidationStatus validationStatus = new AggregateValidationStatus(getContext().getBindings(),
 				AggregateValidationStatus.MAX_SEVERITY);

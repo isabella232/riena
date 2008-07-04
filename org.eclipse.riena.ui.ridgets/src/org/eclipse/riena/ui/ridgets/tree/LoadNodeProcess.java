@@ -13,8 +13,6 @@ package org.eclipse.riena.ui.ridgets.tree;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
-
 /**
  * Loads the value of a node in a dynamic tree. A placeholder user element will
  * be replaced with the actual user element from the nodes parent child
@@ -36,20 +34,6 @@ class LoadNodeProcess extends DynamicTreeModificationProcess {
 	 */
 	LoadNodeProcess(final DynamicLoadTreeModel treeModel, final DynamicTreeNode node) {
 		super(treeModel, LoadNodeProcess.class.getSimpleName());
-		this.node = node;
-		parent = (DynamicTreeNode) node.getParent();
-	}
-
-	/**
-	 * Constructor requires extension point
-	 * 
-	 * @param treeModel
-	 *            The tree model.
-	 * @param node
-	 *            The node to load.
-	 */
-	LoadNodeProcess(final DynamicLoadTreeModel treeModel, final DynamicTreeNode node, final IUISynchronizer syncher) {
-		super(treeModel, LoadNodeProcess.class.getSimpleName(), syncher);
 		this.node = node;
 		parent = (DynamicTreeNode) node.getParent();
 	}

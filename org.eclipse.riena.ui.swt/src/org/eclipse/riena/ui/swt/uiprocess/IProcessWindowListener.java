@@ -8,9 +8,12 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.core.uiprocess;
+package org.eclipse.riena.ui.swt.uiprocess;
 
-public interface IUICallbackDispatcherFactory {
+/**
+ * 
+ */
+public interface IProcessWindowListener {
 
-	IProgressVisualizer getProgressVisualizer();
+	void windowAboutToClose();
 }

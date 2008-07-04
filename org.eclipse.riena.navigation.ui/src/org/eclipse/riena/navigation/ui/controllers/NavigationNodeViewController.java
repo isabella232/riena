@@ -30,7 +30,6 @@ import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
-import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -54,8 +53,8 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 * navigationNode. Register this controller as the presentation of the
 	 * Navigation node.
 	 * 
-	 * @param navigationNode -
-	 *            the node to work on
+	 * @param navigationNode
+	 *            - the node to work on
 	 */
 	public NavigationNodeViewController(N navigationNode) {
 
@@ -105,9 +104,6 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 */
 	public void afterBind() {
 		updateNavigationNodeMarkers();
-		if (getNavigationNode().isActivated()) {
-			registerDispatcherBuilder();
-		}
 	}
 
 	/**
@@ -222,7 +218,8 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+		 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+		 * PropertyChangeEvent)
 		 */
 		public void propertyChange(PropertyChangeEvent evt) {
 
@@ -230,31 +227,12 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherBuilder#buildCallbackDispatcher(boolean)
-	 */
-	public UICallbackDispatcher createCallbackDispatcher() {
-		UICallbackDispatcher dispatcher = getCallbackDispatcherfactory().createCallbackDispatcher();
-		dispatcher.addUIMonitor(getProgressVisualizer());
-		return dispatcher;
-	}
-
-	private void registerDispatcherBuilder() {
+	protected void registerDispatcherBuilder() {
 		ProgressProviderBridge.instance().setCurrentDistpatcherBuilder(this);
 	}
 
 	public IProgressVisualizer getProgressVisualizer() {
 		return new ProgressVisualizer();
-	}
-
-	protected IUICallbackDispatcherFactory getCallbackDispatcherfactory() {
-		return uiprocessCallBackDispatcherFactory;
-	}
-
-	public void setUICallbackDispatcherFactory(IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory) {
-		this.uiprocessCallBackDispatcherFactory = uiprocessCallBackDispatcherFactory;
 	}
 
 	/**

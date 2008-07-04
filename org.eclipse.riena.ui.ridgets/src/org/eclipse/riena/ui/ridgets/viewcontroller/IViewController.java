@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.viewcontroller;
 
-import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
@@ -24,8 +23,6 @@ public interface IViewController extends IRidgetContainer {
 	 * Invoked after the controller was bound to a view.
 	 */
 	void afterBind();
-
-	void setUICallbackDispatcherFactory(IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory);
 
 	/**
 	 * Blocks of unblocks the user input for the view to which this controller

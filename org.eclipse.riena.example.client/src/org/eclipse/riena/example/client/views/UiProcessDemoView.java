@@ -20,20 +20,15 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * 
- */
 public class UiProcessDemoView extends SubModuleNodeView<UIProcessDemoController> {
 
 	public final static String ID = "org.eclipse.riena.sample.app.client.uiprocessdemoview"; //$NON-NLS-1$
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		Button button = new Button(parent, SWT.None);
-		button.setText("Start UIProcess");
-		addUIControl(button, "actionRidget"); //$NON-NLS-1$
+		Button startUIProcess = new Button(parent, SWT.None);
+		addUIControl(startUIProcess, "actionRidget"); //$NON-NLS-1$
 
-		// layout
 		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		FormLayout layout = new FormLayout();
 		parent.setLayout(layout);
@@ -42,50 +37,20 @@ public class UiProcessDemoView extends SubModuleNodeView<UIProcessDemoController
 		fd.height = 20;
 		fd.width = 90;
 		fd.top = new FormAttachment(0, 25);
-		fd.left = new FormAttachment(0, 5);
-		button.setLayoutData(fd);
-	}
+		fd.left = new FormAttachment(0, 15);
+		startUIProcess.setLayoutData(fd);
 
-	// private static final class DialogProgressProvider extends
-	// SynchingProgressProvider {
-	//
-	// public DialogProgressProvider(IUISyncher syncher) {
-	// super(syncher);
-	// }
-	//
-	// @Override
-	// protected IProgressMonitor createWrappedMonitor(final Job job) {
-	// final IProgressMonitor[] monitor = new IProgressMonitor[] { new
-	// NullProgressMonitor() };
-	//
-	// getSyncher().synch(new Runnable() {
-	//
-	// public void run() {
-	// final ProgressMonitorDialog dialog = new
-	// ProgressMonitorJobsDialog(Display.getDefault()
-	// .getActiveShell());
-	// dialog.setBlockOnOpen(false);
-	// dialog.setCancelable(true);
-	// dialog.open();
-	// job.addJobChangeListener(new JobChangeAdapter() {
-	//
-	// @Override
-	// public void done(IJobChangeEvent event) {
-	// getSyncher().synch(new Runnable() {
-	//
-	// public void run() {
-	// dialog.close();
-	// }
-	// });
-	// }
-	// });
-	// monitor[0] = dialog.getProgressMonitor();
-	// }
-	// });
-	// return monitor[0];
-	// }
-	//
-	// }
+		fd = new FormData();
+		fd.height = 20;
+		fd.width = 90;
+		fd.top = new FormAttachment(startUIProcess, 20);
+		fd.left = new FormAttachment(0, 15);
+
+		Button startJob = new Button(parent, SWT.None);
+		addUIControl(startJob, "actionRidgetJob"); //$NON-NLS-1$
+		startJob.setLayoutData(fd);
+
+	}
 
 	@Override
 	protected UIProcessDemoController createController(ISubModuleNode subModuleNode) {

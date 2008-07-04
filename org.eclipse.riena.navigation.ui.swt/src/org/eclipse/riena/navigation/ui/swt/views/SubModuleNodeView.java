@@ -24,13 +24,9 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
-import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
-import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
 
@@ -56,8 +52,8 @@ public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> e
 	/**
 	 * Adds the given control to the list of the controls that will be binded.
 	 * 
-	 * @param uiControl -
-	 *            control to bind
+	 * @param uiControl
+	 *            - control to bind
 	 */
 	protected void addUIControl(Widget uiControl) {
 		uiControls.add(uiControl);
@@ -66,10 +62,10 @@ public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> e
 	/**
 	 * Adds the given control to the list of the controls that will be binded.
 	 * 
-	 * @param uiControl -
-	 *            control to bind
-	 * @param propertyName -
-	 *            name of the property...
+	 * @param uiControl
+	 *            - control to bind
+	 * @param propertyName
+	 *            - name of the property...
 	 */
 	protected void addUIControl(Widget uiControl, String propertyName) {
 		uiControl.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, propertyName);
@@ -79,8 +75,8 @@ public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> e
 	/**
 	 * Find the navigation node corresponding to the passed id
 	 * 
-	 * @param pId -
-	 *            the id to the node
+	 * @param pId
+	 *            - the id to the node
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(String pId, String pSecondary) {
@@ -165,29 +161,14 @@ public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> e
 			}
 			bindingManager.bind(getController(), uiControls);
 			currentController = getController();
-			currentController.setUICallbackDispatcherFactory(new IUICallbackDispatcherFactory() {
-
-				public UICallbackDispatcher createCallbackDispatcher() {
-
-					return new UICallbackDispatcher(new IUISynchronizer() {
-
-						public void synchronize(Runnable runnable) {
-							Display.getCurrent().syncExec(runnable);
-						}
-
-					}) {
-
-					};
-				}
-
-			});
 			getController().afterBind();
 		}
 	}
 
 	protected void createViewFacade() {
-		setController(createController(getCurrentNode()));
+		if (!node2Controler.containsKey(getCurrentNode())) {
+			setController(createController(getCurrentNode()));
+		}
 		bindingManager.injectRidgets(getController(), uiControls);
 	}
-
 }

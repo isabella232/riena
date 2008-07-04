@@ -10,32 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-
 /**
- * 
+ *
  */
-public abstract class SwtUIProcess extends UIProcess {
+public interface ICancelListener {
 
-	public SwtUIProcess(String name) {
-		super(name, new DialogProgressProvider(new SwtUISynchronizer()));
-	}
-
-	@Override
-	public void finalUpdateUI() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void initialUpdateUI() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateProgress(int progress) {
-		// TODO Auto-generated method stub
-
-	}
+	void canceled();
 
 }

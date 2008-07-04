@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.obsolete.ITreeAdapter;
 
@@ -50,28 +49,6 @@ class ExpansionRetainingDynamicTreeModificationProcess extends DynamicTreeModifi
 	ExpansionRetainingDynamicTreeModificationProcess(final DynamicLoadTreeModel treeModel, final Runnable action,
 			final ITreeAdapter tree) {
 		super(treeModel, ExpansionRetainingDynamicTreeModificationProcess.class.getSimpleName());
-
-		this.action = action;
-		this.tree = tree;
-		subModificationProcesses = new ArrayList<LoadNodeByValueSubProcess>(2);
-		root = ((DynamicTreeNode) getTreeModel().getRoot());
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param treeModel
-	 *            The tree model.
-	 * @param action
-	 *            The action changing the underlying model.
-	 * @param tree
-	 *            The tree.
-	 * @param syncher
-	 *            the class so synchronize UI events (different for STW/Swing)
-	 */
-	ExpansionRetainingDynamicTreeModificationProcess(final DynamicLoadTreeModel treeModel, final Runnable action,
-			final ITreeAdapter tree, final IUISynchronizer syncher) {
-		super(treeModel, ExpansionRetainingDynamicTreeModificationProcess.class.getSimpleName(), syncher);
 
 		this.action = action;
 		this.tree = tree;

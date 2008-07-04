@@ -41,14 +41,16 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * Creates a new UIProcess. This constructor assumes the plug-in defines
 	 * exactly one extension point to this class like this:
 	 * 
-	 * <pre><code>
+	 * <pre>
+	 * &lt;code&gt;
 	 * &lt;extension point=&quot;org.riena.ui.core.uiprocess&quot;&gt;
 	 *  &lt;uisynchronizer class=&quot;org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer&quot;/&gt;
 	 * &lt;/extension&gt;
-	 * </pre></code></dd>
-	 * In case multiple extension points exist, which define an implementation
-	 * class for the UIprocesses UIsynchronizer, there is no guarantee which one
-	 * will be used. <br>
+	 * </pre>
+	 * 
+	 * </code></dd> In case multiple extension points exist, which define an
+	 * implementation class for the UIprocesses UIsynchronizer, there is no
+	 * guarantee which one will be used. <br>
 	 * <br>
 	 * 
 	 * @param name
@@ -60,7 +62,11 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * 
 	 */
 	public UIProcess(final String name) {
-		this(name, getSynchronizerFromExtensionPoint());
+		this(name, false);
+	}
+
+	public UIProcess(final String name, boolean user) {
+		this(name, getSynchronizerFromExtensionPoint(), user);
 	}
 
 	private static IUISynchronizer getSynchronizerFromExtensionPoint() {
@@ -89,27 +95,24 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	}
 
-	public UIProcess(String name, IUISynchronizer syncher) {
-		this(name, syncher, true);
-	}
-
 	public UIProcess(String name, IUISynchronizer syncher, boolean user) {
 		this(name, new UICallbackDispatcher(syncher), user);
-	}
-
-	public UIProcess(String name, UICallbackDispatcher dispatcher) {
-		this(name, dispatcher, true);
-	}
-
-	public UIProcess(final Job job, UICallbackDispatcher dispatcher) {
-		this.job = job;
-		this.callbackDispatcher = dispatcher;
-		configure();
 	}
 
 	public UIProcess(String name, UICallbackDispatcher dispatcher, boolean user) {
 		this.callbackDispatcher = dispatcher;
 		createJob(name, user);
+		configure();
+	}
+
+	public UIProcess(final Job job) {
+		this.callbackDispatcher = new UICallbackDispatcher(getSynchronizerFromExtensionPoint());
+		this.job = job;
+		configure();
+	}
+
+	public void setCallbackDispatcher(UICallbackDispatcher callbackDispatcher) {
+		this.callbackDispatcher = callbackDispatcher;
 		configure();
 	}
 
@@ -119,21 +122,23 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	private void configureProcessInfo() {
-		ProcessInfo processInfo = callbackDispatcher.getProcessInfo();
-		processInfo.addPropertyChangeListener(new PropertyChangeListener() {
+		if (callbackDispatcher != null) {
+			ProcessInfo processInfo = callbackDispatcher.getProcessInfo();
+			processInfo.addPropertyChangeListener(new PropertyChangeListener() {
 
-			public void propertyChange(PropertyChangeEvent event) {
-				if (ProcessInfo.PROPERTY_CANCELED.equals(event.getPropertyName())) {
-					job.cancel();
+				public void propertyChange(PropertyChangeEvent event) {
+					if (ProcessInfo.PROPERTY_CANCELED.equals(event.getPropertyName())) {
+						job.cancel();
+					}
 				}
+			});
+			processInfo.setDialogVisible(job.isUser());
+			if (job.isUser()) {
+				processInfo.setStyle(ProcessInfo.STYLE_DIALOG);
 			}
-		});
-		processInfo.setDialogVisible(job.isUser());
-		if (job.isUser()) {
-			processInfo.setStyle(ProcessInfo.STYLE_DIALOG);
+			processInfo.setNote(job.getName());
+			processInfo.setTitle(job.getName());
 		}
-		processInfo.setNote(job.getName());
-		processInfo.setTitle(job.getName());
 	}
 
 	private void createJob(String name, boolean user) {
@@ -149,10 +154,16 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+			monitor.beginTask(getName(), getTotalWork());
 			boolean state = runJob(monitor);
 			monitor.done();
 			return state ? Status.OK_STATUS : Status.CANCEL_STATUS;
 		}
+
+	}
+
+	protected int getTotalWork() {
+		return 0;
 	}
 
 	private void register() {
