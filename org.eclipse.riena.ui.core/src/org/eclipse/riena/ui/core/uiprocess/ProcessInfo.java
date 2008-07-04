@@ -17,11 +17,8 @@ public class ProcessInfo {
 	public static final String PROPERTY_TITLE = "title"; //$NON-NLS-1$
 	public static final String PROPERTY_ICON = "icon"; //$NON-NLS-1$
 	public static final String PROPERTY_NOTE = "note"; //$NON-NLS-1$
-	public static final String PROPERTY_CANCELABLE = "cancelable"; //$NON-NLS-1$
 	public static final String PROPERTY_MAX_PROGRESS = "maxProgress"; //$NON-NLS-1$
 	public static final String PROPERTY_ACTUAL_PROGRESS = "actualProgress"; //$NON-NLS-1$
-	public static final String PROPERTY_STYLE = "style"; //$NON-NLS-1$
-	public static final String PROPERTY_CANCEL_VISIBLE = "cancelVisible"; //$NON-NLS-1$
 	public static final String PROPERTY_CANCELED = "cancel"; //$NON-NLS-1$
 	public static final String DIALOG_VISIBLE = "dialog.visible"; //$NON-NLS-1$
 
@@ -35,11 +32,8 @@ public class ProcessInfo {
 	private String title;
 	private String icon;
 	private String note;
-	private boolean cancelable = true;
-	private boolean cancelVisible = true;
 	private int maxProgress = 0;
 	private int actualProgress = 0;
-	private boolean canceled;
 	private boolean dialogVisible = true;
 	private Style style = STYLE_PLAIN;
 	private PropertyChangeSupport ppSupport;
@@ -105,23 +99,6 @@ public class ProcessInfo {
 	}
 
 	/**
-	 * @return the cancelable
-	 */
-	public boolean isCancelable() {
-		return cancelable;
-	}
-
-	/**
-	 * @param cancelable
-	 *            the cancelable to set
-	 */
-	public void setCancelable(boolean cancelable) {
-		boolean old = this.cancelable;
-		this.cancelable = cancelable;
-		ppSupport.firePropertyChange(PROPERTY_CANCELABLE, old, cancelable);
-	}
-
-	/**
 	 * @return the maxProgress
 	 */
 	public int getMaxProgress() {
@@ -162,48 +139,8 @@ public class ProcessInfo {
 		return style;
 	}
 
-	/**
-	 * @param style
-	 *            the style to set
-	 */
-	public void setStyle(Style style) {
-		Style old = this.style;
-		this.style = style;
-		ppSupport.firePropertyChange(PROPERTY_STYLE, old, style);
-	}
-
-	/**
-	 * @return the cancelVisible
-	 */
-	public boolean isCancelVisible() {
-		return cancelVisible;
-	}
-
-	/**
-	 * @param cancelVisible
-	 *            the cancelVisible to set
-	 */
-	public void setCancelVisible(boolean cancelVisible) {
-		boolean old = this.cancelVisible;
-		this.cancelVisible = cancelVisible;
-		ppSupport.firePropertyChange(PROPERTY_CANCEL_VISIBLE, old, cancelVisible);
-	}
-
 	public void cancel() {
-		this.canceled = true;
 		ppSupport.firePropertyChange(PROPERTY_CANCELED, false, true);
-	}
-
-	/**
-	 * @param dialogStyle
-	 */
-	public void showDialogStyle(boolean dialogStyle) {
-		if (dialogStyle) {
-			setStyle(ProcessInfo.STYLE_DIALOG);
-		} else {
-			setStyle(ProcessInfo.STYLE_PLAIN);
-		}
-
 	}
 
 	public void setDialogVisible(boolean visible) {

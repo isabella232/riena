@@ -111,11 +111,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		configure();
 	}
 
-	public void setCallbackDispatcher(UICallbackDispatcher callbackDispatcher) {
-		this.callbackDispatcher = callbackDispatcher;
-		configure();
-	}
-
 	private void configure() {
 		register();
 		configureProcessInfo();
@@ -133,9 +128,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 				}
 			});
 			processInfo.setDialogVisible(job.isUser());
-			if (job.isUser()) {
-				processInfo.setStyle(ProcessInfo.STYLE_DIALOG);
-			}
 			processInfo.setNote(job.getName());
 			processInfo.setTitle(job.getName());
 		}
@@ -222,35 +214,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		getProcessInfo().setTitle(title);
 	}
 
-	/**
-	 * @param icon
-	 *            the icon to set
-	 */
 	public void setIcon(String icon) {
 		getProcessInfo().setIcon(icon);
-	}
-
-	/**
-	 * @param cancelable
-	 */
-	public void setCancelable(boolean cancelable) {
-		getProcessInfo().setCancelable(cancelable);
-	}
-
-	/**
-	 * @param style
-	 *            the style to set
-	 */
-	public void showDialogStyle(boolean dialogStyle) {
-		getProcessInfo().showDialogStyle(dialogStyle);
-	}
-
-	/**
-	 * @param cancelVisible
-	 *            the cancelVisible to set
-	 */
-	public void setCancelVisible(boolean cancelVisible) {
-		getProcessInfo().setCancelVisible(cancelVisible);
 	}
 
 	/**
@@ -262,10 +227,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	public boolean isActive(IUIMonitorContainer container) {
 		return true;
-	}
-
-	public void setDialogBoxVisible(boolean visible) {
-		getProcessInfo().setDialogVisible(visible);
 	}
 
 }
