@@ -91,7 +91,7 @@ public class UIProcessDemoController extends SubModuleNodeViewController {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					setTitle("sample uiProcess " + i); //$NON-NLS-1$
+					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$
 					monitor.worked(i);
 				}
 				return true;
