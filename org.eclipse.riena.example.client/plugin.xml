@@ -199,12 +199,31 @@
                mnemonic="x">
             <command
                   commandId="org.eclipse.riena.example.client.certainViewCommand"
-                  hoverIcon="icons/ledlightgreen.png"
-                  icon="icons/ledred.png"
+                  hoverIcon="icons/ledred.png"
+                  icon="icons/ledlightgreen.png"
                   id="org.eclipse.riena.example.client.certainViewMenuItem"
                   mnemonic="V">
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="org.eclipse.riena.example.client.toolbar">
+            <command
+                  commandId="org.eclipse.riena.example.client.exitCommand"
+                  id="org.eclipse.riena.example.client.exitToolBarItem"
+                  label="Exit"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.certainViewCommand"
+                  hoverIcon="icons/ledred.png"
+                  icon="icons/ledlightgreen.png"
+                  id="org.eclipse.riena.example.client.certainViewToolBarItem"
+                  style="push">
+            </command>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension

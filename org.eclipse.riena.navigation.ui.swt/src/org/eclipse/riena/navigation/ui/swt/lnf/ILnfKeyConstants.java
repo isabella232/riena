@@ -26,6 +26,8 @@ public class ILnfKeyConstants {
 	public static final String TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR = "TitlelessShell.innerBorderBottomRightColor"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR = "TitlelessShell.innerBorderTopLeftColor"; //$NON-NLS-1$
 
+	public static final String COOLBAR_BACKGROUND = "Coolbar.background"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = "SubApplicationSwitcher.foreground"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BACKGROUND = "SubApplicationSwitcher.background"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR = "SubApplicationSwitcher.borderBottomLeftColor"; //$NON-NLS-1$

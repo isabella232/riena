@@ -40,6 +40,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -70,6 +71,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * The default and the minimum size of the application.
 	 */
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
+	private static final int COOLBAR_HIGHT = 22;
+	private static final int COOLBAR_TOP_MARGIN = 2;
 	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
 
 	enum BtnState {
@@ -173,12 +176,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			shell.setMenuBar(menuBar);
 		}
 
-		getWindowConfigurer().createCoolBarControl(shell); // ist noch
-		// nicht zu
-		// sehen.
-
-		FormLayout layout = new FormLayout();
-		shell.setLayout(layout);
+		shell.setLayout(new FormLayout());
 
 		// composites for logo
 		createLogoComposite(shell);
@@ -187,6 +185,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int padding = borderRenderer.getCompelteBorderWidth();
 
+		// switcher
 		switcherComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
 		switcherComposite.setLayout(new FillLayout());
 		FormData switcherData = new FormData();
@@ -199,11 +198,24 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(model);
 		switcherViewPart.createPartControl(switcherComposite);
 
+		// cool bar
+		Composite coolBarComposite = new Composite(shell, SWT.NONE);
+		Color coolBarColor = LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
+		coolBarComposite.setBackground(coolBarColor);
+		coolBarComposite.setLayout(new FillLayout());
+		FormData coolBarData = new FormData();
+		coolBarData.top = new FormAttachment(switcherComposite, COOLBAR_TOP_MARGIN);
+		coolBarData.left = new FormAttachment(0, padding);
+		coolBarData.right = new FormAttachment(100, -padding);
+		coolBarData.height = COOLBAR_HIGHT;
+		coolBarComposite.setLayoutData(coolBarData);
+		getWindowConfigurer().createCoolBarControl(coolBarComposite);
+
 		// parent of page composite
 		Composite mainComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
 		mainComposite.setLayout(new FillLayout());
 		FormData mainData = new FormData();
-		mainData.top = new FormAttachment(switcherComposite, 0, 0);
+		mainData.top = new FormAttachment(coolBarComposite, 0, 0);
 		mainData.bottom = new FormAttachment(100, -padding);
 		mainData.left = new FormAttachment(0, padding);
 		mainData.right = new FormAttachment(100, -padding);
