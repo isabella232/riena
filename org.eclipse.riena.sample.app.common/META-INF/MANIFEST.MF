@@ -9,3 +9,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: false
 Export-Package: org.eclipse.riena.sample.app.common.model
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

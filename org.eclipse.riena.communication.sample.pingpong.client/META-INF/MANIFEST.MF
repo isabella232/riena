@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.M3
 Bundle-Activator: org.eclipse.riena.internal.communication.sample.pingpong.client.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
 Require-Bundle: org.eclipse.riena.communication.sample.pingpong.common
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

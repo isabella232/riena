@@ -15,3 +15,4 @@ Export-Package: org.eclipse.riena.internal.objecttransaction.impl;x-friends:="or
  org.eclipse.riena.objecttransaction.context,
  org.eclipse.riena.objecttransaction.delta,
  org.eclipse.riena.objecttransaction.state
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

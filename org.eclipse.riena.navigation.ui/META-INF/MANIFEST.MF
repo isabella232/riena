@@ -13,3 +13,4 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.riena.navigation.ui.application,
  org.eclipse.riena.navigation.ui.controllers,
  org.eclipse.riena.navigation.ui.ridgets
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

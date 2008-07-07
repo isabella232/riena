@@ -14,3 +14,4 @@ Export-Package: org.eclipse.riena.ui.core.marker,
  org.eclipse.riena.ui.core.uiprocess,
  org.eclipse.riena.ui.core.util
 Import-Package: org.osgi.service.log;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -20,3 +20,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.swt
 Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
