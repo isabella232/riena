@@ -83,7 +83,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		getNavigationTree().addListener(navigationTreeRidgetListener);
 	}
 
-	private class NavigationTreeRidgetListener extends NavigationTreeRidgetAdapter {
+	private static class NavigationTreeRidgetListener extends NavigationTreeRidgetAdapter {
 
 		/**
 		 * @see org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter#nodeSelected(org.eclipse.riena.navigation.INavigationNode)
@@ -125,7 +125,9 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see
+		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated
+		 * (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDeactivated(ISubApplication source) {
@@ -141,8 +143,11 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see
+		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated
+		 * (org.eclipse.riena.navigation.INavigationNode)
 		 */
+		@Override
 		public void afterActivated(ISubApplication source) {
 			if (getProgressBoxRidget() != null) {
 				getProgressBoxRidget().activate();

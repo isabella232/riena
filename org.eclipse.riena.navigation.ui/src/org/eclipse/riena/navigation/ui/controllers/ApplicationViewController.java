@@ -34,7 +34,9 @@ public class ApplicationViewController extends NavigationNodeViewController<IApp
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+			 * @see
+			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
+			 * (org.eclipse.riena.navigation.INavigationNode)
 			 */
 			@Override
 			public void labelChanged(IApplicationModel source) {
@@ -44,7 +46,9 @@ public class ApplicationViewController extends NavigationNodeViewController<IApp
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged(org.eclipse.riena.navigation.INavigationNode)
+			 * @see
+			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
+			 * (org.eclipse.riena.navigation.INavigationNode)
 			 */
 			@Override
 			public void iconChanged(IApplicationModel source) {
@@ -69,8 +73,7 @@ public class ApplicationViewController extends NavigationNodeViewController<IApp
 		}
 	}
 
-	private class FrameListener implements IWindowRidgetListener {
-
+	private static class FrameListener implements IWindowRidgetListener {
 		public void closed() {
 		}
 	}
@@ -85,6 +88,7 @@ public class ApplicationViewController extends NavigationNodeViewController<IApp
 	/**
 	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeViewController#afterBind()
 	 */
+	@Override
 	public void afterBind() {
 		super.afterBind();
 		getNavigationNode().activate();

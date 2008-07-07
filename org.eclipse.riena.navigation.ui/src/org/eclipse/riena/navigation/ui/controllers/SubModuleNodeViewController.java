@@ -18,7 +18,6 @@ import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
-import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -35,8 +34,6 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
 
 	private IWindowRidget windowRidget;
-
-	private IUICallbackDispatcherFactory providerFactory;
 
 	public SubModuleNodeViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -166,6 +163,7 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 		updateIcon(windowRidget);
 	}
 
+	@Override
 	public IProgressVisualizer getProgressVisualizer() {
 		INavigationNode<?> aNode = getSubApplication(getNavigationNode());
 		if (aNode != null) {

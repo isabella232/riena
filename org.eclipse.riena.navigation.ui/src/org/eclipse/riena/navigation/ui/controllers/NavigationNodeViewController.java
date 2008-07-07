@@ -46,7 +46,6 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
 	private PropertyChangeListener propertyChangeListener;
-	private IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory;
 
 	/**
 	 * Create a new Navigation Node view Controller on the specified
@@ -254,9 +253,9 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 * @param blocked
 	 *            the blocked state
 	 */
-	public void blockRidgets(Collection ridgets, boolean blocked) {
-		for (Iterator iterator = ridgets.iterator(); iterator.hasNext();) {
-			IRidget object = (IRidget) iterator.next();
+	public void blockRidgets(Collection<? extends IRidget> ridgets, boolean blocked) {
+		for (Iterator<? extends IRidget> iterator = ridgets.iterator(); iterator.hasNext();) {
+			IRidget object = iterator.next();
 			object.setBlocked(blocked);
 			if (object instanceof IRidgetContainer) {
 				blockRidgets(((IRidgetContainer) object).getRidgets(), blocked);

@@ -38,14 +38,14 @@ public class SwtViewIdTest extends TestCase {
 		assertEquals("b", viewId.getSecondary());
 
 		try {
-			viewId = new SwtViewId("ab");
+			new SwtViewId("ab");
 			fail("Eexception expected");
 		} catch (RuntimeException e) {
 			// expected
 		}
 
 		try {
-			viewId = new SwtViewId(null);
+			new SwtViewId(null);
 			fail("Eexception expected");
 		} catch (RuntimeException e) {
 			// expected
