@@ -211,7 +211,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
 
-		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 30);
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 20);
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, false);
 

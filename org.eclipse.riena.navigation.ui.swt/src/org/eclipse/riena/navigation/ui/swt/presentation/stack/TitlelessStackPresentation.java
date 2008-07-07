@@ -17,7 +17,6 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationTabRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -29,7 +28,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.internal.presentations.PresentablePart;
 import org.eclipse.ui.presentations.IPresentablePart;
 import org.eclipse.ui.presentations.IStackPresentationSite;
@@ -40,15 +38,15 @@ import org.eclipse.ui.presentations.StackPresentation;
  * <pre>
  * +-----------------------------------------------------------------+
  * |                                                                 |
- * |               *1 +---------+---------+                          |
+ * |                  +---------+---------+                          |
  * |                  | SubApp1 | SubApp2 |                          |
  * +-----------------------------------------------------------------+
- * | *2           *3                                                 |
+ * | *1           *2                                                 |
  * | +---------+  +------------------------------------------------+ |
  * | | Module1 |  | Module1 - Sub1                                 | |
  * | +---------+  +------------------------------------------------+ |
  * | | o Sub1  |  |                                                | |
- * | | o Sub2  |  | *4                                             | |
+ * | | o Sub2  |  | *3                                             | |
  * | +---------+  |                                                | |
  * | | Module2 |  |                                                | |
  * | +---------+  |                                                | |
@@ -60,10 +58,9 @@ import org.eclipse.ui.presentations.StackPresentation;
  * |              +------------------------------------------------+ |
  * +-----------------------------------------------------------------+
  * 
- * legend: *1 - sub-application switcher
- *         *2 - navigation
- *         *3 - sub-module view (with title bar and border)
- *         *4 - content area of the sub-module view
+ * legend: *1 - navigation
+ *         *2 - sub-module view (with title bar and border)
+ *         *3 - content area of the sub-module view
  * </pre>
  */
 public class TitlelessStackPresentation extends StackPresentation {
@@ -92,23 +89,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Gap between navigation and sub-module view
 	 */
 	private static final int NAVIGATION_SUB_MODULE_GAP = 10;
-	/**
-	 * Height of the sub-application switcher
-	 */
-	private static final int SUB_APPLICATION_SWITCHER_HEIGHT = 65;
 
 	/**
 	 * Property to distinguish the view of the navigation.
 	 */
 	public static final String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
-	/**
-	 * Property to distinguish the view of the sub-application switcher.
-	 */
-	public static final String PROPERTY_SUB_APPLICATION_SWITCHER = "subApplicationSwitcher"; //$NON-NLS-1$
 
 	private Control current;
 	private Control navigation;
-	private Control subApplicationSwitcher;
 	private Composite parent;
 	private SubModuleViewRenderer renderer;
 
@@ -216,9 +204,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (toSelect.getPartProperty(PROPERTY_NAVIGATION) != null) {
 			// show navigation tree
 			navigation = toSelect.getControl();
-		} else if (toSelect.getPartProperty(PROPERTY_SUB_APPLICATION_SWITCHER) != null) {
-			// show applications
-			subApplicationSwitcher = toSelect.getControl();
 		} else {
 			if (!isCurrentDisposed()) {
 				current.setVisible(false);
@@ -256,9 +241,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (navigation != null) {
 			updateControl(navigation, calcNavigationBounds());
 		}
-		if (subApplicationSwitcher != null) {
-			updateControl(subApplicationSwitcher, calcSubApplicationSwitcherBounds());
-		}
 
 	}
 
@@ -291,50 +273,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 		GC gc = new GC(parent);
 		Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 		gc.dispose();
-		int tabHeight = calcTabHeight();
 
 		int x = PADDING_LEFT;
-		int y = tabHeight + PADDING_TOP;
+		int y = PADDING_TOP;
 		int width = size.x;
-		int height = parent.getBounds().height - tabHeight - PADDING_BOTTOM - PADDING_TOP;
-
-		return new Rectangle(x, y, width, height);
-
-	}
-
-	/**
-	 * Returns the height of a tab.
-	 * 
-	 * @return tab height.
-	 */
-	public static int calcTabHeight() {
-
-		GC gc = new GC(Display.getCurrent());
-
-		// Get the renderer of tab
-		SubApplicationTabRenderer renderer = (SubApplicationTabRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER);
-
-		renderer.setActivated(true);
-		int tabHeight = renderer.computeSize(gc, null).y;
-		tabHeight += SubApplicationTabRenderer.ACTIVE_Y_OFFSET;
-		gc.dispose();
-
-		return tabHeight;
-
-	}
-
-	/**
-	 * Calculates the bounds of the switcher of the sub-applications.
-	 * 
-	 * @return bounds of switcher of sub-applications
-	 */
-	private Rectangle calcSubApplicationSwitcherBounds() {
-
-		int x = 0;
-		int y = 0;
-		int width = parent.getBounds().width;
-		int height = calcTabHeight();
+		int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP;
 
 		return new Rectangle(x, y, width, height);
 
@@ -366,9 +309,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (navigation != null) {
 			navigation.setVisible(false);
 		}
-		if (subApplicationSwitcher != null) {
-			subApplicationSwitcher.setVisible(false);
-		}
+		// if (subApplicationSwitcher != null) {
+		// subApplicationSwitcher.setVisible(false);
+		// }
 		parent.setVisible(false);
 
 	}
@@ -376,10 +319,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Updates the bounds of the given control.<br>
 	 * 
-	 * @param ctrl -
-	 *            control
-	 * @param bounds -
-	 *            new bounds
+	 * @param ctrl
+	 *            - control
+	 * @param bounds
+	 *            - new bounds
 	 */
 	private void updateControl(Control ctrl, Rectangle bounds) {
 

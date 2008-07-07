@@ -107,17 +107,12 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		private void checkBaseStructure() {
 			if (!navigationUp) {
 				createNavigation();
-				createApplications();
 				navigationUp = true;
 			}
 		}
 
 		protected String createNextId() {
 			return String.valueOf(System.currentTimeMillis());
-		}
-
-		private void createApplications() {
-			showView(SubApplicationSwitcherViewPart.ID, createNextId());
 		}
 
 		private void createNavigation() {

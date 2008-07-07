@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
+import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
 import org.eclipse.riena.navigation.model.SubApplicationAdapter;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
@@ -26,7 +27,6 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.swt.SWT;
@@ -83,6 +83,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private Cursor handCursor;
 	private Cursor grabCursor;
 	private Cursor defaultCursor;
+	private Composite switcherComposite;
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationViewController pController) {
 		super(configurer);
@@ -139,8 +140,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Disposes the given resource, if the the resource is not null and isn't
 	 * already disposed.
 	 * 
-	 * @param resource -
-	 *            resouce to dispose
+	 * @param resource
+	 *            - resouce to dispose
 	 */
 	private void disposeResource(Resource resource) {
 		if ((resource != null) && (!resource.isDisposed())) {
@@ -182,14 +183,27 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// composites for logo
 		createLogoComposite(shell);
 
-		// parent of page composite
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int padding = borderRenderer.getCompelteBorderWidth();
+
+		switcherComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
+		switcherComposite.setLayout(new FillLayout());
+		FormData switcherData = new FormData();
+		switcherData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
+		switcherData.left = new FormAttachment(0, padding);
+		switcherData.right = new FormAttachment(100, -padding);
+		switcherData.height = getSwitchterHeight();
+		switcherComposite.setLayoutData(switcherData);
+		ApplicationModel model = (ApplicationModel) controller.getNavigationNode();
+		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(model);
+		switcherViewPart.createPartControl(switcherComposite);
+
+		// parent of page composite
 		Composite mainComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
 		mainComposite.setLayout(new FillLayout());
 		FormData mainData = new FormData();
-		mainData.top = new FormAttachment(0, getTopMargin());
+		mainData.top = new FormAttachment(switcherComposite, 0, 0);
 		mainData.bottom = new FormAttachment(100, -padding);
 		mainData.left = new FormAttachment(0, padding);
 		mainData.right = new FormAttachment(100, -padding);
@@ -216,7 +230,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		//
 		// Composite c_base = new Composite(shell, SWT.NONE);
 		// c_base.setLayoutData(f);
-		// c_base.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		//c_base.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_WHITE
+		// ));
 		// c_base.setLayout(new FormLayout());
 		//
 		// Composite c1 = new Composite(c_base, SWT.NONE);
@@ -293,6 +308,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	@Override
 	public void postWindowOpen() {
+		if (switcherComposite != null) {
+			switcherComposite.setRedraw(false);
+			switcherComposite.setRedraw(true);
+		}
 		super.postWindowOpen();
 		doInitialBinding();
 	}
@@ -313,8 +332,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * is used.
 	 * 
 	 * @param shell
-	 * @param lnfKey -
-	 *            look and feel key of the cursor image
+	 * @param lnfKey
+	 *            - look and feel key of the cursor image
 	 * @return cursor
 	 */
 	private Cursor createCursor(Shell shell, String lnfKey) {
@@ -373,8 +392,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Sets the given cursor for the shell
 	 * 
 	 * @param shell
-	 * @param cursor -
-	 *            new cursor
+	 * @param cursor
+	 *            - new cursor
 	 */
 	private void setCursor(Shell shell, Cursor cursor) {
 		if ((cursor != null) && (shell.getCursor() != cursor)) {
@@ -394,17 +413,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			}
 			super.activated(source);
 		}
-	}
 
-	private void showPerspective(ISubApplication source) {
-		try {
-			PlatformUI.getWorkbench().showPerspective(
-					SwtPresentationManagerAccessor.getManager().getSwtViewId(source).getId(),
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		private void showPerspective(ISubApplication source) {
+			try {
+				PlatformUI.getWorkbench().showPerspective(
+						SwtPresentationManagerAccessor.getManager().getSwtViewId(source).getId(),
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 
-		} catch (WorkbenchException e) {
-			e.printStackTrace();
+			} catch (WorkbenchException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 	/**
@@ -413,7 +433,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * 
 	 * @return margin
 	 */
-	private int getTopMargin() {
+	private int getSwitchterTopMargin() {
 
 		int margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
@@ -421,10 +441,22 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
+	 * Returns the of the sub-application switcher.
+	 * 
+	 * @return height
+	 */
+	private int getSwitchterHeight() {
+
+		int margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		return margin;
+
+	}
+
+	/**
 	 * Creates and positions the composite of the logo.
 	 * 
-	 * @param parent -
-	 *            parent composite
+	 * @param parent
+	 *            - parent composite
 	 */
 	private void createLogoComposite(Composite parent) {
 
@@ -436,7 +468,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		int borderWidth = borderRenderer.getBorderWidth();
 		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		logoData.top = new FormAttachment(0, borderWidth);
-		int height = TitlelessStackPresentation.calcTabHeight() + getTopMargin() - 1;
+		int padding = borderRenderer.getCompelteBorderWidth();
+		int height = getSwitchterTopMargin() + getSwitchterHeight() + padding - 1;
 		logoData.bottom = new FormAttachment(0, height);
 		logoData.width = getLogoImage().getImageData().width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
 		Integer hPos = getHorizontalLogoPosition();
@@ -508,8 +541,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * Paints the border, title, buttons and background of the (titleless)
 		 * shell.
 		 * 
-		 * @param e -
-		 *            event
+		 * @param e
+		 *            - event
 		 */
 		private void onPaint(PaintEvent e) {
 
@@ -579,8 +612,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * Redraws the shell.
 		 * 
-		 * @param e -
-		 *            event
+		 * @param e
+		 *            - event
 		 */
 		private void onStateChanged(ShellEvent e) {
 			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
@@ -613,13 +646,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		/**
-		 * Returns <code>true</code> if the given bounds are is inside the
-		 * area of the display, and <code>false</code> otherwise.
+		 * Returns <code>true</code> if the given bounds are is inside the area
+		 * of the display, and <code>false</code> otherwise.
 		 * 
-		 * @param display -
-		 *            display
-		 * @param bounds -
-		 *            bounds to test for containment
+		 * @param display
+		 *            - display
+		 * @param bounds
+		 *            - bounds to test for containment
 		 * @return <code>true</code> if the rectangle contains the bounds and
 		 *         <code>false</code> otherwise
 		 */
@@ -663,8 +696,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * Paints the image of the logo.
 		 * 
-		 * @param e -
-		 *            an event containing information about the paint
+		 * @param e
+		 *            - an event containing information about the paint
 		 */
 		private void onPaint(PaintEvent e) {
 
@@ -701,8 +734,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * Returns the shell on which the event initially occurred.
 		 * 
-		 * @param e -
-		 *            mouse event
+		 * @param e
+		 *            - mouse event
 		 * @return shell or <code>null</code> if source is not a shell.
 		 */
 		private Shell getShell(MouseEvent e) {
@@ -729,10 +762,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * Sets the state of a button (and resets the others).
 		 * 
-		 * @param newState -
-		 *            state to set
-		 * @param btnIndex -
-		 *            button index
+		 * @param newState
+		 *            - state to set
+		 * @param btnIndex
+		 *            - button index
 		 */
 		private void changeBtnState(BtnState newState, int btnIndex) {
 			if (newState != BtnState.NONE) {
@@ -744,8 +777,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		/**
 		 * Updates the states of the buttons.
 		 * 
-		 * @param e -
-		 *            mouse event
+		 * @param e
+		 *            - mouse event
 		 */
 		private void updateButtonStates(MouseEvent e) {
 

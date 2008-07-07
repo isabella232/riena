@@ -14,7 +14,6 @@ import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,6 +28,13 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 
 	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.subApplicationSwitcherView"; //$NON-NLS-1$
 
+	private ApplicationModel model;
+
+	public SubApplicationSwitcherViewPart(ApplicationModel model) {
+		super();
+		this.model = model;
+	}
+
 	/**
 	 * Adds the <code>SubApplicationSwitcherWidget</code> to the parent.
 	 * 
@@ -36,9 +42,6 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-
-		// set a property to distinguish this view
-		setPartProperty(TitlelessStackPresentation.PROPERTY_SUB_APPLICATION_SWITCHER, Boolean.TRUE.toString());
 
 		// add the widget SubApplicationSwitcherWidget
 		parent.setLayout(new FillLayout());
@@ -52,18 +55,7 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 	 * @return application model
 	 */
 	private ApplicationModel getApplicationModel() {
-		return getSubApplication().getParent().getTypecastedAdapter(ApplicationModel.class);
-	}
-
-	/**
-	 * Returns the navigation node of the current sub-application.<br>
-	 * The current sub-application depends on the current perspective.
-	 * 
-	 * @return sub-application
-	 */
-	private ISubApplication getSubApplication() {
-		String perspectiveID = getViewSite().getPage().getPerspective().getId();
-		return SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveID, ISubApplication.class);
+			return model;
 	}
 
 	/**
