@@ -27,7 +27,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class SubApplicationSwitcherViewPart extends ViewPart {
 
-	public final static String ID = "org.eclipse.riena.navigation.ui.swt.applicationSwicther"; //$NON-NLS-1$
+	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.subApplicationSwitcherView"; //$NON-NLS-1$
 
 	/**
 	 * Adds the <code>SubApplicationSwitcherWidget</code> to the parent.

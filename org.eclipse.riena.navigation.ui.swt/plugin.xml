@@ -7,14 +7,14 @@
       <view
             allowMultiple="true"
             class="org.eclipse.riena.navigation.ui.swt.views.NavigationTreeViewPart"
-            id="org.eclipse.riena.navigation.ui.navigationtree"
+            id="org.eclipse.riena.navigation.ui.swt.views.navigationTreeView"
             name="NavigationTreeView">
       </view>
       <view
             allowMultiple="true"
             class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationSwitcherViewPart"
-            id="org.eclipse.riena.navigation.ui.swt.applicationSwicther"
-            name="org.eclipse.riena.navigation.ui.swt.applicationSwicther">
+            id="org.eclipse.riena.navigation.ui.swt.views.subApplicationSwitcherView"
+            name="SubApplicationSwitcherView">
       </view>
    </extension>
    

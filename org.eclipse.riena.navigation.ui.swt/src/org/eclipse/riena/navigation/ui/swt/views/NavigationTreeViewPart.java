@@ -26,7 +26,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class NavigationTreeViewPart extends ViewPart {
 
-	public final static String ID = "org.eclipse.riena.navigation.ui.navigationtree"; //$NON-NLS-1$
+	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.navigationTreeView"; //$NON-NLS-1$
 
 	private SubApplicationNavigationComponent subApplicationComponent;
 
