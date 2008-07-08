@@ -13,8 +13,6 @@ package org.eclipse.riena.core.util;
 /**
  * The <code>ReflectionFailure</code> signals errors with the usage of
  * reflection.
- * 
- * @author Stefan Liebig
  */
 public class ReflectionFailure extends UtilFailure {
 

@@ -14,8 +14,6 @@ import org.eclipse.riena.core.exception.Failure;
 
 /**
  * Failure class for util specific failures.
- * 
- * @author Stefan Liebig
  */
 public class UtilFailure extends Failure {
 
