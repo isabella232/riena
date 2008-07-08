@@ -415,14 +415,14 @@ public class ListRidgetTest extends AbstractSelectableRidgetTest {
 	@Override
 	protected Object getRowValue(int i) {
 		// return getRidget().getRowObservables().get(i);
-		return ((IObservableList) ReflectionUtils.invokeHidden(getRidget(), "getRowObservables")).get(i);
+		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		return rowObservables.get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
 		// IObservableList rowObservables = getRidget().getRowObservables();
-		IObservableList rowObservables = (IObservableList) ReflectionUtils.invokeHidden(getRidget(),
-				"getRowObservables");
+		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		Object[] elements = getRidget().getMultiSelectionObservable().toArray();
 		int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {
