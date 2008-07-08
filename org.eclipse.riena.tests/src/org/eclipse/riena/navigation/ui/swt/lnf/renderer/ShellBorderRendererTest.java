@@ -33,15 +33,15 @@ public class ShellBorderRendererTest extends TestCase {
 
 		lnf.setPadding(20);
 		int expected = 20 + renderer.getBorderWidth();
-		assertEquals(expected, renderer.getCompelteBorderWidth());
+		assertEquals(expected, renderer.getCompleteBorderWidth());
 
 		lnf.removePadding();
 		expected = renderer.getBorderWidth();
-		assertEquals(expected, renderer.getCompelteBorderWidth());
+		assertEquals(expected, renderer.getCompleteBorderWidth());
 
 		lnf.setPadding(1.2);
 		expected = renderer.getBorderWidth();
-		assertEquals(expected, renderer.getCompelteBorderWidth());
+		assertEquals(expected, renderer.getCompleteBorderWidth());
 
 		renderer.dispose();
 

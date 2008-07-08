@@ -116,7 +116,7 @@ public class ShellBorderRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return border width
 	 */
-	public int getCompelteBorderWidth() {
+	public int getCompleteBorderWidth() {
 
 		int width = BORDER_WIDTH;
 

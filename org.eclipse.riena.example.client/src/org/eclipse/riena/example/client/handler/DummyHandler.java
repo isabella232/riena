@@ -10,25 +10,34 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.handler;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.ui.handlers.HandlerUtil;
+
 /**
  * 
  */
-public class CertainViewHandler extends DummyHandler {
+public class DummyHandler extends AbstractHandler {
 
 	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getTitle()
+	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
-	@Override
-	protected String getTitle() {
-		return "Certain view"; //$NON-NLS-1$
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+		MessageDialog.openInformation(HandlerUtil.getActiveShell(event), getTitle(), getMessage());
+
+		return null;
+
 	}
 
-	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getMessage()
-	 */
-	@Override
+	protected String getTitle() {
+		return "Dummy"; //$NON-NLS-1$
+	}
+
 	protected String getMessage() {
-		return "This command is only enabled for a certain view!"; //$NON-NLS-1$
+		return "Not implemented!"; //$NON-NLS-1$
 	}
 
 }

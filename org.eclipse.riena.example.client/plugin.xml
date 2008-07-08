@@ -160,6 +160,14 @@
             id="org.eclipse.riena.example.client.certainViewCommand"
             name="Certain View">
       </command>
+      <command
+            id="org.eclipse.riena.example.client.zoomInCommand"
+            name="In">
+      </command>
+      <command
+            id="org.eclipse.riena.example.client.zoomOutCommand"
+            name="Out">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -168,6 +176,22 @@
          <menu
                label="File"
                mnemonic="F">
+            <menu
+                  label="Zoom"
+                  mnemonic="Z">
+               <command
+                     commandId="org.eclipse.riena.example.client.zoomInCommand"
+                     id="org.eclipse.riena.example.client.zoomInMenuItem"
+                     mnemonic="I"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.eclipse.riena.example.client.zoomOutCommand"
+                     id="org.eclipse.riena.example.client.zoomOutMenuItem"
+                     mnemonic="O"
+                     style="push">
+               </command>
+            </menu>
             <command
                   commandId="org.eclipse.riena.example.client.exitCommand"
                   id="org.eclipse.riena.example.client.exitMenuItem"
@@ -251,6 +275,14 @@
                </equals>
             </with>
          </enabledWhen>
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.ZoomInHandler"
+            commandId="org.eclipse.riena.example.client.zoomInCommand">
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.ZoomOutHandler"
+            commandId="org.eclipse.riena.example.client.zoomOutCommand">
       </handler>
    </extension>
    

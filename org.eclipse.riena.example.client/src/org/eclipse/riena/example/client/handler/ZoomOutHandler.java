@@ -13,22 +13,14 @@ package org.eclipse.riena.example.client.handler;
 /**
  * 
  */
-public class CertainViewHandler extends DummyHandler {
+public class ZoomOutHandler extends DummyHandler {
 
 	/**
 	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getTitle()
 	 */
 	@Override
 	protected String getTitle() {
-		return "Certain view"; //$NON-NLS-1$
-	}
-
-	/**
-	 * @see org.eclipse.riena.example.client.handler.DummyHandler#getMessage()
-	 */
-	@Override
-	protected String getMessage() {
-		return "This command is only enabled for a certain view!"; //$NON-NLS-1$
+		return "Zoom Out"; //$NON-NLS-1$
 	}
 
 }

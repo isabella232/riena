@@ -13,6 +13,8 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
@@ -32,12 +34,16 @@ import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
@@ -53,14 +59,16 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Decorations;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
-import org.eclipse.ui.application.ActionBarAdvisor;
-import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.WorkbenchWindow;
@@ -80,8 +88,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private ApplicationViewController controller;
-	private ISubApplicationListener subApplicationListener;
-	private NavigationTreeObserver navigationTreeObserver;
 	private List<Object> uiControls;
 	private Cursor handCursor;
 	private Cursor grabCursor;
@@ -100,32 +106,59 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void initializeListener() {
-		subApplicationListener = new SubApplicationListener();
-		navigationTreeObserver = new NavigationTreeObserver();
+		ISubApplicationListener subApplicationListener = new SubApplicationListener();
+		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(subApplicationListener);
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
-	@Override
-	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
-		return new ApplicationActionAdvisor(configurer, controller);
-	}
-
+	/**
+	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#preWindowOpen()
+	 */
 	@Override
 	public void preWindowOpen() {
-		configureView();
+		configureWindow();
 	}
 
-	private void configureView() {
+	/**
+	 * Configures the window of the application.
+	 */
+	private void configureWindow() {
+
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		configurer.setShowMenuBar(controller.isMenubarVisible());
-		configurer.setShowStatusLine(false);
+		// don't show the default menu and tool bar
+		configurer.setShowMenuBar(false);
 		configurer.setShowCoolBar(false);
+		configurer.setShowStatusLine(false);
 		configurer.setTitle(controller.getNavigationNode().getLabel());
 		configurer.setInitialSize(APPLICATION_SIZE);
 		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+			// don't show the shell border (with the minimize, maximize and
+			// close buttons) of the operation system
 			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
 		}
+
+	}
+
+	/**
+	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowOpen()
+	 */
+	@Override
+	public void postWindowOpen() {
+		if (switcherComposite != null) {
+			// Redraw the switcher so that the active tab is displayed correct
+			switcherComposite.setRedraw(false);
+			switcherComposite.setRedraw(true);
+		}
+		super.postWindowOpen();
+		doInitialBinding();
+	}
+
+	private void doInitialBinding() {
+		DefaultBindingManager defaultBindingManager = createBindingManager();
+		defaultBindingManager.injectRidgets(controller, uiControls);
+		defaultBindingManager.bind(controller, uiControls);
+		controller.afterBind();
 	}
 
 	/**
@@ -159,140 +192,40 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void createWindowContents(final Shell shell) {
 
-		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
-		addUIControl(shell);
+		initShell(shell);
+
+		// create and layouts the composite of switcher, menu, tool bar etc.
+		shell.setLayout(new FormLayout());
+		createLogoComposite(shell);
+		switcherComposite = createSwitcherComposite(shell);
+		Composite menuBarComposite = createMenuBarComposite(shell, switcherComposite);
+		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
+		createMainComposite(shell, coolBarComposite);
+
+	}
+
+	/**
+	 * Initializes the given shell.
+	 * 
+	 * @param shell
+	 *            - shell to initialize
+	 */
+	private void initShell(final Shell shell) {
+
+		// sets the background of the shell
 		Image image = LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 		shell.setBackgroundImage(image);
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
+
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
 		shell.setMinimumSize(APPLICATION_SIZE);
+
+		// prepare shell for binding
+		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
+		addUIControl(shell);
+
 		addListeners(shell);
 
-		// see WorkbenchWindow.createDefaultContents
-
-		WorkbenchWindow workbenchWindow = (WorkbenchWindow) getWindowConfigurer().getWindow();
-		Menu menuBar = workbenchWindow.getMenuManager().createMenuBar((Decorations) shell);
-		if (getWindowConfigurer().getShowMenuBar()) {
-			shell.setMenuBar(menuBar);
-		}
-
-		shell.setLayout(new FormLayout());
-
-		// composites for logo
-		createLogoComposite(shell);
-
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		int padding = borderRenderer.getCompelteBorderWidth();
-
-		// switcher
-		switcherComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
-		switcherComposite.setLayout(new FillLayout());
-		FormData switcherData = new FormData();
-		switcherData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
-		switcherData.left = new FormAttachment(0, padding);
-		switcherData.right = new FormAttachment(100, -padding);
-		switcherData.height = getSwitchterHeight();
-		switcherComposite.setLayoutData(switcherData);
-		ApplicationModel model = (ApplicationModel) controller.getNavigationNode();
-		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(model);
-		switcherViewPart.createPartControl(switcherComposite);
-
-		// cool bar
-		Composite coolBarComposite = new Composite(shell, SWT.NONE);
-		Color coolBarColor = LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
-		coolBarComposite.setBackground(coolBarColor);
-		coolBarComposite.setLayout(new FillLayout());
-		FormData coolBarData = new FormData();
-		coolBarData.top = new FormAttachment(switcherComposite, COOLBAR_TOP_MARGIN);
-		coolBarData.left = new FormAttachment(0, padding);
-		coolBarData.right = new FormAttachment(100, -padding);
-		coolBarData.height = COOLBAR_HIGHT;
-		coolBarComposite.setLayoutData(coolBarData);
-		getWindowConfigurer().createCoolBarControl(coolBarComposite);
-
-		// parent of page composite
-		Composite mainComposite = new Composite(shell, SWT.DOUBLE_BUFFERED);
-		mainComposite.setLayout(new FillLayout());
-		FormData mainData = new FormData();
-		mainData.top = new FormAttachment(coolBarComposite, 0, 0);
-		mainData.bottom = new FormAttachment(100, -padding);
-		mainData.left = new FormAttachment(0, padding);
-		mainData.right = new FormAttachment(100, -padding);
-		mainComposite.setLayoutData(mainData);
-		// page composite
-		getWindowConfigurer().createPageComposite(mainComposite);
-
-		// Composite(shell, SWT.NONE);
-		// topComposite.setBounds(100, 0, 12, getTopMargin());
-		// GridData gridData = new GridData();
-		// gridData.grabExcessHorizontalSpace = false;
-		// gridData.grabExcessVerticalSpace = false;
-		// topComposite.setLayoutData(gridData);
-
-		// FormLayout layout = new FormLayout();
-		// FillLayout fillLayout = new FillLayout();
-		// shell.setLayout(layout);
-		// FormData f = new FormData();
-		// f.width = 790;
-		// f.height = 600;
-		// f.top = new FormAttachment(0, 0);
-		//
-		// fillLayout = new FillLayout();
-		//
-		// Composite c_base = new Composite(shell, SWT.NONE);
-		// c_base.setLayoutData(f);
-		//c_base.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_WHITE
-		// ));
-		// c_base.setLayout(new FormLayout());
-		//
-		// Composite c1 = new Composite(c_base, SWT.NONE);
-		// c1.setLayout(new FillLayout());
-		// FormData fd = new FormData();
-		// fd.height = 40;
-		// fd.width = 790;
-		// c1.setLayoutData(fd);
-		//
-		// fd = new FormData();
-		// fd.top = new FormAttachment(c1, 10);
-		// fd.height = shell.getBounds().height - 40;
-		// fd.width = 790;
-		// fd.left = new FormAttachment(0, 0);
-		//
-		// // new ApplicationSwitchViewPart((ApplicationModel)
-		// // controller.getNavigationNode()).createPartControl(c1);
-		//
-		// Composite c2 = new Composite(c_base, SWT.NONE);
-		// c2.setLayout(new FormLayout());
-		// c2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-		// c2.setLayoutData(fd);
-		// // WorkbenchWindow workbenchWindow = (WorkbenchWindow)
-		// // getWindowConfigurer().getWindow();
-		// // workbenchWindow.getMenuManager().createMenuBar(c2);
-		// // c2.setMenu(getWindowConfigurer().createMenuBar());
-		//
-		// // Shell shell2 = new Shell(shell);
-		// Menu menuBar = new Menu(shell, SWT.BAR);
-		// // Menu menuBar = getWindowConfigurer().createMenuBar();
-		// shell.setMenuBar(menuBar);
-		//
-		// Control c = getWindowConfigurer().createCoolBarControl(c2);
-		// c.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		// fd = new FormData();
-		// fd.top = new FormAttachment(0, 00);
-		// fd.height = 20;
-		// fd.width = 790;
-		// fd.left = new FormAttachment(0, 0);
-		// c.setLayoutData(fd);
-		// Control cx = getWindowConfigurer().createPageComposite(c2);
-		// fd = new FormData();
-		// fd.top = new FormAttachment(c, 50);
-		// fd.height = shell.getBounds().height - 60;
-		// fd.width = 1000;
-		// fd.left = new FormAttachment(0, 0);
-		// cx.setLayoutData(fd);
-		//
-		// // super.createWindowContents(shell);
 	}
 
 	/**
@@ -313,26 +246,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.addMouseMoveListener(mouseListener);
 		shell.addMouseTrackListener(mouseListener);
 
-	}
-
-	/**
-	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowOpen()
-	 */
-	@Override
-	public void postWindowOpen() {
-		if (switcherComposite != null) {
-			switcherComposite.setRedraw(false);
-			switcherComposite.setRedraw(true);
-		}
-		super.postWindowOpen();
-		doInitialBinding();
-	}
-
-	private void doInitialBinding() {
-		DefaultBindingManager defaultBindingManager = createBindingManager();
-		defaultBindingManager.injectRidgets(controller, uiControls);
-		defaultBindingManager.bind(controller, uiControls);
-		controller.afterBind();
 	}
 
 	protected DefaultBindingManager createBindingManager() {
@@ -413,6 +326,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
+	/**
+	 * Returns the menu manager of the main menu (menu bar).
+	 * 
+	 * @return menu manager
+	 */
+	private MenuManager getMenuManager() {
+
+		WorkbenchWindow workbenchWindow = (WorkbenchWindow) getWindowConfigurer().getWindow();
+		return workbenchWindow.getMenuManager();
+
+	}
+
 	private class SubApplicationListener extends SubApplicationAdapter {
 
 		/**
@@ -480,7 +405,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		int borderWidth = borderRenderer.getBorderWidth();
 		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		logoData.top = new FormAttachment(0, borderWidth);
-		int padding = borderRenderer.getCompelteBorderWidth();
+		int padding = borderRenderer.getCompleteBorderWidth();
 		int height = getSwitchterTopMargin() + getSwitchterHeight() + padding - 1;
 		logoData.bottom = new FormAttachment(0, height);
 		logoData.width = getLogoImage().getImageData().width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
@@ -499,6 +424,242 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		topLeftComposite.setLayoutData(logoData);
 		topLeftComposite.addPaintListener(new LogoPaintListener());
+
+	}
+
+	/**
+	 * Creates and positions the composite for the sub-application switcher.
+	 * 
+	 * @param parent
+	 *            - parent of composite
+	 * @return composite
+	 */
+	private Composite createSwitcherComposite(Composite parent) {
+
+		assert parent.getLayout() instanceof FormLayout;
+
+		int padding = getShellPadding();
+
+		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		composite.setLayout(new FillLayout());
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
+		formData.left = new FormAttachment(0, padding);
+		formData.right = new FormAttachment(100, -padding);
+		formData.height = getSwitchterHeight();
+		composite.setLayoutData(formData);
+		ApplicationModel model = (ApplicationModel) controller.getNavigationNode();
+		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(model);
+		switcherViewPart.createPartControl(composite);
+
+		return composite;
+
+	}
+
+	/**
+	 * Creates and positions the composite for the menu bar.
+	 * 
+	 * @param parent
+	 *            - parent of composite
+	 * @param previous
+	 *            - previous composite in the layout
+	 * @return composite
+	 */
+	private Composite createMenuBarComposite(Composite parent, Composite previous) {
+
+		assert parent.getLayout() instanceof FormLayout;
+
+		int padding = getShellPadding();
+
+		// menu bar
+		Composite composite = new Composite(parent, SWT.NONE);
+		Color menuBarColor = LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
+		composite.setBackground(menuBarColor);
+		composite.setLayout(new FillLayout());
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
+		formData.left = new FormAttachment(0, padding);
+		formData.right = new FormAttachment(100, -padding);
+		formData.height = COOLBAR_HIGHT;
+		composite.setLayoutData(formData);
+
+		createMenuBar(composite);
+
+		return composite;
+
+	}
+
+	/**
+	 * Creates a cool bar with menus.
+	 * 
+	 * @param parent
+	 * @return cool bar with menus
+	 */
+	private CoolBar createMenuBar(Composite parent) {
+
+		CoolBar coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
+		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
+		ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
+		coolItem.setControl(toolBar);
+
+		// create for every top menu a tool item and create the corresponding
+		// menu
+		IContributionItem[] contribItems = getMenuManager().getItems();
+		for (int i = 0; i < contribItems.length; i++) {
+			if (contribItems[i] instanceof MenuManager) {
+				MenuManager topMenuManager = (MenuManager) contribItems[i];
+				ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
+				toolItem.setText(topMenuManager.getMenuText());
+				createMenu(parent, toolItem, topMenuManager);
+			}
+		}
+
+		coolBar.setLocked(true);
+		calcSize(coolItem);
+
+		return coolBar;
+
+	}
+
+	/**
+	 * Creates with the help of the given menu manager a menu. If the given tool
+	 * item is selected, the menu is shown.
+	 * 
+	 * @param parent
+	 * @param toolItem
+	 *            - tool item with menu
+	 * @param topMenuManager
+	 *            - menu manager
+	 */
+	private void createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {
+
+		final Menu menu = topMenuManager.createContextMenu(parent.getShell());
+		menu.addMenuListener(new MenuListener() {
+
+			/**
+			 * @see org.eclipse.swt.events.MenuListener#menuHidden(org.eclipse.swt.events.MenuEvent)
+			 */
+			public void menuHidden(MenuEvent e) {
+				if (e.getSource() == menu) {
+					toolItem.setSelection(false);
+				}
+			}
+
+			/**
+			 * @see org.eclipse.swt.events.MenuListener#menuShown(org.eclipse.swt.events.MenuEvent)
+			 */
+			public void menuShown(MenuEvent e) {
+			}
+
+		});
+
+		toolItem.addSelectionListener(new SelectionListener() {
+
+			/**
+			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			/**
+			 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			public void widgetSelected(SelectionEvent e) {
+				if (e.getSource() == toolItem) {
+					Rectangle itemBounds = toolItem.getBounds();
+					Point loc = toolItem.getParent().toDisplay(itemBounds.x, itemBounds.height + itemBounds.y);
+					menu.setLocation(loc);
+					menu.setVisible(true);
+				}
+			}
+
+		});
+
+	}
+
+	/**
+	 * Calculates and sets the size of the given cool item.
+	 * 
+	 * @param item
+	 *            - item of cool bar
+	 */
+	private void calcSize(CoolItem item) {
+		Control control = item.getControl();
+		Point pt = control.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		pt = item.computeSize(pt.x, pt.y);
+		item.setSize(pt);
+	}
+
+	/**
+	 * Creates and positions the composite for the cool bar.
+	 * 
+	 * @param parent
+	 *            - parent of composite
+	 * @param previous
+	 *            - previous composite in the layout
+	 * @return composite
+	 */
+	private Composite createCoolBarComposite(Composite parent, Composite previous) {
+
+		assert parent.getLayout() instanceof FormLayout;
+
+		int padding = getShellPadding();
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		Color coolBarColor = LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
+		composite.setBackground(coolBarColor);
+		composite.setLayout(new FillLayout());
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
+		formData.left = new FormAttachment(0, padding);
+		formData.right = new FormAttachment(100, -padding);
+		formData.height = COOLBAR_HIGHT;
+		composite.setLayoutData(formData);
+		getWindowConfigurer().createCoolBarControl(composite);
+
+		return composite;
+
+	}
+
+	/**
+	 * Creates the main composite.
+	 * 
+	 * @param parent
+	 *            - parent of composite
+	 * @param previous
+	 *            - previous composite in the layout
+	 * @return composite
+	 */
+	private Composite createMainComposite(Composite parent, Composite previous) {
+
+		assert parent.getLayout() instanceof FormLayout;
+
+		int padding = getShellPadding();
+
+		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		composite.setLayout(new FillLayout());
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(previous, 0, 0);
+		formData.bottom = new FormAttachment(100, -padding);
+		formData.left = new FormAttachment(0, padding);
+		formData.right = new FormAttachment(100, -padding);
+		composite.setLayoutData(formData);
+		getWindowConfigurer().createPageComposite(composite);
+
+		return composite;
+
+	}
+
+	/**
+	 * Returns the padding between shell border and content.
+	 * 
+	 * @return padding
+	 */
+	private int getShellPadding() {
+
+		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		return borderRenderer.getCompleteBorderWidth();
 
 	}
 
