@@ -19,13 +19,14 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.internal.core.Activator;
+import org.osgi.framework.Bundle;
 
 /**
- * The <code>ReflectionUtils</code> class is a collection of usefull helpers
- * when working with reflection. <br>
- * <b>Note:</b> All methods only throw Failures (i.e. RuntimeExceptions)!
- * 
- * @author Stefan Liebig
+ * The <code>ReflectionUtils</code> class is a collection of useful helpers when
+ * working with reflection. <br>
+ * <b>Note:</b> All methods only throw Failures (i.e. RuntimeExceptions)!<br>
+ * <b>Note:</b> Use this helper only for test code!!!
  */
 public final class ReflectionUtils {
 
@@ -47,11 +48,11 @@ public final class ReflectionUtils {
 	 * @return the new instance.
 	 * @pre className != null
 	 */
-	public static Object newInstance(String className, Object... args) {
+	public static <T> T newInstance(String className, Object... args) {
 		Assert.isNotNull(className, "className must be given!");
 
 		try {
-			return newInstance(Class.forName(className), args);
+			return (T) newInstance(loadClass(className), args);
 		} catch (Exception e) {
 			throw new ReflectionFailure("Error creating instance for " + className + " with parameters "
 					+ Arrays.asList(args) + "!", e);
@@ -93,11 +94,11 @@ public final class ReflectionUtils {
 	 * @pre interfaceName != null
 	 * @pre invocationHandler != null
 	 */
-	public static Object newInstance(String interfaceName, InvocationHandler invocationHandler) {
+	public static <T> T newInstance(String interfaceName, InvocationHandler invocationHandler) {
 		Assert.isNotNull(interfaceName, "interfaceName must be given!");
 		Assert.isNotNull(invocationHandler, "invocationHandler must be given!");
 		try {
-			return newInstance(Class.forName(interfaceName), invocationHandler);
+			return (T) newInstance(Class.forName(interfaceName), invocationHandler);
 		} catch (Exception e) {
 			throw new ReflectionFailure("Error creating proxy instance for " + interfaceName + " !", e);
 		}
@@ -143,13 +144,12 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
-	public static Object invoke(Object instance, String methodName, Object... args) {
+	public static <T> T invoke(Object instance, String methodName, Object... args) {
 		return invoke(false, instance, methodName, args);
 	}
 
 	/**
-	 * Invoke a ´hidden´ (private, protected, ...) method on a given object.
-	 * <br>
+	 * Invoke a ´hidden´ (private, protected, ...) method on a given object. <br>
 	 * <b>This method should not be used for production code but only for unit
 	 * tests! </b>
 	 * 
@@ -164,7 +164,7 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
-	public static Object invokeHidden(Object instance, String methodName, Object... args) {
+	public static <T> T invokeHidden(Object instance, String methodName, Object... args) {
 		return invoke(true, instance, methodName, args);
 	}
 
@@ -249,7 +249,7 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
-	private static Object invoke(boolean open, Object instance, String methodName, Object... args) {
+	private static <T> T invoke(boolean open, Object instance, String methodName, Object... args) {
 		Assert.isNotNull(instance, "instance must be given!");
 		Assert.isNotNull(methodName, "methodName must be given!");
 
@@ -258,11 +258,10 @@ public final class ReflectionUtils {
 		while (clazz != null) {
 			Method method = findMatchingMethod(clazz, methodName, clazzes);
 			if (method != null) {
-				if (open) {
+				if (open)
 					method.setAccessible(true);
-				}
 				try {
-					return method.invoke(instance, args);
+					return (T) method.invoke(instance, args);
 				} catch (InvocationTargetException ite) {
 					throw new InvocationTargetFailure("Calling #" + methodName + " on " + instance + " failed.", ite
 							.getTargetException());
@@ -323,7 +322,8 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre fieldName != null
 	 */
-	public static Object getHidden(Object instance, String fieldName) {
+	@SuppressWarnings("unchecked")
+	public static <T> T getHidden(Object instance, String fieldName) {
 		Assert.isNotNull(instance, "instance must be given!");
 		Assert.isNotNull(fieldName, "fieldName must be given!");
 
@@ -331,7 +331,7 @@ public final class ReflectionUtils {
 		try {
 			Field field = getDeepField(clazz, fieldName);
 			field.setAccessible(true);
-			return field.get(instance);
+			return (T) field.get(instance);
 		} catch (Exception e) {
 			throw new ReflectionFailure("Could not get hidden field " + fieldName + " on " + clazz.getName() + "!", e);
 		}
@@ -344,7 +344,7 @@ public final class ReflectionUtils {
 	 * @param args
 	 * @return
 	 */
-	public static <T> T newLazyInstance(Class<T> interfaze, Class clazz, Object... args) {
+	public static <T> T newLazyInstance(Class<T> interfaze, Class<? extends T> clazz, Object... args) {
 		return newInstance(interfaze, new LazyInstantiationHandler(clazz, args));
 	}
 
@@ -362,18 +362,15 @@ public final class ReflectionUtils {
 	private static class LazyInstantiationHandler implements InvocationHandler {
 
 		private Object instance;
-
-		private Class clazz;
-
+		private Class<?> clazz;
 		private String clazzName;
-
 		private Object[] params;
 
 		/**
 		 * @param clazz
 		 * @param args
 		 */
-		public LazyInstantiationHandler(Class clazz, Object[] args) {
+		public LazyInstantiationHandler(Class<?> clazz, Object[] args) {
 			this.clazz = clazz;
 			this.params = args;
 		}
@@ -389,13 +386,8 @@ public final class ReflectionUtils {
 
 		@SuppressWarnings("unchecked")
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			if (instance == null) {
-				if (clazz != null) {
-					instance = newInstance(clazz, params);
-				} else {
-					instance = newInstance(clazzName, params);
-				}
-			}
+			if (instance == null)
+				instance = clazz != null ? newInstance(clazz, params) : newInstance(clazzName, params);
 			// try {
 			return ReflectionUtils.invoke(instance, method.getName(), args);
 			// } catch (Throwable e) {
@@ -412,24 +404,19 @@ public final class ReflectionUtils {
 		assert clazz != null;
 
 		try {
-			if (clazzes == null) {
+			if (clazzes == null)
 				return clazz.getConstructor();
-			} else {
-				Constructor[] constructors = clazz.getConstructors();
 
-				for (Constructor constructor : constructors) {
-					Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
-					if (expectedParameterTypes.length == clazzes.length) {
-						boolean stop = false;
-						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
-								stop = true;
-							}
-						}
-						if (!stop) {
-							return constructor;
-						}
-					}
+			Constructor[] constructors = clazz.getConstructors();
+			for (Constructor constructor : constructors) {
+				Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
+				if (expectedParameterTypes.length == clazzes.length) {
+					boolean stop = false;
+					for (int j = 0; j < expectedParameterTypes.length && !stop; j++)
+						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]))
+							stop = true;
+					if (!stop)
+						return constructor;
 				}
 			}
 			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName());
@@ -443,25 +430,20 @@ public final class ReflectionUtils {
 		assert name != null;
 
 		try {
-			if (clazzes == null) {
+			if (clazzes == null)
 				return clazz.getDeclaredMethod(name);
-			} else {
-				Method[] methods = clazz.getDeclaredMethods();
 
-				for (Method method : methods) {
-					if (method.getName().equals(name)) {
-						Class<?>[] expectedParameterTypes = method.getParameterTypes();
-						if (expectedParameterTypes.length == clazzes.length) {
-							boolean stop = false;
-							for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-								if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
-									stop = true;
-								}
-							}
-							if (!stop) {
-								return method;
-							}
-						}
+			Method[] methods = clazz.getDeclaredMethods();
+			for (Method method : methods) {
+				if (method.getName().equals(name)) {
+					Class<?>[] expectedParameterTypes = method.getParameterTypes();
+					if (expectedParameterTypes.length == clazzes.length) {
+						boolean stop = false;
+						for (int j = 0; j < expectedParameterTypes.length && !stop; j++)
+							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]))
+								stop = true;
+						if (!stop)
+							return method;
 					}
 				}
 			}
@@ -503,11 +485,7 @@ public final class ReflectionUtils {
 	private static Class<?> getClass(Object instance) {
 		assert instance != null;
 
-		if (instance instanceof Class) {
-			return (Class<?>) instance;
-		} else {
-			return instance.getClass();
-		}
+		return (instance instanceof Class) ? (Class<?>) instance : instance.getClass();
 	}
 
 	private static Field getDeepField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
@@ -522,6 +500,28 @@ public final class ReflectionUtils {
 				lookIn = lookIn.getSuperclass();
 			}
 		}
-		throw new NoSuchFieldException("Could not find field " + fieldName + " within class " + clazz + ".");
+		throw new NoSuchFieldException("Could not find field " + fieldName + " within class " + clazz + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> Class<T> loadClass(String className) {
+		ClassNotFoundException cnfe = null;
+		try {
+			return (Class<T>) Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			cnfe = e;
+		}
+		// ok, do it the hard way!!
+		// TODO Check for ambiguity? Do we find more than one bundle capable of
+		// loading the requested class?
+		Bundle[] bundles = Activator.getDefault().getContext().getBundles();
+		for (Bundle bundle : bundles) {
+			try {
+				return (Class<T>) bundle.loadClass(className);
+			} catch (ClassNotFoundException e) {
+				cnfe = e;
+			}
+		}
+		throw new ReflectionFailure("Could not load class " + className + ".", cnfe);
 	}
 }
