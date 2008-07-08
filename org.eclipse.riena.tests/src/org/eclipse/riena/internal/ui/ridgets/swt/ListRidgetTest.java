@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -413,12 +414,15 @@ public class ListRidgetTest extends AbstractSelectableRidgetTest {
 
 	@Override
 	protected Object getRowValue(int i) {
-		return getRidget().getRowObservables().get(i);
+		// return getRidget().getRowObservables().get(i);
+		return ((IObservableList) ReflectionUtils.invokeHidden(getRidget(), "getRowObservables")).get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
-		IObservableList rowObservables = getRidget().getRowObservables();
+		// IObservableList rowObservables = getRidget().getRowObservables();
+		IObservableList rowObservables = (IObservableList) ReflectionUtils.invokeHidden(getRidget(),
+				"getRowObservables");
 		Object[] elements = getRidget().getMultiSelectionObservable().toArray();
 		int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {
