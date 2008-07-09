@@ -71,6 +71,13 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 		validators.remove(validator);
 	}
 
+	/**
+	 * Returns true if the given validator is contained in this collection;
+	 * false otherwise.
+	 * 
+	 * @param validator
+	 *            a IValidator instance (may be null)
+	 */
 	public boolean contains(final IValidator validator) {
 		return validators.contains(validator);
 	}
