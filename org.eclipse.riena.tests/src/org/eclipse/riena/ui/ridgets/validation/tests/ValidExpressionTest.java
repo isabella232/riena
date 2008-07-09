@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidExpression;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
@@ -123,6 +125,15 @@ public class ValidExpressionTest extends TestCase {
 		assertFalse(insensitiveRule.validate("1Test").isOK());
 		assertFalse(insensitiveRule.validate("Test1").isOK());
 		assertFalse(insensitiveRule.validate("Te1st").isOK());
+	}
+
+	public void testDoesNotBlockInputWhenFailing() {
+
+		final ValidExpression rule = new ValidExpression(ValidExpression.GERMAN_ZIP);
+		IStatus result = rule.validate("XX123");
+
+		assertFalse(result.isOK());
+		assertEquals(IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
 	}
 
 }
