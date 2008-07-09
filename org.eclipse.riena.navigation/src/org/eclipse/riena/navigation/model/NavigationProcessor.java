@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 
@@ -26,6 +27,13 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  * Default implementation for the navigation processor
  */
 public class NavigationProcessor implements INavigationProcessor {
+
+	private INavigationNodePresentationFactory navigationNodePresentationFactory;
+
+	public NavigationProcessor(INavigationNodePresentationFactory navigationNodePresentationFactory) {
+		super();
+		this.navigationNodePresentationFactory = navigationNodePresentationFactory;
+	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
@@ -102,6 +110,17 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/**
+	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse
+	 *      .riena.navigation.INavigationNode, java.lang.String)
+	 */
+	public void navigate(INavigationNode<?> sourceNode, String targetId) {
+
+		INavigationNode<?> targetNode = navigationNodePresentationFactory.createNode(sourceNode, targetId);
+
+		targetNode.activate();
+	}
+
+	/**
 	 * Ascertain the correct node to dispose. If e.g. the first module in a
 	 * Group is disposed, than the whole group has to be disposed
 	 * 
@@ -147,8 +166,8 @@ public class NavigationProcessor implements INavigationProcessor {
 	 * Find a node or list of nodes which have to activated when a specified
 	 * node is disposed
 	 * 
-	 * @param toDispose -
-	 *            the node to dispose
+	 * @param toDispose
+	 *            - the node to dispose
 	 * @return return a list of nodes
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnDispose(INavigationNode<?> toDispose) {
@@ -184,8 +203,8 @@ public class NavigationProcessor implements INavigationProcessor {
 	/**
 	 * Finds all the nodes to activate
 	 * 
-	 * @param toActivate -
-	 *            the node do activate
+	 * @param toActivate
+	 *            - the node do activate
 	 * @return a List of all nodes to activate
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnActivation(INavigationNode<?> toActivate) {
@@ -423,8 +442,8 @@ public class NavigationProcessor implements INavigationProcessor {
 	/**
 	 * The navigation processor decides which child to activate even initially
 	 * 
-	 * @param pNode -
-	 *            the node who's child is searched
+	 * @param pNode
+	 *            - the node who's child is searched
 	 */
 	private INavigationNode<?> getChildToActivate(INavigationNode<?> pNode) {
 		// for sub module is always null
@@ -540,10 +559,10 @@ public class NavigationProcessor implements INavigationProcessor {
 	 * this navigation processor allows only one selected child, so it resets
 	 * the flag in all children before marking the one
 	 * 
-	 * @param parent -
-	 *            the parent to reset in
-	 * @param child -
-	 *            the child to set as selected
+	 * @param parent
+	 *            - the parent to reset in
+	 * @param child
+	 *            - the child to set as selected
 	 */
 	private void setSelectedChild(INavigationNode<?> parent, INavigationNode<?> child) {
 		for (INavigationNode<?> next : parent.getChildren()) {

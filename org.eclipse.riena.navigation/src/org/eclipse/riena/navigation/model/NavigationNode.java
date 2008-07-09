@@ -642,8 +642,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @param selected -
-	 *            the selected to set
+	 * @param selected
+	 *            - the selected to set
 	 */
 	public void setSelected(boolean selected) {
 		if (selected != this.selected) {
@@ -774,4 +774,20 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			return getParent().getParentOfType(clazz);
 		}
 	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(java.lang.String)
+	 */
+	public void navigate(String targetId) {
+		getNavigationProcessor().navigate(this, targetId);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#getPresentationId()
+	 */
+	public String getPresentationId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
