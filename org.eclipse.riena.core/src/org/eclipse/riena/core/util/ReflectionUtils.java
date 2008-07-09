@@ -384,7 +384,6 @@ public final class ReflectionUtils {
 			this.params = args;
 		}
 
-		@SuppressWarnings("unchecked")
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (instance == null)
 				instance = clazz != null ? newInstance(clazz, params) : newInstance(clazzName, params);
