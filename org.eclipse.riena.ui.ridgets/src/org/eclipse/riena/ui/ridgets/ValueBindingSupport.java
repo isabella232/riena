@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.riena.core.marker.IMarkable;
@@ -109,7 +110,7 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * Adds a validation rule.
 	 * 
 	 * @param validationRule
-	 *            The validation rule to add
+	 *            The validation rule to add (non null)
 	 * @param validateOnEdit
 	 *            true if this validation rule should be checked "on edit",
 	 *            false if this validation rule should be checked "on update"
@@ -117,6 +118,7 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * @see #getOnEditValidators()
 	 */
 	public boolean addValidationRule(IValidator validationRule, boolean validateOnEdit) {
+		Assert.isNotNull(validationRule);
 		if (validateOnEdit) {
 			onEditValidators.add(validationRule);
 			return true;
@@ -134,10 +136,6 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
-	// TODO [ev] - I believe this is buggy. Consider this case:
-	// 1. addValidationRule(x, false);
-	// 2. addValidationRule(x, true);
-	// 3. removeValidationRule(x) gives ??
 	public boolean removeValidationRule(IValidator validationRule) {
 		if (validationRule == null) {
 			return false;

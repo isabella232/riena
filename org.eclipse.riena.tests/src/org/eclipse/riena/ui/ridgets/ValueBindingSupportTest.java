@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
@@ -28,7 +29,6 @@ import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
@@ -90,7 +90,7 @@ public class ValueBindingSupportTest extends TestCase {
 
 	public void testValidationMessagesAddAndRemove() throws Exception {
 
-		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters());
+		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), false);
 		valueBindingSupport.addValidationMessage("TestMessage1");
 		valueBindingSupport.addValidationMessage("TestMessage2");
 		ErrorMessageMarker messageMarker1 = new ErrorMessageMarker("TestMessage3");
@@ -136,7 +136,7 @@ public class ValueBindingSupportTest extends TestCase {
 
 	public void testValidationMessagesAddAndRemoveWhileActive() throws Exception {
 
-		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters());
+		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), false);
 		target.setValue("odd");
 
 		assertEquals(1, markable.getMarkers().size());
@@ -168,8 +168,8 @@ public class ValueBindingSupportTest extends TestCase {
 
 		EvenNumberOfCharacters evenNumberOfCharacters = new EvenNumberOfCharacters();
 		NotEndingWithDisaster notEndingWithDisaster = new NotEndingWithDisaster();
-		valueBindingSupport.addValidationRule(evenNumberOfCharacters);
-		valueBindingSupport.addValidationRule(notEndingWithDisaster);
+		valueBindingSupport.addValidationRule(evenNumberOfCharacters, false);
+		valueBindingSupport.addValidationRule(notEndingWithDisaster, false);
 		valueBindingSupport.addValidationMessage("TestNotEvenMessage1", evenNumberOfCharacters);
 		valueBindingSupport.addValidationMessage(new MessageMarker("TestNotEvenMessage2"), evenNumberOfCharacters);
 		valueBindingSupport.addValidationMessage("TestDisasterMessage", notEndingWithDisaster);
@@ -185,12 +185,14 @@ public class ValueBindingSupportTest extends TestCase {
 
 		target.setValue("Disaster Area");
 
-		// /////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////
+		// ///
 		//
 		// Hallo Carsten!
 		// Hier werden offenbar alle Marker gesetzt... Finde heraus, wieso...
 		//
-		// /////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////
+		// ///
 
 		assertEquals(3, markable.getMarkers().size());
 		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2");
@@ -205,7 +207,43 @@ public class ValueBindingSupportTest extends TestCase {
 		assertEquals(0, markable.getMarkers().size());
 	}
 
-	void assertMessageMarkers(String... messages) {
+	public void testValidationRuleAddAndRemove() {
+		final IValidator rule = new EvenNumberOfCharacters();
+
+		boolean isOnEdit1 = valueBindingSupport.addValidationRule(rule, true);
+
+		assertTrue(isOnEdit1);
+		assertTrue(valueBindingSupport.getOnEditValidators().contains(rule));
+		assertFalse(valueBindingSupport.getAfterGetValidators().contains(rule));
+
+		boolean isOnEdit2 = valueBindingSupport.addValidationRule(rule, false);
+
+		assertFalse(isOnEdit2);
+		assertTrue(valueBindingSupport.getOnEditValidators().contains(rule));
+		assertTrue(valueBindingSupport.getAfterGetValidators().contains(rule));
+
+		valueBindingSupport.removeValidationRule(rule);
+
+		assertFalse(valueBindingSupport.getOnEditValidators().contains(rule));
+		assertFalse(valueBindingSupport.getAfterGetValidators().contains(rule));
+	}
+
+	public void testValidationRuleAddAndRemoveNull() {
+		try {
+			valueBindingSupport.addValidationRule(null, false);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		boolean result = valueBindingSupport.removeValidationRule(null);
+		assertFalse(result);
+	}
+
+	// helping methods
+	// ////////////////
+
+	private void assertMessageMarkers(String... messages) {
 		Collection<String> missingMessages = new ArrayList<String>(Arrays.asList(messages));
 
 		for (IMessageMarker messageMarker : markable.getMarkersOfType(IMessageMarker.class)) {
@@ -215,7 +253,10 @@ public class ValueBindingSupportTest extends TestCase {
 		assertTrue("missing MessageMarker for " + missingMessages, missingMessages.isEmpty());
 	}
 
-	private class EvenNumberOfCharacters implements IValidationRule {
+	// helping clases
+	// ///////////////
+
+	private class EvenNumberOfCharacters implements IValidator {
 
 		public IStatus validate(final Object value) {
 			if (value == null) {
@@ -232,13 +273,9 @@ public class ValueBindingSupportTest extends TestCase {
 					+ String.class.getName());
 		}
 
-		public ValidationTime getValidationTime() {
-			return ValidationTime.ON_UPDATE_TO_MODEL;
-		}
-
 	}
 
-	private class NotEndingWithDisaster implements IValidationRule {
+	private class NotEndingWithDisaster implements IValidator {
 
 		public IStatus validate(final Object value) {
 			if (value == null) {
@@ -253,10 +290,6 @@ public class ValueBindingSupportTest extends TestCase {
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 					+ String.class.getName());
-		}
-
-		public ValidationTime getValidationTime() {
-			return ValidationTime.ON_UPDATE_TO_MODEL;
 		}
 
 	}
