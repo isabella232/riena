@@ -245,7 +245,7 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		txtExpression.bindToModel(getTextValue(lblExpression));
 		txtExpression.setText("PDX97"); //$NON-NLS-1$
 
-		txtLengthLessThan5.addValidationRule(new MaxLength(5), false);
+		txtLengthLessThan5.addValidationRule(new MaxLength(5), true);
 		txtLengthLessThan5.bindToModel(getTextValue(lblLengthLessThan5));
 
 		txtRequiredLowercase.addValidationRule(new RequiredField(), true);
