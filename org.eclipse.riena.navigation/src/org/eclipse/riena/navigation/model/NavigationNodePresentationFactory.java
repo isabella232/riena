@@ -39,7 +39,7 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 
 	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, String targetId) {
 
-		INavigationNode targetNode = findNode(sourceNode, targetId);
+		INavigationNode targetNode = findNode(getRootNode(sourceNode), targetId);
 
 		if (targetNode == null) {
 			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinition(targetId);
@@ -66,11 +66,24 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return null;
 	}
 
-	private INavigationNode<?> findNode(INavigationNode<?> sourceNode, String targetId) {
+	private INavigationNode<?> getRootNode(INavigationNode<?> node) {
+		if (node.getParent() == null) {
+			return node;
+		}
+		return getRootNode(node.getParent());
+	}
 
-		// search the tree that contains the sourceNode for a node with
-		// the presentationId targetId...
+	private INavigationNode<?> findNode(INavigationNode<?> node, String targetId) {
 
+		if (targetId.equals(node.getPresentationId())) {
+			return node;
+		}
+		for (INavigationNode<?> child : node.getChildren()) {
+			INavigationNode<?> foundNode = findNode(child, targetId);
+			if (foundNode != null) {
+				return findNode(child, targetId);
+			}
+		}
 		return null;
 	}
 
