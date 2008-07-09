@@ -15,6 +15,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -59,7 +60,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 
 	/**
 	 * @deprecated use BeansObservables.observeValue(ridget instance,
-	 * 	ITextFieldRidget.PROPERTY_TEXT);
+	 *             ITextFieldRidget.PROPERTY_TEXT);
 	 */
 	public final IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ITextFieldRidget.PROPERTY_TEXT);
@@ -177,7 +178,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private void updateTextValue() {
 		String oldValue = textValue;
 		String newValue = getUIControl().getText();
-		if (!oldValue.equals(newValue)) {
+		if (!oldValue.equals(newValue) && checkOnEditRules(newValue).isOK()) {
 			textValue = newValue;
 			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
 		}
@@ -243,7 +244,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 			String newText = getText(e);
 			IStatus status = checkOnEditRules(newText);
 			validationRulesChecked(status);
-			e.doit = status.isOK();
+			boolean block = status.getCode() != IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
+			e.doit = block;
 		}
 
 		private String getText(VerifyEvent e) {

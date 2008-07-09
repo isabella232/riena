@@ -33,9 +33,11 @@ import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
+import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRule.ValidationTime;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -707,11 +709,104 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("this is not too short", model.getValue());
 	}
 
-	public void testValidationMessage() throws Exception {
+	public void testUpdateFromRidgetWithValidationOnEditRule() {
 		Text control = getUIControl();
 		ITextFieldRidget ridget = getRidget();
+
+		ridget.addValidationRule(new ValidEmailAddress() {
+			@Override
+			public ValidationTime getValidationTime() {
+				return ValidationTime.ON_UI_CONTROL_EDITED;
+			}
+		});
 		ridget.bindToModel(bean, TestBean.PROPERTY);
-		ridget.addValidationRule(new EvenNumberOfCharacters());
+
+		assertFalse(ridget.isErrorMarked());
+		assertFalse(ridget.isDirectWriting());
+
+		// a little workaround because UITestHelper cannot send '@'
+		control.setText("a@");
+		control.setSelection(3, 3);
+		// \t triggers update
+		UITestHelper.sendString(control.getDisplay(), "b.com\t");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("a@b.com", ridget.getText());
+		assertEquals("a@b.com", bean.getProperty());
+
+		control.setFocus();
+		control.selectAll();
+		// \t triggers update
+		UITestHelper.sendString(control.getDisplay(), "invalid\t");
+
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("a@b.com", ridget.getText());
+		assertEquals("a@b.com", bean.getProperty());
+
+		// a little workaround because UITestHelper cannot send '@'
+		control.setText("c@");
+		control.setFocus();
+		control.setSelection(3, 3);
+		// \t triggers update
+		UITestHelper.sendString(control.getDisplay(), "d.com\t");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("c@d.com", ridget.getText());
+		assertEquals("c@d.com", bean.getProperty());
+	}
+
+	public void testUpdateFromRidgetWithValidationOnUpdateRule() {
+		Text control = getUIControl();
+		ITextFieldRidget ridget = getRidget();
+
+		ridget.addValidationRule(new ValidEmailAddress() {
+			@Override
+			public ValidationTime getValidationTime() {
+				return ValidationTime.ON_UPDATE_TO_MODEL;
+			}
+		});
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		assertFalse(ridget.isErrorMarked());
+		assertFalse(ridget.isDirectWriting());
+
+		// a little workaround because UITestHelper cannot send '@'
+		control.setText("a@");
+		control.setSelection(3, 3);
+		// \t triggers update
+		UITestHelper.sendString(control.getDisplay(), "b.com\t");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("a@b.com", ridget.getText());
+		assertEquals("a@b.com", bean.getProperty());
+
+		control.setFocus();
+		control.selectAll();
+		// \t triggers update
+		UITestHelper.sendString(control.getDisplay(), "invalid\t");
+
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("invalid", ridget.getText());
+		assertEquals("a@b.com", bean.getProperty());
+
+		// a little workaround because UITestHelper cannot send '@'
+		control.setText("c@");
+		control.setFocus();
+		control.setSelection(3, 3);
+		// \t triggers update
+		UITestHelper.sendString(control.getDisplay(), "d.com\t");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("c@d.com", ridget.getText());
+		assertEquals("c@d.com", bean.getProperty());
+	}
+
+	public void testValidationMessageWithOnEditRule() throws Exception {
+		Text control = getUIControl();
+		ITextFieldRidget ridget = getRidget();
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.addValidationRule(new EvenNumberOfCharacters(ValidationTime.ON_UI_CONTROL_EDITED));
 		ridget.setDirectWriting(true);
 
 		ridget.addValidationMessage("TestTextTooShortMessage");
@@ -728,6 +823,33 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(0, ridget.getMarkers().size());
 	}
 
+	public void testValidationMessageWithOnUpdateRule() throws Exception {
+		Text control = getUIControl();
+		ITextFieldRidget ridget = getRidget();
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.addValidationRule(new EvenNumberOfCharacters(ValidationTime.ON_UPDATE_TO_MODEL));
+		ridget.setDirectWriting(true);
+
+		ridget.addValidationMessage("TestTextTooShortMessage");
+
+		assertEquals(0, ridget.getMarkers().size());
+
+		// \r triggers update
+		UITestHelper.sendString(control.getDisplay(), "a\r");
+
+		assertEquals(2, ridget.getMarkers().size());
+		assertEquals("TestTextTooShortMessage", getMessageMarker(ridget.getMarkers()).getMessage());
+
+		// \r triggers update
+		UITestHelper.sendString(control.getDisplay(), "b\r");
+
+		assertEquals(0, ridget.getMarkers().size());
+	}
+
+	// helping methods
+	// ////////////////
+
 	private IMessageMarker getMessageMarker(Collection<? extends IMarker> markers) {
 		for (IMarker marker : markers) {
 			if (marker instanceof IMessageMarker) {
@@ -737,7 +859,13 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		return null;
 	}
 
-	private class EvenNumberOfCharacters implements IValidationRule {
+	private static class EvenNumberOfCharacters implements IValidationRule {
+
+		private final ValidationTime validationTime;
+
+		EvenNumberOfCharacters(ValidationTime validationTime) {
+			this.validationTime = validationTime;
+		}
 
 		public IStatus validate(final Object value) {
 			if (value == null) {
@@ -755,7 +883,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		}
 
 		public ValidationTime getValidationTime() {
-			return ValidationTime.ON_UPDATE_TO_MODEL;
+			return validationTime;
 		}
 
 	}
