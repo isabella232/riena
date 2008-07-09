@@ -14,7 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -23,6 +23,8 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
+
+import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -614,12 +616,16 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 
 	@Override
 	protected Object getRowValue(int i) {
-		return getRidget().getRowObservables().get(i);
+		// return getRidget().getRowObservables().get(i);
+		// return getRidget().getRowObservables().get(i);
+		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		return rowObservables.get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
-		IObservableList rowObservables = getRidget().getRowObservables();
+		// IObservableList rowObservables = getRidget().getRowObservables();
+		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		Object[] elements = getRidget().getMultiSelectionObservable().toArray();
 		int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {
