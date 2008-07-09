@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
@@ -110,7 +112,8 @@ public class ValidEmailAddressTest extends TestCase {
 
 		// mixed segments:
 		// assertTrue(rule.validate("user@[192.168.2.100].de").isOK());
-		// assertTrue(rule.validate("user@#1234567890.[127.0.0.1].example").isOK());
+		//assertTrue(rule.validate("user@#1234567890.[127.0.0.1].example").isOK(
+		// ));
 
 		// local part with escaped character:
 		// assertTrue(rule.validate("us\\,er@domain.example").isOK());
@@ -127,9 +130,18 @@ public class ValidEmailAddressTest extends TestCase {
 		//
 		// assertTrue(rule
 		// .validate(
-		// "user.who.has.an@extreme.unbelievalble.long.strange.email.address.of.doom.withLotsOf.Strange.UpperCaseletters.co.uk.example")
+		// "user.who.has.an@extreme.unbelievalble.long.strange.email.address.of.doom.withLotsOf.Strange.UpperCaseletters.co.uk.example"
+		// )
 		// .isOK());
+	}
 
+	public void testDoesNotBlockInputWhenFailing() {
+
+		final ValidEmailAddress rule = new ValidEmailAddress();
+		IStatus result = rule.validate("invalid");
+
+		assertFalse(result.isOK());
+		assertEquals(IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
 	}
 
 }
