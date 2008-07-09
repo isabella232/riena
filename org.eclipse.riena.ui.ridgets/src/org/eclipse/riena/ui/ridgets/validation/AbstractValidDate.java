@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
-import org.apache.commons.validator.GenericValidator;
-import org.eclipse.core.runtime.IStatus;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+
 import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * Validator checking that a String matches a given pattern for a Date.
@@ -59,16 +62,19 @@ public abstract class AbstractValidDate implements IValidationRule {
 	 * @see org.eclipse.core.databinding.validation.IValidator#validate(java.lang.Object)
 	 */
 	public IStatus validate(final Object value) {
+		System.out.println("validate date:" + value);
 		if (value != null) {
 			if (!(value instanceof String)) {
 				throw new ValidationFailure("ValidCharacters can only validate objects of type String."); //$NON-NLS-1$
 			}
 			final String string = (String) value;
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
+				System.out.println("error");
 				return ValidationRuleStatus
 						.error(false, "Invalid date (must match the pattern " + pattern + ").", this);
 			}
 		}
+		System.out.println("ok");
 		return ValidationRuleStatus.ok();
 	}
 
@@ -84,9 +90,38 @@ public abstract class AbstractValidDate implements IValidationRule {
 		}
 
 		if (checkValidIntermediate) {
-			return GenericValidator.isDate(complete(value, datePattern), datePattern, false);
+			return isDate(complete(value, datePattern), datePattern, false);
 		}
-		return GenericValidator.isDate(value, datePattern, true);
+		return isDate(value, datePattern, true);
+		// if (checkValidIntermediate) {
+		// return GenericValidator.isDate(complete(value, datePattern),
+		// datePattern, false);
+		// }
+		// return GenericValidator.isDate(value, datePattern, true);
+	}
+
+	private boolean isDate(String value, String pattern, boolean strict) {
+		if (value == null || pattern == null || pattern.length() <= 0) {
+
+			return false;
+		}
+		if (strict && value.length() != pattern.length()) {
+			return false;
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+		formatter.setLenient(false);
+
+		ParsePosition pos = new ParsePosition(0);
+		formatter.parse(value, pos);
+		if (pos.getErrorIndex() != -1) {
+			return false;
+		}
+		if (strict) {
+			if (pos.getIndex() < value.length()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private String complete(String value, String datePattern) {
@@ -97,6 +132,9 @@ public abstract class AbstractValidDate implements IValidationRule {
 		int nextSeparatorIndex = nextSeparatorIndex(datePatternToCheck);
 		while (nextSeparatorIndex != -1) {
 			int nextSeparatorIndexOfValueToCheck = valueToCheck.indexOf(datePatternToCheck.charAt(nextSeparatorIndex));
+			if (nextSeparatorIndexOfValueToCheck == -1) {
+				break;
+			}
 			if (nextSeparatorIndexOfValueToCheck == 0
 					|| isPlaceholderInvalidSubstitutionNeeded(valueToCheck.substring(0,
 							nextSeparatorIndexOfValueToCheck))) {

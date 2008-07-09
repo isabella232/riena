@@ -14,6 +14,7 @@ import java.util.Hashtable;
 
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -42,6 +43,22 @@ public class Activator implements BundleActivator {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/PingPongWS");
 
 		pingPongRegHessian = context.registerService(IPingPong.class.getName(), pingPong, properties);
+
+		// create ecf service
+		// PingPong pingPong = new PingPong();
+		// Hashtable<String, String> properties = new Hashtable<String,
+		// String>(3);
+		//
+		// properties.put(RSDPublisherProperties.PROP_IS_REMOTE,
+		// Boolean.TRUE.toString());
+		// properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, "ecf");
+		// properties.put("ecf.type", "generic");
+		// properties.put(RSDPublisherProperties.PROP_REMOTE_PATH,
+		// "ecftcp://localhost:30000/server");
+		//
+		// pingPongRegHessian =
+		// context.registerService(IPingPong.class.getName(), pingPong,
+		// properties);
 
 	}
 

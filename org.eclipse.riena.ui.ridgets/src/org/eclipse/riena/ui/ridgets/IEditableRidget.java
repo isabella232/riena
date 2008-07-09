@@ -12,11 +12,12 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.Collection;
 
-import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.validation.IValidator;
 
 /**
  * Ridget with a value that can be edited, validated and converted.
@@ -60,6 +61,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 *             if validationRule is null.
 	 */
 	void addValidationRule(IValidator validationRule);
+
+	void addValidationRule(IValidator validationRule, boolean validateOnEdit);
 
 	/**
 	 * Removes a validator.

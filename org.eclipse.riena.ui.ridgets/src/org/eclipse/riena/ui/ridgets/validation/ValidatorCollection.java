@@ -71,6 +71,10 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 		validators.remove(validator);
 	}
 
+	public boolean contains(final IValidator validator) {
+		return validators.contains(validator);
+	}
+
 	/**
 	 * Validates the value using all validators and returns a joined status.
 	 * 

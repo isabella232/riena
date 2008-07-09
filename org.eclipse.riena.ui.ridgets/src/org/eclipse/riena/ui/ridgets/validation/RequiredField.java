@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IStatus;
 
 /**
  * Implementation for a required field validation. This rule accepts any String
- * which is not either <tt>null</tt>, empty or all whitespace including
- * ignored characters.
+ * which is not either <tt>null</tt>, empty or all whitespace including ignored
+ * characters.
  */
 public class RequiredField implements IValidationRule {
 
@@ -52,7 +52,9 @@ public class RequiredField implements IValidationRule {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime
+	 * ()
 	 */
 	public ValidationTime getValidationTime() {
 		return ValidationTime.ON_UI_CONTROL_EDITED;
@@ -61,7 +63,9 @@ public class RequiredField implements IValidationRule {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.core.databinding.validation.IValidator#validate(java.lang.Object)
+	 * @see
+	 * org.eclipse.core.databinding.validation.IValidator#validate(java.lang
+	 * .Object)
 	 */
 	public IStatus validate(final Object value) {
 		if (value == null) {
@@ -79,6 +83,6 @@ public class RequiredField implements IValidationRule {
 				return ValidationRuleStatus.ok();
 			}
 		}
-		return ValidationRuleStatus.error(true, "'String must not be blank.", this);
+		return ValidationRuleStatus.error(false, "'String must not be blank.", this);
 	}
 }
