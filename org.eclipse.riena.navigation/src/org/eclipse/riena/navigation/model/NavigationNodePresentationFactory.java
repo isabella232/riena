@@ -26,11 +26,11 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 
 	private static NavigationNodePresentationFactory factory;
 
-	/**
-	 * Constructor (private). no instance allowed.
-	 */
-	private NavigationNodePresentationFactory() {
+	public NavigationNodePresentationFactory() {
 		// TODO Auto-generated constructor stub
+
+		// instantiation of this class would populate instance variable
+		// <code>webBrowserCreator</code>
 
 		NodePresentationData target = new NodePresentationData();
 		Inject.extension(ID).useType(INavigationNodePresentationDefiniton.class).into(target).andStart(
@@ -54,12 +54,6 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 	}
 
 	private INavigationNodePresentationDefiniton getPresentationDefinition(String targetId) {
-		if (factory == null) {
-			// side effect:
-			// instantiation of this class would populate instance variable
-			// <code>webBrowserCreator</code>
-			factory = new NavigationNodePresentationFactory();
-		}
 
 		// TODO EAC: get presentation definition for targetId
 
