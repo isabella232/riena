@@ -15,17 +15,22 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 
 /**
- * Implementation for a regular expression check. Note that the value
- * <tt>null</tt> will be treated as an empty string. The option <tt>i</tt>,
- * <tt>m</tt> and <tt>x</tt>, as featured in the Perl5 native format
- * <quote>[m]/pattern/[i][m][s][x]</quote> are supported through the
- * {@link Option} enumeration.<br>
+ * Implementation for a regular expression check. If the rule fails it will
+ * prevent updating the ridget and model values. The rule will not block invalid
+ * input to the widget.
+ * <p>
+ * Note that the value <tt>null</tt> will be treated as an empty string. The
+ * option <tt>i</tt>, <tt>m</tt> and <tt>x</tt>, as featured in the Perl5 native
+ * format <quote>[m]/pattern/[i][m][s][x]</quote> are supported through the
+ * {@link Option} enumeration.
+ * <p>
  * At the moment this class supports Perl5 regular expressions. It is however
  * recommended to stick to common standards between
  * {@linkplain java.util.regex.Pattern java.util.regex} and Perl5 regular
- * expressions, if possible.<br>
- * <br>
+ * expressions, if possible.
+ * <p>
  * This validation rule does not support partial correctness checking.
+ * <p>
  * 
  * @see org.apache.oro.text.perl.Perl5Util#match(String, String)
  * @see java.util.regex.Pattern
@@ -78,8 +83,8 @@ public class ValidExpression implements IValidationRule {
 	 * @see org.apache.oro.text.perl.Perl5Util#match(String, String)
 	 * @see java.util.regex.Pattern#matches(String, CharSequence)
 	 * @throws some_kind_of_runtime_exception
-	 *             if parameter is <tt>null</tt>, pattern is a String of
-	 *             length zero, or pattern is malformed.
+	 *             if parameter is <tt>null</tt>, pattern is a String of length
+	 *             zero, or pattern is malformed.
 	 */
 	public ValidExpression(final String pattern, final Option... options) {
 		Assert.isNotNull(pattern, "pattern must not be null"); //$NON-NLS-1$
@@ -114,7 +119,7 @@ public class ValidExpression implements IValidationRule {
 		if (matcher.match("/" + pattern + "/" + options, string)) { //$NON-NLS-1$//$NON-NLS-2$
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(true, "'String '" + string + "' does not match regex '" + pattern + "'.",
+		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'.",
 				this);
 	}
 

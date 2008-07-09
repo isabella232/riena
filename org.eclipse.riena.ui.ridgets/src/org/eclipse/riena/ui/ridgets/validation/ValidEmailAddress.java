@@ -17,6 +17,9 @@ import org.eclipse.core.runtime.IStatus;
  * Implementation for a email address validation. This rule accepts any String
  * which is either <tt>null</tt>, empty, all whitespace or a valid email
  * address.
+ * <p>
+ * If the rule fails it will prevent updating the ridget and model values. The
+ * rule will not block invalid input to the widget.
  */
 public class ValidEmailAddress implements IValidationRule {
 
