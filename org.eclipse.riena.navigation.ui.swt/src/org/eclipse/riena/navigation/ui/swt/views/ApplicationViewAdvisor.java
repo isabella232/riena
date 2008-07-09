@@ -361,7 +361,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	/**
@@ -501,6 +500,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
 		ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
 		coolItem.setControl(toolBar);
+		toolBar.addMouseMoveListener(new ToolBarMouseListener());
 
 		// create for every top menu a tool item and create the corresponding
 		// menu
@@ -510,7 +510,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				MenuManager topMenuManager = (MenuManager) contribItems[i];
 				ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
 				toolItem.setText(topMenuManager.getMenuText());
-				createMenu(parent, toolItem, topMenuManager);
+				createMenu(toolBar, toolItem, topMenuManager);
 			}
 		}
 
@@ -533,7 +533,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {
 
-		final Menu menu = topMenuManager.createContextMenu(parent.getShell());
+		final Menu menu = topMenuManager.createContextMenu(parent);
 		menu.addMenuListener(new MenuListener() {
 
 			/**
@@ -588,6 +588,44 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		Point pt = control.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		pt = item.computeSize(pt.x, pt.y);
 		item.setSize(pt);
+	}
+
+	/**
+	 * If the mouse moves over an unselected item of the tool bar and another
+	 * item was selected, deselect the other item and select the item below the
+	 * mouse pointer.<br>
+	 * <i>Does not work, if menu is visible.</i>
+	 */
+	private static class ToolBarMouseListener implements MouseMoveListener {
+
+		/**
+		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void mouseMove(MouseEvent e) {
+
+			if (e.getSource() instanceof ToolBar) {
+
+				ToolBar toolBar = (ToolBar) e.getSource();
+
+				ToolItem selectedItem = null;
+				ToolItem[] items = toolBar.getItems();
+				for (int i = 0; i < items.length; i++) {
+					if (items[i].getSelection()) {
+						selectedItem = items[i];
+					}
+				}
+
+				ToolItem hoverItem = toolBar.getItem(new Point(e.x, e.y));
+				if (hoverItem != null) {
+					if (!hoverItem.getSelection() && (selectedItem != null)) {
+						selectedItem.setSelection(false);
+						hoverItem.setSelection(true);
+					}
+				}
+			}
+
+		}
+
 	}
 
 	/**

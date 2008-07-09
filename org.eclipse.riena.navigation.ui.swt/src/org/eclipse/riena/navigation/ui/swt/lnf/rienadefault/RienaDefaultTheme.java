@@ -30,8 +30,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	private static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
 	private static final String PATH_ICONS = "org.eclipse.riena.navigation.ui.swt:" + PATH_SEPARATOR + "icons"; //$NON-NLS-1$ //$NON-NLS-2$
-	private static final String IMAGE_FOLDER = PATH_ICONS + PATH_SEPARATOR + "fldr_obj.gif"; //$NON-NLS-1$
-	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "folder_closed.gif"; //$NON-NLS-1$
+	private static final String IMAGE_FOLDER = PATH_ICONS + PATH_SEPARATOR + "node_expanded.gif"; //$NON-NLS-1$
+	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "node_collapsed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
 	private static final String IMAGE_THIN_CLOSE = PATH_ICONS + PATH_SEPARATOR + "thin_close_view.gif"; //$NON-NLS-1$
 	private static final String IMAGE_BACKGROUND = PATH_ICONS + PATH_SEPARATOR + "background.png"; //$NON-NLS-1$

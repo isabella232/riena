@@ -107,33 +107,6 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="org.eclipse.riena.example.client.actionSet"
-            label="Sample Action Set"
-            visible="false">
-         <menu
-               id="sampleMenu"
-               label="Sample &amp;Menu">
-            <separator
-                  name="sampleGroup">
-            </separator>
-         </menu>
-         <action
-               class="org.eclipse.riena.example.client.actions.SampleAction"
-               enablesFor="*"
-               hoverIcon="icons/ledred.png"
-               icon="icons/0457_a_a00.png"
-               id="org.eclipse.riena.example.client.actions.SampleAction"
-               label="&amp;Action"
-               menubarPath="sampleMenu/sampleGroup"
-               state="false"
-               toolbarPath="sampleGroup"
-               tooltip="Hello, Eclipse world">
-         </action>
-      </actionSet>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="subapplication.1">
@@ -149,24 +122,20 @@
             name="Exit">
       </command>
       <command
-            id="org.eclipse.riena.example.client.rienaDefaultLnfCommand"
-            name="Default">
-      </command>
-      <command
-            id="org.eclipse.riena.example.client.exampleLnfCommand"
-            name="Example">
+            id="org.eclipse.riena.example.client.zoomInCommand"
+            name="In">
       </command>
       <command
             id="org.eclipse.riena.example.client.certainViewCommand"
             name="Certain View">
       </command>
       <command
-            id="org.eclipse.riena.example.client.zoomInCommand"
-            name="In">
-      </command>
-      <command
             id="org.eclipse.riena.example.client.zoomOutCommand"
             name="Out">
+      </command>
+      <command
+            id="org.eclipse.riena.example.client.certainPerspectiveCommand"
+            name="Certain Perspective">
       </command>
    </extension>
    <extension
@@ -174,6 +143,7 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
+               id="fileMenu"
                label="File"
                mnemonic="F">
             <menu
@@ -219,14 +189,22 @@
          </menu>
          -->
          <menu
+               id="contextMenu"
                label="Context menu"
                mnemonic="x">
             <command
                   commandId="org.eclipse.riena.example.client.certainViewCommand"
-                  hoverIcon="icons/ledred.png"
-                  icon="icons/ledlightgreen.png"
+                  icon="icons/ledred.png"
                   id="org.eclipse.riena.example.client.certainViewMenuItem"
-                  mnemonic="V">
+                  mnemonic="V"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.certainPerspectiveCommand"
+                  icon="icons/ledlightgreen.png"
+                  id="org.eclipse.riena.example.client.certainPerspectiveMenuItem"
+                  mnemonic="P"
+                  style="push">
             </command>
          </menu>
       </menuContribution>
@@ -238,13 +216,22 @@
                   commandId="org.eclipse.riena.example.client.exitCommand"
                   id="org.eclipse.riena.example.client.exitToolBarItem"
                   label="Exit"
+                  mnemonic="x"
                   style="push">
             </command>
             <command
                   commandId="org.eclipse.riena.example.client.certainViewCommand"
-                  hoverIcon="icons/ledred.png"
-                  icon="icons/ledlightgreen.png"
+                  icon="icons/ledred.png"
                   id="org.eclipse.riena.example.client.certainViewToolBarItem"
+                  label="View"
+                  mnemonic="V"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.certainPerspectiveCommand"
+                  icon="icons/ledlightgreen.png"
+                  label="Perspective"
+                  mnemonic="P"
                   style="push">
             </command>
          </toolbar>
@@ -257,14 +244,6 @@
             commandId="org.eclipse.riena.example.client.exitCommand">
       </handler>
       <handler
-            class="org.eclipse.riena.example.client.handler.RienaDefaultLnfHandler"
-            commandId="org.eclipse.riena.example.client.rienaDefaultLnfCommand">
-      </handler>
-      <handler
-            class="org.eclipse.riena.example.client.handler.ExampleLnfHandler"
-            commandId="org.eclipse.riena.example.client.exampleLnfCommand">
-      </handler>
-      <handler
             class="org.eclipse.riena.example.client.handler.CertainViewHandler"
             commandId="org.eclipse.riena.example.client.certainViewCommand">
          <enabledWhen>
@@ -272,6 +251,18 @@
                   variable="activePartId">
                <equals
                      value="customerDetailView">
+               </equals>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.CertainPerspectiveHandler"
+            commandId="org.eclipse.riena.example.client.certainPerspectiveCommand">
+         <enabledWhen>
+            <with
+                  variable="activeWorkbenchWindow.activePerspective">
+               <equals
+                     value="subapplication.2">
                </equals>
             </with>
          </enabledWhen>
