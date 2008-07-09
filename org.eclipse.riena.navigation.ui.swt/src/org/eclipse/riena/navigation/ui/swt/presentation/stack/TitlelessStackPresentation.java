@@ -309,9 +309,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (navigation != null) {
 			navigation.setVisible(false);
 		}
-		// if (subApplicationSwitcher != null) {
-		// subApplicationSwitcher.setVisible(false);
-		// }
 		parent.setVisible(false);
 
 	}

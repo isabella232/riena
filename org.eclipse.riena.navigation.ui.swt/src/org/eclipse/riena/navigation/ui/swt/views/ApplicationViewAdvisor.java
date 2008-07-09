@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
@@ -31,6 +33,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -53,7 +56,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -81,6 +83,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
 	private static final int COOLBAR_HIGHT = 22;
 	private static final int COOLBAR_TOP_MARGIN = 2;
+	private static final int STATUSLINE_HIGHT = 22;
 	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
 
 	enum BtnState {
@@ -93,6 +96,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private Cursor grabCursor;
 	private Cursor defaultCursor;
 	private Composite switcherComposite;
+	private CoolBar coolBar;
+	private ToolBar toolBar;
+	private Composite menuBarComposite;
+	private Composite coolBarComposite;
+	private Composite mainComposite;
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationViewController pController) {
 		super(configurer);
@@ -126,10 +134,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private void configureWindow() {
 
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		// don't show the default menu and tool bar
-		configurer.setShowMenuBar(false);
-		configurer.setShowCoolBar(false);
-		configurer.setShowStatusLine(false);
 		configurer.setTitle(controller.getNavigationNode().getLabel());
 		configurer.setInitialSize(APPLICATION_SIZE);
 		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
@@ -152,6 +156,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 		super.postWindowOpen();
 		doInitialBinding();
+
+		IStatusLineManager statusline = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
+		statusline.setMessage(null, "Very simple status line");
+
 	}
 
 	private void doInitialBinding() {
@@ -166,24 +174,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	@Override
 	public void dispose() {
-		super.dispose();
-		disposeResource(handCursor);
-		disposeResource(grabCursor);
-		disposeResource(defaultCursor);
-	}
 
-	/**
-	 * Disposes the given resource, if the the resource is not null and isn't
-	 * already disposed.
-	 * 
-	 * @param resource
-	 *            - resouce to dispose
-	 */
-	private void disposeResource(Resource resource) {
-		if ((resource != null) && (!resource.isDisposed())) {
-			resource.dispose();
-			resource = null;
-		}
+		super.dispose();
+
+		SwtUtilities.disposeResource(handCursor);
+		SwtUtilities.disposeResource(grabCursor);
+		SwtUtilities.disposeResource(defaultCursor);
+
+		SwtUtilities.disposeWidget(toolBar);
+		SwtUtilities.disposeWidget(coolBar);
+		SwtUtilities.disposeWidget(switcherComposite);
+		SwtUtilities.disposeWidget(menuBarComposite);
+		SwtUtilities.disposeWidget(coolBarComposite);
+		SwtUtilities.disposeWidget(mainComposite);
+
 	}
 
 	/**
@@ -198,9 +202,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setLayout(new FormLayout());
 		createLogoComposite(shell);
 		switcherComposite = createSwitcherComposite(shell);
-		Composite menuBarComposite = createMenuBarComposite(shell, switcherComposite);
-		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
-		createMainComposite(shell, coolBarComposite);
+		menuBarComposite = createMenuBarComposite(shell, switcherComposite);
+		coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
+		mainComposite = createMainComposite(shell, coolBarComposite);
+		createStatusLineComposite(shell);
 
 	}
 
@@ -338,6 +343,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
+	/**
+	 * TODO
+	 */
+	private StatusLineManager getStatusLineManager() {
+
+		WorkbenchWindow workbenchWindow = (WorkbenchWindow) getWindowConfigurer().getWindow();
+		return workbenchWindow.getStatusLineManager();
+
+	}
+
 	private class SubApplicationListener extends SubApplicationAdapter {
 
 		/**
@@ -398,11 +413,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		assert parent.getLayout() instanceof FormLayout;
 
+		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int borderWidth = borderRenderer.getBorderWidth();
-		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		logoData.top = new FormAttachment(0, borderWidth);
 		int padding = borderRenderer.getCompleteBorderWidth();
 		int height = getSwitchterTopMargin() + getSwitchterHeight() + padding - 1;
@@ -420,8 +435,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			logoData.left = new FormAttachment(0, borderWidth);
 			break;
 		}
-
 		topLeftComposite.setLayoutData(logoData);
+
 		topLeftComposite.addPaintListener(new LogoPaintListener());
 
 	}
@@ -496,9 +511,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private CoolBar createMenuBar(Composite parent) {
 
-		CoolBar coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
+		coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
 		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
-		ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
+		toolBar = new ToolBar(coolBar, SWT.FLAT);
 		coolItem.setControl(toolBar);
 		toolBar.addMouseMoveListener(new ToolBarMouseListener());
 
@@ -530,8 +545,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            - tool item with menu
 	 * @param topMenuManager
 	 *            - menu manager
+	 * @return menu
 	 */
-	private void createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {
+	private Menu createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {
 
 		final Menu menu = topMenuManager.createContextMenu(parent);
 		menu.addMenuListener(new MenuListener() {
@@ -574,6 +590,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			}
 
 		});
+
+		return menu;
 
 	}
 
@@ -678,11 +696,38 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, 0, 0);
-		formData.bottom = new FormAttachment(100, -padding);
+		formData.bottom = new FormAttachment(100, -(padding + STATUSLINE_HIGHT));
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
 		composite.setLayoutData(formData);
 		getWindowConfigurer().createPageComposite(composite);
+
+		return composite;
+
+	}
+
+	private Composite createStatusLineComposite(Shell shell) {
+
+		assert shell.getLayout() instanceof FormLayout;
+
+		Point grabCornerSize = GrabCorner.getGrabCornerSize();
+		int padding = getShellPadding();
+
+		Composite composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
+		// composite.setBackground(LnfManager.getLnf().getColor("red"));
+		composite.setLayout(new FillLayout());
+		FormData formData = new FormData();
+		formData.height = STATUSLINE_HIGHT;
+		formData.bottom = new FormAttachment(100, -padding);
+		formData.left = new FormAttachment(0, padding);
+		formData.right = new FormAttachment(100, -(padding + grabCornerSize.x));
+		composite.setLayoutData(formData);
+
+		getWindowConfigurer().getPresentationFactory().createStatusLineControl(getStatusLineManager(), composite);
+
+		if (GrabCorner.isResizeable()) {
+			new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
+		}
 
 		return composite;
 
@@ -853,7 +898,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse.swt.events.ControlEvent)
 		 */
 		public void controlResized(ControlEvent e) {
-			// noting to do ?
 		}
 
 		/**
@@ -1081,7 +1125,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 					showHandCursor(shell);
 				}
 			} else {
-				showDefaultCursor(shell);
+				if (!move) {
+					showDefaultCursor(shell);
+				}
 			}
 
 		}
@@ -1173,13 +1219,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		public void mouseMove(MouseEvent e) {
 			updateButtonStates(e);
 			if (move) {
-				Point pointer = new Point(e.x, e.y);
-				if (!getShellRenderer().isInsideMoveArea(pointer)) {
-					move = false;
-				}
-				if (move) {
-					move(e);
-				}
+				move(e);
 			}
 			updateCursor(e);
 		}

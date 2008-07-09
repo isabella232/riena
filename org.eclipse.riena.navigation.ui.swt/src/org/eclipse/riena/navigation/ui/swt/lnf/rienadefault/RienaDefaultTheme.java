@@ -56,6 +56,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_RESTORE_INACTIVE_ICON = PATH_ICONS + PATH_SEPARATOR + "mb_restore_inactive.gif"; //$NON-NLS-1$
 	private static final String IMAGE_HAND = PATH_ICONS + PATH_SEPARATOR + "hand.png"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB = PATH_ICONS + PATH_SEPARATOR + "grab.png"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB_CORNER = PATH_ICONS + PATH_SEPARATOR + "grabCorner.png"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
@@ -184,6 +185,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 				IMAGE_RESTORE_INACTIVE_ICON));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE, new ImageLnfResource(IMAGE_HAND));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE, new ImageLnfResource(IMAGE_GRAB));
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE, new ImageLnfResource(IMAGE_GRAB_CORNER));
 
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
@@ -201,7 +203,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomSettings(Map<String, Object> table) {
 
-		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, false);
+		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, true);
 
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
@@ -212,6 +214,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
+		table.put(ILnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
 
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 22);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);

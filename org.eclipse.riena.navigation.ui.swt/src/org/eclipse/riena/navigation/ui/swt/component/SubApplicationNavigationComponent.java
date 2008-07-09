@@ -28,7 +28,6 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	}
 
 	protected ISubApplicationListener getModuleGroupObserver() {
-		System.out.println(moduleGroupObserver.toString());
 		return moduleGroupObserver;
 	}
 

@@ -23,6 +23,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.EmbeddedBorderRender
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.EmbeddedTitlebarRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewIdTest;
+import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
 
 /**
  * Tests all test cases within package:
@@ -42,6 +43,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(SwtViewIdTest.class);
 		suite.addTestSuite(ModuleItemTest.class);
 		suite.addTestSuite(ShellBorderRendererTest.class);
+		suite.addTestSuite(ApplicationViewAdvisorTest.class);
 		return suite;
 	}
 

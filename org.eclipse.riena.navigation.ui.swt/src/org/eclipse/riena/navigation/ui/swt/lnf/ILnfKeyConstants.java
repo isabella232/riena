@@ -101,6 +101,7 @@ public class ILnfKeyConstants {
 	public static final String TITLELESS_SHELL_RESTORE_INACTIVE_ICON = "TitlelessShell.restoreInactiveIcon"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_GRAB_IMAGE = "TitlelessShell.grabImage"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_HAND_IMAGE = "TitlelessShell.handImage"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_GRAB_CORNER_IMAGE = "TitlelessShell.grabCornerImage"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
@@ -122,6 +123,7 @@ public class ILnfKeyConstants {
 	public static final String TITLELESS_SHELL_SHOW_MAX = "TitlelessShell.showMax"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_SHOW_MIN = "TitlelessShell.showMin"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_SHOW_CLOSE = "TitlelessShell.showClose"; //$NON-NLS-1$
+	public static final String TITLELESS_SHELL_RESIZEABLE = "TitlelessShell.resizeable"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_SWITCHER_TOP_MARGIN = "SubApplicationSwitcher.topMargin"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_HEIGHT = "SubApplicationSwitcher.height"; //$NON-NLS-1$

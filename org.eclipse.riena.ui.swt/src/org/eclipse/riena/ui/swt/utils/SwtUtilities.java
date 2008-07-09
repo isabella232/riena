@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.swt.utils;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Resource;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * A collection of utility methods for SWT.
@@ -32,15 +34,15 @@ public final class SwtUtilities {
 	 * the maximum width.<br>
 	 * The clipped text always ends with three dots ("...").
 	 * 
-	 * @param gc -
-	 *            graphics context
-	 * @param text -
-	 *            text
-	 * @param maxWidth -
-	 *            maximum of the text
+	 * @param gc
+	 *            - graphics context
+	 * @param text
+	 *            - text
+	 * @param maxWidth
+	 *            - maximum of the text
 	 * @return truncated text
 	 */
-	public static String clipText(GC gc, String text, int maxWidth) {
+	public static String clipText(final GC gc, final String text, int maxWidth) {
 
 		int textwidth = calcTextWidth(gc, text);
 		if (textwidth > maxWidth) {
@@ -69,13 +71,13 @@ public final class SwtUtilities {
 	 * Calculates the width of the given text based on the current settings of
 	 * the given graphics context.
 	 * 
-	 * @param gc -
-	 *            graphics context
-	 * @param text -
-	 *            text
+	 * @param gc
+	 *            - graphics context
+	 * @param text
+	 *            - text
 	 * @return width of text
 	 */
-	public static int calcTextWidth(GC gc, String text) {
+	public static int calcTextWidth(final GC gc, final String text) {
 
 		return calcTextWidth(gc, new StringBuffer(text));
 
@@ -85,13 +87,13 @@ public final class SwtUtilities {
 	 * Calculates the width of the given text based on the current settings of
 	 * the given graphics context.
 	 * 
-	 * @param gc -
-	 *            graphics context
-	 * @param text -
-	 *            text
+	 * @param gc
+	 *            - graphics context
+	 * @param text
+	 *            - text
 	 * @return width of text
 	 */
-	public static int calcTextWidth(GC gc, StringBuffer text) {
+	public static int calcTextWidth(final GC gc, final StringBuffer text) {
 
 		int width = 0;
 		if (text == null) {
@@ -118,7 +120,7 @@ public final class SwtUtilities {
 	 * 
 	 * @pre color != null;
 	 */
-	public static Color makeBrighter(Color color, float f) {
+	public static Color makeBrighter(final Color color, float f) {
 
 		assert color != null;
 		assert f >= 0.0;
@@ -136,6 +138,35 @@ public final class SwtUtilities {
 		RGB rgb = new RGB(h, s, b);
 
 		return new Color(color.getDevice(), rgb);
+
+	}
+
+	/**
+	 * Disposes the given resource, if the the resource is not null and isn't
+	 * already disposed.
+	 * 
+	 * @param resource
+	 *            - resource to dispose
+	 */
+	public static void disposeResource(Resource resource) {
+		if ((resource != null) && (!resource.isDisposed())) {
+			resource.dispose();
+			resource = null;
+		}
+	}
+
+	/**
+	 * Disposes the given widget, if the the widget is not null and isn't
+	 * already disposed.
+	 * 
+	 * @param widget
+	 *            - widget to dispose
+	 */
+	public static void disposeWidget(Widget widget) {
+		if ((widget != null) && (!widget.isDisposed())) {
+			widget.dispose();
+			widget = null;
+		}
 
 	}
 
