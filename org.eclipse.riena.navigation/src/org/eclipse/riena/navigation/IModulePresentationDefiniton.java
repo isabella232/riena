@@ -17,4 +17,16 @@ package org.eclipse.riena.navigation;
  */
 public interface IModulePresentationDefiniton {
 
+	/**
+	 * Returns the ModuleComposer for this module presentation
+	 */
+
+	INodeProvider getProvider();
+
+	/**
+	 * The id of this presentation
+	 */
+
+	String getPresentationId();
+
 }

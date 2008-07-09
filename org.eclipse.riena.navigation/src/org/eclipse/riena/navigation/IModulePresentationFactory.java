@@ -18,4 +18,9 @@ package org.eclipse.riena.navigation;
  */
 public interface IModulePresentationFactory {
 
+	/**
+	 * Returns the module presentation for this given presentationID
+	 */
+
+	IModulePresentationDefiniton getPresentation(String id);
 }
