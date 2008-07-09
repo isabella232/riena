@@ -11,16 +11,22 @@
 package org.eclipse.riena.navigation;
 
 /**
- * A ModulePresentationFactory provides a ModulePresentationDefinition, given by
- * a presentationID
+ * A modulePresentationDefinition defines the navigationModule to be activated.
  * 
- * @author erich Achilles
+ * @author Erich Achilles
  */
-public interface IModulePresentationFactory {
+public interface INavigationNodePresentationDefiniton {
 
 	/**
-	 * Returns the module presentation for this given presentationID
+	 * Returns the ModuleComposer for this module presentation
 	 */
 
-	IModulePresentationDefiniton getPresentation(String id);
+	INodeProvider getProvider();
+
+	/**
+	 * The id of this presentation
+	 */
+
+	String getPresentationId();
+
 }

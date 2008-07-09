@@ -10,22 +10,39 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IModulePresentationDefiniton;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.INodeProvider;
 
 /**
- *
+ * 
  */
 public class NavigationNodePresentationFactory implements INavigationNodePresentationFactory {
+
+	private static final String ID = "de.compeople.scp.navigation.ui.swing.ModulePresentation";
+
+	private static NavigationNodePresentationFactory factory;
+
+	/**
+	 * Constructor (private). no instance allowed.
+	 */
+	private NavigationNodePresentationFactory() {
+		// TODO Auto-generated constructor stub
+
+		NodePresentationData target = new NodePresentationData();
+		Inject.extension(ID).useType(INavigationNodePresentationDefiniton.class).into(target).andStart(
+				Activator.getDefault().getContext());
+	}
 
 	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, String targetId) {
 
 		INavigationNode targetNode = findNode(sourceNode, targetId);
 
 		if (targetNode == null) {
-			IModulePresentationDefiniton presentationDefinition = getPresentationDefinition(targetId);
+			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinition(targetId);
 			INodeProvider provider = presentationDefinition.getProvider();
 			targetNode = provider.provide();
 
@@ -36,8 +53,16 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return targetNode;
 	}
 
-	private IModulePresentationDefiniton getPresentationDefinition(String targetId) {
-		// TODO Auto-generated method stub
+	private INavigationNodePresentationDefiniton getPresentationDefinition(String targetId) {
+		if (factory == null) {
+			// side effect:
+			// instantiation of this class would populate instance variable
+			// <code>webBrowserCreator</code>
+			factory = new NavigationNodePresentationFactory();
+		}
+
+		// TODO EAC: get presentation definition for targetId
+
 		return null;
 	}
 
@@ -47,6 +72,20 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		// the presentationId targetId...
 
 		return null;
+	}
+
+	private class NodePresentationData {
+
+		private INavigationNodePresentationDefiniton[] data;
+
+		public void update(INavigationNodePresentationDefiniton[] data) {
+			this.data = data;
+		}
+
+		public INavigationNodePresentationDefiniton[] getData() {
+			return data;
+		}
+
 	}
 
 }
