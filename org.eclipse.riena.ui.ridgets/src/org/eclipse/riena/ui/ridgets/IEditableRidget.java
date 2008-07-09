@@ -12,12 +12,11 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.Collection;
 
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
-
-import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.validation.IValidator;
 
 /**
  * Ridget with a value that can be edited, validated and converted.
@@ -59,18 +58,42 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 *            The validation rule to add (non-null).
 	 * @throws RuntimeException
 	 *             if validationRule is null.
+	 * @deprecated use {@link #addValidationRule(IValidator, boolean)}
 	 */
 	void addValidationRule(IValidator validationRule);
 
-	void addValidationRule(IValidator validationRule, boolean validateOnEdit);
+	/**
+	 * Adds a validator to this ridget.
+	 * <p>
+	 * By default validators will be evaluated when updating from the UI-control
+	 * to the ridget ("on edit") and when updating from the ridget to the model
+	 * ("on update").
+	 * <p>
+	 * Failed validators cause an error marker to apper next to the UI-control.
+	 * "On edit" validators may choose to block user input. The reaction to a
+	 * failed validation can be changed by using a validator that returns an
+	 * IValidationRuleStatus.
+	 * 
+	 * @see IValidator
+	 * @see IValidationRuleStatus
+	 * 
+	 * @param validator
+	 *            The validator to add (non-null).
+	 * @param validateOnEdit
+	 *            true will cause the validator to be evaluated "on edit", false
+	 *            will cause the validator to be evaluated "on update"
+	 * @throws RuntimeException
+	 *             if the validator is null.
+	 */
+	void addValidationRule(IValidator validator, boolean validateOnEdit);
 
 	/**
 	 * Removes a validator.
 	 * 
-	 * @param validationRule
+	 * @param validator
 	 *            The validation rule to remove.
 	 */
-	void removeValidationRule(IValidator validationRule);
+	void removeValidationRule(IValidator validator);
 
 	/**
 	 * Adds a message to be displayed when any validation rule of the ridget
