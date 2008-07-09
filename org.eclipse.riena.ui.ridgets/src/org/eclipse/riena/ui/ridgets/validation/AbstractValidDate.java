@@ -62,19 +62,16 @@ public abstract class AbstractValidDate implements IValidationRule {
 	 * @see org.eclipse.core.databinding.validation.IValidator#validate(java.lang.Object)
 	 */
 	public IStatus validate(final Object value) {
-		System.out.println("validate date:" + value);
 		if (value != null) {
 			if (!(value instanceof String)) {
 				throw new ValidationFailure("ValidCharacters can only validate objects of type String."); //$NON-NLS-1$
 			}
 			final String string = (String) value;
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
-				System.out.println("error");
 				return ValidationRuleStatus
 						.error(false, "Invalid date (must match the pattern " + pattern + ").", this);
 			}
 		}
-		System.out.println("ok");
 		return ValidationRuleStatus.ok();
 	}
 
