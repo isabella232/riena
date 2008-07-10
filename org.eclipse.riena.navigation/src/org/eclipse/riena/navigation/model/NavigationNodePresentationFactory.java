@@ -90,7 +90,7 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		for (INavigationNode<?> child : node.getChildren()) {
 			INavigationNode<?> foundNode = findNode(child, targetId);
 			if (foundNode != null) {
-				return findNode(child, targetId);
+				return foundNode;
 			}
 		}
 		return null;
