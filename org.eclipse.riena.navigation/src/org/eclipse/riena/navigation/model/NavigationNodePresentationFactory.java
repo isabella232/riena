@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
+import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
@@ -59,15 +60,22 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 
 		// TODO: ... und dann diese Dummy nodes entfernen:
 		if (targetNode == null) {
-			targetNode = new ModuleGroupNode("New Group");
-			IModuleNode module = new ModuleNode("New Module");
-			targetNode.addChild(module);
-			ISubModuleNode messageBoxSubModule = new SubModuleNode("New SubModule 1");
-			module.addChild(messageBoxSubModule);
-			ISubModuleNode messageMarkerSubModule = new SubModuleNode("New SubModule 2");
-			module.addChild(messageMarkerSubModule);
+			INavigationNodeProvider nodeProvider = new INavigationNodeProvider() {
+				public INavigationNode<?> buildNode() {
+					INavigationNode node = new ModuleGroupNode("New Group");
+					IModuleNode module = new ModuleNode("New Module");
+					node.addChild(module);
+					ISubModuleNode messageBoxSubModule = new SubModuleNode("New SubModule 1");
+					module.addChild(messageBoxSubModule);
+					ISubModuleNode messageMarkerSubModule = new SubModuleNode("New SubModule 2");
+					module.addChild(messageMarkerSubModule);
+					return node;
+				}
+			};
 			// add to app1
 			INavigationNode parentNode = sourceNode.getParentOfType(IApplicationModel.class).getChild(0);
+
+			targetNode = nodeProvider.buildNode();
 			parentNode.addChild(targetNode);
 		}
 
