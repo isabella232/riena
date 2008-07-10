@@ -12,13 +12,10 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
-import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
  * 
@@ -32,51 +29,24 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 	private NodePresentationData target = null;
 
 	public NavigationNodePresentationFactory() {
-		// TODO Auto-generated constructor stub
-
-		// instantiation of this class would populate instance variable
-		// <code>webBrowserCreator</code>
-
 		target = new NodePresentationData();
 		Inject.extension(ID).into(target).andStart(Activator.getDefault().getContext());
 	}
 
 	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, String targetId) {
+		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 
-		INavigationNode targetNode = findNode(getRootNode(sourceNode), targetId);
-
-		// TODO: einkommentieren wenn Methoden da
-		// if (targetNode == null) {
-		// INavigationNodePresentationDefiniton presentationDefinition =
-		// getPresentationDefinition(targetId);
-		// INavigationNodeProvider provider =
-		// presentationDefinition.getProvider();
-		// targetNode = provider.provide();
-		//
-		// INavigationNode parentNode = createNode(sourceNode,
-		// presentationDefinition.getParent());
-		// parentNode.addChild(targetNode);
-		// }
-
-		// TODO: ... und dann diese Dummy nodes entfernen:
 		if (targetNode == null) {
-			INavigationNodeProvider nodeProvider = new INavigationNodeProvider() {
-				public INavigationNode<?> buildNode() {
-					INavigationNode node = new ModuleGroupNode("New Group");
-					IModuleNode module = new ModuleNode("New Module");
-					node.addChild(module);
-					ISubModuleNode messageBoxSubModule = new SubModuleNode("New SubModule 1");
-					module.addChild(messageBoxSubModule);
-					ISubModuleNode messageMarkerSubModule = new SubModuleNode("New SubModule 2");
-					module.addChild(messageMarkerSubModule);
-					return node;
-				}
-			};
-			// add to app1
-			INavigationNode parentNode = sourceNode.getParentOfType(IApplicationModel.class).getChild(0);
+			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinition(targetId);
+			if (presentationDefinition != null) {
+				INavigationNodeProvider builder = presentationDefinition.createNodeProvider();
+				targetNode = builder.buildNode(targetId);
 
-			targetNode = nodeProvider.buildNode();
-			parentNode.addChild(targetNode);
+				INavigationNode parentNode = createNode(sourceNode, presentationDefinition.getParentPresentationId());
+				parentNode.addChild(targetNode);
+			} else {
+				// TODO throw some new type of failure
+			}
 		}
 
 		return targetNode;
