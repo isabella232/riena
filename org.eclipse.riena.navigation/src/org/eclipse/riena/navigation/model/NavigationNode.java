@@ -43,6 +43,7 @@ import org.eclipse.riena.navigation.common.TypecastingObject;
 public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
 		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L> {
 
+	private String presentationId;
 	private State state;
 	private String label;
 	private String icon;
@@ -786,8 +787,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#getPresentationId()
 	 */
 	public String getPresentationId() {
-		// TODO Auto-generated method stub
-		return null;
+		return presentationId;
+	}
+
+	public void setPresentationId(String presentationId) {
+		// TODO set via constructor, remove setter
+		this.presentationId = presentationId;
 	}
 
 }
