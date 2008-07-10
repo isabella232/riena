@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Core (Incubation)
 Bundle-SymbolicName: org.eclipse.riena.core;singleton:=true
-Bundle-Version: 1.0.0.M3
+Bundle-Version: 1.0.0.M4
 Bundle-Activator: org.eclipse.riena.internal.core.Activator
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
