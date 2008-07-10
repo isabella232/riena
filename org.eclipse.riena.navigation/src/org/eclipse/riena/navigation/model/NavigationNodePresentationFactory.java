@@ -129,10 +129,7 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 
 		public void update(INavigationNodePresentationDefiniton[] data) {
 			this.data = data;
-			System.out.println("update" + data.length);
-			for (INavigationNodePresentationDefiniton def : data) {
-				System.out.println(def.getPresentationId() + ", " + def.createNodeProvider().getClass());
-			}
+
 		}
 
 		public INavigationNodePresentationDefiniton[] getData() {
