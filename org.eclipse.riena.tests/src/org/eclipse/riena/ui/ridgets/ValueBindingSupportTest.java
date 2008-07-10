@@ -16,11 +16,6 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.internal.ui.ridgets.swt.DefaultRealm;
@@ -31,6 +26,12 @@ import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * Tests for the ValueBindingSupport.
@@ -90,7 +91,7 @@ public class ValueBindingSupportTest extends TestCase {
 
 	public void testValidationMessagesAddAndRemove() throws Exception {
 
-		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), false);
+		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("TestMessage1");
 		valueBindingSupport.addValidationMessage("TestMessage2");
 		ErrorMessageMarker messageMarker1 = new ErrorMessageMarker("TestMessage3");
@@ -136,7 +137,7 @@ public class ValueBindingSupportTest extends TestCase {
 
 	public void testValidationMessagesAddAndRemoveWhileActive() throws Exception {
 
-		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), false);
+		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		target.setValue("odd");
 
 		assertEquals(1, markable.getMarkers().size());
@@ -168,8 +169,8 @@ public class ValueBindingSupportTest extends TestCase {
 
 		EvenNumberOfCharacters evenNumberOfCharacters = new EvenNumberOfCharacters();
 		NotEndingWithDisaster notEndingWithDisaster = new NotEndingWithDisaster();
-		valueBindingSupport.addValidationRule(evenNumberOfCharacters, false);
-		valueBindingSupport.addValidationRule(notEndingWithDisaster, false);
+		valueBindingSupport.addValidationRule(evenNumberOfCharacters, ValidationTime.ON_UPDATE_TO_MODEL);
+		valueBindingSupport.addValidationRule(notEndingWithDisaster, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("TestNotEvenMessage1", evenNumberOfCharacters);
 		valueBindingSupport.addValidationMessage(new MessageMarker("TestNotEvenMessage2"), evenNumberOfCharacters);
 		valueBindingSupport.addValidationMessage("TestDisasterMessage", notEndingWithDisaster);
@@ -210,13 +211,13 @@ public class ValueBindingSupportTest extends TestCase {
 	public void testValidationRuleAddAndRemove() {
 		final IValidator rule = new EvenNumberOfCharacters();
 
-		boolean isOnEdit1 = valueBindingSupport.addValidationRule(rule, true);
+		boolean isOnEdit1 = valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
 
 		assertTrue(isOnEdit1);
 		assertTrue(valueBindingSupport.getOnEditValidators().contains(rule));
 		assertFalse(valueBindingSupport.getAfterGetValidators().contains(rule));
 
-		boolean isOnEdit2 = valueBindingSupport.addValidationRule(rule, false);
+		boolean isOnEdit2 = valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 
 		assertFalse(isOnEdit2);
 		assertTrue(valueBindingSupport.getOnEditValidators().contains(rule));
@@ -230,7 +231,7 @@ public class ValueBindingSupportTest extends TestCase {
 
 	public void testValidationRuleAddAndRemoveNull() {
 		try {
-			valueBindingSupport.addValidationRule(null, false);
+			valueBindingSupport.addValidationRule(null, ValidationTime.ON_UPDATE_TO_MODEL);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected

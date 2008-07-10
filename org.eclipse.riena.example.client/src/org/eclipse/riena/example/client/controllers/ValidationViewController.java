@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.example.client.views.ValidationView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ValidationTime;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.RequiredField;
@@ -25,6 +24,9 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidExpression;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
+
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 
 /**
  * Controller for the {@link ValidationView} example.
@@ -231,45 +233,49 @@ public class ValidationViewController extends SubModuleNodeViewController {
 
 		// on edit validation
 
-		txtNumbersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS), true);
+		txtNumbersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS),
+				ValidationTime.ON_UI_CONTROL_EDIT);
 		txtNumbersOnly.bindToModel(getTextValue(lblNumbersOnly));
 
-		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS), true);
+		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS),
+				ValidationTime.ON_UI_CONTROL_EDIT);
 		txtNumbersOnlyDW.setDirectWriting(true);
 		txtNumbersOnlyDW.bindToModel(getTextValue(lblNumbersOnlyDW));
 
-		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER), true);
+		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER),
+				ValidationTime.ON_UI_CONTROL_EDIT);
 		txtCharactersOnly.bindToModel(getTextValue(lblCharactersOnly));
 
-		txtExpression.addValidationRule(new ValidExpression("^PDX[0-9]{2}$"), true); //$NON-NLS-1$
+		txtExpression.addValidationRule(new ValidExpression("^PDX[0-9]{2}$"), ValidationTime.ON_UI_CONTROL_EDIT); //$NON-NLS-1$
 		txtExpression.bindToModel(getTextValue(lblExpression));
 		txtExpression.setText("PDX97"); //$NON-NLS-1$
 
-		txtLengthLessThan5.addValidationRule(new MaxLength(5), true);
+		txtLengthLessThan5.addValidationRule(new MaxLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtLengthLessThan5.bindToModel(getTextValue(lblLengthLessThan5));
 
-		txtRequiredLowercase.addValidationRule(new RequiredField(), true);
-		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE), true);
+		txtRequiredLowercase.addValidationRule(new RequiredField(), ValidationTime.ON_UI_CONTROL_EDIT);
+		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE),
+				ValidationTime.ON_UI_CONTROL_EDIT);
 		txtRequiredLowercase.bindToModel(getTextValue(lblRequiredLowercase));
 
 		// on update validation
 
-		txtRange18to80.addValidationRule(new RequiredField(), false);
-		txtRange18to80.addValidationRule(new ValidRange(18, 80), false);
+		txtRange18to80.addValidationRule(new RequiredField(), ValidationTime.ON_UPDATE_TO_MODEL);
+		txtRange18to80.addValidationRule(new ValidRange(18, 80), ValidationTime.ON_UPDATE_TO_MODEL);
 		txtRange18to80.bindToModel(getTextValue(lblRange18to80));
 
-		txtLength5to10.addValidationRule(new MinLength(5), false);
-		txtLength5to10.addValidationRule(new MaxLength(10), false);
+		txtLength5to10.addValidationRule(new MinLength(5), ValidationTime.ON_UPDATE_TO_MODEL);
+		txtLength5to10.addValidationRule(new MaxLength(10), ValidationTime.ON_UPDATE_TO_MODEL);
 		txtLength5to10.bindToModel(getTextValue(lblLength5to10));
 
 		// complex validation
 
-		txtDate.addValidationRule(new ValidIntermediateDate(DATE_PATTERN), true);
-		txtDate.addValidationRule(new ValidDate(DATE_PATTERN), false);
+		txtDate.addValidationRule(new ValidIntermediateDate(DATE_PATTERN), ValidationTime.ON_UI_CONTROL_EDIT);
+		txtDate.addValidationRule(new ValidDate(DATE_PATTERN), ValidationTime.ON_UPDATE_TO_MODEL);
 		txtDate.setText("25.12.2008"); //$NON-NLS-1$
 		txtDate.bindToModel(getTextValue(lblDate));
 
-		txtEmail.addValidationRule(new ValidEmailAddress(), true);
+		txtEmail.addValidationRule(new ValidEmailAddress(), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
 	}

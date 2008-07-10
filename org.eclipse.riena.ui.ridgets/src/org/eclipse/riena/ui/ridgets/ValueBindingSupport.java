@@ -1,7 +1,19 @@
 package org.eclipse.riena.ui.ridgets;
 
+import static org.eclipse.riena.ui.ridgets.ValidationTime.ON_UI_CONTROL_EDIT;
+import static org.eclipse.riena.ui.ridgets.ValidationTime.ON_UPDATE_TO_MODEL;
+
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.eclipse.riena.core.marker.IMarkable;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.MessageMarker;
+import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
+import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
@@ -17,14 +29,6 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.riena.core.marker.IMarkable;
-import org.eclipse.riena.ui.core.marker.ErrorMarker;
-import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.core.marker.MessageMarker;
-import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
-import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Helper class for Ridgets to delegate their value binding issues to.
@@ -97,14 +101,18 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
-	public boolean addValidationRule(IValidator validationRule, boolean validateOnEdit) {
+	public boolean addValidationRule(IValidator validationRule, ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
-		if (validateOnEdit) {
+		if (validationTime == ON_UI_CONTROL_EDIT) {
 			onEditValidators.add(validationRule);
 			return true;
 		} else {
-			afterGetValidators.add(validationRule);
-			return false;
+			if (validationTime == ON_UPDATE_TO_MODEL) {
+				afterGetValidators.add(validationRule);
+				return false;
+			} else {
+				throw new UnsupportedOperationException();
+			}
 		}
 	}
 
@@ -120,11 +128,14 @@ public class ValueBindingSupport implements IValidationCallback {
 		if (validationRule == null) {
 			return false;
 		}
+		// first remove in the list of afterGetValidators
+		afterGetValidators.remove(validationRule);
+		// if it is in the list of On_edit validators, also remove and return
+		// true
 		if (onEditValidators.contains(validationRule)) {
 			onEditValidators.remove(validationRule);
 			return true;
 		} else {
-			afterGetValidators.remove(validationRule);
 			return false;
 		}
 		// if (isValidateOnEdit(validationRule)) {

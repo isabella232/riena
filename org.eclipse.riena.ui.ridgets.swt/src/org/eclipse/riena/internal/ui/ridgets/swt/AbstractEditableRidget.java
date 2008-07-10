@@ -12,14 +12,16 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.Collection;
 
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.ridgets.IEditableRidget;
+import org.eclipse.riena.ui.ridgets.IValidationCallback;
+import org.eclipse.riena.ui.ridgets.ValidationTime;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.IEditableRidget;
-import org.eclipse.riena.ui.ridgets.IValidationCallback;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
@@ -30,9 +32,9 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 
 	private boolean isFlashInProgress = false;
 
-	public void addValidationRule(IValidator validationRule, boolean validateOnEdit) {
+	public void addValidationRule(IValidator validationRule, ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
-		getValueBindingSupport().addValidationRule(validationRule, validateOnEdit);
+		getValueBindingSupport().addValidationRule(validationRule, validationTime);
 	}
 
 	public IConverter getUIControlToModelConverter() {
