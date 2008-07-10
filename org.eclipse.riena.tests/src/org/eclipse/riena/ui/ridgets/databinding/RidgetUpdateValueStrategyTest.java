@@ -14,6 +14,8 @@ import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
+
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 
@@ -26,25 +28,25 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 
 		RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy();
 
-		IConverter converter = strategy.createConverter(String.class, Double.TYPE);
+		IConverter converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, Double.TYPE);
 		assertTrue(converter instanceof StringToNumberAllowingNullConverter);
 
-		converter = strategy.createConverter(String.class, Float.TYPE);
+		converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, Float.TYPE);
 		assertTrue(converter instanceof StringToNumberAllowingNullConverter);
 
-		converter = strategy.createConverter(String.class, Long.TYPE);
+		converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, Long.TYPE);
 		assertTrue(converter instanceof StringToNumberAllowingNullConverter);
 
-		converter = strategy.createConverter(String.class, Integer.TYPE);
+		converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, Integer.TYPE);
 		assertTrue(converter instanceof StringToNumberAllowingNullConverter);
 
-		converter = strategy.createConverter(String.class, GregorianCalendar.class);
+		converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, GregorianCalendar.class);
 		assertTrue(converter instanceof StringToGregorianCalendarConverter);
 
-		converter = strategy.createConverter(GregorianCalendar.class, String.class);
+		converter = ReflectionUtils.invokeHidden(strategy, "createConverter", GregorianCalendar.class, String.class);
 		assertTrue(converter instanceof GregorianCalendarToStringConverter);
 
-		converter = strategy.createConverter(Integer.class, String.class);
+		converter = ReflectionUtils.invokeHidden(strategy, "createConverter", Integer.class, String.class);
 		assertTrue(converter instanceof NumberToStringConverter);
 
 	}
