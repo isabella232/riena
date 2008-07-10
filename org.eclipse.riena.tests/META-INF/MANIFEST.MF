@@ -7,7 +7,6 @@ Bundle-Activator: org.eclipse.riena.internal.tests.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  org.eclipse.riena.security.common,
- org.eclipse.equinox.cm,
  org.eclipse.riena.core,
  org.eclipse.equinox.log;bundle-version="1.1.0",
  org.eclipse.riena.sample.app.common,
@@ -25,11 +24,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.ridgets,
  org.eclipse.riena.ui.ridgets.swt,
- org.eclipse.swt,
  org.eclipse.riena.navigation.ui,
  org.eclipse.riena.navigation,
  org.eclipse.ui;bundle-version="3.4.0",
- org.eclipse.jface.databinding;bundle-version="1.2.0",
  org.eclipse.riena.ui.swt;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
