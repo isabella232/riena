@@ -25,13 +25,15 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 
 	private static NavigationNodePresentationFactory factory;
 
+	private NodePresentationData target = null;
+
 	public NavigationNodePresentationFactory() {
 		// TODO Auto-generated constructor stub
 
 		// instantiation of this class would populate instance variable
 		// <code>webBrowserCreator</code>
 
-		NodePresentationData target = new NodePresentationData();
+		target = new NodePresentationData();
 		Inject.extension(ID).useType(INavigationNodePresentationDefiniton.class).into(target).andStart(
 				Activator.getDefault().getContext());
 	}
@@ -44,7 +46,8 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		// if (targetNode == null) {
 		// INavigationNodePresentationDefiniton presentationDefinition =
 		// getPresentationDefinition(targetId);
-		// INavigationNodeProvider provider = presentationDefinition.getProvider();
+		// INavigationNodeProvider provider =
+		// presentationDefinition.getProvider();
 		// targetNode = provider.provide();
 		//
 		// INavigationNode parentNode = createNode(sourceNode,
@@ -55,11 +58,21 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return targetNode;
 	}
 
-	private INavigationNodePresentationDefiniton getPresentationDefinition(String targetId) {
+	public INavigationNodePresentationDefiniton getPresentationDefinition(String targetId) {
 
-		// TODO EAC: get presentation definition for targetId
+		if (target == null || target.getData().length == 0) {
+			return null;
+		} else {
+			INavigationNodePresentationDefiniton[] data = target.getData();
+			for (int i = 0; i < data.length; i++) {
+				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId)) {
+					return data[i];
+				}
 
+			}
+		}
 		return null;
+
 	}
 
 	private INavigationNode<?> getRootNode(INavigationNode<?> node) {

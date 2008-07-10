@@ -8,15 +8,13 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.model;
+
+import org.eclipse.riena.navigation.INavigationNodeProvider;
 
 /**
- * 
+ *
  */
-public interface INavigationNodePresentationFactory {
-
-	INavigationNode<?> createNode(INavigationNode<?> sourceNode, String targetId);
-
-	INavigationNodePresentationDefiniton getPresentationDefinition(String targetId);
+public class TestNavigationNodeProvider implements INavigationNodeProvider {
 
 }

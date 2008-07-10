@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="de.compeople.scp.navigation.ui.swing.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationID="ki/akte/vb123321">
+         <nodeProvider
+               class="org.eclipse.riena.navigation.INavigationNodeProvider">
+         </nodeProvider>
+         <businessController></businessController>
+         <parent
+               presentationID="ki/application">
+         </parent>
+      </navigationNodePresentation>
+   </extension>
+</plugin>
