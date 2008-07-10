@@ -12,13 +12,14 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import java.util.Arrays;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 /**
  * Implementation for a plausibility rule which checks if the typed character is
  * contained in a set of allowed characters. <br>
  */
-public class ValidCharacters implements IValidationRule {
+public class ValidCharacters implements IValidator {
 
 	/** <code>VALID_NUMBERS</code> defines 0-9 */
 	public static final String VALID_NUMBERS = "0123456789"; //$NON-NLS-1$
@@ -63,13 +64,6 @@ public class ValidCharacters implements IValidationRule {
 			}
 		}
 		return ValidationRuleStatus.ok();
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
 	}
 
 	/**

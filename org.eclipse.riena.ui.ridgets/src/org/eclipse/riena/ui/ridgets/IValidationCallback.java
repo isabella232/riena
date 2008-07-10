@@ -11,7 +11,6 @@
 package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 
 /**

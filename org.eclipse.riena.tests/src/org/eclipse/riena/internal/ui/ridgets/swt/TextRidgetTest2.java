@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.easymock.EasyMock;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
@@ -29,7 +30,6 @@ import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.util.beans.DateBean;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
@@ -37,7 +37,6 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRule.ValidationTime;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -493,7 +492,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
-		ridget.addValidationRule(new MinLength(3));
+		ridget.addValidationRule(new MinLength(3), false);
 
 		bean.setProperty(TEXT_ONE);
 		ridget.updateFromModel();
@@ -526,7 +525,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
-		ridget.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS));
+		ridget.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS), true);
 		ridget.setDirectWriting(true);
 
 		UITestHelper.sendString(control.getDisplay(), "12");
@@ -552,7 +551,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		fail("TODO - implement segmentend date text field");
 		// TODO control = UIControlsFactory.createSegmentedDateTextField();
 
-		ridget.addValidationRule(new ValidIntermediateDate("dd.MM.yyyy"));
+		ridget.addValidationRule(new ValidIntermediateDate("dd.MM.yyyy"), true);
 		ridget.setUIControlToModelConverter(new StringToDateConverter("dd.MM.yyyy"));
 		ridget.setModelToUIControlConverter(new DateToStringConverter("dd.MM.yyyy"));
 
@@ -578,13 +577,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidationRule onEditRule = new MaxLength(5);
+		IValidator onEditRule = new MaxLength(5);
 
-		assertEquals(IValidationRule.ValidationTime.ON_UI_CONTROL_EDITED, onEditRule.getValidationTime());
 		assertFalse(ridget.isErrorMarked());
 
 		ridget.setText("tiny");
-		ridget.addValidationRule(onEditRule);
+		ridget.addValidationRule(onEditRule, true);
 
 		try {
 			ridget.setText("too long");
@@ -611,13 +609,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidationRule onUpdateRule = new MinLength(10);
+		IValidator onUpdateRule = new MinLength(10);
 
-		assertEquals(IValidationRule.ValidationTime.ON_UPDATE_TO_MODEL, onUpdateRule.getValidationTime());
 		assertFalse(ridget.isErrorMarked());
 
 		ridget.setText("this is long enough");
-		ridget.addValidationRule(onUpdateRule);
+		ridget.addValidationRule(onUpdateRule, false);
 
 		try {
 			ridget.setText("tiny");
@@ -644,13 +641,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidationRule onEditRule = new MaxLength(5);
+		IValidator onEditRule = new MaxLength(5);
 
-		assertEquals(IValidationRule.ValidationTime.ON_UI_CONTROL_EDITED, onEditRule.getValidationTime());
 		assertFalse(ridget.isErrorMarked());
 
 		ridget.setText("tiny");
-		ridget.addValidationRule(onEditRule);
+		ridget.addValidationRule(onEditRule, true);
 		model.setValue("too long");
 
 		try {
@@ -679,13 +675,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidationRule onUpdateRule = new MinLength(10);
+		IValidator onUpdateRule = new MinLength(10);
 
-		assertEquals(IValidationRule.ValidationTime.ON_UPDATE_TO_MODEL, onUpdateRule.getValidationTime());
 		assertFalse(ridget.isErrorMarked());
 
 		ridget.setText("something long");
-		ridget.addValidationRule(onUpdateRule);
+		ridget.addValidationRule(onUpdateRule, false);
 		model.setValue("tiny");
 
 		try {
@@ -713,12 +708,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		Text control = getUIControl();
 		ITextFieldRidget ridget = getRidget();
 
-		ridget.addValidationRule(new ValidEmailAddress() {
-			@Override
-			public ValidationTime getValidationTime() {
-				return ValidationTime.ON_UI_CONTROL_EDITED;
-			}
-		});
+		ridget.addValidationRule(new ValidEmailAddress(), true);
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
 		assertFalse(ridget.isErrorMarked());
@@ -759,12 +749,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		Text control = getUIControl();
 		ITextFieldRidget ridget = getRidget();
 
-		ridget.addValidationRule(new ValidEmailAddress() {
-			@Override
-			public ValidationTime getValidationTime() {
-				return ValidationTime.ON_UPDATE_TO_MODEL;
-			}
-		});
+		ridget.addValidationRule(new ValidEmailAddress(), false);
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
 		assertFalse(ridget.isErrorMarked());
@@ -806,7 +791,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ITextFieldRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
-		ridget.addValidationRule(new EvenNumberOfCharacters(ValidationTime.ON_UI_CONTROL_EDITED));
+		ridget.addValidationRule(new EvenNumberOfCharacters(), true);
 		ridget.setDirectWriting(true);
 
 		ridget.addValidationMessage("TestTextTooShortMessage");
@@ -828,7 +813,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ITextFieldRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
-		ridget.addValidationRule(new EvenNumberOfCharacters(ValidationTime.ON_UPDATE_TO_MODEL));
+		ridget.addValidationRule(new EvenNumberOfCharacters(), false);
 		ridget.setDirectWriting(true);
 
 		ridget.addValidationMessage("TestTextTooShortMessage");
@@ -859,13 +844,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		return null;
 	}
 
-	private static class EvenNumberOfCharacters implements IValidationRule {
-
-		private final ValidationTime validationTime;
-
-		EvenNumberOfCharacters(ValidationTime validationTime) {
-			this.validationTime = validationTime;
-		}
+	private static class EvenNumberOfCharacters implements IValidator {
 
 		public IStatus validate(final Object value) {
 			if (value == null) {
@@ -880,10 +859,6 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 			}
 			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 					+ String.class.getName());
-		}
-
-		public ValidationTime getValidationTime() {
-			return validationTime;
 		}
 
 	}

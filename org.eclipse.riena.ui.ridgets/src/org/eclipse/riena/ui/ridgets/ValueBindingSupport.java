@@ -23,7 +23,6 @@ import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
@@ -85,25 +84,6 @@ public class ValueBindingSupport implements IValidationCallback {
 
 	public ValidatorCollection getAfterGetValidators() {
 		return afterGetValidators;
-	}
-
-	/**
-	 * Adds a validation rule.
-	 * 
-	 * @param validationRule
-	 *            The validation rule to add
-	 * @return true, if the onEditValidators were changed, false otherwise
-	 * @see #getOnEditValidators()
-	 * @deprecated use {@link #addValidationRule(IValidator, boolean)}
-	 */
-	public boolean addValidationRule(IValidator validationRule) {
-		if (isValidateOnEdit(validationRule)) {
-			onEditValidators.add(validationRule);
-			return true;
-		} else {
-			afterGetValidators.add(validationRule);
-			return false;
-		}
 	}
 
 	/**
@@ -248,11 +228,6 @@ public class ValueBindingSupport implements IValidationCallback {
 			context = new DataBindingContext();
 		}
 		return context;
-	}
-
-	private boolean isValidateOnEdit(IValidator validationRule) {
-		return validationRule instanceof IValidationRule
-				&& ((IValidationRule) validationRule).getValidationTime() == IValidationRule.ValidationTime.ON_UI_CONTROL_EDITED;
 	}
 
 	private void updateValidationMessageMarkers(IStatus status) {

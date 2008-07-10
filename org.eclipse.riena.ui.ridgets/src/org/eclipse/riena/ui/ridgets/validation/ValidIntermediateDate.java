@@ -21,8 +21,4 @@ public class ValidIntermediateDate extends AbstractValidDate {
 		super(pattern, true);
 	}
 
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
-	}
-
 }

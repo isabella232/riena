@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 /**
  * 
  */
-public class MaxLength implements IValidationRule {
+public class MaxLength implements IValidator {
 
 	private int maxLength;
 
@@ -44,13 +45,6 @@ public class MaxLength implements IValidationRule {
 		} else {
 			throw new ValidationFailure("MaxLength can only validate objects of type String.");
 		}
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
 	}
 
 }

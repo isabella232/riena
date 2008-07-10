@@ -44,8 +44,8 @@ public class ValidRange extends ValidDecimal {
 	 * @throws some_kind_of_runtime_exception
 	 *             if a parameter is <tt>null</tt>.
 	 * @throws some_kind_of_runtime_exception
-	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not
-	 *             belong to the same class.
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
+	 *             the same class.
 	 */
 	public ValidRange(final Number min, final Number max) {
 		this(min, max, Locale.getDefault());
@@ -64,8 +64,8 @@ public class ValidRange extends ValidDecimal {
 	 * @throws some_kind_of_runtime_exception
 	 *             if a parameter is <tt>null</tt>.
 	 * @throws some_kind_of_runtime_exception
-	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not
-	 *             belong to the same class.
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
+	 *             the same class.
 	 */
 	public ValidRange(final Number min, final Number max, final Locale locale) {
 		super(true, locale);
@@ -116,13 +116,6 @@ public class ValidRange extends ValidDecimal {
 					+ "].", this);
 		}
 		return ValidationRuleStatus.ok();
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UPDATE_TO_MODEL;
 	}
 
 	/**

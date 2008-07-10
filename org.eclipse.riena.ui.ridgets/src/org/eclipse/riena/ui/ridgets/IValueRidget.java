@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
 
 /**
  * Ridget with a value.
@@ -45,14 +44,6 @@ public interface IValueRidget extends IRidget {
 	void bindToModel(IObservableValue observableValue);
 
 	/**
-	 * @deprecated Use methods in IEditableRidget
-	 * @see IEditableRidget
-	 */
-	@Deprecated
-	void bindToModel(IObservableValue observableValue, IValidator uiControlToModelValidator,
-			IConverter uiControlToModelConverter, IConverter modelToUIControlConverter);
-
-	/**
 	 * Creates an observable value from the specified bean property and binds it
 	 * to the Ridget value using a default binding. The UpdateValueStrategy will
 	 * be POLICY_UPDATE to the model value (automatic update) and
@@ -66,14 +57,6 @@ public interface IValueRidget extends IRidget {
 	 *            Name of the bean property holding the model value.
 	 */
 	void bindToModel(Object bean, String propertyName);
-
-	/**
-	 * @deprecated Use methods in IEditableRidget
-	 * @see IEditableRidget
-	 */
-	@Deprecated
-	void bindToModel(Object bean, String propertyName, IValidator uiControlToModelValidator,
-			IConverter uiControlToModelConverter, IConverter modelToUIControlConverter);
 
 	/**
 	 * @return The converter used when updating from the model to the

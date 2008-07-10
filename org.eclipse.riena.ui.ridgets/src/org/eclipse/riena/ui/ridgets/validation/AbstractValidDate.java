@@ -13,14 +13,14 @@ package org.eclipse.riena.ui.ridgets.validation;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
-
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
 
 /**
  * Validator checking that a String matches a given pattern for a Date.
  */
-public abstract class AbstractValidDate implements IValidationRule {
+public abstract class AbstractValidDate implements IValidator {
 
 	private static final String DAY_COMPONENT_LETTER = "d"; //$NON-NLS-1$
 	private static final String MONTH_COMPONENT_LETTER = "M"; //$NON-NLS-1$

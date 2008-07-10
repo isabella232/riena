@@ -12,7 +12,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.ridgets.IValueRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 
@@ -34,24 +33,6 @@ public abstract class AbstractValueRidget extends AbstractMarkableRidget impleme
 
 	public void bindToModel(Object bean, String propertyName) {
 		valueBindingSupport.bindToModel(bean, propertyName);
-	}
-
-	@Deprecated
-	public void bindToModel(IObservableValue observableValue, IValidator uiControlToModelValidator,
-			IConverter uiControlToModelConverter, IConverter modelToUIControlConverter) {
-		valueBindingSupport.addValidationRule(uiControlToModelValidator);
-		valueBindingSupport.setUIControlToModelConverter(uiControlToModelConverter);
-		valueBindingSupport.setModelToUIControlConverter(modelToUIControlConverter);
-		bindToModel(observableValue);
-	}
-
-	@Deprecated
-	public void bindToModel(Object bean, String propertyName, IValidator uiControlToModelValidator,
-			IConverter uiControlToModelConverter, IConverter modelToUIControlConverter) {
-		valueBindingSupport.addValidationRule(uiControlToModelValidator);
-		valueBindingSupport.setUIControlToModelConverter(uiControlToModelConverter);
-		valueBindingSupport.setModelToUIControlConverter(modelToUIControlConverter);
-		bindToModel(bean, propertyName);
 	}
 
 	public IConverter getModelToUIControlConverter() {

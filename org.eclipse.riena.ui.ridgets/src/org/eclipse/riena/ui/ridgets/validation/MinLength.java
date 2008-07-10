@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 /**
  * 
  */
-public class MinLength implements IValidationRule {
+public class MinLength implements IValidator {
 
 	private int minLength;
 
@@ -44,13 +45,6 @@ public class MinLength implements IValidationRule {
 		}
 		throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
 				+ String.class.getName());
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UPDATE_TO_MODEL;
 	}
 
 }

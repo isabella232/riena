@@ -15,6 +15,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Locale;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 /**
@@ -26,7 +27,7 @@ import org.eclipse.core.runtime.IStatus;
  * we do not treat missing fraction as error, where &quot;missing fraction&quot;
  * means there no fraction digit.
  */
-public class ValidDecimal implements IValidationRule {
+public class ValidDecimal implements IValidator {
 
 	private static final char FRENCH_GROUPING_SEPARATOR = (char) 0xA0;
 	private final boolean partialCheckSupported;
@@ -116,13 +117,6 @@ public class ValidDecimal implements IValidationRule {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
-	}
-
-	/**
 	 * Contains the result of the {@link ValidDecimal#scan(String)} method.
 	 */
 	protected static final class ScanResult {
@@ -154,8 +148,8 @@ public class ValidDecimal implements IValidationRule {
 		/**
 		 * The index of the last alien character found. Where &quot;alien&quot;
 		 * means no digit, minus-sign, decimal-separator or grouping-separator.
-		 * In case the grouping-character is <tt>(char)0xa0</tt>, like for
-		 * the French locale's NumberFormat, whitespace is not considered alien
+		 * In case the grouping-character is <tt>(char)0xa0</tt>, like for the
+		 * French locale's NumberFormat, whitespace is not considered alien
 		 * either.
 		 * 
 		 * @see Character#isDigit(char)

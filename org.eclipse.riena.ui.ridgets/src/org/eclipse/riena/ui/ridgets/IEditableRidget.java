@@ -15,7 +15,6 @@ import java.util.Collection;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRule;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 
 /**
@@ -42,25 +41,6 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * @see #addValidationRule(IValidator)
 	 */
 	Collection<IValidator> getValidationRules();
-
-	/**
-	 * Adds a validator. By default validations will be performed when updating
-	 * from the UI-control to the model and before a conversion. By default
-	 * failed validations will mark the UI-control with an ErrorMarker and not
-	 * block any user input. The time of the validation can be changed by using
-	 * an IValidationRule. The reaction to a failed validation can be changed by
-	 * using a validator that returns an IValidationRuleStatus.
-	 * 
-	 * @see IValidationRule
-	 * @see IValidationRuleStatus
-	 * 
-	 * @param validationRule
-	 *            The validation rule to add (non-null).
-	 * @throws RuntimeException
-	 *             if validationRule is null.
-	 * @deprecated use {@link #addValidationRule(IValidator, boolean)}
-	 */
-	void addValidationRule(IValidator validationRule);
 
 	/**
 	 * Adds a validator to this ridget.

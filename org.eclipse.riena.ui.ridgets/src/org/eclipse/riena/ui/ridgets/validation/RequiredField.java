@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import java.util.Arrays;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 /**
@@ -19,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
  * which is not either <tt>null</tt>, empty or all whitespace including ignored
  * characters.
  */
-public class RequiredField implements IValidationRule {
+public class RequiredField implements IValidator {
 
 	private String ignoreCharacters = ""; //$NON-NLS-1$
 	private char[] sortedIgnoreCharacters = new char[0];
@@ -47,17 +48,6 @@ public class RequiredField implements IValidationRule {
 		// this is done on a copy
 		sortedIgnoreCharacters = ignoreCharacters == null ? new char[0] : ignoreCharacters.toCharArray();
 		Arrays.sort(sortedIgnoreCharacters);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime
-	 * ()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
 	}
 
 	/*

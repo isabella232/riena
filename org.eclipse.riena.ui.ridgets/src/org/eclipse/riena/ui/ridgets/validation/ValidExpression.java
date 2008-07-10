@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.apache.oro.text.perl.Perl5Util;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 
@@ -35,7 +36,7 @@ import org.eclipse.core.runtime.IStatus;
  * @see org.apache.oro.text.perl.Perl5Util#match(String, String)
  * @see java.util.regex.Pattern
  */
-public class ValidExpression implements IValidationRule {
+public class ValidExpression implements IValidator {
 
 	/** <code>GERMAN_ZIP</code> */
 	public static final String GERMAN_ZIP = "^[0-9]{5}$";
@@ -94,14 +95,6 @@ public class ValidExpression implements IValidationRule {
 		for (final Option option : options) {
 			this.options.append(option.symbol);
 		}
-	}
-
-	/**
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.validation.IValidationRule#getValidationTime()
-	 */
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
 	}
 
 	/**

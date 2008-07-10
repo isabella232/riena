@@ -19,8 +19,4 @@ public class ValidDate extends AbstractValidDate {
 		super(pattern, false);
 	}
 
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UPDATE_TO_MODEL;
-	}
-
 }

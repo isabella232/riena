@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.apache.commons.validator.GenericValidator;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
 /**
@@ -21,11 +22,7 @@ import org.eclipse.core.runtime.IStatus;
  * If the rule fails it will prevent updating the ridget and model values. The
  * rule will not block invalid input to the widget.
  */
-public class ValidEmailAddress implements IValidationRule {
-
-	public ValidationTime getValidationTime() {
-		return ValidationTime.ON_UI_CONTROL_EDITED;
-	}
+public class ValidEmailAddress implements IValidator {
 
 	public IStatus validate(final Object value) {
 		if (value == null) {
