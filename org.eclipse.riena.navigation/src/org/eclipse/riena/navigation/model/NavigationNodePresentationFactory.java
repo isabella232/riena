@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  */
 public class NavigationNodePresentationFactory implements INavigationNodePresentationFactory {
 
-	private static final String ID = "de.compeople.scp.navigation.ui.swing.NavigationNodePresentation";
+	private static final String ID = "de.compeople.scp.navigation.NavigationNodePresentation";
 
 	private static NavigationNodePresentationFactory factory;
 
