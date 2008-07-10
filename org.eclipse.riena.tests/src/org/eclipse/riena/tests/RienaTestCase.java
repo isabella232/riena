@@ -41,13 +41,14 @@ public abstract class RienaTestCase extends TestCase {
 
 	// Keep track of services and and corresponding service references.
 	private Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
-	private BundleContext context = Activator.getDefault().getContext();
+	private BundleContext context;
 
 	/**
 	 * 
 	 */
 	public RienaTestCase() {
 		super();
+		this.context = Activator.getDefault().getContext();
 	}
 
 	/**
@@ -55,6 +56,7 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase(String name) {
 		super(name);
+		this.context = Activator.getDefault().getContext();
 	}
 
 	/*
@@ -90,6 +92,15 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
+	 * Set the bundle context.
+	 * 
+	 * @return
+	 */
+	protected void setContext(BundleContext context) {
+		this.context = context;
+	}
+
+	/**
 	 * Print the current test´s name.
 	 */
 	protected void printTestName() {
@@ -109,7 +120,7 @@ public abstract class RienaTestCase extends TestCase {
 	protected void addPluginXml(Class<?> forLoad, String pluginResource) {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
-		IContributor contributor = ContributorFactoryOSGi.createContributor(Activator.getDefault().getBundle());
+		IContributor contributor = ContributorFactoryOSGi.createContributor(context.getBundle());
 		assertTrue(registry.addContribution(inputStream, contributor, false, null, null, ((ExtensionRegistry) registry)
 				.getTemporaryUserToken()));
 	}
@@ -142,8 +153,6 @@ public abstract class RienaTestCase extends TestCase {
 	/**
 	 * Get the service for the specified <code>serviceClass</code>.
 	 * 
-	 * @param <
-	 * 		T>
 	 * @param serviceClass
 	 * @return
 	 */
