@@ -21,7 +21,7 @@ import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
  */
 public class NavigationNodePresentationFactory implements INavigationNodePresentationFactory {
 
-	private static final String ID = "de.compeople.scp.navigation.ui.swing.ModulePresentation";
+	private static final String ID = "de.compeople.scp.navigation.ui.swing.NavigationNodePresentation";
 
 	private static NavigationNodePresentationFactory factory;
 
@@ -34,8 +34,7 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		// <code>webBrowserCreator</code>
 
 		target = new NodePresentationData();
-		Inject.extension(ID).useType(INavigationNodePresentationDefiniton.class).into(target).andStart(
-				Activator.getDefault().getContext());
+		Inject.extension(ID).into(target).andStart(Activator.getDefault().getContext());
 	}
 
 	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, String targetId) {
@@ -96,12 +95,16 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return null;
 	}
 
-	private class NodePresentationData {
+	public class NodePresentationData {
 
 		private INavigationNodePresentationDefiniton[] data;
 
 		public void update(INavigationNodePresentationDefiniton[] data) {
 			this.data = data;
+			System.out.println("update" + data.length);
+			for (INavigationNodePresentationDefiniton def : data) {
+				System.out.println(def.getPresentationId() + ", " + def.createNodeProvider().getClass());
+			}
 		}
 
 		public INavigationNodePresentationDefiniton[] getData() {

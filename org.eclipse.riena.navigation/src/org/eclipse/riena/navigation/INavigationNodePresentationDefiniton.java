@@ -21,12 +21,18 @@ public interface INavigationNodePresentationDefiniton {
 	 * Returns the ModuleComposer for this module presentation
 	 */
 
-	INavigationNodeProvider getProvider();
+	INavigationNodeProvider createNodeProvider();
 
 	/**
 	 * The id of this presentation
 	 */
 
 	String getPresentationId();
+
+	/**
+	 * The id of this presentations parent presentation
+	 */
+
+	String getParentPresentationId();
 
 }
