@@ -17,9 +17,5 @@ package org.eclipse.riena.navigation;
  * @author erich Achilles
  */
 public interface IWorkAreaPresentationFactory {
-	/**
-	 * Returns the work area presentation for this given presentationID
-	 */
 
-	IWorkAreaPresentationDefinition getPresentation(String id);
 }

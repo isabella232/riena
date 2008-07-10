@@ -17,4 +17,10 @@ package org.eclipse.riena.navigation;
  */
 public interface IWorkAreaPresentationDefinition {
 
+	/**
+	 * The id of this presentation
+	 */
+
+	String getPresentationId();
+
 }
