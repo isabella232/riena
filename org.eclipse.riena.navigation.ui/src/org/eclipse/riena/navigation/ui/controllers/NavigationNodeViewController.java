@@ -48,6 +48,14 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	private PropertyChangeListener propertyChangeListener;
 
 	/**
+	 * Create a new Navigation Node view Controller. Set the navigation node
+	 * later.
+	 */
+	public NavigationNodeViewController() {
+		super();
+	}
+
+	/**
 	 * Create a new Navigation Node view Controller on the specified
 	 * navigationNode. Register this controller as the presentation of the
 	 * Navigation node.
@@ -62,7 +70,7 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 		ridgets = new HashMap<String, IRidget>();
 		propertyChangeListener = new PropertyChangeHandler();
 		setNavigationNode(navigationNode);
-		navigationNode.setPresentation(this);
+
 	}
 
 	/**
@@ -78,6 +86,7 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 */
 	public void setNavigationNode(N navigationNode) {
 		this.navigationNode = navigationNode;
+		navigationNode.setPresentation(this);
 	}
 
 	/**
