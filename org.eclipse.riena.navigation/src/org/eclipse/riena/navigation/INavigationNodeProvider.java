@@ -16,6 +16,6 @@ package org.eclipse.riena.navigation;
  * 
  * @author Erich Achilles
  */
-public interface INodeProvider {
+public interface INavigationNodeProvider {
 
 }

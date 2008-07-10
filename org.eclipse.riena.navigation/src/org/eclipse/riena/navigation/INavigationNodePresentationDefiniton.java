@@ -21,7 +21,7 @@ public interface INavigationNodePresentationDefiniton {
 	 * Returns the ModuleComposer for this module presentation
 	 */
 
-	INodeProvider getProvider();
+	INavigationNodeProvider getProvider();
 
 	/**
 	 * The id of this presentation

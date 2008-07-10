@@ -15,7 +15,6 @@ import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
-import org.eclipse.riena.navigation.INodeProvider;
 
 /**
  * 
@@ -41,14 +40,17 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 
 		INavigationNode targetNode = findNode(getRootNode(sourceNode), targetId);
 
-		if (targetNode == null) {
-			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinition(targetId);
-			INodeProvider provider = presentationDefinition.getProvider();
-			targetNode = provider.provide();
-
-			INavigationNode parentNode = createNode(sourceNode, presentationDefinition.getParent());
-			parentNode.addChild(targetNode);
-		}
+		// TODO: einkommentieren wenn Methoden da
+		// if (targetNode == null) {
+		// INavigationNodePresentationDefiniton presentationDefinition =
+		// getPresentationDefinition(targetId);
+		// INavigationNodeProvider provider = presentationDefinition.getProvider();
+		// targetNode = provider.provide();
+		//
+		// INavigationNode parentNode = createNode(sourceNode,
+		// presentationDefinition.getParent());
+		// parentNode.addChild(targetNode);
+		// }
 
 		return targetNode;
 	}
