@@ -22,7 +22,7 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
  */
 public class NavigationNodePresentationFactory implements INavigationNodePresentationFactory {
 
-	private static final String ID = "de.compeople.scp.navigation.NavigationNodePresentation";
+	private static final String ID = "org.eclipse.riena.navigation.NavigationNodePresentation";
 
 	private static NavigationNodePresentationFactory factory;
 
