@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener;
 
 /**
  * Describes the ability of a navigation node to carry a listener The ability is
@@ -22,9 +21,5 @@ public interface INavigationNodeListenerable<S extends INavigationNode<C>, C ext
 	void addListener(L pListener);
 
 	void removeListener(L pListener);
-
-	void addSimpleListener(ISimpleNavigationNodeListener pListener);
-
-	void removeSimpleListener(ISimpleNavigationNodeListener pListener);
 
 }

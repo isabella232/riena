@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
+import org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener;
 
 /**
  * Summary of all abilities common to all model objects Each object is
@@ -58,8 +59,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor to activate the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void activate(INavigationContext pContext);
 
@@ -67,8 +68,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor before activating the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void onBeforeActivate(INavigationContext pContext);
 
@@ -76,8 +77,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor after activating the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void onAfterActivate(INavigationContext pContext);
 
@@ -85,8 +86,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor to dispose the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void dispose(INavigationContext pContext);
 
@@ -94,8 +95,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor before disposing the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void onBeforeDispose(INavigationContext pContext);
 
@@ -103,8 +104,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor after disposing the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void onAfterDispose(INavigationContext pContext);
 
@@ -112,8 +113,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor to deactivate the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to deactivate within
+	 * @param pContext
+	 *            - the Context to deactivate within
 	 */
 	void deactivate(INavigationContext pContext);
 
@@ -121,8 +122,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor before deactivating the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void onBeforeDeactivate(INavigationContext pContext);
 
@@ -130,8 +131,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor after deactivating the node within an
 	 * INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to activate within
+	 * @param pContext
+	 *            - the Context to activate within
 	 */
 	void onAfterDeactivate(INavigationContext pContext);
 
@@ -139,8 +140,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor to check if a node can be activated
 	 * within an INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to check within
+	 * @param pContext
+	 *            - the Context to check within
 	 */
 	boolean allowsActivate(INavigationContext pContext);
 
@@ -148,8 +149,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor to check if a node can be deactivated
 	 * within an INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to check within
+	 * @param pContext
+	 *            - the Context to check within
 	 */
 	boolean allowsDeactivate(INavigationContext pContext);
 
@@ -157,8 +158,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called by a NavigationProcessor to check if a node can be disposed within
 	 * an INavigationContext.
 	 * 
-	 * @param pContext -
-	 *            the Context to check within
+	 * @param pContext
+	 *            - the Context to check within
 	 */
 	boolean allowsDispose(INavigationContext pContext);
 
@@ -166,10 +167,10 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Called from the navigation processor to remove a node during dispose
 	 * Removes the passed node from the list child nodes
 	 * 
-	 * @param pChild -
-	 *            the child node to remove
-	 * @param context -
-	 *            the navigation context to word in
+	 * @param pChild
+	 *            - the child node to remove
+	 * @param context
+	 *            - the navigation context to word in
 	 */
 	void removeChild(INavigationContext context, INavigationNode<?> pChild);
 
@@ -181,21 +182,21 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Adds the passed child to the list of child nodes
 	 * 
-	 * @param pChild -
-	 *            the child node to add
+	 * @param pChild
+	 *            - the child node to add
 	 */
 	void addChild(C pChild);
 
 	/**
-	 * @param pIndex -
-	 *            index of the child
+	 * @param pIndex
+	 *            - index of the child
 	 * @return the child at the specified index or null
 	 */
 	C getChild(int pIndex);
 
 	/**
-	 * @param pChild -
-	 *            the child to find
+	 * @param pChild
+	 *            - the child to find
 	 * @return the index of the child starting at 0 or -1 if the passed child is
 	 *         not a child of the node addressed
 	 */
@@ -238,6 +239,10 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 
 	void setNavigationProcessor(INavigationProcessor pProcessor);
 
+	void addSimpleListener(ISimpleNavigationNodeListener pListener);
+
+	void removeSimpleListener(ISimpleNavigationNodeListener pListener);
+
 	/**
 	 * @return true, if this navigation node should be presented expanded
 	 */
@@ -276,16 +281,16 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Adds an action to the node. Actions can be associated with nodes to
 	 * automatically show and hide actions corresponding to the activated node
 	 * 
-	 * @param pAction -
-	 *            the action to add
+	 * @param pAction
+	 *            - the action to add
 	 */
 	void addAction(IAction pAction);
 
 	/**
 	 * Remove an action from the node
 	 * 
-	 * @param pAction -
-	 *            the action to remove
+	 * @param pAction
+	 *            - the action to remove
 	 */
 	void removeAction(IAction pAction);
 
