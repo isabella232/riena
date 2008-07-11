@@ -14,15 +14,32 @@ import org.apache.log4j.Logger;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
+import org.osgi.service.log.LogService;
 
 public class Log4jLogListener implements LogListener {
 
 	public void logged(LogEntry entry) {
-		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
+		ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;
+		String loggerName = extendedEntry.getLoggerName();
+		Logger logger = Logger.getLogger(loggerName != null ? loggerName : "<unknown-logger-name>"); //$NON-NLS-1$
 
-		Logger logger = Logger.getLogger(eEntry.getLoggerName());
+		switch (extendedEntry.getLevel()) {
+		case LogService.LOG_DEBUG:
+			logger.debug(extendedEntry.getMessage(), extendedEntry.getException());
+			break;
+		case LogService.LOG_WARNING:
+			logger.warn(extendedEntry.getMessage(), extendedEntry.getException());
+			break;
+		case LogService.LOG_ERROR:
+			logger.error(extendedEntry.getMessage(), extendedEntry.getException());
+			break;
+		case LogService.LOG_INFO:
+			logger.info(extendedEntry.getMessage(), extendedEntry.getException());
+			break;
+		default:
+			break;
+		}
 
-		logger.info(eEntry.getMessage());
 	}
 
 }
