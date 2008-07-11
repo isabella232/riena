@@ -74,7 +74,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		final IConfigurationElement[] configurations = extensionRegistry
 				.getConfigurationElementsFor(EXTENSION_POINT_ID); //$NON-NLS-1$
 		if (configurations.length == 0) {
-			throw new IllegalStateException("No configuration element for extension point '" + EXTENSION_POINT_ID
+			throw new IllegalStateException("No configuration element for extension point '" + EXTENSION_POINT_ID //$NON-NLS-1$
 					+ '\'');
 		}
 		// if one extension point exists, which contains a "uisynchronizer"
@@ -90,16 +90,15 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 			}
 
 		}
-		throw new IllegalStateException("No element '" + EXTENSION_POINT_UI_SYNCHRONIZER_ELEMENT
-				+ "' in extension point '" + EXTENSION_POINT_ID + '\'');
-
+		throw new IllegalStateException("No element '" + EXTENSION_POINT_UI_SYNCHRONIZER_ELEMENT //$NON-NLS-1$
+				+ "' in extension point '" + EXTENSION_POINT_ID + '\''); //$NON-NLS-1$
 	}
 
 	public UIProcess(String name, IUISynchronizer syncher, boolean user) {
 		this(name, new UICallbackDispatcher(syncher), user);
 	}
 
-	public UIProcess(String name, UICallbackDispatcher dispatcher, boolean user) {
+	private UIProcess(String name, UICallbackDispatcher dispatcher, boolean user) {
 		this.callbackDispatcher = dispatcher;
 		createJob(name, user);
 		configure();
