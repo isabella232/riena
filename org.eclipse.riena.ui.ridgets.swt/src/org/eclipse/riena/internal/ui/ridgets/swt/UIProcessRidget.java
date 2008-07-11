@@ -225,15 +225,4 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 		// nothing to do here
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IProgressBoxRidget#isHoldingActiveUIProcess
-	 * ()
-	 */
-	public boolean isHoldingActiveUIProcess() {
-		return visualizerStack.size() > 0;
-	}
-
 }

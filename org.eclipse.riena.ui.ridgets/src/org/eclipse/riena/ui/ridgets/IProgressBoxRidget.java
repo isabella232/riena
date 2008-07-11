@@ -21,6 +21,4 @@ public interface IProgressBoxRidget extends IProgressVisualizerObserver, IRidget
 
 	public void deactivate();
 
-	public boolean isHoldingActiveUIProcess();
-
 }
