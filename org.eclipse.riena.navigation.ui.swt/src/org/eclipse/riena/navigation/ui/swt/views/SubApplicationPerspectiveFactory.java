@@ -20,6 +20,9 @@ import org.eclipse.ui.PlatformUI;
 
 public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 
+	private SubApplicationViewController subApplicationViewController;
+	private UIProcessRidget uiProcessRidget;
+
 	/**
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
 	 */
@@ -39,10 +42,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	}
 
 	protected SubApplicationViewController createController(ISubApplication subApplication) {
-		SubApplicationViewController subApplicationViewController = new SubApplicationViewController(subApplication);
-		UIProcessRidget progressBoxRidget = new UIProcessRidget();
-		progressBoxRidget.setUIControl(new UIProcessControl(Display.getDefault().getActiveShell()));
-		subApplicationViewController.setProgressBoxRidget(progressBoxRidget);
+		subApplicationViewController = new SubApplicationViewController(subApplication);
 		return subApplicationViewController;
 	}
 
@@ -66,7 +66,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
-	private static class SubModuleNodeListener extends SubModuleNodeAdapter {
+	private class SubModuleNodeListener extends SubModuleNodeAdapter {
 
 		private boolean navigationUp = false;
 
@@ -107,8 +107,15 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		private void checkBaseStructure() {
 			if (!navigationUp) {
 				createNavigation();
+				initUIProcessRidget();
 				navigationUp = true;
 			}
+		}
+
+		private void initUIProcessRidget() {
+			uiProcessRidget = new UIProcessRidget();
+			uiProcessRidget.setUIControl(new UIProcessControl(Display.getDefault().getActiveShell()));
+			subApplicationViewController.setProgressBoxRidget(uiProcessRidget);
 		}
 
 		protected String createNextId() {
