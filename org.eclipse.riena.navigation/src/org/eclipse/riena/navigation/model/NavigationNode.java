@@ -52,6 +52,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private List<C> children;
 	private boolean selected;
 	private List<L> listeners;
+	private List<ISimpleNavigationNodeListener> simpleListeners;
 	private IMarkable markable;
 	private Object context;
 	private Set<IAction> actions;
@@ -109,12 +110,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.presentationChanged((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.presentationChanged(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifySelectedChanged() {
 		for (L next : getListeners()) {
 			next.selectedChanged((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.selectedChanged(this);
 		}
 	}
 
@@ -123,12 +130,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.labelChanged((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.labelChanged(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifyIconChanged() {
 		for (L next : getListeners()) {
 			next.iconChanged((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.iconChanged(this);
 		}
 	}
 
@@ -137,12 +150,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.childAdded((S) this, pChild);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.childAdded(this, pChild);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifyActivated() {
 		for (L next : getListeners()) {
 			next.activated((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.activated(this);
 		}
 
 	}
@@ -152,12 +171,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.beforeActivated((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.beforeActivated(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifyAfterActivated() {
 		for (L next : getListeners()) {
 			next.afterActivated((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.afterActivated(this);
 		}
 
 	}
@@ -167,6 +192,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.deactivated((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.deactivated(this);
+		}
 
 	}
 
@@ -175,12 +203,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.beforeDeactivated((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.beforeDeactivated(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifyAfterDeactivated() {
 		for (L next : getListeners()) {
 			next.afterDeactivated((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.afterDeactivated(this);
 		}
 
 	}
@@ -189,6 +223,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private void notifyChildRemoved(C pChild) {
 		for (L next : getListeners()) {
 			next.childRemoved((S) this, pChild);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.childRemoved(this, pChild);
 		}
 	}
 
@@ -276,6 +313,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
+	public void addSimpleListener(ISimpleNavigationNodeListener simpleListener) {
+		simpleListeners.add(simpleListener);
+	}
+
+	public void removeSimpleListener(ISimpleNavigationNodeListener simpleListener) {
+		simpleListeners.remove(simpleListener);
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeListenerable#removeListener(org.eclipse.riena.navigation.INavigationNodeListener)
 	 */
@@ -286,6 +331,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	protected List<L> getListeners() {
 		return new LinkedList<L>(listeners);
+	}
+
+	protected List<ISimpleNavigationNodeListener> getSimpleListeners() {
+		return new LinkedList<ISimpleNavigationNodeListener>(simpleListeners);
 	}
 
 	/**
@@ -350,6 +399,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.parentChanged((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.parentChanged(this);
+		}
 	}
 
 	/**
@@ -407,6 +459,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private void notifyExpandedChanged() {
 		for (L next : getListeners()) {
 			next.expandedChanged((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.expandedChanged(this);
 		}
 	}
 
@@ -485,6 +540,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private void notifyMarkersChanged() {
 		for (L next : getListeners()) {
 			next.markersChanged((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.markersChanged(this);
 		}
 	}
 
@@ -604,6 +662,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.stateChanged((S) this, oldState, newState);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.stateChanged(this, oldState, newState);
+		}
 	}
 
 	/**
@@ -642,8 +703,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @param selected -
-	 *            the selected to set
+	 * @param selected
+	 *            - the selected to set
 	 */
 	public void setSelected(boolean selected) {
 		if (selected != this.selected) {
@@ -656,9 +717,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#allowsDispose(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public boolean allowsDispose(INavigationContext context) {
-		IPresentation plesentation = getPresentation();
-		if (plesentation != null) {
-			return plesentation.allowsDispose(this, context);
+		IPresentation presentation = getPresentation();
+		if (presentation != null) {
+			return presentation.allowsDispose(this, context);
 		} else {
 			return true;
 		}
@@ -676,6 +737,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.disposed((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.disposed(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -683,12 +747,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (L next : getListeners()) {
 			next.beforeDisposed((S) this);
 		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.beforeDisposed(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifyAfterDisposed() {
 		for (L next : getListeners()) {
 			next.afterDisposed((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.afterDisposed(this);
 		}
 	}
 
@@ -748,6 +818,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private void notifyBlockedChanged() {
 		for (L next : getListeners()) {
 			next.block((S) this, isBlocked() && isActivated());
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.block(this, isBlocked() && isActivated());
 		}
 
 	}
