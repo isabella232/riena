@@ -105,6 +105,12 @@
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.NavigateSubModuleView"
+            id="org.eclipse.riena.example.client.views.NavigateSubModuleView"
+            name="org.eclipse.riena.example.client.views.NavigateSubModuleView">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
@@ -252,6 +258,23 @@
             </with>
          </enabledWhen>
       </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="open2"
+            nodeProvider="org.eclipse.riena.example.client.navigation.model.Open2NavigationNodeBuilder"
+            parentPresentationId="app1">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="open3"
+            nodeProvider="org.eclipse.riena.example.client.navigation.model.Open3NavigationNodeBuilder"
+            parentPresentationId="playground">
+      </navigationNodePresentation>
    </extension>
    
 </plugin>

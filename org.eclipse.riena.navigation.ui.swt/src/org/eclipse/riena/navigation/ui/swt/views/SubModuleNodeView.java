@@ -44,9 +44,13 @@ public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> e
 	private IBindingManager bindingManager;
 
 	public SubModuleNodeView() {
-		bindingManager = new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
+		bindingManager = createBindingManager();
 		node2Controler = new HashMap<ISubModuleNode, C>();
 		uiControls = new ArrayList<Object>();
+	}
+
+	protected IBindingManager createBindingManager() {
+		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
 	}
 
 	/**
