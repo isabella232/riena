@@ -6,15 +6,6 @@ import static org.eclipse.riena.ui.ridgets.ValidationTime.ON_UPDATE_TO_MODEL;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.riena.core.marker.IMarkable;
-import org.eclipse.riena.ui.core.marker.ErrorMarker;
-import org.eclipse.riena.ui.core.marker.IMessageMarker;
-import org.eclipse.riena.ui.core.marker.MessageMarker;
-import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
-import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
-
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -29,6 +20,14 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.riena.core.marker.IMarkable;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.MessageMarker;
+import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
+import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Helper class for Ridgets to delegate their value binding issues to.
@@ -138,13 +137,6 @@ public class ValueBindingSupport implements IValidationCallback {
 		} else {
 			return false;
 		}
-		// if (isValidateOnEdit(validationRule)) {
-		// onEditValidators.remove(validationRule);
-		// return true;
-		// } else {
-		// afterGetValidators.remove(validationRule);
-		// return false;
-		// }
 	}
 
 	public void bindToTarget(IObservableValue observableValue) {
