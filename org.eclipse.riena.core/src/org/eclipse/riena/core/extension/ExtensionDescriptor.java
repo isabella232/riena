@@ -23,13 +23,15 @@ import org.osgi.framework.BundleContext;
  * modified.<br>
  * The type of the bind method can be either of type array of <i>interface
  * type</i> or just <i>interface type</i>. The <i>interface type</i> is just a
- * simple java interface with getters where their name corresponds to attributes
- * of an extension.
+ * simple java interface with <i>getters</i> where their name corresponds to
+ * attribute names or element names for nested extensions of an extension.<br>
+ * For a detailed description of the interface/extension mapping
+ * {@link ExtensionReader}
  * <p>
- * The extension injector tracks the specified extension with {@link #start()}
- * or {@link #start(BundleContext)}. It stops tracking with {@link #stop()}.<br>
- * If {@link #start(BundleContext)} is used configuration modifications as
- * defined by <code>ConfigurationPlugin</code> will be applied applied.
+ * The extension injector starts tracking the specified extension with
+ * {@link #andStart(BundleContext)}. It stops tracking with {@link #stop()}.<br>
+ * Configuration modifications as defined by <code>ConfigurationPlugin</code>
+ * will also be performed.
  * <p>
  * The ExtensionDescriptor and ExtensionInjector are implemented as a ´fluent
  * interface´ allowing constructs like:
@@ -38,7 +40,7 @@ import org.osgi.framework.BundleContext;
  * <li>
  * Inject.extension("id2").useType(interface).into(target).bind("configure").
  * andStart(context)</li>
- * <li>Inject.extension("id3").expectExactly(1).into(target).andStart()</li>
+ * <li>Inject.extension("id3").expectExactly(1).into(target).andStart(context)</li>
  * <li>..</li>
  * </ol>
  * <p>
