@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.util.Collection;
 
+import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
@@ -34,6 +35,8 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
 
 	private IWindowRidget windowRidget;
+	// observer of the uiProcess for marker support
+	private UIProcessFinsishedObserver uiProcesFinishedObserver;
 
 	public SubModuleNodeViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -44,49 +47,32 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 
 		getNavigationNode().addListener(new SubModuleNodeAdapter() {
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
-			 * (org.eclipse.riena.navigation.INavigationNode)
-			 */
 			@Override
 			public void labelChanged(ISubModuleNode subModuleNode) {
 				updateLabel();
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
-			 * (org.eclipse.riena.navigation.INavigationNode)
-			 */
 			@Override
 			public void iconChanged(ISubModuleNode source) {
 				updateIcon();
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated
-			 * (org.eclipse.riena.navigation.INavigationNode)
-			 */
 			@Override
 			public void activated(ISubModuleNode source) {
 				super.activated(source);
 				registerDispatcherBuilder();
 			}
+
 		});
+
+		createUIProcessObserver();
+	}
+
+	private void createUIProcessObserver() {
+		uiProcesFinishedObserver = new UIProcessFinsishedObserver(getNavigationNode());
 	}
 
 	public UICallbackDispatcher createCallbackDispatcher() {
-		// UICallbackDispatcher dispatcher = new UICallbackDispatcher(n);
-		// dispatcher.addUIMonitor(getProgressVisualizer());
-		// return dispatcher;
 		return null;
 	}
 
@@ -105,13 +91,6 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 		return windowRidget;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ui.controllers.NavigationNodeViewController
-	 * #afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
@@ -169,6 +148,8 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 		if (aNode != null) {
 			IProgressVisualizer aVisualizer = new ProgressVisualizer();
 			aVisualizer.addObserver(((SubApplicationViewController) aNode.getPresentation()).getProgressBoxRidget());
+			// observe the uiProcess
+			aVisualizer.addObserver(uiProcesFinishedObserver);
 			for (INavigationNode<?> aSubApplicationNode : getSubApplications()) {
 				if (aSubApplicationNode.getPresentation() != null
 						&& ((SubApplicationViewController) aSubApplicationNode.getPresentation()).getStatusbarRidget() != null) {
