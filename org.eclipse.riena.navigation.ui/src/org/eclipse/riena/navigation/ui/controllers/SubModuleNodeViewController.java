@@ -20,7 +20,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
-import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -70,10 +69,6 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 
 	private void createUIProcessObserver() {
 		uiProcesFinishedObserver = new UIProcessFinsishedObserver(getNavigationNode());
-	}
-
-	public UICallbackDispatcher createCallbackDispatcher() {
-		return null;
 	}
 
 	/**
