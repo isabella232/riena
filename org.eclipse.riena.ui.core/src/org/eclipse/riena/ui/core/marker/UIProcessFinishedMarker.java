@@ -8,19 +8,27 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.core.marker;
 
-import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
+import org.eclipse.riena.core.marker.AbstractMarker;
 
-/**
- * 
- */
-public interface IProgressBoxRidget extends IProgressVisualizerObserver, IRidget {
+public class UIProcessFinishedMarker extends AbstractMarker {
 
-	public void activate();
+	private static final String ATTRIBUTE_FINISHED = "uiprocess.finished"; //$NON-NLS-1$
 
-	public void deactivate();
+	/**
+	 * @return the finished
+	 */
+	public boolean isFinished() {
+		return (Boolean) getAttribute(ATTRIBUTE_FINISHED);
+	}
 
-	public boolean isHoldingActiveUIProcess();
+	/**
+	 * @param finished
+	 *            the finished to set
+	 */
+	public void setFinished(boolean finished) {
+		setAttribute(ATTRIBUTE_FINISHED, finished);
+	}
 
 }
