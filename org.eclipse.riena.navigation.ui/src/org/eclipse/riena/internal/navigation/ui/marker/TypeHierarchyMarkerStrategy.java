@@ -89,7 +89,7 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 
 	private void removeNavigationNodeMarker(INavigationNode source) {
 		source.removeMarker(marker);
-		// remove observer an let gc work
+		// remove observer and let gc work
 		source.removeSimpleListener(nodeObserver);
 	}
 
