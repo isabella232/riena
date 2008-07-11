@@ -64,6 +64,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		super();
 
 		listeners = new LinkedList<L>();
+		simpleListeners = new LinkedList<ISimpleNavigationNodeListener>();
 		children = new LinkedList<C>();
 		markable = createMarkable();
 		actions = new LinkedHashSet<IAction>();
