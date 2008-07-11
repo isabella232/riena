@@ -148,6 +148,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
 				.into(target).bind("configure").andStart(Activator.getContext());
 		assertNotNull(target.getData());
+		assertTrue(target.getData().getValue().contains("And Now for Something Completely Different!"));
 		assertTrue(target.getData().getRequired());
 		assertTrue(target.getData().isRequired());
 		assertEquals("test1", target.getData().getText());
@@ -294,7 +295,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		assertEquals("test6", target.getData().getText());
 		assertEquals(String.class, target.getData().createObjectType().getClass());
 
-		IData2 data2 = target.getData().getData();
+		IData2 data2 = target.getData().getNews();
 		assertNotNull(data2);
 		assertEquals("rmation", data2.getInfo());
 
@@ -324,8 +325,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		assertEquals("test6", target.getData().getText());
 		assertEquals(String.class, target.getData().createObjectType().getClass());
 
-		IData2 data21 = target.getData().getData();
-		IData2 data22 = target.getData().getData();
+		IData2 data21 = target.getData().getNews();
+		IData2 data22 = target.getData().getNews();
 		assertSame(data21, data22);
 
 		IData3[] data31 = target.getData().getMoreData();

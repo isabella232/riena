@@ -6,6 +6,7 @@
             required="true"
             objectType="java.lang.String"
             text="test1">
+            And Now for Something Completely Different!
       </test>
    </extension>
 </plugin>

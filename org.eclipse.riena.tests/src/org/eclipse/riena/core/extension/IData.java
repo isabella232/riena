@@ -12,8 +12,12 @@ package org.eclipse.riena.core.extension;
 
 public interface IData {
 
+	@MapValue()
+	String getValue();
+
 	String getText();
 
+	@MapName("required")
 	boolean getRequired();
 
 	boolean isRequired();
@@ -34,7 +38,8 @@ public interface IData {
 
 	Object createObjectType();
 
-	IData2 getData();
+	@MapName("data")
+	IData2 getNews();
 
 	IData3[] getMoreData();
 }
