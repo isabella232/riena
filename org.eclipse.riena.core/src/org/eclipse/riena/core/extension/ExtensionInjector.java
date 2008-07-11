@@ -16,15 +16,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.core.logging.ConsoleLogger;
-
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IExtensionDelta;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IRegistryChangeEvent;
-import org.eclipse.core.runtime.IRegistryChangeListener;
+import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
@@ -34,21 +33,17 @@ import org.osgi.service.log.LogService;
  */
 public class ExtensionInjector {
 
-	// TODO When 3.4 is released we switch to IRegistryEventListener. This is
-	// the code in comments! PLEASE, DO NOT REMOVE IT!
+	private final ExtensionDescriptor extensionId;
+	private final Object target;
 
-	private ExtensionDescriptor extensionId;
-	private Object target;
 	private BundleContext context;
 	private boolean started;
 	private boolean track = true;
 	private boolean translate;
 	private String updateMethodName = "update"; //$NON-NLS-1$
 	private Method updateMethod;
-	// TODO 3.4: private IRegistryEventListener injectorListener;
-	private IRegistryChangeListener injectorListener;
+	private IRegistryEventListener injectorListener;
 	private boolean isArray;
-
 	private Class<?> componentType;
 
 	private final static Logger LOGGER = new ConsoleLogger(ExtensionInjector.class.getName());
@@ -86,9 +81,7 @@ public class ExtensionInjector {
 						"For some reason the extension registry has not been created. Tracking is not possible.");
 			else {
 				injectorListener = new InjectorListener();
-				// TODO 3.4: extensionRegistry.addListener(injectorListener,
-				// extensionId.getExtensionPointId());
-				extensionRegistry.addRegistryChangeListener(injectorListener);
+				extensionRegistry.addListener(injectorListener, extensionId.getExtensionPointId());
 			}
 		}
 		return this;
@@ -145,10 +138,8 @@ public class ExtensionInjector {
 				// TODO Is this an error for that we should throw an exception?
 				LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created.");
 			else
-				// TODO 3.4: extensionRegistry.removeListener(injectorListener);
-				extensionRegistry.removeRegistryChangeListener(injectorListener);
+				extensionRegistry.removeListener(injectorListener);
 		}
-		extensionId = null;
 		injectorListener = null;
 	}
 
@@ -242,7 +233,9 @@ public class ExtensionInjector {
 	void populateInterfaceBeans() {
 		Object[] beans = ExtensionReader.read(context, extensionId.getExtensionPointId(), componentType);
 		if (!matchesExtensionPointConstraint(beans.length))
-			LOGGER.log(LogService.LOG_ERROR, "Number of extensions does not fullfil the extenion point's constraints.");
+			LOGGER
+					.log(LogService.LOG_ERROR,
+							"Number of extensions does not fullfil the extension point's constraints.");
 		try {
 			if (isArray) {
 				updateMethod.invoke(target, new Object[] { beans });
@@ -262,65 +255,47 @@ public class ExtensionInjector {
 		return occurence >= extensionId.getMinOccurences() && occurence <= extensionId.getMaxOccurences();
 	}
 
-	// TODO 3.4: /**
-	// *
-	// */
-	// private class InjectorListener implements IRegistryEventListener {
-	//
-	// /*
-	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.
-	// runtime.IExtension[])
-	// */
-	// public void added(IExtension[] extensions) {
-	// populateInterfaceBeans();
-	// }
-	//
-	// /*
-	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.
-	// runtime.IExtensionPoint[])
-	// */
-	// public void added(IExtensionPoint[] extensionPoints) {
-	// populateInterfaceBeans();
-	// }
-	//
-	// /*
-	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.
-	// runtime.IExtension[])
-	// */
-	// public void removed(IExtension[] extensions) {
-	// populateInterfaceBeans();
-	// }
-	//
-	// /*
-	// * @see
-	// org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.
-	// runtime.IExtensionPoint[])
-	// */
-	// public void removed(IExtensionPoint[] extensionPoints) {
-	// populateInterfaceBeans();
-	// }
-	//
-	// }
-
 	/**
-	 * 
+	 * Listen to extension registry events.
 	 */
-	private class InjectorListener implements IRegistryChangeListener {
+	private class InjectorListener implements IRegistryEventListener {
 
 		/*
 		 * @see
-		 * org.eclipse.core.runtime.IRegistryChangeListener#registryChanged(
-		 * org.eclipse.core.runtime.IRegistryChangeEvent)
+		 * org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse
+		 * .core. runtime.IExtension[])
 		 */
-		public void registryChanged(IRegistryChangeEvent event) {
-			for (IExtensionDelta delta : event.getExtensionDeltas())
-				if (delta.getExtensionPoint().getUniqueIdentifier().equals(extensionId.getExtensionPointId())) {
-					populateInterfaceBeans();
-					return;
-				}
+		public void added(IExtension[] extensions) {
+			populateInterfaceBeans();
+		}
+
+		/*
+		 * @see
+		 * org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse
+		 * .core. runtime.IExtensionPoint[])
+		 */
+		public void added(IExtensionPoint[] extensionPoints) {
+			// We don´t care about other extension points. We only listen to the
+			// extensions for the id <code>extensionId</code>!
+		}
+
+		/*
+		 * @see
+		 * org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse
+		 * .core. runtime.IExtension[])
+		 */
+		public void removed(IExtension[] extensions) {
+			populateInterfaceBeans();
+		}
+
+		/*
+		 * @see
+		 * org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse
+		 * .core. runtime.IExtensionPoint[])
+		 */
+		public void removed(IExtensionPoint[] extensionPoints) {
+			// We don´t care about other extension points. We only listen to the
+			// extensions for the id <code>extensionId</code>!
 		}
 
 	}
