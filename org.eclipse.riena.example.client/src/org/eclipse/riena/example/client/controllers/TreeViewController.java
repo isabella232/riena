@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -23,10 +25,8 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.tree.DefaultObservableTreeModel;
-import org.eclipse.riena.ui.ridgets.tree.DefaultObservableTreeNode;
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
-import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
+import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
@@ -40,6 +40,8 @@ public class TreeViewController extends SubModuleNodeViewController {
 	private IActionRidget buttonAddChild;
 	private IActionRidget buttonRename;
 	private IActionRidget buttonDelete;
+	private IActionRidget buttonExpand;
+	private IActionRidget buttonCollapse;
 
 	public ITreeRidget getTree() {
 		return tree;
@@ -81,6 +83,22 @@ public class TreeViewController extends SubModuleNodeViewController {
 		this.buttonDelete = buttonDelete;
 	}
 
+	public IActionRidget getButtonExpand() {
+		return buttonExpand;
+	}
+
+	public void setButtonExpand(IActionRidget buttonExpand) {
+		this.buttonExpand = buttonExpand;
+	}
+
+	public IActionRidget getButtonCollapse() {
+		return buttonCollapse;
+	}
+
+	public void setButtonCollapse(IActionRidget buttonCollapse) {
+		this.buttonCollapse = buttonCollapse;
+	}
+
 	public TreeViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
@@ -95,20 +113,17 @@ public class TreeViewController extends SubModuleNodeViewController {
 	 */
 	private void initRidgets() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		tree.bindToModel(createTreeModel());
+		tree.bindToModel(createTreeInput(), ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
 		tree.updateFromModel();
 
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.setEnabled(false);
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
-				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
-						.getValue();
-				if (node != null) {
-					DefaultObservableTreeNode parent = (DefaultObservableTreeNode) node.getParent();
-					if (parent != null) { // make sure its not the root node
-						parent.addChild(new DefaultObservableTreeNode("NEW_SIBLING"));
-					}
+				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				ITreeNode parent = (node != null) ? node.getParent() : null;
+				if (parent != null) {
+					new TreeNode(parent, "NEW_SIBLING");
 				}
 			}
 		});
@@ -117,10 +132,9 @@ public class TreeViewController extends SubModuleNodeViewController {
 		buttonAddChild.setEnabled(false);
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
-				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
-						.getValue();
+				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					node.addChild(new DefaultObservableTreeNode("NEW_CHILD"));
+					new TreeNode(node, "NEW_CHILD");
 				}
 			}
 		});
@@ -129,12 +143,11 @@ public class TreeViewController extends SubModuleNodeViewController {
 		buttonRename.setEnabled(false);
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
-				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
-						.getValue();
+				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					String newValue = getNewValue(node.getUserObject());
+					String newValue = getNewValue(node.getValue());
 					if (newValue != null) {
-						node.getModel().setUserObject(node, newValue);
+						node.setValue(newValue);
 					}
 				}
 			}
@@ -144,16 +157,54 @@ public class TreeViewController extends SubModuleNodeViewController {
 		buttonDelete.setEnabled(false);
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
-				DefaultObservableTreeNode node = (DefaultObservableTreeNode) tree.getSingleSelectionObservable()
-						.getValue();
-				if (node != null) {
-					DefaultObservableTreeNode parent = (DefaultObservableTreeNode) node.getParent();
-					if (parent != null) { // make sure it's not the root node
-						parent.removeChild(node);
-					}
+				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				ITreeNode parent = (node != null) ? node.getParent() : null;
+				if (parent != null) {
+					List<ITreeNode> children = parent.getChildren();
+					children.remove(node);
+					parent.setChildren(children);
 				}
 			}
 		});
+
+		buttonExpand.setText("E&xpand");
+		buttonExpand.setEnabled(false);
+		buttonExpand.addListener(new IActionListener() {
+			public void callback() {
+				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				if (node != null) {
+					tree.expand(node);
+				}
+			}
+		});
+
+		buttonCollapse.setText("&Collapse");
+		buttonCollapse.setEnabled(false);
+		buttonCollapse.addListener(new IActionListener() {
+			public void callback() {
+				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
+				if (node != null) {
+					tree.collapse(node);
+				}
+			}
+		});
+
+		// final IObservableValue viewerSelection =
+		// tree.getSingleSelectionObservable();
+		// IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+		// protected Object calculate() {
+		// return Boolean.valueOf(viewerSelection.getValue() != null);
+		// }
+		// };
+		// DataBindingContext dbc = new DataBindingContext();
+		// dbc.bindValue(BeansObservables.observeValue(buttonAddChild,
+		// "enabled"), hasSelection, null, null);
+		// dbc.bindValue(BeansObservables.observeValue(buttonAddSibling,
+		// "enabled"), hasSelection, null, null);
+		// dbc.bindValue(BeansObservables.observeValue(buttonDelete, "enabled"),
+		// hasSelection, null, null);
+		// dbc.bindValue(BeansObservables.observeValue(buttonRename, "enabled"),
+		// hasSelection, null, null);
 
 		WritableValue singleSelection = new WritableValue();
 		singleSelection.addValueChangeListener(new IValueChangeListener() {
@@ -165,33 +216,32 @@ public class TreeViewController extends SubModuleNodeViewController {
 				buttonAddSibling.setEnabled(hasParent);
 				buttonDelete.setEnabled(hasParent);
 				buttonRename.setEnabled(isTreeNode);
+				buttonExpand.setEnabled(isTreeNode);
+				buttonCollapse.setEnabled(isTreeNode);
 			}
 		});
 		tree.bindSingleSelectionToModel(singleSelection);
 	}
 
-	private IObservableTreeModel createTreeModel() {
-		DefaultObservableTreeNode root = new DefaultObservableTreeNode("root");
+	private ITreeNode createTreeInput() {
+		ITreeNode root = new TreeNode("root");
 
-		DefaultObservableTreeNode groupA = new DefaultObservableTreeNode("group a");
-		groupA.addChild(new DefaultObservableTreeNode("a_child_1"));
-		groupA.addChild(new DefaultObservableTreeNode("a_child_2"));
-		groupA.addChild(new DefaultObservableTreeNode("a_child_3"));
-		root.addChild(groupA);
+		ITreeNode groupA = new TreeNode(root, "group a");
+		new TreeNode(groupA, "a_child_1");
+		new TreeNode(groupA, "a_child_2");
+		new TreeNode(groupA, "a_child_3");
 
-		DefaultObservableTreeNode groupB = new DefaultObservableTreeNode("group b");
-		groupB.addChild(new DefaultObservableTreeNode("b_child_1"));
-		groupB.addChild(new DefaultObservableTreeNode("b_child_2"));
-		groupB.addChild(new DefaultObservableTreeNode("b_child_3"));
-		root.addChild(groupB);
+		ITreeNode groupB = new TreeNode(root, "group b");
+		new TreeNode(groupB, "b_child_1");
+		new TreeNode(groupB, "b_child_2");
+		new TreeNode(groupB, "b_child_3");
 
-		DefaultObservableTreeNode groupC = new DefaultObservableTreeNode("group c");
-		groupC.addChild(new DefaultObservableTreeNode("c_child_1"));
-		groupC.addChild(new DefaultObservableTreeNode("c_child_2"));
-		groupC.addChild(new DefaultObservableTreeNode("c_child_3"));
-		root.addChild(groupC);
+		ITreeNode groupC = new TreeNode(root, "group c");
+		new TreeNode(groupC, "c_child_1");
+		new TreeNode(groupC, "c_child_2");
+		new TreeNode(groupC, "c_child_3");
 
-		return new DefaultObservableTreeModel(root);
+		return root;
 	}
 
 	private String getNewValue(Object oldValue) {

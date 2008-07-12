@@ -18,6 +18,9 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
@@ -27,6 +30,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -35,7 +39,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public abstract class AbstractSWTRidgetTest extends TestCase {
 
-	private DefaultRealm realm;
 	private Shell shell;
 	private Control control;
 	private IRidget ridget;
@@ -44,7 +47,11 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		realm = new DefaultRealm();
+		Display display = Display.getDefault();
+
+		Realm realm = SWTObservables.getRealm(display);
+		assertNotNull(realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
 		shell = new Shell();
 		shell.setLayout(new RowLayout(SWT.VERTICAL));
@@ -73,8 +80,6 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		otherControl = null;
 		shell.dispose();
 		shell = null;
-		realm.dispose();
-		realm = null;
 	}
 
 	// protected methods

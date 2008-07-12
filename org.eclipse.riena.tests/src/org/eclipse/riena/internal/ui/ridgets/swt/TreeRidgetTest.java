@@ -1,11 +1,12 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.List;
+
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.tree.DefaultObservableTreeModel;
-import org.eclipse.riena.ui.ridgets.tree.DefaultObservableTreeNode;
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
+import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -25,12 +26,10 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	private static final String ROOT_CHILD1_CHILD2_NODE_USER_OBJECT = "TestRootChild1Child2Node";
 	private static final String ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT = "TestRootChild1Child2ChildNode";
 
-	private DefaultObservableTreeNode rootNode;
-	private DefaultObservableTreeNode rootChild1Node;
-	private DefaultObservableTreeNode rootChild2Node;
-	private DefaultObservableTreeNode rootChild1Child1Node;
-	private DefaultObservableTreeNode rootChild1Child2Node;
-	private DefaultObservableTreeNode rootChild1Child2ChildNode;
+	private ITreeNode rootNode;
+	private ITreeNode rootChild1Node;
+	private ITreeNode rootChild2Node;
+	private ITreeNode rootChild1Child2Node;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -39,7 +38,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	private void bindToModel() {
-		getRidget().bindToModel(initializeTreeModel());
+		ITreeNode treeRoot = initializeTreeModel();
+		getRidget().bindToModel(treeRoot, ITreeNode.class, "children", "value");
 	}
 
 	@Override
@@ -105,12 +105,12 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(3, getItemCount(control));
 
-		rootChild2Node.removeFromParent();
+		removeFromParent(rootChild2Node);
 
 		assertEquals(2, getItemCount(control));
 
-		rootNode.addChild(createNode("TestNewNode1"));
-		rootNode.addChild(createNode("TestNewNode2"));
+		new TreeNode(rootNode, "TestNewNode1");
+		new TreeNode(rootNode, "TestNewNode2");
 
 		assertEquals(4, getItemCount(control));
 	}
@@ -271,29 +271,14 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	// ////////////////
 
-	private IObservableTreeModel initializeTreeModel() {
-		rootNode = createNode(ROOT_NODE_USER_OBJECT);
-		rootChild1Node = createNode(ROOT_CHILD1_NODE_USER_OBJECT);
-		rootChild2Node = createNode(ROOT_CHILD2_NODE_USER_OBJECT);
-		rootChild1Child1Node = createNode(ROOT_CHILD1_CHILD1_NODE_USER_OBJECT);
-		rootChild1Child2Node = createNode(ROOT_CHILD1_CHILD2_NODE_USER_OBJECT);
-		rootChild1Child2ChildNode = createNode(ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT);
-
-		rootNode.addChild(rootChild1Node);
-		rootNode.addChild(rootChild2Node);
-		rootChild1Node.addChild(rootChild1Child1Node);
-		rootChild1Node.addChild(rootChild1Child2Node);
-		rootChild1Child2Node.addChild(rootChild1Child2ChildNode);
-
-		return createTreeModel(rootNode);
-	}
-
-	private DefaultObservableTreeNode createNode(String userObject) {
-		return new DefaultObservableTreeNode(userObject);
-	}
-
-	private DefaultObservableTreeModel createTreeModel(DefaultObservableTreeNode rootNode) {
-		return new DefaultObservableTreeModel(rootNode);
+	private ITreeNode initializeTreeModel() {
+		rootNode = new TreeNode(ROOT_NODE_USER_OBJECT);
+		rootChild1Node = new TreeNode(rootNode, ROOT_CHILD1_NODE_USER_OBJECT);
+		rootChild2Node = new TreeNode(rootNode, ROOT_CHILD2_NODE_USER_OBJECT);
+		new TreeNode(rootChild1Node, ROOT_CHILD1_CHILD1_NODE_USER_OBJECT);
+		rootChild1Child2Node = new TreeNode(rootChild1Node, ROOT_CHILD1_CHILD2_NODE_USER_OBJECT);
+		new TreeNode(rootChild1Child2Node, ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT);
+		return rootNode;
 	}
 
 	/**
@@ -320,6 +305,16 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			}
 		}
 		return count;
+	}
+
+	/** Removes the give node from its parent (if it has one). */
+	private void removeFromParent(ITreeNode node) {
+		ITreeNode parent = node.getParent();
+		if (parent != null) {
+			List<ITreeNode> children = parent.getChildren();
+			children.remove(node);
+			parent.setChildren(children);
+		}
 	}
 
 }

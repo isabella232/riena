@@ -53,7 +53,7 @@ public class TreeView extends SubModuleNodeView<TreeViewController> {
 		Group group = UIControlsFactory.createGroup(parent, "&Tree:");
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		Tree tree = new Tree(group, SWT.FULL_SELECTION | SWT.SINGLE);
+		Tree tree = new Tree(group, SWT.FULL_SELECTION | SWT.MULTI);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(tree);
 		addUIControl(tree, "tree"); //$NON-NLS-1$
 
@@ -65,7 +65,7 @@ public class TreeView extends SubModuleNodeView<TreeViewController> {
 
 	private Composite createButtonComposite(Group group) {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
-		GridLayoutFactory.fillDefaults().numColumns(4).equalWidth(false).applyTo(buttonComposite);
+		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(false).applyTo(buttonComposite);
 
 		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
 		int widthHint = UIControlsFactory.getWidthHint(buttonAddSibling);
@@ -81,6 +81,12 @@ public class TreeView extends SubModuleNodeView<TreeViewController> {
 
 		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
+
+		Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonExpand, "buttonExpand"); //$NON-NLS-1$
+
+		Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonCollapse, "buttonCollapse"); //$NON-NLS-1$
 
 		return buttonComposite;
 	}

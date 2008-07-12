@@ -39,8 +39,49 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * 
 	 * @param observableValue
 	 *            The model value.
+	 * 
+	 * @deprecated see {@link #bindToModel(Object, Class, String, String)}
 	 */
 	void bindToModel(IObservableTreeModel observableTreeModel);
+
+	/**
+	 * Creates a default binding between the Tree Ridget and the specified
+	 * rootElement value. The UpdateValueStrategy will be POLICY_UPDATE to the
+	 * model value (automatic update) and POLICY_ON_REQUEST from the model
+	 * value.
+	 * <p>
+	 * The rootElement must have an accessor that provides a list of children
+	 * (List) and an accessor that provides a value (Object) for each child. It
+	 * is assumed that the rootElement and all children are of the same type.
+	 * <p>
+	 * Example:
+	 * 
+	 * <pre>
+	 * AnyBean rootElement;
+	 * // AnyBean has getChildren() and getValue() methods
+	 * treeRidget.bind(rootElement, AnyBean.class, &quot;children&quot;, &quot;value&quot;);
+	 * </pre>
+	 * 
+	 * @param treeRoot
+	 *            an Object the root of the tree (non-null). Note that the
+	 *            children of the treeRoot will be shown in level-0 of the tree
+	 *            and the treeRoot itself is not shown.
+	 * @param treeElementClass
+	 *            the type of the elements in the tree (i.e. treeRoot and all
+	 *            children).
+	 * @param childrenAccessor
+	 *            a non-null, non-empty String specifying an accessor for
+	 *            obtaining a List of children from the rootElementClass
+	 *            (example "children" specifies "getChildren()"). The returned
+	 *            children will be shown underneath their parent.
+	 * @param valueAccessor
+	 *            a non-null, non-empty String specifying an accessor for
+	 *            obtaining an Object value from each child (example "value"
+	 *            specifies "getValue()"). The returned value will be shown in
+	 *            the corresponding tree node.
+	 */
+	void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String valueAccessor);
 
 	/**
 	 * Expands all nodes of the tree based on the current ITreeModel value if
@@ -74,6 +115,8 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see IRidget#getUIControl()
 	 * @param node
 	 *            The node to expand.
+	 * @deprecated see {@link #expand(Object)
+	 * 
 	 */
 	void expand(ITreeNode node);
 
@@ -85,8 +128,15 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see IRidget#getUIControl()
 	 * @param node
 	 *            The node to collapse.
+	 * @deprecated see {@link #collapse(Object)}
 	 */
 	void collapse(ITreeNode node);
+
+	// TODO [ev] update javadoc
+	void expand(Object element);
+
+	// TODO [ev] update javadoc
+	void collapse(Object element);
 
 	void addDoubleClickListener(IActionListener listener);
 

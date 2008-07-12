@@ -13,23 +13,34 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.map.IObservableMap;
+import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
+import org.eclipse.core.databinding.observable.set.ISetChangeListener;
+import org.eclipse.core.databinding.observable.set.SetChangeEvent;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
+import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
-import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -47,18 +58,20 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
-	/* a flat list of all "model" values from all nodes */
-	private final WritableList observableValues;
 
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
-	private IObservableTreeModel observableTreeModel;
 	private Collection<IActionListener> doubleClickListeners;
+
+	private Object treeRoot;
+	private Class<? extends Object> treeElementClass;
+	private String childrenAccessor;
+	private String valueAccessor;
 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
-		observableValues = new WritableList();
+		// observableValues = new WritableList();
 	}
 
 	@Override
@@ -110,30 +123,12 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	@Override
 	protected void bindUIControl() {
 		Tree control = getUIControl();
-		if (control != null && observableTreeModel != null) {
-			viewer = new TreeViewer(control);
-			viewer.setLabelProvider(new TreeNodeLabelProvider(viewer));
-			viewer.setContentProvider(new TreeModelContentProvider());
-			viewer.setInput(observableTreeModel);
-			if (observableTreeModel.getRoot() instanceof ITreeNode) {
-				expand((ITreeNode) observableTreeModel.getRoot());
-			}
-
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-
-			dbc = new DataBindingContext();
-			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
-			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			IObservableList viewerSelections = new SelectionProviderMultipleSelectionObservableList(dbc
-					.getValidationRealm(), viewer, Object.class);
-			dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
-
-			viewer.setSelection(currentSelection);
-
+		if (control != null && treeRoot != null) {
+			bindToViewer(control);
+			bindToSelection();
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
+			expand(treeRoot); // TODO [ev] restoreExpansionState
 		}
 	}
 
@@ -169,21 +164,41 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		doubleClickListeners.add(listener);
 	}
 
+	/**
+	 * @deprecated see {@link #bindToModel(Object, Class, String, String)}
+	 */
 	public void bindToModel(IObservableTreeModel observableTreeModel) {
+		throw new UnsupportedOperationException("deprecated");
+	}
+
+	public void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String valueAccessor) {
+		Assert.isNotNull(treeRoot);
+		Assert.isNotNull(treeElementClass);
+		Assert.isNotNull(childrenAccessor);
+		Assert.isNotNull(valueAccessor);
 		unbindUIControl();
-		this.observableTreeModel = observableTreeModel;
-		observableValues.clear();
-		// TODO [ex] fill OVS?
-		setRowObservables(observableValues);
+		this.treeRoot = treeRoot;
+		this.treeElementClass = treeElementClass;
+		this.childrenAccessor = childrenAccessor;
+		this.valueAccessor = valueAccessor;
+		// observableValues.clear();
+		// // TODO [ex] fill OVS?
+		// setRowObservables(observableValues);
 		bindUIControl();
 	}
 
-	public void collapse(ITreeNode node) {
+	/** @deprecated */
+	public void collapse(org.eclipse.riena.ui.ridgets.tree.ITreeNode node) {
+		collapse((Object) node);
+	}
+
+	public void collapse(Object element) {
 		if (viewer != null) {
 			Tree control = getUIControl();
 			control.setRedraw(false);
-			viewer.collapseToLevel(node, 1);
-			viewer.update(node, null); // update icon
+			viewer.collapseToLevel(element, 1);
+			viewer.update(element, null); // update icon
 			control.setRedraw(true);
 		}
 	}
@@ -193,17 +208,22 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Tree control = getUIControl();
 			control.setRedraw(false);
 			viewer.collapseAll();
-			viewer.refresh(); // update icons
+			viewer.refresh(); // update all icons
 			control.setRedraw(true);
 		}
 	}
 
-	public void expand(ITreeNode node) {
+	/** @deprecated */
+	public void expand(org.eclipse.riena.ui.ridgets.tree.ITreeNode node) {
+		expand((Object) node);
+	}
+
+	public void expand(Object element) {
 		if (viewer != null) {
 			Tree control = getUIControl();
 			control.setRedraw(false);
-			viewer.expandToLevel(node, 1);
-			viewer.update(node, null); // update icon
+			viewer.expandToLevel(element, 1);
+			viewer.update(element, null); // update icon
 			control.setRedraw(true);
 		}
 	}
@@ -213,19 +233,94 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Tree control = getUIControl();
 			control.setRedraw(false);
 			viewer.expandAll();
-			viewer.refresh(); // update icons
+			viewer.refresh(); // update all icons
 			control.setRedraw(true);
 		}
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public IObservableTreeModel getRidgetObservable() {
-		return observableTreeModel;
+		throw new UnsupportedOperationException("deprecated");
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
 		}
+	}
+
+	// helping methods
+	// ////////////////
+
+	private void bindToViewer(final Tree control) {
+		viewer = new TreeViewer(control);
+		// content
+		Realm realm = Realm.getDefault();
+		IObservableFactory listFactory = BeansObservables.listFactory(realm, childrenAccessor, treeElementClass);
+		// needed for updating the icons on additon / removal (who's the
+		// parent?)
+		final TreeStructureAdvisor structureAdvisor = new TreeStructureAdvisor() {
+			@Override
+			public Object getParent(Object element) {
+				if (element instanceof ITreeNode) {
+					return ((ITreeNode) element).getParent();
+				}
+				return super.getParent(element);
+			}
+		};
+		final TreeContentProvider viewerCP = new TreeContentProvider(listFactory, structureAdvisor);
+		viewerCP.getKnownElements().addSetChangeListener(new ISetChangeListener() {
+			// updates the icons on addition / removal
+			public void handleSetChange(SetChangeEvent event) {
+				if (!viewerCP.isClearing()) {
+					Set<Object> parents = new HashSet<Object>();
+					for (Object element : event.diff.getAdditions()) {
+						Object parent = structureAdvisor.getParent(element);
+						if (parent != null) {
+							parents.add(parent);
+						}
+					}
+					for (Object element : event.diff.getRemovals()) {
+						Object parent = structureAdvisor.getParent(element);
+						if (parent != null) {
+							parents.add(parent);
+						}
+					}
+					for (Object parent : parents) {
+						if (!viewer.isBusy()) {
+							viewer.update(parent, null);
+						}
+					}
+				}
+			}
+		});
+		// TODO [ev] think about setInput(treeRoot), setInput(new Object[](tR1,
+		// trR2)), setInput(newObject[](tr1)
+		viewer.setContentProvider(viewerCP);
+		// labels
+		IObservableMap attributeMap = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass,
+				valueAccessor);
+		ILabelProvider viewerLP = new TreeRidgetLabelProvider(viewer, attributeMap);
+		viewer.setLabelProvider(viewerLP);
+		// input
+		viewer.setInput(new Object[] { treeRoot });
+	}
+
+	private void bindToSelection() {
+		StructuredSelection currentSelection = new StructuredSelection(getSelection());
+
+		dbc = new DataBindingContext();
+		IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
+		dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		IObservableList viewerSelections = new SelectionProviderMultipleSelectionObservableList(dbc
+				.getValidationRealm(), viewer, Object.class);
+		dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+
+		viewer.setSelection(currentSelection);
 	}
 
 	// helping classes
@@ -243,8 +338,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				if (control.getSelectionCount() > 1) {
 					// ignore this event
 					e.doit = false;
-					// set selection to most recent item
-					TreeItem firstItem = findFirstItem(control);
+					// set selection one item
+					TreeItem firstItem = control.getSelection()[0];
+					// (
+					// control);
 					control.setSelection(firstItem);
 					// fire event
 					Event event = new Event();
@@ -253,22 +350,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					control.notifyListeners(SWT.Selection, event);
 				}
 			}
-		}
-
-		private TreeItem findFirstItem(Tree control) {
-			TreeItem result = null;
-			int minIndex = Integer.MAX_VALUE;
-
-			TreeItem[] selectedItems = control.getSelection();
-			Assert.isLegal(selectedItems.length > 0);
-			for (TreeItem item : selectedItems) {
-				int index = control.indexOf(item);
-				if (index < minIndex) {
-					minIndex = index;
-					result = item;
-				}
-			}
-			return result;
 		}
 	}
 
@@ -283,6 +364,36 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					listener.callback();
 				}
 			}
+		}
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 */
+	private static class TreeContentProvider extends ObservableListTreeContentProvider {
+
+		private boolean isClearing = true;
+
+		TreeContentProvider(IObservableFactory listFactory, TreeStructureAdvisor structureAdvisor) {
+			super(listFactory, structureAdvisor);
+		}
+
+		@Override
+		public Object[] getElements(Object inputElement) {
+			if (inputElement instanceof Object[]) {
+				return (Object[]) inputElement;
+			}
+			return super.getElements(inputElement);
+		}
+
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			isClearing = newInput == null;
+			super.inputChanged(viewer, oldInput, newInput);
+		}
+
+		boolean isClearing() {
+			return isClearing;
 		}
 	}
 
