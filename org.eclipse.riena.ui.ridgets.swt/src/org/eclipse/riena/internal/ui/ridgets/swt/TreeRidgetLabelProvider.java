@@ -43,7 +43,6 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
-		System.out.println("TreeRidgetLabelProvider.getImage() for " + element);
 		String key = getImageKey(element);
 		return Activator.getSharedImage(key);
 	}
