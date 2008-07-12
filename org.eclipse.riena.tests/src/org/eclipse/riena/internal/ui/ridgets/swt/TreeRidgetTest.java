@@ -39,7 +39,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	private void bindToModel() {
 		ITreeNode treeRoot = initializeTreeModel();
-		getRidget().bindToModel(treeRoot, ITreeNode.class, "children", "value");
+		getRidget().bindToModel(treeRoot, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
 	}
 
 	@Override

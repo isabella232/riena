@@ -12,9 +12,10 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.util.List;
 
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
-import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.ComputedValue;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -23,6 +24,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
@@ -117,7 +119,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		tree.updateFromModel();
 
 		buttonAddSibling.setText("Add &Sibling");
-		buttonAddSibling.setEnabled(false);
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -129,7 +130,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonAddChild.setText("Add &Child");
-		buttonAddChild.setEnabled(false);
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -140,7 +140,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonRename.setText("&Rename");
-		buttonRename.setEnabled(false);
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -154,7 +153,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonDelete.setText("&Delete");
-		buttonDelete.setEnabled(false);
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -168,7 +166,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonExpand.setText("E&xpand");
-		buttonExpand.setEnabled(false);
 		buttonExpand.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -179,7 +176,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		});
 
 		buttonCollapse.setText("&Collapse");
-		buttonCollapse.setEnabled(false);
 		buttonCollapse.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -189,38 +185,33 @@ public class TreeViewController extends SubModuleNodeViewController {
 			}
 		});
 
-		// final IObservableValue viewerSelection =
-		// tree.getSingleSelectionObservable();
-		// IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
-		// protected Object calculate() {
-		// return Boolean.valueOf(viewerSelection.getValue() != null);
-		// }
-		// };
-		// DataBindingContext dbc = new DataBindingContext();
-		// dbc.bindValue(BeansObservables.observeValue(buttonAddChild,
-		// "enabled"), hasSelection, null, null);
-		// dbc.bindValue(BeansObservables.observeValue(buttonAddSibling,
-		// "enabled"), hasSelection, null, null);
-		// dbc.bindValue(BeansObservables.observeValue(buttonDelete, "enabled"),
-		// hasSelection, null, null);
-		// dbc.bindValue(BeansObservables.observeValue(buttonRename, "enabled"),
-		// hasSelection, null, null);
-
-		WritableValue singleSelection = new WritableValue();
-		singleSelection.addValueChangeListener(new IValueChangeListener() {
-			public void handleValueChange(ValueChangeEvent event) {
-				Object selectedValue = event.getObservableValue().getValue();
-				boolean isTreeNode = selectedValue instanceof ITreeNode;
-				boolean hasParent = isTreeNode && ((ITreeNode) selectedValue).getParent() != null;
-				buttonAddChild.setEnabled(isTreeNode);
-				buttonAddSibling.setEnabled(hasParent);
-				buttonDelete.setEnabled(hasParent);
-				buttonRename.setEnabled(isTreeNode);
-				buttonExpand.setEnabled(isTreeNode);
-				buttonCollapse.setEnabled(isTreeNode);
+		final IObservableValue viewerSelection = tree.getSingleSelectionObservable();
+		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+			protected Object calculate() {
+				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
-		});
-		tree.bindSingleSelectionToModel(singleSelection);
+		};
+		IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
+			protected Object calculate() {
+				boolean result = false;
+				Object node = viewerSelection.getValue();
+				if (node instanceof ITreeNode) {
+					result = ((ITreeNode) node).getParent() != null;
+				}
+				return Boolean.valueOf(result);
+			}
+		};
+		DataBindingContext dbc = new DataBindingContext();
+		bindEnablementToValue(dbc, buttonAddChild, hasSelection);
+		bindEnablementToValue(dbc, buttonAddSibling, hasNonRootSelection);
+		bindEnablementToValue(dbc, buttonDelete, hasNonRootSelection);
+		bindEnablementToValue(dbc, buttonRename, hasSelection);
+		bindEnablementToValue(dbc, buttonExpand, hasSelection);
+		bindEnablementToValue(dbc, buttonCollapse, hasSelection);
+	}
+
+	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
+		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
 	private ITreeNode createTreeInput() {
