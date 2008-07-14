@@ -10,25 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
-
 /**
- * A WorkAreaPresentationDefinition defines the work area to be activated.
+ * A modulePresentationDefinition defines the navigationModule to be activated.
  * 
  * @author Erich Achilles
  */
-public interface IWorkAreaPresentationDefinition extends IPresentationDefinition {
+public interface IPresentationDefinition {
 
 	/**
-	 * Returns the view controller for this work area presentation
+	 * The id of this presentation
 	 */
 
-	IViewController createViewController();
-
-	/**
-	 * Return true if the specified view shoud be a shared view, false otherwise
-	 */
-
-	boolean isViewShared();
-
+	String getPresentationId();
 }
