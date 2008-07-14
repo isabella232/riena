@@ -33,6 +33,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -201,11 +202,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// create and layouts the composite of switcher, menu, tool bar etc.
 		shell.setLayout(new FormLayout());
 		createLogoComposite(shell);
+		createGrabCorner(shell);
 		switcherComposite = createSwitcherComposite(shell);
 		menuBarComposite = createMenuBarComposite(shell, switcherComposite);
 		coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
 		mainComposite = createMainComposite(shell, coolBarComposite);
-		createStatusLineComposite(shell);
+		// createStatusLineComposite(shell);
 
 	}
 
@@ -438,6 +440,19 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		topLeftComposite.setLayoutData(logoData);
 
 		topLeftComposite.addPaintListener(new LogoPaintListener());
+
+	}
+
+	/**
+	 * Creates and positions the corner to grab.
+	 * 
+	 * @param shell
+	 */
+	private void createGrabCorner(final Shell shell) {
+
+		if (GrabCorner.isResizeable()) {
+			new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
+		}
 
 	}
 
@@ -696,7 +711,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, 0, 0);
-		formData.bottom = new FormAttachment(100, -(padding + STATUSLINE_HIGHT));
+		formData.bottom = new FormAttachment(100, -padding);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
 		composite.setLayoutData(formData);
@@ -714,20 +729,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		int padding = getShellPadding();
 
 		Composite composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
-		// composite.setBackground(LnfManager.getLnf().getColor("red"));
+		composite.setBackground(LnfManager.getLnf().getColor("red"));
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.height = STATUSLINE_HIGHT;
 		formData.bottom = new FormAttachment(100, -padding);
 		formData.left = new FormAttachment(0, padding);
-		formData.right = new FormAttachment(100, -(padding + grabCornerSize.x));
+		formData.right = new FormAttachment(100, -padding);
 		composite.setLayoutData(formData);
 
 		getWindowConfigurer().getPresentationFactory().createStatusLineControl(getStatusLineManager(), composite);
-
-		if (GrabCorner.isResizeable()) {
-			new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
-		}
 
 		return composite;
 

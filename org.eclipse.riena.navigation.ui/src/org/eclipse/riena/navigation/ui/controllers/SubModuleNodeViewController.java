@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 import java.util.Collection;
 
 import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
+import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
@@ -61,7 +62,6 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 				super.activated(source);
 				registerDispatcherBuilder();
 			}
-
 		});
 
 		createUIProcessObserver();
@@ -121,8 +121,7 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 
 	protected String getFullTitle() {
 		String title = getNavigationNode().getLabel();
-		if (!((ModuleNodeViewController) getNavigationNode().getParentOfType(IModuleNode.class).getPresentation())
-				.hasSingleLeafChild()) {
+		if (!getModuleController().hasSingleLeafChild()) {
 			INavigationNode<?> parent = getNavigationNode().getParent();
 			while (!(parent instanceof IModuleNode)) {
 				title = parent.getLabel() + TITLE_SEPARATOR + title;
@@ -139,13 +138,12 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 
 	@Override
 	public IProgressVisualizer getProgressVisualizer() {
-		INavigationNode<?> aNode = getSubApplication(getNavigationNode());
-		if (aNode != null) {
+		ISubApplication subApp = getNavigationNode().getParentOfType(ISubApplication.class);
+		if (subApp != null) {
 			IProgressVisualizer aVisualizer = new ProgressVisualizer();
-			aVisualizer.addObserver(((SubApplicationViewController) aNode.getPresentation()).getProgressBoxRidget());
 			// observe the uiProcess
 			aVisualizer.addObserver(uiProcesFinishedObserver);
-			for (INavigationNode<?> aSubApplicationNode : getSubApplications()) {
+			for (ISubApplication aSubApplicationNode : getSubApplications()) {
 				if (aSubApplicationNode.getPresentation() != null
 						&& ((SubApplicationViewController) aSubApplicationNode.getPresentation()).getStatusbarRidget() != null) {
 					aVisualizer.addObserver(((SubApplicationViewController) aSubApplicationNode.getPresentation())
@@ -157,24 +155,18 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 		return null;
 	}
 
-	private Collection<INavigationNode> getSubApplications() {
-		INavigationNode topNode = getParentNavigationNode(getNavigationNode());
-		return topNode.getChildren();
+	private Collection<ISubApplication> getSubApplications() {
+		IApplicationModel app = getNavigationNode().getParentOfType(IApplicationModel.class);
+		return app.getChildren();
 	}
 
-	private INavigationNode getParentNavigationNode(INavigationNode aNode) {
-		if (aNode.getParent() == null) {
-			return aNode;
-		} else {
-			return getParentNavigationNode(aNode.getParent());
-		}
+	/**
+	 * Returns the controller of the parent module.
+	 * 
+	 * @return module controller
+	 */
+	public ModuleNodeViewController getModuleController() {
+		return (ModuleNodeViewController) getNavigationNode().getParentOfType(IModuleNode.class).getPresentation();
 	}
 
-	private INavigationNode getSubApplication(INavigationNode aNode) {
-		if (aNode instanceof ISubApplication || aNode == null) {
-			return aNode;
-		} else {
-			return getSubApplication(aNode.getParent());
-		}
-	}
 }

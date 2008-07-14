@@ -27,8 +27,8 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
 	 */
 	public void createInitialLayout(IPageLayout layout) {
-		SubApplicationViewController controller = createController(layout.getDescriptor().getId());
-		initializeListener(controller);
+		subApplicationViewController = createController(layout.getDescriptor().getId());
+		initializeListener(subApplicationViewController);
 		doBaseLayout(layout);
 	}
 
@@ -41,9 +41,25 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		return SwtPresentationManagerAccessor.getManager().getNavigationNode(id, ISubApplication.class);
 	}
 
+	/**
+	 * Creates controller of the sub-application view and create and set the
+	 * some ridgets.
+	 * 
+	 * @param subApplication
+	 *            - sub-application node
+	 * @return controller of the sub-application view
+	 */
 	protected SubApplicationViewController createController(ISubApplication subApplication) {
-		subApplicationViewController = new SubApplicationViewController(subApplication);
-		return subApplicationViewController;
+
+		SubApplicationViewController controller = new SubApplicationViewController(subApplication);
+
+		// process ridget/control
+		UIProcessRidget progressBoxRidget = new UIProcessRidget();
+		progressBoxRidget.setUIControl(new UIProcessControl(Display.getDefault().getActiveShell()));
+		controller.setProgressBoxRidget(progressBoxRidget);
+
+		return controller;
+
 	}
 
 	/**
@@ -108,6 +124,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 			if (!navigationUp) {
 				createNavigation();
 				initUIProcessRidget();
+				createStatusLine();
 				navigationUp = true;
 			}
 		}
@@ -124,6 +141,10 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 
 		private void createNavigation() {
 			showView(NavigationTreeViewPart.ID, createNextId());
+		}
+
+		private void createStatusLine() {
+			showView(StatusLineViewPart.ID, createNextId());
 		}
 
 		private void showMultiView(SwtViewId id) {

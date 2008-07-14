@@ -10,16 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.presentation.stack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
+import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
+import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
+import org.eclipse.riena.ui.swt.Statusbar;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -28,6 +37,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.presentations.PresentablePart;
 import org.eclipse.ui.presentations.IPresentablePart;
 import org.eclipse.ui.presentations.IStackPresentationSite;
@@ -56,6 +67,7 @@ import org.eclipse.ui.presentations.StackPresentation;
  * |              |                                                | |
  * |              |                                                | |
  * |              +------------------------------------------------+ |
+ * | Status Line                                                     |
  * +-----------------------------------------------------------------+
  * 
  * legend: *1 - navigation
@@ -89,14 +101,23 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Gap between navigation and sub-module view
 	 */
 	private static final int NAVIGATION_SUB_MODULE_GAP = 10;
+	/**
+	 * The height of the status bar
+	 */
+	private static final int STATUSLINE_HIGHT = 22;
 
 	/**
 	 * Property to distinguish the view of the navigation.
 	 */
 	public static final String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
+	/**
+	 * Property to distinguish the view of the status line.
+	 */
+	public static final String PROPERTY_STATUSLINE = "statusLine"; //$NON-NLS-1$
 
 	private Control current;
 	private Control navigation;
+	private Control statusLine;
 	private Composite parent;
 	private SubModuleViewRenderer renderer;
 
@@ -204,6 +225,21 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (toSelect.getPartProperty(PROPERTY_NAVIGATION) != null) {
 			// show navigation tree
 			navigation = toSelect.getControl();
+		} else if (toSelect.getPartProperty(PROPERTY_STATUSLINE) != null) {
+			// show status line
+			statusLine = toSelect.getControl();
+			// TODO - is this the correct place ???
+			if (getActivePage() != null) {
+				String perspectiveId = getActivePage().getPerspective().getId();
+				ISubApplication node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
+						ISubApplication.class);
+				SubApplicationViewController controller = (SubApplicationViewController) node.getPresentation();
+				DefaultBindingManager defaultBindingManager = createBindingManager();
+				List<Object> uiControls = new ArrayList<Object>(1);
+				uiControls.add(getStatusLineWidget(statusLine));
+				defaultBindingManager.injectRidgets(controller, uiControls);
+				defaultBindingManager.bind(controller, uiControls);
+			}
 		} else {
 			if (!isCurrentDisposed()) {
 				current.setVisible(false);
@@ -212,6 +248,23 @@ public class TitlelessStackPresentation extends StackPresentation {
 			parts.put(current, getViewId((PresentablePart) toSelect));
 		}
 		updateBounds();
+	}
+
+	private Statusbar getStatusLineWidget(Control parent) {
+
+		if (parent instanceof Statusbar) {
+			return (Statusbar) parent;
+		} else {
+			if (parent instanceof Composite) {
+				Control[] children = ((Composite) parent).getChildren();
+				for (int i = 0; i < children.length; i++) {
+					return getStatusLineWidget(children[i]);
+				}
+			}
+		}
+
+		return null;
+
 	}
 
 	/**
@@ -238,9 +291,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 			gc.dispose();
 			updateControl(current, innerBounds);
 		}
-		if (navigation != null) {
-			updateControl(navigation, calcNavigationBounds());
-		}
+		updateControl(navigation, calcNavigationBounds());
+		updateControl(statusLine, calcStatusLineBounds());
 
 	}
 
@@ -278,8 +330,23 @@ public class TitlelessStackPresentation extends StackPresentation {
 		int y = PADDING_TOP;
 		int width = size.x;
 		int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP;
+		height -= STATUSLINE_HIGHT;
 
 		return new Rectangle(x, y, width, height);
+
+	}
+
+	private Rectangle calcStatusLineBounds() {
+
+		Rectangle naviBounds = calcNavigationBounds();
+
+		int x = naviBounds.x;
+		int y = naviBounds.y + naviBounds.height;
+		int width = parent.getBounds().width - x - GrabCorner.getGrabCornerSize().x;
+		int height = STATUSLINE_HIGHT;
+		Rectangle bounds = new Rectangle(x, y, width, height);
+
+		return bounds;
 
 	}
 
@@ -309,6 +376,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (navigation != null) {
 			navigation.setVisible(false);
 		}
+		if (statusLine != null) {
+			statusLine.setVisible(false);
+		}
 		parent.setVisible(false);
 
 	}
@@ -322,6 +392,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 *            - new bounds
 	 */
 	private void updateControl(Control ctrl, Rectangle bounds) {
+
+		if (ctrl == null) {
+			return;
+		}
 
 		if (!ctrl.getBounds().equals(bounds)) {
 			ctrl.setVisible(false);
@@ -338,6 +412,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 	public void setBounds(Rectangle bounds) {
 		parent.setBounds(bounds);
 		updateBounds();
+	}
+
+	private DefaultBindingManager createBindingManager() {
+		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
 	}
 
 	/**
@@ -395,6 +473,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Returns the currently active page.
+	 * 
+	 * @return active page
+	 */
+	private IWorkbenchPage getActivePage() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
 
 }

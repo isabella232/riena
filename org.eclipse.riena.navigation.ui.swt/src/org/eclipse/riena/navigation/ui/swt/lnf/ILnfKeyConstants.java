@@ -109,6 +109,8 @@ public class ILnfKeyConstants {
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 
+	public static final String STATUSBAR_SPACER_ICON = "Statusbar.spacerIcon"; //$NON-NLS-1$
+
 	/**
 	 * Setting keys
 	 */

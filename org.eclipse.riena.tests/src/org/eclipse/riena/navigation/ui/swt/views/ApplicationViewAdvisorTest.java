@@ -17,6 +17,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;

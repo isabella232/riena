@@ -98,7 +98,9 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	 * .eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver)
 	 */
 	public void addObserver(IProgressVisualizerObserver anObserver) {
-		observers.add(anObserver);
+		if (anObserver != null) {
+			observers.add(anObserver);
+		}
 
 	}
 

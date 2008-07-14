@@ -57,6 +57,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_HAND = PATH_ICONS + PATH_SEPARATOR + "hand.png"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB = PATH_ICONS + PATH_SEPARATOR + "grab.png"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB_CORNER = PATH_ICONS + PATH_SEPARATOR + "grabCorner.png"; //$NON-NLS-1$
+	private static final String IMAGE_SPACER = PATH_ICONS + PATH_SEPARATOR + "spacer.png"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
@@ -194,7 +195,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
 
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
+		table.put(ILnfKeyConstants.STATUSBAR_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
 
 	}
 

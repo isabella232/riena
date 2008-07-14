@@ -270,4 +270,13 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	public boolean isBlocked() {
 		return getNavigationNode() != null && getNavigationNode().isBlocked();
 	}
+
+	public NavigationNodeViewController<?> getParentViewController() {
+		if ((getNavigationNode() != null) && (getNavigationNode().getParent() == null)) {
+			return null;
+		} else {
+			return (NavigationNodeViewController<?>) navigationNode.getParent().getPresentation();
+		}
+	}
+
 }

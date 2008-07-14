@@ -19,6 +19,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -48,6 +49,7 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 	public void afterBind() {
 		super.afterBind();
 		initRidgets();
+		setDefaultButton(getAddModuleBtn());
 	}
 
 	/**
@@ -62,6 +64,7 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
 				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to Module"); //$NON-NLS-1$
 				parent.addChild(newNode);
+				showStatusBarMessage("Sub-Module was added!");
 			}
 		});
 
@@ -70,6 +73,7 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to SubModule"); //$NON-NLS-1$
 				getNavigationNode().addChild(newNode);
+				showStatusBarMessage("Sub-Module was added!");
 			}
 		});
 
@@ -78,6 +82,7 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				IModuleGroupNode parent = getParentNodeOfType(getNavigationNode(), IModuleGroupNode.class);
 				parent.addChild(createModuleNode());
+				showStatusBarMessage("Module was added!");
 			}
 		});
 
@@ -86,9 +91,16 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				ISubApplication parent = getParentNodeOfType(getNavigationNode(), ISubApplication.class);
 				parent.addChild(createModuleGroupNode());
+				showStatusBarMessage("Module-Group was added!");
 			}
 		});
 
+	}
+
+	private void showStatusBarMessage(String text) {
+		SubApplicationViewController subAppController = getSubApplicationController();
+		subAppController.getStatusbarRidget().setMessage(text);
+		subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
 	}
 
 	private <N extends INavigationNode<?>> N getParentNodeOfType(INavigationNode<?> node, Class<N> clazz) {
@@ -186,8 +198,8 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 	/**
 	 * Creates a new sub-module with the given label.
 	 * 
-	 * @param label -
-	 *            label of the sub-module
+	 * @param label
+	 *            - label of the sub-module
 	 * @return sub-module
 	 */
 	private ISubModuleNode createSubModuleNode(String label) {
@@ -197,6 +209,16 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 
 		return newSubModuleNode;
 
+	}
+
+	/**
+	 * Returns the controller of the parent sub-application.
+	 * 
+	 * @return sub-application controller
+	 */
+	private SubApplicationViewController getSubApplicationController() {
+		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplication.class)
+				.getPresentation();
 	}
 
 }
