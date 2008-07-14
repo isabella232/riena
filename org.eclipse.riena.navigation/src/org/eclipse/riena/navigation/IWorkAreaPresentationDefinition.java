@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+
 /**
  * A WorkAreaPresentationDefinition defines the work area to be activated.
  * 
@@ -22,5 +24,11 @@ public interface IWorkAreaPresentationDefinition {
 	 */
 
 	String getPresentationId();
+
+	/**
+	 * Returns the view controller for this work area presentation
+	 */
+
+	IViewController createViewController();
 
 }
