@@ -31,4 +31,10 @@ public interface IWorkAreaPresentationDefinition {
 
 	IViewController createViewController();
 
+	/**
+	 * Return true if the specified view shoud be a shared view, false otherwise
+	 */
+
+	boolean isViewShared();
+
 }
