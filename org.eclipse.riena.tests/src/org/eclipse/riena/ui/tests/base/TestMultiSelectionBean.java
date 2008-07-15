@@ -15,6 +15,9 @@ import java.util.List;
 
 public class TestMultiSelectionBean {
 
+	/** Key for the multiple selection property ("selectionList"). */
+	public static final String PROPERTY_SELECTION = "selectionList";
+
 	private List<Object> selectionList = new ArrayList<Object>();
 
 	public List<Object> getSelectionList() {

@@ -12,6 +12,9 @@ package org.eclipse.riena.ui.tests.base;
 
 public class TestSingleSelectionBean {
 
+	/** Key for the single selection property ("selection"). */
+	public static final String PROPERTY_SELECTION = "selection";
+
 	private Object selection;
 
 	public Object getSelection() {
