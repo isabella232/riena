@@ -126,6 +126,7 @@ public class ExtensionReader {
 	 */
 	static class InterfaceBean implements InvocationHandler {
 
+		private final Class<?> interfaceType;
 		private final IConfigurationElement configurationElement;
 		private final BundleContext context;
 		private final Map<Method, Object> resolved;
@@ -135,10 +136,11 @@ public class ExtensionReader {
 		static Object newInstance(BundleContext context, Class<?> interfaceType,
 				IConfigurationElement configurationElement) {
 			return Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType },
-					new InterfaceBean(context, configurationElement));
+					new InterfaceBean(interfaceType, context, configurationElement));
 		}
 
-		private InterfaceBean(BundleContext context, IConfigurationElement configurationElement) {
+		private InterfaceBean(Class<?> interfaceType, BundleContext context, IConfigurationElement configurationElement) {
+			this.interfaceType = interfaceType;
 			this.configurationElement = configurationElement;
 			this.context = context;
 			this.resolved = new HashMap<Method, Object>();
@@ -166,6 +168,8 @@ public class ExtensionReader {
 				String name = getAttributeName(method, methodKind);
 				return configurationElement.createExecutableExtension(name);
 			}
+			if (method.getParameterTypes().length == 0 && method.getName().equals("toString")) //$NON-NLS-1$
+				return "Dynamic proxy for " + interfaceType.getName(); //$NON-NLS-1$
 			throw new UnsupportedOperationException("Only " + Arrays.toString(ALLOWED_PREFIXES) + " are supported."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
@@ -184,7 +188,7 @@ public class ExtensionReader {
 					return null;
 				if (cfgElements.length == 1)
 					return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
-							new InterfaceBean(context, cfgElements[0]));
+							new InterfaceBean(returnType, context, cfgElements[0]));
 				throw new IllegalStateException(
 						"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for: " + method); //$NON-NLS-1$
 			}
@@ -193,7 +197,8 @@ public class ExtensionReader {
 				final Object[] result = (Object[]) Array.newInstance(returnType.getComponentType(), cfgElements.length);
 				for (int i = 0; i < cfgElements.length; i++) {
 					result[i] = Proxy.newProxyInstance(returnType.getComponentType().getClassLoader(),
-							new Class[] { returnType.getComponentType() }, new InterfaceBean(context, cfgElements[i]));
+							new Class[] { returnType.getComponentType() }, new InterfaceBean(returnType
+									.getComponentType(), context, cfgElements[i]));
 				}
 				return result;
 			}
