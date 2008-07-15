@@ -363,8 +363,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	boolean isBlocked();
 
-	String getPresentationId();
+	INavigationNodeId getPresentationId();
 
-	void navigate(String targetId);
+	void navigate(INavigationNodeId targetId);
 
 }

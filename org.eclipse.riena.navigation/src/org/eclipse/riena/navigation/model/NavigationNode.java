@@ -23,6 +23,7 @@ import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodeListener;
 import org.eclipse.riena.navigation.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.INavigationProcessor;
@@ -43,7 +44,7 @@ import org.eclipse.riena.navigation.common.TypecastingObject;
 public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
 		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L> {
 
-	private String presentationId;
+	private INavigationNodeId presentationId;
 	private State state;
 	private String label;
 	private String icon;
@@ -779,18 +780,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(java.lang.String)
 	 */
-	public void navigate(String targetId) {
+	public void navigate(INavigationNodeId targetId) {
 		getNavigationProcessor().navigate(this, targetId);
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#getPresentationId()
 	 */
-	public String getPresentationId() {
+	public INavigationNodeId getPresentationId() {
 		return presentationId;
 	}
 
-	public void setPresentationId(String presentationId) {
+	public void setPresentationId(INavigationNodeId presentationId) {
 		// TODO set via constructor, remove setter
 		this.presentationId = presentationId;
 	}

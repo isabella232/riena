@@ -23,6 +23,6 @@ public interface INavigationProcessor {
 
 	void dispose(INavigationNode<?> toDispose);
 
-	void navigate(INavigationNode<?> sourceNode, String targetId);
+	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId);
 
 }

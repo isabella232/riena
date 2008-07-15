@@ -11,6 +11,7 @@ import org.eclipse.riena.example.client.views.FocusableView;
 import org.eclipse.riena.example.client.views.MarkerView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -25,7 +26,7 @@ public class Open2NavigationNodeBuilder implements INavigationNodeProvider {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#buildNode()
 	 */
-	public IModuleGroupNode buildNode(String presentationId) {
+	public IModuleGroupNode buildNode(INavigationNodeId presentationId) {
 		ModuleGroupNode node = new ModuleGroupNode("New Group");
 		node.setPresentationId(presentationId);
 		IModuleNode module = new ModuleNode("New Module");

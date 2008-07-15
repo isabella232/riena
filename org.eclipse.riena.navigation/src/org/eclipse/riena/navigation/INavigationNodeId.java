@@ -11,12 +11,12 @@
 package org.eclipse.riena.navigation;
 
 /**
- * 
+ * Returns the identifier of a node in the navigation model.
  */
-public interface INavigationNodePresentationFactory {
+public interface INavigationNodeId {
 
-	INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId);
+	String getTypeId();
 
-	INavigationNodePresentationDefiniton getPresentationDefinition(INavigationNodeId targetId);
+	String getInstanceId();
 
 }

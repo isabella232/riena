@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.model;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
@@ -33,7 +34,7 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		Inject.extension(ID).into(target).andStart(Activator.getDefault().getContext());
 	}
 
-	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, String targetId) {
+	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 
 		if (targetNode == null) {
@@ -42,7 +43,8 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 				INavigationNodeProvider builder = presentationDefinition.createNodeProvider();
 				targetNode = builder.buildNode(targetId);
 
-				INavigationNode parentNode = createNode(sourceNode, presentationDefinition.getParentPresentationId());
+				INavigationNode parentNode = createNode(sourceNode, new NavigationNodeId(presentationDefinition
+						.getParentPresentationId()));
 				parentNode.addChild(targetNode);
 			} else {
 				// TODO throw some new type of failure
@@ -52,14 +54,14 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return targetNode;
 	}
 
-	public INavigationNodePresentationDefiniton getPresentationDefinition(String targetId) {
+	public INavigationNodePresentationDefiniton getPresentationDefinition(INavigationNodeId targetId) {
 
-		if (target == null || target.getData().length == 0) {
+		if (target == null || target.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
 			INavigationNodePresentationDefiniton[] data = target.getData();
 			for (int i = 0; i < data.length; i++) {
-				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId)) {
+				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId.getTypeId())) {
 					return data[i];
 				}
 
@@ -76,7 +78,7 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return getRootNode(node.getParent());
 	}
 
-	private INavigationNode<?> findNode(INavigationNode<?> node, String targetId) {
+	private INavigationNode<?> findNode(INavigationNode<?> node, INavigationNodeId targetId) {
 
 		if (targetId == null) {
 			return null;

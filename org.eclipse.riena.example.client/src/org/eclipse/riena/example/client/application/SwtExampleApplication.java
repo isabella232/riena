@@ -32,6 +32,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
@@ -95,7 +96,7 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		// sub application 1
 		subApplication = new SubApplication("Navigation");
-		subApplication.setPresentationId("app1");
+		subApplication.setPresentationId(new NavigationNodeId("app1"));
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "subapplication.1");
 		applicationModel.addChild(subApplication);
@@ -146,7 +147,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		// Playground
 		subApplication = new SubApplication("Playground");
-		subApplication.setPresentationId("playground");
+		subApplication.setPresentationId(new NavigationNodeId("playground"));
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2");
 		applicationModel.addChild(subApplication);

@@ -8,6 +8,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -39,7 +40,7 @@ public class NavigateSubModuleViewController extends SubModuleNodeViewController
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getNavigationNode().navigate(target.getText());
+			getNavigationNode().navigate(new NavigationNodeId(target.getText()));
 		}
 
 	}
