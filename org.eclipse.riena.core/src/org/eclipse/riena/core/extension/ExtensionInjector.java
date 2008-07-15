@@ -70,7 +70,10 @@ public class ExtensionInjector {
 		updateMethod = findUpdateMethod();
 		Class<?> paramaterType = updateMethod.getParameterTypes()[0];
 		isArray = paramaterType.isArray();
-		componentType = isArray ? paramaterType.getComponentType() : paramaterType;
+		// if the interface type is given explicitly it will be used; otherwise
+		// the formal parameter type of the update method will be used.
+		componentType = extensionId.getInterfaceType() != null ? extensionId.getInterfaceType()
+				: isArray ? paramaterType.getComponentType() : paramaterType;
 		populateInterfaceBeans();
 
 		if (track) {
@@ -156,25 +159,37 @@ public class ExtensionInjector {
 	 */
 	private Method findUpdateMethodForKownType() {
 		try {
-			if (extensionId.requiresArrayUpdateMethod()) {
-				Class<?> interfaceType = Array.newInstance(extensionId.getInterfaceType(), 0).getClass();
-				return target.getClass().getMethod(updateMethodName, interfaceType);
-			}
+			if (extensionId.requiresArrayUpdateMethod())
+				return seekMatchingUpdateMethod(extensionId.getInterfaceType(), true);
 
 			try {
-				return target.getClass().getMethod(updateMethodName, extensionId.getInterfaceType());
+				return seekMatchingUpdateMethod(extensionId.getInterfaceType(), false);
 			} catch (NoSuchMethodException e) {
 				// retry with array
-				Class<?> beanType = Array.newInstance(extensionId.getInterfaceType(), 0).getClass();
-				return target.getClass().getMethod(updateMethodName, beanType);
+				return seekMatchingUpdateMethod(extensionId.getInterfaceType(), true);
 			}
 
 		} catch (SecurityException e) {
-			throw new IllegalStateException("Could not find a 'bind' method.", e);
+			throw new IllegalStateException("Could not find 'bind' method.", e);
 		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException("Could not find a 'bind' method.", e);
+			throw new IllegalStateException("Could not find 'bind' method.", e);
 		}
+	}
 
+	private Method seekMatchingUpdateMethod(final Class<?> interfaceType, boolean isArray) throws SecurityException,
+			NoSuchMethodException {
+		try {
+			Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
+			return target.getClass().getMethod(updateMethodName, seeking);
+		} catch (NoSuchMethodException e) {
+			for (Class<?> superInterfaceType : interfaceType.getInterfaces()) {
+				Method attempt = seekMatchingUpdateMethod(superInterfaceType, isArray);
+				if (attempt != null)
+					return attempt;
+			}
+		}
+		throw new NoSuchMethodError("In class " + target.getClass() + " is no method matching " + updateMethodName
+				+ "(" + interfaceType + " )");
 	}
 
 	/**
