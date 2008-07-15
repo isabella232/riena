@@ -52,7 +52,7 @@ public class ExtensionInjector {
 	 * @param extensionId
 	 * @param target
 	 */
-	ExtensionInjector(ExtensionDescriptor extensionId, Object target) {
+	ExtensionInjector(final ExtensionDescriptor extensionId, final Object target) {
 		this.extensionId = extensionId;
 		this.target = target;
 	}
@@ -63,7 +63,7 @@ public class ExtensionInjector {
 	 * @param context
 	 * @return itself
 	 */
-	public ExtensionInjector andStart(BundleContext context) {
+	public ExtensionInjector andStart(final BundleContext context) {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
 		started = true;
 		this.context = context;
@@ -97,7 +97,7 @@ public class ExtensionInjector {
 	 * @param bindMethodName
 	 * @return itself
 	 */
-	public ExtensionInjector bind(String bindMethodName) {
+	public ExtensionInjector bind(final String bindMethodName) {
 		Assert.isNotNull(bindMethodName, "Bind method name must not be null");
 		Assert.isTrue(!started, "ExtensionInjector already started.");
 		this.updateMethodName = bindMethodName;
@@ -176,8 +176,8 @@ public class ExtensionInjector {
 		}
 	}
 
-	private Method seekMatchingUpdateMethod(final Class<?> interfaceType, boolean isArray) throws SecurityException,
-			NoSuchMethodException {
+	private Method seekMatchingUpdateMethod(final Class<?> interfaceType, final boolean isArray)
+			throws SecurityException, NoSuchMethodException {
 		try {
 			Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
 			return target.getClass().getMethod(updateMethodName, seeking);
@@ -241,12 +241,12 @@ public class ExtensionInjector {
 	 * @param type
 	 * @return
 	 */
-	private boolean matchesExtensionPointConstraint(Class<?> type) {
+	private boolean matchesExtensionPointConstraint(final Class<?> type) {
 		return !extensionId.requiresArrayUpdateMethod() || type.isArray();
 	}
 
 	void populateInterfaceBeans() {
-		Object[] beans = ExtensionReader.read(context, extensionId.getExtensionPointId(), componentType);
+		final Object[] beans = ExtensionReader.read(context, extensionId.getExtensionPointId(), componentType);
 		if (!matchesExtensionPointConstraint(beans.length))
 			LOGGER
 					.log(LogService.LOG_ERROR,
