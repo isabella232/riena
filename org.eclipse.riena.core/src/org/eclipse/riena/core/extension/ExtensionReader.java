@@ -83,7 +83,7 @@ import org.osgi.service.log.LogService;
  * or attribute.<br>
  * The extension element´s value can be retrieved by either using the method
  * <code>get()</code> or annotate a <i>getter</i> with <code>@MapValue()</code>.
- * The return type must be <code>String</String>.
+ * The return type must be <code>String</code>.
  * </ul>
  */
 public class ExtensionReader {
