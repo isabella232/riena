@@ -64,7 +64,10 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
 				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to Module"); //$NON-NLS-1$
 				parent.addChild(newNode);
-				showStatusBarMessage("Sub-Module was added!");
+				String text = "Sub-Module was added!";
+				SubApplicationViewController subAppController = getSubApplicationController();
+				subAppController.getStatusbarRidget().setMessage(text);
+				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -73,7 +76,10 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to SubModule"); //$NON-NLS-1$
 				getNavigationNode().addChild(newNode);
-				showStatusBarMessage("Sub-Module was added!");
+				String text = "Sub-Module was added!";
+				SubApplicationViewController subAppController = getSubApplicationController();
+				subAppController.getStatusbarRidget().info(text);
+				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -82,7 +88,10 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				IModuleGroupNode parent = getParentNodeOfType(getNavigationNode(), IModuleGroupNode.class);
 				parent.addChild(createModuleNode());
-				showStatusBarMessage("Module was added!");
+				String text = "Module was added!";
+				SubApplicationViewController subAppController = getSubApplicationController();
+				subAppController.getStatusbarRidget().warning(text);
+				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -91,16 +100,13 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				ISubApplication parent = getParentNodeOfType(getNavigationNode(), ISubApplication.class);
 				parent.addChild(createModuleGroupNode());
-				showStatusBarMessage("Module-Group was added!");
+				String text = "Module-Group was added!";
+				SubApplicationViewController subAppController = getSubApplicationController();
+				subAppController.getStatusbarRidget().error(text);
+				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
 			}
 		});
 
-	}
-
-	private void showStatusBarMessage(String text) {
-		SubApplicationViewController subAppController = getSubApplicationController();
-		subAppController.getStatusbarRidget().setMessage(text);
-		subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
 	}
 
 	private <N extends INavigationNode<?>> N getParentNodeOfType(INavigationNode<?> node, Class<N> clazz) {

@@ -11,7 +11,7 @@
 package org.eclipse.riena.example.client.handler;
 
 import org.eclipse.riena.example.client.application.ExampleLnf;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * 

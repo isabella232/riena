@@ -13,9 +13,9 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
-import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -34,7 +34,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
 	@Override

@@ -12,10 +12,10 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationNavigationComponent;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;

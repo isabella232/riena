@@ -32,7 +32,7 @@ public class StatusbarNumber extends AbstractStatusbarComposite {
 	 *            - the style of widget to construct
 	 */
 	public StatusbarNumber(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.NO_FOCUS);
 	}
 
 	/**

@@ -29,7 +29,7 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	 * @param style
 	 */
 	public StatusbarSpacer(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.NO_FOCUS);
 
 	}
 

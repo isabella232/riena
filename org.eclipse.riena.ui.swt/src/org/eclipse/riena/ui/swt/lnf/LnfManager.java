@@ -8,10 +8,10 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.ui.internal.util.BundleUtility;
 import org.osgi.framework.Bundle;
 
@@ -58,8 +58,9 @@ public class LnfManager {
 	 * Loads the look and feel specified by the given class name and passes it
 	 * to <code>setLnf(RienaDefaultLnf)<code>.
 	 * 
-	 * @param lnfClassName - a string specifying the name of the class that implements
-	 *        the look and feel
+	 * @param lnfClassName
+	 *            - a string specifying the name of the class that implements
+	 *            the look and feel
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
@@ -96,8 +97,8 @@ public class LnfManager {
 	 * Sets the current look and feel. New look and feel will be initialized and
 	 * the old one will be uninitialized.
 	 * 
-	 * @param newLnf -
-	 *            new look and feel to install.
+	 * @param newLnf
+	 *            - new look and feel to install.
 	 */
 	public static void setLnf(RienaDefaultLnf newLnf) {
 		lnf = newLnf;

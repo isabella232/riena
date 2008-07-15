@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfResource;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
@@ -83,7 +84,7 @@ public class AbstractLnfResourceTest extends TestCase {
 	private class MockLnfResource extends AbstractLnfResource {
 
 		/**
-		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
+		 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 		 */
 		public Resource createResource() {
 			Color color = new Color(Display.getDefault(), 1, 1, 1);

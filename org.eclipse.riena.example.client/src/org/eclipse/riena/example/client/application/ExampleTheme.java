@@ -12,12 +12,12 @@ package org.eclipse.riena.example.client.application;
 
 import java.util.Map;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.ColorLnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.FontLnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.ImageLnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme;
+import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
+import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
 import org.eclipse.swt.SWT;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.swt.SWT;
 public class ExampleTheme extends RienaDefaultTheme {
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomColors(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomColors(java.util.Map)
 	 */
 	@Override
 	public void addCustomColors(Map<String, ILnfResource> table) {
@@ -51,7 +51,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomImages(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomImages(java.util.Map)
 	 */
 	@Override
 	public void addCustomImages(Map<String, ILnfResource> table) {
@@ -72,7 +72,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomFonts(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#addCustomFonts(java.util.Map)
 	 */
 	@Override
 	public void addCustomFonts(Map<String, ILnfResource> table) {
@@ -84,7 +84,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
 	 */
 	@Override
 	public void addCustomSettings(Map<String, Object> table) {
@@ -103,7 +103,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryForeground()
+	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryForeground()
 	 */
 	@Override
 	protected ColorLnfResource getPrimaryForeground() {
@@ -111,7 +111,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryBackground()
+	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryBackground()
 	 */
 	@Override
 	protected ColorLnfResource getPrimaryBackground() {
@@ -119,7 +119,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryFont()
+	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryFont()
 	 */
 	@Override
 	protected FontLnfResource getPrimaryFont() {

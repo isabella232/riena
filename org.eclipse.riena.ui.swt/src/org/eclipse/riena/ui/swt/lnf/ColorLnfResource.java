@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -44,7 +44,7 @@ public class ColorLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResource#getResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfResource#getResource()
 	 */
 	@Override
 	public Color getResource() {
@@ -52,7 +52,7 @@ public class ColorLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
 	public Resource createResource() {
 		if (rgb == null) {

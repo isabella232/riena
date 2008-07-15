@@ -8,16 +8,16 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
+package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
 import java.util.Map;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.ColorLnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.FontLnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
-import org.eclipse.riena.navigation.ui.swt.lnf.ImageLnfResource;
+import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
+import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
+import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Display;
 public class RienaDefaultTheme implements ILnfTheme {
 
 	private static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
-	private static final String PATH_ICONS = "org.eclipse.riena.navigation.ui.swt:" + PATH_SEPARATOR + "icons"; //$NON-NLS-1$ //$NON-NLS-2$
+	private static final String PATH_ICONS = "org.eclipse.riena.ui.swt:" + PATH_SEPARATOR + "icons"; //$NON-NLS-1$ //$NON-NLS-2$
 	private static final String IMAGE_FOLDER = PATH_ICONS + PATH_SEPARATOR + "node_expanded.gif"; //$NON-NLS-1$
 	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "node_collapsed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
@@ -58,12 +58,15 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_GRAB = PATH_ICONS + PATH_SEPARATOR + "grab.png"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB_CORNER = PATH_ICONS + PATH_SEPARATOR + "grabCorner.png"; //$NON-NLS-1$
 	private static final String IMAGE_SPACER = PATH_ICONS + PATH_SEPARATOR + "spacer.png"; //$NON-NLS-1$
+	private static final String IMAGE_ERROR = PATH_ICONS + PATH_SEPARATOR + "statusbar_error.gif"; //$NON-NLS-1$
+	private static final String IMAGE_WARNING = PATH_ICONS + PATH_SEPARATOR + "statusbar_warning.gif"; //$NON-NLS-1$
+	private static final String IMAGE_INFO = PATH_ICONS + PATH_SEPARATOR + "statusbar_info.gif"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
 	 */
 	public void addCustomColors(Map<String, ILnfResource> table) {
 
@@ -142,7 +145,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomFonts(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomFonts(java.util.Map)
 	 */
 	public void addCustomFonts(Map<String, ILnfResource> table) {
 
@@ -157,7 +160,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
 	 */
 	public void addCustomImages(Map<String, ILnfResource> table) {
 
@@ -196,11 +199,14 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
 
 		table.put(ILnfKeyConstants.STATUSBAR_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
+		table.put(ILnfKeyConstants.STATUSBAR_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
+		table.put(ILnfKeyConstants.STATUSBAR_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
+		table.put(ILnfKeyConstants.STATUSBAR_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
 
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
 	 */
 	public void addCustomSettings(Map<String, Object> table) {
 

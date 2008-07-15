@@ -11,10 +11,10 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;

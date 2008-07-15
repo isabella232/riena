@@ -8,14 +8,26 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.utils.extpoint;
+package org.eclipse.riena.ui.swt;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
- *
+ * Tests all test cases within package:
+ * 
+ * org.eclipse.riena.ui.swt
  */
-public interface ISwtUtililityExtPoint {
+public class AllTests extends TestCase {
 
-	ISwtUtility createImplementation();
+	public static Test suite() {
+		TestSuite suite = new TestSuite(AllTests.class.getName());
+		suite.addTestSuite(StatusbarTest.class);
+		suite.addTestSuite(StatusbarTimeTest.class);
+		suite.addTestSuite(StatusbarMessageTest.class);
+		suite.addTestSuite(StatusbarNumberTest.class);
+		return suite;
+	}
 
 }

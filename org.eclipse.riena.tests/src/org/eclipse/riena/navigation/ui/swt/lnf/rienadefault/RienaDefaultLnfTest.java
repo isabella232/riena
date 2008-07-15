@@ -14,10 +14,12 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
 import org.eclipse.swt.graphics.Color;
 
 /**
@@ -164,25 +166,25 @@ public class RienaDefaultLnfTest extends TestCase {
 	private static class DummyTheme implements ILnfTheme {
 
 		/**
-		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
+		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomColors(java.util.Map)
 		 */
 		public void addCustomColors(Map<String, ILnfResource> table) {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomFonts(java.util.Map)
+		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomFonts(java.util.Map)
 		 */
 		public void addCustomFonts(Map<String, ILnfResource> table) {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
+		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomImages(java.util.Map)
 		 */
 		public void addCustomImages(Map<String, ILnfResource> table) {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
+		 * @see org.eclipse.riena.ui.swt.lnf.ILnfTheme#addCustomSettings(java.util.Map)
 		 */
 		public void addCustomSettings(Map<String, Object> table) {
 		}

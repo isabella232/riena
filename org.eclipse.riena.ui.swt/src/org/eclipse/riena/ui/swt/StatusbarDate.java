@@ -37,6 +37,7 @@ public class StatusbarDate extends StatusbarTime {
 	 * 
 	 * @return format
 	 */
+	@Override
 	protected SimpleDateFormat getFormat() {
 
 		if (format == null) {

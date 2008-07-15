@@ -10,18 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * Represents a label of the status bar that displays a message.
  */
 public class StatusbarMessage extends AbstractStatusbarComposite {
 
-	private Label messageLabel;
+	private static final int TOP_MARGIN = 3;
+
+	private CLabel messageLabel;
 
 	/**
 	 * Creates a new instance of <code>StatusbarMessage</code>.
@@ -33,7 +37,7 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 	 *            - the style of widget to construct
 	 */
 	public StatusbarMessage(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.NO_FOCUS);
 	}
 
 	/**
@@ -42,9 +46,9 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 	@Override
 	protected void createContents() {
 
-		messageLabel = new Label(this, SWT.LEFT);
+		messageLabel = new CLabel(this, SWT.LEFT);
 		messageLabel.setText(" "); //$NON-NLS-1$
-		messageLabel.setImage(getSpacerImage());
+		messageLabel.setImage(getPlaceholderImage());
 
 	}
 
@@ -86,11 +90,16 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 	 * 
 	 * @return image
 	 */
-	private static Image getSpacerImage() {
-		return null;
-		// TODO
-		// return
-		// LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSBAR_SPACER_ICON);
+	private Image getPlaceholderImage() {
+		return LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSBAR_SPACER_ICON);
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#getTopMargin()
+	 */
+	@Override
+	protected int getTopMargin() {
+		return TOP_MARGIN;
 	}
 
 }

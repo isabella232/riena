@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Resource;
 
@@ -20,7 +20,7 @@ public abstract class AbstractLnfResource implements ILnfResource {
 	private Resource resource;
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#dispose()
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#dispose()
 	 */
 	public void dispose() {
 		if (resource != null) {
@@ -30,7 +30,7 @@ public abstract class AbstractLnfResource implements ILnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#getResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#getResource()
 	 */
 	public Resource getResource() {
 		if ((resource == null) || (resource.isDisposed())) {

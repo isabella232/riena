@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -45,7 +45,7 @@ public class FontLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResource#getResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfResource#getResource()
 	 */
 	@Override
 	public Font getResource() {
@@ -53,7 +53,7 @@ public class FontLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
 	public Resource createResource() {
 		return new Font(Display.getCurrent(), fontData);

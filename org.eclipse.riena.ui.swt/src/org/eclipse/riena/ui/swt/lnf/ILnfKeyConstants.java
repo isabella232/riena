@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.ui.swt.lnf;
 
 /**
  * Keys of the look and feel of riena.
@@ -110,6 +110,9 @@ public class ILnfKeyConstants {
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 
 	public static final String STATUSBAR_SPACER_ICON = "Statusbar.spacerIcon"; //$NON-NLS-1$
+	public static final String STATUSBAR_ERROR_ICON = "Statusbar.errorIcon"; //$NON-NLS-1$
+	public static final String STATUSBAR_INFO_ICON = "Statusbar.infoIcon"; //$NON-NLS-1$
+	public static final String STATUSBAR_WARNING_ICON = "Statusbar.warningIcon"; //$NON-NLS-1$
 
 	/**
 	 * Setting keys

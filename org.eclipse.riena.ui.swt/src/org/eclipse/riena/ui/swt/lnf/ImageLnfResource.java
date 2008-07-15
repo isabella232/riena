@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf;
+package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.riena.navigation.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
@@ -22,8 +22,8 @@ public class ImageLnfResource extends AbstractLnfResource {
 	private String imagePath;
 
 	/**
-	 * @param image -
-	 *            image to wrap
+	 * @param image
+	 *            - image to wrap
 	 */
 	public ImageLnfResource(String imagePath) {
 		super();
@@ -31,7 +31,7 @@ public class ImageLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResource#getResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfResource#getResource()
 	 */
 	@Override
 	public Image getResource() {
@@ -39,7 +39,7 @@ public class ImageLnfResource extends AbstractLnfResource {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource#createResource()
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
 	public Resource createResource() {
 		return ImageUtil.getImage(imagePath);

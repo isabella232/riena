@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -27,7 +27,7 @@ public class ShellBorderRenderer extends AbstractLnfRenderer {
 	private final static int BORDER_WIDTH = 2;
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
 	@Override

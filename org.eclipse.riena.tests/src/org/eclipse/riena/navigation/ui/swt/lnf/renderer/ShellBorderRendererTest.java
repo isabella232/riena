@@ -12,9 +12,9 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Tests of the class <code>ShellBorderRenderer</code>.

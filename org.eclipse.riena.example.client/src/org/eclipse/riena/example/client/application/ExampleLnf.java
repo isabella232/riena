@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Look and Feel (Lnf) of the example application.<br>

@@ -151,8 +151,8 @@ public final class SwtUtilities {
 	public static void disposeResource(Resource resource) {
 		if ((resource != null) && (!resource.isDisposed())) {
 			resource.dispose();
-			resource = null;
 		}
+		resource = null;
 	}
 
 	/**
@@ -165,8 +165,8 @@ public final class SwtUtilities {
 	public static void disposeWidget(Widget widget) {
 		if ((widget != null) && (!widget.isDisposed())) {
 			widget.dispose();
-			widget = null;
 		}
+		widget = null;
 
 	}
 

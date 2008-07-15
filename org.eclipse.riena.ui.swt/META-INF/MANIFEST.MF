@@ -12,6 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.core;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.riena.ui.swt,
+ org.eclipse.riena.ui.swt.lnf,
+ org.eclipse.riena.ui.swt.lnf.rienadefault,
  org.eclipse.riena.ui.swt.uiprocess,
  org.eclipse.riena.ui.swt.utils
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

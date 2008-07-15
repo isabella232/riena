@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.riena.navigation.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.riena.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.navigation.ui.swt" id="org.eclipse.riena.navigation.ui.swt.swtutility" name="Swt Utility"/>
+         <meta.schema plugin="org.eclipse.riena.ui.swt" id="org.eclipse.riena.ui.swt.lnfrenderer" name="org.eclipse.riena.ui.swt.lnfrenderer"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,8 +17,8 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="swtUtil"/>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="renderer"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,15 +47,22 @@
       </complexType>
    </element>
 
-   <element name="swtUtil">
+   <element name="renderer">
       <complexType>
-         <attribute name="implementation" type="string">
+         <attribute name="lnfkey" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.swt.lnf.ILnfRenderer"/>
                </appinfo>
             </annotation>
          </attribute>

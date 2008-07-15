@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.riena.navigation.ui.swt.component.ModuleItem;
-import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -35,7 +35,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private boolean activated;
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
+	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
 	@Override

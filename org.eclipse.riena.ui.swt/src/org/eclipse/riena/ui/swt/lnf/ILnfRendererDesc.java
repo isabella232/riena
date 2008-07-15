@@ -8,15 +8,28 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.utils.extpoint;
+package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.riena.core.extension.MapName;
 
 /**
- *
+ * Descriptor of a renderer.
  */
-public interface ISwtUtility {
+public interface ILnfRendererDesc {
 
-	void hideScrollBars(Control control);
+	/**
+	 * Returns the key in the table of the renderers of the look and feel
+	 * 
+	 * @return key
+	 */
+	String getLnfkey();
+
+	/**
+	 * Creates a renderer.
+	 * 
+	 * @return renderer
+	 */
+	@MapName("class")
+	ILnfRenderer createRenderer();
 
 }

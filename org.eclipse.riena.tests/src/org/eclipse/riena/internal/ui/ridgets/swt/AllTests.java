@@ -32,6 +32,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(TextRidgetTest2.class);
 		suite.addTestSuite(TreeRidgetTest.class);
 		suite.addTestSuite(ToggleButtonRidgetTest.class);
+		suite.addTestSuite(StatusbarNumberRidgetTest.class);
 		return suite;
 	}
 

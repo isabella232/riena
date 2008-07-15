@@ -41,7 +41,7 @@ public class StatusbarTime extends AbstractStatusbarComposite {
 	 */
 	public StatusbarTime(Composite parent, int style) {
 
-		super(parent, style);
+		super(parent, style | SWT.NO_FOCUS);
 		timer = new Timer();
 		StatusbarUpdateTask task = new StatusbarUpdateTask();
 		timer.scheduleAtFixedRate(task, 0, 1000);

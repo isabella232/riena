@@ -8,27 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
+package org.eclipse.riena.ui.swt.lnf.rienadefault;
 
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfKeyConstants;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfResource;
-import org.eclipse.riena.navigation.ui.swt.lnf.ILnfTheme;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.HoverBorderRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationTabRenderer;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
+import org.eclipse.riena.ui.swt.lnf.ILnfResource;
+import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -39,7 +31,8 @@ import org.eclipse.swt.graphics.Resource;
  */
 public class RienaDefaultLnf {
 
-	private final static String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
+	private static final String LNF_RENDERER_EXTENSION_ID = "org.eclipse.riena.ui.swt.lnfrenderer"; //$NON-NLS-1$
+	private static final String DEFAULT_THEME_CLASSNAME = RienaDefaultTheme.class.getName();
 	private Map<String, ILnfResource> resourceTable = new Hashtable<String, ILnfResource>();
 	private Map<String, Object> settingTable = new Hashtable<String, Object>();
 	private Map<String, ILnfRenderer> rendererTable = new Hashtable<String, ILnfRenderer>();
@@ -72,7 +65,7 @@ public class RienaDefaultLnf {
 	}
 
 	/**
-	 * Uninitialize the Look and Feel. Disposes resources and clears the tables
+	 * Uninitializes the Look and Feel. Disposes resources and clears the tables
 	 * of resources and renderers.
 	 */
 	public void uninitialize() {
@@ -84,24 +77,52 @@ public class RienaDefaultLnf {
 	}
 
 	/**
-	 * Initializes the table with the renderers.
+	 * Initializes the table with the renderers.<br>
+	 * Injects the renderers of the extension into the table of renderers.
 	 */
 	protected void initWidgetRendererDefaults() {
 
-		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_RENDERER, new ShellRenderer());
-		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER, new ShellBorderRenderer());
-		getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER, new ShellLogoRenderer());
+		Inject.extension(LNF_RENDERER_EXTENSION_ID).into(this).andStart(Activator.getDefault().getContext()).stop();
 
-		getRendererTable()
-				.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER, new SubApplicationSwitcherRenderer());
-		getRendererTable().put(ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER, new SubApplicationTabRenderer());
+		// getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_RENDERER, new
+		// ShellRenderer());
+		//getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER
+		// , new ShellBorderRenderer());
+		//getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER,
+		// new ShellLogoRenderer());
+		//
+		// getRendererTable()
+		// .put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER, new
+		// SubApplicationSwitcherRenderer());
+		// getRendererTable().put(ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER,
+		// new SubApplicationTabRenderer());
+		//
+		// getRendererTable().put(ILnfKeyConstants.MODULE_GROUP_RENDERER, new
+		// ModuleGroupRenderer());
+		//
+		//getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER
+		// , new EmbeddedBorderRenderer());
+		// getRendererTable().put(ILnfKeyConstants.
+		// SUB_MODULE_VIEW_TITLEBAR_RENDERER, new EmbeddedTitlebarRenderer());
+		// getRendererTable().put(ILnfKeyConstants.
+		// SUB_MODULE_VIEW_HOVER_BORDER_RENDERER, new HoverBorderRenderer());
+		// getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER, new
+		// SubModuleViewRenderer());
 
-		getRendererTable().put(ILnfKeyConstants.MODULE_GROUP_RENDERER, new ModuleGroupRenderer());
+	}
 
-		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER, new EmbeddedBorderRenderer());
-		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER, new EmbeddedTitlebarRenderer());
-		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER, new HoverBorderRenderer());
-		getRendererTable().put(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER, new SubModuleViewRenderer());
+	/**
+	 * Puts the given renderers into the table of renderer.
+	 * 
+	 * @param rendererDescriptors
+	 *            - descriptors of renderer
+	 */
+	public void update(ILnfRendererDesc[] rendererDescriptors) {
+
+		for (int i = 0; i < rendererDescriptors.length; i++) {
+			ILnfRenderer renderer = rendererDescriptors[i].createRenderer();
+			getRendererTable().put(rendererDescriptors[i].getLnfkey(), renderer);
+		}
 
 	}
 
@@ -125,7 +146,7 @@ public class RienaDefaultLnf {
 	}
 
 	/**
-	 * Puts the fonrs to resource table.
+	 * Puts the fonts to resource table.
 	 */
 	protected void initFontDefaults() {
 		if (getTheme() != null) {
@@ -167,8 +188,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the resource for the given key.
 	 * 
-	 * @param key -
-	 *            key whose associated resource is to be returned.
+	 * @param key
+	 *            - key whose associated resource is to be returned.
 	 * @return the resource to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -184,8 +205,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the color for the given key.
 	 * 
-	 * @param key -
-	 *            key whose associated color is to be returned.
+	 * @param key
+	 *            - key whose associated color is to be returned.
 	 * @return the color to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -201,8 +222,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the font for the given key.
 	 * 
-	 * @param key -
-	 *            key whose associated font is to be returned.
+	 * @param key
+	 *            - key whose associated font is to be returned.
 	 * @return the font to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -218,8 +239,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the image for the given key.
 	 * 
-	 * @param key -
-	 *            key whose associated image is to be returned.
+	 * @param key
+	 *            - key whose associated image is to be returned.
 	 * @return the image to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -235,8 +256,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the renderer for the given key.
 	 * 
-	 * @param key -
-	 *            key whose associated renderer is to be returned.
+	 * @param key
+	 *            - key whose associated renderer is to be returned.
 	 * @return the renderer to which this renderer maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -247,8 +268,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the setting for the given key
 	 * 
-	 * @param key -
-	 *            key whose associated setting is to be returned.
+	 * @param key
+	 *            - key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -259,8 +280,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the integer value of the setting for the given key
 	 * 
-	 * @param key -
-	 *            key whose associated setting is to be returned.
+	 * @param key
+	 *            - key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
@@ -276,8 +297,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Returns the boolean value of the setting for the given key
 	 * 
-	 * @param key -
-	 *            key whose associated setting is to be returned.
+	 * @param key
+	 *            - key whose associated setting is to be returned.
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 */
@@ -296,9 +317,9 @@ public class RienaDefaultLnf {
 	/**
 	 * Loads the theme specified by the given class name.
 	 * 
-	 * @param themeClassName -
-	 *            a string specifying the name of the class that implements the
-	 *            theme
+	 * @param themeClassName
+	 *            - a string specifying the name of the class that implements
+	 *            the theme
 	 * @return theme
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
@@ -334,8 +355,8 @@ public class RienaDefaultLnf {
 	/**
 	 * Sets the theme to be used by the Look and Feel.
 	 * 
-	 * @param newTheme -
-	 *            the theme to be used
+	 * @param newTheme
+	 *            - the theme to be used
 	 */
 	public void setTheme(ILnfTheme newTheme) {
 		if (theme != newTheme) {
@@ -358,7 +379,5 @@ public class RienaDefaultLnf {
 	private void setInitialized(boolean initialized) {
 		this.initialized = initialized;
 	}
-
-	// getWidgetRenderer
 
 }

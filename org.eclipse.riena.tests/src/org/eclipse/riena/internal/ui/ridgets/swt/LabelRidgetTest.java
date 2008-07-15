@@ -55,6 +55,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 		return (ILabelRidget) super.getRidget();
 	}
 
+	@Override
 	protected Label getUIControl() {
 		return (Label) super.getUIControl();
 	}

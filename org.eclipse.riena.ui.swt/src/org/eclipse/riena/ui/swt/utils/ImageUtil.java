@@ -8,12 +8,12 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.utils;
+package org.eclipse.riena.ui.swt.utils;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -29,8 +29,8 @@ public class ImageUtil {
 	/**
 	 * Returns the image for the given path
 	 * 
-	 * @param fullPath -
-	 *            path of the image
+	 * @param fullPath
+	 *            - path of the image
 	 * @return image or <code>null</code> if no image was found.
 	 */
 	public static Image getImage(String fullPath) {

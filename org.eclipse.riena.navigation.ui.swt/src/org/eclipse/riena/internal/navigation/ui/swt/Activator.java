@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,7 +23,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	private static BundleContext context;
+	private BundleContext context;
 
 	/**
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -43,7 +42,6 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-		LnfManager.dispose();
 		this.context = null;
 	}
 
@@ -56,7 +54,7 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public static BundleContext getContext() {
+	public BundleContext getContext() {
 		return context;
 	}
 

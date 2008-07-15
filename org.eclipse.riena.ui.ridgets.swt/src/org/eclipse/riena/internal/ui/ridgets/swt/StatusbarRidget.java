@@ -16,6 +16,9 @@ import org.eclipse.riena.ui.ridgets.IStatusbarProcessRidget;
 import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
 import org.eclipse.riena.ui.swt.Statusbar;
 import org.eclipse.riena.ui.swt.StatusbarMessage;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Ridget for the {@link Statusbar}.
@@ -56,7 +59,7 @@ public class StatusbarRidget extends AbstractCompositeRidget implements IStatusb
 	 * @see org.eclipse.riena.ui.ridgets.IStatusbarRidget#error(java.lang.String)
 	 */
 	public void error(String message) {
-		// TODO icon
+		setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSBAR_ERROR_ICON));
 		setMessage(message);
 	}
 
@@ -116,7 +119,7 @@ public class StatusbarRidget extends AbstractCompositeRidget implements IStatusb
 	 * @see org.eclipse.riena.ui.ridgets.IStatusbarRidget#info(java.lang.String)
 	 */
 	public void info(String message) {
-		// TODO icon
+		setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSBAR_INFO_ICON));
 		setMessage(message);
 	}
 
@@ -129,6 +132,10 @@ public class StatusbarRidget extends AbstractCompositeRidget implements IStatusb
 	public void setIcon(String icon) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void setImage(Image image) {
+		getStatusbarMessage().setImage(image);
 	}
 
 	/**
@@ -146,7 +153,7 @@ public class StatusbarRidget extends AbstractCompositeRidget implements IStatusb
 	 * @see org.eclipse.riena.ui.ridgets.IStatusbarRidget#warning(java.lang.String)
 	 */
 	public void warning(String message) {
-		// TODO icon
+		setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSBAR_WARNING_ICON));
 		setMessage(message);
 	}
 

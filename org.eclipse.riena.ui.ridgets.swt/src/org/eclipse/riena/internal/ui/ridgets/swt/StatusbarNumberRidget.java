@@ -49,7 +49,7 @@ public class StatusbarNumberRidget extends AbstractSWTRidget implements IStatusb
 			// TODO Numberformatter nutzen
 			numberString = number.toString();
 		}
-		getUIControl().setNumber(number.intValue());
+		getUIControl().setNumber(number);
 	}
 
 	/**
