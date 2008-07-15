@@ -115,8 +115,10 @@ public class TreeViewController extends SubModuleNodeViewController {
 	 */
 	private void initRidgets() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		tree.bindToModel(createTreeInput(), ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+		ITreeNode root = createTreeInput();
+		tree.bindToModel(root, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
 		tree.updateFromModel();
+		tree.setSelection(root);
 
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.addListener(new IActionListener() {
