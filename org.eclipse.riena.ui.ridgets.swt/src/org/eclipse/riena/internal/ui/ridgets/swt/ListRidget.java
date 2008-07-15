@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.List;
 /**
  * Ridget for SWT {@link List} widgets.
  */
-public class ListRidget extends AbstractSelectableRidget implements ITableRidget {
+public class ListRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
@@ -211,7 +211,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	 * This method is not supported by this ridget.
 	 * 
 	 * @throws UnsupportedOperationException
-	 * 		this is not supported by this ridget
+	 *             this is not supported by this ridget
 	 */
 	public final void setColumnSortable(int columnIndex, boolean sortable) {
 		throw new UnsupportedOperationException();
@@ -273,7 +273,7 @@ public class ListRidget extends AbstractSelectableRidget implements ITableRidget
 	 * This method is not supported by this ridget.
 	 * 
 	 * @throws UnsupportedOperationException
-	 * 		this is not supported by this ridget
+	 *             this is not supported by this ridget
 	 */
 	public final void setMoveableColumns(boolean moveableColumns) {
 		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$

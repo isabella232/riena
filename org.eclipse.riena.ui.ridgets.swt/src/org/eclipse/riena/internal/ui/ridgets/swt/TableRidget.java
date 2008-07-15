@@ -52,7 +52,7 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * Ridget for SWT {@link Table} widgets.
  */
-public class TableRidget extends AbstractSelectableRidget implements ITableRidget {
+public class TableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;

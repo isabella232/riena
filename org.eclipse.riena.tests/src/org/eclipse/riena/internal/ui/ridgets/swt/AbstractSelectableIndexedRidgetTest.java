@@ -25,6 +25,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
@@ -38,7 +39,7 @@ import org.eclipse.swt.widgets.Event;
 /**
  * Tests of the class {@link AbstractSelectableRidget}.
  */
-public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest {
+public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRidgetTest {
 
 	protected PersonManager manager;
 	protected Person person1;
@@ -68,15 +69,15 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	protected abstract void bindRidgetToModel();
 
 	@Override
-	protected ISelectableRidget getRidget() {
-		return (ISelectableRidget) super.getRidget();
+	protected ISelectableIndexedRidget getRidget() {
+		return (ISelectableIndexedRidget) super.getRidget();
 	}
 
 	// test methods
 	// /////////////
 
 	public void testClearSelection() {
-		ISelectableRidget ridget = getRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 		ridget.setSelection(person1);
@@ -102,7 +103,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testGetSelection() {
-		ISelectableRidget ridget = getRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertNotNull(ridget.getSelection());
 		assertTrue(ridget.getSelection().isEmpty());
@@ -116,7 +117,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testGetSelectionIndex() {
-		ISelectableRidget ridget = getRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.getSelectionIndex());
 
@@ -135,7 +136,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testGetSelectionIndices() {
-		ISelectableRidget ridget = getRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertEquals(0, ridget.getSelectionIndices().length);
 
@@ -156,7 +157,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionInt() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertNull(singleSelectionBean.getSelection());
 		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
@@ -206,7 +207,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionIntArray() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertNull(singleSelectionBean.getSelection());
 		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
@@ -245,7 +246,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionList() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertNull(singleSelectionBean.getSelection());
 		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
@@ -294,7 +295,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionObject() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertNull(singleSelectionBean.getSelection());
 		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
@@ -322,7 +323,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionWithNoModel() {
-		ISelectableRidget ridget = (ISelectableRidget) createRidget();
+		ISelectableIndexedRidget ridget = (ISelectableIndexedRidget) createRidget();
 
 		assertEquals(0, ridget.getOptionCount());
 
@@ -356,7 +357,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateMultiSelectionCustomBinding() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		WritableList customMultiSelectionObservable = new WritableList();
@@ -389,7 +390,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateMultiSelectionFromControl() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 
@@ -412,7 +413,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateMultiSelectionFromModel() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(0, 2);
@@ -442,7 +443,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateMultiSelectionFromModelWhenUnbound() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(0, 2);
@@ -474,7 +475,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateMultiSelectionFromRidgetOnRebind() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(1, 2);
@@ -499,7 +500,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateSingleSelectionCustomBinding() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		WritableValue customSingleSelectionObservable = new WritableValue();
 		DataBindingContext dbc = new DataBindingContext();
@@ -531,7 +532,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateSingleSelectionFromModel() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		setUIControlRowSelectionInterval(1, 1);
 		singleSelectionBean.setSelection(getRowValue(0));
@@ -552,7 +553,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateSingleSelectionFromModelWhenUnbound() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		setUIControlRowSelectionInterval(1, 1);
 		singleSelectionBean.setSelection(getRowValue(0));
@@ -575,7 +576,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testUpdateSingleSelectionFromRidgetOnRebind() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		setUIControlRowSelectionInterval(2, 2);
 		ridget.setUIControl(null); // unbind
@@ -596,7 +597,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSelectionEventsSelectionTypeSingle() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 		ridget.setSelectionType(SelectionType.SINGLE);
 
 		assertNull(singleSelectionBean.getSelection());
@@ -654,7 +655,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSelectionEventsSelectionTypeMulti() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 		ridget.setSelectionType(SelectionType.MULTI);
 
 		assertNull(singleSelectionBean.getSelection());
@@ -712,7 +713,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testIndexOfOption() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.indexOfOption(null));
 		assertEquals(-1, ridget.indexOfOption(new Object()));
@@ -723,7 +724,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testGetOption() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		try {
 			ridget.getOption(-1);
@@ -746,7 +747,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testGetOptionCount() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		int oldCount = manager.getPersons().size();
 		assertEquals(oldCount, ridget.getOptionCount());
@@ -763,7 +764,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionTypeNull() {
-		ISelectableRidget ridget = getSelectableRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		try {
 			ridget.setSelectionType(null);
@@ -774,7 +775,7 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 	}
 
 	public void testSetSelectionTypeNONE() {
-		ISelectableRidget ridget = getRidget();
+		ISelectableIndexedRidget ridget = getRidget();
 
 		try {
 			ridget.setSelectionType(ISelectableRidget.SelectionType.NONE);
@@ -809,10 +810,6 @@ public abstract class AbstractSelectableRidgetTest extends AbstractSWTRidgetTest
 		event.widget = getUIControl();
 		event.type = SWT.Selection;
 		getUIControl().notifyListeners(SWT.Selection, event);
-	}
-
-	private ISelectableRidget getSelectableRidget() {
-		return getRidget();
 	}
 
 	private Collection<Person> createPersonList() {

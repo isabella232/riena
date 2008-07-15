@@ -105,20 +105,6 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		return multiSelectionObservable;
 	}
 
-	public final Object getOption(int index) {
-		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
-			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
-		}
-		return getRowObservables().get(index);
-	}
-
-	public final int getOptionCount() {
-		if (getRowObservables() == null) {
-			return 0;
-		}
-		return getRowObservables().size();
-	}
-
 	public final List<Object> getSelection() {
 		List<Object> result = new ArrayList<Object>();
 		if (SelectionType.SINGLE.equals(selectionType)) {
@@ -131,24 +117,6 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		return result;
 	}
 
-	/*
-	 * this method should be provided by subclasses, since it requires access to
-	 * the specific control instance (i.e. List, Table, etc.)
-	 */
-	public abstract int getSelectionIndex();
-
-	/*
-	 * this method should be provided by subclasses, since it requires access to
-	 * the specific control instance (i.e. List, Table, etc.)
-	 */
-	public abstract int[] getSelectionIndices();
-
-	/*
-	 * this method should be provided by subclasses, since it requires access to
-	 * the specific control instance (i.e. List, Table, etc.)
-	 */
-	public abstract int indexOfOption(Object option);
-
 	public final SelectionType getSelectionType() {
 		return selectionType;
 	}
@@ -157,7 +125,7 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		return singleSelectionObservable;
 	}
 
-	public final void setSelection(List<?> newSelection) {
+	public void setSelection(List<?> newSelection) {
 		assertIsBoundToModel();
 		List<?> knownElements = getKnownElements(newSelection);
 		if (SelectionType.SINGLE.equals(selectionType)) {
@@ -184,22 +152,6 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 				multiSelectionObservable.add(newSelection);
 			}
 		}
-	}
-
-	public final void setSelection(int index) {
-		setSelection(new int[] { index });
-	}
-
-	public final void setSelection(int[] indices) {
-		assertIsBoundToModel();
-		List<Object> newSelection = new ArrayList<Object>();
-		for (int index : indices) {
-			Object option = getOption(index);
-			if (option != null) {
-				newSelection.add(option);
-			}
-		}
-		setSelection(newSelection);
 	}
 
 	public final void setSelectionType(SelectionType selectionType) {
@@ -247,6 +199,16 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 	}
 
 	/**
+	 * Throws an exception if no model observables are available (i.e.
+	 * getRowObservables() == null).
+	 */
+	protected final void assertIsBoundToModel() {
+		if (getRowObservables() == null) {
+			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
+		}
+	}
+
+	/**
 	 * <p>
 	 * An observable list of objects which can be selected through this ridget.
 	 * </p>
@@ -264,12 +226,6 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 
 	// helping methods
 	// ////////////////
-
-	private void assertIsBoundToModel() {
-		if (getRowObservables() == null) {
-			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
-		}
-	}
 
 	private List<Object> getKnownElements(List<?> elements) {
 		List<Object> result = new ArrayList<Object>();

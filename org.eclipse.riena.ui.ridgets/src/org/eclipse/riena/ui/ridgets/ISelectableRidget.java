@@ -165,20 +165,6 @@ public interface ISelectableRidget extends IMarkableRidget {
 	List<Object> getSelection();
 
 	/**
-	 * Returns an array of indices of the selected items.
-	 * 
-	 * @return indices of the selected items; never null; may be empty
-	 */
-	int[] getSelectionIndices();
-
-	/**
-	 * Return the index of the first selected item or -1 if none.
-	 * 
-	 * @return index of the first selected item or -1 if none
-	 */
-	int getSelectionIndex();
-
-	/**
 	 * Selects the given items. Items that are not in the set of selectable
 	 * options will be ignored.
 	 * 
@@ -202,52 +188,6 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void setSelection(Object newSelection);
 
 	/**
-	 * Selects the item of the given row.
-	 * 
-	 * @param index
-	 *            a 0-based index of the row to select.
-	 * @throws RuntimeException
-	 *             (a) if the index is out of bounds (index &lt; 0 || index &ge;
-	 *             getOptionCount()); (b) when there is no bound model to select
-	 *             from
-	 */
-	void setSelection(int index);
-
-	/**
-	 * Selects the items of the given rows.
-	 * 
-	 * @param indices
-	 *            indices of the rows to select.
-	 * @throws RuntimeException
-	 *             (a) if the index is out of bounds (index &lt; 0 || index &ge;
-	 *             getOptionCount()); (b) when there is no bound model to select
-	 *             from
-	 */
-	void setSelection(int[] indices);
-
-	/**
-	 * Returns one of the options among which to select.
-	 * 
-	 * @param index
-	 *            the index of the option
-	 * @return An option.
-	 * @throws RuntimeException
-	 *             if the index is out of bounds (index &lt; 0 || index &gt;=
-	 *             getOptionCount())
-	 */
-	Object getOption(int index);
-
-	/**
-	 * Index of the option among the selectable options.
-	 * 
-	 * @param option
-	 *            An option.
-	 * @return The index of the option or -1 if the given option is not amongst
-	 *         the selectable options.
-	 */
-	int indexOfOption(Object option);
-
-	/**
 	 * Indicates whether the specified option is one of the options among which
 	 * to select.
 	 * 
@@ -257,10 +197,5 @@ public interface ISelectableRidget extends IMarkableRidget {
 	 *         otherwise.
 	 */
 	boolean containsOption(Object option);
-
-	/**
-	 * @return The number of options among which to select.
-	 */
-	int getOptionCount();
 
 }

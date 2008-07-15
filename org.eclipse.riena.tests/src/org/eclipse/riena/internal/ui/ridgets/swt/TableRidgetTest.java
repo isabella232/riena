@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
@@ -23,8 +24,6 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
-
-import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -35,7 +34,7 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * Tests of the class {@link TableRidget}.
  */
-public class TableRidgetTest extends AbstractSelectableRidgetTest {
+public class TableRidgetTest extends AbstractSelectableIndexedRidgetTest {
 
 	@Override
 	protected Control createUIControl(Composite parent) {
@@ -458,8 +457,8 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 
 		ridget.setSortedAscending(true);
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, true,
-				false));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
+				Boolean.TRUE, Boolean.FALSE));
 
 		ridget.setSortedAscending(false);
 
@@ -469,8 +468,8 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 		ridget.setSortedAscending(false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, false,
-				true));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
+				Boolean.FALSE, Boolean.TRUE));
 
 		ridget.setSortedAscending(true);
 
@@ -487,7 +486,8 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, -1, 0));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
+				.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -497,7 +497,8 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, 0, 1));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
+				.valueOf(0), Integer.valueOf(1)));
 
 		ridget.setSortedColumn(1);
 
@@ -513,7 +514,7 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 
 		verifyPropertyChangeEvents();
 		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				0));
+				Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, false);
 
@@ -524,7 +525,7 @@ public class TableRidgetTest extends AbstractSelectableRidgetTest {
 
 		verifyPropertyChangeEvents();
 		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null,
-				0));
+				Integer.valueOf(0)));
 
 		ridget.setColumnSortable(0, true);
 

@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.List;
 /**
  * Tests of the class {@link ListRidget}.
  */
-public class ListRidgetTest extends AbstractSelectableRidgetTest {
+public class ListRidgetTest extends AbstractSelectableIndexedRidgetTest {
 
 	@Override
 	protected Control createUIControl(Composite parent) {
@@ -334,8 +334,8 @@ public class ListRidgetTest extends AbstractSelectableRidgetTest {
 
 		assertTrue(ridget.isSortedAscending());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, true,
-				false));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
+				Boolean.TRUE, Boolean.FALSE));
 
 		ridget.setSortedAscending(false);
 
@@ -345,8 +345,8 @@ public class ListRidgetTest extends AbstractSelectableRidgetTest {
 		ridget.setSortedAscending(false);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING, false,
-				true));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORT_ASCENDING,
+				Boolean.FALSE, Boolean.TRUE));
 
 		ridget.setSortedAscending(true);
 
@@ -363,7 +363,8 @@ public class ListRidgetTest extends AbstractSelectableRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, -1, 0));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
+				.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -373,7 +374,8 @@ public class ListRidgetTest extends AbstractSelectableRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, 0, -1));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
+				.valueOf(0), Integer.valueOf(-1)));
 
 		ridget.setSortedColumn(-1);
 

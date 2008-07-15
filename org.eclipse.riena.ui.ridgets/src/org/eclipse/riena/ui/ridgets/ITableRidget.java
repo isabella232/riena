@@ -17,14 +17,14 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 /**
  * Ridget for a table.
  */
-public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
+public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColumn {
 
 	/**
 	 * Return an observable list of objects which can be selected through this
 	 * ridget.
 	 * 
 	 * @return an IObservableList instance or null, if the ridget has not been
-	 * 	bound to a model
+	 *         bound to a model
 	 */
 	IObservableList getObservableList();
 
@@ -32,20 +32,21 @@ public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
 	 * Binds the table to the model data.
 	 * 
 	 * @param rowBeansObservable
-	 * 		An observable list with a list of beans.
+	 *            An observable list with a list of beans.
 	 * @param rowBeanClass
-	 * 		The class of the beans in the list.
+	 *            The class of the beans in the list.
 	 * @param columnPropertyNames
-	 * 		The property names of the properties of the beans to be displayed in
-	 * 		the columns. A non-null String array.
+	 *            The property names of the properties of the beans to be
+	 *            displayed in the columns. A non-null String array.
 	 * @param columnHeaders
-	 * 		The titles of the columns to be displayed in the header. May be null
-	 * 		if no headers should be shown for this table. Individual array
-	 * 		entries may be null, which will show an empty title in the header of
-	 * 		that column.
+	 *            The titles of the columns to be displayed in the header. May
+	 *            be null if no headers should be shown for this table.
+	 *            Individual array entries may be null, which will show an empty
+	 *            title in the header of that column.
 	 * @throws RuntimeException
-	 * 		when columnHeaders is non-null and the the number of columnHeaders
-	 * 		does not match the number of columnPropertyNames
+	 *             when columnHeaders is non-null and the the number of
+	 *             columnHeaders does not match the number of
+	 *             columnPropertyNames
 	 */
 	void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders);
@@ -54,22 +55,23 @@ public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
 	 * Binds the table to the model data.
 	 * 
 	 * @param rowBeansBean
-	 * 		A bean that has a property with a list of beans.
+	 *            A bean that has a property with a list of beans.
 	 * @param rowBeansPropertyName
-	 * 		The name of the property with the list on beans.
+	 *            The name of the property with the list on beans.
 	 * @param rowBeanClass
-	 * 		The class of the beans in the list.
+	 *            The class of the beans in the list.
 	 * @param columnPropertyNames
-	 * 		The property names of the properties of the beans to be displayed in
-	 * 		the columns.
+	 *            The property names of the properties of the beans to be
+	 *            displayed in the columns.
 	 * @param columnHeaders
-	 * 		The titles of the columns to be displayed in the header. May be null
-	 * 		if no headers should be shown for this table. Individual array
-	 * 		entries may be null, which will show an empty title in the header of
-	 * 		that column.
+	 *            The titles of the columns to be displayed in the header. May
+	 *            be null if no headers should be shown for this table.
+	 *            Individual array entries may be null, which will show an empty
+	 *            title in the header of that column.
 	 * @throws RuntimeException
-	 * 		when columnHeaders is non-null and the the number of columnHeaders
-	 * 		does not match the number of columnPropertyNames
+	 *             when columnHeaders is non-null and the the number of
+	 *             columnHeaders does not match the number of
+	 *             columnPropertyNames
 	 */
 	void bindToModel(Object rowBeansBean, String rowBeansPropertyName, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders);
@@ -82,9 +84,9 @@ public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
 	 * times as it is added.
 	 * 
 	 * @param listener
-	 * 		a non-null {@link IActionListener} instance
+	 *            a non-null {@link IActionListener} instance
 	 * @throws RuntimeException
-	 * 		if listener is null
+	 *             if listener is null
 	 */
 	void addDoubleClickListener(IActionListener listener);
 
@@ -93,7 +95,7 @@ public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
 	 * notified when the bound control is double-clicked.
 	 * 
 	 * @param listener
-	 * 		an {@link IActionListener} instance
+	 *            an {@link IActionListener} instance
 	 */
 	void removeDoubleClickListener(IActionListener listener);
 
@@ -101,12 +103,12 @@ public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
 	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
 	 * 
 	 * @param columnIndex
-	 * 		a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
-	 * 		numColumns )
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
+	 *            numColumns )
 	 * @param comparator
-	 * 		a Comparator instance; may be null
+	 *            a Comparator instance; may be null
 	 * @throws RuntimeException
-	 * 		if columnIndex is out of range
+	 *             if columnIndex is out of range
 	 */
 	public void setComparator(int columnIndex, Comparator<Object> comparator);
 
@@ -121,8 +123,8 @@ public interface ITableRidget extends ISelectableRidget, ISortableByColumn {
 	 * user.
 	 * 
 	 * @param moveableColumns
-	 * 		true, if column should be re-arrangable by the user; false
-	 * 		otherwise.
+	 *            true, if column should be re-arrangable by the user; false
+	 *            otherwise.
 	 */
 	public void setMoveableColumns(boolean moveableColumns);
 }

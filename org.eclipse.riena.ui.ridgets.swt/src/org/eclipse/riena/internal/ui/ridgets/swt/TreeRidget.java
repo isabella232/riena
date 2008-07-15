@@ -11,9 +11,9 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -47,6 +47,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -72,52 +73,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
 		// observableValues = new WritableList();
-	}
-
-	@Override
-	public int getSelectionIndex() {
-		int result = -1;
-		if (getUIControl() != null) {
-			int[] indexes = getSelectionIndices();
-			if (indexes.length > 0) {
-				Arrays.sort(indexes);
-				result = indexes[0];
-			}
-		}
-		return result;
-	}
-
-	@Override
-	public int[] getSelectionIndices() {
-		int[] result = null;
-		Tree control = getUIControl();
-		if (control != null) {
-			TreeItem[] items = control.getSelection();
-			result = new int[items.length];
-			for (int i = 0; i < items.length; i++) {
-				TreeItem item = items[i];
-				result[i] = control.indexOf(item);
-			}
-		}
-		return result != null ? result : new int[0];
-	}
-
-	@Override
-	public int indexOfOption(Object option) {
-		int result = -1;
-		Tree control = getUIControl();
-		if (control != null) {
-			TreeItem[] items = control.getItems();
-			for (int i = 0; result == -1 && i < items.length; i++) {
-				TreeItem item = items[i];
-				// SWT impl detail; option is stored in item.getData();
-				Object data = item.getData();
-				if (data == option) {
-					result = control.indexOf(item);
-				}
-			}
-		}
-		return result;
 	}
 
 	@Override
@@ -251,6 +206,20 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 	}
 
+	public final void setSelection(List<?> newSelection) {
+		Assert.isNotNull(viewer);
+		Control control = viewer.getControl();
+		control.setRedraw(false);
+		try {
+			for (Object candidate : newSelection) {
+				viewer.expandToLevel(candidate, 0);
+			}
+		} finally {
+			control.setRedraw(true);
+		}
+		super.setSelection(newSelection);
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -271,10 +240,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			}
 		};
 		final TreeContentProvider viewerCP = new TreeContentProvider(listFactory, structureAdvisor);
+
 		viewerCP.getKnownElements().addSetChangeListener(new ISetChangeListener() {
 			// updates the icons on addition / removal
 			public void handleSetChange(SetChangeEvent event) {
-				if (!viewerCP.isClearing()) {
+				if (!viewerCP.isDisposing()) {
 					Set<Object> parents = new HashSet<Object>();
 					for (Object element : event.diff.getAdditions()) {
 						Object parent = structureAdvisor.getParent(element);
@@ -306,6 +276,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewer.setLabelProvider(viewerLP);
 		// input
 		viewer.setInput(new Object[] { treeRoot });
+
+		// selection
+		setRowObservables(BeansObservables.observeList(realm, viewerCP, "knownElements"));
 	}
 
 	private void bindToSelection() {
@@ -372,7 +345,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	private static class TreeContentProvider extends ObservableListTreeContentProvider {
 
-		private boolean isClearing = true;
+		private boolean isDisposing = true;
 
 		TreeContentProvider(IObservableFactory listFactory, TreeStructureAdvisor structureAdvisor) {
 			super(listFactory, structureAdvisor);
@@ -388,12 +361,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			isClearing = newInput == null;
+			// this is a workaround to allow our set change listener, which
+			// is in charge triggering an update of the tree icons, to skip the
+			// update when the viewer is in the process of disposing itself
+			// (newInput == null)
+			isDisposing = (newInput == null);
 			super.inputChanged(viewer, oldInput, newInput);
 		}
 
-		boolean isClearing() {
-			return isClearing;
+		/* Returns true if we in the midst of a disposal */
+		boolean isDisposing() {
+			return isDisposing;
 		}
 	}
 
