@@ -52,7 +52,7 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 * later.
 	 */
 	public NavigationNodeViewController() {
-		super();
+		this(null);
 	}
 
 	/**
@@ -65,12 +65,12 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 	 */
 	public NavigationNodeViewController(N navigationNode) {
 
-		super();
-
 		ridgets = new HashMap<String, IRidget>();
 		propertyChangeListener = new PropertyChangeHandler();
-		setNavigationNode(navigationNode);
 
+		if (navigationNode != null) {
+			setNavigationNode(navigationNode);
+		}
 	}
 
 	/**
