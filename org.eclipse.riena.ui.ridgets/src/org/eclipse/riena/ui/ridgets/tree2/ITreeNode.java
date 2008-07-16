@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.tree2;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -39,7 +38,7 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * 
  * @see ITreeRidget#bindToModel(Object, Class, String, String)
  */
-public interface ITreeNode extends Serializable {
+public interface ITreeNode {
 
 	/**
 	 * Property name of the value property ("value").

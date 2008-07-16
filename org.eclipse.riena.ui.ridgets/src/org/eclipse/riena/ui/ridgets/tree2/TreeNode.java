@@ -27,8 +27,6 @@ import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 // TODO [ev] unit test
 public class TreeNode extends AbstractBean implements ITreeNode {
 
-	private static final long serialVersionUID = 1L;
-
 	private static void addToParent(ITreeNode parent, ITreeNode child) {
 		Assert.isNotNull(child);
 		List<ITreeNode> pChildren = parent.getChildren();
