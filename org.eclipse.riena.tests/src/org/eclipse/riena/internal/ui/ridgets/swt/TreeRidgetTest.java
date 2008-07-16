@@ -1,7 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.List;
 
+import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -16,6 +27,11 @@ import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Tests for the {@link TreeRidget}.
+ * <p>
+ * These tests us a TreeNode that wraps a String and focus on methods from the
+ * {@link ITreeRidget}.
+ * 
+ * @see TreeRidgetTest2
  */
 public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
@@ -34,12 +50,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		bindToModel();
-	}
-
-	private void bindToModel() {
-		ITreeNode treeRoot = initializeTreeModel();
-		getRidget().bindToModel(treeRoot, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+		getRidget().bindToModel(initializeTreeModel(), ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
 	}
 
 	@Override
@@ -65,9 +76,53 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	// testing methods
 	// ////////////////
 
+	public void testRidgetMapping() {
+		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		assertSame(TreeRidget.class, mapper.getRidgetClass(getUIControl()));
+	}
+
 	public void testGetUIControl() throws Exception {
 		Tree control = getUIControl();
 		assertEquals(control, getRidget().getUIControl());
+	}
+
+	public void testBindToModel() {
+		assertEquals(ROOT_NODE_USER_OBJECT, getUIControlItem(0).getText(0));
+		assertEquals(ROOT_CHILD1_NODE_USER_OBJECT, getUIControlItem(1).getText(0));
+		assertEquals(ROOT_CHILD1_CHILD1_NODE_USER_OBJECT, getUIControlItem(2).getText(0));
+		assertEquals(ROOT_CHILD2_NODE_USER_OBJECT, getUIControlItem(3).getText(0));
+	}
+
+	public void testBindToModelNull() {
+		ITreeRidget ridget = getRidget();
+
+		try {
+			ridget.bindToModel(null, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.bindToModel(rootNode, null, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.bindToModel(rootNode, ITreeNode.class, null, ITreeNode.PROP_VALUE);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.bindToModel(rootNode, ITreeNode.class, ITreeNode.PROP_CHILDREN, null);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 	}
 
 	public void testUpdateTreeFromModel() throws Exception {
@@ -141,7 +196,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		// ...to check that it collapses to its default state when a new model
 		// is updated...
-		bindToModel();
+		getRidget().bindToModel(initializeTreeModel(), ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
 		ridget.updateFromModel();
 
 		assertEquals(3, getItemCount(control));
@@ -204,35 +259,6 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(control);
 
 		assertEquals(3, getItemCount(control));
-	}
-
-	public void testSelectionType() throws Exception {
-		TreeRidget ridget = getRidget();
-		Tree control = getUIControl();
-
-		assertEquals(ITreeRidget.SelectionType.SINGLE, ridget.getSelectionType());
-
-		ridget.setSelectionType(ITreeRidget.SelectionType.MULTI);
-
-		assertEquals(ITreeRidget.SelectionType.MULTI, ridget.getSelectionType());
-
-		try {
-			ridget.setSelectionType(ITreeRidget.SelectionType.NONE);
-			fail("IllegalArgumentException expected");
-		} catch (IllegalArgumentException expected) {
-			// ok, expected
-		}
-
-		assertEquals(ITreeRidget.SelectionType.MULTI, ridget.getSelectionType());
-
-		ridget.setUIControl(null); // unbind
-		ridget.setSelectionType(ITreeRidget.SelectionType.SINGLE);
-
-		assertEquals(ITreeRidget.SelectionType.SINGLE, ridget.getSelectionType());
-
-		ridget.setUIControl(control); // rebind
-
-		assertEquals(ITreeRidget.SelectionType.SINGLE, ridget.getSelectionType());
 	}
 
 	public void testAddDoubleClickListener() {
@@ -315,6 +341,29 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			children.remove(node);
 			parent.setChildren(children);
 		}
+	}
+
+	/**
+	 * Return the TreeItem corresponding to the following mock "index" scheme:
+	 * 0: item for node1, 1: item for node2, 2: item for node3.
+	 * <p>
+	 * This method will fully expand the tree to ensure all tree items are
+	 * created.
+	 */
+	private final TreeItem getUIControlItem(int index) {
+		getRidget().expandTree();
+		Tree control = getUIControl();
+		switch (index) {
+		case 0:
+			return control.getItem(0);
+		case 1:
+			return control.getItem(0).getItem(0);
+		case 2:
+			return control.getItem(0).getItem(0).getItem(0);
+		case 3:
+			return control.getItem(0).getItem(1);
+		}
+		throw new IndexOutOfBoundsException("index= " + index);
 	}
 
 }
