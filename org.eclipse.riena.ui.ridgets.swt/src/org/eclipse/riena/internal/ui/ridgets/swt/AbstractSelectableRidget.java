@@ -93,7 +93,7 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		singleSelectionObservable.setValue(null);
 	}
 
-	public final boolean containsOption(Object option) {
+	public boolean containsOption(Object option) {
 		if (getRowObservables() == null) {
 			return false;
 		}
