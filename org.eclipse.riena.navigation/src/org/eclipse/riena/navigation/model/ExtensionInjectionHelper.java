@@ -8,14 +8,21 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.model;
 
-/**
- * A WorkAreaPresentationFactory provides a WorkAreaPresentationDefinition,
- * given by a presentationID
- * 
- * @author erich Achilles
- */
-public interface IWorkAreaPresentationFactory {
+import org.eclipse.riena.navigation.IPresentationDefinition;
+
+public class ExtensionInjectionHelper<E extends IPresentationDefinition> {
+
+	private E[] data;
+
+	public void update(E[] data) {
+		this.data = data;
+
+	}
+
+	public E[] getData() {
+		return data;
+	}
 
 }

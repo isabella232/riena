@@ -12,7 +12,6 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IApplicationModelListener;
-import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.ISubApplication;
 
 /**
@@ -58,7 +57,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 		setNavigationProcessor(new NavigationProcessor(createNavigationNodePresentationFactory()));
 	}
 
-	protected INavigationNodePresentationFactory createNavigationNodePresentationFactory() {
+	protected NavigationNodePresentationFactory createNavigationNodePresentationFactory() {
 		return new NavigationNodePresentationFactory();
 	}
 

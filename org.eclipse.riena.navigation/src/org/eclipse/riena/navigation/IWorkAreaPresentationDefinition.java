@@ -26,9 +26,17 @@ public interface IWorkAreaPresentationDefinition extends IPresentationDefinition
 	IViewController createViewController();
 
 	/**
-	 * Return true if the specified view shoud be a shared view, false otherwise
+	 * Return true if the specified view should be a shared view, false
+	 * otherwise
 	 */
 
 	boolean isViewShared();
+
+	/**
+	 * Return an instance of a view
+	 * 
+	 */
+
+	Object createView();
 
 }

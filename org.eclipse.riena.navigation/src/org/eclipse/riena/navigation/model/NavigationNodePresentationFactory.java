@@ -10,28 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
-import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 
 /**
  * 
  */
-public class NavigationNodePresentationFactory implements INavigationNodePresentationFactory {
+public class NavigationNodePresentationFactory extends
+		AbstractNavigationNodePresentationFactory<INavigationNodePresentationDefiniton> {
 
 	private static final String ID = "org.eclipse.riena.navigation.NavigationNodePresentation";
 
-	private static NavigationNodePresentationFactory factory;
-
-	private NodePresentationData target = null;
-
 	public NavigationNodePresentationFactory() {
-		target = new NodePresentationData();
-		Inject.extension(ID).into(target).andStart(Activator.getDefault().getContext());
+		target = new ExtensionInjectionHelper<INavigationNodePresentationDefiniton>();
+		init(INavigationNodePresentationDefiniton.class);
 	}
 
 	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
@@ -54,60 +48,15 @@ public class NavigationNodePresentationFactory implements INavigationNodePresent
 		return targetNode;
 	}
 
-	public INavigationNodePresentationDefiniton getPresentationDefinition(INavigationNodeId targetId) {
-
-		if (target == null || target.getData().length == 0 || targetId == null) {
-			return null;
-		} else {
-			INavigationNodePresentationDefiniton[] data = target.getData();
-			for (int i = 0; i < data.length; i++) {
-				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId.getTypeId())) {
-					return data[i];
-				}
-
-			}
-		}
-		return null;
-
-	}
-
-	private INavigationNode<?> getRootNode(INavigationNode<?> node) {
-		if (node.getParent() == null) {
-			return node;
-		}
-		return getRootNode(node.getParent());
-	}
-
-	private INavigationNode<?> findNode(INavigationNode<?> node, INavigationNodeId targetId) {
-
-		if (targetId == null) {
-			return null;
-		}
-		if (targetId.equals(node.getPresentationId())) {
-			return node;
-		}
-		for (INavigationNode<?> child : node.getChildren()) {
-			INavigationNode<?> foundNode = findNode(child, targetId);
-			if (foundNode != null) {
-				return foundNode;
-			}
-		}
-		return null;
-	}
-
-	public class NodePresentationData {
-
-		private INavigationNodePresentationDefiniton[] data;
-
-		public void update(INavigationNodePresentationDefiniton[] data) {
-			this.data = data;
-
-		}
-
-		public INavigationNodePresentationDefiniton[] getData() {
-			return data;
-		}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.model.AbstractPresentationFactory#
+	 * getExtensionPointId()
+	 */
+	@Override
+	protected String getExtensionPointId() {
+		return ID;
 	}
 
 }

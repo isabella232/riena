@@ -20,7 +20,6 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
-import org.eclipse.riena.navigation.INavigationNodePresentationFactory;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 
@@ -29,9 +28,9 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  */
 public class NavigationProcessor implements INavigationProcessor {
 
-	private INavigationNodePresentationFactory navigationNodePresentationFactory;
+	private NavigationNodePresentationFactory navigationNodePresentationFactory;
 
-	public NavigationProcessor(INavigationNodePresentationFactory navigationNodePresentationFactory) {
+	public NavigationProcessor(NavigationNodePresentationFactory navigationNodePresentationFactory) {
 		super();
 		this.navigationNodePresentationFactory = navigationNodePresentationFactory;
 	}
@@ -110,6 +109,10 @@ public class NavigationProcessor implements INavigationProcessor {
 
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse
+	 *      .riena.navigation.INavigationNode, java.lang.String)
+	 */
 	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
 
 		INavigationNode<?> targetNode = navigationNodePresentationFactory.createNode(sourceNode, targetId);
