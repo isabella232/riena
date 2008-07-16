@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.IPresentationDefinition;
 /**
  * Base class for riena presentation factories.
  */
-public abstract class AbstractPresentationFactory<E extends IPresentationDefinition> {
+public abstract class AbstractDefinitionInjector<E extends IPresentationDefinition> {
 
 	protected ExtensionInjectionHelper<E> target = null;
 

@@ -18,7 +18,7 @@ import org.eclipse.riena.navigation.IPresentationDefinition;
  *
  */
 public abstract class AbstractNavigationNodePresentationFactory<E extends IPresentationDefinition> extends
-		AbstractPresentationFactory<E> {
+		AbstractDefinitionInjector<E> {
 
 	protected INavigationNode<?> getRootNode(INavigationNode<?> node) {
 		if (node.getParent() == null) {

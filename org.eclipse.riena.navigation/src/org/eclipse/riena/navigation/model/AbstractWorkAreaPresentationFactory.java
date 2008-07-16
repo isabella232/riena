@@ -16,7 +16,7 @@ import org.eclipse.riena.navigation.IPresentationDefinition;
  *
  */
 public abstract class AbstractWorkAreaPresentationFactory<E extends IPresentationDefinition> extends
-		AbstractPresentationFactory<E> {
+		AbstractDefinitionInjector<E> {
 
 	public E getPresentationDefinition(String targetId) {
 
