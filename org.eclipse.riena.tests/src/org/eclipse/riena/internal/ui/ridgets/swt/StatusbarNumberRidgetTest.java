@@ -89,7 +89,7 @@ public class StatusbarNumberRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testSetNumber() {
 
-		getRidget().setNumber(4711);
+		getRidget().setNumber(Integer.valueOf((4711)));
 		assertEquals("0004711", getLabel().getText());
 
 	}
