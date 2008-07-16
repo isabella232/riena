@@ -60,9 +60,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
 
+	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
-	private Collection<IActionListener> doubleClickListeners;
 
 	private Object treeRoot;
 	private Class<? extends Object> treeElementClass;
@@ -104,6 +104,16 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			control.removeMouseListener(doubleClickForwarder);
 		}
 		viewer = null;
+	}
+
+	@Override
+	protected List<?> getRowObservables() {
+		List<?> result = null;
+		if (viewer != null) {
+			TreeContentProvider cp = (TreeContentProvider) viewer.getContentProvider();
+			result = new ArrayList<Object>(cp.getKnownElements());
+		}
+		return result;
 	}
 
 	@Override
@@ -206,23 +216,38 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * For each selection candidate in the List <tt>newSelection</tt>, this
+	 * implementation will try to expand the path to the corresponding tree
+	 * node, to ensure that the corresponding tree element is selectable.
+	 */
 	public final void setSelection(List<?> newSelection) {
-		Assert.isNotNull(viewer);
-		Control control = viewer.getControl();
-		control.setRedraw(false);
-		try {
-			for (Object candidate : newSelection) {
-				viewer.expandToLevel(candidate, 0);
-			}
-		} finally {
-			control.setRedraw(true);
-		}
+		reveal(newSelection.toArray());
 		super.setSelection(newSelection);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * For each selection candidate in the List <tt>newSelection</tt>, this
+	 * implementation will try to expand the path to the corresponding tree
+	 * node, to ensure that the corresponding tree element is selectable.
+	 */
+	public final void setSelection(Object candidate) {
+		if (candidate != null) {
+			reveal(new Object[] { candidate });
+		}
+		super.setSelection(candidate);
 	}
 
 	// helping methods
 	// ////////////////
 
+	/**
+	 * Initialize databining for tree viewer.
+	 */
 	private void bindToViewer(final Tree control) {
 		viewer = new TreeViewer(control);
 		// content
@@ -276,11 +301,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewer.setLabelProvider(viewerLP);
 		// input
 		viewer.setInput(new Object[] { treeRoot });
-
-		// selection
-		setRowObservables(BeansObservables.observeList(realm, viewerCP, "knownElements"));
 	}
 
+	/**
+	 * Initialize databinding related to selection handling (single/multi).
+	 */
 	private void bindToSelection() {
 		StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
@@ -294,6 +319,25 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 
 		viewer.setSelection(currentSelection);
+	}
+
+	/**
+	 * Expand tree paths to candidates before selecting them. This ensures the
+	 * tree items to the candidates are created and the candidates become
+	 * "known elements" (if they exist).
+	 */
+	private void reveal(Object[] candidates) {
+		if (viewer != null) {
+			Control control = viewer.getControl();
+			control.setRedraw(false);
+			try {
+				for (Object candidate : candidates) {
+					viewer.expandToLevel(candidate, 0);
+				}
+			} finally {
+				control.setRedraw(true);
+			}
+		}
 	}
 
 	// helping classes

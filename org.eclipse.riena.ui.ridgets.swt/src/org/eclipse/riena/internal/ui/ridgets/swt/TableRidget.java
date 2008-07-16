@@ -20,7 +20,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -61,9 +60,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private TableViewer viewer;
-	private String[] renderingMethods;
 	private String[] columnHeaders;
+	private IObservableList rowObservables;
 	private Class<?> rowBeanClass;
+	private String[] renderingMethods;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -143,6 +143,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	@Override
+	protected java.util.List<?> getRowObservables() {
+		return rowObservables;
+	}
+
+	@Override
 	public Table getUIControl() {
 		return (Table) super.getUIControl();
 	}
@@ -164,10 +169,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		unbindUIControl();
 
 		this.rowBeanClass = rowBeanClass;
-
+		rowObservables = listObservableValue;
 		renderingMethods = new String[columnPropertyNames.length];
 		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);
-		setRowObservables(listObservableValue);
 
 		if (columnHeaders != null) {
 			this.columnHeaders = new String[columnHeaders.length];
@@ -192,9 +196,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			viewer.getControl().setRedraw(false);
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			try {
-				IObservable model = getRowObservables();
-				if (model instanceof IUnboundPropertyObservable) {
-					((UnboundPropertyWritableList) model).updateFromBean();
+				if (rowObservables instanceof IUnboundPropertyObservable) {
+					((UnboundPropertyWritableList) rowObservables).updateFromBean();
 				}
 				viewer.refresh(true);
 			} finally {
@@ -205,7 +208,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	public IObservableList getObservableList() {
-		return getRowObservables();
+		return rowObservables;
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {

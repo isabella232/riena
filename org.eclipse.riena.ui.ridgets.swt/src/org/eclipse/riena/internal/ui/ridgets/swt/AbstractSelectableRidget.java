@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -42,8 +43,6 @@ import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
  */
 public abstract class AbstractSelectableRidget extends AbstractMarkableRidget implements ISelectableRidget {
 
-	/** List of bean Objects to be shown in the List. */
-	private IObservableList rowObservables;
 	/** A single of selected bean Object. */
 	private final WritableValue singleSelectionObservable;
 	/** A list of selected bean Objects. */
@@ -140,18 +139,10 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		}
 	}
 
-	public final void setSelection(Object newSelection) {
+	public void setSelection(Object newSelection) {
 		assertIsBoundToModel();
-		int index = rowObservables.indexOf(newSelection);
-		if (SelectionType.SINGLE.equals(selectionType)) {
-			Object value = index == -1 ? null : newSelection;
-			singleSelectionObservable.setValue(value);
-		} else if (SelectionType.MULTI.equals(selectionType)) {
-			multiSelectionObservable.clear();
-			if (index != -1) {
-				multiSelectionObservable.add(newSelection);
-			}
-		}
+		List<Object> list = Arrays.asList(new Object[] { newSelection });
+		setSelection(list);
 	}
 
 	public final void setSelectionType(SelectionType selectionType) {
@@ -191,12 +182,10 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 	 * Return an observable list of objects which can be selected through this
 	 * ridget.
 	 * 
-	 * @return an IObservableList instance or null, if the ridget has not been
-	 *         bound to a model
+	 * @return a List instance or null, if the ridget has not been bound to a
+	 *         model
 	 */
-	protected final IObservableList getRowObservables() {
-		return rowObservables;
-	}
+	abstract protected List<?> getRowObservables();
 
 	/**
 	 * Throws an exception if no model observables are available (i.e.
@@ -208,27 +197,12 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		}
 	}
 
-	/**
-	 * <p>
-	 * An observable list of objects which can be selected through this ridget.
-	 * </p>
-	 * <p>
-	 * Subclasses must call this method in their bindToModel method(s).
-	 * </p>
-	 * 
-	 * @param observableList
-	 *            a WriteableList instance; may be null if the ridget has not
-	 *            been bound to a model
-	 */
-	protected final void setRowObservables(IObservableList observableList) {
-		this.rowObservables = observableList;
-	}
-
 	// helping methods
 	// ////////////////
 
 	private List<Object> getKnownElements(List<?> elements) {
 		List<Object> result = new ArrayList<Object>();
+		Collection<?> rowObservables = getRowObservables();
 		for (Object element : elements) {
 			if (rowObservables.contains(element)) {
 				result.add(element);

@@ -18,7 +18,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -57,8 +56,9 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private ListViewer viewer;
-	private String renderingMethod;
 	private Class<?> rowBeanClass;
+	private IObservableList rowObservables;
+	private String renderingMethod;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -123,6 +123,11 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	}
 
 	@Override
+	protected java.util.List<?> getRowObservables() {
+		return rowObservables;
+	}
+
+	@Override
 	public List getUIControl() {
 		return (List) super.getUIControl();
 	}
@@ -141,8 +146,8 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 		unbindUIControl();
 
 		this.rowBeanClass = rowBeanClass;
+		rowObservables = listObservableValue;
 		renderingMethod = columnPropertyNames[0];
-		setRowObservables(listObservableValue);
 
 		bindUIControl();
 	}
@@ -161,9 +166,8 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 			// update
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 			try {
-				IObservable model = getRowObservables();
-				if (model instanceof IUnboundPropertyObservable) {
-					((UnboundPropertyWritableList) model).updateFromBean();
+				if (rowObservables instanceof IUnboundPropertyObservable) {
+					((UnboundPropertyWritableList) rowObservables).updateFromBean();
 				}
 				viewer.refresh(true);
 			} finally {
@@ -174,7 +178,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	}
 
 	public IObservableList getObservableList() {
-		return getRowObservables();
+		return rowObservables;
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
