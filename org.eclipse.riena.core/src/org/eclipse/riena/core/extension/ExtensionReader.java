@@ -168,8 +168,19 @@ public class ExtensionReader {
 				String name = getAttributeName(method, methodKind);
 				return configurationElement.createExecutableExtension(name);
 			}
-			if (method.getParameterTypes().length == 0 && method.getName().equals("toString")) //$NON-NLS-1$
-				return "Dynamic proxy for " + interfaceType.getName(); //$NON-NLS-1$
+			if (method.getParameterTypes().length == 0) {
+				if (method.getName().equals("toString")) //$NON-NLS-1$
+					return toString();
+				if (method.getName().equals("hashCode")) //$NON-NLS-1$
+					return hashCode();
+				if (method.getName().equals("clone")) //$NON-NLS-1$
+					return clone();
+				if (method.getName().equals("finalize")) //$NON-NLS-1$
+					finalize();
+			}
+			if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == Object.class
+					&& method.getName().equals("equals")) //$NON-NLS-1$
+				return equals(args[0]);
 			throw new UnsupportedOperationException("Only " + Arrays.toString(ALLOWED_PREFIXES) + " are supported."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
@@ -204,6 +215,70 @@ public class ExtensionReader {
 			}
 
 			throw new UnsupportedOperationException("property for method " + method.getName() + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#clone()
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning a interface bean is not supported."); //$NON-NLS-1$
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				InvocationHandler handler = Proxy.getInvocationHandler(obj);
+				if (handler instanceof InterfaceBean)
+					return configurationElement.equals(((InterfaceBean) handler).configurationElement);
+			} catch (IllegalArgumentException e) {
+				// fall thru
+			}
+			return false;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#finalize()
+		 */
+		@Override
+		protected void finalize() throws Throwable {
+			// nothing
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			return configurationElement.hashCode();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			StringBuilder bob = new StringBuilder("Dynamic proxy for "); //$NON-NLS-1$
+			bob.append(interfaceType.getName()).append(':');
+			String[] names = configurationElement.getAttributeNames();
+			for (String name : names) {
+				bob.append(name).append('=').append(configurationElement.getAttribute(name)).append(',');
+			}
+			bob.setLength(bob.length() - 1);
+			return bob.toString();
 		}
 
 		private String getAttributeName(Method method, MethodKind methodKind) {
