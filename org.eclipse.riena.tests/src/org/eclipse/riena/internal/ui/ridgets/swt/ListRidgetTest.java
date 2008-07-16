@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.List;
 /**
  * Tests of the class {@link ListRidget}.
  */
-public class ListRidgetTest extends AbstractSelectableIndexedRidgetTest {
+public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected Control createUIControl(Composite parent) {

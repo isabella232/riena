@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
@@ -24,27 +22,29 @@ import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.tests.UITestHelper;
-import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.tests.base.TestMultiSelectionBean;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * Tests of the class {@link AbstractSelectableRidget}.
+ * Tests for the class {@link AbstractSelectableRidget} for tree- based
+ * implementations.
  */
-public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRidgetTest {
+public abstract class AbstractTreeRidgetTest extends AbstractSWTRidgetTest {
 
-	protected PersonManager manager;
-	protected Person person1;
-	protected Person person2;
-	protected Person person3;
+	protected ITreeNode node1;
+	protected ITreeNode node2;
+	protected ITreeNode node3;
 
 	private TestSingleSelectionBean singleSelectionBean;
 	private TestMultiSelectionBean multiSelectionBean;
@@ -52,35 +52,37 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		manager = new PersonManager(createPersonList());
-		Iterator<Person> it = manager.getPersons().iterator();
-		person1 = it.next();
-		person2 = it.next();
-		person3 = it.next();
-		bindRidgetToModel();
+		ITreeNode[] nodes = bindRidgetToModel();
+		node1 = nodes[0];
+		node2 = nodes[1];
+		node3 = nodes[2];
 		singleSelectionBean = new TestSingleSelectionBean();
-		getRidget().bindSingleSelectionToModel(singleSelectionBean, "selection");
+		getRidget().bindSingleSelectionToModel(singleSelectionBean, TestSingleSelectionBean.PROPERTY_SELECTION);
 		multiSelectionBean = new TestMultiSelectionBean();
-		getRidget().bindMultiSelectionToModel(multiSelectionBean, "selectionList");
+		getRidget().bindMultiSelectionToModel(multiSelectionBean, TestMultiSelectionBean.PROPERTY_SELECTION);
 		getRidget().updateFromModel();
 		UITestHelper.readAndDispatch(getUIControl());
 	}
 
-	protected abstract void bindRidgetToModel();
+	protected abstract ITreeNode[] bindRidgetToModel();
 
 	@Override
-	protected ISelectableIndexedRidget getRidget() {
-		return (ISelectableIndexedRidget) super.getRidget();
+	protected ITreeRidget getRidget() {
+		return (ITreeRidget) super.getRidget();
+	}
+
+	protected final Tree getUIControl() {
+		return (Tree) super.getUIControl();
 	}
 
 	// test methods
 	// /////////////
 
 	public void testClearSelection() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
-		ridget.setSelection(person1);
+		ridget.setSelection(node1);
 
 		assertTrue(ridget.getSelection().size() > 0);
 		assertTrue(getUIControlSelectedRowCount() > 0);
@@ -91,7 +93,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		assertEquals(0, getUIControlSelectedRowCount());
 
 		ridget.setSelectionType(SelectionType.MULTI);
-		ridget.setSelection(Arrays.asList(new Person[] { person1, person2 }));
+		ridget.setSelection(Arrays.asList(new Object[] { node1, node2 }));
 
 		assertTrue(ridget.getSelection().size() > 0);
 		assertTrue(getUIControlSelectedRowCount() > 0);
@@ -103,150 +105,21 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testGetSelection() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		assertNotNull(ridget.getSelection());
 		assertTrue(ridget.getSelection().isEmpty());
 
 		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
-		ridget.setSelection(new int[] { 1, 2 });
+		ridget.setSelection(Arrays.asList(new Object[] { node2, node3 }));
 
 		assertEquals(2, ridget.getSelection().size());
 		assertEquals(getRowValue(1), ridget.getSelection().get(0));
 		assertEquals(getRowValue(2), ridget.getSelection().get(1));
 	}
 
-	public void testGetSelectionIndex() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		assertEquals(-1, ridget.getSelectionIndex());
-
-		ridget.setSelection(1);
-
-		assertEquals(1, ridget.getSelectionIndex());
-
-		ridget.setSelection(new int[] { 2, 0 });
-
-		// TODO [ev] is first the "smallest" ?
-		assertEquals(2, ridget.getSelectionIndex());
-
-		ridget.clearSelection();
-
-		assertEquals(-1, ridget.getSelectionIndex());
-	}
-
-	public void testGetSelectionIndices() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		assertEquals(0, ridget.getSelectionIndices().length);
-
-		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
-		java.util.List<Object> selBeans = new ArrayList<Object>(2);
-		selBeans.add(getRowValue(0));
-		selBeans.add(getRowValue(1));
-		ridget.setSelection(selBeans);
-
-		assertEquals(2, ridget.getSelectionIndices().length);
-		assertEquals(0, ridget.getSelectionIndices()[0]);
-		assertEquals(1, ridget.getSelectionIndices()[1]);
-
-		ridget.setSelection(2);
-
-		assertEquals(1, ridget.getSelectionIndices().length);
-		assertEquals(2, ridget.getSelectionIndices()[0]);
-	}
-
-	public void testSetSelectionInt() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		assertNull(singleSelectionBean.getSelection());
-		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
-		assertEquals(0, getUIControlSelectedRowCount());
-
-		ridget.setSelection(0);
-
-		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(0, getUIControlSelectedRow());
-		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
-		assertEquals(1, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
-
-		ridget.setSelection(1);
-
-		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(1, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-
-		try {
-			ridget.setSelection(99);
-			fail();
-		} catch (RuntimeException e) {
-			// expected
-		}
-
-		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(1, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-
-		try {
-			ridget.setSelection(-1);
-			fail();
-		} catch (RuntimeException e) {
-			// expected
-		}
-
-		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(1, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-	}
-
-	public void testSetSelectionIntArray() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		assertNull(singleSelectionBean.getSelection());
-		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
-		assertEquals(0, getUIControlSelectedRowCount());
-
-		ridget.setSelectionType(SelectionType.SINGLE);
-		ridget.setSelection(new int[] { 1, 2 });
-
-		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(1, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-
-		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
-		ridget.setSelection(new int[] { 1, 2 });
-
-		assertEquals(2, getUIControlSelectedRowCount());
-		assertEquals(1, getSelectedRows()[0]);
-		assertEquals(2, getSelectedRows()[1]);
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(2, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
-
-		ridget.setSelection(new int[] {});
-
-		assertEquals(0, ridget.getSelectionIndices().length);
-
-		try {
-			ridget.setSelection(new int[] { 1, -1, 2 });
-			fail();
-		} catch (RuntimeException e) {
-			// expected
-		}
-	}
-
 	public void testSetSelectionList() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		assertNull(singleSelectionBean.getSelection());
 		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
@@ -258,7 +131,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		ridget.setSelection(selBeans1);
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(0, getUIControlSelectedRow());
+		assertUIControlSelectionContains(0);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
@@ -270,8 +143,8 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		ridget.setSelection(selBeans2);
 
 		assertEquals(2, getUIControlSelectedRowCount());
-		assertEquals(0, getSelectedRows()[0]);
-		assertEquals(1, getSelectedRows()[1]);
+		assertUIControlSelectionContains(0);
+		assertUIControlSelectionContains(1);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(2, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
@@ -295,7 +168,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testSetSelectionObject() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		assertNull(singleSelectionBean.getSelection());
 		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
@@ -304,7 +177,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		ridget.setSelection(getRowValue(0));
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(0, getUIControlSelectedRow());
+		assertUIControlSelectionContains(0);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
@@ -323,23 +196,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testSetSelectionWithNoModel() {
-		ISelectableIndexedRidget ridget = (ISelectableIndexedRidget) createRidget();
-
-		assertEquals(0, ridget.getOptionCount());
-
-		try {
-			ridget.setSelection(0);
-			fail();
-		} catch (BindingException bex) {
-			// expected
-		}
-
-		try {
-			ridget.setSelection(new int[] { 0 });
-			fail();
-		} catch (BindingException bex) {
-			// expected
-		}
+		ISelectableRidget ridget = (ISelectableRidget) createRidget();
 
 		try {
 			ridget.setSelection((Object) null);
@@ -357,7 +214,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateMultiSelectionCustomBinding() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		WritableList customMultiSelectionObservable = new WritableList();
@@ -390,7 +247,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateMultiSelectionFromControl() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 
@@ -404,7 +261,9 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
 
-		setUIControlRowSelection(new int[] { 0, 2 });
+		TreeItem[] items = { getUIControlItem(0), getUIControlItem(2) };
+		getUIControl().setSelection(items);
+		fireSelectionEvent();
 
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(2, multiSelectionBean.getSelectionList().size());
@@ -413,7 +272,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateMultiSelectionFromModel() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(0, 2);
@@ -443,7 +302,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateMultiSelectionFromModelWhenUnbound() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(0, 2);
@@ -475,7 +334,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateMultiSelectionFromRidgetOnRebind() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
 		setUIControlRowSelectionInterval(1, 2);
@@ -500,7 +359,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateSingleSelectionCustomBinding() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		WritableValue customSingleSelectionObservable = new WritableValue();
 		DataBindingContext dbc = new DataBindingContext();
@@ -510,13 +369,13 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		setUIControlRowSelectionInterval(1, 1);
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
+		assertUIControlSelectionContains(1);
 		assertNull(customSingleSelectionObservable.getValue());
 
 		customSingleSelectionObservable.setValue(getRowValue(0));
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(0, getUIControlSelectedRow());
+		assertUIControlSelectionContains(0);
 		assertEquals(getRowValue(0), customSingleSelectionObservable.getValue());
 	}
 
@@ -532,13 +391,13 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testUpdateSingleSelectionFromModel() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		setUIControlRowSelectionInterval(1, 1);
 		singleSelectionBean.setSelection(getRowValue(0));
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
+		assertUIControlSelectionContains(1);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
@@ -546,20 +405,20 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		ridget.updateSingleSelectionFromModel();
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(0, getUIControlSelectedRow());
+		assertUIControlSelectionContains(0);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
 	}
 
 	public void testUpdateSingleSelectionFromModelWhenUnbound() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		setUIControlRowSelectionInterval(1, 1);
 		singleSelectionBean.setSelection(getRowValue(0));
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(1, getUIControlSelectedRow());
+		assertUIControlSelectionContains(1);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
@@ -569,14 +428,14 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		ridget.setUIControl(getUIControl()); // rebind
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(0, getUIControlSelectedRow());
+		assertUIControlSelectionContains(0);
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
 	}
 
 	public void testUpdateSingleSelectionFromRidgetOnRebind() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		setUIControlRowSelectionInterval(2, 2);
 		ridget.setUIControl(null); // unbind
@@ -590,14 +449,14 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		ridget.setUIControl(getUIControl()); // rebind
 
 		assertEquals(1, getUIControlSelectedRowCount());
-		assertEquals(2, getUIControlSelectedRow());
+		assertUIControlSelectionContains(2);
 		assertEquals(getRowValue(2), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(0));
 	}
 
 	public void testSelectionEventsSelectionTypeSingle() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 		ridget.setSelectionType(SelectionType.SINGLE);
 
 		assertNull(singleSelectionBean.getSelection());
@@ -614,20 +473,20 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		// });
 
 		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
-		java.util.List<?> newSelection = Arrays.asList(new Object[] { person1 });
+		java.util.List<?> newSelection = Arrays.asList(new Object[] { node1 });
 		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION,
 				oldSelection, newSelection);
 		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION,
-				null, person1);
+				null, node1);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
-		ridget.setSelection(0);
+		ridget.setSelection(node1);
 
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
 
-		ridget.setSelection(0);
+		ridget.setSelection(node1);
 
 		verifyPropertyChangeEvents();
 
@@ -635,7 +494,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		newSelection = Collections.EMPTY_LIST;
 		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
 				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, person1, null);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, node1, null);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(Collections.EMPTY_LIST);
@@ -643,19 +502,19 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		verifyPropertyChangeEvents();
 
 		oldSelection = Collections.EMPTY_LIST;
-		newSelection = Arrays.asList(new Object[] { person2 });
+		newSelection = Arrays.asList(new Object[] { node2 });
 		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
 				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, null, person2);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, null, node2);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
-		ridget.setSelection(new int[] { 1, 2 });
+		ridget.setSelection(Arrays.asList(new Object[] { node2, node3 }));
 
 		verifyPropertyChangeEvents();
 	}
 
 	public void testSelectionEventsSelectionTypeMulti() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 		ridget.setSelectionType(SelectionType.MULTI);
 
 		assertNull(singleSelectionBean.getSelection());
@@ -672,20 +531,20 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		// });
 
 		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
-		java.util.List<?> newSelection = Arrays.asList(new Object[] { person1 });
+		java.util.List<?> newSelection = Arrays.asList(new Object[] { node1 });
 		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION,
 				oldSelection, newSelection);
 		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION,
-				null, person1);
+				null, node1);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
-		ridget.setSelection(0);
+		ridget.setSelection(node1);
 
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
 
-		ridget.setSelection(0);
+		ridget.setSelection(node1);
 
 		verifyPropertyChangeEvents();
 
@@ -693,7 +552,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		newSelection = Collections.EMPTY_LIST;
 		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
 				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, person1, null);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, node1, null);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(Collections.EMPTY_LIST);
@@ -701,70 +560,19 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 		verifyPropertyChangeEvents();
 
 		oldSelection = Collections.EMPTY_LIST;
-		newSelection = Arrays.asList(new Object[] { person2, person3 });
+		newSelection = Arrays.asList(new Object[] { node2, node3 });
 		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
 				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, null, person2);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, null, node2);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
-		ridget.setSelection(new int[] { 1, 2 });
+		ridget.setSelection(Arrays.asList(new Object[] { node2, node3 }));
 
 		verifyPropertyChangeEvents();
 	}
 
-	public void testIndexOfOption() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		assertEquals(-1, ridget.indexOfOption(null));
-		assertEquals(-1, ridget.indexOfOption(new Object()));
-
-		assertEquals(0, ridget.indexOfOption(person1));
-		assertEquals(1, ridget.indexOfOption(person2));
-		assertEquals(2, ridget.indexOfOption(person3));
-	}
-
-	public void testGetOption() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		try {
-			ridget.getOption(-1);
-			fail();
-		} catch (RuntimeException e) {
-			// expected
-		}
-
-		try {
-			int tooBig = manager.getPersons().size() + 1;
-			ridget.getOption(tooBig);
-			fail();
-		} catch (RuntimeException e) {
-			// expected
-		}
-
-		assertSame(person1, ridget.getOption(0));
-		assertSame(person2, ridget.getOption(1));
-		assertSame(person3, ridget.getOption(2));
-	}
-
-	public void testGetOptionCount() {
-		ISelectableIndexedRidget ridget = getRidget();
-
-		int oldCount = manager.getPersons().size();
-		assertEquals(oldCount, ridget.getOptionCount());
-
-		manager.getPersons().remove(person1);
-		int newCount = oldCount - 1;
-
-		assertEquals(newCount, manager.getPersons().size());
-		assertEquals(oldCount, ridget.getOptionCount());
-
-		ridget.updateFromModel();
-
-		assertEquals(newCount, ridget.getOptionCount());
-	}
-
 	public void testSetSelectionTypeNull() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		try {
 			ridget.setSelectionType(null);
@@ -775,7 +583,7 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 	}
 
 	public void testSetSelectionTypeNONE() {
-		ISelectableIndexedRidget ridget = getRidget();
+		ISelectableRidget ridget = getRidget();
 
 		try {
 			ridget.setSelectionType(ISelectableRidget.SelectionType.NONE);
@@ -792,62 +600,107 @@ public abstract class AbstractSelectableIndexedRidgetTest extends AbstractSWTRid
 
 	abstract protected int getUIControlSelectedRowCount();
 
-	abstract protected int getUIControlSelectedRow();
+	/**
+	 * Returns the "indices" of the selected tree items based on a mock "index"
+	 * scheme (0: item for node1, 1: item for node2, 2: item for node3).
+	 */
+	private int[] getUIControlSelectedRows() {
+		TreeItem[] selection = getUIControl().getSelection();
+		int[] result = new int[selection.length];
+		for (int i = 0; i < result.length; i++) {
+			if (selection[i] == getUIControlItem(0)) {
+				result[i] = 0;
+			} else if (selection[i] == getUIControlItem(1)) {
+				result[i] = 1;
+			} else if (selection[i] == getUIControlItem(2)) {
+				result[i] = 2;
+			}
+		}
+		return result;
+	}
 
-	abstract protected Object getRowValue(int i);
+	/**
+	 * Select one or more TreeItems based on a mock "index" scheme (0: item for
+	 * node1, 1: item for node2, 2: item for node3).
+	 * 
+	 * @param start
+	 *            the start index (>=0)
+	 * @param end
+	 *            the end index (>= start index; and < 3)
+	 */
+	private void setUIControlRowSelectionInterval(int start, int end) {
+		Assert.isLegal(0 <= start);
+		Assert.isLegal(start <= end);
+		Tree control = getUIControl();
+		int length = (end - start) + 1;
+		TreeItem[] items = new TreeItem[length];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = getUIControlItem(i + start);
+		}
+		control.setSelection(items);
+		fireSelectionEvent();
+	}
 
-	abstract protected int[] getSelectedRows();
+	/**
+	 * Return the TreeItem corresponding to the following mock "index" scheme:
+	 * 0: item for node1, 1: item for node2, 2: item for node3.
+	 * <p>
+	 * This method will fully expand the tree to ensure all tree items are
+	 * created.
+	 */
+	protected final TreeItem getUIControlItem(int index) {
+		getRidget().expandTree();
+		Tree control = getUIControl();
+		switch (index) {
+		case 0:
+			return control.getItem(0);
+		case 1:
+			return control.getItem(0).getItem(0);
+		case 2:
+			return control.getItem(0).getItem(0).getItem(0);
+		}
+		throw new IndexOutOfBoundsException("index= " + index);
+	}
 
-	abstract protected int[] getUIControlSelectedRows();
+	/**
+	 * Returns true if the control's selection contains the TreeItem
+	 * corresponding to the given mock "index" number (0: item for node1, 1:
+	 * item for node2, 2: item for node3).
+	 */
+	private void assertUIControlSelectionContains(int itemIndex) {
+		boolean result = false;
+		TreeItem item = getUIControlItem(itemIndex);
+		TreeItem[] selections = getUIControl().getSelection();
+		for (int i = 0; !result && i < selections.length; i++) {
+			result = (item == selections[i]);
+		}
+		assertTrue("not selected in ui control: " + item, result);
+	}
 
-	abstract protected void setUIControlRowSelection(int[] indices);
+	/**
+	 * Return the tree node corresponding to the following mock "index" scheme:
+	 * 0: item for node1, 1: item for node2, 2: item for node3.
+	 */
+	private ITreeNode getRowValue(int index) {
+		switch (index) {
+		case 0:
+			return node1;
+		case 1:
+			return node2;
+		case 2:
+			return node3;
+		}
+		throw new IndexOutOfBoundsException("index= " + index);
+	}
 
-	abstract protected void setUIControlRowSelectionInterval(int start, int end);
-
+	/**
+	 * fires a selection event manually - control.setXXX does not fire events
+	 */
 	protected final void fireSelectionEvent() {
-		// fire selection event manually - control.setXXX does not fire events
 		Event event = new Event();
 		event.widget = getUIControl();
 		event.type = SWT.Selection;
 		getUIControl().notifyListeners(SWT.Selection, event);
-	}
-
-	private Collection<Person> createPersonList() {
-		Collection<Person> newList = new ArrayList<Person>();
-
-		Person person = new Person("Doe", "John");
-		person.setEyeColor(1);
-		newList.add(person);
-
-		person = new Person("Jackson", "Janet");
-		person.setEyeColor(1);
-		newList.add(person);
-
-		person = new Person("Jackson", "Jermaine");
-		person.setEyeColor(1);
-		newList.add(person);
-
-		person = new Person("Jackson", "John");
-		person.setEyeColor(3);
-		newList.add(person);
-
-		person = new Person("JJ Jr. Shabadoo", "Joey");
-		person.setEyeColor(3);
-		newList.add(person);
-
-		person = new Person("Johnson", "Jack");
-		person.setEyeColor(2);
-		newList.add(person);
-
-		person = new Person("Johnson", "Jane");
-		person.setEyeColor(3);
-		newList.add(person);
-
-		person = new Person("Zappa", "Frank");
-		person.setEyeColor(2);
-		newList.add(person);
-
-		return newList;
 	}
 
 }

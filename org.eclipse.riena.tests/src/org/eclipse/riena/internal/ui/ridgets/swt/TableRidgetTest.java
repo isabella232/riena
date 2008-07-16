@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * Tests of the class {@link TableRidget}.
  */
-public class TableRidgetTest extends AbstractSelectableIndexedRidgetTest {
+public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected Control createUIControl(Composite parent) {
@@ -617,7 +617,6 @@ public class TableRidgetTest extends AbstractSelectableIndexedRidgetTest {
 
 	@Override
 	protected Object getRowValue(int i) {
-		// return getRidget().getRowObservables().get(i);
 		// return getRidget().getRowObservables().get(i);
 		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		return rowObservables.get(i);
