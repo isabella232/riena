@@ -79,6 +79,12 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected void bindUIControl() {
 		Tree control = getUIControl();
 		if (control != null && treeRoot != null) {
+			// TODO [ev] reproduce in a snippet and file a bug
+			// Bug workaround: deselect pre-existing selection in tree.
+			// The tree viewer tries to preserve the selection in the tree.
+			// However we have just put new content into it, so the "preserve
+			// selection" code will NPE
+			control.deselectAll();
 			bindToViewer(control);
 			bindToSelection();
 			control.addSelectionListener(selectionTypeEnforcer);
@@ -421,7 +427,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			// is in charge triggering an update of the tree icons, to skip the
 			// update when the viewer is in the process of disposing itself
 			// (newInput == null)
-			hasInput = (newInput == null);
+			hasInput = (newInput != null);
 			super.inputChanged(viewer, oldInput, newInput);
 		}
 
