@@ -13,7 +13,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -59,6 +61,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
+	private final Queue<ExpansionCommand> expansionStack;
 
 	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
@@ -72,7 +75,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
-		// observableValues = new WritableList();
+		expansionStack = new LinkedList<ExpansionCommand>();
 	}
 
 	@Override
@@ -89,7 +92,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			bindToSelection();
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
-			expand(treeRoot); // TODO [ev] restoreExpansionState
+			updateExpansionState();
 		}
 	}
 
@@ -100,6 +103,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	@Override
 	protected void unbindUIControl() {
+		if (viewer != null) {
+			Object[] elements = viewer.getExpandedElements();
+			ExpansionCommand cmd = new ExpansionCommand(ExpansionState.RESTORE, elements);
+			expansionStack.add(cmd);
+		}
 		if (dbc != null) {
 			dbc.dispose();
 			dbc = null;
@@ -153,6 +161,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		this.treeElementClass = treeElementClass;
 		this.childrenAccessor = childrenAccessor;
 		this.valueAccessor = valueAccessor;
+		expansionStack.clear();
+		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, treeRoot);
+		expansionStack.add(cmd);
 		bindUIControl();
 	}
 
@@ -162,23 +173,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	public void collapse(Object element) {
-		if (viewer != null) {
-			Tree control = getUIControl();
-			control.setRedraw(false);
-			viewer.collapseToLevel(element, 1);
-			viewer.update(element, null); // update icon
-			control.setRedraw(true);
-		}
+		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.COLLAPSE, element);
+		expansionStack.add(cmd);
+		updateExpansionState();
 	}
 
 	public void collapseTree() {
-		if (viewer != null) {
-			Tree control = getUIControl();
-			control.setRedraw(false);
-			viewer.collapseAll();
-			viewer.refresh(); // update all icons
-			control.setRedraw(true);
-		}
+		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.FULLY_COLLAPSE, null);
+		expansionStack.add(cmd);
+		updateExpansionState();
 	}
 
 	/** @deprecated */
@@ -187,23 +190,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	public void expand(Object element) {
-		if (viewer != null) {
-			Tree control = getUIControl();
-			control.setRedraw(false);
-			viewer.expandToLevel(element, 1);
-			viewer.update(element, null); // update icon
-			control.setRedraw(true);
-		}
+		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, element);
+		expansionStack.add(cmd);
+		updateExpansionState();
 	}
 
 	public void expandTree() {
-		if (viewer != null) {
-			Tree control = getUIControl();
-			control.setRedraw(false);
-			viewer.expandAll();
-			viewer.refresh(); // update all icons
-			control.setRedraw(true);
-		}
+		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.FULLY_EXPAND, null);
+		expansionStack.add(cmd);
+		updateExpansionState();
 	}
 
 	/**
@@ -305,8 +300,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				}
 			}
 		});
-		// TODO [ev] think about setInput(treeRoot), setInput(new Object[](tR1,
-		// trR2)), setInput(newObject[](tr1)
 		viewer.setContentProvider(viewerCP);
 		// labels
 		IObservableMap attributeMap = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass,
@@ -354,8 +347,76 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 	}
 
+	/**
+	 * Updates the expand / collapse state of the viewers model, based on a FIFO
+	 * queue of {@link ExpansionCommand}s.
+	 */
+	private void updateExpansionState() {
+		if (viewer != null) {
+			viewer.getControl().setRedraw(false);
+			while (!expansionStack.isEmpty()) {
+				ExpansionCommand cmd = expansionStack.remove();
+				ExpansionState state = cmd.state;
+				if (state == ExpansionState.FULLY_COLLAPSE) {
+					Object[] expanded = viewer.getExpandedElements();
+					viewer.collapseAll();
+					for (Object wasExpanded : expanded) {
+						viewer.update(wasExpanded, null); // update icon
+					}
+				} else if (state == ExpansionState.FULLY_EXPAND) {
+					viewer.expandAll();
+					viewer.refresh(); // update all icons
+				} else if (state == ExpansionState.COLLAPSE) {
+					viewer.collapseToLevel(cmd.element, 1);
+					viewer.update(cmd.element, null); // update icon
+				} else if (state == ExpansionState.EXPAND) {
+					viewer.expandToLevel(cmd.element, 1);
+					viewer.update(cmd.element, null); // update icon
+				} else if (state == ExpansionState.RESTORE) {
+					Object[] elements = (Object[]) cmd.element;
+					viewer.setExpandedElements(elements);
+				} else {
+					String errorMsg = "unknown expansion state: " + state; //$NON-NLS-1$
+					throw new IllegalStateException(errorMsg);
+				}
+				viewer.getControl().setRedraw(true);
+			}
+		}
+	}
+
 	// helping classes
 	// ////////////////
+
+	/**
+	 * Enumeration with the expansion states of this ridget.
+	 */
+	private enum ExpansionState {
+		FULLY_COLLAPSE, FULLY_EXPAND, COLLAPSE, EXPAND, RESTORE
+	}
+
+	/**
+	 * An operation that modifies the expansion state of the tree ridget.
+	 */
+	private static class ExpansionCommand {
+		/** An expansion modification */
+		final ExpansionState state;
+		/** The element to expand / collapse (only for COLLAPSE, EXPAND ops) */
+		final Object element;
+
+		/**
+		 * Creates a new ExpansionCommand instance.
+		 * 
+		 * @param state
+		 *            an expansion modification
+		 * @param element
+		 *            the element to expand / collapse (null for FULLY_EXPAND /
+		 *            FULLY_COLLAPSE)
+		 */
+		ExpansionCommand(ExpansionState state, Object element) {
+			this.state = state;
+			this.element = element;
+		}
+	}
 
 	/**
 	 * Disallows multiple selection is the selection type of the ridget is
