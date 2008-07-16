@@ -364,7 +364,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(ISubData.class).expectingExactly(1)
 				.into(target).bind("configure").andStart(getContext());
 		assertNotNull(target.getData());
-		assertTrue(target.getData().toString().contains(ISubData.class.getName()));
+		assertEquals("Dynamic proxy for " + ISubData.class.getName()
+				+ ":subText=SubSub,required=true,objectType=java.lang.String,text=test1", target.getData().toString());
 		assertTrue(ISubData.class.isInstance(target.getData()));
 		assertEquals("SubSub", ((ISubData) target.getData()).getSubText());
 		assertTrue(target.getData().getValue().contains("And Now for Something Completely Different!"));
@@ -376,4 +377,28 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 	}
+
+	public void testEqualsAndHashCode() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
+		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				getContext());
+		assertEquals(2, target.getData().length);
+		assertEquals(target.getData()[0], target.getData()[0]);
+		assertEquals(target.getData()[1], target.getData()[1]);
+		assertFalse(target.getData()[0].equals(target.getData()[1]));
+		assertFalse(target.getData()[0].equals("no"));
+		assertTrue(
+				"This test is based on the fact that the hasCode for IConfigurationElement is based on a handle which is a different int for every element.",
+				target.getData()[0].hashCode() != target.getData()[1].hashCode());
+
+		removeExtension("core.test.extpoint.id1");
+		removeExtension("core.test.extpoint.id2");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
 }
