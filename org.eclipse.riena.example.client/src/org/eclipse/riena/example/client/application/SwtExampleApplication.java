@@ -20,6 +20,7 @@ import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoView;
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
 import org.eclipse.riena.example.client.views.TextView;
+import org.eclipse.riena.example.client.views.TreeTableView;
 import org.eclipse.riena.example.client.views.TreeView;
 import org.eclipse.riena.example.client.views.UiProcessDemoView;
 import org.eclipse.riena.example.client.views.ValidationView;
@@ -223,6 +224,11 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(TreeView.ID, false);
 		presentation.present(treeSubModule, TreeView.ID);
 		playgroundModule.addChild(treeSubModule);
+
+		ISubModuleNode treeTableSubModule = new SubModuleNode("Tree Table");
+		presentation.registerView(TreeTableView.ID, false);
+		presentation.present(treeTableSubModule, TreeTableView.ID);
+		playgroundModule.addChild(treeTableSubModule);
 
 		return applicationModel;
 	}
