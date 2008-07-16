@@ -388,16 +388,11 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		for (TreeItem root : control.getItems()) {
 			count += getItemCount(root);
 		}
-		System.out.println("---");
 		return count;
 	}
 
-	int level = 0;
-
 	/** Returns the number of items in subtree starting from item (included). */
 	private int getItemCount(TreeItem item) {
-		level++;
-		System.out.println(level + "\t" + item);
 		int count = 0;
 		if (item != null) { // && item.getData() != null) {
 			count++;
@@ -407,7 +402,6 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 				}
 			}
 		}
-		level--;
 		return count;
 	}
 
