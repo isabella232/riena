@@ -110,7 +110,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected List<?> getRowObservables() {
 		List<?> result = null;
 		if (viewer != null) {
-			TreeContentProvider cp = (TreeContentProvider) viewer.getContentProvider();
+			ObservableListTreeContentProvider cp = (ObservableListTreeContentProvider) viewer.getContentProvider();
 			result = new ArrayList<Object>(cp.getKnownElements());
 		}
 		return result;
@@ -147,9 +147,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		this.treeElementClass = treeElementClass;
 		this.childrenAccessor = childrenAccessor;
 		this.valueAccessor = valueAccessor;
-		// observableValues.clear();
-		// // TODO [ex] fill OVS?
-		// setRowObservables(observableValues);
 		bindUIControl();
 	}
 
@@ -280,7 +277,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewerCP.getKnownElements().addSetChangeListener(new ISetChangeListener() {
 			// updates the icons on addition / removal
 			public void handleSetChange(SetChangeEvent event) {
-				if (!viewerCP.isDisposing()) {
+				if (viewerCP.hasInput()) {
 					Set<Object> parents = new HashSet<Object>();
 					for (Object element : event.diff.getAdditions()) {
 						Object parent = structureAdvisor.getParent(element);
@@ -396,11 +393,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Extends a standard observable tree content provider with support for:
+	 * <ul>
+	 * <li>handling Object[] <b>and</b> Object input</li> <li>knowing when we
+	 * have a valid input</li>
+	 * </ul>
 	 */
 	private static class TreeContentProvider extends ObservableListTreeContentProvider {
 
-		private boolean isDisposing = true;
+		private boolean hasInput = false;
 
 		TreeContentProvider(IObservableFactory listFactory, TreeStructureAdvisor structureAdvisor) {
 			super(listFactory, structureAdvisor);
@@ -420,13 +421,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			// is in charge triggering an update of the tree icons, to skip the
 			// update when the viewer is in the process of disposing itself
 			// (newInput == null)
-			isDisposing = (newInput == null);
+			hasInput = (newInput == null);
 			super.inputChanged(viewer, oldInput, newInput);
 		}
 
-		/* Returns true if we in the midst of a disposal */
-		boolean isDisposing() {
-			return isDisposing;
+		/** Returns true if we have a valid (i.e. non-null) input. */
+		boolean hasInput() {
+			return hasInput;
 		}
 	}
 
