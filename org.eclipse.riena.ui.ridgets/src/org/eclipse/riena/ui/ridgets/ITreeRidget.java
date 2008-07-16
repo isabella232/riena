@@ -61,6 +61,9 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * // AnyBean has getChildren() and getValue() methods
 	 * treeRidget.bind(rootElement, AnyBean.class, &quot;children&quot;, &quot;value&quot;);
 	 * </pre>
+	 * <p>
+	 * Note that invoking this method will discard any queued expand/collapse
+	 * operations on the ridget.
 	 * 
 	 * @param treeRoot
 	 *            an Object the root of the tree (non-null). Note that the
@@ -85,61 +88,97 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 
 	/**
 	 * Expands all nodes of the tree based on the current ITreeModel value if
-	 * the Ridget is currently bound to a tree UI-control. If the tree is
-	 * updated by calling updateFromModel() the new nodes will not be expanded.
-	 * If the UI-control is null when this method is invoked, nothing will
-	 * happen.
+	 * the Ridget is currently bound to a tree UI-control.
+	 * <p>
+	 * If the UI-control is null when this method is invoked, the expansion will
+	 * be queued and applied to the ridget at a later time. Re-binding the
+	 * ridget to another model will cancel any queued expand/collapse
+	 * operations.
 	 * 
-	 * @see IRidget#updateFromModel()
+	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
 	void expandTree();
 
 	/**
 	 * Collapses all nodes of the tree if the Ridget is currently bound to a
-	 * tree UI-control. If the UI-control is null when this method is invoked,
-	 * nothing will happen.
+	 * tree UI-control.
+	 * <p>
+	 * If the UI-control is null when this method is invoked, the collapsing
+	 * will be queued and applied to the ridget at a later time. Re-binding the
+	 * ridget to another model will cancel any queued expand/collapse
+	 * operations.
 	 * 
+	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
 	void collapseTree();
 
 	/**
-	 * Expands a node if it is part of the current ITreeModel value and if the
-	 * Ridget is currently bound to a tree UI-control. If the node is not part
-	 * of the model value e.g. because the value has not yet been updated from
-	 * the model, nothing will happen. If the UI-control is null when this
-	 * method is invoked, nothing will happen either.
-	 * 
-	 * @see IRidget#updateFromModel()
-	 * @see IRidget#getUIControl()
-	 * @param node
-	 *            The node to expand.
-	 * @deprecated see {@link #expand(Object)
-	 * 
+	 * @deprecated see {@link #expand(Object)}
 	 */
 	void expand(ITreeNode node);
 
 	/**
-	 * Collapses a node if it is part of the current ITreeModel value and if the
-	 * Ridget is currently bound to a tree UI-control. If the UI-control is null
-	 * when this method is invoked, nothing will happen.
-	 * 
-	 * @see IRidget#getUIControl()
-	 * @param node
-	 *            The node to collapse.
 	 * @deprecated see {@link #collapse(Object)}
 	 */
 	void collapse(ITreeNode node);
 
-	// TODO [ev] update javadoc
+	/**
+	 * Expands a node if it is part of the data-model currently bound to the
+	 * tree. If the node is not part of the data-model nothing will happen.
+	 * <p>
+	 * If the UI-control is null when this method is invoked, the expansion will
+	 * be queued and applied to the ridget at a later time. Re-binding the
+	 * ridget to another model will cancel any queued expand/collapse
+	 * operations.
+	 * 
+	 * @param node
+	 *            The node to expand (non-null).
+	 * 
+	 * @see #bindToModel(Object, Class, String, String)
+	 * @see IRidget#getUIControl()
+	 */
 	void expand(Object element);
 
-	// TODO [ev] update javadoc
+	/**
+	 * Collapses a node if it is part of the data-model currently bound to the
+	 * tree. If the node is not part of the model nothing will happen.
+	 * <p>
+	 * If the UI-control is null when this method is invoked, the collapsing
+	 * will be queued and applied to the ridget at a later time. Re-binding the
+	 * ridget to another model will cancel any queued expand/collapse
+	 * operations.
+	 * 
+	 * @param node
+	 *            The node to collapse.
+	 * 
+	 * @see #bindToModel(Object, Class, String, String)
+	 * @see IRidget#getUIControl()
+	 */
 	void collapse(Object element);
 
+	/**
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the bound control is double-clicked.
+	 * <p>
+	 * The same listener may be added more than once, and will be called as many
+	 * times as it is added.
+	 * 
+	 * @param listener
+	 *            a non-null {@link IActionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
 	void addDoubleClickListener(IActionListener listener);
 
+	/**
+	 * Removes the listener from the collection of listeners who will be
+	 * notified when the bound control is double-clicked.
+	 * 
+	 * @param listener
+	 *            an {@link IActionListener} instance
+	 */
 	void removeDoubleClickListener(IActionListener listener);
 
 }
