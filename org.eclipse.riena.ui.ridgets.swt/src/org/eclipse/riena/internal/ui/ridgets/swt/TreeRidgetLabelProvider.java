@@ -34,7 +34,7 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 
 	private final TreeViewer viewer;
 
-	TreeRidgetLabelProvider(final TreeViewer viewer, IObservableMap attributeMap) {
+	TreeRidgetLabelProvider(final TreeViewer viewer, IObservableMap[] attributeMap) {
 		super(attributeMap);
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);

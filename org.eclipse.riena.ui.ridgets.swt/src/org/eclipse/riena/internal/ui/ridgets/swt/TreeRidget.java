@@ -70,7 +70,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private Object treeRoot;
 	private Class<? extends Object> treeElementClass;
 	private String childrenAccessor;
-	private String valueAccessor;
+	private String[] valueAccessors;
 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -152,15 +152,21 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	public void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String valueAccessor) {
+		this.bindToModel(treeRoot, treeElementClass, childrenAccessor, new String[] { valueAccessor });
+	}
+
+	protected void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String[] valueAccessors) {
 		Assert.isNotNull(treeRoot);
 		Assert.isNotNull(treeElementClass);
 		Assert.isNotNull(childrenAccessor);
-		Assert.isNotNull(valueAccessor);
+		Assert.isNotNull(valueAccessors);
+		Assert.isLegal(valueAccessors.length > 0);
 		unbindUIControl();
 		this.treeRoot = treeRoot;
 		this.treeElementClass = treeElementClass;
 		this.childrenAccessor = childrenAccessor;
-		this.valueAccessor = valueAccessor;
+		this.valueAccessors = valueAccessors; // TODO [ev] copy
 		expansionStack.clear();
 		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, treeRoot);
 		expansionStack.add(cmd);
@@ -302,12 +308,16 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		});
 		viewer.setContentProvider(viewerCP);
 		// labels
-		IObservableMap attributeMap = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass,
-				valueAccessor);
+		IObservableMap[] attributeMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), treeElementClass,
+				valueAccessors);
 		ILabelProvider viewerLP = new TreeRidgetLabelProvider(viewer, attributeMap);
 		viewer.setLabelProvider(viewerLP);
 		// input
-		viewer.setInput(new Object[] { treeRoot });
+		if (treeRoot instanceof Object[]) {
+			viewer.setInput(treeRoot);
+		} else {
+			viewer.setInput(new Object[] { treeRoot });
+		}
 	}
 
 	/**

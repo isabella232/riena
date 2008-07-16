@@ -14,7 +14,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.StatusbarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.Statusbar;
@@ -55,7 +55,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Shell.class, ShellRidget.class);
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
-		addMapping(Tree.class, TreeRidget.class);
+		addMapping(Tree.class, TreeTableRidget.class); // TODO [ev] hack
 		addMapping(Statusbar.class, StatusbarRidget.class);
 		addMapping(StatusbarNumber.class, StatusbarNumberRidget.class);
 	}

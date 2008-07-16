@@ -11,8 +11,12 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Ridget for a tree table. The model value is an ITreeTableModel.
+ * Ridget for a tree table.
  */
 public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
+
+    // TODO [ev] docs
+	void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String[] columnPropertyNames, String[] columnHeaders);
 
 }

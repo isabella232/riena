@@ -86,6 +86,8 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String valueAccessor);
 
+	// TODO [ev] bindToMode(Object[] ...)
+
 	/**
 	 * Expands all nodes of the tree based on the current ITreeModel value if
 	 * the Ridget is currently bound to a tree UI-control.
