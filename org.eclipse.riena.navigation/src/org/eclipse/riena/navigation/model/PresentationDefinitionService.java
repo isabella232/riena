@@ -39,7 +39,7 @@ public class PresentationDefinitionService implements IPresentationDefinitionSer
 
 	// TODO: integrate bind to viewController?
 
-	// TODO: some more servive like "findView", "findNode" ... ?
+	// TODO: some more service methods like "findView", "findNode" ... ?
 
 	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.WorkAreaPresentation";
 	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.NavigationNodePresentation";
