@@ -44,7 +44,7 @@ public interface ISortableByColumn {
 
 	/**
 	 * @return <code>true</code> if and only if the currently sorted column is
-	 * 	in ascending order. Otherwise <code>false</code>
+	 *         in ascending order. Otherwise <code>false</code>
 	 */
 	public boolean isSortedAscending();
 
@@ -54,14 +54,14 @@ public interface ISortableByColumn {
 	 * Fires a {@link #PROPERTY_SORT_ASCENDING} event.
 	 * 
 	 * @param ascending
-	 * 		<code>true</code> for ascending order, <code>false</code> for descending
-	 * 		order.
+	 *            <code>true</code> for ascending order, <code>false</code> for
+	 *            descending order.
 	 */
 	public void setSortedAscending(boolean ascending);
 
 	/**
-	 * @return the index of the currently sorted column or <code>-1</code> if no
-	 * 	column is currently sorted.
+	 * @return the 0-based index of the currently sorted column or
+	 *         <code>-1</code> if no column is currently sorted.
 	 */
 	public int getSortedColumn();
 
@@ -73,11 +73,11 @@ public interface ISortableByColumn {
 	 * Fires a {@link #PROPERTY_SORTED_COLUMN} event.
 	 * 
 	 * @param columnIndex
-	 * 		a columnIndex in the allowed range (-1 &le; columnIndex &lt;
-	 * 		numColumns). A value of -1 indicates that no column should be
-	 * 		sorted.
+	 *            a columnIndex in the allowed range (-1 &le; columnIndex &lt;
+	 *            numColumns). A value of -1 indicates that no column should be
+	 *            sorted.
 	 * @throws RuntimeException
-	 * 		if <code>columnIndex</code> is out of range
+	 *             if <code>columnIndex</code> is out of range
 	 */
 	public void setSortedColumn(int columnIndex);
 
@@ -89,10 +89,10 @@ public interface ISortableByColumn {
 	 * implementors of the {@link Comparable} interface only)
 	 * 
 	 * @param columnIndex
-	 * 		a columnIndex in the allowed range (0 &le; columnIndex &lt;
-	 * 		numColumns)
+	 *            a columnIndex in the allowed range (0 &le; columnIndex &lt;
+	 *            numColumns)
 	 * @throws RuntimeException
-	 * 		if <code>columnIndex</code> is out of range
+	 *             if <code>columnIndex</code> is out of range
 	 */
 	public boolean isColumnSortable(int columnIndex);
 
@@ -112,12 +112,13 @@ public interface ISortableByColumn {
 	 * Fires a {@link #PROPERTY_COLUMN_SORTABILITY} event.
 	 * 
 	 * @param columnIndex
-	 * 		a columnIndex in the allowed range (0 &le; columnIndex &lt;
-	 * 		numColumns)
+	 *            a columnIndex in the allowed range (0 &le; columnIndex &lt;
+	 *            numColumns)
 	 * @param sortable
-	 * 		<code>true</code> if the column is sortable, <code>false</code> otherwise
+	 *            <code>true</code> if the column is sortable,
+	 *            <code>false</code> otherwise
 	 * @throws RuntimeException
-	 * 		if <code>columnIndex</code> is out of range
+	 *             if <code>columnIndex</code> is out of range
 	 */
 	public void setColumnSortable(int columnIndex, boolean sortable);
 }
