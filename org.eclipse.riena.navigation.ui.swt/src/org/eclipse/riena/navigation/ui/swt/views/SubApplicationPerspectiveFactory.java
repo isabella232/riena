@@ -55,7 +55,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 
 		// process ridget/control
 		UIProcessRidget progressBoxRidget = new UIProcessRidget();
-		progressBoxRidget.setUIControl(new UIProcessControl(Display.getDefault().getActiveShell()));
+		progressBoxRidget.setUIControl(new UIProcessControl(Display.getDefault().getShells()[0]));
 		controller.setProgressBoxRidget(progressBoxRidget);
 
 		return controller;
