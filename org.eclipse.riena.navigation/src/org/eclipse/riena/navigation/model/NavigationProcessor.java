@@ -21,7 +21,7 @@ import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
-import org.eclipse.riena.navigation.IPresentationDefinitionService;
+import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
@@ -29,9 +29,9 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  */
 public class NavigationProcessor implements INavigationProcessor {
 
-	private IPresentationDefinitionService presentationDefitinionService;
+	private IPresentationProviderService presentationDefitinionService;
 
-	public NavigationProcessor(IPresentationDefinitionService service) {
+	public NavigationProcessor(IPresentationProviderService service) {
 		super();
 		this.presentationDefitinionService = service;
 	}

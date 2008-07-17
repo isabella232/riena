@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IApplicationModelListener;
-import org.eclipse.riena.navigation.IPresentationDefinitionService;
+import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubApplication;
 
 /**
@@ -58,10 +58,10 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 		setNavigationProcessor(new NavigationProcessor(getPresentationDefinitionService()));
 	}
 
-	protected IPresentationDefinitionService getPresentationDefinitionService() {
+	protected IPresentationProviderService getPresentationDefinitionService() {
 
 		// TODO: handling if no service found ???
-		return PresentationDefinitionServiceAccessor.current().getPresentationDefinitionService();
+		return PresentationProviderServiceAccessor.current().getPresentationDefinitionService();
 
 	}
 

@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  * 
  * 
  */
-public interface IPresentationDefinitionService {
+public interface IPresentationProviderService {
 
 	/**
 	 * Returns a navigationNode identified by the given navigationNodeId

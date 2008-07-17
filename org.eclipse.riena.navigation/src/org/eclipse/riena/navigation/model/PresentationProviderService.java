@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.IPresentationDefinition;
-import org.eclipse.riena.navigation.IPresentationDefinitionService;
+import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.IWorkAreaPresentationDefinition;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 
@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  * 
  * 
  */
-public class PresentationDefinitionService implements IPresentationDefinitionService {
+public class PresentationProviderService implements IPresentationProviderService {
 
 	// TODO: cleaning, dispose, release of resources etc.
 
@@ -55,7 +55,7 @@ public class PresentationDefinitionService implements IPresentationDefinitionSer
 		Inject.extension(wpID).useType(interfaceType).into(target).andStart(Activator.getDefault().getContext());
 	}
 
-	public PresentationDefinitionService() {
+	public PresentationProviderService() {
 
 		targetWA = new ExtensionInjectionHelper<IWorkAreaPresentationDefinition>();
 		inject(IWorkAreaPresentationDefinition.class, EP_WORKAREA, targetWA);
@@ -68,7 +68,7 @@ public class PresentationDefinitionService implements IPresentationDefinitionSer
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.navigation.IPresentationDefinitionService#createNode
+	 * org.eclipse.riena.navigation.IPresentationProviderService#createNode
 	 * (org.eclipse.riena.navigation.INavigationNode,
 	 * org.eclipse.riena.navigation.INavigationNodeId)
 	 */
@@ -154,7 +154,7 @@ public class PresentationDefinitionService implements IPresentationDefinitionSer
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.navigation.IPresentationDefinitionService#createView
+	 * org.eclipse.riena.navigation.IPresentationProviderService#createView
 	 * (org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public Object createView(INavigationNodeId targetId) {
@@ -189,7 +189,7 @@ public class PresentationDefinitionService implements IPresentationDefinitionSer
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.navigation.IPresentationDefinitionService#isViewShared
+	 * org.eclipse.riena.navigation.IPresentationProviderService#isViewShared
 	 * ()
 	 */
 	public boolean isViewShared(INavigationNodeId targetId) {

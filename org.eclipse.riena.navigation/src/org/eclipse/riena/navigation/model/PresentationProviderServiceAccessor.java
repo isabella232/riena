@@ -12,47 +12,47 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.IPresentationDefinitionService;
+import org.eclipse.riena.navigation.IPresentationProviderService;
 
 /**
  *
  */
-public class PresentationDefinitionServiceAccessor {
-	private static PresentationDefinitionServiceAccessor psa = null;
-	private IPresentationDefinitionService service = null;
+public class PresentationProviderServiceAccessor {
+	private static PresentationProviderServiceAccessor psa = null;
+	private IPresentationProviderService service = null;
 
 	/**
 	 * Default Constructor
 	 */
-	private PresentationDefinitionServiceAccessor() {
-		Inject.service(IPresentationDefinitionService.class.getName()).useRanking().into(this).andStart(
+	private PresentationProviderServiceAccessor() {
+		Inject.service(IPresentationProviderService.class.getName()).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
 
 	}
 
-	static public PresentationDefinitionServiceAccessor current() {
+	static public PresentationProviderServiceAccessor current() {
 		if (psa == null)
 			return initPresentationServiceAccessor();
 		return psa;
 	}
 
-	static private PresentationDefinitionServiceAccessor initPresentationServiceAccessor() {
-		psa = new PresentationDefinitionServiceAccessor();
+	static private PresentationProviderServiceAccessor initPresentationServiceAccessor() {
+		psa = new PresentationProviderServiceAccessor();
 
 		return psa;
 	}
 
-	public IPresentationDefinitionService getPresentationDefinitionService() {
+	public IPresentationProviderService getPresentationDefinitionService() {
 
 		return service;
 
 	}
 
-	public void bind(IPresentationDefinitionService s) {
+	public void bind(IPresentationProviderService s) {
 		service = s;
 	}
 
-	public void unbind(IPresentationDefinitionService dep) {
+	public void unbind(IPresentationProviderService dep) {
 		service = null;
 	}
 
