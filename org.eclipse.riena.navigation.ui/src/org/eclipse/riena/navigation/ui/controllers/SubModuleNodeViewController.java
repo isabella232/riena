@@ -141,6 +141,7 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 		ISubApplication subApp = getNavigationNode().getParentOfType(ISubApplication.class);
 		if (subApp != null) {
 			IProgressVisualizer aVisualizer = new ProgressVisualizer();
+			aVisualizer.addObserver(((SubApplicationViewController) subApp.getPresentation()).getProgressBoxRidget());
 			// observe the uiProcess
 			aVisualizer.addObserver(uiProcesFinishedObserver);
 			for (ISubApplication aSubApplicationNode : getSubApplications()) {
