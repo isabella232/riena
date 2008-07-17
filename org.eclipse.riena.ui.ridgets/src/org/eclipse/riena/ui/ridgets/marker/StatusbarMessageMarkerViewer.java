@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
@@ -35,6 +36,19 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
 	private IFocusListener ridgetFocusListener = new RidgetFocusListener();
 
+	enum Severity {
+		NONE(0), INFO(1), WARNING(2), ERROR(3);
+		int index;
+
+		Severity(int index) {
+			this.index = index;
+		}
+
+		boolean isLower(Severity other) {
+			return index < other.index;
+		}
+	}
+
 	/**
 	 * @param statusbarRidget
 	 *            The statusbar.
@@ -53,31 +67,48 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		markableRidget.addFocusListener(ridgetFocusListener);
 	}
 
+	@Override
 	protected void showMessages(IMarkableRidget markableRidget) {
 		if (markableRidget.hasFocus()) {
-			Collection messageMarker = this.getMessageMarker(markableRidget);
+			Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
 			String message = constructMessage(messageMarker).trim();
+			Severity severity = getMaxSeverity(messageMarker);
 			// show the message only if there is something to show
 			if (message.length() > 0 && isVisible()) {
-				setStatusbarMessage(message);
+				setStatusbarMessage(message, severity);
 			} else {
 				hideMessages(markableRidget);
 			}
 		}
 	}
 
+	@Override
 	protected void hideMessages(IMarkableRidget ridget) {
 		if (ridget.hasFocus()) {
 			resetStatusbarMessage();
 		}
 	}
 
-	private void setStatusbarMessage(String message) {
+	private void setStatusbarMessage(String message, Severity severity) {
 		if (getStatusBar() != null) {
 			if (statusbarMessage == null) {
 				originalStatusbarMessage = getStatusBar().getMessage();
 			}
-			this.getStatusBar().setMessage(message);
+			switch (severity) {
+			case ERROR:
+				getStatusBar().error(message);
+				break;
+			case WARNING:
+				getStatusBar().warning(message);
+				break;
+			case INFO:
+				getStatusBar().info(message);
+				break;
+			default:
+				getStatusBar().clear();
+				getStatusBar().setMessage(message);
+				break;
+			}
 			statusbarMessage = message;
 		}
 	}
@@ -91,14 +122,14 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		}
 	}
 
-	private String constructMessage(Collection messageMarker) {
+	private String constructMessage(Collection<IMessageMarker> messageMarker) {
 		StringWriter sw = new StringWriter();
 		IMessageMarker nextMarker = null;
 		if (messageMarker != null) {
-			for (Iterator i = messageMarker.iterator(); i.hasNext();) {
-				nextMarker = (IMessageMarker) i.next();
+			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
+				nextMarker = i.next();
 				if (sw.toString().trim().length() > 0) {
-					sw.write(" ");
+					sw.write(" "); //$NON-NLS-1$
 				}
 				if (nextMarker.getMessage() != null) {
 					sw.write(nextMarker.getMessage());
@@ -106,6 +137,22 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 			}
 		}
 		return sw.toString().trim();
+	}
+
+	private Severity getMaxSeverity(Collection<IMessageMarker> messageMarkers) {
+
+		Severity severity = Severity.NONE;
+
+		for (IMessageMarker messageMarker : messageMarkers) {
+			if (messageMarker instanceof ErrorMarker) {
+				if (severity.isLower(Severity.ERROR)) {
+					severity = Severity.ERROR;
+				}
+			}
+		}
+
+		return severity;
+
 	}
 
 	IStatusbarRidget getStatusBar() {

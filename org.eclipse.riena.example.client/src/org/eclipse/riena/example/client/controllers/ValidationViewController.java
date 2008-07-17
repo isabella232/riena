@@ -10,11 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.example.client.views.ValidationView;
+import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValidationTime;
+import org.eclipse.riena.ui.ridgets.marker.StatusbarMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.RequiredField;
@@ -24,9 +30,6 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidExpression;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
-
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 
 /**
  * Controller for the {@link ValidationView} example.
@@ -235,27 +238,33 @@ public class ValidationViewController extends SubModuleNodeViewController {
 
 		txtNumbersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS),
 				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtNumbersOnly.addValidationMessage("Only numbers are allowed!"); //$NON-NLS-1$
 		txtNumbersOnly.bindToModel(getTextValue(lblNumbersOnly));
 
 		txtNumbersOnlyDW.addValidationRule(new ValidCharacters(ValidCharacters.VALID_NUMBERS),
 				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtNumbersOnlyDW.addValidationMessage("Only numbers are allowed!"); //$NON-NLS-1$
 		txtNumbersOnlyDW.setDirectWriting(true);
 		txtNumbersOnlyDW.bindToModel(getTextValue(lblNumbersOnlyDW));
 
 		txtCharactersOnly.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LETTER),
 				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtCharactersOnly.addValidationMessage("Only characters are allowed!"); //$NON-NLS-1$
 		txtCharactersOnly.bindToModel(getTextValue(lblCharactersOnly));
 
 		txtExpression.addValidationRule(new ValidExpression("^PDX[0-9]{2}$"), ValidationTime.ON_UI_CONTROL_EDIT); //$NON-NLS-1$
+		txtExpression.addValidationMessage("The text does not match with the expression (PDX##)!"); //$NON-NLS-1$
 		txtExpression.bindToModel(getTextValue(lblExpression));
 		txtExpression.setText("PDX97"); //$NON-NLS-1$
 
 		txtLengthLessThan5.addValidationRule(new MaxLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
+		txtLengthLessThan5.addValidationMessage("The text is longer than 5 characters!"); //$NON-NLS-1$
 		txtLengthLessThan5.bindToModel(getTextValue(lblLengthLessThan5));
 
 		txtRequiredLowercase.addValidationRule(new RequiredField(), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtRequiredLowercase.addValidationRule(new ValidCharacters(ValidCharacters.VALID_LOWERCASE),
 				ValidationTime.ON_UI_CONTROL_EDIT);
+		txtRequiredLowercase.addValidationMessage("Only lowercase characters are allowed!"); //$NON-NLS-1$
 		txtRequiredLowercase.bindToModel(getTextValue(lblRequiredLowercase));
 
 		// on update validation
@@ -278,10 +287,29 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		txtEmail.addValidationRule(new ValidEmailAddress(), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
+
+		IStatusbarRidget statusbarRidget = getSubApplicationController().getStatusbarRidget();
+		StatusbarMessageMarkerViewer statusbarMessageMarkerViewer = new StatusbarMessageMarkerViewer(statusbarRidget);
+		statusbarMessageMarkerViewer.addRidget(txtNumbersOnly);
+		statusbarMessageMarkerViewer.addRidget(txtNumbersOnlyDW);
+		statusbarMessageMarkerViewer.addRidget(txtCharactersOnly);
+		statusbarMessageMarkerViewer.addRidget(txtExpression);
+		statusbarMessageMarkerViewer.addRidget(txtLengthLessThan5);
+		statusbarMessageMarkerViewer.addRidget(txtRequiredLowercase);
 	}
 
 	private IObservableValue getTextValue(ITextFieldRidget bean) {
 		return BeansObservables.observeValue(bean, ITextFieldRidget.PROPERTY_TEXT);
+	}
+
+	/**
+	 * Returns the controller of the parent sub-application.
+	 * 
+	 * @return sub-application controller
+	 */
+	private SubApplicationViewController getSubApplicationController() {
+		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplication.class)
+				.getPresentation();
 	}
 
 }
