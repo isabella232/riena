@@ -90,6 +90,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	public void testBindToModelTooFewColumns() {
 		Table control = getUIControl();
 
+		// the table widget has two columns, we bind only one
 		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" },
 				new String[] { "First Name" });
 
@@ -107,6 +108,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	public void testBindToModelWithTooManyColumns() {
 		Table control = getUIControl();
 
+		// the table widget has two columns but we bind three
 		getRidget().bindToModel(manager, "persons", Person.class,
 				new String[] { "firstname", "lastname", "listEntry" },
 				new String[] { "First Name", "Last Name", "First - Last" });
