@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
+import org.eclipse.riena.navigation.IPresentationDefinitionService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
@@ -28,11 +29,11 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  */
 public class NavigationProcessor implements INavigationProcessor {
 
-	private NavigationNodePresentationFactory navigationNodePresentationFactory;
+	private IPresentationDefinitionService presentationDefitinionService;
 
-	public NavigationProcessor(NavigationNodePresentationFactory navigationNodePresentationFactory) {
+	public NavigationProcessor(IPresentationDefinitionService service) {
 		super();
-		this.navigationNodePresentationFactory = navigationNodePresentationFactory;
+		this.presentationDefitinionService = service;
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	 */
 	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
 
-		INavigationNode<?> targetNode = navigationNodePresentationFactory.createNode(sourceNode, targetId);
+		INavigationNode<?> targetNode = presentationDefitinionService.createNode(sourceNode, targetId);
 
 		targetNode.activate();
 	}
