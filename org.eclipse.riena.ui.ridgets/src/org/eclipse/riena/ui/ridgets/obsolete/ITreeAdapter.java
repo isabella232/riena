@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004-2005 compeople AG                         *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.obsolete;
 
 import java.util.List;
@@ -88,8 +91,8 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 * Adds a listener for the <code>ITreeModelEvent</code> posted after the
 	 * tree changes.
 	 * 
-	 * @param l -
-	 *            listener to add.
+	 * @param l
+	 *            - listener to add.
 	 */
 	void addTreeModelListener(ITreeModelListener l);
 
@@ -97,8 +100,8 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 * Removes a listener previously added with
 	 * <code>addTreeModelListener</code>.
 	 * 
-	 * @param l -
-	 *            listener to remove.
+	 * @param l
+	 *            - listener to remove.
 	 */
 	void removeTreeModelListener(ITreeModelListener l);
 
@@ -119,11 +122,11 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	/**
 	 * Sets the number of selected nodes. <br>
 	 * <b>Note: </b> This method exists only for the communication between
-	 * <code>TreeSwingAdapter</code> and <code>TreeAdpater</code> (and only
-	 * this direction). Do not use this method!
+	 * <code>TreeSwingAdapter</code> and <code>TreeAdpater</code> (and only this
+	 * direction). Do not use this method!
 	 * 
-	 * @param count -
-	 *            number of selected nodes.
+	 * @param count
+	 *            - number of selected nodes.
 	 */
 	void setSelectionCount(int count);
 
@@ -138,8 +141,8 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	/**
 	 * Sets the list of the selected tree nodes
 	 * 
-	 * @param nodes -
-	 *            list of the selected nodes
+	 * @param nodes
+	 *            - list of the selected nodes
 	 */
 	void setSelectionList(List nodes);
 
@@ -164,8 +167,8 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 * <b>Attention: </b> the tree paths contains the node of a SWING tree.
 	 * <i>for internal use only! </i>
 	 * 
-	 * @param list -
-	 *            list with expandes pathes
+	 * @param list
+	 *            - list with expandes pathes
 	 */
 	void setExpandedList(List list);
 
@@ -216,8 +219,8 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 * 
 	 * @see de.compeople.spirit.core.client.controller.AbstractExtendedController#onAfterBind()
 	 * 
-	 * @param node -
-	 *            node to expand
+	 * @param node
+	 *            - node to expand
 	 */
 	void expand(ITreeNode node);
 
@@ -241,35 +244,35 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 * Sets the callback "method", that is called after a double click of the
 	 * left mouse button.
 	 * 
-	 * @param callback -
-	 *            the callback of double click; null for no action.
+	 * @param callback
+	 *            - the callback of double click; null for no action.
 	 */
 	void setDoubleClickCallback(IActionCallback callback);
 
 	/**
 	 * Called whenever an item in the tree has been expanded.
 	 * 
-	 * @param node -
-	 *            node that has been expanded.
+	 * @param node
+	 *            - node that has been expanded.
 	 */
 	void callbackExpand(ITreeNode node);
 
 	/**
 	 * Sets the callback "method", that is called whenever an item in the tree
 	 * has been expanded. <br>
-	 * The parameter of the callback method, is the node (<code>ITreeNode</code>)
-	 * that has been expanded.
+	 * The parameter of the callback method, is the node (<code>ITreeNode</code>
+	 * ) that has been expanded.
 	 * 
-	 * @param callback -
-	 *            the callback of expand; null for no action.
+	 * @param callback
+	 *            - the callback of expand; null for no action.
 	 */
 	void setExpandCallback(IActionCallback callback);
 
 	/**
 	 * Called whenever an item in the tree has been collapsed. <br>
 	 * 
-	 * @param node -
-	 *            node that has been collapsed.
+	 * @param node
+	 *            - node that has been collapsed.
 	 */
 	void callbackCollapse(ITreeNode node);
 
@@ -278,8 +281,8 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 * has been collapsed. The parameter of the callback method, is the node (
 	 * <code>ITreeNode</code>) that has been collapsed.
 	 * 
-	 * @param callback -
-	 *            the callback of collapse; null for no action.
+	 * @param callback
+	 *            - the callback of collapse; null for no action.
 	 */
 	void setCollapseCallback(IActionCallback callback);
 
@@ -306,8 +309,9 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	/**
 	 * Sets the selection type (single or multi)
 	 * 
-	 * @param selectionType -
-	 *            single (<code>SELECTION_TYPE_SINGLE</code>) or multi (<code>SELECTION_TYPE_MULI</code>)
+	 * @param selectionType
+	 *            - single (<code>SELECTION_TYPE_SINGLE</code>) or multi (
+	 *            <code>SELECTION_TYPE_MULI</code>)
 	 */
 	void setSelectionType(int selectionType);
 

@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004-2005 compeople AG                         *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.obsolete;
 
 import org.eclipse.riena.ui.ridgets.IActionAdapter;
@@ -34,10 +37,10 @@ public interface IMenuActionAdapter extends IActionAdapter, IMenuItem, IAccelera
 	 * Valid characters are '0'-'9', 'A'-'Z' and the KEY_... constants defined
 	 * by <code>IAcceleratorConstants</code>.
 	 * 
-	 * @param keyChar -
-	 *            the character value for a keyboard key
-	 * @param modifiers -
-	 *            a bitwise-ored combination of any modifiers
+	 * @param keyChar
+	 *            - the character value for a keyboard key
+	 * @param modifiers
+	 *            - a bitwise-ored combination of any modifiers
 	 */
 	void setAccelerator(char keyChar, int modifiers);
 

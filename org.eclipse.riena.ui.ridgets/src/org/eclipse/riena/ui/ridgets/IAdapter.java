@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeListener;
@@ -66,8 +69,8 @@ public interface IAdapter extends IUIRepresentation {
 	/**
 	 * Sets the ID to used to connect UI control to adapter
 	 * 
-	 * @param adapterId -
-	 *            the ID to set
+	 * @param adapterId
+	 *            - the ID to set
 	 */
 	void setAdapterID(String adapterId);
 
@@ -155,8 +158,8 @@ public interface IAdapter extends IUIRepresentation {
 	 * Registers the text to display in a tool tip. The text displays when the
 	 * cursor lingers over the component.
 	 * 
-	 * @param text -
-	 *            the string to display; if the text is null, the tool tip is
+	 * @param text
+	 *            - the string to display; if the text is null, the tool tip is
 	 *            turned off for this component
 	 */
 	void setToolTipText(String text);

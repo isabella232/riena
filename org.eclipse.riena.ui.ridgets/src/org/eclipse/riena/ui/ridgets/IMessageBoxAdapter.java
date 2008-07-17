@@ -1,10 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004-2005 compeople AG                         *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2007 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
 /**
@@ -151,8 +154,8 @@ public interface IMessageBoxAdapter extends IAdapter {
 	 * If the user pushs this button, another dialog pops up and displays the
 	 * help text.
 	 * 
-	 * @param helpText -
-	 *            if the <code>helpText</code> is not null an additional
+	 * @param helpText
+	 *            - if the <code>helpText</code> is not null an additional
 	 *            button, the help button is available.
 	 */
 	void setHelpText(String helpText);
@@ -168,8 +171,8 @@ public interface IMessageBoxAdapter extends IAdapter {
 	/**
 	 * Sets the message number, that is display in the title of the message box.
 	 * 
-	 * @param messageNumber -
-	 *            the message number is displayed in the title.
+	 * @param messageNumber
+	 *            - the message number is displayed in the title.
 	 */
 	void setMessageNumber(String messageNumber);
 
@@ -183,8 +186,8 @@ public interface IMessageBoxAdapter extends IAdapter {
 	/**
 	 * Sets the title the message box.
 	 * 
-	 * @param title -
-	 *            text to display in the title bar of the message box
+	 * @param title
+	 *            - text to display in the title bar of the message box
 	 */
 	void setMessageTitle(String title);
 
@@ -198,8 +201,8 @@ public interface IMessageBoxAdapter extends IAdapter {
 	/**
 	 * Sets the text, that is displayed inside the message box.
 	 * 
-	 * @param messageText -
-	 *            the text to display.
+	 * @param messageText
+	 *            - the text to display.
 	 */
 	void setMessageText(String messageText);
 
@@ -215,9 +218,9 @@ public interface IMessageBoxAdapter extends IAdapter {
 	/**
 	 * Set the type of message.
 	 * 
-	 * @param messageType -
-	 *            the type of message: <code>INFORMATION_MESSAGE</code>,<code>WARNING_MESSAGE</code>
-	 *            or <code>ERROR_MESSAGE</code>.
+	 * @param messageType
+	 *            - the type of message: <code>INFORMATION_MESSAGE</code>,
+	 *            <code>WARNING_MESSAGE</code> or <code>ERROR_MESSAGE</code>.
 	 * 
 	 * @pre messageType messageType == INFORMATION_MESSAGE || messageType ==
 	 *      WARNING_MESSAGE || messageType == ERROR_MESSAGE || messageType ==
@@ -256,8 +259,8 @@ public interface IMessageBoxAdapter extends IAdapter {
 	/**
 	 * Sets the option type. The option type designates the available buttons.
 	 * 
-	 * @param optionType -
-	 *            an integer designating the buttons available on the dialog:
+	 * @param optionType
+	 *            - an integer designating the buttons available on the dialog:
 	 *            <code>OK_OPTION</code>,<code>OK_CANCEL_OPTION</code>,
 	 *            <code>YES_NO_OPTION</code> or
 	 *            <code>YES_NO_CANCEL_OPTION</code>.
@@ -271,9 +274,9 @@ public interface IMessageBoxAdapter extends IAdapter {
 	 * Sets the choices array. The choices array type designates the available
 	 * buttons. The first entry always specifies die default button.
 	 * 
-	 * @param options -
-	 *            a list of available choices. maybe strings, components, icons,
-	 *            or other.
+	 * @param options
+	 *            - a list of available choices. maybe strings, components,
+	 *            icons, or other.
 	 * 
 	 */
 	void setOptions(Object[] options);
@@ -284,7 +287,7 @@ public interface IMessageBoxAdapter extends IAdapter {
 	 * 
 	 * @return options the array of choices
 	 * 
-	 * @see #setOptions( Object[])
+	 * @see #setOptions(Object[])
 	 */
 	Object[] getOptions();
 
