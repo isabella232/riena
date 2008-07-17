@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation;
 
 /**
- * A modulePresentationDefinition defines the navigationModule to be activated.
+ * Base interface for presentation definitions, carries the ID
  * 
  * @author Erich Achilles
  */

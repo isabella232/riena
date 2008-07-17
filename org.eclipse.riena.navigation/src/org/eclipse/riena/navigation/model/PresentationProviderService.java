@@ -31,13 +31,9 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  */
 public class PresentationProviderService implements IPresentationProviderService {
 
-	// TODO: cleaning, dispose, release of resources etc.
-
 	// TODO: "sharedView"-problem ?
 
 	// TODO: integrate bind to viewController?
-
-	// TODO: some more service methods like "findView", "findNode" ... ?
 
 	// TODO: split off ... problem: navigation is gui-less ...
 
@@ -67,8 +63,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.IPresentationProviderService#createNode
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode
 	 * (org.eclipse.riena.navigation.INavigationNode,
 	 * org.eclipse.riena.navigation.INavigationNodeId)
 	 */
@@ -153,8 +148,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.IPresentationProviderService#createView
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createView
 	 * (org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public Object createView(INavigationNodeId targetId) {
@@ -189,8 +183,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.navigation.IPresentationProviderService#isViewShared
-	 * ()
+	 * org.eclipse.riena.navigation.IPresentationProviderService#isViewShared ()
 	 */
 	public boolean isViewShared(INavigationNodeId targetId) {
 		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
@@ -199,6 +192,16 @@ public class PresentationProviderService implements IPresentationProviderService
 			return presentationDefinition.isViewShared();
 		}
 		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#cleanUp()
+	 */
+	public void cleanUp() {
+		// TODO: implement, does noething special yet
+
 	}
 
 }

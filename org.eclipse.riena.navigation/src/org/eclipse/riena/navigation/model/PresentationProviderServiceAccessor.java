@@ -53,6 +53,7 @@ public class PresentationProviderServiceAccessor {
 	}
 
 	public void unbind(IPresentationProviderService dep) {
+		service.cleanUp();
 		service = null;
 	}
 

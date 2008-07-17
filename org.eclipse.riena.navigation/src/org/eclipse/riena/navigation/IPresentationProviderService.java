@@ -53,4 +53,9 @@ public interface IPresentationProviderService {
 
 	boolean isViewShared(INavigationNodeId targetId);
 
+	/**
+	 * Perform some housekeeping
+	 */
+	void cleanUp();
+
 }
