@@ -39,8 +39,8 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 *            The property names of the properties of the beans to be
 	 *            displayed in the columns. A non-null String array.
 	 * @param columnHeaders
-	 *            The titles of the columns to be displayed in the header. May
-	 *            be null if no headers should be shown for this table.
+	 *            The titles of the columns to be displayed in the table header.
+	 *            May be null if no headers should be shown for this table.
 	 *            Individual array entries may be null, which will show an empty
 	 *            title in the header of that column.
 	 * @throws RuntimeException
