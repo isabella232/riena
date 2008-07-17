@@ -10,7 +10,7 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.factory.hessian,org.eclipse.riena.communication.factory.hessian,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.publisher,org.eclipse.riena.communication.publisher,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.publisher.hessian,org.eclipse.riena.communication.publisher.hessian,v20080708_1_0_0_M3_exp_branch"/>
-<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.core,org.eclipse.riena.core,v20080708_1_0_0_M3_exp_branch"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.core,org.eclipse.riena.core"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.exceptionhandler,org.eclipse.riena.exceptionhandler,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.exceptionmanager,org.eclipse.riena.exceptionmanager,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/com.caucho.hessian,com.caucho.hessian,v20080708_1_0_0_M3"/>
@@ -21,7 +21,7 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.security.common,org.eclipse.riena.security.common,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.security.server,org.eclipse.riena.security.server,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.security.common.bootpolicy,org.eclipse.riena.security.common.bootpolicy,v20080708_1_0_0_M3_exp_branch"/>
-<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.tests,org.eclipse.riena.tests,v20080708_1_0_0_M3_exp_branch"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.tests,org.eclipse.riena.tests"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.releng,org.eclipse.riena.releng,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.sample.app.common,org.eclipse.riena.sample.app.common,v20080708_1_0_0_M3_exp_branch"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.sample.app.server,org.eclipse.riena.sample.app.server,v20080708_1_0_0_M3_exp_branch"/>
