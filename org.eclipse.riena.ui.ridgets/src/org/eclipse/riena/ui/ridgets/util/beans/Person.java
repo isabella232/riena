@@ -17,15 +17,15 @@ public class Person extends AbstractBean {
 	/**
 	 * Property name of the first name property ("firstname").
 	 */
-	private static final String PROPERTY_FIRSTNAME = "firstname"; //$NON-NLS-1$
+	public static final String PROPERTY_FIRSTNAME = "firstname"; //$NON-NLS-1$
 	/**
 	 * Property name of the first name property ("lastname").
 	 */
-	private static final String PROPERTY_LASTNAME = "lastname"; //$NON-NLS-1$
+	public static final String PROPERTY_LASTNAME = "lastname"; //$NON-NLS-1$
 	/**
 	 * Property name of the eye color property ("eyeColor").
 	 */
-	private static final String PROPERTY_EYE_COLOR = "eyeColor"; //$NON-NLS-1$
+	public static final String PROPERTY_EYE_COLOR = "eyeColor"; //$NON-NLS-1$
 	/**
 	 * Constant for <code>MALE</code> gender value ("male").
 	 */
