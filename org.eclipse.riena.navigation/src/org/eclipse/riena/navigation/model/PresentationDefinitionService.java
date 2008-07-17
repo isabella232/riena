@@ -41,6 +41,8 @@ public class PresentationDefinitionService implements IPresentationDefinitionSer
 
 	// TODO: some more service methods like "findView", "findNode" ... ?
 
+	// TODO: split off ... problem: navigation is gui-less ...
+
 	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.WorkAreaPresentation";
 	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.NavigationNodePresentation";
 	private ExtensionInjectionHelper<IWorkAreaPresentationDefinition> targetWA;

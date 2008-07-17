@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.navigation.IPresentationDefinitionService;
+import org.eclipse.riena.navigation.model.PresentationDefinitionService;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -39,6 +44,12 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
+
+		PresentationDefinitionService service = new PresentationDefinitionService();
+		Dictionary properties = new Hashtable();
+		properties.put("a", "b");
+
+		context.registerService(IPresentationDefinitionService.class.getName(), service, properties);
 	}
 
 	/*
