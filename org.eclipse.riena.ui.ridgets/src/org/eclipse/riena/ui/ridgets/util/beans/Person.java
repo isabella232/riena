@@ -15,18 +15,29 @@ package org.eclipse.riena.ui.ridgets.util.beans;
  */
 public class Person extends AbstractBean {
 	/**
-	 * Comment for <code>MALE</code>
+	 * Property name of the first name property ("firstname").
 	 */
-	public final static String MALE = "male";
+	private static final String PROPERTY_FIRSTNAME = "firstname"; //$NON-NLS-1$
 	/**
-	 * Comment for <code>FEMALE</code>
+	 * Property name of the first name property ("lastname").
 	 */
-	public final static String FEMALE = "female";
+	private static final String PROPERTY_LASTNAME = "lastname"; //$NON-NLS-1$
+	/**
+	 * Property name of the eye color property ("eyeColor").
+	 */
+	private static final String PROPERTY_EYE_COLOR = "eyeColor"; //$NON-NLS-1$
+	/**
+	 * Constant for <code>MALE</code> gender value ("male").
+	 */
+	public final static String MALE = "male"; //$NON-NLS-1$
+	/**
+	 * Constant for <code>FEMALE</code> gender value ("female").
+	 */
+	public final static String FEMALE = "female"; //$NON-NLS-1$
 
 	private String lastname;
 	private String firstname;
 	private String gender;
-	// private boolean vip;
 	private boolean hasDog;
 	private boolean hasCat;
 	private boolean hasFish;
@@ -44,7 +55,7 @@ public class Person extends AbstractBean {
 
 		this.lastname = lastname;
 		this.firstname = firstname;
-		birthday = "";
+		birthday = ""; //$NON-NLS-1$
 		gender = MALE;
 	}
 
@@ -52,7 +63,6 @@ public class Person extends AbstractBean {
 	 * @return last name
 	 */
 	public String getLastname() {
-
 		return lastname;
 	}
 
@@ -60,7 +70,6 @@ public class Person extends AbstractBean {
 	 * @return first name
 	 */
 	public String getFirstname() {
-
 		return firstname;
 	}
 
@@ -68,7 +77,6 @@ public class Person extends AbstractBean {
 	 * @return eye color
 	 */
 	public Integer getEyeColor() {
-
 		return new Integer(eyeColor);
 	}
 
@@ -76,29 +84,26 @@ public class Person extends AbstractBean {
 	 * @param lastname
 	 */
 	public void setLastname(String lastname) {
-
 		String oldLastname = this.lastname;
 		this.lastname = lastname;
 
-		firePropertyChanged("lastname", oldLastname, lastname);
+		firePropertyChanged(PROPERTY_LASTNAME, oldLastname, lastname);
 	}
 
 	/**
 	 * @param firstname
 	 */
 	public void setFirstname(String firstname) {
-
 		String oldFirstname = this.firstname;
 		this.firstname = firstname;
 
-		firePropertyChanged("firstname", oldFirstname, firstname);
+		firePropertyChanged(PROPERTY_FIRSTNAME, oldFirstname, firstname);
 	}
 
 	/**
 	 * @param newEyeColor
 	 */
 	public void setEyeColor(Integer newEyeColor) {
-
 		if (newEyeColor != null) {
 			setEyeColor(newEyeColor.intValue());
 		}
@@ -108,18 +113,16 @@ public class Person extends AbstractBean {
 	 * @param newEyeColor
 	 */
 	public void setEyeColor(int newEyeColor) {
-
 		int oldEyeColor = this.eyeColor;
 		this.eyeColor = newEyeColor;
 
-		firePropertyChanged("eyeColor", new Integer(oldEyeColor), new Integer(eyeColor));
+		firePropertyChanged(PROPERTY_EYE_COLOR, new Integer(oldEyeColor), new Integer(eyeColor));
 	}
 
 	/**
 	 * @param value
 	 */
 	public void setEyeColorGreen(boolean value) {
-
 		if (value) {
 			setEyeColor(0);
 		}
@@ -129,7 +132,6 @@ public class Person extends AbstractBean {
 	 * @param value
 	 */
 	public void setEyeColorGray(boolean value) {
-
 		if (value) {
 			setEyeColor(1);
 		}
@@ -139,9 +141,17 @@ public class Person extends AbstractBean {
 	 * @param value
 	 */
 	public void setEyeColorBlue(boolean value) {
-
 		if (value) {
 			setEyeColor(2);
+		}
+	}
+
+	/**
+	 * @param value
+	 */
+	public void setEyeColorBrown(boolean value) {
+		if (value) {
+			setEyeColor(3);
 		}
 	}
 
@@ -167,11 +177,11 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @param hasDaughter
-	 *            The hasDaughter to set.
+	 * @param hasDog
+	 *            The hasDog to set.
 	 */
-	public void setHasDog(boolean hasDaughter) {
-		this.hasDog = hasDaughter;
+	public void setHasDog(boolean hasDog) {
+		this.hasDog = hasDog;
 	}
 
 	/**
@@ -182,11 +192,11 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @param hasSon
-	 *            The hasSon to set.
+	 * @param hasCat
+	 *            The hasCat to set.
 	 */
-	public void setHasCat(boolean hasSon) {
-		this.hasCat = hasSon;
+	public void setHasCat(boolean hasCat) {
+		this.hasCat = hasCat;
 	}
 
 	/**
@@ -205,20 +215,9 @@ public class Person extends AbstractBean {
 	}
 
 	/**
-	 * @param value
-	 */
-	public void setEyeColorBrown(boolean value) {
-
-		if (value) {
-			setEyeColor(3);
-		}
-	}
-
-	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
-
 		if (obj == null || !(obj instanceof Person)) {
 			return false;
 		}
@@ -236,7 +235,6 @@ public class Person extends AbstractBean {
 	}
 
 	private boolean equalsFirstname(Person person) {
-
 		if (firstname == null) {
 			return person.firstname == firstname;
 		} else {
@@ -245,7 +243,6 @@ public class Person extends AbstractBean {
 	}
 
 	private boolean equalsLastname(Person person) {
-
 		if (lastname == null) {
 			return lastname == person.lastname;
 		} else {
@@ -257,8 +254,7 @@ public class Person extends AbstractBean {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-
-		return lastname + ", " + firstname;
+		return lastname + ", " + firstname; //$NON-NLS-1$
 	}
 
 	/**
@@ -267,16 +263,14 @@ public class Person extends AbstractBean {
 	 * @return a string representing object as list entry.
 	 */
 	public String getListEntry() {
-		return lastname + " - " + firstname;
+		return lastname + " - " + firstname; //$NON-NLS-1$
 	}
 
 	/**
 	 * @return Returns the birthday.
 	 */
 	public String getBirthday() {
-
 		return birthday;
-
 	} // end method
 
 	/**
@@ -284,8 +278,6 @@ public class Person extends AbstractBean {
 	 *            The birthday to set.
 	 */
 	public void setBirthday(String birthday) {
-
 		this.birthday = birthday;
-
 	} // end method
 }
