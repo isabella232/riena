@@ -31,8 +31,6 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  */
 public class PresentationDefinitionService implements IPresentationDefinitionService {
 
-	// TODO: implement as "real" service
-
 	// TODO: cleaning, dispose, release of resources etc.
 
 	// TODO: "sharedView"-problem ?

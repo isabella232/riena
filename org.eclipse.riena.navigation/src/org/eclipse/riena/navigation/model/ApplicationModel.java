@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IApplicationModelListener;
 import org.eclipse.riena.navigation.IPresentationDefinitionService;
 import org.eclipse.riena.navigation.ISubApplication;
-import org.osgi.framework.ServiceReference;
 
 /**
  * Default implementation for the ApplicationModel
@@ -62,18 +60,8 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 
 	protected IPresentationDefinitionService getPresentationDefinitionService() {
 
-		// TODO: use service accessor/provider
-
-		ServiceReference ref = Activator.getDefault().getContext().getServiceReference(
-				IPresentationDefinitionService.class.getName());
-		if (ref != null) {
-			IPresentationDefinitionService service = (IPresentationDefinitionService) Activator.getDefault()
-					.getContext().getService(ref);
-			return service;
-		} else {
-			// TODO: some handling ???
-			return null;
-		}
+		// TODO: handling if no service found ???
+		return PresentationDefinitionServiceAccessor.current().getPresentationDefinitionService();
 
 	}
 

@@ -17,6 +17,7 @@ import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.navigation.IPresentationDefinitionService;
 import org.eclipse.riena.navigation.model.PresentationDefinitionService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -46,10 +47,10 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 
 		PresentationDefinitionService service = new PresentationDefinitionService();
-		Dictionary properties = new Hashtable();
-		properties.put("a", "b");
+		Dictionary<String, Object> dict = new Hashtable<String, Object>();
+		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(-100));
 
-		context.registerService(IPresentationDefinitionService.class.getName(), service, properties);
+		context.registerService(IPresentationDefinitionService.class.getName(), service, dict);
 	}
 
 	/*
