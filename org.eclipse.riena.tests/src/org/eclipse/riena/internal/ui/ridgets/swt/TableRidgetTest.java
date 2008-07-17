@@ -131,11 +131,6 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals("First Name", columns[0].getText());
 		assertEquals("Last Name", columns[1].getText());
 		assertTrue(control.getHeaderVisible());
-
-		String[] properties = new String[] { "firstname" };
-		getRidget().bindToModel(manager, "persons", Person.class, properties, null);
-
-		assertFalse(control.getHeaderVisible());
 	}
 
 	public void testTableColumnsNumAndHeaderWithMismatch() {
@@ -144,13 +139,6 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		try {
 			getRidget().bindToModel(manager, "persons", Person.class, properties1, headers1);
-			fail();
-		} catch (RuntimeException rex) {
-			// expected
-		}
-
-		try {
-			getRidget().bindToModel(null, Object.class, properties1, headers1);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
