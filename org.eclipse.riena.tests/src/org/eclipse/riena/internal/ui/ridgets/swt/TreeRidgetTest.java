@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
@@ -169,41 +170,41 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	public void testUpdateOnModelChanges() {
 		Tree control = getUIControl();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		removeFromParent(rootChild2Node);
 
-		assertEquals(2, getItemCount(control));
+		assertEquals(2, TreeUtils.getItemCount(control));
 
 		new TreeNode(rootNode, "TestNewNode1");
 		new TreeNode(rootNode, "TestNewNode2");
 
-		assertEquals(4, getItemCount(control));
+		assertEquals(4, TreeUtils.getItemCount(control));
 	}
 
 	public void testExpandAndCollapseTree() {
 		TreeRidget ridget = getRidget();
 		Tree control = getUIControl();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.expandTree();
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.collapseTree();
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 
 		// check that the tree was collapsed recursively...
 
 		ridget.expand(rootNode);
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.expandTree();
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		// ...to check that it collapses to its default state when a new model
 		// is updated...
@@ -211,7 +212,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 		ridget.updateFromModel();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 	}
 
 	/**
@@ -222,25 +223,25 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		TreeRidget ridget = getRidget();
 		Tree control = getUIControl();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.expandTree();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(control);
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.collapseTree();
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(control);
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 	}
 
 	public void testExpandAndCollapseSingleNodes() {
@@ -249,23 +250,23 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.expandTree();
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.collapse(rootChild1Child2Node);
 
-		assertEquals(5, getItemCount(control));
+		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.collapse(rootChild1Node);
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.expand(rootChild1Node);
 
-		assertEquals(5, getItemCount(control));
+		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.expand(rootChild1Child2Node);
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 	}
 
 	/**
@@ -276,25 +277,25 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		TreeRidget ridget = getRidget();
 		Tree control = getUIControl();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.expand(rootChild1Node);
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(control);
 
-		assertEquals(5, getItemCount(control));
+		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.collapse(rootNode);
 
-		assertEquals(5, getItemCount(control));
+		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(control);
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 	}
 
 	public void testFullExpansionStatusIsPreserved() {
@@ -303,46 +304,46 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.expandTree();
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.setUIControl(control);
 
-		assertEquals(6, getItemCount(control));
+		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.collapseTree();
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.setUIControl(control);
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 	}
 
 	public void testPartialExpansionStatusIsPreserved() {
 		TreeRidget ridget = getRidget();
 		Tree control = getUIControl();
 
-		assertEquals(3, getItemCount(control));
+		assertEquals(3, TreeUtils.getItemCount(control));
 
 		ridget.expand(rootChild1Node);
 
-		assertEquals(5, getItemCount(control));
+		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.setUIControl(control);
 
-		assertEquals(5, getItemCount(control));
+		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.collapse(rootNode);
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.setUIControl(control);
 
-		assertEquals(1, getItemCount(control));
+		assertEquals(1, TreeUtils.getItemCount(control));
 	}
 
 	public void testAddDoubleClickListener() {
@@ -391,32 +392,6 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		return new ITreeNode[] { rootNode };
 	}
 
-	/**
-	 * Returns the number of items in the tree starting from the root
-	 * (included).
-	 */
-	private int getItemCount(Tree control) {
-		int count = 0;
-		for (TreeItem root : control.getItems()) {
-			count += getItemCount(root);
-		}
-		return count;
-	}
-
-	/** Returns the number of items in subtree starting from item (included). */
-	private int getItemCount(TreeItem item) {
-		int count = 0;
-		if (item != null) { // && item.getData() != null) {
-			count++;
-			if (item.getExpanded()) {
-				for (TreeItem child : item.getItems()) {
-					count += getItemCount(child);
-				}
-			}
-		}
-		return count;
-	}
-
 	/** Removes the give node from its parent (if it has one). */
 	private void removeFromParent(ITreeNode node) {
 		ITreeNode parent = node.getParent();
@@ -429,7 +404,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	/**
 	 * Return the TreeItem corresponding to the following mock "index" scheme:
-	 * 0: item for node1, 1: item for node2, 2: item for node3.
+	 * 0: item for node1, 1: item for node2, 2: item for node3, 3: item for
+	 * node4.
 	 * <p>
 	 * This method will fully expand the tree to ensure all tree items are
 	 * created.

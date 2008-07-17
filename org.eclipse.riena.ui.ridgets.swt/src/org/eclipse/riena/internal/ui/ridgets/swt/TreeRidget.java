@@ -52,6 +52,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
@@ -95,6 +96,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
 			updateExpansionState();
+			applyTableColumnHeaders(control);
 		}
 	}
 
@@ -287,6 +289,21 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	// helping methods
 	// ////////////////
+
+	private void applyTableColumnHeaders(Tree control) {
+		boolean headersVisible = columnHeaders != null;
+		control.setHeaderVisible(headersVisible);
+		if (headersVisible) {
+			TreeColumn[] columns = control.getColumns();
+			for (int i = 0; i < columns.length; i++) {
+				String columnHeader = ""; //$NON-NLS-1$
+				if (i < columnHeaders.length && columnHeaders[i] != null) {
+					columnHeader = columnHeaders[i];
+				}
+				columns[i].setText(columnHeader);
+			}
+		}
+	}
 
 	/**
 	 * Initialize databining for tree viewer.
