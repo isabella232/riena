@@ -68,7 +68,7 @@ public class TreeNode extends AbstractBean implements ITreeNode {
 	public void setChildren(List<ITreeNode> children) {
 		if (this.children != children) {
 			List<ITreeNode> newValue = (children != null) ? new ArrayList<ITreeNode>(children) : null;
-			firePropertyChanged(PROP_CHILDREN, this.children, this.children = newValue);
+			firePropertyChanged(PROPERTY_CHILDREN, this.children, this.children = newValue);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class TreeNode extends AbstractBean implements ITreeNode {
 		if (this.value != value) {
 			Object oldValue = this.value;
 			this.value = value;
-			firePropertyChanged(PROP_VALUE, oldValue, this.value);
+			firePropertyChanged(PROPERTY_VALUE, oldValue, this.value);
 		}
 	}
 

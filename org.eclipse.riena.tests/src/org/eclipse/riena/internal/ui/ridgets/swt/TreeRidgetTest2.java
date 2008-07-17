@@ -64,7 +64,10 @@ public class TreeRidgetTest2 extends AbstractTreeRidgetTest {
 		ITreeNode node4 = new TreeNode(node1, person4);
 		// node3 is on level-2, so it does not get autoexpanded
 		ITreeNode node3 = new TreeNode(node2, person3);
-		getRidget().bindToModel(node1, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+
+		ITreeNode[] roots = { node1 };
+		getRidget().bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
 		return new ITreeNode[] { node1, node2, node3, node4 };
 	}
 
@@ -125,15 +128,16 @@ public class TreeRidgetTest2 extends AbstractTreeRidgetTest {
 		assertTrue(ridget.containsOption(rootChild1Child1));
 		assertTrue(ridget.containsOption(rootChild2));
 
-		TreeNode newRoot = new TreeNode("newRoot");
+		TreeNode[] newRoots = { new TreeNode("newRoot") };
 
 		assertFalse(ridget.containsOption(null));
-		assertFalse(ridget.containsOption(newRoot));
+		assertFalse(ridget.containsOption(newRoots[0]));
 
-		getRidget().bindToModel(newRoot, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+		getRidget().bindToModel(newRoots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
 
 		assertFalse(ridget.containsOption(root));
-		assertTrue(ridget.containsOption(newRoot));
+		assertTrue(ridget.containsOption(newRoots[0]));
 	}
 
 	public void testSelectionType() throws Exception {

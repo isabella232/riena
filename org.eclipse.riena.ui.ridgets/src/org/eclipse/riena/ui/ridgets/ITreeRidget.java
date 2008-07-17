@@ -46,47 +46,49 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 
 	/**
 	 * Creates a default binding between the Tree Ridget and the specified
-	 * rootElement value. The UpdateValueStrategy will be POLICY_UPDATE to the
-	 * model value (automatic update) and POLICY_ON_REQUEST from the model
-	 * value.
+	 * treeRoots.
 	 * <p>
-	 * The rootElement must have an accessor that provides a list of children
-	 * (List) and an accessor that provides a value (Object) for each child. It
-	 * is assumed that the rootElement and all children are of the same type.
+	 * Each tree element must have an accessor that provides a list of children
+	 * (List), an accessor that provides a parent (null for the a root element)
+	 * and an accessor that provides a value (Object) for each child. It is
+	 * assumed that the rootElement and all children are of the same type.
 	 * <p>
 	 * Example:
 	 * 
 	 * <pre>
-	 * AnyBean rootElement;
-	 * // AnyBean has getChildren() and getValue() methods
-	 * treeRidget.bind(rootElement, AnyBean.class, &quot;children&quot;, &quot;value&quot;);
+	 * AnyBean[] rootElements = { root1 };
+	 * // AnyBean has getChildren(), getParent() and getValue() methods
+	 * treeRidget.bind(rootElements, AnyBean.class, &quot;children&quot;, &quot;parent&quot;, &quot;value&quot;);
 	 * </pre>
 	 * <p>
 	 * Note that invoking this method will discard any queued expand/collapse
 	 * operations on the ridget.
 	 * 
-	 * @param treeRoot
-	 *            an Object the root of the tree (non-null). Note that the
-	 *            children of the treeRoot will be shown in level-0 of the tree
-	 *            and the treeRoot itself is not shown.
+	 * @param treeRoots
+	 *            the root elements of the tree (non-null, non-empty).
 	 * @param treeElementClass
-	 *            the type of the elements in the tree (i.e. treeRoot and all
-	 *            children).
+	 *            the type of the elements in the tree (i.e. for treeRoot and
+	 *            all children).
 	 * @param childrenAccessor
 	 *            a non-null, non-empty String specifying an accessor for
-	 *            obtaining a List of children from the rootElementClass
-	 *            (example "children" specifies "getChildren()"). The returned
+	 *            obtaining a List of children from an object in the tree. For
+	 *            example "children" specifies "getChildren()". The returned
 	 *            children will be shown underneath their parent.
+	 * @param parentAccessor
+	 *            a non-null, non-empty String specifying an accessor for
+	 *            abtaining the parent Object from an object in the tree. The
+	 *            accessor is allowed to return null for root elements. For
+	 *            example "parent" specifies "getParent()". The parents are used
+	 *            when determining the correct way to expand or collapse a tree
+	 *            element.
 	 * @param valueAccessor
 	 *            a non-null, non-empty String specifying an accessor for
 	 *            obtaining an Object value from each child (example "value"
 	 *            specifies "getValue()"). The returned value will be shown in
 	 *            the corresponding tree node.
 	 */
-	void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String valueAccessor);
-
-	// TODO [ev] bindToMode(Object[] ...)
+	void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String valueAccessor);
 
 	/**
 	 * Expands all nodes of the tree based on the current ITreeModel value if

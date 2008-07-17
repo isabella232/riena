@@ -115,10 +115,11 @@ public class TreeViewController extends SubModuleNodeViewController {
 	 */
 	private void initRidgets() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		ITreeNode root = createTreeInput();
-		tree.bindToModel(root, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+		ITreeNode[] roots = createTreeInput();
+		tree.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
 		tree.updateFromModel();
-		tree.setSelection(root);
+		tree.setSelection(roots[0]);
 
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.addListener(new IActionListener() {
@@ -216,7 +217,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
-	private ITreeNode createTreeInput() {
+	private ITreeNode[] createTreeInput() {
 		ITreeNode root = new TreeNode("root");
 
 		ITreeNode groupA = new TreeNode(root, "group a");
@@ -234,7 +235,7 @@ public class TreeViewController extends SubModuleNodeViewController {
 		new TreeNode(groupC, "c_child_2");
 		new TreeNode(groupC, "c_child_3");
 
-		return root;
+		return new ITreeNode[] { root };
 	}
 
 	private String getNewValue(Object oldValue) {

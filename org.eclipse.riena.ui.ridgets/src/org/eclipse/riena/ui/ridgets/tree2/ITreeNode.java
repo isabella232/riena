@@ -46,7 +46,7 @@ public interface ITreeNode {
 	 * @see #getValue()
 	 * @see #setValue(Object)
 	 */
-	String PROP_VALUE = "value"; //$NON-NLS-1$
+	String PROPERTY_VALUE = "value"; //$NON-NLS-1$
 
 	/**
 	 * Property name of the children property ("children").
@@ -54,7 +54,14 @@ public interface ITreeNode {
 	 * @see #getChildren()
 	 * @see #setChildren(List)
 	 */
-	String PROP_CHILDREN = "children"; //$NON-NLS-1$
+	String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
+
+	/**
+	 * Property name of the parent property ("parnet").
+	 * 
+	 * @see #getParent()
+	 */
+	String PROPERTY_PARENT = "parent"; //$NON-NLS-1$
 
 	/**
 	 * Returns the children objects of this node.

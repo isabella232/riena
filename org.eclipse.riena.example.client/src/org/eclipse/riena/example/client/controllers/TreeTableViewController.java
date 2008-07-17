@@ -50,13 +50,15 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 	 * Binds and updates the ridgets.
 	 */
 	private void initRidgets() {
-		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		Object[] roots = createTreeInput();
-		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String[] columnHeaders = { "Word", "Uppercase", "A Count" };
-		tree.bindToModel(roots, WordNode.class, "children", columnPropertyNames, columnHeaders); //$NON-NLS-1$
-		tree.updateFromModel();
-		tree.expand(roots[0]);
+		if (tree != null) {
+			tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+			Object[] roots = createTreeInput();
+			String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String[] columnHeaders = { "Word", "Uppercase", "A Count" };
+			tree.bindToModel(roots, WordNode.class, "children", "parent", columnPropertyNames, columnHeaders); //$NON-NLS-1$ //$NON-NLS-2$
+			tree.updateFromModel();
+			tree.expand(roots[0]);
+		}
 	}
 
 	private WordNode[] createTreeInput() {
@@ -115,10 +117,6 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 			}
 		}
 
-		public List<WordNode> getChildren() {
-			return Collections.unmodifiableList(children);
-		}
-
 		public int getACount() {
 			int result = 0;
 			for (char c : word.toCharArray()) {
@@ -127,6 +125,14 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 				}
 			}
 			return result;
+		}
+
+		public List<WordNode> getChildren() {
+			return Collections.unmodifiableList(children);
+		}
+
+		public WordNode getParent() {
+			return parent;
 		}
 
 		public String getWord() {

@@ -50,7 +50,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		getRidget().bindToModel(initializeTreeModel(), ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+		getRidget().bindToModel(initializeTreeModel(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 	}
 
 	@Override
@@ -95,30 +96,40 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testBindToModelNull() {
 		ITreeRidget ridget = getRidget();
+		ITreeNode[] roots = { rootNode };
 
 		try {
-			ridget.bindToModel(null, ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+			ridget.bindToModel(null, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+					ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
 		}
 
 		try {
-			ridget.bindToModel(rootNode, null, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+			ridget.bindToModel(roots, null, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+					ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
 		}
 
 		try {
-			ridget.bindToModel(rootNode, ITreeNode.class, null, ITreeNode.PROP_VALUE);
+			ridget.bindToModel(roots, ITreeNode.class, null, ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
 		}
 
 		try {
-			ridget.bindToModel(rootNode, ITreeNode.class, ITreeNode.PROP_CHILDREN, null);
+			ridget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, null, ITreeNode.PROPERTY_VALUE);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, null);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
@@ -196,7 +207,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		// ...to check that it collapses to its default state when a new model
 		// is updated...
-		getRidget().bindToModel(initializeTreeModel(), ITreeNode.class, ITreeNode.PROP_CHILDREN, ITreeNode.PROP_VALUE);
+		getRidget().bindToModel(initializeTreeModel(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 		ridget.updateFromModel();
 
 		assertEquals(3, getItemCount(control));
@@ -369,14 +381,14 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	// ////////////////
 
-	private ITreeNode initializeTreeModel() {
+	private ITreeNode[] initializeTreeModel() {
 		rootNode = new TreeNode(ROOT_NODE_USER_OBJECT);
 		rootChild1Node = new TreeNode(rootNode, ROOT_CHILD1_NODE_USER_OBJECT);
 		rootChild2Node = new TreeNode(rootNode, ROOT_CHILD2_NODE_USER_OBJECT);
 		new TreeNode(rootChild1Node, ROOT_CHILD1_CHILD1_NODE_USER_OBJECT);
 		rootChild1Child2Node = new TreeNode(rootChild1Node, ROOT_CHILD1_CHILD2_NODE_USER_OBJECT);
 		new TreeNode(rootChild1Child2Node, ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT);
-		return rootNode;
+		return new ITreeNode[] { rootNode };
 	}
 
 	/**

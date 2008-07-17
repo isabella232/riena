@@ -67,10 +67,12 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
 
-	private Object treeRoot;
+	private Object[] treeRoots;
 	private Class<? extends Object> treeElementClass;
 	private String childrenAccessor;
+	private String parentAccessor;
 	private String[] valueAccessors;
+	private String[] columnHeaders;
 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -81,7 +83,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	@Override
 	protected void bindUIControl() {
 		Tree control = getUIControl();
-		if (control != null && treeRoot != null) {
+		if (control != null && treeRoots != null) {
 			// TODO [ev] reproduce in a snippet and file a bug
 			// Bug workaround: deselect pre-existing selection in tree.
 			// The tree viewer tries to preserve the selection in the tree.
@@ -121,7 +123,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	@Override
-	protected List<?> getRowObservables() {
+	protected final List<?> getRowObservables() {
 		List<?> result = null;
 		if (viewer != null) {
 			ObservableListTreeContentProvider cp = (ObservableListTreeContentProvider) viewer.getContentProvider();
@@ -129,6 +131,48 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 		return result;
 	}
+
+	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
+		Assert.isNotNull(treeRoots);
+		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
+		Assert.isNotNull(treeElementClass);
+		Assert.isNotNull(childrenAccessor);
+		Assert.isNotNull(parentAccessor);
+		Assert.isNotNull(valueAccessors);
+		Assert.isLegal(valueAccessors.length > 0, "valueAccessors must have at least one entry"); //$NON-NLS-1$
+		if (columnHeaders != null) {
+			String msg = "Mismatch between number of valueAccessors and columnHeaders"; //$NON-NLS-1$
+			Assert.isLegal(valueAccessors.length == columnHeaders.length, msg);
+		}
+
+		unbindUIControl();
+
+		this.treeRoots = new Object[treeRoots.length];
+		System.arraycopy(treeRoots, 0, this.treeRoots, 0, this.treeRoots.length);
+		this.treeElementClass = treeElementClass;
+		this.childrenAccessor = childrenAccessor;
+		this.parentAccessor = parentAccessor;
+		this.valueAccessors = new String[valueAccessors.length];
+		System.arraycopy(valueAccessors, 0, this.valueAccessors, 0, this.valueAccessors.length);
+		if (columnHeaders != null) {
+			this.columnHeaders = new String[columnHeaders.length];
+			System.arraycopy(columnHeaders, 0, this.columnHeaders, 0, this.columnHeaders.length);
+		} else {
+			this.columnHeaders = null;
+		}
+
+		expansionStack.clear();
+		if (treeRoots.length == 1) {
+			ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, treeRoots[0]);
+			expansionStack.add(cmd);
+		}
+
+		bindUIControl();
+	}
+
+	// public methods
+	// ///////////////
 
 	@Override
 	public Tree getUIControl() {
@@ -144,33 +188,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * @deprecated see {@link #bindToModel(Object, Class, String, String)}
+	 * @deprecated see
+	 *             {@link #bindToModel(Object[], Class, String, String, String)}
 	 */
 	public void bindToModel(IObservableTreeModel observableTreeModel) {
-		throw new UnsupportedOperationException("deprecated");
+		throw new UnsupportedOperationException("deprecated"); //$NON-NLS-1$
 	}
 
-	public void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String valueAccessor) {
-		this.bindToModel(treeRoot, treeElementClass, childrenAccessor, new String[] { valueAccessor });
-	}
-
-	protected void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String[] valueAccessors) {
-		Assert.isNotNull(treeRoot);
-		Assert.isNotNull(treeElementClass);
-		Assert.isNotNull(childrenAccessor);
-		Assert.isNotNull(valueAccessors);
-		Assert.isLegal(valueAccessors.length > 0);
-		unbindUIControl();
-		this.treeRoot = treeRoot;
-		this.treeElementClass = treeElementClass;
-		this.childrenAccessor = childrenAccessor;
-		this.valueAccessors = valueAccessors; // TODO [ev] copy
-		expansionStack.clear();
-		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, treeRoot);
-		expansionStack.add(cmd);
-		bindUIControl();
+	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String valueAccessor) {
+		String[] valueAccessors = new String[] { valueAccessor };
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, null);
 	}
 
 	/** @deprecated */
@@ -211,7 +239,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * @deprecated
 	 */
 	public IObservableTreeModel getRidgetObservable() {
-		throw new UnsupportedOperationException("deprecated");
+		throw new UnsupportedOperationException("deprecated"); //$NON-NLS-1$
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
@@ -313,11 +341,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		ILabelProvider viewerLP = new TreeRidgetLabelProvider(viewer, attributeMap);
 		viewer.setLabelProvider(viewerLP);
 		// input
-		if (treeRoot instanceof Object[]) {
-			viewer.setInput(treeRoot);
-		} else {
-			viewer.setInput(new Object[] { treeRoot });
-		}
+		viewer.setInput(treeRoots);
 	}
 
 	/**
@@ -364,31 +388,34 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private void updateExpansionState() {
 		if (viewer != null) {
 			viewer.getControl().setRedraw(false);
-			while (!expansionStack.isEmpty()) {
-				ExpansionCommand cmd = expansionStack.remove();
-				ExpansionState state = cmd.state;
-				if (state == ExpansionState.FULLY_COLLAPSE) {
-					Object[] expanded = viewer.getExpandedElements();
-					viewer.collapseAll();
-					for (Object wasExpanded : expanded) {
-						viewer.update(wasExpanded, null); // update icon
+			try {
+				while (!expansionStack.isEmpty()) {
+					ExpansionCommand cmd = expansionStack.remove();
+					ExpansionState state = cmd.state;
+					if (state == ExpansionState.FULLY_COLLAPSE) {
+						Object[] expanded = viewer.getExpandedElements();
+						viewer.collapseAll();
+						for (Object wasExpanded : expanded) {
+							viewer.update(wasExpanded, null); // update icon
+						}
+					} else if (state == ExpansionState.FULLY_EXPAND) {
+						viewer.expandAll();
+						viewer.refresh(); // update all icons
+					} else if (state == ExpansionState.COLLAPSE) {
+						viewer.collapseToLevel(cmd.element, 1);
+						viewer.update(cmd.element, null); // update icon
+					} else if (state == ExpansionState.EXPAND) {
+						viewer.expandToLevel(cmd.element, 1);
+						viewer.update(cmd.element, null); // update icon
+					} else if (state == ExpansionState.RESTORE) {
+						Object[] elements = (Object[]) cmd.element;
+						viewer.setExpandedElements(elements);
+					} else {
+						String errorMsg = "unknown expansion state: " + state; //$NON-NLS-1$
+						throw new IllegalStateException(errorMsg);
 					}
-				} else if (state == ExpansionState.FULLY_EXPAND) {
-					viewer.expandAll();
-					viewer.refresh(); // update all icons
-				} else if (state == ExpansionState.COLLAPSE) {
-					viewer.collapseToLevel(cmd.element, 1);
-					viewer.update(cmd.element, null); // update icon
-				} else if (state == ExpansionState.EXPAND) {
-					viewer.expandToLevel(cmd.element, 1);
-					viewer.update(cmd.element, null); // update icon
-				} else if (state == ExpansionState.RESTORE) {
-					Object[] elements = (Object[]) cmd.element;
-					viewer.setExpandedElements(elements);
-				} else {
-					String errorMsg = "unknown expansion state: " + state; //$NON-NLS-1$
-					throw new IllegalStateException(errorMsg);
 				}
+			} finally {
 				viewer.getControl().setRedraw(true);
 			}
 		}
@@ -486,10 +513,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-			if (inputElement instanceof Object[]) {
-				return (Object[]) inputElement;
-			}
-			return super.getElements(inputElement);
+			return (Object[]) inputElement;
 		}
 
 		@Override

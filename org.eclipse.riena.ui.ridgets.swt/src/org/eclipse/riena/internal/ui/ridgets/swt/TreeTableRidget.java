@@ -12,25 +12,23 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
 
 /**
- * TODO [ev] docs
+ * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
+ * columns.
  */
 public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 
-	public void bindToModel(Object treeRoot, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String[] columnPropertyNames, String[] columnHeaders) {
-		super.bindToModel(treeRoot, treeElementClass, childrenAccessor, columnPropertyNames);
-		// TODO [ev] hack - remove
-		Tree tree = getUIControl();
-		if (tree != null) {
-			TreeColumn[] columns = tree.getColumns();
-			for (int i = 0; i < columns.length; i++) {
-				columns[i].setText(columnPropertyNames[i]);
-			}
-		}
+	// ITreeTableRidget methods
+	// /////////////////////////
+
+	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
+		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders);
 	}
+
+	// ISortableByColumn methods
+	// //////////////////////////
 
 	public int getSortedColumn() {
 		// TODO Auto-generated method stub
