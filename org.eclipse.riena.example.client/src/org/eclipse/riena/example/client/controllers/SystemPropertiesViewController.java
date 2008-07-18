@@ -240,6 +240,9 @@ public class SystemPropertiesViewController extends SubModuleNodeViewController 
 		}
 	}
 
+	/**
+	 * Show a {@link MessageDialog} on double click.
+	 */
 	private final class DoubleClickListener implements IActionListener {
 
 		public void callback() {
