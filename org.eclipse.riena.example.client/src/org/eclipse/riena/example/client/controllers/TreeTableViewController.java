@@ -164,7 +164,7 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 			public void callback() {
 				WordNode node = (WordNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					String newValue = getNewValue(node.getWord());
+					String newValue = getNewValue(node.getWordIgnoreUppercase());
 					if (newValue != null) {
 						node.setWord(newValue);
 					}
@@ -334,6 +334,10 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 		}
 
 		public String getWord() {
+			return isUpperCase ? word.toUpperCase() : word;
+		}
+
+		public String getWordIgnoreUppercase() {
 			return word;
 		}
 
