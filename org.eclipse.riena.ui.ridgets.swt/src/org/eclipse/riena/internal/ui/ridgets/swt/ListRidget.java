@@ -79,14 +79,14 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	@Override
 	protected void bindUIControl() {
 		final List control = (List) getUIControl();
-		if (control != null && getRowObservables() != null) {
+		if (control != null && rowObservables != null) {
 			viewer = new ListViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					new String[] { renderingMethod });
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
-			viewer.setInput(getRowObservables());
+			viewer.setInput(rowObservables);
 
 			updateComparator();
 

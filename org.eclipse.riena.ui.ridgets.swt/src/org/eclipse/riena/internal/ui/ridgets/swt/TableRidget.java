@@ -90,7 +90,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	@Override
 	protected void bindUIControl() {
 		final Table control = (Table) getUIControl();
-		if (control != null && getRowObservables() != null) {
+		if (control != null && rowObservables != null) {
 			viewer = new TableViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
@@ -102,7 +102,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			applyTableColumnHeaders(control);
 			applyComparator();
 
-			viewer.setInput(getRowObservables());
+			viewer.setInput(rowObservables);
 
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
