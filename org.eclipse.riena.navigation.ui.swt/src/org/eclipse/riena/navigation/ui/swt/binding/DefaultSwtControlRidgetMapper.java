@@ -55,7 +55,11 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Shell.class, ShellRidget.class);
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
-		addMapping(Tree.class, TreeTableRidget.class); // TODO [ev] hack
+		// TODO [ev] remove this workaround below
+		// reason: currently we cannot determine if we need a TreeRidget or
+		// a TableTreeRidget for a tree widget. There is no special style bit in
+		// this case.
+		addMapping(Tree.class, TreeTableRidget.class);
 		addMapping(Statusbar.class, StatusbarRidget.class);
 		addMapping(StatusbarNumber.class, StatusbarNumberRidget.class);
 	}
