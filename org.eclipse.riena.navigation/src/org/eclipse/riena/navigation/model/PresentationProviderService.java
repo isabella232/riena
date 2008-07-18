@@ -31,31 +31,27 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  */
 public class PresentationProviderService implements IPresentationProviderService {
 
-	// TODO: "sharedView"-problem ?
-
-	// TODO: integrate bind to viewController?
-
 	// TODO: split off ... problem: navigation is gui-less ...
 
 	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.WorkAreaPresentation";
 	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.NavigationNodePresentation";
-	private ExtensionInjectionHelper<IWorkAreaPresentationDefinition> targetWA;
-	private ExtensionInjectionHelper<INavigationNodePresentationDefiniton> targetNN;
+	private PresentationExtensionInjectionHelper<IWorkAreaPresentationDefinition> targetWA;
+	private PresentationExtensionInjectionHelper<INavigationNodePresentationDefiniton> targetNN;
 
 	/**
 	 * Injects the extension point into a given target. The target returns a set
 	 * of presentation definitions
 	 */
 	private void inject(Class<? extends IPresentationDefinition> interfaceType, String wpID,
-			ExtensionInjectionHelper<? extends IPresentationDefinition> target) {
+			PresentationExtensionInjectionHelper<? extends IPresentationDefinition> target) {
 		Inject.extension(wpID).useType(interfaceType).into(target).andStart(Activator.getDefault().getContext());
 	}
 
 	public PresentationProviderService() {
 
-		targetWA = new ExtensionInjectionHelper<IWorkAreaPresentationDefinition>();
+		targetWA = new PresentationExtensionInjectionHelper<IWorkAreaPresentationDefinition>();
 		inject(IWorkAreaPresentationDefinition.class, EP_WORKAREA, targetWA);
-		targetNN = new ExtensionInjectionHelper<INavigationNodePresentationDefiniton>();
+		targetNN = new PresentationExtensionInjectionHelper<INavigationNodePresentationDefiniton>();
 		inject(INavigationNodePresentationDefiniton.class, EP_NAVNODE, targetNN);
 
 	}

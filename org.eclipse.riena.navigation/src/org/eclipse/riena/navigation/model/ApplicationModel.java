@@ -61,7 +61,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	protected IPresentationProviderService getPresentationDefinitionService() {
 
 		// TODO: handling if no service found ???
-		return PresentationProviderServiceAccessor.current().getPresentationDefinitionService();
+		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
 
 	}
 

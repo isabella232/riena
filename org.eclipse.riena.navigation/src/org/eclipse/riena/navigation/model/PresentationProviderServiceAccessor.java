@@ -42,7 +42,7 @@ public class PresentationProviderServiceAccessor {
 		return psa;
 	}
 
-	public IPresentationProviderService getPresentationDefinitionService() {
+	public IPresentationProviderService getPresentationProviderService() {
 
 		return service;
 

@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IPresentationDefinition;
 
-public class ExtensionInjectionHelper<E extends IPresentationDefinition> {
+public class PresentationExtensionInjectionHelper<E extends IPresentationDefinition> {
 
 	private E[] data;
 

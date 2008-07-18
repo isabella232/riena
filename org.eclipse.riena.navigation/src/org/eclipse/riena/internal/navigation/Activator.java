@@ -29,6 +29,7 @@ public class Activator extends RienaPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+	private IPresentationProviderService service = null;
 
 	/**
 	 * The constructor
@@ -46,7 +47,7 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		Activator.plugin = this;
 
-		PresentationProviderService service = new PresentationProviderService();
+		service = new PresentationProviderService();
 		Dictionary<String, Object> dict = new Hashtable<String, Object>();
 		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(-100));
 
@@ -61,6 +62,10 @@ public class Activator extends RienaPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
+		if (service != null) {
+			service.cleanUp();
+			service = null;
+		}
 		super.stop(context);
 	}
 
