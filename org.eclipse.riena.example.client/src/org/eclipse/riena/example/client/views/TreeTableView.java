@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
@@ -73,6 +74,37 @@ public class TreeTableView extends SubModuleNodeView<TreeTableViewController> {
 		layout.setColumnData(columnACount, new ColumnWeightData(30));
 		treeComposite.setLayout(layout);
 
+		Composite buttonComposite = createButtonComposite(group);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonComposite);
+
 		return group;
+	}
+
+	private Composite createButtonComposite(Group group) {
+		Composite buttonComposite = UIControlsFactory.createComposite(group);
+		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(false).applyTo(buttonComposite);
+
+		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
+		int widthHint = UIControlsFactory.getWidthHint(buttonAddSibling);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
+				.applyTo(buttonAddSibling);
+		addUIControl(buttonAddSibling, "buttonAddSibling"); //$NON-NLS-1$
+
+		Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonAddChild, "buttonAddChild"); //$NON-NLS-1$
+
+		Button buttonRename = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonRename, "buttonRename"); //$NON-NLS-1$
+
+		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
+
+		Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonExpand, "buttonExpand"); //$NON-NLS-1$
+
+		Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonCollapse, "buttonCollapse"); //$NON-NLS-1$
+
+		return buttonComposite;
 	}
 }
