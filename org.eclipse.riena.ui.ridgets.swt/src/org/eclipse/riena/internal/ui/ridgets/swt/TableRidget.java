@@ -236,7 +236,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		if (table != null) {
 			TableColumn column = table.getSortColumn();
 			if (column != null) {
-				result = getColumnIndex(column);
+				result = table.indexOf(column);
 			}
 		}
 		return result;
@@ -268,10 +268,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		Integer key = Integer.valueOf(columnIndex);
 		Boolean newValue = Boolean.valueOf(sortable);
 		Boolean oldValue = sortableColumnsMap.put(key, newValue);
-		Table control = getUIControl();
-		if (control != null) {
-			applyTableColumnHeaders(control);
-		}
 		if (oldValue == null) {
 			oldValue = Boolean.TRUE;
 		}
@@ -394,18 +390,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		Assert.isLegal(columnIndex < range, msg);
 	}
 
-	private static int getColumnIndex(TableColumn column) {
-		Table table = column.getParent();
-		TableColumn[] columns = table.getColumns();
-		int result = -1;
-		for (int i = 0; result == -1 && i < columns.length; i++) {
-			if (columns[i] == column) {
-				result = i;
-			}
-		}
-		return result;
-	}
-
 	// helping classes
 	// ////////////////
 
@@ -472,7 +456,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final class ColumnSortListener extends SelectionAdapter {
 		public void widgetSelected(SelectionEvent e) {
 			TableColumn column = (TableColumn) e.widget;
-			int columnIndex = getColumnIndex(column);
+			int columnIndex = column.getParent().indexOf(column);
 			int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
 				if (direction == SWT.DOWN) {
