@@ -47,6 +47,14 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 		return Activator.getSharedImage(key);
 	}
 
+	@Override
+	public Image getColumnImage(Object element, int columnIndex) {
+		if (columnIndex == 0) {
+			return getImage(element);
+		}
+		return super.getColumnImage(element, columnIndex);
+	}
+
 	// helping methods
 	// ////////////////
 
