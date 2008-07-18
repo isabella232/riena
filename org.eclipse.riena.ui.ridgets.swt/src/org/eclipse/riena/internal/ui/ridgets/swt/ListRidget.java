@@ -190,7 +190,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	public void setComparator(int columnIndex, Comparator<Object> comparator) {
 		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
 		if (comparator != null) {
-			SortableComparator sortableComparator = new SortableComparator(comparator);
+			SortableComparator sortableComparator = new SortableComparator(this, comparator);
 			this.comparator = new ViewerComparator(sortableComparator);
 		} else {
 			this.comparator = null;
@@ -334,24 +334,6 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 					listener.callback();
 				}
 			}
-		}
-	}
-
-	/**
-	 * Changes the result of the given <tt>comparator</tt> according to the
-	 * <tt>sortedAscending</tt> setting in the ridget.
-	 */
-	private final class SortableComparator implements Comparator<Object> {
-
-		private final Comparator<Object> orgComparator;
-
-		SortableComparator(Comparator<Object> comparator) {
-			orgComparator = comparator;
-		}
-
-		public int compare(Object o1, Object o2) {
-			int result = orgComparator.compare(o1, o2);
-			return isSortedAscending ? result : result * -1;
 		}
 	}
 

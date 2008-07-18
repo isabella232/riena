@@ -19,8 +19,6 @@ import org.eclipse.riena.ui.ridgets.ISortableByColumn;
  * Changes the result of the given <tt>comparator</tt> according to the
  * <tt>sortedAscending</tt> setting in the ridget.
  */
-// TODO [ev] use in list and table ridget
-// TODO [ev] cleanup list / table ridget get observables
 final class SortableComparator implements Comparator<Object> {
 
 	private final ISortableByColumn ridget;

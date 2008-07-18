@@ -353,12 +353,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				compi = comparatorMap.get(key);
 			}
 			if (compi != null) {
-				SortableComparator sortableComparator = new SortableComparator(compi);
-				viewer.setComparator(new ViewerComparator(sortableComparator));
 				TableColumn column = table.getColumn(sortedColumn);
 				table.setSortColumn(column);
 				int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
 				table.setSortDirection(direction);
+				SortableComparator sortableComparator = new SortableComparator(this, compi);
+				viewer.setComparator(new ViewerComparator(sortableComparator));
 			} else {
 				viewer.setComparator(null);
 				table.setSortColumn(null);
@@ -428,24 +428,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					listener.callback();
 				}
 			}
-		}
-	}
-
-	/**
-	 * Changes the result of the given <tt>comparator</tt> according to the
-	 * <tt>sortedAscending</tt> setting in the ridget.
-	 */
-	private final class SortableComparator implements Comparator<Object> {
-
-		private final Comparator<Object> orgComparator;
-
-		SortableComparator(Comparator<Object> comparator) {
-			orgComparator = comparator;
-		}
-
-		public int compare(Object o1, Object o2) {
-			int result = orgComparator.compare(o1, o2);
-			return isSortedAscending ? result : result * -1;
 		}
 	}
 
