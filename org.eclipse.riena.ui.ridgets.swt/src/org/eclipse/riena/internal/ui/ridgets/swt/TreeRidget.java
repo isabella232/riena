@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -42,7 +46,6 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
-import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -319,45 +322,14 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewer = new TreeViewer(control);
 		// content
 		Realm realm = Realm.getDefault();
+		// how to create a list of children from a given object (expansion)
 		IObservableFactory listFactory = BeansObservables.listFactory(realm, childrenAccessor, treeElementClass);
-		// needed for updating the icons on additon / removal (who's the
-		// parent?)
-		final TreeStructureAdvisor structureAdvisor = new TreeStructureAdvisor() {
-			@Override
-			public Object getParent(Object element) {
-				if (element instanceof ITreeNode) {
-					return ((ITreeNode) element).getParent();
-				}
-				return super.getParent(element);
-			}
-		};
-		final TreeContentProvider viewerCP = new TreeContentProvider(listFactory, structureAdvisor);
-
-		viewerCP.getKnownElements().addSetChangeListener(new ISetChangeListener() {
-			// updates the icons on addition / removal
-			public void handleSetChange(SetChangeEvent event) {
-				if (viewerCP.hasInput()) {
-					Set<Object> parents = new HashSet<Object>();
-					for (Object element : event.diff.getAdditions()) {
-						Object parent = structureAdvisor.getParent(element);
-						if (parent != null) {
-							parents.add(parent);
-						}
-					}
-					for (Object element : event.diff.getRemovals()) {
-						Object parent = structureAdvisor.getParent(element);
-						if (parent != null) {
-							parents.add(parent);
-						}
-					}
-					for (Object parent : parents) {
-						if (!viewer.isBusy()) {
-							viewer.update(parent, null);
-						}
-					}
-				}
-			}
-		});
+		// how to get the parent from a give object
+		TreeStructureAdvisor structureAdvisor = new GenericTreeStructureAdvisor(parentAccessor, treeElementClass);
+		// how to create the content/structure for the tree
+		TreeContentProvider viewerCP = new TreeContentProvider(listFactory, structureAdvisor);
+		// refresh icons on addition / removal
+		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewerCP, structureAdvisor));
 		viewer.setContentProvider(viewerCP);
 		// labels
 		IObservableMap[] attributeMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), treeElementClass,
@@ -553,6 +525,118 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		/** Returns true if we have a valid (i.e. non-null) input. */
 		boolean hasInput() {
 			return hasInput;
+		}
+	}
+
+	/**
+	 * Advisor class for the Eclipse 3.4 tree databinding framework. See {link
+	 * TreeStructureAdvisor}.
+	 * <p>
+	 * This advisor uses the supplied property name and beanClass to invoke an
+	 * appropriate accessor (get/isXXX method) on a element in the tree.
+	 * <p>
+	 * This functionality is used by the databinding framework to perform expand
+	 * operations.
+	 * 
+	 * @see TreeStructureAdvisor
+	 */
+	private static final class GenericTreeStructureAdvisor extends TreeStructureAdvisor {
+
+		private static final Object[] EMPTY_ARRAY = new Object[0];
+
+		private final Class<?> beanClass;
+		private PropertyDescriptor descriptor;
+
+		GenericTreeStructureAdvisor(String propertyName, Class<?> beanClass) {
+			Assert.isNotNull(propertyName);
+			String errorMsg = "propertyName cannot be empty"; //$NON-NLS-1$
+			Assert.isLegal(propertyName.trim().length() > 0, errorMsg);
+			Assert.isNotNull(beanClass);
+
+			String readMethodName = "get" + capitalize(propertyName); //$NON-NLS-1$
+			try {
+				descriptor = new PropertyDescriptor(propertyName, beanClass, readMethodName, null);
+			} catch (IntrospectionException exc) {
+				Activator.log(exc);
+				descriptor = null;
+			}
+			this.beanClass = beanClass;
+		}
+
+		@Override
+		public Object getParent(Object element) {
+			Object result = null;
+			if (element != null && beanClass.isAssignableFrom(element.getClass()) && descriptor != null) {
+				Method readMethod = descriptor.getReadMethod();
+				if (!readMethod.isAccessible()) {
+					readMethod.setAccessible(true);
+				}
+				try {
+					result = readMethod.invoke(element, EMPTY_ARRAY);
+				} catch (InvocationTargetException exc) {
+					Activator.log(exc);
+				} catch (IllegalAccessException exc) {
+					Activator.log(exc);
+				}
+			}
+			return result;
+		}
+
+		private String capitalize(String name) {
+			String result = name.substring(0, 1).toUpperCase();
+			if (name.length() > 1) {
+				result += name.substring(1);
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * This change listener reacts to additions / removals of objects from the
+	 * tree and is responsible for updating the image of the <b>parent</b>
+	 * element. Specifically:
+	 * <ul>
+	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
+	 * have any children beforehand</li> <li>if B gets removed to A we have to
+	 * refresh the icon of A, if B was the last child underneath A</li>
+	 * <ul>
+	 */
+	private final class TreeContentChangeListener implements ISetChangeListener {
+
+		private final TreeContentProvider viewerCP;
+		private final TreeStructureAdvisor structureAdvisor;
+
+		private TreeContentChangeListener(TreeContentProvider viewerCP, TreeStructureAdvisor structureAdvisor) {
+			Assert.isNotNull(viewerCP);
+			Assert.isNotNull(structureAdvisor);
+			this.structureAdvisor = structureAdvisor;
+			this.viewerCP = viewerCP;
+		}
+
+		/**
+		 * Updates the icons of the parent elements on addition / removal
+		 */
+		public void handleSetChange(SetChangeEvent event) {
+			if (viewerCP.hasInput()) { // continue only when viewer has input
+				Set<Object> parents = new HashSet<Object>();
+				for (Object element : event.diff.getAdditions()) {
+					Object parent = structureAdvisor.getParent(element);
+					if (parent != null) {
+						parents.add(parent);
+					}
+				}
+				for (Object element : event.diff.getRemovals()) {
+					Object parent = structureAdvisor.getParent(element);
+					if (parent != null) {
+						parents.add(parent);
+					}
+				}
+				for (Object parent : parents) {
+					if (!viewer.isBusy()) {
+						viewer.update(parent, null);
+					}
+				}
+			}
 		}
 	}
 

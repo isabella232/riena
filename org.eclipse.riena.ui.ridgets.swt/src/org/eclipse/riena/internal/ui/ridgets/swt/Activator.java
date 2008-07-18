@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -85,6 +88,22 @@ public class Activator extends AbstractUIPlugin {
 			return null; // for unit testing only
 		}
 		return getDefault().internalGetSharedColor(colorKey);
+	}
+
+	/**
+	 * Log an error message with the given throwable.
+	 * 
+	 * @param throwable
+	 *            a non-null Throwable
+	 */
+	public static void log(Throwable throwable) {
+		Assert.isNotNull(throwable);
+		String msg = throwable.getMessage();
+		if (msg == null) {
+			msg = "Unexpected error."; //$NON-NLS-1$
+		}
+		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, msg, throwable);
+		getDefault().getLog().log(status);
 	}
 
 	// helping methods
