@@ -121,6 +121,7 @@ public class ListViewController extends SubModuleNodeViewController {
 	private void initRidgets() {
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new StringComparator());
+		listPersons.setSortedColumn(0);
 		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		listPersons.updateFromModel();
 
