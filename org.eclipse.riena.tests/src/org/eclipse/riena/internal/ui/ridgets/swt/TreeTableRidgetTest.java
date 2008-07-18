@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper
 import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.swt.SWT;
@@ -692,7 +693,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Wraps a {@link Person} to make it compatible with the
+	 * {@link ITreeTableRidget}.
 	 */
 	private static final class PersonNode extends TreeNode {
 

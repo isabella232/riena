@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 import org.eclipse.swt.widgets.Button;
@@ -289,7 +290,8 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 	// ////////////////
 
 	/**
-	 * TODO [ev] docs
+	 * This bean stores information about a word (String) and can be used with
+	 * {@link ITreeRidget}s and {@link ITreeTableRidget}s.
 	 */
 	private static class WordNode extends AbstractBean {
 
