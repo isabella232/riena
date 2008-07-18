@@ -173,6 +173,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		bindUIControl();
 	}
 
+	/**
+	 * Returns the TreeViewer instance used by this ridget or null.
+	 */
+	protected final TreeViewer getViewer() {
+		return viewer;
+	}
+
 	// public methods
 	// ///////////////
 

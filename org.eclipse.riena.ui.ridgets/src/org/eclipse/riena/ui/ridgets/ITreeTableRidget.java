@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import java.util.Comparator;
+
 /**
  * Ridget for a tree table.
  */
@@ -75,5 +77,18 @@ public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 
 	void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders);
+
+	/**
+	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
+	 * 
+	 * @param columnIndex
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
+	 *            numColumns )
+	 * @param comparator
+	 *            a Comparator instance; may be null
+	 * @throws RuntimeException
+	 *             if columnIndex is out of range
+	 */
+	public void setComparator(int columnIndex, Comparator<Object> comparator);
 
 }

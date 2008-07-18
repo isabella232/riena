@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.tests;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -48,5 +49,49 @@ public final class TreeUtils {
 			}
 		}
 		return count;
+	}
+
+	private static int level = 0;
+
+	/**
+	 * Dump the substree to system.out starting with the given item.
+	 * 
+	 * @param item
+	 *            a non-null TreeItem
+	 */
+	public synchronized static void print(TreeItem item) {
+		printSpaces(level);
+		System.out.println(item);
+		level++;
+		try {
+			for (TreeItem child : item.getItems()) {
+				print(child);
+			}
+		} finally {
+			level--;
+		}
+	}
+
+	/**
+	 * Dump the tree to system.out starting with the given item.
+	 * 
+	 * @param tree
+	 *            a non-null Tree instance
+	 */
+	public synchronized static void print(Tree tree) {
+		for (TreeItem child : tree.getItems()) {
+			print(child);
+		}
+		System.out.println("###");
+	}
+
+	// helping methods
+	// ////////////////
+
+	private static void printSpaces(int numSpaces) {
+		Assert.isLegal(numSpaces >= 0);
+		for (int i = 0; i < numSpaces; i++) {
+			System.out.print(" ");
+		}
 	}
 }
