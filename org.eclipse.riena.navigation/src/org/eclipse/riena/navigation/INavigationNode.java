@@ -365,6 +365,24 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 
 	INavigationNodeId getPresentationId();
 
+	/**
+	 * Creates the specified navigation node and adds it to the application
+	 * model it does not already exist.
+	 * 
+	 * @param targetId
+	 *            Refers to an extension point describing the target node.
+	 * @see INavigationNodeProvider
+	 */
+	void create(INavigationNodeId targetId);
+
+	/**
+	 * Creates the specified navigation node (if it does not already exist) and
+	 * navigates to it.
+	 * 
+	 * @param targetId
+	 *            Refers to an extension point describing the target node.
+	 * @see INavigationNodeProvider
+	 */
 	void navigate(INavigationNodeId targetId);
 
 }

@@ -23,6 +23,8 @@ public interface INavigationProcessor {
 
 	void dispose(INavigationNode<?> toDispose);
 
+	void create(INavigationNode<?> sourceNode, INavigationNodeId targetId);
+
 	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId);
 
 }
