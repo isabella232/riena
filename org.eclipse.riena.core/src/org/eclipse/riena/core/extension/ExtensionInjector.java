@@ -33,13 +33,13 @@ import org.osgi.service.log.LogService;
  */
 public class ExtensionInjector {
 
-	private final ExtensionDescriptor extensionId;
+	private final ExtensionDescriptor extensionDesc;
 	private final Object target;
 
 	private BundleContext context;
 	private boolean started;
 	private boolean track = true;
-	private boolean translate;
+	private boolean symbolReplacement = true;
 	private String updateMethodName = "update"; //$NON-NLS-1$
 	private Method updateMethod;
 	private IRegistryEventListener injectorListener;
@@ -49,11 +49,11 @@ public class ExtensionInjector {
 	private final static Logger LOGGER = new ConsoleLogger(ExtensionInjector.class.getName());
 
 	/**
-	 * @param extensionId
+	 * @param extensionDesc
 	 * @param target
 	 */
-	ExtensionInjector(final ExtensionDescriptor extensionId, final Object target) {
-		this.extensionId = extensionId;
+	ExtensionInjector(final ExtensionDescriptor extensionDesc, final Object target) {
+		this.extensionDesc = extensionDesc;
 		this.target = target;
 	}
 
@@ -72,7 +72,7 @@ public class ExtensionInjector {
 		isArray = paramaterType.isArray();
 		// if the interface type is given explicitly it will be used; otherwise
 		// the formal parameter type of the update method will be used.
-		componentType = extensionId.getInterfaceType() != null ? extensionId.getInterfaceType()
+		componentType = extensionDesc.getInterfaceType() != null ? extensionDesc.getInterfaceType()
 				: isArray ? paramaterType.getComponentType() : paramaterType;
 		populateInterfaceBeans();
 
@@ -84,7 +84,7 @@ public class ExtensionInjector {
 						"For some reason the extension registry has not been created. Tracking is not possible.");
 			else {
 				injectorListener = new InjectorListener();
-				extensionRegistry.addListener(injectorListener, extensionId.getExtensionPointId());
+				extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
 			}
 		}
 		return this;
@@ -111,7 +111,6 @@ public class ExtensionInjector {
 	 */
 	public ExtensionInjector doNotTrack() {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
-		Assert.isTrue(!this.track, "Not tracking is already set.");
 		track = false;
 		return this;
 	}
@@ -121,10 +120,9 @@ public class ExtensionInjector {
 	 * 
 	 * @return itself
 	 */
-	public ExtensionInjector useTranslation() {
+	public ExtensionInjector doNotReplaceSymbols() {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
-		Assert.isTrue(!this.translate, "Translation is already set.");
-		translate = true;
+		symbolReplacement = false;
 		return this;
 	}
 
@@ -149,7 +147,8 @@ public class ExtensionInjector {
 	/**
 	 */
 	private Method findUpdateMethod() {
-		return extensionId.getInterfaceType() == null ? findUpdateMethodForUnkownType() : findUpdateMethodForKownType();
+		return extensionDesc.getInterfaceType() == null ? findUpdateMethodForUnkownType()
+				: findUpdateMethodForKownType();
 	}
 
 	/**
@@ -159,14 +158,14 @@ public class ExtensionInjector {
 	 */
 	private Method findUpdateMethodForKownType() {
 		try {
-			if (extensionId.requiresArrayUpdateMethod())
-				return seekMatchingUpdateMethod(extensionId.getInterfaceType(), true);
+			if (extensionDesc.requiresArrayUpdateMethod())
+				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), true);
 
 			try {
-				return seekMatchingUpdateMethod(extensionId.getInterfaceType(), false);
+				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), false);
 			} catch (NoSuchMethodException e) {
 				// retry with array
-				return seekMatchingUpdateMethod(extensionId.getInterfaceType(), true);
+				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), true);
 			}
 
 		} catch (SecurityException e) {
@@ -242,11 +241,11 @@ public class ExtensionInjector {
 	 * @return
 	 */
 	private boolean matchesExtensionPointConstraint(final Class<?> type) {
-		return !extensionId.requiresArrayUpdateMethod() || type.isArray();
+		return !extensionDesc.requiresArrayUpdateMethod() || type.isArray();
 	}
 
 	void populateInterfaceBeans() {
-		final Object[] beans = ExtensionReader.read(context, extensionId.getExtensionPointId(), componentType);
+		final Object[] beans = ExtensionMapper.read(symbolReplacement ? context : null, extensionDesc, componentType);
 		if (!matchesExtensionPointConstraint(beans.length))
 			LOGGER
 					.log(LogService.LOG_ERROR,
@@ -267,7 +266,7 @@ public class ExtensionInjector {
 	}
 
 	private boolean matchesExtensionPointConstraint(int occurence) {
-		return occurence >= extensionId.getMinOccurences() && occurence <= extensionId.getMaxOccurences();
+		return occurence >= extensionDesc.getMinOccurences() && occurence <= extensionDesc.getMaxOccurences();
 	}
 
 	/**
@@ -291,7 +290,7 @@ public class ExtensionInjector {
 		 */
 		public void added(IExtensionPoint[] extensionPoints) {
 			// We don´t care about other extension points. We only listen to the
-			// extensions for the id <code>extensionId</code>!
+			// extensions for the id <code>extensionDesc</code>!
 		}
 
 		/*
@@ -310,7 +309,7 @@ public class ExtensionInjector {
 		 */
 		public void removed(IExtensionPoint[] extensionPoints) {
 			// We don´t care about other extension points. We only listen to the
-			// extensions for the id <code>extensionId</code>!
+			// extensions for the id <code>extensionDesc</code>!
 		}
 
 	}
