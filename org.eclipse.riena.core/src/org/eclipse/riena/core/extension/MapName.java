@@ -17,13 +17,14 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation specifies the attribute or element name that the
- * <i>getter</i> method is mapped to, e.g.<br>
+ * <i>getter</i> method is mapped to, e.g.
  * 
- * <code>
- * ..<br>
+ * <pre>
  * 
- * @MapName("validation-policy")<br> String getValidationPolicy();<br> ..<br>
- *                                   </code>
+ * @MapName("validation-policy")
+ * String getValidationPolicy();
+ * 
+ *                                          </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
