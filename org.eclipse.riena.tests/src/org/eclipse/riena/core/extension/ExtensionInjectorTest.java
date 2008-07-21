@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
+import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.COARSE;
+import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.FINE;
+
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -17,6 +20,7 @@ import java.util.Hashtable;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -37,8 +41,10 @@ public class ExtensionInjectorTest extends RienaTestCase {
 	public void scribble() {
 		BundleContext context = null;
 		Inject.extension("").useType(Object.class).expectingMinMax(0, 1).into(this).andStart(context);
-		Inject.extension("").useType(Object.class).expectingExactly(1).into(this).bind("update").andStart(context);
-		Inject.extension("").into(this).doNotTrack().useTranslation().andStart(context).stop();
+		Inject.homogeneousExtension("").useType(Object.class).grained(FINE).expectingExactly(1).into(this).bind(
+				"update").andStart(context);
+		Inject.heterogeneousExtension("").grained(COARSE).into(this).doNotTrack().doNotReplaceSymbols().andStart(context)
+				.stop();
 	}
 
 	public void testConstructorConstraints() {
@@ -269,7 +275,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext5.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
-				"configure").useTranslation().andStart(getContext());
+				"configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getRequired());
 		assertEquals("test5", target.getData().getText());
@@ -397,6 +403,38 @@ public class ExtensionInjectorTest extends RienaTestCase {
 
 		removeExtension("core.test.extpoint.id1");
 		removeExtension("core.test.extpoint.id2");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testGetContributor() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
+		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				getContext());
+		assertEquals(1, target.getData().length);
+		assertEquals(Activator.getDefault().getBundle(), target.getData()[0].getContributingBundle());
+		removeExtension("core.test.extpoint.id1");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testLazyCreate() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext7.xml");
+		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				getContext());
+		assertEquals(1, target.getData().length);
+		assertFalse(LazyThing.instantiated);
+		ILazyThing lazyThing = target.getData()[0].createLazyThing();
+		assertFalse(LazyThing.instantiated);
+		lazyThing.doSomething();
+		assertTrue(LazyThing.instantiated);
+		removeExtension("core.test.extpoint.id7");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 	}

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
+import org.osgi.framework.Bundle;
+
 public interface IData {
 
 	@MapValue()
@@ -42,4 +44,11 @@ public interface IData {
 	IData2 getNews();
 
 	IData3[] getMoreData();
+
+	@MapContributor()
+	Bundle getContributingBundle();
+
+	@CreateLazy()
+	@MapName("objectType")
+	ILazyThing createLazyThing();
 }
