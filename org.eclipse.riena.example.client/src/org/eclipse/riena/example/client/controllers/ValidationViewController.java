@@ -21,6 +21,7 @@ import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValidationTime;
 import org.eclipse.riena.ui.ridgets.marker.StatusbarMessageMarkerViewer;
+import org.eclipse.riena.ui.ridgets.marker.TooltipMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.RequiredField;
@@ -296,6 +297,10 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		statusbarMessageMarkerViewer.addRidget(txtExpression);
 		statusbarMessageMarkerViewer.addRidget(txtLengthLessThan5);
 		statusbarMessageMarkerViewer.addRidget(txtRequiredLowercase);
+
+		TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
+		tooltipMessageMarkerViewer.addRidget(txtNumbersOnly);
+
 	}
 
 	private IObservableValue getTextValue(ITextFieldRidget bean) {

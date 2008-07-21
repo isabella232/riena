@@ -18,6 +18,7 @@ import org.eclipse.riena.example.client.views.MarkerView;
 import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoView;
+import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
 import org.eclipse.riena.example.client.views.TextView;
 import org.eclipse.riena.example.client.views.TreeTableView;
@@ -229,6 +230,11 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(TreeTableView.ID, false);
 		presentation.present(treeTableSubModule, TreeTableView.ID);
 		playgroundModule.addChild(treeTableSubModule);
+
+		ISubModuleNode statusLineSubModule = new SubModuleNode("Statusline"); //$NON-NLS-1$
+		presentation.registerView(StatuslineSubModuleView.ID, false);
+		presentation.present(statusLineSubModule, StatuslineSubModuleView.ID);
+		playgroundModule.addChild(statusLineSubModule);
 
 		return applicationModel;
 	}

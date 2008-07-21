@@ -111,6 +111,12 @@
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
+            id="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
+            name="org.eclipse.riena.example.client.views.StatuslineSubModuleView">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
