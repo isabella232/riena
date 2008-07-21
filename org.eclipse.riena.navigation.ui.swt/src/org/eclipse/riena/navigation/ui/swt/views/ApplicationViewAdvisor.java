@@ -817,7 +817,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 				Shell shell = (Shell) e.getSource();
 
-				Rectangle bounds = new Rectangle(0, 0, e.width, e.height);
+				Rectangle shellBounds = shell.getBounds();
+				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
 
 				GC gc = e.gc;
 
