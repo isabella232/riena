@@ -29,13 +29,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
  */
 public class NavigationProcessor implements INavigationProcessor {
 
-	private IPresentationProviderService presentationProviderService;
-
-	public NavigationProcessor(IPresentationProviderService service) {
-		super();
-		this.presentationProviderService = service;
-	}
-
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
 	 */
@@ -116,9 +109,16 @@ public class NavigationProcessor implements INavigationProcessor {
 	 */
 	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
 
-		INavigationNode<?> targetNode = presentationProviderService.createNode(sourceNode, targetId);
+		INavigationNode<?> targetNode = getPresentationDefinitionService().createNode(sourceNode, targetId);
 
 		targetNode.activate();
+	}
+
+	protected IPresentationProviderService getPresentationDefinitionService() {
+
+		// TODO: handling if no service found ???
+		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
+
 	}
 
 	/**
