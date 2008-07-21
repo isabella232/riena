@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
+import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.COARSE;
+import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.FINE;
+
 import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
 
@@ -26,7 +29,7 @@ import org.osgi.framework.BundleContext;
  * simple java interface with <i>getters</i> where their name corresponds to
  * attribute names or element names for nested extensions of an extension.<br>
  * For a detailed description of the interface/extension mapping
- * {@link ExtensionReader}
+ * {@link ExtensionMapper}
  * <p>
  * The extension injector starts tracking the specified extension with
  * {@link #andStart(BundleContext)}. It stops tracking with {@link #stop()}.<br>
@@ -54,8 +57,24 @@ import org.osgi.framework.BundleContext;
  */
 public class ExtensionDescriptor {
 
-	private String extensionPointId;
+	/**
+	 *
+	 */
+	public enum ExtensionKind {
+		HOMOGENEOUS, HETEROGENEOUS
+	};
+
+	/**
+	 *
+	 */
+	public enum Granularity {
+		COARSE, FINE;
+	}
+
+	private final String extensionPointId;
+	private final ExtensionKind extensionKind;
 	private Class<?> interfaceType;
+	private Granularity granulartiy;
 	private int minOccurences = 0;
 	private int maxOccurences = UNBOUNDED;
 
@@ -65,10 +84,12 @@ public class ExtensionDescriptor {
 	 * Create an extension descriptor for the given extension point id.
 	 * 
 	 * @param extensionPointId
+	 * @param extensionKind
 	 */
-	public ExtensionDescriptor(String extensionPointId) {
+	public ExtensionDescriptor(final String extensionPointId, final ExtensionKind extensionKind) {
 		Assert.isNotNull(extensionPointId, "The extension id must not be null."); //$NON-NLS-1$
 		this.extensionPointId = extensionPointId;
+		this.extensionKind = extensionKind;
 	}
 
 	/**
@@ -84,6 +105,12 @@ public class ExtensionDescriptor {
 		Assert.isTrue(interfaceType.isInterface(), "Interface type must be an interface."); //$NON-NLS-1$
 		Assert.isTrue(this.interfaceType == null, "Interface type has already been set."); //$NON-NLS-1$
 		this.interfaceType = interfaceType;
+		return this;
+	}
+
+	public ExtensionDescriptor grained(Granularity granularity) {
+		Assert.isTrue(this.granulartiy == null, "Granularity has already been set."); //$NON-NLS-1$
+		this.granulartiy = granularity;
 		return this;
 	}
 
@@ -134,6 +161,10 @@ public class ExtensionDescriptor {
 		return extensionPointId;
 	}
 
+	Granularity getGranularity() {
+		return granulartiy == null ? COARSE : FINE;
+	}
+
 	/**
 	 * @return the interfaceType
 	 */
@@ -153,6 +184,13 @@ public class ExtensionDescriptor {
 	 */
 	int getMaxOccurences() {
 		return maxOccurences;
+	}
+
+	/**
+	 * @return the extensionKind
+	 */
+	ExtensionKind getKind() {
+		return extensionKind;
 	}
 
 	/**
