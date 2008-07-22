@@ -25,6 +25,6 @@ public interface INavigationProcessor {
 
 	void create(INavigationNode<?> sourceNode, INavigationNodeId targetId);
 
-	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId);
+	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object... arguments);
 
 }

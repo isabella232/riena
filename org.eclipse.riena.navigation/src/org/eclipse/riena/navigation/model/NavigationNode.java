@@ -785,10 +785,11 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId,
+	 *      java.lang.Object[])
 	 */
-	public void navigate(INavigationNodeId targetId) {
-		getNavigationProcessor().navigate(this, targetId);
+	public void navigate(INavigationNodeId targetId, Object... arguments) {
+		getNavigationProcessor().navigate(this, targetId, arguments);
 	}
 
 	/**

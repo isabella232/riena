@@ -383,6 +383,6 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            Refers to an extension point describing the target node.
 	 * @see INavigationNodeProvider
 	 */
-	void navigate(INavigationNodeId targetId);
+	void navigate(INavigationNodeId targetId, Object... arguments);
 
 }
