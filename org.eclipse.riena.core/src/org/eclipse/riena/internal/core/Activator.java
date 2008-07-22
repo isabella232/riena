@@ -43,7 +43,7 @@ public class Activator extends RienaPlugin {
 	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
 	 * )
 	 */
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 		Logger LOGGER = getLogger(Activator.class.getName());
@@ -79,6 +79,19 @@ public class Activator extends RienaPlugin {
 			}
 		}
 
+		startConcurrent();
+		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.core.RienaPlugin#concurrentStart(org.osgi.framework
+	 * .BundleContext)
+	 */
+	@Override
+	protected void concurrentStart(BundleContext context) {
 		// register ConfigSymbolReplace that replaces symbols in config strings
 		ConfigSymbolReplace csr = new ConfigSymbolReplace();
 		Hashtable<String, String> ht = new Hashtable<String, String>();
@@ -90,7 +103,6 @@ public class Activator extends RienaPlugin {
 		// execute the class that reads through the extensions and executes them
 		// as config admin packages
 		new ConfigFromExtensions(context).doConfig();
-		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
 	}
 
 	/*

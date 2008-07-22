@@ -69,4 +69,37 @@ public abstract class RienaPlugin extends Plugin {
 			logUtil = new LogUtil(context);
 		return logUtil.getLogger(name);
 	}
+
+	/**
+	 * Starts the <code>concurrentStart</code> method in a separate thread. This
+	 * method must to be called from within
+	 * <code>start( BundleContext context)</code> if the
+	 * <code>concurrentStart(BundleContext context) has been overridden.
+	 */
+	protected void startConcurrent() {
+		new Thread() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.lang.Thread#run()
+			 */
+			@Override
+			public void run() {
+				concurrentStart(context);
+			}
+		}.start();
+	}
+
+	/**
+	 * This method will be started in a separate thread by the
+	 * <code>startConcurrent</code> method. This method can be overridden to
+	 * perform initializations that need not be within the
+	 * <code>start(BundleContext context)</code> method or should not be in it.
+	 * 
+	 * @param context
+	 */
+	protected void concurrentStart(BundleContext context) {
+		// nothing to do here
+	}
 }
