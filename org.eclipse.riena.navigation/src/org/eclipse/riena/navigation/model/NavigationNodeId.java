@@ -56,6 +56,16 @@ public class NavigationNodeId implements INavigationNodeId {
 		return false;
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder(typeId);
+		if (instanceId != null) {
+			sb.append("[");
+			sb.append(instanceId);
+			sb.append("]");
+		}
+		return sb.toString();
+	}
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
