@@ -55,7 +55,7 @@ public class ModuleItem {
 	}
 
 	private void construct(Composite parent) {
-		body = new Composite(parent, SWT.None);
+		body = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		body.setLayout(new FillLayout());
 		createSubModuleTree();
 	}
@@ -65,7 +65,7 @@ public class ModuleItem {
 	 */
 	protected void createSubModuleTree() {
 
-		subModuleTree = new Tree(getBody(), SWT.NO_SCROLL);
+		subModuleTree = new Tree(getBody(), SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
 		subModuleTree.setLinesVisible(false);
 
 		addListeners();

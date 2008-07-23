@@ -44,6 +44,8 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
@@ -233,9 +235,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		shell.addPaintListener(new TitlelessPaintListener());
 
-		// TitlelessShellListener shellListener = new TitlelessShellListener();
-		// shell.addShellListener(shellListener);
-		// shell.addControlListener(shellListener);
+		shell.addShellListener(new TitlelessShellListener());
+		// shell.addControlListener(new TitlelessControlListener());
 
 		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
 		shell.addMouseListener(mouseListener);
@@ -792,69 +793,71 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
+	/**
+	 * When the state of the shell is changed a redraw maybe necessary.
+	 */
+	private static class TitlelessShellListener implements ShellListener {
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt
+		 *      .events.ShellEvent)
+		 */
+		public void shellActivated(ShellEvent e) {
+			onStateChanged(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.events
+		 *      .ShellEvent)
+		 */
+		public void shellClosed(ShellEvent e) {
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt
+		 *      .events.ShellEvent)
+		 */
+		public void shellDeactivated(ShellEvent e) {
+			onStateChanged(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt
+		 *      .events.ShellEvent)
+		 */
+		public void shellDeiconified(ShellEvent e) {
+			onStateChanged(e);
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt
+		 *      .events.ShellEvent)
+		 */
+		public void shellIconified(ShellEvent e) {
+		}
+
+		/**
+		 * Redraws the shell.
+		 * 
+		 * @param e
+		 *            - event
+		 */
+		private void onStateChanged(ShellEvent e) {
+			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+				Shell shell = (Shell) e.getSource();
+				shell.redraw();
+			}
+		}
+
+	}
+
 	// /**
-	// * When the state of the shell is changed a redraw maybe necessary.
+	// * After moving a redraw maybe necessary.
 	// */
-	// private static class TitlelessShellListener implements ShellListener,
-	// ControlListener {
+	// private static class TitlelessControlListener implements ControlListener
+	// {
 	//
 	// private Rectangle moveBounds;
-	//
-	// /**
-	// * @see
-	// org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt
-	// .events.ShellEvent)
-	// */
-	// public void shellActivated(ShellEvent e) {
-	// onStateChanged(e);
-	// }
-	//
-	// /**
-	// * @see
-	// org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.events
-	// .ShellEvent)
-	// */
-	// public void shellClosed(ShellEvent e) {
-	// }
-	//
-	// /**
-	// * @see
-	// org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt
-	// .events.ShellEvent)
-	// */
-	// public void shellDeactivated(ShellEvent e) {
-	// onStateChanged(e);
-	// }
-	//
-	// /**
-	// * @see
-	// org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt
-	// .events.ShellEvent)
-	// */
-	// public void shellDeiconified(ShellEvent e) {
-	// onStateChanged(e);
-	// }
-	//
-	// /**
-	// * @see
-	// org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt
-	// .events.ShellEvent)
-	// */
-	// public void shellIconified(ShellEvent e) {
-	// }
-	//
-	// /**
-	// * Redraws the shell.
-	// *
-	// * @param e
-	// * - event
-	// */
-	// private void onStateChanged(ShellEvent e) {
-	// if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
-	// Shell shell = (Shell) e.getSource();
-	// shell.redraw();
-	// }
-	// }
 	//
 	// /**
 	// * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse

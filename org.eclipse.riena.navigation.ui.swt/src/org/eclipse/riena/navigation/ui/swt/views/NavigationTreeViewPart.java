@@ -57,7 +57,7 @@ public class NavigationTreeViewPart extends ViewPart {
 	}
 
 	private Composite initLayoutParts(Composite parent) {
-		Composite c = new Composite(parent, SWT.None);
+		Composite c = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		c.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.NAVIGATION_BACKGROUND));
 		c.setLayout(new FillLayout());
 		return c;
