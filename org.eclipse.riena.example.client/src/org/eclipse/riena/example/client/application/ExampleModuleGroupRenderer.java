@@ -10,33 +10,35 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 
 /**
- * Look and Feel (Lnf) of the example application.<br>
- * The Lnf uses its own theme.
+ *
  */
-public class ExampleLnf extends RienaDefaultLnf {
+public class ExampleModuleGroupRenderer extends ModuleGroupRenderer {
 
 	/**
-	 * ID of this Look and Feel
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer#getModuleGroupPadding()
 	 */
-	private final static String LNF_ID = "ExampleLnf"; //$NON-NLS-1$
-
-	/**
-	 * Creates a new instance of {@code ExampleLnf}
-	 */
-	public ExampleLnf() {
-		super();
-		setTheme(new ExampleTheme());
+	@Override
+	protected int getModuleGroupPadding() {
+		return 0;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf#getLnfId()
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer#getModuleModuleGap()
 	 */
 	@Override
-	protected String getLnfId() {
-		return LNF_ID;
+	protected int getModuleModuleGap() {
+		return 0;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer#getItemWidth()
+	 */
+	@Override
+	public int getItemWidth() {
+		return super.getItemWidth() + 25;
 	}
 
 }

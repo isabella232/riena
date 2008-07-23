@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IComplexComponent;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -45,8 +47,6 @@ public class Statusbar extends Composite implements IComplexComponent {
 	 */
 	public Statusbar(Composite parent, int style) {
 		super(parent, style | SWT.NO_SCROLL);
-		uiControls = new ArrayList<Object>();
-		createContents();
 	}
 
 	/**
@@ -62,8 +62,16 @@ public class Statusbar extends Composite implements IComplexComponent {
 	 */
 	public Statusbar(Composite parent, int style, Class<? extends Control> pSpacer) {
 		super(parent, style | SWT.NO_SCROLL);
-		uiControls = new ArrayList<Object>();
 		spacer = pSpacer;
+		init();
+	}
+
+	/**
+	 * Initializes the statusbar.
+	 */
+	private void init() {
+		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		uiControls = new ArrayList<Object>();
 		createContents();
 	}
 

@@ -288,5 +288,13 @@
             commandId="org.eclipse.riena.example.client.zoomOutCommand">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.riena.ui.swt.lnfrenderer">
+      <renderer
+            class="org.eclipse.riena.example.client.application.ExampleModuleGroupRenderer"
+            lnfid="ExampleLnf"
+            lnfkey="ModuleGroup.renderer">
+      </renderer>
+   </extension>
    
 </plugin>

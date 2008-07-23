@@ -65,6 +65,10 @@ public class ILnfKeyConstants {
 	public static final String SUB_MODULE_TREE_ITEM_BACKGROUND = "subModuleTreeItem.background"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_ITEM_FOREGROUND = "subModuleTreeItem.foreground"; //$NON-NLS-1$
 
+	public static final String STATUSBAR_BACKGROUND = "statusbar.background"; //$NON-NLS-1$
+
+	public static final String GRAB_CORNER_BACKGROUND = "grabCorner.background"; //$NON-NLS-1$
+
 	/**
 	 * Font keys
 	 */

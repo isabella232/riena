@@ -148,6 +148,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 					if (getRenderer() != null) {
 						getRenderer().setBounds(calcSubModuleOuterBounds());
 						SwtViewId viewId = parts.get(current);
+						// boolean db = (current.getStyle() &
+						// SWT.DOUBLE_BUFFERED) == SWT.DOUBLE_BUFFERED;
+						// if (!db) {
+						// System.out.println(".paintControl() " +
+						// parent.getBounds() + " / " + parent.hashCode());
+						// System.out.println(".paintControl() " +
+						// current.getBounds() + " / " + current.hashCode());
+						// }
 						current.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 						SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(
 								viewId.getId(), viewId.getSecondary(), SubModuleNode.class);
@@ -336,6 +344,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	}
 
+	/**
+	 * Calculates the bounds of the status line.
+	 * 
+	 * @return bounds of status line
+	 */
 	private Rectangle calcStatusLineBounds() {
 
 		Rectangle naviBounds = calcNavigationBounds();
@@ -398,10 +411,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 		}
 
 		if (!ctrl.getBounds().equals(bounds)) {
-			ctrl.setVisible(false);
 			ctrl.setBounds(bounds);
+			// ctrl.setRedraw(false);
+			// ctrl.setRedraw(true);
 		}
-		ctrl.setVisible(true);
+		if (!ctrl.isVisible()) {
+			ctrl.setVisible(true);
+		}
 
 	}
 
@@ -411,6 +427,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	@Override
 	public void setBounds(Rectangle bounds) {
 		parent.setBounds(bounds);
+		// System.out.println("TitlelessStackPresentation.setBounds()");
 		updateBounds();
 	}
 

@@ -18,11 +18,18 @@ import org.eclipse.riena.core.extension.MapName;
 public interface ILnfRendererDesc {
 
 	/**
-	 * Returns the key in the table of the renderers of the look and feel
+	 * Returns the key in the table of the renderers of the look and feel.
 	 * 
 	 * @return key
 	 */
 	String getLnfkey();
+
+	/**
+	 * Returns the ID of the look and feel.
+	 * 
+	 * @return id
+	 */
+	String getLnfid();
 
 	/**
 	 * Creates a renderer.

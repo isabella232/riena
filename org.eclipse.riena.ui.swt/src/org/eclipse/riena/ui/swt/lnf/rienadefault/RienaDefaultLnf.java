@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfRendererDesc;
@@ -120,8 +121,16 @@ public class RienaDefaultLnf {
 	public void update(ILnfRendererDesc[] rendererDescriptors) {
 
 		for (int i = 0; i < rendererDescriptors.length; i++) {
-			ILnfRenderer renderer = rendererDescriptors[i].createRenderer();
-			getRendererTable().put(rendererDescriptors[i].getLnfkey(), renderer);
+			String id = rendererDescriptors[i].getLnfid();
+			if (StringUtils.isEmpty(id) || id.equals(getLnfId())) {
+				if (StringUtils.isEmpty(id)) {
+					if (getRendererTable().get(rendererDescriptors[i].getLnfkey()) != null) {
+						continue;
+					}
+				}
+				ILnfRenderer renderer = rendererDescriptors[i].createRenderer();
+				getRendererTable().put(rendererDescriptors[i].getLnfkey(), renderer);
+			}
 		}
 
 	}
@@ -378,6 +387,16 @@ public class RienaDefaultLnf {
 	 */
 	private void setInitialized(boolean initialized) {
 		this.initialized = initialized;
+	}
+
+	/**
+	 * The ID of this Look and Feel.<br>
+	 * The ID of the default LnF is empty.
+	 * 
+	 * @return look'n'feel ID
+	 */
+	protected String getLnfId() {
+		return ""; //$NON-NLS-1$
 	}
 
 }

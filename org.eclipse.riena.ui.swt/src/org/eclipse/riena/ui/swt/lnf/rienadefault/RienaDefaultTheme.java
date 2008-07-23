@@ -128,6 +128,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOREGROUND, getPrimaryForeground());
 
+		table.put(ILnfKeyConstants.STATUSBAR_BACKGROUND, getPrimaryBackground());
+
+		table.put(ILnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
+
 		table.put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
 		table.put("lightGray", new ColorLnfResource(192, 192, 192)); //$NON-NLS-1$
 		table.put("gray", new ColorLnfResource(128, 128, 128)); //$NON-NLS-1$
