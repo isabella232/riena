@@ -44,7 +44,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
 		ISubModuleNode node = (ISubModuleNode) value;
 
-		// titlebar
+		// title bar
 		getTitlebarRenderer().setActive(node.isActivated());
 		getTitlebarRenderer().setCloseable(false);
 		getTitlebarRenderer().setPressed(false);
@@ -65,8 +65,8 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	/**
 	 * Returns the text of the title bar.
 	 * 
-	 * @param node -
-	 *            node of active sub module
+	 * @param node
+	 *            - node of active sub module
 	 * @return title
 	 */
 	private String getTitle(ISubModuleNode node) {
@@ -102,10 +102,10 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	/**
 	 * Computes the size of the space inside the outer bounds.
 	 * 
-	 * @param gc -
-	 *            <code>GC</code>
-	 * @param outerBounds -
-	 *            outer bounds
+	 * @param gc
+	 *            - <code>GC</code>
+	 * @param outerBounds
+	 *            - outer bounds
 	 * @return inner bounds
 	 */
 	public Rectangle computeInnerBounds(GC gc, Rectangle outerBounds) {

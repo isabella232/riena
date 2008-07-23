@@ -191,89 +191,69 @@ public class GrabCorner extends Composite {
 		private boolean resize;
 		private Point startPoint;
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse
-		 * .swt.events.MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse
+		 *      .swt.events.MouseEvent)
 		 */
 		public void mouseDoubleClick(MouseEvent e) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
-		 * .MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
+		 *      .MouseEvent)
 		 */
 		public void mouseDown(MouseEvent e) {
 			resize = true;
 			startPoint = new Point(e.x, e.y);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events
-		 * .MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events
+		 *      .MouseEvent)
 		 */
 		public void mouseUp(MouseEvent e) {
 			resize = false;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.
-		 * swt.events.MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.
+		 *      swt.events.MouseEvent)
 		 */
 		public void mouseEnter(MouseEvent e) {
 			showResizeCursor();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt
-		 * .events.MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt
+		 *      .events.MouseEvent)
 		 */
 		public void mouseExit(MouseEvent e) {
 			showDefaultCursor();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.
-		 * swt.events.MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.
+		 *      swt.events.MouseEvent)
 		 */
 		public void mouseHover(MouseEvent e) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt
-		 * .events.MouseEvent)
+		/**
+		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt
+		 *      .events.MouseEvent)
 		 */
 		public void mouseMove(MouseEvent e) {
 
 			if (resize) {
-				Point endPoint = new Point(e.x, e.y);
 				Point size = getShell().getSize();
-				size.x -= startPoint.x - endPoint.x;
-				size.y -= startPoint.y - endPoint.y;
+				size.x -= startPoint.x - e.x;
+				size.y -= startPoint.y - e.y;
 				getShell().setSize(size);
+				getShell().update();
 			}
 
 		}
+
 	}
 
 }

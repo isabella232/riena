@@ -43,13 +43,13 @@ public class ModuleGroupWidget extends Canvas {
 	/**
 	 * Creates a new widget.
 	 * 
-	 * @param parent -
-	 *            a composite control which will be the parent of the new
+	 * @param parent
+	 *            - a composite control which will be the parent of the new
 	 *            instance
-	 * @param style -
-	 *            the style of control to construct
-	 * @param moduleGroupNode -
-	 *            node of the module group
+	 * @param style
+	 *            - the style of control to construct
+	 * @param moduleGroupNode
+	 *            - node of the module group
 	 */
 	public ModuleGroupWidget(Composite parent, int style, IModuleGroupNode moduleGroupNode) {
 
@@ -104,8 +104,8 @@ public class ModuleGroupWidget extends Canvas {
 	/**
 	 * Opens the given item.
 	 * 
-	 * @param item -
-	 *            item to open
+	 * @param item
+	 *            - item to open
 	 */
 	protected void openItem(ModuleItem item) {
 
@@ -139,8 +139,8 @@ public class ModuleGroupWidget extends Canvas {
 	/**
 	 * Returns the module at the given point.
 	 * 
-	 * @param point -
-	 *            point over module item
+	 * @param point
+	 *            - point over module item
 	 * @return module item; or null, if not item was found
 	 */
 	protected ModuleItem getItem(Point point) {
@@ -159,8 +159,8 @@ public class ModuleGroupWidget extends Canvas {
 	 * Returns the module at the given point, if the point is over the close
 	 * "button".
 	 * 
-	 * @param point -
-	 *            point over module item
+	 * @param point
+	 *            - point over module item
 	 * @return module item; or null, if not item was found
 	 */
 	protected ModuleItem getClosingItem(Point point) {
@@ -326,10 +326,10 @@ public class ModuleGroupWidget extends Canvas {
 		/**
 		 * Switches the hover state of the item under the given position.
 		 * 
-		 * @param x -
-		 *            x coordinate of the position
-		 * @param y -
-		 *            y coordinate of the position
+		 * @param x
+		 *            - x coordinate of the position
+		 * @param y
+		 *            - y coordinate of the position
 		 */
 		private void hoverOrNot(int x, int y) {
 

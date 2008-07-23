@@ -66,8 +66,8 @@ public class ShellRenderer extends AbstractLnfRenderer {
 			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
 
 	/**
-	 * Creates a new instance of <code>ShellRenderer</code> and initializes
-	 * the bounds of the buttons.
+	 * Creates a new instance of <code>ShellRenderer</code> and initializes the
+	 * bounds of the buttons.
 	 */
 	public ShellRenderer() {
 
@@ -123,10 +123,10 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	/**
 	 * Sets the bounds for a button and paints it.
 	 * 
-	 * @param gc -
-	 *            graphics context
-	 * @param btnIndex -
-	 *            index of the button
+	 * @param gc
+	 *            - graphics context
+	 * @param btnIndex
+	 *            - index of the button
 	 */
 	private void paintButton(GC gc, int btnIndex) {
 
@@ -170,8 +170,8 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * @param gc -
-	 *            graphics context
+	 * @param gc
+	 *            - graphics context
 	 * @param shell
 	 */
 	private void paintTitle(GC gc, Shell shell) {
@@ -312,11 +312,11 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of
-	 * the close button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the
+	 * close button, and <code>false</code> otherwise.
 	 * 
-	 * @param pt -
-	 *            the point to test
+	 * @param pt
+	 *            - the point to test
 	 * @return <code>true</code> if the close button bounds contains the point
 	 *         and <code>false</code> otherwise
 	 */
@@ -325,11 +325,11 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of
-	 * the minimize button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the
+	 * minimize button, and <code>false</code> otherwise.
 	 * 
-	 * @param pt -
-	 *            the point to test
+	 * @param pt
+	 *            - the point to test
 	 * @return <code>true</code> if the minimize button bounds contains the
 	 *         point and <code>false</code> otherwise
 	 */
@@ -338,26 +338,26 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of
-	 * the maximize/restore button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the
+	 * maximize/restore button, and <code>false</code> otherwise.
 	 * 
-	 * @param pt -
-	 *            the point to test
-	 * @return <code>true</code> if the maximize/restore button bounds
-	 *         contains the point and <code>false</code> otherwise
+	 * @param pt
+	 *            - the point to test
+	 * @return <code>true</code> if the maximize/restore button bounds contains
+	 *         the point and <code>false</code> otherwise
 	 */
 	public boolean isInsideMaximizeButton(Point pt) {
 		return isInsideButton(pt, MAX_BTN_INDEX);
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of
-	 * the button, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the given point is inside the bounds of the
+	 * button, and <code>false</code> otherwise.
 	 * 
-	 * @param pt -
-	 *            the point to test
-	 * @param btnIndex -
-	 *            index of button
+	 * @param pt
+	 *            - the point to test
+	 * @param btnIndex
+	 *            - index of button
 	 * @return <code>true</code> if the button bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */
@@ -366,14 +366,14 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the bounds of
-	 * the move area, and <code>false</code> otherwise.<br>
+	 * Returns <code>true</code> if the given point is inside the bounds of the
+	 * move area, and <code>false</code> otherwise.<br>
 	 * The move area is the area of the shell less the bounds of the buttons.
 	 * 
-	 * @param pt -
-	 *            the point to test
-	 * @return <code>true</code> if the move area bounds contains the point
-	 *         and <code>false</code> otherwise
+	 * @param pt
+	 *            - the point to test
+	 * @return <code>true</code> if the move area bounds contains the point and
+	 *         <code>false</code> otherwise
 	 */
 	public boolean isInsideMoveArea(Point pt) {
 		Rectangle moveArea = new Rectangle(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
@@ -390,6 +390,23 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		moveArea.width = width;
 		moveArea.height = maxHeight;
 		return moveArea.contains(pt);
+	}
+
+	/**
+	 * Returns the bounds of all buttons.
+	 * 
+	 * @return bounds of buttons
+	 */
+	public Rectangle getButtonsBounds() {
+
+		Rectangle bounds = new Rectangle(btnBounds[0].x, btnBounds[0].y, btnBounds[0].width, btnBounds[0].height);
+
+		for (int i = 1; i < btnBounds.length; i++) {
+			bounds.add(btnBounds[i]);
+		}
+
+		return bounds;
+
 	}
 
 	/**
