@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubApplicationListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
@@ -36,8 +34,6 @@ import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -48,8 +44,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
@@ -65,7 +59,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
@@ -84,7 +77,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
 	private static final int COOLBAR_HIGHT = 22;
 	private static final int COOLBAR_TOP_MARGIN = 2;
-	private static final int STATUSLINE_HIGHT = 22;
 	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
 
 	enum BtnState {
@@ -102,6 +94,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private Composite menuBarComposite;
 	private Composite coolBarComposite;
 	private Composite mainComposite;
+	private Composite logoComposite;
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationViewController pController) {
 		super(configurer);
@@ -157,10 +150,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 		super.postWindowOpen();
 		doInitialBinding();
-
-		IStatusLineManager statusline = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
-		statusline.setMessage(null, "Very simple status line");
-
 	}
 
 	private void doInitialBinding() {
@@ -244,9 +233,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		shell.addPaintListener(new TitlelessPaintListener());
 
-		TitlelessShellListener shellListener = new TitlelessShellListener();
-		shell.addShellListener(shellListener);
-		shell.addControlListener(shellListener);
+		// TitlelessShellListener shellListener = new TitlelessShellListener();
+		// shell.addShellListener(shellListener);
+		// shell.addControlListener(shellListener);
 
 		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
 		shell.addMouseListener(mouseListener);
@@ -345,16 +334,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	/**
-	 * TODO
-	 */
-	private StatusLineManager getStatusLineManager() {
-
-		WorkbenchWindow workbenchWindow = (WorkbenchWindow) getWindowConfigurer().getWindow();
-		return workbenchWindow.getStatusLineManager();
-
-	}
-
 	private class SubApplicationListener extends SubApplicationAdapter {
 
 		/**
@@ -415,7 +394,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		assert parent.getLayout() instanceof FormLayout;
 
-		Composite topLeftComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
@@ -437,9 +416,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			logoData.left = new FormAttachment(0, borderWidth);
 			break;
 		}
-		topLeftComposite.setLayoutData(logoData);
+		logoComposite.setLayoutData(logoData);
 
-		topLeftComposite.addPaintListener(new LogoPaintListener());
+		logoComposite.addPaintListener(new LogoPaintListener());
 
 	}
 
@@ -716,30 +695,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		formData.right = new FormAttachment(100, -padding);
 		composite.setLayoutData(formData);
 		getWindowConfigurer().createPageComposite(composite);
-
-		return composite;
-
-	}
-
-	private Composite createStatusLineComposite(Shell shell) {
-
-		assert shell.getLayout() instanceof FormLayout;
-
-		Point grabCornerSize = GrabCorner.getGrabCornerSize();
-		int padding = getShellPadding();
-
-		Composite composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
-		composite.setBackground(LnfManager.getLnf().getColor("red"));
-		composite.setLayout(new FillLayout());
-		FormData formData = new FormData();
-		formData.height = STATUSLINE_HIGHT;
-		formData.bottom = new FormAttachment(100, -padding);
-		formData.left = new FormAttachment(0, padding);
-		formData.right = new FormAttachment(100, -padding);
-		composite.setLayoutData(formData);
-
-		getWindowConfigurer().getPresentationFactory().createStatusLineControl(getStatusLineManager(), composite);
-
 		return composite;
 
 	}
@@ -837,121 +792,135 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	/**
-	 * When the state of the shell is changed a redraw maybe necessary.
-	 */
-	private static class TitlelessShellListener implements ShellListener, ControlListener {
-
-		private Rectangle moveBounds;
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt.events.ShellEvent)
-		 */
-		public void shellActivated(ShellEvent e) {
-			onStateChanged(e);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.events.ShellEvent)
-		 */
-		public void shellClosed(ShellEvent e) {
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt.events.ShellEvent)
-		 */
-		public void shellDeactivated(ShellEvent e) {
-			onStateChanged(e);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt.events.ShellEvent)
-		 */
-		public void shellDeiconified(ShellEvent e) {
-			onStateChanged(e);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt.events.ShellEvent)
-		 */
-		public void shellIconified(ShellEvent e) {
-		}
-
-		/**
-		 * Redraws the shell.
-		 * 
-		 * @param e
-		 *            - event
-		 */
-		private void onStateChanged(ShellEvent e) {
-			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
-				Shell shell = (Shell) e.getSource();
-				shell.redraw();
-			}
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt.events.ControlEvent)
-		 */
-		public void controlMoved(ControlEvent e) {
-			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
-				Shell shell = (Shell) e.getSource();
-				Display display = shell.getDisplay();
-				if ((moveBounds == null) || (!displaySurrounds(display, moveBounds))) {
-					shell.setRedraw(false);
-					shell.setRedraw(true);
-					shell.redraw();
-				}
-				moveBounds = shell.getBounds();
-			}
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse.swt.events.ControlEvent)
-		 */
-		public void controlResized(ControlEvent e) {
-		}
-
-		/**
-		 * Returns <code>true</code> if the given bounds are is inside the area
-		 * of the display, and <code>false</code> otherwise.
-		 * 
-		 * @param display
-		 *            - display
-		 * @param bounds
-		 *            - bounds to test for containment
-		 * @return <code>true</code> if the rectangle contains the bounds and
-		 *         <code>false</code> otherwise
-		 */
-		private boolean displaySurrounds(Display display, Rectangle bounds) {
-
-			// top left
-			if (!display.getBounds().contains(bounds.x, bounds.y)) {
-				return false;
-			}
-			// top right
-			if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y)) {
-				return false;
-			}
-			// bottom left
-			if (!display.getBounds().contains(bounds.x, bounds.y + bounds.height)) {
-				return false;
-			}
-			// bottom right
-			if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y + bounds.height)) {
-				return false;
-			}
-
-			return true;
-
-		}
-
-	}
+	// /**
+	// * When the state of the shell is changed a redraw maybe necessary.
+	// */
+	// private static class TitlelessShellListener implements ShellListener,
+	// ControlListener {
+	//
+	// private Rectangle moveBounds;
+	//
+	// /**
+	// * @see
+	// org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt
+	// .events.ShellEvent)
+	// */
+	// public void shellActivated(ShellEvent e) {
+	// onStateChanged(e);
+	// }
+	//
+	// /**
+	// * @see
+	// org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.events
+	// .ShellEvent)
+	// */
+	// public void shellClosed(ShellEvent e) {
+	// }
+	//
+	// /**
+	// * @see
+	// org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt
+	// .events.ShellEvent)
+	// */
+	// public void shellDeactivated(ShellEvent e) {
+	// onStateChanged(e);
+	// }
+	//
+	// /**
+	// * @see
+	// org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt
+	// .events.ShellEvent)
+	// */
+	// public void shellDeiconified(ShellEvent e) {
+	// onStateChanged(e);
+	// }
+	//
+	// /**
+	// * @see
+	// org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt
+	// .events.ShellEvent)
+	// */
+	// public void shellIconified(ShellEvent e) {
+	// }
+	//
+	// /**
+	// * Redraws the shell.
+	// *
+	// * @param e
+	// * - event
+	// */
+	// private void onStateChanged(ShellEvent e) {
+	// if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+	// Shell shell = (Shell) e.getSource();
+	// shell.redraw();
+	// }
+	// }
+	//
+	// /**
+	// * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse
+	// * .swt.events.ControlEvent)
+	// */
+	// public void controlMoved(ControlEvent e) {
+	// if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+	// Shell shell = (Shell) e.getSource();
+	// Display display = shell.getDisplay();
+	// if ((moveBounds == null) || (!displaySurrounds(display, moveBounds))) {
+	// shell.setRedraw(false);
+	// shell.setRedraw(true);
+	// shell.redraw();
+	// }
+	// moveBounds = shell.getBounds();
+	// }
+	// }
+	//
+	// /**
+	// * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse
+	// * .swt.events.ControlEvent)
+	// */
+	// public void controlResized(ControlEvent e) {
+	// }
+	//
+	// /**
+	// * Returns <code>true</code> if the given bounds are is inside the area
+	// * of the display, and <code>false</code> otherwise.
+	// *
+	// * @param display
+	// * - display
+	// * @param bounds
+	// * - bounds to test for containment
+	// * @return <code>true</code> if the rectangle contains the bounds and
+	// * <code>false</code> otherwise
+	// */
+	// private boolean displaySurrounds(Display display, Rectangle bounds) {
+	//
+	// // top left
+	// if (!display.getBounds().contains(bounds.x, bounds.y)) {
+	// return false;
+	// }
+	// // top right
+	// if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y)) {
+	// return false;
+	// }
+	// // bottom left
+	// if (!display.getBounds().contains(bounds.x, bounds.y + bounds.height)) {
+	// return false;
+	// }
+	// // bottom right
+	// if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y +
+	// bounds.height)) {
+	// return false;
+	// }
+	//
+	// return true;
+	//
+	// }
+	//
+	// }
 
 	/**
 	 * This listener paints the logo.
 	 */
-	private static class LogoPaintListener implements PaintListener {
+	private class LogoPaintListener implements PaintListener {
 
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
@@ -968,10 +937,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		private void onPaint(PaintEvent e) {
 
-			ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
-					ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
-			renderer.setBounds(e.x, e.y, e.width, e.height);
-			renderer.paint(e.gc, null);
+			if (e.getSource() == logoComposite) {
+				Rectangle compositeBounds = logoComposite.getBounds();
+				ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
+						ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
+				renderer.setBounds(compositeBounds);
+				renderer.paint(e.gc, null);
+			}
 
 		}
 
@@ -1119,8 +1091,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			if (redraw) {
 				Shell shell = getShell(e);
-				shell.setRedraw(false);
-				shell.setRedraw(true);
+				Rectangle buttonBounds = getShellRenderer().getButtonsBounds();
+				shell.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
 			}
 
 		}
