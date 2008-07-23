@@ -62,7 +62,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 		Class<? extends IRidget> ridget = mapper.getRidgetClass(MockComposite.class);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), MockRidget.class.getName());
+		assertEquals(MockRidget.class.getName(), ridget.getName());
 
 	}
 
@@ -81,14 +81,55 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 		Class<? extends IRidget> ridget = mapper.getRidgetClass(MockComposite.class);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), MockRidget.class.getName());
+		assertEquals(MockRidget.class.getName(), ridget.getName());
 
 		MockComposite widget = new MockComposite(shell, SWT.BORDER);
 		ridget = mapper.getRidgetClass(widget);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), MockRidget2.class.getName());
+		assertEquals(MockRidget2.class.getName(), ridget.getName());
 		widget.dispose();
 
+	}
+
+	/**
+	 * Tests the method
+	 * {@link DefaultSwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)}
+	 * .
+	 */
+	public void testAddMappingWithCondition() {
+
+		FTMappingCondition condition1 = new FTMappingCondition(false);
+		FTMappingCondition condition2 = new FTMappingCondition(false);
+
+		mapper.addMapping(MockComposite.class, MockRidget.class, condition1);
+		mapper.addMapping(MockComposite.class, MockRidget2.class, condition2);
+
+		MockComposite widget = new MockComposite(shell, SWT.NONE);
+		try {
+			condition1.setMatch(true);
+
+			Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(widget);
+			assertNotNull(ridgetClass);
+			assertEquals(MockRidget.class.getName(), ridgetClass.getName());
+
+			condition1.setMatch(false);
+			condition2.setMatch(true);
+
+			ridgetClass = mapper.getRidgetClass(widget);
+			assertNotNull(ridgetClass);
+			assertEquals(MockRidget2.class.getName(), ridgetClass.getName());
+
+			condition2.setMatch(false);
+
+			try {
+				ridgetClass = mapper.getRidgetClass(widget);
+				fail();
+			} catch (BindingException bex) {
+				// expected: no matching widget
+			}
+		} finally {
+			widget.dispose();
+		}
 	}
 
 	/**
@@ -101,7 +142,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 		Class<? extends IRidget> ridget = mapper.getRidgetClass(Label.class);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), LabelRidget.class.getName());
+		assertEquals(LabelRidget.class.getName(), ridget.getName());
 
 		try {
 			ridget = mapper.getRidgetClass(MockComposite.class);
@@ -122,17 +163,17 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		Button button = new Button(shell, SWT.DEFAULT);
 		Class<? extends IRidget> ridget = mapper.getRidgetClass(button);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), ActionRidget.class.getName());
+		assertEquals(ActionRidget.class.getName(), ridget.getName());
 
 		button = new Button(shell, SWT.FLAT);
 		ridget = mapper.getRidgetClass(button);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), ActionRidget.class.getName());
+		assertEquals(ActionRidget.class.getName(), ridget.getName());
 
 		button = new Button(shell, SWT.CHECK);
 		ridget = mapper.getRidgetClass(button);
 		assertNotNull(ridget);
-		assertEquals(ridget.getName(), ToggleButtonRidget.class.getName());
+		assertEquals(ToggleButtonRidget.class.getName(), ridget.getName());
 
 	}
 
@@ -147,10 +188,14 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		Mapping mapping = new Mapping(MockComposite.class, MockRidget.class);
 		assertTrue(mapping.isMatching(MockComposite.class));
 		assertFalse(mapping.isMatching(MockComposite2.class));
+
 		mapping = new Mapping(MockComposite.class, MockRidget.class, SWT.CHECK);
 		assertFalse(mapping.isMatching(MockComposite.class));
 		assertFalse(mapping.isMatching(MockComposite2.class));
 
+		mapping = new Mapping(MockComposite.class, MockRidget.class, new FTMappingCondition(true));
+		assertFalse(mapping.isMatching(MockComposite.class));
+		assertFalse(mapping.isMatching(MockComposite2.class));
 	}
 
 	/**
@@ -180,12 +225,48 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		assertTrue(mapping.isMatching(comp));
 		comp.dispose();
 
+		FTMappingCondition condition = new FTMappingCondition(true);
+		mapping = new Mapping(MockComposite.class, MockRidget.class, condition);
+		comp = new MockComposite(shell, SWT.DEFAULT);
+		try {
+			assertTrue(mapping.isMatching(comp));
+			condition.setMatch(false);
+			assertFalse(mapping.isMatching(comp));
+		} finally {
+			comp.dispose();
+		}
+
+	}
+
+	// helping classes
+	// ////////////////
+
+	/**
+	 * Simple implementation of an IMappingCondition used for testing purposes.
+	 * USe the {@link #setMatch(boolean)} to change the behavior of a condition.
+	 */
+	private static final class FTMappingCondition implements IMappingCondition {
+
+		private boolean isMatch = true;
+
+		public FTMappingCondition(boolean isMatch) {
+			this.isMatch = isMatch;
+		}
+
+		void setMatch(boolean isMatch) {
+			this.isMatch = isMatch;
+		}
+
+		public boolean isMatch(Object widget) {
+			return isMatch;
+		}
+
 	}
 
 	/**
 	 * Mock extention of <code>Composite</code>.
 	 */
-	private class MockComposite extends Composite {
+	private static final class MockComposite extends Composite {
 
 		public MockComposite(Composite parent, int style) {
 			super(parent, style);
@@ -196,7 +277,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 	/**
 	 * Another mock extention of <code>Composite</code>.
 	 */
-	private class MockComposite2 extends Composite {
+	private static final class MockComposite2 extends Composite {
 
 		public MockComposite2(Composite parent, int style) {
 			super(parent, style);
@@ -207,7 +288,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 	/**
 	 * Mock implementation of ridget.
 	 */
-	private class MockRidget implements IRidget {
+	private static final class MockRidget implements IRidget {
 
 		public Object getUIControl() {
 			return null;
@@ -265,31 +346,18 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		public void setToolTipText(String toolTipText) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
-		 */
 		public boolean isBlocked() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
-		 */
 		public void setBlocked(boolean blocked) {
-			// TODO Auto-generated method stub
-
 		}
 	}
 
 	/**
 	 * Another mock implementation of ridget.
 	 */
-	private class MockRidget2 implements IRidget {
+	private static final class MockRidget2 implements IRidget {
 
 		public Object getUIControl() {
 			return null;
@@ -347,24 +415,11 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		public void setToolTipText(String toolTipText) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
-		 */
 		public boolean isBlocked() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
-		 */
 		public void setBlocked(boolean blocked) {
-			// TODO Auto-generated method stub
-
 		}
 	}
 }
