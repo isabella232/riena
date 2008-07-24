@@ -96,7 +96,7 @@ final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseT
 	}
 
 	/**
-	 * Show a tracker rectangle
+	 * Create a tracker rectangle
 	 */
 	private Tracker createTracker() {
 		Shell shell = control.getShell();
