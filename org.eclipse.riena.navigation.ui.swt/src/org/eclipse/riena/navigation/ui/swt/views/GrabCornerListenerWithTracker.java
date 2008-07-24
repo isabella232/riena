@@ -47,6 +47,7 @@ final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseT
 		this.control = control;
 	}
 
+	@Override
 	public void mouseDown(MouseEvent e) {
 		Tracker tracker = createTracker();
 		try {
