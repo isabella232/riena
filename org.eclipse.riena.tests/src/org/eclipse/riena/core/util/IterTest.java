@@ -77,6 +77,42 @@ public class IterTest extends TestCase {
 	/**
 	 * Nomen est omen!
 	 */
+	public void testArray() {
+		String[] strings = new String[] { "a", "b", "c" };
+		String result = "";
+		for (String o : Iter.able(strings)) {
+			result = result + o;
+		}
+		assertEquals("abc", result);
+	}
+
+	/**
+	 * Nomen est omen!
+	 */
+	public void testEmptyArray() {
+		String[] strings = new String[0];
+		String result = "";
+		for (String o : Iter.able(strings)) {
+			result = result + o;
+		}
+		assertEquals("", result);
+	}
+
+	/**
+	 * Nomen est omen!
+	 */
+	public void testNullArray() {
+		String[] strings = null;
+		String result = "";
+		for (String o : Iter.able(strings)) {
+			result = result + o;
+		}
+		assertEquals("", result);
+	}
+
+	/**
+	 * Nomen est omen!
+	 */
 	public void testEnumerationUntyped() {
 		StringTokenizer st = new StringTokenizer("this is a test");
 		String result = "";
