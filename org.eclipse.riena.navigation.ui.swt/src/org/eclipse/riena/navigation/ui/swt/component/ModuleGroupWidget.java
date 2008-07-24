@@ -146,6 +146,9 @@ public class ModuleGroupWidget extends Canvas {
 	protected ModuleItem getItem(Point point) {
 
 		for (ModuleItem item : getItems()) {
+			if (item.getBounds() == null) {
+				continue;
+			}
 			if (item.getBounds().contains(point)) {
 				return item;
 			}
