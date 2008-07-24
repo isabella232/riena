@@ -13,15 +13,8 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -36,9 +29,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GrabCorner extends Composite {
 
-	private Cursor resizeCursor;
-	private Cursor defaultCursor;
-
 	/**
 	 * @param shell
 	 * @param style
@@ -50,8 +40,9 @@ public class GrabCorner extends Composite {
 
 		setLayoutData();
 
-		addListeners();
-
+		addPaintListener(new GrabPaintListener());
+		// new GrabCornerListener(this); // TODO [ev] delete later
+		new GrabCornerListenerWithTracker(this);
 	}
 
 	/**
@@ -68,19 +59,6 @@ public class GrabCorner extends Composite {
 		grabFormData.bottom = new FormAttachment(100, -borderWidth);
 		grabFormData.right = new FormAttachment(100, -borderWidth);
 		setLayoutData(grabFormData);
-
-	}
-
-	/**
-	 * Adds listeners to the grab corner.
-	 */
-	private void addListeners() {
-
-		addPaintListener(new GrabPaintListener());
-		GrabMouseListener mouseListener = new GrabMouseListener();
-		addMouseListener(mouseListener);
-		addMouseMoveListener(mouseListener);
-		addMouseTrackListener(mouseListener);
 
 	}
 
@@ -136,122 +114,15 @@ public class GrabCorner extends Composite {
 	}
 
 	/**
-	 * Sets the resize cursor.
-	 */
-	private void showResizeCursor() {
-		if (resizeCursor == null) {
-			resizeCursor = new Cursor(getDisplay(), SWT.CURSOR_SIZENWSE);
-		}
-		setCursor(resizeCursor);
-
-	}
-
-	/**
-	 * Sets the default cursor.
-	 */
-	private void showDefaultCursor() {
-		if (defaultCursor == null) {
-			defaultCursor = new Cursor(getDisplay(), SWT.CURSOR_ARROW);
-		}
-		setCursor(defaultCursor);
-	}
-
-	/**
-	 * @see org.eclipse.swt.widgets.Widget#dispose()
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-		SwtUtilities.disposeResource(resizeCursor);
-		SwtUtilities.disposeResource(defaultCursor);
-	}
-
-	/**
 	 * This Listener paint the grab corner.
 	 */
 	private static class GrabPaintListener implements PaintListener {
 
-		/**
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
-		 */
 		public void paintControl(PaintEvent e) {
 
 			GC gc = e.gc;
 			Image grabCornerImage = getGrabCornerImage();
 			gc.drawImage(grabCornerImage, 0, 0);
-
-		}
-
-	}
-
-	/**
-	 * After any mouse operation a method of this listener is called.
-	 */
-	private class GrabMouseListener implements MouseListener, MouseTrackListener, MouseMoveListener {
-
-		private boolean resize;
-		private Point startPoint;
-
-		/**
-		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse
-		 *      .swt.events.MouseEvent)
-		 */
-		public void mouseDoubleClick(MouseEvent e) {
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
-		 *      .MouseEvent)
-		 */
-		public void mouseDown(MouseEvent e) {
-			resize = true;
-			startPoint = new Point(e.x, e.y);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events
-		 *      .MouseEvent)
-		 */
-		public void mouseUp(MouseEvent e) {
-			resize = false;
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.
-		 *      swt.events.MouseEvent)
-		 */
-		public void mouseEnter(MouseEvent e) {
-			showResizeCursor();
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt
-		 *      .events.MouseEvent)
-		 */
-		public void mouseExit(MouseEvent e) {
-			showDefaultCursor();
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.
-		 *      swt.events.MouseEvent)
-		 */
-		public void mouseHover(MouseEvent e) {
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt
-		 *      .events.MouseEvent)
-		 */
-		public void mouseMove(MouseEvent e) {
-
-			if (resize) {
-				Point size = getShell().getSize();
-				size.x -= startPoint.x - e.x;
-				size.y -= startPoint.y - e.y;
-				getShell().setSize(size);
-				getShell().update();
-			}
 
 		}
 
