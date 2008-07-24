@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -17,7 +18,11 @@ import java.util.Iterator;
 /**
  * The Iter class provides conversions from classes only implementing Iterator
  * or Enumeration such that they can be used within the extended for()-loop
- * (foreach).
+ * (foreach).<br>
+ * However, all the <code>able()</code> methods can be used with a
+ * <code>null</code> parameter. Most important, checking for <code>null</code>
+ * is not necessary!<br>
+ * <b>Note: </b>All these methods induce a small performance penalty.
  */
 public final class Iter {
 
@@ -58,6 +63,24 @@ public final class Iter {
 			return Collections.emptyList();
 		} else {
 			return new IteratorIterable<T>(new EnumerationIterator<T>(enumeration));
+		}
+	}
+
+	/**
+	 * Create an Iterable for the given array.
+	 * 
+	 * @param <T>
+	 *            generic type for the Iterable
+	 * @param array
+	 *            the array (might be null!)
+	 * 
+	 * @return the Iterable
+	 */
+	public static <T> Iterable<T> able(T[] array) {
+		if (array == null) {
+			return Collections.emptyList();
+		} else {
+			return Arrays.asList(array);
 		}
 	}
 
