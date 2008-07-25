@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoView;
 import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
 import org.eclipse.riena.example.client.views.SystemPropertiesView;
+import org.eclipse.riena.example.client.views.TableView;
 import org.eclipse.riena.example.client.views.TextView;
 import org.eclipse.riena.example.client.views.TreeTableView;
 import org.eclipse.riena.example.client.views.TreeView;
@@ -222,11 +223,6 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.present(validationSubModule, ValidationView.ID);
 		playgroundModule.addChild(validationSubModule);
 
-		ISubModuleNode systemPropertiesSubModule = new SubModuleNode("System Properties"); //$NON-NLS-1$
-		presentation.registerView(SystemPropertiesView.ID, false);
-		presentation.present(systemPropertiesSubModule, SystemPropertiesView.ID);
-		playgroundModule.addChild(systemPropertiesSubModule);
-
 		ISubModuleNode treeSubModule = new SubModuleNode("Tree"); //$NON-NLS-1$
 		presentation.registerView(TreeView.ID, false);
 		presentation.present(treeSubModule, TreeView.ID);
@@ -236,6 +232,16 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(TreeTableView.ID, false);
 		presentation.present(treeTableSubModule, TreeTableView.ID);
 		playgroundModule.addChild(treeTableSubModule);
+
+		ISubModuleNode tableSubModule = new SubModuleNode("Table");
+		presentation.registerView(TableView.ID, false);
+		presentation.present(tableSubModule, TableView.ID);
+		playgroundModule.addChild(tableSubModule);
+
+		ISubModuleNode systemPropertiesSubModule = new SubModuleNode("System Properties"); //$NON-NLS-1$
+		presentation.registerView(SystemPropertiesView.ID, false);
+		presentation.present(systemPropertiesSubModule, SystemPropertiesView.ID);
+		playgroundModule.addChild(systemPropertiesSubModule);
 
 		ISubModuleNode statusLineSubModule = new SubModuleNode("Statusline"); //$NON-NLS-1$
 		presentation.registerView(StatuslineSubModuleView.ID, false);

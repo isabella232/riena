@@ -107,6 +107,12 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.TableView"
+            id="org.eclipse.riena.example.client.views.TableView"
+            name="org.eclipse.riena.example.client.views.TableView">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">
