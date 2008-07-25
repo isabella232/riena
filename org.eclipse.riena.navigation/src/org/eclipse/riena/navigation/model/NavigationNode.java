@@ -21,6 +21,7 @@ import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.navigation.IAction;
+import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
@@ -796,7 +797,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 *      java.lang.Object)
 	 */
 	public void navigate(INavigationNodeId targetId, Object argument) {
-		getNavigationProcessor().navigate(this, targetId, argument);
+		navigate(targetId, argument, null);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId,
+	 *      java.lang.Object,
+	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
+	 */
+	public void navigate(INavigationNodeId targetId, Object argument, INavigationArgumentListener argumentListener) {
+		getNavigationProcessor().navigate(this, targetId, argument, argumentListener);
 	}
 
 	/**

@@ -390,9 +390,21 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * navigates to it.
 	 * 
 	 * @param targetId
+	 * @param argument
 	 *            Refers to an extension point describing the target node.
 	 * @see INavigationNodeProvider
 	 */
 	void navigate(INavigationNodeId targetId, Object argument);
+
+	/**
+	 * Creates the specified navigation node (if it does not already exist) and
+	 * navigates to it.
+	 * 
+	 * @param targetId
+	 * @param argument
+	 * @param argumentListener
+	 * @see INavigationNodeProvider
+	 */
+	void navigate(INavigationNodeId targetId, Object argument, INavigationArgumentListener argumentListener);
 
 }

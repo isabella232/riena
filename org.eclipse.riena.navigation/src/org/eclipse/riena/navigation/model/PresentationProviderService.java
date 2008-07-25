@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
@@ -58,19 +59,21 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	/**
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object)
+	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object,
+	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
 	 */
-	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument) {
+	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+			INavigationArgumentListener argumentListener) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 
 		if (targetNode == null) {
 			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinitionNN(targetId);
 			if (presentationDefinition != null) {
 				INavigationNodeProvider builder = presentationDefinition.createNodeProvider();
-				targetNode = builder.buildNode(targetId, argument);
+				targetNode = builder.buildNode(targetId);
 
 				INavigationNode parentNode = createNode(sourceNode, new NavigationNodeId(presentationDefinition
-						.getParentPresentationId()), null);
+						.getParentPresentationId()), null, null);
 				parentNode.addChild(targetNode);
 			} else {
 				// TODO throw some new type of failure

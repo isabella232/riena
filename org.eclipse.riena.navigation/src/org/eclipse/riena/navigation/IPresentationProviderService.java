@@ -30,7 +30,8 @@ public interface IPresentationProviderService {
 	 * @return
 	 */
 
-	INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument);
+	INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+			INavigationArgumentListener argumentListener);
 
 	/**
 	 * Return an instance of a view

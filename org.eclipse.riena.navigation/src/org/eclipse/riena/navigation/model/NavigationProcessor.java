@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
@@ -108,22 +109,26 @@ public class NavigationProcessor implements INavigationProcessor {
 	 *      org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public void create(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
-		createTarget(sourceNode, targetId, null);
+		createTarget(sourceNode, targetId, null, null);
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object)
+	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object,
+	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
 	 */
-	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument) {
+	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+			INavigationArgumentListener argumentListener) {
 
-		INavigationNode<?> targetNode = createTarget(sourceNode, targetId, argument);
+		INavigationNode<?> targetNode = createTarget(sourceNode, targetId, argument, argumentListener);
 
 		targetNode.activate();
 	}
 
-	private INavigationNode<?> createTarget(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument) {
-		INavigationNode<?> targetNode = getPresentationDefinitionService().createNode(sourceNode, targetId, argument);
+	private INavigationNode<?> createTarget(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+			INavigationArgumentListener argumentListener) {
+		INavigationNode<?> targetNode = getPresentationDefinitionService().createNode(sourceNode, targetId, argument,
+				argumentListener);
 		return targetNode;
 	}
 

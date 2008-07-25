@@ -27,7 +27,7 @@ public class Open3NavigationNodeBuilder implements INavigationNodeProvider {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#buildNode()
 	 */
-	public IModuleGroupNode buildNode(INavigationNodeId presentationId, Object... arguments) {
+	public IModuleGroupNode buildNode(INavigationNodeId presentationId) {
 		ModuleGroupNode node = new ModuleGroupNode("New Group");
 		node.setPresentationId(presentationId);
 		IModuleNode module = new ModuleNode("New Module");

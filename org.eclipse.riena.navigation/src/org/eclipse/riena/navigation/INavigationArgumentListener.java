@@ -11,13 +11,10 @@
 package org.eclipse.riena.navigation;
 
 /**
- * Implementations of this interface are responsible for creating application
- * specific modules (or module trees).
- * 
- * @author Erich Achilles
+ *
  */
-public interface INavigationNodeProvider {
+public interface INavigationArgumentListener {
 
-	INavigationNode<?> buildNode(INavigationNodeId INavigationNodeId);
+	void valueChanged(Object argument);
 
 }
