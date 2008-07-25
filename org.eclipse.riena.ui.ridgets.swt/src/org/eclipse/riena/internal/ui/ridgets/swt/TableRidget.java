@@ -25,7 +25,6 @@ import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
-import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -95,7 +94,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					renderingMethods);
-			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
+			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap));
 			viewer.setContentProvider(viewerCP);
 
 			applyColumnsMoveable(control);
