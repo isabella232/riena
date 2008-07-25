@@ -33,12 +33,23 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
 
 	private final TreeViewer viewer;
+	private final IObservableMap[] attributeMap;
 
+	/**
+	 * Create a new instance
+	 * 
+	 * @param viewer
+	 *            a non-null {@link TreeViewer} instance
+	 * @param attributeMap
+	 *            a non-null {@link IObservableMap} instance
+	 */
 	TreeRidgetLabelProvider(final TreeViewer viewer, IObservableMap[] attributeMap) {
 		super(attributeMap);
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);
 		this.viewer = viewer;
+		this.attributeMap = new IObservableMap[attributeMap.length];
+		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
 	}
 
 	@Override
@@ -51,6 +62,13 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 	public Image getColumnImage(Object element, int columnIndex) {
 		if (columnIndex == 0) {
 			return getImage(element);
+		}
+		if (columnIndex < attributeMap.length) {
+			Object result = attributeMap[columnIndex].get(element);
+			if (result instanceof Boolean) {
+				String key = ((Boolean) result).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
+				return Activator.getSharedImage(key);
+			}
 		}
 		return super.getColumnImage(element, columnIndex);
 	}

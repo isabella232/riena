@@ -31,11 +31,15 @@ public final class SharedImages {
 	public static final String IMG_NODE_COLLAPSED = "IMG_NODE_COLLAPSED"; //$NON-NLS-1$
 	public static final String IMG_NODE_EXPANDED = "IMG_NODE_EXPANDED"; //$NON-NLS-1$
 	public static final String IMG_LEAF = "IMG_LEAF"; //$NON-NLS-1$
+	public static final String IMG_CHECKED = "IMG_CHECKED"; //$NON-NLS-1$
+	public static final String IMG_UNCHECKED = "IMG_UNCHECKED"; //$NON-NLS-1$
 
 	static void initializeImageRegistry(ImageRegistry reg) {
 		doPut(reg, IMG_NODE_COLLAPSED, "/icons/obj16/node_collapsed.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_NODE_EXPANDED, "/icons/obj16/node_expanded.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_LEAF, "/icons/obj16/leaf.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_CHECKED, "/icons/obj16/checkbox_checked.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_UNCHECKED, "/icons/obj16/checkbox_unchecked.gif"); //$NON-NLS-1$
 	}
 
 	// helping methods
