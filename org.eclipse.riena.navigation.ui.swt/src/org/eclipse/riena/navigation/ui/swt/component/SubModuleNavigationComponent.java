@@ -83,9 +83,21 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 	private final class TreeUIObserver implements Listener {
 
 		public void handleEvent(Event event) {
-			TreeItem[] selection = getTree().getSelection();
-			if (selection != null && selection.length > 0 && selection[0].getData().equals(getModelNode())) {
-				nodeSelected();
+			Tree tree = getTree();
+			/*
+			 * The focus check is necessary because of a windows/swt "feature".
+			 * Sometimes we get a bogus selection event on resize, which can be
+			 * identified because the tree has no focus. If the user clicks on
+			 * the tree it, the tree will be the focus control.
+			 */
+			if (tree.isFocusControl()) {
+				TreeItem[] selection = tree.getSelection();
+				if (selection != null && selection.length > 0) {
+					Object data = selection[0].getData();
+					if (data.equals(getModelNode())) {
+						nodeSelected();
+					}
+				}
 			}
 		}
 	}
@@ -123,8 +135,8 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 	/**
 	 * Sets the image of the sub-module for the given tree item
 	 * 
-	 * @param item -
-	 *            tree item
+	 * @param item
+	 *            - tree item
 	 */
 	private void setSubModuleImage(TreeItem item) {
 
@@ -150,8 +162,8 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 	/**
 	 * Updates the image of a folder in the tree.
 	 * 
-	 * @param item -
-	 *            item to be updated.
+	 * @param item
+	 *            - item to be updated.
 	 */
 	public void updateItemImage(TreeItem item) {
 
@@ -162,8 +174,8 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 	/**
 	 * Updates the image of a folder in the tree.
 	 * 
-	 * @param item -
-	 *            item to be updated.
+	 * @param item
+	 *            - item to be updated.
 	 */
 	public void updateItemImage(TreeItem item, boolean expanded) {
 
