@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
-import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -29,8 +28,6 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
 
 	private IWindowRidget windowRidget;
-	// observer of the uiProcess for marker support
-	private UIProcessFinsishedObserver uiProcesFinishedObserver;
 
 	public SubModuleNodeViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -48,12 +45,6 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 			}
 
 		});
-
-		createUIProcessObserver();
-	}
-
-	private void createUIProcessObserver() {
-		uiProcesFinishedObserver = new UIProcessFinsishedObserver(getNavigationNode());
 	}
 
 	/**
