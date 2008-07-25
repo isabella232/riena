@@ -33,7 +33,7 @@ public class StatusLineViewPart extends ViewPart {
 	public void createPartControl(Composite parent) {
 		setPartProperty(TitlelessStackPresentation.PROPERTY_STATUSLINE, String.valueOf(Boolean.TRUE));
 		Statusbar statusLine = new Statusbar(parent, SWT.None, StatusbarSpacer.class);
-		statusLine.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "statusbarRidget");
+		statusLine.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "statusbarRidget"); //$NON-NLS-1$
 	}
 
 	/**
