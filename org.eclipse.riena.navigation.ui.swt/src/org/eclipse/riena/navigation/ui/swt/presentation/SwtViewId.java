@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.presentation;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * ID of a SWT view. The ID consists of two IDs, ID and secondary ID.
  */
@@ -21,10 +23,10 @@ public class SwtViewId {
 	/**
 	 * Creates a new instance of <code>SwtViewId</code> and sets the two IDs.
 	 * 
-	 * @param id -
-	 *            ID
-	 * @param secondary -
-	 *            secondary ID
+	 * @param id
+	 *            - ID
+	 * @param secondary
+	 *            - secondary ID
 	 */
 	public SwtViewId(String id, String secondary) {
 		setId(id);
@@ -34,17 +36,17 @@ public class SwtViewId {
 	/**
 	 * Creates a new instance of <code>SwtViewId</code> and sets the two IDs.
 	 * 
-	 * @param compoundId -
-	 *            compund ID
+	 * @param compoundId
+	 *            - compund ID
 	 * @see #getCompoundId()
 	 * @pre compoundId != null
 	 */
 	public SwtViewId(String compoundId) {
 
-		assert compoundId != null;
+		Assert.isNotNull(compoundId);
 
 		String[] ids = compoundId.split(":"); //$NON-NLS-1$
-		if ((ids.length < 1) || (ids.length > 2)) {
+		if (ids.length != 2) {
 			throw new RuntimeException("The compound ID is not correct!"); //$NON-NLS-1$
 		}
 		setId(ids[0]);
