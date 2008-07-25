@@ -376,20 +376,25 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	 *         <code>false</code> otherwise
 	 */
 	public boolean isInsideMoveArea(Point pt) {
-		Rectangle moveArea = new Rectangle(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
-		int minX = getBounds().x + getBounds().width;
-		int maxHeight = textBounds.y + textBounds.height;
-		for (int i = 0; i < btnBounds.length; i++) {
-			minX = Math.min(minX, btnBounds[i].x);
-			maxHeight = Math.max(maxHeight, btnBounds[i].y + btnBounds[i].height);
+		boolean result = false;
+		Rectangle bounds = getBounds();
+		if (bounds != null) {
+			Rectangle moveArea = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+			int minX = bounds.x + bounds.width;
+			int maxHeight = textBounds.y + textBounds.height;
+			for (int i = 0; i < btnBounds.length; i++) {
+				minX = Math.min(minX, btnBounds[i].x);
+				maxHeight = Math.max(maxHeight, btnBounds[i].y + btnBounds[i].height);
+			}
+			int width = minX - bounds.x;
+			if (width < 0) {
+				width = 0;
+			}
+			moveArea.width = width;
+			moveArea.height = maxHeight;
+			result = moveArea.contains(pt);
 		}
-		int width = minX - getBounds().x;
-		if (width < 0) {
-			width = 0;
-		}
-		moveArea.width = width;
-		moveArea.height = maxHeight;
-		return moveArea.contains(pt);
+		return result;
 	}
 
 	/**
