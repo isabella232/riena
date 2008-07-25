@@ -108,23 +108,22 @@ public class NavigationProcessor implements INavigationProcessor {
 	 *      org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public void create(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
-		createTarget(sourceNode, targetId);
+		createTarget(sourceNode, targetId, null);
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object[])
+	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object)
 	 */
-	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object... arguments) {
+	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument) {
 
-		INavigationNode<?> targetNode = createTarget(sourceNode, targetId, arguments);
+		INavigationNode<?> targetNode = createTarget(sourceNode, targetId, argument);
 
 		targetNode.activate();
 	}
 
-	private INavigationNode<?> createTarget(INavigationNode<?> sourceNode, INavigationNodeId targetId,
-			Object... arguments) {
-		INavigationNode<?> targetNode = getPresentationDefinitionService().createNode(sourceNode, targetId, arguments);
+	private INavigationNode<?> createTarget(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument) {
+		INavigationNode<?> targetNode = getPresentationDefinitionService().createNode(sourceNode, targetId, argument);
 		return targetNode;
 	}
 

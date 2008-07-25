@@ -58,19 +58,19 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	/**
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object[])
+	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object)
 	 */
-	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object... arguments) {
+	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 
 		if (targetNode == null) {
 			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinitionNN(targetId);
 			if (presentationDefinition != null) {
 				INavigationNodeProvider builder = presentationDefinition.createNodeProvider();
-				targetNode = builder.buildNode(targetId, arguments);
+				targetNode = builder.buildNode(targetId, argument);
 
 				INavigationNode parentNode = createNode(sourceNode, new NavigationNodeId(presentationDefinition
-						.getParentPresentationId()));
+						.getParentPresentationId()), null);
 				parentNode.addChild(targetNode);
 			} else {
 				// TODO throw some new type of failure
