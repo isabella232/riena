@@ -20,10 +20,10 @@ import org.eclipse.ui.presentations.StackPresentation;
 
 public class TitlelessStackPresentationFactory extends AbstractPresentationFactory {
 
-	private Map<IStackPresentationSite, TitlelessStackPresentation> presentations;
+	private Map<IStackPresentationSite, StackPresentation> presentations;
 
 	public TitlelessStackPresentationFactory() {
-		presentations = new HashMap<IStackPresentationSite, TitlelessStackPresentation>();
+		presentations = new HashMap<IStackPresentationSite, StackPresentation>();
 	}
 
 	/**
