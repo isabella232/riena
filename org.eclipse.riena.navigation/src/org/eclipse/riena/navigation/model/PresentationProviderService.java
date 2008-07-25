@@ -161,8 +161,9 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @seeorg.eclipse.riena.navigation.IPresentationDefinitionService#
 	 * createViewController()
 	 */
-	public IViewController createViewController(INavigationNodeId targetId) {
-		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
+	public IViewController createViewController(INavigationNode node) {
+		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(node.getPresentationId()
+				.getTypeId());
 		IViewController viewController = null;
 
 		if (presentationDefinition != null) {

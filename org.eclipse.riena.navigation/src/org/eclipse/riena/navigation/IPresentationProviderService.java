@@ -44,7 +44,7 @@ public interface IPresentationProviderService {
 	 * navigationNodeId
 	 */
 
-	IViewController createViewController(INavigationNodeId targetId);
+	IViewController createViewController(INavigationNode node);
 
 	/**
 	 * Return true if the specified view should be a shared view, false
