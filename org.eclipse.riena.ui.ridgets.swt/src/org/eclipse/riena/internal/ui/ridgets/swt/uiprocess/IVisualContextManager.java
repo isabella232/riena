@@ -8,13 +8,14 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt.uiprocess;
+package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
-/**
- *
- */
-public interface ICancelListener {
+import java.util.List;
 
-	void canceled(boolean windowClosing);
+public interface IVisualContextManager {
+
+	List<Object> getActiveContexts(List<Object> contexts);
+
+	void addContextUpdateListener(IContextUpdateListener listener, Object context);
 
 }

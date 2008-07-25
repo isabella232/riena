@@ -81,12 +81,14 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 	 */
 	class NodeObserver extends SimpleNavigationNodeAdapater {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void activated(INavigationNode source) {
 			removeNavigationNodeMarker(source);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void removeNavigationNodeMarker(INavigationNode source) {
 		source.removeMarker(marker);
 		// remove observer and let gc work

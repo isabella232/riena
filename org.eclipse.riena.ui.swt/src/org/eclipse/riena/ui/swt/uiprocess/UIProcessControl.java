@@ -25,7 +25,6 @@ public class UIProcessControl implements IProgressControl {
 	private static final int UPDATE_DELAY = 200;
 	private boolean processing = false;
 	private UiProcessWindow processWindow;
-	private boolean closing = false;
 
 	public UIProcessControl(Shell parentShell) {
 		Assert.isNotNull(parentShell);
@@ -37,10 +36,8 @@ public class UIProcessControl implements IProgressControl {
 		processWindow.addProcessWindowListener(new IProcessWindowListener() {
 
 			public void windowAboutToClose() {
-				closing = true;
 				stopProcessing();
-				fireCanceled();
-				closing = false;
+				fireCanceled(true);
 			}
 
 		});
@@ -53,7 +50,6 @@ public class UIProcessControl implements IProgressControl {
 
 	private void showWindow() {
 		processWindow.openWindow();
-		startProcessing();
 	}
 
 	public void stop() {
@@ -61,10 +57,8 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	private void closeWindow() {
-		if (!closing) {
-			stopProcessing();
-			processWindow.closeWindow();
-		}
+		stopProcessing();
+		processWindow.closeWindow();
 
 	}
 
@@ -85,12 +79,16 @@ public class UIProcessControl implements IProgressControl {
 		if (!isProcessing()) {
 			setProcessing(true);
 			getProgressBar().setMaximum(90);
-			startUpdateThread();
+			getPercentLabel().setText(""); //$NON-NLS-1$
+			if (processUpdateThread == null || !processUpdateThread.isAlive()) {
+				startUpdateThread();
+			}
 		}
 	}
 
 	private void startUpdateThread() {
-		new ProcessUpdateThread().start();
+		processUpdateThread = new ProcessUpdateThread();
+		processUpdateThread.start();
 	}
 
 	private final class ProcessUpdateThread extends Thread {
@@ -101,7 +99,6 @@ public class UIProcessControl implements IProgressControl {
 			setName("ProcessUpdateThread"); //$NON-NLS-1$
 			processUpdateLoop();
 		}
-
 	}
 
 	private void processUpdateLoop() {
@@ -118,7 +115,9 @@ public class UIProcessControl implements IProgressControl {
 
 					public void run() {
 						if (!getProgressBar().isDisposed()) {
-							getProgressBar().setSelection(selection[0]);
+							if (isProcessing()) {
+								getProgressBar().setSelection(selection[0]);
+							}
 						}
 					}
 				});
@@ -139,8 +138,10 @@ public class UIProcessControl implements IProgressControl {
 	public void showProgress(int value, int maxValue) {
 		stopProcessing();
 		int percentValue = calcSelection(value, maxValue);
-		getPercentLabel().setText(String.valueOf(percentValue) + " %"); //$NON-NLS-1$
-		getProgressBar().setSelection(percentValue);
+		if (getWindow().getShell() != null && !getWindow().getShell().isDisposed()) {
+			getPercentLabel().setText(String.valueOf(percentValue) + " %"); //$NON-NLS-1$
+			getProgressBar().setSelection(percentValue);
+		}
 	}
 
 	private Label getPercentLabel() {
@@ -157,13 +158,12 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	public void start() {
-		showAndProcess();
+		showProcessBox();
 
 	}
 
-	private void showAndProcess() {
+	private void showProcessBox() {
 		showWindow();
-		startProcessing();
 	}
 
 	public void setDescription(String text) {
@@ -175,6 +175,7 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	private ListenerList cancelListeners = new ListenerList();
+	private ProcessUpdateThread processUpdateThread;
 
 	public void addCancelListener(ICancelListener listener) {
 		cancelListeners.add(listener);
@@ -184,9 +185,9 @@ public class UIProcessControl implements IProgressControl {
 		cancelListeners.remove(listener);
 	}
 
-	protected void fireCanceled() {
+	protected void fireCanceled(boolean windowClosing) {
 		for (Object listener : cancelListeners.getListeners()) {
-			ICancelListener.class.cast(listener).canceled();
+			ICancelListener.class.cast(listener).canceled(windowClosing);
 		}
 	}
 }

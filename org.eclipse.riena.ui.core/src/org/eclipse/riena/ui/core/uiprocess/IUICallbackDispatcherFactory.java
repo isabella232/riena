@@ -12,5 +12,5 @@ package org.eclipse.riena.ui.core.uiprocess;
 
 public interface IUICallbackDispatcherFactory {
 
-	IProgressVisualizer getProgressVisualizer();
+	IProgressVisualizer getProgressVisualizer(Object context);
 }

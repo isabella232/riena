@@ -105,12 +105,12 @@ public class UiProcessWindow extends ApplicationWindow implements IUIProcessWind
 		cancel.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				progressControl.fireCanceled();
+				progressControl.fireCanceled(false);
 
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				progressControl.fireCanceled();
+				progressControl.fireCanceled(false);
 			}
 
 		});
@@ -152,10 +152,10 @@ public class UiProcessWindow extends ApplicationWindow implements IUIProcessWind
 		open();
 	}
 
-	@Override
-	protected int getShellStyle() {
-		return SWT.TOOL | SWT.CLOSE | SWT.APPLICATION_MODAL;
-	}
+	// @Override
+	// protected int getShellStyle() {
+	// return SWT.TOOL | SWT.CLOSE | SWT.APPLICATION_MODAL;
+	// }
 
 	@Override
 	protected boolean showTopSeperator() {

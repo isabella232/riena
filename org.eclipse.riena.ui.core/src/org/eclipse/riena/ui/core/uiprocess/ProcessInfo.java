@@ -37,6 +37,7 @@ public class ProcessInfo {
 	private boolean dialogVisible = true;
 	private Style style = STYLE_PLAIN;
 	private PropertyChangeSupport ppSupport;
+	private Object context;
 
 	public ProcessInfo() {
 		ppSupport = new PropertyChangeSupport(this);
@@ -151,6 +152,21 @@ public class ProcessInfo {
 
 	public boolean isDialogVisible() {
 		return dialogVisible;
+	}
+
+	/**
+	 * @param context
+	 *            the context to set
+	 */
+	public void setContext(Object context) {
+		this.context = context;
+	}
+
+	/**
+	 * @return the context
+	 */
+	public Object getContext() {
+		return context;
 	}
 
 }

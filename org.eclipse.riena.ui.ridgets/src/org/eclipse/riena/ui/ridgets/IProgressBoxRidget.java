@@ -17,8 +17,8 @@ import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
  */
 public interface IProgressBoxRidget extends IProgressVisualizerObserver, IRidget {
 
-	public void activate();
+	void activate();
 
-	public void deactivate();
+	void deactivate();
 
 }

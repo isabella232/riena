@@ -71,7 +71,7 @@ public class UIProcessDemoController extends SubModuleNodeViewController {
 
 	void runUIProcess() {
 
-		UIProcess p = new UIProcess("sample uiProcess", true) { //$NON-NLS-1$
+		UIProcess p = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
 			@Override
 			public boolean runJob(IProgressMonitor monitor) {
 				try {
@@ -89,7 +89,7 @@ public class UIProcessDemoController extends SubModuleNodeViewController {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$
+					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 					monitor.worked(i);
 				}
 				return true;
@@ -100,7 +100,7 @@ public class UIProcessDemoController extends SubModuleNodeViewController {
 				return 10;
 			}
 		};
-		p.setNote("samlpe uiProcess note .."); //$NON-NLS-1$
+		p.setNote("samlpe uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
 		p.setTitle("sample uiProcess"); //$NON-NLS-1$
 		p.start();
 
@@ -127,6 +127,7 @@ public class UIProcessDemoController extends SubModuleNodeViewController {
 				return Status.OK_STATUS;
 			}
 		};
+		job.setProperty(UIProcess.PROPERTY_CONTEXT, getNavigationNode());
 		job.setUser(true);// to be visualized the job has to be user
 		job.schedule();
 	}

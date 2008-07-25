@@ -26,10 +26,6 @@ import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
 import org.eclipse.riena.ui.core.resource.internal.IconSize;
-import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
-import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
-import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
-import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -41,7 +37,7 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  * controller N - Type of the Navigation node
  */
 public abstract class NavigationNodeViewController<N extends INavigationNode<?>> extends TypecastingObject implements
-		IPresentation, IViewController, IUICallbackDispatcherFactory {
+		IPresentation, IViewController {
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
@@ -226,13 +222,9 @@ public abstract class NavigationNodeViewController<N extends INavigationNode<?>>
 		}
 	}
 
-	protected void registerDispatcherBuilder() {
-		ProgressProviderBridge.instance().setCurrentDistpatcherBuilder(this);
-	}
-
-	public IProgressVisualizer getProgressVisualizer() {
-		return new ProgressVisualizer();
-	}
+	// public IProgressVisualizer getProgressVisualizer(Object context) {
+	// return new ProgressVisualizer();
+	// }
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setBlocked(boolean)

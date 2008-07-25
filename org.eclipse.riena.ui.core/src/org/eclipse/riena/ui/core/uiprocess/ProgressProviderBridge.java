@@ -25,7 +25,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	private static ProgressProviderBridge instance;
 
-	private IUICallbackDispatcherFactory currentUICallbackFactory;
+	private IUICallbackDispatcherFactory visualizerFactory;
 
 	private Map<Job, UIProcess> jobUiProcess;
 
@@ -40,8 +40,8 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return instance;
 	}
 
-	public void setCurrentDistpatcherBuilder(IUICallbackDispatcherFactory builder) {
-		this.currentUICallbackFactory = builder;
+	public void setVisualizerFactory(IUICallbackDispatcherFactory visualizerFactory) {
+		this.visualizerFactory = visualizerFactory;
 	}
 
 	@Override
@@ -58,10 +58,14 @@ public class ProgressProviderBridge extends ProgressProvider {
 		UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
 		if (factoriesAvailable()) {
 			// TODO is User?
-			dispatcher.addUIMonitor(currentUICallbackFactory.getProgressVisualizer());
+			dispatcher.addUIMonitor(visualizerFactory.getProgressVisualizer(getContext(job)));
 		}
 
 		return dispatcher;
+	}
+
+	private Object getContext(Job job) {
+		return job.getProperty(UIProcess.PROPERTY_CONTEXT);
 	}
 
 	private UIProcess createDefaultUIProcess(Job job) {
@@ -69,7 +73,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 	}
 
 	private boolean factoriesAvailable() {
-		return currentUICallbackFactory != null;
+		return visualizerFactory != null;
 	}
 
 	public void registerMapping(Job job, UIProcess process) {

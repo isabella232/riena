@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.application;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer.VisualizerFactory;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -31,8 +32,14 @@ public abstract class AbstractApplication implements IApplication {
 	public Object start(IApplicationContext context) throws Exception {
 		IApplicationModel model = createModel();
 		initializeModel(model);
-		Job.getJobManager().setProgressProvider(ProgressProviderBridge.instance());
+		setProgressProviderBridge(model);
 		return createView(context, model);
+	}
+
+	private void setProgressProviderBridge(IApplicationModel model) {
+		ProgressProviderBridge bridge = ProgressProviderBridge.instance();
+		Job.getJobManager().setProgressProvider(bridge);
+		bridge.setVisualizerFactory(new VisualizerFactory(model));
 	}
 
 	/**
@@ -52,14 +59,6 @@ public abstract class AbstractApplication implements IApplication {
 	protected void initializeModelDefaults(IApplicationModel model) {
 		initializeNodeDefaults(model);
 	}
-
-	// protected <C extends INavigationNode<?>> void
-	// initializeNodeDefaults(INavigationNode<C> node) {
-	//
-	// for (C child : node.getChildren()) {
-	// initializeNodeDefaults(child);
-	// }
-	// }
 
 	protected void initializeNodeDefaults(IApplicationModel node) {
 

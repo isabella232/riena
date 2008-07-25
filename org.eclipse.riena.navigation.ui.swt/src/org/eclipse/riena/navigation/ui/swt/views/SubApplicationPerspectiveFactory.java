@@ -1,9 +1,17 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.internal.ui.ridgets.swt.UIProcessRidget;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IContextUpdateListener;
+import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IVisualContextManager;
+import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
@@ -50,15 +58,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	 * @return controller of the sub-application view
 	 */
 	protected SubApplicationViewController createController(ISubApplication subApplication) {
-
-		SubApplicationViewController controller = new SubApplicationViewController(subApplication);
-
-		// process ridget/control
-		UIProcessRidget progressBoxRidget = new UIProcessRidget();
-		progressBoxRidget.setUIControl(new UIProcessControl(Display.getDefault().getShells()[0]));
-		controller.setProgressBoxRidget(progressBoxRidget);
-
-		return controller;
+		return new SubApplicationViewController(subApplication);
 
 	}
 
@@ -131,9 +131,65 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 
 		private void initUIProcessRidget() {
 			uiProcessRidget = new UIProcessRidget();
+			uiProcessRidget.setContextLocator(new IVisualContextManager() {
+
+				@SuppressWarnings("unchecked")
+				public List<Object> getActiveContexts(List<Object> contexts) {
+					List nodes = new ArrayList();
+					for (Object object : contexts) {
+						SubModuleNode node = (SubModuleNode) object;
+						if (node.isActivated()) {
+							nodes.add(node);
+						}
+					}
+					return nodes;
+				}
+
+				public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
+					if (context instanceof INavigationNode<?>) {
+						INavigationNode<?> node = (INavigationNode<?>) context;
+						node.addSimpleListener(contextUpdater);
+						listeners.add(listener);
+					}
+
+				}
+
+			});
 			uiProcessRidget.setUIControl(new UIProcessControl(Display.getDefault().getActiveShell()));
 			subApplicationViewController.setProgressBoxRidget(uiProcessRidget);
 		}
+
+		@SuppressWarnings("unchecked")
+		private class NodeListener extends SimpleNavigationNodeAdapater {
+
+			@Override
+			public void activated(INavigationNode source) {
+				contextUpdated(source);
+			}
+
+			@Override
+			public void beforeDeactivated(INavigationNode source) {
+				for (IContextUpdateListener listener : listeners) {
+					listener.beforeContextUpdate(source);
+				}
+			}
+
+			@Override
+			public void deactivated(INavigationNode source) {
+				contextUpdated(source);
+			}
+
+			private void contextUpdated(INavigationNode source) {
+				for (IContextUpdateListener listener : listeners) {
+					listener.contextUpdated(source);
+				}
+			}
+
+		}
+
+		private NodeListener contextUpdater = new NodeListener();
+
+		private List<IContextUpdateListener> listeners = new ArrayList<IContextUpdateListener>();
 
 		protected String createNextId() {
 			return String.valueOf(System.currentTimeMillis());

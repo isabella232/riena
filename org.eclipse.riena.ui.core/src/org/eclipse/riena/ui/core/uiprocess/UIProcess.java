@@ -20,10 +20,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 public class UIProcess extends PlatformObject implements IUIMonitor {
+
+	public final static QualifiedName PROPERTY_CONTEXT = new QualifiedName("uiProcess", "context"); //$NON-NLS-1$//$NON-NLS-2$
 
 	/** The name of the extension point to this class. */
 	protected static final String EXTENSION_POINT_ID = "org.riena.ui.core.uiprocess"; //$NON-NLS-1$
@@ -66,13 +69,17 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	public UIProcess(final String name, boolean user) {
-		this(name, getSynchronizerFromExtensionPoint(), user);
+		this(name, user, new Object());
+	}
+
+	public UIProcess(final String name, boolean user, Object context) {
+		this(name, getSynchronizerFromExtensionPoint(), user, context);
 	}
 
 	private static IUISynchronizer getSynchronizerFromExtensionPoint() {
 		final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		final IConfigurationElement[] configurations = extensionRegistry
-				.getConfigurationElementsFor(EXTENSION_POINT_ID); //$NON-NLS-1$
+				.getConfigurationElementsFor(EXTENSION_POINT_ID);
 		if (configurations.length == 0) {
 			throw new IllegalStateException("No configuration element for extension point '" + EXTENSION_POINT_ID //$NON-NLS-1$
 					+ '\'');
@@ -94,13 +101,13 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 				+ "' in extension point '" + EXTENSION_POINT_ID + '\''); //$NON-NLS-1$
 	}
 
-	public UIProcess(String name, IUISynchronizer syncher, boolean user) {
-		this(name, new UICallbackDispatcher(syncher), user);
+	public UIProcess(String name, IUISynchronizer syncher, boolean user, Object context) {
+		this(name, new UICallbackDispatcher(syncher), user, context);
 	}
 
-	private UIProcess(String name, UICallbackDispatcher dispatcher, boolean user) {
+	private UIProcess(String name, UICallbackDispatcher dispatcher, boolean user, Object context) {
 		this.callbackDispatcher = dispatcher;
-		createJob(name, user);
+		createJob(name, user, context);
 		configure();
 	}
 
@@ -118,23 +125,26 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	private void configureProcessInfo() {
 		if (callbackDispatcher != null) {
 			ProcessInfo processInfo = callbackDispatcher.getProcessInfo();
-			processInfo.addPropertyChangeListener(new PropertyChangeListener() {
-
-				public void propertyChange(PropertyChangeEvent event) {
-					if (ProcessInfo.PROPERTY_CANCELED.equals(event.getPropertyName())) {
-						job.cancel();
-					}
-				}
-			});
+			processInfo.setContext(job.getProperty(PROPERTY_CONTEXT));
+			processInfo.addPropertyChangeListener(new CancelListener());
 			processInfo.setDialogVisible(job.isUser());
 			processInfo.setNote(job.getName());
 			processInfo.setTitle(job.getName());
 		}
 	}
 
-	private void createJob(String name, boolean user) {
+	private void createJob(String name, boolean user, Object context) {
 		this.job = new InternalJob(name);
 		job.setUser(user);
+		job.setProperty(PROPERTY_CONTEXT, context);
+	}
+
+	private final class CancelListener implements PropertyChangeListener {
+		public void propertyChange(PropertyChangeEvent event) {
+			if (ProcessInfo.PROPERTY_CANCELED.equals(event.getPropertyName())) {
+				job.cancel();
+			}
+		}
 	}
 
 	private final class InternalJob extends Job {
