@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Image;
  * TODO [ev] docs
  */
 // TODO [ev] unit tests
-final class TableRidgetLabelProvider extends ObservableMapLabelProvider {
+class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 
 	private final IObservableMap[] attributeMap;
 

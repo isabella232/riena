@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.observable.map.IObservableMap;
-import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
@@ -28,12 +27,11 @@ import org.eclipse.swt.widgets.TreeItem;
  *</ul>
  */
 // TODO [ev] unit tests
-final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
+final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
 
 	private final TreeViewer viewer;
-	private final IObservableMap[] attributeMap;
 
 	/**
 	 * Create a new instance
@@ -48,8 +46,6 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);
 		this.viewer = viewer;
-		this.attributeMap = new IObservableMap[attributeMap.length];
-		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
 	}
 
 	@Override
@@ -62,13 +58,6 @@ final class TreeRidgetLabelProvider extends ObservableMapLabelProvider {
 	public Image getColumnImage(Object element, int columnIndex) {
 		if (columnIndex == 0) {
 			return getImage(element);
-		}
-		if (columnIndex < attributeMap.length) {
-			Object result = attributeMap[columnIndex].get(element);
-			if (result instanceof Boolean) {
-				String key = ((Boolean) result).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
-				return Activator.getSharedImage(key);
-			}
 		}
 		return super.getColumnImage(element, columnIndex);
 	}
