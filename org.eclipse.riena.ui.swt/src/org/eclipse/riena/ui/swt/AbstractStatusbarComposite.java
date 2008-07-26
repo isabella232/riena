@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,6 +29,7 @@ public abstract class AbstractStatusbarComposite extends Composite {
 	 */
 	public AbstractStatusbarComposite(Composite parent, int style) {
 		super(parent, style);
+		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
 		setContentsLayout();
 		createContents();
 	}
