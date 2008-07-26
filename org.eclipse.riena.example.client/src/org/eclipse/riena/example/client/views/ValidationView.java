@@ -16,10 +16,10 @@ import org.eclipse.riena.example.client.controllers.ValidationViewController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
-import org.eclipse.swt.SWT;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -33,13 +33,13 @@ public class ValidationView extends SubModuleNodeView<ValidationViewController> 
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		Group group1 = createGroupOnEditValidation(parent);
-		// fillFactory.applyTo(group1);
+		fillFactory.applyTo(group1);
 	}
 
 	@Override

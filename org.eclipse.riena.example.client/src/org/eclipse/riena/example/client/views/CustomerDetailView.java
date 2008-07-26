@@ -3,8 +3,11 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.riena.example.client.controllers.CustomerDetailViewController;
+import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -43,7 +46,7 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 	public void basicCreatePartControl(Composite parent) {
 
 		this.contentArea = parent;
-		contentArea.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		contentArea.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		contentArea.setLayout(new FormLayout());
 
 		Label personLabel = createSectionLabel(contentArea, "Person");
@@ -52,9 +55,7 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 		fd.left = new FormAttachment(0, LEFT);
 		personLabel.setLayoutData(fd);
 
-		Label kundennummerLabel = new Label(contentArea, SWT.LEFT);
-		kundennummerLabel.setText("Customer No.");
-		kundennummerLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		Label kundennummerLabel = UIControlsFactory.createLabel(contentArea, "Customer No.");
 		fd = new FormData();
 		fd.top = new FormAttachment(personLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(personLabel, SECTION_LABEL_WIDTH, SWT.LEFT);
@@ -68,9 +69,7 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 		fd.width = FIELD_WIDTH;
 		kundennummerText.setLayoutData(fd);
 
-		Label nameLabel = new Label(contentArea, SWT.LEFT);
-		nameLabel.setText("Last Name");
-		nameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		Label nameLabel = UIControlsFactory.createLabel(contentArea, "Last Name");
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, LINE_GAP);
 		fd.left = new FormAttachment(kundennummerLabel, 0, SWT.LEFT);
@@ -84,9 +83,7 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 		nameText.setLayoutData(fd);
 		nameText.setText(getController().getNavigationNode().getLabel());
 
-		Label vornameLabel = new Label(contentArea, SWT.LEFT);
-		vornameLabel.setText("First Name");
-		vornameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		Label vornameLabel = UIControlsFactory.createLabel(contentArea, "First Name");
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(nameLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
@@ -99,9 +96,7 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 		fd.width = FIELD_WIDTH;
 		vornameText.setLayoutData(fd);
 
-		Label birthdayLabel = new Label(contentArea, SWT.LEFT);
-		birthdayLabel.setText("Birthday");
-		birthdayLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		Label birthdayLabel = UIControlsFactory.createLabel(contentArea, "Birthday");
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, LINE_GAP);
 		fd.left = new FormAttachment(nameLabel, 0, SWT.LEFT);
@@ -113,9 +108,7 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 		fd.left = new FormAttachment(nameText, 0, SWT.LEFT);
 		birthdayText.setLayoutData(fd);
 
-		Label birthplaceLabel = new Label(contentArea, SWT.LEFT);
-		birthplaceLabel.setText("Birthplace");
-		birthplaceLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		Label birthplaceLabel = UIControlsFactory.createLabel(contentArea, "Birthplace");
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(birthdayLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
@@ -147,14 +140,9 @@ public class CustomerDetailView extends SubModuleNodeView<CustomerDetailViewCont
 	}
 
 	private Label createSectionLabel(Composite parent, String text) {
-
-		Label label = new Label(parent, SWT.LEFT);
-		label.setText(text);
+		Label label = UIControlsFactory.createLabel(parent, text);
 		label.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
-		label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
-
 		return label;
-
 	}
 
 	/**

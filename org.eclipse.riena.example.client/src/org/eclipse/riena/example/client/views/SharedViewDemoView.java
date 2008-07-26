@@ -1,16 +1,18 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.riena.example.client.controllers.SharedViewDemo;
+import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -28,9 +30,8 @@ public class SharedViewDemoView extends SubModuleNodeView<SharedViewDemo> {
 	 */
 	@Override
 	public void basicCreatePartControl(Composite parent) {
-		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		final Label helloLabel = new Label(parent, SWT.CENTER);
-		helloLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		final Label helloLabel = UIControlsFactory.createLabel(parent, "", SWT.CENTER); //$NON-NLS-1$
 
 		// layout
 		FormLayout layout = new FormLayout();
@@ -40,9 +41,7 @@ public class SharedViewDemoView extends SubModuleNodeView<SharedViewDemo> {
 		addUIControl(helloLabel, "labelFacade"); //$NON-NLS-1$
 		// getController().setLabelFacade(labelFacade);
 
-		Label someText = new Label(parent, SWT.LEFT);
-		someText.setText("Data");
-		someText.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		Label someText = UIControlsFactory.createLabel(parent, "Data", SWT.LEFT);
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);

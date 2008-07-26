@@ -17,6 +17,8 @@ import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,6 +41,7 @@ public class MarkerView extends SubModuleNodeView<MarkerViewController> {
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
+		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(2, false));
 
 		Group group1 = createMarkerOptionsGroup(parent);
@@ -159,7 +162,7 @@ public class MarkerView extends SubModuleNodeView<MarkerViewController> {
 
 	private Composite createComposite(Group group) {
 		Composite composite = new Composite(group, SWT.NONE);
-		composite.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		composite.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.fillDefaults().numColumns(4).equalWidth(true).spacing(10, 0).applyTo(composite);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 		return composite;

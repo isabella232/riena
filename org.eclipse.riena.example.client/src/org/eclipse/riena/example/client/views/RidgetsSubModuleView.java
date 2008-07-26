@@ -14,6 +14,8 @@ import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -21,7 +23,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 
 /**
@@ -37,7 +38,7 @@ public class RidgetsSubModuleView extends SubModuleNodeView<RidgetsSubModuleCont
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 
-		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new FormLayout());
 
 		createButtonGroup(parent);
@@ -59,10 +60,10 @@ public class RidgetsSubModuleView extends SubModuleNodeView<RidgetsSubModuleCont
 		fd.left = new FormAttachment(0, 0);
 		buttonGroup.setLayoutData(fd);
 
-		Button toggleButton = new Button(buttonGroup, SWT.TOGGLE);
+		Button toggleButton = UIControlsFactory.createButtonToggle(buttonGroup);
 		addUIControl(toggleButton, "toggleOne"); //$NON-NLS-1$
 
-		Button checkBox = new Button(buttonGroup, SWT.CHECK);
+		Button checkBox = UIControlsFactory.createButtonCheck(buttonGroup);
 		addUIControl(checkBox, "checkOne"); //$NON-NLS-1$
 
 	}

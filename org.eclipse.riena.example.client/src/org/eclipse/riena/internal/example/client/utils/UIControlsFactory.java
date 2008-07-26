@@ -13,14 +13,16 @@ package org.eclipse.riena.internal.example.client.utils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -31,19 +33,34 @@ import org.eclipse.swt.widgets.Text;
  */
 public final class UIControlsFactory {
 
+	private static Color SHARED_BG_COLOR;
+
+	static {
+		SHARED_BG_COLOR = LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND);
+		Assert.isNotNull(SHARED_BG_COLOR);
+	}
+
 	private UIControlsFactory() {
 		// prevent instantiation
 	}
 
 	public static Label createLabel(Composite parent, String caption) {
-		Label label = new Label(parent, SWT.NONE);
+		return createLabel(parent, caption, SWT.NONE);
+	}
+
+	public static Label createLabel(Composite parent, String caption, int style) {
+		Label label = new Label(parent, style);
 		label.setText(caption);
-		label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		label.setBackground(SHARED_BG_COLOR);
 		return label;
 	}
 
 	public static Text createText(Composite parent) {
 		return new Text(parent, SWT.SINGLE | SWT.BORDER);
+	}
+
+	public static Text createText(Composite parent, int style) {
+		return new Text(parent, style | SWT.BORDER);
 	}
 
 	public static Text createTextNumeric(Composite parent) {
@@ -78,13 +95,13 @@ public final class UIControlsFactory {
 
 	public static Button createButtonCheck(Composite parent) {
 		Button button = new Button(parent, SWT.CHECK);
-		button.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		button.setBackground(SHARED_BG_COLOR);
 		return button;
 	}
 
 	public static Button createButtonRadio(Composite parent) {
 		Button button = new Button(parent, SWT.RADIO);
-		button.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		button.setBackground(SHARED_BG_COLOR);
 		return button;
 	}
 
@@ -94,14 +111,14 @@ public final class UIControlsFactory {
 
 	public static Composite createComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		composite.setBackground(SHARED_BG_COLOR);
 		return composite;
 	}
 
 	public static Group createGroup(Composite parent, String caption) {
 		Group group = new Group(parent, SWT.NONE);
 		group.setText(caption);
-		group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		group.setBackground(SHARED_BG_COLOR);
 		return group;
 	}
 
