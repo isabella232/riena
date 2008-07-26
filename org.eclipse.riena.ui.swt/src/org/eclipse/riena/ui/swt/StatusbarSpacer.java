@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +42,7 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	protected void createContents() {
 
 		separator = new Label(this, SWT.SEPARATOR | SWT.VERTICAL);
-
+		separator.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
 	}
 
 	/**

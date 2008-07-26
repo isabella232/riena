@@ -49,6 +49,7 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 		messageLabel = new CLabel(this, SWT.LEFT);
 		messageLabel.setText(" "); //$NON-NLS-1$
 		messageLabel.setImage(getPlaceholderImage());
+		messageLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
 
 	}
 
