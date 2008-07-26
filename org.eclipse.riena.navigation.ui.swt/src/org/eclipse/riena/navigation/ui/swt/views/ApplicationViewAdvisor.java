@@ -213,7 +213,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// sets the background of the shell
 		Image image = LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 		shell.setBackgroundImage(image);
-		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
 		shell.setMinimumSize(APPLICATION_SIZE);
