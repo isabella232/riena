@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.navigation.ISubApplication;
@@ -77,7 +78,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * The default and the minimum size of the application.
 	 */
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
-	private static final int COOLBAR_HIGHT = 22;
+	private static final int COOLBAR_HEIGHT = 22;
 	private static final int COOLBAR_TOP_MARGIN = 2;
 	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
 
@@ -392,7 +393,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void createLogoComposite(Composite parent) {
 
-		assert parent.getLayout() instanceof FormLayout;
+		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
@@ -444,7 +445,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private Composite createSwitcherComposite(Composite parent) {
 
-		assert parent.getLayout() instanceof FormLayout;
+		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getShellPadding();
 
@@ -475,20 +476,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private Composite createMenuBarComposite(Composite parent, Composite previous) {
 
-		assert parent.getLayout() instanceof FormLayout;
+		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getShellPadding();
 
 		// menu bar
 		Composite composite = new Composite(parent, SWT.NONE);
-		Color menuBarColor = LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
-		composite.setBackground(menuBarColor);
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
-		formData.height = COOLBAR_HIGHT;
+		formData.height = COOLBAR_HEIGHT;
 		composite.setLayoutData(formData);
 
 		createMenuBar(composite);
@@ -506,6 +505,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private CoolBar createMenuBar(Composite parent) {
 
 		coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
+		coolBar.setBackground(getCoolbarBackground());
+
 		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
 		toolBar = new ToolBar(coolBar, SWT.FLAT);
 		coolItem.setControl(toolBar);
@@ -603,6 +604,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
+	 * Return the coolbar / menubar background color according to the
+	 * look-and-feel.
+	 */
+	private Color getCoolbarBackground() {
+		return LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
+	}
+
+	/**
 	 * If the mouse moves over an unselected item of the tool bar and another
 	 * item was selected, deselect the other item and select the item below the
 	 * mouse pointer.<br>
@@ -651,21 +660,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private Composite createCoolBarComposite(Composite parent, Composite previous) {
 
-		assert parent.getLayout() instanceof FormLayout;
+		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getShellPadding();
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		Color coolBarColor = LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
-		composite.setBackground(coolBarColor);
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
-		formData.height = COOLBAR_HIGHT;
+		formData.height = COOLBAR_HEIGHT;
 		composite.setLayoutData(formData);
-		getWindowConfigurer().createCoolBarControl(composite);
+
+		Control control = getWindowConfigurer().createCoolBarControl(composite);
+		control.setBackground(getCoolbarBackground());
 
 		return composite;
 
@@ -682,7 +691,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private Composite createMainComposite(Composite parent, Composite previous) {
 
-		assert parent.getLayout() instanceof FormLayout;
+		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getShellPadding();
 
