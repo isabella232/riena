@@ -31,8 +31,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
+import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
@@ -195,94 +194,6 @@ public class TableViewController extends SubModuleNodeViewController {
 
 	// helping classes
 	// ////////////////
-
-	/**
-	 * This bean stores information about a word (String) and can be used with
-	 * {@link ITreeRidget}s and {@link ITableRidget}s.
-	 */
-	// TODO [ev] this is large enough to go in a class of its own - dupe TTVC
-	private static class WordNode extends AbstractBean {
-
-		private final WordNode parent;
-
-		private String word;
-		private boolean isUpperCase;
-		private List<WordNode> children;
-
-		WordNode(String word) {
-			this(null, word);
-		}
-
-		WordNode(WordNode parent, String word) {
-			Assert.isNotNull(word);
-			this.parent = parent;
-			this.word = word;
-			this.children = new ArrayList<WordNode>();
-			if (parent != null) {
-				parent.addChild(this);
-			}
-		}
-
-		public int getACount() {
-			int result = 0;
-			for (char c : word.toCharArray()) {
-				if (c == 'a' || c == 'A') {
-					result++;
-				}
-			}
-			return result;
-		}
-
-		public List<WordNode> getChildren() {
-			return new ArrayList<WordNode>(children);
-		}
-
-		public WordNode getParent() {
-			return parent;
-		}
-
-		public String getWord() {
-			return isUpperCase ? word.toUpperCase() : word;
-		}
-
-		public String getWordIgnoreUppercase() {
-			return word;
-		}
-
-		public boolean isUpperCase() {
-			return isUpperCase;
-		}
-
-		public void setChildren(List<WordNode> children) {
-			List<WordNode> oldChildren = this.children;
-			this.children = new ArrayList<WordNode>(children);
-			firePropertyChanged("children", oldChildren, this.children); //$NON-NLS-1$
-		}
-
-		public void setUpperCase(boolean isUppercase) {
-			boolean oldValue = this.isUpperCase;
-			this.isUpperCase = isUppercase;
-			firePropertyChanged("upperCase", oldValue, this.isUpperCase); //$NON-NLS-1$
-		}
-
-		public void setWord(String word) {
-			String oldWord = word;
-			this.word = word;
-			firePropertyChanged("word", oldWord, this.word); //$NON-NLS-1$
-		}
-
-		@Override
-		public String toString() {
-			return word;
-		}
-
-		private void addChild(WordNode child) {
-			Assert.isNotNull(child);
-			List<WordNode> newChildren = getChildren();
-			newChildren.add(child);
-			setChildren(newChildren);
-		}
-	}
 
 	/**
 	 * Compares two strings.
