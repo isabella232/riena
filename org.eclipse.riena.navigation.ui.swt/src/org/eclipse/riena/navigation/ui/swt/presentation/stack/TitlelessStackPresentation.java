@@ -449,6 +449,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 		}
 	}
 
+	/**
+	 * Install a sub module change listener with the navigation tree, that will
+	 * repaint the sub module title when the node has changed.
+	 * <p>
+	 * This is necessary because when "shared" nodes (i.e. parts) are selected,
+	 * we do <b>not</b> receive a {@link #selectPart(IPresentablePart)}
+	 * notification if the part is <b>already</b> selected. However the shared
+	 * parts may still have different titles.
+	 */
 	private synchronized void initializeSubModuleChangeListener() {
 		if (hasListener) {
 			return;
