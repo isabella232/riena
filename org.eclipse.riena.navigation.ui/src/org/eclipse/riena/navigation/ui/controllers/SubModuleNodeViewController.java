@@ -31,6 +31,18 @@ public class SubModuleNodeViewController extends NavigationNodeViewController<IS
 
 	public SubModuleNodeViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
+	}
+
+	public SubModuleNodeViewController() {
+		this(null);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeViewController#setNavigationNode(org.eclipse.riena.navigation.INavigationNode)
+	 */
+	@Override
+	public void setNavigationNode(ISubModuleNode navigationNode) {
+		super.setNavigationNode(navigationNode);
 
 		getNavigationNode().addListener(new SubModuleNodeAdapter() {
 

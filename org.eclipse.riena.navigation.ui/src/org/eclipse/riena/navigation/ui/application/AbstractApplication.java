@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 
@@ -49,7 +50,9 @@ public abstract class AbstractApplication implements IApplication {
 	 *         model
 	 */
 	protected IApplicationModel createModel() {
-		return new ApplicationModel();
+		ApplicationModel applicationModel = new ApplicationModel();
+		applicationModel.setPresentationId(new NavigationNodeId("application"));
+		return applicationModel;
 	}
 
 	protected void initializeModel(IApplicationModel model) {
