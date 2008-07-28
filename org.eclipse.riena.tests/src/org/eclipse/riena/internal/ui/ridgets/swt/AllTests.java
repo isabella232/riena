@@ -28,6 +28,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ListRidgetTest.class);
 		suite.addTestSuite(MarkableRidgetTest.class);
 		suite.addTestSuite(TableRidgetTest.class);
+		suite.addTestSuite(TableRidgetLabelProviderTest.class);
 		suite.addTestSuite(TextRidgetTest.class);
 		suite.addTestSuite(TextRidgetTest2.class);
 		suite.addTestSuite(TreeRidgetTest.class);

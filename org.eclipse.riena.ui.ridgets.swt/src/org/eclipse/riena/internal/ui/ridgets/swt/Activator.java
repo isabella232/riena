@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -31,6 +35,9 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+
+	// Fake images helper class (for unit tests)
+	private static FakeImages fakeImages;
 
 	// Helper class for shared colors
 	private SharedColors sharedColors;
@@ -69,8 +76,11 @@ public class Activator extends AbstractUIPlugin {
 	 * @return a non-null Image instance
 	 */
 	public static Image getSharedImage(final String imageKey) {
-		if (getDefault() == null) {
-			return null; // for unit testing only
+		if (getDefault() == null) { // are we unit testing?
+			if (fakeImages == null) {
+				fakeImages = new FakeImages();
+			}
+			return fakeImages.getImage(imageKey);
 		}
 		return getDefault().getImageRegistry().get(imageKey);
 	}
@@ -115,6 +125,33 @@ public class Activator extends AbstractUIPlugin {
 			sharedColors = new SharedColors(display);
 		}
 		return sharedColors.getSharedColor(colorKey);
+	}
+
+	/**
+	 * Return mock images (for unit tests).
+	 */
+	private static final class FakeImages {
+
+		private Map<String, Image> IMAGES = new HashMap<String, Image>();
+
+		/**
+		 * Returns the an image for the given key. Multiple invocation return
+		 * the same instance for the same key.
+		 * 
+		 * @param imageKey
+		 *            a non-null string
+		 * @return an Image instance (never null)
+		 */
+		Image getImage(String imageKey) {
+			Assert.isNotNull(imageKey);
+			Image result = IMAGES.get(imageKey);
+			if (result == null) {
+				result = ImageDescriptor.getMissingImageDescriptor().createImage();
+				IMAGES.put(imageKey, result);
+			}
+			return result;
+		}
+
 	}
 
 }

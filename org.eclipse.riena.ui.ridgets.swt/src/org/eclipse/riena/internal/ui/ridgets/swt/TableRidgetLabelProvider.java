@@ -16,9 +16,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * TODO [ev] docs
+ * Label provider that shows checked / unchecked icons, if the attribute in a
+ * column is of Boolean type.
+ * 
+ * @see TableRidget
  */
-// TODO [ev] unit tests
 class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 
 	private final IObservableMap[] attributeMap;
@@ -35,6 +37,11 @@ class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 		super(attributeMap);
 		this.attributeMap = new IObservableMap[attributeMap.length];
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
+	}
+
+	@Override
+	public Image getImage(Object element) {
+		return getColumnImage(element, 0);
 	}
 
 	@Override
