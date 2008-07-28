@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
-import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.COARSE;
-import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.FINE;
-
 import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
 
@@ -57,24 +54,9 @@ import org.osgi.framework.BundleContext;
  */
 public class ExtensionDescriptor {
 
-	/**
-	 *
-	 */
-	public enum ExtensionKind {
-		HOMOGENEOUS, HETEROGENEOUS
-	};
-
-	/**
-	 *
-	 */
-	public enum Granularity {
-		COARSE, FINE;
-	}
-
 	private final String extensionPointId;
-	private final ExtensionKind extensionKind;
+	private boolean homogeneous = true;
 	private Class<?> interfaceType;
-	private Granularity granulartiy;
 	private int minOccurences = 0;
 	private int maxOccurences = UNBOUNDED;
 
@@ -84,12 +66,10 @@ public class ExtensionDescriptor {
 	 * Create an extension descriptor for the given extension point id.
 	 * 
 	 * @param extensionPointId
-	 * @param extensionKind
 	 */
-	public ExtensionDescriptor(final String extensionPointId, final ExtensionKind extensionKind) {
+	public ExtensionDescriptor(final String extensionPointId) {
 		Assert.isNotNull(extensionPointId, "The extension id must not be null."); //$NON-NLS-1$
 		this.extensionPointId = extensionPointId;
-		this.extensionKind = extensionKind;
 	}
 
 	/**
@@ -98,7 +78,7 @@ public class ExtensionDescriptor {
 	 * reflection and the name of the ´bind´ method.
 	 * 
 	 * @param interfaceType
-	 * @return
+	 * @return itself
 	 */
 	public ExtensionDescriptor useType(Class<?> interfaceType) {
 		Assert.isNotNull(interfaceType, "Interface type must not be null."); //$NON-NLS-1$
@@ -108,9 +88,16 @@ public class ExtensionDescriptor {
 		return this;
 	}
 
-	public ExtensionDescriptor grained(Granularity granularity) {
-		Assert.isTrue(this.granulartiy == null, "Granularity has already been set."); //$NON-NLS-1$
-		this.granulartiy = granularity;
+	/**
+	 * Set that the extension is heterogeneous.<br>
+	 * A homogeneous extension (that is the default) is an extension that only
+	 * has sub-elements of the same element type. A heterogeneous extension is
+	 * an extension that has sub-elements of various types.
+	 * 
+	 * @return itself
+	 */
+	public ExtensionDescriptor heterogeneous() {
+		homogeneous = false;
 		return this;
 	}
 
@@ -118,6 +105,7 @@ public class ExtensionDescriptor {
 	 * Inject the ´extensions´ into the specified target object.
 	 * 
 	 * @param target
+	 * @return itself
 	 */
 	public ExtensionInjector into(Object target) {
 		Assert.isNotNull(target, "The target must not be null."); //$NON-NLS-1$
@@ -132,7 +120,7 @@ public class ExtensionDescriptor {
 	 * 
 	 * @param min
 	 * @param max
-	 * @return
+	 * @return itself
 	 */
 	public ExtensionDescriptor expectingMinMax(int min, int max) {
 		Assert.isLegal(max >= min, "min must not be greater than max."); //$NON-NLS-1$
@@ -148,7 +136,7 @@ public class ExtensionDescriptor {
 	 * same.
 	 * 
 	 * @param exactly
-	 * @return
+	 * @return itself
 	 */
 	public ExtensionDescriptor expectingExactly(int exactly) {
 		return expectingMinMax(exactly, exactly);
@@ -159,10 +147,6 @@ public class ExtensionDescriptor {
 	 */
 	String getExtensionPointId() {
 		return extensionPointId;
-	}
-
-	Granularity getGranularity() {
-		return granulartiy == null ? COARSE : FINE;
 	}
 
 	/**
@@ -187,10 +171,10 @@ public class ExtensionDescriptor {
 	}
 
 	/**
-	 * @return the extensionKind
+	 * @return the form
 	 */
-	ExtensionKind getKind() {
-		return extensionKind;
+	boolean isHomogeneous() {
+		return homogeneous;
 	}
 
 	/**
