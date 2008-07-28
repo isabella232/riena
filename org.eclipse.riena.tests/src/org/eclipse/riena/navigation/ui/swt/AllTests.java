@@ -24,6 +24,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.EmbeddedTitlebarRend
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewIdTest;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
+import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
 
 /**
  * Tests all test cases within package:
@@ -44,6 +45,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ModuleItemTest.class);
 		suite.addTestSuite(ShellBorderRendererTest.class);
 		suite.addTestSuite(ApplicationViewAdvisorTest.class);
+		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
 		return suite;
 	}
 

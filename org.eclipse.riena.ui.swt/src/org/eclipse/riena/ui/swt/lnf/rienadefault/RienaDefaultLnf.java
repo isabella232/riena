@@ -83,7 +83,9 @@ public class RienaDefaultLnf {
 	 */
 	protected void initWidgetRendererDefaults() {
 
-		Inject.extension(LNF_RENDERER_EXTENSION_ID).into(this).andStart(Activator.getDefault().getContext()).stop();
+		if (Activator.getDefault() != null) {
+			Inject.extension(LNF_RENDERER_EXTENSION_ID).into(this).andStart(Activator.getDefault().getContext()).stop();
+		}
 
 		// getRendererTable().put(ILnfKeyConstants.TITLELESS_SHELL_RENDERER, new
 		// ShellRenderer());

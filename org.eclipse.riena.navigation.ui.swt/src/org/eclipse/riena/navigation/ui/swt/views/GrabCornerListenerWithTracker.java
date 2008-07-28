@@ -12,12 +12,15 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -28,14 +31,14 @@ import org.eclipse.swt.widgets.Tracker;
  * <p>
  * This implementation relies on a SWT {@link Tracker} for resize operations.
  */
-final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
+public final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
 
 	private final GrabCorner control;
 
 	private Cursor resizeCursor;
 	private Cursor defaultCursor;
 
-	GrabCornerListenerWithTracker(GrabCorner control) {
+	public GrabCornerListenerWithTracker(GrabCorner control) {
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				SwtUtilities.disposeResource(resizeCursor);
@@ -102,6 +105,7 @@ final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseT
 		Shell shell = control.getShell();
 		Display display = shell.getDisplay();
 		Tracker tracker = new Tracker(display, SWT.DOWN | SWT.RIGHT | SWT.RESIZE);
+		tracker.addControlListener(new TrackerListener());
 		Rectangle boundsDsp = display.map(shell, null, shell.getClientArea());
 		tracker.setRectangles(new Rectangle[] { boundsDsp });
 		tracker.setStippled(true);
@@ -112,11 +116,81 @@ final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseT
 	 * Resize the shell with the coordinates from the tracker
 	 */
 	private void handleResize(Tracker tracker) {
+		Rectangle bounds = getTrackerBounds(tracker);
+		if (bounds != null) {
+			control.getShell().setBounds(bounds);
+		}
+	}
+
+	/**
+	 * Returns the bounds of the given tracker.<br>
+	 * <i>The tracker can have different bounds. This method returns the bounds
+	 * of the first rectangle.</i>
+	 * 
+	 * @param tracker
+	 * @return bounds; {@code null} if the tracker has no bounds.
+	 */
+	private Rectangle getTrackerBounds(Tracker tracker) {
 		Rectangle[] rectangles = tracker.getRectangles();
 		if (rectangles.length > 0) {
-			Rectangle boundsDsp = rectangles[0];
-			control.getShell().setBounds(boundsDsp);
+			return rectangles[0];
+		} else {
+			return null;
 		}
+
+	}
+
+	/**
+	 * If the size of the tracker is less than the minimum size of the shell,
+	 * the tracker will be set the minimum shell bounds.
+	 * 
+	 * @param tracker
+	 */
+	private void setMinimumBounds(Tracker tracker) {
+
+		Rectangle bounds = getTrackerBounds(tracker);
+		Point miniSize = control.getShell().getMinimumSize();
+		boolean setTrackerBounds = false;
+		if (bounds.width < miniSize.x) {
+			setTrackerBounds = true;
+			bounds.width = miniSize.x;
+		}
+		if (bounds.height < miniSize.y) {
+			setTrackerBounds = true;
+			bounds.height = miniSize.y;
+		}
+		if (setTrackerBounds) {
+			tracker.setRectangles(new Rectangle[] { bounds });
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	private class TrackerListener implements ControlListener {
+
+		/**
+		 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt
+		 *      .events.ControlEvent)
+		 */
+		public void controlMoved(ControlEvent e) {
+			// nothing to do
+		}
+
+		/**
+		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse
+		 *      .swt.events.ControlEvent)
+		 */
+		public void controlResized(ControlEvent e) {
+
+			if (e.widget instanceof Tracker) {
+				Tracker tracker = (Tracker) e.widget;
+				setMinimumBounds(tracker);
+			}
+
+		}
+
 	}
 
 }

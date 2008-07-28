@@ -109,7 +109,11 @@ public class GrabCorner extends Composite {
 
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		return borderRenderer.getBorderWidth();
+		if (borderRenderer != null) {
+			return borderRenderer.getBorderWidth();
+		} else {
+			return 0;
+		}
 
 	}
 
