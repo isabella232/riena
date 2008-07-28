@@ -76,7 +76,7 @@ public final class Iter {
 	 * 
 	 * @return the Iterable
 	 */
-	public static <T> Iterable<T> able(T[] array) {
+	public static <T> Iterable<T> able(T... array) {
 		if (array == null) {
 			return Collections.emptyList();
 		} else {
