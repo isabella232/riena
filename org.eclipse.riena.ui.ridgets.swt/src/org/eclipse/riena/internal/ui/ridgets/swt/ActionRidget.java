@@ -27,6 +27,7 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		actionObserver = new ActionObserver();
 	}
 
+	@Override
 	protected void checkUIControl(Object uiControl) {
 		assertType(uiControl, Button.class);
 	}

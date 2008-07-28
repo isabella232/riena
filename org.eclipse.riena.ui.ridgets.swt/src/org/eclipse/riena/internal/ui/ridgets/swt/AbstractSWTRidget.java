@@ -67,21 +67,21 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	}
 
 	public Control getUIControl() {
-		return (Control) uiControl;
+		return uiControl;
 	}
 
 	public final void requestFocus() {
 		if (isFocusable()) {
-			if ((getUIControl() != null) && (getUIControl() instanceof Control)) {
-				Control control = (Control) getUIControl();
+			if (getUIControl() != null) {
+				Control control = getUIControl();
 				control.setFocus();
 			}
 		}
 	}
 
 	public final boolean hasFocus() {
-		if ((getUIControl() != null) && (getUIControl() instanceof Control)) {
-			Control control = (Control) getUIControl();
+		if (getUIControl() != null) {
+			Control control = getUIControl();
 			return control.isFocusControl();
 		}
 		return false;
@@ -130,8 +130,8 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 * Performs checks on the control about to be bound by this ridget.
 	 * </p>
 	 * <p>
-	 * Implementors must make sure the given <tt>uiControl</tt> has the
-	 * expected type.
+	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
+	 * type.
 	 * </p>
 	 * 
 	 * @param uiControl
@@ -207,6 +207,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	 */
 	private final class FocusManager extends FocusAdapter {
 
+		@Override
 		public void focusGained(FocusEvent e) {
 			if (focusable) {
 				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, AbstractSWTRidget.this));

@@ -99,6 +99,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		}
 	}
 
+	@Override
 	public Button getUIControl() {
 		return (Button) super.getUIControl();
 	}
@@ -149,6 +150,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
 	 */
+	@Override
 	public boolean isBlocked() {
 		return blocked;
 	}
@@ -158,6 +160,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
 	 */
+	@Override
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 

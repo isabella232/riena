@@ -78,7 +78,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	public void setUIControl(Object uiControl) {
 
 		if (uiControl != null && !(uiControl instanceof IComplexComponent)) {
-			throw new UIBindingFailure("uiControl of a AbstractCompositeRidget must be a IComplexComponent but was a "
+			throw new UIBindingFailure("uiControl of a AbstractCompositeRidget must be a IComplexComponent but was a " //$NON-NLS-1$
 					+ uiControl.getClass().getSimpleName());
 		}
 
@@ -138,9 +138,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
 	 */
 	public void setFocusable(boolean focusable) {
-		Collection r = getRidgets();
-		for (Iterator iterator = r.iterator(); iterator.hasNext();) {
-			IRidget object = (IRidget) iterator.next();
+		Collection<? extends IRidget> r = getRidgets();
+		for (Iterator<? extends IRidget> iterator = r.iterator(); iterator.hasNext();) {
+			IRidget object = iterator.next();
 			object.setFocusable(focusable);
 
 		}
@@ -158,7 +158,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+		 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
+		 * PropertyChangeEvent)
 		 */
 		public void propertyChange(PropertyChangeEvent evt) {
 
@@ -178,7 +179,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
 	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;
@@ -197,9 +199,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	public void setBlocked(boolean blocked) {
 
-		Collection r = getRidgets();
-		for (Iterator iterator = r.iterator(); iterator.hasNext();) {
-			IRidget object = (IRidget) iterator.next();
+		Collection<? extends IRidget> r = getRidgets();
+		for (Iterator<? extends IRidget> iterator = r.iterator(); iterator.hasNext();) {
+			IRidget object = iterator.next();
 			object.setBlocked(blocked);
 
 		}

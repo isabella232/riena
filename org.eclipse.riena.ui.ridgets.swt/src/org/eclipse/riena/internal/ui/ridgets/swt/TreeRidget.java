@@ -266,6 +266,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * This implementation will try to expand the path to the give option, to
 	 * ensure that the corresponding tree element exists.
 	 */
+	@Override
 	public boolean containsOption(Object option) {
 		reveal(new Object[] { option });
 		return super.containsOption(option);
@@ -278,6 +279,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * implementation will try to expand the path to the corresponding tree
 	 * node, to ensure that the corresponding tree element is selectable.
 	 */
+	@Override
 	public final void setSelection(List<?> newSelection) {
 		reveal(newSelection.toArray());
 		super.setSelection(newSelection);
@@ -290,6 +292,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * implementation will try to expand the path to the corresponding tree
 	 * node, to ensure that the corresponding tree element is selectable.
 	 */
+	@Override
 	public final void setSelection(Object candidate) {
 		if (candidate != null) {
 			reveal(new Object[] { candidate });

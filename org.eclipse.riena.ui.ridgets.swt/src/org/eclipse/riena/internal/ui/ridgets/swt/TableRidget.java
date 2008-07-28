@@ -88,7 +88,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	@Override
 	protected void bindUIControl() {
-		final Table control = (Table) getUIControl();
+		final Table control = getUIControl();
 		if (control != null && rowObservables != null) {
 			viewer = new TableViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
@@ -188,6 +188,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		bindToModel(listObservableValue, rowBeanClass, columnPropertyNames, columnHeaders);
 	}
 
+	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
 		if (viewer != null) {
@@ -296,16 +297,19 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
+	@Override
 	public int getSelectionIndex() {
 		Table control = getUIControl();
 		return control == null ? -1 : control.getSelectionIndex();
 	}
 
+	@Override
 	public int[] getSelectionIndices() {
 		Table control = getUIControl();
 		return control == null ? new int[0] : control.getSelectionIndices();
 	}
 
+	@Override
 	public int indexOfOption(Object option) {
 		Table control = getUIControl();
 		if (control != null) {
@@ -435,6 +439,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * column according to the information stored in the ridget.
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			TableColumn column = (TableColumn) e.widget;
 			int columnIndex = column.getParent().indexOf(column);

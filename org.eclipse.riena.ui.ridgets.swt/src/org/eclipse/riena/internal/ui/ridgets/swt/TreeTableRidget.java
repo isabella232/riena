@@ -71,6 +71,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 	// ITreeTableRidget methods
 	// /////////////////////////
 
+	@Override
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
 		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders);
@@ -202,6 +203,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 	 * column according to the information stored in the ridget.
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			TreeColumn column = (TreeColumn) e.widget;
 			int columnIndex = column.getParent().indexOf(column);
