@@ -19,6 +19,7 @@ import org.eclipse.riena.internal.core.config.ConfigFromExtensions;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationPlugin;
@@ -27,8 +28,13 @@ import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
 
+	/**
+	 * 
+	 */
+	public static final String RIENA_FORCE_START = "Riena-ForceStart"; //$NON-NLS-1$
+
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.core";
+	public static final String PLUGIN_ID = "org.eclipse.riena.core"; //$NON-NLS-1$
 
 	private ServiceRegistration configSymbolReplace;
 	private ServiceRegistration configurationPlugin;
@@ -46,38 +52,9 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		Logger LOGGER = getLogger(Activator.class.getName());
+		final Logger LOGGER = getLogger(Activator.class.getName());
 
-		Bundle[] bundles = context.getBundles();
-		for (Bundle bundle : bundles) {
-			boolean forceStart = Boolean.parseBoolean((String) bundle.getHeaders().get("Riena-ForceStart"));
-			if (bundle.getState() != Bundle.ACTIVE
-					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals(
-							"org.eclipse.equinox.log"))) {
-				forceStart = true;
-			}
-			if (forceStart) {
-				// TODO STARTING == LAZY, so start that also, STARTING is
-				// disabled, bundles with forceStart should not be LAZY
-				if (bundle.getState() == Bundle.RESOLVED/*
-														 * || bundle.getState()
-														 * == Bundle.STARTING
-														 */) {
-					bundle.start();
-					LOGGER.log(LogService.LOG_INFO, bundle.getSymbolicName() + " forced autostart successfully");
-				} else {
-					if (bundle.getState() == Bundle.INSTALLED) {
-						System.err.println(bundle.getSymbolicName()
-								+ " has Riena-ForceStart but is only in state INSTALLED (not RESOLVED).");
-					} else {
-						if (bundle.getState() == Bundle.ACTIVE) {
-							LOGGER.log(LogService.LOG_INFO, bundle.getSymbolicName()
-									+ " no forced autostart. Bundle is already ACTIVE.");
-						}
-					}
-				}
-			}
-		}
+		startForcedRienaBundles(context, LOGGER);
 
 		// register ConfigSymbolReplace that replaces symbols in config strings
 		ConfigSymbolReplace csr = new ConfigSymbolReplace();
@@ -91,6 +68,44 @@ public class Activator extends RienaPlugin {
 		// as config admin packages
 		new ConfigFromExtensions(context).doConfig();
 		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
+	}
+
+	/**
+	 * Force starting of bundles that are marked true with the
+	 * <code>RIENA_FORCE_START</code> bundle header.
+	 * 
+	 * @param context
+	 * @param LOGGER
+	 * @throws BundleException
+	 */
+	private void startForcedRienaBundles(BundleContext context, final Logger LOGGER) throws BundleException {
+		Bundle[] bundles = context.getBundles();
+		for (Bundle bundle : bundles) {
+			boolean forceStart = Boolean.parseBoolean((String) bundle.getHeaders().get(RIENA_FORCE_START));
+			if (bundle.getState() != Bundle.ACTIVE
+					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals(
+							"org.eclipse.equinox.log"))) {
+				forceStart = true;
+			}
+			if (!forceStart)
+				continue;
+
+			// TODO STARTING == LAZY, so start that also, STARTING is
+			// disabled, bundles with forceStart should not be LAZY
+			if (bundle.getState() == Bundle.RESOLVED/*
+													 * || bundle.getState() ==
+													 * Bundle.STARTING
+													 */) {
+				bundle.start();
+				LOGGER.log(LogService.LOG_INFO, bundle.getSymbolicName() + " forced autostart successfully");
+			} else if (bundle.getState() == Bundle.INSTALLED) {
+				LOGGER.log(LogService.LOG_ERROR, bundle.getSymbolicName() + " has " + RIENA_FORCE_START
+						+ " but is only in state INSTALLED (not RESOLVED).");
+			} else if (bundle.getState() == Bundle.ACTIVE) {
+				LOGGER.log(LogService.LOG_DEBUG, bundle.getSymbolicName()
+						+ " no forced autostart. Bundle is already ACTIVE.");
+			}
+		}
 	}
 
 	/*
