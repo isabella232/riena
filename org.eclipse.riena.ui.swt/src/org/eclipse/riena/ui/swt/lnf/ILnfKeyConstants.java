@@ -64,6 +64,8 @@ public class ILnfKeyConstants {
 
 	public static final String SUB_MODULE_TREE_ITEM_BACKGROUND = "subModuleTreeItem.background"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_ITEM_FOREGROUND = "subModuleTreeItem.foreground"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_ITEM_SELECTION_COLOR = "subModuleTreeItem.selectionColor"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_ITEM_FOCUS_COLOR = "subModuleTreeItem.focusColor"; //$NON-NLS-1$
 
 	public static final String STATUSBAR_BACKGROUND = "statusbar.background"; //$NON-NLS-1$
 

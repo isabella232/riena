@@ -48,6 +48,9 @@ public class ExampleTheme extends RienaDefaultTheme {
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(186, 193, 225));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(151, 150, 180));
 
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_SELECTION_COLOR, new ColorLnfResource(null));
+		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOCUS_COLOR, new ColorLnfResource(null));
+
 	}
 
 	/**
