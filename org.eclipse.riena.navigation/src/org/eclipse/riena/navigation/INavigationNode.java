@@ -371,7 +371,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param targetId
 	 *            Refers to an extension point describing the target node.
-	 * @see INavigationNodeProvider
+	 * @see INavigationNodeBuilder
 	 */
 	void create(INavigationNodeId targetId);
 
@@ -381,7 +381,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * 
 	 * @param targetId
 	 *            Refers to an extension point describing the target node.
-	 * @see INavigationNodeProvider
+	 * @see INavigationNodeBuilder
 	 */
 	void navigate(INavigationNodeId targetId);
 
@@ -392,7 +392,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @param targetId
 	 * @param argument
 	 *            Refers to an extension point describing the target node.
-	 * @see INavigationNodeProvider
+	 * @see INavigationNodeBuilder
 	 */
 	void navigate(INavigationNodeId targetId, Object argument);
 
@@ -403,7 +403,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @param targetId
 	 * @param argument
 	 * @param argumentListener
-	 * @see INavigationNodeProvider
+	 * @see INavigationNodeBuilder
 	 */
 	void navigate(INavigationNodeId targetId, Object argument, INavigationArgumentListener argumentListener);
 

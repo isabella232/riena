@@ -16,7 +16,7 @@ import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
-import org.eclipse.riena.navigation.INavigationNodeProvider;
+import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.IPresentationDefinition;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.IWorkAreaPresentationDefinition;
@@ -69,7 +69,7 @@ public class PresentationProviderService implements IPresentationProviderService
 		if (targetNode == null) {
 			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinitionNN(targetId);
 			if (presentationDefinition != null) {
-				INavigationNodeProvider builder = presentationDefinition.createNodeProvider();
+				INavigationNodeBuilder builder = presentationDefinition.createNodeBuilder();
 				targetNode = builder.buildNode(targetId);
 
 				INavigationNode parentNode = createNode(sourceNode, new NavigationNodeId(presentationDefinition

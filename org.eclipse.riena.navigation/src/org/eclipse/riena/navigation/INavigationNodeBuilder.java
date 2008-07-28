@@ -16,7 +16,7 @@ package org.eclipse.riena.navigation;
  * 
  * @author Erich Achilles
  */
-public interface INavigationNodeProvider {
+public interface INavigationNodeBuilder {
 
 	INavigationNode<?> buildNode(INavigationNodeId INavigationNodeId);
 

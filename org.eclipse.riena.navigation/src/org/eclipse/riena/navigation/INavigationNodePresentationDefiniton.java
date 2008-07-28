@@ -21,7 +21,7 @@ public interface INavigationNodePresentationDefiniton extends IPresentationDefin
 	 * Returns the ModuleComposer for this module presentation
 	 */
 
-	INavigationNodeProvider createNodeProvider();
+	INavigationNodeBuilder createNodeBuilder();
 
 	/**
 	 * The id of this presentations parent presentation

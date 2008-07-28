@@ -13,7 +13,7 @@ import org.eclipse.riena.example.client.views.TreeView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
-import org.eclipse.riena.navigation.INavigationNodeProvider;
+import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -22,10 +22,10 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAc
 /**
  *
  */
-public class Open3NavigationNodeBuilder implements INavigationNodeProvider {
+public class Open3NavigationNodeBuilder implements INavigationNodeBuilder {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#buildNode()
+	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode()
 	 */
 	public IModuleGroupNode buildNode(INavigationNodeId presentationId) {
 		ModuleGroupNode node = new ModuleGroupNode("New Group");
