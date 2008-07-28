@@ -37,7 +37,7 @@ import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.log.LogService;
 
 /**
- * InvocationHandler for proxies that map to extension elements.
+ * InvocationHandler for proxies that map to configuration elements.
  */
 class InterfaceBean implements InvocationHandler {
 
