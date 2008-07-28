@@ -18,7 +18,6 @@ import org.eclipse.riena.core.config.ConfigTest;
 import org.eclipse.riena.core.exception.ExceptionHandlerManagerTest;
 import org.eclipse.riena.core.extension.ExtensionInjectorTest;
 import org.eclipse.riena.core.extension.HeterogeneousInjectingTest;
-import org.eclipse.riena.core.extension.util.ExtensionUtilTest;
 import org.eclipse.riena.core.service.ServiceInjectorTest;
 
 /**
@@ -32,7 +31,6 @@ public class AllTests extends TestCase {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTestSuite(ConfigTest.class);
 		suite.addTestSuite(ExceptionHandlerManagerTest.class);
-		suite.addTestSuite(ExtensionUtilTest.class);
 		suite.addTestSuite(ServiceInjectorTest.class);
 		suite.addTestSuite(ExtensionInjectorTest.class);
 		suite.addTestSuite(HeterogeneousInjectingTest.class);
