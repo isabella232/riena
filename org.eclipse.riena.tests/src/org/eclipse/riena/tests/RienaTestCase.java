@@ -42,6 +42,7 @@ public abstract class RienaTestCase extends TestCase {
 	// Keep track of services and and corresponding service references.
 	private Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	private BundleContext context;
+	private boolean print;
 
 	/**
 	 * 
@@ -101,13 +102,46 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
+	 * Enable/Disable printing.
+	 * 
+	 * @param print
+	 */
+	protected void setPrint(boolean print) {
+		this.print = print;
+	}
+
+	/**
 	 * Print the current test´s name.
 	 */
 	protected void printTestName() {
+		if (!print)
+			return;
 		System.out.println(getName());
 		for (int i = 0; i < getName().length(); i++)
 			System.out.print('-');
 		System.out.println();
+	}
+
+	/**
+	 * Print the string, no CR/LF.
+	 * 
+	 * @param string
+	 */
+	protected void print(String string) {
+		if (!print)
+			return;
+		System.out.print(string);
+	}
+
+	/**
+	 * Print the string, with CR/LF.
+	 * 
+	 * @param string
+	 */
+	protected void println(String string) {
+		if (!print)
+			return;
+		System.out.println(string);
 	}
 
 	/**
