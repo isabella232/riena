@@ -75,15 +75,23 @@ public abstract class AbstractMarker implements IMarker {
 		}
 	}
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IMarker#addAttributeChangeListener(de.compeople.spirit.core.client.uibinding.IMarkerAttributeChangeListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.core.marker.IMarker#addAttributeChangeListener(org.
+	 * eclipse.riena.core.marker.IMarkerAttributeChangeListener)
 	 */
 	public void addAttributeChangeListener(IMarkerAttributeChangeListener listener) {
 		attributeChangeListeners.add(listener);
 	}
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.IMarker#removeAttributeChangeListener(de.compeople.spirit.core.client.uibinding.IMarkerAttributeChangeListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.core.marker.IMarker#removeAttributeChangeListener(org
+	 * .eclipse.riena.core.marker.IMarkerAttributeChangeListener)
 	 */
 	public void removeAttributeChangeListener(IMarkerAttributeChangeListener listener) {
 		attributeChangeListeners.remove(listener);

@@ -19,58 +19,64 @@ import org.eclipse.riena.security.common.ISubjectChangeListener;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.SubjectChangeEvent;
 
-
 /**
- * The <code>SimpleSubjectHolder</code> is a very simple implementation of the <code>ISubjectHolder</code>
- * interface which should be sufficient for at least the client side.
+ * The <code>SimpleSubjectHolder</code> is a very simple implementation of the
+ * <code>ISubjectHolder</code> interface which should be sufficient for at least
+ * the client side.
  * 
  */
 public class SimpleSubjectHolder implements ISubjectHolder {
 
-    private Subject subject;
-    private List<ISubjectChangeListener> principalChangeListeners;
+	private Subject subject;
+	private List<ISubjectChangeListener> principalChangeListeners;
 
-    /**
-     * Creates a SimpleSubjectHolder
-     */
-    public SimpleSubjectHolder() {
-        principalChangeListeners = new ArrayList<ISubjectChangeListener>();
-    }
+	/**
+	 * Creates a SimpleSubjectHolder
+	 */
+	public SimpleSubjectHolder() {
+		principalChangeListeners = new ArrayList<ISubjectChangeListener>();
+	}
 
-    /**
-     * @see de.compeople.spirit.security.base.ISubjectHolder#getSubject()
-     */
-    public Subject getSubject() {
-        return subject;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.security.common.ISubjectHolder#getSubject()
+	 */
+	public Subject getSubject() {
+		return subject;
+	}
 
-    /**
-     * @see de.compeople.spirit.security.base.ISubjectHolder#setSubject(Subject)
-     */
-    public void setSubject(Subject subject) {
-    	Subject old = this.subject;
-        this.subject = subject;
-        notifySubjectChange(this.subject, old);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.common.ISubjectHolder#setSubject(javax.security
+	 * .auth.Subject)
+	 */
+	public void setSubject(Subject subject) {
+		Subject old = this.subject;
+		this.subject = subject;
+		notifySubjectChange(this.subject, old);
+	}
 
-    private void notifySubjectChange(Subject newSubject, Subject oldSubject) {
-        // check avoids SubjectChangeEvent object if there is no listener
-        if (principalChangeListeners.size() > 0) {
-            SubjectChangeEvent event = new SubjectChangeEvent(newSubject, oldSubject);
-            for (ISubjectChangeListener listener : principalChangeListeners) {
-                listener.changed(event);
-            }
-        }
-    }
+	private void notifySubjectChange(Subject newSubject, Subject oldSubject) {
+		// check avoids SubjectChangeEvent object if there is no listener
+		if (principalChangeListeners.size() > 0) {
+			SubjectChangeEvent event = new SubjectChangeEvent(newSubject, oldSubject);
+			for (ISubjectChangeListener listener : principalChangeListeners) {
+				listener.changed(event);
+			}
+		}
+	}
 
-    public void addSubjectChangeListener(ISubjectChangeListener listener) {
-        if (listener != null) {
-            principalChangeListeners.add(listener);
-        }
-    }
+	public void addSubjectChangeListener(ISubjectChangeListener listener) {
+		if (listener != null) {
+			principalChangeListeners.add(listener);
+		}
+	}
 
-    public void removeSubjectChangeListener(ISubjectChangeListener listener) {
-        principalChangeListeners.remove(listener);
-    }
+	public void removeSubjectChangeListener(ISubjectChangeListener listener) {
+		principalChangeListeners.remove(listener);
+	}
 
 }

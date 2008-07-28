@@ -71,12 +71,12 @@ public class SessionService implements ISessionService {
 		this.sessionProvider = sessionProvider;
 	}
 
-	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#
-	 * 	generateSession(java.security.Principal,
-	 * 	org.eclipse.riena.security.common.IPrincipalLocation,
-	 * 	de.compeople.spirit.security.base.authentication.Credentials)
-	 * @pre principal!=null
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.server.session.ISessionService#generateSession
+	 * (java.security.Principal[])
 	 */
 	public Session generateSession(Principal[] principals) {
 		// Assert.isNotNull( principal.getName(),"userid must not be null" );
@@ -92,20 +92,13 @@ public class SessionService implements ISessionService {
 		return session;
 	}
 
-	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#
-	 * 	registerSession
-	 * 	(de.compeople.spirit.security.base.authentication.ISecurityTicket)
-	 */
-	// public boolean registerSession(ISecurityTicket ticket) {
-	// SessionEntry entry = new SessionEntry(ticket.getSession(),
-	// ticket.getAuthenticationContext().getPrincipal(), null);
-	// store.write(entry);
-	// return true;
-	// }
-	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#
-	 * 	findPrincipals(org.eclipse.riena.security.common.session.ISession)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.server.session.ISessionService#findPrincipals
+	 * (org.eclipse.riena.security.common.session.Session)
+	 * 
 	 * @pre session!=null
 	 */
 	public Principal[] findPrincipals(Session session) {
@@ -117,28 +110,36 @@ public class SessionService implements ISessionService {
 		return entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()]);
 	}
 
-	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#
-	 * 	isValidSession(Session)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.server.session.ISessionService#isValidSession
+	 * (org.eclipse.riena.security.common.session.Session)
 	 */
 	public boolean isValidSession(Session session) {
 		SessionEntry entry = store.read(session);
 		return entry != null && entry.getValid();
 	}
 
-	/**
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
-	 * 	de.compeople.spirit.security.server.session.ISessionService#hasSession
-	 * 	(Session)
+	 * org.eclipse.riena.security.server.session.ISessionService#hasSession(
+	 * org.eclipse.riena.security.common.session.Session)
 	 */
 	public boolean hasSession(Session session) {
 		SessionEntry entry = store.read(session);
 		return entry != null;
 	}
 
-	/**
-	 * @see de.compeople.spirit.security.server.session.ISessionService#
-	 * 	invalidateSession(Session)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.server.session.ISessionService#invalidateSession
+	 * (org.eclipse.riena.security.common.session.Session)
 	 */
 	public void invalidateSession(Session session) {
 		store.delete(session);

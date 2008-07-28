@@ -21,7 +21,6 @@ import org.eclipse.riena.security.common.session.Session;
  * An object of this class will be returned by the authentication process. It
  * contains the references to the authentication module and the session service.
  * 
- * @see de.compeople.spirit.security.base.authentication.ISecurityTicket
  */
 public class AuthenticationTicket implements Serializable {
 

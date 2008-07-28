@@ -46,9 +46,12 @@ public class SecurityCallHook implements ICallHook {
 		}
 	}
 
-	/**
-	 * @see de.compeople.spirit.communication.base.hook.ICallHook#beforeCall(de.
-	 * 	compeople.spirit.communication.base.hook.ICallContext)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.hooks.ICallHook#beforeCall(org.eclipse
+	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void beforeCall(CallContext callback) {
 		ISessionHolder sessionHolder = shService.fetchSessionHolder();
@@ -59,9 +62,12 @@ public class SecurityCallHook implements ICallHook {
 		}
 	}
 
-	/**
-	 * @see de.compeople.spirit.communication.base.hook.ICallHook#afterCall(de.
-	 * 	compeople.spirit.communication.base.hook.ICallContext)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.hooks.ICallHook#afterCall(org.eclipse
+	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void afterCall(CallContext callback) {
 		ISessionHolder sessionHolder = shService.fetchSessionHolder();

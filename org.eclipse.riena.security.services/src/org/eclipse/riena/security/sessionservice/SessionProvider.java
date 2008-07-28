@@ -15,30 +15,32 @@ import java.security.SecureRandom;
 
 import org.eclipse.riena.security.common.session.Session;
 
-
 /**
  * This Provider constructs a <code>Session</code> object.
  * 
  */
 public class SessionProvider implements ISessionProvider {
 
-    private SecureRandom random;
+	private SecureRandom random;
 
-    /**
-     * Creates a new instance of <code>SessionProvider</code>
-     */
-    public SessionProvider() {
-        super();
-        random = new SecureRandom();
-    }
+	/**
+	 * Creates a new instance of <code>SessionProvider</code>
+	 */
+	public SessionProvider() {
+		super();
+		random = new SecureRandom();
+	}
 
-    /**
-     * @see de.compeople.spirit.securityimplementation.server.session.ISessionProvider#createSession(java.security.Principal,
-     *      de.compeople.spirit.security.base.internal.PrincipalLocation)
-     */
-    public Session createSession(Principal[] principals) {
-        // we could use information from the principal parameter here
-        return new Session("ssoid##" + Long.valueOf(random.nextLong() + System.currentTimeMillis()).toString() + "##");
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.sessionservice.ISessionProvider#createSession
+	 * (java.security.Principal[])
+	 */
+	public Session createSession(Principal[] principals) {
+		// we could use information from the principal parameter here
+		return new Session("ssoid##" + Long.valueOf(random.nextLong() + System.currentTimeMillis()).toString() + "##");
+	}
 
 }
