@@ -78,6 +78,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
 		assertEquals(siChecked, labelProvider.getImage(elementB));
+
+		assertNotSame(siChecked, siUnchecked);
 	}
 
 	public void testGetColumnImage() {
@@ -91,6 +93,8 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
 		assertEquals(siChecked, labelProvider.getColumnImage(elementB, 1));
+
+		assertNotSame(siChecked, siUnchecked);
 
 		assertEquals(null, labelProvider.getColumnImage(elementA, 99));
 	}

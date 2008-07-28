@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.TreeItem;
  * <li>leaf (i.e. node with no children)</li>
  *</ul>
  */
-// TODO [ev] unit tests
 final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
