@@ -264,7 +264,7 @@
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
             presentationId="open2"
-            nodeProvider="org.eclipse.riena.example.client.navigation.model.Open2NavigationNodeBuilder"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.Open2NavigationNodeBuilder"
             parentPresentationId="app1">
       </navigationNodePresentation>
    </extension>
@@ -272,7 +272,7 @@
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
             presentationId="open3"
-            nodeProvider="org.eclipse.riena.example.client.navigation.model.Open3NavigationNodeBuilder"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.Open3NavigationNodeBuilder"
             parentPresentationId="playground">
       </navigationNodePresentation>
    </extension>
