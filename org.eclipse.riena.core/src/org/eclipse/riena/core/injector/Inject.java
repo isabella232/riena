@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector;
 
-import static org.eclipse.riena.core.extension.ExtensionDescriptor.ExtensionKind.HETEROGENEOUS;
-import static org.eclipse.riena.core.extension.ExtensionDescriptor.ExtensionKind.HOMOGENEOUS;
-
 import org.eclipse.riena.core.extension.ExtensionDescriptor;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 
@@ -39,26 +36,7 @@ public final class Inject {
 	 * @return
 	 */
 	public static ExtensionDescriptor extension(String extensionId) {
-		return new ExtensionDescriptor(extensionId, HOMOGENEOUS);
+		return new ExtensionDescriptor(extensionId);
 	}
 
-	/**
-	 * @see ExtensionDescriptor
-	 * 
-	 * @param string
-	 * @return
-	 */
-	public static ExtensionDescriptor homogeneousExtension(String extensionId) {
-		return extension(extensionId);
-	}
-
-	/**
-	 * @see ExtensionDescriptor
-	 * 
-	 * @param string
-	 * @return
-	 */
-	public static ExtensionDescriptor heterogeneousExtension(String extensionId) {
-		return new ExtensionDescriptor(extensionId, HETEROGENEOUS);
-	}
 }
