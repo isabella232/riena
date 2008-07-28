@@ -40,6 +40,7 @@ public class ExtensionInjector {
 	private boolean started;
 	private boolean track = true;
 	private boolean symbolReplacement = true;
+	private boolean nonSpecific = true;
 	private String updateMethodName = "update"; //$NON-NLS-1$
 	private Method updateMethod;
 	private IRegistryEventListener injectorListener;
@@ -112,6 +113,19 @@ public class ExtensionInjector {
 	public ExtensionInjector doNotTrack() {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
 		track = false;
+		return this;
+	}
+
+	/**
+	 * Explicitly force specific injection, i.e. the injected types reflect that
+	 * they come from different extensions. Otherwise (which is the default) it
+	 * will not be differentiated.
+	 * 
+	 * @return itself
+	 */
+	public ExtensionInjector specific() {
+		Assert.isTrue(!started, "ExtensionInjector already started.");
+		nonSpecific = false;
 		return this;
 	}
 
@@ -245,7 +259,8 @@ public class ExtensionInjector {
 	}
 
 	void populateInterfaceBeans() {
-		final Object[] beans = ExtensionMapper.read(symbolReplacement ? context : null, extensionDesc, componentType);
+		final Object[] beans = ExtensionMapper.map(symbolReplacement ? context : null, extensionDesc, componentType,
+				nonSpecific);
 		if (!matchesExtensionPointConstraint(beans.length))
 			LOGGER
 					.log(LogService.LOG_ERROR,
