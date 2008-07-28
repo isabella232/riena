@@ -18,12 +18,12 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import junit.framework.TestCase;
+import org.eclipse.riena.tests.RienaTestCase;
 
 /**
  * Test the Iter class
  */
-public class IterTest extends TestCase {
+public class IterTest extends RienaTestCase {
 
 	/**
 	 * Nomen est omen!
@@ -140,7 +140,7 @@ public class IterTest extends TestCase {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		Enumeration<URL> enumeration = classLoader.getResources("META-INF/hivemodule.xml");
 		for (URL jarUrl : Iter.able(enumeration)) {
-			System.out.println(jarUrl);
+			println(jarUrl.toString());
 		}
 	}
 
