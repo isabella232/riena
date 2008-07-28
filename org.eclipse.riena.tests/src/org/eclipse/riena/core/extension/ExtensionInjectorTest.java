@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
-import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.COARSE;
-import static org.eclipse.riena.core.extension.ExtensionDescriptor.Granularity.FINE;
-
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -22,7 +19,6 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
@@ -33,19 +29,15 @@ import org.osgi.service.cm.ConfigurationPlugin;
  */
 public class ExtensionInjectorTest extends RienaTestCase {
 
+	{
+		// If you want printing remove the comments below:
+		setPrint(true);
+	}
+
 	/**
 	 * In some test we have to sleep because of asynchronous processing.
 	 */
 	private static final int SLEEP_TIME = 500;
-
-	public void scribble() {
-		BundleContext context = null;
-		Inject.extension("").useType(Object.class).expectingMinMax(0, 1).into(this).andStart(context);
-		Inject.homogeneousExtension("").useType(Object.class).grained(FINE).expectingExactly(1).into(this).bind(
-				"update").andStart(context);
-		Inject.heterogeneousExtension("").grained(COARSE).into(this).doNotTrack().doNotReplaceSymbols().andStart(context)
-				.stop();
-	}
 
 	public void testConstructorConstraints() {
 		printTestName();
@@ -435,6 +427,57 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		lazyThing.doSomething();
 		assertTrue(LazyThing.instantiated);
 		removeExtension("core.test.extpoint.id7");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testWithUnknownTypeAndMultipleDataSpecific() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
+		ConfigurableThingMultipleDataSpecific target = new ConfigurableThingMultipleDataSpecific();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).specific().andStart(
+				getContext());
+		assertEquals(3, target.getExtData().length);
+		for (IExtData data : target.getExtData()) {
+			if (data.getTest()[0].getText().equals("test1"))
+				assertEquals("java.lang.String", data.getTest()[0].createObjectType().getClass().getName());
+			else if (data.getTest()[0].getText().equals("test2"))
+				assertEquals("java.util.HashMap", data.getTest()[0].createObjectType().getClass().getName());
+			else if (data.getTest()[0].getText().equals("test3"))
+				assertEquals("java.util.ArrayList", data.getTest()[0].createObjectType().getClass().getName());
+			else
+				fail("Argh!");
+		}
+		removeExtension("core.test.extpoint.id1");
+		removeExtension("core.test.extpoint.id2");
+		removeExtension("core.test.extpoint.id3");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testWithUnknownTypeAndMultipleDataSpecific2() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-a.xml");
+		ConfigurableThingMultipleDataSpecific target = new ConfigurableThingMultipleDataSpecific();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).specific().andStart(
+				getContext());
+		assertEquals(1, target.getExtData().length);
+		for (IExtData extData : target.getExtData()) {
+			assertEquals(2, extData.getTest().length);
+			for (IData data : extData.getTest()) {
+				if (data.getText().equals("test-a1"))
+					assertEquals("java.lang.String", data.createObjectType().getClass().getName());
+				else if (data.getText().equals("test-a2"))
+					assertEquals("java.lang.StringBuffer", data.createObjectType().getClass().getName());
+				else
+					fail("Argh!");
+			}
+		}
+		removeExtension("core.test.extpoint.id-a");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 	}
