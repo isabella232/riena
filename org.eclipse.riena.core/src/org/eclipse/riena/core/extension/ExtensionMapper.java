@@ -12,12 +12,17 @@ package org.eclipse.riena.core.extension;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.osgi.framework.BundleContext;
 
@@ -73,6 +78,10 @@ public class ExtensionMapper {
 	// private final static Logger LOGGER = new
 	// ConsoleLogger(ExtensionMapper.class.getName());
 
+	private ExtensionMapper() {
+		throw new IllegalStateException("Should never be invoked!"); //$NON-NLS-1$
+	}
+
 	/**
 	 * Static method to read extensions
 	 * 
@@ -84,23 +93,215 @@ public class ExtensionMapper {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] read(BundleContext context, ExtensionDescriptor extensionDesc, Class<?> componentType) {
+	public static <T> T[] map(final BundleContext context, final ExtensionDescriptor extensionDesc,
+			final Class<T> componentType, boolean nonSpecific) {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionDesc.getExtensionPointId());
 		if (extensionPoint == null)
 			throw new IllegalArgumentException("Extension point " + extensionDesc.getExtensionPointId()
 					+ " does not exist");
-
 		final IExtension[] extensions = extensionPoint.getExtensions();
 		if (extensions.length == 0)
 			return (T[]) Array.newInstance(componentType, 0);
 
 		final List<Object> list = new ArrayList<Object>();
-		for (final IExtension extension : extensions)
-			for (final IConfigurationElement element : extension.getConfigurationElements())
-				list.add(InterfaceBean.newInstance(context, componentType, element));
+		if (nonSpecific) {
+			if (extensionDesc.isHomogeneous())
+				for (final IConfigurationElement element : extensionPoint.getConfigurationElements())
+					list.add(InterfaceBean.newInstance(context, componentType, element));
+			else
+				list.add(InterfaceBean.newInstance(context, componentType, new Wrapper(extensionPoint)));
+		} else
+			for (IExtension extension : extensions)
+				list.add(InterfaceBean.newInstance(context, componentType, new Wrapper(extension)));
 
 		return list.toArray((T[]) Array.newInstance(componentType, list.size()));
+	}
+
+	/**
+	 * Wrap an IExtension or an IExtensionPoint so that it behaves almost like a
+	 * IConfigurationElement.
+	 */
+	private static class Wrapper implements IConfigurationElement {
+
+		private final IExtensionPoint extensionPoint;
+		private final IExtension extension;
+
+		private Wrapper(final IExtensionPoint extensionPoint) {
+			Assert.isNotNull(extensionPoint, "extensionPoint must not be null.");
+			this.extensionPoint = extensionPoint;
+			this.extension = null;
+		}
+
+		private Wrapper(final IExtension extension) {
+			Assert.isNotNull(extension, "extension must not be null.");
+			this.extension = extension;
+			this.extensionPoint = null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#createExecutableExtension
+		 * (java.lang.String)
+		 */
+		public Object createExecutableExtension(String propertyName) throws CoreException {
+			throw new UnsupportedOperationException("IExtension/Point does not support createExecutableExtension()");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#getAttribute(java.
+		 * lang.String)
+		 */
+		public String getAttribute(String name) throws InvalidRegistryObjectException {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#getAttributeAsIs(java
+		 * .lang.String)
+		 */
+		public String getAttributeAsIs(String name) throws InvalidRegistryObjectException {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#getAttributeNames()
+		 */
+		public String[] getAttributeNames() throws InvalidRegistryObjectException {
+			return new String[0];
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getChildren()
+		 */
+		public IConfigurationElement[] getChildren() throws InvalidRegistryObjectException {
+			if (extension != null)
+				return extension.getConfigurationElements();
+
+			List<IConfigurationElement> elements = new ArrayList<IConfigurationElement>();
+			for (final IExtension extension : extensionPoint.getExtensions())
+				elements.addAll(Arrays.asList(extension.getConfigurationElements()));
+
+			return elements.toArray(new IConfigurationElement[elements.size()]);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#getChildren(java.lang
+		 * .String)
+		 */
+		public IConfigurationElement[] getChildren(String name) throws InvalidRegistryObjectException {
+			final IConfigurationElement[] configurationElements = extension != null ? extension
+					.getConfigurationElements() : extensionPoint.getConfigurationElements();
+
+			final List<IConfigurationElement> elements = new ArrayList<IConfigurationElement>();
+			for (final IConfigurationElement configurationElement : configurationElements)
+				if (configurationElement.getName().equals(name))
+					elements.add(configurationElement);
+
+			return elements.toArray(new IConfigurationElement[elements.size()]);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getContributor()
+		 */
+		public IContributor getContributor() throws InvalidRegistryObjectException {
+			return extension != null ? extension.getContributor() : extensionPoint.getContributor();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#getDeclaringExtension
+		 * ()
+		 */
+		public IExtension getDeclaringExtension() throws InvalidRegistryObjectException {
+			throw new UnsupportedOperationException("IExtensionPoint does not support getDeclaringExtension()");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getName()
+		 */
+		public String getName() throws InvalidRegistryObjectException {
+			return extension != null ? extension.getLabel() : extensionPoint.getLabel();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getNamespace()
+		 */
+		public String getNamespace() throws InvalidRegistryObjectException {
+			return extension != null ? extension.getNamespace() : extensionPoint.getNamespace();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.core.runtime.IConfigurationElement#getNamespaceIdentifier
+		 * ()
+		 */
+		public String getNamespaceIdentifier() throws InvalidRegistryObjectException {
+			return extension != null ? extension.getNamespaceIdentifier() : extensionPoint.getNamespaceIdentifier();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getParent()
+		 */
+		public Object getParent() throws InvalidRegistryObjectException {
+			throw new UnsupportedOperationException("IExtensionPoint does not support getParent()");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getValue()
+		 */
+		public String getValue() throws InvalidRegistryObjectException {
+			throw new UnsupportedOperationException("IExtensionPoint does not support getValue()");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#getValueAsIs()
+		 */
+		public String getValueAsIs() throws InvalidRegistryObjectException {
+			throw new UnsupportedOperationException("IExtensionPoint does not support getValueAsIs()");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.core.runtime.IConfigurationElement#isValid()
+		 */
+		public boolean isValid() {
+			return extension != null ? extension.isValid() : extensionPoint.isValid();
+		}
+
 	}
 
 }
