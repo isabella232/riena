@@ -17,9 +17,9 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
-import org.osgi.framework.Bundle;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.internal.core.Activator;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ConfigurationPlugin;
@@ -113,7 +113,7 @@ public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService 
 			if (key.getClass() != String.class)
 				continue;
 			Object value = properties.get(key);
-			if (value.getClass() != String.class)
+			if (value == null || value.getClass() != String.class)
 				continue;
 			variables[0] = variableManager.newValueVariable((String) key, null, true, (String) value);
 			try {
