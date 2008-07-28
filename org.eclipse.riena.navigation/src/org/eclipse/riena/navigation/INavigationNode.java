@@ -367,4 +367,49 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @return true if input is blocked, false otherwise
 	 */
 	boolean isBlocked();
+
+	INavigationNodeId getPresentationId();
+
+	/**
+	 * Creates the specified navigation node and adds it to the application
+	 * model it does not already exist.
+	 * 
+	 * @param targetId
+	 *            Refers to an extension point describing the target node.
+	 * @see INavigationNodeBuilder
+	 */
+	void create(INavigationNodeId targetId);
+
+	/**
+	 * Creates the specified navigation node (if it does not already exist) and
+	 * navigates to it.
+	 * 
+	 * @param targetId
+	 *            Refers to an extension point describing the target node.
+	 * @see INavigationNodeBuilder
+	 */
+	void navigate(INavigationNodeId targetId);
+
+	/**
+	 * Creates the specified navigation node (if it does not already exist) and
+	 * navigates to it.
+	 * 
+	 * @param targetId
+	 * @param argument
+	 *            Refers to an extension point describing the target node.
+	 * @see INavigationNodeBuilder
+	 */
+	void navigate(INavigationNodeId targetId, Object argument);
+
+	/**
+	 * Creates the specified navigation node (if it does not already exist) and
+	 * navigates to it.
+	 * 
+	 * @param targetId
+	 * @param argument
+	 * @param argumentListener
+	 * @see INavigationNodeBuilder
+	 */
+	void navigate(INavigationNodeId targetId, Object argument, INavigationArgumentListener argumentListener);
+
 }

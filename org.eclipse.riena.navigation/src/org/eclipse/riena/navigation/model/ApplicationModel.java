@@ -17,7 +17,8 @@ import org.eclipse.riena.navigation.ISubApplication;
 /**
  * Default implementation for the ApplicationModel
  */
-public class ApplicationModel extends NavigationNode<IApplicationModel, ISubApplication, IApplicationModelListener> implements IApplicationModel {
+public class ApplicationModel extends NavigationNode<IApplicationModel, ISubApplication, IApplicationModelListener>
+		implements IApplicationModel {
 
 	/**
 	 * 
@@ -55,4 +56,5 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	protected void initializeNavigationProcessor() {
 		setNavigationProcessor(new NavigationProcessor());
 	}
+
 }

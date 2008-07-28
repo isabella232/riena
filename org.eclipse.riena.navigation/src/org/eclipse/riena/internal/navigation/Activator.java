@@ -10,8 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.navigation.IPresentationProviderService;
+import org.eclipse.riena.navigation.model.PresentationProviderService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -23,6 +29,7 @@ public class Activator extends RienaPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+	private IPresentationProviderService service = null;
 
 	/**
 	 * The constructor
@@ -39,6 +46,12 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
+
+		service = new PresentationProviderService();
+		Dictionary<String, Object> dict = new Hashtable<String, Object>();
+		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(-100));
+
+		context.registerService(IPresentationProviderService.class.getName(), service, dict);
 	}
 
 	/*
@@ -49,6 +62,10 @@ public class Activator extends RienaPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
+		if (service != null) {
+			service.cleanUp();
+			service = null;
+		}
 		super.stop(context);
 	}
 

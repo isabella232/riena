@@ -21,8 +21,10 @@ import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.navigation.IAction;
+import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodeListener;
 import org.eclipse.riena.navigation.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.INavigationProcessor;
@@ -43,6 +45,7 @@ import org.eclipse.riena.navigation.common.TypecastingObject;
 public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
 		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L> {
 
+	private INavigationNodeId presentationId;
 	private State state;
 	private String label;
 	private String icon;
@@ -848,4 +851,48 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			return getParent().getParentOfType(clazz);
 		}
 	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#create(org.eclipse.riena.navigation.INavigationNodeId)
+	 */
+	public void create(INavigationNodeId targetId) {
+		getNavigationProcessor().create(this, targetId);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId)
+	 */
+	public void navigate(INavigationNodeId targetId) {
+		navigate(targetId, null);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId,
+	 *      java.lang.Object)
+	 */
+	public void navigate(INavigationNodeId targetId, Object argument) {
+		navigate(targetId, argument, null);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId,
+	 *      java.lang.Object,
+	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
+	 */
+	public void navigate(INavigationNodeId targetId, Object argument, INavigationArgumentListener argumentListener) {
+		getNavigationProcessor().navigate(this, targetId, argument, argumentListener);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#getPresentationId()
+	 */
+	public INavigationNodeId getPresentationId() {
+		return presentationId;
+	}
+
+	public void setPresentationId(INavigationNodeId presentationId) {
+		// TODO set via constructor, remove setter
+		this.presentationId = presentationId;
+	}
+
 }
