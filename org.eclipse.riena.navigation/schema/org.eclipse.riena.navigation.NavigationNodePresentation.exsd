@@ -56,13 +56,13 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="nodeProvider" type="string">
+         <attribute name="nodeBuilder" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.navigation.INavigationNodeProvider"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.navigation.INavigationNodeBuilder"/>
                </appinfo>
             </annotation>
          </attribute>

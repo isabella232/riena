@@ -15,6 +15,7 @@ import org.eclipse.riena.example.client.views.ComboView;
 import org.eclipse.riena.example.client.views.FocusableView;
 import org.eclipse.riena.example.client.views.ListView;
 import org.eclipse.riena.example.client.views.MarkerView;
+import org.eclipse.riena.example.client.views.NavigateSubModuleView;
 import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoView;
@@ -30,11 +31,11 @@ import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.ISubApplication;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubApplication;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
@@ -88,7 +89,7 @@ public class SwtExampleApplication extends SwtApplication {
 	@Override
 	protected IApplicationModel createModel() {
 
-		ISubApplication subApplication = null;
+		SubApplication subApplication = null;
 		IModuleGroupNode moduleGroup = null;
 		IModuleNode module = null;
 		ISubModuleNode subModule = null;
@@ -99,6 +100,7 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		// sub application 1
 		subApplication = new SubApplication("Navigation"); //$NON-NLS-1$
+		subApplication.setPresentationId(new NavigationNodeId("app1")); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "subapplication.1"); //$NON-NLS-1$
 		applicationModel.addChild(subApplication);
@@ -149,6 +151,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		// Playground
 		subApplication = new SubApplication("Playground"); //$NON-NLS-1$
+		subApplication.setPresentationId(new NavigationNodeId("playground")); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
 		applicationModel.addChild(subApplication);
@@ -247,6 +250,17 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.registerView(StatuslineSubModuleView.ID, false);
 		presentation.present(statusLineSubModule, StatuslineSubModuleView.ID);
 		playgroundModule.addChild(statusLineSubModule);
+
+		// navigate
+		moduleGroup = new ModuleGroupNode("Navigate");
+		moduleGroup.setPresentWithSingleModule(false);
+		subApplication.addChild(moduleGroup);
+		module = new ModuleNode("Navigate");
+		module.setIcon(createIconPath(IExampleIcons.ICON_GREEN_LED));
+		moduleGroup.addChild(module);
+		subModule = new SubModuleNode("Navigate");
+		presentation.present(subModule, NavigateSubModuleView.ID);
+		module.addChild(subModule);
 
 		return applicationModel;
 	}

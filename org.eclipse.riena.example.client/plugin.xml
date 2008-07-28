@@ -123,6 +123,12 @@
             id="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
             name="org.eclipse.riena.example.client.views.StatuslineSubModuleView">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.NavigateSubModuleView"
+            id="org.eclipse.riena.example.client.views.NavigateSubModuleView"
+            name="org.eclipse.riena.example.client.views.NavigateSubModuleView">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -301,6 +307,23 @@
             lnfid="ExampleLnf"
             lnfkey="ModuleGroup.renderer">
       </renderer>
+   </extension>
+   
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="open2"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.Open2NavigationNodeBuilder"
+            parentPresentationId="app1">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="open3"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.Open3NavigationNodeBuilder"
+            parentPresentationId="playground">
+      </navigationNodePresentation>
    </extension>
    
 </plugin>
