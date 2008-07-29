@@ -118,13 +118,15 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		}
 	}
 
-	public void publish(String interfaceName, ServiceReference serviceRef, String url, String protocol) {
+	public void publish(String interfaceName, ServiceReference serviceRef, String path, String protocol) {
 		RemoteServiceDescription rsd;
 		try {
 			Class<?> interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
 			rsd = new RemoteServiceDescription(serviceRef, Activator.getDefault().getContext().getService(serviceRef),
 					interfaceClazz);
 			rsd.setService(Activator.getDefault().getContext().getService(serviceRef));
+			rsd.setPath(path);
+			rsd.setProtocol(protocol);
 			publish(rsd);
 		} catch (ClassNotFoundException e) {
 			LOGGER.log(LogService.LOG_WARNING,

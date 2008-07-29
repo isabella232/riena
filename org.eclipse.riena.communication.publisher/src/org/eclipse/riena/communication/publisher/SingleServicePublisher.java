@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.publisher.Activator;
+
+import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
@@ -29,7 +30,7 @@ public class SingleServicePublisher {
 	private String serviceName;
 	private String filter;
 	private BundleContext context;
-	private String url;
+	private String path;
 	private String protocol;
 
 	private IServicePublishBinder binder;
@@ -51,9 +52,9 @@ public class SingleServicePublisher {
 		return this;
 	}
 
-	public SingleServicePublisher usingUrl(String url) {
-		Assert.isNotNull(url);
-		this.url = url;
+	public SingleServicePublisher usingPath(String path) {
+		Assert.isNotNull(path);
+		this.path = path;
 		return this;
 	}
 
@@ -65,8 +66,7 @@ public class SingleServicePublisher {
 
 	public void andStart(BundleContext context) {
 		this.context = context;
-		Assert.isNotNull(filter);
-		Assert.isNotNull(url);
+		Assert.isNotNull(path);
 		Assert.isNotNull(protocol);
 
 		try {
@@ -111,7 +111,7 @@ public class SingleServicePublisher {
 	}
 
 	private void publish(ServiceReference serviceReference) {
-		binder.publish(serviceReference, url, protocol);
+		binder.publish(serviceReference, path, protocol);
 	}
 
 	private void unpublish(ServiceReference serviceReference) {

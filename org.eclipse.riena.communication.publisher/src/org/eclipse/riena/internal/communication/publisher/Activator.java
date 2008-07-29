@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.publisher;
 
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.riena.communication.core.hooks.IServiceHook;
-import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
@@ -30,7 +25,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.log.LogService;
 
 public class Activator extends RienaActivator {
 
@@ -88,21 +82,25 @@ public class Activator extends RienaActivator {
 
 		// register a service hook which is called then for every webservice
 
-		context.registerService(IServiceHook.class.getName(), new IServiceHook() {
-
-			public void afterService(ServiceContext context) {
-				logger.log(LogService.LOG_DEBUG, "after service (in hook)");
-				context.getMessageContext().addResponseHeader("Set-Cookie", "x-scpserver-test-sessionid=11");
-			}
-
-			public void beforeService(ServiceContext context) {
-				logger.log(LogService.LOG_DEBUG, "before service (in hook)");
-				Map<String, List<String>> headers = context.getMessageContext().listRequestHeaders();
-				for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-					logger.log(LogService.LOG_DEBUG, "header: name:" + entry.getKey() + " value: " + entry.getValue());
-				}
-			}
-		}, null);
+		// context.registerService(IServiceHook.class.getName(), new
+		// IServiceHook() {
+		//
+		// public void afterService(ServiceContext context) {
+		// logger.log(LogService.LOG_DEBUG, "after service (in hook)");
+		// context.getMessageContext().addResponseHeader("Set-Cookie",
+		// "x-scpserver-test-sessionid=11");
+		// }
+		//
+		// public void beforeService(ServiceContext context) {
+		// logger.log(LogService.LOG_DEBUG, "before service (in hook)");
+		// Map<String, List<String>> headers =
+		// context.getMessageContext().listRequestHeaders();
+		// for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+		// logger.log(LogService.LOG_DEBUG, "header: name:" + entry.getKey() +
+		// " value: " + entry.getValue());
+		// }
+		// }
+		// }, null);
 	}
 
 	/*
