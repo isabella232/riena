@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -22,6 +23,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -65,6 +67,8 @@ public class ShellRenderer extends AbstractLnfRenderer {
 			ILnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
 			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
 
+	private Shell shell;
+
 	/**
 	 * Creates a new instance of <code>ShellRenderer</code> and initializes the
 	 * bounds of the buttons.
@@ -88,15 +92,26 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
+	 * Set the Shell used by this renderer.
+	 * 
+	 * @param shell
+	 *            the shell to set (non-null)
+	 */
+	public void setShell(Shell shell) {
+		Assert.isNotNull(shell);
+		this.shell = shell;
+	}
+
+	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
 
-		assert value != null;
-		assert value instanceof Shell;
-		Shell shell = (Shell) value;
+		Assert.isNotNull(shell);
+		Assert.isTrue(value instanceof Control);
+
 		setActive(shell == shell.getDisplay().getActiveShell());
 		setMaximized(shell.getMaximized());
 
@@ -115,7 +130,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 				paintButton(gc, i);
 			}
 			// paint title
-			paintTitle(gc, shell);
+			paintTitle(gc, (Control) value);
 		}
 
 	}
@@ -174,7 +189,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 	 *            - graphics context
 	 * @param shell
 	 */
-	private void paintTitle(GC gc, Shell shell) {
+	private void paintTitle(GC gc, Control control) {
 
 		String title = shell.getText();
 		if (StringUtils.isEmpty(title)) {
@@ -206,7 +221,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 				x = Math.min(x, btnBounds[i].x);
 			}
 		}
-		int textWidth = SwtUtilities.calcTextWidth(gc, shell.getText());
+		int textWidth = SwtUtilities.calcTextWidth(gc, title);
 		switch (getHorizontalLogoPosition()) {
 		case SWT.LEFT:
 			x = TITLE_MARGIN;
@@ -221,7 +236,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		}
 
 		textBounds = new Rectangle(x, y, textWidth, textHeight);
-		gc.drawText(shell.getText(), x, y, true);
+		gc.drawText(title, x, y, true);
 
 	}
 

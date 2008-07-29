@@ -45,8 +45,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
@@ -88,16 +86,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private ApplicationViewController controller;
 	private List<Object> uiControls;
+
 	private Cursor handCursor;
 	private Cursor grabCursor;
 	private Cursor defaultCursor;
+
 	private Composite switcherComposite;
-	private CoolBar coolBar;
-	private ToolBar toolBar;
-	private Composite menuBarComposite;
-	private Composite coolBarComposite;
-	private Composite mainComposite;
-	private Composite logoComposite;
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationViewController pController) {
 		super(configurer);
@@ -173,14 +167,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		SwtUtilities.disposeResource(handCursor);
 		SwtUtilities.disposeResource(grabCursor);
 		SwtUtilities.disposeResource(defaultCursor);
-
-		SwtUtilities.disposeWidget(toolBar);
-		SwtUtilities.disposeWidget(coolBar);
-		SwtUtilities.disposeWidget(switcherComposite);
-		SwtUtilities.disposeWidget(menuBarComposite);
-		SwtUtilities.disposeWidget(coolBarComposite);
-		SwtUtilities.disposeWidget(mainComposite);
-
 	}
 
 	/**
@@ -193,13 +179,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		// create and layouts the composite of switcher, menu, tool bar etc.
 		shell.setLayout(new FormLayout());
-		createLogoComposite(shell);
+
 		createGrabCorner(shell);
-		switcherComposite = createSwitcherComposite(shell);
-		menuBarComposite = createMenuBarComposite(shell, switcherComposite);
-		coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
-		mainComposite = createMainComposite(shell, coolBarComposite);
-		// createStatusLineComposite(shell);
+		Composite titleComposite = createTitleComposite(shell);
+		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
+		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
+		createMainComposite(shell, coolBarComposite);
 
 	}
 
@@ -210,10 +195,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            - shell to initialize
 	 */
 	private void initShell(final Shell shell) {
-
-		// sets the background of the shell
-		Image image = LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
-		shell.setBackgroundImage(image);
+		// TODO do we need a separate key for the shell background color?
+		shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.NAVIGATION_BACKGROUND));
 
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
 		shell.setMinimumSize(APPLICATION_SIZE);
@@ -222,27 +205,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
 		addUIControl(shell);
 
-		addListeners(shell);
-
-	}
-
-	/**
-	 * Adds all necessary to the given shell.
-	 * 
-	 * @param shell
-	 */
-	private void addListeners(final Shell shell) {
-
-		shell.addPaintListener(new TitlelessPaintListener());
-
-		shell.addShellListener(new TitlelessShellListener());
-		// shell.addControlListener(new TitlelessControlListener());
-
-		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
-		shell.addMouseListener(mouseListener);
-		shell.addMouseMoveListener(mouseListener);
-		shell.addMouseTrackListener(mouseListener);
-
+		getShellRenderer().setShell(shell);
 	}
 
 	protected DefaultBindingManager createBindingManager() {
@@ -253,12 +216,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * Creates a cursor there for the corresponding image of the look and feel
 	 * is used.
 	 * 
-	 * @param shell
+	 * @param control
 	 * @param lnfKey
 	 *            - look and feel key of the cursor image
 	 * @return cursor
 	 */
-	private Cursor createCursor(Shell shell, String lnfKey) {
+	private Cursor createCursor(Control control, String lnfKey) {
 
 		Cursor cursor = null;
 
@@ -267,59 +230,59 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			ImageData imageData = cursorImage.getImageData();
 			int x = imageData.width / 2;
 			int y = imageData.height / 2;
-			cursor = new Cursor(shell.getDisplay(), imageData, x, y);
+			cursor = new Cursor(control.getDisplay(), imageData, x, y);
 		}
 		return cursor;
 
 	}
 
 	/**
-	 * Sets the hand cursor for the given shell.
+	 * Sets the hand cursor for the given control.
 	 * 
-	 * @param shell
+	 * @param control
 	 */
-	private void showHandCursor(Shell shell) {
+	private void showHandCursor(Control control) {
 		if (handCursor == null) {
-			handCursor = createCursor(shell, ILnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE);
+			handCursor = createCursor(control, ILnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE);
 		}
-		setCursor(shell, handCursor);
+		setCursor(control, handCursor);
 	}
 
 	/**
-	 * Sets the grab cursor for the given shell.
+	 * Sets the grab cursor for the given control.
 	 * 
-	 * @param shell
+	 * @param control
 	 */
-	private void showGrabCursor(Shell shell) {
+	private void showGrabCursor(Control control) {
 		if (grabCursor == null) {
-			grabCursor = createCursor(shell, ILnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE);
+			grabCursor = createCursor(control, ILnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE);
 		}
-		setCursor(shell, grabCursor);
+		setCursor(control, grabCursor);
 
 	}
 
 	/**
-	 * Sets the default cursor for the given shell.
+	 * Sets the default cursor for the given control.
 	 * 
 	 * @param shell
 	 */
-	private void showDefaultCursor(Shell shell) {
+	private void showDefaultCursor(Control control) {
 		if (defaultCursor == null) {
-			defaultCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW);
+			defaultCursor = new Cursor(control.getDisplay(), SWT.CURSOR_ARROW);
 		}
-		setCursor(shell, defaultCursor);
+		setCursor(control, defaultCursor);
 	}
 
 	/**
-	 * Sets the given cursor for the shell
+	 * Sets the given cursor for the control
 	 * 
-	 * @param shell
+	 * @param control
 	 * @param cursor
 	 *            - new cursor
 	 */
-	private void setCursor(Shell shell, Cursor cursor) {
-		if ((cursor != null) && (shell.getCursor() != cursor)) {
-			shell.setCursor(cursor);
+	private void setCursor(Control control, Cursor cursor) {
+		if ((cursor != null) && (control.getCursor() != cursor)) {
+			control.setCursor(cursor);
 		}
 	}
 
@@ -386,6 +349,48 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
+	 * Create the composite that contains the:
+	 * <ul>
+	 * <li>shell title and title buttons</li>
+	 * <li>the logo</li>
+	 * <li>the sub application switcher</li>
+	 * </ul>
+	 * 
+	 * @param parent
+	 *            the parent composite (non null)
+	 * @return the title composite (never null)
+	 */
+	private Composite createTitleComposite(final Composite parent) {
+		Composite result = new Composite(parent, SWT.NONE);
+
+		// force result's background into logo and switcher
+		result.setBackgroundMode(SWT.INHERIT_FORCE);
+		// sets the background of the composite
+		Image image = LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
+		result.setBackgroundImage(image);
+
+		result.setLayout(new FormLayout());
+
+		FormData data = new FormData();
+		data.top = new FormAttachment(parent);
+		data.left = new FormAttachment(0);
+		data.right = new FormAttachment(100);
+		result.setLayoutData(data);
+
+		createLogoComposite(result);
+		switcherComposite = createSwitcherComposite(result);
+
+		result.addPaintListener(new TitlelessPaintListener());
+
+		TitlelessShellMouseListener mouseListener = new TitlelessShellMouseListener();
+		result.addMouseListener(mouseListener);
+		result.addMouseMoveListener(mouseListener);
+		result.addMouseTrackListener(mouseListener);
+
+		return result;
+	}
+
+	/**
 	 * Creates and positions the composite of the logo.
 	 * 
 	 * @param parent
@@ -395,7 +400,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		Composite logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
@@ -502,13 +507,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @param parent
 	 * @return cool bar with menus
 	 */
-	private CoolBar createMenuBar(Composite parent) {
+	private void createMenuBar(Composite parent) {
 
-		coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
+		CoolBar coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
 		coolBar.setBackground(getCoolbarBackground());
 
 		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
-		toolBar = new ToolBar(coolBar, SWT.FLAT);
+		ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
 		coolItem.setControl(toolBar);
 		toolBar.addMouseMoveListener(new ToolBarMouseListener());
 
@@ -526,8 +531,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		coolBar.setLocked(true);
 		calcSize(coolItem);
-
-		return coolBar;
 
 	}
 
@@ -777,9 +780,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		private void onPaint(PaintEvent e) {
 
-			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
+			if (e.getSource() instanceof Control) {
 
-				Shell shell = (Shell) e.getSource();
+				Control shell = (Control) e.getSource();
 
 				Rectangle shellBounds = shell.getBounds();
 				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
@@ -802,136 +805,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * When the state of the shell is changed a redraw maybe necessary.
-	 */
-	private static class TitlelessShellListener implements ShellListener {
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt
-		 *      .events.ShellEvent)
-		 */
-		public void shellActivated(ShellEvent e) {
-			onStateChanged(e);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.events
-		 *      .ShellEvent)
-		 */
-		public void shellClosed(ShellEvent e) {
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse.swt
-		 *      .events.ShellEvent)
-		 */
-		public void shellDeactivated(ShellEvent e) {
-			onStateChanged(e);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse.swt
-		 *      .events.ShellEvent)
-		 */
-		public void shellDeiconified(ShellEvent e) {
-			onStateChanged(e);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt
-		 *      .events.ShellEvent)
-		 */
-		public void shellIconified(ShellEvent e) {
-		}
-
-		/**
-		 * Redraws the shell.
-		 * 
-		 * @param e
-		 *            - event
-		 */
-		private void onStateChanged(ShellEvent e) {
-			if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
-				Shell shell = (Shell) e.getSource();
-				shell.redraw();
-			}
-		}
-
-	}
-
-	// /**
-	// * After moving a redraw maybe necessary.
-	// */
-	// private static class TitlelessControlListener implements ControlListener
-	// {
-	//
-	// private Rectangle moveBounds;
-	//
-	// /**
-	// * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse
-	// * .swt.events.ControlEvent)
-	// */
-	// public void controlMoved(ControlEvent e) {
-	// if ((e.getSource() != null) && (e.getSource() instanceof Shell)) {
-	// Shell shell = (Shell) e.getSource();
-	// Display display = shell.getDisplay();
-	// if ((moveBounds == null) || (!displaySurrounds(display, moveBounds))) {
-	// shell.setRedraw(false);
-	// shell.setRedraw(true);
-	// shell.redraw();
-	// }
-	// moveBounds = shell.getBounds();
-	// }
-	// }
-	//
-	// /**
-	// * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse
-	// * .swt.events.ControlEvent)
-	// */
-	// public void controlResized(ControlEvent e) {
-	// }
-	//
-	// /**
-	// * Returns <code>true</code> if the given bounds are is inside the area
-	// * of the display, and <code>false</code> otherwise.
-	// *
-	// * @param display
-	// * - display
-	// * @param bounds
-	// * - bounds to test for containment
-	// * @return <code>true</code> if the rectangle contains the bounds and
-	// * <code>false</code> otherwise
-	// */
-	// private boolean displaySurrounds(Display display, Rectangle bounds) {
-	//
-	// // top left
-	// if (!display.getBounds().contains(bounds.x, bounds.y)) {
-	// return false;
-	// }
-	// // top right
-	// if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y)) {
-	// return false;
-	// }
-	// // bottom left
-	// if (!display.getBounds().contains(bounds.x, bounds.y + bounds.height)) {
-	// return false;
-	// }
-	// // bottom right
-	// if (!display.getBounds().contains(bounds.x + bounds.width, bounds.y +
-	// bounds.height)) {
-	// return false;
-	// }
-	//
-	// return true;
-	//
-	// }
-	//
-	// }
-
-	/**
 	 * This listener paints the logo.
 	 */
-	private class LogoPaintListener implements PaintListener {
+	private static class LogoPaintListener implements PaintListener {
 
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
@@ -948,13 +824,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 */
 		private void onPaint(PaintEvent e) {
 
-			if (e.getSource() == logoComposite) {
-				Rectangle compositeBounds = logoComposite.getBounds();
-				ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
-						ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
-				renderer.setBounds(compositeBounds);
-				renderer.paint(e.gc, null);
-			}
+			Composite logoComposite = (Composite) e.getSource();
+			Rectangle compositeBounds = logoComposite.getBounds();
+			ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
+					ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
+			renderer.setBounds(compositeBounds);
+			renderer.paint(e.gc, null);
 
 		}
 
@@ -979,25 +854,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			resetBtnStates();
 			mouseDownOnButton = false;
 			move = false;
-		}
-
-		/**
-		 * Returns the shell on which the event initially occurred.
-		 * 
-		 * @param e
-		 *            - mouse event
-		 * @return shell or <code>null</code> if source is not a shell.
-		 */
-		private Shell getShell(MouseEvent e) {
-
-			if (e.getSource() == null) {
-				return null;
-			}
-			if (!(e.getSource() instanceof Shell)) {
-				return null;
-			}
-			return (Shell) e.getSource();
-
 		}
 
 		/**
@@ -1101,27 +957,27 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			}
 
 			if (redraw) {
-				Shell shell = getShell(e);
+				Control control = (Control) e.getSource();
 				Rectangle buttonBounds = getShellRenderer().getButtonsBounds();
-				shell.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
+				control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
 			}
 
 		}
 
 		private void updateCursor(MouseEvent e) {
 
-			Shell shell = getShell(e);
+			Control control = (Control) e.getSource();
 
 			Point pointer = new Point(e.x, e.y);
 			if (moveInside && getShellRenderer().isInsideMoveArea(pointer)) {
 				if (move) {
-					showGrabCursor(shell);
+					showGrabCursor(control);
 				} else {
-					showHandCursor(shell);
+					showHandCursor(control);
 				}
 			} else {
 				if (!move) {
-					showDefaultCursor(shell);
+					showDefaultCursor(control);
 				}
 			}
 
@@ -1158,19 +1014,23 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			Point pointer = new Point(e.x, e.y);
 
-			if (mouseDownOnButton && (getShell(e) != null)) {
-				if (getShellRenderer().isInsideCloseButton(pointer)) {
-					if (btnStates[CLOSE_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						getShell(e).close();
-					}
-				} else if (getShellRenderer().isInsideMaximizeButton(pointer)) {
-					if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						boolean maximized = getShell(e).getMaximized();
-						getShell(e).setMaximized(!maximized);
-					}
-				} else if (getShellRenderer().isInsideMinimizeButton(pointer)) {
-					if (btnStates[MIN_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						getShell(e).setMinimized(true);
+			if (mouseDownOnButton && (e.getSource() instanceof Control)) {
+				Control control = (Control) e.getSource();
+				Shell shell = getShell(control);
+				if (shell != null) {
+					if (getShellRenderer().isInsideCloseButton(pointer)) {
+						if (btnStates[CLOSE_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+							shell.close();
+						}
+					} else if (getShellRenderer().isInsideMaximizeButton(pointer)) {
+						if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+							boolean maximized = shell.getMaximized();
+							shell.setMaximized(!maximized);
+						}
+					} else if (getShellRenderer().isInsideMinimizeButton(pointer)) {
+						if (btnStates[MIN_BTN_INDEX] == BtnState.HOVER_SELECTED) {
+							shell.setMinimized(true);
+						}
 					}
 				}
 			}
@@ -1206,6 +1066,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseHover(MouseEvent e) {
+			// unused
 		}
 
 		/**
@@ -1221,7 +1082,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		private void move(MouseEvent e) {
 			Point moveEndPoint = new Point(e.x, e.y);
-			Shell shell = getShell(e);
+			Control control = (Control) e.getSource();
+			Shell shell = getShell(control);
 			int xMove = moveStartPoint.x - moveEndPoint.x;
 			int yMove = moveStartPoint.y - moveEndPoint.y;
 			int x = shell.getLocation().x - xMove;
@@ -1229,6 +1091,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			shell.setLocation(x, y);
 		}
 
+		private Shell getShell(Control control) {
+			Shell result = null;
+			while (control != null && result == null) {
+				if (control instanceof Shell) {
+					result = (Shell) control;
+				} else {
+					control = control.getParent();
+				}
+			}
+			return result;
+		}
 	}
 
 }
