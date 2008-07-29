@@ -5,8 +5,10 @@ Bundle-SymbolicName: org.eclipse.riena.sample.app.server;singleton:=true
 Bundle-Version: 1.0.0.M4
 Bundle-Activator: org.eclipse.riena.internal.sample.app.server.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.riena.sample.app.common,
  org.eclipse.equinox.http.registry,
+ org.eclipse.equinox.log,
+ org.eclipse.osgi.services,
+ org.eclipse.riena.sample.app.common,
  org.eclipse.riena.server;bundle-version="1.0.0"
 Import-Package: javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0"
