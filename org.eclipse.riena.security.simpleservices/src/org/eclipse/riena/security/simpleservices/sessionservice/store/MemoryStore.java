@@ -27,8 +27,12 @@ public class MemoryStore implements ISessionStore {
 	private HashMap<String, SessionEntry> sessionTable = new HashMap<String, SessionEntry>();
 	private HashMap<Principal, SessionList> userTable = new HashMap<Principal, SessionList>();
 
-	/**
-	 * @see de.compeople.spirit.securityimplementation.server.session.store.ISessionStore#read(java.security.Principal)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.sessionservice.ISessionStore#read(java.security
+	 * .Principal)
 	 */
 	public synchronized Session[] read(Principal principal) {
 		SessionList sl = userTable.get(principal);
@@ -40,15 +44,23 @@ public class MemoryStore implements ISessionStore {
 		return sessions;
 	}
 
-	/**
-	 * @see de.compeople.spirit.securityimplementation.server.session.store.SessionStore#read(org.eclipse.riena.security.simpleservices.common.session.Session)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.sessionservice.ISessionStore#read(org.eclipse
+	 * .riena.security.common.session.Session)
 	 */
 	public synchronized SessionEntry read(Session session) {
 		return sessionTable.get(session.getSessionId());
 	}
 
-	/**
-	 * @see de.compeople.spirit.securityimplementation.server.session.store.SessionStore#write(de.compeople.spirit.securityimplementation.server.session.store.SessionEntry)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.sessionservice.ISessionStore#write(org.eclipse
+	 * .riena.security.sessionservice.SessionEntry)
 	 */
 	public synchronized void write(SessionEntry entry) {
 		sessionTable.put(entry.getSession().getSessionId(), entry);
@@ -63,8 +75,13 @@ public class MemoryStore implements ISessionStore {
 		}
 	}
 
-	/**
-	 * @see de.compeople.spirit.securityimplementation.server.session.store.SessionStore#delete(org.eclipse.riena.security.simpleservices.common.session.Session)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.sessionservice.ISessionStore#delete(org.eclipse
+	 * .riena.security.common.session.Session)
+	 * 
 	 * @pre session!=null
 	 */
 	public synchronized void delete(Session session) {
@@ -81,8 +98,12 @@ public class MemoryStore implements ISessionStore {
 		}
 	}
 
-	/**
-	 * @see de.compeople.spirit.securityimplementation.server.session.store.SessionStore#delete(java.security.Principal)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.security.sessionservice.ISessionStore#delete(java.security
+	 * .Principal)
 	 */
 	public synchronized void delete(Principal principal) {
 		SessionList sl = userTable.get(principal);
