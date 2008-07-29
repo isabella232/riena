@@ -54,6 +54,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Table.class, TableRidget.class);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.TOGGLE);
+		addMapping(Button.class, ToggleButtonRidget.class, SWT.RADIO);
 		addMapping(Button.class, ActionRidget.class);
 		addMapping(Shell.class, ShellRidget.class);
 		addMapping(Combo.class, ComboRidget.class);

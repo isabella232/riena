@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
@@ -108,8 +109,9 @@ public class ToggleButtonRidgetTest extends TestCase {
 
 		ridget.bindToModel(modelOV);
 
-		assertNotNull(ridget.getRidgetObservable());
-		assertEquals(boolean.class, ridget.getRidgetObservable().getValueType());
+		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
+		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED)
+				.getValueType());
 		assertFalse(ridget.isSelected());
 
 		ridget.updateFromModel();
@@ -125,8 +127,9 @@ public class ToggleButtonRidgetTest extends TestCase {
 
 		ridget.bindToModel(model, "selected");
 
-		assertNotNull(ridget.getRidgetObservable());
-		assertEquals(boolean.class, ridget.getRidgetObservable().getValueType());
+		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
+		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED)
+				.getValueType());
 		assertFalse(ridget.isSelected());
 
 		ridget.updateFromModel();

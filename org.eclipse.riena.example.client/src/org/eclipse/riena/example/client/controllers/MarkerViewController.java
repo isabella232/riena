@@ -45,9 +45,9 @@ public class MarkerViewController extends SubModuleNodeViewController {
 	private ITextFieldRidget textName;
 	private ITextFieldRidget textPrice;
 	private IComboBoxRidget comboAge;
-	private IActionRidget radioRed;
-	private IActionRidget radioWhite;
-	private IActionRidget radioRose;
+	private IToggleButtonRidget radioRed;
+	private IToggleButtonRidget radioWhite;
+	private IToggleButtonRidget radioRose;
 	private ITextFieldRidget textDescr;
 	private IToggleButtonRidget checkDry;
 	private IToggleButtonRidget checkSweet;
@@ -128,15 +128,15 @@ public class MarkerViewController extends SubModuleNodeViewController {
 		return listPersons;
 	}
 
-	public IActionRidget getRadioRed() {
+	public IToggleButtonRidget getRadioRed() {
 		return radioRed;
 	}
 
-	public IActionRidget getRadioRose() {
+	public IToggleButtonRidget getRadioRose() {
 		return radioRose;
 	}
 
-	public IActionRidget getRadioWhite() {
+	public IToggleButtonRidget getRadioWhite() {
 		return radioWhite;
 	}
 
@@ -204,15 +204,15 @@ public class MarkerViewController extends SubModuleNodeViewController {
 		this.listPersons = listPersons;
 	}
 
-	public void setRadioRed(IActionRidget radioRed) {
+	public void setRadioRed(IToggleButtonRidget radioRed) {
 		this.radioRed = radioRed;
 	}
 
-	public void setRadioRose(IActionRidget radioRose) {
+	public void setRadioRose(IToggleButtonRidget radioRose) {
 		this.radioRose = radioRose;
 	}
 
-	public void setRadioWhite(IActionRidget radioWhite) {
+	public void setRadioWhite(IToggleButtonRidget radioWhite) {
 		this.radioWhite = radioWhite;
 	}
 

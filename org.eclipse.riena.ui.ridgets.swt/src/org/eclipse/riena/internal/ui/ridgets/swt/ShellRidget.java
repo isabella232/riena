@@ -47,7 +47,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 */
 	public void setUIControl(Object uiControl) {
 		if (uiControl != null && !(uiControl instanceof Shell)) {
-			throw new UIBindingFailure("uiControl of a ShellRidget must be a Shell but was a "
+			throw new UIBindingFailure("uiControl of a ShellRidget must be a Shell but was a " //$NON-NLS-1$
 					+ uiControl.getClass().getSimpleName());
 		}
 		shell = (Shell) uiControl;
@@ -152,7 +152,8 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
 	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;

@@ -59,8 +59,9 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		if (uiControl != null) {
 			Button uiButton = (Button) uiControl;
 			int style = uiButton.getStyle();
-			if ((style & SWT.CHECK) != SWT.CHECK && (style & SWT.TOGGLE) != SWT.TOGGLE) {
-				throw new BindingException("Button must be a check box or a toggle button"); //$NON-NLS-1$
+			if ((style & SWT.CHECK) != SWT.CHECK && (style & SWT.TOGGLE) != SWT.TOGGLE
+					&& (style & SWT.RADIO) != SWT.RADIO) {
+				throw new BindingException("Button must be a check box, a radio button or a toggle button"); //$NON-NLS-1$
 			}
 		}
 	}
