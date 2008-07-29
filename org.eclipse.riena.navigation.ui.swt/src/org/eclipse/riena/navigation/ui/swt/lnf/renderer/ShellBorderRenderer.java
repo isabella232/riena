@@ -33,10 +33,13 @@ public class ShellBorderRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+		if (!lnf.getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+			return;
+		}
+
 		gc.setAdvanced(true);
 		gc.setAntialias(SWT.OFF);
-
-		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		// Border
 
@@ -118,7 +121,7 @@ public class ShellBorderRenderer extends AbstractLnfRenderer {
 	 */
 	public int getCompleteBorderWidth() {
 
-		int width = BORDER_WIDTH;
+		int width = getBorderWidth();
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		Integer padding = lnf.getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_PADDING);
@@ -137,8 +140,11 @@ public class ShellBorderRenderer extends AbstractLnfRenderer {
 	 */
 	public int getBorderWidth() {
 
-		return BORDER_WIDTH;
+		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+			return BORDER_WIDTH;
+		} else {
+			return 0;
+		}
 
 	}
-
 }

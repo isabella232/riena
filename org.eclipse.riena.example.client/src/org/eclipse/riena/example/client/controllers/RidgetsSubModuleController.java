@@ -59,13 +59,13 @@ public class RidgetsSubModuleController extends SubModuleNodeViewController {
 	 * Binds and updates the ridgets.
 	 */
 	private void initRidgets() {
-		toggleOne.setText("Toggle 1");
+		toggleOne.setText("&Toggle 1");
 		if (toggleOne != null) {
 			toggleOne.bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
 			toggleOne.updateFromModel();
 		}
 
-		checkOne.setText("Check 1");
+		checkOne.setText("C&heck 1");
 		if (checkOne != null) {
 			checkOne.bindToModel(model, "checkOneSelected"); //$NON-NLS-1$
 			checkOne.updateFromModel();

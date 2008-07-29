@@ -94,7 +94,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomSettings(table);
 
-		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, true);
+		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, false);
 
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 3);
