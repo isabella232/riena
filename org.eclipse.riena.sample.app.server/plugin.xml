@@ -8,6 +8,14 @@
             class="org.eclipse.riena.internal.sample.app.server.BasicAuthenticationTestServlet"
             load-on-startup="true">
       </servlet>
+      <servlet
+            alias="/junittest/errorinthemiddle"
+            class="org.eclipse.riena.internal.sample.app.server.junittests.ErrorInTheMiddleServlet">
+      </servlet>
+      <servlet
+            alias="/junittest/validoutput"
+            class="org.eclipse.riena.internal.sample.app.server.junittests.ValidOutputServlet">
+      </servlet>
    </extension>
 
 </plugin>

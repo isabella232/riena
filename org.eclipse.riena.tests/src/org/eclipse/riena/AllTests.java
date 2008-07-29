@@ -22,6 +22,7 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTest(org.eclipse.riena.communication.core.ssl.AllTests.suite());
+		suite.addTest(org.eclipse.riena.communication.core.attachment.AllTests.suite());
 		suite.addTest(org.eclipse.riena.core.AllTests.suite());
 		suite.addTest(org.eclipse.riena.exceptionmanager.AllTests.suite());
 		suite.addTest(org.eclipse.riena.security.AllTests.suite());
