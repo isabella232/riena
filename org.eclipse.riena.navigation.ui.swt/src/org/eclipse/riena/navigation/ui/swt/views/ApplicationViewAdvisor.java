@@ -436,7 +436,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void createGrabCorner(final Shell shell) {
 
-		if (GrabCorner.isResizeable()) {
+		if (GrabCorner.isResizeable() && LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
 		}
 
