@@ -16,8 +16,8 @@ import java.util.Date;
 /**
  * Exception for handling of non-recoverable errors/problems (resource
  * unavailability, runtime exceptions and other system errors). This class
- * extends <code>java.lang.RuntimeException</code> and is therefore an
- * unchecked exception.
+ * extends <code>java.lang.RuntimeException</code> and is therefore an unchecked
+ * exception.
  * 
  * @see java.lang.RuntimeException
  */
@@ -136,11 +136,14 @@ public abstract class Failure extends RuntimeException {
 		// HEX_BASE).toUpperCase(Locale.getDefault()));
 		// setJavaVersion(ExceptionHelper.getJavaVersion());
 		// setServerMsg(getFormattedMsgText(msg, args));
-		// setClientMsg(ExceptionHelper.getDefaultClientMsg().replaceAll(ExceptionHelper.PLACEHOLDER_FAILURE_ID_REGEX,
+		// setClientMsg(ExceptionHelper.getDefaultClientMsg().replaceAll(
+		// ExceptionHelper.PLACEHOLDER_FAILURE_ID_REGEX,
 		// getId()));
 		// setCallerClassName(ExceptionHelper.getCallerByRef(this));
-		// setCallerMethodName(ExceptionHelper.getCallerMethod(getCallerClassName()));
-		// setCallerClassVersion(ExceptionHelper.getVersionId(getCallerClassName()));
+		//setCallerMethodName(ExceptionHelper.getCallerMethod(getCallerClassName
+		// ()));
+		//setCallerClassVersion(ExceptionHelper.getVersionId(getCallerClassName(
+		// )));
 	}
 
 	/**
@@ -245,10 +248,10 @@ public abstract class Failure extends RuntimeException {
 	}
 
 	/**
-	 * Get value of attribute <code>id</code>. The <code>id</code> is an
-	 * unique identifier for this Failure instance. The <code>id</code> is
-	 * embedded inside the server and client message text and can be used as a
-	 * reference (i.e. inside the logging file) to address the problem.
+	 * Get value of attribute <code>id</code>. The <code>id</code> is an unique
+	 * identifier for this Failure instance. The <code>id</code> is embedded
+	 * inside the server and client message text and can be used as a reference
+	 * (i.e. inside the logging file) to address the problem.
 	 * 
 	 * @return value of attribute id.
 	 */
@@ -395,17 +398,6 @@ public abstract class Failure extends RuntimeException {
 	 */
 	// public String getRecursiveStacktrace() {
 	// return ExceptionHelper.getRecursiveStacktrace(this);
-	// }
-	/**
-	 * @see de.compeople.spirit.core.base.serialization.IImmutableBean#serializeProperties()
-	 */
-	// public Object[] serializeProperties() {
-	// Calendar cal = Calendar.getInstance();
-	// cal.setTime(timestamp);
-	// return new Object[] { serverMsg, getCauseClassName(), id, cal,
-	// callerClassName, callerClassVersion,
-	// callerMethodName, nativeErrorCode, clientMsg,
-	// javaVersion, ExceptionHelper.getStacktraceAsString(this) };
 	// }
 	/**
 	 * This method is called to clear details that were automatically set by the
