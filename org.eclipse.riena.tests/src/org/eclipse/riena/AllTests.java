@@ -27,6 +27,7 @@ public class AllTests extends TestCase {
 		suite.addTest(org.eclipse.riena.exceptionmanager.AllTests.suite());
 		suite.addTest(org.eclipse.riena.security.AllTests.suite());
 		suite.addTest(org.eclipse.riena.objecttransaction.AllTests.suite());
+		suite.addTest(org.eclipse.riena.navigation.AllTests.suite());
 		suite.addTest(org.eclipse.riena.navigation.ui.swt.AllTests.suite());
 		suite.addTest(org.eclipse.riena.core.util.AllTests.suite());
 		suite.addTest(org.eclipse.riena.internal.ui.ridgets.swt.AllTests.suite());

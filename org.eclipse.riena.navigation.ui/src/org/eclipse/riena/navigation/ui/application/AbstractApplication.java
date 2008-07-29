@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer.VisualizerFactory;
+import org.eclipse.riena.navigation.ApplicationModelManager;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -32,6 +33,7 @@ public abstract class AbstractApplication implements IApplication {
 
 	public Object start(IApplicationContext context) throws Exception {
 		IApplicationModel model = createModel();
+		ApplicationModelManager.registerApplicationModel(model);
 		initializeModel(model);
 		setProgressProviderBridge(model);
 		return createView(context, model);
