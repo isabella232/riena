@@ -110,7 +110,7 @@ public class Activator extends RienaActivator {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		context.removeServiceListener(updateNotifierRemoteService);
+		// context.removeServiceListener(updateNotifierRemoteService);
 		dispatcher.stop();
 		dispatcher = null;
 		publisherInjector.stop();
