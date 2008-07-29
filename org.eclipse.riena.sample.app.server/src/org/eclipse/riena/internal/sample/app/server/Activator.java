@@ -13,10 +13,14 @@ package org.eclipse.riena.internal.sample.app.server;
 import java.util.Hashtable;
 
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
+import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -32,6 +36,8 @@ public class Activator extends RienaPlugin {
 	private ServiceRegistration regCustomers;
 	private HelloWorldService helloWorldService;
 	private ServiceRegistration regHelloWorldService;
+	private ServiceRegistration regAttachmentService;
+	private ServiceRegistration regExceptionService;
 
 	// The shared instance
 	private static Activator plugin;
@@ -59,6 +65,10 @@ public class Activator extends RienaPlugin {
 		startCustomerSearch(context);
 		startCustomers(context);
 		startHelloWorldService(context);
+		startAttachmentService(context);
+		context.registerService(IExceptionService.class.getName(), new ExceptionService(), null);
+		Publish.service(IExceptionService.class.getName()).usingPath("/ExceptionService").withProtocol("hessian")
+				.andStart(context); // stops automatically when bundle stops
 	}
 
 	/*
@@ -72,6 +82,7 @@ public class Activator extends RienaPlugin {
 		stopCustomerSearch();
 		stopCustomers();
 		stopHelloWorldService();
+		stopAttachmentService();
 		Activator.plugin = null;
 		super.stop(context);
 	}
@@ -136,4 +147,18 @@ public class Activator extends RienaPlugin {
 		regHelloWorldService.unregister();
 		regHelloWorldService = null;
 	}
+
+	private void startAttachmentService(BundleContext context) {
+		regAttachmentService = context.registerService(IAttachmentService.class.getName(), new AttachmentService(),
+				null);
+
+		Publish.service(IAttachmentService.class.getName()).usingPath("/AttachmentService").withProtocol("hessian")
+				.andStart(context);
+
+	}
+
+	private void stopAttachmentService() {
+		regAttachmentService.unregister();
+	}
+
 }
