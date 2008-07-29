@@ -57,12 +57,27 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (InvocationTargetException e) {
+			// if (e.getTargetException() instanceof RuntimeException) {
+			// throw e.getTargetException();
+			// }
+			// throw exception if it is in the method signature
+			for (Class<?> exceptionType : method.getExceptionTypes()) {
+				if (exceptionType.isAssignableFrom(e.getTargetException().getClass())) {
+					throw e.getTargetException();
+				}
+			}
+			// otherwise throw a remote failure
 			throw new RemoteFailure("error while invoke remote service", e.getTargetException()); //$NON-NLS-1$
+			// throw e.getTargetException();
 		} finally {
 			// context might be null and callHooks were injected during invoke
-			if (context != null) {
-				for (ICallHook sHook : callHooks) {
-					sHook.afterCall(context);
+			if (callHooks.size() > 0) {
+				if (context != null) {
+					for (ICallHook sHook : callHooks) {
+						sHook.afterCall(context);
+					}
+				} else {
+					throw new RuntimeException("context is null, unexpected situation");
 				}
 			}
 		}
