@@ -146,8 +146,13 @@ public class ModuleItem {
 	 */
 	public int getOpenHeight() {
 		IModuleNode moduleNode = getModuleNode();
-		int itemHeight = getTree().getItemHeight();
-		return moduleNode.calcDepth() * itemHeight + 1;
+		int depth = moduleNode.calcDepth();
+		if (depth == 0) {
+			return 0;
+		} else {
+			int itemHeight = getTree().getItemHeight();
+			return depth * itemHeight + 1;
+		}
 	}
 
 	/**
