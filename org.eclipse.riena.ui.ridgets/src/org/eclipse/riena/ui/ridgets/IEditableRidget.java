@@ -49,7 +49,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * to the ridget ("on edit") and when updating from the ridget to the model
 	 * ("on update").
 	 * <p>
-	 * Failed validators cause an error marker to apper next to the UI-control.
+	 * Failed validators cause an error marker to appear next to the UI-control.
 	 * "On edit" validators may choose to block user input. The reaction to a
 	 * failed validation can be changed by using a validator that returns an
 	 * IValidationRuleStatus.
