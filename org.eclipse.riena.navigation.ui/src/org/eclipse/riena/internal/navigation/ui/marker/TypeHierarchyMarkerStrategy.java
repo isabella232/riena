@@ -15,7 +15,7 @@ import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener;
+import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 
 /**

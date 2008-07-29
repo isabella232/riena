@@ -29,6 +29,7 @@ import org.eclipse.riena.navigation.INavigationNodeListener;
 import org.eclipse.riena.navigation.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.IPresentation;
+import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 
 /**
@@ -317,10 +318,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.riena.navigation.INavigationNode#addSimpleListener(org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener)
+	 */
 	public void addSimpleListener(ISimpleNavigationNodeListener simpleListener) {
 		simpleListeners.add(simpleListener);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.riena.navigation.INavigationNode#removeSimpleListener(org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener)
+	 */
 	public void removeSimpleListener(ISimpleNavigationNodeListener simpleListener) {
 		simpleListeners.remove(simpleListener);
 	}

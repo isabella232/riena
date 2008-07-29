@@ -15,7 +15,6 @@ import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
-import org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener;
 
 /**
  * Summary of all abilities common to all model objects Each object is
@@ -239,8 +238,19 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 
 	void setNavigationProcessor(INavigationProcessor pProcessor);
 
+	/**
+	 * adds listener that fire events that are type specific to the node type
+	 * 
+	 * @param pListener
+	 *            listener to add
+	 */
 	void addSimpleListener(ISimpleNavigationNodeListener pListener);
 
+	/**
+	 * removes simple listener @see addSimpleListener that were previously added
+	 * 
+	 * @param pListener
+	 */
 	void removeSimpleListener(ISimpleNavigationNodeListener pListener);
 
 	/**
