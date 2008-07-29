@@ -11,13 +11,8 @@
 package org.eclipse.riena.internal.communication.core;
 
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
-import org.eclipse.riena.communication.core.hooks.CallContext;
-import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.core.RienaActivator;
@@ -25,10 +20,11 @@ import org.eclipse.riena.core.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.log.LogService;
 
 /**
  * @author Alexander Ziegler
@@ -64,24 +60,26 @@ public class Activator extends RienaActivator {
 				properties);
 
 		final Logger logger = getLogger(Activator.class.getName());
-		context.registerService(ICallHook.class.getName(), new ICallHook() {
 
-			public void afterCall(CallContext context) {
-				logger.log(LogService.LOG_DEBUG, "after call (in hook) method=" + context.getMethodName()); //$NON-NLS-1$
-				Map<String, List<String>> headers = context.getMessageContext().listResponseHeaders();
-				if (headers != null) {
-					for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-						logger.log(LogService.LOG_DEBUG, "header: name:" + entry.getKey() + " value: " //$NON-NLS-1$ //$NON-NLS-2$
-								+ entry.getValue());
-					}
-				}
-			}
-
-			public void beforeCall(CallContext context) {
-				context.getMessageContext().addRequestHeader("Cookie", "x-scpclient-test-sessionid=222"); //$NON-NLS-1$ //$NON-NLS-2$
-				logger.log(LogService.LOG_DEBUG, "before call (in hook) method=" + context.getMethodName()); //$NON-NLS-1$
-			}
-		}, null);
+		// context.registerService(ICallHook.class.getName(), new ICallHook() {
+		//
+		// public void afterCall(CallContext context) {
+		//				logger.log(LogService.LOG_DEBUG, "after call (in hook) method=" + context.getMethodName()); //$NON-NLS-1$
+		// Map<String, List<String>> headers =
+		// context.getMessageContext().listResponseHeaders();
+		// if (headers != null) {
+		// for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+		//						logger.log(LogService.LOG_DEBUG, "header: name:" + entry.getKey() + " value: " //$NON-NLS-1$ //$NON-NLS-2$
+		// + entry.getValue());
+		// }
+		// }
+		// }
+		//
+		// public void beforeCall(CallContext context) {
+		//				context.getMessageContext().addRequestHeader("Cookie", "x-scpclient-test-sessionid=222"); //$NON-NLS-1$ //$NON-NLS-2$
+		//				logger.log(LogService.LOG_DEBUG, "before call (in hook) method=" + context.getMethodName()); //$NON-NLS-1$
+		// }
+		// }, null);
 
 		// context.registerService(ConfigurationPlugin.class.getName(), new
 		// SymbolConfigPlugin(), null);
