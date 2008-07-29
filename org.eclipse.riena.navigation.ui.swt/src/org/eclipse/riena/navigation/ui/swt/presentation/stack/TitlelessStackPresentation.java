@@ -143,6 +143,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 		knownParts.add(newPart);
 	}
 
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#selectPart(org.eclipse
+	 *      .ui.presentations.IPresentablePart)
+	 */
+	@Override
 	public void selectPart(IPresentablePart toSelect) {
 		if (current == toSelect) {
 			return;
@@ -165,7 +170,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 			redrawSubModuleTitle();
 			current = toSelect;
 		}
-		toSelect.setVisible(true);
+		if (toSelect != null) {
+			toSelect.setVisible(true);
+		}
 	}
 
 	@Override
@@ -216,6 +223,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 		return null;
 	}
 
+	/**
+	 * @see org.eclipse.ui.presentations.StackPresentation#getControl()
+	 */
+	@Override
 	public Control getControl() {
 		return parent;
 	}

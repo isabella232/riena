@@ -47,7 +47,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
@@ -195,8 +194,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            - shell to initialize
 	 */
 	private void initShell(final Shell shell) {
-		// TODO do we need a separate key for the shell background color?
-		shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.NAVIGATION_BACKGROUND));
+		shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
+		shell.addPaintListener(new ShellPaintListener());
 
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
 		shell.setMinimumSize(APPLICATION_SIZE);
@@ -370,11 +369,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		result.setBackgroundImage(image);
 
 		result.setLayout(new FormLayout());
-
+		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		int borderWidth = borderRenderer.getBorderWidth();
 		FormData data = new FormData();
-		data.top = new FormAttachment(parent);
-		data.left = new FormAttachment(0);
-		data.right = new FormAttachment(100);
+		data.top = new FormAttachment(parent, borderWidth);
+		data.left = new FormAttachment(0, borderWidth);
+		data.right = new FormAttachment(100, -borderWidth);
 		result.setLayoutData(data);
 
 		createLogoComposite(result);
@@ -760,7 +761,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * This listener paints the shell.
+	 * This listener paints (top part of) the shell.
 	 */
 	private class TitlelessPaintListener implements PaintListener {
 
@@ -772,8 +773,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		/**
-		 * Paints the border, title, buttons and background of the (titleless)
-		 * shell.
+		 * Paints the title, buttons and background of the (titleless) shell.
 		 * 
 		 * @param e
 		 *            - event
@@ -787,16 +787,47 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				Rectangle shellBounds = shell.getBounds();
 				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
 
-				GC gc = e.gc;
-
 				ILnfRenderer shellRenderer = getShellRenderer();
 				shellRenderer.setBounds(bounds);
-				shellRenderer.paint(gc, shell);
+				shellRenderer.paint(e.gc, shell);
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * This listener paints the shell (the border of the shell).
+	 */
+	private static class ShellPaintListener implements PaintListener {
+
+		/**
+		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
+		 */
+		public void paintControl(PaintEvent e) {
+			onPaint(e);
+		}
+
+		/**
+		 * Paints the border of the (titleless) shell.
+		 * 
+		 * @param e
+		 *            - event
+		 */
+		private void onPaint(PaintEvent e) {
+
+			if (e.getSource() instanceof Control) {
+
+				Control shell = (Control) e.getSource();
+
+				Rectangle shellBounds = shell.getBounds();
+				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
 
 				ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
 						ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 				borderRenderer.setBounds(bounds);
-				borderRenderer.paint(gc, null);
+				borderRenderer.paint(e.gc, null);
 
 			}
 
