@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher.hessian;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Principal;
+import java.util.HashMap;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -22,15 +24,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
 import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
+import com.caucho.hessian.io.AbstractDeserializer;
+import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
@@ -73,6 +79,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 				return null;
 			}
 		});
+		addSpecialDeserializer(serializerFactory);
 		logger.log(LogService.LOG_DEBUG, "initialized");
 	}
 
@@ -152,6 +159,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		try {
 			sk.invoke(inp, out);
 		} catch (Throwable t) {
+			t.printStackTrace();
 			throw new ServletException(t);
 		}
 	}
@@ -162,6 +170,20 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 	 */
 	protected HessianRemoteServicePublisher getPublisher() {
 		return Activator.getDefault().getPublisher();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addSpecialDeserializer(SerializerFactory serializerFactory) {
+		HashMap staticDeSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
+		staticDeSerMap.put(java.io.InputStream.class, new SpecificInputStreamDeserializer());
+	}
+
+	class SpecificInputStreamDeserializer extends AbstractDeserializer {
+		public Object readObject(AbstractHessianInput in) throws IOException {
+
+			byte[] bytes = in.readBytes();
+			return new ByteArrayInputStream(bytes);
+		}
 	}
 
 }

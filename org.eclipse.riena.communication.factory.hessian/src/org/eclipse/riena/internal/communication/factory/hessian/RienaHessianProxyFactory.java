@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -17,18 +18,23 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.Principal;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.util.ReflectionUtils;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.caucho.hessian.io.AbstractDeserializer;
+import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
@@ -88,14 +94,21 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 	public SerializerFactory getSerializerFactory() {
 		SerializerFactory serializerFactory = super.getSerializerFactory();
 		serializerFactory.setAllowNonSerializable(true);
+		addSpecialDeserializer(serializerFactory);
 		return serializerFactory;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addSpecialDeserializer(SerializerFactory serializerFactory) {
+		HashMap staticDeSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
+		staticDeSerMap.put(java.io.InputStream.class, new SpecificInputStreamDeserializer());
 	}
 
 	public void setCallMessageContextAccessor(ICallMessageContextAccessor mca) {
 		this.mca = mca;
 	}
 
-	public static HttpURLConnection getHttpURLConnection() {
+	protected static HttpURLConnection getHttpURLConnection() {
 		return connections.get();
 	}
 
@@ -113,6 +126,14 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 			LOGGER.log(LogService.LOG_ERROR, "invalid url " + urlStr, e);
 		}
 
+	}
+
+	class SpecificInputStreamDeserializer extends AbstractDeserializer {
+		public Object readObject(AbstractHessianInput in) throws IOException {
+
+			byte[] bytes = in.readBytes();
+			return new ByteArrayInputStream(bytes);
+		}
 	}
 
 }
