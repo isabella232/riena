@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.TreeItem;
 /**
  * Tests for the {@link TreeRidget}.
  * <p>
- * These tests us a TreeNode that wraps a String and focus on methods from the
+ * These tests use a TreeNode that wraps a String and focus on methods from the
  * {@link ITreeRidget}.
  * 
  * @see TreeRidgetTest2
