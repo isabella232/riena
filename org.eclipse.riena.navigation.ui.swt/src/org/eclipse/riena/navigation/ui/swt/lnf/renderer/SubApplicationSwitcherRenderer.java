@@ -114,7 +114,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	/**
 	 * @return the items
 	 */
-	public List<SubApplicationItem> getItems() {
+	private List<SubApplicationItem> getItems() {
 		if (items == null) {
 			items = new ArrayList<SubApplicationItem>();
 		}

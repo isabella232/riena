@@ -306,6 +306,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		public void activated(ISubApplication source) {
 			if (source != null) {
 				showPerspective(source);
+				switcherComposite.setRedraw(false);
+				switcherComposite.setRedraw(true);
 			}
 			super.activated(source);
 		}
@@ -315,7 +317,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				PlatformUI.getWorkbench().showPerspective(
 						SwtPresentationManagerAccessor.getManager().getSwtViewId(source).getId(),
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-
 			} catch (WorkbenchException e) {
 				e.printStackTrace();
 			}
