@@ -312,16 +312,16 @@
    <extension
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
-            presentationId="open2"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.Open2NavigationNodeBuilder"
+            presentationId="org.eclipse.riena.example.navigation.comboAndList"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
             parentPresentationId="app1">
       </navigationNodePresentation>
    </extension>
    <extension
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
-            presentationId="open3"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.Open3NavigationNodeBuilder"
+            presentationId="org.eclipse.riena.example.navigation.tableTextAndTree"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentPresentationId="playground">
       </navigationNodePresentation>
    </extension>

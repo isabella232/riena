@@ -12,12 +12,9 @@ import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IInjectAllRidgetsAtOnce;
 
 public class NavigateSubModuleViewController extends SubModuleNodeViewController implements IInjectAllRidgetsAtOnce {
-
-	private ITextFieldRidget target;
 
 	public NavigateSubModuleViewController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -25,22 +22,33 @@ public class NavigateSubModuleViewController extends SubModuleNodeViewController
 
 	public void configureRidgets() {
 
-		target = (ITextFieldRidget) getRidget("target");
+		IActionRidget comboAndList = (IActionRidget) getRidget("comboAndList");
+		comboAndList.setText("Combo and List (SubApplication 1)");
+		comboAndList.addListener(new ComboAndListListener());
 
-		IActionRidget navigate = (IActionRidget) getRidget("navigate");
-		navigate.setText("Go");
-		navigate.addListener(new NavigateListener());
-
-		setDefaultButton(navigate);
+		IActionRidget tableTextAndTree = (IActionRidget) getRidget("tableTextAndTree");
+		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)");
+		tableTextAndTree.addListener(new TableTextAndTreeListener());
 	}
 
-	private class NavigateListener implements IActionListener {
+	private class ComboAndListListener implements IActionListener {
 
 		/**
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId(target.getText()));
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.comboAndList"));
+		}
+
+	}
+
+	private class TableTextAndTreeListener implements IActionListener {
+
+		/**
+		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
+		 */
+		public void callback() {
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.tableTextAndTree"));
 		}
 
 	}

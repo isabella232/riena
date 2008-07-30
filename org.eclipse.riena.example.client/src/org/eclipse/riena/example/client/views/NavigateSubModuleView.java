@@ -24,7 +24,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * SWT {@link IComboRidget} sample.
@@ -39,14 +38,15 @@ public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleVi
 		parent.setLayout(new GridLayout(1, false));
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		UIControlsFactory.createLabel(parent, "Navigate To:"); //$NON-NLS-1$
-		Text target = UIControlsFactory.createText(parent);
-		fillFactory.applyTo(target);
-		addUIControl(target, "target"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Where do you want to go today?"); //$NON-NLS-1$
 
-		Button navigate = UIControlsFactory.createButton(parent);
-		fillFactory.applyTo(navigate);
-		addUIControl(navigate, "navigate"); //$NON-NLS-1$
+		Button comboAndList = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(comboAndList);
+		addUIControl(comboAndList, "comboAndList"); //$NON-NLS-1$
+
+		Button tableTextAndTree = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(tableTextAndTree);
+		addUIControl(tableTextAndTree, "tableTextAndTree"); //$NON-NLS-1$
 	}
 
 	@Override
