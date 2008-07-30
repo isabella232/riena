@@ -11,10 +11,11 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Date;
 
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.UITestHelper;
@@ -35,10 +36,6 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-
-import org.easymock.EasyMock;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -54,14 +51,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	private final static String TEXT_ONE = "TestText1";
 	private final static String TEXT_TWO = "TestText2";
 	private TestBean bean;
-	private PropertyChangeListener propertyChangeListenerMock;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		bean = new TestBean();
-		propertyChangeListenerMock = EasyMock.createMock(PropertyChangeListener.class);
-		getRidget().addPropertyChangeListener(propertyChangeListenerMock);
 		Shell shell = getShell();
 		// need a second control, so that we can switch focus
 		new Text(shell, SWT.BORDER);

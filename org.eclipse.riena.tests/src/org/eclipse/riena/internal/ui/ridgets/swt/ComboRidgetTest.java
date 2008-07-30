@@ -11,12 +11,10 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.easymock.EasyMock;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
@@ -39,7 +37,6 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	private Person selection1;
 	private Person selection2;
 	private Person selection3;
-	private PropertyChangeListener propertyChangeListenerMock;
 
 	@Override
 	public void setUp() throws Exception {
@@ -49,8 +46,6 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		selection1 = it.next();
 		selection2 = it.next();
 		selection3 = it.next();
-		propertyChangeListenerMock = EasyMock.createMock(PropertyChangeListener.class);
-		getRidget().addPropertyChangeListener(propertyChangeListenerMock);
 	}
 
 	@Override
