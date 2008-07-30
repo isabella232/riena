@@ -14,9 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.riena.tests.RienaTestCase;
-
 import org.easymock.MockControl;
+import org.eclipse.riena.tests.RienaTestCase;
 
 /**
  * Test the ByteArrayDataSource class.
@@ -128,7 +127,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 		// This creation should not fail!
 		ByteArrayDataSource dataSource = new ByteArrayDataSource(null);
 
-		assertEquals(dataSource.getName(), null);
+		assertNull(dataSource.getName());
 		assertNull(dataSource.getInputStream());
 	}
 
@@ -142,7 +141,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 		setUpDataSourceMock(length);
 		long before = System.currentTimeMillis();
 		ByteArrayDataSource dataSource = new ByteArrayDataSource(dataSourceMock);
-		System.out.println("Run with " + length + " bytes took " + (System.currentTimeMillis() - before) + " ms.");
+		println("Run with " + length + " bytes took " + (System.currentTimeMillis() - before) + " ms.");
 		assertEquals(getInputStream(length), dataSource.getInputStream());
 		assertEquals(NAME, dataSource.getName());
 	}
