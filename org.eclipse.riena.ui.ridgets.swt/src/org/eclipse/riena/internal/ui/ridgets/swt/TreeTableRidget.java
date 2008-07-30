@@ -17,29 +17,38 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.riena.ui.ridgets.IGroupedTableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
  * columns.
  */
-public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
+public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGroupedTableRidget {
 
 	private final ColumnSortListener sortListener;
+	private final Listener groupedTableListener;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
 
+	private boolean isGroupingEnabled;
+
 	public TreeTableRidget() {
 		sortListener = new ColumnSortListener();
+		groupedTableListener = new GroupedTablePaintListener();
 		isSortedAscending = true;
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
@@ -54,6 +63,8 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 			for (TreeColumn column : control.getColumns()) {
 				column.addSelectionListener(sortListener);
 			}
+			applyComparator();
+			applyGrouping();
 		}
 	}
 
@@ -65,6 +76,8 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 			for (TreeColumn column : control.getColumns()) {
 				column.removeSelectionListener(sortListener);
 			}
+			control.removeListener(SWT.EraseItem, groupedTableListener);
+			control.removeListener(SWT.PaintItem, groupedTableListener);
 		}
 	}
 
@@ -75,6 +88,22 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
 		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders);
+	}
+
+	// IGroupedTableRidget methods
+	// ////////////////////////////
+
+	public boolean isGroupingEnabled() {
+		return isGroupingEnabled;
+	}
+
+	public void setGroupingEnabled(boolean grouping) {
+		boolean oldValue = isGroupingEnabled;
+		isGroupingEnabled = grouping;
+		if (oldValue != isGroupingEnabled) {
+			firePropertyChange(IGroupedTableRidget.PROPERTY_GROUPING_ENABLED, oldValue, isGroupingEnabled);
+			applyGrouping();
+		}
 	}
 
 	// ISortableByColumn methods
@@ -167,22 +196,47 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 		TreeViewer viewer = getViewer();
 		if (viewer != null) {
 			Tree tree = viewer.getTree();
-			Comparator<Object> compi = null;
-			if (sortedColumn != -1) {
-				Integer key = Integer.valueOf(sortedColumn);
-				compi = comparatorMap.get(key);
+			tree.setRedraw(false);
+			try {
+				Comparator<Object> compi = null;
+				if (sortedColumn != -1) {
+					Integer key = Integer.valueOf(sortedColumn);
+					compi = comparatorMap.get(key);
+				}
+				if (compi != null) {
+					TreeColumn column = tree.getColumn(sortedColumn);
+					tree.setSortColumn(column);
+					int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
+					tree.setSortDirection(direction);
+					SortableComparator sortableComparator = new SortableComparator(this, compi);
+					viewer.setComparator(new ViewerComparator(sortableComparator));
+				} else {
+					viewer.setComparator(null);
+					tree.setSortColumn(null);
+					tree.setSortDirection(SWT.NONE);
+				}
+				// we have to update the expanded / collapsed icons
+				viewer.refresh();
+			} finally {
+				tree.setRedraw(true);
 			}
-			if (compi != null) {
-				TreeColumn column = tree.getColumn(sortedColumn);
-				tree.setSortColumn(column);
-				int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
-				tree.setSortDirection(direction);
-				SortableComparator sortableComparator = new SortableComparator(this, compi);
-				viewer.setComparator(new ViewerComparator(sortableComparator));
-			} else {
-				viewer.setComparator(null);
-				tree.setSortColumn(null);
-				tree.setSortDirection(SWT.NONE);
+		}
+	}
+
+	private void applyGrouping() {
+		Control control = getUIControl();
+		if (control != null) {
+			control.setRedraw(false);
+			try {
+				control.removeListener(SWT.EraseItem, groupedTableListener);
+				control.removeListener(SWT.PaintItem, groupedTableListener);
+				if (isGroupingEnabled) {
+					control.addListener(SWT.EraseItem, groupedTableListener);
+					control.addListener(SWT.PaintItem, groupedTableListener);
+				}
+			} finally {
+				control.setRedraw(true);
+				control.redraw();
 			}
 		}
 	}
@@ -221,6 +275,36 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget {
 				}
 			}
 			column.getParent().showSelection();
+		}
+	}
+
+	/**
+	 * Listener for EraseItem / PaintItem events that is repsonsible for greated
+	 * the "grouped" look in tree tables.
+	 * <p>
+	 * Refer to '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+	 * >Custom Drawing Table and Tree Items</a>' for additional info.
+	 */
+	private final static class GroupedTablePaintListener implements Listener {
+
+		/*
+		 * Called EXTREMELY frequently. Must be as efficient as possible.
+		 */
+		public void handleEvent(Event event) {
+			TreeItem item = (TreeItem) event.item;
+			/*
+			 * let SWT draw the cell content if: (a) the item has no children or
+			 * (b) we are in the first column
+			 */
+			if (item.getItemCount() == 0 || event.index == 0) {
+				return;
+			}
+			if (event.type == SWT.EraseItem) {
+				// indicate we are responsible for drawing the cell's content
+				event.detail &= ~SWT.FOREGROUND;
+			} else if (event.type == SWT.PaintItem) {
+				// paint nothing to leave the cell blank
+			}
 		}
 	}
 

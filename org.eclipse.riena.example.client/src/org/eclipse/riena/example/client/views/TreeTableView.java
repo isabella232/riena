@@ -61,7 +61,6 @@ public class TreeTableView extends SubModuleNodeView<TreeTableViewController> {
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(treeComposite);
 
 		Tree tree = new Tree(treeComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
-		tree.setLinesVisible(true);
 		tree.setHeaderVisible(true);
 		addUIControl(tree, "tree"); //$NON-NLS-1$
 
@@ -85,10 +84,13 @@ public class TreeTableView extends SubModuleNodeView<TreeTableViewController> {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(false).applyTo(buttonComposite);
 
+		Button buttonEnableGrouping = UIControlsFactory.createButtonCheck(buttonComposite);
+		GridDataFactory.fillDefaults().span(6, 1).grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(
+				buttonEnableGrouping);
+		addUIControl(buttonEnableGrouping, "buttonEnableGrouping"); //$NON-NLS-1$
+
 		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
-		int widthHint = UIControlsFactory.getWidthHint(buttonAddSibling);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
-				.applyTo(buttonAddSibling);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonAddSibling);
 		addUIControl(buttonAddSibling, "buttonAddSibling"); //$NON-NLS-1$
 
 		Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);

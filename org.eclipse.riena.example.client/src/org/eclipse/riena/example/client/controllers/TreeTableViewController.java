@@ -25,9 +25,10 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IGroupedTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
@@ -37,7 +38,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class TreeTableViewController extends SubModuleNodeViewController {
 
-	private ITreeTableRidget tree;
+	private IGroupedTableRidget tree;
+	private IToggleButtonRidget buttonEnableGrouping;
 	private IActionRidget buttonAddSibling;
 	private IActionRidget buttonAddChild;
 	private IActionRidget buttonRename;
@@ -45,12 +47,20 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 	private IActionRidget buttonExpand;
 	private IActionRidget buttonCollapse;
 
-	public ITreeTableRidget getTree() {
+	public IGroupedTableRidget getTree() {
 		return tree;
 	}
 
-	public void setTree(ITreeTableRidget tree) {
+	public void setTree(IGroupedTableRidget tree) {
 		this.tree = tree;
+	}
+
+	public IToggleButtonRidget getButtonEnableGrouping() {
+		return buttonEnableGrouping;
+	}
+
+	public void setButtonEnableGrouping(IToggleButtonRidget buttonEnableGrouping) {
+		this.buttonEnableGrouping = buttonEnableGrouping;
 	}
 
 	public IActionRidget getButtonAddSibling() {
@@ -134,6 +144,9 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 				}
 			}
 		});
+
+		buttonEnableGrouping.setText("Grouping &Enabled");
+		buttonEnableGrouping.setSelected(true);
 
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.addListener(new IActionListener() {
@@ -219,6 +232,8 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 			}
 		};
 		DataBindingContext dbc = new DataBindingContext();
+		dbc.bindValue(BeansObservables.observeValue(tree, IGroupedTableRidget.PROPERTY_GROUPING_ENABLED),
+				BeansObservables.observeValue(buttonEnableGrouping, IToggleButtonRidget.PROPERTY_SELECTED), null, null);
 		bindEnablementToValue(dbc, buttonAddChild, hasSelection);
 		bindEnablementToValue(dbc, buttonAddSibling, hasNonRootSelection);
 		bindEnablementToValue(dbc, buttonDelete, hasNonRootSelection);

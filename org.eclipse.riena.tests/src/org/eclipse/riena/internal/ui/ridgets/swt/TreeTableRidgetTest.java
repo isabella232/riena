@@ -15,6 +15,7 @@ import java.util.Comparator;
 
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.TreeUtils;
+import org.eclipse.riena.ui.ridgets.IGroupedTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
@@ -181,116 +182,40 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("", control.getColumn(1).getText());
 	}
 
-	// public void testUpdateFromModel() {
-	// ITableRidget ridget = getRidget();
-	// Table control = getUIControl();
-	//
-	// int oldCount = manager.getPersons().size();
-	//
-	// assertEquals(oldCount, ridget.getObservableList().size());
-	// assertEquals(oldCount, control.getItemCount());
-	//
-	// manager.getPersons().remove(person1);
-	//
-	// int newCount = oldCount - 1;
-	//
-	// assertEquals(newCount, manager.getPersons().size());
-	// assertEquals(oldCount, ridget.getObservableList().size());
-	// assertEquals(oldCount, control.getItemCount());
-	//
-	// ridget.updateFromModel();
-	//
-	// assertEquals(newCount, manager.getPersons().size());
-	// assertEquals(newCount, ridget.getObservableList().size());
-	// assertEquals(newCount, control.getItemCount());
-	// }
-	//
-	// public void testUpdateFromModelPreservesSelection() {
-	// ITableRidget ridget = getRidget();
-	//
-	// ridget.setSelection(person2);
-	//
-	// assertSame(person2, ridget.getSelection().get(0));
-	//
-	// manager.getPersons().remove(person1);
-	// ridget.updateFromModel();
-	//
-	// assertSame(person2, ridget.getSelection().get(0));
-	// }
-	//
-	// public void testContainsOption() {
-	// ITableRidget ridget = getRidget();
-	//
-	// assertTrue(ridget.containsOption(person1));
-	// assertTrue(ridget.containsOption(person2));
-	// assertTrue(ridget.containsOption(person3));
-	//
-	// assertFalse(ridget.containsOption(null));
-	// assertFalse(ridget.containsOption(new Person("", "")));
-	//
-	// java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
-	// PersonManager manager = new PersonManager(persons);
-	// getRidget().bindToModel(manager, "persons", Person.class, new String[] {
-	// "firstname" }, new String[] { "" });
-	//
-	// assertFalse(ridget.containsOption(person1));
-	// assertTrue(ridget.containsOption(person3));
-	// }
-	//
-	// public void testSetSelectionType() {
-	// ITableRidget ridget = getRidget();
-	// Table control = getUIControl();
-	//
-	// assertEquals(SelectionType.SINGLE, ridget.getSelectionType());
-	// assertTrue((control.getStyle() & SWT.MULTI) != 0);
-	//
-	// ridget.setSelection(new int[] { 0, 1 });
-	//
-	// // single selection is enforced
-	// assertEquals(1, ridget.getSelectionIndices().length);
-	// assertEquals(1, control.getSelectionCount());
-	//
-	// // multiple selection is now allowed
-	// ridget.setSelectionType(SelectionType.MULTI);
-	// ridget.setSelection(new int[] { 0, 1 });
-	//
-	// assertEquals(2, ridget.getSelectionIndices().length);
-	// assertEquals(2, control.getSelectionCount());
-	// }
-	//
-	// public void testAddDoubleClickListener() {
-	// TableRidget ridget = getRidget();
-	// Table control = getUIControl();
-	//
-	// try {
-	// ridget.addDoubleClickListener(null);
-	// fail();
-	// } catch (RuntimeException npe) {
-	// // expected
-	// }
-	//
-	// FTActionListener listener1 = new FTActionListener();
-	// ridget.addDoubleClickListener(listener1);
-	//
-	// FTActionListener listener2 = new FTActionListener();
-	// ridget.addDoubleClickListener(listener2);
-	// ridget.addDoubleClickListener(listener2);
-	//
-	// Event doubleClick = new Event();
-	// doubleClick.widget = control;
-	// doubleClick.type = SWT.MouseDoubleClick;
-	// control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
-	//
-	// assertEquals(1, listener1.getCount());
-	// assertEquals(2, listener2.getCount());
-	//
-	// ridget.removeDoubleClickListener(listener1);
-	//
-	// control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
-	//
-	// assertEquals(1, listener1.getCount());
-	// }
-	//
+	public void testSetGroupingEnabled() {
+		TreeTableRidget ridget = getRidget();
+
+		assertFalse(ridget.isGroupingEnabled());
+
+		ridget.setGroupingEnabled(true);
+
+		assertTrue(ridget.isGroupingEnabled());
+
+		ridget.setGroupingEnabled(false);
+
+		assertFalse(ridget.isGroupingEnabled());
+	}
+
+	public void testSetGroupingEnabledFiresEvents() {
+		TreeTableRidget ridget = getRidget();
+
+		expectPropertyChangeEvent(IGroupedTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.FALSE, Boolean.TRUE);
+		ridget.setGroupingEnabled(true);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.setGroupingEnabled(true);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IGroupedTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.TRUE, Boolean.FALSE);
+		ridget.setGroupingEnabled(false);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.setGroupingEnabled(false);
+		verifyPropertyChangeEvents();
+	}
+
 	public void testSetComparator() {
 		TreeTableRidget ridget = getRidget();
 		Tree control = getUIControl();
@@ -621,62 +546,6 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		}
 		throw new IndexOutOfBoundsException("index= " + index);
 	}
-
-	//
-	// @Override
-	// protected void clearUIControlRowSelection() {
-	// getUIControl().deselectAll();
-	// fireSelectionEvent();
-	// }
-	//
-	// @Override
-	// protected int getUIControlSelectedRowCount() {
-	// return getUIControl().getSelectionCount();
-	// }
-	//
-	// @Override
-	// protected int getUIControlSelectedRow() {
-	// return getUIControl().getSelectionIndex();
-	// }
-	//
-	// @Override
-	// protected Object getRowValue(int i) {
-	// // return getRidget().getRowObservables().get(i);
-	// IObservableList rowObservables =
-	// ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
-	// return rowObservables.get(i);
-	// }
-	//
-	// @Override
-	// protected int[] getSelectedRows() {
-	// // IObservableList rowObservables = getRidget().getRowObservables();
-	// IObservableList rowObservables =
-	// ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
-	// Object[] elements = getRidget().getMultiSelectionObservable().toArray();
-	// int[] result = new int[elements.length];
-	// for (int i = 0; i < elements.length; i++) {
-	// Object element = elements[i];
-	// result[i] = rowObservables.indexOf(element);
-	// }
-	// return result;
-	// }
-	//
-	// @Override
-	// protected int[] getUIControlSelectedRows() {
-	// return getUIControl().getSelectionIndices();
-	// }
-	//
-	// @Override
-	// protected void setUIControlRowSelection(int[] indices) {
-	// getUIControl().setSelection(indices);
-	// fireSelectionEvent();
-	// }
-	//
-	// @Override
-	// protected void setUIControlRowSelectionInterval(int start, int end) {
-	// getUIControl().setSelection(start, end);
-	// fireSelectionEvent();
-	// }
 
 	// helping classes
 	// ////////////////

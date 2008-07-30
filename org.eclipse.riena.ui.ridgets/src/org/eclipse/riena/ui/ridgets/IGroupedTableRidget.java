@@ -10,8 +10,30 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+
 /**
+ * A ridget that supports "grouping" of columns.
+ * <p>
+ * When grouping is <b>enabled</b>, rows containing expandable/collapsable tree
+ * nodes will be rendered as "grouping rows" with the tree columns spanning all
+ * the columns in the table, instead of normal data rows that have several
+ * columns.
+ * <p>
+ * Example of a row in "grouped" mode:
  * 
+ * <pre>
+ * +------------+-------------------+-----------+
+ * + [+] \Home                                  | 
+ * +------------+-------------------+-----------+
+ * </pre>
+ * 
+ * Same row in "ungrouped" mode:
+ * 
+ * <pre>
+ * +------------+-------------------+-----------+
+ * + [+] \Home  |          column_2 |  column_3 | 
+ * +------------+-------------------+-----------+
+ * </pre>
  */
 public interface IGroupedTableRidget extends ITreeTableRidget {
 
@@ -20,7 +42,7 @@ public interface IGroupedTableRidget extends ITreeTableRidget {
 	 * should be rendered as grouping rows with the tree column spanning the
 	 * entire table or rather as normal data rows like their children.
 	 */
-	String PROPERTY_GROUPING_ENABLED = "groupingEnabled";
+	String PROPERTY_GROUPING_ENABLED = "groupingEnabled"; //$NON-NLS-1$
 
 	/**
 	 * Indicates whether grouping is enabled. As grouped table without grouping
@@ -33,6 +55,8 @@ public interface IGroupedTableRidget extends ITreeTableRidget {
 	/**
 	 * Sets whether grouping is enabled. As grouped table without grouping looks
 	 * like a normal table.
+	 * <p>
+	 * Fires a {@link IGroupedTableRidget#PROPERTY_GROUPING_ENABLED} event.
 	 * 
 	 * @param grouping
 	 *            The new grouping state.
