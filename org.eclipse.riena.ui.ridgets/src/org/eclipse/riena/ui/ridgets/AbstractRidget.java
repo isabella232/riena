@@ -36,31 +36,37 @@ public abstract class AbstractRidget implements IRidget {
 		focusListeners = new HashSet<IFocusListener>(1, 1.0f);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.beans.PropertyChangeListener)
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.beans
+	 * .PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.lang.String,
-	 *      java.beans.PropertyChangeListener)
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.lang
+	 * .String, java.beans.PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
 		propertyChangeSupport.addPropertyChangeListener(propertyName, propertyChangeListener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java.beans.PropertyChangeListener)
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java
+	 * .beans.PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java.lang.String,
-	 *      java.beans.PropertyChangeListener)
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java
+	 * .lang.String, java.beans.PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyName, propertyChangeListener);
@@ -96,15 +102,19 @@ public abstract class AbstractRidget implements IRidget {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#addFocusListener(org.eclipse.riena.ui.ridgets.listener.IFocusListener)
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#addFocusListener(org.eclipse.riena
+	 * .ui.ridgets.listener.IFocusListener)
 	 */
 	public void addFocusListener(IFocusListener listener) {
 		focusListeners.add(listener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#removeFocusListener(org.eclipse.riena.ui.ridgets.listener.IFocusListener)
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IRidget#removeFocusListener(org.eclipse.
+	 * riena.ui.ridgets.listener.IFocusListener)
 	 */
 	public void removeFocusListener(IFocusListener listener) {
 		focusListeners.remove(listener);
@@ -113,8 +123,8 @@ public abstract class AbstractRidget implements IRidget {
 	/**
 	 * Notifies all listeners that the ridget has lost the focus.
 	 * 
-	 * @param event -
-	 *            the FocusEvent
+	 * @param event
+	 *            - the FocusEvent
 	 */
 	protected void fireFocusLost(FocusEvent event) {
 		for (IFocusListener focusListener : focusListeners) {
@@ -125,8 +135,8 @@ public abstract class AbstractRidget implements IRidget {
 	/**
 	 * Notifies all listeners that the ridget has gained the focus.
 	 * 
-	 * @param event -
-	 *            the FocusEvent
+	 * @param event
+	 *            - the FocusEvent
 	 */
 	protected void fireFocusGained(FocusEvent event) {
 		for (IFocusListener focusListener : focusListeners) {
@@ -134,7 +144,7 @@ public abstract class AbstractRidget implements IRidget {
 		}
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#updateFromModel()
 	 */
 	public void updateFromModel() {
