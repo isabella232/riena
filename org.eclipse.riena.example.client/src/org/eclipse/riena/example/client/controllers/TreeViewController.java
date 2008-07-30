@@ -118,7 +118,6 @@ public class TreeViewController extends SubModuleNodeViewController {
 		ITreeNode[] roots = createTreeInput();
 		tree.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
-		tree.updateFromModel();
 		tree.setSelection(roots[0]);
 
 		buttonAddSibling.setText("Add &Sibling");

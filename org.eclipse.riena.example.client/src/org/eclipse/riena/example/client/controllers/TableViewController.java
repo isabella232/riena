@@ -19,7 +19,6 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -94,7 +93,6 @@ public class TableViewController extends SubModuleNodeViewController {
 		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String[] columnHeaders = { "Word", "Uppercase", "A Count" };
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
-		table.updateFromModel();
 		table.setComparator(0, new StringComparator());
 		table.setComparator(1, new StringComparator());
 		table.setColumnSortable(2, false);

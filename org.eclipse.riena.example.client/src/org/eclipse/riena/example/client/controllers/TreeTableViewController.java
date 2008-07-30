@@ -128,7 +128,6 @@ public class TreeTableViewController extends SubModuleNodeViewController {
 		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String[] columnHeaders = { "Word", "Uppercase", "A Count" };
 		tree.bindToModel(roots, WordNode.class, "children", "parent", columnPropertyNames, columnHeaders); //$NON-NLS-1$ //$NON-NLS-2$
-		tree.updateFromModel();
 		tree.expand(roots[0]);
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		tree.setComparator(0, new StringComparator());
