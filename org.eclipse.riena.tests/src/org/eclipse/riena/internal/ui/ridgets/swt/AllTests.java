@@ -37,6 +37,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(TreeTableRidgetTest.class);
 		suite.addTestSuite(ToggleButtonRidgetTest.class);
 		suite.addTestSuite(StatusbarNumberRidgetTest.class);
+		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
 		return suite;
 	}
 

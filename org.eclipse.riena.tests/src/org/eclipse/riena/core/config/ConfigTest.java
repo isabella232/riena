@@ -23,6 +23,7 @@ public class ConfigTest extends RienaTestCase {
 	/**
 	 * @throws java.lang.Exception
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		startBundles("org\\.eclipse\\.equinox\\.cm.*", null);
@@ -32,6 +33,7 @@ public class ConfigTest extends RienaTestCase {
 	/**
 	 * @throws java.lang.Exception
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 	}
 

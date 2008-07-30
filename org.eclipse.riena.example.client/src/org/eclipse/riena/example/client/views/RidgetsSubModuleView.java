@@ -66,6 +66,9 @@ public class RidgetsSubModuleView extends SubModuleNodeView<RidgetsSubModuleCont
 		Button checkBox = UIControlsFactory.createButtonCheck(buttonGroup);
 		addUIControl(checkBox, "checkOne"); //$NON-NLS-1$
 
+		Button buttonWithImage = UIControlsFactory.createButton(buttonGroup);
+		addUIControl(buttonWithImage, "buttonWithImage"); //$NON-NLS-1$
+
 	}
 
 	/**

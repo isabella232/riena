@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Label;
 public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-	private static Image missingImage;
 
 	private String text = EMPTY_STRING;
 	private String icon;
@@ -118,33 +117,25 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 		}
 	}
 
-	private Image getManagedImage(String key) {
-		Activator activator = Activator.getDefault();
-		Image result = null;
-		if (activator != null) {
-			ImageRegistry registry = activator.getImageRegistry();
-			result = registry.get(key);
-			if (result == null) {
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#getManagedImage(java.lang.String)
+	 */
+	@Override
+	protected Image getManagedImage(String key) {
+		Image image = super.getManagedImage(key);
+		if ((image == null) || (image == getMissingImage())) {
+			Activator activator = Activator.getDefault();
+			if (activator != null) {
+				ImageRegistry registry = activator.getImageRegistry();
 				ImageDescriptor descr = ImageDescriptor.createFromURL(iconLocation);
 				registry.put(key, descr);
-				result = registry.get(key);
+				image = registry.get(key);
 			}
-		} else {
-			result = getMissingImage();
 		}
-		return result;
-	}
-
-	private synchronized Image getMissingImage() {
-		if (missingImage == null) {
-			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
+		if (image == null) {
+			image = getMissingImage();
 		}
-		return missingImage;
-	}
-
-	private boolean hasChanged(String oldValue, String newValue) {
-		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
-				|| oldValue.equals(newValue);
+		return image;
 	}
 
 	private boolean hasChanged(URL oldValue, URL newValue) {

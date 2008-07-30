@@ -11,10 +11,13 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -24,6 +27,7 @@ import org.eclipse.swt.widgets.Widget;
  */
 public abstract class AbstractSWTRidget extends AbstractRidget {
 
+	private static Image missingImage;
 	private FocusListener focusManager = new FocusManager();
 	private Control uiControl;
 	private boolean visible;
@@ -197,6 +201,26 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		if (uiControl != null) {
 			uiControl.setToolTipText(toolTip);
 		}
+	}
+
+	protected Image getManagedImage(String key) {
+		Image image = ImageUtil.getImage(key);
+		if (image == null) {
+			image = getMissingImage();
+		}
+		return image;
+	}
+
+	protected synchronized Image getMissingImage() {
+		if (missingImage == null) {
+			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
+		}
+		return missingImage;
+	}
+
+	protected boolean hasChanged(Object oldValue, Object newValue) {
+		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
+				|| !oldValue.equals(newValue);
 	}
 
 	/**

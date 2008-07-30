@@ -26,6 +26,9 @@ import org.eclipse.swt.widgets.Event;
  */
 public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
+	private final static String PLUGIN_ID = "org.eclipse.riena.ui.tests:";
+	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
+
 	private final static String LABEL = "testlabel";
 	private final static String LABEL2 = "testlabel2";
 
@@ -153,6 +156,24 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(LABEL2, ridget.getText());
 		assertEquals(LABEL2, control.getText());
+	}
+
+	/**
+	 * Test method get/setIcon().
+	 */
+	public final void testSetIcon() {
+		IActionRidget ridget = getRidget();
+		Button control = (Button) ridget.getUIControl();
+
+		ridget.setIcon(ICON_ECLIPSE);
+
+		assertEquals(ICON_ECLIPSE, ridget.getIcon());
+		assertNotNull(control.getImage());
+
+		ridget.setIcon(null);
+
+		assertNull(ridget.getIcon());
+		assertNull(control.getImage());
 	}
 
 	// helping methods

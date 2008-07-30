@@ -49,13 +49,13 @@ public final class ReflectionUtils {
 	 * @pre className != null
 	 */
 	public static <T> T newInstance(String className, Object... args) {
-		Assert.isNotNull(className, "className must be given!");
+		Assert.isNotNull(className, "className must be given!"); //$NON-NLS-1$
 
 		try {
 			return (T) newInstance(loadClass(className), args);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating instance for " + className + " with parameters "
-					+ Arrays.asList(args) + "!", e);
+			throw new ReflectionFailure("Error creating instance for " + className + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
+					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
 		}
 	}
 
@@ -71,15 +71,15 @@ public final class ReflectionUtils {
 	 * @pre clazz != null
 	 */
 	public static <T> T newInstance(Class<T> clazz, Object... args) {
-		Assert.isNotNull(clazz, "clazz must be given!");
+		Assert.isNotNull(clazz, "clazz must be given!"); //$NON-NLS-1$
 
 		try {
 			Class<?>[] clazzes = classesFromObjects(args);
 			Constructor<T> constructor = findMatchingConstructor(clazz, clazzes);
 			return constructor.newInstance(args);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters "
-					+ Arrays.asList(args) + "!", e);
+			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
+					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
 		}
 	}
 
@@ -95,12 +95,12 @@ public final class ReflectionUtils {
 	 * @pre invocationHandler != null
 	 */
 	public static <T> T newInstance(String interfaceName, InvocationHandler invocationHandler) {
-		Assert.isNotNull(interfaceName, "interfaceName must be given!");
-		Assert.isNotNull(invocationHandler, "invocationHandler must be given!");
+		Assert.isNotNull(interfaceName, "interfaceName must be given!"); //$NON-NLS-1$
+		Assert.isNotNull(invocationHandler, "invocationHandler must be given!"); //$NON-NLS-1$
 		try {
 			return (T) newInstance(Class.forName(interfaceName), invocationHandler);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Error creating proxy instance for " + interfaceName + " !", e);
+			throw new ReflectionFailure("Error creating proxy instance for " + interfaceName + " !", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -117,8 +117,8 @@ public final class ReflectionUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(Class<T> interfaze, InvocationHandler invocationHandler) {
-		Assert.isNotNull(interfaze, "interfaceName must be given");
-		Assert.isNotNull(invocationHandler, "invocationHandler must be given");
+		Assert.isNotNull(interfaze, "interfaceName must be given"); //$NON-NLS-1$
+		Assert.isNotNull(invocationHandler, "invocationHandler must be given"); //$NON-NLS-1$
 
 		Class proxyClass = Proxy.getProxyClass(interfaze.getClassLoader(), new Class<?>[] { interfaze });
 		try {
@@ -126,7 +126,7 @@ public final class ReflectionUtils {
 			T object = constructor.newInstance(new Object[] { invocationHandler });
 			return object;
 		} catch (Throwable throwable) {
-			throw new ReflectionFailure("Error creating proxy instance for " + interfaze.getName() + " !", throwable);
+			throw new ReflectionFailure("Error creating proxy instance for " + interfaze.getName() + " !", throwable); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -188,7 +188,7 @@ public final class ReflectionUtils {
 	@SuppressWarnings("unchecked")
 	public static <T extends Throwable> Object invoke(Object instance, String methodName, Class<T> expectedException,
 			Object... args) throws T {
-		Assert.isNotNull(expectedException, "expectedException should not be null!");
+		Assert.isNotNull(expectedException, "expectedException should not be null!"); //$NON-NLS-1$
 
 		try {
 			return invoke(instance, methodName, args);
@@ -220,7 +220,7 @@ public final class ReflectionUtils {
 	@SuppressWarnings("unchecked")
 	public static <T extends Throwable> Object invokeHidden(Object instance, String methodName,
 			Class<T> expectedException, Object... args) throws T {
-		Assert.isNotNull(expectedException, "expectedException should not be null!");
+		Assert.isNotNull(expectedException, "expectedException should not be null!"); //$NON-NLS-1$
 
 		try {
 			return invokeHidden(instance, methodName, args);
@@ -250,8 +250,8 @@ public final class ReflectionUtils {
 	 * @pre methodName != null
 	 */
 	private static <T> T invoke(boolean open, Object instance, String methodName, Object... args) {
-		Assert.isNotNull(instance, "instance must be given!");
-		Assert.isNotNull(methodName, "methodName must be given!");
+		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
+		Assert.isNotNull(methodName, "methodName must be given!"); //$NON-NLS-1$
 
 		Class<?> clazz = getClass(instance);
 		Class<?>[] clazzes = classesFromObjects(args);
@@ -263,19 +263,19 @@ public final class ReflectionUtils {
 				try {
 					return (T) method.invoke(instance, args);
 				} catch (InvocationTargetException ite) {
-					throw new InvocationTargetFailure("Calling #" + methodName + " on " + instance + " failed.", ite
+					throw new InvocationTargetFailure("Calling #" + methodName + " on " + instance + " failed.", ite //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							.getTargetException());
 				} catch (IllegalArgumentException e) {
-					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e);
+					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				} catch (IllegalAccessException e) {
-					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e);
+					throw new ReflectionFailure("Calling #" + methodName + " on " + instance + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 			}
 			clazz = clazz.getSuperclass();
 		}
 
-		throw new ReflectionFailure("Could not invoke hidden method " + methodName + " on "
-				+ instance.getClass().getName() + "!");
+		throw new ReflectionFailure("Could not invoke hidden method " + methodName + " on " //$NON-NLS-1$ //$NON-NLS-2$
+				+ instance.getClass().getName() + "!"); //$NON-NLS-1$
 	}
 
 	/**
@@ -295,9 +295,9 @@ public final class ReflectionUtils {
 	 * @pre value != null
 	 */
 	public static void setHidden(Object instance, String fieldName, Object value) {
-		Assert.isNotNull(instance, "instance must be given!");
-		Assert.isNotNull(fieldName, "fieldName must be given!");
-		Assert.isNotNull(value, "value must be given!");
+		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
+		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
+		Assert.isNotNull(value, "value must be given!"); //$NON-NLS-1$
 
 		Class<?> clazz = getClass(instance);
 		try {
@@ -305,7 +305,7 @@ public final class ReflectionUtils {
 			field.setAccessible(true);
 			field.set(instance, value);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Could not set hidden field " + fieldName + " on " + clazz.getName() + "!", e);
+			throw new ReflectionFailure("Could not set hidden field " + fieldName + " on " + clazz.getName() + "!", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -324,8 +324,8 @@ public final class ReflectionUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getHidden(Object instance, String fieldName) {
-		Assert.isNotNull(instance, "instance must be given!");
-		Assert.isNotNull(fieldName, "fieldName must be given!");
+		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
+		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
 
 		Class<?> clazz = getClass(instance);
 		try {
@@ -333,7 +333,7 @@ public final class ReflectionUtils {
 			field.setAccessible(true);
 			return (T) field.get(instance);
 		} catch (Exception e) {
-			throw new ReflectionFailure("Could not get hidden field " + fieldName + " on " + clazz.getName() + "!", e);
+			throw new ReflectionFailure("Could not get hidden field " + fieldName + " on " + clazz.getName() + "!", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -418,9 +418,9 @@ public final class ReflectionUtils {
 						return constructor;
 				}
 			}
-			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName());
+			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName()); //$NON-NLS-1$
 		} catch (NoSuchMethodException nsme) {
-			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName(), nsme);
+			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName(), nsme); //$NON-NLS-1$
 		}
 	}
 
@@ -457,23 +457,26 @@ public final class ReflectionUtils {
 		if (objects != null) {
 			clazzes = new Class<?>[objects.length];
 			for (int i = 0; i < objects.length; i++) {
-				Class<?> argClass = objects[i].getClass();
-				if (argClass == Integer.class) {
-					argClass = int.class;
-				} else if (argClass == Long.class) {
-					argClass = long.class;
-				} else if (argClass == Short.class) {
-					argClass = short.class;
-				} else if (argClass == Boolean.class) {
-					argClass = boolean.class;
-				} else if (argClass == Byte.class) {
-					argClass = byte.class;
-				} else if (argClass == Float.class) {
-					argClass = float.class;
-				} else if (argClass == Double.class) {
-					argClass = double.class;
-				} else if (argClass == Character.class) {
-					argClass = char.class;
+				Class<?> argClass = Object.class;
+				if (objects[i] != null) {
+					argClass = objects[i].getClass();
+					if (argClass == Integer.class) {
+						argClass = int.class;
+					} else if (argClass == Long.class) {
+						argClass = long.class;
+					} else if (argClass == Short.class) {
+						argClass = short.class;
+					} else if (argClass == Boolean.class) {
+						argClass = boolean.class;
+					} else if (argClass == Byte.class) {
+						argClass = byte.class;
+					} else if (argClass == Float.class) {
+						argClass = float.class;
+					} else if (argClass == Double.class) {
+						argClass = double.class;
+					} else if (argClass == Character.class) {
+						argClass = char.class;
+					}
 				}
 				clazzes[i] = argClass;
 			}
@@ -521,6 +524,6 @@ public final class ReflectionUtils {
 				cnfe = e;
 			}
 		}
-		throw new ReflectionFailure("Could not load class " + className + ".", cnfe);
+		throw new ReflectionFailure("Could not load class " + className + ".", cnfe); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -21,6 +21,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 
 /**
@@ -32,6 +33,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	private final ActionObserver actionObserver;
 	private Binding controlBinding;
 	private String text;
+	private String icon;
 	private boolean selected;
 	private boolean blocked;
 
@@ -127,12 +129,22 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		updateText();
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#getIcon()
+	 */
 	public String getIcon() {
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+		return icon;
 	}
 
-	public void setIcon(String iconName) {
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#setIcon(java.lang.String)
+	 */
+	public void setIcon(String icon) {
+		String oldIcon = this.icon;
+		this.icon = icon;
+		if (hasChanged(oldIcon, icon)) {
+			updateIconInControl();
+		}
 	}
 
 	// helping methods
@@ -143,6 +155,20 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		if (button != null) {
 			String buttonText = text == null ? "" : text; //$NON-NLS-1$
 			button.setText(buttonText);
+		}
+	}
+
+	/**
+	 * Updates the images of the control.
+	 */
+	private void updateIconInControl() {
+		Button control = getUIControl();
+		if (control != null) {
+			Image image = null;
+			if (icon != null) {
+				image = getManagedImage(icon);
+			}
+			control.setImage(image);
 		}
 	}
 

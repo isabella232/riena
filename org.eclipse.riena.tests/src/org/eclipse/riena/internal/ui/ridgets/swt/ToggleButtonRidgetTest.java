@@ -14,10 +14,12 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
@@ -27,6 +29,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ToggleButtonRidgetTest extends TestCase {
 
+	private final static String PLUGIN_ID = "org.eclipse.riena.ui.tests:";
+	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
 	private final static String LABEL = "testlabel";
 	private final static String LABEL2 = "testlabel2";
 
@@ -37,6 +41,7 @@ public class ToggleButtonRidgetTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		realm = new DefaultRealm();
 		shell = new Shell();
 		button = new Button(shell, SWT.CHECK);
@@ -46,6 +51,7 @@ public class ToggleButtonRidgetTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		super.tearDown();
 		ridget = null;
 		button.dispose();
 		button = null;
@@ -208,6 +214,30 @@ public class ToggleButtonRidgetTest extends TestCase {
 
 		assertEquals(LABEL2, ridget.getText());
 		assertEquals(LABEL2, button.getText());
+	}
+
+	/**
+	 * Test method get/setIcon().
+	 */
+	public final void testSetIcon() {
+		Button control = ridget.getUIControl();
+
+		ridget.setIcon(ICON_ECLIPSE);
+
+		assertEquals(ICON_ECLIPSE, ridget.getIcon());
+		assertNotNull(control.getImage());
+
+		ridget.setIcon(null);
+
+		assertNull(ridget.getIcon());
+		assertNull(control.getImage());
+
+		ridget.setIcon("nonsense");
+
+		Image missingImage = ReflectionUtils.invokeHidden(ridget, "getMissingImage", new Object[] {});
+		assertEquals("nonsense", ridget.getIcon());
+		assertEquals(missingImage, control.getImage());
+
 	}
 
 	// helping classes

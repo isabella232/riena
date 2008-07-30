@@ -12,6 +12,8 @@ package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
@@ -19,8 +21,13 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class RidgetsSubModuleController extends SubModuleNodeViewController {
 
+	private final static String PLUGIN_ID = "org.eclipse.riena.example.client:"; //$NON-NLS-1$
+	private final static String ICON_SAMPLE = PLUGIN_ID + "/icons/sample.gif"; //$NON-NLS-1$
+	private final static String ICON_RED = PLUGIN_ID + "/icons/ledred.png"; //$NON-NLS-1$
+
 	private IToggleButtonRidget toggleOne;
 	private IToggleButtonRidget checkOne;
+	private IActionRidget buttonWithImage;
 	private RidgetsModel model;
 
 	public RidgetsSubModuleController(ISubModuleNode navigationNode) {
@@ -28,6 +35,14 @@ public class RidgetsSubModuleController extends SubModuleNodeViewController {
 		model = new RidgetsModel();
 		model.setToggleOneSelected(true);
 		model.setCheckOneSelected(true);
+	}
+
+	public IActionRidget getButtonWithImage() {
+		return buttonWithImage;
+	}
+
+	public void setButtonWithImage(IActionRidget buttonWithImage) {
+		this.buttonWithImage = buttonWithImage;
 	}
 
 	public IToggleButtonRidget getToggleOne() {
@@ -59,17 +74,26 @@ public class RidgetsSubModuleController extends SubModuleNodeViewController {
 	 * Binds and updates the ridgets.
 	 */
 	private void initRidgets() {
-		toggleOne.setText("&Toggle 1");
+		toggleOne.setText("&Toggle 1"); //$NON-NLS-1$
+		toggleOne.setIcon(ICON_SAMPLE);
 		if (toggleOne != null) {
 			toggleOne.bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
 			toggleOne.updateFromModel();
 		}
 
-		checkOne.setText("C&heck 1");
+		checkOne.setText("C&heck 1"); //$NON-NLS-1$
 		if (checkOne != null) {
 			checkOne.bindToModel(model, "checkOneSelected"); //$NON-NLS-1$
 			checkOne.updateFromModel();
 		}
+
+		buttonWithImage.setText("Text"); //$NON-NLS-1$
+		buttonWithImage.setIcon(ICON_SAMPLE);
+		buttonWithImage.addListener(new IActionListener() {
+			public void callback() {
+				buttonWithImage.setIcon(ICON_RED);
+			}
+		});
 	}
 
 	/**

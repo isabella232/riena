@@ -14,13 +14,14 @@ import java.beans.EventHandler;
 
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Control;
 
 public class ActionRidget extends AbstractMarkableRidget implements IActionRidget {
 
-	private String text;
 	private Button button;
+	private String text;
+	private String icon;
 	private ActionObserver actionObserver;
 
 	public ActionRidget() {
@@ -34,9 +35,9 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 
 	@Override
 	protected void bindUIControl() {
-		Control control = getUIControl();
+		Button control = getUIControl();
 		if (control != null) {
-			button = (Button) control;
+			button = control;
 			button.addSelectionListener(actionObserver);
 			updateText();
 		}
@@ -48,6 +49,14 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 			button.removeSelectionListener(actionObserver);
 			button = null;
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#getUIControl()
+	 */
+	@Override
+	public Button getUIControl() {
+		return (Button) super.getUIControl();
 	}
 
 	public final void addListener(IActionListener listener) {
@@ -71,12 +80,22 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		updateText();
 	}
 
-	public final String getIcon() {
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#getIcon()
+	 */
+	public String getIcon() {
+		return icon;
 	}
 
-	public final void setIcon(String iconName) {
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#setIcon(java.lang.String)
+	 */
+	public void setIcon(String icon) {
+		String oldIcon = this.icon;
+		this.icon = icon;
+		if (hasChanged(oldIcon, icon)) {
+			updateIconInControl();
+		}
 	}
 
 	// helping methods
@@ -86,6 +105,17 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		if (button != null) {
 			String buttonText = text == null ? "" : text; //$NON-NLS-1$
 			button.setText(buttonText);
+		}
+	}
+
+	private void updateIconInControl() {
+		Button control = getUIControl();
+		if (control != null) {
+			Image image = null;
+			if (icon != null) {
+				image = getManagedImage(icon);
+			}
+			control.setImage(image);
 		}
 	}
 
