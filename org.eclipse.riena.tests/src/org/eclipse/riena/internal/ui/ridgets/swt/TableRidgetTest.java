@@ -212,6 +212,19 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertSame(person2, ridget.getSelection().get(0));
 	}
 
+	public void testUpdateFromModelRemovesSelection() {
+		ITableRidget ridget = getRidget();
+
+		ridget.setSelection(person2);
+
+		assertSame(person2, ridget.getSelection().get(0));
+
+		manager.getPersons().remove(person2);
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
 	public void testContainsOption() {
 		ITableRidget ridget = getRidget();
 
