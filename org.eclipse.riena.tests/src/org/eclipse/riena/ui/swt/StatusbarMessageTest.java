@@ -14,8 +14,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -52,7 +52,7 @@ public class StatusbarMessageTest extends TestCase {
 
 		Control[] controls = statusMessage.getChildren();
 		assertEquals(1, controls.length);
-		assertTrue(controls[0] instanceof Label);
+		assertTrue(controls[0] instanceof CLabel);
 
 	}
 
@@ -64,7 +64,7 @@ public class StatusbarMessageTest extends TestCase {
 		statusMessage.setMessage("Hello!");
 
 		Control[] controls = statusMessage.getChildren();
-		Label label = (Label) controls[0];
+		CLabel label = (CLabel) controls[0];
 		assertEquals("Hello!", label.getText());
 
 	}

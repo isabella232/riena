@@ -5,29 +5,29 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
-import org.eclipse.riena.navigation.ISubApplicationListener;
-import org.eclipse.riena.navigation.model.SubApplicationAdapter;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNodeListener;
+import org.eclipse.riena.navigation.model.SubApplicationNodeAdapter;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This class manages the navigation of a SubApplicationNode.
  */
-public class SubApplicationNavigationComponent extends AbstractNavigationComponent<ISubApplication> {
+public class SubApplicationNavigationComponent extends AbstractNavigationComponent<ISubApplicationNode> {
 
 	private Map<IModuleGroupNode, ModuleGroupNavigationComponent> moduleGroupComponents;
 	private IComponentUpdateListener componentUpdateListener;
-	private ISubApplicationListener moduleGroupObserver;
+	private ISubApplicationNodeListener moduleGroupObserver;
 
-	public SubApplicationNavigationComponent(ISubApplication subApplication, Composite parent) {
+	public SubApplicationNavigationComponent(ISubApplicationNode subApplication, Composite parent) {
 		super(subApplication, parent);
 		initializeMgNodeMapping();
 		initUI();
 		buildInitialTree();
 	}
 
-	protected ISubApplicationListener getModuleGroupObserver() {
+	protected ISubApplicationNodeListener getModuleGroupObserver() {
 		return moduleGroupObserver;
 	}
 
@@ -74,14 +74,14 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	 * This observer resizes the navigation after a child was added or removed.<br>
 	 * 
 	 */
-	private final class ModuleGroupObserver extends SubApplicationAdapter {
+	private final class ModuleGroupObserver extends SubApplicationNodeAdapter {
 
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(ISubApplication source, IModuleGroupNode child) {
+		public void childAdded(ISubApplicationNode source, IModuleGroupNode child) {
 			super.childAdded(source, child);
 			addModuleGroupComponent(child);
 			sizeNavigation();
@@ -92,7 +92,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(ISubApplication source, IModuleGroupNode child) {
+		public void childRemoved(ISubApplicationNode source, IModuleGroupNode child) {
 			super.childRemoved(source, child);
 			removeMapping(child);
 			sizeNavigation();
@@ -114,7 +114,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	 */
 	@Override
 	protected void buildInitialTree() {
-		ISubApplication root = getModelNode();
+		ISubApplicationNode root = getModelNode();
 		for (IModuleGroupNode mgNode : root.getChildren()) {
 			addModuleGroupComponent(mgNode);
 		}
@@ -136,7 +136,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	}
 
 	public void sizeNavigation() {
-		ISubApplication root = getModelNode();
+		ISubApplicationNode root = getModelNode();
 		int yPos = 0;
 		for (IModuleGroupNode moduleGroup : root.getChildren()) {
 			yPos = moduleGroupComponents.get(moduleGroup).recalculate(yPos);
@@ -159,7 +159,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	 * Rebuilds the tree items of the sub-modules.
 	 */
 	public void rebuild() {
-		ISubApplication root = getModelNode();
+		ISubApplicationNode root = getModelNode();
 		for (IModuleGroupNode moduleGroup : root.getChildren()) {
 			moduleGroupComponents.get(moduleGroup).rebuild();
 		}

@@ -14,7 +14,7 @@ import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -98,7 +98,7 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 		getAddModuleGroupBtn().setText("Add Module-&Group"); //$NON-NLS-1$
 		getAddModuleGroupBtn().addListener(new IActionListener() {
 			public void callback() {
-				ISubApplication parent = getParentNodeOfType(getNavigationNode(), ISubApplication.class);
+				ISubApplicationNode parent = getParentNodeOfType(getNavigationNode(), ISubApplicationNode.class);
 				parent.addChild(createModuleGroupNode());
 				String text = "Module-Group was added!";
 				SubApplicationViewController subAppController = getSubApplicationController();
@@ -223,7 +223,7 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 	 * @return sub-application controller
 	 */
 	private SubApplicationViewController getSubApplicationController() {
-		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplication.class)
+		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
 				.getPresentation();
 	}
 

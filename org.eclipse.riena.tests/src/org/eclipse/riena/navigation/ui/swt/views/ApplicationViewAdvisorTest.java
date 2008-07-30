@@ -72,36 +72,8 @@ public class ApplicationViewAdvisorTest extends TestCase {
 
 		ReflectionUtils.invokeHidden(advisor, "initShell", shell);
 
-		assertSame(SWT.INHERIT_FORCE, shell.getBackgroundMode());
 		assertFalse(defMinSize.equals(shell.getMinimumSize()));
 		assertNotNull(shell.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
-
-		// ShellListener added? -> method addListeners was called
-		assertTrue(shell.getListeners(SWT.Close).length == 1);
-
-		SwtUtilities.disposeWidget(shell);
-
-	}
-
-	/**
-	 * Tests the method <code>addListeners</code>.
-	 */
-	public void testAddListeners() {
-
-		Shell shell = new Shell();
-
-		ReflectionUtils.invokeHidden(advisor, "addListeners", shell);
-
-		// ShellListener added?
-		assertTrue(shell.getListeners(SWT.Close).length == 1);
-		// ControlListener added?
-		assertTrue(shell.getListeners(SWT.Resize).length == 1);
-		// MouseListener added?
-		assertTrue(shell.getListeners(SWT.MouseDown).length == 1);
-		// MouseMoveListener added?
-		assertTrue(shell.getListeners(SWT.MouseMove).length == 1);
-		// MouseTrackListener added?
-		assertTrue(shell.getListeners(SWT.MouseEnter).length == 1);
 
 		SwtUtilities.disposeWidget(shell);
 

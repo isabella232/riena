@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation;
 /**
  * Describes the riena mode of an application consisting of sub applications
  */
-public interface IApplicationModel extends INavigationNode<ISubApplication>,
-		INavigationNodeListenerable<IApplicationModel, ISubApplication, IApplicationModelListener> {
+public interface IApplicationModel extends INavigationNode<ISubApplicationNode>,
+		INavigationNodeListenerable<IApplicationModel, ISubApplicationNode, IApplicationModelListener> {
 
 }

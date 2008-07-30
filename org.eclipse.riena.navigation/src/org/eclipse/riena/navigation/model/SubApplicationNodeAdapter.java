@@ -8,11 +8,16 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.model;
+
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNodeListener;
 
 /**
- * Special listener for the sub application
+ * Default implementation for the IModuleGroupNodeListener
  */
-public interface ISubApplicationListener extends INavigationNodeListener<ISubApplication, IModuleGroupNode> {
+public class SubApplicationNodeAdapter extends NavigationNodeAdapter<ISubApplicationNode, IModuleGroupNode> implements
+		ISubApplicationNodeListener {
 
 }

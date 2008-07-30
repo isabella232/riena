@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
@@ -160,7 +160,7 @@ public class StatuslineSubModuleViewController extends SubModuleNodeViewControll
 	 * @return sub-application controller
 	 */
 	private SubApplicationViewController getSubApplicationController() {
-		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplication.class)
+		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
 				.getPresentation();
 	}
 

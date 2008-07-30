@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.ui.IWorkbenchPage;
@@ -47,15 +47,15 @@ public class CertainViewHandler extends DummyHandler {
 		return msg;
 	}
 
-	private ISubApplication getActiveSubApplication() {
+	private ISubApplicationNode getActiveSubApplication() {
 		String perspectiveId = getActivePage().getPerspective().getId();
-		ISubApplication node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
-				ISubApplication.class);
+		ISubApplicationNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
+				ISubApplicationNode.class);
 		return node;
 	}
 
 	private IModuleGroupNode getActiveModuleGroup() {
-		ISubApplication parent = getActiveSubApplication();
+		ISubApplicationNode parent = getActiveSubApplication();
 		List<IModuleGroupNode> children = parent.getChildren();
 		for (IModuleGroupNode moduleGroupNode : children) {
 			if (moduleGroupNode.isActivated()) {

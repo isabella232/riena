@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -156,8 +156,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 */
 	private void registerItems(IApplicationModel applicationModel) {
 
-		List<ISubApplication> subApps = applicationModel.getChildren();
-		for (ISubApplication subApp : subApps) {
+		List<ISubApplicationNode> subApps = applicationModel.getChildren();
+		for (ISubApplicationNode subApp : subApps) {
 			SubApplicationItem item = new SubApplicationItem(this, subApp);
 			item.setIcon(subApp.getIcon());
 			item.setLabel(subApp.getLabel());

@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation;
 /**
  * Represents a business area within the desktop
  */
-public interface ISubApplication extends INavigationNode<IModuleGroupNode>,
-		INavigationNodeListenerable<ISubApplication, IModuleGroupNode, ISubApplicationListener> {
+public interface ISubApplicationNode extends INavigationNode<IModuleGroupNode>,
+		INavigationNodeListenerable<ISubApplicationNode, IModuleGroupNode, ISubApplicationNodeListener> {
 
 }

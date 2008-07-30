@@ -29,6 +29,8 @@ public class ModuleItemTest extends TestCase {
 	private Shell shell;
 	private ModuleGroupWidget parent;
 	private ModuleGroupNode mgNode;
+	private ModuleNavigationComponent moduleCmp;
+	private ModuleGroupNavigationComponent moduleGroupCmp;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -38,6 +40,8 @@ public class ModuleItemTest extends TestCase {
 		shell = new Shell();
 		mgNode = new ModuleGroupNode();
 		parent = new ModuleGroupWidget(shell, SWT.NONE, mgNode);
+		moduleGroupCmp = new ModuleGroupNavigationComponent(new ModuleGroupNode(), shell, null);
+		moduleCmp = new ModuleNavigationComponent(new ModuleNode(), moduleGroupCmp);
 	}
 
 	/**
@@ -45,6 +49,8 @@ public class ModuleItemTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		moduleGroupCmp = null;
+		moduleCmp = null;
 		parent.dispose();
 		parent = null;
 		shell.dispose();
@@ -57,7 +63,7 @@ public class ModuleItemTest extends TestCase {
 	 */
 	public void testModuleItem() {
 
-		ModuleItem item = new ModuleItem(parent, null);
+		ModuleItem item = new ModuleItem(parent, moduleCmp);
 		assertFalse(item.isHover());
 		assertFalse(item.isPressed());
 		assertNotNull(item.getBody());
@@ -71,7 +77,7 @@ public class ModuleItemTest extends TestCase {
 	 */
 	public void testCreateSubModuleTree() {
 
-		ModuleItem item = new ModuleItem(parent, null);
+		ModuleItem item = new ModuleItem(parent, moduleCmp);
 		item.createSubModuleTree();
 		Tree tree = item.getTree();
 		assertNotNull(tree);
@@ -92,7 +98,7 @@ public class ModuleItemTest extends TestCase {
 	 */
 	public void testDispose() {
 
-		ModuleItem item = new ModuleItem(parent, null);
+		ModuleItem item = new ModuleItem(parent, moduleCmp);
 		Composite body = item.getBody();
 		Tree tree = item.getTree();
 		item.dispose();

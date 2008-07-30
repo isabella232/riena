@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationNavigationComponent;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
@@ -39,7 +39,7 @@ public class NavigationTreeViewPart extends ViewPart {
 		// set a property to distinguish this view
 		setPartProperty(TitlelessStackPresentation.PROPERTY_NAVIGATION, String.valueOf(Boolean.TRUE));
 
-		ISubApplication subApplicationNode = getSubApplication();
+		ISubApplicationNode subApplicationNode = getSubApplication();
 		Composite baseComposite = initLayoutParts(parent);
 		subApplicationComponent = new SubApplicationNavigationComponent(subApplicationNode, baseComposite);
 
@@ -51,9 +51,9 @@ public class NavigationTreeViewPart extends ViewPart {
 	 * 
 	 * @return sub-application
 	 */
-	private ISubApplication getSubApplication() {
+	private ISubApplicationNode getSubApplication() {
 		String perspectiveID = getViewSite().getPage().getPerspective().getId();
-		return SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveID, ISubApplication.class);
+		return SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveID, ISubApplicationNode.class);
 	}
 
 	private Composite initLayoutParts(Composite parent) {

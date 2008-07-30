@@ -14,12 +14,12 @@ import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
-import org.eclipse.riena.navigation.model.SubApplication;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
@@ -50,7 +50,7 @@ public class HelloWorldApplication extends SwtApplication {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
 		application = new ApplicationModel("Hello World Application");
-		ISubApplication subApplication = new SubApplication("Riena Samples");
+		ISubApplicationNode subApplication = new SubApplicationNode("Riena Samples");
 		presentation.present(subApplication, "helloWorldSubApplication");
 		application.addChild(subApplication);
 
@@ -84,7 +84,7 @@ public class HelloWorldApplication extends SwtApplication {
 		presentation.present(cSearchSubModule, CustomerSearchSubModuleView.ID);
 		cSearchModule.addChild(cSearchSubModule);
 
-		ISubApplication subApplication2 = new SubApplication("Simple Subapplication");
+		ISubApplicationNode subApplication2 = new SubApplicationNode("Simple Subapplication");
 		presentation.present(subApplication2, "org.eclipse.riena.sample.app.client.second");
 		application.addChild(subApplication2);
 		moduleGroup = new ModuleGroupNode("ModuleGroup 1");

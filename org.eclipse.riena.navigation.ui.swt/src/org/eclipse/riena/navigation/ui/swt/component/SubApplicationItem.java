@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.component;
 
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 public class SubApplicationItem {
 
 	private Composite parent;
-	private ISubApplication subApplicationNode;
+	private ISubApplicationNode subApplicationNode;
 	private Rectangle bounds;
 	private String label;
 	private String icon;
@@ -34,7 +34,7 @@ public class SubApplicationItem {
 	 * @param subApplicationNode -
 	 *            node of the sub-application (model)
 	 */
-	public SubApplicationItem(Composite parent, ISubApplication subApplicationNode) {
+	public SubApplicationItem(Composite parent, ISubApplicationNode subApplicationNode) {
 		this.parent = parent;
 		this.subApplicationNode = subApplicationNode;
 		bounds = new Rectangle(0, 0, 0, 0);
@@ -50,7 +50,7 @@ public class SubApplicationItem {
 	/**
 	 * @return the subApplicationNode
 	 */
-	public ISubApplication getSubApplicationNode() {
+	public ISubApplicationNode getSubApplicationNode() {
 		return subApplicationNode;
 	}
 

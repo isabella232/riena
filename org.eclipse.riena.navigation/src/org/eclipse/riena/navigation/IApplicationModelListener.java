@@ -13,6 +13,6 @@ package org.eclipse.riena.navigation;
 /**
  * Special listener for the application model
  */
-public interface IApplicationModelListener extends INavigationNodeListener<IApplicationModel, ISubApplication> {
+public interface IApplicationModelListener extends INavigationNodeListener<IApplicationModel, ISubApplicationNode> {
 
 }

@@ -36,7 +36,7 @@ import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
-import org.eclipse.riena.navigation.model.SubApplication;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
@@ -89,7 +89,7 @@ public class SwtExampleApplication extends SwtApplication {
 	@Override
 	protected IApplicationModel createModel() {
 
-		SubApplication subApplication = null;
+		SubApplicationNode subApplication = null;
 		IModuleGroupNode moduleGroup = null;
 		IModuleNode module = null;
 		ISubModuleNode subModule = null;
@@ -99,7 +99,7 @@ public class SwtExampleApplication extends SwtApplication {
 		final IApplicationModel applicationModel = new ApplicationModel("Riena Navigation Example"); //$NON-NLS-1$
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		// sub application 1
-		subApplication = new SubApplication("Navigation"); //$NON-NLS-1$
+		subApplication = new SubApplicationNode("Navigation"); //$NON-NLS-1$
 		subApplication.setPresentationId(new NavigationNodeId("app1")); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "subapplication.1"); //$NON-NLS-1$
@@ -150,7 +150,7 @@ public class SwtExampleApplication extends SwtApplication {
 		module.addChild(subModule);
 
 		// Playground
-		subApplication = new SubApplication("Playground"); //$NON-NLS-1$
+		subApplication = new SubApplicationNode("Playground"); //$NON-NLS-1$
 		subApplication.setPresentationId(new NavigationNodeId("playground")); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$

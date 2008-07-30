@@ -16,11 +16,11 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.riena.navigation.ISubApplication;
-import org.eclipse.riena.navigation.ISubApplicationListener;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
-import org.eclipse.riena.navigation.model.SubApplicationAdapter;
+import org.eclipse.riena.navigation.model.SubApplicationNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
@@ -104,7 +104,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void initializeListener() {
-		ISubApplicationListener subApplicationListener = new SubApplicationListener();
+		ISubApplicationNodeListener subApplicationListener = new SubApplicationNodeListener();
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(subApplicationListener);
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
@@ -204,7 +204,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
 		addUIControl(shell);
 
-		getShellRenderer().setShell(shell);
+		if (getShellRenderer() != null) {
+			getShellRenderer().setShell(shell);
+		}
 	}
 
 	protected DefaultBindingManager createBindingManager() {
@@ -297,13 +299,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	private class SubApplicationListener extends SubApplicationAdapter {
+	private class SubApplicationNodeListener extends SubApplicationNodeAdapter {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#activated(org.eclipse.riena.navigation.ISubApplication)
+		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#activated(org.eclipse.riena.navigation.ISubApplicationNode)
 		 */
 		@Override
-		public void activated(ISubApplication source) {
+		public void activated(ISubApplicationNode source) {
 			if (source != null) {
 				showPerspective(source);
 				switcherComposite.setRedraw(false);
@@ -312,7 +314,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			super.activated(source);
 		}
 
-		private void showPerspective(ISubApplication source) {
+		private void showPerspective(ISubApplicationNode source) {
 			try {
 				PlatformUI.getWorkbench().showPerspective(
 						SwtPresentationManagerAccessor.getManager().getSwtViewId(source).getId(),

@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
@@ -35,11 +35,11 @@ public class VisualizerFactory implements IUICallbackDispatcherFactory {
 		IProgressVisualizer aVisualizer = new ProgressVisualizer();
 		if (context != null && INavigationNode.class.isAssignableFrom(context.getClass())) {
 			INavigationNode node = INavigationNode.class.cast(context);
-			ISubApplication subApp = (ISubApplication) node.getParentOfType(ISubApplication.class);
+			ISubApplicationNode subApp = (ISubApplicationNode) node.getParentOfType(ISubApplicationNode.class);
 			if (subApp != null) {
 				aVisualizer.addObserver(getUIProcessRidget(subApp));
 				aVisualizer.addObserver(createObserver(node));
-				for (ISubApplication aSubApplicationNode : getSubApplications()) {
+				for (ISubApplicationNode aSubApplicationNode : getSubApplications()) {
 					if (aSubApplicationNode.getPresentation() != null
 							&& ((SubApplicationViewController) aSubApplicationNode.getPresentation())
 									.getStatusbarRidget() != null) {
@@ -56,11 +56,11 @@ public class VisualizerFactory implements IUICallbackDispatcherFactory {
 		return new UIProcessFinsishedObserver(node);
 	}
 
-	private List<ISubApplication> getSubApplications() {
+	private List<ISubApplicationNode> getSubApplications() {
 		return applicationModel.getChildren();
 	}
 
-	private IProgressVisualizerObserver getUIProcessRidget(ISubApplication subApp) {
+	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {
 		return ((SubApplicationViewController) subApp.getPresentation()).getProgressBoxRidget();
 	}
 }

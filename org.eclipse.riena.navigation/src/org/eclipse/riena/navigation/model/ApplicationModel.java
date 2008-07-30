@@ -12,12 +12,12 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IApplicationModelListener;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
  * Default implementation for the ApplicationModel
  */
-public class ApplicationModel extends NavigationNode<IApplicationModel, ISubApplication, IApplicationModelListener>
+public class ApplicationModel extends NavigationNode<IApplicationModel, ISubApplicationNode, IApplicationModelListener>
 		implements IApplicationModel {
 
 	/**
@@ -31,7 +31,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	/**
 	 * @param children
 	 */
-	public ApplicationModel(ISubApplication... children) {
+	public ApplicationModel(ISubApplicationNode... children) {
 		super(children);
 		initializeNavigationProcessor();
 	}
@@ -40,7 +40,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 * @param label
 	 * @param children
 	 */
-	public ApplicationModel(String label, ISubApplication... children) {
+	public ApplicationModel(String label, ISubApplicationNode... children) {
 		super(label, children);
 		initializeNavigationProcessor();
 	}

@@ -11,25 +11,26 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.ISubApplication;
-import org.eclipse.riena.navigation.ISubApplicationListener;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNodeListener;
 
 /**
  * Default implementation for the sub application
  */
-public class SubApplication extends NavigationNode<ISubApplication, IModuleGroupNode, ISubApplicationListener> implements ISubApplication {
+public class SubApplicationNode extends NavigationNode<ISubApplicationNode, IModuleGroupNode, ISubApplicationNodeListener>
+		implements ISubApplicationNode {
 
 	/**
 	 * 
 	 */
-	public SubApplication() {
+	public SubApplicationNode() {
 		super();
 	}
 
 	/**
 	 * @param children
 	 */
-	public SubApplication(IModuleGroupNode... children) {
+	public SubApplicationNode(IModuleGroupNode... children) {
 		super(children);
 	}
 
@@ -37,14 +38,14 @@ public class SubApplication extends NavigationNode<ISubApplication, IModuleGroup
 	 * @param label
 	 * @param children
 	 */
-	public SubApplication(String label, IModuleGroupNode... children) {
+	public SubApplicationNode(String label, IModuleGroupNode... children) {
 		super(label, children);
 	}
 
 	/**
 	 * @param label
 	 */
-	public SubApplication(String label) {
+	public SubApplicationNode(String label) {
 		super(label);
 	}
 

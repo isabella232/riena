@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -497,8 +497,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 		IWorkbenchPage page = getActivePage();
 		if (page != null) {
 			String id = page.getPerspective().getId();
-			ISubApplication subApplication = SwtPresentationManagerAccessor.getManager().getNavigationNode(id,
-					ISubApplication.class);
+			ISubApplicationNode subApplication = SwtPresentationManagerAccessor.getManager().getNavigationNode(id,
+					ISubApplicationNode.class);
 			result = (SubApplicationViewController) subApplication.getPresentation();
 		}
 		return result;

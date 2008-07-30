@@ -15,14 +15,14 @@ import org.eclipse.riena.navigation.IModuleGroupNodeListener;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.IModuleNodeListener;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
-import org.eclipse.riena.navigation.ISubApplicationListener;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNodeAdapter;
 import org.eclipse.riena.navigation.model.ModuleNodeAdapter;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
-import org.eclipse.riena.navigation.model.SubApplicationAdapter;
+import org.eclipse.riena.navigation.model.SubApplicationNodeAdapter;
 import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
@@ -33,11 +33,11 @@ import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
 /**
  * Implements the Controller for a Module Sub Application
  */
-public class SubApplicationViewController extends NavigationNodeViewController<ISubApplication> {
+public class SubApplicationViewController extends NavigationNodeViewController<ISubApplicationNode> {
 
 	private INavigationTreeRidget navigationTree;
 	private INavigationTreeRidgetListener navigationTreeRidgetListener;
-	private ISubApplicationListener subApplicationListener;
+	private ISubApplicationNodeListener subApplicationListener;
 	private ISubModuleNodeListener subModuleNodeListener;
 	private IModuleNodeListener moduleNodeListener;
 	private IModuleGroupNodeListener moduleGroupNodeListener;
@@ -49,10 +49,10 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 	 * Create a new Controller, find the corresponding subApplication for the
 	 * passed ID
 	 */
-	public SubApplicationViewController(ISubApplication pSubApplication) {
+	public SubApplicationViewController(ISubApplicationNode pSubApplication) {
 		super(pSubApplication);
 		navigationTreeRidgetListener = new NavigationTreeRidgetListener();
-		subApplicationListener = new SubApplicationListener();
+		subApplicationListener = new SubApplicationNodeListener();
 		subModuleNodeListener = new SubModuleNodeListener();
 		moduleNodeListener = new ModuleNodeListener();
 		moduleGroupNodeListener = new ModuleGroupNodeListener();
@@ -121,7 +121,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 
 	}
 
-	private class SubApplicationListener extends SubApplicationAdapter {
+	private class SubApplicationNodeListener extends SubApplicationNodeAdapter {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -130,7 +130,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		 * (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDeactivated(ISubApplication source) {
+		public void afterDeactivated(ISubApplicationNode source) {
 			super.afterDeactivated(source);
 			if (getStatusbarRidget() != null) {
 				getStatusbarRidget().hidePopups();
@@ -148,18 +148,18 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		 * (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterActivated(ISubApplication source) {
+		public void afterActivated(ISubApplicationNode source) {
 			if (getProgressBoxRidget() != null) {
 				getProgressBoxRidget().activate();
 			}
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#childAdded(org.eclipse.riena.navigation.ISubApplication,
+		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#childAdded(org.eclipse.riena.navigation.ISubApplicationNode,
 		 *      org.eclipse.riena.navigation.IModuleGroupNode)
 		 */
 		@Override
-		public void childAdded(ISubApplication source, IModuleGroupNode childAdded) {
+		public void childAdded(ISubApplicationNode source, IModuleGroupNode childAdded) {
 			super.childAdded(source, childAdded);
 			if (getNavigationTree() != null) {
 				getNavigationTree().childAdded(childAdded);

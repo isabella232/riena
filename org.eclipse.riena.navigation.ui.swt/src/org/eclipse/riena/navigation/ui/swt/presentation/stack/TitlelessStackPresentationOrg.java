@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
@@ -243,8 +243,8 @@ public class TitlelessStackPresentationOrg extends StackPresentation {
 			// TODO - is this the correct place ???
 			if (getActivePage() != null) {
 				String perspectiveId = getActivePage().getPerspective().getId();
-				ISubApplication node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
-						ISubApplication.class);
+				ISubApplicationNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
+						ISubApplicationNode.class);
 				SubApplicationViewController controller = (SubApplicationViewController) node.getPresentation();
 				DefaultBindingManager defaultBindingManager = createBindingManager();
 				List<Object> uiControls = new ArrayList<Object>(1);

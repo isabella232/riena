@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.example.client.views.ValidationView;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
@@ -313,7 +313,7 @@ public class ValidationViewController extends SubModuleNodeViewController {
 	 * @return sub-application controller
 	 */
 	private SubApplicationViewController getSubApplicationController() {
-		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplication.class)
+		return (SubApplicationViewController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
 				.getPresentation();
 	}
 

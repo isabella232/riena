@@ -7,7 +7,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IContextUpdateListene
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IVisualContextManager;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
@@ -41,12 +41,12 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	}
 
 	protected SubApplicationViewController createController(String id) {
-		ISubApplication subApplication = locateSubApplication(id);
+		ISubApplicationNode subApplication = locateSubApplication(id);
 		return createController(subApplication);
 	}
 
-	private ISubApplication locateSubApplication(String id) {
-		return SwtPresentationManagerAccessor.getManager().getNavigationNode(id, ISubApplication.class);
+	private ISubApplicationNode locateSubApplication(String id) {
+		return SwtPresentationManagerAccessor.getManager().getNavigationNode(id, ISubApplicationNode.class);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	 *            - sub-application node
 	 * @return controller of the sub-application view
 	 */
-	protected SubApplicationViewController createController(ISubApplication subApplication) {
+	protected SubApplicationViewController createController(ISubApplicationNode subApplication) {
 		return new SubApplicationViewController(subApplication);
 
 	}

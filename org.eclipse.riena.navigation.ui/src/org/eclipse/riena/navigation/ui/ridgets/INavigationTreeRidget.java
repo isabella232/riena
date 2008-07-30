@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.ridgets;
 
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
  * A ridget to the navigation tree
@@ -24,7 +24,7 @@ public interface INavigationTreeRidget {
 	 * @param pNode -
 	 *            the root node
 	 */
-	void showRoot(ISubApplication pNode);
+	void showRoot(ISubApplicationNode pNode);
 
 	void collapse(INavigationNode<?> pNode);
 

@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubApplication;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
@@ -67,12 +67,12 @@ public abstract class AbstractApplication implements IApplication {
 
 	protected void initializeNodeDefaults(IApplicationModel node) {
 
-		for (ISubApplication child : node.getChildren()) {
+		for (ISubApplicationNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
 	}
 
-	protected void initializeNodeDefaults(ISubApplication node) {
+	protected void initializeNodeDefaults(ISubApplicationNode node) {
 
 		for (IModuleGroupNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
