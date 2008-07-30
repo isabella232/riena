@@ -58,6 +58,8 @@ public class ByteArrayDataSource implements IDataSource {
 	 */
 	public InputStream getInputStream() throws IOException {
 		// return new ByteArrayInputStream( internalBuffer );
+		if (input == null)
+			return null;
 		input.reset();
 		return input;
 	}
