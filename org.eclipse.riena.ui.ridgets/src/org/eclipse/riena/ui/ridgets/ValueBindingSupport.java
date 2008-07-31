@@ -94,24 +94,24 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * 
 	 * @param validationRule
 	 *            The validation rule to add (non null)
-	 * @param validateOnEdit
-	 *            true if this validation rule should be checked "on edit",
-	 *            false if this validation rule should be checked "on update"
+	 * @param validationTime
+	 *            a value specifying when to evalute the validator (non-null)
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
+	 * @throws RuntimeException
+	 *             if validationRule is null, or an unsupported ValidationTime
+	 *             is used
 	 */
 	public boolean addValidationRule(IValidator validationRule, ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
 		if (validationTime == ON_UI_CONTROL_EDIT) {
 			onEditValidators.add(validationRule);
 			return true;
+		} else if (validationTime == ON_UPDATE_TO_MODEL) {
+			afterGetValidators.add(validationRule);
+			return false;
 		} else {
-			if (validationTime == ON_UPDATE_TO_MODEL) {
-				afterGetValidators.add(validationRule);
-				return false;
-			} else {
-				throw new UnsupportedOperationException();
-			}
+			throw new UnsupportedOperationException();
 		}
 	}
 
