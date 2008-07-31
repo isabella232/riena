@@ -22,6 +22,9 @@ import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.IWorkAreaPresentationDefinition;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 
+import org.eclipse.equinox.log.Logger;
+import org.osgi.service.log.LogService;
+
 /**
  * This class provides service methods to get information provided by
  * WorkAreaPresentationDefinitions and NavigationNodePresentationDefitinios
@@ -31,6 +34,8 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  * 
  */
 public class PresentationProviderService implements IPresentationProviderService {
+
+	private final static Logger LOGGER = Activator.getDefault().getLogger(PresentationProviderService.class.getName());
 
 	// TODO: split off ... problem: navigation is gui-less ...
 
@@ -48,13 +53,14 @@ public class PresentationProviderService implements IPresentationProviderService
 		Inject.extension(wpID).useType(interfaceType).into(target).andStart(Activator.getDefault().getContext());
 	}
 
+	/**
+	 * 
+	 */
 	public PresentationProviderService() {
-
 		targetWA = new PresentationExtensionInjectionHelper<IWorkAreaPresentationDefinition>();
 		inject(IWorkAreaPresentationDefinition.class, EP_WORKAREA, targetWA);
 		targetNN = new PresentationExtensionInjectionHelper<INavigationNodePresentationDefiniton>();
 		inject(INavigationNodePresentationDefiniton.class, EP_NAVNODE, targetNN);
-
 	}
 
 	/**
@@ -62,16 +68,18 @@ public class PresentationProviderService implements IPresentationProviderService
 	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object,
 	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
 	 */
+	@SuppressWarnings("unchecked")
 	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
 			INavigationArgumentListener argumentListener) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
-
 		if (targetNode == null) {
+			if (LOGGER.isLoggable(LogService.LOG_DEBUG))
+				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
 			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinitionNN(targetId);
 			if (presentationDefinition != null) {
 				INavigationNodeBuilder builder = presentationDefinition.createNodeBuilder();
+				prepareNavigationNodeBuilder(targetId, builder);
 				targetNode = builder.buildNode(targetId);
-
 				INavigationNode parentNode = createNode(sourceNode, new NavigationNodeId(presentationDefinition
 						.getParentPresentationId()), null, null);
 				parentNode.addChild(targetNode);
@@ -79,12 +87,24 @@ public class PresentationProviderService implements IPresentationProviderService
 				// TODO throw some new type of failure
 			}
 		}
-
 		return targetNode;
 	}
 
-	private IWorkAreaPresentationDefinition getPresentationDefinitionWA(String targetId) {
+	/**
+	 * Used to prepare the NavigationNodeBuilder in a application specific way.
+	 * 
+	 * @param targetId
+	 * @param builder
+	 */
+	protected void prepareNavigationNodeBuilder(INavigationNodeId targetId, INavigationNodeBuilder builder) {
+		// can be overwritten by subclass
+	}
 
+	/**
+	 * @param targetId
+	 * @return
+	 */
+	private IWorkAreaPresentationDefinition getPresentationDefinitionWA(String targetId) {
 		if (targetWA == null || targetWA.getData().length == 0) {
 			return null;
 		} else {
@@ -93,15 +113,16 @@ public class PresentationProviderService implements IPresentationProviderService
 				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId)) {
 					return data[i];
 				}
-
 			}
 		}
 		return null;
-
 	}
 
+	/**
+	 * @param targetId
+	 * @return
+	 */
 	private INavigationNodePresentationDefiniton getPresentationDefinitionNN(INavigationNodeId targetId) {
-
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
@@ -117,6 +138,10 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	}
 
+	/**
+	 * @param node
+	 * @return
+	 */
 	protected INavigationNode<?> getRootNode(INavigationNode<?> node) {
 		if (node.getParent() == null) {
 			return node;
@@ -124,8 +149,12 @@ public class PresentationProviderService implements IPresentationProviderService
 		return getRootNode(node.getParent());
 	}
 
+	/**
+	 * @param node
+	 * @param targetId
+	 * @return
+	 */
 	protected INavigationNode<?> findNode(INavigationNode<?> node, INavigationNodeId targetId) {
-
 		if (targetId == null) {
 			return null;
 		}
@@ -197,8 +226,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#cleanUp()
 	 */
 	public void cleanUp() {
-		// TODO: implement, does noething special yet
-
+		// TODO: implement, does nothing special yet
 	}
 
 }
