@@ -11,9 +11,9 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Adapter for a statusbar.
+ * Adapter for a status line.
  */
-public interface IStatusbarRidget extends IComplexRidget {
+public interface IStatuslineRidget extends IComplexRidget {
 
 	/**
 	 * @param aMessage
@@ -65,13 +65,13 @@ public interface IStatusbarRidget extends IComplexRidget {
 	void hidePopups();
 
 	/**
-	 * @return the statusBarProcess
+	 * @return the statuslineProcess
 	 */
-	IStatusbarProcessRidget getStatusBarProcessRidget();
+	IStatuslineProcessRidget getStatuslineProcessRidget();
 
 	/**
-	 * @return the statusBarNumer
+	 * @return the statuslineNumer
 	 */
-	IStatusbarNumberRidget getStatusBarNumberRidget();
+	IStatuslineNumberRidget getStatuslineNumberRidget();
 
 }

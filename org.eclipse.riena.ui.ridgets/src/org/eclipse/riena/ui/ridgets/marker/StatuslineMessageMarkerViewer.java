@@ -19,19 +19,19 @@ import java.util.Iterator;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
  * Visualizes certain types of message markers by displaying the message in the
- * statusbar.
+ * status line.
  */
-public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
+public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
-	private String statusbarMessage;
-	private String originalStatusbarMessage;
-	private IStatusbarRidget statusbar = null;
+	private String statuslineMessage;
+	private String originalStatuslineMessage;
+	private IStatuslineRidget statusline = null;
 
 	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
 	private IFocusListener ridgetFocusListener = new RidgetFocusListener();
@@ -50,11 +50,11 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	/**
-	 * @param statusbarRidget
-	 *            The statusbar.
+	 * @param statuslineridget
+	 *            The status line.
 	 */
-	public StatusbarMessageMarkerViewer(IStatusbarRidget statusbarRidget) {
-		this.statusbar = statusbarRidget;
+	public StatuslineMessageMarkerViewer(IStatuslineRidget statuslineRidget) {
+		this.statusline = statuslineRidget;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 			Severity severity = getMaxSeverity(messageMarker);
 			// show the message only if there is something to show
 			if (message.length() > 0 && isVisible()) {
-				setStatusbarMessage(message, severity);
+				setStatuslineMessage(message, severity);
 			} else {
 				hideMessages(markableRidget);
 			}
@@ -85,40 +85,40 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	@Override
 	protected void hideMessages(IMarkableRidget ridget) {
 		if (ridget.hasFocus()) {
-			resetStatusbarMessage();
+			resetStatuslineMessage();
 		}
 	}
 
-	private void setStatusbarMessage(String message, Severity severity) {
-		if (getStatusBar() != null) {
-			if (statusbarMessage == null) {
-				originalStatusbarMessage = getStatusBar().getMessage();
+	private void setStatuslineMessage(String message, Severity severity) {
+		if (getStatusLine() != null) {
+			if (statuslineMessage == null) {
+				originalStatuslineMessage = getStatusLine().getMessage();
 			}
 			switch (severity) {
 			case ERROR:
-				getStatusBar().error(message);
+				getStatusLine().error(message);
 				break;
 			case WARNING:
-				getStatusBar().warning(message);
+				getStatusLine().warning(message);
 				break;
 			case INFO:
-				getStatusBar().info(message);
+				getStatusLine().info(message);
 				break;
 			default:
-				getStatusBar().clear();
-				getStatusBar().setMessage(message);
+				getStatusLine().clear();
+				getStatusLine().setMessage(message);
 				break;
 			}
-			statusbarMessage = message;
+			statuslineMessage = message;
 		}
 	}
 
-	private void resetStatusbarMessage() {
-		if (getStatusBar() != null) {
-			if (statusbarMessage != null && statusbarMessage.equals(getStatusBar().getMessage())) {
-				this.getStatusBar().setMessage(originalStatusbarMessage);
+	private void resetStatuslineMessage() {
+		if (getStatusLine() != null) {
+			if (statuslineMessage != null && statuslineMessage.equals(getStatusLine().getMessage())) {
+				this.getStatusLine().setMessage(originalStatuslineMessage);
 			}
-			statusbarMessage = null;
+			statuslineMessage = null;
 		}
 	}
 
@@ -155,18 +155,18 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	}
 
-	IStatusbarRidget getStatusBar() {
-		// if ( statusbar == null ) {
+	IStatuslineRidget getStatusLine() {
+		// if ( statusline == null ) {
 		// IModuleApplicationController moduleApplicationController =
 		// subModuleController.getModuleApplicationController();
 		// if ( moduleApplicationController != null ) {
-		// statusbar = moduleApplicationController.getStatusBar();
-		// PostCondition.assertNotNull( "The statusbar to show messages in must
+		// statusline = moduleApplicationController.getStatusline();
+		// PostCondition.assertNotNull( "The statusline to show messages in must
 		// not be
-		// null!", statusbar );
+		// null!", statusline );
 		// }
 		// }
-		return statusbar;
+		return statusline;
 	}
 
 	private class MarkerPropertyChangeListener implements PropertyChangeListener {
@@ -199,7 +199,7 @@ public class StatusbarMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		 */
 		public void focusLost(FocusEvent event) {
 			if (event.getOldFocusOwner() instanceof IMarkableRidget) {
-				resetStatusbarMessage();
+				resetStatuslineMessage();
 			}
 		}
 

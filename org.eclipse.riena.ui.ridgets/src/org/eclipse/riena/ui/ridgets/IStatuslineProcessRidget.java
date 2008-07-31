@@ -13,9 +13,9 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 
 /**
- * Interface for the Adapter of the process component of the statusbar
+ * Interface for the Adapter of the process component of the status line
  */
-public interface IStatusbarProcessRidget extends IProgressVisualizerObserver, IRidget { // extends
+public interface IStatuslineProcessRidget extends IProgressVisualizerObserver, IRidget { // extends
 	// IProcessInfoViewer,
 	// ICompositePopupAdapter {
 	//
@@ -27,7 +27,7 @@ public interface IStatusbarProcessRidget extends IProgressVisualizerObserver, IR
 	// String MODE_STATIC = "ShowStaticProgress";
 	//
 	// /**
-	// * The default name of this statusbar component
+	// * The default name of this statusline component
 	// */
 	// String NAME = "process";
 	//

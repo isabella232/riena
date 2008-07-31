@@ -66,8 +66,8 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				parent.addChild(newNode);
 				String text = "Sub-Module was added!";
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatusbarRidget().setMessage(text);
-				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().setMessage(text);
+				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -78,8 +78,8 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				getNavigationNode().addChild(newNode);
 				String text = "Sub-Module was added!";
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatusbarRidget().info(text);
-				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().info(text);
+				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -90,8 +90,8 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				parent.addChild(createModuleNode());
 				String text = "Module was added!";
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatusbarRidget().warning(text);
-				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().warning(text);
+				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -102,8 +102,8 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				parent.addChild(createModuleGroupNode());
 				String text = "Module-Group was added!";
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatusbarRidget().error(text);
-				subAppController.getStatusbarRidget().getStatusBarNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().error(text);
+				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
 			}
 		});
 

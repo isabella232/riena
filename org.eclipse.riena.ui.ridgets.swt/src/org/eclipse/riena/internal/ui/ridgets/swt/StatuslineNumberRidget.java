@@ -10,34 +10,34 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.riena.ui.ridgets.IStatusbarNumberRidget;
-import org.eclipse.riena.ui.swt.StatusbarNumber;
+import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
+import org.eclipse.riena.ui.swt.StatuslineNumber;
 
 /**
- * Ridget for composite of the status bar to display a number (
- * {@link StatusbarNumber}).
+ * Ridget for composite of the status line to display a number (
+ * {@link StatuslineNumber}).
  */
-public class StatusbarNumberRidget extends AbstractSWTRidget implements IStatusbarNumberRidget {
+public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatuslineNumberRidget {
 
 	private Integer number;
 	private String numberString;
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatusbarNumberRidget#getNumber()
+	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#getNumber()
 	 */
 	public Integer getNumber() {
 		return number;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatusbarNumberRidget#getNumberString()
+	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#getNumberString()
 	 */
 	public String getNumberString() {
 		return numberString;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatusbarNumberRidget#setNumber(java.lang
+	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#setNumber(java.lang
 	 *      .Integer)
 	 */
 	public void setNumber(Integer number) {
@@ -53,7 +53,7 @@ public class StatusbarNumberRidget extends AbstractSWTRidget implements IStatusb
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IStatusbarNumberRidget#setNumberString(java
+	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#setNumberString(java
 	 *      .lang.String)
 	 */
 	public void setNumberString(String numberStrg) {
@@ -72,8 +72,8 @@ public class StatusbarNumberRidget extends AbstractSWTRidget implements IStatusb
 	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#getUIControl()
 	 */
 	@Override
-	public StatusbarNumber getUIControl() {
-		return (StatusbarNumber) super.getUIControl();
+	public StatuslineNumber getUIControl() {
+		return (StatuslineNumber) super.getUIControl();
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class StatusbarNumberRidget extends AbstractSWTRidget implements IStatusb
 	 */
 	@Override
 	protected void checkUIControl(Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, StatusbarNumber.class);
+		AbstractSWTRidget.assertType(uiControl, StatuslineNumber.class);
 	}
 
 	/**

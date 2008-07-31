@@ -16,9 +16,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Composite of the status bar.
+ * Composite of the status line.
  */
-public abstract class AbstractStatusbarComposite extends Composite {
+public abstract class AbstractStatuslineComposite extends Composite {
 
 	private static final int LEFT_RIGHT_MARGIN = 5;
 	private static final int TOP_BOTTOM_MARGIN = 5;
@@ -27,15 +27,15 @@ public abstract class AbstractStatusbarComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public AbstractStatusbarComposite(Composite parent, int style) {
+	public AbstractStatuslineComposite(Composite parent, int style) {
 		super(parent, style);
-		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 		setContentsLayout();
 		createContents();
 	}
 
 	/**
-	 * Creates the contents of a composite of the status bar.
+	 * Creates the contents of a composite of the status line.
 	 */
 	protected abstract void createContents();
 

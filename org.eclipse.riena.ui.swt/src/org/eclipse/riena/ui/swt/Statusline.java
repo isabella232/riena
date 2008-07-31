@@ -27,17 +27,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * Status bar (status line)
+ * Status line.
  */
-public class Statusbar extends Composite implements IComplexComponent {
+public class Statusline extends Composite implements IComplexComponent {
 
-	private final static String NUMBER_NAME = "statusBarNumberRidget"; //$NON-NLS-1$
+	private final static String NUMBER_NAME = "statuslineNumberRidget"; //$NON-NLS-1$
 	private List<Object> uiControls;
-	private StatusbarMessage message;
+	private StatuslineMessage message;
 	private Class<? extends Control> spacer;
 
 	/**
-	 * Creates a new instance of <code>Statusbar</code>.
+	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
 	 *            - a widget which will be the parent of the new instance
@@ -45,12 +45,12 @@ public class Statusbar extends Composite implements IComplexComponent {
 	 * @param style
 	 *            - the style of widget to construct
 	 */
-	public Statusbar(Composite parent, int style) {
+	public Statusline(Composite parent, int style) {
 		super(parent, style | SWT.NO_SCROLL);
 	}
 
 	/**
-	 * Creates a new instance of <code>Statusbar</code>.
+	 * Creates a new instance of <code>Statusline</code>.
 	 * 
 	 * @param parent
 	 *            - a widget which will be the parent of the new instance
@@ -60,29 +60,29 @@ public class Statusbar extends Composite implements IComplexComponent {
 	 * @param pSpacer
 	 *            - class to create spacer
 	 */
-	public Statusbar(Composite parent, int style, Class<? extends Control> pSpacer) {
+	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer) {
 		super(parent, style | SWT.NO_SCROLL);
 		spacer = pSpacer;
 		init();
 	}
 
 	/**
-	 * Initializes the statusbar.
+	 * Initializes the status line.
 	 */
 	private void init() {
-		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 		uiControls = new ArrayList<Object>();
 		createContents();
 	}
 
 	/**
-	 * Creates the contents of the status bar.
+	 * Creates the contents of the status line.
 	 */
 	protected void createContents() {
 
 		setLayout(new FormLayout());
 
-		StatusbarTime time = new StatusbarTime(this, SWT.NONE);
+		StatuslineTime time = new StatuslineTime(this, SWT.NONE);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -100,7 +100,7 @@ public class Statusbar extends Composite implements IComplexComponent {
 			lastControl = spacerControl;
 		}
 
-		StatusbarDate date = new StatusbarDate(this, SWT.NONE);
+		StatuslineDate date = new StatuslineDate(this, SWT.NONE);
 		formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -118,7 +118,7 @@ public class Statusbar extends Composite implements IComplexComponent {
 			lastControl = spacerControl;
 		}
 
-		StatusbarNumber number = new StatusbarNumber(this, SWT.NONE);
+		StatuslineNumber number = new StatuslineNumber(this, SWT.NONE);
 		addUIControl(number, NUMBER_NAME);
 		formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
@@ -137,7 +137,7 @@ public class Statusbar extends Composite implements IComplexComponent {
 			lastControl = spacerControl;
 		}
 
-		message = new StatusbarMessage(this, SWT.NONE);
+		message = new StatuslineMessage(this, SWT.NONE);
 		formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -199,7 +199,7 @@ public class Statusbar extends Composite implements IComplexComponent {
 	/**
 	 * @return Returns the message.
 	 */
-	public final StatusbarMessage getMessageComposite() {
+	public final StatuslineMessage getMessageComposite() {
 		return message;
 	}
 

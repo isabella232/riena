@@ -17,10 +17,10 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
-import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValidationTime;
-import org.eclipse.riena.ui.ridgets.marker.StatusbarMessageMarkerViewer;
+import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.marker.TooltipMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
@@ -225,6 +225,7 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		this.lblRequiredLowercase = lblRequiredLowercase;
 	}
 
+	@Override
 	public void afterBind() {
 		super.afterBind();
 		initRidgets();
@@ -289,14 +290,15 @@ public class ValidationViewController extends SubModuleNodeViewController {
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
 
-		IStatusbarRidget statusbarRidget = getSubApplicationController().getStatusbarRidget();
-		StatusbarMessageMarkerViewer statusbarMessageMarkerViewer = new StatusbarMessageMarkerViewer(statusbarRidget);
-		statusbarMessageMarkerViewer.addRidget(txtNumbersOnly);
-		statusbarMessageMarkerViewer.addRidget(txtNumbersOnlyDW);
-		statusbarMessageMarkerViewer.addRidget(txtCharactersOnly);
-		statusbarMessageMarkerViewer.addRidget(txtExpression);
-		statusbarMessageMarkerViewer.addRidget(txtLengthLessThan5);
-		statusbarMessageMarkerViewer.addRidget(txtRequiredLowercase);
+		IStatuslineRidget statuslineRidget = getSubApplicationController().getStatuslineRidget();
+		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
+				statuslineRidget);
+		statuslineMessageMarkerViewer.addRidget(txtNumbersOnly);
+		statuslineMessageMarkerViewer.addRidget(txtNumbersOnlyDW);
+		statuslineMessageMarkerViewer.addRidget(txtCharactersOnly);
+		statuslineMessageMarkerViewer.addRidget(txtExpression);
+		statuslineMessageMarkerViewer.addRidget(txtLengthLessThan5);
+		statuslineMessageMarkerViewer.addRidget(txtRequiredLowercase);
 
 		TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 		tooltipMessageMarkerViewer.addRidget(txtNumbersOnly);

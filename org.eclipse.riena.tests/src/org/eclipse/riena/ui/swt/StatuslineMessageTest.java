@@ -19,12 +19,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tests of the class {@link StatusbarMessage}.
+ * Tests of the class {@link StatuslineMessage}.
  */
-public class StatusbarMessageTest extends TestCase {
+public class StatuslineMessageTest extends TestCase {
 
 	private Shell shell;
-	private StatusbarMessage statusMessage;
+	private StatuslineMessage statusMessage;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -32,7 +32,7 @@ public class StatusbarMessageTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		shell = new Shell();
-		statusMessage = new StatusbarMessage(shell, SWT.NONE);
+		statusMessage = new StatuslineMessage(shell, SWT.NONE);
 	}
 
 	/**

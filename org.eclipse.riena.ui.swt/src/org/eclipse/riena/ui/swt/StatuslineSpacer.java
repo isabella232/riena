@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Spacer or separator between the composites of the status bar.
+ * Spacer or separator between the composites of the status line.
  */
-public class StatusbarSpacer extends AbstractStatusbarComposite {
+public class StatuslineSpacer extends AbstractStatuslineComposite {
 
 	private static final int TOP_BOTTOM_MARGIN = 3;
 
@@ -30,19 +30,19 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	 * @param parent
 	 * @param style
 	 */
-	public StatusbarSpacer(Composite parent, int style) {
+	public StatuslineSpacer(Composite parent, int style) {
 		super(parent, style | SWT.NO_FOCUS);
 
 	}
 
 	/**
-	 * Creates the contents of spacer composite of the status bar.
+	 * Creates the contents of spacer composite of the status line.
 	 */
 	@Override
 	protected void createContents() {
 
 		separator = new Label(this, SWT.SEPARATOR | SWT.VERTICAL);
-		separator.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		separator.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#getBottomMargin()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#getBottomMargin()
 	 */
 	@Override
 	protected int getBottomMargin() {
@@ -66,7 +66,7 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#getTopMargin()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#getTopMargin()
 	 */
 	@Override
 	protected int getTopMargin() {
@@ -74,7 +74,7 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#getRightMargin()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#getRightMargin()
 	 */
 	@Override
 	protected int getRightMargin() {
@@ -82,7 +82,7 @@ public class StatusbarSpacer extends AbstractStatusbarComposite {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#getLeftMargin()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#getLeftMargin()
 	 */
 	@Override
 	protected int getLeftMargin() {

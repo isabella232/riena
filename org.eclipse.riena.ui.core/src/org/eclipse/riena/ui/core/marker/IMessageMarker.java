@@ -17,7 +17,7 @@ import org.eclipse.riena.core.marker.IMarker;
  * the UI widget bound to the Ridget to which it the marker is added the message
  * can be displayed by some other part of the UI. An example is a descriptive
  * message about a textfield which is marked as error or as mandatory that is
- * shown in the statusbar when the textfield is focused.
+ * shown in the status line when the textfield is focused.
  */
 public interface IMessageMarker extends IMarker {
 

@@ -28,7 +28,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAc
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
-import org.eclipse.riena.ui.swt.Statusbar;
+import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -114,7 +114,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private static final int NAVIGATION_SUB_MODULE_GAP = 10;
 	/**
-	 * The height of the status bar
+	 * The height of the status line
 	 */
 	private static final int STATUSLINE_HIGHT = 22;
 
@@ -431,22 +431,22 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	/**
 	 * Make a depth-first-search starting with parent and return the first
-	 * Statusbar widget found.
+	 * Status line widget found.
 	 * 
 	 * @throws RuntimeException
-	 *             if no Statusbar was found
+	 *             if no Status line was found
 	 */
-	private Statusbar getStatusLineWidget(Control parent) {
+	private Statusline getStatuslineWidget(Control parent) {
 
-		if (parent instanceof Statusbar) {
-			return (Statusbar) parent;
+		if (parent instanceof Statusline) {
+			return (Statusline) parent;
 		} else if (parent instanceof Composite) {
 			Control[] children = ((Composite) parent).getChildren();
 			for (int i = 0; i < children.length; i++) {
-				return getStatusLineWidget(children[i]);
+				return getStatuslineWidget(children[i]);
 			}
 		}
-		throw new IllegalStateException("could not find Statubar widget"); //$NON-NLS-1$
+		throw new IllegalStateException("could not find Status line widget"); //$NON-NLS-1$
 	}
 
 	private void initializeStatusLine() {
@@ -454,7 +454,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (controller != null) {
 			DefaultBindingManager defaultBindingManager = createBindingManager();
 			List<Object> uiControls = new ArrayList<Object>(1);
-			uiControls.add(getStatusLineWidget(statusLine.getControl()));
+			uiControls.add(getStatuslineWidget(statusLine.getControl()));
 			defaultBindingManager.injectRidgets(controller, uiControls);
 			defaultBindingManager.bind(controller, uiControls);
 		}

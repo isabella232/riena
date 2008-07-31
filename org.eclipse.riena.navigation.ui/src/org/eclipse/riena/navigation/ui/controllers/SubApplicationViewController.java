@@ -28,7 +28,7 @@ import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter;
 import org.eclipse.riena.ui.ridgets.IProgressBoxRidget;
-import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 
 /**
  * Implements the Controller for a Module Sub Application
@@ -42,7 +42,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 	private IModuleNodeListener moduleNodeListener;
 	private IModuleGroupNodeListener moduleGroupNodeListener;
 	private NavigationTreeObserver navigationTreeObserver;
-	private IStatusbarRidget statusbarRidget;
+	private IStatuslineRidget statuslineRidget;
 	private IProgressBoxRidget progressBoxRidget;
 
 	/**
@@ -132,8 +132,8 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		@Override
 		public void afterDeactivated(ISubApplicationNode source) {
 			super.afterDeactivated(source);
-			if (getStatusbarRidget() != null) {
-				getStatusbarRidget().hidePopups();
+			if (getStatuslineRidget() != null) {
+				getStatuslineRidget().hidePopups();
 			}
 			if (getProgressBoxRidget() != null) {
 				getProgressBoxRidget().deactivate();
@@ -200,18 +200,18 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 	}
 
 	/**
-	 * @return the statusbarRidget
+	 * @return the statuslineRidget
 	 */
-	public IStatusbarRidget getStatusbarRidget() {
-		return statusbarRidget;
+	public IStatuslineRidget getStatuslineRidget() {
+		return statuslineRidget;
 	}
 
 	/**
-	 * @param statusbarRidget
-	 *            the statusbarRidget to set
+	 * @param statuslineRidget
+	 *            the statuslineRidget to set
 	 */
-	public void setStatusbarRidget(IStatusbarRidget statusbarRidget) {
-		this.statusbarRidget = statusbarRidget;
+	public void setStatuslineRidget(IStatuslineRidget statuslineRidget) {
+		this.statuslineRidget = statuslineRidget;
 	}
 
 	/**

@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Represents a label of the status bar that displays the current time.
+ * Represents a label of the status line that displays the current time.
  */
-public class StatusbarTime extends AbstractStatusbarComposite {
+public class StatuslineTime extends AbstractStatuslineComposite {
 
 	protected SimpleDateFormat format;
 	private Date date;
@@ -33,7 +33,7 @@ public class StatusbarTime extends AbstractStatusbarComposite {
 	private Timer timer;
 
 	/**
-	 * Creates a new instance of <code>StatusbarTime</code>.
+	 * Creates a new instance of <code>StatuslineTime</code>.
 	 * 
 	 * @param parent
 	 *            - a widget which will be the parent of the new instance
@@ -41,23 +41,23 @@ public class StatusbarTime extends AbstractStatusbarComposite {
 	 * @param style
 	 *            - the style of widget to construct
 	 */
-	public StatusbarTime(Composite parent, int style) {
+	public StatuslineTime(Composite parent, int style) {
 
 		super(parent, style | SWT.NO_FOCUS);
 		timer = new Timer();
-		StatusbarUpdateTask task = new StatusbarUpdateTask();
+		StatuslineUpdateTask task = new StatuslineUpdateTask();
 		timer.scheduleAtFixedRate(task, 0, 1000);
 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#createContents()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#createContents()
 	 */
 	@Override
 	protected void createContents() {
 
 		timeLabel = new Label(this, SWT.LEFT);
-		timeLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		timeLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 		updateTime();
 
 	}
@@ -112,7 +112,7 @@ public class StatusbarTime extends AbstractStatusbarComposite {
 	/**
 	 * This task updates the time.
 	 */
-	private class StatusbarUpdateTask extends TimerTask {
+	private class StatuslineUpdateTask extends TimerTask {
 
 		/**
 		 * @see java.util.TimerTask#run()

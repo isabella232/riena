@@ -11,8 +11,8 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IStatusbarNumberRidget;
-import org.eclipse.riena.ui.swt.StatusbarNumber;
+import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
+import org.eclipse.riena.ui.swt.StatuslineNumber;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Label;
 /**
  *
  */
-public class StatusbarNumberRidgetTest extends AbstractSWTRidgetTest {
+public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 
 	/*
 	 * (non-Javadoc)
@@ -46,7 +46,7 @@ public class StatusbarNumberRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	@Override
 	protected IRidget createRidget() {
-		return new StatusbarNumberRidget();
+		return new StatuslineNumberRidget();
 	}
 
 	/**
@@ -54,33 +54,33 @@ public class StatusbarNumberRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	@Override
 	protected Control createUIControl(Composite parent) {
-		return new StatusbarNumber(parent, SWT.NONE);
+		return new StatuslineNumber(parent, SWT.NONE);
 	}
 
 	/**
 	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#getRidget()
 	 */
 	@Override
-	protected IStatusbarNumberRidget getRidget() {
-		return (IStatusbarNumberRidget) super.getRidget();
+	protected IStatuslineNumberRidget getRidget() {
+		return (IStatuslineNumberRidget) super.getRidget();
 	}
 
 	/**
 	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#getUIControl()
 	 */
 	@Override
-	protected StatusbarNumber getUIControl() {
-		return (StatusbarNumber) super.getUIControl();
+	protected StatuslineNumber getUIControl() {
+		return (StatuslineNumber) super.getUIControl();
 	}
 
 	/**
-	 * Returns the label of {@code StatusbarNumber}.
+	 * Returns the label of {@code StatuslineNumber}.
 	 * 
 	 * @return label
 	 */
 	private Label getLabel() {
-		StatusbarNumber statusbarNumber = getUIControl();
-		Control[] controls = statusbarNumber.getChildren();
+		StatuslineNumber statuslineNumber = getUIControl();
+		Control[] controls = statuslineNumber.getChildren();
 		return (Label) controls[0];
 	}
 

@@ -19,16 +19,16 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Represents a label of the status bar that displays a message.
+ * Represents a label of the status line that displays a message.
  */
-public class StatusbarMessage extends AbstractStatusbarComposite {
+public class StatuslineMessage extends AbstractStatuslineComposite {
 
 	private static final int TOP_MARGIN = 3;
 
 	private CLabel messageLabel;
 
 	/**
-	 * Creates a new instance of <code>StatusbarMessage</code>.
+	 * Creates a new instance of <code>StatuslineMessage</code>.
 	 * 
 	 * @param parent
 	 *            - a widget which will be the parent of the new instance
@@ -36,12 +36,12 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 	 * @param style
 	 *            - the style of widget to construct
 	 */
-	public StatusbarMessage(Composite parent, int style) {
+	public StatuslineMessage(Composite parent, int style) {
 		super(parent, style | SWT.NO_FOCUS);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#createContents()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#createContents()
 	 */
 	@Override
 	protected void createContents() {
@@ -49,7 +49,7 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 		messageLabel = new CLabel(this, SWT.LEFT);
 		messageLabel.setText(" "); //$NON-NLS-1$
 		messageLabel.setImage(getPlaceholderImage());
-		messageLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		messageLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 
 	}
 
@@ -92,11 +92,11 @@ public class StatusbarMessage extends AbstractStatusbarComposite {
 	 * @return image
 	 */
 	private Image getPlaceholderImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSBAR_SPACER_ICON);
+		return LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSLINE_SPACER_ICON);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#getTopMargin()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#getTopMargin()
 	 */
 	@Override
 	protected int getTopMargin() {

@@ -42,9 +42,9 @@ public class VisualizerFactory implements IUICallbackDispatcherFactory {
 				for (ISubApplicationNode aSubApplicationNode : getSubApplications()) {
 					if (aSubApplicationNode.getPresentation() != null
 							&& ((SubApplicationViewController) aSubApplicationNode.getPresentation())
-									.getStatusbarRidget() != null) {
+									.getStatuslineRidget() != null) {
 						aVisualizer.addObserver(((SubApplicationViewController) aSubApplicationNode.getPresentation())
-								.getStatusbarRidget().getStatusBarProcessRidget());
+								.getStatuslineRidget().getStatuslineProcessRidget());
 					}
 				}
 			}

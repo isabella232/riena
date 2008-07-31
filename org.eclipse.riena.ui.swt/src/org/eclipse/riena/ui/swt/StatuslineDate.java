@@ -15,12 +15,12 @@ import java.text.SimpleDateFormat;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Represents a label of the status bar that displays the current date.
+ * Represents a label of the status line that displays the current date.
  */
-public class StatusbarDate extends StatusbarTime {
+public class StatuslineDate extends StatuslineTime {
 
 	/**
-	 * Creates a new instance of <code>StatusbarDate</code>.
+	 * Creates a new instance of <code>StatuslineDate</code>.
 	 * 
 	 * @param parent
 	 *            - a widget which will be the parent of the new instance
@@ -28,7 +28,7 @@ public class StatusbarDate extends StatusbarTime {
 	 * @param style
 	 *            - the style of widget to construct
 	 */
-	public StatusbarDate(Composite parent, int style) {
+	public StatuslineDate(Composite parent, int style) {
 		super(parent, style);
 	}
 

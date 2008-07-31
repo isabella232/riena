@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAc
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
-import org.eclipse.riena.ui.swt.Statusbar;
+import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -105,7 +105,7 @@ public class TitlelessStackPresentationOrg extends StackPresentation {
 	 */
 	private static final int NAVIGATION_SUB_MODULE_GAP = 10;
 	/**
-	 * The height of the status bar
+	 * The height of the status line
 	 */
 	private static final int STATUSLINE_HIGHT = 22;
 
@@ -263,10 +263,10 @@ public class TitlelessStackPresentationOrg extends StackPresentation {
 		updateBounds();
 	}
 
-	private Statusbar getStatusLineWidget(Control parent) {
+	private Statusline getStatusLineWidget(Control parent) {
 
-		if (parent instanceof Statusbar) {
-			return (Statusbar) parent;
+		if (parent instanceof Statusline) {
+			return (Statusline) parent;
 		} else {
 			if (parent instanceof Composite) {
 				Control[] children = ((Composite) parent).getChildren();

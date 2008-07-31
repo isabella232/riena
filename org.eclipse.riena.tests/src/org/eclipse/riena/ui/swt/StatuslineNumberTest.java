@@ -10,15 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import junit.framework.TestCase;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
@@ -26,12 +19,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tests of the class {@link StatusbarTime}.
+ * Tests of the class {@link StatuslineNumber}.
  */
-public class StatusbarTimeTest extends TestCase {
+public class StatuslineNumberTest extends TestCase {
 
 	private Shell shell;
-	private StatusbarTime statusTime;
+	private StatuslineNumber statusNumber;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -39,7 +32,7 @@ public class StatusbarTimeTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		shell = new Shell();
-		statusTime = new StatusbarTime(shell, SWT.NONE);
+		statusNumber = new StatuslineNumber(shell, SWT.NONE);
 	}
 
 	/**
@@ -48,7 +41,7 @@ public class StatusbarTimeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(statusTime);
+		SwtUtilities.disposeWidget(statusNumber);
 	}
 
 	/**
@@ -57,39 +50,49 @@ public class StatusbarTimeTest extends TestCase {
 	 */
 	public void testCreateContents() {
 
-		Control[] controls = statusTime.getChildren();
+		Control[] controls = statusNumber.getChildren();
 		assertEquals(1, controls.length);
 		assertTrue(controls[0] instanceof Label);
+		Label label = (Label) controls[0];
+		assertEquals("0000000", label.getText());
 
 	}
 
 	/**
-	 * Tests the method {@code updateTime()}.
-	 * 
-	 * @throws ParseException
+	 * Tests the method {@code setNumber(String)}.
 	 */
-	public void testUpdateTime() throws ParseException {
+	public void testSetNumberString() {
 
-		Date dateBeforeUpdate = new Date();
-		Calendar cal1 = GregorianCalendar.getInstance();
-		cal1.setTime(dateBeforeUpdate);
-		cal1.set(0, 0, 0);
-		cal1.set(Calendar.SECOND, 0);
+		statusNumber.setNumber("4711-a");
 
-		ReflectionUtils.invokeHidden(statusTime, "updateTime");
-		Control[] controls = statusTime.getChildren();
+		Control[] controls = statusNumber.getChildren();
 		Label label = (Label) controls[0];
-		String timeString = label.getText();
+		assertEquals("4711-a", label.getText());
 
-		SimpleDateFormat format = ReflectionUtils.invokeHidden(statusTime, "getFormat");
-		Date labelDate = format.parse(timeString);
-		Calendar cal2 = GregorianCalendar.getInstance();
-		cal2.setTime(labelDate);
-		cal2.set(0, 0, 0);
+		statusNumber.setNumber(null);
 
-		long diff = cal1.getTimeInMillis() - cal2.getTimeInMillis();
-		assertTrue(diff >= 0);
-		assertTrue(diff < 1000);
+		assertEquals("", label.getText());
+
+	}
+
+	/**
+	 * Tests the method {@code setNumber(int)}.
+	 */
+	public void testSetNumberInt() {
+
+		statusNumber.setNumber(12);
+
+		Control[] controls = statusNumber.getChildren();
+		Label label = (Label) controls[0];
+		assertEquals("0000012", label.getText());
+
+		statusNumber.setNumber(0);
+
+		assertEquals("", label.getText());
+
+		statusNumber.setNumber(12345678);
+
+		assertEquals("12345678", label.getText());
 
 	}
 

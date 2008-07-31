@@ -58,9 +58,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_GRAB = PATH_ICONS + PATH_SEPARATOR + "grab.png"; //$NON-NLS-1$
 	private static final String IMAGE_GRAB_CORNER = PATH_ICONS + PATH_SEPARATOR + "grabCorner.png"; //$NON-NLS-1$
 	private static final String IMAGE_SPACER = PATH_ICONS + PATH_SEPARATOR + "spacer.png"; //$NON-NLS-1$
-	private static final String IMAGE_ERROR = PATH_ICONS + PATH_SEPARATOR + "statusbar_error.gif"; //$NON-NLS-1$
-	private static final String IMAGE_WARNING = PATH_ICONS + PATH_SEPARATOR + "statusbar_warning.gif"; //$NON-NLS-1$
-	private static final String IMAGE_INFO = PATH_ICONS + PATH_SEPARATOR + "statusbar_info.gif"; //$NON-NLS-1$
+	private static final String IMAGE_ERROR = PATH_ICONS + PATH_SEPARATOR + "statusline_error.gif"; //$NON-NLS-1$
+	private static final String IMAGE_WARNING = PATH_ICONS + PATH_SEPARATOR + "statusline_warning.gif"; //$NON-NLS-1$
+	private static final String IMAGE_INFO = PATH_ICONS + PATH_SEPARATOR + "statusline_info.gif"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
@@ -130,7 +130,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_SELECTION_COLOR, new ColorLnfResource(249, 223, 146));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOCUS_COLOR, new ColorLnfResource(166, 202, 240));
 
-		table.put(ILnfKeyConstants.STATUSBAR_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.STATUSLINE_BACKGROUND, getPrimaryBackground());
 
 		table.put(ILnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
 
@@ -204,10 +204,10 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
 
-		table.put(ILnfKeyConstants.STATUSBAR_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
-		table.put(ILnfKeyConstants.STATUSBAR_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
-		table.put(ILnfKeyConstants.STATUSBAR_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
-		table.put(ILnfKeyConstants.STATUSBAR_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
+		table.put(ILnfKeyConstants.STATUSLINE_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
+		table.put(ILnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
+		table.put(ILnfKeyConstants.STATUSLINE_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
+		table.put(ILnfKeyConstants.STATUSLINE_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
 
 	}
 

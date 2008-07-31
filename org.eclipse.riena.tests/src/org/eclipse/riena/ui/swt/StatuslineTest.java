@@ -23,12 +23,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tests of the class {@link Statusbar}.
+ * Tests of the class {@link Statusline}.
  */
-public class StatusbarTest extends TestCase {
+public class StatuslineTest extends TestCase {
 
 	private Shell shell;
-	private Statusbar statusbar;
+	private Statusline statusline;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -36,7 +36,7 @@ public class StatusbarTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		shell = new Shell();
-		statusbar = new Statusbar(shell, SWT.NONE, StatusbarSpacer.class);
+		statusline = new Statusline(shell, SWT.NONE, StatuslineSpacer.class);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class StatusbarTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(statusbar);
+		SwtUtilities.disposeWidget(statusline);
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class StatusbarTest extends TestCase {
 
 		Label label = new Label(shell, SWT.NONE);
 
-		ReflectionUtils.invokeHidden(statusbar, "addUIControl", label, "labelName");
-		List<Object> controls = statusbar.getUIControls();
+		ReflectionUtils.invokeHidden(statusline, "addUIControl", label, "labelName");
+		List<Object> controls = statusline.getUIControls();
 		assertNotNull(controls);
 		assertFalse(controls.isEmpty());
 		Label labelOfList = (Label) controls.get(controls.size() - 1);
@@ -72,9 +72,9 @@ public class StatusbarTest extends TestCase {
 	 */
 	public void testCreateSpacer() {
 
-		Control spacer = ReflectionUtils.invokeHidden(statusbar, "createSpacer", shell);
+		Control spacer = ReflectionUtils.invokeHidden(statusline, "createSpacer", shell);
 		assertNotNull(spacer);
-		assertTrue(spacer instanceof StatusbarSpacer);
+		assertTrue(spacer instanceof StatuslineSpacer);
 		assertSame(shell, spacer.getParent());
 
 	}
@@ -85,24 +85,24 @@ public class StatusbarTest extends TestCase {
 	 */
 	public void testCreateContents() {
 
-		Control[] controls = statusbar.getChildren();
+		Control[] controls = statusline.getChildren();
 		boolean time = false;
 		boolean date = false;
 		boolean number = false;
 		for (int i = 0; i < controls.length; i++) {
-			if (controls[i].getClass() == StatusbarTime.class) {
+			if (controls[i].getClass() == StatuslineTime.class) {
 				if (time) {
 					fail("More than of time control!");
 				}
 				time = true;
 			}
-			if (controls[i].getClass() == StatusbarDate.class) {
+			if (controls[i].getClass() == StatuslineDate.class) {
 				if (date) {
 					fail("More than of date control!");
 				}
 				date = true;
 			}
-			if (controls[i].getClass() == StatusbarNumber.class) {
+			if (controls[i].getClass() == StatuslineNumber.class) {
 				if (number) {
 					fail("More than of number control!");
 				}
@@ -112,18 +112,18 @@ public class StatusbarTest extends TestCase {
 		assertTrue(time);
 		assertTrue(date);
 		assertTrue(number);
-		assertNotNull(statusbar.getMessageComposite());
+		assertNotNull(statusline.getMessageComposite());
 
 		number = false;
-		List<Object> uicontrols = statusbar.getUIControls();
+		List<Object> uicontrols = statusline.getUIControls();
 		for (Object uiControl : uicontrols) {
-			if (uiControl.getClass() == StatusbarNumber.class) {
+			if (uiControl.getClass() == StatuslineNumber.class) {
 				if (number) {
 					fail("More than of number UI-control!");
 				}
 				number = true;
-				StatusbarNumber statusbarNumber = (StatusbarNumber) uiControl;
-				assertEquals("statusBarNumberRidget", statusbarNumber
+				StatuslineNumber statuslineNumber = (StatuslineNumber) uiControl;
+				assertEquals("statuslineNumberRidget", statuslineNumber
 						.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 			}
 		}

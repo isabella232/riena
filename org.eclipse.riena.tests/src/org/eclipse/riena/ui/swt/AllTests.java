@@ -23,10 +23,10 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(StatusbarTest.class);
-		suite.addTestSuite(StatusbarTimeTest.class);
-		suite.addTestSuite(StatusbarMessageTest.class);
-		suite.addTestSuite(StatusbarNumberTest.class);
+		suite.addTestSuite(StatuslineTest.class);
+		suite.addTestSuite(StatuslineTimeTest.class);
+		suite.addTestSuite(StatuslineMessageTest.class);
+		suite.addTestSuite(StatuslineNumberTest.class);
 		return suite;
 	}
 

@@ -11,9 +11,9 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Interface for the Adapter of the number component of the statusbar
+ * Interface for the Adapter of the number component of the status line
  */
-public interface IStatusbarNumberRidget extends IRidget {
+public interface IStatuslineNumberRidget extends IRidget {
 	/**
 	 * @return Returns the number.
 	 */
@@ -30,21 +30,21 @@ public interface IStatusbarNumberRidget extends IRidget {
 	void setNumber(Integer number);
 
 	/**
-	 * Returns the string, that will be display in the status bar at the
+	 * Returns the string, that will be display in the status line at the
 	 * position of the number.
 	 * 
-	 * @return string in the status bar at the position of the number
+	 * @return string in the status line at the position of the number
 	 */
 	String getNumberString();
 
 	/**
-	 * Sets the string, that will be display in the status bar at the position
+	 * Sets the string, that will be display in the status line at the position
 	 * of the number. <b>Note: </b> If you set the number string, the number is
 	 * set 0
 	 * 
-	 * @param numberStrg -
-	 *            the string to displayed in the status bar; null removes the
-	 *            number string from the status bar
+	 * @param numberStrg
+	 *            - the string to displayed in the status line; null removes the
+	 *            number string from the status line
 	 * @see #setNumber(int)
 	 */
 	void setNumberString(String numberStrg);

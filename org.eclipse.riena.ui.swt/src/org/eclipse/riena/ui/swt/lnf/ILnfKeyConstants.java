@@ -67,7 +67,7 @@ public class ILnfKeyConstants {
 	public static final String SUB_MODULE_TREE_ITEM_SELECTION_COLOR = "subModuleTreeItem.selectionColor"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_ITEM_FOCUS_COLOR = "subModuleTreeItem.focusColor"; //$NON-NLS-1$
 
-	public static final String STATUSBAR_BACKGROUND = "statusbar.background"; //$NON-NLS-1$
+	public static final String STATUSLINE_BACKGROUND = "statusline.background"; //$NON-NLS-1$
 
 	public static final String GRAB_CORNER_BACKGROUND = "grabCorner.background"; //$NON-NLS-1$
 
@@ -115,10 +115,10 @@ public class ILnfKeyConstants {
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 
-	public static final String STATUSBAR_SPACER_ICON = "Statusbar.spacerIcon"; //$NON-NLS-1$
-	public static final String STATUSBAR_ERROR_ICON = "Statusbar.errorIcon"; //$NON-NLS-1$
-	public static final String STATUSBAR_INFO_ICON = "Statusbar.infoIcon"; //$NON-NLS-1$
-	public static final String STATUSBAR_WARNING_ICON = "Statusbar.warningIcon"; //$NON-NLS-1$
+	public static final String STATUSLINE_SPACER_ICON = "statusline.spacerIcon"; //$NON-NLS-1$
+	public static final String STATUSLINE_ERROR_ICON = "statusline.errorIcon"; //$NON-NLS-1$
+	public static final String STATUSLINE_INFO_ICON = "statusline.infoIcon"; //$NON-NLS-1$
+	public static final String STATUSLINE_WARNING_ICON = "statusline.warningIcon"; //$NON-NLS-1$
 
 	/**
 	 * Setting keys

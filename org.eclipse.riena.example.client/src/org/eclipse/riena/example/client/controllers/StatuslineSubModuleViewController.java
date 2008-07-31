@@ -20,7 +20,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
-import org.eclipse.riena.ui.ridgets.IStatusbarRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
 /**
@@ -150,8 +150,8 @@ public class StatuslineSubModuleViewController extends SubModuleNodeViewControll
 		this.showMessage = showMessage;
 	}
 
-	private IStatusbarRidget getStatusBar() {
-		return getSubApplicationController().getStatusbarRidget();
+	private IStatuslineRidget getStatusLine() {
+		return getSubApplicationController().getStatuslineRidget();
 	}
 
 	/**
@@ -221,19 +221,19 @@ public class StatuslineSubModuleViewController extends SubModuleNodeViewControll
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getStatusBar().clear();
+			getStatusLine().clear();
 			switch (getModel().getSeverity()) {
 			case INFO:
-				getStatusBar().info(getMessageText().getText());
+				getStatusLine().info(getMessageText().getText());
 				break;
 			case WARNING:
-				getStatusBar().warning(getMessageText().getText());
+				getStatusLine().warning(getMessageText().getText());
 				break;
 			case ERROR:
-				getStatusBar().error(getMessageText().getText());
+				getStatusLine().error(getMessageText().getText());
 				break;
 			default:
-				getStatusBar().setMessage(getMessageText().getText());
+				getStatusLine().setMessage(getMessageText().getText());
 				break;
 			}
 		}
@@ -252,9 +252,9 @@ public class StatuslineSubModuleViewController extends SubModuleNodeViewControll
 			String text = getModel().getNumberText();
 			try {
 				int intValue = Integer.parseInt(text);
-				getStatusBar().getStatusBarNumberRidget().setNumber(intValue);
+				getStatusLine().getStatuslineNumberRidget().setNumber(intValue);
 			} catch (NumberFormatException e) {
-				getStatusBar().getStatusBarNumberRidget().setNumberString(text);
+				getStatusLine().getStatuslineNumberRidget().setNumberString(text);
 			}
 		}
 

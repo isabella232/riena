@@ -18,14 +18,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Represents a label of the status bar that displays a number (7-digit).
+ * Represents a label of the status line that displays a number (7-digit).
  */
-public class StatusbarNumber extends AbstractStatusbarComposite {
+public class StatuslineNumber extends AbstractStatuslineComposite {
 
 	private Label numberLabel;
 
 	/**
-	 * Creates a new instance of <code>StatusbarNumber</code>.
+	 * Creates a new instance of <code>StatuslineNumber</code>.
 	 * 
 	 * @param parent
 	 *            - a widget which will be the parent of the new instance
@@ -33,19 +33,19 @@ public class StatusbarNumber extends AbstractStatusbarComposite {
 	 * @param style
 	 *            - the style of widget to construct
 	 */
-	public StatusbarNumber(Composite parent, int style) {
+	public StatuslineNumber(Composite parent, int style) {
 		super(parent, style | SWT.NO_FOCUS);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatusbarComposite#createContents()
+	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#createContents()
 	 */
 	@Override
 	protected void createContents() {
 
 		numberLabel = new Label(this, SWT.LEFT);
 		numberLabel.setText("0000000"); //$NON-NLS-1$
-		numberLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSBAR_BACKGROUND));
+		numberLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 
 	}
 
@@ -62,12 +62,12 @@ public class StatusbarNumber extends AbstractStatusbarComposite {
 	}
 
 	/**
-	 * Sets a number, that will be display in the status bar. <br>
+	 * Sets a number, that will be display in the status line. <br>
 	 * If the number is greater 0, the number gets leading 0. Otherwise the
 	 * number is not displayed.
 	 * 
 	 * @param number
-	 *            - number to display in the status bar.
+	 *            - number to display in the status line.
 	 */
 	public void setNumber(int number) {
 
@@ -87,11 +87,11 @@ public class StatusbarNumber extends AbstractStatusbarComposite {
 	}
 
 	/**
-	 * Sets the given "number", that will be display in the status bar.
+	 * Sets the given "number", that will be display in the status line.
 	 * 
 	 * @param number
-	 *            - the string to displayed in the status bar; null removes the
-	 *            number string from the status bar
+	 *            - the string to displayed in the status line; null removes the
+	 *            number string from the status line
 	 */
 	public void setNumber(String number) {
 

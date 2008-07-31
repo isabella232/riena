@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
-import org.eclipse.riena.ui.swt.Statusbar;
-import org.eclipse.riena.ui.swt.StatusbarSpacer;
+import org.eclipse.riena.ui.swt.Statusline;
+import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -32,8 +32,8 @@ public class StatusLineViewPart extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		setPartProperty(TitlelessStackPresentation.PROPERTY_STATUSLINE, String.valueOf(Boolean.TRUE));
-		Statusbar statusLine = new Statusbar(parent, SWT.None, StatusbarSpacer.class);
-		statusLine.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "statusbarRidget"); //$NON-NLS-1$
+		Statusline statusLine = new Statusline(parent, SWT.None, StatuslineSpacer.class);
+		statusLine.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "statuslineRidget"); //$NON-NLS-1$
 	}
 
 	/**
