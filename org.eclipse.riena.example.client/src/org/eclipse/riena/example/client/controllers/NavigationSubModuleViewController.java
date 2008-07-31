@@ -64,10 +64,9 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
 				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to Module"); //$NON-NLS-1$
 				parent.addChild(newNode);
-				String text = "Sub-Module was added!";
+				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationViewController subAppController = getSubApplicationController();
 				subAppController.getStatuslineRidget().setMessage(text);
-				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
 			}
 		});
 
@@ -76,10 +75,9 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to SubModule"); //$NON-NLS-1$
 				getNavigationNode().addChild(newNode);
-				String text = "Sub-Module was added!";
+				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().info(text);
-				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().setMessage(text);
 			}
 		});
 
@@ -88,10 +86,9 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				IModuleGroupNode parent = getParentNodeOfType(getNavigationNode(), IModuleGroupNode.class);
 				parent.addChild(createModuleNode());
-				String text = "Module was added!";
+				String text = "Module was added!"; //$NON-NLS-1$
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().warning(text);
-				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().setMessage(text);
 			}
 		});
 
@@ -100,10 +97,9 @@ public class NavigationSubModuleViewController extends SubModuleNodeViewControll
 			public void callback() {
 				ISubApplicationNode parent = getParentNodeOfType(getNavigationNode(), ISubApplicationNode.class);
 				parent.addChild(createModuleGroupNode());
-				String text = "Module-Group was added!";
+				String text = "Module-Group was added!"; //$NON-NLS-1$
 				SubApplicationViewController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().error(text);
-				subAppController.getStatuslineRidget().getStatuslineNumberRidget().setNumber(4711);
+				subAppController.getStatuslineRidget().setMessage(text);
 			}
 		});
 

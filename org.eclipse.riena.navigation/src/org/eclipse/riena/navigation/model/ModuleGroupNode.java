@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.IModuleGroupNodeListener;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
 
 /**
  * Default implementation for the module group node

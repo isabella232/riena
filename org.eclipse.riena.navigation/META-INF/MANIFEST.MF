@@ -10,5 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.riena.navigation,
  org.eclipse.riena.navigation.common,
+ org.eclipse.riena.navigation.listener,
  org.eclipse.riena.navigation.model
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

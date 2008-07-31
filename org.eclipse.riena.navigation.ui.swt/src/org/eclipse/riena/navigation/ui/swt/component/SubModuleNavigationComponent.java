@@ -1,8 +1,8 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ISubModuleNodeListener;
-import org.eclipse.riena.navigation.model.SubModuleNodeListener;
+import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;

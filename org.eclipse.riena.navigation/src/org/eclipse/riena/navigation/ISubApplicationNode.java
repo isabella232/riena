@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
+
 /**
  * Represents a business area within the desktop
  */

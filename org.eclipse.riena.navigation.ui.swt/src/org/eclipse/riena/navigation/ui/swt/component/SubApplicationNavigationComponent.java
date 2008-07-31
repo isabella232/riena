@@ -6,8 +6,8 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
-import org.eclipse.riena.navigation.ISubApplicationNodeListener;
-import org.eclipse.riena.navigation.model.SubApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -77,7 +77,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	private final class ModuleGroupObserver extends SubApplicationNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -88,7 +88,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override

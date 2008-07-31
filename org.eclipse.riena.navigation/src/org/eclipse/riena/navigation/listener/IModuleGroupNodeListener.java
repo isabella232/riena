@@ -8,20 +8,16 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.model;
+package org.eclipse.riena.navigation.listener;
 
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.IModuleNodeListener;
-import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
- * Default implementation for the IModuleGroupNodeListener
+ * Special listener for the module group node
  */
-public class ModuleNodeListener extends NavigationNodeListener<IModuleNode, ISubModuleNode> implements
-		IModuleNodeListener {
+public interface IModuleGroupNodeListener extends INavigationNodeListener<IModuleGroupNode, IModuleNode> {
 
-	public void presentSingleSubModuleChanged(IModuleNode source) {
-
-	}
+	void presentWithSingleModuleChanged(IModuleGroupNode source);
 
 }

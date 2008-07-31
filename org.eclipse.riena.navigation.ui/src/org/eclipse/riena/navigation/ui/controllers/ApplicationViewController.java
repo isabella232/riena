@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.controllers;
 
 import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.model.ApplicationModelListener;
+import org.eclipse.riena.navigation.listener.ApplicationModelListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 

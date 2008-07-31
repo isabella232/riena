@@ -8,16 +8,15 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.listener;
+
+import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
- * Provides the desktop in the context of the current user application
+ * Default implementation for IApplicationModelListener
  */
-public interface IApplicationModelProvider {
-	
-	/**
-	 * @return the ApplicationModel of the current application
-	 */
-	IApplicationModel getApplicationModel();
+public class ApplicationModelListener extends NavigationNodeListener<IApplicationModel, ISubApplicationNode> implements
+		IApplicationModelListener {
 
 }

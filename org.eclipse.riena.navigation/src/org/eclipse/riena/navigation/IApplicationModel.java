@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.navigation.listener.IApplicationModelListener;
+import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+
 /**
  * Describes the riena mode of an application consisting of sub applications
  */

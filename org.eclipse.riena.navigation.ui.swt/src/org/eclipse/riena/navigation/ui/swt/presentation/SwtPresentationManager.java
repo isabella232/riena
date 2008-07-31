@@ -17,7 +17,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleNodeListener;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 
 /**
  * Manages the reference between the navigation nodes and the view id's

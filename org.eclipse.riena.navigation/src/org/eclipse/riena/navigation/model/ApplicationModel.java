@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.IApplicationModelListener;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.listener.IApplicationModelListener;
 
 /**
  * Default implementation for the ApplicationModel

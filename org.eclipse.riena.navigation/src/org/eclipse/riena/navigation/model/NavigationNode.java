@@ -25,12 +25,12 @@ import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
-import org.eclipse.riena.navigation.INavigationNodeListener;
-import org.eclipse.riena.navigation.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.IPresentation;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.common.TypecastingObject;
+import org.eclipse.riena.navigation.listener.INavigationNodeListener;
+import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 
 /**
  * Default implementation of all features common to all navigation node objects
@@ -311,7 +311,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeListenerable#addListener(org.eclipse.riena.navigation.INavigationNodeListener)
+	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListenerable#addListener(org.eclipse.riena.navigation.listener.INavigationNodeListener)
 	 */
 	public void addListener(L listener) {
 		listeners.add(listener);
@@ -333,7 +333,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeListenerable#removeListener(org.eclipse.riena.navigation.INavigationNodeListener)
+	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListenerable#removeListener(org.eclipse.riena.navigation.listener.INavigationNodeListener)
 	 */
 	public void removeListener(L listener) {
 		listeners.remove(listener);

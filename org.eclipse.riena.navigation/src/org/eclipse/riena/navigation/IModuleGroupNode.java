@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
+import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+
 /**
  * this is a node containing module nodes
  */

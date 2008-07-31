@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
-import org.eclipse.riena.navigation.ISubApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 
 /**
  * Default implementation for the sub application

@@ -9,10 +9,10 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.NavigationTreeObserver;
+import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -87,7 +87,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		private boolean navigationUp = false;
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(ISubModuleNode source) {
@@ -97,7 +97,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(ISubModuleNode source) {

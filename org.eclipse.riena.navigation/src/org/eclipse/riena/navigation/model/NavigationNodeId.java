@@ -56,12 +56,13 @@ public class NavigationNodeId implements INavigationNodeId {
 		return false;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(typeId);
 		if (instanceId != null) {
-			sb.append("[");
+			sb.append("["); //$NON-NLS-1$
 			sb.append(instanceId);
-			sb.append("]");
+			sb.append("]"); //$NON-NLS-1$
 		}
 		return sb.toString();
 	}

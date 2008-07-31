@@ -8,13 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.listener;
+
+import org.eclipse.riena.navigation.INavigationNode;
+
 
 /**
- * Special listener for the module node
+ * Describes the ability of a navigation node to carry a listener The ability is
+ * not a part of the INavigationNode, because there are nodes which are not
+ * listen able
  */
-public interface IModuleNodeListener extends INavigationNodeListener<IModuleNode, ISubModuleNode> {
+public interface INavigationNodeListenerable<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>> {
 
-	void presentSingleSubModuleChanged(IModuleNode source);
+	void addListener(L pListener);
+
+	void removeListener(L pListener);
 
 }

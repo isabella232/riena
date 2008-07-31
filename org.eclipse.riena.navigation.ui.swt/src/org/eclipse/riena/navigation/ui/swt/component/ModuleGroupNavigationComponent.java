@@ -6,7 +6,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.model.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;

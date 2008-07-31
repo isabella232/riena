@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.model.ModuleNodeListener;
+import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**

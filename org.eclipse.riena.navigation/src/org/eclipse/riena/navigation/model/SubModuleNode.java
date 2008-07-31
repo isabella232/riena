@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ISubModuleNodeListener;
+import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
 
 /**
  * Default implementation for the sub module node

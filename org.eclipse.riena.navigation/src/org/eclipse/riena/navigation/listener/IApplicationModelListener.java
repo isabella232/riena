@@ -8,16 +8,14 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.model;
+package org.eclipse.riena.navigation.listener;
 
 import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.IApplicationModelListener;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
- * Default implementation for IApplicationModelListener
+ * Special listener for the application model
  */
-public class ApplicationModelListener extends NavigationNodeListener<IApplicationModel, ISubApplicationNode> implements
-		IApplicationModelListener {
+public interface IApplicationModelListener extends INavigationNodeListener<IApplicationModel, ISubApplicationNode> {
 
 }

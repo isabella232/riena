@@ -22,12 +22,12 @@ public class NavigateSubModuleViewController extends SubModuleNodeViewController
 
 	public void configureRidgets() {
 
-		IActionRidget comboAndList = (IActionRidget) getRidget("comboAndList");
-		comboAndList.setText("Combo and List (SubApplication 1)");
+		IActionRidget comboAndList = (IActionRidget) getRidget("comboAndList"); //$NON-NLS-1$
+		comboAndList.setText("Combo and List (SubApplication 1)"); //$NON-NLS-1$
 		comboAndList.addListener(new ComboAndListListener());
 
-		IActionRidget tableTextAndTree = (IActionRidget) getRidget("tableTextAndTree");
-		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)");
+		IActionRidget tableTextAndTree = (IActionRidget) getRidget("tableTextAndTree"); //$NON-NLS-1$
+		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2)"); //$NON-NLS-1$
 		tableTextAndTree.addListener(new TableTextAndTreeListener());
 	}
 
@@ -37,7 +37,7 @@ public class NavigateSubModuleViewController extends SubModuleNodeViewController
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.comboAndList"));
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.comboAndList")); //$NON-NLS-1$
 		}
 
 	}
@@ -48,7 +48,7 @@ public class NavigateSubModuleViewController extends SubModuleNodeViewController
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.tableTextAndTree"));
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.tableTextAndTree")); //$NON-NLS-1$
 		}
 
 	}
