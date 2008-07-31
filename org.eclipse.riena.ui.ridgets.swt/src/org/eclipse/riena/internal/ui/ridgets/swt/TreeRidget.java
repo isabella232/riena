@@ -71,6 +71,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
 
+	/*
+	 * The original array of elements given as input to the ridget via the
+	 * #bindToModel method. The ridget however works with the copy (treeRoots)
+	 * in order to be independend of modification to the original array.
+	 * 
+	 * Calling #updateFromModel will synchronize the treeRoots array with the
+	 * model array.
+	 */
+	private Object[] model;
 	private Object[] treeRoots;
 	private Class<? extends Object> treeElementClass;
 	private String childrenAccessor;
@@ -153,8 +162,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 		unbindUIControl();
 
-		this.treeRoots = new Object[treeRoots.length];
-		System.arraycopy(treeRoots, 0, this.treeRoots, 0, this.treeRoots.length);
+		this.model = treeRoots;
+		this.treeRoots = new Object[model.length];
+		System.arraycopy(model, 0, this.treeRoots, 0, this.treeRoots.length);
 		this.treeElementClass = treeElementClass;
 		this.childrenAccessor = childrenAccessor;
 		this.parentAccessor = parentAccessor;
@@ -298,6 +308,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			reveal(new Object[] { candidate });
 		}
 		super.setSelection(candidate);
+	}
+
+	@Override
+	public void updateFromModel() {
+		treeRoots = new Object[model.length];
+		System.arraycopy(model, 0, treeRoots, 0, treeRoots.length);
+		if (viewer != null) {
+			viewer.setInput(treeRoots);
+		}
 	}
 
 	// helping methods

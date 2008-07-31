@@ -660,6 +660,45 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertTrue(ridget.getSelection().isEmpty());
 	}
 
+	public void testUpdateRootFromModelPreservesSelection() {
+		ITreeRidget ridget = getRidget();
+		ITreeNode node1 = new TreeNode(new Person("Doe", "John"));
+		ITreeNode node2 = new TreeNode(new Person("Doe", "Jane"));
+		ITreeNode[] roots = { node1, node2 };
+		getRidget().bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
+
+		ridget.setSelection(node1);
+
+		assertSame(node1, ridget.getSelection().get(0));
+
+		ITreeNode swap = roots[0];
+		roots[0] = roots[1];
+		roots[1] = swap;
+		ridget.updateFromModel();
+
+		assertSame(node1, ridget.getSelection().get(0));
+	}
+
+	public void testUpdateRootFromModelRemovesSelection() {
+		ITreeRidget ridget = getRidget();
+		ITreeNode node1 = new TreeNode(new Person("Doe", "John"));
+		ITreeNode node2 = new TreeNode(new Person("Doe", "Jane"));
+		ITreeNode[] roots = { node1, node2 };
+		getRidget().bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
+
+		ridget.setSelection(node1);
+
+		assertSame(node1, ridget.getSelection().get(0));
+
+		roots[0] = new TreeNode(new Person("New", "Person 1"));
+		roots[1] = new TreeNode(new Person("New", "Person 2"));
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getSelection().isEmpty());
+	}
+
 	public void testContainsOption() {
 		ITreeRidget ridget = getRidget();
 
