@@ -92,7 +92,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		String testErrorMessage = "Test Error in Adapter 1";
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
-		statuslineRidget.setMessage(testErrorMessage);
+		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.addMarker(new ErrorMessageMarker(testErrorMessage));
@@ -116,7 +116,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		ErrorMessageMarker errorMessageMarker1 = new ErrorMessageMarker(testErrorMessage);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
-		statuslineRidget.setMessage(testErrorMessage);
+		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.addMarker(errorMessageMarker1);
@@ -135,7 +135,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.reset(statuslineRidget);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testMessageBySomebodyElse);
-		statuslineRidget.setMessage(testErrorMessage);
+		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 
 		text1.setFocus();
@@ -154,7 +154,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		String anotherTestErrorMessage = "Another Test Error in Adapter 1";
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testMessageBySomebodyElse);
-		statuslineRidget.setMessage(anotherTestErrorMessage);
+		statuslineRidget.error(anotherTestErrorMessage);
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.addMarker(new ErrorMessageMarker(anotherTestErrorMessage));
@@ -176,7 +176,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		String testErrorMessage = "Test Error in Adapter 1";
 		ErrorMessageMarker errorMessageMarker1 = new ErrorMessageMarker(testErrorMessage);
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
-		statuslineRidget.setMessage(testErrorMessage);
+		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 		ridget1.addMarker(errorMessageMarker1);
 		text1.setFocus();
@@ -211,6 +211,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.reset(statuslineRidget);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
+		statuslineRidget.clear();
 		statuslineRidget.setMessage(messageDifferentType);
 		EasyMock.replay(statuslineRidget);
 
@@ -229,6 +230,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.reset(statuslineRidget);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
+		statuslineRidget.clear();
 		statuslineRidget.setMessage(messageDifferentType);
 		EasyMock.replay(statuslineRidget);
 
@@ -245,7 +247,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		ridget1.addMarker(new ErrorMessageMarker(testErrorMessage));
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
-		statuslineRidget.setMessage(testErrorMessage);
+		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 
 		statuslineMessageMarkerViewer.setVisible(true);
@@ -279,7 +281,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		MessageMarker marker2 = new MessageMarker(testErrorMessage2);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
-		statuslineRidget.setMessage(testErrorMessage1);
+		statuslineRidget.error(testErrorMessage1);
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.addMarker(marker1);
@@ -287,7 +289,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.verify(statuslineRidget);
 		EasyMock.reset(statuslineRidget);
 
-		statuslineRidget.setMessage(testErrorMessage1 + " " + testErrorMessage2);
+		statuslineRidget.error(testErrorMessage1 + " " + testErrorMessage2);
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.addMarker(marker2);
@@ -295,6 +297,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.verify(statuslineRidget);
 		EasyMock.reset(statuslineRidget);
 
+		statuslineRidget.clear();
 		statuslineRidget.setMessage(testErrorMessage2);
 		EasyMock.replay(statuslineRidget);
 
