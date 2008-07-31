@@ -83,23 +83,25 @@ public class ConsoleLogger implements Logger {
 
 	/*
 	 * @see org.eclipse.equinox.log.Logger#log(int, java.lang.String,
-	 *      java.lang.Throwable)
+	 * java.lang.Throwable)
 	 */
 	public void log(int level, String message, Throwable exception) {
 		log(level, null, null, message, exception);
 	}
 
 	/*
-	 * @see org.eclipse.equinox.log.Logger#log(org.osgi.framework.ServiceReference,
-	 *      int, java.lang.String)
+	 * @see
+	 * org.eclipse.equinox.log.Logger#log(org.osgi.framework.ServiceReference,
+	 * int, java.lang.String)
 	 */
 	public void log(ServiceReference sr, int level, String message) {
 		log(level, null, sr, message, null);
 	}
 
 	/*
-	 * @see org.eclipse.equinox.log.Logger#log(org.osgi.framework.ServiceReference,
-	 *      int, java.lang.String, java.lang.Throwable)
+	 * @see
+	 * org.eclipse.equinox.log.Logger#log(org.osgi.framework.ServiceReference,
+	 * int, java.lang.String, java.lang.Throwable)
 	 */
 	public void log(ServiceReference sr, int level, String message, Throwable exception) {
 		log(level, null, null, message, exception);
@@ -107,7 +109,7 @@ public class ConsoleLogger implements Logger {
 
 	/*
 	 * @see org.eclipse.equinox.log.Logger#log(java.lang.Object, int,
-	 *      java.lang.String)
+	 * java.lang.String)
 	 */
 	public void log(Object context, int level, String message) {
 		log(level, context, null, message, null);
@@ -115,7 +117,7 @@ public class ConsoleLogger implements Logger {
 
 	/*
 	 * @see org.eclipse.equinox.log.Logger#log(java.lang.Object, int,
-	 *      java.lang.String, java.lang.Throwable)
+	 * java.lang.String, java.lang.Throwable)
 	 */
 	public void log(Object context, int level, String message, Throwable exception) {
 		log(level, context, null, message, exception);
@@ -123,7 +125,9 @@ public class ConsoleLogger implements Logger {
 
 	private void log(int level, Object context, ServiceReference sr, String message, Throwable throwable) {
 		StringBuilder bob = new StringBuilder();
-		bob.append(formatter.format(new Date()));
+		synchronized (formatter) {
+			bob.append(formatter.format(new Date()));
+		}
 		bob.append(' ');
 		bob.append(nameAndHost);
 		bob.append(' ');
@@ -176,11 +180,9 @@ public class ConsoleLogger implements Logger {
 	private PrintStream getPrintStream(int level) {
 		switch (level) {
 		case LogService.LOG_DEBUG:
-			return System.out;
 		case LogService.LOG_INFO:
 			return System.out;
 		case LogService.LOG_WARNING:
-			return System.err;
 		case LogService.LOG_ERROR:
 			return System.err;
 		default:
