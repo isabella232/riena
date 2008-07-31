@@ -325,5 +325,45 @@
             parentPresentationId="playground">
       </navigationNodePresentation>
    </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.combo"
+            view="org.eclipse.riena.example.client.views.ComboSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.ComboSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.list"
+            view="org.eclipse.riena.example.client.views.ListSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.ListSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.table"
+            view="org.eclipse.riena.example.client.views.TableSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.TableSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.text"
+            view="org.eclipse.riena.example.client.views.TextSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.TextSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.tree"
+            view="org.eclipse.riena.example.client.views.TreeSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.TreeSubModuleController">
+      </workAreaPresentation>
+   </extension>
    
 </plugin>

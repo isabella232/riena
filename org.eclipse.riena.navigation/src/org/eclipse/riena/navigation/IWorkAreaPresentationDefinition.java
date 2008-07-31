@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.extension.MapName;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 
 /**
@@ -38,5 +39,11 @@ public interface IWorkAreaPresentationDefinition extends IPresentationDefinition
 	 */
 
 	Object createView();
+
+	/**
+	 * @return The view id.
+	 */
+	@MapName("view")
+	String getViewId();
 
 }

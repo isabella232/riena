@@ -16,8 +16,11 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 
 /**
  * Manages the reference between the navigation nodes and the view id's
@@ -46,6 +49,18 @@ public class SwtPresentationManager {
 	}
 
 	public SwtViewId getSwtViewId(INavigationNode<?> pNode) {
+
+		INavigationNodeId presentationId = pNode.getPresentationId();
+		if (presentationId != null) {
+
+			String viewId = getPresentationDefinitionService().getViewId(presentationId);
+			for (SwtViewId swtViewId : views.values()) {
+				if (swtViewId.getId().equals(viewId)) {
+					return swtViewId;
+				}
+			}
+		}
+
 		return views.get(pNode);
 	}
 
@@ -150,6 +165,13 @@ public class SwtPresentationManager {
 			}
 		}
 		return null;
+
+	}
+
+	protected IPresentationProviderService getPresentationDefinitionService() {
+
+		// TODO: handling if no service found ???
+		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
 
 	}
 

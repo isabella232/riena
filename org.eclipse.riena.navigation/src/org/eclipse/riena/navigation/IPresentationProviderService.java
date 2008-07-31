@@ -40,6 +40,8 @@ public interface IPresentationProviderService {
 
 	Object createView(INavigationNodeId targetId);
 
+	String getViewId(INavigationNodeId targetId);
+
 	/**
 	 * Returns the view controller for the work area presentation for the given
 	 * navigationNodeId

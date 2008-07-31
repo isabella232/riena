@@ -187,6 +187,18 @@ public class PresentationProviderService implements IPresentationProviderService
 		return view;
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#getViewId(org.eclipse.riena.navigation.INavigationNodeId)
+	 */
+	public String getViewId(INavigationNodeId targetId) {
+		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
+
+		if (presentationDefinition != null) {
+			return presentationDefinition.getViewId();
+		}
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

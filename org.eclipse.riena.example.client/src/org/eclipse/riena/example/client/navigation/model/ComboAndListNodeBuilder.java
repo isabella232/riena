@@ -7,16 +7,14 @@
  ****************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.views.ComboSubModuleView;
-import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 
 /**
  *
@@ -32,14 +30,10 @@ public class ComboAndListNodeBuilder implements INavigationNodeBuilder {
 		IModuleNode module = new ModuleNode("Combo&List");
 		node.addChild(module);
 		SubModuleNode subModule = new SubModuleNode("Combo");
-		// TODO get presentation via presentationId from extension point
-		// subModule.setPresentationId("child1");
-		SwtPresentationManagerAccessor.getManager().present(subModule, ComboSubModuleView.ID);
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.combo"));
 		module.addChild(subModule);
 		subModule = new SubModuleNode("List");
-		// TODO get presentation via presentationId from extension point
-		// subModule.setPresentationId("child2");
-		SwtPresentationManagerAccessor.getManager().present(subModule, ListSubModuleView.ID);
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.list"));
 		module.addChild(subModule);
 		return node;
 	}
