@@ -41,7 +41,6 @@ public class GrabCorner extends Composite {
 		setLayoutData();
 
 		addPaintListener(new GrabPaintListener());
-		// new GrabCornerListener(this); // TODO [ev] delete later
 		new GrabCornerListenerWithTracker(this);
 	}
 
