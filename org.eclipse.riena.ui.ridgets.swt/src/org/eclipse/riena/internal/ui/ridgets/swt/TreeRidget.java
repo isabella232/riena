@@ -315,7 +315,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		treeRoots = new Object[model.length];
 		System.arraycopy(model, 0, treeRoots, 0, treeRoots.length);
 		if (viewer != null) {
+			Object[] expandedElements = viewer.getExpandedElements();
 			viewer.setInput(treeRoots);
+			viewer.setExpandedElements(expandedElements);
 		}
 	}
 
