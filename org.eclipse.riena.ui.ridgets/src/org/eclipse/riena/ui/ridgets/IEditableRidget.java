@@ -60,10 +60,11 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * @param validator
 	 *            The validator to add (non-null).
 	 * @param validationTime
-	 *            true will cause the validator to be evaluated "on edit", false
-	 *            will cause the validator to be evaluated "on update"
+	 *            a value specifying when to evalute the validator (non-null)
 	 * @throws RuntimeException
-	 *             if the validator is null.
+	 *             if the validator or validationTime is null
+	 * @see #removeValidationRule(IValidator)
+	 * @see #revalidate()
 	 */
 	void addValidationRule(IValidator validator, ValidationTime validationTime);
 
@@ -72,6 +73,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * 
 	 * @param validator
 	 *            The validation rule to remove.
+	 * @see #addValidationRule(IValidator, ValidationTime)
+	 * @see #revalidate()
 	 */
 	void removeValidationRule(IValidator validator);
 
@@ -166,5 +169,21 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 *            The validation rule related to the IMessageMarker.
 	 */
 	void removeValidationMessage(IMessageMarker messageMarker, IValidator validationRule);
+
+	/**
+	 * Revalidate the ridget using the current validation rules. It can be used
+	 * to update the validation state after adding or removing validation rules
+	 * from the ridget.
+	 * <p>
+	 * If the new validation state is 'valid' this method will update the model
+	 * with the current value from the ridget.
+	 * 
+	 * @return true if all validation rules have passed without errors, false
+	 *         otherwise
+	 * 
+	 * @see #addValidationRule(IValidator, ValidationTime)
+	 * @see #removeValidationRule(IValidator)
+	 */
+	boolean revalidate();
 
 }

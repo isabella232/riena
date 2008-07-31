@@ -496,7 +496,6 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertTrue(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 		assertEquals(TEXT_ONE, ridget.getText());
 
-		// ridget.setText("xy");
 		control.selectAll();
 		UITestHelper.sendString(control.getDisplay(), "xy\t");
 
@@ -573,23 +572,18 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
+		// this is a blocking rule
 		IValidator onEditRule = new MaxLength(5);
 
 		assertFalse(ridget.isErrorMarked());
 
 		ridget.setText("tiny");
 		ridget.addValidationRule(onEditRule, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.setText("too long");
 
-		try {
-			ridget.setText("too long");
-			fail();
-		} catch (RuntimeException rex) {
-			// expected
-		}
-
-		assertFalse(ridget.isErrorMarked());
-		assertEquals("tiny", ridget.getText());
-		assertEquals("tiny", getUIControl().getText());
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("too long", ridget.getText());
+		assertEquals("too long", getUIControl().getText());
 		assertEquals("tiny", model.getValue());
 
 		ridget.setText("short");
@@ -611,17 +605,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setText("this is long enough");
 		ridget.addValidationRule(onUpdateRule, ValidationTime.ON_UPDATE_TO_MODEL);
+		ridget.setText("tiny");
 
-		try {
-			ridget.setText("tiny");
-			fail();
-		} catch (RuntimeException rex) {
-			// expected
-		}
-
-		assertFalse(ridget.isErrorMarked());
-		assertEquals("this is long enough", ridget.getText());
-		assertEquals("this is long enough", getUIControl().getText());
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("tiny", ridget.getText());
+		assertEquals("tiny", getUIControl().getText());
 		assertEquals("this is long enough", model.getValue());
 
 		ridget.setText("this is not too short");
@@ -645,16 +633,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.addValidationRule(onEditRule, ValidationTime.ON_UI_CONTROL_EDIT);
 		model.setValue("too long");
 
-		try {
-			ridget.updateFromModel();
-			fail();
-		} catch (RuntimeException rex) {
-			// expected
-		}
+		ridget.updateFromModel();
 
-		assertFalse(ridget.isErrorMarked());
-		assertEquals("tiny", ridget.getText());
-		assertEquals("tiny", getUIControl().getText());
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("too long", ridget.getText());
+		assertEquals("too long", getUIControl().getText());
 		assertEquals("too long", model.getValue());
 
 		model.setValue("short");
@@ -679,16 +662,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.addValidationRule(onUpdateRule, ValidationTime.ON_UPDATE_TO_MODEL);
 		model.setValue("tiny");
 
-		try {
-			ridget.updateFromModel();
-			fail();
-		} catch (RuntimeException rex) {
-			// expected
-		}
+		ridget.updateFromModel();
 
-		assertFalse(ridget.isErrorMarked());
-		assertEquals("something long", ridget.getText());
-		assertEquals("something long", getUIControl().getText());
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("tiny", ridget.getText());
+		assertEquals("tiny", getUIControl().getText());
 		assertEquals("tiny", model.getValue());
 
 		model.setValue("this is not too short");
@@ -726,7 +704,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "invalid\t");
 
 		assertTrue(ridget.isErrorMarked());
-		assertEquals("a@b.com", ridget.getText());
+		// ValidEmailAddress is non-blocking, so we expected 'invalid' in ridget
+		assertEquals("invalid", ridget.getText());
 		assertEquals("a@b.com", bean.getProperty());
 
 		// a little workaround because UITestHelper cannot send '@'
@@ -826,6 +805,144 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "b\r");
 
 		assertEquals(0, ridget.getMarkers().size());
+	}
+
+	public void testRevalidateOnEditRule() {
+		ITextFieldRidget ridget = getRidget();
+		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.setText("abc");
+
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.addValidationRule(numbersOnly, ValidationTime.ON_UI_CONTROL_EDIT);
+
+		assertFalse(ridget.isErrorMarked());
+
+		boolean isOk1 = ridget.revalidate();
+
+		assertFalse(isOk1);
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeValidationRule(numbersOnly);
+
+		assertTrue(ridget.isErrorMarked());
+
+		boolean isOk2 = ridget.revalidate();
+
+		assertTrue(isOk2);
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	public void testRevalidateOnUpdateRule() {
+		ITextFieldRidget ridget = getRidget();
+		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.setText("abc");
+
+		assertFalse(ridget.isErrorMarked());
+
+		ridget.addValidationRule(numbersOnly, ValidationTime.ON_UPDATE_TO_MODEL);
+
+		assertFalse(ridget.isErrorMarked());
+
+		boolean isOk1 = ridget.revalidate();
+
+		assertFalse(isOk1);
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeValidationRule(numbersOnly);
+
+		assertTrue(ridget.isErrorMarked());
+
+		boolean isOk2 = ridget.revalidate();
+
+		assertTrue(isOk2);
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	public void testRevalidateDoesUpdate() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		EvenNumberOfCharacters evenChars = new EvenNumberOfCharacters();
+		ridget.addValidationRule(evenChars, ValidationTime.ON_UI_CONTROL_EDIT);
+
+		bean.setProperty("ab");
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
+
+		control.setFocus();
+		control.selectAll();
+		UITestHelper.sendString(control.getDisplay(), "abc\t");
+		assertEquals("abc", control.getText());
+		// non-blocking rule, expect 'abc'
+		assertEquals("abc", ridget.getText());
+		assertEquals("ab", bean.getProperty());
+
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.removeValidationRule(evenChars);
+		ridget.revalidate();
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("abc", control.getText());
+		assertEquals("abc", ridget.getText());
+		assertEquals("abc", bean.getProperty());
+	}
+
+	public void testReValidationOnSetText() {
+		ITextFieldRidget ridget = getRidget();
+		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+
+		ridget.setText("123");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("123", ridget.getText());
+
+		ridget.addValidationRule(numbersOnly, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.setText("abc");
+
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("abc", ridget.getText());
+
+		ridget.removeValidationRule(numbersOnly);
+		ridget.setText("abc");
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("abc", ridget.getText());
+	}
+
+	public void testReValidationOnUpdateFromModel() {
+		ITextFieldRidget ridget = getRidget();
+		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+
+		bean.setProperty("123");
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("123", ridget.getText());
+
+		ridget.addValidationRule(numbersOnly, ValidationTime.ON_UI_CONTROL_EDIT);
+
+		bean.setProperty("abc");
+		ridget.updateFromModel();
+
+		assertTrue(ridget.isErrorMarked());
+		assertEquals("abc", bean.getProperty());
+		assertEquals("abc", ridget.getText());
+
+		ridget.removeValidationRule(numbersOnly);
+
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
+		assertEquals("abc", bean.getProperty());
+		assertEquals("abc", ridget.getText());
 	}
 
 	// helping methods

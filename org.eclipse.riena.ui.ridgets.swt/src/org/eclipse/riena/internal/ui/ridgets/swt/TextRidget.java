@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Ridget for an SWT <code>Text</code> widget.
  */
-public class TextRidget extends AbstractEditableRidget implements ITextFieldRidget {
+public final class TextRidget extends AbstractEditableRidget implements ITextFieldRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
@@ -43,19 +44,12 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 
-	/* True indicates that an updateFromModel() is in progress */
-	private boolean isUpdatingFromModel = false;
-	/* True indicates that setText was aborted because the value was illegal */
-	private boolean setTextAborted = false;
-
 	public TextRidget() {
 		crKeyListener = new CRKeyListener();
 		focusListener = new FocusManager();
 		modifyListener = new SyncModifyListener();
 		verifyListener = new ValidationListener();
 		isDirectWriting = false;
-		isUpdatingFromModel = false;
-		setTextAborted = false;
 	}
 
 	/**
@@ -72,7 +66,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	}
 
 	@Override
-	protected void bindUIControl() {
+	protected synchronized void bindUIControl() {
 		Text control = getUIControl();
 		if (control != null) {
 			control.setText(textValue);
@@ -85,7 +79,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	}
 
 	@Override
-	protected void unbindUIControl() {
+	protected synchronized void unbindUIControl() {
 		Text control = getUIControl();
 		if (control != null) {
 			control.removeKeyListener(crKeyListener);
@@ -100,44 +94,43 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		return (Text) super.getUIControl();
 	}
 
-	public String getText() {
+	public synchronized String getText() {
 		return textValue;
 	}
 
 	public synchronized void setText(String text) {
-		if (hasErrors(text)) {
-			if (isUpdatingFromModel) {
-				setTextAborted = true;
-			} else {
-				throw new IllegalArgumentException("Invalid text:" + text); //$NON-NLS-1$
-			}
-		} else {
-			String oldValue = textValue;
-			textValue = text;
-			setTextToControl(textValue);
+		String oldValue = textValue;
+		textValue = text;
+		forceTextToControl(textValue);
+		IStatus onEdit = checkOnEditRules(text);
+		validationRulesChecked(onEdit);
+		if (onEdit.isOK()) {
 			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
 		}
 	}
 
-	@Override
-	public synchronized void updateFromModel() {
-		isUpdatingFromModel = true;
-		try {
-			super.updateFromModel();
-			if (setTextAborted) {
-				throw new IllegalArgumentException("Invalid text in model"); //$NON-NLS-1$
-			}
-		} finally {
-			isUpdatingFromModel = false;
-			setTextAborted = false;
-		}
+	public synchronized boolean revalidate() {
+		Text control = getUIControl();
+		String text = control != null ? control.getText() : textValue;
+		textValue = null; // textValue != text in order to propage prop. change
+		setText(text);
+		return !isErrorMarked();
 	}
 
-	public boolean isDirectWriting() {
+	@Override
+	public synchronized void updateFromModel() {
+		super.updateFromModel();
+		IStatus onEdit = checkOnEditRules(textValue);
+		IStatus onUpdate = checkOnUpdateRules(textValue);
+		IStatus joinedStatus = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
+		validationRulesChecked(joinedStatus);
+	}
+
+	public synchronized boolean isDirectWriting() {
 		return isDirectWriting;
 	}
 
-	public void setDirectWriting(boolean directWriting) {
+	public synchronized void setDirectWriting(boolean directWriting) {
 		if (this.isDirectWriting != directWriting) {
 			this.isDirectWriting = directWriting;
 		}
@@ -160,27 +153,24 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		return result;
 	}
 
-	private boolean hasErrors(String newValue) {
-		IStatus onUpdate = checkOnUpdateRules(newValue);
-		IStatus onEdit = checkOnEditRules(newValue);
-		boolean result = !onUpdate.isOK() || !onEdit.isOK();
-		return result;
-	}
-
-	private void setTextToControl(String newValue) {
+	private synchronized void forceTextToControl(String newValue) {
 		Text control = getUIControl();
 		if (control != null) {
+			control.removeVerifyListener(verifyListener);
 			control.setText(newValue);
 			control.setSelection(0, 0);
+			control.addVerifyListener(verifyListener);
 		}
 	}
 
-	private void updateTextValue() {
+	private synchronized void updateTextValue() {
 		String oldValue = textValue;
 		String newValue = getUIControl().getText();
-		if (!oldValue.equals(newValue) && checkOnEditRules(newValue).isOK()) {
+		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
-			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
+			if (checkOnEditRules(newValue).isOK()) {
+				firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
+			}
 		}
 	}
 
@@ -243,9 +233,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		public synchronized void verifyText(VerifyEvent e) {
 			String newText = getText(e);
 			IStatus status = checkOnEditRules(newText);
+			boolean doit = !(status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
+			e.doit = doit;
 			validationRulesChecked(status);
-			boolean block = status.getCode() != IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
-			e.doit = block;
 		}
 
 		private String getText(VerifyEvent e) {
