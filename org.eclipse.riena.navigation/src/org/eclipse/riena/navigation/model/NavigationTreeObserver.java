@@ -47,15 +47,15 @@ public class NavigationTreeObserver {
 	 */
 	public NavigationTreeObserver() {
 		super();
-		applicationModelListener = new ApplicationModelListener();
+		applicationModelListener = new MyApplicationModelListener();
 		applicationModelListeners = new HashSet<IApplicationModelListener>();
-		subApplicationListener = new SubApplicationNodeListener();
+		subApplicationListener = new MySubApplicationNodeListener();
 		subApplicationListeners = new HashSet<ISubApplicationNodeListener>();
-		moduleGroupNodeListener = new ModuleGroupNodeListener();
+		moduleGroupNodeListener = new MyModuleGroupNodeListener();
 		moduleGroupNodeListeners = new HashSet<IModuleGroupNodeListener>();
-		moduleNodeListener = new ModuleNodeListener();
+		moduleNodeListener = new MyModuleNodeListener();
 		moduleNodeListeners = new HashSet<IModuleNodeListener>();
-		subModuleNodeListener = new SubModuleNodeListener();
+		subModuleNodeListener = new MySubModuleNodeListener();
 		subModuleNodeListeners = new HashSet<ISubModuleNodeListener>();
 	}
 
@@ -264,10 +264,10 @@ public class NavigationTreeObserver {
 		pSubModuleNode.removeListener(subModuleNodeListener);
 	}
 
-	private class ApplicationModelListener extends ApplicationModelAdapter {
+	private class MyApplicationModelListener extends ApplicationModelListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(IApplicationModel source) {
@@ -278,7 +278,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeActivated(IApplicationModel source) {
@@ -298,7 +298,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterActivated(IApplicationModel source) {
@@ -309,7 +309,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#deactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void deactivated(IApplicationModel source) {
@@ -320,7 +320,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDeactivated(IApplicationModel source) {
@@ -331,7 +331,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDeactivated(IApplicationModel source) {
@@ -342,7 +342,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(IApplicationModel source) {
@@ -353,7 +353,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDisposed(IApplicationModel source) {
@@ -364,7 +364,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDisposed(IApplicationModel source) {
@@ -375,7 +375,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -388,7 +388,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -401,7 +401,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void expandedChanged(IApplicationModel source) {
@@ -412,7 +412,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(IApplicationModel source) {
@@ -423,7 +423,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void markersChanged(IApplicationModel source) {
@@ -434,7 +434,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#parentChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void parentChanged(IApplicationModel source) {
@@ -445,7 +445,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void presentationChanged(IApplicationModel source) {
@@ -456,7 +456,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void selectedChanged(IApplicationModel source) {
@@ -467,7 +467,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#stateChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#stateChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode.State,
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
@@ -481,10 +481,10 @@ public class NavigationTreeObserver {
 
 	}
 
-	private class SubApplicationNodeListener extends SubApplicationNodeAdapter {
+	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(ISubApplicationNode source) {
@@ -503,7 +503,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeActivated(ISubApplicationNode source) {
@@ -514,7 +514,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterActivated(ISubApplicationNode source) {
@@ -525,7 +525,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#deactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void deactivated(ISubApplicationNode source) {
@@ -536,7 +536,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDeactivated(ISubApplicationNode source) {
@@ -547,7 +547,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDeactivated(ISubApplicationNode source) {
@@ -558,7 +558,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(ISubApplicationNode source) {
@@ -569,7 +569,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDisposed(ISubApplicationNode source) {
@@ -580,7 +580,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDisposed(ISubApplicationNode source) {
@@ -591,7 +591,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -604,7 +604,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -617,7 +617,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void expandedChanged(ISubApplicationNode source) {
@@ -628,7 +628,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(ISubApplicationNode source) {
@@ -639,7 +639,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void markersChanged(ISubApplicationNode source) {
@@ -650,7 +650,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#parentChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void parentChanged(ISubApplicationNode source) {
@@ -661,7 +661,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void presentationChanged(ISubApplicationNode source) {
@@ -672,7 +672,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void selectedChanged(ISubApplicationNode source) {
@@ -683,7 +683,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#stateChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#stateChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode.State,
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
@@ -697,10 +697,10 @@ public class NavigationTreeObserver {
 
 	}
 
-	private class ModuleGroupNodeListener extends ModuleGroupNodeAdapter {
+	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(IModuleGroupNode source) {
@@ -719,7 +719,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeActivated(IModuleGroupNode source) {
@@ -730,7 +730,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterActivated(IModuleGroupNode source) {
@@ -741,7 +741,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#deactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void deactivated(IModuleGroupNode source) {
@@ -752,7 +752,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDeactivated(IModuleGroupNode source) {
@@ -763,7 +763,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDeactivated(IModuleGroupNode source) {
@@ -774,7 +774,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(IModuleGroupNode source) {
@@ -785,7 +785,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDisposed(IModuleGroupNode source) {
@@ -796,7 +796,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDisposed(IModuleGroupNode source) {
@@ -807,7 +807,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -820,7 +820,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -833,7 +833,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void expandedChanged(IModuleGroupNode source) {
@@ -844,7 +844,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(IModuleGroupNode source) {
@@ -855,7 +855,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void markersChanged(IModuleGroupNode source) {
@@ -866,7 +866,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#parentChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void parentChanged(IModuleGroupNode source) {
@@ -877,7 +877,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void presentationChanged(IModuleGroupNode source) {
@@ -888,7 +888,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void selectedChanged(IModuleGroupNode source) {
@@ -899,7 +899,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#stateChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#stateChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode.State,
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
@@ -912,10 +912,10 @@ public class NavigationTreeObserver {
 		}
 	}
 
-	private class ModuleNodeListener extends ModuleNodeAdapter {
+	private class MyModuleNodeListener extends ModuleNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(IModuleNode source) {
@@ -934,7 +934,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeActivated(IModuleNode source) {
@@ -945,7 +945,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterActivated(IModuleNode source) {
@@ -956,7 +956,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#deactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void deactivated(IModuleNode source) {
@@ -967,7 +967,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDeactivated(IModuleNode source) {
@@ -978,7 +978,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDeactivated(IModuleNode source) {
@@ -989,7 +989,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(IModuleNode source) {
@@ -1000,7 +1000,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDisposed(IModuleNode source) {
@@ -1011,7 +1011,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDisposed(IModuleNode source) {
@@ -1022,7 +1022,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -1035,7 +1035,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -1048,7 +1048,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void expandedChanged(IModuleNode source) {
@@ -1059,7 +1059,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(IModuleNode source) {
@@ -1070,7 +1070,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void markersChanged(IModuleNode source) {
@@ -1081,7 +1081,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#parentChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void parentChanged(IModuleNode source) {
@@ -1092,7 +1092,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void presentationChanged(IModuleNode source) {
@@ -1103,7 +1103,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void selectedChanged(IModuleNode source) {
@@ -1114,7 +1114,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#stateChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#stateChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode.State,
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
@@ -1127,7 +1127,7 @@ public class NavigationTreeObserver {
 		}
 	}
 
-	private class SubModuleNodeListener extends SubModuleNodeAdapter {
+	private class MySubModuleNodeListener extends SubModuleNodeListener {
 
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
@@ -1138,7 +1138,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(ISubModuleNode source) {
@@ -1149,7 +1149,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeActivated(ISubModuleNode source) {
@@ -1160,7 +1160,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterActivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterActivated(ISubModuleNode source) {
@@ -1171,7 +1171,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#deactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void deactivated(ISubModuleNode source) {
@@ -1182,7 +1182,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDeactivated(ISubModuleNode source) {
@@ -1193,7 +1193,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDeactivated(ISubModuleNode source) {
@@ -1204,7 +1204,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(ISubModuleNode source) {
@@ -1215,7 +1215,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void beforeDisposed(ISubModuleNode source) {
@@ -1226,7 +1226,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void afterDisposed(ISubModuleNode source) {
@@ -1237,7 +1237,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -1250,7 +1250,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -1263,7 +1263,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void expandedChanged(ISubModuleNode source) {
@@ -1274,7 +1274,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(ISubModuleNode source) {
@@ -1285,7 +1285,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void markersChanged(ISubModuleNode source) {
@@ -1296,7 +1296,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#parentChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void parentChanged(ISubModuleNode source) {
@@ -1307,7 +1307,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void presentationChanged(ISubModuleNode source) {
@@ -1318,7 +1318,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void selectedChanged(ISubModuleNode source) {
@@ -1329,7 +1329,7 @@ public class NavigationTreeObserver {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#stateChanged(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#stateChanged(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode.State,
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */

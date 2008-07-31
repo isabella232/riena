@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
@@ -476,7 +476,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		SubApplicationViewController controller = getSubApplicationViewController();
 		if (controller != null) {
 			NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-			navigationTreeObserver.addListener(new SubModuleNodeAdapter() {
+			navigationTreeObserver.addListener(new SubModuleNodeListener() {
 				@Override
 				public void activated(ISubModuleNode source) {
 					redrawSubModuleTitle();

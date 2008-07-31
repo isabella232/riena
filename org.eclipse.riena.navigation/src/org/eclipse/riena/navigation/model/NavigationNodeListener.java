@@ -22,7 +22,7 @@ import org.eclipse.riena.navigation.INavigationNode.State;
  * @param <C>
  *            the type of the child nodes
  */
-public class NavigationNodeAdapter<S extends INavigationNode<C>, C extends INavigationNode<?>> implements
+public class NavigationNodeListener<S extends INavigationNode<C>, C extends INavigationNode<?>> implements
 		INavigationNodeListener<S, C> {
 
 	/**

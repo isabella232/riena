@@ -17,7 +17,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 
 /**
  * Manages the reference between the navigation nodes and the view id's
@@ -29,7 +29,7 @@ public class SwtPresentationManager {
 	private Map<String, Integer> viewCounter;
 	private HashMap<String, Boolean> viewShared;
 	private Map<ISubModuleNode, Boolean> activated;
-	private SubModuleNodeAdapter subModuleNodeObserver;
+	private SubModuleNodeListener subModuleNodeObserver;
 
 	/**
 	 * Create new instance and initialize
@@ -49,7 +49,7 @@ public class SwtPresentationManager {
 		return views.get(pNode);
 	}
 
-	private final class SubModuleObserver extends SubModuleNodeAdapter {
+	private final class SubModuleObserver extends SubModuleNodeListener {
 
 		@Override
 		public void activated(ISubModuleNode source) {

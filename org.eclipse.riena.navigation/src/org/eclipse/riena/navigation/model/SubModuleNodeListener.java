@@ -10,17 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.IModuleNodeListener;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ISubModuleNodeListener;
 
 /**
- * Default implementation for the IModuleGroupNodeListener
+ * Default implementation for the ISubModuleNodeListener
  */
-public class ModuleNodeAdapter extends NavigationNodeAdapter<IModuleNode, ISubModuleNode> implements IModuleNodeListener {
-
-	public void presentSingleSubModuleChanged(IModuleNode source) {
-
-	}
+public class SubModuleNodeListener extends NavigationNodeListener<ISubModuleNode, ISubModuleNode> implements
+		ISubModuleNodeListener {
 
 }

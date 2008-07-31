@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.model.ModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.ModuleNodeListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
@@ -32,14 +32,16 @@ public class ModuleNodeViewController extends NavigationNodeViewController<IModu
 
 		closeable = true;
 		dragEnabled = true;
-		getNavigationNode().addListener(new ModuleNodeListener());
+		getNavigationNode().addListener(new MyModuleNodeListener());
 	}
 
-	private final class ModuleNodeListener extends ModuleNodeAdapter {
+	private final class MyModuleNodeListener extends ModuleNodeListener {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see
+		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
+		 * (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(IModuleNode moduleNode) {
@@ -49,7 +51,9 @@ public class ModuleNodeViewController extends NavigationNodeViewController<IModu
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged(org.eclipse.riena.navigation.INavigationNode)
+		 * @see
+		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
+		 * (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void iconChanged(IModuleNode source) {

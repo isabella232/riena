@@ -20,7 +20,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
-import org.eclipse.riena.navigation.model.SubApplicationNodeAdapter;
+import org.eclipse.riena.navigation.model.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
@@ -104,7 +104,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void initializeListener() {
-		ISubApplicationNodeListener subApplicationListener = new SubApplicationNodeListener();
+		ISubApplicationNodeListener subApplicationListener = new MySubApplicationNodeListener();
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(subApplicationListener);
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
@@ -299,7 +299,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	private class SubApplicationNodeListener extends SubApplicationNodeAdapter {
+	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
 
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#activated(org.eclipse.riena.navigation.ISubApplicationNode)

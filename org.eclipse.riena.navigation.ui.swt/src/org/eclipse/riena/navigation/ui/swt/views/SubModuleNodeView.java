@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
-import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
@@ -130,11 +130,11 @@ public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> e
 			node = node.getParent();
 		}
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new SubModuleNodeListener());
+		navigationTreeObserver.addListener(new MySubModuleNodeListener());
 		navigationTreeObserver.addListenerTo(node.getTypecastedAdapter(IApplicationModel.class));
 	}
 
-	private final class SubModuleNodeListener extends SubModuleNodeAdapter {
+	private final class MySubModuleNodeListener extends SubModuleNodeListener {
 		@Override
 		public void activated(ISubModuleNode source) {
 			SwtViewId id = SwtPresentationManagerAccessor.getManager().getSwtViewId(source);

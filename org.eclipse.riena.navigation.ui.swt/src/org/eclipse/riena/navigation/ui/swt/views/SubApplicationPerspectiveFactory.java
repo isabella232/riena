@@ -12,7 +12,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -70,7 +70,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	 */
 	private void initializeListener(SubApplicationViewController controller) {
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new SubModuleNodeListener());
+		navigationTreeObserver.addListener(new MySubModuleNodeListener());
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
@@ -82,12 +82,12 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
-	private class SubModuleNodeListener extends SubModuleNodeAdapter {
+	private class MySubModuleNodeListener extends SubModuleNodeListener {
 
 		private boolean navigationUp = false;
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(ISubModuleNode source) {
@@ -97,7 +97,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(ISubModuleNode source) {

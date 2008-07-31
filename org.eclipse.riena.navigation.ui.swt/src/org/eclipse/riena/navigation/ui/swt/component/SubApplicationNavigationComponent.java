@@ -7,7 +7,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNodeListener;
-import org.eclipse.riena.navigation.model.SubApplicationNodeAdapter;
+import org.eclipse.riena.navigation.model.SubApplicationNodeListener;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -74,10 +74,10 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 	 * This observer resizes the navigation after a child was added or removed.<br>
 	 * 
 	 */
-	private final class ModuleGroupObserver extends SubApplicationNodeAdapter {
+	private final class ModuleGroupObserver extends SubApplicationNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -88,7 +88,7 @@ public class SubApplicationNavigationComponent extends AbstractNavigationCompone
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childRemoved(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override

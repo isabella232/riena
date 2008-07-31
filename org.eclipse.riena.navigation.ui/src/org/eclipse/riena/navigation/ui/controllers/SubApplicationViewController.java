@@ -19,11 +19,11 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeListener;
-import org.eclipse.riena.navigation.model.ModuleGroupNodeAdapter;
-import org.eclipse.riena.navigation.model.ModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.model.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.NavigationTreeObserver;
-import org.eclipse.riena.navigation.model.SubApplicationNodeAdapter;
-import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.SubApplicationNodeListener;
+import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter;
@@ -52,10 +52,10 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 	public SubApplicationViewController(ISubApplicationNode pSubApplication) {
 		super(pSubApplication);
 		navigationTreeRidgetListener = new NavigationTreeRidgetListener();
-		subApplicationListener = new SubApplicationNodeListener();
-		subModuleNodeListener = new SubModuleNodeListener();
-		moduleNodeListener = new ModuleNodeListener();
-		moduleGroupNodeListener = new ModuleGroupNodeListener();
+		subApplicationListener = new MySubApplicationNodeListener();
+		subModuleNodeListener = new MySubModuleNodeListener();
+		moduleNodeListener = new MyModuleNodeListener();
+		moduleGroupNodeListener = new MyModuleGroupNodeListener();
 		navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(subApplicationListener);
 		navigationTreeObserver.addListener(moduleGroupNodeListener);
@@ -106,7 +106,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 		}
 	}
 
-	private class SubModuleNodeListener extends SubModuleNodeAdapter {
+	private class MySubModuleNodeListener extends SubModuleNodeListener {
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#childAdded(org.eclipse.riena.navigation.ISubModuleNode,
 		 *      org.eclipse.riena.navigation.ISubModuleNode)
@@ -121,7 +121,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 
 	}
 
-	private class SubApplicationNodeListener extends SubApplicationNodeAdapter {
+	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -168,7 +168,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 
 	}
 
-	private class ModuleNodeListener extends ModuleNodeAdapter {
+	private class MyModuleNodeListener extends ModuleNodeListener {
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#childAdded(org.eclipse.riena.navigation.IModuleNode,
 		 *      org.eclipse.riena.navigation.ISubModuleNode)
@@ -183,7 +183,7 @@ public class SubApplicationViewController extends NavigationNodeViewController<I
 
 	}
 
-	private class ModuleGroupNodeListener extends ModuleGroupNodeAdapter {
+	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
 
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#childAdded(org.eclipse.riena.navigation.IModuleGroupNode,

@@ -2,7 +2,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeListener;
-import org.eclipse.riena.navigation.model.SubModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.SubModuleNodeListener;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -67,7 +67,7 @@ public class SubModuleNavigationComponent extends AbstractNavigationComponent<IS
 		return treeItem;
 	}
 
-	private final class SubModuleNodeObserver extends SubModuleNodeAdapter {
+	private final class SubModuleNodeObserver extends SubModuleNodeListener {
 
 		@Override
 		public void activated(ISubModuleNode source) {

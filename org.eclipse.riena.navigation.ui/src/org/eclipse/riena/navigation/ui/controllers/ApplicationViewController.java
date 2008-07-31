@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.controllers;
 
 import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.model.ApplicationModelAdapter;
+import org.eclipse.riena.navigation.model.ApplicationModelListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
@@ -29,7 +29,7 @@ public class ApplicationViewController extends NavigationNodeViewController<IApp
 	 */
 	public ApplicationViewController(IApplicationModel applicationModel) {
 		super(applicationModel);
-		applicationModel.addListener(new ApplicationModelAdapter() {
+		applicationModel.addListener(new ApplicationModelListener() {
 
 			/*
 			 * (non-Javadoc)

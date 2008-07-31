@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.ModuleNodeAdapter;
+import org.eclipse.riena.navigation.model.ModuleNodeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -43,10 +43,10 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 		getModelNode().addListener(new ModuleNodeObserver());
 	}
 
-	private final class ModuleNodeObserver extends ModuleNodeAdapter {
+	private final class ModuleNodeObserver extends ModuleNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#childAdded(org.eclipse.riena.navigation.INavigationNode,
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -56,7 +56,7 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#activated(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void activated(IModuleNode source) {
@@ -66,7 +66,7 @@ public class ModuleNavigationComponent extends AbstractNavigationComponent<IModu
 		}
 
 		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(IModuleNode node) {

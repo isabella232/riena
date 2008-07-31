@@ -10,13 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.IApplicationModelListener;
-import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.IModuleNodeListener;
+import org.eclipse.riena.navigation.ISubModuleNode;
 
 /**
- * Default implementation for IApplicationModelListener
+ * Default implementation for the IModuleGroupNodeListener
  */
-public class ApplicationModelAdapter extends NavigationNodeAdapter<IApplicationModel, ISubApplicationNode> implements IApplicationModelListener {
+public class ModuleNodeListener extends NavigationNodeListener<IModuleNode, ISubModuleNode> implements
+		IModuleNodeListener {
+
+	public void presentSingleSubModuleChanged(IModuleNode source) {
+
+	}
 
 }

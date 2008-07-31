@@ -6,7 +6,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.model.ModuleGroupNodeAdapter;
+import org.eclipse.riena.navigation.model.ModuleGroupNodeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -68,7 +68,7 @@ public class ModuleGroupNavigationComponent extends AbstractNavigationComponent<
 		}
 	}
 
-	private final class ModuleGroupNodeObserver extends ModuleGroupNodeAdapter {
+	private final class ModuleGroupNodeObserver extends ModuleGroupNodeListener {
 
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {

@@ -17,7 +17,8 @@ import org.eclipse.riena.navigation.IModuleNode;
 /**
  * Default implementation for the IModuleGroupNodeListener
  */
-public class ModuleGroupNodeAdapter extends NavigationNodeAdapter<IModuleGroupNode, IModuleNode> implements IModuleGroupNodeListener {
+public class ModuleGroupNodeListener extends NavigationNodeListener<IModuleGroupNode, IModuleNode> implements
+		IModuleGroupNodeListener {
 
 	public void presentWithSingleModuleChanged(IModuleGroupNode source) {
 
