@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Label;
  */
 public class HelloWorldSubModuleView extends SubModuleNodeView<HelloWorldSubModuleController> {
 
-	public static final String ID = "org.eclipse.riena.sample.app.client.HelloWorldSubModuleView"; //$NON-NLS-1$
+	public static final String ID = HelloWorldSubModuleView.class.getName();
 
 	/**
 	 * Add a label with the text "Hello World!" to the view.

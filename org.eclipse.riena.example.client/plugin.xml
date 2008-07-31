@@ -28,88 +28,88 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CustomerDetailView"
-            id="customerDetailView"
-            name="customerDetailView">
+            class="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
+            id="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
+            name="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView">
       </view>
       
             <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SharedViewDemoView"
-            id="sharedviewdemoid"
-            name="sharedviewdemoid">
+            class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
+            id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
+            name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView">
       </view>
       <view
             allowMultiple="true"
             class="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
-            id="RidgetsSubModuleView"
-            name="RidgetsSubModuleView">
+            id="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
+            name="org.eclipse.riena.example.client.views.RidgetsSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.UiProcessDemoView"
-            id="org.eclipse.riena.sample.app.client.uiprocessdemoview"
-            name="org.eclipse.riena.sample.app.client.uiprocessdemoview">
+            class="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
+            id="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
+            name="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ComboView"
-            id="org.eclipse.riena.example.client.views.ComboView"
-            name="org.eclipse.riena.example.client.views.ComboView">
+            class="org.eclipse.riena.example.client.views.ComboSubModuleView"
+            id="org.eclipse.riena.example.client.views.ComboSubModuleView"
+            name="org.eclipse.riena.example.client.views.ComboSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ListView"
-            id="org.eclipse.riena.example.client.views.ListView"
-            name="org.eclipse.riena.example.client.views.ListView">
+            class="org.eclipse.riena.example.client.views.ListSubModuleView"
+            id="org.eclipse.riena.example.client.views.ListSubModuleView"
+            name="org.eclipse.riena.example.client.views.ListSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TextView"
-            id="org.eclipse.riena.example.client.views.TextView"
-            name="org.eclipse.riena.example.client.views.TextView">
+            class="org.eclipse.riena.example.client.views.TextSubModuleView"
+            id="org.eclipse.riena.example.client.views.TextSubModuleView"
+            name="org.eclipse.riena.example.client.views.TextSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.MarkerView"
-            id="org.eclipse.riena.example.client.views.MarkerView"
-            name="org.eclipse.riena.example.client.views.MarkerView">
+            class="org.eclipse.riena.example.client.views.MarkerSubModuleView"
+            id="org.eclipse.riena.example.client.views.MarkerSubModuleView"
+            name="org.eclipse.riena.example.client.views.MarkerSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.FocusableView"
-            id="org.eclipse.riena.example.client.views.FocusableView"
-            name="org.eclipse.riena.example.client.views.FocusableView">
+            class="org.eclipse.riena.example.client.views.FocusableSubModuleView"
+            id="org.eclipse.riena.example.client.views.FocusableSubModuleView"
+            name="org.eclipse.riena.example.client.views.FocusableSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.ValidationView"
-            id="org.eclipse.riena.example.client.views.ValidationView"
-            name="org.eclipse.riena.example.client.views.ValidationView">
+            class="org.eclipse.riena.example.client.views.ValidationSubModuleView"
+            id="org.eclipse.riena.example.client.views.ValidationSubModuleView"
+            name="org.eclipse.riena.example.client.views.ValidationSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.SystemPropertiesView"
-            id="org.eclipse.riena.example.client.views.SystemPropertiesView"
-            name="org.eclipse.riena.example.client.views.SystemPropertiesView">
+            class="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
+            id="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
+            name="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TreeView"
-            id="org.eclipse.riena.example.client.views.TreeView"
-            name="org.eclipse.riena.example.client.views.TreeView">
+            class="org.eclipse.riena.example.client.views.TreeSubModuleView"
+            id="org.eclipse.riena.example.client.views.TreeSubModuleView"
+            name="org.eclipse.riena.example.client.views.TreeSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TreeTableView"
-            id="org.eclipse.riena.example.client.views.TreeTableView"
-            name="org.eclipse.riena.example.client.views.TreeTableView">
+            class="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
+            id="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
+            name="org.eclipse.riena.example.client.views.TreeTableSubModuleView">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.TableView"
-            id="org.eclipse.riena.example.client.views.TableView"
-            name="org.eclipse.riena.example.client.views.TableView">
+            class="org.eclipse.riena.example.client.views.TableSubModuleView"
+            id="org.eclipse.riena.example.client.views.TableSubModuleView"
+            name="org.eclipse.riena.example.client.views.TableSubModuleView">
       </view>
       <view
             allowMultiple="true"

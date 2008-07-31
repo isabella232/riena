@@ -38,6 +38,9 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		Button control = getUIControl();
 		if (control != null) {
 			button = control;
+			if (text == null) {
+				text = button.getText();
+			}
 			button.addSelectionListener(actionObserver);
 			updateText();
 		}

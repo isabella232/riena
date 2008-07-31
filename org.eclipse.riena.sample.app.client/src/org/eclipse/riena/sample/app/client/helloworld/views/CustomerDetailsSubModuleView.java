@@ -20,7 +20,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class CustomerDetailsSubModuleView extends SubModuleNodeView<CustomerDetailsSubModuleController> {
 
-	public final static String ID = "org.eclipse.riena.sample.app.client.customerdetail";
+	public final static String ID = CustomerDetailsSubModuleView.class.getName();
 
 	private static final int FIELD_WIDTH = 100;
 	private final static int TOP = 10;

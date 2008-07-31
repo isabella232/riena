@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
@@ -245,7 +245,7 @@ public class TitlelessStackPresentationOrg extends StackPresentation {
 				String perspectiveId = getActivePage().getPerspective().getId();
 				ISubApplicationNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
 						ISubApplicationNode.class);
-				SubApplicationViewController controller = (SubApplicationViewController) node.getPresentation();
+				SubApplicationController controller = (SubApplicationController) node.getPresentation();
 				DefaultBindingManager defaultBindingManager = createBindingManager();
 				List<Object> uiControls = new ArrayList<Object>(1);
 				uiControls.add(getStatusLineWidget(statusLine));

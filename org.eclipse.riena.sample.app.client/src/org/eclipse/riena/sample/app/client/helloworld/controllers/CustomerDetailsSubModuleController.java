@@ -11,7 +11,7 @@
 package org.eclipse.riena.sample.app.client.helloworld.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
  * Controller of the sub module that displays the details of a customer.
  */
 public class CustomerDetailsSubModuleController extends
-		SubModuleNodeViewController {
+		SubModuleController {
 
 	private ITextFieldRidget numberFacade;
 	private ITextFieldRidget nameFacade;

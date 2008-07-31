@@ -21,7 +21,7 @@ import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
-import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
@@ -83,7 +83,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		NONE, HOVER, HOVER_SELECTED;
 	}
 
-	private ApplicationViewController controller;
+	private ApplicationController controller;
 	private List<Object> uiControls;
 
 	private Cursor handCursor;
@@ -92,7 +92,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private Composite switcherComposite;
 
-	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationViewController pController) {
+	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController) {
 		super(configurer);
 		uiControls = new ArrayList<Object>();
 		controller = pController;

@@ -13,7 +13,7 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
@@ -28,7 +28,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 
-	private SubApplicationViewController subApplicationViewController;
+	private SubApplicationController subApplicationViewController;
 	private UIProcessRidget uiProcessRidget;
 
 	/**
@@ -40,7 +40,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		doBaseLayout(layout);
 	}
 
-	protected SubApplicationViewController createController(String id) {
+	protected SubApplicationController createController(String id) {
 		ISubApplicationNode subApplication = locateSubApplication(id);
 		return createController(subApplication);
 	}
@@ -57,8 +57,8 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	 *            - sub-application node
 	 * @return controller of the sub-application view
 	 */
-	protected SubApplicationViewController createController(ISubApplicationNode subApplication) {
-		return new SubApplicationViewController(subApplication);
+	protected SubApplicationController createController(ISubApplicationNode subApplication) {
+		return new SubApplicationController(subApplication);
 
 	}
 
@@ -68,7 +68,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	 * @param controller
 	 *            - controller of the sub-application
 	 */
-	private void initializeListener(SubApplicationViewController controller) {
+	private void initializeListener(SubApplicationController controller) {
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new MySubModuleNodeListener());
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());

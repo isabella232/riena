@@ -7,9 +7,9 @@
  ****************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.views.TableView;
-import org.eclipse.riena.example.client.views.TextView;
-import org.eclipse.riena.example.client.views.TreeView;
+import org.eclipse.riena.example.client.views.TableSubModuleView;
+import org.eclipse.riena.example.client.views.TextSubModuleView;
+import org.eclipse.riena.example.client.views.TreeSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
@@ -35,17 +35,17 @@ public class TableTextAndTreeNodeBuilder implements INavigationNodeBuilder {
 		SubModuleNode subModule = new SubModuleNode("Table");
 		// TODO get presentation via presentationId from extension point
 		// subModule.setPresentationId("child1");
-		SwtPresentationManagerAccessor.getManager().present(subModule, TableView.ID);
+		SwtPresentationManagerAccessor.getManager().present(subModule, TableSubModuleView.ID);
 		module.addChild(subModule);
 		subModule = new SubModuleNode("Text");
 		// TODO get presentation via presentationId from extension point
 		// subModule.setPresentationId("child2");
-		SwtPresentationManagerAccessor.getManager().present(subModule, TextView.ID);
+		SwtPresentationManagerAccessor.getManager().present(subModule, TextSubModuleView.ID);
 		module.addChild(subModule);
 		subModule = new SubModuleNode("Tree");
 		// TODO get presentation via presentationId from extension point
 		// subModule.setPresentationId("child3");
-		SwtPresentationManagerAccessor.getManager().present(subModule, TreeView.ID);
+		SwtPresentationManagerAccessor.getManager().present(subModule, TreeSubModuleView.ID);
 		module.addChild(subModule);
 		return node;
 	}

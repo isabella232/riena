@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class RidgetsSubModuleView extends SubModuleNodeView<RidgetsSubModuleController> {
 
-	public static final String ID = "RidgetsSubModuleView"; //$NON-NLS-1$
+	public static final String ID = RidgetsSubModuleView.class.getName();
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)

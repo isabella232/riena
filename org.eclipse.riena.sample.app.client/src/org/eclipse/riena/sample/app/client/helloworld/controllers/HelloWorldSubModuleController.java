@@ -1,10 +1,10 @@
 package org.eclipse.riena.sample.app.client.helloworld.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 
-public class HelloWorldSubModuleController extends SubModuleNodeViewController {
+public class HelloWorldSubModuleController extends SubModuleController {
 
 	private ILabelRidget labelRidget;
 	private TxtBean bean;
@@ -17,7 +17,7 @@ public class HelloWorldSubModuleController extends SubModuleNodeViewController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController#afterBind()
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
 	 */
 	@Override
 	public void afterBind() {

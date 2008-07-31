@@ -20,7 +20,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
@@ -450,7 +450,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	private void initializeStatusLine() {
-		SubApplicationViewController controller = getSubApplicationViewController();
+		SubApplicationController controller = getSubApplicationViewController();
 		if (controller != null) {
 			DefaultBindingManager defaultBindingManager = createBindingManager();
 			List<Object> uiControls = new ArrayList<Object>(1);
@@ -473,7 +473,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (hasListener) {
 			return;
 		}
-		SubApplicationViewController controller = getSubApplicationViewController();
+		SubApplicationController controller = getSubApplicationViewController();
 		if (controller != null) {
 			NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 			navigationTreeObserver.addListener(new SubModuleNodeListener() {
@@ -492,14 +492,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * 
 	 * @return a SubApplicationViewController instance or null
 	 */
-	private SubApplicationViewController getSubApplicationViewController() {
-		SubApplicationViewController result = null;
+	private SubApplicationController getSubApplicationViewController() {
+		SubApplicationController result = null;
 		IWorkbenchPage page = getActivePage();
 		if (page != null) {
 			String id = page.getPerspective().getId();
 			ISubApplicationNode subApplication = SwtPresentationManagerAccessor.getManager().getNavigationNode(id,
 					ISubApplicationNode.class);
-			result = (SubApplicationViewController) subApplication.getPresentation();
+			result = (SubApplicationController) subApplication.getPresentation();
 		}
 		return result;
 	}

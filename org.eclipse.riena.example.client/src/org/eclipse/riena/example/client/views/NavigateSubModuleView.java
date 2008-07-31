@@ -11,7 +11,7 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.riena.example.client.controllers.NavigateSubModuleViewController;
+import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * SWT {@link IComboRidget} sample.
  */
-public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleViewController> {
+public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleController> {
 
 	public static final String ID = NavigateSubModuleView.class.getName();
 
@@ -50,10 +50,11 @@ public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleVi
 	}
 
 	@Override
-	protected NavigateSubModuleViewController createController(ISubModuleNode subModuleNode) {
-		return new NavigateSubModuleViewController(subModuleNode);
+	protected NavigateSubModuleController createController(ISubModuleNode subModuleNode) {
+		return new NavigateSubModuleController(subModuleNode);
 	}
 
+	@Override
 	protected IBindingManager createBindingManager() {
 		return new InjectAllAtOnceBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
 	}

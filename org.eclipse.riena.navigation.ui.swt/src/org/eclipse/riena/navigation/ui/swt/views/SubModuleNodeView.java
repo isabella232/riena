@@ -20,7 +20,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -34,7 +34,7 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * Abstract implementation for a sub module view
  */
-public abstract class SubModuleNodeView<C extends SubModuleNodeViewController> extends ViewPart {
+public abstract class SubModuleNodeView<C extends SubModuleController> extends ViewPart {
 
 	private Map<ISubModuleNode, C> node2Controler;
 

@@ -11,7 +11,7 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.riena.example.client.controllers.NavigationSubModuleViewController;
+import org.eclipse.riena.example.client.controllers.NavigationSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * View of the sub-module to add module-groups, modules etc. dynamically.
  */
-public class NavigationSubModuleView extends SubModuleNodeView<NavigationSubModuleViewController> {
+public class NavigationSubModuleView extends SubModuleNodeView<NavigationSubModuleController> {
 
 	public static final String ID = NavigationSubModuleView.class.getName();
 
@@ -65,8 +65,8 @@ public class NavigationSubModuleView extends SubModuleNodeView<NavigationSubModu
 	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#createController(org.eclipse.riena.navigation.ISubModuleNode)
 	 */
 	@Override
-	protected NavigationSubModuleViewController createController(ISubModuleNode subModuleNode) {
-		return new NavigationSubModuleViewController(subModuleNode);
+	protected NavigationSubModuleController createController(ISubModuleNode subModuleNode) {
+		return new NavigationSubModuleController(subModuleNode);
 	}
 
 }

@@ -28,26 +28,26 @@
       <view
             allowMultiple="true"
             class="org.eclipse.riena.sample.app.client.helloworld.views.HelloWorldSubModuleView"
-            id="org.eclipse.riena.sample.app.client.HelloWorldSubModuleView"
+            id="org.eclipse.riena.sample.app.client.helloworld.views.HelloWorldSubModuleView"
             name="HelloWorldSubModuleView">
       </view>
       <view
             allowMultiple="true"
             class="org.eclipse.riena.sample.app.client.helloworld.views.HelloServerSubModuleView"
-            id="org.eclipse.riena.sample.app.client.helloserver"
+            id="org.eclipse.riena.sample.app.client.helloworld.views.HelloServerSubModuleView"
             name="HelloServer">
       </view>
       <view
             allowMultiple="true"
             class="org.eclipse.riena.sample.app.client.helloworld.views.CustomerSearchSubModuleView"
-            id="org.eclipse.riena.sample.app.client.customersearch"
+            id="org.eclipse.riena.sample.app.client.helloworld.views.CustomerSearchSubModuleView"
             name="CustomerSearch">
       </view>
       <view
             allowMultiple="true"
             class="org.eclipse.riena.sample.app.client.helloworld.views.CustomerDetailsSubModuleView"
-            id="org.eclipse.riena.sample.app.client.customerdetail"
-            name="CustomerDetailsView">
+            id="org.eclipse.riena.sample.app.client.helloworld.views.CustomerDetailsSubModuleView"
+            name="CustomerDetails">
       </view>
 
    </extension>

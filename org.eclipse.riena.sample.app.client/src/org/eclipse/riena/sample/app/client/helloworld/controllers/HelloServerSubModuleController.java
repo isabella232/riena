@@ -6,13 +6,13 @@ import java.beans.PropertyChangeSupport;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
-public class HelloServerSubModuleController extends SubModuleNodeViewController {
+public class HelloServerSubModuleController extends SubModuleController {
 
 	private IHelloWorldService service;
 

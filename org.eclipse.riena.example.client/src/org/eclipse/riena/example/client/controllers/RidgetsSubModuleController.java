@@ -11,7 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 /**
  * Controller of the sub module that shows a set of ridgets.
  */
-public class RidgetsSubModuleController extends SubModuleNodeViewController {
+public class RidgetsSubModuleController extends SubModuleController {
 
 	private final static String PLUGIN_ID = "org.eclipse.riena.example.client:"; //$NON-NLS-1$
 	private final static String ICON_SAMPLE = PLUGIN_ID + "/icons/sample.gif"; //$NON-NLS-1$
@@ -62,7 +62,7 @@ public class RidgetsSubModuleController extends SubModuleNodeViewController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController#afterBind()
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
 	 */
 	@Override
 	public void afterBind() {

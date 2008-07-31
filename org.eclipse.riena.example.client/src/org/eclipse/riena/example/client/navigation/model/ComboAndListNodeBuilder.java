@@ -7,8 +7,8 @@
  ****************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.views.ComboView;
-import org.eclipse.riena.example.client.views.ListView;
+import org.eclipse.riena.example.client.views.ComboSubModuleView;
+import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
@@ -34,12 +34,12 @@ public class ComboAndListNodeBuilder implements INavigationNodeBuilder {
 		SubModuleNode subModule = new SubModuleNode("Combo");
 		// TODO get presentation via presentationId from extension point
 		// subModule.setPresentationId("child1");
-		SwtPresentationManagerAccessor.getManager().present(subModule, ComboView.ID);
+		SwtPresentationManagerAccessor.getManager().present(subModule, ComboSubModuleView.ID);
 		module.addChild(subModule);
 		subModule = new SubModuleNode("List");
 		// TODO get presentation via presentationId from extension point
 		// subModule.setPresentationId("child2");
-		SwtPresentationManagerAccessor.getManager().present(subModule, ListView.ID);
+		SwtPresentationManagerAccessor.getManager().present(subModule, ListSubModuleView.ID);
 		module.addChild(subModule);
 		return node;
 	}

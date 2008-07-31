@@ -9,7 +9,7 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleNodeViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.sample.app.client.helloworld.views.CustomerDetailsSubModuleView;
@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
-public class CustomerSearchSubModuleController extends SubModuleNodeViewController {
+public class CustomerSearchSubModuleController extends SubModuleController {
 
 	private ICustomerSearch service;
 
@@ -128,8 +128,9 @@ public class CustomerSearchSubModuleController extends SubModuleNodeViewControll
 	public void afterBind() {
 		super.afterBind();
 		String[] columnProperties = new String[] { Customer.PROPERTY_CUSTOMER_NUMBER, Customer.PROPERTY_LAST_NAME,
-				Customer.PROPERTY_FIRST_NAME, Customer.PROPERTY_PHONE_BUSINESS, Customer.PROPERTY_PHONE_BUSINESS };
-		tableRidget.bindToModel(searchResult, "list", Customer.class, columnProperties, new String[] {});
+				Customer.PROPERTY_FIRST_NAME, Customer.PROPERTY_PHONE_BUSINESS };
+		tableRidget.bindToModel(searchResult, "list", Customer.class, columnProperties, new String[] { "Number",
+				"Lastname", "Firstname", "phone" });
 
 		tableSelection = new WritableValue();
 		tableRidget.bindSingleSelectionToModel(tableSelection);
@@ -171,7 +172,7 @@ public class CustomerSearchSubModuleController extends SubModuleNodeViewControll
 		}
 	}
 
-	private class ResultContainer {
+	public class ResultContainer {
 
 		private List<Customer> list = new ArrayList<Customer>();
 

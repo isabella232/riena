@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class CustomerSearchSubModuleView extends SubModuleNodeView<CustomerSearchSubModuleController> {
 
-	public final static String ID = "org.eclipse.riena.sample.app.client.customersearch";
+	public final static String ID = CustomerSearchSubModuleView.class.getName();
 
 	private static final int FIELD_WIDTH = 100;
 	private final static int TOP = 10;
@@ -129,27 +129,16 @@ public class CustomerSearchSubModuleView extends SubModuleNodeView<CustomerSearc
 		// create table
 		searchResultTable = new Table(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		searchResultTable.setLinesVisible(true);
+		addUIControl(searchResultTable, "tableRidget");
 		// searchResultTable.addSelectionListener(new CustomerOpener());
 		TableColumn customerNumberColumn = new TableColumn(searchResultTable, SWT.CENTER);
 		TableColumn lastNameColumn = new TableColumn(searchResultTable, SWT.CENTER);
 		TableColumn firstNameColumn = new TableColumn(searchResultTable, SWT.CENTER);
-		TableColumn zipCodeColumn = new TableColumn(searchResultTable, SWT.CENTER);
-		TableColumn cityColumn = new TableColumn(searchResultTable, SWT.CENTER);
-		TableColumn streetColumn = new TableColumn(searchResultTable, SWT.CENTER);
-		addUIControl(searchResultTable, "tableRidget");
-		//		
-		customerNumberColumn.setText("Customer No.");
-		firstNameColumn.setText("First Name");
-		lastNameColumn.setText("Last Name");
-		zipCodeColumn.setText("Zip Code");
-		cityColumn.setText("City");
-		streetColumn.setText("Street");
+		TableColumn phoneColumn = new TableColumn(searchResultTable, SWT.CENTER);
 		customerNumberColumn.setWidth(80);
-		firstNameColumn.setWidth(95);
-		lastNameColumn.setWidth(100);
-		zipCodeColumn.setWidth(80);
-		cityColumn.setWidth(80);
-		streetColumn.setWidth(80);
+		firstNameColumn.setWidth(120);
+		lastNameColumn.setWidth(120);
+		phoneColumn.setWidth(100);
 		searchResultTable.setHeaderVisible(true);
 
 		// layout table

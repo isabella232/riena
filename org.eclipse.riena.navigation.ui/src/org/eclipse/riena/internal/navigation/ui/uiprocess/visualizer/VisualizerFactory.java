@@ -16,7 +16,7 @@ import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserve
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
@@ -41,9 +41,9 @@ public class VisualizerFactory implements IUICallbackDispatcherFactory {
 				aVisualizer.addObserver(createObserver(node));
 				for (ISubApplicationNode aSubApplicationNode : getSubApplications()) {
 					if (aSubApplicationNode.getPresentation() != null
-							&& ((SubApplicationViewController) aSubApplicationNode.getPresentation())
+							&& ((SubApplicationController) aSubApplicationNode.getPresentation())
 									.getStatuslineRidget() != null) {
-						aVisualizer.addObserver(((SubApplicationViewController) aSubApplicationNode.getPresentation())
+						aVisualizer.addObserver(((SubApplicationController) aSubApplicationNode.getPresentation())
 								.getStatuslineRidget().getStatuslineProcessRidget());
 					}
 				}
@@ -61,6 +61,6 @@ public class VisualizerFactory implements IUICallbackDispatcherFactory {
 	}
 
 	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {
-		return ((SubApplicationViewController) subApp.getPresentation()).getProgressBoxRidget();
+		return ((SubApplicationController) subApp.getPresentation()).getProgressBoxRidget();
 	}
 }

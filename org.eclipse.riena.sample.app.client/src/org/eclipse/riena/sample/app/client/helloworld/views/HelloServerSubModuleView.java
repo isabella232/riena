@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class HelloServerSubModuleView extends SubModuleNodeView<HelloServerSubModuleController> {
 
-	public final static String ID = "org.eclipse.riena.sample.app.client.helloserver";
+	public final static String ID = HelloServerSubModuleView.class.getName();
 
 	@Override
 	public void basicCreatePartControl(Composite parent) {

@@ -14,7 +14,7 @@ import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
-import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
@@ -46,8 +46,8 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	protected ApplicationViewController createApplicationViewController(IApplicationModel pModel) {
-		return new ApplicationViewController(pModel);
+	protected ApplicationController createApplicationViewController(IApplicationModel pModel) {
+		return new ApplicationController(pModel);
 	}
 
 	public void stop() {

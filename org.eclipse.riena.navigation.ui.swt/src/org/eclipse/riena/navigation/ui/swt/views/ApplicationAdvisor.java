@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.ui.controllers.ApplicationViewController;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentationFactory;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -18,9 +18,9 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationAdvisor extends WorkbenchAdvisor {
 
-	private ApplicationViewController controller;
+	private ApplicationController controller;
 
-	public ApplicationAdvisor(ApplicationViewController controller) {
+	public ApplicationAdvisor(ApplicationController controller) {
 		this.controller = controller;
 	}
 
