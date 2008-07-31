@@ -96,8 +96,6 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		IObservableValue modelOV = BeansObservables.observeValue(model, "text1");
 		ridget.bindToModel(modelOV);
 
-		assertNotNull(ridget.getRidgetObservable());
-		assertEquals(String.class, ridget.getRidgetObservable().getValueType());
 		assertEquals("", ridget.getText());
 
 		ridget.updateFromModel();
@@ -111,8 +109,6 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		TextBean model = new TextBean();
 		ridget.bindToModel(model, "text2");
 
-		assertNotNull(ridget.getRidgetObservable());
-		assertEquals(String.class, ridget.getRidgetObservable().getValueType());
 		assertEquals("", ridget.getText());
 
 		ridget.updateFromModel();
