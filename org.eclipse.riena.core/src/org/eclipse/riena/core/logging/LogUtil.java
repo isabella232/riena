@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.xml.DOMConfigurator;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
@@ -34,7 +35,7 @@ public class LogUtil {
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
 	private static boolean initialized = false;
 	private BundleContext context;
-	private static final String DEFAULT_CONFIGURATION = "/log4j.default.xml";
+	private static final String DEFAULT_CONFIGURATION = "/log4j.default.xml"; //$NON-NLS-1$
 	private String config = null;
 
 	public LogUtil(BundleContext context) {
@@ -51,8 +52,7 @@ public class LogUtil {
 	 * @return
 	 */
 	public Logger getLogger(String name) {
-		init();
-		return logService == null ? new ConsoleLogger(name) : logService.getLogger(name);
+		return getLogger(DEFAULT_CONFIGURATION, name);
 	}
 
 	/**
@@ -69,6 +69,7 @@ public class LogUtil {
 	 * @return
 	 */
 	public Logger getLogger(String config, String name) {
+		Assert.isNotNull(config, "config must not be null"); //$NON-NLS-1$
 		this.config = config;
 		init();
 		return logService == null ? new ConsoleLogger(name) : logService.getLogger(name);
@@ -122,18 +123,16 @@ public class LogUtil {
 		synchronized (LogUtil.class) {
 			if (!initialized) {
 
+				// Experimental: capture platform logs
+				new PlatformLogBridge().attach();
+
+				// define log destinations
 				logListeners.add(new SysoLogListener());
 				logListeners.add(new Log4jLogListener());
 
 				Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
 				Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
 				initialized = true;
-			}
-
-			// TODO: do we need a default ???
-
-			if (config == null) {
-				config = DEFAULT_CONFIGURATION;
 			}
 
 			// fetch the URL of given log4j configuration file via context
@@ -156,9 +155,7 @@ public class LogUtil {
 				}
 			} else {
 				// TODO: handle this ...
-
 			}
-
 		}
 	}
 
