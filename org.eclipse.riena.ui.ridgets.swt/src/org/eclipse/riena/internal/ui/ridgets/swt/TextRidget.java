@@ -98,6 +98,15 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		return textValue;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Invoking this method will copy the given text into the ridget and the
+	 * widget regardless of the validation outcome. If the text does not pass
+	 * validation the error marker will be set and the text will <b>not</b> be
+	 * copied into the model. If validation passes the text will be copied into
+	 * the model as well.
+	 */
 	public synchronized void setText(String text) {
 		String oldValue = textValue;
 		textValue = text;
@@ -117,6 +126,13 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		return !isErrorMarked();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Invoking this method will copy the model value into the ridget and the
+	 * widget regardless of the validation outcome. If the model value does not
+	 * pass validation, the error marker will be set.
+	 */
 	@Override
 	public synchronized void updateFromModel() {
 		super.updateFromModel();
@@ -225,8 +241,13 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 
 	/**
 	 * Validation listener that checks 'on edit' validation rules when the text
-	 * widget's contents are modified by the user. If the next text value does
-	 * not pass the test, the change will be rejected.
+	 * widget's contents are modified by the user. If the new text value does
+	 * not pass the test and outcome is ERROR_BLOCK_WITH_FLASH, the change will
+	 * be rejected. If the new text passed the test, or fails the test without
+	 * blocking, the value is copied into the ridget. This will fire a proprty
+	 * change event (see {@link TextRidget#setText(String)}) causing the 'on
+	 * update' validation rules to be checked and will copy the value into the
+	 * model if it passes those checks.
 	 */
 	private final class ValidationListener implements VerifyListener {
 
