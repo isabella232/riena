@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IGroupedTableRidget;
+import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class TreeTableSubModuleController extends SubModuleController {
 
-	private IGroupedTableRidget tree;
+	private IGroupedTreeTableRidget tree;
 	private IToggleButtonRidget buttonEnableGrouping;
 	private IActionRidget buttonAddSibling;
 	private IActionRidget buttonAddChild;
@@ -47,11 +47,11 @@ public class TreeTableSubModuleController extends SubModuleController {
 	private IActionRidget buttonExpand;
 	private IActionRidget buttonCollapse;
 
-	public IGroupedTableRidget getTree() {
+	public IGroupedTreeTableRidget getTree() {
 		return tree;
 	}
 
-	public void setTree(IGroupedTableRidget tree) {
+	public void setTree(IGroupedTreeTableRidget tree) {
 		this.tree = tree;
 	}
 
@@ -231,7 +231,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 			}
 		};
 		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(tree, IGroupedTableRidget.PROPERTY_GROUPING_ENABLED),
+		dbc.bindValue(BeansObservables.observeValue(tree, IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED),
 				BeansObservables.observeValue(buttonEnableGrouping, IToggleButtonRidget.PROPERTY_SELECTED), null, null);
 		bindEnablementToValue(dbc, buttonAddChild, hasSelection);
 		bindEnablementToValue(dbc, buttonAddSibling, hasNonRootSelection);

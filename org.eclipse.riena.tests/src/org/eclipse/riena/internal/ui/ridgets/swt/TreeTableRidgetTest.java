@@ -15,7 +15,7 @@ import java.util.Comparator;
 
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.tests.TreeUtils;
-import org.eclipse.riena.ui.ridgets.IGroupedTableRidget;
+import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
@@ -199,7 +199,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetGroupingEnabledFiresEvents() {
 		TreeTableRidget ridget = getRidget();
 
-		expectPropertyChangeEvent(IGroupedTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.FALSE, Boolean.TRUE);
+		expectPropertyChangeEvent(IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.FALSE, Boolean.TRUE);
 		ridget.setGroupingEnabled(true);
 		verifyPropertyChangeEvents();
 
@@ -207,7 +207,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setGroupingEnabled(true);
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IGroupedTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.TRUE, Boolean.FALSE);
+		expectPropertyChangeEvent(IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.TRUE, Boolean.FALSE);
 		ridget.setGroupingEnabled(false);
 		verifyPropertyChangeEvents();
 

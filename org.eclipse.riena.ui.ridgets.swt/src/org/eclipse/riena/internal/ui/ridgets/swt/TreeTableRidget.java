@@ -17,7 +17,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.riena.ui.ridgets.IGroupedTableRidget;
+import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.swt.SWT;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * Ridget for SWT @link {@link Tree} widgets, that shows a tree with multiple
  * columns.
  */
-public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGroupedTableRidget {
+public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGroupedTreeTableRidget {
 
 	private final ColumnSortListener sortListener;
 	private final Listener groupedTableListener;
@@ -101,7 +101,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 		boolean oldValue = isGroupingEnabled;
 		isGroupingEnabled = grouping;
 		if (oldValue != isGroupingEnabled) {
-			firePropertyChange(IGroupedTableRidget.PROPERTY_GROUPING_ENABLED, oldValue, isGroupingEnabled);
+			firePropertyChange(IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED, oldValue, isGroupingEnabled);
 			applyGrouping();
 		}
 	}

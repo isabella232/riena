@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
  * A ridget that supports "grouping" of columns.
  * <p>
@@ -35,7 +34,7 @@ package org.eclipse.riena.ui.ridgets;
  * +------------+-------------------+-----------+
  * </pre>
  */
-public interface IGroupedTableRidget extends ITreeTableRidget {
+public interface IGroupedTreeTableRidget extends ITreeTableRidget {
 
 	/**
 	 * Property indicating whether rows associated with folder nodes in the tree
@@ -56,7 +55,7 @@ public interface IGroupedTableRidget extends ITreeTableRidget {
 	 * Sets whether grouping is enabled. As grouped table without grouping looks
 	 * like a normal table.
 	 * <p>
-	 * Fires a {@link IGroupedTableRidget#PROPERTY_GROUPING_ENABLED} event.
+	 * Fires a {@link IGroupedTreeTableRidget#PROPERTY_GROUPING_ENABLED} event.
 	 * 
 	 * @param grouping
 	 *            The new grouping state.
