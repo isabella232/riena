@@ -10,7 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
-public interface IUICallbackDispatcherFactory {
+/**
+ * locates an {@link IProgressVisualizer} for a given visualization context.
+ */
+public interface IProgressVisualizerLocator {
 
+	/**
+	 * @param context
+	 *            - the visualization context
+	 * @return - the related {@link IProgressVisualizer}
+	 */
 	IProgressVisualizer getProgressVisualizer(Object context);
 }

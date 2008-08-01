@@ -19,10 +19,10 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
-import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
+import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
 
-public class VisualizerFactory implements IUICallbackDispatcherFactory {
+public class VisualizerFactory implements IProgressVisualizerLocator {
 
 	private IApplicationModel applicationModel;
 

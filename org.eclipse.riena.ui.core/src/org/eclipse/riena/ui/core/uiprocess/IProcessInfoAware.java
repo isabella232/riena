@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.core.uiprocess;
 
 /**
- * 
+ * Interface for classes managing instances of {@link ProcessInfo}
  */
 public interface IProcessInfoAware {
 

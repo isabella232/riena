@@ -11,9 +11,10 @@
 package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
- * 
+ * The ridget visualizing a {@link UIProcess}
  */
 public interface IProgressBoxRidget extends IProgressVisualizerObserver, IRidget {
 

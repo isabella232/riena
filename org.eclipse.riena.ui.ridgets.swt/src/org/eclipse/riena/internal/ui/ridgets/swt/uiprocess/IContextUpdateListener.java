@@ -10,10 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
+/**
+ * Implementations can be used to observe changes of visual contexts registered
+ * at the {@link IVisualContextManager}.
+ * 
+ */
 public interface IContextUpdateListener {
 
+	/**
+	 * gets called before the state of the observed context changes
+	 * 
+	 * @param context
+	 *            - the observed context
+	 */
 	void beforeContextUpdate(Object context);
 
+	/**
+	 * notification for context updates
+	 * 
+	 * @param context
+	 *            - the observed context
+	 */
 	void contextUpdated(Object context);
 
 }

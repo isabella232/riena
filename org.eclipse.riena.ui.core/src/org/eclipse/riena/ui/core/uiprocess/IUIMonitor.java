@@ -13,7 +13,8 @@ package org.eclipse.riena.ui.core.uiprocess;
 import org.eclipse.core.runtime.IAdaptable;
 
 /**
- * 
+ * {@link IUIMonitor}s implement callback functions that are called on the user
+ * interface thread
  */
 public interface IUIMonitor extends IAdaptable {
 
@@ -22,22 +23,22 @@ public interface IUIMonitor extends IAdaptable {
 	 * 
 	 * @param progress
 	 */
-	public void updateProgress(int progress);
+	void updateProgress(int progress);
 
 	/**
 	 * The first Update of the UI. Synchronized with UI-Thread
 	 * 
 	 * @param progress
 	 */
-	public void initialUpdateUI(int totalWork);
+	void initialUpdateUI(int totalWork);
 
 	/**
 	 * Called when the process has finished. Synchronized with UI-Thread
 	 * 
 	 * @param progress
 	 */
-	public void finalUpdateUI();
+	void finalUpdateUI();
 
-	public boolean isActive(IUIMonitorContainer container);
+	boolean isActive(IUIMonitorContainer container);
 
 }

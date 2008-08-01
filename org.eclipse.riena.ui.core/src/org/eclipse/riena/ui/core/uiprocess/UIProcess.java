@@ -238,4 +238,21 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		return true;
 	}
 
+	/**
+	 * call this method to get a "ui thread serialized run" of
+	 * {@link #updateUi()}
+	 */
+	protected void notifyUpdateUI() {
+		getCallbackDispatcher().getSyncher().synchronize(new Runnable() {
+
+			public void run() {
+				updateUi();
+			}
+
+		});
+	}
+
+	public void updateUi() {
+	}
+
 }

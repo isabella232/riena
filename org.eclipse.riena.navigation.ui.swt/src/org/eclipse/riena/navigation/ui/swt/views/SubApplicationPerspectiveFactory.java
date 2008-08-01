@@ -12,7 +12,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -137,9 +136,11 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 				public List<Object> getActiveContexts(List<Object> contexts) {
 					List nodes = new ArrayList();
 					for (Object object : contexts) {
-						SubModuleNode node = (SubModuleNode) object;
-						if (node.isActivated()) {
-							nodes.add(node);
+						if (object instanceof INavigationNode) {
+							INavigationNode<?> node = (INavigationNode) object;
+							if (node.isActivated()) {
+								nodes.add(node);
+							}
 						}
 					}
 					return nodes;
@@ -151,7 +152,6 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 						node.addSimpleListener(contextUpdater);
 						listeners.add(listener);
 					}
-
 				}
 
 			});

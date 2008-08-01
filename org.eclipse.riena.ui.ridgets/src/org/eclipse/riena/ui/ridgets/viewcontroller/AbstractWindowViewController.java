@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory;
+import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -74,9 +74,9 @@ public abstract class AbstractWindowViewController implements IViewController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IUICallbackDispatcherFactory)
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator)
 	 */
-	public void setUICallbackDispatcherFactory(IUICallbackDispatcherFactory uiprocessCallBackDispatcherFactory) {
+	public void setUICallbackDispatcherFactory(IProgressVisualizerLocator uiprocessCallBackDispatcherFactory) {
 		// do nothing by default
 	}
 

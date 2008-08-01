@@ -23,8 +23,14 @@ import org.eclipse.swt.widgets.Shell;
 public class UIProcessControl implements IProgressControl {
 
 	private static final int UPDATE_DELAY = 200;
-	private boolean processing = false;
+
+	private boolean processing;
+
 	private UiProcessWindow processWindow;
+
+	private ListenerList cancelListeners = new ListenerList();
+
+	private ProcessUpdateThread processUpdateThread;
 
 	public UIProcessControl(Shell parentShell) {
 		Assert.isNotNull(parentShell);
@@ -32,7 +38,9 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	private void createProcessWindow(Shell parentShell) {
+		// create window
 		processWindow = new UiProcessWindow(parentShell, this);
+		// observe window
 		processWindow.addProcessWindowListener(new IProcessWindowListener() {
 
 			public void windowAboutToClose() {
@@ -43,6 +51,9 @@ public class UIProcessControl implements IProgressControl {
 		});
 	}
 
+	/**
+	 * @return - the {@link ApplicationWindow}
+	 */
 	public ApplicationWindow getWindow() {
 		return processWindow;
 
@@ -57,7 +68,9 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	private void closeWindow() {
+		// stop update thread
 		stopProcessing();
+		// close AppWindow
 		processWindow.closeWindow();
 
 	}
@@ -76,7 +89,8 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	private void startProcessing() {
-		if (!isProcessing()) {
+		// only if not allready processing
+		if (!isProcessing()) {// use the synched way..
 			setProcessing(true);
 			getProgressBar().setMaximum(90);
 			getPercentLabel().setText(""); //$NON-NLS-1$
@@ -91,6 +105,9 @@ public class UIProcessControl implements IProgressControl {
 		processUpdateThread.start();
 	}
 
+	/**
+	 * This Thread is used to visualize "progressing"
+	 */
 	private final class ProcessUpdateThread extends Thread {
 
 		@Override
@@ -158,11 +175,7 @@ public class UIProcessControl implements IProgressControl {
 	}
 
 	public void start() {
-		showProcessBox();
-
-	}
-
-	private void showProcessBox() {
+		// open the ui
 		showWindow();
 	}
 
@@ -174,9 +187,9 @@ public class UIProcessControl implements IProgressControl {
 		processWindow.getShell().setText(text);
 	}
 
-	private ListenerList cancelListeners = new ListenerList();
-	private ProcessUpdateThread processUpdateThread;
-
+	/**
+	 * add an {@link ICancelListener} to be notified about cancel events.
+	 */
 	public void addCancelListener(ICancelListener listener) {
 		cancelListeners.add(listener);
 	}
@@ -185,6 +198,11 @@ public class UIProcessControl implements IProgressControl {
 		cancelListeners.remove(listener);
 	}
 
+	/**
+	 * notify listener
+	 * 
+	 * @param windowClosing
+	 */
 	protected void fireCanceled(boolean windowClosing) {
 		for (Object listener : cancelListeners.getListeners()) {
 			ICancelListener.class.cast(listener).canceled(windowClosing);

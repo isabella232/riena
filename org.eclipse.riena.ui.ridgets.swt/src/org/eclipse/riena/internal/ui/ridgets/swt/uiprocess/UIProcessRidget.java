@@ -24,14 +24,21 @@ import java.util.Map;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
+import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IProgressBoxRidget;
 import org.eclipse.riena.ui.swt.uiprocess.ICancelListener;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRidget {
+/**
+ * The {@link UIProcessRidget} is not a standard {@link AbstractSWTRidget} as it
+ * does not bind a {@link Control} but a {@link UIProcessControl}. Another
+ * difference is that it does not hold any detail state of the uiProcessControl.
+ */
+public class UIProcessRidget extends AbstractRidget implements IProgressBoxRidget {
 
-	private UIProcessControl control;
+	private UIProcessControl uiProcessControl;
 
 	private CancelListener cancelListener;
 
@@ -40,6 +47,8 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	private Map<Object, VisualizerContainer> contexts;
 
 	private IVisualContextManager contextLocator;
+
+	private boolean focusAble;
 
 	public UIProcessRidget() {
 		cancelListener = new CancelListener();
@@ -98,21 +107,17 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 		int completed = -1;
 	}
 
-	protected UIProcessControl getProgressControl() {
-		return control;
-	}
-
 	private void showProcessing() {
-		getProgressControl().showProcessing();
+		getUIControl().showProcessing();
 	}
 
 	public void open() {
-		getProgressControl().start();
-		updateUI();
+		getUIControl().start();
+		updateUi();
 	}
 
 	public void close() {
-		getProgressControl().stop();
+		getUIControl().stop();
 	}
 
 	private class CancelListener implements ICancelListener {
@@ -146,29 +151,25 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 
 	}
 
-	@Override
 	protected void bindUIControl() {
-		control.addCancelListener(cancelListener);
+		uiProcessControl.addCancelListener(cancelListener);
 	}
 
-	@Override
 	public void setUIControl(Object uiControl) {
 		checkUIControl(uiControl);
 		unbindUIControl();
-		this.control = (UIProcessControl) uiControl;
+		uiProcessControl = (UIProcessControl) uiControl;
 		bindUIControl();
 	}
 
-	@Override
 	protected void checkUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, UIProcessControl.class);
 
 	}
 
-	@Override
 	protected void unbindUIControl() {
-		if (getProgressControl() != null) {
-			getProgressControl().removeCancelListener(cancelListener);
+		if (getUIControl() != null) {
+			getUIControl().removeCancelListener(cancelListener);
 		}
 	}
 
@@ -225,7 +226,7 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 			close();
 		} else {
 			if (getCurrentVisualizer() != null) {
-				checkOpen();
+				open();
 				Object currentContext = null;
 
 				for (Object context : contexts.keySet()) {
@@ -236,7 +237,7 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 					}
 				}
 				if (currentContext != null) {
-					getProgressControl().getWindow().getShell().setBounds(contexts.get(currentContext).getBounds());
+					getUIControl().getWindow().getShell().setBounds(contexts.get(currentContext).getBounds());
 				}
 				int progress = getProgress(getCurrentVisualizer()).completed;
 				if (progress <= 0) {
@@ -275,10 +276,10 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 		if (isActive(visualizer)) {
 			// all this makes sense if the visualizers is part of one of the
 			// active contexts
-			checkOpen();
+			open();
 			showProcessing();
 			saveTotalWork(visualizer, totalWork);
-			updateUI();
+			updateUi();
 		}
 	}
 
@@ -313,7 +314,7 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 		public void propertyChange(PropertyChangeEvent evt) {
 			ProcessInfo pInfo = ProcessInfo.class.cast(evt.getSource());
 			if (isActive(pInfo) && !ProcessInfo.PROPERTY_CANCELED.equals(evt.getPropertyName())) {
-				updateUI();
+				updateUi();
 			}
 		}
 
@@ -339,16 +340,16 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	/*
 	 * update ui but take care of disposed widgets!
 	 */
-	private void updateUI() {
+	private void updateUi() {
 		Shell windowShell = getWindowShell();
 		if (windowShell != null) {
 			windowShell.getDisplay().syncExec(new Runnable() {
 
 				public void run() {
-					Shell shell = getProgressControl().getWindow().getShell();
+					Shell shell = getUIControl().getWindow().getShell();
 					if (shell != null && !shell.isDisposed()) {
-						getProgressControl().setDescription(getCurrentProcessInfo().getNote());
-						getProgressControl().setTitle(getCurrentProcessInfo().getTitle());
+						getUIControl().setDescription(getCurrentProcessInfo().getNote());
+						getUIControl().setTitle(getCurrentProcessInfo().getTitle());
 						// show the progress
 						reinitializeProgress();
 
@@ -368,7 +369,7 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	}
 
 	private Shell getWindowShell() {
-		Shell shell = getProgressControl().getWindow().getShell();
+		Shell shell = getUIControl().getWindow().getShell();
 		return shell;
 	}
 
@@ -380,15 +381,11 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 		this.visualizerProgress.get(visualizer).totalWork = totalWork;
 	}
 
-	private void checkOpen() {
-		open();
-	}
-
 	public void removeProgressVisualizer(IProgressVisualizer visualizer) {
 		removeVisualizerFromContextData(visualizer);
 		removeVisualizerProgress(visualizer);
 		if (getCurrentVisualizer() != null) {
-			updateUI();
+			updateUi();
 		}
 	}
 
@@ -404,7 +401,8 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	}
 
 	public void setActiveProgressVisualizer(IProgressVisualizer visualizer) {
-		// TODO Auto-generated method stub
+		// we do not accept this from outside. It depends on the context which
+		// is the active visualizer
 
 	}
 
@@ -415,7 +413,7 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	public void updateProgress(IProgressVisualizer visualizer, int progress) {
 		saveProgress(visualizer, progress);
 		if (isActive(visualizer)) {
-			getProgressControl().showProgress(progress, getTotalWork(visualizer));
+			getUIControl().showProgress(progress, getTotalWork(visualizer));
 		}
 	}
 
@@ -439,26 +437,22 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	}
 
 	public void activate() {
-		// nothing to do here
+		// we do not need to activate anything here
 	}
 
 	public void deactivate() {
-		// nothing to do here
+		// we do not need to DeActivate anything here
 	}
 
 	private void saveBounds(Object visualContext) {
 		if (visualContext != null) {
-			Shell shell = getProgressControl().getWindow().getShell();
+			Shell shell = getUIControl().getWindow().getShell();
 			if (shell != null) {
 				contexts.get(visualContext).setBounds(shell.getBounds());
 			}
 		}
 	}
 
-	/**
-	 * @param contextLocator
-	 *            the contextLocator to set
-	 */
 	public void setContextLocator(IVisualContextManager contextLocator) {
 		this.contextLocator = contextLocator;
 	}
@@ -469,4 +463,66 @@ public class UIProcessRidget extends AbstractSWTRidget implements IProgressBoxRi
 	public IVisualContextManager getContextLocator() {
 		return contextLocator;
 	}
+
+	public String getToolTipText() {
+		if (getWindowShell() != null && !getWindowShell().isDisposed() && isFocusable()) {
+			return getWindowShell().getToolTipText();
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	public UIProcessControl getUIControl() {
+		return uiProcessControl;
+	}
+
+	public boolean hasFocus() {
+		if (getWindowShell() != null && !getWindowShell().isDisposed() && isFocusable()) {
+			return getWindowShell().isFocusControl();
+		}
+		return false;
+	}
+
+	public boolean isFocusable() {
+		return focusAble;
+	}
+
+	public void setFocusable(boolean focusable) {
+		this.focusAble = focusable;
+	}
+
+	public boolean isVisible() {
+		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
+			return getWindowShell().isVisible();
+		}
+		return false;
+	}
+
+	public void requestFocus() {
+		if (getWindowShell() != null && !getWindowShell().isDisposed() && isFocusable()) {
+			getWindowShell().forceFocus();
+		}
+	}
+
+	// No Blocking
+	public void setBlocked(boolean blocked) {
+	}
+
+	public boolean isBlocked() {
+		return false;
+	}
+
+	public void setToolTipText(String toolTipText) {
+		if (getWindowShell() != null && !getWindowShell().isDisposed()) {
+			getWindowShell().setToolTipText(toolTipText);
+		}
+	}
+
+	public void setVisible(boolean visible) {
+		if (visible) {
+			open();
+		} else {
+			close();
+		}
+	}
+
 }
