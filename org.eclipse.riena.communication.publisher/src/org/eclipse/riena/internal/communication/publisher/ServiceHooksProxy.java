@@ -59,13 +59,14 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 			for (IServiceHook sHook : serviceHooks) {
 				sHook.beforeService(context);
 			}
+
+			Object s = context.getProperty("riena.subject");
+			if (s instanceof Subject) {
+				subject = (Subject) s;
+			}
 		}
 
 		try {
-			Object s = context.getProperty("riena.subject");
-			if (s != null && s instanceof Subject) {
-				subject = (Subject) s;
-			}
 			return super.invoke(proxy, method, args);
 		} catch (InvocationTargetException e) {
 			throw e.getTargetException();
