@@ -992,8 +992,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			if (redraw) {
 				Control control = (Control) e.getSource();
-				Rectangle buttonBounds = getShellRenderer().getButtonsBounds();
-				control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
+				// avoid widget disposed exception on close
+				if (!control.isDisposed()) {
+					Rectangle buttonBounds = getShellRenderer().getButtonsBounds();
+					control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
+				}
 			}
 
 		}
@@ -1001,20 +1004,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		private void updateCursor(MouseEvent e) {
 
 			Control control = (Control) e.getSource();
-
-			Point pointer = new Point(e.x, e.y);
-			if (moveInside && getShellRenderer().isInsideMoveArea(pointer)) {
-				if (move) {
-					showGrabCursor(control);
+			// avoids widget is disposed exception on close
+			if (!control.isDisposed()) {
+				Point pointer = new Point(e.x, e.y);
+				if (moveInside && getShellRenderer().isInsideMoveArea(pointer)) {
+					if (move) {
+						showGrabCursor(control);
+					} else {
+						showHandCursor(control);
+					}
 				} else {
-					showHandCursor(control);
-				}
-			} else {
-				if (!move) {
-					showDefaultCursor(control);
+					if (!move) {
+						showDefaultCursor(control);
+					}
 				}
 			}
-
 		}
 
 		/**
