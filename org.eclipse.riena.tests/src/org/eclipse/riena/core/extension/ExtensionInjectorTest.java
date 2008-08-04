@@ -11,9 +11,7 @@
 package org.eclipse.riena.core.extension;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
@@ -254,9 +252,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 			Object service = getContext().getService(reference);
 			if (service instanceof ConfigSymbolReplace) {
 				ConfigSymbolReplace config = (ConfigSymbolReplace) service;
-				Dictionary properties = new Hashtable();
-				properties.put("true", "true");
-				config.updated(properties);
+				config.addVariable("true", "true");
 				configSymbolReplace = true;
 			}
 		}

@@ -23,7 +23,6 @@ import org.osgi.service.cm.ConfigurationException;
  */
 public class ConfigSymbolReplaceTest extends RienaTestCase {
 
-	private Dictionary<String, String> dictionary;
 	private ConfigSymbolReplace translator;
 	private Dictionary<String, String> book;
 	private static Field fgManager;
@@ -47,7 +46,6 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dictionary = new Hashtable<String, String>();
 		book = new Hashtable<String, String>();
 		translator = new ConfigSymbolReplace();
 		// Need every time a fresh manager
@@ -55,17 +53,15 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testUpdatedWrongKey() throws ConfigurationException {
-		dictionary.put("host", "${host");
-		translator.updated(dictionary);
+		translator.addVariable("host", "${host");
 		book.put(REF_KEY, "${host}");
 		translator.modifyConfiguration(null, book);
 		assertEquals("${host", book.get(REF_KEY));
 	}
 
 	public void testUpdatedRecursiveKeyDirectly() throws ConfigurationException {
-		dictionary.put("host", "${host}");
 		try {
-			translator.updated(dictionary);
+			translator.addVariable("host", "${host}");
 			book.put(REF_KEY, "${host}");
 			translator.modifyConfiguration(null, book);
 			fail();
@@ -75,10 +71,9 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testUpdatedRecursiveKeyIndirectly1() throws ConfigurationException {
-		dictionary.put("a", "${b}");
-		dictionary.put("b", "${a}");
 		try {
-			translator.updated(dictionary);
+			translator.addVariable("a", "${b}");
+			translator.addVariable("b", "${a}");
 			book.put(REF_KEY, "${a}");
 			translator.modifyConfiguration(null, book);
 			fail();
@@ -88,11 +83,10 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testUpdatedRecursiveKeyIndirectly2() throws ConfigurationException {
-		dictionary.put("a", "${b}");
-		dictionary.put("b", "${c}");
-		dictionary.put("c", "${a}");
 		try {
-			translator.updated(dictionary);
+			translator.addVariable("a", "${b}");
+			translator.addVariable("b", "${c}");
+			translator.addVariable("c", "${a}");
 			book.put(REF_KEY, "${a}");
 			translator.modifyConfiguration(null, book);
 			fail();
@@ -102,18 +96,14 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testModifyWrongKey() throws ConfigurationException {
-		dictionary.put("host", WWW_ECLIPSE_ORG);
-		translator.updated(dictionary);
-
+		translator.addVariable("host", WWW_ECLIPSE_ORG);
 		book.put(REF_KEY, "${host");
 		translator.modifyConfiguration(null, book);
 		assertEquals("${host", book.get(REF_KEY));
 	}
 
 	public void testModifyEmptyKey() throws ConfigurationException {
-		dictionary.put("", WWW_ECLIPSE_ORG);
-		translator.updated(dictionary);
-
+		translator.addVariable("", WWW_ECLIPSE_ORG);
 		book.put(REF_KEY, "${}");
 		translator.modifyConfiguration(null, book);
 
@@ -121,9 +111,7 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testModifySingle() throws ConfigurationException {
-		dictionary.put("host", WWW_ECLIPSE_ORG);
-		translator.updated(dictionary);
-
+		translator.addVariable("host", WWW_ECLIPSE_ORG);
 		book.put(REF_KEY, "${host}");
 		translator.modifyConfiguration(null, book);
 
@@ -131,9 +119,7 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testModifyDoubleSequentialy() throws ConfigurationException {
-		dictionary.put("host", WWW_ECLIPSE_ORG);
-		translator.updated(dictionary);
-
+		translator.addVariable("host", WWW_ECLIPSE_ORG);
 		book.put(REF_KEY, "${host}${host}");
 		translator.modifyConfiguration(null, book);
 
@@ -141,10 +127,8 @@ public class ConfigSymbolReplaceTest extends RienaTestCase {
 	}
 
 	public void testModifyDoubleNested() throws ConfigurationException {
-		dictionary.put("url", "http://${host}/path");
-		dictionary.put("host", WWW_ECLIPSE_ORG);
-		translator.updated(dictionary);
-
+		translator.addVariable("url", "http://${host}/path");
+		translator.addVariable("host", WWW_ECLIPSE_ORG);
 		book.put(REF_KEY, "${url}");
 		translator.modifyConfiguration(null, book);
 
