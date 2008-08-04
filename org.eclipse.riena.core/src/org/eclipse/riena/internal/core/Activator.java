@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
-import java.util.Hashtable;
-
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.RienaStartupStatus;
@@ -20,10 +21,8 @@ import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
-import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationPlugin;
-import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
@@ -54,20 +53,33 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 		final Logger LOGGER = getLogger(Activator.class.getName());
 
-		startForcedRienaBundles(context, LOGGER);
-
-		// register ConfigSymbolReplace that replaces symbols in config strings
+		// register ConfigSymbolReplace that replaces symbols in configuration
+		// strings
 		ConfigSymbolReplace csr = new ConfigSymbolReplace();
-		Hashtable<String, String> ht = new Hashtable<String, String>();
-		ht.put(Constants.SERVICE_PID, "org.eclipse.riena.config.symbols");
-		// register as configurable osgi service
-		configSymbolReplace = context.registerService(ManagedService.class.getName(), csr, ht);
-		// register as config admin configuration plugin
 		configurationPlugin = context.registerService(ConfigurationPlugin.class.getName(), csr, null);
 		// execute the class that reads through the extensions and executes them
 		// as config admin packages
 		new ConfigFromExtensions(context).doConfig();
+
+		logStage(LOGGER);
+
+		startForcedRienaBundles(context, LOGGER);
+
 		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
+	}
+
+	/**
+	 * @param logger
+	 */
+	private void logStage(Logger logger) {
+		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		String stage;
+		try {
+			stage = variableManager.performStringSubstitution("Riena is running in stage '${riena.stage}'.");
+		} catch (CoreException e) {
+			stage = "No stage information set.";
+		}
+		logger.log(LogService.LOG_INFO, stage);
 	}
 
 	/**
