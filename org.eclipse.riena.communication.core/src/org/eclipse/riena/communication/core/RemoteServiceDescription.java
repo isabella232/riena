@@ -95,24 +95,18 @@ public class RemoteServiceDescription {
 		for (String key : keys) {
 			if (key.equals(Constants.OBJECTCLASS)) {
 				// String obejctClassName =
-				// CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_SERVICE_CLASSNAME),
-				// null);
+				// CommunicationUtil.accessProperty(serviceRef
+				// .getProperty(PROP_SERVICE_CLASSNAME),null);
 				serviceInterfaceClass = serverInterface;
 				serviceInterfaceClassName = serviceInterfaceClass.getName();
+			} else if (key.equals(PROP_REMOTE_PROTOCOL)) {
+				protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
+			} else if (key.equals(PROP_REMOTE_PATH)) {
+				path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
+			} else if (key.equals(PROP_CONFIG_ID)) {
+				configid = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_CONFIG_ID), null);
 			} else {
-				if (key.equals(PROP_REMOTE_PROTOCOL)) {
-					protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
-				} else {
-					if (key.equals(PROP_REMOTE_PATH)) {
-						path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
-					} else {
-						if (key.equals(PROP_CONFIG_ID)) {
-							configid = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_CONFIG_ID), null);
-						} else {
-							setProperty(key, CommunicationUtil.accessProperty(serviceRef.getProperty(key), null));
-						}
-					}
-				}
+				setProperty(key, CommunicationUtil.accessProperty(serviceRef.getProperty(key), null));
 			}
 		}
 		bundleName = serviceRef.getBundle().getSymbolicName();
@@ -190,9 +184,7 @@ public class RemoteServiceDescription {
 
 	/**
 	 * The state of the service. Values are:<br>
-	 * <br>
-	 * {@link #STATUS_REGISTERED}<br>
-	 * {@link #STATUS_MODIFIED}<br>
+	 * <br> {@link #STATUS_REGISTERED}<br> {@link #STATUS_MODIFIED}<br>
 	 * {@link #STATUS_UNREGISTERED}<br>
 	 * 
 	 * @return the current state of the service
@@ -340,18 +332,4 @@ public class RemoteServiceDescription {
 	public Object getProperty(String name) {
 		return properties.get(name);
 	}
-
-	// find interfaceClass by interfaceName
-	private Class<?> findInterfClazz(Object service, String interfaceName) {
-		Class<?> serviceInterfaceClass = null;
-		for (Class<?> aInterface : service.getClass().getInterfaces()) {
-			if (aInterface.getName().equals(interfaceName)) {
-				serviceInterfaceClass = aInterface;
-				break;
-			}
-		}
-		return serviceInterfaceClass;
-
-	}
-
 }
