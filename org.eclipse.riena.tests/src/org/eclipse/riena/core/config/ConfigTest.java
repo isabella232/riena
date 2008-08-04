@@ -28,6 +28,8 @@ public class ConfigTest extends RienaTestCase {
 		super.setUp();
 		startBundles("org\\.eclipse\\.equinox\\.cm.*", null);
 		startBundles("org\\.eclipse\\.riena\\.core", null);
+		// TODO Why do I need this sleep?
+		Thread.sleep(200);
 	}
 
 	/**
