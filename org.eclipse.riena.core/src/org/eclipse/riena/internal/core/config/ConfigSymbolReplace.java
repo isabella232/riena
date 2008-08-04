@@ -19,24 +19,20 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ConfigurationPlugin;
-import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
 /**
- * This <code>ConfigurationPlugin</code> gets notified for each and every
- * configuration that ConfigAdmin applies. ConfigSymbolReplace itself is
- * configurable by sending configuration to SERVICE_PID =
- * "org.eclipse.riena.config.symbols".<br>
- * <code>ConfigSymbolReplace</code> replaces variable references of the form
- * <i>${var}</i> and replaces them with the replacements found in it´s
- * dictionary. It also is possible to have variable references within the
- * dictionary itself.
+ * This <code>ConfigurationPlugin</code> replaces variable references of the
+ * form <i>${var}</i>.
+ * <p>
+ * Internally it uses the <code>StringVariableManager</code> to perform the
+ * replacements. All configuration has to be done by the facilities of the
+ * <code>StringVariableManager</code>.
  */
-public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService {
+public class ConfigSymbolReplace implements ConfigurationPlugin {
 
 	private IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 
@@ -49,6 +45,7 @@ public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService 
 	 * org.osgi.service.cm.ConfigurationPlugin#modifyConfiguration(org.osgi.
 	 * framework.ServiceReference, java.util.Dictionary)
 	 */
+	@SuppressWarnings("unchecked")
 	public void modifyConfiguration(ServiceReference reference, Dictionary properties) {
 		// don't do symbol source replace for configurations of myself
 		if (reference != null && Activator.getDefault().getContext().getService(reference) == this)
@@ -67,65 +64,26 @@ public class ConfigSymbolReplace implements ConfigurationPlugin, ManagedService 
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Add a new string variable to the <code>StringVariableManager</code>.
 	 * 
-	 * @see org.osgi.service.cm.ManagedService#updated(java.util.Dictionary)
+	 * @param key
+	 * @param value
+	 * @throws ConfigurationException
 	 */
-	public void updated(Dictionary properties) throws ConfigurationException {
-
-		// FIXME LATER: This is a workaround for a problem with the startup of
-		// OSGI. What happens is that the Bundle Activator starts this
-		// class as a ConfigurationPlugin, this class is then configured
-		// through this update method. This happens by the ConfigurationAdmin in
-		// a seperate Thread. To update its own configuration with symbols
-		// its needs the class Iter down below. When the class loader loads it,
-		// it tries to start the riena.core bundle which is currently still in
-		// the process of being started, so it waits (for 5 seconds)
-		// at the same time the ConfigFromExtension class is triggered by the
-		// Activator and tries to load other classes to complete bundle start it
-		// hangs there infinitly because loading classes in one bundle is a
-		// synchronized operation.
-		// So we have deadlock.
-		// The ConfigurationAdmin thread waits within the classloader
-		// for the bundle start and the BundleActivator waits for classloader to
-		// come free to load ConfigFromExtension. This times out after 5 seconds
-		// and we can move on. To work around this problem we now wait in this
-		// method here until the Bundle start is completed. So to Activator
-		// is not blocked and this class can load Iter because bundle start is
-		// finished. This gracefully solves all problems.
-		// 23.july 2008 Christian Campo, Stefan Liebig
+	public void addVariable(String key, String value) throws ConfigurationException {
+		IValueVariable[] variables = new IValueVariable[] { variableManager.newValueVariable((String) key, null, true,
+				(String) value) };
 		try {
-			while (Activator.getDefault().getBundle().getState() != Bundle.ACTIVE) {
-				Thread.sleep(100);
-			}
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-
-		if (properties == null)
-			return;
-
-		// We could also create an array with all values, but with that we were
-		// not be able to ignore doubled defined keys but with equal values.
-		IValueVariable[] variables = new IValueVariable[1];
-		for (Object key : Iter.able(properties.keys())) {
-			if (key.getClass() != String.class)
-				continue;
-			Object value = properties.get(key);
-			if (value == null || value.getClass() != String.class)
-				continue;
-			variables[0] = variableManager.newValueVariable((String) key, null, true, (String) value);
-			try {
-				variableManager.addVariables(variables);
-			} catch (CoreException e) {
-				IValueVariable existingValue = variableManager.getValueVariable((String) key);
-				if (existingValue.getValue().equals(value))
-					LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")");
-				else
-					throw new ConfigurationException((String) key, "Could not add a value variable " + variables[0]
-							+ " to variable manager.", e);
-			}
+			variableManager.addVariables(variables);
+		} catch (CoreException e) {
+			IValueVariable existingValue = variableManager.getValueVariable((String) key);
+			if (existingValue.getValue().equals(value))
+				LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")");
+			else
+				throw new ConfigurationException((String) key, "Could not add a value variable " + variables[0]
+						+ " to variable manager.", e);
 		}
 	}
+
 }
