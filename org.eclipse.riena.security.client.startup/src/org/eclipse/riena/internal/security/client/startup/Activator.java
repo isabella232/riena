@@ -38,11 +38,11 @@ public class Activator extends RienaActivator {
 		Activator.plugin = this;
 
 		authenticationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://${securityhost}/hessian/AuthenticationService", "hessian", //$NON-NLS-1$ //$NON-NLS-2$
+				"http://${riena.securehostname}/hessian/AuthenticationService", "hessian", //$NON-NLS-1$ //$NON-NLS-2$
 				"org.eclipse.riena.security.authentication.config"); //$NON-NLS-1$
 
 		authorizationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class, "hessian", //$NON-NLS-1$
-				"http://${securityhost}/hessian/AuthorizazionServiceWS", //$NON-NLS-1$
+				"http://${riena.securehostname}/hessian/AuthorizazionServiceWS", //$NON-NLS-1$
 				"org.eclipse.riena.security.authorizationservice.config"); //$NON-NLS-1$
 	}
 
