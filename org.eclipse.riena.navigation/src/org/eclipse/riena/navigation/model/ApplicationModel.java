@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.IApplicationModelListener;
 
@@ -53,8 +54,42 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 		initializeNavigationProcessor();
 	}
 
+	/**
+	 * 
+	 */
 	protected void initializeNavigationProcessor() {
 		setNavigationProcessor(new NavigationProcessor());
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
+	 *      addNavigationHistoryListener
+	 *      (org.eclipse.riena.navigation.INavigationHistoryListener)
+	 */
+	public void addNavigationHistoryListener(INavigationHistoryListener listener) {
+		getNavigationProcessor().addNavigationHistoryListener(listener);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
+	 *      removeNavigationHistoryListener
+	 *      (org.eclipse.riena.navigation.INavigationHistoryListener)
+	 */
+	public void removeNavigationHistoryListener(INavigationHistoryListener listener) {
+		getNavigationProcessor().removeNavigationHistoryListener(listener);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#getHistoryBackSize()
+	 */
+	public int getHistoryBackSize() {
+		return getNavigationProcessor().getHistoryBackSize();
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#getHistoryForwardSize()
+	 */
+	public int getHistoryForwardSize() {
+		return getNavigationProcessor().getHistoryForwardSize();
+	}
 }

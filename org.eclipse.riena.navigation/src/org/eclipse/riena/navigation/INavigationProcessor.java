@@ -17,7 +17,7 @@ package org.eclipse.riena.navigation;
  * be active at the same time -> the default navigation processor allows only
  * one node of each type
  */
-public interface INavigationProcessor {
+public interface INavigationProcessor extends INavigationHistory, INavigationHistoryListernable {
 
 	void activate(INavigationNode<?> toActivate);
 
@@ -28,4 +28,11 @@ public interface INavigationProcessor {
 	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
 			INavigationArgumentListener argumentListener);
 
+	/**
+	 * Navigates to the caller (the source node) of the given targetNode.
+	 * 
+	 * @param targetNode
+	 *            The node where we have navigate to and return from
+	 */
+	void navigateBack(INavigationNode<?> targetNode);
 }

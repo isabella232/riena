@@ -10,13 +10,23 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.navigation.listener.IApplicationModelListener;
-import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
-
 /**
- * Describes the riena mode of an application consisting of sub applications
+ * Gives access to the navigation history.
  */
-public interface IApplicationModel extends INavigationNode<ISubApplicationNode>,
-		INavigationNodeListenerable<IApplicationModel, ISubApplicationNode, IApplicationModelListener>,
-		INavigationHistoryListernable {
+public interface INavigationHistory {
+
+	/**
+	 * Navigates one step back in the navigation history
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
+	 */
+	public void historyBack();
+
+	/**
+	 * Navigates one step forward in the navigation history
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
+	 */
+	public void historyForward();
+
 }

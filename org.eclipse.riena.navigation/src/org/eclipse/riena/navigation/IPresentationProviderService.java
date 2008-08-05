@@ -23,14 +23,15 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 public interface IPresentationProviderService {
 
 	/**
-	 * Returns a navigationNode identified by the given navigationNodeId
+	 * Returns a navigationNode identified by the given navigationNodeId. The
+	 * node is lazy created if it not yet exists.
 	 * 
 	 * @param sourceNode
 	 * @param targetId
 	 * @return
 	 */
 
-	INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
 			INavigationArgumentListener argumentListener);
 
 	/**

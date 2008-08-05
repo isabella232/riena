@@ -23,7 +23,8 @@ import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
  * The children ability and parent ability is not included because it is
  * different for different model nodes
  */
-public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable {
+public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable,
+		INavigationHistory {
 
 	/**
 	 * The states of the navigation node.
@@ -422,4 +423,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	void navigate(INavigationNodeId targetId, Object argument, INavigationArgumentListener argumentListener);
 
+	/**
+	 * Navigates back to the caller of a navigation.
+	 */
+	void navigateBack();
 }

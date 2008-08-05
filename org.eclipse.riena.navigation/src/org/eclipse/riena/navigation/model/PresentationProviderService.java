@@ -69,7 +69,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
 	 */
 	@SuppressWarnings("unchecked")
-	public INavigationNode<?> createNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
 			INavigationArgumentListener argumentListener) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
@@ -80,7 +80,7 @@ public class PresentationProviderService implements IPresentationProviderService
 				INavigationNodeBuilder builder = presentationDefinition.createNodeBuilder();
 				prepareNavigationNodeBuilder(targetId, builder);
 				targetNode = builder.buildNode(targetId);
-				INavigationNode parentNode = createNode(sourceNode, new NavigationNodeId(presentationDefinition
+				INavigationNode parentNode = provideNode(sourceNode, new NavigationNodeId(presentationDefinition
 						.getParentPresentationId()), null, null);
 				parentNode.addChild(targetNode);
 			} else {
@@ -196,8 +196,7 @@ public class PresentationProviderService implements IPresentationProviderService
 		if (presentationDefinition != null) {
 			return presentationDefinition.getViewId();
 		} else {
-			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId()
-					+ "'.");
+			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId() + "'.");
 		}
 	}
 

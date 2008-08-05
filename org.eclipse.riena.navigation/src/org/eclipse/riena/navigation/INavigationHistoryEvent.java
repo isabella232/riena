@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.navigation.listener.IApplicationModelListener;
-import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import java.util.List;
 
 /**
- * Describes the riena mode of an application consisting of sub applications
+ * This event is fired, when the navigation history is changed.
  */
-public interface IApplicationModel extends INavigationNode<ISubApplicationNode>,
-		INavigationNodeListenerable<IApplicationModel, ISubApplicationNode, IApplicationModelListener>,
-		INavigationHistoryListernable {
+public interface INavigationHistoryEvent {
+	int getHistorySize();
+
+	List<INavigationNode<?>> getHistoryNodes();
 }

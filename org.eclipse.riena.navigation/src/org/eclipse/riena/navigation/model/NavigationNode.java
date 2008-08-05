@@ -318,15 +318,17 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.riena.navigation.INavigationNode#addSimpleListener(org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener)
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#addSimpleListener(org.eclipse
+	 *      .riena.navigation.model.ISimpleNavigationNodeListener)
 	 */
 	public void addSimpleListener(ISimpleNavigationNodeListener simpleListener) {
 		simpleListeners.add(simpleListener);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.riena.navigation.INavigationNode#removeSimpleListener(org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener)
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#removeSimpleListener(org
+	 *      .eclipse.riena.navigation.model.ISimpleNavigationNodeListener)
 	 */
 	public void removeSimpleListener(ISimpleNavigationNodeListener simpleListener) {
 		simpleListeners.remove(simpleListener);
@@ -891,6 +893,30 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
+	 * Navigates to the caller (the source node) of the given targetNode.
+	 * 
+	 * @param targetNode
+	 *            The node where we have navigate to and return from
+	 */
+	public void navigateBack() {
+		getNavigationProcessor().navigateBack(this);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationHistory#historyBack()
+	 */
+	public void historyBack() {
+		getNavigationProcessor().historyBack();
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationHistory#historyPrev()
+	 */
+	public void historyForward() {
+		getNavigationProcessor().historyForward();
+	}
+
+	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#getPresentationId()
 	 */
 	public INavigationNodeId getPresentationId() {
@@ -901,5 +927,4 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		// TODO set via constructor, remove setter
 		this.presentationId = presentationId;
 	}
-
 }

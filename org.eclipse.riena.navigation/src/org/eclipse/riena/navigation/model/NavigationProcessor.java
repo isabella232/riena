@@ -6,19 +6,27 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    compeople AG - initial API and implementation
+ * compeople AG - initial API and implementation
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EmptyStackException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.Vector;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationContext;
+import org.eclipse.riena.navigation.INavigationHistory;
+import org.eclipse.riena.navigation.INavigationHistoryEvent;
+import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
@@ -28,7 +36,14 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 /**
  * Default implementation for the navigation processor
  */
-public class NavigationProcessor implements INavigationProcessor {
+public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
+	// private static Logger LOGGER =
+	// Activator.getDefault().getLogger(NavigationProcessor.class.getName());
+	private static int MAX_STACKSIZE = 20;
+	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
+	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
+	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
+	private List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
@@ -40,26 +55,53 @@ public class NavigationProcessor implements INavigationProcessor {
 				// if toActivate is module, module group or sub application
 				// the same sub module will be activated on activation of
 				// the toActivate, in any case there is nothing to do
+				buildHistory(toActivate);
 			} else {
 				// 1.find the chain to activate
 				// 2.find the chain to deactivate
 				// 3.check the deactivation chain
 				// 4.check the activation chain
 				// 5. do the deactivation chain
-				// 6. do the activation chain
+				// 6. hande node on the histBack
+				// 7. do the activation chain
 				List<INavigationNode<?>> toActivateList = getNodesToActivateOnActivation(toActivate);
 				List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnActivation(toActivate);
 				INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
 				if (allowsDeactivate(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
+						buildHistory(toActivate);
 						activate(navigationContext);
 					}
 				}
-
 			}
 		}
+	}
 
+	/**
+	 * Remembers the node to push onto the navigation history stack. A maximum
+	 * of MAX_STACKSIZE elements are stored. Older elements are removed from the
+	 * stack.
+	 * 
+	 * @param toActivate
+	 */
+	private void buildHistory(INavigationNode<?> toActivate) {
+		// filter out unnavigatable nodes
+		if (!(toActivate instanceof ISubModuleNode) || toActivate.isDisposed())
+			return;
+		if (histBack.isEmpty() || !histBack.peek().equals(toActivate)) {
+			histBack.push(toActivate);
+			// limit the stack size and remove older elements
+			if (histBack.size() > MAX_STACKSIZE)
+				histBack.remove(histBack.firstElement());
+			fireBackHistoryChangedEvent();
+		}
+		// is forewarding history top stack element equals node toActivate,
+		// remove it!
+		if (!histForward.isEmpty() && histForward.peek().equals(toActivate)) {
+			histForward.pop();// remove newest node
+			fireForewardHistoryChangedEvent();
+		}
 	}
 
 	/**
@@ -98,10 +140,34 @@ public class NavigationProcessor implements INavigationProcessor {
 						}
 					}
 				}
+				cleanupHistory(nodeToDispose);
 			}
-
 		}
+	}
 
+	/**
+	 * Cleanup the History stacks and removes all occurences of the node.
+	 * 
+	 * @param toDispose
+	 */
+	private void cleanupHistory(INavigationNode<?> toDispose) {
+		boolean bhc = false;
+		while (histBack.contains(toDispose)) {
+			histBack.remove(toDispose);
+			bhc = true;
+		}
+		if (bhc)
+			fireBackHistoryChangedEvent();
+		boolean fhc = false;
+		while (histForward.contains(toDispose)) {
+			histForward.remove(toDispose);
+			fhc = true;
+		}
+		if (fhc)
+			fireForewardHistoryChangedEvent();
+		if (navigationMap.containsKey(toDispose)) {
+			navigationMap.remove(toDispose);
+		}
 	}
 
 	/**
@@ -109,7 +175,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	 *      org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public void create(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
-		createTarget(sourceNode, targetId, null, null);
+		provideNode(sourceNode, targetId, null, null);
 	}
 
 	/**
@@ -119,24 +185,21 @@ public class NavigationProcessor implements INavigationProcessor {
 	 */
 	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
 			INavigationArgumentListener argumentListener) {
-
-		INavigationNode<?> targetNode = createTarget(sourceNode, targetId, argument, argumentListener);
-
+		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument, argumentListener);
+		navigationMap.put(targetNode, sourceNode);
 		targetNode.activate();
 	}
 
-	private INavigationNode<?> createTarget(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
+	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
 			INavigationArgumentListener argumentListener) {
-		INavigationNode<?> targetNode = getPresentationDefinitionService().createNode(sourceNode, targetId, argument,
+		INavigationNode<?> targetNode = getPresentationDefinitionService().provideNode(sourceNode, targetId, argument,
 				argumentListener);
 		return targetNode;
 	}
 
 	protected IPresentationProviderService getPresentationDefinitionService() {
-
 		// TODO: handling if no service found ???
 		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
-
 	}
 
 	/**
@@ -424,6 +487,8 @@ public class NavigationProcessor implements INavigationProcessor {
 		}
 		for (INavigationNode<?> nextToDispose : context.getToDeactivate()) {
 			nextToDispose.onAfterDispose(context);
+			// clean up history stacks
+			cleanupHistory(nextToDispose);
 		}
 	}
 
@@ -626,5 +691,143 @@ public class NavigationProcessor implements INavigationProcessor {
 		Collections.reverse(listReverse);
 
 		return listReverse;
+	}
+
+	/**
+	 * Navigates one step back in the navigation history
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
+	 */
+	public void historyBack() {
+		try {
+			if (getHistoryBackSize() == 0)
+				return;
+			INavigationNode<?> current = histBack.pop();// skip self
+			fireBackHistoryChangedEvent();
+			histForward.push(current);
+			if (histForward.size() > MAX_STACKSIZE)
+				histForward.remove(histForward.firstElement());
+			fireForewardHistoryChangedEvent();
+			INavigationNode<?> node = histBack.peek();// activate parent
+			if (node != null) {
+				activate(node);
+			}
+		} catch (EmptyStackException ex) {
+			// should we throw exception here?
+		}
+	}
+
+	/**
+	 * Fires a INavigationHistoryEvent when the backward history changes.
+	 */
+	private void fireBackHistoryChangedEvent() {
+		// if (LOGGER.isLoggable(LogService.LOG_DEBUG))
+		// LOGGER.log(LogService.LOG_DEBUG, "BACK " + histBack.size() + "," + histBack);//$NON-NLS-1$ //$NON-NLS-2$
+		if (navigationListener.size() == 0)
+			return;
+		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, histBack.size() - 1));
+		for (INavigationHistoryListener listener : navigationListener) {
+			listener.backHistoryChanged(event);
+		}
+	}
+
+	/**
+	 * Navigates one step forward in the navigation history
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
+	 */
+	public void historyForward() {
+		try {
+			INavigationNode<?> current = histForward.pop();
+			fireForewardHistoryChangedEvent();
+			if (current != null) {
+				histBack.push(current);
+				activate(current);
+				fireBackHistoryChangedEvent();
+			}
+		} catch (EmptyStackException ex) {
+			// TODO should we throw exception here?
+		}
+	}
+
+	/**
+	 * Fires a INavigationHistoryEvent when the forward history changes.
+	 */
+	private void fireForewardHistoryChangedEvent() {
+		// if (LOGGER.isLoggable(LogService.LOG_DEBUG))
+		// LOGGER.log(LogService.LOG_DEBUG, "FORW " //$NON-NLS-1$
+		// + histForward.size() + "," + histForward); //$NON-NLS-1$
+		if (navigationListener.size() == 0)
+			return;
+		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, histForward.size()));
+		for (INavigationHistoryListener listener : navigationListener) {
+			listener.backHistoryChanged(event);
+		}
+	}
+
+	/**
+	 * Answer the current size of the next navigation history
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#getHistorySize()
+	 * @return the amount of navigation nodes on the navigation stack
+	 */
+	public int getHistoryBackSize() {
+		return histBack.size() - 1;
+	}
+
+	/**
+	 * Answer the current size of the previous navigation history
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#getHistorySize()
+	 * @return the amount of navigation nodes on the navigation stack
+	 */
+	public int getHistoryForwardSize() {
+		return histForward.size();
+	}
+
+	/**
+	 * Navigates to the caller (the source node) of the given targetNode. If
+	 * there is no previous caller, no navigation is performed. If the
+	 * targetNode itself has no caller in the navigationMap, the tree hierarchy
+	 * is searched up to the tree root.
+	 * 
+	 * @param targetNode
+	 *            The node where we have navigate to and return from
+	 */
+	public void navigateBack(INavigationNode<?> targetNode) {
+		INavigationNode<?> sourceNode = null;
+		INavigationNode<?> lookupNode = targetNode;
+		while (sourceNode == null) {
+			sourceNode = navigationMap.get(lookupNode);
+			if (sourceNode == null) {
+				lookupNode = lookupNode.getParent();
+				if (lookupNode == null)
+					return;
+			}
+		}
+		navigate(targetNode, sourceNode.getPresentationId(), null, null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
+	 * addNavigationHistoryListener
+	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
+	 */
+	public synchronized void addNavigationHistoryListener(INavigationHistoryListener listener) {
+		if (!navigationListener.contains(listener))
+			navigationListener.add(listener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
+	 * removeNavigationHistoryListener
+	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
+	 */
+	public synchronized void removeNavigationHistoryListener(INavigationHistoryListener listener) {
+		navigationListener.remove(listener);
 	}
 }

@@ -19,6 +19,7 @@ public class NavigationNodeId implements INavigationNodeId {
 
 	private String instanceId;
 	private String typeId;
+	int hash = 0;
 
 	public NavigationNodeId(String typeId, String instanceId) {
 		this.typeId = typeId;
@@ -72,10 +73,13 @@ public class NavigationNodeId implements INavigationNodeId {
 	 */
 	@Override
 	public int hashCode() {
-		if (typeId != null) {
-			return typeId.hashCode();
+		if (hash == 0) {
+			if (typeId != null)
+				hash += typeId.hashCode();
+			if (instanceId != null)
+				hash += instanceId.hashCode();
 		}
-		return 0;
+		return hash;
 	}
 
 	private boolean equals(String string1, String string2) {
