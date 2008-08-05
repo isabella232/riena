@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.osgi.framework.BundleContext;
 
 /**
  * The <code>ExtensionMapper</code> maps interfaces to extensions. Extension
@@ -86,14 +85,15 @@ public class ExtensionMapper {
 	 * Static method to read extensions
 	 * 
 	 * @param <T>
-	 * @param context
-	 *            if given, symbol replacement occurs (via ConfigurationPlugin)
+	 * @param symbolReplace
+	 *            on true symbol replacement occurs (via
+	 *            <code>StringVariableManager</code>)
 	 * @param extensionDesc
 	 * @param componentType
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] map(final BundleContext context, final ExtensionDescriptor extensionDesc,
+	public static <T> T[] map(final boolean symbolReplace, final ExtensionDescriptor extensionDesc,
 			final Class<T> componentType, boolean nonSpecific) {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionDesc.getExtensionPointId());
@@ -108,12 +108,12 @@ public class ExtensionMapper {
 		if (nonSpecific) {
 			if (extensionDesc.isHomogeneous())
 				for (final IConfigurationElement element : extensionPoint.getConfigurationElements())
-					list.add(InterfaceBean.newInstance(context, componentType, element));
+					list.add(InterfaceBean.newInstance(symbolReplace, componentType, element));
 			else
-				list.add(InterfaceBean.newInstance(context, componentType, new Wrapper(extensionPoint)));
+				list.add(InterfaceBean.newInstance(symbolReplace, componentType, new Wrapper(extensionPoint)));
 		} else
 			for (IExtension extension : extensions)
-				list.add(InterfaceBean.newInstance(context, componentType, new Wrapper(extension)));
+				list.add(InterfaceBean.newInstance(symbolReplace, componentType, new Wrapper(extension)));
 
 		return list.toArray((T[]) Array.newInstance(componentType, list.size()));
 	}
