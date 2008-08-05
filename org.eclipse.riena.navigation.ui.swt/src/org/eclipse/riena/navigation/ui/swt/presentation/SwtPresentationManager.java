@@ -56,12 +56,13 @@ public class SwtPresentationManager {
 			INavigationNodeId presentationId = pNode.getPresentationId();
 			if (presentationId != null) {
 				String viewId = getPresentationDefinitionService().getViewId(presentationId);
-				// TODO use
-				// getPresentationDefinitionService().isViewShared(
-				// presentationId
-				// )
-				// instead of creating all views shared
-				swtViewId = new SwtViewId(viewId, "shared");
+				String secondaryId = null;
+				if (getPresentationDefinitionService().isViewShared(presentationId)) {
+					secondaryId = "shared"; //$NON-NLS-1$
+				} else {
+					secondaryId = getNextSecondaryId(viewId);
+				}
+				swtViewId = new SwtViewId(viewId, secondaryId);
 				views.put(pNode, swtViewId);
 			}
 		}
@@ -118,8 +119,15 @@ public class SwtPresentationManager {
 			}
 		}
 		// classic way with one view per node
+		views.put(pNode, new SwtViewId(pViewId, getNextSecondaryId(pViewId)));
+	}
+
+	private String getNextSecondaryId(String pViewId) {
+		if (viewCounter.get(pViewId) == null) {
+			viewCounter.put(pViewId, 0);
+		}
 		viewCounter.put(pViewId, viewCounter.get(pViewId) + 1);
-		views.put(pNode, new SwtViewId(pViewId, String.valueOf(viewCounter.get(pViewId))));
+		return String.valueOf(viewCounter.get(pViewId));
 	}
 
 	public void registerView(String viewId, boolean shared) {

@@ -24,19 +24,47 @@ public class SwtPresentationManagerTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+
 		addPluginXml(SwtPresentationManagerTest.class, "SwtPresentationManagerTest.xml");
 
 		swtPresentationManager = new SwtPresentationManager();
+
 	}
 
-	public void testGetSwtViewId() throws Exception {
+	public void testGetSwtViewIdSharedView() throws Exception {
 
-		SubModuleNode node = new SubModuleNode();
-		node.setPresentationId(new NavigationNodeId("testId"));
+		SubModuleNode node1 = new SubModuleNode();
+		node1.setPresentationId(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
+		SubModuleNode node2 = new SubModuleNode();
+		node2.setPresentationId(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
 
-		SwtViewId swtViewId = swtPresentationManager.getSwtViewId(node);
+		SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
+		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
+		assertEquals("shared", swtViewId1.getSecondary());
 
-		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId.getId());
-		assertEquals("shared", swtViewId.getSecondary());
+		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node1);
+		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
+		assertEquals("shared", swtViewId2.getSecondary());
+
+	}
+
+	public void testGetSwtViewIdNotSharedView() throws Exception {
+
+		SubModuleNode node1 = new SubModuleNode();
+		node1.setPresentationId(new NavigationNodeId("testNotSharedViewId", "testInstanceId1"));
+		SubModuleNode node2 = new SubModuleNode();
+		node2.setPresentationId(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
+
+		SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
+		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
+		assertEquals("1", swtViewId1.getSecondary());
+
+		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
+		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
+		assertEquals("2", swtViewId2.getSecondary());
+
+		SwtViewId swtViewId1Again = swtPresentationManager.getSwtViewId(node1);
+		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1Again.getId());
+		assertEquals("1", swtViewId1Again.getSecondary());
 	}
 }
