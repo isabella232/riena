@@ -6,9 +6,6 @@ Bundle-Version: 1.0.0.M4
 Bundle-Activator: org.eclipse.riena.internal.sample.app.client.Activator
 Bundle-Vendor: compeople AG
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.riena.navigation,
- org.eclipse.riena.navigation.ui,
- org.eclipse.riena.navigation.ui.swt,
  org.eclipse.ui,
  org.eclipse.ui.workbench,
  org.eclipse.riena.core,
@@ -17,9 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.databinding,
  org.eclipse.core.databinding.beans,
  org.eclipse.jface.databinding,
- org.eclipse.riena.ui.ridgets.swt,
- org.eclipse.riena.ui.ridgets,
- org.eclipse.riena.ui.core,
- org.eclipse.riena.ui.swt
+ org.eclipse.riena.client;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

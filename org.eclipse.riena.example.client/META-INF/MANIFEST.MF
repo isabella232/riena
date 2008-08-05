@@ -11,13 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.databinding,
  org.eclipse.ui,
  org.eclipse.equinox.cm,
- org.eclipse.riena.navigation,
- org.eclipse.riena.navigation.ui,
- org.eclipse.riena.navigation.ui.swt,
- org.eclipse.riena.ui.ridgets,
- org.eclipse.riena.ui.ridgets.swt,
- org.eclipse.riena.core,
- org.eclipse.riena.ui.core,
- org.eclipse.riena.ui.swt
+ org.eclipse.riena.client;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
