@@ -13,7 +13,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.TextSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -70,11 +69,6 @@ public class TextSubModuleView extends SubModuleNodeView<TextSubModuleController
 		Text textField10 = UIControlsFactory.createText(parent);
 		textField10.setTextLimit(10);
 		addUIControl(textField10, "textField10"); //$NON-NLS-1$
-	}
-
-	@Override
-	protected TextSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new TextSubModuleController(subModuleNode);
 	}
 
 }

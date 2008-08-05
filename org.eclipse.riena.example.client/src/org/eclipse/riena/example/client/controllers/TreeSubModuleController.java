@@ -101,6 +101,10 @@ public class TreeSubModuleController extends SubModuleController {
 		this.buttonCollapse = buttonCollapse;
 	}
 
+	public TreeSubModuleController() {
+		this(null);
+	}
+
 	public TreeSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}

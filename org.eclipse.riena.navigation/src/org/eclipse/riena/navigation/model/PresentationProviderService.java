@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
@@ -21,8 +23,6 @@ import org.eclipse.riena.navigation.IPresentationDefinition;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.IWorkAreaPresentationDefinition;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -190,13 +190,15 @@ public class PresentationProviderService implements IPresentationProviderService
 	/**
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#getViewId(org.eclipse.riena.navigation.INavigationNodeId)
 	 */
-	public String getViewId(INavigationNodeId targetId) {
-		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
+	public String getViewId(INavigationNodeId nodeId) {
+		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(nodeId.getTypeId());
 
 		if (presentationDefinition != null) {
 			return presentationDefinition.getViewId();
+		} else {
+			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId()
+					+ "'.");
 		}
-		return null;
 	}
 
 	/*

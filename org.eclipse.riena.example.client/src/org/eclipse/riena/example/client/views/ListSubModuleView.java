@@ -13,7 +13,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -42,11 +41,6 @@ public class ListSubModuleView extends SubModuleNodeView<ListSubModuleController
 
 		Group group2 = createEditGroup(parent);
 		GridDataFactory.fillDefaults().applyTo(group2);
-	}
-
-	@Override
-	protected ListSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new ListSubModuleController(subModuleNode);
 	}
 
 	// helping methods

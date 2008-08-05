@@ -17,9 +17,11 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
@@ -146,7 +148,11 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 
 	protected abstract void basicCreatePartControl(Composite parent);
 
-	protected abstract C createController(ISubModuleNode pSubModuleNode);
+	protected C createController(ISubModuleNode pSubModuleNode) {
+		C controller = (C) getPresentationDefinitionService().createViewController(pSubModuleNode);
+		controller.setNavigationNode(pSubModuleNode);
+		return controller;
+	}
 
 	/**
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
@@ -175,5 +181,12 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 			setController(createController(getCurrentNode()));
 		}
 		bindingManager.injectRidgets(getController(), uiControls);
+	}
+
+	protected IPresentationProviderService getPresentationDefinitionService() {
+
+		// TODO: handling if no service found ???
+		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
+
 	}
 }

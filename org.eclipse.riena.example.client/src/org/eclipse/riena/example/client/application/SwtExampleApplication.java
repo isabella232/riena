@@ -11,23 +11,10 @@
 package org.eclipse.riena.example.client.application;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CustomerDetailSubModuleView;
-import org.eclipse.riena.example.client.views.FocusableSubModuleView;
-import org.eclipse.riena.example.client.views.ListSubModuleView;
-import org.eclipse.riena.example.client.views.MarkerSubModuleView;
-import org.eclipse.riena.example.client.views.NavigateSubModuleView;
 import org.eclipse.riena.example.client.views.NavigationSubModuleView;
-import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
-import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
-import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
-import org.eclipse.riena.example.client.views.TableSubModuleView;
-import org.eclipse.riena.example.client.views.TextSubModuleView;
-import org.eclipse.riena.example.client.views.TreeSubModuleView;
-import org.eclipse.riena.example.client.views.TreeTableSubModuleView;
 import org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView;
-import org.eclipse.riena.example.client.views.ValidationSubModuleView;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -188,80 +175,9 @@ public class SwtExampleApplication extends SwtApplication {
 		presentation.present(uiPSubModule, UiProcessDemoSubModuleView.ID);
 		uiProcessModule.addChild(uiPSubModule);
 
-		// playground
-		IModuleNode playgroundModule = new ModuleNode("Playground"); //$NON-NLS-1$
-		moduleGroup.addChild(playgroundModule);
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.playground"));
 
-		ISubModuleNode buttonsSubModule = new SubModuleNode("Buttons"); //$NON-NLS-1$
-		presentation.registerView(RidgetsSubModuleView.ID, false);
-		presentation.present(buttonsSubModule, RidgetsSubModuleView.ID);
-		playgroundModule.addChild(buttonsSubModule);
-
-		ISubModuleNode comboSubModule = new SubModuleNode("Combo"); //$NON-NLS-1$
-		presentation.registerView(ComboSubModuleView.ID, false);
-		presentation.present(comboSubModule, ComboSubModuleView.ID);
-		playgroundModule.addChild(comboSubModule);
-
-		ISubModuleNode listSubModule = new SubModuleNode("List"); //$NON-NLS-1$
-		presentation.registerView(ListSubModuleView.ID, false);
-		presentation.present(listSubModule, ListSubModuleView.ID);
-		playgroundModule.addChild(listSubModule);
-
-		ISubModuleNode textSubModule = new SubModuleNode("Text"); //$NON-NLS-1$
-		presentation.registerView(TextSubModuleView.ID, false);
-		presentation.present(textSubModule, TextSubModuleView.ID);
-		playgroundModule.addChild(textSubModule);
-
-		ISubModuleNode markerSubModule = new SubModuleNode("Marker"); //$NON-NLS-1$
-		presentation.registerView(MarkerSubModuleView.ID, false);
-		presentation.present(markerSubModule, MarkerSubModuleView.ID);
-		playgroundModule.addChild(markerSubModule);
-
-		ISubModuleNode focusableSubModule = new SubModuleNode("Focusable"); //$NON-NLS-1$
-		presentation.registerView(FocusableSubModuleView.ID, false);
-		presentation.present(focusableSubModule, FocusableSubModuleView.ID);
-		playgroundModule.addChild(focusableSubModule);
-
-		ISubModuleNode validationSubModule = new SubModuleNode("Validation"); //$NON-NLS-1$
-		presentation.registerView(ValidationSubModuleView.ID, false);
-		presentation.present(validationSubModule, ValidationSubModuleView.ID);
-		playgroundModule.addChild(validationSubModule);
-
-		ISubModuleNode treeSubModule = new SubModuleNode("Tree"); //$NON-NLS-1$
-		presentation.registerView(TreeSubModuleView.ID, false);
-		presentation.present(treeSubModule, TreeSubModuleView.ID);
-		playgroundModule.addChild(treeSubModule);
-
-		ISubModuleNode treeTableSubModule = new SubModuleNode("Tree Table"); //$NON-NLS-1$
-		presentation.registerView(TreeTableSubModuleView.ID, false);
-		presentation.present(treeTableSubModule, TreeTableSubModuleView.ID);
-		playgroundModule.addChild(treeTableSubModule);
-
-		ISubModuleNode tableSubModule = new SubModuleNode("Table");
-		presentation.registerView(TableSubModuleView.ID, false);
-		presentation.present(tableSubModule, TableSubModuleView.ID);
-		playgroundModule.addChild(tableSubModule);
-
-		ISubModuleNode systemPropertiesSubModule = new SubModuleNode("System Properties"); //$NON-NLS-1$
-		presentation.registerView(SystemPropertiesSubModuleView.ID, false);
-		presentation.present(systemPropertiesSubModule, SystemPropertiesSubModuleView.ID);
-		playgroundModule.addChild(systemPropertiesSubModule);
-
-		ISubModuleNode statusLineSubModule = new SubModuleNode("Statusline"); //$NON-NLS-1$
-		presentation.registerView(StatuslineSubModuleView.ID, false);
-		presentation.present(statusLineSubModule, StatuslineSubModuleView.ID);
-		playgroundModule.addChild(statusLineSubModule);
-
-		// navigate
-		moduleGroup = new ModuleGroupNode("Navigate");
-		moduleGroup.setPresentWithSingleModule(false);
-		subApplication.addChild(moduleGroup);
-		module = new ModuleNode("Navigate");
-		module.setIcon(createIconPath(IExampleIcons.ICON_GREEN_LED));
-		moduleGroup.addChild(module);
-		subModule = new SubModuleNode("Navigate");
-		presentation.present(subModule, NavigateSubModuleView.ID);
-		module.addChild(subModule);
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate"));
 
 		return applicationModel;
 	}

@@ -16,7 +16,6 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -47,11 +46,6 @@ public class SystemPropertiesSubModuleView extends SubModuleNodeView<SystemPrope
 
 		Group group2 = createEditGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(group2);
-	}
-
-	@Override
-	protected SystemPropertiesSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new SystemPropertiesSubModuleController(subModuleNode);
 	}
 
 	// helping methods

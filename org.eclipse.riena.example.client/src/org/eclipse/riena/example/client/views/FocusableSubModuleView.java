@@ -15,7 +15,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -51,11 +50,6 @@ public class FocusableSubModuleView extends SubModuleNodeView<FocusableSubModule
 
 		Group groupB = createGroup(parent, "B", 1);
 		fillFactory.applyTo(groupB);
-	}
-
-	@Override
-	protected FocusableSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new FocusableSubModuleController(subModuleNode);
 	}
 
 	// helping methods

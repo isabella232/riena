@@ -312,7 +312,23 @@
    <extension
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigation.comboAndList"
+            presentationId="org.eclipse.riena.example.playground"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
+            parentPresentationId="playground">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.example.navigate"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
+            parentPresentationId="playground">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.example.navigate.comboAndList"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
             parentPresentationId="app1">
       </navigationNodePresentation>
@@ -320,10 +336,49 @@
    <extension
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigation.tableTextAndTree"
+            presentationId="org.eclipse.riena.example.navigate.tableTextAndTree"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentPresentationId="playground">
       </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.navigation"
+            view="org.eclipse.riena.example.client.views.NavigationSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.NavigationSubModuleController">
+      </workAreaPresentation>
+   </extension>   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.buttons"
+            view="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.RidgetsSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.marker"
+            view="org.eclipse.riena.example.client.views.MarkerSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.MarkerSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.focusable"
+            view="org.eclipse.riena.example.client.views.FocusableSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.FocusableSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.validation"
+            view="org.eclipse.riena.example.client.views.ValidationSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.ValidationSubModuleController">
+      </workAreaPresentation>
    </extension>
    <extension
          point="org.eclipse.riena.navigation.WorkAreaPresentation">
@@ -365,5 +420,36 @@
             viewController="org.eclipse.riena.example.client.controllers.TreeSubModuleController">
       </workAreaPresentation>
    </extension>
-   
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.treeTable"
+            view="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.TreeTableSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.systemProperties"
+            view="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.statusLine"
+            view="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.StatuslineSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.navigate.form"
+            view="org.eclipse.riena.example.client.views.NavigateSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.NavigateSubModuleController">
+      </workAreaPresentation>
+   </extension> 
 </plugin>

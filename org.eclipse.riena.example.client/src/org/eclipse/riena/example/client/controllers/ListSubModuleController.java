@@ -46,6 +46,10 @@ public class ListSubModuleController extends SubModuleController {
 	/** Holds editable data for a person. */
 	private final PersonModificationBean value;
 
+	public ListSubModuleController() {
+		this(null);
+	}
+
 	public ListSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());

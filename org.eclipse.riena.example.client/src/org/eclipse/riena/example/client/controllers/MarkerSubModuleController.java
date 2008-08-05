@@ -62,6 +62,10 @@ public class MarkerSubModuleController extends SubModuleController {
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 
+	public MarkerSubModuleController() {
+		this(null);
+	}
+
 	public MarkerSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());

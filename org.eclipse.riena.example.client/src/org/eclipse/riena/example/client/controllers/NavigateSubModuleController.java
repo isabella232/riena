@@ -16,6 +16,10 @@ import org.eclipse.riena.ui.ridgets.uibinding.IInjectAllRidgetsAtOnce;
 
 public class NavigateSubModuleController extends SubModuleController implements IInjectAllRidgetsAtOnce {
 
+	public NavigateSubModuleController() {
+		this(null);
+	}
+
 	public NavigateSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
@@ -37,7 +41,7 @@ public class NavigateSubModuleController extends SubModuleController implements 
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.comboAndList")); //$NON-NLS-1$
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")); //$NON-NLS-1$
 		}
 
 	}
@@ -48,7 +52,7 @@ public class NavigateSubModuleController extends SubModuleController implements 
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigation.tableTextAndTree")); //$NON-NLS-1$
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")); //$NON-NLS-1$
 		}
 
 	}

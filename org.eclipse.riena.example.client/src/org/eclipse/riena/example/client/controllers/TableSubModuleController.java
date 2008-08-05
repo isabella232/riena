@@ -76,6 +76,10 @@ public class TableSubModuleController extends SubModuleController {
 		this.buttonDelete = buttonDelete;
 	}
 
+	public TableSubModuleController() {
+		this(null);
+	}
+
 	public TableSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}

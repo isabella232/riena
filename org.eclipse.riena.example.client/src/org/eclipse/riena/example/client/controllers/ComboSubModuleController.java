@@ -39,6 +39,10 @@ public class ComboSubModuleController extends SubModuleController {
 	/** Holds editable data for a person. */
 	private final PersonModificationBean value;
 
+	public ComboSubModuleController() {
+		this(null);
+	}
+
 	public ComboSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());

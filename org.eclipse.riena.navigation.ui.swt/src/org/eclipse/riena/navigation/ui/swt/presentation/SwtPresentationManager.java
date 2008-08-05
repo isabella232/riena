@@ -50,18 +50,23 @@ public class SwtPresentationManager {
 
 	public SwtViewId getSwtViewId(INavigationNode<?> pNode) {
 
-		INavigationNodeId presentationId = pNode.getPresentationId();
-		if (presentationId != null) {
+		SwtViewId swtViewId = views.get(pNode);
 
-			String viewId = getPresentationDefinitionService().getViewId(presentationId);
-			for (SwtViewId swtViewId : views.values()) {
-				if (swtViewId.getId().equals(viewId)) {
-					return swtViewId;
-				}
+		if (swtViewId == null) {
+			INavigationNodeId presentationId = pNode.getPresentationId();
+			if (presentationId != null) {
+				String viewId = getPresentationDefinitionService().getViewId(presentationId);
+				// TODO use
+				// getPresentationDefinitionService().isViewShared(
+				// presentationId
+				// )
+				// instead of creating all views shared
+				swtViewId = new SwtViewId(viewId, "shared");
+				views.put(pNode, swtViewId);
 			}
 		}
 
-		return views.get(pNode);
+		return swtViewId;
 	}
 
 	private final class SubModuleObserver extends SubModuleNodeListener {

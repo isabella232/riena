@@ -94,6 +94,10 @@ public class StatuslineSubModuleController extends SubModuleController {
 	private IActionRidget showNumber;
 	private StatuslineModel model;
 
+	public StatuslineSubModuleController() {
+		this(null);
+	}
+
 	/**
 	 * Creates a new instance of {@code StatuslineSubModuleController}
 	 * 

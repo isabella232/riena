@@ -14,7 +14,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -51,15 +50,6 @@ public class StatuslineSubModuleView extends SubModuleNodeView<StatuslineSubModu
 		Group numberGroup = createNumberGroup(parent);
 		fillFactory.applyTo(numberGroup);
 
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#createController
-	 *      (org.eclipse.riena.navigation.ISubModuleNode)
-	 */
-	@Override
-	protected StatuslineSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new StatuslineSubModuleController(subModuleNode);
 	}
 
 	/**

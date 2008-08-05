@@ -28,6 +28,10 @@ public class TextSubModuleController extends SubModuleController {
 	private ITextFieldRidget textPassword;
 	private ITextFieldRidget textField10;
 
+	public TextSubModuleController() {
+		this(null);
+	}
+
 	public TextSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}

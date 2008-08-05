@@ -22,9 +22,6 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.EmbeddedBorderRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.EmbeddedTitlebarRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewIdTest;
-import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
-import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
 
 /**
  * Tests all test cases within package:
@@ -35,17 +32,18 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
+
+		suite.addTest(org.eclipse.riena.navigation.ui.swt.presentation.AllTests.suite());
+		suite.addTest(org.eclipse.riena.navigation.ui.swt.views.AllTests.suite());
+
 		suite.addTestSuite(DefaultSwtControlRidgetMapperTest.class);
 		suite.addTestSuite(AbstractLnfResourceTest.class);
 		suite.addTestSuite(LnfManagerTest.class);
 		suite.addTestSuite(EmbeddedBorderRendererTest.class);
 		suite.addTestSuite(EmbeddedTitlebarRendererTest.class);
 		suite.addTestSuite(RienaDefaultLnfTest.class);
-		suite.addTestSuite(SwtViewIdTest.class);
 		suite.addTestSuite(ModuleItemTest.class);
 		suite.addTestSuite(ShellBorderRendererTest.class);
-		suite.addTestSuite(ApplicationViewAdvisorTest.class);
-		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
 		return suite;
 	}
 

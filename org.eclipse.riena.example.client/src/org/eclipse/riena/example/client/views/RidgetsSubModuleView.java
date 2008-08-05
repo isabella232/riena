@@ -12,7 +12,6 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -69,14 +68,6 @@ public class RidgetsSubModuleView extends SubModuleNodeView<RidgetsSubModuleCont
 		Button buttonWithImage = UIControlsFactory.createButton(buttonGroup);
 		addUIControl(buttonWithImage, "buttonWithImage"); //$NON-NLS-1$
 
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#createController(org.eclipse.riena.navigation.ISubModuleNode)
-	 */
-	@Override
-	protected RidgetsSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new RidgetsSubModuleController(subModuleNode);
 	}
 
 }

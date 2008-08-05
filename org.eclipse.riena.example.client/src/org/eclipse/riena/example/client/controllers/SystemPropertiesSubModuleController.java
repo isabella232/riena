@@ -53,6 +53,10 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	/** IActionListener for double click on the table */
 	private final IActionListener doubleClickListener;
 
+	public SystemPropertiesSubModuleController() {
+		this(null);
+	}
+
 	public SystemPropertiesSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		properties = new ArrayList<KeyValueBean>();

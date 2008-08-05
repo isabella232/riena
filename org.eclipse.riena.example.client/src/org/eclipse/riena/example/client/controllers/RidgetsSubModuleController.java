@@ -30,6 +30,10 @@ public class RidgetsSubModuleController extends SubModuleController {
 	private IActionRidget buttonWithImage;
 	private RidgetsModel model;
 
+	public RidgetsSubModuleController() {
+		this(null);
+	}
+
 	public RidgetsSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		model = new RidgetsModel();

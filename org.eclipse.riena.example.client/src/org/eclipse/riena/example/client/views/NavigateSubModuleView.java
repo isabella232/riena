@@ -13,7 +13,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
@@ -47,11 +46,6 @@ public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleCo
 		Button tableTextAndTree = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(tableTextAndTree);
 		addUIControl(tableTextAndTree, "tableTextAndTree"); //$NON-NLS-1$
-	}
-
-	@Override
-	protected NavigateSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new NavigateSubModuleController(subModuleNode);
 	}
 
 	@Override

@@ -35,6 +35,10 @@ public class NavigationSubModuleController extends SubModuleController {
 	private IActionRidget addModuleBtn;
 	private IActionRidget addModuleGroupBtn;
 
+	public NavigationSubModuleController() {
+		this(null);
+	}
+
 	/**
 	 * @param navigationNode
 	 */

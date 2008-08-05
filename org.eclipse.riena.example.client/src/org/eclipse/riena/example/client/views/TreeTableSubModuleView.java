@@ -16,7 +16,6 @@ import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.example.client.controllers.TreeTableSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -43,11 +42,6 @@ public class TreeTableSubModuleView extends SubModuleNodeView<TreeTableSubModule
 
 		Group group1 = createTreeTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
-	}
-
-	@Override
-	protected TreeTableSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new TreeTableSubModuleController(subModuleNode);
 	}
 
 	// helping methods

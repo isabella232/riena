@@ -41,6 +41,10 @@ public class FocusableSubModuleController extends SubModuleController {
 	private IToggleButtonRidget[] checkButtons;
 	private ITextFieldRidget[] textRidgets;
 
+	public FocusableSubModuleController() {
+		this(null);
+	}
+
 	public FocusableSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}

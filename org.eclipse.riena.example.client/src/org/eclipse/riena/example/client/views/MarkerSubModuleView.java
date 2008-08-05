@@ -14,7 +14,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -50,11 +49,6 @@ public class MarkerSubModuleView extends SubModuleNodeView<MarkerSubModuleContro
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(group2);
 		Group group3 = createControlsGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(group3);
-	}
-
-	@Override
-	protected MarkerSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new MarkerSubModuleController(subModuleNode);
 	}
 
 	// helping methods

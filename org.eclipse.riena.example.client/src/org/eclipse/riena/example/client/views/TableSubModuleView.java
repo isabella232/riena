@@ -16,7 +16,6 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -43,11 +42,6 @@ public class TableSubModuleView extends SubModuleNodeView<TableSubModuleControll
 
 		Group group1 = createTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
-	}
-
-	@Override
-	protected TableSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new TableSubModuleController(subModuleNode);
 	}
 
 	// helping methods
