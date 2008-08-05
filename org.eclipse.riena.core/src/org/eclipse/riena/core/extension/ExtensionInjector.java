@@ -39,7 +39,7 @@ public class ExtensionInjector {
 	private BundleContext context;
 	private boolean started;
 	private boolean track = true;
-	private boolean symbolReplacement = true;
+	private boolean symbolReplace = true;
 	private boolean nonSpecific = true;
 	private String updateMethodName = "update"; //$NON-NLS-1$
 	private Method updateMethod;
@@ -136,7 +136,7 @@ public class ExtensionInjector {
 	 */
 	public ExtensionInjector doNotReplaceSymbols() {
 		Assert.isTrue(!started, "ExtensionInjector already started.");
-		symbolReplacement = false;
+		symbolReplace = false;
 		return this;
 	}
 
@@ -259,8 +259,7 @@ public class ExtensionInjector {
 	}
 
 	void populateInterfaceBeans() {
-		final Object[] beans = ExtensionMapper.map(symbolReplacement ? context : null, extensionDesc, componentType,
-				nonSpecific);
+		final Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
 		if (!matchesExtensionPointConstraint(beans.length))
 			LOGGER
 					.log(LogService.LOG_ERROR,
