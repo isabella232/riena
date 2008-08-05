@@ -74,9 +74,6 @@ import org.eclipse.core.runtime.RegistryFactory;
  */
 public class ExtensionMapper {
 
-	// private final static Logger LOGGER = new
-	// ConsoleLogger(ExtensionMapper.class.getName());
-
 	private ExtensionMapper() {
 		throw new IllegalStateException("Should never be invoked!"); //$NON-NLS-1$
 	}
