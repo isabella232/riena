@@ -16,6 +16,11 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.internal.ui.ridgets.swt.DefaultRealm;
@@ -26,12 +31,6 @@ import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 
 /**
  * Tests for the ValueBindingSupport.
@@ -182,18 +181,7 @@ public class ValueBindingSupportTest extends TestCase {
 		assertEquals(2, markable.getMarkers().size());
 		assertMessageMarkers("TestDisasterMessage");
 
-		System.out.println("Disaster Area...");
-
 		target.setValue("Disaster Area");
-
-		////////////////////////////////////////////////////////////////////////
-		// ///
-		//
-		// Hallo Carsten!
-		// Hier werden offenbar alle Marker gesetzt... Finde heraus, wieso...
-		//
-		////////////////////////////////////////////////////////////////////////
-		// ///
 
 		assertEquals(3, markable.getMarkers().size());
 		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2");
