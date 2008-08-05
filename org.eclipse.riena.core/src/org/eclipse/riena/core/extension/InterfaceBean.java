@@ -20,20 +20,17 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.log.LogService;
 
 /**
@@ -43,21 +40,21 @@ class InterfaceBean implements InvocationHandler {
 
 	private final Class<?> interfaceType;
 	private final IConfigurationElement configurationElement;
-	private final BundleContext context;
+	private final boolean symbolReplace;
 	private final Map<Method, Object> resolved;
 	private static final String[] ALLOWED_PREFIXES = { GET.toString(), IS.toString(), CREATE.toString() };
 
 	private final static Logger LOGGER = new ConsoleLogger(ExtensionMapper.class.getName());
 
-	static Object newInstance(BundleContext context, Class<?> interfaceType, IConfigurationElement configurationElement) {
+	static Object newInstance(boolean symbolReplace, Class<?> interfaceType, IConfigurationElement configurationElement) {
 		return Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType }, new InterfaceBean(
-				interfaceType, context, configurationElement));
+				interfaceType, symbolReplace, configurationElement));
 	}
 
-	private InterfaceBean(Class<?> interfaceType, BundleContext context, IConfigurationElement configurationElement) {
+	private InterfaceBean(Class<?> interfaceType, boolean symbolReplace, IConfigurationElement configurationElement) {
 		this.interfaceType = interfaceType;
 		this.configurationElement = configurationElement;
-		this.context = context;
+		this.symbolReplace = symbolReplace;
 		this.resolved = new HashMap<Method, Object>();
 	}
 
@@ -120,7 +117,7 @@ class InterfaceBean implements InvocationHandler {
 				return null;
 			if (cfgElements.length == 1)
 				return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
-						new InterfaceBean(returnType, context, cfgElements[0]));
+						new InterfaceBean(returnType, symbolReplace, cfgElements[0]));
 			throw new IllegalStateException(
 					"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for: " + method); //$NON-NLS-1$
 		}
@@ -130,7 +127,7 @@ class InterfaceBean implements InvocationHandler {
 			for (int i = 0; i < cfgElements.length; i++) {
 				result[i] = Proxy.newProxyInstance(returnType.getComponentType().getClassLoader(),
 						new Class[] { returnType.getComponentType() }, new InterfaceBean(returnType.getComponentType(),
-								context, cfgElements[i]));
+								symbolReplace, cfgElements[i]));
 			}
 			return result;
 		}
@@ -236,33 +233,20 @@ class InterfaceBean implements InvocationHandler {
 		return value;
 	}
 
-	private static final String MAGIC_KEY = "$magic$"; //$NON-NLS-1$
-
 	private String modify(final String value) {
-		if (context == null || value == null)
+		if (!symbolReplace || value == null)
 			return value;
 
-		final Dictionary<Object, Object> properties = new Hashtable<Object, Object>();
-		properties.put(MAGIC_KEY, value);
+		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		if (variableManager == null)
+			return value;
+
 		try {
-			final ServiceReference[] references = context.getServiceReferences(ConfigurationPlugin.class.getName(),
-					null);
-			for (final ServiceReference reference : references) {
-				final ConfigurationPlugin translator = (ConfigurationPlugin) context.getService(reference);
-				if (translator == null)
-					continue;
-				try {
-					translator.modifyConfiguration(null, properties);
-				} catch (Throwable throwable) {
-					LOGGER.log(LogService.LOG_ERROR, "Configuration plugin " + reference //$NON-NLS-1$
-							+ " failed when modifying " + properties + ".", throwable); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-				context.ungetService(reference);
-			}
-		} catch (InvalidSyntaxException e) {
-			// Should never occur because no filter is set.
+			return variableManager.performStringSubstitution(value);
+		} catch (CoreException e) {
+			LOGGER.log(LogService.LOG_ERROR, "Could not perfrom string substitution for '" + value + "' .", e); //$NON-NLS-1$ //$NON-NLS-2$
+			return value;
 		}
-		return (String) properties.get(MAGIC_KEY);
 	}
 
 	enum MethodKind {
