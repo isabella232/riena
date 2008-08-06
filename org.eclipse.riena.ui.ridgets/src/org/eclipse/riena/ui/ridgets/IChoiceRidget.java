@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,10 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 
 /**
- * @author Frank Schepp
+ * A ridget that allows for the selection of one or more options.
+ * 
+ * @see ISingleChoiceRidget
+ * @see IMultipleChoiceRidget
  */
 public interface IChoiceRidget extends IMarkableRidget {
 
