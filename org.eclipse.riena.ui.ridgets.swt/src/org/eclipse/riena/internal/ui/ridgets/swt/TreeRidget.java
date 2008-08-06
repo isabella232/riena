@@ -11,6 +11,8 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -42,6 +44,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -86,6 +89,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String parentAccessor;
 	private String[] valueAccessors;
 	private String[] columnHeaders;
+	private boolean showRoots = true;
 
 	public TreeRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -340,6 +344,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
+	 * @deprecated temporary - TODO [ev] keep or remove?
+	 */
+	public void setRootsVisible(boolean showRoots) {
+		if (this.showRoots != showRoots) {
+			this.showRoots = showRoots;
+		}
+	}
+
+	/**
 	 * Initialize databining for tree viewer.
 	 */
 	private void bindToViewer(final Tree control) {
@@ -361,7 +374,39 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		ILabelProvider viewerLP = new TreeRidgetLabelProvider(viewer, attributeMap);
 		viewer.setLabelProvider(viewerLP);
 		// input
-		viewer.setInput(treeRoots);
+		if (showRoots) {
+			viewer.setInput(treeRoots);
+		} else {
+			// TODO [ev] productize if it works for Thorsten
+			final Object root0 = treeRoots[0];
+			final String accessor = "get" + capitalize(childrenAccessor);
+			List root0Children = ReflectionUtils.invoke(root0, accessor);
+			final List inputList = new ArrayList(root0Children);
+			viewer.setInput(inputList);
+			PropertyChangeListener listener = new PropertyChangeListener() {
+				private String ACCESSOR = childrenAccessor.toUpperCase();
+
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (evt.getPropertyName().toUpperCase().endsWith(ACCESSOR)) {
+						List root0Children = ReflectionUtils.invoke(root0, accessor);
+						inputList.clear();
+						for (Object child : root0Children) {
+							inputList.add(child);
+						}
+						viewer.refresh();
+					}
+				}
+			};
+			ReflectionUtils.invoke(root0, "addPropertyChangeListener", listener);
+		}
+	}
+
+	private String capitalize(String name) {
+		String result = name.substring(0, 1).toUpperCase();
+		if (name.length() > 1) {
+			result += name.substring(1);
+		}
+		return result;
 	}
 
 	/**
@@ -533,6 +578,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 		@Override
 		public Object[] getElements(Object inputElement) {
+			if (inputElement instanceof List) {
+				return ((List) inputElement).toArray();
+			}
 			return (Object[]) inputElement;
 		}
 
