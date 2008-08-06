@@ -193,7 +193,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
-	private void updateNavigationNodeMarkers() {
+	protected void updateNavigationNodeMarkers() {
 
 		getNavigationNode().removeAllMarkers();
 		for (IMarker marker : getRidgetMarkers()) {

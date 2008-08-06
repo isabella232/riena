@@ -44,11 +44,11 @@ public class InjectAllAtOnceBindingManager implements IBindingManager {
 	/**
 	 * Creates the managers of all bindings of a view.
 	 * 
-	 * @param propertyStrategy -
-	 *            strategy to get the property for the binding from the
+	 * @param propertyStrategy
+	 *            - strategy to get the property for the binding from the
 	 *            UI-control.
-	 * @param mapper -
-	 *            mapping for UI control-classes to ridget-classes
+	 * @param mapper
+	 *            - mapping for UI control-classes to ridget-classes
 	 */
 	public InjectAllAtOnceBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
 
@@ -74,8 +74,8 @@ public class InjectAllAtOnceBindingManager implements IBindingManager {
 						injectRidgets(complexRidget, complexComponent.getUIControls());
 					}
 				} catch (ReflectionFailure e) {
-					UIBindingFailure ee = new UIBindingFailure("Cannot create ridget for ridget property '"
-							+ bindingProperty + "' of ridget container " + ridgetContainer, e);
+					UIBindingFailure ee = new UIBindingFailure("Cannot create ridget for ridget property '" //$NON-NLS-1$
+							+ bindingProperty + "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
 					LOGGER.log(LogService.LOG_ERROR, ee.getMessage(), ee);
 					throw ee;
 				}
@@ -88,8 +88,8 @@ public class InjectAllAtOnceBindingManager implements IBindingManager {
 	/**
 	 * Creates for the given UI-control the appropriate ridget.
 	 * 
-	 * @param control -
-	 *            UI-control
+	 * @param control
+	 *            - UI-control
 	 * @return ridget
 	 * @throws ReflectionFailure
 	 */
@@ -129,8 +129,8 @@ public class InjectAllAtOnceBindingManager implements IBindingManager {
 				String bindingProperty = propertyStrategy.locateBindingProperty(control);
 				IComplexRidget complexRidget = (IComplexRidget) getRidget(bindingProperty, controller);
 				updateBindings(complexRidget, complexComponent.getUIControls(), unbind);
-				if (complexRidget instanceof IRidget) {
-					bindRidget((IRidget) complexRidget, complexComponent, unbind);
+				if (complexRidget != null) {
+					bindRidget(complexRidget, complexComponent, unbind);
 				}
 			} else {
 				String bindingProperty = propertyStrategy.locateBindingProperty(control);

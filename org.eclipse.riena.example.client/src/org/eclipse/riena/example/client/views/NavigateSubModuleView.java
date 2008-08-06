@@ -13,11 +13,9 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.navigation.ui.swt.views.InjectAllAtOnceViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.swt.views.SWTViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
-import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
-import org.eclipse.riena.ui.ridgets.uibinding.InjectAllAtOnceBindingManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -49,8 +47,8 @@ public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleCo
 	}
 
 	@Override
-	protected IBindingManager createBindingManager() {
-		return new InjectAllAtOnceBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
+	protected SWTViewBindingDelegate createBinding() {
+		return new InjectAllAtOnceViewBindingDelegate();
 	}
 
 }

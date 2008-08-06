@@ -55,9 +55,10 @@ public class DefaultBindingManager implements IBindingManager {
 	 * Creates the managers of all bindings of a view.
 	 * 
 	 * @param propertyStrategy
-	 * 		- strategy to get the property for the binding from the UI-control.
+	 *            - strategy to get the property for the binding from the
+	 *            UI-control.
 	 * @param mapper
-	 * 		- mapping for UI control-classes to ridget-classes
+	 *            - mapping for UI control-classes to ridget-classes
 	 */
 	public DefaultBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
 		this.propertyStrategy = propertyStrategy;
@@ -66,9 +67,8 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * @see
-	 * 	org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#injectRidgets(
-	 * 	org.eclipse.riena.ui.ridgets.IRidgetContainer, java.util.List)
+	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#injectRidgets(org.eclipse.riena.ui.ridgets.IRidgetContainer,
+	 *      java.util.List)
 	 */
 	public void injectRidgets(IRidgetContainer ridgetContainer, List<Object> uiControls) {
 		for (Object control : uiControls) {
@@ -97,7 +97,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * Creates for the given UI-control the appropriate ridget.
 	 * 
 	 * @param control
-	 * 		- UI-control
+	 *            - UI-control
 	 * @return ridget
 	 * @throws ReflectionFailure
 	 */
@@ -138,16 +138,16 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#bind(
-	 * 	IRidgetContainer, java.util.List)
+	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#bind(IRidgetContainer,
+	 *      java.util.List)
 	 */
 	public void bind(IRidgetContainer controller, List<Object> uiControls) {
 		updateBindings(controller, uiControls, false);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#unbind(
-	 * 	IRidgetContainer, java.util.List)
+	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#unbind(IRidgetContainer,
+	 *      java.util.List)
 	 */
 	public void unbind(IRidgetContainer controller, List<Object> uiControls) {
 		updateBindings(controller, uiControls, true);
@@ -160,8 +160,8 @@ public class DefaultBindingManager implements IBindingManager {
 				String bindingProperty = propertyStrategy.locateBindingProperty(control);
 				IComplexRidget complexRidget = (IComplexRidget) getRidget(bindingProperty, controller);
 				updateBindings(complexRidget, complexComponent.getUIControls(), unbind);
-				if (complexRidget instanceof IRidget) {
-					bindRidget((IRidget) complexRidget, complexComponent, unbind);
+				if (complexRidget != null) {
+					bindRidget(complexRidget, complexComponent, unbind);
 				}
 
 			} else {

@@ -112,7 +112,7 @@ public class ShellRenderer extends AbstractLnfRenderer {
 		Assert.isNotNull(shell);
 		Assert.isTrue(value instanceof Control);
 
-		setActive(shell == shell.getDisplay().getActiveShell());
+		setActive(true);
 		setMaximized(shell.getMaximized());
 
 		gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND));

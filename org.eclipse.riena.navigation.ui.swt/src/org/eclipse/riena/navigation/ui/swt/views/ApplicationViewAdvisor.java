@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
@@ -22,17 +19,14 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
@@ -84,7 +78,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private ApplicationController controller;
-	private List<Object> uiControls;
+	private SWTViewBindingDelegate binding;
 
 	private Cursor handCursor;
 	private Cursor grabCursor;
@@ -94,13 +88,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController) {
 		super(configurer);
-		uiControls = new ArrayList<Object>();
 		controller = pController;
+		binding = createBinding();
 		initializeListener();
 	}
 
-	public void addUIControl(Composite control) {
-		uiControls.add(control);
+	public void addUIControl(Composite control, String propertyName) {
+		binding.addUIControl(control, propertyName);
 	}
 
 	private void initializeListener() {
@@ -149,10 +143,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void doInitialBinding() {
-		DefaultBindingManager defaultBindingManager = createBindingManager();
-		defaultBindingManager.injectRidgets(controller, uiControls);
-		defaultBindingManager.bind(controller, uiControls);
+		binding.injectAndBind(controller);
 		controller.afterBind();
+	}
+
+	/**
+	 * Creates a delegate for the binding of view and controller.
+	 * 
+	 * @return delegate for binding
+	 */
+	protected SWTViewBindingDelegate createBinding() {
+		return new SWTViewBindingDelegate();
 	}
 
 	/**
@@ -201,16 +202,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setMinimumSize(APPLICATION_SIZE);
 
 		// prepare shell for binding
-		shell.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, SHELL_RIDGET_PROPERTY);
-		addUIControl(shell);
+		addUIControl(shell, SHELL_RIDGET_PROPERTY);
 
 		if (getShellRenderer() != null) {
 			getShellRenderer().setShell(shell);
 		}
-	}
-
-	protected DefaultBindingManager createBindingManager() {
-		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
 	}
 
 	/**
@@ -282,8 +278,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            - new cursor
 	 */
 	private void setCursor(Control control, Cursor cursor) {
-		if ((cursor != null) && (control.getCursor() != cursor)) {
-			control.setCursor(cursor);
+		if (!SwtUtilities.isDisposed(control)) {
+			if ((cursor != null) && (control.getCursor() != cursor)) {
+				control.setCursor(cursor);
+			}
 		}
 	}
 
@@ -992,7 +990,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 			if (redraw) {
 				Control control = (Control) e.getSource();
-				// avoid widget disposed exception on close
 				if (!control.isDisposed()) {
 					Rectangle buttonBounds = getShellRenderer().getButtonsBounds();
 					control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);

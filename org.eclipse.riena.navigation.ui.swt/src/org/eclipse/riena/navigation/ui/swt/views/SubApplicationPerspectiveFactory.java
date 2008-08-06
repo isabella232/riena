@@ -155,7 +155,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 				}
 
 			});
-			uiProcessRidget.setUIControl(new UIProcessControl(Display.getDefault().getActiveShell()));
+			uiProcessRidget.setUIControl(new UIProcessControl(Display.getDefault().getShells()[0]));
 			subApplicationViewController.setProgressBoxRidget(uiProcessRidget);
 		}
 
@@ -196,7 +196,7 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		}
 
 		private void createNavigation() {
-			showView(NavigationTreeViewPart.ID, createNextId());
+			showView(NavigationViewPart.ID, createNextId());
 		}
 
 		private void createStatusLine() {

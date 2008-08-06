@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -35,8 +35,8 @@ public class SubModuleToolTip extends DefaultToolTip {
 	/**
 	 * Creates new instance which add TooltipSupport to the tree.
 	 * 
-	 * @param tree -
-	 *            the tree on whose action the tooltip is shown
+	 * @param tree
+	 *            - the tree on whose action the tooltip is shown
 	 */
 	public SubModuleToolTip(Tree tree) {
 		super(tree);
@@ -154,11 +154,12 @@ public class SubModuleToolTip extends DefaultToolTip {
 	}
 
 	/**
-	 * Returns original (not clipped) text of the item at the given point (<code>event.x</code>
-	 * and <code>event.x</code>) or null if no such item exists.
+	 * Returns original (not clipped) text of the item at the given point (
+	 * <code>event.x</code> and <code>event.x</code>) or null if no such item
+	 * exists.
 	 * 
-	 * @param event -
-	 *            event with the x- and y-position of the mouse pointer
+	 * @param event
+	 *            - event with the x- and y-position of the mouse pointer
 	 * @return original (not clipped) item text
 	 */
 	protected String getItemLongText(Event event) {
@@ -166,7 +167,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 		TreeItem item = getTreeItem(event);
 		String longText = ""; //$NON-NLS-1$
 		if (item != null) {
-			ISubModuleNode subModule = (ISubModuleNode) item.getData();
+			INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
 			longText = subModule.getLabel();
 		}
 
@@ -178,8 +179,8 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * Returns text of the item at the given point (<code>event.x</code> and
 	 * <code>event.x</code>) or null if no such item exists.
 	 * 
-	 * @param event -
-	 *            event with the x- and y-position of the mouse pointer
+	 * @param event
+	 *            - event with the x- and y-position of the mouse pointer
 	 * @return item text
 	 */
 	protected String getItemText(Event event) {
@@ -197,8 +198,8 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * Returns the item at the given point (<code>event.x</code> and
 	 * <code>event.x</code>) or null if no such item exists.
 	 * 
-	 * @param event -
-	 *            event with the x- and y-position of the mouse pointer
+	 * @param event
+	 *            - event with the x- and y-position of the mouse pointer
 	 * @return the item at the given point, or null if the point is not in a
 	 *         selectable item
 	 */

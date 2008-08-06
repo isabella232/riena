@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -60,6 +62,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private IMarkable markable;
 	private Object context;
 	private Set<IAction> actions;
+	private PropertyChangeSupport propertyChangeSupport;
 
 	/**
 	 * Create a new instance with empty children list
@@ -68,6 +71,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		super();
 
 		listeners = new LinkedList<L>();
+		propertyChangeSupport = new PropertyChangeSupport(this);
 		simpleListeners = new LinkedList<ISimpleNavigationNodeListener>();
 		children = new LinkedList<C>();
 		markable = createMarkable();
@@ -158,6 +162,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.childAdded(this, pChild);
 		}
+		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_ADD_CHILDREN, null, pChild);
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -232,6 +238,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.childRemoved(this, pChild);
 		}
+		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_REMOVE_CHILDREN, null, pChild);
 	}
 
 	public void setNavigationProcessor(INavigationProcessor pProcessor) {
@@ -308,6 +315,21 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListenerable#addPropertyChangeListener(java.beans.PropertyChangeListener)
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListenerable#
+	 *      removePropertyChangeListener ()
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
 	}
 
 	/**

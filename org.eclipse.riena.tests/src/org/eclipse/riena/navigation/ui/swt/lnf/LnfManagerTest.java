@@ -24,8 +24,8 @@ public class LnfManagerTest extends TestCase {
 	/**
 	 * Test of the method <code>getLnfClassName()</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testGetLnfClassName() throws Exception {
 
@@ -45,8 +45,8 @@ public class LnfManagerTest extends TestCase {
 	/**
 	 * Test of the method <code>getLnf()</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testGetLnf() throws Exception {
 
@@ -64,10 +64,8 @@ public class LnfManagerTest extends TestCase {
 	public void testDispose() throws Exception {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
 		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 		LnfManager.dispose();
-		assertNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
 		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}

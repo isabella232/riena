@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.riena.navigation.IApplicationModel;
@@ -23,12 +21,8 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
-import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
@@ -39,21 +33,21 @@ import org.eclipse.ui.part.ViewPart;
 public abstract class SubModuleNodeView<C extends SubModuleController> extends ViewPart {
 
 	private Map<ISubModuleNode, C> node2Controler;
-
-	private List<Object> uiControls;
-
+	private SWTViewBindingDelegate binding;
 	private C currentController;
 
-	private IBindingManager bindingManager;
-
 	public SubModuleNodeView() {
-		bindingManager = createBindingManager();
+		binding = createBinding();
 		node2Controler = new HashMap<ISubModuleNode, C>();
-		uiControls = new ArrayList<Object>();
 	}
 
-	protected IBindingManager createBindingManager() {
-		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
+	/**
+	 * Creates a delegate for the binding of view and controller.
+	 * 
+	 * @return delegate for binding
+	 */
+	protected SWTViewBindingDelegate createBinding() {
+		return new SWTViewBindingDelegate();
 	}
 
 	/**
@@ -63,7 +57,7 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 	 *            - control to bind
 	 */
 	protected void addUIControl(Widget uiControl) {
-		uiControls.add(uiControl);
+		binding.addUIControl(uiControl);
 	}
 
 	/**
@@ -75,8 +69,7 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 	 *            - name of the property...
 	 */
 	protected void addUIControl(Widget uiControl, String propertyName) {
-		uiControl.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, propertyName);
-		uiControls.add(uiControl);
+		binding.addUIControl(uiControl, propertyName);
 	}
 
 	/**
@@ -123,6 +116,7 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 		basicCreatePartControl(parent);
 		createViewFacade();
 		activate();
+		observeRoot();
 	}
 
 	private void observeRoot() {
@@ -164,12 +158,12 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 	protected void activate() {
 		if (currentController != getController()) {
 			if (currentController != null) {
-				bindingManager.unbind(currentController, uiControls);
+				binding.unbind(currentController);
 			}
 			if (node2Controler.get(getCurrentNode()) == null && getCurrentNode() != null) {
 				createViewFacade();
 			}
-			bindingManager.bind(getController(), uiControls);
+			binding.bind(getController());
 			currentController = getController();
 			getController().afterBind();
 		}
@@ -179,7 +173,7 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 		if (!node2Controler.containsKey(getCurrentNode())) {
 			setController(createController(getCurrentNode()));
 		}
-		bindingManager.injectRidgets(getController(), uiControls);
+		binding.injectRidgets(getController());
 	}
 
 	protected IPresentationProviderService getPresentationDefinitionService() {
@@ -188,4 +182,5 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
 
 	}
+
 }

@@ -352,6 +352,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 	}
 
+	public boolean isRootVisible() {
+		return showRoots;
+	}
+
 	/**
 	 * Initialize databining for tree viewer.
 	 */
@@ -393,7 +397,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 						for (Object child : root0Children) {
 							inputList.add(child);
 						}
-						viewer.refresh();
+						viewer.setInput(inputList);
+						viewer.refresh(); // TODO [tsc]
 					}
 				}
 			};

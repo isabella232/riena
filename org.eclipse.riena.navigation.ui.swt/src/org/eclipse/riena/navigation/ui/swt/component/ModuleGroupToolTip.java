@@ -12,6 +12,8 @@ package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
+import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -24,22 +26,23 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
+/**
+ * ToolTip for the modules (views) in the module group.<br>
+ * ToolTip is only displayed if the text of the module view was clipped.
+ */
 public class ModuleGroupToolTip extends DefaultToolTip {
 
-	private ModuleGroupWidget moduleGroupWidget;
+	private ModuleGroupView moduleGroupWidget;
 
 	/**
 	 * Creates new instance which add TooltipSupport to the control.
 	 * 
-	 * @param moduleGroupWidget2
+	 * @param moduleGroupView
 	 *            TODO
-	 * 
-	 * @param control -
-	 *            the control on whose action the tooltip is shown
 	 */
-	public ModuleGroupToolTip(ModuleGroupWidget moduleGroupWidget) {
-		super(moduleGroupWidget);
-		setModuleGroupWidget(moduleGroupWidget);
+	public ModuleGroupToolTip(ModuleGroupView moduleGroupView) {
+		super(moduleGroupView);
+		setModuleGroupView(moduleGroupView);
 		setShift(new Point(0, 0));
 	}
 
@@ -101,9 +104,9 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 			label.setFont(font);
 		}
 
-		ModuleItem item = getItem(event);
-		if (item != null) {
-			label.setText(item.getModuleNode().getLabel());
+		ModuleView view = getModuleView(event);
+		if (view != null) {
+			label.setText(view.getNavigationNode().getLabel());
 		}
 
 		return label;
@@ -120,10 +123,10 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 
 		if (should) {
 			initLookAndFeel();
-			ModuleItem item = getItem(event);
-			if (item != null) {
-				GC gc = new GC(getModuleGroupWidget());
-				should = getRenderer().isTextClipped(gc, item);
+			ModuleView view = getModuleView(event);
+			if (view != null) {
+				GC gc = new GC(getModuleGroupView());
+				should = getRenderer().isTextClipped(gc, view);
 				gc.dispose();
 			} else {
 				should = false;
@@ -142,12 +145,12 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 	public Point getLocation(Point tipSize, Event event) {
 
 		Point location = super.getLocation(tipSize, event);
-		ModuleItem item = getItem(event);
-		if (item != null) {
-			GC gc = new GC(getModuleGroupWidget());
-			Rectangle textBounds = getRenderer().computeTextBounds(gc, item);
+		ModuleView view = getModuleView(event);
+		if (view != null) {
+			GC gc = new GC(getModuleGroupView());
+			Rectangle textBounds = getRenderer().computeTextBounds(gc, view);
 			gc.dispose();
-			location = getModuleGroupWidget().toDisplay(textBounds.x, textBounds.y);
+			location = getModuleGroupView().toDisplay(textBounds.x, textBounds.y);
 		}
 
 		return location;
@@ -157,7 +160,7 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 	/**
 	 * @return the moduleGroupWidget
 	 */
-	private ModuleGroupWidget getModuleGroupWidget() {
+	private ModuleGroupView getModuleGroupView() {
 		return moduleGroupWidget;
 	}
 
@@ -165,27 +168,28 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 	 * @param moduleGroupWidget
 	 *            the moduleGroupWidget to set
 	 */
-	private void setModuleGroupWidget(ModuleGroupWidget moduleGroupWidget) {
+	private void setModuleGroupView(ModuleGroupView moduleGroupWidget) {
 		this.moduleGroupWidget = moduleGroupWidget;
 	}
 
 	/**
 	 * Returns the module at the given point.
 	 * 
-	 * @param point -
-	 *            point over module item
-	 * @return module item; or null, if not item was found
+	 * @param point
+	 *            - point over module view
+	 * @return module view; or null, if not module view was found
 	 */
-	protected ModuleItem getItem(Event event) {
+	protected ModuleView getModuleView(Event event) {
 
 		Point point = new Point(event.x, event.y);
 
-		for (ModuleItem item : getModuleGroupWidget().getItems()) {
-			GC gc = new GC(getModuleGroupWidget());
-			Rectangle textBounds = getRenderer().computeTextBounds(gc, item);
+		ModuleView view = getModuleGroupView().getItem(point);
+		if (view != null) {
+			GC gc = new GC(getModuleGroupView());
+			Rectangle textBounds = getRenderer().computeTextBounds(gc, view);
 			gc.dispose();
 			if (textBounds.contains(point)) {
-				return item;
+				return view;
 			}
 		}
 

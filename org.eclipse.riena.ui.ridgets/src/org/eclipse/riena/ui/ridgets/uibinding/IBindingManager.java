@@ -22,30 +22,30 @@ public interface IBindingManager {
 	/**
 	 * injects the mapped ridgets for the uiControls in the controller.
 	 * 
-	 * @param controller -
-	 *            The controller which gets the ridgets injected.
-	 * @param uiControls -
-	 *            The uiControls which will get mapped to ridgets.
+	 * @param controller
+	 *            - The controller which gets the ridgets injected.
+	 * @param uiControls
+	 *            - The uiControls which will get mapped to ridgets.
 	 */
 	void injectRidgets(IRidgetContainer controller, List<Object> uiControls);
 
 	/**
 	 * binds uiControls to their ridgets in the controller.
 	 * 
-	 * @param controller -
-	 *            The controller which holds the ridgets.
-	 * @param uiControls -
-	 *            The uiControls which will be bound to the ridgets.
+	 * @param controller
+	 *            - The controller which holds the ridgets.
+	 * @param uiControls
+	 *            - The uiControls which will be bound to the ridgets.
 	 */
 	void bind(IRidgetContainer controller, List<Object> uiControls);
 
 	/**
-	 * unbinds uiControls from their widgets in the controller.
+	 * unbinds uiControls from their ridgets in the controller.
 	 * 
-	 * @param controller -
-	 *            The controller which holds the ridgets.
-	 * @param uiControls -
-	 *            The uiControls which will be unbound from the ridgets.
+	 * @param controller
+	 *            - The controller which holds the ridgets.
+	 * @param uiControls
+	 *            - The uiControls which will be unbound from the ridgets.
 	 */
 	void unbind(IRidgetContainer controller, List<Object> uiControls);
 }

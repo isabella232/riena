@@ -124,7 +124,7 @@ public class TreeSubModuleController extends SubModuleController {
 		((TreeRidget) tree).setRootsVisible(false);
 		tree.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
-		// tree.setSelection(roots[0]);
+		tree.setSelection(roots[0].getChildren().get(0));
 
 		buttonAddSibling.setText("Add &Sibling");
 		buttonAddSibling.addListener(new IActionListener() {

@@ -14,6 +14,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.riena.ui.swt.utils.SwtUtilitiesTest;
+
 /**
  * Tests all test cases within package:
  * 
@@ -27,6 +29,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(StatuslineTimeTest.class);
 		suite.addTestSuite(StatuslineMessageTest.class);
 		suite.addTestSuite(StatuslineNumberTest.class);
+		suite.addTestSuite(SwtUtilitiesTest.class);
 		return suite;
 	}
 

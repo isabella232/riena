@@ -62,7 +62,6 @@ public class RienaDefaultLnfTest extends TestCase {
 
 		lnf.initialize();
 
-		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
 		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
@@ -75,14 +74,12 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	public void testUninitialize() throws Exception {
 
-		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
 		Color color = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
 		assertNotNull(color);
 
 		lnf.uninitialize();
 
 		assertTrue(color.isDisposed());
-		assertNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
 		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
@@ -113,20 +110,6 @@ public class RienaDefaultLnfTest extends TestCase {
 		lnf.initialize();
 		assertNull(lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 		assertNotNull(lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
-		assertNull(lnf.getFont("dummy"));
-
-	}
-
-	/**
-	 * Test of the method <code>getRenderer(String)</code>.
-	 * 
-	 * @throws Exception
-	 *             - handled by JUnit
-	 */
-	public void testGetRenderer() throws Exception {
-
-		lnf.initialize();
-		assertNotNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER));
 		assertNull(lnf.getFont("dummy"));
 
 	}

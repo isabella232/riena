@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.riena.navigation.ui.swt.component.ModuleItem;
+import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -32,7 +32,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private static final int MODULE_GROUP_PADDING = 1;
 	private static final int MODULE_WIDTH = 165;
 
-	private List<ModuleItem> items;
+	private List<ModuleView> items;
 	private boolean activated;
 
 	/**
@@ -48,8 +48,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		// gc.setInterpolation(SWT.HIGH);
 		// gc.setAntialias(SWT.ON);
 
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
-
 		// border of module group
 		Point size = computeSize(gc, getBounds().width, 0);
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
@@ -62,33 +60,33 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		int x = innerBorder.x + getModuleGroupPadding();
 		int y = innerBorder.y + getModuleGroupPadding();
 		int w = innerBorder.width - getModuleGroupPadding() * 2;
-		List<ModuleItem> modules = getItems();
-		for (Iterator<ModuleItem> iterator = modules.iterator(); iterator.hasNext();) {
-			ModuleItem module = iterator.next();
-
+		List<ModuleView> modules = getItems();
+		for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
+			ModuleView moduleView = iterator.next();
+			EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(moduleView);
 			// title bar
-			titlebarRenderer.setActive(module.isActivated());
-			titlebarRenderer.setCloseable(module.isCloseable());
-			titlebarRenderer.setPressed(module.isPressed());
-			titlebarRenderer.setHover(module.isHover());
-			titlebarRenderer.setIcon(module.getIcon());
+			titlebarRenderer.setActive(moduleView.isActivated());
+			titlebarRenderer.setCloseable(moduleView.isCloseable());
+			titlebarRenderer.setPressed(moduleView.isPressed());
+			titlebarRenderer.setHover(moduleView.isHover());
+			titlebarRenderer.setIcon(moduleView.getIcon());
 			Point titlebarSize = titlebarRenderer.computeSize(gc, getBounds().width, 0);
 			Rectangle titlebarBounds = new Rectangle(x, y, w, titlebarSize.y);
 			titlebarRenderer.setBounds(titlebarBounds);
-			String label = module.getLabel();
+			String label = moduleView.getLabel();
 			titlebarRenderer.paint(gc, label);
 
-			module.setBounds(new Rectangle(x, y, w, titlebarSize.y));
+			moduleView.setBounds(new Rectangle(x, y, w, titlebarSize.y));
 
 			y += titlebarSize.y;
 
-			if (module.isActivated()) {
+			if (moduleView.isActivated()) {
 				// body (normally: tree) of module
-				module.getBody().layout();
-				module.getBody().setBounds(x, y, w, module.getOpenHeight() - 1);
-				module.getBody().setVisible(true);
-				y += module.getOpenHeight();
-				titlebarBounds.height += module.getOpenHeight();
+				moduleView.getBody().layout();
+				moduleView.getBody().setBounds(x, y, w, moduleView.getOpenHeight() - 1);
+				moduleView.getBody().setVisible(true);
+				y += moduleView.getOpenHeight();
+				titlebarBounds.height += moduleView.getOpenHeight();
 			}
 
 			if (iterator.hasNext()) {
@@ -97,7 +95,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 				y += getModuleGroupPadding();
 			}
 
-			computeTextBounds(gc, module);
+			computeTextBounds(gc, moduleView);
 
 		}
 
@@ -107,7 +105,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		for (ModuleItem item : getItems()) {
+		for (ModuleView item : getItems()) {
 			item.dispose();
 		}
 	}
@@ -125,7 +123,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 */
 	public Point computeSize(GC gc, int wHint, int hHint) {
 
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 
 		int w = wHint;
@@ -133,15 +130,16 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			w = borderRenderer.computeOuterWidth(getItemWidth());
 		}
 
-		List<ModuleItem> modules = getItems();
+		List<ModuleView> modules = getItems();
 		int h = getModuleGroupPadding();
-		for (Iterator<ModuleItem> iterator = modules.iterator(); iterator.hasNext();) {
-			ModuleItem module = iterator.next();
-			titlebarRenderer.setIcon(module.getIcon());
+		for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
+			ModuleView moduleView = iterator.next();
+			EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(moduleView);
+			titlebarRenderer.setIcon(moduleView.getIcon());
 			Point titlebarSize = titlebarRenderer.computeSize(gc, wHint, 0);
 			h += titlebarSize.y;
-			if (module.getModuleNode().isActivated()) {
-				h += module.getOpenHeight();
+			if (moduleView.isActivated()) {
+				h += moduleView.getOpenHeight();
 			}
 			if (iterator.hasNext()) {
 				h += getModuleModuleGap();
@@ -163,13 +161,13 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 *            - module item
 	 * @return bounds of close "button".
 	 */
-	public Rectangle computeCloseButtonBounds(GC gc, ModuleItem item) {
+	public Rectangle computeCloseButtonBounds(GC gc, ModuleView item) {
 
-		if (!item.getModuleNode().isCloseable()) {
+		if (!item.isCloseable()) {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(item);
 		titlebarRenderer.setBounds(item.getBounds());
 		Rectangle closeBounds = titlebarRenderer.computeCloseButtonBounds();
 
@@ -180,27 +178,27 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	/**
 	 * Returns the bounds of the text of the titlebar for the given module item.
 	 * 
-	 * @param item
+	 * @param moduleView
 	 *            - module item
 	 * @return bounds of text.
 	 */
-	public Rectangle computeTextBounds(GC gc, ModuleItem item) {
+	public Rectangle computeTextBounds(GC gc, ModuleView moduleView) {
 
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
-		titlebarRenderer.setBounds(item.getBounds());
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(moduleView);
+		titlebarRenderer.setBounds(moduleView.getBounds());
 		Rectangle textBounds = titlebarRenderer.computeTextBounds(gc);
 
-		Rectangle closeBounds = computeCloseButtonBounds(gc, item);
+		Rectangle closeBounds = computeCloseButtonBounds(gc, moduleView);
 		textBounds.width -= closeBounds.width;
 
 		return textBounds;
 
 	}
 
-	public boolean isTextClipped(GC gc, ModuleItem item) {
+	public boolean isTextClipped(GC gc, ModuleView item) {
 
-		String text = item.getModuleNode().getLabel();
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		String text = item.getLabel();
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(item);
 		titlebarRenderer.setBounds(item.getBounds());
 		String clippedText = titlebarRenderer.getClippedText(gc, text);
 
@@ -219,23 +217,17 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	}
 
-	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
-
-		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
-		if (renderer == null) {
-			renderer = new EmbeddedTitlebarRenderer();
-		}
-		return renderer;
+	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer(ModuleView moduleView) {
+		return moduleView.getLnfTitlebarRenderer();
 
 	}
 
 	/**
 	 * @return the items
 	 */
-	public List<ModuleItem> getItems() {
+	public List<ModuleView> getItems() {
 		if (items == null) {
-			items = new ArrayList<ModuleItem>();
+			items = new ArrayList<ModuleView>();
 		}
 		return items;
 	}
@@ -244,7 +236,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @param items
 	 *            the items to set
 	 */
-	public void setItems(List<ModuleItem> items) {
+	public void setItems(List<ModuleView> items) {
 		this.items = items;
 	}
 

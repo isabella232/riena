@@ -35,18 +35,18 @@ public class ComboSubModuleView extends SubModuleNodeView<ComboSubModuleControll
 		parent.setLayout(new GridLayout(1, false));
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		UIControlsFactory.createLabel(parent, "&Persons:");
+		UIControlsFactory.createLabel(parent, "&Persons:"); //$NON-NLS-1$
 
 		Combo combo = UIControlsFactory.createCombo(parent);
 		fillFactory.applyTo(combo);
 		addUIControl(combo, "comboOne"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "&First Name:");
+		UIControlsFactory.createLabel(parent, "&First Name:"); //$NON-NLS-1$
 		Text textFirst = UIControlsFactory.createText(parent);
 		fillFactory.applyTo(textFirst);
 		addUIControl(textFirst, "textFirst"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "&Last Name:");
+		UIControlsFactory.createLabel(parent, "&Last Name:"); //$NON-NLS-1$
 		Text textLast = UIControlsFactory.createText(parent);
 		fillFactory.applyTo(textLast);
 		addUIControl(textLast, "textLast"); //$NON-NLS-1$
@@ -55,11 +55,5 @@ public class ComboSubModuleView extends SubModuleNodeView<ComboSubModuleControll
 		fillFactory.applyTo(buttonSave);
 		addUIControl(buttonSave, "buttonSave"); //$NON-NLS-1$
 	}
-
-	// @Override
-	// protected ComboSubModuleController createController(ISubModuleNode
-	// subModuleNode) {
-	// return new ComboSubModuleController(subModuleNode);
-	// }
 
 }

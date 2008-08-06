@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.presentation.stack;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -21,17 +19,15 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
-import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
+import org.eclipse.riena.navigation.ui.swt.views.SWTViewBindingDelegate;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -125,10 +121,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private Composite parent;
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
+	private SWTViewBindingDelegate binding;
 
 	public TitlelessStackPresentation(Composite parent, IStackPresentationSite stackSite) {
 		super(stackSite);
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		binding = createBinding();
 		createSubModuleViewArea();
 	}
 
@@ -139,8 +137,29 @@ public class TitlelessStackPresentation extends StackPresentation {
 			navigation = newPart;
 		} else if (isStatusLine(newPart)) {
 			statusLine = newPart;
+			binding.addUIControl(getStatuslineWidget(statusLine.getControl()));
+			SubApplicationController controller = getSubApplicationViewController();
+			if (controller != null) {
+				binding.injectAndBind(controller);
+				// DefaultBindingManager defaultBindingManager =
+				// createBindingManager();
+				// List<Object> uiControls = new ArrayList<Object>(1);
+				// uiControls.add(getStatuslineWidget(statusLine.getControl()));
+				// defaultBindingManager.injectRidgets(controller, uiControls);
+				// defaultBindingManager.bind(controller, uiControls);
+			}
+
 		}
 		knownParts.add(newPart);
+	}
+
+	/**
+	 * Creates a delegate for the binding of view and controller.
+	 * 
+	 * @return delegate for binding
+	 */
+	protected SWTViewBindingDelegate createBinding() {
+		return new SWTViewBindingDelegate();
 	}
 
 	/**
@@ -353,10 +372,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		return new Rectangle(x, y, width, height);
 	}
 
-	private DefaultBindingManager createBindingManager() {
-		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
-	}
-
 	/**
 	 * Creates the area within witch the view of the current active sub-module
 	 * is displayed.
@@ -450,14 +465,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	private void initializeStatusLine() {
-		SubApplicationController controller = getSubApplicationViewController();
-		if (controller != null) {
-			DefaultBindingManager defaultBindingManager = createBindingManager();
-			List<Object> uiControls = new ArrayList<Object>(1);
-			uiControls.add(getStatuslineWidget(statusLine.getControl()));
-			defaultBindingManager.injectRidgets(controller, uiControls);
-			defaultBindingManager.bind(controller, uiControls);
-		}
+		// SubApplicationController controller =
+		// getSubApplicationViewController();
+		// if (controller != null) {
+		// DefaultBindingManager defaultBindingManager = createBindingManager();
+		// List<Object> uiControls = new ArrayList<Object>(1);
+		// uiControls.add(getStatuslineWidget(statusLine.getControl()));
+		// defaultBindingManager.injectRidgets(controller, uiControls);
+		// defaultBindingManager.bind(controller, uiControls);
+		// }
 	}
 
 	/**

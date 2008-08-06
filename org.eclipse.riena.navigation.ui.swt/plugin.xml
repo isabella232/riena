@@ -5,8 +5,8 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.navigation.ui.swt.views.NavigationTreeViewPart"
-            id="org.eclipse.riena.navigation.ui.swt.views.navigationTreeView"
+            class="org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart"
+            id="org.eclipse.riena.navigation.ui.swt.views.experimental.NavigationViewPart"
             name="NavigationTreeView">
       </view>
       <view

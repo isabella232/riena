@@ -149,25 +149,49 @@ public final class SwtUtilities {
 	 *            - resource to dispose
 	 */
 	public static void disposeResource(Resource resource) {
-		if ((resource != null) && (!resource.isDisposed())) {
+		if (!isDisposed(resource)) {
 			resource.dispose();
 		}
 		resource = null;
 	}
 
 	/**
-	 * Disposes the given widget, if the the widget is not null and isn't
-	 * already disposed.
+	 * Disposes the given widget, if the the widget is not {@code null} and
+	 * isn't already disposed.
 	 * 
 	 * @param widget
 	 *            - widget to dispose
 	 */
 	public static void disposeWidget(Widget widget) {
-		if ((widget != null) && (!widget.isDisposed())) {
+		if (!isDisposed(widget)) {
 			widget.dispose();
 		}
 		widget = null;
 
+	}
+
+	/**
+	 * Returns {@code true}, if the given widget is disposed or {@code null}.
+	 * 
+	 * @param widget
+	 *            - widget to check
+	 * @return {@code true}, if the widget is disposed or {@code null};
+	 *         otherwise {@code false}.
+	 */
+	public static boolean isDisposed(Widget widget) {
+		return !((widget != null) && (!widget.isDisposed()));
+	}
+
+	/**
+	 * Returns {@code true}, if the given resource is disposed or {@code null}.
+	 * 
+	 * @param resource
+	 *            - resource to check
+	 * @return {@code true}, if the resource is disposed or {@code null};
+	 *         otherwise {@code false}.
+	 */
+	public static boolean isDisposed(Resource resource) {
+		return !((resource != null) && (!resource.isDisposed()));
 	}
 
 }

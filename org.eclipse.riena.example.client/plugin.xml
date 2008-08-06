@@ -274,7 +274,7 @@
             <with
                   variable="activePartId">
                <equals
-                     value="customerDetailView">
+                     value="org.eclipse.riena.example.client.views.ComboSubModuleView">
                </equals>
             </with>
          </enabledWhen>

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.listener;
 
-import org.eclipse.riena.navigation.INavigationNode;
+import java.beans.PropertyChangeListener;
 
+import org.eclipse.riena.navigation.INavigationNode;
 
 /**
  * Describes the ability of a navigation node to carry a listener The ability is
@@ -20,8 +21,15 @@ import org.eclipse.riena.navigation.INavigationNode;
  */
 public interface INavigationNodeListenerable<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>> {
 
+	static final String PROPERTY_ADD_CHILDREN = "addChildren"; //$NON-NLS-1$
+	static final String PROPERTY_REMOVE_CHILDREN = "removeChildren"; //$NON-NLS-1$
+
 	void addListener(L pListener);
 
 	void removeListener(L pListener);
+
+	void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
+
+	void removePropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 }
