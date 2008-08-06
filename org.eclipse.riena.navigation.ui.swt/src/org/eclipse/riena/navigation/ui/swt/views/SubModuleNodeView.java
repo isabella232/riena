@@ -123,7 +123,6 @@ public abstract class SubModuleNodeView<C extends SubModuleController> extends V
 		basicCreatePartControl(parent);
 		createViewFacade();
 		activate();
-		observeRoot();
 	}
 
 	private void observeRoot() {
