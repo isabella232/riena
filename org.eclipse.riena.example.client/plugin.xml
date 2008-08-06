@@ -344,11 +344,20 @@
    <extension
          point="org.eclipse.riena.navigation.WorkAreaPresentation">
       <workAreaPresentation
+            presentationId="org.eclipse.riena.example.customerDetail"
+            view="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
             presentationId="org.eclipse.riena.example.navigation"
             view="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             viewController="org.eclipse.riena.example.client.controllers.NavigationSubModuleController">
       </workAreaPresentation>
-   </extension>   <extension
+   </extension>
+   <extension
          point="org.eclipse.riena.navigation.WorkAreaPresentation">
       <workAreaPresentation
             presentationId="org.eclipse.riena.example.buttons"

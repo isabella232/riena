@@ -13,9 +13,9 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.riena.example.client.application.IExampleIcons;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 
 /**
  * Controller for the customer detail view
@@ -33,11 +33,11 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		ISubModuleNode newNode = new SubModuleNode("dynamically added node"); //$NON-NLS-1$
+		SubModuleNode newNode = new SubModuleNode("dynamically added node"); //$NON-NLS-1$
 		// TODO do it like swtExampleApplication ..
 		String iconPath = Activator.PLUGIN_ID.concat(":").concat(IExampleIcons.ICON_FILE); //$NON-NLS-1$
 		newNode.setIcon(iconPath);
-		SwtPresentationManagerAccessor.getManager().present(newNode, "customerDetailView"); //$NON-NLS-1$
+		newNode.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.customerDetail")); //$NON-NLS-1$
 		getNavigationNode().addChild(newNode);
 	}
 }

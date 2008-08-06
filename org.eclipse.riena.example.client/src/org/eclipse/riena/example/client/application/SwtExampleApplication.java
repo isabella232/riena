@@ -80,7 +80,7 @@ public class SwtExampleApplication extends SwtApplication {
 		SubApplicationNode subApplication = null;
 		IModuleGroupNode moduleGroup = null;
 		IModuleNode module = null;
-		ISubModuleNode subModule = null;
+		SubModuleNode subModule = null;
 
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
@@ -119,8 +119,8 @@ public class SwtExampleApplication extends SwtApplication {
 		module.addChild(subModule);
 		/* NEW */
 		subModule = new SubModuleNode("Navigation"); //$NON-NLS-1$
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
 		presentation.registerView(NavigationSubModuleView.ID, false);
-		presentation.present(subModule, NavigationSubModuleView.ID);
 		module.addChild(subModule);
 
 		moduleGroup = new ModuleGroupNode("Group 1.2"); //$NON-NLS-1$
