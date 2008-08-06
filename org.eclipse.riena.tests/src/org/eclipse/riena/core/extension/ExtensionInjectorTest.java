@@ -13,14 +13,12 @@ package org.eclipse.riena.core.extension;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ConfigurationPlugin;
 
 /**
  * 
@@ -244,21 +242,10 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
-	public void testModifyWithUnknownTypeAndSingleData() throws ConfigurationException, InvalidSyntaxException {
+	public void testModifyWithUnknownTypeAndSingleData() throws CoreException, InvalidSyntaxException {
 		printTestName();
-		ServiceReference[] references = getContext().getServiceReferences(ConfigurationPlugin.class.getName(), null);
-		boolean configSymbolReplace = false;
-		for (ServiceReference reference : references) {
-			Object service = getContext().getService(reference);
-			if (service instanceof ConfigSymbolReplace) {
-				ConfigSymbolReplace config = (ConfigSymbolReplace) service;
-				config.addVariable("true", "true");
-				configSymbolReplace = true;
-			}
-		}
-		assertTrue("Ok, test needs rework - expected ConfigSymbolReplace is not registered!", configSymbolReplace);
-		for (ServiceReference reference : references)
-			getContext().ungetService(reference);
+		VariableManagerUtil.addVariable("true", "true");
+
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext5.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
