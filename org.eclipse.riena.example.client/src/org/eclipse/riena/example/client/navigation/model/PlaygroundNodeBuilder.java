@@ -39,6 +39,10 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 		buttonsSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.buttons")); //$NON-NLS-1$
 		playgroundModule.addChild(buttonsSubModule);
 
+		SubModuleNode choiceSubModule = new SubModuleNode("Choice"); //$NON-NLS-1$
+		choiceSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.choice")); //$NON-NLS-1$
+		playgroundModule.addChild(choiceSubModule);
+
 		SubModuleNode comboSubModule = new SubModuleNode("Combo"); //$NON-NLS-1$
 		comboSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.combo")); //$NON-NLS-1$
 		playgroundModule.addChild(comboSubModule);
