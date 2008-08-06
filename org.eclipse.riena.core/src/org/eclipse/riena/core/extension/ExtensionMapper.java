@@ -88,6 +88,8 @@ public class ExtensionMapper {
 	 * @param extensionDesc
 	 * @param componentType
 	 * @return
+	 * @throws IllegalArgumentException
+	 *             if extension point is not existent
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] map(final boolean symbolReplace, final ExtensionDescriptor extensionDesc,
