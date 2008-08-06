@@ -65,6 +65,8 @@ public class PlatformLogBridge implements ILogListener {
 			logLevel = LogService.LOG_DEBUG;
 			break;
 		}
+		if (Activator.getDefault() == null)
+			return;
 		Activator.getDefault().getLogger("Bundle " + plugin).log(logLevel, status.getMessage(), status.getException()); //$NON-NLS-1$
 	}
 
