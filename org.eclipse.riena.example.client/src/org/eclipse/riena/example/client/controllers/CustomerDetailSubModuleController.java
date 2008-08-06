@@ -22,6 +22,10 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
  */
 public class CustomerDetailSubModuleController extends SubModuleController {
 
+	public CustomerDetailSubModuleController() {
+		this(null);
+	}
+
 	public CustomerDetailSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 

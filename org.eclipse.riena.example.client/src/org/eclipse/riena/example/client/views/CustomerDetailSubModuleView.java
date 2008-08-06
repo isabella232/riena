@@ -4,7 +4,6 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -150,9 +149,9 @@ public class CustomerDetailSubModuleView extends SubModuleNodeView<CustomerDetai
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#createController(org.eclipse.riena.navigation.ISubModuleNode)
 	 */
-	@Override
-	protected CustomerDetailSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new CustomerDetailSubModuleController(subModuleNode);
-	}
-
+	// @Override
+	// protected CustomerDetailSubModuleController
+	// createController(ISubModuleNode subModuleNode) {
+	// return new CustomerDetailSubModuleController(subModuleNode);
+	// }
 }

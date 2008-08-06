@@ -27,6 +27,10 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 
 	private boolean registered;
 
+	public UIProcessDemoSubModuleController() {
+		this(null);
+	}
+
 	public UIProcessDemoSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}

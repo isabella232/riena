@@ -7,6 +7,10 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
 public class SharedViewDemoSubModuleController extends SubModuleController {
 
+	public SharedViewDemoSubModuleController() {
+		this(null);
+	}
+
 	public SharedViewDemoSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		bean = new TxtBean();

@@ -14,7 +14,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -40,11 +39,6 @@ public class ValidationSubModuleView extends SubModuleNodeView<ValidationSubModu
 
 		Group group1 = createGroupOnEditValidation(parent);
 		fillFactory.applyTo(group1);
-	}
-
-	@Override
-	protected ValidationSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new ValidationSubModuleController(subModuleNode);
 	}
 
 	// helping methods

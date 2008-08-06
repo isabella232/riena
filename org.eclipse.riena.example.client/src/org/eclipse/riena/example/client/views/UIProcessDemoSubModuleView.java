@@ -13,7 +13,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -23,9 +22,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-public class UiProcessDemoSubModuleView extends SubModuleNodeView<UIProcessDemoSubModuleController> {
+public class UIProcessDemoSubModuleView extends SubModuleNodeView<UIProcessDemoSubModuleController> {
 
-	public final static String ID = UiProcessDemoSubModuleView.class.getName();
+	public final static String ID = UIProcessDemoSubModuleView.class.getName();
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
@@ -51,11 +50,6 @@ public class UiProcessDemoSubModuleView extends SubModuleNodeView<UIProcessDemoS
 		addUIControl(startJob, "actionRidgetJob"); //$NON-NLS-1$
 
 		return group;
-	}
-
-	@Override
-	protected UIProcessDemoSubModuleController createController(ISubModuleNode subModuleNode) {
-		return new UIProcessDemoSubModuleController(getCurrentNode());
 	}
 
 }

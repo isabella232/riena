@@ -47,9 +47,9 @@
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
-            id="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
-            name="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView">
+            class="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
+            id="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
+            name="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
       </view>
       <view
             allowMultiple="true"
@@ -377,7 +377,7 @@
          point="org.eclipse.riena.navigation.WorkAreaPresentation">
       <workAreaPresentation
             presentationId="org.eclipse.riena.example.uiProcess"
-            view="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
+            view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
             viewController="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
       </workAreaPresentation>
    </extension>
@@ -388,14 +388,6 @@
             view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
             viewController="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController">
             viewShared="true"
-      </workAreaPresentation>
-   </extension>
-   <extension
-         point="org.eclipse.riena.navigation.WorkAreaPresentation">
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.sharedView"
-            view="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
       </workAreaPresentation>
    </extension>
    <extension

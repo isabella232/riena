@@ -61,6 +61,10 @@ public class ValidationSubModuleController extends SubModuleController {
 	private ITextFieldRidget lblDate;
 	private ITextFieldRidget lblEmail;
 
+	public ValidationSubModuleController() {
+		this(null);
+	}
+
 	public ValidationSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
