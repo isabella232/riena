@@ -23,6 +23,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
@@ -32,6 +33,7 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	private static final FieldDecoration DEC_ERROR = FieldDecorationRegistry.getDefault().getFieldDecoration(
 			FieldDecorationRegistry.DEC_ERROR);
 
+	private Boolean preOutputEditable;
 	private Color preOutputBg;
 	private Color preMandatoryBg;
 	private Color preNegativeFg;
@@ -83,6 +85,11 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (preOutputBg == null) {
 			preOutputBg = control.getBackground();
 			control.setBackground(color);
+			if (control instanceof Text) {
+				Text text = (Text) control;
+				preOutputEditable = Boolean.valueOf(text.getEditable());
+				text.setEditable(false);
+			}
 		}
 	}
 
@@ -111,6 +118,10 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 			control.setBackground(preOutputBg);
 			preOutputBg = null;
 		}
+		if (preOutputEditable != null && control instanceof Text) {
+			((Text) control).setEditable(preOutputEditable.booleanValue());
+		}
+		preOutputEditable = null;
 	}
 
 	private void updateDisabled(Control control) {
@@ -161,7 +172,7 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	 * <li>ridget is hidden - no decorations are not shown</li>
 	 * <li>disabled on - all other states not shown on the ridget</li>
 	 * <li>output on - output decoration is shown</li>
-	 * <li>mandatory on - mandatory decoration is shown </li>
+	 * <li>mandatory on - mandatory decoration is shown</li>
 	 * <li>error on - error decoration is shown</li>
 	 * <li>negative on - negative decoration is shown</li>
 	 * <ol>

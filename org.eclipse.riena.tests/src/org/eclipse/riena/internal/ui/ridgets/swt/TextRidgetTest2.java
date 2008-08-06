@@ -945,6 +945,30 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("abc", ridget.getText());
 	}
 
+	public void testControlNotEditableWithOutputMarker() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+
+		assertTrue(control.getEditable());
+
+		ridget.setOutputOnly(true);
+
+		assertFalse(control.getEditable());
+
+		ridget.setOutputOnly(false);
+
+		assertTrue(control.getEditable());
+
+		control.setEditable(false); // override to not editable
+		ridget.setOutputOnly(true);
+
+		assertFalse(control.getEditable());
+
+		ridget.setOutputOnly(false);
+
+		assertFalse(control.getEditable());
+	}
+
 	// helping methods
 	// ////////////////
 
