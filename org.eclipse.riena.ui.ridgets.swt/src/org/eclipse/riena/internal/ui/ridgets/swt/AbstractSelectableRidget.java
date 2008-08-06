@@ -43,7 +43,7 @@ import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
  */
 public abstract class AbstractSelectableRidget extends AbstractMarkableRidget implements ISelectableRidget {
 
-	/** A single of selected bean Object. */
+	/** A single selected bean Object. */
 	private final WritableValue singleSelectionObservable;
 	/** A list of selected bean Objects. */
 	private final WritableList multiSelectionObservable;
