@@ -25,15 +25,15 @@ public class ComboAndListNodeBuilder implements INavigationNodeBuilder {
 	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode()
 	 */
 	public IModuleGroupNode buildNode(INavigationNodeId presentationId) {
-		ModuleGroupNode node = new ModuleGroupNode("Combo&List");
+		ModuleGroupNode node = new ModuleGroupNode("Combo&List"); //$NON-NLS-1$
 		node.setPresentationId(presentationId);
-		IModuleNode module = new ModuleNode("Combo&List");
+		IModuleNode module = new ModuleNode("Combo&List"); //$NON-NLS-1$
 		node.addChild(module);
-		SubModuleNode subModule = new SubModuleNode("Combo");
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.combo"));
+		SubModuleNode subModule = new SubModuleNode("Combo"); //$NON-NLS-1$
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.combo")); //$NON-NLS-1$
 		module.addChild(subModule);
-		subModule = new SubModuleNode("List");
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.list"));
+		subModule = new SubModuleNode("List"); //$NON-NLS-1$
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.list")); //$NON-NLS-1$
 		module.addChild(subModule);
 		return node;
 	}

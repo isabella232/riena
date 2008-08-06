@@ -18,6 +18,6 @@ package org.eclipse.riena.navigation;
  */
 public interface INavigationNodeBuilder {
 
-	INavigationNode<?> buildNode(INavigationNodeId INavigationNodeId);
+	INavigationNode<?> buildNode(INavigationNodeId navigationNodeId);
 
 }

@@ -312,6 +312,38 @@
    <extension
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
+            presentationId="org.eclipse.riena.example.navigation"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
+            parentPresentationId="application">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.example.navigate"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
+            parentPresentationId="org.eclipse.riena.example.navigation">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.example.sharedViews"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeBuilder"
+            parentPresentationId="playground">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.example.uiProcesses"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.UIProcessNodeBuilder"
+            parentPresentationId="playground">
+      </navigationNodePresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
             presentationId="org.eclipse.riena.example.playground"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
             parentPresentationId="playground">
@@ -320,17 +352,9 @@
    <extension
          point="org.eclipse.riena.navigation.NavigationNodePresentation">
       <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigate"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
-            parentPresentationId="playground">
-      </navigationNodePresentation>
-   </extension>
-   <extension
-         point="org.eclipse.riena.navigation.NavigationNodePresentation">
-      <navigationNodePresentation
             presentationId="org.eclipse.riena.example.navigate.comboAndList"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
-            parentPresentationId="app1">
+            parentPresentationId="org.eclipse.riena.example.navigation">
       </navigationNodePresentation>
    </extension>
    <extension
@@ -347,6 +371,31 @@
             presentationId="org.eclipse.riena.example.customerDetail"
             view="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
             viewController="org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.uiProcess"
+            view="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.sharedView"
+            view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController">
+            viewShared="true"
+      </workAreaPresentation>
+   </extension>
+   <extension
+         point="org.eclipse.riena.navigation.WorkAreaPresentation">
+      <workAreaPresentation
+            presentationId="org.eclipse.riena.example.sharedView"
+            view="org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView"
+            viewController="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
       </workAreaPresentation>
    </extension>
    <extension

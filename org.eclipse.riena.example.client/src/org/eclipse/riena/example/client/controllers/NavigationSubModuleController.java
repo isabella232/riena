@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -18,10 +17,10 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
@@ -210,8 +209,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private ISubModuleNode createSubModuleNode(String label) {
 
-		ISubModuleNode newSubModuleNode = new SubModuleNode(label);
-		SwtPresentationManagerAccessor.getManager().present(newSubModuleNode, NavigationSubModuleView.ID);
+		SubModuleNode newSubModuleNode = new SubModuleNode(label);
+		newSubModuleNode.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigation"));
 
 		return newSubModuleNode;
 

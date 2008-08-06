@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.application.IExampleIcons;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -21,20 +22,25 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 /**
  *
  */
-public class NavigateNodeBuilder extends NavigationNodeBuilder {
+public class UIProcessNodeBuilder implements INavigationNodeBuilder {
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId)
 	 */
-	public INavigationNode<?> buildNode(INavigationNodeId INavigationNodeId) {
-		ModuleGroupNode moduleGroup = new ModuleGroupNode("Navigate"); //$NON-NLS-1$
-		moduleGroup.setPresentWithSingleModule(false);
-		ModuleNode module = new ModuleNode("Navigate"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_GREEN_LED));
-		moduleGroup.addChild(module);
-		SubModuleNode subModule = new SubModuleNode("Navigate"); //$NON-NLS-1$
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigate.form")); //$NON-NLS-1$
-		module.addChild(subModule);
+	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId) {
+		ModuleGroupNode moduleGroup = new ModuleGroupNode("UIProcess"); //$NON-NLS-1$
+		moduleGroup.setPresentationId(navigationNodeId);
+
+		IModuleNode uiProcessModule = new ModuleNode("UIProcess"); //$NON-NLS-1$
+		moduleGroup.addChild(uiProcessModule);
+
+		SubModuleNode uiPSubModule = new SubModuleNode("Demo1"); //$NON-NLS-1$
+		uiPSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.uiProcess")); //$NON-NLS-1$
+		uiProcessModule.addChild(uiPSubModule);
+
+		uiPSubModule = new SubModuleNode("Demo2"); //$NON-NLS-1$
+		uiPSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.uiProcess")); //$NON-NLS-1$
+		uiProcessModule.addChild(uiPSubModule);
 		return moduleGroup;
 	}
 

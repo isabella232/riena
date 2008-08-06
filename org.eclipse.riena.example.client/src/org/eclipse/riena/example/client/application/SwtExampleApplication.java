@@ -11,21 +11,12 @@
 package org.eclipse.riena.example.client.application;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.example.client.views.CustomerDetailSubModuleView;
-import org.eclipse.riena.example.client.views.NavigationSubModuleView;
-import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
-import org.eclipse.riena.example.client.views.UiProcessDemoSubModuleView;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
-import org.eclipse.riena.navigation.model.ModuleGroupNode;
-import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
@@ -79,105 +70,32 @@ public class SwtExampleApplication extends SwtApplication {
 
 		SubApplicationNode subApplication = null;
 		IModuleGroupNode moduleGroup = null;
-		IModuleNode module = null;
-		SubModuleNode subModule = null;
 
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		final IApplicationModel applicationModel = new ApplicationModel("Riena Navigation Example"); //$NON-NLS-1$
+		final ApplicationModel applicationModel = new ApplicationModel("Riena Navigation Example"); //$NON-NLS-1$
+		applicationModel.setPresentationId(new NavigationNodeId("application"));
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
-		// sub application 1
-		subApplication = new SubApplicationNode("Navigation"); //$NON-NLS-1$
-		subApplication.setPresentationId(new NavigationNodeId("app1")); //$NON-NLS-1$
-		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
-		presentation.present(subApplication, "subapplication.1"); //$NON-NLS-1$
-		applicationModel.addChild(subApplication);
-		subApplication.setSelected(true);
 
-		moduleGroup = new ModuleGroupNode("Group 1.1"); //$NON-NLS-1$
-		subApplication.addChild(moduleGroup);
-		module = new ModuleNode("Module 1.1.1"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
-		moduleGroup.addChild(module);
-		subModule = new SubModuleNode("SubModule 1.1.1.1"); //$NON-NLS-1$
-		subModule.setIcon(createIconPath(IExampleIcons.ICON_FILE));
-		presentation.present(subModule, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
-		module.addChild(subModule);
+		// Navigation SubApplication
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigation"));
 
-		SubModuleNode subModule2 = new SubModuleNode("SubModule 1.1.1.1"); //$NON-NLS-1$
-		presentation.present(subModule2, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
-		subModule.addChild(subModule2);
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate"));
 
-		subModule = new SubModuleNode("SubModule 1.1.1.2"); //$NON-NLS-1$
-		presentation.present(subModule, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
-		module.addChild(subModule);
-		module = new ModuleNode("Module 1.1.2 (closeable)"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_HOMEFOLDER));
-		moduleGroup.addChild(module);
-		subModule = new SubModuleNode("SubModule 1.1.2.1"); //$NON-NLS-1$
-		presentation.present(subModule, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
-		module.addChild(subModule);
-		/* NEW */
-		subModule = new SubModuleNode("Navigation"); //$NON-NLS-1$
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
-		presentation.registerView(NavigationSubModuleView.ID, false);
-		module.addChild(subModule);
-
-		moduleGroup = new ModuleGroupNode("Group 1.2"); //$NON-NLS-1$
-		moduleGroup.setPresentWithSingleModule(false);
-		subApplication.addChild(moduleGroup);
-		module = new ModuleNode("Module 1.2.1 (not closeable)"); //$NON-NLS-1$
-		module.setCloseable(false);
-		module.setIcon(createIconPath(IExampleIcons.ICON_RED_LED));
-		moduleGroup.addChild(module);
-		subModule = new SubModuleNode("SubModule 1.2.1.1"); //$NON-NLS-1$
-		presentation.present(subModule, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
-		module.addChild(subModule);
-		subModule = new SubModuleNode("SubModule 1.2.1.2"); //$NON-NLS-1$
-		presentation.present(subModule, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
-		module.addChild(subModule);
-
-		// Playground
+		// Playground SubApplication
 		subApplication = new SubApplicationNode("Playground"); //$NON-NLS-1$
 		subApplication.setPresentationId(new NavigationNodeId("playground")); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
 		applicationModel.addChild(subApplication);
 
-		moduleGroup = new ModuleGroupNode("Group 2.2"); //$NON-NLS-1$
-		subApplication.addChild(moduleGroup);
-
 		// shared view demo
-		presentation.registerView(SharedViewDemoSubModuleView.ID, true);
-		IModuleNode sharedViewModule = new ModuleNode("Shared View Demo"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
-		moduleGroup.addChild(sharedViewModule);
-
-		ISubModuleNode sharedViewSm1 = new SubModuleNode("Node 1"); //$NON-NLS-1$
-		presentation.present(sharedViewSm1, SharedViewDemoSubModuleView.ID);
-		sharedViewModule.addChild(sharedViewSm1);
-
-		ISubModuleNode sharedViewSm2 = new SubModuleNode("Node 2"); //$NON-NLS-1$
-		presentation.present(sharedViewSm2, SharedViewDemoSubModuleView.ID);
-		sharedViewModule.addChild(sharedViewSm2);
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.sharedViews"));
 
 		// uiProcess demo
-		IModuleNode uiProcessModule = new ModuleNode("UIProcess"); //$NON-NLS-1$
-		moduleGroup.addChild(uiProcessModule);
-
-		ISubModuleNode uiPSubModule = new SubModuleNode("Demo1"); //$NON-NLS-1$
-		presentation.registerView(UiProcessDemoSubModuleView.ID, false);
-		presentation.present(uiPSubModule, UiProcessDemoSubModuleView.ID);
-		uiProcessModule.addChild(uiPSubModule);
-
-		uiPSubModule = new SubModuleNode("Demo2"); //$NON-NLS-1$
-		presentation.registerView(UiProcessDemoSubModuleView.ID, false);
-		presentation.present(uiPSubModule, UiProcessDemoSubModuleView.ID);
-		uiProcessModule.addChild(uiPSubModule);
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.uiProcesses"));
 
 		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.playground"));
-
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate"));
 
 		return applicationModel;
 	}

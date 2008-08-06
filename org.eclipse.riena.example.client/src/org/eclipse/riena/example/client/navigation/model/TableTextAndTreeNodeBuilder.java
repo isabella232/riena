@@ -25,18 +25,18 @@ public class TableTextAndTreeNodeBuilder implements INavigationNodeBuilder {
 	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode()
 	 */
 	public IModuleGroupNode buildNode(INavigationNodeId presentationId) {
-		ModuleGroupNode node = new ModuleGroupNode("Table,Text&Tree");
+		ModuleGroupNode node = new ModuleGroupNode("Table,Text&Tree"); //$NON-NLS-1$
 		node.setPresentationId(presentationId);
-		IModuleNode module = new ModuleNode("Table,Text&Tree");
+		IModuleNode module = new ModuleNode("Table,Text&Tree"); //$NON-NLS-1$
 		node.addChild(module);
-		SubModuleNode subModule = new SubModuleNode("Table");
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.table"));
+		SubModuleNode subModule = new SubModuleNode("Table"); //$NON-NLS-1$
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.table")); //$NON-NLS-1$
 		module.addChild(subModule);
-		subModule = new SubModuleNode("Text");
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.text"));
+		subModule = new SubModuleNode("Text"); //$NON-NLS-1$
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.text")); //$NON-NLS-1$
 		module.addChild(subModule);
-		subModule = new SubModuleNode("Tree");
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.tree"));
+		subModule = new SubModuleNode("Tree"); //$NON-NLS-1$
+		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.tree")); //$NON-NLS-1$
 		module.addChild(subModule);
 		return node;
 	}
