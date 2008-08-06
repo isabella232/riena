@@ -75,7 +75,7 @@ public class ExtensionInjector {
 		// the formal parameter type of the update method will be used.
 		componentType = extensionDesc.getInterfaceType() != null ? extensionDesc.getInterfaceType()
 				: isArray ? paramaterType.getComponentType() : paramaterType;
-		populateInterfaceBeans();
+		populateInterfaceBeans(true);
 
 		if (track) {
 			IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
@@ -258,18 +258,27 @@ public class ExtensionInjector {
 		return !extensionDesc.requiresArrayUpdateMethod() || type.isArray();
 	}
 
-	void populateInterfaceBeans() {
-		final Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
-		if (!matchesExtensionPointConstraint(beans.length))
-			LOGGER
-					.log(LogService.LOG_ERROR,
-							"Number of extensions does not fullfil the extension point's constraints.");
+	void populateInterfaceBeans(boolean onStart) {
 		try {
+			Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
+			if (!matchesExtensionPointConstraint(beans.length))
+				LOGGER.log(LogService.LOG_ERROR,
+						"Number of extensions does not fullfil the extension point's constraints.");
 			if (isArray) {
-				updateMethod.invoke(target, new Object[] { beans });
+				update(new Object[] { beans });
 			} else {
-				updateMethod.invoke(target, new Object[] { beans.length > 0 ? beans[0] : null });
+				update(new Object[] { beans.length > 0 ? beans[0] : null });
 			}
+		} catch (IllegalArgumentException e) {
+			if (onStart)
+				throw e;
+			update(new Object[] { null });
+		}
+	}
+
+	private void update(Object[] params) {
+		try {
+			updateMethod.invoke(target, params);
 		} catch (IllegalArgumentException e) {
 			throw new IllegalStateException("Calling 'bind' method fails.", e);
 		} catch (IllegalAccessException e) {
@@ -294,7 +303,7 @@ public class ExtensionInjector {
 		 * .core. runtime.IExtension[])
 		 */
 		public void added(IExtension[] extensions) {
-			populateInterfaceBeans();
+			populateInterfaceBeans(false);
 		}
 
 		/*
@@ -313,7 +322,7 @@ public class ExtensionInjector {
 		 * .core. runtime.IExtension[])
 		 */
 		public void removed(IExtension[] extensions) {
-			populateInterfaceBeans();
+			populateInterfaceBeans(false);
 		}
 
 		/*
