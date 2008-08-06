@@ -22,12 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.util.ReflectionUtils;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
@@ -45,8 +44,9 @@ import com.caucho.hessian.io.SerializerFactory;
 public class RienaHessianProxyFactory extends HessianProxyFactory implements ManagedService {
 
 	private ICallMessageContextAccessor mca;
-	private static ThreadLocal<HttpURLConnection> connections = new ThreadLocal<HttpURLConnection>();
 	private URL url;
+
+	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
 	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianProxyFactory.class.getName());
 
 	public RienaHessianProxyFactory() {
@@ -86,7 +86,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 				}
 			}
 		}
-		connections.set((HttpURLConnection) connection);
+		CONNECTIONS.set((HttpURLConnection) connection);
 		return connection;
 	}
 
@@ -109,7 +109,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 	}
 
 	protected static HttpURLConnection getHttpURLConnection() {
-		return connections.get();
+		return CONNECTIONS.get();
 	}
 
 	@SuppressWarnings("unchecked")

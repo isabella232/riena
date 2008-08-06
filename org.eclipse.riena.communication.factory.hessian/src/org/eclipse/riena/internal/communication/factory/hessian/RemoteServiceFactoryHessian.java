@@ -37,13 +37,14 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
  * 
  */
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
-	private final static String PROTOCOL = "hessian";
-	private ICallMessageContextAccessor mca = new CallMsgCtxAcc();
+	private final ICallMessageContextAccessor mca = new CallMsgCtxAcc();
+	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see xeval.rsd.core.IRemoteServiceFactory#create(xeval.rsd.core.RemoteServiceDescription)
+	 * @seexeval.rsd.core.IRemoteServiceFactory#create(xeval.rsd.core.
+	 * RemoteServiceDescription)
 	 */
 	public RemoteServiceReference createProxy(RemoteServiceDescription endpoint) {
 		String uri = endpoint.getURL();
