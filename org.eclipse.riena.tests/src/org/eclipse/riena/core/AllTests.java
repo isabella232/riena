@@ -14,7 +14,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.core.config.ConfigTest;
 import org.eclipse.riena.core.exception.ExceptionHandlerManagerTest;
 import org.eclipse.riena.core.extension.ExtensionInjectorTest;
 import org.eclipse.riena.core.extension.HeterogeneousInjectingTest;
@@ -29,7 +28,6 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(ConfigTest.class);
 		suite.addTestSuite(ExceptionHandlerManagerTest.class);
 		suite.addTestSuite(ServiceInjectorTest.class);
 		suite.addTestSuite(ExtensionInjectorTest.class);
