@@ -15,7 +15,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @see IRidget#setFocusable(boolean)
  */
-public class FocusableSubModuleView extends SubModuleNodeView<FocusableSubModuleController> {
+public class FocusableSubModuleView extends SubModuleView<FocusableSubModuleController> {
 
 	public static final String ID = FocusableSubModuleView.class.getName();
 

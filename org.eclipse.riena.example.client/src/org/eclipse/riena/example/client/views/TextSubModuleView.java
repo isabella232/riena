@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.TextSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * SWT {@link ITextFieldRidget} sample.
  */
-public class TextSubModuleView extends SubModuleNodeView<TextSubModuleController> {
+public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
 
 	public static final String ID = TextSubModuleView.class.getName();
 

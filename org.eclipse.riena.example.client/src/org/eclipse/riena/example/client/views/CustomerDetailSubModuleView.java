@@ -4,7 +4,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class CustomerDetailSubModuleView extends SubModuleNodeView<CustomerDetailSubModuleController> {
+public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSubModuleController> {
 
 	public final static String ID = CustomerDetailSubModuleView.class.getName();
 

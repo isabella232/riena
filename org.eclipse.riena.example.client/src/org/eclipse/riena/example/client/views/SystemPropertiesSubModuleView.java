@@ -16,7 +16,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * SWT {@link ITableRidget} sample.
  */
-public class SystemPropertiesSubModuleView extends SubModuleNodeView<SystemPropertiesSubModuleController> {
+public class SystemPropertiesSubModuleView extends SubModuleView<SystemPropertiesSubModuleController> {
 
 	public static final String ID = SystemPropertiesSubModuleView.class.getName();
 

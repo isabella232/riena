@@ -14,7 +14,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @see IMarkableRidget
  */
-public class MarkerSubModuleView extends SubModuleNodeView<MarkerSubModuleController> {
+public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController> {
 
 	public static final String ID = MarkerSubModuleView.class.getName();
 

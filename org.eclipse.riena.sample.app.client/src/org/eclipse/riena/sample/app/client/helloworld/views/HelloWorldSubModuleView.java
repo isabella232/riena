@@ -11,7 +11,7 @@
 package org.eclipse.riena.sample.app.client.helloworld.views;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloWorldSubModuleController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author schenkel
  */
-public class HelloWorldSubModuleView extends SubModuleNodeView<HelloWorldSubModuleController> {
+public class HelloWorldSubModuleView extends SubModuleView<HelloWorldSubModuleController> {
 
 	public static final String ID = HelloWorldSubModuleView.class.getName();
 

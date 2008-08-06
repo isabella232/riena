@@ -23,7 +23,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
 		suite.addTestSuite(ApplicationViewAdvisorTest.class);
-		suite.addTestSuite(SubModuleNodeViewTest.class);
+		suite.addTestSuite(SubModuleViewTest.class);
 		//$JUnit-END$
 		return suite;
 	}

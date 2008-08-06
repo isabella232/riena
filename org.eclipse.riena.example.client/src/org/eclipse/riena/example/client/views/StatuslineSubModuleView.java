@@ -14,7 +14,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -30,12 +30,12 @@ import org.eclipse.swt.widgets.Text;
  * View of the sub-module that is an example how to display something in the
  * status line.
  */
-public class StatuslineSubModuleView extends SubModuleNodeView<StatuslineSubModuleController> {
+public class StatuslineSubModuleView extends SubModuleView<StatuslineSubModuleController> {
 
 	public static final String ID = StatuslineSubModuleView.class.getName();
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
+	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

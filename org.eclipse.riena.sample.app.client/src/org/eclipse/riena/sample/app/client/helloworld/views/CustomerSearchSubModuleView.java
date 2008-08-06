@@ -4,7 +4,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerSearchSubModuleController;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.swt.SWT;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-public class CustomerSearchSubModuleView extends SubModuleNodeView<CustomerSearchSubModuleController> {
+public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSubModuleController> {
 
 	public final static String ID = CustomerSearchSubModuleView.class.getName();
 

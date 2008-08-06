@@ -15,7 +15,7 @@ import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ui.swt.views.InjectAllAtOnceViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.views.SWTViewBindingDelegate;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * SWT {@link IComboRidget} sample.
  */
-public class NavigateSubModuleView extends SubModuleNodeView<NavigateSubModuleController> {
+public class NavigateSubModuleView extends SubModuleView<NavigateSubModuleController> {
 
 	public static final String ID = NavigateSubModuleView.class.getName();
 

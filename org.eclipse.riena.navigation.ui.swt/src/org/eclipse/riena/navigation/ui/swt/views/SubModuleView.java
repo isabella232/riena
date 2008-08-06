@@ -30,13 +30,13 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * Abstract implementation for a sub module view
  */
-public abstract class SubModuleNodeView<C extends SubModuleController> extends ViewPart {
+public abstract class SubModuleView<C extends SubModuleController> extends ViewPart {
 
 	private Map<ISubModuleNode, C> node2Controler;
 	private SWTViewBindingDelegate binding;
 	private C currentController;
 
-	public SubModuleNodeView() {
+	public SubModuleView() {
 		binding = createBinding();
 		node2Controler = new HashMap<ISubModuleNode, C>();
 	}

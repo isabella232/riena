@@ -3,7 +3,7 @@ package org.eclipse.riena.sample.app.client.helloworld.views;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerDetailsSubModuleController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-public class CustomerDetailsSubModuleView extends SubModuleNodeView<CustomerDetailsSubModuleController> {
+public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsSubModuleController> {
 
 	public final static String ID = CustomerDetailsSubModuleView.class.getName();
 

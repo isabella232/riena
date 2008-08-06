@@ -22,15 +22,15 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Tests for the SubModuleNodeView.
  */
-public class SubModuleNodeViewTest extends RienaTestCase {
+public class SubModuleViewTest extends RienaTestCase {
 
-	private SubModuleNodeView<SubModuleController> subModuleNodeView;
+	private SubModuleView<SubModuleController> subModuleNodeView;
 	private SubModuleNode node;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		addPluginXml(SubModuleNodeViewTest.class, "SubModuleNodeViewTest.xml");
+		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
 		subModuleNodeView = new TestView();
 		node = new SubModuleNode() {
@@ -54,7 +54,7 @@ public class SubModuleNodeViewTest extends RienaTestCase {
 		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
 
-	private class TestView extends SubModuleNodeView<SubModuleController> {
+	private class TestView extends SubModuleView<SubModuleController> {
 
 		@Override
 		protected ISubModuleNode getCurrentNode() {

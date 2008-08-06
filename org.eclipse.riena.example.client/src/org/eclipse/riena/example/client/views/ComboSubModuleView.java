@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * SWT {@link IComboRidget} sample.
  */
-public class ComboSubModuleView extends SubModuleNodeView<ComboSubModuleController> {
+public class ComboSubModuleView extends SubModuleView<ComboSubModuleController> {
 
 	public static final String ID = ComboSubModuleView.class.getName();
 

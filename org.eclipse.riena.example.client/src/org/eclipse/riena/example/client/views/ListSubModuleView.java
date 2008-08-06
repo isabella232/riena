@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * SWT {@link IListRidget} sample.
  */
-public class ListSubModuleView extends SubModuleNodeView<ListSubModuleController> {
+public class ListSubModuleView extends SubModuleView<ListSubModuleController> {
 
 	public static final String ID = ListSubModuleView.class.getName();
 

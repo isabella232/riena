@@ -3,7 +3,7 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class SharedViewDemoSubModuleView extends SubModuleNodeView<SharedViewDemoSubModuleController> {
+public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSubModuleController> {
 
 	public static final String ID = SharedViewDemoSubModuleView.class.getName();
 

@@ -12,7 +12,7 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -27,12 +27,12 @@ import org.eclipse.swt.widgets.Group;
 /**
  * View of the sub module that shows a set of UI controls.
  */
-public class RidgetsSubModuleView extends SubModuleNodeView<RidgetsSubModuleController> {
+public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleController> {
 
 	public static final String ID = RidgetsSubModuleView.class.getName();
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
+	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#basicCreatePartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
 	protected void basicCreatePartControl(Composite parent) {

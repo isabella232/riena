@@ -16,7 +16,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * SWT {@link ITreeRidget} sample.
  */
-public class TableSubModuleView extends SubModuleNodeView<TableSubModuleController> {
+public class TableSubModuleView extends SubModuleView<TableSubModuleController> {
 
 	public static final String ID = TableSubModuleView.class.getName();
 
