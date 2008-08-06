@@ -29,17 +29,17 @@ import org.eclipse.core.runtime.Assert;
  */
 public class Attachment {
 
-	protected static final int TYPE_FILE = 1;
-	protected static final int TYPE_URL = 2;
-	protected static final int TYPE_INPUTSTREAM = 3;
+	protected enum Type {
+		FILE, URL, INPUTSTREAM
+	}
 
 	private static final int READ_BLOCK_SIZE = 10000;
 
 	// make all fields that are not in AttachmentSerialized transient, so
 	// hessian does not try to transfer them
-	// type how the attachment was constructed, is either TYPE_FILE, TYPE_URL or
-	// TYPE_DATAHANDLER
-	private transient int type;
+	// type how the attachment was constructed, is either FILE, URL or
+	// INPUTSTREAM
+	private transient Type type;
 	// contains the file object from which the Attachment was constructed
 	private transient File file;
 	// contains the url object from which the Attachment was constructed
@@ -66,7 +66,7 @@ public class Attachment {
 	 */
 	public Attachment(File file) throws FileNotFoundException, IOException {
 		super();
-		type = TYPE_FILE;
+		type = Type.FILE;
 		this.file = file;
 		this.dataSource = new FileDataSource(file);
 		this.dataSource.checkValid();
@@ -78,7 +78,7 @@ public class Attachment {
 	 */
 	public Attachment(URL url) throws IOException {
 		super();
-		type = TYPE_URL;
+		type = Type.URL;
 		this.url = url;
 		this.dataSource = new HttpURLDataSource(url);
 		this.dataSource.checkValid();
@@ -89,14 +89,14 @@ public class Attachment {
 	 */
 	public Attachment(InputStream inputStream) throws IOException {
 		super();
-		type = TYPE_INPUTSTREAM;
+		type = Type.INPUTSTREAM;
 		this.dataSource = new InputStreamDataSource(inputStream);
 		this.dataSource.checkValid();
 	}
 
 	protected Attachment(ByteArrayDataSource dataSource) {
 		super();
-		type = TYPE_INPUTSTREAM;
+		type = Type.INPUTSTREAM;
 		this.dataSource = dataSource;
 	}
 
@@ -144,16 +144,16 @@ public class Attachment {
 	/**
 	 * @return return the construction type of the attachment
 	 */
-	protected int getType() {
+	protected Type getType() {
 		return type;
 	}
 
 	/**
 	 * @return File object that was used when creating the attachment
-	 * @pre getType()==TYPE_FILE;
+	 * @pre getType()==Type.FILE;
 	 */
 	protected File getInternalFile() {
-		Assert.isTrue(getType() == TYPE_FILE, "invalid type when getting File object");
+		Assert.isTrue(getType() == Type.FILE, "invalid type when getting File object");
 		return file;
 	}
 
@@ -168,7 +168,7 @@ public class Attachment {
 	 */
 	public Object writeReplace() {
 		try {
-			if (type == TYPE_INPUTSTREAM) {
+			if (type == Type.INPUTSTREAM) {
 				try {
 					InputStream input = dataSource.getInputStream();
 					if (input != null) {
@@ -195,7 +195,7 @@ public class Attachment {
 	 */
 	public Object readResolve() {
 		dataSource = internalDataSource;
-		type = TYPE_INPUTSTREAM;
+		type = Type.INPUTSTREAM;
 		internalDataSource = null;
 		return this;
 	}

@@ -65,8 +65,8 @@ public class AttachmentTest extends RienaTestCase {
 	 *
 	 */
 	public void testConstruction() {
-		assertTrue("attachment does not have type FILE",
-				(Integer) ReflectionUtils.invokeHidden(attach, "getType") == Attachment.TYPE_FILE);
+		assertTrue("attachment does not have type FILE", (Attachment.Type) ReflectionUtils.invokeHidden(attach,
+				"getType") == Attachment.Type.FILE);
 		assertTrue("internal file object is not the passed parameter", (File) ReflectionUtils.invokeHidden(attach,
 				"getInternalFile") == file);
 	}
