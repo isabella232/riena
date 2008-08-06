@@ -47,20 +47,22 @@ import org.osgi.framework.ServiceReference;
  */
 public class RemoteServiceDescription {
 
-	/**
-	 * The "remote" OSGi Service was registered
-	 */
-	public final static int STATUS_REGISTERED = 0x00000001;
-	/**
-	 * The "remote" OSGi Service was modified
-	 */
-	public final static int STATUS_MODIFIED = 0x00000002;
-	/**
-	 * The "remote" OSGi Service was unregistered
-	 */
-	public final static int STATUS_UNREGISTERED = 0x00000004;
+	public enum State {
+		/**
+		 * The "remote" OSGi Service was registered
+		 */
+		REGISTERED,
+		/**
+		 * The "remote" OSGi Service was modified
+		 */
+		MODIFIED,
+		/**
+		 * The "remote" OSGi Service was unregistered
+		 */
+		UNREGISTERED
+	};
 
-	private int type = STATUS_REGISTERED;
+	private State state = State.REGISTERED;
 	private transient Class<?> serviceInterfaceClass;
 	private transient Object service;
 	private transient ServiceReference serviceRef;
@@ -184,13 +186,12 @@ public class RemoteServiceDescription {
 
 	/**
 	 * The state of the service. Values are:<br>
-	 * <br> {@link #STATUS_REGISTERED}<br> {@link #STATUS_MODIFIED}<br>
-	 * {@link #STATUS_UNREGISTERED}<br>
+	 * <br> {@link #REGISTERED}<br> {@link #MODIFIED}<br> {@link #UNREGISTERED}<br>
 	 * 
 	 * @return the current state of the service
 	 */
-	public int getType() {
-		return type;
+	public State getState() {
+		return state;
 	}
 
 	/**
@@ -278,8 +279,8 @@ public class RemoteServiceDescription {
 		this.serviceRef = serviceRef;
 	}
 
-	public void setType(int type) {
-		this.type = type;
+	public void setState(State type) {
+		this.state = type;
 	}
 
 	/**

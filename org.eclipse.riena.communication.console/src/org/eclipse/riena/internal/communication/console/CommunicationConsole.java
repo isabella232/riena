@@ -43,7 +43,7 @@ public class CommunicationConsole implements CommandProvider {
 
 		// boolean found = false;
 		for (RemoteServiceDescription rsDesc : rsDescs) {
-			if (rsDesc.getType() == RemoteServiceDescription.STATUS_UNREGISTERED) {
+			if (rsDesc.getState() == RemoteServiceDescription.State.UNREGISTERED) {
 				// found = true;
 				System.out.println("Riena:: not published end point=(" + rsDesc + ")");
 			}
@@ -57,7 +57,7 @@ public class CommunicationConsole implements CommandProvider {
 		RemoteServiceDescription[] rsDescs = servicePublisher.getAllServices();
 		boolean found = false;
 		for (RemoteServiceDescription rsDesc : rsDescs) {
-			if (rsDesc.getType() == RemoteServiceDescription.STATUS_REGISTERED) {
+			if (rsDesc.getState() == RemoteServiceDescription.State.REGISTERED) {
 				found = true;
 				System.out.println("Riena:: published end point=(" + rsDesc + ")");
 			}

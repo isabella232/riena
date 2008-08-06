@@ -35,7 +35,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertNull(rsd.getServiceInterfaceClass());
 		assertNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 
 	public void testNonDefaultCreationObjectClass() {
@@ -60,7 +60,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertEquals(String.class, rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 
 	public void testNonDefaultCreationPropRemoteProtocol() {
@@ -86,7 +86,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertNull(rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 
 	public void testNonDefaultCreationPropRemotePath() {
@@ -112,7 +112,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertNull(rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 
 	public void testNonDefaultCreationPropConfigId() {
@@ -138,7 +138,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertNull(rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 
 	public void testNonDefaultCreationPropElse() {
@@ -165,7 +165,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertNull(rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 
 	public void testNonDefaultCreationAllTheStuff() {
@@ -198,6 +198,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getVersion());
 		assertEquals(String.class, rsd.getServiceInterfaceClass());
 		assertNotNull(rsd.getServiceRef());
-		assertEquals(RemoteServiceDescription.STATUS_REGISTERED, rsd.getType());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
 	}
 }

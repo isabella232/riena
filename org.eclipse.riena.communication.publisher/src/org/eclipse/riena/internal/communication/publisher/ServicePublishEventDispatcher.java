@@ -85,7 +85,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 		if (rsDesc == null) {
 			return false;
 		}
-		return rsDesc.getType() == RemoteServiceDescription.STATUS_REGISTERED;
+		return rsDesc.getState() == RemoteServiceDescription.State.REGISTERED;
 	}
 
 	public void bind(IServicePublisher publisher) {
@@ -129,7 +129,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 				RemoteServiceDescription rsDesc = new RemoteServiceDescription(serviceRef, service, interfaceClazz);
 				handler.setRemoteServiceDescription(rsDesc);
 				RemoteServiceDescription rsDescFound = rsDescs.get(rsDesc.getProtocol() + "::" + rsDesc.getPath());
-				if (rsDescFound != null && rsDescFound.getType() == RemoteServiceDescription.STATUS_REGISTERED) {
+				if (rsDescFound != null && rsDescFound.getState() == RemoteServiceDescription.State.REGISTERED) {
 					LOGGER.log(LogService.LOG_WARNING, "A service endpoint with path=[" + rsDesc.getPath()
 							+ "] and remoteType=[" + rsDesc.getProtocol() + "] already published... ignored");
 					return;
@@ -148,7 +148,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 					rsDescs.put(rsDesc.getProtocol() + "::" + rsDesc.getPath(), rsDesc);
 					LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size());
 
-				} else if (rsDescFound.getType() == RemoteServiceDescription.STATUS_UNREGISTERED) {
+				} else if (rsDescFound.getState() == RemoteServiceDescription.State.UNREGISTERED) {
 					rsDesc = rsDescFound;
 				}
 
@@ -171,7 +171,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 		rsDesc.setURL(url);
 		handler.setMessageContextAccessor(publisher.getMessageContextAccessor());
 
-		rsDesc.setType(RemoteServiceDescription.STATUS_REGISTERED);
+		rsDesc.setState(RemoteServiceDescription.State.REGISTERED);
 
 	}
 
@@ -220,7 +220,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 
 		publisher.unpublishService(rsDesc.getPath());
 
-		rsDesc.setType(RemoteServiceDescription.STATUS_UNREGISTERED);
+		rsDesc.setState(RemoteServiceDescription.State.UNREGISTERED);
 	}
 
 	public void stop() {
