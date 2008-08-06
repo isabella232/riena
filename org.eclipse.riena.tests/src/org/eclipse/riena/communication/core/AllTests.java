@@ -21,7 +21,7 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(org.eclipse.riena.communication.core.RemoteServiceDescriptionTest.class);
+		suite.addTestSuite(RemoteServiceDescriptionTest.class);
 		return suite;
 	}
 }
