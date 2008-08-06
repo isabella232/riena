@@ -16,13 +16,9 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.RienaStartupStatus;
-import org.eclipse.riena.internal.core.config.ConfigFromExtensions;
-import org.eclipse.riena.internal.core.config.ConfigSymbolReplace;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
@@ -34,9 +30,6 @@ public class Activator extends RienaPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.core"; //$NON-NLS-1$
-
-	private ServiceRegistration configSymbolReplace;
-	private ServiceRegistration configurationPlugin;
 
 	// The shared instance
 	private static Activator plugin;
@@ -53,17 +46,8 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 		final Logger LOGGER = getLogger(Activator.class.getName());
 
-		// register ConfigSymbolReplace that replaces symbols in configuration
-		// strings
-		ConfigSymbolReplace csr = new ConfigSymbolReplace();
-		configurationPlugin = context.registerService(ConfigurationPlugin.class.getName(), csr, null);
-		// execute the class that reads through the extensions and executes them
-		// as config admin packages
-		new ConfigFromExtensions(context).doConfig();
-
 		logStage(LOGGER);
-
-		startForcedRienaBundles(context, LOGGER);
+		startForcedRienaBundles(LOGGER);
 
 		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
 	}
@@ -90,8 +74,8 @@ public class Activator extends RienaPlugin {
 	 * @param LOGGER
 	 * @throws BundleException
 	 */
-	private void startForcedRienaBundles(BundleContext context, final Logger LOGGER) throws BundleException {
-		Bundle[] bundles = context.getBundles();
+	private void startForcedRienaBundles(final Logger LOGGER) throws BundleException {
+		Bundle[] bundles = getContext().getBundles();
 		for (Bundle bundle : bundles) {
 			boolean forceStart = Boolean.parseBoolean((String) bundle.getHeaders().get(RIENA_FORCE_START));
 			if (bundle.getState() != Bundle.ACTIVE
@@ -108,14 +92,19 @@ public class Activator extends RienaPlugin {
 													 * || bundle.getState() ==
 													 * Bundle.STARTING
 													 */) {
-				bundle.start();
-				LOGGER.log(LogService.LOG_INFO, bundle.getSymbolicName() + " forced autostart successfully");
+				try {
+					bundle.start();
+					LOGGER.log(LogService.LOG_INFO, "Forced start: '" + bundle.getSymbolicName() + "' succesful.");
+				} catch (RuntimeException rte) {
+					LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName()
+							+ "' failed with exception.", rte);
+					throw rte;
+				}
 			} else if (bundle.getState() == Bundle.INSTALLED) {
-				LOGGER.log(LogService.LOG_ERROR, bundle.getSymbolicName() + " has " + RIENA_FORCE_START
-						+ " but is only in state INSTALLED (not RESOLVED).");
+				LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() + "' failed. Header '"
+						+ RIENA_FORCE_START + "' is set but is only in state INSTALLED (not RESOLVED).");
 			} else if (bundle.getState() == Bundle.ACTIVE) {
-				LOGGER.log(LogService.LOG_DEBUG, bundle.getSymbolicName()
-						+ " no forced autostart. Bundle is already ACTIVE.");
+				LOGGER.log(LogService.LOG_DEBUG, "Forced start: '" + bundle.getSymbolicName() + "' is already ACTIVE.");
 			}
 		}
 	}
@@ -126,8 +115,6 @@ public class Activator extends RienaPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(false);
-		configSymbolReplace.unregister();
-		configurationPlugin.unregister();
 		Activator.plugin = null;
 		super.stop(context);
 	}

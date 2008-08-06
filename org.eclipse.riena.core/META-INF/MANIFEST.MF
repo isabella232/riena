@@ -13,15 +13,13 @@ Import-Package: org.apache.log4j,
  org.osgi.service.log;version="1.3.0"
 Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.core.cache,
- org.eclipse.riena.core.config,
  org.eclipse.riena.core.exception,
  org.eclipse.riena.core.extension,
  org.eclipse.riena.core.injector,
  org.eclipse.riena.core.logging,
  org.eclipse.riena.core.marker,
  org.eclipse.riena.core.service,
- org.eclipse.riena.core.util,
- org.eclipse.riena.internal.core.config;x-friends:="org.eclipse.riena.tests"
+ org.eclipse.riena.core.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.log;bundle-version="1.1.0",
  org.eclipse.equinox.cm,
