@@ -6,10 +6,12 @@ import java.util.List;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ChoiceComposite;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineNumberRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
@@ -56,11 +58,12 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.TOGGLE);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.RADIO);
 		addMapping(Button.class, ActionRidget.class);
-		addMapping(Shell.class, ShellRidget.class);
+		addMapping(ChoiceComposite.class, SingleChoiceRidget.class);
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
 		addMapping(Tree.class, TreeRidget.class, new TreeWithoutColumnsCondition());
 		addMapping(Tree.class, TreeTableRidget.class, new TreeWithColumnsCondition());
+		addMapping(Shell.class, ShellRidget.class);
 		addMapping(Statusline.class, StatuslineRidget.class);
 		addMapping(StatuslineNumber.class, StatuslineNumberRidget.class);
 	}

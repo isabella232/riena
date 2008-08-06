@@ -27,6 +27,9 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(LabelRidgetTest.class);
 		suite.addTestSuite(ListRidgetTest.class);
 		suite.addTestSuite(MarkableRidgetTest.class);
+		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
+		suite.addTestSuite(SingleChoiceRidgetTest.class);
+		suite.addTestSuite(StatuslineNumberRidgetTest.class);
 		suite.addTestSuite(TableRidgetTest.class);
 		suite.addTestSuite(TableRidgetLabelProviderTest.class);
 		suite.addTestSuite(TreeRidgetLabelProviderTest.class);
@@ -36,8 +39,6 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(TreeRidgetTest2.class);
 		suite.addTestSuite(TreeTableRidgetTest.class);
 		suite.addTestSuite(ToggleButtonRidgetTest.class);
-		suite.addTestSuite(StatuslineNumberRidgetTest.class);
-		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
 		return suite;
 	}
 

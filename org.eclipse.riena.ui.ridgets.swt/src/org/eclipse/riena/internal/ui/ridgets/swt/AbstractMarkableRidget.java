@@ -37,7 +37,7 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 		updateMarkers();
 	}
 
-	public final boolean isDisableMandatoryMarker() {
+	public boolean isDisableMandatoryMarker() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("not implemented yet"); //$NON-NLS-1$
 	}

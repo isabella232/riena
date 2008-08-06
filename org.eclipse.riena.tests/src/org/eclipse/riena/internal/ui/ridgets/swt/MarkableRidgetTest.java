@@ -17,8 +17,6 @@ import java.util.Iterator;
 
 import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMarkerPropertyChangeEvent;
@@ -44,11 +42,6 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected IRidget createRidget() {
 		return new TextRidget();
-	}
-
-	@Override
-	protected Text getUIControl() {
-		return (Text) super.getUIControl();
 	}
 
 	@Override
