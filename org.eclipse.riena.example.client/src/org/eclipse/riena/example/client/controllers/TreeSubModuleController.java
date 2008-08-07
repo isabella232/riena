@@ -46,6 +46,8 @@ public class TreeSubModuleController extends SubModuleController {
 	private IActionRidget buttonExpand;
 	private IActionRidget buttonCollapse;
 
+	private int nodeCount = 0;
+
 	public ITreeRidget getTree() {
 		return tree;
 	}
@@ -132,7 +134,7 @@ public class TreeSubModuleController extends SubModuleController {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				ITreeNode parent = (node != null) ? node.getParent() : null;
 				if (parent != null) {
-					new TreeNode(parent, "NEW_SIBLING");
+					new TreeNode(parent, "SIBLING " + nodeCount++);
 				}
 			}
 		});
@@ -142,7 +144,7 @@ public class TreeSubModuleController extends SubModuleController {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					new TreeNode(node, "NEW_CHILD");
+					new TreeNode(node, "CHILD " + nodeCount++);
 				}
 			}
 		});

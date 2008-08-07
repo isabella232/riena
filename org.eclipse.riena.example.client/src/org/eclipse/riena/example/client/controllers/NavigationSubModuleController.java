@@ -34,6 +34,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	private IActionRidget addModuleBtn;
 	private IActionRidget addModuleGroupBtn;
 
+	private int nodeCount = 0;
+
 	public NavigationSubModuleController() {
 		this(null);
 	}
@@ -64,8 +66,8 @@ public class NavigationSubModuleController extends SubModuleController {
 		getAddSubModuleToModuleBtn().setText("Add Sub-Module to &Root"); //$NON-NLS-1$
 		getAddSubModuleToModuleBtn().addListener(new IActionListener() {
 			public void callback() {
+				ISubModuleNode newNode = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
 				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
-				ISubModuleNode newNode = createSubModuleNode("Child to " + parent.getLabel()); //$NON-NLS-1$
 				parent.addChild(newNode);
 				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationController subAppController = getSubApplicationController();
@@ -77,8 +79,7 @@ public class NavigationSubModuleController extends SubModuleController {
 		getAddSubModuleToSelfBtn().addListener(new IActionListener() {
 			public void callback() {
 				ISubModuleNode navigationNode = getNavigationNode();
-				ISubModuleNode newNode = createSubModuleNode("Child to " + navigationNode.getLabel()); //$NON-NLS-1$
-				navigationNode.addChild(newNode);
+				navigationNode.addChild(createSubModuleNode("Node " + String.valueOf(nodeCount++)));
 				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationController subAppController = getSubApplicationController();
 				subAppController.getStatuslineRidget().setMessage(text);
