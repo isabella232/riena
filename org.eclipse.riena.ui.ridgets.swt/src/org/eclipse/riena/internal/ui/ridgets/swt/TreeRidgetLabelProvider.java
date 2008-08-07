@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * expansion state of a tree element:
  * <ul>
  * <li>expandable node - collapsed</li>
- * <li>expandable node - expaned</li>
+ * <li>expandable node - expanded</li>
  * <li>leaf (i.e. node with no children)</li>
  *</ul>
  */
