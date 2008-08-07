@@ -393,10 +393,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					if (evt.getPropertyName().toUpperCase().endsWith(ACCESSOR)) {
 						List root0Children = ReflectionUtils.invoke(root0, accessor);
 						inputList.clear();
-						for (Object child : root0Children) {
-							inputList.add(child);
-						}
-						viewer.setInput(inputList);
+						inputList.addAll(root0Children);
+						viewer.refresh();
 					}
 				}
 			};
