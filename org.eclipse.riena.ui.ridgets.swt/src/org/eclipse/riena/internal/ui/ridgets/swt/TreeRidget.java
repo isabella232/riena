@@ -101,12 +101,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected void bindUIControl() {
 		Tree control = getUIControl();
 		if (control != null && treeRoots != null) {
-			// TODO [ev] reproduce in a snippet and file a bug
-			// Bug workaround: deselect pre-existing selection in tree.
-			// The tree viewer tries to preserve the selection in the tree.
-			// However we have just put new content into it, so the "preserve
-			// selection" code will NPE
-			control.deselectAll();
 			bindToViewer(control);
 			bindToSelection();
 			control.addSelectionListener(selectionTypeEnforcer);
@@ -127,9 +121,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Object[] elements = viewer.getExpandedElements();
 			ExpansionCommand cmd = new ExpansionCommand(ExpansionState.RESTORE, elements);
 			expansionStack.add(cmd);
-			// IMPORTANT: this removes the change listeners from the input model
-			// https://bugs.eclipse.org/243374
-			viewer.setInput(null);
 		}
 		if (dbc != null) {
 			dbc.dispose();
@@ -139,6 +130,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (control != null) {
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
+		}
+		if (viewer != null) {
+			// IMPORTANT: remove the change listeners from the input model.
+			// Has to happen after disposing the binding to avoid affecting
+			// the selection.
+			// See also https://bugs.eclipse.org/243374
+			viewer.setInput(null);
 		}
 		viewer = null;
 	}

@@ -235,18 +235,12 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setUIControl(null);
 		ridget.expandTree();
-
-		assertEquals(3, TreeUtils.getItemCount(control));
-
 		ridget.setUIControl(control);
 
 		assertEquals(6, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.collapseTree();
-
-		assertEquals(6, TreeUtils.getItemCount(control));
-
 		ridget.setUIControl(control);
 
 		assertEquals(1, TreeUtils.getItemCount(control));
@@ -289,18 +283,12 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setUIControl(null);
 		ridget.expand(rootChild1Node);
-
-		assertEquals(3, TreeUtils.getItemCount(control));
-
 		ridget.setUIControl(control);
 
 		assertEquals(5, TreeUtils.getItemCount(control));
 
 		ridget.setUIControl(null);
 		ridget.collapse(rootNode);
-
-		assertEquals(5, TreeUtils.getItemCount(control));
-
 		ridget.setUIControl(control);
 
 		assertEquals(1, TreeUtils.getItemCount(control));
