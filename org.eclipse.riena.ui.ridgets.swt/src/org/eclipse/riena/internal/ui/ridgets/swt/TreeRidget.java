@@ -18,11 +18,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
@@ -399,7 +397,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 							inputList.add(child);
 						}
 						viewer.setInput(inputList);
-						viewer.refresh(); // TODO [tsc]
 					}
 				}
 			};
@@ -695,26 +692,28 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		 * Updates the icons of the parent elements on addition / removal
 		 */
 		public void handleSetChange(SetChangeEvent event) {
-			if (viewerCP.hasInput()) { // continue only when viewer has input
-				Set<Object> parents = new HashSet<Object>();
-				for (Object element : event.diff.getAdditions()) {
-					Object parent = structureAdvisor.getParent(element);
-					if (parent != null) {
-						parents.add(parent);
-					}
-				}
-				for (Object element : event.diff.getRemovals()) {
-					Object parent = structureAdvisor.getParent(element);
-					if (parent != null) {
-						parents.add(parent);
-					}
-				}
-				for (Object parent : parents) {
-					if (!viewer.isBusy()) {
-						viewer.update(parent, null);
-					}
-				}
-			}
+			// TODO [ev] causes tree corruption, investigate
+
+			// if (viewerCP.hasInput()) { // continue only when viewer has input
+			// Set<Object> parents = new HashSet<Object>();
+			// for (Object element : event.diff.getAdditions()) {
+			// Object parent = structureAdvisor.getParent(element);
+			// if (parent != null) {
+			// parents.add(parent);
+			// }
+			// }
+			// for (Object element : event.diff.getRemovals()) {
+			// Object parent = structureAdvisor.getParent(element);
+			// if (parent != null) {
+			// parents.add(parent);
+			// }
+			// }
+			// for (Object parent : parents) {
+			// if (!viewer.isBusy()) {
+			// viewer.update(parent, null);
+			// }
+			// }
+			// }
 		}
 	}
 
