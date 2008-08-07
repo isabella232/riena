@@ -39,19 +39,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SystemPropertiesSubModuleController extends SubModuleController {
 
-	private ITableRidget tableProperties;
-	private ITextFieldRidget textKey;
-	private ITextFieldRidget textValue;
-	private IActionRidget buttonAdd;
-	private IToggleButtonRidget toggleDoubleClick;
-	private IActionRidget buttonSave;
-
 	/** Manages a collection of PropertyBeans */
 	private final List<KeyValueBean> properties;
 	/** Bean for holding the value being edited. */
 	private final KeyValueBean valueBean;
 	/** IActionListener for double click on the table */
 	private final IActionListener doubleClickListener;
+	private ITableRidget tableProperties;
+	private ITextFieldRidget textKey;
+	private ITextFieldRidget textValue;
 
 	public SystemPropertiesSubModuleController() {
 		this(null);
@@ -64,67 +60,46 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		doubleClickListener = new DoubleClickListener();
 	}
 
-	public ITableRidget getTableProperties() {
-		return tableProperties;
-	}
-
-	public void setTableProperties(ITableRidget tableProperties) {
-		this.tableProperties = tableProperties;
-	}
-
-	public ITextFieldRidget getTextKey() {
-		return textKey;
-	}
-
-	public void setTextKey(ITextFieldRidget textKey) {
-		this.textKey = textKey;
-	}
-
-	public ITextFieldRidget getTextValue() {
-		return textValue;
-	}
-
-	public void setTextValue(ITextFieldRidget textValue) {
-		this.textValue = textValue;
-	}
-
-	public IActionRidget getButtonAdd() {
-		return buttonAdd;
-	}
-
-	public void setButtonAdd(IActionRidget buttonAdd) {
-		this.buttonAdd = buttonAdd;
-	}
-
-	public IToggleButtonRidget getToggleDoubleClick() {
-		return toggleDoubleClick;
-	}
-
-	public void setToggleDoubleClick(IToggleButtonRidget toggleDoubleClick) {
-		this.toggleDoubleClick = toggleDoubleClick;
-	}
-
-	public IActionRidget getButtonSave() {
-		return buttonSave;
-	}
-
-	public void setButtonSave(IActionRidget buttonSave) {
-		this.buttonSave = buttonSave;
-	}
-
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
+	@Override
 	public void afterBind() {
 		super.afterBind();
-		initRidgets();
+		bindModels();
 	}
 
-	/**
-	 * Binds and updates the ridgets.
-	 */
-	private void initRidgets() {
+	private void bindModels() {
+		tableProperties.bindToModel(new WritableList(properties, KeyValueBean.class), KeyValueBean.class, new String[] {
+				"key", "value" }, new String[] { "Key", "Value" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		tableProperties.updateFromModel();
 		tableProperties.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		tableProperties.setComparator(0, new StringComparator());
 		tableProperties.setComparator(1, new StringComparator());
 		tableProperties.setMoveableColumns(true);
+		if (!properties.isEmpty()) {
+			tableProperties.setSelection(0);
+		}
+
+		textKey.bindToModel(valueBean, "key"); //$NON-NLS-1$
+		textKey.updateFromModel();
+		textValue.bindToModel(valueBean, "value"); //$NON-NLS-1$
+		textValue.updateFromModel();
+	}
+
+	/**
+	 * Binds and updates the ridgets.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+
+		tableProperties = (ITableRidget) getRidget("tableProperties"); //$NON-NLS-1$
+		textKey = (ITextFieldRidget) getRidget("textKey"); //$NON-NLS-1$
+		textValue = (ITextFieldRidget) getRidget("textValue"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
+		final IToggleButtonRidget toggleDoubleClick = (IToggleButtonRidget) getRidget("toggleDoubleClick"); //$NON-NLS-1$
+		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
 
 		Set<Object> keys = System.getProperties().keySet();
 		for (Object key : keys) {
@@ -134,16 +109,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			properties.add(bean);
 		}
 
-		tableProperties.bindToModel(new WritableList(properties, KeyValueBean.class), KeyValueBean.class, new String[] {
-				"key", "value" }, new String[] { "Key", "Value" }); //$NON-NLS-1$ //$NON-NLS-2$
-		tableProperties.updateFromModel();
-
-		textKey.bindToModel(valueBean, "key"); //$NON-NLS-1$
-		textKey.updateFromModel();
-		textValue.bindToModel(valueBean, "value"); //$NON-NLS-1$
-		textValue.updateFromModel();
-
-		tableProperties.addPropertyChangeListener(ITableRidget.PROPERTY_SINGLE_SELECTION, new PropertyChangeListener() {
+		tableProperties.addPropertyChangeListener(ITableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				List<Object> selection = tableProperties.getSelection();
 				if (!selection.isEmpty()) {
@@ -154,7 +120,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonAdd.setText("&Add");
+		buttonAdd.setText("&Add"); //$NON-NLS-1$
 		buttonAdd.addListener(new IActionListener() {
 			private int count = 0;
 
@@ -169,7 +135,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			}
 		});
 
-		toggleDoubleClick.setText("Handle &Double Click");
+		toggleDoubleClick.setText("Handle &Double Click"); //$NON-NLS-1$
 		toggleDoubleClick.addListener(new IActionListener() {
 			public void callback() {
 				if (toggleDoubleClick.isSelected()) {
@@ -180,17 +146,13 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonSave.setText("&Save");
+		buttonSave.setText("&Save"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
 				valueBean.update();
 				tableProperties.updateFromModel();
 			}
 		});
-
-		if (!properties.isEmpty()) {
-			tableProperties.setSelection(0);
-		}
 	}
 
 	// helping classes
@@ -251,8 +213,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 
 		public void callback() {
 			Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-			String title = "Information";
-			String message = "The key ''{0}'' is selected and has the value ''{1}''";
+			String title = "Information"; //$NON-NLS-1$
+			String message = "The key ''{0}'' is selected and has the value ''{1}''"; //$NON-NLS-1$
 			message = NLS.bind(message, valueBean.getKey(), valueBean.getValue());
 			MessageDialog.openInformation(shell, title, message);
 		}

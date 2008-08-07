@@ -29,15 +29,13 @@ import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
  */
 public class ComboSubModuleController extends SubModuleController {
 
-	private IComboBoxRidget comboOne;
-	private ITextFieldRidget textFirst;
-	private ITextFieldRidget textLast;
-	private IActionRidget buttonSave;
-
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
 	private final PersonModificationBean value;
+	private IComboBoxRidget comboOne;
+	private ITextFieldRidget textFirst;
+	private ITextFieldRidget textLast;
 
 	public ComboSubModuleController() {
 		this(null);
@@ -50,57 +48,37 @@ public class ComboSubModuleController extends SubModuleController {
 		value = new PersonModificationBean();
 	}
 
-	public IComboBoxRidget getComboOne() {
-		return comboOne;
-	}
-
-	public void setComboOne(IComboBoxRidget comboOne) {
-		this.comboOne = comboOne;
-	}
-
-	public ITextFieldRidget getTextFirst() {
-		return textFirst;
-	}
-
-	public void setTextFirst(ITextFieldRidget textFirst) {
-		this.textFirst = textFirst;
-	}
-
-	public ITextFieldRidget getTextLast() {
-		return textLast;
-	}
-
-	public void setTextLast(ITextFieldRidget textLast) {
-		this.textLast = textLast;
-	}
-
-	public IActionRidget getButtonSave() {
-		return buttonSave;
-	}
-
-	public void setButtonSave(IActionRidget buttonSave) {
-		this.buttonSave = buttonSave;
-	}
-
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		initRidgets();
+		bindModels();
 	}
 
-	/**
-	 * Binds and updates the ridgets.
-	 */
-	private void initRidgets() {
+	private void bindModels() {
 		comboOne.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson"); //$NON-NLS-1$ //$NON-NLS-2$
 		comboOne.updateFromModel();
 
-		value.setPerson(manager.getSelectedPerson());
-
 		textFirst.bindToModel(value, "firstName"); //$NON-NLS-1$
 		textFirst.updateFromModel();
+
 		textLast.bindToModel(value, "lastName"); //$NON-NLS-1$
 		textLast.updateFromModel();
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+
+		comboOne = (IComboBoxRidget) getRidget("comboOne"); //$NON-NLS-1$
+
+		value.setPerson(manager.getSelectedPerson());
+
+		textFirst = (ITextFieldRidget) getRidget("textFirst"); //$NON-NLS-1$
+		textLast = (ITextFieldRidget) getRidget("textLast"); //$NON-NLS-1$
 
 		comboOne.addPropertyChangeListener(IComboBoxRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -110,7 +88,8 @@ public class ComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonSave.setText("&Save");
+		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
+		buttonSave.setText("&Save"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
 				value.update();

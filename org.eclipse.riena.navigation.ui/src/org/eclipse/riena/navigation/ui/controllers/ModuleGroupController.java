@@ -23,4 +23,12 @@ public class ModuleGroupController extends NavigationNodeController<IModuleGroup
 	public ModuleGroupController(IModuleGroupNode navigationNode) {
 		super(navigationNode);
 	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		// nothing to do
+	}
+
 }

@@ -14,10 +14,10 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
- * The {@link InjectAllAtOnceBindingManager} binding policy requires the
+ * The {@link DefaultBindingManager} binding policy requires the
  * {@link IRidgetContainer} to implement this interface.
  */
-public interface IInjectAllRidgetsAtOnce extends IRidgetContainer {
+public interface IInjectAllRidgets extends IRidgetContainer {
 
 	/**
 	 * Configure the ridgets of the receiver. This method should be called by

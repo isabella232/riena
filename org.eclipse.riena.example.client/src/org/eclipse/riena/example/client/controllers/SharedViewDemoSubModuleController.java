@@ -7,6 +7,8 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
 public class SharedViewDemoSubModuleController extends SubModuleController {
 
+	private TxtBean bean;
+
 	public SharedViewDemoSubModuleController() {
 		this(null);
 	}
@@ -14,43 +16,22 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 	public SharedViewDemoSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		bean = new TxtBean();
-		bean.setTxt("Shared View Demo");
-		bean.setName("");
+		bean.setTxt("Shared View Demo"); //$NON-NLS-1$
+		bean.setName(""); //$NON-NLS-1$
 	}
 
-	private ILabelRidget labelFacade;
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
 
-	private ITextFieldRidget textFacade;
+		ILabelRidget labelFacade = (ILabelRidget) getRidget("labelFacade"); //$NON-NLS-1$
+		ITextFieldRidget textFacade = (ITextFieldRidget) getRidget("textFacade"); //$NON-NLS-1$
 
-	private TxtBean bean;
-
-	public void setLabelFacade(ILabelRidget labelFacade) {
-		this.labelFacade = labelFacade;
-	}
-
-	public void setTextFacade(ITextFieldRidget textFacade) {
-		this.textFacade = textFacade;
-	}
-
-	public ILabelRidget getLabelFacade() {
-		return labelFacade;
-	}
-
-	public ITextFieldRidget getTextFacade() {
-		return textFacade;
-	}
-
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		initLabelFacade();
-	}
-
-	private void initLabelFacade() {
 		if (labelFacade != null) {
-			labelFacade.bindToModel(bean, "txt");
+			labelFacade.bindToModel(bean, "txt"); //$NON-NLS-1$
 			labelFacade.updateFromModel();
-			textFacade.bindToModel(bean, "name");
+			textFacade.bindToModel(bean, "name"); //$NON-NLS-1$
 			textFacade.updateFromModel();
 		}
 	}

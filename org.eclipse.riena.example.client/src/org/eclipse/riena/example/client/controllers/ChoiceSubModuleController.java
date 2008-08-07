@@ -30,64 +30,28 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
  */
 public class ChoiceSubModuleController extends SubModuleController {
 
-	private ISingleChoiceRidget compositeCarModel;
-	private ITextFieldRidget txtPrice;
-	private IActionRidget buttonReset;
-	private IActionRidget buttonBMW;
-
 	public ChoiceSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
-	public ISingleChoiceRidget getCompositeCarModel() {
-		return compositeCarModel;
-	}
-
-	public void setCompositeCarModel(ISingleChoiceRidget compositeCarModel) {
-		this.compositeCarModel = compositeCarModel;
-	}
-
-	public ITextFieldRidget getTxtPrice() {
-		return txtPrice;
-	}
-
-	public void setTxtPrice(ITextFieldRidget txtPrice) {
-		this.txtPrice = txtPrice;
-	}
-
-	public IActionRidget getButtonReset() {
-		return buttonReset;
-	}
-
-	public void setButtonReset(IActionRidget buttonReset) {
-		this.buttonReset = buttonReset;
-	}
-
-	public IActionRidget getButtonBMW() {
-		return buttonBMW;
-	}
-
-	public void setButtonBMW(IActionRidget buttonBMW) {
-		this.buttonBMW = buttonBMW;
-	}
-
-	public void afterBind() {
-		super.afterBind();
-		initRidgets();
-	}
-
 	/**
 	 * Binds and updates the ridgets.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	private void initRidgets() {
+	public void configureRidgets() {
+
+		final ISingleChoiceRidget compositeCarModel = (ISingleChoiceRidget) getRidget("compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.bindToModel(new WritableList(Arrays.asList(CarModel.values()), CarModel.class), null);
 
+		ITextFieldRidget txtPrice = (ITextFieldRidget) getRidget("txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(compositeCarModel, IChoiceRidget.PROPERTY_SELECTION), null, null);
 
-		buttonReset.setText("&Reset");
+		IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
+		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {
 			public void callback() {
 				System.out.println("reset.callback()");
@@ -95,7 +59,8 @@ public class ChoiceSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonBMW.setText("&Gimme a Beamer");
+		IActionRidget buttonBMW = (IActionRidget) getRidget("buttonBMW"); //$NON-NLS-1$
+		buttonBMW.setText("&Gimme a Beamer"); //$NON-NLS-1$
 		buttonBMW.addListener(new IActionListener() {
 			public void callback() {
 				System.out.println("bmw.callback()");

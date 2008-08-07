@@ -38,71 +38,9 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class TreeSubModuleController extends SubModuleController {
 
-	private ITreeRidget tree;
-	private IActionRidget buttonAddSibling;
-	private IActionRidget buttonAddChild;
-	private IActionRidget buttonRename;
-	private IActionRidget buttonDelete;
-	private IActionRidget buttonExpand;
-	private IActionRidget buttonCollapse;
-
 	private int nodeCount = 0;
-
-	public ITreeRidget getTree() {
-		return tree;
-	}
-
-	public void setTree(ITreeRidget tree) {
-		this.tree = tree;
-	}
-
-	public IActionRidget getButtonAddSibling() {
-		return buttonAddSibling;
-	}
-
-	public void setButtonAddSibling(IActionRidget buttonAddSibling) {
-		this.buttonAddSibling = buttonAddSibling;
-	}
-
-	public IActionRidget getButtonAddChild() {
-		return buttonAddChild;
-	}
-
-	public void setButtonAddChild(IActionRidget buttonAddChild) {
-		this.buttonAddChild = buttonAddChild;
-	}
-
-	public IActionRidget getButtonRename() {
-		return buttonRename;
-	}
-
-	public void setButtonRename(IActionRidget buttonRename) {
-		this.buttonRename = buttonRename;
-	}
-
-	public IActionRidget getButtonDelete() {
-		return buttonDelete;
-	}
-
-	public void setButtonDelete(IActionRidget buttonDelete) {
-		this.buttonDelete = buttonDelete;
-	}
-
-	public IActionRidget getButtonExpand() {
-		return buttonExpand;
-	}
-
-	public void setButtonExpand(IActionRidget buttonExpand) {
-		this.buttonExpand = buttonExpand;
-	}
-
-	public IActionRidget getButtonCollapse() {
-		return buttonCollapse;
-	}
-
-	public void setButtonCollapse(IActionRidget buttonCollapse) {
-		this.buttonCollapse = buttonCollapse;
-	}
+	private IActionRidget buttonRename;
+	private ITreeRidget tree;
 
 	public TreeSubModuleController() {
 		this(null);
@@ -112,44 +50,61 @@ public class TreeSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
+	@Override
 	public void afterBind() {
 		super.afterBind();
-		initRidgets();
+
+		bindModel();
+
 	}
 
-	/**
-	 * Binds and updates the ridgets.
-	 */
-	private void initRidgets() {
+	private void bindModel() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		ITreeNode[] roots = createTreeInput();
 		((TreeRidget) tree).setRootsVisible(false);
 		tree.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
 		tree.setSelection(roots[0].getChildren().get(0));
+	}
 
-		buttonAddSibling.setText("Add &Sibling");
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+
+		tree = (ITreeRidget) getRidget("tree"); //$NON-NLS-1$
+		final IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
+		final IActionRidget buttonAddChild = (IActionRidget) getRidget("buttonAddChild"); //$NON-NLS-1$
+		buttonRename = (IActionRidget) getRidget("buttonRename"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonExpand = (IActionRidget) getRidget("buttonExpand"); //$NON-NLS-1$
+		final IActionRidget buttonCollapse = (IActionRidget) getRidget("buttonCollapse"); //$NON-NLS-1$
+
+		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				ITreeNode parent = (node != null) ? node.getParent() : null;
 				if (parent != null) {
-					new TreeNode(parent, "SIBLING " + nodeCount++);
+					new TreeNode(parent, "SIBLING " + nodeCount++); //$NON-NLS-1$
 				}
 			}
 		});
 
-		buttonAddChild.setText("Add &Child");
+		buttonAddChild.setText("Add &Child"); //$NON-NLS-1$
 		buttonAddChild.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					new TreeNode(node, "CHILD " + nodeCount++);
+					new TreeNode(node, "CHILD " + nodeCount++); //$NON-NLS-1$
 				}
 			}
 		});
 
-		buttonRename.setText("&Rename");
+		buttonRename.setText("&Rename"); //$NON-NLS-1$
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -162,7 +117,7 @@ public class TreeSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonDelete.setText("&Delete");
+		buttonDelete.setText("&Delete"); //$NON-NLS-1$
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -175,7 +130,7 @@ public class TreeSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonExpand.setText("E&xpand");
+		buttonExpand.setText("E&xpand"); //$NON-NLS-1$
 		buttonExpand.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -185,7 +140,7 @@ public class TreeSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonCollapse.setText("&Collapse");
+		buttonCollapse.setText("&Collapse"); //$NON-NLS-1$
 		buttonCollapse.addListener(new IActionListener() {
 			public void callback() {
 				ITreeNode node = (ITreeNode) tree.getSingleSelectionObservable().getValue();
@@ -197,11 +152,13 @@ public class TreeSubModuleController extends SubModuleController {
 
 		final IObservableValue viewerSelection = tree.getSingleSelectionObservable();
 		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+			@Override
 			protected Object calculate() {
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		};
 		IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
+			@Override
 			protected Object calculate() {
 				boolean result = false;
 				Object node = viewerSelection.getValue();
@@ -225,22 +182,22 @@ public class TreeSubModuleController extends SubModuleController {
 	}
 
 	private ITreeNode[] createTreeInput() {
-		ITreeNode root = new TreeNode("root");
+		ITreeNode root = new TreeNode("root"); //$NON-NLS-1$
 
-		ITreeNode groupA = new TreeNode(root, "group a");
-		new TreeNode(groupA, "a_child_1");
-		new TreeNode(groupA, "a_child_2");
-		new TreeNode(groupA, "a_child_3");
+		ITreeNode groupA = new TreeNode(root, "group a"); //$NON-NLS-1$
+		new TreeNode(groupA, "a_child_1"); //$NON-NLS-1$
+		new TreeNode(groupA, "a_child_2"); //$NON-NLS-1$
+		new TreeNode(groupA, "a_child_3"); //$NON-NLS-1$
 
-		ITreeNode groupB = new TreeNode(root, "group b");
-		new TreeNode(groupB, "b_child_1");
-		new TreeNode(groupB, "b_child_2");
-		new TreeNode(groupB, "b_child_3");
+		ITreeNode groupB = new TreeNode(root, "group b"); //$NON-NLS-1$
+		new TreeNode(groupB, "b_child_1"); //$NON-NLS-1$
+		new TreeNode(groupB, "b_child_2"); //$NON-NLS-1$
+		new TreeNode(groupB, "b_child_3"); //$NON-NLS-1$
 
-		ITreeNode groupC = new TreeNode(root, "group c");
-		new TreeNode(groupC, "c_child_1");
-		new TreeNode(groupC, "c_child_2");
-		new TreeNode(groupC, "c_child_3");
+		ITreeNode groupC = new TreeNode(root, "group c"); //$NON-NLS-1$
+		new TreeNode(groupC, "c_child_1"); //$NON-NLS-1$
+		new TreeNode(groupC, "c_child_2"); //$NON-NLS-1$
+		new TreeNode(groupC, "c_child_3"); //$NON-NLS-1$
 
 		return new ITreeNode[] { root };
 	}
@@ -252,10 +209,10 @@ public class TreeSubModuleController extends SubModuleController {
 			IInputValidator validator = new IInputValidator() {
 				public String isValid(String newText) {
 					boolean isValid = newText.trim().length() > 0;
-					return isValid ? null : "Name cannot be empty!";
+					return isValid ? null : "Name cannot be empty!"; //$NON-NLS-1$
 				}
 			};
-			InputDialog dialog = new InputDialog(shell, "Rename", "Enter a new name:", String.valueOf(oldValue),
+			InputDialog dialog = new InputDialog(shell, "Rename", "Enter a new name:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
 					validator);
 			int result = dialog.open();
 			if (result == Window.OK) {

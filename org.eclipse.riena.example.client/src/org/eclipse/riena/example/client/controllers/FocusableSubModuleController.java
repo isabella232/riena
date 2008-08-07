@@ -23,24 +23,6 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class FocusableSubModuleController extends SubModuleController {
 
-	private IToggleButtonRidget checkVisible;
-	private IToggleButtonRidget buttonA0;
-	private IToggleButtonRidget buttonA1;
-	private IToggleButtonRidget buttonA2;
-	private IToggleButtonRidget buttonA3;
-	private IToggleButtonRidget buttonA4;
-	private IToggleButtonRidget buttonB0;
-
-	private ITextFieldRidget textA0;
-	private ITextFieldRidget textA1;
-	private ITextFieldRidget textA2;
-	private ITextFieldRidget textA3;
-	private ITextFieldRidget textA4;
-	private ITextFieldRidget textB0;
-
-	private IToggleButtonRidget[] checkButtons;
-	private ITextFieldRidget[] textRidgets;
-
 	public FocusableSubModuleController() {
 		this(null);
 	}
@@ -49,123 +31,33 @@ public class FocusableSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
-	public IToggleButtonRidget getCheckVisible() {
-		return checkVisible;
-	}
-
-	public void setCheckVisible(IToggleButtonRidget checkVisible) {
-		this.checkVisible = checkVisible;
-	}
-
-	public IToggleButtonRidget getButtonA0() {
-		return buttonA0;
-	}
-
-	public void setButtonA0(IToggleButtonRidget buttonA0) {
-		this.buttonA0 = buttonA0;
-	}
-
-	public IToggleButtonRidget getButtonA1() {
-		return buttonA1;
-	}
-
-	public void setButtonA1(IToggleButtonRidget buttonA1) {
-		this.buttonA1 = buttonA1;
-	}
-
-	public IToggleButtonRidget getButtonA2() {
-		return buttonA2;
-	}
-
-	public void setButtonA2(IToggleButtonRidget buttonA2) {
-		this.buttonA2 = buttonA2;
-	}
-
-	public IToggleButtonRidget getButtonA3() {
-		return buttonA3;
-	}
-
-	public void setButtonA3(IToggleButtonRidget buttonA3) {
-		this.buttonA3 = buttonA3;
-	}
-
-	public IToggleButtonRidget getButtonA4() {
-		return buttonA4;
-	}
-
-	public void setButtonA4(IToggleButtonRidget buttonA4) {
-		this.buttonA4 = buttonA4;
-	}
-
-	public IToggleButtonRidget getButtonB0() {
-		return buttonB0;
-	}
-
-	public void setButtonB0(IToggleButtonRidget buttonB0) {
-		this.buttonB0 = buttonB0;
-	}
-
-	public ITextFieldRidget getTextA0() {
-		return textA0;
-	}
-
-	public void setTextA0(ITextFieldRidget textA0) {
-		this.textA0 = textA0;
-	}
-
-	public ITextFieldRidget getTextA1() {
-		return textA1;
-	}
-
-	public void setTextA1(ITextFieldRidget textA1) {
-		this.textA1 = textA1;
-	}
-
-	public ITextFieldRidget getTextA2() {
-		return textA2;
-	}
-
-	public void setTextA2(ITextFieldRidget textA2) {
-		this.textA2 = textA2;
-	}
-
-	public ITextFieldRidget getTextA3() {
-		return textA3;
-	}
-
-	public void setTextA3(ITextFieldRidget textA3) {
-		this.textA3 = textA3;
-	}
-
-	public ITextFieldRidget getTextA4() {
-		return textA4;
-	}
-
-	public void setTextA4(ITextFieldRidget textA4) {
-		this.textA4 = textA4;
-	}
-
-	public ITextFieldRidget getTextB0() {
-		return textB0;
-	}
-
-	public void setTextB0(ITextFieldRidget textB0) {
-		this.textB0 = textB0;
-	}
-
-	public void afterBind() {
-		super.afterBind();
-		initRidgets();
-	}
-
 	/**
 	 * Binds and updates the ridgets.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	private void initRidgets() {
-		checkButtons = new IToggleButtonRidget[] { buttonA0, buttonA1, buttonA2, buttonA3, buttonA4, buttonB0 };
-		textRidgets = new ITextFieldRidget[] { textA0, textA1, textA2, textA3, textA4, textB0 };
+	public void configureRidgets() {
 
-		checkVisible.setText("show checkboxes");
+		final IToggleButtonRidget checkVisible = (IToggleButtonRidget) getRidget("checkVisible"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA0 = (IToggleButtonRidget) getRidget("buttonA0"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA1 = (IToggleButtonRidget) getRidget("buttonA1"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA2 = (IToggleButtonRidget) getRidget("buttonA2"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA3 = (IToggleButtonRidget) getRidget("buttonA3"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA4 = (IToggleButtonRidget) getRidget("buttonA4"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonB0 = (IToggleButtonRidget) getRidget("buttonB0"); //$NON-NLS-1$
+
+		final ITextFieldRidget textA0 = (ITextFieldRidget) getRidget("textA0"); //$NON-NLS-1$
+		final ITextFieldRidget textA1 = (ITextFieldRidget) getRidget("textA1"); //$NON-NLS-1$
+		final ITextFieldRidget textA2 = (ITextFieldRidget) getRidget("textA2"); //$NON-NLS-1$
+		final ITextFieldRidget textA3 = (ITextFieldRidget) getRidget("textA3"); //$NON-NLS-1$
+		final ITextFieldRidget textA4 = (ITextFieldRidget) getRidget("textA4"); //$NON-NLS-1$
+		final ITextFieldRidget textB0 = (ITextFieldRidget) getRidget("textB0"); //$NON-NLS-1$
+
+		final IToggleButtonRidget[] checkButtons = new IToggleButtonRidget[] { buttonA0, buttonA1, buttonA2, buttonA3,
+				buttonA4, buttonB0 };
+		final ITextFieldRidget[] textRidgets = new ITextFieldRidget[] { textA0, textA1, textA2, textA3, textA4, textB0 };
+
+		checkVisible.setText("show checkboxes"); //$NON-NLS-1$
 		checkVisible.setSelected(true);
 		checkVisible.addListener(new IActionListener() {
 			public void callback() {
@@ -179,14 +71,14 @@ public class FocusableSubModuleController extends SubModuleController {
 		Assert.isLegal(checkButtons.length == textRidgets.length);
 		for (int i = 0; i < checkButtons.length; i++) {
 			IToggleButtonRidget check = checkButtons[i];
-			check.setText("make focusable");
+			check.setText("make focusable"); //$NON-NLS-1$
 			check.setSelected(true);
 			IActionListener listener = new ChangeFocusableCallback(check, textRidgets[i]);
 			check.addListener(listener);
 		}
 
 		for (int i = 0; i < textRidgets.length; i++) {
-			textRidgets[i].setText("Text Field #" + i);
+			textRidgets[i].setText("Text Field #" + i); //$NON-NLS-1$
 		}
 	}
 

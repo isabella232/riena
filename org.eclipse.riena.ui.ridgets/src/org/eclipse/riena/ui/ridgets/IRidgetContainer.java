@@ -41,4 +41,10 @@ public interface IRidgetContainer {
 	 * @return the ridgets.
 	 */
 	Collection<? extends IRidget> getRidgets();
+
+	/**
+	 * This method is called after all ridgets are injected.
+	 */
+	void configureRidgets();
+
 }

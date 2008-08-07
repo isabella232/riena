@@ -12,8 +12,8 @@ public class HelloWorldSubModuleController extends SubModuleController {
 	public HelloWorldSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 		bean = new TxtBean();
-		bean.setTxt("Hello World");
-		bean.setName("");
+		bean.setTxt("Hello World"); //$NON-NLS-1$
+		bean.setName(""); //$NON-NLS-1$
 	}
 
 	/**
@@ -30,9 +30,16 @@ public class HelloWorldSubModuleController extends SubModuleController {
 	 */
 	private void initLabelRidget() {
 		if (labelRidget != null) {
-			labelRidget.bindToModel(bean, "txt");
+			labelRidget.bindToModel(bean, "txt"); //$NON-NLS-1$
 			labelRidget.updateFromModel();
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		labelRidget = (ILabelRidget) getRidget("labelRidget"); //$NON-NLS-1$
 	}
 
 	/**
@@ -59,14 +66,6 @@ public class HelloWorldSubModuleController extends SubModuleController {
 			this.txt = txt;
 		}
 
-	}
-
-	public ILabelRidget getLabelRidget() {
-		return labelRidget;
-	}
-
-	public void setLabelRidget(ILabelRidget labelRidget) {
-		this.labelRidget = labelRidget;
 	}
 
 }

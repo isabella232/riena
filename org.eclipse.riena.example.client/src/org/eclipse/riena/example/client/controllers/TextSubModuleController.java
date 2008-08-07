@@ -20,14 +20,6 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
  */
 public class TextSubModuleController extends SubModuleController {
 
-	private ITextFieldRidget textField;
-	private ITextFieldRidget textModel1;
-	private ITextFieldRidget textDirectWrite;
-	private ITextFieldRidget textModel2;
-	private ITextFieldRidget textArea;
-	private ITextFieldRidget textPassword;
-	private ITextFieldRidget textField10;
-
 	public TextSubModuleController() {
 		this(null);
 	}
@@ -36,77 +28,33 @@ public class TextSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
-	public ITextFieldRidget getTextField() {
-		return textField;
-	}
-
-	public void setTextField(ITextFieldRidget textField) {
-		this.textField = textField;
-	}
-
-	public ITextFieldRidget getTextModel1() {
-		return textModel1;
-	}
-
-	public void setTextModel1(ITextFieldRidget textModel1) {
-		this.textModel1 = textModel1;
-	}
-
-	public ITextFieldRidget getTextDirectWrite() {
-		return textDirectWrite;
-	}
-
-	public void setTextDirectWrite(ITextFieldRidget textDirectWrite) {
-		this.textDirectWrite = textDirectWrite;
-	}
-
-	public ITextFieldRidget getTextModel2() {
-		return textModel2;
-	}
-
-	public void setTextModel2(ITextFieldRidget textModel2) {
-		this.textModel2 = textModel2;
-	}
-
-	public ITextFieldRidget getTextArea() {
-		return textArea;
-	}
-
-	public void setTextArea(ITextFieldRidget textArea) {
-		this.textArea = textArea;
-	}
-
-	public ITextFieldRidget getTextPassword() {
-		return textPassword;
-	}
-
-	public void setTextPassword(ITextFieldRidget textPassword) {
-		this.textPassword = textPassword;
-	}
-
-	public ITextFieldRidget getTextField10() {
-		return textField10;
-	}
-
-	public void setTextField10(ITextFieldRidget textField10) {
-		this.textField10 = textField10;
-	}
-
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		initRidgets();
+		configureRidgets();
 	}
 
 	/**
 	 * Binds and updates the ridgets.
 	 */
-	private void initRidgets() {
-		textModel1.setText("type something");
+	public void configureRidgets() {
+
+		// private ITextFieldRidget textArea;
+		// private ITextFieldRidget textPassword;
+		// private ITextFieldRidget textField10;
+
+		ITextFieldRidget textModel1 = (ITextFieldRidget) getRidget("textModel1"); //$NON-NLS-1$
+		textModel1.setText("type something"); //$NON-NLS-1$
+		ITextFieldRidget textField = (ITextFieldRidget) getRidget("textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextFieldRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
 
-		textModel2.setText("type something");
+		ITextFieldRidget textModel2 = (ITextFieldRidget) getRidget("textModel2"); //$NON-NLS-1$
+		textModel2.setText("type something"); //$NON-NLS-1$
+		ITextFieldRidget textDirectWrite = (ITextFieldRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextFieldRidget.PROPERTY_TEXT);
 		textDirectWrite.updateFromModel();

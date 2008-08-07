@@ -25,9 +25,6 @@ public class RidgetsSubModuleController extends SubModuleController {
 	private final static String ICON_SAMPLE = PLUGIN_ID + "/icons/sample.gif"; //$NON-NLS-1$
 	private final static String ICON_RED = PLUGIN_ID + "/icons/ledred.png"; //$NON-NLS-1$
 
-	private IToggleButtonRidget toggleOne;
-	private IToggleButtonRidget checkOne;
-	private IActionRidget buttonWithImage;
 	private RidgetsModel model;
 
 	public RidgetsSubModuleController() {
@@ -42,60 +39,37 @@ public class RidgetsSubModuleController extends SubModuleController {
 	}
 
 	public IActionRidget getButtonWithImage() {
-		return buttonWithImage;
-	}
-
-	public void setButtonWithImage(IActionRidget buttonWithImage) {
-		this.buttonWithImage = buttonWithImage;
+		return (IActionRidget) getRidget("buttonWithImage"); //$NON-NLS-1$
 	}
 
 	public IToggleButtonRidget getToggleOne() {
-		return toggleOne;
-	}
-
-	public void setToggleOne(IToggleButtonRidget toggleOne) {
-		this.toggleOne = toggleOne;
+		return (IToggleButtonRidget) getRidget("toggleOne"); //$NON-NLS-1$
 	}
 
 	public IToggleButtonRidget getCheckOne() {
-		return checkOne;
-	}
-
-	public void setCheckOne(IToggleButtonRidget checkOne) {
-		this.checkOne = checkOne;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		initRidgets();
+		return (IToggleButtonRidget) getRidget("checkOne"); //$NON-NLS-1$
 	}
 
 	/**
 	 * Binds and updates the ridgets.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	private void initRidgets() {
-		toggleOne.setText("&Toggle 1"); //$NON-NLS-1$
-		toggleOne.setIcon(ICON_SAMPLE);
-		if (toggleOne != null) {
-			toggleOne.bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
-			toggleOne.updateFromModel();
-		}
+	public void configureRidgets() {
+		getToggleOne().setText("&Toggle 1"); //$NON-NLS-1$
+		getToggleOne().setIcon(ICON_SAMPLE);
+		getToggleOne().bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
+		getToggleOne().updateFromModel();
 
-		checkOne.setText("C&heck 1"); //$NON-NLS-1$
-		if (checkOne != null) {
-			checkOne.bindToModel(model, "checkOneSelected"); //$NON-NLS-1$
-			checkOne.updateFromModel();
-		}
+		getCheckOne().setText("C&heck 1"); //$NON-NLS-1$
+		getCheckOne().bindToModel(model, "checkOneSelected"); //$NON-NLS-1$
+		getCheckOne().updateFromModel();
 
-		buttonWithImage.setText("Text"); //$NON-NLS-1$
-		buttonWithImage.setIcon(ICON_SAMPLE);
-		buttonWithImage.addListener(new IActionListener() {
+		getButtonWithImage().setText("Text"); //$NON-NLS-1$
+		getButtonWithImage().setIcon(ICON_SAMPLE);
+		getButtonWithImage().addListener(new IActionListener() {
 			public void callback() {
-				buttonWithImage.setIcon(ICON_RED);
+				getButtonWithImage().setIcon(ICON_RED);
 			}
 		});
 	}

@@ -39,42 +39,9 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class TableSubModuleController extends SubModuleController {
 
-	private ITableRidget table;
-	private IActionRidget buttonAddSibling;
 	private IActionRidget buttonRename;
-	private IActionRidget buttonDelete;
-
-	public ITableRidget getTable() {
-		return table;
-	}
-
-	public void setTable(ITableRidget table) {
-		this.table = table;
-	}
-
-	public IActionRidget getButtonAddSibling() {
-		return buttonAddSibling;
-	}
-
-	public void setButtonAddSibling(IActionRidget buttonAddSibling) {
-		this.buttonAddSibling = buttonAddSibling;
-	}
-
-	public IActionRidget getButtonRename() {
-		return buttonRename;
-	}
-
-	public void setButtonRename(IActionRidget buttonRename) {
-		this.buttonRename = buttonRename;
-	}
-
-	public IActionRidget getButtonDelete() {
-		return buttonDelete;
-	}
-
-	public void setButtonDelete(IActionRidget buttonDelete) {
-		this.buttonDelete = buttonDelete;
-	}
+	private ITableRidget table;
+	private List<WordNode> input;
 
 	public TableSubModuleController() {
 		this(null);
@@ -84,24 +51,36 @@ public class TableSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
+	@Override
 	public void afterBind() {
 		super.afterBind();
-		initRidgets();
+		bindModel();
 	}
 
-	/**
-	 * Binds and updates the ridgets.
-	 */
-	private void initRidgets() {
-		final List<WordNode> input = createInput();
+	private void bindModel() {
+		input = createInput();
 		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String[] columnHeaders = { "Word", "Uppercase", "A Count" };
+		String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
 		table.setComparator(0, new StringComparator());
 		table.setComparator(1, new StringComparator());
 		table.setColumnSortable(2, false);
 		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		table.setSelection(0);
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+
+		table = (ITableRidget) getRidget("table"); //$NON-NLS-1$
+		final IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
+		buttonRename = (IActionRidget) getRidget("buttonRename"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
 
 		table.addDoubleClickListener(new IActionListener() {
 			public void callback() {
@@ -113,17 +92,17 @@ public class TableSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonAddSibling.setText("&Add");
+		buttonAddSibling.setText("&Add"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
 			public void callback() {
-				WordNode newNode = new WordNode("A_NEW_SIBLING");
+				WordNode newNode = new WordNode("A_NEW_SIBLING"); //$NON-NLS-1$
 				input.add(newNode);
 				table.updateFromModel();
 				table.setSelection(newNode);
 			}
 		});
 
-		buttonRename.setText("&Modify");
+		buttonRename.setText("&Modify"); //$NON-NLS-1$
 		buttonRename.addListener(new IActionListener() {
 			public void callback() {
 				WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
@@ -136,7 +115,7 @@ public class TableSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonDelete.setText("&Delete");
+		buttonDelete.setText("&Delete"); //$NON-NLS-1$
 		buttonDelete.addListener(new IActionListener() {
 			public void callback() {
 				WordNode node = (WordNode) table.getSingleSelectionObservable().getValue();
@@ -147,6 +126,7 @@ public class TableSubModuleController extends SubModuleController {
 
 		final IObservableValue viewerSelection = table.getSingleSelectionObservable();
 		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+			@Override
 			protected Object calculate() {
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
@@ -167,10 +147,10 @@ public class TableSubModuleController extends SubModuleController {
 			IInputValidator validator = new IInputValidator() {
 				public String isValid(String newText) {
 					boolean isValid = newText.trim().length() > 0;
-					return isValid ? null : "Word cannot be empty!";
+					return isValid ? null : "Word cannot be empty!"; //$NON-NLS-1$
 				}
 			};
-			InputDialog dialog = new InputDialog(shell, "Modify", "Enter a new word:", String.valueOf(oldValue),
+			InputDialog dialog = new InputDialog(shell, "Modify", "Enter a new word:", String.valueOf(oldValue), //$NON-NLS-1$ //$NON-NLS-2$
 					validator);
 			int result = dialog.open();
 			if (result == Window.OK) {
@@ -181,9 +161,9 @@ public class TableSubModuleController extends SubModuleController {
 	}
 
 	private List<WordNode> createInput() {
-		String[] words = { "Adventure", "Acclimatisation", "Aardwark", "Binoculars", "Beverage", "Boredom",
-				"Ballistics", "Calculation", "Coexistence", "Cinnamon", "Celebration", "Disney", "Dictionary", "Delta",
-				"Desperate", "Elf", "Electronics", "Elwood", "Enemy" };
+		String[] words = { "Adventure", "Acclimatisation", "Aardwark", "Binoculars", "Beverage", "Boredom", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"Ballistics", "Calculation", "Coexistence", "Cinnamon", "Celebration", "Disney", "Dictionary", "Delta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"Desperate", "Elf", "Electronics", "Elwood", "Enemy" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		ArrayList<WordNode> result = new ArrayList<WordNode>(words.length);
 		for (int i = 0; i < words.length; i++) {
 			WordNode node = new WordNode(words[i]);

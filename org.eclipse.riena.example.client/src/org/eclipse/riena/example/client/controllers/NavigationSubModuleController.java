@@ -48,20 +48,12 @@ public class NavigationSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		initRidgets();
-		setDefaultButton(getAddModuleBtn());
-	}
-
-	/**
 	 * Binds and updates the ridgets.<br>
 	 * Sets texts and adds action listeners.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	private void initRidgets() {
+	public void configureRidgets() {
 
 		getAddSubModuleToModuleBtn().setText("Add Sub-Module to &Root"); //$NON-NLS-1$
 		getAddSubModuleToModuleBtn().addListener(new IActionListener() {
@@ -107,6 +99,8 @@ public class NavigationSubModuleController extends SubModuleController {
 				subAppController.getStatuslineRidget().setMessage(text);
 			}
 		});
+
+		setDefaultButton(getAddModuleBtn());
 
 	}
 

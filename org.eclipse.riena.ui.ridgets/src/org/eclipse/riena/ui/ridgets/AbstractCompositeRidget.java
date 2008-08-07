@@ -207,4 +207,11 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 
 	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+	}
+
 }

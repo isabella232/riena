@@ -24,7 +24,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewIdTest;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
-import org.eclipse.riena.navigation.ui.swt.views.experimental.SWTViewBindingDelegateTest;
+import org.eclipse.riena.navigation.ui.swt.views.AbstractViewBindingDelegateTest;
 
 /**
  * Tests all test cases within package:
@@ -49,7 +49,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ShellBorderRendererTest.class);
 		suite.addTestSuite(ApplicationViewAdvisorTest.class);
 		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
-		suite.addTestSuite(SWTViewBindingDelegateTest.class);
+		suite.addTestSuite(AbstractViewBindingDelegateTest.class);
 		return suite;
 	}
 

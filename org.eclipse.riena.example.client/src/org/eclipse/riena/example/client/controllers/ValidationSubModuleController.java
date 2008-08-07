@@ -39,28 +39,6 @@ public class ValidationSubModuleController extends SubModuleController {
 
 	private static final String DATE_PATTERN = "dd.MM.yyyy"; //$NON-NLS-1$
 
-	private ITextFieldRidget txtNumbersOnly;
-	private ITextFieldRidget txtNumbersOnlyDW;
-	private ITextFieldRidget txtCharactersOnly;
-	private ITextFieldRidget txtExpression;
-	private ITextFieldRidget txtLengthLessThan5;
-	private ITextFieldRidget txtRequiredLowercase;
-	private ITextFieldRidget txtRange18to80;
-	private ITextFieldRidget txtLength5to10;
-	private ITextFieldRidget txtDate;
-	private ITextFieldRidget txtEmail;
-
-	private ITextFieldRidget lblNumbersOnly;
-	private ITextFieldRidget lblNumbersOnlyDW;
-	private ITextFieldRidget lblCharactersOnly;
-	private ITextFieldRidget lblExpression;
-	private ITextFieldRidget lblLengthLessThan5;
-	private ITextFieldRidget lblRequiredLowercase;
-	private ITextFieldRidget lblRange18to80;
-	private ITextFieldRidget lblLength5to10;
-	private ITextFieldRidget lblDate;
-	private ITextFieldRidget lblEmail;
-
 	public ValidationSubModuleController() {
 		this(null);
 	}
@@ -69,176 +47,34 @@ public class ValidationSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
-	public ITextFieldRidget getTxtNumbersOnly() {
-		return txtNumbersOnly;
-	}
-
-	public void setTxtNumbersOnly(ITextFieldRidget txtNumbersOnly) {
-		this.txtNumbersOnly = txtNumbersOnly;
-	}
-
-	public ITextFieldRidget getTxtNumbersOnlyDW() {
-		return txtNumbersOnlyDW;
-	}
-
-	public void setTxtNumbersOnlyDW(ITextFieldRidget txtNumbersOnlyDW) {
-		this.txtNumbersOnlyDW = txtNumbersOnlyDW;
-	}
-
-	public ITextFieldRidget getTxtCharactersOnly() {
-		return txtCharactersOnly;
-	}
-
-	public void setTxtCharactersOnly(ITextFieldRidget txtCharactersOnly) {
-		this.txtCharactersOnly = txtCharactersOnly;
-	}
-
-	public ITextFieldRidget getTxtExpression() {
-		return txtExpression;
-	}
-
-	public void setTxtExpression(ITextFieldRidget txtExpression) {
-		this.txtExpression = txtExpression;
-	}
-
-	public ITextFieldRidget getTxtLengthLessThan5() {
-		return txtLengthLessThan5;
-	}
-
-	public void setTxtLengthLessThan5(ITextFieldRidget txtLengthLessThan5) {
-		this.txtLengthLessThan5 = txtLengthLessThan5;
-	}
-
-	public ITextFieldRidget getTxtRange18to80() {
-		return txtRange18to80;
-	}
-
-	public void setTxtRange18to80(ITextFieldRidget txtRange18to80) {
-		this.txtRange18to80 = txtRange18to80;
-	}
-
-	public ITextFieldRidget getTxtLength5to10() {
-		return txtLength5to10;
-	}
-
-	public void setTxtLength5to10(ITextFieldRidget txtLength5to10) {
-		this.txtLength5to10 = txtLength5to10;
-	}
-
-	public ITextFieldRidget getTxtDate() {
-		return txtDate;
-	}
-
-	public void setTxtDate(ITextFieldRidget txtDate) {
-		this.txtDate = txtDate;
-	}
-
-	public ITextFieldRidget getTxtEmail() {
-		return txtEmail;
-	}
-
-	public void setTxtEmail(ITextFieldRidget txtEmail) {
-		this.txtEmail = txtEmail;
-	}
-
-	public ITextFieldRidget getLblNumbersOnly() {
-		return lblNumbersOnly;
-	}
-
-	public void setLblNumbersOnly(ITextFieldRidget lblNumbersOnly) {
-		this.lblNumbersOnly = lblNumbersOnly;
-	}
-
-	public ITextFieldRidget getLblNumbersOnlyDW() {
-		return lblNumbersOnlyDW;
-	}
-
-	public void setLblNumbersOnlyDW(ITextFieldRidget lblNumbersOnlyDW) {
-		this.lblNumbersOnlyDW = lblNumbersOnlyDW;
-	}
-
-	public ITextFieldRidget getLblCharactersOnly() {
-		return lblCharactersOnly;
-	}
-
-	public void setLblCharactersOnly(ITextFieldRidget lblCharactersOnly) {
-		this.lblCharactersOnly = lblCharactersOnly;
-	}
-
-	public ITextFieldRidget getLblExpression() {
-		return lblExpression;
-	}
-
-	public void setLblExpression(ITextFieldRidget lblExpression) {
-		this.lblExpression = lblExpression;
-	}
-
-	public ITextFieldRidget getLblLengthLessThan5() {
-		return lblLengthLessThan5;
-	}
-
-	public void setLblLengthLessThan5(ITextFieldRidget lblLengthLessThan5) {
-		this.lblLengthLessThan5 = lblLengthLessThan5;
-	}
-
-	public ITextFieldRidget getLblRange18to80() {
-		return lblRange18to80;
-	}
-
-	public void setLblRange18to80(ITextFieldRidget lblRange18to80) {
-		this.lblRange18to80 = lblRange18to80;
-	}
-
-	public ITextFieldRidget getLblLength5to10() {
-		return lblLength5to10;
-	}
-
-	public void setLblLength5to10(ITextFieldRidget lblLength5to10) {
-		this.lblLength5to10 = lblLength5to10;
-	}
-
-	public ITextFieldRidget getLblDate() {
-		return lblDate;
-	}
-
-	public void setLblDate(ITextFieldRidget lblDate) {
-		this.lblDate = lblDate;
-	}
-
-	public ITextFieldRidget getLblEmail() {
-		return lblEmail;
-	}
-
-	public void setLblEmail(ITextFieldRidget lblEmail) {
-		this.lblEmail = lblEmail;
-	}
-
-	public ITextFieldRidget getTxtRequiredLowercase() {
-		return txtRequiredLowercase;
-	}
-
-	public void setTxtRequiredLowercase(ITextFieldRidget txtRequiredLowercase) {
-		this.txtRequiredLowercase = txtRequiredLowercase;
-	}
-
-	public ITextFieldRidget getLblRequiredLowercase() {
-		return lblRequiredLowercase;
-	}
-
-	public void setLblRequiredLowercase(ITextFieldRidget lblRequiredLowercase) {
-		this.lblRequiredLowercase = lblRequiredLowercase;
-	}
-
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		initRidgets();
-	}
-
 	/**
 	 * Binds and updates the ridgets.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	private void initRidgets() {
+	public void configureRidgets() {
+
+		final ITextFieldRidget txtNumbersOnly = (ITextFieldRidget) getRidget("txtNumbersOnly"); //$NON-NLS-1$
+		final ITextFieldRidget txtNumbersOnlyDW = (ITextFieldRidget) getRidget("txtNumbersOnlyDW"); //$NON-NLS-1$
+		final ITextFieldRidget txtCharactersOnly = (ITextFieldRidget) getRidget("txtCharactersOnly"); //$NON-NLS-1$
+		final ITextFieldRidget txtExpression = (ITextFieldRidget) getRidget("txtExpression"); //$NON-NLS-1$
+		final ITextFieldRidget txtLengthLessThan5 = (ITextFieldRidget) getRidget("txtLengthLessThan5"); //$NON-NLS-1$
+		final ITextFieldRidget txtRequiredLowercase = (ITextFieldRidget) getRidget("txtRequiredLowercase"); //$NON-NLS-1$
+		final ITextFieldRidget txtRange18to80 = (ITextFieldRidget) getRidget("txtRange18to80"); //$NON-NLS-1$
+		final ITextFieldRidget txtLength5to10 = (ITextFieldRidget) getRidget("txtLength5to10"); //$NON-NLS-1$
+		final ITextFieldRidget txtDate = (ITextFieldRidget) getRidget("txtDate"); //$NON-NLS-1$
+		final ITextFieldRidget txtEmail = (ITextFieldRidget) getRidget("txtEmail"); //$NON-NLS-1$
+
+		final ITextFieldRidget lblNumbersOnly = (ITextFieldRidget) getRidget("lblNumbersOnly"); //$NON-NLS-1$
+		final ITextFieldRidget lblNumbersOnlyDW = (ITextFieldRidget) getRidget("lblNumbersOnlyDW"); //$NON-NLS-1$
+		final ITextFieldRidget lblCharactersOnly = (ITextFieldRidget) getRidget("lblCharactersOnly"); //$NON-NLS-1$
+		final ITextFieldRidget lblExpression = (ITextFieldRidget) getRidget("lblExpression"); //$NON-NLS-1$
+		final ITextFieldRidget lblLengthLessThan5 = (ITextFieldRidget) getRidget("lblLengthLessThan5"); //$NON-NLS-1$
+		final ITextFieldRidget lblRequiredLowercase = (ITextFieldRidget) getRidget("lblRequiredLowercase"); //$NON-NLS-1$
+		final ITextFieldRidget lblRange18to80 = (ITextFieldRidget) getRidget("lblRange18to80"); //$NON-NLS-1$
+		final ITextFieldRidget lblLength5to10 = (ITextFieldRidget) getRidget("lblLength5to10"); //$NON-NLS-1$
+		final ITextFieldRidget lblDate = (ITextFieldRidget) getRidget("lblDate"); //$NON-NLS-1$
+		final ITextFieldRidget lblEmail = (ITextFieldRidget) getRidget("lblEmail"); //$NON-NLS-1$
 
 		// on edit validation
 

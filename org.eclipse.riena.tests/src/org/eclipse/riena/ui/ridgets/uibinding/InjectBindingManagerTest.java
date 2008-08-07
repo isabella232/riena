@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Tests of the class <code>DefaultBindingManager</code>.
  */
-public class DefaultBindingManagerTest extends TestCase {
+public class InjectBindingManagerTest extends TestCase {
 
 	/**
 	 * 
@@ -50,7 +50,7 @@ public class DefaultBindingManagerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		realm = new DefaultRealm();
-		manager = new DefaultBindingManager(new BindingPropertyLocator(), new ControlRidgetMapper());
+		manager = new InjectBindingManager(new BindingPropertyLocator(), new ControlRidgetMapper());
 		ridgetContainer = new RidgetContainer();
 		shell = new Shell();
 	}
@@ -72,8 +72,8 @@ public class DefaultBindingManagerTest extends TestCase {
 	/**
 	 * Tests the method <code>injectRidgets</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testInjectRidgets() throws Exception {
 
@@ -102,8 +102,8 @@ public class DefaultBindingManagerTest extends TestCase {
 	/**
 	 * Tests the method <code>bind</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testBind() throws Exception {
 
@@ -126,8 +126,8 @@ public class DefaultBindingManagerTest extends TestCase {
 	/**
 	 * Tests the method <code>unbind</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testUnbind() throws Exception {
 
@@ -243,6 +243,12 @@ public class DefaultBindingManagerTest extends TestCase {
 
 		public void setLabel2(ILabelRidget label2) {
 			this.label2 = label2;
+		}
+
+		/**
+		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+		 */
+		public void configureRidgets() {
 		}
 
 	}

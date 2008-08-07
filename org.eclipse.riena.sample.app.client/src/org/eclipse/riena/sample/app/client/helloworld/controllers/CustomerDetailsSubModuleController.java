@@ -20,8 +20,7 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 /**
  * Controller of the sub module that displays the details of a customer.
  */
-public class CustomerDetailsSubModuleController extends
-		SubModuleController {
+public class CustomerDetailsSubModuleController extends SubModuleController {
 
 	private ITextFieldRidget numberFacade;
 	private ITextFieldRidget nameFacade;
@@ -44,16 +43,16 @@ public class CustomerDetailsSubModuleController extends
 
 		Customer customer = getCustomer();
 
-		numberFacade.bindToModel(customer, "customerNumber");
+		numberFacade.bindToModel(customer, "customerNumber"); //$NON-NLS-1$
 		numberFacade.updateFromModel();
 
-		nameFacade.bindToModel(customer, "lastName");
+		nameFacade.bindToModel(customer, "lastName"); //$NON-NLS-1$
 		nameFacade.updateFromModel();
 
-		firstnameFacade.bindToModel(customer, "firstName");
+		firstnameFacade.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstnameFacade.updateFromModel();
 
-		birthplaceFacade.bindToModel(customer.getBirth(), "birthPlace");
+		birthplaceFacade.bindToModel(customer.getBirth(), "birthPlace"); //$NON-NLS-1$
 		birthplaceFacade.updateFromModel();
 
 		IActionListener callback = new SaveCallback();
@@ -119,7 +118,7 @@ public class CustomerDetailsSubModuleController extends
 	private class SaveCallback implements IActionListener {
 
 		public void callback() {
-			System.out.println("Save is not implemented");
+			System.out.println("Save is not implemented"); //$NON-NLS-1$
 		}
 
 	}
@@ -127,7 +126,7 @@ public class CustomerDetailsSubModuleController extends
 	private class OffersCallback implements IActionListener {
 
 		public void callback() {
-			System.out.println("Offers is not implemented");
+			System.out.println("Offers is not implemented"); //$NON-NLS-1$
 		}
 
 	}

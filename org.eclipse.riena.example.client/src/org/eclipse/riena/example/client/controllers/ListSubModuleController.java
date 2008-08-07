@@ -33,14 +33,6 @@ import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
  */
 public class ListSubModuleController extends SubModuleController {
 
-	private ITableRidget listPersons;
-	private ITextFieldRidget textFirst;
-	private ITextFieldRidget textLast;
-	private IToggleButtonRidget buttonSort;
-	private IActionRidget buttonAdd;
-	private IActionRidget buttonRemove;
-	private IActionRidget buttonSave;
-
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
@@ -57,72 +49,14 @@ public class ListSubModuleController extends SubModuleController {
 		value = new PersonModificationBean();
 	}
 
-	public ITableRidget getListPersons() {
-		return listPersons;
-	}
-
-	public void setListPersons(ITableRidget listPersons) {
-		this.listPersons = listPersons;
-	}
-
-	public ITextFieldRidget getTextFirst() {
-		return textFirst;
-	}
-
-	public void setTextFirst(ITextFieldRidget textFirst) {
-		this.textFirst = textFirst;
-	}
-
-	public ITextFieldRidget getTextLast() {
-		return textLast;
-	}
-
-	public void setTextLast(ITextFieldRidget textLast) {
-		this.textLast = textLast;
-	}
-
-	public IToggleButtonRidget getButtonSort() {
-		return buttonSort;
-	}
-
-	public void setButtonSort(IToggleButtonRidget buttonSort) {
-		this.buttonSort = buttonSort;
-	}
-
-	public IActionRidget getButtonAdd() {
-		return buttonAdd;
-	}
-
-	public void setButtonAdd(IActionRidget buttonAdd) {
-		this.buttonAdd = buttonAdd;
-	}
-
-	public IActionRidget getButtonRemove() {
-		return buttonRemove;
-	}
-
-	public void setButtonRemove(IActionRidget buttonRemove) {
-		this.buttonRemove = buttonRemove;
-	}
-
-	public IActionRidget getButtonSave() {
-		return buttonSave;
-	}
-
-	public void setButtonSave(IActionRidget buttonSave) {
-		this.buttonSave = buttonSave;
-	}
-
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		initRidgets();
-	}
-
 	/**
 	 * Binds and updates the ridgets.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	private void initRidgets() {
+	public void configureRidgets() {
+
+		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new StringComparator());
 		listPersons.setSortedColumn(0);
@@ -131,12 +65,14 @@ public class ListSubModuleController extends SubModuleController {
 
 		listPersons.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);
 
+		final ITextFieldRidget textFirst = (ITextFieldRidget) getRidget("textFirst"); //$NON-NLS-1$
 		textFirst.bindToModel(value, "firstName"); //$NON-NLS-1$
 		textFirst.updateFromModel();
+		final ITextFieldRidget textLast = (ITextFieldRidget) getRidget("textLast"); //$NON-NLS-1$
 		textLast.bindToModel(value, "lastName"); //$NON-NLS-1$
 		textLast.updateFromModel();
 
-		listPersons.addPropertyChangeListener(ITableRidget.PROPERTY_SINGLE_SELECTION, new PropertyChangeListener() {
+		listPersons.addPropertyChangeListener(ITableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				value.setPerson(manager.getSelectedPerson());
 				textFirst.updateFromModel();
@@ -144,7 +80,8 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonSort.setText("Sort ascending");
+		final IToggleButtonRidget buttonSort = (IToggleButtonRidget) getRidget("buttonSort"); //$NON-NLS-1$
+		buttonSort.setText("Sort ascending"); //$NON-NLS-1$
 		buttonSort.setSelected(true);
 		listPersons.setSortedAscending(buttonSort.isSelected());
 		buttonSort.addListener(new IActionListener() {
@@ -154,12 +91,13 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonAdd.setText("&Add");
+		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
+		buttonAdd.setText("&Add"); //$NON-NLS-1$
 		buttonAdd.addListener(new IActionListener() {
 			private int count = 0;
 
 			public void callback() {
-				Person newPerson = new Person("Average", "Joe #" + ++count);
+				Person newPerson = new Person("Average", "Joe #" + ++count); //$NON-NLS-1$ //$NON-NLS-2$
 				manager.getPersons().add(newPerson);
 				listPersons.updateFromModel();
 				manager.setSelectedPerson(newPerson);
@@ -167,7 +105,8 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonRemove.setText("&Remove");
+		final IActionRidget buttonRemove = (IActionRidget) getRidget("buttonRemove"); //$NON-NLS-1$
+		buttonRemove.setText("&Remove"); //$NON-NLS-1$
 		buttonRemove.addListener(new IActionListener() {
 			public void callback() {
 				Person selPerson = manager.getSelectedPerson();
@@ -179,7 +118,8 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		buttonSave.setText("&Save");
+		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
+		buttonSave.setText("&Save"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
 				value.update();

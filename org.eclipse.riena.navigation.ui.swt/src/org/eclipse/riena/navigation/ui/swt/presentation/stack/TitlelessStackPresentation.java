@@ -19,12 +19,13 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
-import org.eclipse.riena.navigation.ui.swt.views.SWTViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -121,7 +122,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private Composite parent;
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
-	private SWTViewBindingDelegate binding;
+	private AbstractViewBindingDelegate binding;
 
 	public TitlelessStackPresentation(Composite parent, IStackPresentationSite stackSite) {
 		super(stackSite);
@@ -158,8 +159,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * 
 	 * @return delegate for binding
 	 */
-	protected SWTViewBindingDelegate createBinding() {
-		return new SWTViewBindingDelegate();
+	protected AbstractViewBindingDelegate createBinding() {
+		return new InjectSwtViewBindingDelegate();
 	}
 
 	/**

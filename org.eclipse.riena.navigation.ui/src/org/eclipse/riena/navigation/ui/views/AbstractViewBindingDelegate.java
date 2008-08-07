@@ -8,29 +8,28 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views;
+package org.eclipse.riena.navigation.ui.views;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * A delegate for the binding of view (UI controls) and controller (Ridgets).
  */
-public class SWTViewBindingDelegate {
+public abstract class AbstractViewBindingDelegate {
 
 	private List<Object> uiControls;
 
 	private IBindingManager bindingManager;
 
-	public SWTViewBindingDelegate() {
-		bindingManager = createBindingManager();
+	public AbstractViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+		bindingManager = createBindingManager(propertyStrategy, mapper);
 		uiControls = new ArrayList<Object>();
 	}
 
@@ -39,8 +38,8 @@ public class SWTViewBindingDelegate {
 	 * 
 	 * @return binding manager
 	 */
-	protected IBindingManager createBindingManager() {
-		return new DefaultBindingManager(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
+	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 
 	/**
@@ -49,7 +48,7 @@ public class SWTViewBindingDelegate {
 	 * @param uiControl
 	 *            - control to bind
 	 */
-	public void addUIControl(Widget uiControl) {
+	public void addUIControl(Object uiControl) {
 		uiControls.add(uiControl);
 	}
 
@@ -61,8 +60,7 @@ public class SWTViewBindingDelegate {
 	 * @param bindingId
 	 *            - ID for binding
 	 */
-	public void addUIControl(Widget uiControl, String bindingId) {
-		uiControl.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, bindingId);
+	public void addUIControl(Object uiControl, String bindingId) {
 		uiControls.add(uiControl);
 	}
 

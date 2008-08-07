@@ -86,12 +86,18 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	}
 
 	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		getNavigationNode().activate();
+	}
+
+	/**
 	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#afterBind()
 	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		getNavigationNode().activate();
 		updateLabel();
 		updateIcon();
 	}

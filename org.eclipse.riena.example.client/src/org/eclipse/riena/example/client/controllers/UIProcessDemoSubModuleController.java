@@ -22,9 +22,6 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 public class UIProcessDemoSubModuleController extends SubModuleController {
 
-	private IActionRidget actionRidget;
-	private IActionRidget actionRidgetJob;
-
 	private boolean registered;
 
 	public UIProcessDemoSubModuleController() {
@@ -35,31 +32,23 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 		super(navigationNode);
 	}
 
-	public void setActionRidget(IActionRidget actionRidget) {
-		this.actionRidget = actionRidget;
-	}
-
 	public IActionRidget getActionRidget() {
-		return actionRidget;
+		return (IActionRidget) getRidget("actionRidget"); //$NON-NLS-1$
 	}
 
 	public IActionRidget getActionRidgetJob() {
-		return actionRidgetJob;
+		return (IActionRidget) getRidget("actionRidgetJob"); //$NON-NLS-1$
 	}
 
-	public void setActionRidgetJob(IActionRidget actionRidgetJob) {
-		this.actionRidgetJob = actionRidgetJob;
-	}
-
-	@Override
-	public void afterBind() {
-		super.afterBind();
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
 		if (getActionRidget() != null && !registered) {
 			initUIProcessAction();
 			initJobAction();
 			registered = true;
 		}
-
 	}
 
 	private void initJobAction() {
@@ -112,6 +101,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 
 	void runJob() {
 		Job job = new Job("eclipse job") { //$NON-NLS-1$
+			@Override
 			public IStatus run(IProgressMonitor monitor) {
 				try {
 					monitor.beginTask("eclipse job", 10); //$NON-NLS-1$

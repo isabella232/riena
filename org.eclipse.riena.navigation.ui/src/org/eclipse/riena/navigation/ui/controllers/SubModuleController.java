@@ -133,4 +133,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		return (ModuleController) getNavigationNode().getParentOfType(IModuleNode.class).getPresentation();
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+	}
+
 }

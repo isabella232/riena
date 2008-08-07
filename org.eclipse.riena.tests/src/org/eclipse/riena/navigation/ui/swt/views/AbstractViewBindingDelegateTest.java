@@ -8,32 +8,31 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views.experimental;
+package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.navigation.ui.swt.views.SWTViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 
 /**
- * Tests of the class {@link SWTViewBindingDelegate}.
+ * Tests of the class {@link AbstractViewBindingDelegate}.
  */
-public class SWTViewBindingDelegateTest extends TestCase {
+public class AbstractViewBindingDelegateTest extends TestCase {
 
-	private SWTViewBindingDelegate binding;
+	private AbstractViewBindingDelegate binding;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		binding = new SWTViewBindingDelegate();
+		binding = new MyViewBindingDelegate(null, null);
 	}
 
 	/**
@@ -58,20 +57,15 @@ public class SWTViewBindingDelegateTest extends TestCase {
 
 	}
 
-	/**
-	 * Test of the method {@code addUIControl(Widget, String)}.
-	 */
-	public void testAddUIControl() {
+	private static class MyViewBindingDelegate extends AbstractViewBindingDelegate {
 
-		Shell shell = new Shell();
-
-		binding.addUIControl(shell, "shellID");
-
-		List<Object> uiControls = ReflectionUtils.getHidden(binding, "uiControls");
-		shell = (Shell) uiControls.get(0);
-		assertEquals("shellID", shell.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
-
-		SwtUtilities.disposeWidget(shell);
+		/**
+		 * @param propertyStrategy
+		 * @param mapper
+		 */
+		public MyViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+			super(propertyStrategy, mapper);
+		}
 
 	}
 

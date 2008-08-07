@@ -77,14 +77,18 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		setCloseable(getNavigationNode().isCloseable());
+	}
+
+	/**
 	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#afterBind()
 	 */
 	@Override
 	public void afterBind() {
-
 		super.afterBind();
-
-		setCloseable(getNavigationNode().isCloseable());
 		updateLabel();
 		updateIcon();
 	}

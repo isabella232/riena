@@ -21,8 +21,10 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
@@ -33,7 +35,7 @@ import org.eclipse.ui.part.ViewPart;
 public abstract class SubModuleView<C extends SubModuleController> extends ViewPart {
 
 	private Map<ISubModuleNode, C> node2Controler;
-	private SWTViewBindingDelegate binding;
+	private AbstractViewBindingDelegate binding;
 	private C currentController;
 
 	public SubModuleView() {
@@ -46,8 +48,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * 
 	 * @return delegate for binding
 	 */
-	protected SWTViewBindingDelegate createBinding() {
-		return new SWTViewBindingDelegate();
+	protected AbstractViewBindingDelegate createBinding() {
+		return new DefaultSwtViewBindingDelegate();
 	}
 
 	/**

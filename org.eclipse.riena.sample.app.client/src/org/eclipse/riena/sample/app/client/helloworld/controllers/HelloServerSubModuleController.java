@@ -14,14 +14,10 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
 public class HelloServerSubModuleController extends SubModuleController {
 
-	private IHelloWorldService service;
-
 	private IActionRidget actionFacade;
-
 	private ITextFieldRidget textFacade;
-
 	private IActionListener callback;
-
+	private IHelloWorldService service;
 	private MessageBean messageBean;
 
 	public HelloServerSubModuleController(ISubModuleNode navigationNode) {
@@ -44,22 +40,6 @@ public class HelloServerSubModuleController extends SubModuleController {
 		}
 	}
 
-	public void setTextFacade(ITextFieldRidget textFacade) {
-		this.textFacade = textFacade;
-	}
-
-	public ITextFieldRidget getTextFacade() {
-		return textFacade;
-	}
-
-	public void setActionFacade(IActionRidget actionFacade) {
-		this.actionFacade = actionFacade;
-	}
-
-	public IActionRidget getActionFacade() {
-		return actionFacade;
-	}
-
 	@Override
 	public void afterBind() {
 		super.afterBind();
@@ -68,10 +48,19 @@ public class HelloServerSubModuleController extends SubModuleController {
 
 	private void intializeControlBindings() {
 		messageBean = new MessageBean();
-		textFacade.bindToModel(messageBean, "message");
+		textFacade.bindToModel(messageBean, "message"); //$NON-NLS-1$
 		textFacade.updateFromModel();
 		callback = new ActionCallback();
 		actionFacade.addListener(callback);
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		actionFacade = (IActionRidget) getRidget("actionFacade"); //$NON-NLS-1$
+		textFacade = (ITextFieldRidget) getRidget("textFacade"); //$NON-NLS-1$
+		callback = (IActionListener) getRidget("callback"); //$NON-NLS-1$
 	}
 
 	private final static class MessageBean {
@@ -95,7 +84,7 @@ public class HelloServerSubModuleController extends SubModuleController {
 		public void setMessage(String message) {
 			String old = this.message;
 			this.message = message;
-			pcSupport.firePropertyChange("message", old, message);
+			pcSupport.firePropertyChange("message", old, message); //$NON-NLS-1$
 		}
 
 		public String getMessage() {

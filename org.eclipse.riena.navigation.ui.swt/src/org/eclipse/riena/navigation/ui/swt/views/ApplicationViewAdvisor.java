@@ -19,10 +19,12 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
+import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -78,7 +80,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private ApplicationController controller;
-	private SWTViewBindingDelegate binding;
+	private AbstractViewBindingDelegate binding;
 
 	private Cursor handCursor;
 	private Cursor grabCursor;
@@ -152,8 +154,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * 
 	 * @return delegate for binding
 	 */
-	protected SWTViewBindingDelegate createBinding() {
-		return new SWTViewBindingDelegate();
+	protected AbstractViewBindingDelegate createBinding() {
+		return new InjectSwtViewBindingDelegate();
 	}
 
 	/**

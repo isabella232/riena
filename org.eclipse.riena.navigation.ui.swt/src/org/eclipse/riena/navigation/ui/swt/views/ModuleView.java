@@ -20,8 +20,10 @@ import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
+import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -43,7 +45,7 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class ModuleView implements INavigationNodeView<SWTModuleController, ModuleNode> {
 
-	private SWTViewBindingDelegate binding;
+	private AbstractViewBindingDelegate binding;
 	private Composite parent;
 	private Composite body;
 	private Tree subModuleTree;
@@ -67,8 +69,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * 
 	 * @return delegate for binding
 	 */
-	protected SWTViewBindingDelegate createBinding() {
-		return new SWTViewBindingDelegate();
+	protected AbstractViewBindingDelegate createBinding() {
+		return new InjectSwtViewBindingDelegate();
 	}
 
 	/**

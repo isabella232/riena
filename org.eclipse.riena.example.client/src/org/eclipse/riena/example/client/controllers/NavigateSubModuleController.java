@@ -12,9 +12,11 @@ import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.uibinding.IInjectAllRidgetsAtOnce;
 
-public class NavigateSubModuleController extends SubModuleController implements IInjectAllRidgetsAtOnce {
+public class NavigateSubModuleController extends SubModuleController /*
+																	 * implements
+																	 * IInjectAllRidgets
+																	 */{
 
 	public NavigateSubModuleController() {
 		this(null);
@@ -24,6 +26,18 @@ public class NavigateSubModuleController extends SubModuleController implements 
 		super(navigationNode);
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
+	@Override
+	public void afterBind() {
+		super.afterBind();
+		configureRidgets();
+	}
+
+	/*
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
 	public void configureRidgets() {
 
 		IActionRidget comboAndList = (IActionRidget) getRidget("comboAndList"); //$NON-NLS-1$

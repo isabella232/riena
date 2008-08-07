@@ -158,4 +158,11 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		setMessage(message);
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		// nothing to do
+	}
+
 }

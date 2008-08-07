@@ -36,31 +36,10 @@ import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
  */
 public class MarkerSubModuleController extends SubModuleController {
 
-	private IToggleButtonRidget checkMandatory;
-	private IToggleButtonRidget checkError;
-	private IToggleButtonRidget checkDisabled;
-	private IToggleButtonRidget checkOutput;
-	private IToggleButtonRidget checkHidden;
-
-	private ITextFieldRidget textName;
-	private ITextFieldRidget textPrice;
-	private IComboBoxRidget comboAge;
-	private IToggleButtonRidget radioRed;
-	private IToggleButtonRidget radioWhite;
-	private IToggleButtonRidget radioRose;
-	private ITextFieldRidget textDescr;
-	private IToggleButtonRidget checkDry;
-	private IToggleButtonRidget checkSweet;
-	private IToggleButtonRidget checkSour;
-	private IToggleButtonRidget checkSpicy;
-	private ITableRidget listPersons;
-	private IToggleButtonRidget buttonToggle;
-	private IActionRidget buttonPush;
-
-	private IMarkableRidget markables[];
-
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
+	private IComboBoxRidget comboAge;
+	private ITableRidget listPersons;
 
 	public MarkerSubModuleController() {
 		this(null);
@@ -72,202 +51,81 @@ public class MarkerSubModuleController extends SubModuleController {
 		manager.setSelectedPerson(manager.getPersons().iterator().next());
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
+	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		markables = new IMarkableRidget[] { textName, textPrice, comboAge, radioRed, radioWhite, radioRose, textDescr,
-				checkDry, checkSweet, checkSour, checkSpicy, listPersons, buttonToggle, buttonPush };
-		initRidgets();
+		bindModels();
 	}
 
-	public IActionRidget getButtonPush() {
-		return buttonPush;
-	}
+	private void bindModels() {
 
-	public IToggleButtonRidget getButtonToggle() {
-		return buttonToggle;
-	}
-
-	public IToggleButtonRidget getCheckDisabled() {
-		return checkDisabled;
-	}
-
-	public IToggleButtonRidget getCheckDry() {
-		return checkDry;
-	}
-
-	public IToggleButtonRidget getCheckError() {
-		return checkError;
-	}
-
-	public IToggleButtonRidget getCheckHidden() {
-		return checkHidden;
-	}
-
-	public IToggleButtonRidget getCheckMandatory() {
-		return checkMandatory;
-	}
-
-	public IToggleButtonRidget getCheckOutput() {
-		return checkOutput;
-	}
-
-	public IToggleButtonRidget getCheckSour() {
-		return checkSour;
-	}
-
-	public IToggleButtonRidget getCheckSpicy() {
-		return checkSpicy;
-	}
-
-	public IToggleButtonRidget getCheckSweet() {
-		return checkSweet;
-	}
-
-	public IComboBoxRidget getComboAge() {
-		return comboAge;
-	}
-
-	public ITableRidget getListPersons() {
-		return listPersons;
-	}
-
-	public IToggleButtonRidget getRadioRed() {
-		return radioRed;
-	}
-
-	public IToggleButtonRidget getRadioRose() {
-		return radioRose;
-	}
-
-	public IToggleButtonRidget getRadioWhite() {
-		return radioWhite;
-	}
-
-	public ITextFieldRidget getTextDescr() {
-		return textDescr;
-	}
-
-	public ITextFieldRidget getTextName() {
-		return textName;
-	}
-
-	public ITextFieldRidget getTextPrice() {
-		return textPrice;
-	}
-
-	public void setButtonPush(IActionRidget buttonPush) {
-		this.buttonPush = buttonPush;
-	}
-
-	public void setButtonToggle(IToggleButtonRidget buttonToggle) {
-		this.buttonToggle = buttonToggle;
-	}
-
-	public void setCheckDisabled(IToggleButtonRidget checkDisabled) {
-		this.checkDisabled = checkDisabled;
-	}
-
-	public void setCheckDry(IToggleButtonRidget checkDry) {
-		this.checkDry = checkDry;
-	}
-
-	public void setCheckError(IToggleButtonRidget checkError) {
-		this.checkError = checkError;
-	}
-
-	public void setCheckHidden(IToggleButtonRidget checkHidden) {
-		this.checkHidden = checkHidden;
-	}
-
-	public void setCheckMandatory(IToggleButtonRidget checkMandatory) {
-		this.checkMandatory = checkMandatory;
-	}
-
-	public void setCheckOutput(IToggleButtonRidget checkOutput) {
-		this.checkOutput = checkOutput;
-	}
-
-	public void setCheckSour(IToggleButtonRidget checkSour) {
-		this.checkSour = checkSour;
-	}
-
-	public void setCheckSpicy(IToggleButtonRidget checkSpicy) {
-		this.checkSpicy = checkSpicy;
-	}
-
-	public void setCheckSweet(IToggleButtonRidget checkSweet) {
-		this.checkSweet = checkSweet;
-	}
-
-	public void setComboAge(IComboBoxRidget comboAge) {
-		this.comboAge = comboAge;
-	}
-
-	public void setListPersons(ITableRidget listPersons) {
-		this.listPersons = listPersons;
-	}
-
-	public void setRadioRed(IToggleButtonRidget radioRed) {
-		this.radioRed = radioRed;
-	}
-
-	public void setRadioRose(IToggleButtonRidget radioRose) {
-		this.radioRose = radioRose;
-	}
-
-	public void setRadioWhite(IToggleButtonRidget radioWhite) {
-		this.radioWhite = radioWhite;
-	}
-
-	public void setTextDescr(ITextFieldRidget textDescr) {
-		this.textDescr = textDescr;
-	}
-
-	public void setTextName(ITextFieldRidget textName) {
-		this.textName = textName;
-	}
-
-	public void setTextPrice(ITextFieldRidget textPrice) {
-		this.textPrice = textPrice;
-	}
-
-	/**
-	 * Binds and updates the ridgets.
-	 */
-	private void initRidgets() {
-		textName.setText("Chateau Schaedelbrummer");
-
-		textPrice.setText("-29,99");
-		// TODO [ev] could use a validation rule here to add / remove the marker
-		textPrice.addMarker(new NegativeMarker());
-
-		List<String> ages = Arrays.asList(new String[] { "young", "moderate", "aged", "old" });
+		List<String> ages = Arrays.asList(new String[] { "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 		comboAge.updateFromModel();
 		comboAge.setSelection(0);
-
-		radioRed.setText("red");
-		radioWhite.setText("white");
-		radioRose.setText("rose");
-
-		textDescr.setText("Body:\n\tcomplex, spicy, berries\nAftertaste:\n\tchocolatey");
-
-		checkDry.setText("dry");
-		checkDry.setSelected(true);
-		checkSweet.setText("sweet");
-		checkSour.setText("sour");
-		checkSpicy.setText("spicy");
 
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		listPersons.updateFromModel();
 
-		buttonToggle.setText("Toggle Me");
-		buttonToggle.setSelected(true);
-		buttonPush.setText("Push Me");
+	}
 
-		checkMandatory.setText("&mandatory");
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+
+		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
+		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
+		final IToggleButtonRidget checkDisabled = (IToggleButtonRidget) getRidget("checkDisabled"); //$NON-NLS-1$
+		final IToggleButtonRidget checkOutput = (IToggleButtonRidget) getRidget("checkOutput"); //$NON-NLS-1$
+		final IToggleButtonRidget checkHidden = (IToggleButtonRidget) getRidget("checkHidden"); //$NON-NLS-1$
+
+		final ITextFieldRidget textName = (ITextFieldRidget) getRidget("textName"); //$NON-NLS-1$
+		final ITextFieldRidget textPrice = (ITextFieldRidget) getRidget("textPrice"); //$NON-NLS-1$
+		comboAge = (IComboBoxRidget) getRidget("comboAge"); //$NON-NLS-1$
+		final IToggleButtonRidget radioRed = (IToggleButtonRidget) getRidget("radioRed"); //$NON-NLS-1$
+		final IToggleButtonRidget radioWhite = (IToggleButtonRidget) getRidget("radioWhite"); //$NON-NLS-1$
+		final IToggleButtonRidget radioRose = (IToggleButtonRidget) getRidget("radioRose"); //$NON-NLS-1$
+		final ITextFieldRidget textDescr = (ITextFieldRidget) getRidget("textDescr"); //$NON-NLS-1$
+		final IToggleButtonRidget checkDry = (IToggleButtonRidget) getRidget("checkDry"); //$NON-NLS-1$
+		final IToggleButtonRidget checkSweet = (IToggleButtonRidget) getRidget("checkSweet"); //$NON-NLS-1$
+		final IToggleButtonRidget checkSour = (IToggleButtonRidget) getRidget("checkSour"); //$NON-NLS-1$
+		final IToggleButtonRidget checkSpicy = (IToggleButtonRidget) getRidget("checkSpicy"); //$NON-NLS-1$
+		listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
+		final IActionRidget buttonPush = (IActionRidget) getRidget("buttonPush"); //$NON-NLS-1$
+
+		final IMarkableRidget markables[] = new IMarkableRidget[] { textName, textPrice, comboAge, radioRed,
+				radioWhite, radioRose, textDescr, checkDry, checkSweet, checkSour, checkSpicy, listPersons,
+				buttonToggle, buttonPush };
+
+		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
+
+		textPrice.setText("-29,99"); //$NON-NLS-1$
+		// TODO [ev] could use a validation rule here to add / remove the marker
+		textPrice.addMarker(new NegativeMarker());
+
+		radioRed.setText("red"); //$NON-NLS-1$
+		radioWhite.setText("white"); //$NON-NLS-1$
+		radioRose.setText("rose"); //$NON-NLS-1$
+
+		textDescr.setText("Body:\n\tcomplex, spicy, berries\nAftertaste:\n\tchocolatey"); //$NON-NLS-1$
+
+		checkDry.setText("dry"); //$NON-NLS-1$
+		checkDry.setSelected(true);
+		checkSweet.setText("sweet"); //$NON-NLS-1$
+		checkSour.setText("sour"); //$NON-NLS-1$
+		checkSpicy.setText("spicy"); //$NON-NLS-1$
+
+		buttonToggle.setText("Toggle Me"); //$NON-NLS-1$
+		buttonToggle.setSelected(true);
+		buttonPush.setText("Push Me"); //$NON-NLS-1$
+
+		checkMandatory.setText("&mandatory"); //$NON-NLS-1$
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {
 				boolean isMandatory = checkMandatory.isSelected();
@@ -277,7 +135,7 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkError.setText("&error");
+		checkError.setText("&error"); //$NON-NLS-1$
 		checkError.addListener(new IActionListener() {
 			public void callback() {
 				boolean isError = checkError.isSelected();
@@ -287,7 +145,7 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkDisabled.setText("&disabled");
+		checkDisabled.setText("&disabled"); //$NON-NLS-1$
 		checkDisabled.addListener(new IActionListener() {
 			public void callback() {
 				boolean isEnabled = !checkDisabled.isSelected();
@@ -297,7 +155,7 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkOutput.setText("&output");
+		checkOutput.setText("&output"); //$NON-NLS-1$
 		checkOutput.addListener(new IActionListener() {
 			public void callback() {
 				boolean isOutput = checkOutput.isSelected();
@@ -307,7 +165,7 @@ public class MarkerSubModuleController extends SubModuleController {
 			}
 		});
 
-		checkHidden.setText("&hidden");
+		checkHidden.setText("&hidden"); //$NON-NLS-1$
 		checkHidden.addListener(new IActionListener() {
 			public void callback() {
 				boolean isVisible = !checkHidden.isSelected();

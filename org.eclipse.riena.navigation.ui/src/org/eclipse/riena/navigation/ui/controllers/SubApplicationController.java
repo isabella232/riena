@@ -96,11 +96,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#afterBind()
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
+	public void configureRidgets() {
 		if (getNavigationTree() != null) {
 			getNavigationTree().showRoot(getNavigationNode());
 		}

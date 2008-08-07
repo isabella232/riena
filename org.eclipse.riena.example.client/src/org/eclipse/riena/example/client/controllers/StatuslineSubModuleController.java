@@ -56,42 +56,6 @@ public class StatuslineSubModuleController extends SubModuleController {
 
 	}
 
-	private ITextFieldRidget messageText;
-
-	/**
-	 * @return the numberText
-	 */
-	public ITextFieldRidget getNumberText() {
-		return numberText;
-	}
-
-	/**
-	 * @param numberText
-	 *            the numberText to set
-	 */
-	public void setNumberText(ITextFieldRidget numberText) {
-		this.numberText = numberText;
-	}
-
-	/**
-	 * @return the showNumber
-	 */
-	public IActionRidget getShowNumber() {
-		return showNumber;
-	}
-
-	/**
-	 * @param showNumber
-	 *            the showNumber to set
-	 */
-	public void setShowNumber(IActionRidget showNumber) {
-		this.showNumber = showNumber;
-	}
-
-	private IComboBoxRidget severity;
-	private IActionRidget showMessage;
-	private ITextFieldRidget numberText;
-	private IActionRidget showNumber;
 	private StatuslineModel model;
 
 	public StatuslineSubModuleController() {
@@ -112,46 +76,36 @@ public class StatuslineSubModuleController extends SubModuleController {
 	/**
 	 * @return the messageText
 	 */
-	public ITextFieldRidget getMessageText() {
-		return messageText;
-	}
-
-	/**
-	 * @param messageText
-	 *            the messageText to set
-	 */
-	public void setMessageText(ITextFieldRidget messageText) {
-		this.messageText = messageText;
+	private ITextFieldRidget getMessageText() {
+		return (ITextFieldRidget) getRidget("messageText"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the severity
 	 */
-	public IComboBoxRidget getSeverity() {
-		return severity;
-	}
-
-	/**
-	 * @param severity
-	 *            the severity to set
-	 */
-	public void setSeverity(IComboBoxRidget severity) {
-		this.severity = severity;
+	private IComboBoxRidget getSeverity() {
+		return (IComboBoxRidget) getRidget("severity"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the showMessage
 	 */
-	public IActionRidget getShowMessage() {
-		return showMessage;
+	private IActionRidget getShowMessage() {
+		return (IActionRidget) getRidget("showMessage"); //$NON-NLS-1$
 	}
 
 	/**
-	 * @param showMessage
-	 *            the showMessage to set
+	 * @return the numberText
 	 */
-	public void setShowMessage(IActionRidget showMessage) {
-		this.showMessage = showMessage;
+	private ITextFieldRidget getNumberText() {
+		return (ITextFieldRidget) getRidget("numberText"); //$NON-NLS-1$
+	}
+
+	/**
+	 * @return the showNumber
+	 */
+	private IActionRidget getShowNumber() {
+		return (IActionRidget) getRidget("showNumber"); //$NON-NLS-1$
 	}
 
 	private IStatuslineRidget getStatusLine() {
@@ -188,28 +142,30 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void afterBind() {
-
 		super.afterBind();
-		initRidgets();
-
+		bindModels();
 	}
 
-	/**
-	 * Initializes all ridgets of the sub-module.
-	 */
-	private void initRidgets() {
-
+	private void bindModels() {
 		getMessageText().bindToModel(getModel(), "messageText"); //$NON-NLS-1$
 		getMessageText().updateFromModel();
 
 		getSeverity().bindToModel(getModel(), "severities", Severity.class, null, getModel(), "severity"); //$NON-NLS-1$ //$NON-NLS-2$
 		getSeverity().updateFromModel();
 
-		getShowMessage().setText("Show"); //$NON-NLS-1$
-		getShowMessage().addListener(new MessageListener());
-
 		getNumberText().bindToModel(getModel(), "numberText"); //$NON-NLS-1$
 		getNumberText().updateFromModel();
+	}
+
+	/**
+	 * Initializes all ridgets of the sub-module.
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+
+		getShowMessage().setText("Show"); //$NON-NLS-1$
+		getShowMessage().addListener(new MessageListener());
 
 		getShowNumber().setText("Show"); //$NON-NLS-1$
 		getShowNumber().addListener(new NumberListener());

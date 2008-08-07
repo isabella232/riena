@@ -29,7 +29,6 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	private IActionRidget clearAction;
 	private IActionRidget openAction;
 
-	private ITextFieldRidget numberRidget;
 	private ITextFieldRidget firstNameRidget;
 	private ITextFieldRidget lastNameRidget;
 
@@ -55,62 +54,6 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 		}
 	}
 
-	public void setTableRidget(ITableRidget tableFacade) {
-		this.tableRidget = tableFacade;
-	}
-
-	public ITableRidget getTableRidget() {
-		return tableRidget;
-	}
-
-	public void setSearchAction(IActionRidget searchAction) {
-		this.searchAction = searchAction;
-	}
-
-	public IActionRidget getSearchAction() {
-		return searchAction;
-	}
-
-	public void setClearAction(IActionRidget clearAction) {
-		this.clearAction = clearAction;
-	}
-
-	public IActionRidget getClearAction() {
-		return clearAction;
-	}
-
-	public void setOpenAction(IActionRidget openAction) {
-		this.openAction = openAction;
-	}
-
-	public IActionRidget getOpenAction() {
-		return openAction;
-	}
-
-	public void setFirstNameRidget(ITextFieldRidget firstNameRidget) {
-		this.firstNameRidget = firstNameRidget;
-	}
-
-	public ITextFieldRidget getFirstNameRidget() {
-		return firstNameRidget;
-	}
-
-	public void setLastNameRidget(ITextFieldRidget lastNameRidget) {
-		this.lastNameRidget = lastNameRidget;
-	}
-
-	public ITextFieldRidget getLastNameRidget() {
-		return lastNameRidget;
-	}
-
-	public void setNumberRidget(ITextFieldRidget numberRidget) {
-		this.numberRidget = numberRidget;
-	}
-
-	public ITextFieldRidget getNumberRidget() {
-		return numberRidget;
-	}
-
 	private class SearchCallback implements IActionListener {
 
 		public void callback() {
@@ -124,19 +67,31 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 		tableRidget.updateFromModel();
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		tableRidget = (ITableRidget) getRidget("tableRidget"); //$NON-NLS-1$
+		searchAction = (IActionRidget) getRidget("searchAction"); //$NON-NLS-1$
+		clearAction = (IActionRidget) getRidget("clearAction"); //$NON-NLS-1$
+		openAction = (IActionRidget) getRidget("openAction"); //$NON-NLS-1$
+		firstNameRidget = (ITextFieldRidget) getRidget("firstNameRidget"); //$NON-NLS-1$
+		lastNameRidget = (ITextFieldRidget) getRidget("lastNameRidget"); //$NON-NLS-1$
+	}
+
 	@Override
 	public void afterBind() {
 		super.afterBind();
 		String[] columnProperties = new String[] { Customer.PROPERTY_CUSTOMER_NUMBER, Customer.PROPERTY_LAST_NAME,
 				Customer.PROPERTY_FIRST_NAME, Customer.PROPERTY_PHONE_BUSINESS };
-		tableRidget.bindToModel(searchResult, "list", Customer.class, columnProperties, new String[] { "Number",
-				"Lastname", "Firstname", "phone" });
+		tableRidget.bindToModel(searchResult, "list", Customer.class, columnProperties, new String[] { "Number", //$NON-NLS-1$ //$NON-NLS-2$
+				"Lastname", "Firstname", "phone" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		tableSelection = new WritableValue();
 		tableRidget.bindSingleSelectionToModel(tableSelection);
 		searchAction.addListener(new SearchCallback());
-		firstNameRidget.bindToModel(sample, "firstName");
-		lastNameRidget.bindToModel(sample, "lastName");
+		firstNameRidget.bindToModel(sample, "firstName"); //$NON-NLS-1$
+		lastNameRidget.bindToModel(sample, "lastName"); //$NON-NLS-1$
 		clearAction.addListener(new ClearCallback());
 		openAction.addListener(new OpenCallback());
 	}
@@ -148,7 +103,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 				return;
 			}
 			if (!(selectedValue instanceof Customer)) {
-				throw new RuntimeException("invalid datatype for selected value");
+				throw new RuntimeException("invalid datatype for selected value"); //$NON-NLS-1$
 			}
 			Customer selected = (Customer) selectedValue;
 			ISubModuleNode node = getNavigationNode();
@@ -165,8 +120,8 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 
 		public void callback() {
 			sample.setCustomerNumber(null);
-			sample.setFirstName("");
-			sample.setLastName("");
+			sample.setFirstName(""); //$NON-NLS-1$
+			sample.setLastName(""); //$NON-NLS-1$
 			firstNameRidget.updateFromModel();
 			lastNameRidget.updateFromModel();
 		}

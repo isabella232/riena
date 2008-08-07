@@ -30,11 +30,9 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#afterBind()
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
+	public void configureRidgets() {
 		ISubModuleNode newNode = new SubModuleNode("dynamically added node"); //$NON-NLS-1$
 		// TODO do it like swtExampleApplication ..
 		String iconPath = Activator.PLUGIN_ID.concat(":").concat(IExampleIcons.ICON_FILE); //$NON-NLS-1$
@@ -42,4 +40,5 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 		//		SwtPresentationManagerAccessor.getManager().present(newNode, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
 		// getNavigationNode().addChild(newNode);
 	}
+
 }
