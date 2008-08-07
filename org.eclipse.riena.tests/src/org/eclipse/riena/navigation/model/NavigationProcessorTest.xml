@@ -2,21 +2,19 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.riena.navigation.WorkAreaPresentation">
-      <workAreaPresentation
-            presentationId="testSharedViewId"
-            view="org.eclipse.riena.navigation.ui.swt.views.TestView"
-            viewController="org.eclipse.riena.navigation.ui.controllers.SubModuleController"
-           	viewShared="true">
-      </workAreaPresentation>
-   </extension>
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.navigation.model.test.secondSubApplication"
+            nodeBuilder="org.eclipse.riena.navigation.model.TestSecondSubApplicationNodeBuilder"
+            parentPresentationId="org.eclipse.riena.navigation.model.test.application">
+      </navigationNodePresentation>
+   </extension> 
    <extension
-         point="org.eclipse.riena.navigation.WorkAreaPresentation">
-      <workAreaPresentation
-            presentationId="testNotSharedViewId"
-            view="org.eclipse.riena.navigation.ui.swt.views.TestView"
-            viewController="org.eclipse.riena.navigation.ui.controllers.SubModuleController"
-           	viewShared="false">
-      </workAreaPresentation>
-   </extension>
+         point="org.eclipse.riena.navigation.NavigationNodePresentation">
+      <navigationNodePresentation
+            presentationId="org.eclipse.riena.navigation.model.test.secondModuleGroup"
+            nodeBuilder="org.eclipse.riena.navigation.model.TestSecondModuleGroupNodeBuilder"
+            parentPresentationId="org.eclipse.riena.navigation.model.test.secondSubApplication">
+      </navigationNodePresentation>
+   </extension> 
 </plugin>
