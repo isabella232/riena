@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation;
+package org.eclipse.riena.navigation.ui;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -21,8 +21,7 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTest(org.eclipse.riena.navigation.model.AllTests.suite());
-		suite.addTestSuite(ApplicationModelManagerTest.class);
+		suite.addTest(org.eclipse.riena.navigation.ui.controllers.AllTests.suite());
 		return suite;
 	}
 }
