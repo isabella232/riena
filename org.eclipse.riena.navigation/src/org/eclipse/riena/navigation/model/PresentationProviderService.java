@@ -29,9 +29,6 @@ import org.osgi.service.log.LogService;
  * This class provides service methods to get information provided by
  * WorkAreaPresentationDefinitions and NavigationNodePresentationDefitinios
  * identified by a given presentationID.
- * 
- * 
- * 
  */
 public class PresentationProviderService implements IPresentationProviderService {
 
@@ -109,7 +106,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @return
 	 */
-	private IWorkAreaPresentationDefinition getPresentationDefinitionWA(String targetId) {
+	protected IWorkAreaPresentationDefinition getPresentationDefinitionWA(String targetId) {
 		if (targetWA == null || targetWA.getData().length == 0) {
 			return null;
 		} else {
@@ -127,7 +124,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @return
 	 */
-	private INavigationNodePresentationDefiniton getPresentationDefinitionNN(INavigationNodeId targetId) {
+	protected INavigationNodePresentationDefiniton getPresentationDefinitionNN(INavigationNodeId targetId) {
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
@@ -140,7 +137,6 @@ public class PresentationProviderService implements IPresentationProviderService
 			}
 		}
 		return null;
-
 	}
 
 	/**
@@ -175,43 +171,26 @@ public class PresentationProviderService implements IPresentationProviderService
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * This is the basic SWT implementation from Riena. It returns the matching
+	 * view id for the given navigationNodeId
 	 * 
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createView
-	 * (org.eclipse.riena.navigation.INavigationNodeId)
+	 *      (org.eclipse.riena.navigation.INavigationNodeId)
 	 */
-	public Object createView(INavigationNodeId targetId) {
-		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
-		Object view = null;
-
-		if (presentationDefinition != null) {
-			view = presentationDefinition.createView();
-		}
-
-		return view;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#getViewId(org.eclipse.riena.navigation.INavigationNodeId)
-	 */
-	public String getViewId(INavigationNodeId nodeId) {
+	public Object provideView(INavigationNodeId nodeId) {
 		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(nodeId.getTypeId());
-
 		if (presentationDefinition != null) {
 			return presentationDefinition.getViewId();
 		} else {
-			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId() + "'.");
+			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId() + "'."); //$NON-NLS-2$
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.IPresentationDefinitionService#
-	 * createViewController()
+	/**
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#provideController(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public IViewController createViewController(INavigationNode<?> node) {
+	public IViewController provideController(INavigationNode<?> node) {
 		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(node.getPresentationId()
 				.getTypeId());
 		IViewController viewController = null;
@@ -223,11 +202,8 @@ public class PresentationProviderService implements IPresentationProviderService
 		return viewController;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.IPresentationProviderService#isViewShared ()
+	/**
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#isViewShared(org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public boolean isViewShared(INavigationNodeId targetId) {
 		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
@@ -238,9 +214,7 @@ public class PresentationProviderService implements IPresentationProviderService
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#cleanUp()
 	 */
 	public void cleanUp() {

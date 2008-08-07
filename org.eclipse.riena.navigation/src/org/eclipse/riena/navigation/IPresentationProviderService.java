@@ -16,9 +16,6 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  * Implementation of this service interface provides service methods to get
  * information provided by WorkAreaPresentationDefinitions and
  * NavigationNodePresentationDefitinios identified by a given presentationID.
- * 
- * 
- * 
  */
 public interface IPresentationProviderService {
 
@@ -35,31 +32,27 @@ public interface IPresentationProviderService {
 			NavigationArgument argument);
 
 	/**
-	 * Return an instance of a view
+	 * Return an Object representing a instance of a view. In case of SWT/Riena
+	 * it is the String representation of the view (the view id).
 	 * 
+	 * @return the view id of the matching view
 	 */
-
-	Object createView(INavigationNodeId targetId);
-
-	String getViewId(INavigationNodeId targetId);
+	Object provideView(INavigationNodeId targetId);
 
 	/**
 	 * Returns the view controller for the work area presentation for the given
 	 * navigationNodeId
 	 */
-
-	IViewController createViewController(INavigationNode<?> node);
+	IViewController provideController(INavigationNode<?> node);
 
 	/**
 	 * Return true if the specified view should be a shared view, false
 	 * otherwise
 	 */
-
 	boolean isViewShared(INavigationNodeId targetId);
 
 	/**
 	 * Perform some housekeeping
 	 */
 	void cleanUp();
-
 }

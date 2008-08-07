@@ -142,7 +142,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	protected abstract void basicCreatePartControl(Composite parent);
 
 	protected C createController(ISubModuleNode pSubModuleNode) {
-		C controller = (C) getPresentationDefinitionService().createViewController(pSubModuleNode);
+		C controller = (C) getPresentationDefinitionService().provideController(pSubModuleNode);
 		controller.setNavigationNode(pSubModuleNode);
 		return controller;
 	}

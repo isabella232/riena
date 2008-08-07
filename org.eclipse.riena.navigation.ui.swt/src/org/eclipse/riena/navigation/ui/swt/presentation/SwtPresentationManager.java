@@ -49,15 +49,13 @@ public class SwtPresentationManager {
 	}
 
 	public SwtViewId getSwtViewId(INavigationNode<?> pNode) {
-
 		SwtViewId swtViewId = views.get(pNode);
-
 		if (swtViewId == null) {
 			INavigationNodeId presentationId = pNode.getPresentationId();
 			if (presentationId != null) {
-				String viewId = getPresentationDefinitionService().getViewId(presentationId);
+				String viewId = (String) getPresentationProviderService().provideView(presentationId);
 				String secondaryId = null;
-				if (getPresentationDefinitionService().isViewShared(presentationId)) {
+				if (getPresentationProviderService().isViewShared(presentationId)) {
 					secondaryId = "shared"; //$NON-NLS-1$
 				} else {
 					secondaryId = getNextSecondaryId(viewId);
@@ -178,14 +176,14 @@ public class SwtPresentationManager {
 			}
 		}
 		return null;
-
 	}
 
-	protected IPresentationProviderService getPresentationDefinitionService() {
-
+	/**
+	 * @return
+	 */
+	protected IPresentationProviderService getPresentationProviderService() {
 		// TODO: handling if no service found ???
 		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
-
 	}
 
 }
