@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+
 /**
  * Manages the Navigation. Is called by a navigation node to navigate to it The
  * navigation processor works with the INavigationNode What does the navigation
@@ -25,8 +26,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 
 	void create(INavigationNode<?> sourceNode, INavigationNodeId targetId);
 
-	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
-			INavigationArgumentListener argumentListener);
+	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Navigates to the caller (the source node) of the given targetNode.

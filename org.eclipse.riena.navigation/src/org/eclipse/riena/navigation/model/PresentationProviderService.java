@@ -14,7 +14,6 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
-import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
@@ -22,6 +21,7 @@ import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
 import org.eclipse.riena.navigation.IPresentationDefinition;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.IWorkAreaPresentationDefinition;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.osgi.service.log.LogService;
 
@@ -65,12 +65,12 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	/**
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object,
-	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
+	 *      org.eclipse.riena.navigation.INavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	@SuppressWarnings("unchecked")
-	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
-			INavigationArgumentListener argumentListener) {
+	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
+			NavigationArgument argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG))
@@ -80,8 +80,13 @@ public class PresentationProviderService implements IPresentationProviderService
 				INavigationNodeBuilder builder = presentationDefinition.createNodeBuilder();
 				prepareNavigationNodeBuilder(targetId, builder);
 				targetNode = builder.buildNode(targetId);
-				INavigationNode parentNode = provideNode(sourceNode, new NavigationNodeId(presentationDefinition
-						.getParentPresentationId()), null, null);
+				INavigationNode parentNode = null;
+				if (argument != null && argument.getParentNodeId() != null) {
+					parentNode = provideNode(sourceNode, new NavigationNodeId(argument.getParentNodeId()), null);
+				} else {
+					parentNode = provideNode(sourceNode, new NavigationNodeId(presentationDefinition
+							.getParentPresentationId()), null);
+				}
 				parentNode.addChild(targetNode);
 			} else {
 				// TODO throw some new type of failure

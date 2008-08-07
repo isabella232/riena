@@ -22,7 +22,6 @@ import java.util.Stack;
 import java.util.Vector;
 
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationArgumentListener;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
 import org.eclipse.riena.navigation.INavigationHistoryEvent;
@@ -32,6 +31,7 @@ import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
 
 /**
  * Default implementation for the navigation processor
@@ -175,7 +175,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public void create(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
-		provideNode(sourceNode, targetId, null, null);
+		provideNode(sourceNode, targetId, null);
 	}
 
 	/**
@@ -183,17 +183,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object,
 	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
 	 */
-	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
-			INavigationArgumentListener argumentListener) {
-		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument, argumentListener);
+	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument) {
+		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument);
+		if (targetNode == null)
+			return;
 		navigationMap.put(targetNode, sourceNode);
 		targetNode.activate();
 	}
 
-	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
-			INavigationArgumentListener argumentListener) {
-		INavigationNode<?> targetNode = getPresentationDefinitionService().provideNode(sourceNode, targetId, argument,
-				argumentListener);
+	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
+			NavigationArgument argument) {
+		INavigationNode<?> targetNode = getPresentationDefinitionService().provideNode(sourceNode, targetId, argument);
 		return targetNode;
 	}
 
@@ -805,7 +805,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					return;
 			}
 		}
-		navigate(targetNode, sourceNode.getPresentationId(), null, null);
+		navigate(targetNode, sourceNode.getPresentationId(), null);
 	}
 
 	/*

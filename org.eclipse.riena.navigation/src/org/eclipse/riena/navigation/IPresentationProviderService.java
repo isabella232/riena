@@ -28,11 +28,11 @@ public interface IPresentationProviderService {
 	 * 
 	 * @param sourceNode
 	 * @param targetId
+	 * @param argument
 	 * @return
 	 */
-
-	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId, Object argument,
-			INavigationArgumentListener argumentListener);
+	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
+			NavigationArgument argument);
 
 	/**
 	 * Return an instance of a view
