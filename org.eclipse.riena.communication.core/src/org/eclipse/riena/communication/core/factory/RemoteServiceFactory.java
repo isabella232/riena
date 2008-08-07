@@ -42,12 +42,12 @@ import org.osgi.service.log.LogService;
  * in one step call {@link #createAndRegisterProxy(..)}
  * <p>
  * This RemoteServiceFactory do not create IRemoteServiceReference itself. This
- * RemoteServiceFactory delegates the behavior to a protocol specifically
+ * RemoteServiceFactory delegates the behavior to a protocol
  * {@link IRemoteServiceFactory} OSGi Service. This RemoteServiceFactory finds a
  * corresponding IRemoteServiceFactory by the filter
  * "riena.remote.protocol=[aProtocol]" (e.g. aProtcol replaced with 'hessian').
  * <p>
- * This RemoteServiceFactory does nothing if no protocol specifically
+ * This RemoteServiceFactory does nothing if no protocol specific
  * IRemoteServiceFactory is available.
  * <p>
  * <b>NOTE</b><br>
@@ -101,18 +101,18 @@ public class RemoteServiceFactory {
 	}
 
 	/**
-	 * Creates and registers a protocol specifically remote service reference
-	 * and registers the reference into the {@link IRemoteServiceRegistry}. A
+	 * Creates and registers a protocol specific remote service reference and
+	 * registers the reference into the {@link IRemoteServiceRegistry}. A
 	 * registered reference becomes automatically registered as "remote" OSGi
 	 * Service within the local OSGi container. Answers the registration object
 	 * for the reference. If no protocol specific {@link IRemoteServiceFactory}
 	 * OSGI Service available answers <code>null</code>.
 	 * 
-	 * @param serviceClass
+	 * @param interfaceClass
 	 * @param url
 	 * @param protocol
+	 * @param configid
 	 * @return the registration object or <code>null</code>
-	 * 
 	 */
 	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
 			String configid) {
@@ -120,8 +120,8 @@ public class RemoteServiceFactory {
 	}
 
 	/**
-	 * Creates and registers a protocol specifically remote service reference
-	 * and registers the reference into the {@link IRemoteServiceRegistry}. A
+	 * Creates and registers a protocol specific remote service reference and
+	 * registers the reference into the {@link IRemoteServiceRegistry}. A
 	 * registered reference becomes automatically registered as "remote" OSGi
 	 * Service within the local OSGi container. Answers the registration object
 	 * for the reference. If no protocol specific {@link IRemoteServiceFactory}
@@ -130,9 +130,10 @@ public class RemoteServiceFactory {
 	 * The hostId identifies who is responsible for this remote service
 	 * registration
 	 * 
-	 * @param serviceClass
+	 * @param interfaceClass
 	 * @param url
 	 * @param protocol
+	 * @param configid
 	 * @param hostId
 	 * @return the registration object or <code>null</code>
 	 */
@@ -143,8 +144,8 @@ public class RemoteServiceFactory {
 	}
 
 	/**
-	 * Creates and registers a protocol specifically remote service reference
-	 * and registers the reference into the {@link IRemoteServiceRegistry}. A
+	 * Creates and registers a protocol specific remote service reference and
+	 * registers the reference into the {@link IRemoteServiceRegistry}. A
 	 * registered reference becomes automatically registered as "remote" OSGi
 	 * Service within the local OSGi container. Answers the registration object
 	 * for the reference. If no protocol specific {@link IRemoteServiceFactory}
@@ -200,9 +201,10 @@ public class RemoteServiceFactory {
 	 * {@link IRemoteServiceFactory} OSGI Service available answers
 	 * <code>null</code>.
 	 * 
-	 * @param serviceClass
+	 * @param interfaceClass
 	 * @param url
 	 * @param protocol
+	 * @param configid
 	 * @return the serviceInstance references or <code>null</code>
 	 */
 	public IRemoteServiceReference createProxy(Class<?> interfaceClass, String url, String protocol, String configid) {
@@ -222,8 +224,8 @@ public class RemoteServiceFactory {
 	}
 
 	/**
-	 * Creates a protocol specific IRemoteServcieRefernce for the given end
-	 * point description. Answers the IRemoteServiceReference.. If no end point
+	 * Creates a protocol specific IRemoteServcieReference for the given end
+	 * point description. Answers the IRemoteServiceReference. If no end point
 	 * specific {@link IRemoteServiceFactory} OSGI Service available answers
 	 * <code>null</code>.
 	 * 
