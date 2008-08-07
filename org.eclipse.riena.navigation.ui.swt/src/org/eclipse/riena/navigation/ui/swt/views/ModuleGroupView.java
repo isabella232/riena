@@ -130,14 +130,14 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	/**
 	 * Opens the given item.
 	 * 
-	 * @param item
+	 * @param moduleView
 	 *            - item to open
 	 */
-	protected void openModuleView(ModuleView item) {
+	protected void openModuleView(ModuleView moduleView) {
 
 		hidePrevious();
-		if (item != openView) {
-			openView = item;
+		if (moduleView != openView) {
+			openView = moduleView;
 		}
 
 		// TODO else if (true) {
@@ -145,7 +145,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		// }
 		redraw();
 
-		item.getNavigationNode().activate();
+		moduleView.getNavigationNode().activate();
 
 	}
 
@@ -200,6 +200,32 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		@Override
 		public void activated(IModuleGroupNode source) {
 			updateActivityToUi();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated
+		 * (org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void deactivated(IModuleGroupNode source) {
+			super.deactivated(source);
+			hidePrevious();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed
+		 * (org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void disposed(IModuleGroupNode source) {
+			super.disposed(source);
+			dispose();
 		}
 
 	}
@@ -452,7 +478,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 */
 	public void unregisterModuleView(IModuleNode moduleNode) {
 		for (ModuleView moduleView : registeredModuleViews) {
-			if (moduleView.getNavigationNode() == moduleNode) {
+			if (moduleView.getNavigationNode() == moduleNode || moduleView.getNavigationNode() == null) {
 				unregisterModuleView(moduleView);
 				break;
 			}

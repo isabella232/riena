@@ -384,6 +384,19 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			resize();
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed
+		 * (org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void disposed(IModuleNode source) {
+			super.disposed(source);
+			dispose();
+		}
+
 	}
 
 	/**

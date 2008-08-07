@@ -143,6 +143,13 @@ public class NavigationViewPart extends ViewPart {
 		public void childRemoved(IModuleGroupNode source, IModuleNode child) {
 			updateNavigationSize();
 		}
+
+		@Override
+		public void disposed(IModuleGroupNode source) {
+			super.disposed(source);
+			unregisterModuleGroupView(moduleGroupNodesToViews.get(source));
+
+		}
 	}
 
 	private void createModuleGroupView(IModuleGroupNode moduleGroupNode) {
@@ -166,19 +173,7 @@ public class NavigationViewPart extends ViewPart {
 	private final class ModuleGroupViewObserver implements IComponentUpdateListener {
 
 		public void update(INavigationNode<?> node) {
-			if (node instanceof IModuleGroupNode) {
-				closeInactive((IModuleGroupNode) node);
-			}
 			updateNavigationSize();
-		}
-	}
-
-	public void closeInactive(IModuleGroupNode selected) {
-		for (IModuleGroupNode mg : getSubApplicationNode().getChildren()) {
-			if (mg != selected) {
-				ModuleGroupView moduleGroupView = moduleGroupNodesToViews.get(mg);
-				moduleGroupView.closeCurrent();
-			}
 		}
 	}
 
