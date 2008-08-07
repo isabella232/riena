@@ -15,7 +15,6 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.NavigationNode;
@@ -49,7 +48,6 @@ public class SWTModuleController extends ModuleController {
 	private void addListeners() {
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new SubModuleListener());
-		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListenerTo(getNavigationNode());
 	}
 
@@ -60,24 +58,6 @@ public class SWTModuleController extends ModuleController {
 	private class SubModuleListener extends SubModuleNodeListener {
 
 		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
-		 *      org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
-			updateTree();
-		}
-
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
-		 *      org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
-			updateTree();
-		}
-
-		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
@@ -86,42 +66,6 @@ public class SWTModuleController extends ModuleController {
 			selectActiveNode();
 		}
 
-	}
-
-	/**
-	 * Updates the tree if a sub-module node is added or remove form parent
-	 * module node.
-	 */
-	private class ModuleListener extends ModuleNodeListener {
-
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
-		 *      org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
-			updateTree();
-		}
-
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
-		 *      org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void childRemoved(IModuleNode source, ISubModuleNode childRemoved) {
-			updateTree();
-		}
-
-	}
-
-	/**
-	 * Updates the tree.<br>
-	 * The SWT tree is updated with the model of the tree ridget.
-	 */
-	protected void updateTree() {
-		if (getTree() != null) {
-			getTree().updateFromModel();
-		}
 	}
 
 	/**

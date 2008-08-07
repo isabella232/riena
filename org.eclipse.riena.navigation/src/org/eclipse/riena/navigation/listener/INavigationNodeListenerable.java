@@ -15,14 +15,19 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.riena.navigation.INavigationNode;
 
 /**
- * Describes the ability of a navigation node to carry a listener The ability is
- * not a part of the INavigationNode, because there are nodes which are not
- * listen able
+ * Describes the ability of a navigation node to carry a listener. The ability
+ * is not a part of the INavigationNode, because there are nodes which cannot be
+ * listened to.
  */
 public interface INavigationNodeListenerable<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>> {
 
-	static final String PROPERTY_ADD_CHILDREN = "addChildren"; //$NON-NLS-1$
-	static final String PROPERTY_REMOVE_CHILDREN = "removeChildren"; //$NON-NLS-1$
+	/**
+	 * A change event with this id indicates a change in the list of children
+	 * (value is "children").
+	 * 
+	 * @see INavigationNode#getChildren()
+	 */
+	String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
 
 	void addListener(L pListener);
 

@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -162,8 +163,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.childAdded(this, pChild);
 		}
-		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_ADD_CHILDREN, null, pChild);
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -238,7 +237,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.childRemoved(this, pChild);
 		}
-		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_REMOVE_CHILDREN, null, pChild);
 	}
 
 	public void setNavigationProcessor(INavigationProcessor pProcessor) {
@@ -247,8 +245,11 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	public void addChild(C pChild) {
 		if (pChild != null && !hasChild(pChild) && !pChild.isDisposed()) {
+			List<C> oldList = new ArrayList<C>(children);
 			children.add(pChild);
 			addChildParent(pChild);
+
+			propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
 			notifyChildAdded(pChild);
 		}
 		// TODO do something if the node cannot be added
@@ -269,11 +270,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	@SuppressWarnings("unchecked")
 	public void removeChild(INavigationContext context, INavigationNode<?> child) {
 		if (child != null && hasChild(child) && !child.isActivated()) {
+			List<C> oldList = new ArrayList<C>(children);
 			children.remove(child);
+			child.setParent(null);
+
+			propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
 			// if this node has the child, than it can be casted to C,
 			// because it must be C
 			notifyChildRemoved((C) child);
-			child.setParent(null);
 		}
 		// TODO do something if the node cannot be removed
 	}
