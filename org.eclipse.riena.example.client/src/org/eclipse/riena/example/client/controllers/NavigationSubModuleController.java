@@ -61,11 +61,11 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private void initRidgets() {
 
-		getAddSubModuleToModuleBtn().setText("Add &Sub-Module to Module"); //$NON-NLS-1$
+		getAddSubModuleToModuleBtn().setText("Add Sub-Module to &Root"); //$NON-NLS-1$
 		getAddSubModuleToModuleBtn().addListener(new IActionListener() {
 			public void callback() {
 				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
-				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to Module"); //$NON-NLS-1$
+				ISubModuleNode newNode = createSubModuleNode("Child to " + parent.getLabel()); //$NON-NLS-1$
 				parent.addChild(newNode);
 				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationController subAppController = getSubApplicationController();
@@ -73,11 +73,12 @@ public class NavigationSubModuleController extends SubModuleController {
 			}
 		});
 
-		getAddSubModuleToSelfBtn().setText("Add S&ub-Module to Self"); //$NON-NLS-1$
+		getAddSubModuleToSelfBtn().setText("Add S&ub-Module this Node"); //$NON-NLS-1$
 		getAddSubModuleToSelfBtn().addListener(new IActionListener() {
 			public void callback() {
-				ISubModuleNode newNode = createSubModuleNode("Added child SubModule to SubModule"); //$NON-NLS-1$
-				getNavigationNode().addChild(newNode);
+				ISubModuleNode navigationNode = getNavigationNode();
+				ISubModuleNode newNode = createSubModuleNode("Child to " + navigationNode.getLabel()); //$NON-NLS-1$
+				navigationNode.addChild(newNode);
 				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationController subAppController = getSubApplicationController();
 				subAppController.getStatuslineRidget().setMessage(text);
