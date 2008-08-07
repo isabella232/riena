@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @see TableRidget
  */
-class TableRidgetLabelProvider extends ObservableMapLabelProvider {
+public class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 
 	private final IObservableMap[] attributeMap;
 
@@ -33,7 +33,7 @@ class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 	 * @param attributeMap
 	 *            a non-null {@link IObservableMap} instance
 	 */
-	TableRidgetLabelProvider(IObservableMap[] attributeMap) {
+	public TableRidgetLabelProvider(IObservableMap[] attributeMap) {
 		super(attributeMap);
 		this.attributeMap = new IObservableMap[attributeMap.length];
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);

@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * <li>leaf (i.e. node with no children)</li>
  *</ul>
  */
-final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
+public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
 
@@ -40,7 +40,7 @@ final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 	 * @param attributeMap
 	 *            a non-null {@link IObservableMap} instance
 	 */
-	TreeRidgetLabelProvider(final TreeViewer viewer, IObservableMap[] attributeMap) {
+	public TreeRidgetLabelProvider(final TreeViewer viewer, IObservableMap[] attributeMap) {
 		super(attributeMap);
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);
