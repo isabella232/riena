@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -94,8 +95,9 @@ public class Activator extends AbstractUIPlugin {
 	 * @return a non-null Color instance
 	 */
 	public static Color getSharedColor(String colorKey) {
-		if (getDefault() == null) {
-			return null; // for unit testing only
+		if (getDefault() == null || Workbench.getInstance() == null) {
+			// this is just for plain junit testing / headless testing
+			return null;
 		}
 		return getDefault().internalGetSharedColor(colorKey);
 	}
