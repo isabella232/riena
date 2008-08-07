@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleGroupToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
@@ -48,6 +49,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	private ModuleGroupNode moduleGroupNode;
 	private ModuleView openView;
 	private ModuleGroupListener moduleGroupListener;
+	private ModuleListener moduleListener;
 	private PaintDelegation paintDelegation;
 	private SelectionListener selectionListener;
 	private List<IComponentUpdateListener> updateListeners;
@@ -83,6 +85,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	protected void addListeners() {
 
 		moduleGroupListener = new ModuleGroupListener();
+		moduleListener = new ModuleListener();
 		getNavigationNode().addListener(moduleGroupListener);
 
 		paintDelegation = new PaintDelegation();
@@ -172,6 +175,20 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 			openView.hideBody();
 		}
 
+	}
+
+	private final class ModuleListener extends ModuleNodeListener {
+		@Override
+		public void activated(IModuleNode source) {
+			super.activated(source);
+			updateActivityToUi();
+		}
+
+		@Override
+		public void deactivated(IModuleNode source) {
+			super.deactivated(source);
+			updateActivityToUi();
+		}
 	}
 
 	/**
@@ -459,6 +476,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 *            - view to register
 	 */
 	public void registerModuleView(ModuleView moduleView) {
+		moduleView.getNavigationNode().addListener(moduleListener);
 		// we need that to calculate the bounds of the ModuleGroupView
 		registeredModuleViews.add(moduleView);
 		// observer moduleView for expand/collapse
@@ -492,6 +510,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 *            - view to remove
 	 */
 	public void unregisterModuleView(ModuleView moduleView) {
+		moduleView.getNavigationNode().removeListener(moduleListener);
 		registeredModuleViews.remove(moduleView);
 	}
 
