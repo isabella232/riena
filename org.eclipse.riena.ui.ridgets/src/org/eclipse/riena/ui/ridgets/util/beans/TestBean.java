@@ -18,7 +18,7 @@ public class TestBean {
 	/**
 	 * The name of the 'property' property of the bean.
 	 */
-	public static final String PROPERTY = "property";
+	public static final String PROPERTY = "property"; //$NON-NLS-1$
 
 	private Object property;
 
@@ -38,5 +38,4 @@ public class TestBean {
 	public void setProperty(Object property) {
 		this.property = property;
 	}
-
 }
