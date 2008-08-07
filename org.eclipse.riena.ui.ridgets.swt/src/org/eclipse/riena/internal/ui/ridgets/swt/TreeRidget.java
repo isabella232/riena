@@ -127,6 +127,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Object[] elements = viewer.getExpandedElements();
 			ExpansionCommand cmd = new ExpansionCommand(ExpansionState.RESTORE, elements);
 			expansionStack.add(cmd);
+			// IMPORTANT: this removes the change listeners from the input model
+			// https://bugs.eclipse.org/243374
+			viewer.setInput(null);
 		}
 		if (dbc != null) {
 			dbc.dispose();
