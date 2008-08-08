@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.model.PresentationProviderService;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -48,10 +45,9 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 
 		service = new PresentationProviderService();
-		Dictionary<String, Object> dict = new Hashtable<String, Object>();
-		dict.put(Constants.SERVICE_RANKING, Integer.valueOf(-100));
 
-		context.registerService(IPresentationProviderService.class.getName(), service, dict);
+		context.registerService(IPresentationProviderService.class.getName(), service, ServiceDescriptor
+				.newDefaultServiceProperties());
 	}
 
 	/*
