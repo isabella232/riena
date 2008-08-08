@@ -30,7 +30,7 @@ public class UnboundPropertyWritableList extends WritableList implements IUnboun
 			propertyDescriptor = BeanUtils.getPropertyDescriptor(listBean, listPropertyName);
 			bean = listBean;
 		} catch (IntrospectionException e) {
-			throw new UIBindingFailure("Could not read property '" + listPropertyName + "' of bean " + listBean + ".",
+			throw new UIBindingFailure("Could not read property '" + listPropertyName + "' of bean " + listBean + ".", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					e);
 		}
 		updateFromBean();
@@ -42,8 +42,8 @@ public class UnboundPropertyWritableList extends WritableList implements IUnboun
 			clear();
 			addAll((Collection) value);
 		} else {
-			throw new UIBindingFailure("The property '" + propertyDescriptor.getName()
-					+ "' is not a java.util.Collection.");
+			throw new UIBindingFailure("The property '" + propertyDescriptor.getName() //$NON-NLS-1$
+					+ "' is not a java.util.Collection."); //$NON-NLS-1$
 		}
 	}
 

@@ -80,12 +80,12 @@ public class SessionService implements ISessionService {
 	 */
 	public Session generateSession(Principal[] principals) {
 		// Assert.isNotNull( principal.getName(),"userid must not be null" );
-		assert store != null : "store instance is null";
+		assert store != null : "store instance is null"; //$NON-NLS-1$
 
 		Session session = sessionProvider.createSession(principals);
 
 		if (session == null) {
-			throw new SessionFailure("internal error, generating a session failed");
+			throw new SessionFailure("internal error, generating a session failed"); //$NON-NLS-1$
 		}
 		SessionEntry entry = new SessionEntry(session, principals);
 		store.write(entry);

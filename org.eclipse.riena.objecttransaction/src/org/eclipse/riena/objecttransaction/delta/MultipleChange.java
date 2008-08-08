@@ -72,20 +72,20 @@ public class MultipleChange extends AbstractBaseChange {
 	 */
 	public String toString() {
 		if (changeEntries.size() == 0) {
-			return "SetChange: <no changes>";
+			return "SetChange: <no changes>"; //$NON-NLS-1$
 		}
 		Object[] array = changeEntries.toArray();
-		StringBuilder sb = new StringBuilder("SetChange: refName:" + this.getRelationName());
+		StringBuilder sb = new StringBuilder("SetChange: refName:" + this.getRelationName()); //$NON-NLS-1$
 		if (array.length > 1) {
-			sb.append("\n");
+			sb.append("\n"); //$NON-NLS-1$
 		}
 		for (int i = 0; i < array.length; i++) {
 			if (array.length > 1) {
-				sb.append("---------------->");
+				sb.append("---------------->"); //$NON-NLS-1$
 			}
-			sb.append(" entry[" + i + "]:" + array[i]);
+			sb.append(" entry[" + i + "]:" + array[i]); //$NON-NLS-1$ //$NON-NLS-2$
 			if (array.length > 1 && (i + 1) < array.length) {
-				sb.append("\n");
+				sb.append("\n"); //$NON-NLS-1$
 			}
 		}
 		return sb.toString();

@@ -43,7 +43,7 @@ public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibl
 	 */
 	public IVisibleTreeNode getVisibleChildAt(int childIndex) {
 
-		Assert.isNotNull(children, "node has no children");
+		Assert.isNotNull(children, "node has no children"); //$NON-NLS-1$
 
 		return (IVisibleTreeNode) getVisibleChildren().elementAt(childIndex);
 	}
@@ -85,7 +85,7 @@ public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibl
 	 */
 	public int getVisibleIndex(IVisibleTreeNode node) {
 
-		Assert.isNotNull(node, "missing node argument");
+		Assert.isNotNull(node, "missing node argument"); //$NON-NLS-1$
 
 		return getVisibleChildren().indexOf(node);
 	}

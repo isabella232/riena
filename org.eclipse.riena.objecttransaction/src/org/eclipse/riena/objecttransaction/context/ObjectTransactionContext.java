@@ -70,7 +70,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 		if (isActivated()) {
 			ObjectTransactionManagerAccessor.fetchObjectTransactionManager().setCurrent(replaced.pop());
 		} else {
-			throw new ObjectTransactionContextFailure("Inconsistency while passivating object transaction context!");
+			throw new ObjectTransactionContextFailure("Inconsistency while passivating object transaction context!"); //$NON-NLS-1$
 		}
 
 	}
@@ -101,7 +101,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	}
 
 	public String toString() {
-		return super.toString() + "ObjectTransaction=" + objectTransaction;
+		return super.toString() + "ObjectTransaction=" + objectTransaction; //$NON-NLS-1$
 	}
 
 }

@@ -52,7 +52,7 @@ public class SystemPropertiesSubModuleView extends SubModuleView<SystemPropertie
 	// ////////////////
 
 	private Group createTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&System Properties:");
+		Group group = UIControlsFactory.createGroup(parent, "&System Properties:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		Composite tableComposite = createTable(group);
@@ -65,17 +65,17 @@ public class SystemPropertiesSubModuleView extends SubModuleView<SystemPropertie
 	}
 
 	private Group createEditGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Edit:");
+		Group group = UIControlsFactory.createGroup(parent, "Edit:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
-		UIControlsFactory.createLabel(group, "&Key:");
+		UIControlsFactory.createLabel(group, "&Key:"); //$NON-NLS-1$
 		Text textKey = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textKey);
 		addUIControl(textKey, "textKey"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "&Value:");
+		UIControlsFactory.createLabel(group, "&Value:"); //$NON-NLS-1$
 		Text textValue = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textValue);
 		addUIControl(textValue, "textValue"); //$NON-NLS-1$

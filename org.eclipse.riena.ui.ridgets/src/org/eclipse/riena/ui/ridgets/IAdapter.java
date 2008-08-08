@@ -29,35 +29,35 @@ public interface IAdapter extends IUIRepresentation {
 	/**
 	 * <code>PROPERTY_VISIBLE</code>
 	 */
-	String PROPERTY_VISIBLE = "visible";
+	String PROPERTY_VISIBLE = "visible"; //$NON-NLS-1$
 
 	/**
 	 * <code>PROPERTY_TOOLTIP</code>
 	 */
-	String PROPERTY_TOOLTIP = "tooltip";
+	String PROPERTY_TOOLTIP = "tooltip"; //$NON-NLS-1$
 
 	/**
 	 * <code>PROPERTY_HELP_ID</code>
 	 */
-	String PROPERTY_HELP_ID = "helpid";
+	String PROPERTY_HELP_ID = "helpid"; //$NON-NLS-1$
 
 	/** <code>PROPERTY_FOCUSABLE</code> */
-	String PROPERTY_FOCUSABLE = "focusable";
+	String PROPERTY_FOCUSABLE = "focusable"; //$NON-NLS-1$
 
 	/**
 	 * <code>PROPERTY_REQUEST_FOCUS</code>
 	 */
-	String PROPERTY_REQUEST_FOCUS = "requestFocus";
+	String PROPERTY_REQUEST_FOCUS = "requestFocus"; //$NON-NLS-1$
 
 	/**
 	 * <code>PROPERTY_REQUEST_FOCUS_IN_WINDOW</code>
 	 */
-	String PROPERTY_REQUEST_FOCUS_IN_WINDOW = "requestFocusInWindow";
+	String PROPERTY_REQUEST_FOCUS_IN_WINDOW = "requestFocusInWindow"; //$NON-NLS-1$
 
 	/**
 	 * <code>PROPERTY_BLOCKED</code>
 	 */
-	String PROPERTY_BLOCKED = "blocked";
+	String PROPERTY_BLOCKED = "blocked"; //$NON-NLS-1$
 
 	/**
 	 * the id is used to connect(/bind) ui controls to adapters.

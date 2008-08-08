@@ -74,13 +74,13 @@ public class SwtExampleApplication extends SwtApplication {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
 		final ApplicationModel applicationModel = new ApplicationModel("Riena Navigation Example"); //$NON-NLS-1$
-		applicationModel.setPresentationId(new NavigationNodeId("application"));
+		applicationModel.setPresentationId(new NavigationNodeId("application")); //$NON-NLS-1$
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 
 		// Navigation SubApplication
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigation"));
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
 
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate"));
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate")); //$NON-NLS-1$
 
 		// Playground SubApplication
 		subApplication = new SubApplicationNode("Playground"); //$NON-NLS-1$
@@ -90,12 +90,12 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationModel.addChild(subApplication);
 
 		// shared view demo
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.sharedViews"));
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
 
 		// uiProcess demo
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.uiProcesses"));
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.uiProcesses")); //$NON-NLS-1$
 
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.playground"));
+		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.playground")); //$NON-NLS-1$
 
 		return applicationModel;
 	}

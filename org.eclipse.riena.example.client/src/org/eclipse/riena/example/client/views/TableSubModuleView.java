@@ -48,7 +48,7 @@ public class TableSubModuleView extends SubModuleView<TableSubModuleController> 
 	// ////////////////
 
 	private Group createTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Table:");
+		Group group = UIControlsFactory.createGroup(parent, "&Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
 		Composite treeComposite = new Composite(group, SWT.NONE);

@@ -56,9 +56,9 @@ public final class PropertyAccessFailure extends PropertyFailure {
 		} else {
 			beanType = bean.getClass().getName();
 		}
-		String message = "Failed to read an adapted Java Bean property." + "\nbean     =" + bean + "\nbean type="
-				+ beanType + "\nproperty name  =" + propertyDescriptor.getName() + "\nproperty type  ="
-				+ propertyDescriptor.getPropertyType().getName() + "\nproperty reader="
+		String message = "Failed to read an adapted Java Bean property." + "\nbean     =" + bean + "\nbean type=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ beanType + "\nproperty name  =" + propertyDescriptor.getName() + "\nproperty type  =" //$NON-NLS-1$ //$NON-NLS-2$
+				+ propertyDescriptor.getPropertyType().getName() + "\nproperty reader=" //$NON-NLS-1$
 				+ propertyDescriptor.getReadMethod();
 
 		return new PropertyAccessFailure(message, cause);
@@ -95,10 +95,10 @@ public final class PropertyAccessFailure extends PropertyFailure {
 			valueType = value.getClass().getName();
 		}
 
-		String message = "Failed to set an adapted Java Bean property." + "\nbean      =" + bean + "\nbean type ="
-				+ beanType + "\nvalue     =" + value + "\nvalue type=" + valueType + "\nproperty name  ="
-				+ propertyDescriptor.getName() + "\nproperty type  =" + propertyDescriptor.getPropertyType().getName()
-				+ "\nproperty setter=" + propertyDescriptor.getWriteMethod();
+		String message = "Failed to set an adapted Java Bean property." + "\nbean      =" + bean + "\nbean type =" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ beanType + "\nvalue     =" + value + "\nvalue type=" + valueType + "\nproperty name  =" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ propertyDescriptor.getName() + "\nproperty type  =" + propertyDescriptor.getPropertyType().getName() //$NON-NLS-1$
+				+ "\nproperty setter=" + propertyDescriptor.getWriteMethod(); //$NON-NLS-1$
 
 		return new PropertyAccessFailure(message, cause);
 	}

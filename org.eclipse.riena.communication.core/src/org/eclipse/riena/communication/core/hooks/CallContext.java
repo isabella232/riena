@@ -57,7 +57,7 @@ public class CallContext {
 	}
 
 	public void setCookie(String name, String value) {
-		messageContext.addRequestHeader("Cookie", name + "=" + value);
+		messageContext.addRequestHeader("Cookie", name + "=" + value); //$NON-NLS-1$ //$NON-NLS-2$
 		return;
 	}
 
@@ -66,13 +66,13 @@ public class CallContext {
 		if (respHeaders == null) {
 			return null;
 		}
-		List<String> listSetCookies = respHeaders.get("Set-Cookie");
+		List<String> listSetCookies = respHeaders.get("Set-Cookie"); //$NON-NLS-1$
 		if (listSetCookies == null) {
 			return null;
 		}
 		Map<String, String> setCookies = new HashMap<String, String>();
 		for (String temp : listSetCookies) {
-			setCookies.put(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1));
+			setCookies.put(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return setCookies;
 	}

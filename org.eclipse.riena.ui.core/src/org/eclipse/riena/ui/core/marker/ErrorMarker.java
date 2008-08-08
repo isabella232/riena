@@ -21,10 +21,10 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	 * @see Object#toString()
 	 */
 	public String toString() {
-		StringBuilder buffer = new StringBuilder("ErrorMarker[");
-		buffer.append("attributes=");
+		StringBuilder buffer = new StringBuilder("ErrorMarker["); //$NON-NLS-1$
+		buffer.append("attributes="); //$NON-NLS-1$
 		buffer.append(getAttributes());
-		buffer.append("]");
+		buffer.append("]"); //$NON-NLS-1$
 		return buffer.toString();
 	}
 
@@ -32,6 +32,6 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
 	 */
 	public String getIconConfiguationKey() {
-		return "ErrorMarker";
+		return "ErrorMarker"; //$NON-NLS-1$
 	}
 }

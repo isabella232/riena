@@ -47,7 +47,7 @@ public class ListSubModuleView extends SubModuleView<ListSubModuleController> {
 	// ////////////////
 
 	private Group createListGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Persons:");
+		Group group = UIControlsFactory.createGroup(parent, "&Persons:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(2, true));
 
 		List listPersons = UIControlsFactory.createList(group, true, true);
@@ -72,17 +72,17 @@ public class ListSubModuleView extends SubModuleView<ListSubModuleController> {
 	}
 
 	private Group createEditGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Edit:");
+		Group group = UIControlsFactory.createGroup(parent, "Edit:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(1, false));
 
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
-		UIControlsFactory.createLabel(group, "&First Name:");
+		UIControlsFactory.createLabel(group, "&First Name:"); //$NON-NLS-1$
 		Text textFirst = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textFirst);
 		addUIControl(textFirst, "textFirst"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "&Last Name:");
+		UIControlsFactory.createLabel(group, "&Last Name:"); //$NON-NLS-1$
 		Text textLast = UIControlsFactory.createText(group);
 		fillFactory.applyTo(textLast);
 		addUIControl(textLast, "textLast"); //$NON-NLS-1$

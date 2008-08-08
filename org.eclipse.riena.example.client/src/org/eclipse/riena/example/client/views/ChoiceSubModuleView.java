@@ -56,12 +56,12 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 	// ////////////////
 
 	private Group createChoiceGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:");
+		Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
 		// next row
 
-		Label lblModel = UIControlsFactory.createLabel(group, "Model");
+		Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblModel);
 
 		Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
@@ -70,42 +70,42 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 
 		// next row
 
-		Label lblExtras = UIControlsFactory.createLabel(group, "Extras");
+		Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblExtras);
 
 		Composite compositeCarExtras = new Composite(group, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true, false).applyTo(compositeCarExtras);
-		createCheck(compositeCarExtras, "Front Maschine Guns");
-		createCheck(compositeCarExtras, "Self Destruct Button");
-		createCheck(compositeCarExtras, "Underwater Package");
-		createCheck(compositeCarExtras, "Park Distance Control System");
+		createCheck(compositeCarExtras, "Front Maschine Guns"); //$NON-NLS-1$
+		createCheck(compositeCarExtras, "Self Destruct Button"); //$NON-NLS-1$
+		createCheck(compositeCarExtras, "Underwater Package"); //$NON-NLS-1$
+		createCheck(compositeCarExtras, "Park Distance Control System"); //$NON-NLS-1$
 		compositeCarExtras.setLayout(new FillLayout(SWT.VERTICAL));
 
 		// next row
 
-		UIControlsFactory.createLabel(group, "Manufacturer's\nWarranty");
+		UIControlsFactory.createLabel(group, "Manufacturer's\nWarranty"); //$NON-NLS-1$
 
 		Composite compositeCarWarranty = new Composite(group, SWT.NONE);
-		createRadio(compositeCarWarranty, "Standard");
-		createRadio(compositeCarWarranty, "Extended");
+		createRadio(compositeCarWarranty, "Standard"); //$NON-NLS-1$
+		createRadio(compositeCarWarranty, "Extended"); //$NON-NLS-1$
 		compositeCarWarranty.setLayout(new FillLayout(SWT.VERTICAL));
 
 		// next row
 
-		UIControlsFactory.createLabel(group, "License Plate(s)");
+		UIControlsFactory.createLabel(group, "License Plate(s)"); //$NON-NLS-1$
 
 		Composite compositeCarPlates = new Composite(group, SWT.NONE);
 		compositeCarPlates.setLayout(new RowLayout(SWT.HORIZONTAL));
-		createCheck(compositeCarPlates, "JM5B0ND");
-		createCheck(compositeCarPlates, "1 SPY");
-		createCheck(compositeCarPlates, "MNY PNY");
-		createCheck(compositeCarPlates, "BN D007");
-		createCheck(compositeCarPlates, "Q RULE2");
-		createCheck(compositeCarPlates, "MI64EVR");
+		createCheck(compositeCarPlates, "JM5B0ND"); //$NON-NLS-1$
+		createCheck(compositeCarPlates, "1 SPY"); //$NON-NLS-1$
+		createCheck(compositeCarPlates, "MNY PNY"); //$NON-NLS-1$
+		createCheck(compositeCarPlates, "BN D007"); //$NON-NLS-1$
+		createCheck(compositeCarPlates, "Q RULE2"); //$NON-NLS-1$
+		createCheck(compositeCarPlates, "MI64EVR"); //$NON-NLS-1$
 
 		// next row
 
-		UIControlsFactory.createLabel(group, "Price");
+		UIControlsFactory.createLabel(group, "Price"); //$NON-NLS-1$
 
 		Text txtPrice = UIControlsFactory.createText(group);
 		addUIControl(txtPrice, "txtPrice"); //$NON-NLS-1$

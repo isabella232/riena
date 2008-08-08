@@ -46,10 +46,10 @@ public class Activator implements BundleActivator {
 		// register hessian proxy for nyote remote service
 		RemoteServiceFactory rsf = new RemoteServiceFactory();
 		Class<?> serviceInterface = IPingPong.class;
-		String url = "http://${riena.hostname}/hessian/PingPongWS";
-		String protocol = "hessian";
+		String url = "http://${riena.hostname}/hessian/PingPongWS"; //$NON-NLS-1$
+		String protocol = "hessian"; //$NON-NLS-1$
 
-		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, "de.compeople.pingpong.config");
+		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, "de.compeople.pingpong.config"); //$NON-NLS-1$
 
 		// register xfire proxy for nyote remote service
 		// url = "http://${localhost}/xfire/PingPongXFireWS";

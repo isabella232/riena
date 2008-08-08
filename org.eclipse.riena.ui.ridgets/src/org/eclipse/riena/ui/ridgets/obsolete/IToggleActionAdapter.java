@@ -21,7 +21,7 @@ public interface IToggleActionAdapter extends IMenuActionAdapter {
 	/**
 	 * Comment for <code>PROPERTY_SELECTED</code>
 	 */
-	String PROPERTY_SELECTED = "selected";
+	String PROPERTY_SELECTED = "selected"; //$NON-NLS-1$
 
 	/**
 	 * @return true is adapter is selected

@@ -69,11 +69,11 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 			ServiceReference[] refs;
 			try {
 				refs = Activator.getDefault().getContext().getServiceReferences(ManagedService.class.getName(),
-						"(" + Constants.SERVICE_PID + "=" + pid + ")");
+						"(" + Constants.SERVICE_PID + "=" + pid + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				if (refs != null && refs.length > 0) {
-					LOGGER.log(LogService.LOG_ERROR, "duplicate configuration " + Constants.SERVICE_PID + " = "
-							+ reference.getDescription().getConfigPID() + " for service "
-							+ reference.getServiceInterfaceClassName() + " service is set to NOT configurable");
+					LOGGER.log(LogService.LOG_ERROR, "duplicate configuration " + Constants.SERVICE_PID + " = " //$NON-NLS-1$ //$NON-NLS-2$
+							+ reference.getDescription().getConfigPID() + " for service " //$NON-NLS-1$
+							+ reference.getServiceInterfaceClassName() + " service is set to NOT configurable"); //$NON-NLS-1$
 					pid = null;
 				}
 			} catch (InvalidSyntaxException e) {
@@ -87,8 +87,8 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 			if (foundRemoteServiceReg == null) {
 				// it is a new entry, set properties
 				Properties props = new Properties();
-				props.put("service.url", url);
-				props.put("service.protocol", reference.getDescription().getProtocol());
+				props.put("service.url", url); //$NON-NLS-1$
+				props.put("service.protocol", reference.getDescription().getProtocol()); //$NON-NLS-1$
 				ServiceRegistration serviceRegistration = Activator.getDefault().getContext().registerService(
 						reference.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
 				reference.setServiceRegistration(serviceRegistration);
@@ -103,7 +103,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 				RemoteServiceRegistration remoteServiceReg = new RemoteServiceRegistration(reference, this);
 				registeredServices.put(url, remoteServiceReg);
 
-				LOGGER.log(LogService.LOG_DEBUG, "OSGi NEW service registered id: "
+				LOGGER.log(LogService.LOG_DEBUG, "OSGi NEW service registered id: " //$NON-NLS-1$
 						+ reference.getServiceInterfaceClassName());
 				return remoteServiceReg;
 			} else {
@@ -123,7 +123,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 *      (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public void unregisterService(IRemoteServiceReference reference) {
-		assert reference != null : "RemoteServiceReference must not be null";
+		assert reference != null : "RemoteServiceReference must not be null"; //$NON-NLS-1$
 		synchronized (registeredServices) {
 			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
 			serviceRegistration.unregister();
@@ -133,7 +133,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 			String id = reference.getServiceInterfaceClassName();
 			registeredServices.remove(reference.getURL());
 			reference.dispose();
-			LOGGER.log(LogService.LOG_DEBUG, "OSGi service removed id: " + id);
+			LOGGER.log(LogService.LOG_DEBUG, "OSGi service removed id: " + id); //$NON-NLS-1$
 		}
 	}
 
@@ -147,7 +147,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 		synchronized (registeredServices) {
 			Collection<IRemoteServiceRegistration> values = registeredServices.values();
 			// Answers all service registrations when hostId is null or "*"
-			if (hostId == null || hostId.equals("*")) {
+			if (hostId == null || hostId.equals("*")) { //$NON-NLS-1$
 				return new ArrayList<IRemoteServiceRegistration>(values);
 			}
 

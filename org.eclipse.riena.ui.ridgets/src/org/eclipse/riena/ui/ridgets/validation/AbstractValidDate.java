@@ -69,7 +69,7 @@ public abstract class AbstractValidDate implements IValidator {
 			final String string = (String) value;
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
 				return ValidationRuleStatus
-						.error(false, "Invalid date (must match the pattern " + pattern + ").", this);
+						.error(false, "Invalid date (must match the pattern " + pattern + ").", this); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return ValidationRuleStatus.ok();

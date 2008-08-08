@@ -39,6 +39,6 @@ public abstract class Message {
      * @return this message text
      */
     public String toString() {
-        return "[" + getClass().getSimpleName() + "] says = " + getText();
+        return "[" + getClass().getSimpleName() + "] says = " + getText(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

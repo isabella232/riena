@@ -56,13 +56,13 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		contentArea.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		contentArea.setLayout(new FormLayout());
 
-		Label personLabel = createSectionLabel(contentArea, "Person");
+		Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);
 		personLabel.setLayoutData(fd);
 
-		Label kundennummerLabel = UIControlsFactory.createLabel(contentArea, "Customer No.");
+		Label kundennummerLabel = UIControlsFactory.createLabel(contentArea, "Customer No."); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(personLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(personLabel, SECTION_LABEL_WIDTH, SWT.LEFT);
@@ -76,14 +76,14 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		fd.width = FIELD_WIDTH;
 		kundennummerText.setLayoutData(fd);
 
-		Label nameLabel = UIControlsFactory.createLabel(contentArea, "Last Name");
+		Label nameLabel = UIControlsFactory.createLabel(contentArea, "Last Name"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, LINE_GAP);
 		fd.left = new FormAttachment(kundennummerLabel, 0, SWT.LEFT);
 		nameLabel.setLayoutData(fd);
 
 		Text nameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
-		nameText.setData("binding_property", "lastname");
+		nameText.setData("binding_property", "lastname"); //$NON-NLS-1$ //$NON-NLS-2$
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(kundennummerText, 0, SWT.LEFT);
@@ -91,7 +91,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		nameText.setLayoutData(fd);
 		nameText.setText(getController().getNavigationNode().getLabel());
 
-		Label vornameLabel = UIControlsFactory.createLabel(contentArea, "First Name");
+		Label vornameLabel = UIControlsFactory.createLabel(contentArea, "First Name"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(nameLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
@@ -104,7 +104,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		fd.width = FIELD_WIDTH;
 		vornameText.setLayoutData(fd);
 
-		Label birthdayLabel = UIControlsFactory.createLabel(contentArea, "Birthday");
+		Label birthdayLabel = UIControlsFactory.createLabel(contentArea, "Birthday"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, LINE_GAP);
 		fd.left = new FormAttachment(nameLabel, 0, SWT.LEFT);
@@ -116,7 +116,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		fd.left = new FormAttachment(nameText, 0, SWT.LEFT);
 		birthdayText.setLayoutData(fd);
 
-		Label birthplaceLabel = UIControlsFactory.createLabel(contentArea, "Birthplace");
+		Label birthplaceLabel = UIControlsFactory.createLabel(contentArea, "Birthplace"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(birthdayLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
@@ -130,7 +130,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		birthplaceText.setLayoutData(fd);
 
 		Button openOffers = new Button(contentArea, 0);
-		openOffers.setText("Offers");
+		openOffers.setText("Offers"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
 		fd.left = new FormAttachment(birthdayText, 0, SWT.LEFT);
@@ -138,7 +138,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		openOffers.setLayoutData(fd);
 
 		Button saveButton = new Button(contentArea, 0);
-		saveButton.setText("Save");
+		saveButton.setText("Save"); //$NON-NLS-1$
 		// saveButton.addSelectionListener(new StoreCustomerListener());
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);

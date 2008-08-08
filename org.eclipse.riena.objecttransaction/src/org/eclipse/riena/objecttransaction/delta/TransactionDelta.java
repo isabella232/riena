@@ -104,8 +104,8 @@ public class TransactionDelta implements Cloneable {
 	public void addMultiRefObject(String refName, Object childObject) {
 		AbstractBaseChange baseEntry = referenceChanges.get(refName);
 		if (!(baseEntry instanceof MultipleChange) && baseEntry != null) {
-			throw new ObjectTransactionFailure("impossible to add a reference to refName" + refName
-					+ "as it was previously used with a set object, which creates a 1:1 reference.");
+			throw new ObjectTransactionFailure("impossible to add a reference to refName" + refName //$NON-NLS-1$
+					+ "as it was previously used with a set object, which creates a 1:1 reference."); //$NON-NLS-1$
 		}
 		MultipleChange entry = (MultipleChange) baseEntry;
 		if (entry == null) {
@@ -124,8 +124,8 @@ public class TransactionDelta implements Cloneable {
 	public void removeMultiRefObject(String refName, Object childObject) {
 		AbstractBaseChange baseEntry = referenceChanges.get(refName);
 		if (!(baseEntry instanceof MultipleChange) && baseEntry != null) {
-			throw new ObjectTransactionFailure("impossible to add a reference to refName" + refName
-					+ "as it was previously used with a set object, which creates a 1:1 reference.");
+			throw new ObjectTransactionFailure("impossible to add a reference to refName" + refName //$NON-NLS-1$
+					+ "as it was previously used with a set object, which creates a 1:1 reference."); //$NON-NLS-1$
 		}
 		MultipleChange entry = (MultipleChange) baseEntry;
 		if (entry == null) {
@@ -207,13 +207,13 @@ public class TransactionDelta implements Cloneable {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("##### objectId:" + objectId + " #####\n");
-		sb.append("state:" + State.toString(state) + "\n");
-		sb.append("reference Changes ---START---\n");
+		sb.append("##### objectId:" + objectId + " #####\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("state:" + State.toString(state) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("reference Changes ---START---\n"); //$NON-NLS-1$
 		for (Map.Entry<String, AbstractBaseChange> entry : referenceChanges.entrySet()) {
-			sb.append(entry.toString() + "\n");
+			sb.append(entry.toString() + "\n"); //$NON-NLS-1$
 		}
-		sb.append("reference Changes ---END---\n");
+		sb.append("reference Changes ---END---\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

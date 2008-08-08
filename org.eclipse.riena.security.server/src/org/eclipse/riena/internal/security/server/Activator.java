@@ -25,7 +25,7 @@ import org.osgi.framework.ServiceRegistration;
 public class Activator extends RienaPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "de.compeople.scp.security.server";
+	public static final String PLUGIN_ID = "de.compeople.scp.security.server"; //$NON-NLS-1$
 
 	private ServiceRegistration principalCacheRegistration;
 	private ServiceRegistration securityServiceHook;
@@ -49,9 +49,9 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		Activator.plugin = this;
 		GenericObjectCache principalCache = new GenericObjectCache();
-		principalCache.setName("principalCache");
+		principalCache.setName("principalCache"); //$NON-NLS-1$
 		Hashtable<String, String> props = new Hashtable<String, String>();
-		props.put("cache.type", "PrincipalCache");
+		props.put("cache.type", "PrincipalCache"); //$NON-NLS-1$ //$NON-NLS-2$
 		principalCacheRegistration = context
 				.registerService(IGenericObjectCache.class.getName(), principalCache, props);
 		securityServiceHook = context.registerService(IServiceHook.class.getName(), new SecurityServiceHook(), null);

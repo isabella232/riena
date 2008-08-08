@@ -30,10 +30,10 @@ public class PingPong implements IPingPong {
 	 */
 	public Pong ping(Ping ping) {
 
-		System.out.println("PingPong::Server:: " + ping);
+		System.out.println("PingPong::Server:: " + ping); //$NON-NLS-1$
 
 		Pong pong = new Pong();
-		pong.setText("Thx. I got the ping!");
+		pong.setText("Thx. I got the ping!"); //$NON-NLS-1$
 
 		return pong;
 	}

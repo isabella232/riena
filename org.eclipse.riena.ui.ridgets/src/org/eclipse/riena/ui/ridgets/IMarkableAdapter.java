@@ -31,14 +31,14 @@ public interface IMarkableAdapter extends IAdapter, IMarkable, IMarkableUIRepres
 	 * The name of the PropertyChangeEvent that will be fired if a marker was
 	 * added or removed.
 	 */
-	String PROPERTY_MARKER = "marker";
+	String PROPERTY_MARKER = "marker"; //$NON-NLS-1$
 
 	/**
 	 * The name of the PropertyChangeEvent that will be fired if the actual
 	 * visibility of the adapter changes. An adapter is showing when it is
 	 * visible and the parent of its UI representation is showing too.
 	 */
-	String PROPERTY_SHOWING = "showing";
+	String PROPERTY_SHOWING = "showing"; //$NON-NLS-1$
 
 	/**
 	 * Sets the editing state of the UI representation of the adapter. If

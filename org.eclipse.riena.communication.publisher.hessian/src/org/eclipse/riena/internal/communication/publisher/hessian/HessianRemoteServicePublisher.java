@@ -36,8 +36,8 @@ import org.osgi.service.log.LogService;
  * 
  */
 public class HessianRemoteServicePublisher implements IServicePublisher {
-	private final static String PROTOCOL = "hessian";
-	private final static String SERVLET_PATH = "/hessian";
+	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
+	private final static String SERVLET_PATH = "/hessian"; //$NON-NLS-1$
 	private IServiceMessageContextAccessor mca = new MsgCxtAcc();
 
 	private HashMap<String, RemoteServiceDescription> webServiceDescriptions;
@@ -56,16 +56,16 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	 * RemoteServiceDescription rsd )
 	 */
 	public synchronized String publishService(RemoteServiceDescription rsd) {
-		String localhost = "localhost";
+		String localhost = "localhost"; //$NON-NLS-1$
 		try {
 			localhost = Inet4Address.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 		}
-		String url = "http://" + localhost + SERVLET_PATH + rsd.getPath();
+		String url = "http://" + localhost + SERVLET_PATH + rsd.getPath(); //$NON-NLS-1$
 		rsd.setURL(url);
 		webServiceDescriptions.put(SERVLET_PATH + rsd.getPath(), rsd);
-		LOGGER.log(LogService.LOG_DEBUG, "published web service. " + rsd);
-		LOGGER.log(LogService.LOG_DEBUG, "web service count: " + webServiceDescriptions.size());
+		LOGGER.log(LogService.LOG_DEBUG, "published web service. " + rsd); //$NON-NLS-1$
+		LOGGER.log(LogService.LOG_DEBUG, "web service count: " + webServiceDescriptions.size()); //$NON-NLS-1$
 		return url;
 	}
 
@@ -78,8 +78,8 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	 */
 	public synchronized void unpublishService(String path) {
 		RemoteServiceDescription rsd = webServiceDescriptions.remove(SERVLET_PATH + path);
-		LOGGER.log(LogService.LOG_DEBUG, "unpublished web service. " + rsd);
-		LOGGER.log(LogService.LOG_DEBUG, "web service count: " + webServiceDescriptions.size());
+		LOGGER.log(LogService.LOG_DEBUG, "unpublished web service. " + rsd); //$NON-NLS-1$
+		LOGGER.log(LogService.LOG_DEBUG, "web service count: " + webServiceDescriptions.size()); //$NON-NLS-1$
 	}
 
 	/*

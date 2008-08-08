@@ -44,6 +44,6 @@ public final class PropertyNotFoundFailure extends PropertyFailure {
 	 *            unknown.)
 	 */
 	public PropertyNotFoundFailure(String propertyName, Object bean, Throwable cause) {
-		super("Property '" + propertyName + "' not found in bean " + bean, cause);
+		super("Property '" + propertyName + "' not found in bean " + bean, cause); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

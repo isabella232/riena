@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 public abstract class AbstractRidget implements IRidget {
 
-	public final static String PROPERTY_RIDGET = "ridget";
+	public final static String PROPERTY_RIDGET = "ridget"; //$NON-NLS-1$
 
 	protected PropertyChangeSupport propertyChangeSupport;
 	private Set<IFocusListener> focusListeners;

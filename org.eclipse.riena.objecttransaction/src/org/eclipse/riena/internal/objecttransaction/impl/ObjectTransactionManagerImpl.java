@@ -27,7 +27,7 @@ public class ObjectTransactionManagerImpl implements IObjectTransactionManager {
 	 */
 	public IObjectTransaction getCurrent() {
 		if (objectTransaction != null && objectTransaction.isInvalid()) {
-			throw new InvalidTransactionFailure("no valid objecttransaction, but required");
+			throw new InvalidTransactionFailure("no valid objecttransaction, but required"); //$NON-NLS-1$
 		}
 		return objectTransaction;
 	}
@@ -37,7 +37,7 @@ public class ObjectTransactionManagerImpl implements IObjectTransactionManager {
 	 */
 	public void setCurrent(IObjectTransaction currentObjectTransaction) {
 		if (currentObjectTransaction != null && currentObjectTransaction.isInvalid()) {
-			throw new InvalidTransactionFailure("an invalid object transaction cannot be set to be the current object transaction");
+			throw new InvalidTransactionFailure("an invalid object transaction cannot be set to be the current object transaction"); //$NON-NLS-1$
 		}
 		this.objectTransaction = currentObjectTransaction;
 	}

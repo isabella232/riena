@@ -39,12 +39,12 @@ import org.eclipse.core.runtime.IStatus;
 public class ValidExpression implements IValidator {
 
 	/** <code>GERMAN_ZIP</code> */
-	public static final String GERMAN_ZIP = "^[0-9]{5}$";
+	public static final String GERMAN_ZIP = "^[0-9]{5}$"; //$NON-NLS-1$
 
 	/**
 	 * @see http://de.wikipedia.org/wiki/SWIFT
 	 */
-	public static final String SWIFT_BIC = "^([a-zA-Z]{6}[a-zA-Z\\d]{2})([a-zA-Z\\d]{3})?$";
+	public static final String SWIFT_BIC = "^([a-zA-Z]{6}[a-zA-Z\\d]{2})([a-zA-Z\\d]{3})?$"; //$NON-NLS-1$
 
 	/**
 	 * Option postfixes.
@@ -104,7 +104,7 @@ public class ValidExpression implements IValidator {
 	 */
 	public IStatus validate(final Object value) {
 		if (!(value == null || value instanceof String)) {
-			throw new ValidationFailure(getClass().getSimpleName() + " can only validate objects of type "
+			throw new ValidationFailure(getClass().getSimpleName() + " can only validate objects of type " //$NON-NLS-1$
 					+ String.class.getName());
 		}
 		final String string = value == null ? "" : (String) value; //$NON-NLS-1$
@@ -112,7 +112,7 @@ public class ValidExpression implements IValidator {
 		if (matcher.match("/" + pattern + "/" + options, string)) { //$NON-NLS-1$//$NON-NLS-2$
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'.",
+		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'.", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				this);
 	}
 

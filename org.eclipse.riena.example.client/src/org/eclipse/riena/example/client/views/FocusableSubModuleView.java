@@ -45,10 +45,10 @@ public class FocusableSubModuleView extends SubModuleView<FocusableSubModuleCont
 		Group groupVisibility = createVisibilityGroup(parent);
 		fillFactory.applyTo(groupVisibility);
 
-		Group groupA = createGroup(parent, "A", 5);
+		Group groupA = createGroup(parent, "A", 5); //$NON-NLS-1$
 		fillFactory.applyTo(groupA);
 
-		Group groupB = createGroup(parent, "B", 1);
+		Group groupB = createGroup(parent, "B", 1); //$NON-NLS-1$
 		fillFactory.applyTo(groupB);
 	}
 
@@ -56,7 +56,7 @@ public class FocusableSubModuleView extends SubModuleView<FocusableSubModuleCont
 	// ////////////////
 
 	private Group createVisibilityGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:");
+		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		Button checkVisible = UIControlsFactory.createButtonCheck(group);
@@ -66,7 +66,7 @@ public class FocusableSubModuleView extends SubModuleView<FocusableSubModuleCont
 	}
 
 	private Group createGroup(Composite parent, String groupCaption, int numElements) {
-		Group group = UIControlsFactory.createGroup(parent, "Group #&" + groupCaption);
+		Group group = UIControlsFactory.createGroup(parent, "Group #&" + groupCaption); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
 		Assert.isLegal(numElements > 0);

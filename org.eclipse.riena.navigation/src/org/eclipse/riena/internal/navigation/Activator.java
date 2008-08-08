@@ -14,6 +14,7 @@ import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.model.PresentationProviderService;
+
 import org.osgi.framework.BundleContext;
 
 /**
@@ -22,7 +23,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends RienaPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.navigation";
+	public static final String PLUGIN_ID = "org.eclipse.riena.navigation"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

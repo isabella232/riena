@@ -54,7 +54,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("reset.callback()");
+				System.out.println("reset.callback()"); //$NON-NLS-1$
 				compositeCarModel.setSelection(null);
 			}
 		});
@@ -63,7 +63,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		buttonBMW.setText("&Gimme a Beamer"); //$NON-NLS-1$
 		buttonBMW.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("bmw.callback()");
+				System.out.println("bmw.callback()"); //$NON-NLS-1$
 				compositeCarModel.setSelection(CarModel.BMW);
 			}
 		});
@@ -73,7 +73,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	// ////////////////
 
 	private enum CarModel {
-		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8");
+		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String label;
 

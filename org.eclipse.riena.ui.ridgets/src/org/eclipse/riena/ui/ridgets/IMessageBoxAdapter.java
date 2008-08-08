@@ -32,43 +32,43 @@ public interface IMessageBoxAdapter extends IAdapter {
 	/**
 	 * <code>PROPERTY_ICON</code>
 	 */
-	String PROPERTY_ICON = "icon";
+	String PROPERTY_ICON = "icon"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_RET_VALUE</code>
 	 */
-	String PROPERTY_RET_VALUE = "retValue";
+	String PROPERTY_RET_VALUE = "retValue"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_SHOW_MESSAGE_BOX</code>
 	 */
-	String PROPERTY_SHOW_MESSAGE_BOX = "showMessageBox";
+	String PROPERTY_SHOW_MESSAGE_BOX = "showMessageBox"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_MESSAGE_TYPE</code>
 	 */
-	String PROPERTY_MESSAGE_TYPE = "messageType";
+	String PROPERTY_MESSAGE_TYPE = "messageType"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_MESSAGE_TEXT</code>
 	 */
-	String PROPERTY_MESSAGE_TEXT = "messageText";
+	String PROPERTY_MESSAGE_TEXT = "messageText"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_MESSAGE_TITLE</code>
 	 */
-	String PROPERTY_MESSAGE_TITLE = "messageTitle";
+	String PROPERTY_MESSAGE_TITLE = "messageTitle"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_HELP_TEXT</code>
 	 */
-	String PROPERTY_HELP_TEXT = "helpText";
+	String PROPERTY_HELP_TEXT = "helpText"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_OPTION_TYPE</code>
 	 */
-	String PROPERTY_OPTION_TYPE = "optionType";
+	String PROPERTY_OPTION_TYPE = "optionType"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_OPTIONS</code>
 	 */
-	String PROPERTY_OPTIONS = "options";
+	String PROPERTY_OPTIONS = "options"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_MESSAGE_NUMBER</code>
 	 */
-	String PROPERTY_MESSAGE_NUMBER = "messageNumber";
+	String PROPERTY_MESSAGE_NUMBER = "messageNumber"; //$NON-NLS-1$
 	/**
 	 * return value if YES is chosen.
 	 */

@@ -71,7 +71,7 @@ public class NavigationSubModuleController extends SubModuleController {
 		getAddSubModuleToSelfBtn().addListener(new IActionListener() {
 			public void callback() {
 				ISubModuleNode navigationNode = getNavigationNode();
-				navigationNode.addChild(createSubModuleNode("Node " + String.valueOf(nodeCount++)));
+				navigationNode.addChild(createSubModuleNode("Node " + String.valueOf(nodeCount++))); //$NON-NLS-1$
 				String text = "Sub-Module was added!"; //$NON-NLS-1$
 				SubApplicationController subAppController = getSubApplicationController();
 				subAppController.getStatuslineRidget().setMessage(text);
@@ -206,7 +206,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	private ISubModuleNode createSubModuleNode(String label) {
 
 		SubModuleNode newSubModuleNode = new SubModuleNode(label);
-		newSubModuleNode.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigation"));
+		newSubModuleNode.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
 
 		return newSubModuleNode;
 

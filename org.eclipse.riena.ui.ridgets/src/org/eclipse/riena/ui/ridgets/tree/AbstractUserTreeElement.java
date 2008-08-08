@@ -47,7 +47,7 @@ public abstract class AbstractUserTreeElement implements IUserTreeElement {
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.IUserTreeElement#getLoadingChildValue()
 	 */
 	public Object getLoadingChildValue() {
-		return "...";
+		return "..."; //$NON-NLS-1$
 	}
 
 }

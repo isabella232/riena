@@ -59,7 +59,7 @@ public class BooleanBean extends AbstractBean {
 		if (this.value != value) {
 			boolean old = this.value;
 			this.value = value;
-			firePropertyChanged("value", old, this.value);
+			firePropertyChanged("value", old, this.value); //$NON-NLS-1$
 		}
 	}
 

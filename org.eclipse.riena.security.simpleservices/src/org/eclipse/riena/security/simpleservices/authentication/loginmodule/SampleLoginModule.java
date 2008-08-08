@@ -82,7 +82,7 @@ public class SampleLoginModule implements LoginModule {
 		this.options = options;
 
 		// initialize any configured options
-		debug = Boolean.valueOf((String) options.get("debug"));
+		debug = Boolean.valueOf((String) options.get("debug")); //$NON-NLS-1$
 	}
 
 	/*
@@ -92,10 +92,10 @@ public class SampleLoginModule implements LoginModule {
 	 */
 	public boolean login() throws LoginException {
 		Callback[] callbacks = new Callback[2];
-		callbacks[0] = new NameCallback("username: ");
-		callbacks[1] = new PasswordCallback("password: ", false);
+		callbacks[0] = new NameCallback("username: "); //$NON-NLS-1$
+		callbacks[1] = new PasswordCallback("password: ", false); //$NON-NLS-1$
 		if (callbackHandler == null) {
-			LOGGER.log(LogService.LOG_ERROR, "callbackhandler cant be null");
+			LOGGER.log(LogService.LOG_ERROR, "callbackhandler cant be null"); //$NON-NLS-1$
 			return false;
 		}
 		try {
@@ -103,13 +103,13 @@ public class SampleLoginModule implements LoginModule {
 			username = ((NameCallback) callbacks[0]).getName();
 			password = new String(((PasswordCallback) callbacks[1]).getPassword());
 			if (username != null && password != null) {
-				if (username.equals("testuser") && password.equals("testpass")) {
+				if (username.equals("testuser") && password.equals("testpass")) { //$NON-NLS-1$ //$NON-NLS-2$
 					return true;
 				} else {
-					if (username.equals("testuser2") && password.equals("testpass2")) {
+					if (username.equals("testuser2") && password.equals("testpass2")) { //$NON-NLS-1$ //$NON-NLS-2$
 						return true;
 					} else {
-						if (username.equals("cca") && password.equals("christian")) {
+						if (username.equals("cca") && password.equals("christian")) { //$NON-NLS-1$ //$NON-NLS-2$
 							return true;
 						}
 					}

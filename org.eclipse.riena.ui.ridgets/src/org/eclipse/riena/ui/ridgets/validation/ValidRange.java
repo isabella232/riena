@@ -75,7 +75,7 @@ public class ValidRange extends ValidDecimal {
 				+ min.getClass().getName() + ", max = " + max.getClass().getName()); //$NON-NLS-1$		
 		this.min = toBigDecimal(min);
 		this.max = toBigDecimal(max);
-		Assert.isLegal(this.min.compareTo(this.max) <= 0, "min " + this.min + " must be smaller or equal max "
+		Assert.isLegal(this.min.compareTo(this.max) <= 0, "min " + this.min + " must be smaller or equal max " //$NON-NLS-1$ //$NON-NLS-2$
 				+ this.max);
 	}
 
@@ -106,14 +106,14 @@ public class ValidRange extends ValidDecimal {
 						// should never occur, as super.validate(Object) will
 						// make this method return earlier
 						return ValidationRuleStatus
-								.error(true, "cannot parse string '" + string + "' to number.", this);
+								.error(true, "cannot parse string '" + string + "' to number.", this); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
 		}
 		if (currentValue.compareTo(min) < 0 || currentValue.compareTo(max) > 0) {
-			return ValidationRuleStatus.error(true, "value " + currentValue + "' out of range: [" + min + ".." + max
-					+ "].", this);
+			return ValidationRuleStatus.error(true, "value " + currentValue + "' out of range: [" + min + ".." + max //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ "].", this); //$NON-NLS-1$
 		}
 		return ValidationRuleStatus.ok();
 	}

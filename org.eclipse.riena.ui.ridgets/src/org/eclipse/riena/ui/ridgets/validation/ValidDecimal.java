@@ -89,27 +89,27 @@ public class ValidDecimal implements IValidator {
 				final ScanResult scanned = scan(string);
 				if (!partialCheckSupported) {
 					if (scanned.decimalSeperatorIndex < 0) {
-						return ValidationRuleStatus.error(true, "no decimal separator '"
-								+ symbols.getDecimalSeparator() + "' in String '" + string + '\'', this);
+						return ValidationRuleStatus.error(true, "no decimal separator '" //$NON-NLS-1$
+								+ symbols.getDecimalSeparator() + "' in String '" + string + '\'', this); //$NON-NLS-1$
 					}
 					// test if grouping character is behind decimal separator:
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
-						return ValidationRuleStatus.error(true, "grouping-separator '" + symbols.getGroupingSeparator()
-								+ "' behind decimal-seperator '" + symbols.getDecimalSeparator() + "' in string '"
+						return ValidationRuleStatus.error(true, "grouping-separator '" + symbols.getGroupingSeparator() //$NON-NLS-1$
+								+ "' behind decimal-seperator '" + symbols.getDecimalSeparator() + "' in string '" //$NON-NLS-1$ //$NON-NLS-2$
 								+ string + '\'', this);
 					}
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter
-							+ "' in string '" + string + '\'', this);
+					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter //$NON-NLS-1$
+							+ "' in string '" + string + '\'', this); //$NON-NLS-1$
 				}
 				try {
 					synchronized (format) {// NumberFormat not threadsafe!
 						format.parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this);
+					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}

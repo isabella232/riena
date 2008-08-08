@@ -16,34 +16,34 @@ package org.eclipse.riena.ui.core.resource.internal;
 public final class IconState {
 
 	/** Icon state NORMAL. */
-	public static final IconState NORMAL = new IconState("");
+	public static final IconState NORMAL = new IconState(""); //$NON-NLS-1$
 
 	/** Icon state HOVER. */
-	public static final IconState HOVER = new IconState("_h_");
+	public static final IconState HOVER = new IconState("_h_"); //$NON-NLS-1$
 
 	/** Icon state PRESSED. */
-	public static final IconState PRESSED = new IconState("_p_");
+	public static final IconState PRESSED = new IconState("_p_"); //$NON-NLS-1$
 
 	/** Icon state DISABLED. */
-	public static final IconState DISABLED = new IconState("_d_");
+	public static final IconState DISABLED = new IconState("_d_"); //$NON-NLS-1$
 
 	/** Icon state SELECTED. */
-	public static final IconState SELECTED = new IconState("_a_");
+	public static final IconState SELECTED = new IconState("_a_"); //$NON-NLS-1$
 
 	/** Icon state SELECTED_HOVER. */
-	public static final IconState SELECTED_HOVER = new IconState("_ah_");
+	public static final IconState SELECTED_HOVER = new IconState("_ah_"); //$NON-NLS-1$
 
 	/** Icon state SELECTED_DISABLED. */
-	public static final IconState SELECTED_DISABLED = new IconState("_ad_");
+	public static final IconState SELECTED_DISABLED = new IconState("_ad_"); //$NON-NLS-1$
 
 	/** Icon state DEFAULT. */
-	public static final IconState DEFAULT = new IconState("_s_");
+	public static final IconState DEFAULT = new IconState("_s_"); //$NON-NLS-1$
 
 	/** Icon state HAS_FOCUS. */
-	public static final IconState HAS_FOCUS = new IconState("_f_");
+	public static final IconState HAS_FOCUS = new IconState("_f_"); //$NON-NLS-1$
 
 	/** Icon state HAS_ROLLOVER_FOCUS. */
-	public static final IconState HAS_ROLLOVER_FOCUS = new IconState("_hf_");
+	public static final IconState HAS_ROLLOVER_FOCUS = new IconState("_hf_"); //$NON-NLS-1$
 
 	private String defaultMapping;
 

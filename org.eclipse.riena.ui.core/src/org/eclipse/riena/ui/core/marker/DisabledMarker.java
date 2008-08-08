@@ -21,10 +21,10 @@ public class DisabledMarker extends AbstractMarker {
 	 * @see Object#toString()
 	 */
 	public String toString() {
-		StringBuilder buffer = new StringBuilder("DisabledMarker[");
-		buffer.append("attributes=");
+		StringBuilder buffer = new StringBuilder("DisabledMarker["); //$NON-NLS-1$
+		buffer.append("attributes="); //$NON-NLS-1$
 		buffer.append(getAttributes());
-		buffer.append("]");
+		buffer.append("]"); //$NON-NLS-1$
 		return buffer.toString();
 	}
 

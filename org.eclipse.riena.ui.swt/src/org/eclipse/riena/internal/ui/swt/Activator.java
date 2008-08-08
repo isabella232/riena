@@ -1,6 +1,7 @@
 package org.eclipse.riena.internal.ui.swt;
 
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -10,7 +11,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.ui.swt";
+	public static final String PLUGIN_ID = "org.eclipse.riena.ui.swt"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

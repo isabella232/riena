@@ -19,10 +19,10 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	 * @see Object#toString()
 	 */
 	public String toString() {
-		StringBuilder buffer = new StringBuilder("ErrorMessageMarker[");
-		buffer.append("attributes=");
+		StringBuilder buffer = new StringBuilder("ErrorMessageMarker["); //$NON-NLS-1$
+		buffer.append("attributes="); //$NON-NLS-1$
 		buffer.append(getAttributes());
-		buffer.append("]");
+		buffer.append("]"); //$NON-NLS-1$
 		return buffer.toString();
 	}
 
@@ -41,7 +41,7 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	 */
 	public ErrorMessageMarker(String pMessage) {
 		super();
-		assert pMessage != null : "The message of the message marker mus not be null";
+		assert pMessage != null : "The message of the message marker mus not be null"; //$NON-NLS-1$
 		setAttribute(MESSAGE, pMessage);
 	}
 

@@ -55,7 +55,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 	// ////////////////
 
 	private Group createMarkerOptionsGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Marker Options:");
+		Group group = UIControlsFactory.createGroup(parent, "Marker Options:"); //$NON-NLS-1$
 		group.setLayout(createFillLayout());
 
 		Button checkMandatory = UIControlsFactory.createButtonCheck(group);
@@ -74,7 +74,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 	}
 
 	private Group createVisibilityOptionsGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:");
+		Group group = UIControlsFactory.createGroup(parent, "Visibility Options:"); //$NON-NLS-1$
 		group.setLayout(createFillLayout());
 
 		Button checkHidden = UIControlsFactory.createButtonCheck(group);
@@ -84,7 +84,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 	}
 
 	private Group createControlsGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "UI-Controls:");
+		Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).applyTo(group);
 
 		Label label;
@@ -92,22 +92,22 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
 		GridDataFactory vFillFactory = GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING);
 
-		UIControlsFactory.createLabel(group, "Name:");
+		UIControlsFactory.createLabel(group, "Name:"); //$NON-NLS-1$
 		Text textName = UIControlsFactory.createText(group);
 		hFillFactory.applyTo(textName);
 		addUIControl(textName, "textName"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Price:");
+		UIControlsFactory.createLabel(group, "Price:"); //$NON-NLS-1$
 		Text textPrice = UIControlsFactory.createTextNumeric(group);
 		hFillFactory.applyTo(textPrice);
 		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Age:");
+		UIControlsFactory.createLabel(group, "Age:"); //$NON-NLS-1$
 		Combo comboAge = UIControlsFactory.createCombo(group);
 		hFillFactory.applyTo(comboAge);
 		addUIControl(comboAge, "comboAge"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Type:");
+		UIControlsFactory.createLabel(group, "Type:"); //$NON-NLS-1$
 		composite = createComposite(group);
 		Button radioRed = UIControlsFactory.createButtonRadio(composite);
 		addUIControl(radioRed, "radioRed"); //$NON-NLS-1$
@@ -116,13 +116,13 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Button radioRose = UIControlsFactory.createButtonRadio(composite);
 		addUIControl(radioRose, "radioRose"); //$NON-NLS-1$
 
-		label = UIControlsFactory.createLabel(group, "Description:");
+		label = UIControlsFactory.createLabel(group, "Description:"); //$NON-NLS-1$
 		Text textDescr = UIControlsFactory.createTextMulti(group, false, true);
 		vFillFactory.applyTo(label);
 		hFillFactory.applyTo(textDescr);
 		addUIControl(textDescr, "textDescr"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Characteristics:");
+		UIControlsFactory.createLabel(group, "Characteristics:"); //$NON-NLS-1$
 		composite = createComposite(group);
 		Button checkDry = UIControlsFactory.createButtonCheck(composite);
 		checkDry.setSelection(true);
@@ -134,7 +134,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Button checkSpicy = UIControlsFactory.createButtonCheck(composite);
 		addUIControl(checkSpicy, "checkSpicy"); //$NON-NLS-1$
 
-		label = UIControlsFactory.createLabel(group, "Reviewed by:");
+		label = UIControlsFactory.createLabel(group, "Reviewed by:"); //$NON-NLS-1$
 		List listPersons = UIControlsFactory.createList(group, false, true);
 		vFillFactory.applyTo(label);
 		int hHint = UIControlsFactory.getHeightHint(listPersons, 5);

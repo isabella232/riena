@@ -39,7 +39,7 @@ public final class StateMachine {
 			return State.DELETED;
 		}
 
-		throw new InvalidActionFailure("unknown action " + Action.toString(action));
+		throw new InvalidActionFailure("unknown action " + Action.toString(action)); //$NON-NLS-1$
 	}
 
 	/**
@@ -53,7 +53,7 @@ public final class StateMachine {
 	 * @pre currentState!=null
 	 */
 	public static State processAction(State currentState, Action action) throws InvalidActionFailure {
-		Assert.isNotNull(currentState, "currentState cannot be null");
+		Assert.isNotNull(currentState, "currentState cannot be null"); //$NON-NLS-1$
 		// CREATED
 		if (currentState.equals(State.CREATED)) {
 			if (action.equals(Action.SET) || action.equals(Action.ADD) || action.equals(Action.REMOVE)) {
@@ -66,7 +66,7 @@ public final class StateMachine {
 			// MODIFIED
 		} else if (currentState.equals(State.MODIFIED)) {
 			if (action.equals(Action.NEW)) {
-				throw new InvalidActionFailure("state is MODIFIED, can't set to NEW");
+				throw new InvalidActionFailure("state is MODIFIED, can't set to NEW"); //$NON-NLS-1$
 			} else if (action.equals(Action.SET) || action.equals(Action.ADD) || action.equals(Action.REMOVE)) {
 				return currentState;
 			} else if (action.equals(Action.DELETE)) {
@@ -74,21 +74,21 @@ public final class StateMachine {
 			}
 			// DELETED
 		} else if (currentState.equals(State.DELETED)) {
-			throw new InvalidActionFailure("currentState is DELETED, no action possible");
+			throw new InvalidActionFailure("currentState is DELETED, no action possible"); //$NON-NLS-1$
 			// VANISHED
 		} else if (currentState.equals(State.VANISHED)) {
-			throw new InvalidActionFailure("currentState is VANISHED, no action possible");
+			throw new InvalidActionFailure("currentState is VANISHED, no action possible"); //$NON-NLS-1$
 			// CLEAN
 		} else if (currentState.equals(State.CLEAN)) {
 			if (action.equals(Action.NEW)) {
-				throw new InvalidActionFailure("state is MODIFIED, can't set to NEW");
+				throw new InvalidActionFailure("state is MODIFIED, can't set to NEW"); //$NON-NLS-1$
 			} else if (action.equals(Action.SET) || action.equals(Action.ADD) || action.equals(Action.REMOVE)) {
 				return State.MODIFIED;
 			} else if (action.equals(Action.DELETE)) {
 				return State.DELETED;
 			}
 		}
-		throw new InvalidActionFailure("unknown action for currentState state is " + State.toString(currentState) + " action is " + Action.toString(action));
+		throw new InvalidActionFailure("unknown action for currentState state is " + State.toString(currentState) + " action is " + Action.toString(action)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -116,16 +116,16 @@ public final class StateMachine {
 		} else if (currentState.equals(State.MODIFIED) && newState.equals(State.CREATED)) {
 			return State.MODIFIED;
 		} else if (currentState.equals(State.DELETED) || currentState.equals(State.VANISHED)) {
-			throw new InvalidActionFailure("current State is " + State.toString(currentState) + " new State is " + State.toString(newState) + " invalid change");
+			throw new InvalidActionFailure("current State is " + State.toString(currentState) + " new State is " + State.toString(newState) + " invalid change"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} else if (currentState.equals(State.CLEAN)) {
 			if (newState.equals(State.MODIFIED) || newState.equals(State.DELETED)) {
 				return newState;
 			}
 			if (newState.equals(State.VANISHED)) {
-				throw new InvalidActionFailure("current State is " + State.toString(currentState) + " new State is " + State.toString(newState)
-						+ " invalid change");
+				throw new InvalidActionFailure("current State is " + State.toString(currentState) + " new State is " + State.toString(newState) //$NON-NLS-1$ //$NON-NLS-2$
+						+ " invalid change"); //$NON-NLS-1$
 			}
 		}
-		throw new InvalidActionFailure("unknown current State " + State.toString(currentState) + " and new State " + State.toString(newState));
+		throw new InvalidActionFailure("unknown current State " + State.toString(currentState) + " and new State " + State.toString(newState)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

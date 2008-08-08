@@ -112,7 +112,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 			if (serviceRef == rsd.getServiceRef()) {
 				IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
 				servicePublisher.unpublishService(rsd.getPath());
-				rsDescs.remove(rsd.getProtocol() + "::" + rsd.getPath());
+				rsDescs.remove(rsd.getProtocol() + "::" + rsd.getPath()); //$NON-NLS-1$
 				return;
 			}
 		}

@@ -48,7 +48,7 @@ public class TreeTableSubModuleView extends SubModuleView<TreeTableSubModuleCont
 	// ////////////////
 
 	private Group createTreeTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Tree Table:");
+		Group group = UIControlsFactory.createGroup(parent, "&Tree Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
 		Composite treeComposite = new Composite(group, SWT.NONE);

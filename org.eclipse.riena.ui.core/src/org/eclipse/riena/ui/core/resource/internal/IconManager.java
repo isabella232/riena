@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.core.resource.IIconManager;
  */
 public final class IconManager implements IIconManager {
 
-	private static final String EXTENSION_SEPERATOR = ".";
+	private static final String EXTENSION_SEPERATOR = "."; //$NON-NLS-1$
 
 	private Map<String, Icon> icons;
 

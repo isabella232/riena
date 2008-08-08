@@ -27,7 +27,7 @@ public class FileDataSource implements IDataSource {
 	private File file;
 
 	public FileDataSource(File file) {
-		Assert.isNotNull(file, "file must not be null");
+		Assert.isNotNull(file, "file must not be null"); //$NON-NLS-1$
 		this.file = file;
 	}
 

@@ -43,6 +43,6 @@ public class SingleChange extends AbstractBaseChange {
 	}
 
 	public String toString() {
-		return "SingleChange: new:" + childObject;
+		return "SingleChange: new:" + childObject; //$NON-NLS-1$
 	}
 }

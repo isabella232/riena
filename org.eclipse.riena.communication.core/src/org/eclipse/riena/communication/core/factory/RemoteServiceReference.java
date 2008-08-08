@@ -167,6 +167,6 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 
 	@Override
 	public String toString() {
-		return "hostId= " + hostId + ", end point=(" + getDescription() + ")";
+		return "hostId= " + hostId + ", end point=(" + getDescription() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 }

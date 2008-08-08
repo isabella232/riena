@@ -90,18 +90,18 @@ public class ValidInteger extends ValidDecimal {
 			if (string.length() > 0) {
 				final ScanResult scanned = scan(string);
 				if (scanned.decimalSeperatorIndex >= 0) {
-					return ValidationRuleStatus.error(true, "no integer: decimal separator '"
-							+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\'', this);
+					return ValidationRuleStatus.error(true, "no integer: decimal separator '" //$NON-NLS-1$
+							+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\'', this); //$NON-NLS-1$
 				}
 				// test if sign present
 				if (!signed && scanned.minusSignIndex > -1) {
-					return ValidationRuleStatus.error(true, "minus sign present at position '" + scanned.minusSignIndex
-							+ "' in string '" + string + "' where an unsigned integer was expected.", this);
+					return ValidationRuleStatus.error(true, "minus sign present at position '" + scanned.minusSignIndex //$NON-NLS-1$
+							+ "' in string '" + string + "' where an unsigned integer was expected.", this); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter
-							+ "' in string '" + string + '\'', this);
+					return ValidationRuleStatus.error(true, "unrecognized character '" + scanned.lastAlienCharacter //$NON-NLS-1$
+							+ "' in string '" + string + '\'', this); //$NON-NLS-1$
 				}
 				try {
 					final DecimalFormat format = getFormat();
@@ -109,7 +109,7 @@ public class ValidInteger extends ValidDecimal {
 						format.parse(string);
 					}
 				} catch (final ParseException e) {
-					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this);
+					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}

@@ -52,7 +52,7 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 	 */
 	private void createButtonGroup(Composite parent) {
 
-		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons");
+		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
 		buttonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, 0);

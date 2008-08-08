@@ -41,13 +41,13 @@ public class StringToDateConverter extends Converter {
 	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
 	 */
 	public Object convert(Object fromObject) {
-		if (fromObject == null || "".equals(fromObject)) {
+		if (fromObject == null || "".equals(fromObject)) { //$NON-NLS-1$
 			return null;
 		}
 		try {
 			return format.parse((String) fromObject);
 		} catch (ParseException e) {
-			throw new ConversionFailure("Cannot convert \"" + fromObject + "\" to a java.util.Date.", e);
+			throw new ConversionFailure("Cannot convert \"" + fromObject + "\" to a java.util.Date.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

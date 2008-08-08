@@ -40,7 +40,7 @@ public class Activator implements BundleActivator {
 		if (pingPongRef != null) {
 			new PingClient().sendPing(pingPongRef);
 		} else {
-			context.addServiceListener(new PingClient(), "(objectClass=" + IPingPong.class.getName() + ")");
+			context.addServiceListener(new PingClient(), "(objectClass=" + IPingPong.class.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -64,10 +64,10 @@ public class Activator implements BundleActivator {
 			}
 
 			Ping ping = new Ping();
-			ping.setText("I ping you and you pong me");
+			ping.setText("I ping you and you pong me"); //$NON-NLS-1$
 
 			Pong pong = pingPong.ping(ping);
-			System.out.println("PingPong::Client:: " + pong);
+			System.out.println("PingPong::Client:: " + pong); //$NON-NLS-1$
 
 		}
 	}

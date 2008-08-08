@@ -43,7 +43,7 @@ public class Activator extends RienaActivator {
 		Activator.plugin = this;
 
 		logger = getLogger(Activator.class.getName());
-		logger.log(LogService.LOG_INFO, "start hessian support on server");
+		logger.log(LogService.LOG_INFO, "start hessian support on server"); //$NON-NLS-1$
 
 		publisher = new HessianRemoteServicePublisher();
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
@@ -62,7 +62,7 @@ public class Activator extends RienaActivator {
 		publisherReg = null;
 		publisher = null;
 
-		logger.log(LogService.LOG_INFO, "stop hessian support on server");
+		logger.log(LogService.LOG_INFO, "stop hessian support on server"); //$NON-NLS-1$
 		Activator.plugin = null;
 		super.stop(context);
 	}

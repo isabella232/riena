@@ -29,19 +29,19 @@ public interface IActionAdapter extends IMarkableAdapter, IPositionable {
 	/**
 	 * <code>PROPERTY_TEXT</code>
 	 */
-	String PROPERTY_TEXT = "text";
+	String PROPERTY_TEXT = "text"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_ICON</code>
 	 */
-	String PROPERTY_ICON = "icon";
+	String PROPERTY_ICON = "icon"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_POSITION</code>
 	 */
-	String PROPERTY_POSITION = "position";
+	String PROPERTY_POSITION = "position"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_MNEMONIC_INDEX</code>
 	 */
-	String PROPERTY_MNEMONIC_INDEX = "mnemonicIndex";
+	String PROPERTY_MNEMONIC_INDEX = "mnemonicIndex"; //$NON-NLS-1$
 
 	/**
 	 * Indicates whether a DisabledMarker has been added.

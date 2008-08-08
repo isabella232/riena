@@ -120,13 +120,13 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (!allowRegister) {
 			return;
 		}
-		Assert.isNotNull(object, "object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
 		// objects can only be registered once, so check if is already
 		// registered
 		Assert.isTrue((object.getObjectId() != null && !isRegistered(object)) || object.getObjectId() == null,
-				"object cannot be registered a second time");
+				"object cannot be registered a second time"); //$NON-NLS-1$
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		keepReferenceOf(object);
@@ -146,11 +146,11 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (!allowRegister) {
 			return;
 		}
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isTrue(object.getObjectId() != null, "ObjectId of Transacted Object must not be null");
-		Assert.isTrue(!isRegistered(object), "Transacted Object must not be already registered");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isTrue(object.getObjectId() != null, "ObjectId of Transacted Object must not be null"); //$NON-NLS-1$
+		Assert.isTrue(!isRegistered(object), "Transacted Object must not be already registered"); //$NON-NLS-1$
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		notifyObjectChange(object, Action.NEW);
@@ -163,10 +163,10 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (!allowRegister) {
 			return;
 		}
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		notifyObjectChange(object, Action.DELETE);
 	}
@@ -218,12 +218,12 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 									extract.addCleanTransactedObject((ITransactedObject) mChild);
 								}
 							} else {
-								throw new ObjectTransactionFailure("non ITransactionObject in multi reference ???");
+								throw new ObjectTransactionFailure("non ITransactionObject in multi reference ???"); //$NON-NLS-1$
 							}
 						}
 					} else {
 						throw new ObjectTransactionFailure(
-								"unknown change typ (not single and not multi reference change)");
+								"unknown change typ (not single and not multi reference change)"); //$NON-NLS-1$
 					}
 				}
 			}
@@ -233,7 +233,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 
 	private IObjectTransactionExtract exportExtractInternal(boolean exportClean) {
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		// copies the TransactionDeltas into an Array
 		ObjectTransactionExtractImpl extract = new ObjectTransactionExtractImpl();
@@ -247,7 +247,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 				}
 			}
 		} catch (CloneNotSupportedException e) {
-			throw new ObjectTransactionFailure("error cloning TransactionDelta ", e);
+			throw new ObjectTransactionFailure("error cloning TransactionDelta ", e); //$NON-NLS-1$
 		}
 		// and create an objectTransactionextract from it
 		return extract;
@@ -282,8 +282,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 						}
 					}
 					if (!isRegistered) {
-						throw new InvalidTransactionFailure("reference target object " + child
-								+ " must be registered before import");
+						throw new InvalidTransactionFailure("reference target object " + child //$NON-NLS-1$
+								+ " must be registered before import"); //$NON-NLS-1$
 					}
 				} else {
 					if (change instanceof MultipleChange) {
@@ -297,17 +297,17 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 								if (mChild instanceof ITransactedObject) {
 									isRegistered = isRegistered((ITransactedObject) mChild);
 								} else {
-									throw new InvalidTransactionFailure("invalid object in multi-ref " + mChild);
+									throw new InvalidTransactionFailure("invalid object in multi-ref " + mChild); //$NON-NLS-1$
 								}
 							}
 							if (!isRegistered) {
-								throw new InvalidTransactionFailure("reference target object " + mChild
-										+ " must be registered before import");
+								throw new InvalidTransactionFailure("reference target object " + mChild //$NON-NLS-1$
+										+ " must be registered before import"); //$NON-NLS-1$
 							}
 						}
 					} else {
 						throw new ObjectTransactionFailure(
-								"unknown change typ (not single and not multi reference change)");
+								"unknown change typ (not single and not multi reference change)"); //$NON-NLS-1$
 					}
 				}
 			}
@@ -323,15 +323,15 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 */
 	private void checkForRegisteredObjects() throws InvalidTransactionFailure {
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		if (!isRootTransaction()) {
-			throw new InvalidTransactionFailure("object transaction must be the root transaction");
+			throw new InvalidTransactionFailure("object transaction must be the root transaction"); //$NON-NLS-1$
 		}
 		// import means adding changes to the objectTransaction and cannot
 		// happen in clean modus
 		if (isCleanModus()) {
-			throw new InvalidTransactionFailure("object transaction must NOT be in clean modus when importing");
+			throw new InvalidTransactionFailure("object transaction must NOT be in clean modus when importing"); //$NON-NLS-1$
 		}
 
 		// this will add all preregistered objects with ObjectIds to the
@@ -340,10 +340,10 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		if (preRegisteredCleanObjects != null && preRegisteredCleanObjects.size() > 0) {
 			for (ITransactedObject object : preRegisteredCleanObjects) {
 				if (object.getObjectId() != null) {
-					throw new InvalidTransactionFailure("internal error, preregistered object found with ObjectId "
+					throw new InvalidTransactionFailure("internal error, preregistered object found with ObjectId " //$NON-NLS-1$
 							+ object);
 				} else {
-					throw new InvalidTransactionFailure("missing object id for object " + object);
+					throw new InvalidTransactionFailure("missing object id for object " + object); //$NON-NLS-1$
 				}
 			}
 		}
@@ -353,15 +353,15 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	private void importExtractInternal(IObjectTransactionExtract extract, boolean importClean)
 			throws InvalidTransactionFailure {
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		if (!isRootTransaction()) {
-			throw new InvalidTransactionFailure("object transaction must be the root transaction");
+			throw new InvalidTransactionFailure("object transaction must be the root transaction"); //$NON-NLS-1$
 		}
 		// import means adding changes to the objectTransaction and cannot
 		// happen in clean modus
 		if (isCleanModus()) {
-			throw new InvalidTransactionFailure("object transaction must NOT be in clean modus when importing");
+			throw new InvalidTransactionFailure("object transaction must NOT be in clean modus when importing"); //$NON-NLS-1$
 		}
 
 		// check that all object ids referenced in the deltas, exist in the
@@ -374,16 +374,16 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 				IObjectId newObjectId = null;
 				String versionChange = null;
 				// check if the extract contains an object id change
-				if (delta.getSingleRefObject("sys::oldoid") != null) {
-					objectId = (IObjectId) delta.getSingleRefObject("sys::oldoid");
-					newObjectId = (IObjectId) delta.getSingleRefObject("sys::oid");
+				if (delta.getSingleRefObject("sys::oldoid") != null) { //$NON-NLS-1$
+					objectId = (IObjectId) delta.getSingleRefObject("sys::oldoid"); //$NON-NLS-1$
+					newObjectId = (IObjectId) delta.getSingleRefObject("sys::oid"); //$NON-NLS-1$
 				}
-				if (delta.getSingleRefObject("sys::version") != null) {
-					versionChange = (String) delta.getSingleRefObject("sys::version");
+				if (delta.getSingleRefObject("sys::version") != null) { //$NON-NLS-1$
+					versionChange = (String) delta.getSingleRefObject("sys::version"); //$NON-NLS-1$
 				}
 				if (this.involvedTransactedObjects.get(objectId) == null) {
 					throw new ObjectTransactionFailure(
-							"ObjectIds for all imported deltas must exist in objectTransaction, not found=" + delta);
+							"ObjectIds for all imported deltas must exist in objectTransaction, not found=" + delta); //$NON-NLS-1$
 				} else {
 					if (newObjectId != null) {
 						changeObjectId(objectId, newObjectId);
@@ -412,7 +412,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 */
 	public boolean isRootTransaction() {
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		return rootTransaction;
 	}
@@ -426,10 +426,10 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *            state that should be set
 	 */
 	private void setObjectState(ITransactedObject object, State state) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		keepReferenceOf(object);
@@ -458,10 +458,10 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 * @return state of the transacted objcet
 	 */
 	private State getObjectState(ITransactedObject object) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		// find the delta for an oid
 		TransactionDelta delta = changesInTransaction.get(object.getObjectId());
@@ -482,16 +482,16 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      java.lang.String, java.lang.Object)
 	 */
 	public void setReference(ITransactedObject object, String refName, Object newValue) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		Assert.isTrue(!(newValue instanceof ITransactedObject),
-				"setReference for Object must not pass a \"hidden\" ITransactedObject");
+				"setReference for Object must not pass a \"hidden\" ITransactedObject"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
-			Assert.isTrue(isRegistered(object), "object must be registered");
+			Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 		}
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		// change nothing if in clean modus
@@ -517,18 +517,18 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	}
 
 	public Object getReference(ITransactedObject object, String refName, Object defaultValue) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		Assert.isTrue(!(defaultValue instanceof ITransactedObject),
-				"getReference for Object must not pass a \"hidden\" ITransactedObject for defaultValue");
+				"getReference for Object must not pass a \"hidden\" ITransactedObject for defaultValue"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (isCleanModus() || (!isStrictModus() && !isRegistered(object))) {
 			return defaultValue;
 		}
-		Assert.isTrue(isRegistered(object), "object must be registered");
+		Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		// find delta entry, look for a single change entry with the requested
@@ -561,17 +561,17 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public void setReference(ITransactedObject object, String relationName, ITransactedObject refObject) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
-			Assert.isTrue(isRegistered(object), "object must be registered");
+			Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 			Assert.isTrue(refObject == null || (refObject.getObjectId() != null && isRegistered(refObject)),
-					"invalid refObject");
+					"invalid refObject"); //$NON-NLS-1$
 		}
 
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		// do nothing if in clean modus
@@ -608,18 +608,18 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 */
 	public ITransactedObject getReference(ITransactedObject object, String relationName,
 			ITransactedObject defaultRefObject) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (isCleanModus() || (!isStrictModus() && !isRegistered(object))) {
 			return defaultRefObject;
 		}
-		Assert.isTrue(isRegistered(object), "object must be registered");
+		Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 		Assert.isTrue(defaultRefObject == null
 				|| (defaultRefObject.getObjectId() != null && isRegistered(defaultRefObject)),
-				"invalid defaultRefObject (is null, has no ObjectId or is not registered)");
+				"invalid defaultRefObject (is null, has no ObjectId or is not registered)"); //$NON-NLS-1$
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 
 		// find the delta entry for this transacted object, look for a single
@@ -634,7 +634,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 					if (refObject instanceof IObjectId) {
 						return lookupObjectById((IObjectId) refObject);
 					} else {
-						throw new InvalidTransactionFailure("how did I ever get here ???");
+						throw new InvalidTransactionFailure("how did I ever get here ???"); //$NON-NLS-1$
 					}
 				} else {
 					return null;
@@ -655,20 +655,20 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public void addReference(ITransactedObject object, String referenceName, ITransactedObject refObject) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
-			Assert.isTrue(isRegistered(object), "object must be registered");
+			Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 		}
-		Assert.isNotNull(refObject, "refObject must not be null");
-		Assert.isNotNull(refObject.getObjectId(), "ObjectId of refObject must not be null");
+		Assert.isNotNull(refObject, "refObject must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(refObject.getObjectId(), "ObjectId of refObject must not be null"); //$NON-NLS-1$
 		if (!isCleanModus()) {
-			Assert.isTrue(isRegistered(refObject), "refObject must be registered");
+			Assert.isTrue(isRegistered(refObject), "refObject must be registered"); //$NON-NLS-1$
 		}
 
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		// do nothing if in clean modus
 		if (isCleanModus()) {
@@ -697,20 +697,20 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public void removeReference(ITransactedObject object, String referenceName, ITransactedObject refObject) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
-			Assert.isTrue(isRegistered(object), "object must be registered");
+			Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 		}
-		Assert.isNotNull(refObject, "object must not be null");
-		Assert.isNotNull(refObject.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(refObject, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(refObject.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		if (!isCleanModus() || isStrictModus()) {
-			Assert.isTrue(isRegistered(refObject), "refObject must be registered");
+			Assert.isTrue(isRegistered(refObject), "refObject must be registered"); //$NON-NLS-1$
 		}
 
 		if (isInvalid()) {
-			throw new InvalidTransactionFailure("object transaction is invalid");
+			throw new InvalidTransactionFailure("object transaction is invalid"); //$NON-NLS-1$
 		}
 		// if in clean modus don't do anything in the transaction
 		if (isCleanModus()) {
@@ -737,13 +737,13 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      java.lang.String, java.util.Set)
 	 */
 	public <T> Set<T> listReference(ITransactedObject object, String referenceName, Set<T> initialSet) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (isCleanModus() || (!isStrictModus() && !isRegistered(object))) {
 			return initialSet;
 		}
-		Assert.isTrue(isRegistered(object), "object must be registered");
+		Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 		Set<T> newSet;
 		// if the passed Set is not a LinkedHashSet, make it one
 		if (initialSet == null) {
@@ -761,13 +761,13 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      java.lang.String, java.util.List)
 	 */
 	public <T> List<T> listReference(ITransactedObject object, String referenceName, List<T> initialList) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		if (isCleanModus() || (!isStrictModus() && !isRegistered(object))) {
 			return initialList;
 		}
-		Assert.isTrue(isRegistered(object), "object must be registered");
+		Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
 
 		List<T> newList;
 		if (initialList == null) {
@@ -809,7 +809,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 						} else if (singleEntry.getState().equals(State.REMOVED)) {
 							initialCollection.remove(tObject);
 						} else {
-							throw new InvalidTransactionFailure("state was not ADDED or REMOVED for " + singleEntry);
+							throw new InvalidTransactionFailure("state was not ADDED or REMOVED for " + singleEntry); //$NON-NLS-1$
 						}
 					}
 				}
@@ -822,11 +822,11 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      java.lang.String)
 	 */
 	public void setVersionUpdate(ITransactedObject object, String version) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "object ObjectId must not be null");
-		Assert.isTrue(!isInvalid(), "must not be an invalid transaction");
-		Assert.isTrue(!isCleanModus(), "must not be in clean modus");
-		this.setReference(object, "sys::version", version);
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "object ObjectId must not be null"); //$NON-NLS-1$
+		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
+		Assert.isTrue(!isCleanModus(), "must not be in clean modus"); //$NON-NLS-1$
+		this.setReference(object, "sys::version", version); //$NON-NLS-1$
 		object.setVersion(version);
 	}
 
@@ -852,17 +852,17 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      org.eclipse.riena.objecttransaction.IObjectId)
 	 */
 	public void setObjectIdUpdate(IObjectId oldObjectId, IObjectId newObjectId) {
-		Assert.isTrue(oldObjectId != null && newObjectId != null, "old and new ObjectId must not be null");
-		Assert.isTrue(oldObjectId != newObjectId, "instance of oldObjectId and newObjectId must not be the same");
+		Assert.isTrue(oldObjectId != null && newObjectId != null, "old and new ObjectId must not be null"); //$NON-NLS-1$
+		Assert.isTrue(oldObjectId != newObjectId, "instance of oldObjectId and newObjectId must not be the same"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		changeObjectId(oldObjectId, newObjectId);
 	}
 
 	private void changeObjectId(IObjectId oldObjectId, IObjectId newObjectId) {
-		assert oldObjectId != null && newObjectId != null : "oldObjectId and newObjectId must not be null";
+		assert oldObjectId != null && newObjectId != null : "oldObjectId and newObjectId must not be null"; //$NON-NLS-1$
 		ITransactedObject transObject = lookupObjectById(oldObjectId);
 		if (transObject == null) {
-			throw new ObjectTransactionFailure("oldObjectId is not registered");
+			throw new ObjectTransactionFailure("oldObjectId is not registered"); //$NON-NLS-1$
 		}
 		// change the ObjectId in the transactedobject
 		transObject.setObjectId(newObjectId);
@@ -900,8 +900,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		}
 		// add change record so that extract contain a notification of the
 		// change
-		this.setReference(transObject, "sys::oid", newObjectId);
-		this.setReference(transObject, "sys::oldoid", oldObjectId);
+		this.setReference(transObject, "sys::oid", newObjectId); //$NON-NLS-1$
+		this.setReference(transObject, "sys::oldoid", oldObjectId); //$NON-NLS-1$
 	}
 
 	/**
@@ -909,9 +909,9 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransaction#isRegistered(org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public boolean isRegistered(ITransactedObject object) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isNotNull(object.getObjectId(), "object ObjectId must not be null");
-		Assert.isTrue(!isInvalid(), "must not be an invalid transaction");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(object.getObjectId(), "object ObjectId must not be null"); //$NON-NLS-1$
+		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		// check if a delta entry was found
 		boolean isRegistered = changesInTransaction.get(object.getObjectId()) != null;
@@ -925,8 +925,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	}
 
 	private boolean isRegistered(IObjectId object) {
-		Assert.isNotNull(object, "object must not be null");
-		Assert.isTrue(!isInvalid(), "must not be an invalid transaction");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
+		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		// check if a delta entry was found
 		boolean isRegistered = changesInTransaction.get(object) != null;
@@ -943,7 +943,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	 *      int)
 	 */
 	private void notifyObjectChange(ITransactedObject object, Action action) {
-		Assert.isNotNull(object, "object must not be null");
+		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null");
 
 		if (isInvalid()) {

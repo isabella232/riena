@@ -24,7 +24,7 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface ISessionService {
 
-	String WS_ID = "/SessionService";
+	String WS_ID = "/SessionService"; //$NON-NLS-1$
 
 	/**
 	 * Generates a new sessionid for a user with given credentials

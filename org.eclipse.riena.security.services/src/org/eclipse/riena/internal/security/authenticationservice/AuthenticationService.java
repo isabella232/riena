@@ -56,7 +56,7 @@ public class AuthenticationService implements IAuthenticationService {
 	/**
 	 * version ID (controlled by CVS)
 	 */
-	public static final String VERSION_ID = "$Id$";
+	public static final String VERSION_ID = "$Id$"; //$NON-NLS-1$
 
 	// private Properties properties;
 	private final static Logger LOGGER = Activator.getDefault().getLogger(AuthenticationService.class.getName());
@@ -159,7 +159,7 @@ public class AuthenticationService implements IAuthenticationService {
 			ticket.setSession(session);
 			return ticket;
 		} catch (LoginException e) {
-			throw new AuthenticationFailure("AuthenticationService login failed", e);
+			throw new AuthenticationFailure("AuthenticationService login failed", e); //$NON-NLS-1$
 		}
 	}
 
@@ -224,7 +224,7 @@ class MyCallbackHandler implements CallbackHandler {
 
 												} else {
 													throw new UnsupportedOperationException(
-															"unsupported authentication callback type");
+															"unsupported authentication callback type"); //$NON-NLS-1$
 												}
 											}
 										}

@@ -45,16 +45,16 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 	// ////////////////
 
 	private Group createGroupOnEditValidation(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "Validation Rules:");
+		Group group = UIControlsFactory.createGroup(parent, "Validation Rules:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(3).applyTo(group);
 
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(group, "Control Value");
-		UIControlsFactory.createLabel(group, "Ridget Value");
+		UIControlsFactory.createLabel(group, "Control Value"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Ridget Value"); //$NON-NLS-1$
 
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults().grab(true, false);
 
-		UIControlsFactory.createLabel(group, "Numbers only:");
+		UIControlsFactory.createLabel(group, "Numbers only:"); //$NON-NLS-1$
 		Text txtNumbersOnly = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnly, "txtNumbersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(txtNumbersOnly);
@@ -62,7 +62,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblNumbersOnly, "lblNumbersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(lblNumbersOnly);
 
-		UIControlsFactory.createLabel(group, "Numbers only (direct writing):");
+		UIControlsFactory.createLabel(group, "Numbers only (direct writing):"); //$NON-NLS-1$
 		Text txtNumbersOnlyDW = UIControlsFactory.createText(group);
 		addUIControl(txtNumbersOnlyDW, "txtNumbersOnlyDW"); //$NON-NLS-1$
 		fillFactory.applyTo(txtNumbersOnlyDW);
@@ -70,7 +70,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblNumbersOnlyDW, "lblNumbersOnlyDW"); //$NON-NLS-1$
 		fillFactory.applyTo(lblNumbersOnlyDW);
 
-		UIControlsFactory.createLabel(group, "Characters only:");
+		UIControlsFactory.createLabel(group, "Characters only:"); //$NON-NLS-1$
 		Text txtCharactersOnly = UIControlsFactory.createText(group);
 		addUIControl(txtCharactersOnly, "txtCharactersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(txtCharactersOnly);
@@ -78,7 +78,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblCharactersOnly, "lblCharactersOnly"); //$NON-NLS-1$
 		fillFactory.applyTo(lblCharactersOnly);
 
-		UIControlsFactory.createLabel(group, "Expression (PDX##):");
+		UIControlsFactory.createLabel(group, "Expression (PDX##):"); //$NON-NLS-1$
 		Text txtExpression = UIControlsFactory.createText(group);
 		addUIControl(txtExpression, "txtExpression"); //$NON-NLS-1$
 		fillFactory.applyTo(txtExpression);
@@ -86,7 +86,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblExpression, "lblExpression"); //$NON-NLS-1$
 		fillFactory.applyTo(lblExpression);
 
-		UIControlsFactory.createLabel(group, "Length < 5:");
+		UIControlsFactory.createLabel(group, "Length < 5:"); //$NON-NLS-1$
 		Text txtLengthLessThan5 = UIControlsFactory.createText(group);
 		addUIControl(txtLengthLessThan5, "txtLengthLessThan5"); //$NON-NLS-1$
 		fillFactory.applyTo(txtLengthLessThan5);
@@ -94,7 +94,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblLengthLessThan5, "lblLengthLessThan5"); //$NON-NLS-1$
 		fillFactory.applyTo(lblLengthLessThan5);
 
-		UIControlsFactory.createLabel(group, "Required and Lowercase:");
+		UIControlsFactory.createLabel(group, "Required and Lowercase:"); //$NON-NLS-1$
 		Text txtRequiredLowercase = UIControlsFactory.createText(group);
 		addUIControl(txtRequiredLowercase, "txtRequiredLowercase"); //$NON-NLS-1$
 		fillFactory.applyTo(txtRequiredLowercase);
@@ -102,7 +102,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblRequiredLowercase, "lblRequiredLowercase"); //$NON-NLS-1$
 		fillFactory.applyTo(lblRequiredLowercase);
 
-		UIControlsFactory.createLabel(group, "Numeric Range 18 to 80:");
+		UIControlsFactory.createLabel(group, "Numeric Range 18 to 80:"); //$NON-NLS-1$
 		Text txtRange18to80 = UIControlsFactory.createTextNumeric(group);
 		addUIControl(txtRange18to80, "txtRange18to80"); //$NON-NLS-1$
 		fillFactory.applyTo(txtRange18to80);
@@ -110,7 +110,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblRange18to80, "lblRange18to80"); //$NON-NLS-1$
 		fillFactory.applyTo(lblRange18to80);
 
-		UIControlsFactory.createLabel(group, "Length between 5 and 10:");
+		UIControlsFactory.createLabel(group, "Length between 5 and 10:"); //$NON-NLS-1$
 		Text txtLength5to10 = UIControlsFactory.createText(group);
 		addUIControl(txtLength5to10, "txtLength5to10"); //$NON-NLS-1$
 		fillFactory.applyTo(txtLength5to10);
@@ -118,7 +118,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblLength5to10, "lblLength5to10"); //$NON-NLS-1$
 		fillFactory.applyTo(lblLength5to10);
 
-		UIControlsFactory.createLabel(group, "Valid Date (dd.MM.yyyy):");
+		UIControlsFactory.createLabel(group, "Valid Date (dd.MM.yyyy):"); //$NON-NLS-1$
 		Text txtDate = UIControlsFactory.createText(group);
 		addUIControl(txtDate, "txtDate"); //$NON-NLS-1$
 		fillFactory.applyTo(txtDate);
@@ -126,7 +126,7 @@ public class ValidationSubModuleView extends SubModuleView<ValidationSubModuleCo
 		addUIControl(lblDate, "lblDate"); //$NON-NLS-1$
 		fillFactory.applyTo(lblDate);
 
-		Label lbl = UIControlsFactory.createLabel(group, "Valid eMail:");
+		Label lbl = UIControlsFactory.createLabel(group, "Valid eMail:"); //$NON-NLS-1$
 		Text txtEmail = UIControlsFactory.createText(group);
 		addUIControl(txtEmail, "txtEmail"); //$NON-NLS-1$
 		fillFactory.applyTo(txtEmail);

@@ -30,7 +30,7 @@ public interface IRemoteServiceProtocol {
      * Defines the OSGi Service property for protocol type. An OSGi Service should set this property and the protocol
      * name
      */
-    String PROP_PROTOCOL = "riena.protocol";
+    String PROP_PROTOCOL = "riena.protocol"; //$NON-NLS-1$
 
     /**
      * 

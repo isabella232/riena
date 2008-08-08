@@ -39,7 +39,7 @@ import org.osgi.service.log.LogService;
  */
 public class ServicePublishEventDispatcher implements IServicePublishEventDispatcher {
 
-	public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")";
+	public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)(" + PROP_REMOTE_PROTOCOL + "=*)" + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private Map<String, RemoteServiceDescription> rsDescs;
 	private Map<String, IServicePublisher> servicePublishers;
@@ -81,7 +81,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 		String remoteType = CommunicationUtil.accessProperty(serviceRef
 				.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
 		String path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
-		RemoteServiceDescription rsDesc = rsDescs.get(remoteType + "::" + path);
+		RemoteServiceDescription rsDesc = rsDescs.get(remoteType + "::" + path); //$NON-NLS-1$
 		if (rsDesc == null) {
 			return false;
 		}
@@ -90,8 +90,8 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 
 	public void bind(IServicePublisher publisher) {
 		servicePublishers.put(publisher.getProtocol(), publisher);
-		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol()
-				+ " REGISTER...publishing all services that were waiting for him");
+		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
+				+ " REGISTER...publishing all services that were waiting for him"); //$NON-NLS-1$
 		// check for services which are missing a publisher
 
 		update();
@@ -99,8 +99,8 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 
 	public void unbind(IServicePublisher publisher) {
 		String protocol = publisher.getProtocol();
-		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol()
-				+ " UNREGISTER...unpublishing all its services");
+		LOGGER.log(LogService.LOG_DEBUG, "servicePublish=" + publisher.getProtocol() //$NON-NLS-1$
+				+ " UNREGISTER...unpublishing all its services"); //$NON-NLS-1$
 		// unregister all web services for this type
 
 		for (RemoteServiceDescription rsDesc : rsDescs.values()) {
@@ -121,32 +121,32 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 				ServiceHooksProxy handler = new ServiceHooksProxy(service);
 				// create remote service description
 				String[] interfaces = (String[]) serviceRef.getProperty(Constants.OBJECTCLASS);
-				assert interfaces.length == 1 : "OSGi service registrations only with one interface supported";
+				assert interfaces.length == 1 : "OSGi service registrations only with one interface supported"; //$NON-NLS-1$
 				String interfaceName = interfaces[0];
 				Class interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
 				service = Proxy.newProxyInstance(interfaceClazz.getClassLoader(), new Class[] { interfaceClazz },
 						handler);
 				RemoteServiceDescription rsDesc = new RemoteServiceDescription(serviceRef, service, interfaceClazz);
 				handler.setRemoteServiceDescription(rsDesc);
-				RemoteServiceDescription rsDescFound = rsDescs.get(rsDesc.getProtocol() + "::" + rsDesc.getPath());
+				RemoteServiceDescription rsDescFound = rsDescs.get(rsDesc.getProtocol() + "::" + rsDesc.getPath()); //$NON-NLS-1$
 				if (rsDescFound != null && rsDescFound.getState() == RemoteServiceDescription.State.REGISTERED) {
-					LOGGER.log(LogService.LOG_WARNING, "A service endpoint with path=[" + rsDesc.getPath()
-							+ "] and remoteType=[" + rsDesc.getProtocol() + "] already published... ignored");
+					LOGGER.log(LogService.LOG_WARNING, "A service endpoint with path=[" + rsDesc.getPath() //$NON-NLS-1$
+							+ "] and remoteType=[" + rsDesc.getProtocol() + "] already published... ignored"); //$NON-NLS-1$ //$NON-NLS-2$
 					return;
 				}
 
 				if (rsDescFound == null) {
 					if (rsDesc.getPath() == null) {
-						LOGGER.log(LogService.LOG_WARNING, "no path for service: " + service.toString()
-								+ " Service not published remote");
+						LOGGER.log(LogService.LOG_WARNING, "no path for service: " + service.toString() //$NON-NLS-1$
+								+ " Service not published remote"); //$NON-NLS-1$
 						return;
 					}
 					if (!servicePublishers.containsKey(rsDesc.getProtocol())) {
-						LOGGER.log(LogService.LOG_DEBUG, "no publisher found for protocol " + rsDesc.getProtocol());
+						LOGGER.log(LogService.LOG_DEBUG, "no publisher found for protocol " + rsDesc.getProtocol()); //$NON-NLS-1$
 						return;
 					}
-					rsDescs.put(rsDesc.getProtocol() + "::" + rsDesc.getPath(), rsDesc);
-					LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size());
+					rsDescs.put(rsDesc.getProtocol() + "::" + rsDesc.getPath(), rsDesc); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size()); //$NON-NLS-1$
 
 				} else if (rsDescFound.getState() == RemoteServiceDescription.State.UNREGISTERED) {
 					rsDesc = rsDescFound;
@@ -155,7 +155,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 				publish(rsDesc, handler);
 			} catch (ClassNotFoundException e) {
 				LOGGER.log(LogService.LOG_DEBUG,
-						"Could not load class for remote service interface for service reference " + serviceRef, e);
+						"Could not load class for remote service interface for service reference " + serviceRef, e); //$NON-NLS-1$
 			}
 		}
 
@@ -199,7 +199,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 					}
 				}
 				if (toRemove != null) {
-					rsDescs.remove(remoteType + "::" + path);
+					rsDescs.remove(remoteType + "::" + path); //$NON-NLS-1$
 					if (servicePublishers.containsKey(toRemove.getProtocol())) {
 						unpublish(toRemove);
 					}
@@ -208,7 +208,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 			} finally {
 				context.ungetService(serviceRef);
 			}
-			LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size());
+			LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size()); //$NON-NLS-1$
 		}
 	}
 

@@ -193,7 +193,7 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 	public String toString() {
 
 		if (userObject == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else {
 			return userObject.toString();
 		} // end if

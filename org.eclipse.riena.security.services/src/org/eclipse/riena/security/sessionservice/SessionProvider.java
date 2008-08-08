@@ -40,7 +40,7 @@ public class SessionProvider implements ISessionProvider {
 	 */
 	public Session createSession(Principal[] principals) {
 		// we could use information from the principal parameter here
-		return new Session("ssoid##" + Long.valueOf(random.nextLong() + System.currentTimeMillis()).toString() + "##");
+		return new Session("ssoid##" + Long.valueOf(random.nextLong() + System.currentTimeMillis()).toString() + "##"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

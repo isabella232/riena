@@ -83,7 +83,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 			Collections.sort(sortedMarkers, new MessageMarkerComparator());
 			for (IMessageMarker nextMarker : sortedMarkers) {
 				if (sw.toString().trim().length() > 0) {
-					sw.write("\n");
+					sw.write("\n"); //$NON-NLS-1$
 				}
 				if (nextMarker.getMessage() != null) {
 					sw.write(nextMarker.getMessage());

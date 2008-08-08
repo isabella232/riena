@@ -26,172 +26,172 @@ import org.eclipse.riena.ui.core.resource.internal.IconState;
 public interface IIconManager {
 
 	/** Icon FAVORITES. */
-	String FAVORITES = "0001";
+	String FAVORITES = "0001"; //$NON-NLS-1$
 
 	/** Icon ERROR. */
-	String ERROR = "0002";
+	String ERROR = "0002"; //$NON-NLS-1$
 
 	/** Icon INFORMATION. */
-	String INFORMATION = "0003";
+	String INFORMATION = "0003"; //$NON-NLS-1$
 
 	/** Icon HELP. */
-	String HELP = "0004";
+	String HELP = "0004"; //$NON-NLS-1$
 
 	/** Icon WARNING. */
-	String WARNING = "0005";
+	String WARNING = "0005"; //$NON-NLS-1$
 
 	/** Icon BROWSER. */
-	String BROWSER = "0007";
+	String BROWSER = "0007"; //$NON-NLS-1$
 
 	/** Icon CLOSE_MODULE. */
-	String MODULE_CLOSE = "0008";
+	String MODULE_CLOSE = "0008"; //$NON-NLS-1$
 
 	/** Icon COMMUNICATION. */
-	String COMMUNICATION = "0009";
+	String COMMUNICATION = "0009"; //$NON-NLS-1$
 
 	/** Icon SPACER. */
-	String SPACER = "0010";
+	String SPACER = "0010"; //$NON-NLS-1$
 
 	/** Icon TREE_DOCUMENT_LEAF. */
-	String TREE_DOCUMENT_LEAF = "0013";
+	String TREE_DOCUMENT_LEAF = "0013"; //$NON-NLS-1$
 
 	/** Icon LOGIN. */
-	String LOGIN = "0014";
+	String LOGIN = "0014"; //$NON-NLS-1$
 
 	/** Icon SAVE. */
-	String SAVE = "0018";
+	String SAVE = "0018"; //$NON-NLS-1$
 
 	/** Icon TREE_FOLDER_CLOSED. */
-	String TREE_FOLDER_CLOSED = "0022";
+	String TREE_FOLDER_CLOSED = "0022"; //$NON-NLS-1$
 
 	/** Icon TREE_FOLDER_OPEN. */
-	String TREE_FOLDER_OPEN = "0023";
+	String TREE_FOLDER_OPEN = "0023"; //$NON-NLS-1$
 
 	/** Icon REFRESH. */
-	String REFRESH = "0028";
+	String REFRESH = "0028"; //$NON-NLS-1$
 
 	/** Icon PRINT. */
-	String PRINT = "0030";
+	String PRINT = "0030"; //$NON-NLS-1$
 
 	/** Icon GENERAL_MODULE. */
-	String GENERAL_MODULE = "0034";
+	String GENERAL_MODULE = "0034"; //$NON-NLS-1$
 
 	/** Icon TREE. */
-	String TREE = "0035";
+	String TREE = "0035"; //$NON-NLS-1$
 
 	/** Icon SEARCH. */
-	String SEARCH = "0042";
+	String SEARCH = "0042"; //$NON-NLS-1$
 
 	/** Icon DEFAULT_ICON - to be designed. */
-	String DEFAULT_ICON = "0044";
+	String DEFAULT_ICON = "0044"; //$NON-NLS-1$
 
 	/** Icon FORWARD. */
-	String FORWARD = "0045";
+	String FORWARD = "0045"; //$NON-NLS-1$
 
 	/** Icon BACK. */
-	String BACK = "0046";
+	String BACK = "0046"; //$NON-NLS-1$
 
 	/** Icon FIRST. */
-	String FIRST = "0047";
+	String FIRST = "0047"; //$NON-NLS-1$
 
 	/** Icon LAST. */
-	String LAST = "0048";
+	String LAST = "0048"; //$NON-NLS-1$
 
 	/** Markericon MISSING_MANDATORY */
-	String MARKER_MISSING_MANDATORY = "0059";
+	String MARKER_MISSING_MANDATORY = "0059"; //$NON-NLS-1$
 
 	/** Markericon ERROR */
-	String MARKER_ERROR = "0061";
+	String MARKER_ERROR = "0061"; //$NON-NLS-1$
 
 	/** Icon TREE_EXPANSION_KNOB_CLOSED. */
-	String TREE_EXPANSION_KNOB_CLOSED = "2068";
+	String TREE_EXPANSION_KNOB_CLOSED = "2068"; //$NON-NLS-1$
 
 	/** Icon TREE_EXPANSION_KNOB_OPEN. */
-	String TREE_EXPANSION_KNOB_OPEN = "2069";
+	String TREE_EXPANSION_KNOB_OPEN = "2069"; //$NON-NLS-1$
 
 	/** Icon TREE_EXPANSION_KNOB_OPEN_LOCKED. */
-	String TREE_EXPANSION_KNOB_OPEN_LOCKED = "2067";
+	String TREE_EXPANSION_KNOB_OPEN_LOCKED = "2067"; //$NON-NLS-1$
 
 	/** Icon CLOSE_WINDOW. */
-	String WINDOW_CLOSE = "0070";
+	String WINDOW_CLOSE = "0070"; //$NON-NLS-1$
 
 	/** Icon WINDOW_MINIMIZE. */
-	String WINDOW_MINIMIZE = "0071";
+	String WINDOW_MINIMIZE = "0071"; //$NON-NLS-1$
 
 	/** Icon CURSOR_DRAG. */
-	String CURSOR_DRAG = "0072";
+	String CURSOR_DRAG = "0072"; //$NON-NLS-1$
 
 	/** Icon CURSOR_DRAG_IN_PROGRESS. */
-	String CURSOR_DRAG_PRESSED = "0073";
+	String CURSOR_DRAG_PRESSED = "0073"; //$NON-NLS-1$
 
 	/** Icon NOTEPAD_FRAME_COLLAPSE. */
-	String NOTEPAD_FRAME_COLLAPSE = "0438";
+	String NOTEPAD_FRAME_COLLAPSE = "0438"; //$NON-NLS-1$
 
 	/** Icon NOTEPAD_FRAME_EXPAND. */
-	String NOTEPAD_FRAME_EXPAND = "0441";
+	String NOTEPAD_FRAME_EXPAND = "0441"; //$NON-NLS-1$
 
 	/** Icon NOTEPAD_FRAME_CLOSE. */
-	String NOTEPAD_FRAME_CLOSE = "0444";
+	String NOTEPAD_FRAME_CLOSE = "0444"; //$NON-NLS-1$
 
 	/** Icon NOTEPAD_FRAME_RESIZE. */
-	String NOTEPAD_FRAME_RESIZE = "0447";
+	String NOTEPAD_FRAME_RESIZE = "0447"; //$NON-NLS-1$
 
 	/** Icon NOTEPAD_FRAME_GRIP. */
-	String NOTEPAD_FRAME_GRIP = "0448";
+	String NOTEPAD_FRAME_GRIP = "0448"; //$NON-NLS-1$
 
 	/** Icon SHADOW_NE. */
-	String SHADOW_NE = "0449";
+	String SHADOW_NE = "0449"; //$NON-NLS-1$
 
 	/** Icon SHADOW_E. */
-	String SHADOW_E = "0450";
+	String SHADOW_E = "0450"; //$NON-NLS-1$
 
 	/** Icon SHADOW_SE. */
-	String SHADOW_SE = "0451";
+	String SHADOW_SE = "0451"; //$NON-NLS-1$
 
 	/** Icon SHADOW_S. */
-	String SHADOW_S = "0452";
+	String SHADOW_S = "0452"; //$NON-NLS-1$
 
 	/** Icon SHADOW_SW. */
-	String SHADOW_SW = "0453";
+	String SHADOW_SW = "0453"; //$NON-NLS-1$
 
 	/** Icon SHADOW_W. */
-	String SHADOW_W = "0454";
+	String SHADOW_W = "0454"; //$NON-NLS-1$
 
 	/** Icon SHADOW_NW. */
-	String SHADOW_NW = "0455";
+	String SHADOW_NW = "0455"; //$NON-NLS-1$
 
 	/** Icon SHADOW_N. */
-	String SHADOW_N = "0456";
+	String SHADOW_N = "0456"; //$NON-NLS-1$
 
 	/** Cursor icon indicating some background activity */
-	String CURSOR_BACKGROUND_ACTIVITY = "2053";
+	String CURSOR_BACKGROUND_ACTIVITY = "2053"; //$NON-NLS-1$
 
 	/** Cursor icon indicating move/drop while dragging */
-	String CURSOR_MOVE_DROP = "2256";
+	String CURSOR_MOVE_DROP = "2256"; //$NON-NLS-1$
 
 	/** Icon incicating the drop down capability of a drop down button */
-	String DROP_DOWN_BUTTON_ARROW_DOWN = "2065";
+	String DROP_DOWN_BUTTON_ARROW_DOWN = "2065"; //$NON-NLS-1$
 
 	/**
 	 * Icon incicating the drop down capability of a drop down button (with the
 	 * popup opening above the button)
 	 */
-	String DROP_DOWN_BUTTON_ARROW_UP = "2066";
+	String DROP_DOWN_BUTTON_ARROW_UP = "2066"; //$NON-NLS-1$
 
 	/** Icon QUESTION. */
-	String QUESTION = "9001";
+	String QUESTION = "9001"; //$NON-NLS-1$
 
 	/** Icon GO. */
-	String GO = "10000";
+	String GO = "10000"; //$NON-NLS-1$
 
 	/** Icon of the check box that is included in a menu. */
-	String CHECK_BOX_MENU_ITEM_UNSELECTED = "2080";
+	String CHECK_BOX_MENU_ITEM_UNSELECTED = "2080"; //$NON-NLS-1$
 
 	/** Icon of the check box that is included in a menu. */
-	String CHECK_BOX_MENU_ITEM_SELECTED = "2081";
+	String CHECK_BOX_MENU_ITEM_SELECTED = "2081"; //$NON-NLS-1$
 
 	/** Markericon PROCESS_FINISHED */
-	String MARKER_PROCESS_FINISHED = "prgsm";
+	String MARKER_PROCESS_FINISHED = "prgsm"; //$NON-NLS-1$
 
 	/**
 	 * Stores an icon with the specified name and size and returns an ID to

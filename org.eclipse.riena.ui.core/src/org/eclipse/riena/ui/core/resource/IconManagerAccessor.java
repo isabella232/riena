@@ -18,7 +18,7 @@ import org.eclipse.riena.ui.core.resource.internal.IconManager;
 public final class IconManagerAccessor {
 
 	/** <code>ICON_MANAGER_ID</code> */
-	public final static String ICON_MANAGER_ID = "riena.core.client.IconManager";
+	public final static String ICON_MANAGER_ID = "riena.core.client.IconManager"; //$NON-NLS-1$
 
 	private static IIconManager manager;
 

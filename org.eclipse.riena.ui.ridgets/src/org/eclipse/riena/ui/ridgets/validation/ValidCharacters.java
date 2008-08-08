@@ -57,8 +57,8 @@ public class ValidCharacters implements IValidator {
 				for (int t = 0; t < string.length(); ++t) {
 					final char currentChar = string.charAt(t);
 					if (Arrays.binarySearch(allowedCharsSorted, currentChar) < 0) {
-						return ValidationRuleStatus.error(true, "Character '" + currentChar + "' in text '" + value
-								+ "' is not allowed.", this);
+						return ValidationRuleStatus.error(true, "Character '" + currentChar + "' in text '" + value //$NON-NLS-1$ //$NON-NLS-2$
+								+ "' is not allowed.", this); //$NON-NLS-1$
 					}
 				}
 			}

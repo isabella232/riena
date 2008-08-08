@@ -74,7 +74,7 @@ public class DefaultTreeNode implements ITreeNode {
 	 */
 	public ITreeNode getChildAt(int childIndex) {
 
-		Assert.isNotNull(children, "node has no children");
+		Assert.isNotNull(children, "node has no children"); //$NON-NLS-1$
 		return children.elementAt(childIndex);
 	} // end method
 
@@ -95,7 +95,7 @@ public class DefaultTreeNode implements ITreeNode {
 	 */
 	public int getIndex(ITreeNode node) {
 
-		Assert.isNotNull(node, "missing node argument");
+		Assert.isNotNull(node, "missing node argument"); //$NON-NLS-1$
 
 		if (!isNodeChild(node)) {
 			return -1;
@@ -146,7 +146,7 @@ public class DefaultTreeNode implements ITreeNode {
 	public String toString() {
 
 		if (userObject == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else {
 			return userObject.toString();
 		} // end if
@@ -232,8 +232,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 */
 	public void remove(DefaultTreeNode aChild) {
 
-		Assert.isNotNull(aChild, "missing aChild argument");
-		Assert.isTrue(isNodeChild(aChild), "aChild argument is not a child");
+		Assert.isNotNull(aChild, "missing aChild argument"); //$NON-NLS-1$
+		Assert.isTrue(isNodeChild(aChild), "aChild argument is not a child"); //$NON-NLS-1$
 
 		remove(getIndex(aChild));
 	} // end method

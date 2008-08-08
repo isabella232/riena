@@ -75,7 +75,7 @@ public class TreeTableSubModuleController extends SubModuleController {
 	 */
 	public void configureRidgets() {
 
-		tree = (IGroupedTreeTableRidget) getRidget("tree");
+		tree = (IGroupedTreeTableRidget) getRidget("tree"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonEnableGrouping = (IToggleButtonRidget) getRidget("buttonEnableGrouping"); //$NON-NLS-1$
 		final IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
 		final IActionRidget buttonAddChild = (IActionRidget) getRidget("buttonAddChild"); //$NON-NLS-1$

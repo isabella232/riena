@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends RienaPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.objecttransaction";
+	public static final String PLUGIN_ID = "org.eclipse.riena.objecttransaction"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

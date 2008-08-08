@@ -30,35 +30,35 @@ public class PersonFactory {
 	public static Collection<Person> createPersonList() {
 		Collection<Person> newList = new ArrayList<Person>();
 
-		Person person = new Person("Doe", "John");
+		Person person = new Person("Doe", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
 		newList.add(person);
 
-		person = new Person("Jackson", "Janet");
+		person = new Person("Jackson", "Janet"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
 		newList.add(person);
 
-		person = new Person("Jackson", "Jermaine");
+		person = new Person("Jackson", "Jermaine"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
 		newList.add(person);
 
-		person = new Person("Jackson", "John");
+		person = new Person("Jackson", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
 		newList.add(person);
 
-		person = new Person("JJ Jr. Shabadoo", "Joey");
+		person = new Person("JJ Jr. Shabadoo", "Joey"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
 		newList.add(person);
 
-		person = new Person("Johnson", "Jack");
+		person = new Person("Johnson", "Jack"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(2);
 		newList.add(person);
 
-		person = new Person("Johnson", "Jane");
+		person = new Person("Johnson", "Jane"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
 		newList.add(person);
 
-		person = new Person("Zappa", "Frank");
+		person = new Person("Zappa", "Frank"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(2);
 		newList.add(person);
 

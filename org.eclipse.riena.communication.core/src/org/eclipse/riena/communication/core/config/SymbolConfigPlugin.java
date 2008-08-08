@@ -32,14 +32,14 @@ public class SymbolConfigPlugin implements ConfigurationPlugin {
 		super();
 
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
-		IExtension[] cfgExtensions = registry.getExtensionPoint("org.eclipse.riena.communication.core.configProxies").getExtensions();
+		IExtension[] cfgExtensions = registry.getExtensionPoint("org.eclipse.riena.communication.core.configProxies").getExtensions(); //$NON-NLS-1$
 		for (IExtension cfgExt : cfgExtensions) {
 			IConfigurationElement[] configs = cfgExt.getConfigurationElements();
 			for (IConfigurationElement config : configs) {
 				IConfigurationElement[] properties = config.getChildren();
 				for (IConfigurationElement prop : properties) {
-					String name = prop.getAttribute("name");
-					String value = prop.getAttribute("value");
+					String name = prop.getAttribute("name"); //$NON-NLS-1$
+					String value = prop.getAttribute("value"); //$NON-NLS-1$
 					symbolTable.put(name, value);
 				}
 			}
@@ -59,7 +59,7 @@ public class SymbolConfigPlugin implements ConfigurationPlugin {
 	private String replaceSymbol(String value) {
 		StringBuilder sb = new StringBuilder(value);
 		for (int i = 0; i < sb.length() - 1; i++) {
-			if (sb.substring(i, i + 2).equals("${")) {
+			if (sb.substring(i, i + 2).equals("${")) { //$NON-NLS-1$
 				int x = sb.substring(i).indexOf('}');
 				if (x > 0) {
 					String key = value.substring(i + 2, i + x);
@@ -73,7 +73,7 @@ public class SymbolConfigPlugin implements ConfigurationPlugin {
 	private String lookupSymbol(String symbol) {
 		String value = symbolTable.get(symbol);
 		if (value == null) {
-			return "${" + symbol + "}";
+			return "${" + symbol + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			return value;
 		}

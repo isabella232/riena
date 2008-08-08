@@ -46,7 +46,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 	}
 
 	private String computeMethodName(Method method, int paramSize) {
-		return method.getName() + "__" + paramSize;
+		return method.getName() + "__" + paramSize; //$NON-NLS-1$
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -88,7 +88,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 			}
 		}
 		if (proxyMethod == null) {
-			throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args));
+			throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		Subject subject = getSubject();
 		if (subject == null) {

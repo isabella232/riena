@@ -34,38 +34,38 @@ public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
 		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(2, true));
 
-		UIControlsFactory.createLabel(parent, "Text Field:");
+		UIControlsFactory.createLabel(parent, "Text Field:"); //$NON-NLS-1$
 		Text textField = UIControlsFactory.createText(parent);
 		addUIControl(textField, "textField"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Model:");
+		UIControlsFactory.createLabel(parent, "Model:"); //$NON-NLS-1$
 		Text textModel1 = UIControlsFactory.createText(parent);
 		textModel1.setEnabled(false);
 		textModel1.setEditable(false);
 		addUIControl(textModel1, "textModel1"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Text Field (direct writing):");
+		UIControlsFactory.createLabel(parent, "Text Field (direct writing):"); //$NON-NLS-1$
 		Text textDirectWrite = UIControlsFactory.createText(parent);
 		addUIControl(textDirectWrite, "textDirectWrite"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Model:");
+		UIControlsFactory.createLabel(parent, "Model:"); //$NON-NLS-1$
 		Text textModel2 = UIControlsFactory.createText(parent);
 		textModel2.setEnabled(false);
 		textModel2.setEditable(false);
 		addUIControl(textModel2, "textModel2"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Text Area:");
+		UIControlsFactory.createLabel(parent, "Text Area:"); //$NON-NLS-1$
 		Text textArea = UIControlsFactory.createText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		int heightHint = (textArea.getLineHeight() * 5) + (textArea.getBorderWidth() * 2);
 		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, heightHint).applyTo(textArea);
 		addUIControl(textArea, "textArea"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Password Field:");
+		UIControlsFactory.createLabel(parent, "Password Field:"); //$NON-NLS-1$
 		Text textPassword = UIControlsFactory.createText(parent, SWT.SINGLE | SWT.PASSWORD);
 		textPassword.setEchoChar('*');
 		addUIControl(textPassword, "textPassword"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Max. Length (<= 10 char):");
+		UIControlsFactory.createLabel(parent, "Max. Length (<= 10 char):"); //$NON-NLS-1$
 		Text textField10 = UIControlsFactory.createText(parent);
 		textField10.setTextLimit(10);
 		addUIControl(textField10, "textField10"); //$NON-NLS-1$

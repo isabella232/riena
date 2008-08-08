@@ -17,7 +17,7 @@ public interface ITabbedPaneRidget extends IRidget {
 	 * is expected. The list should be a Set(Integer). All included Tabs will be
 	 * blinking.
 	 */
-	String PROPERTY_BLINKINGTABS = "PROPERTY_BLINKINGTABS";
+	String PROPERTY_BLINKINGTABS = "PROPERTY_BLINKINGTABS"; //$NON-NLS-1$
 
 	void addTabbedPaneRidgetListener(ITabbedPaneRidgetListener listener);
 

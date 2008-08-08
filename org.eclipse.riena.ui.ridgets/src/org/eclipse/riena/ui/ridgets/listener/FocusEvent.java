@@ -84,11 +84,11 @@ public class FocusEvent {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuilder buffer = new StringBuilder("FocusEvent[oldFocusOwner=");
+		StringBuilder buffer = new StringBuilder("FocusEvent[oldFocusOwner="); //$NON-NLS-1$
 		buffer.append(getOldFocusOwner());
-		buffer.append(", newFocusOwner=");
+		buffer.append(", newFocusOwner="); //$NON-NLS-1$
 		buffer.append(getNewFocusOwner());
-		buffer.append("]");
+		buffer.append("]"); //$NON-NLS-1$
 		return buffer.toString();
 	}
 

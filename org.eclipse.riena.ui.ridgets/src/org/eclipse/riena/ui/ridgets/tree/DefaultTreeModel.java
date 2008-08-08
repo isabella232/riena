@@ -45,8 +45,8 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	 */
 	public Object getChild(Object parent, int index) {
 
-		Assert.isNotNull(parent, "parent is null");
-		Assert.isTrue(parent instanceof ITreeNode, "parent is not an instance of ITreeNode");
+		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
+		Assert.isTrue(parent instanceof ITreeNode, "parent is not an instance of ITreeNode"); //$NON-NLS-1$
 
 		return ((ITreeNode) parent).getChildAt(index);
 
@@ -57,8 +57,8 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	 */
 	public int getChildCount(Object parent) {
 
-		Assert.isNotNull(parent, "parent is null");
-		Assert.isTrue(parent instanceof ITreeNode, "parent is not an instance of ITreeNode");
+		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
+		Assert.isTrue(parent instanceof ITreeNode, "parent is not an instance of ITreeNode"); //$NON-NLS-1$
 
 		return ((ITreeNode) parent).getChildCount();
 
@@ -87,10 +87,10 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	 */
 	public int getIndexOfChild(Object parent, Object child) {
 
-		Assert.isNotNull(parent, "parent is null");
-		Assert.isTrue(parent instanceof ITreeNode, "parent is not an instance of ITreeNode");
-		Assert.isNotNull(child, "child is null");
-		Assert.isTrue(child instanceof ITreeNode, "child is not an instance of ITreeNode");
+		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
+		Assert.isTrue(parent instanceof ITreeNode, "parent is not an instance of ITreeNode"); //$NON-NLS-1$
+		Assert.isNotNull(child, "child is null"); //$NON-NLS-1$
+		Assert.isTrue(child instanceof ITreeNode, "child is not an instance of ITreeNode"); //$NON-NLS-1$
 
 		return ((ITreeNode) parent).getIndex((ITreeNode) child);
 
@@ -101,8 +101,8 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	 */
 	public boolean isLeaf(Object node) {
 
-		Assert.isNotNull(node, "node is null");
-		Assert.isTrue(node instanceof ITreeNode, "node is not an instance of ITreeNode");
+		Assert.isNotNull(node, "node is null"); //$NON-NLS-1$
+		Assert.isTrue(node instanceof ITreeNode, "node is not an instance of ITreeNode"); //$NON-NLS-1$
 
 		return ((ITreeNode) node).isLeaf();
 
@@ -177,7 +177,7 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 		DefaultTreeNode parent = (DefaultTreeNode) node.getParent();
 
 		if (parent == null) {
-			throw new UIBindingFailure("node does not have a parent.");
+			throw new UIBindingFailure("node does not have a parent."); //$NON-NLS-1$
 		} // end if
 
 		int[] childIndex = new int[1];

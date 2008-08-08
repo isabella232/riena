@@ -21,7 +21,7 @@ import org.osgi.framework.ServiceRegistration;
 public class Activator extends RienaActivator {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.security.services";
+	public static final String PLUGIN_ID = "org.eclipse.riena.security.services"; //$NON-NLS-1$
 
 	private ServiceRegistration authenticationService;
 	private ServiceRegistration sessionService;
@@ -49,25 +49,25 @@ public class Activator extends RienaActivator {
 		Activator.plugin = this;
 		// register AuthenticationService
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
-		properties.put("riena.remote", Boolean.TRUE.toString());
-		properties.put("riena.remote.protocol", "hessian");
-		properties.put("riena.remote.path", IAuthenticationService.WS_ID);
+		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
+		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("riena.remote.path", IAuthenticationService.WS_ID); //$NON-NLS-1$
 		authenticationService = getContext().registerService(IAuthenticationService.class.getName(),
 				new AuthenticationService(), properties);
 
 		// register SessionService
 		properties = ServiceDescriptor.newDefaultServiceProperties();
-		properties.put("riena.remote", Boolean.TRUE.toString());
-		properties.put("riena.remote.protocol", "hessian");
-		properties.put("riena.remote.path", ISessionService.WS_ID);
+		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
+		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("riena.remote.path", ISessionService.WS_ID); //$NON-NLS-1$
 		sessionService = getContext()
 				.registerService(ISessionService.class.getName(), new SessionService(), properties);
 
 		// register AuthorizationService
 		properties = ServiceDescriptor.newDefaultServiceProperties();
-		properties.put("riena.remote", Boolean.TRUE.toString());
-		properties.put("riena.remote.protocol", "hessian");
-		properties.put("riena.remote.path", IAuthorizationService.WS_ID);
+		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
+		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("riena.remote.path", IAuthorizationService.WS_ID); //$NON-NLS-1$
 		authorizationService = getContext().registerService(IAuthorizationService.class.getName(),
 				new AuthorizationService(), properties);
 

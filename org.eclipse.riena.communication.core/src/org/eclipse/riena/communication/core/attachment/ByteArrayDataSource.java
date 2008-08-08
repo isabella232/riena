@@ -48,7 +48,7 @@ public class ByteArrayDataSource implements IDataSource {
 			try {
 				input = source.getInputStream();
 			} catch (IOException e) {
-				throw new RuntimeException("IOException when transporting attachment ", e);
+				throw new RuntimeException("IOException when transporting attachment ", e); //$NON-NLS-1$
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class ByteArrayDataSource implements IDataSource {
 	 * @see javax.IDataSource.DataSource#getOutputStream()
 	 */
 	public OutputStream getOutputStream() throws IOException {
-		throw new IOException("not supported");
+		throw new IOException("not supported"); //$NON-NLS-1$
 	}
 
 	public void checkValid() {

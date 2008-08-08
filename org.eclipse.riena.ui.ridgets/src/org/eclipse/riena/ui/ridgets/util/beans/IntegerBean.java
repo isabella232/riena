@@ -53,7 +53,7 @@ public class IntegerBean extends AbstractBean {
 	public void setValue(Integer value) {
 		Object old = this.value;
 		this.value = value;
-		firePropertyChanged("value", old, this.value);
+		firePropertyChanged("value", old, this.value); //$NON-NLS-1$
 
 	}
 

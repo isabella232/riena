@@ -58,21 +58,21 @@ public class FilePermissionStore implements IPermissionStore {
 	 */
 	public Permissions loadPermissions(Principal principal) {
 		Permissions allPerms = new Permissions();
-		NodeList nl = permissionTree.getDocumentElement().getElementsByTagName("principal");
+		NodeList nl = permissionTree.getDocumentElement().getElementsByTagName("principal"); //$NON-NLS-1$
 		for (int i = 0; i < nl.getLength(); i++) {
 			Element el = (Element) nl.item(i);
-			String principalClazz = el.getAttribute("class");
-			String principalName = el.getAttribute("name");
+			String principalClazz = el.getAttribute("class"); //$NON-NLS-1$
+			String principalName = el.getAttribute("name"); //$NON-NLS-1$
 			if (!principalClazz.equals(principal.getClass().getName()) || !principalName.equals(principal.getName())) {
 				continue;
 			}
-			if (principal.getClass().getName().equals(el.getAttribute("class"))) {
-				NodeList nlPerms = el.getElementsByTagName("permission");
+			if (principal.getClass().getName().equals(el.getAttribute("class"))) { //$NON-NLS-1$
+				NodeList nlPerms = el.getElementsByTagName("permission"); //$NON-NLS-1$
 				for (int x = 0; x < nlPerms.getLength(); x++) {
 					Element ePerm = (Element) nlPerms.item(x);
-					String clazz = ePerm.getAttribute("class");
-					String name = ePerm.getAttribute("name");
-					String action = ePerm.getAttribute("action");
+					String clazz = ePerm.getAttribute("class"); //$NON-NLS-1$
+					String name = ePerm.getAttribute("name"); //$NON-NLS-1$
+					String action = ePerm.getAttribute("action"); //$NON-NLS-1$
 					try {
 						// its not good to use Class.forName
 						// so we use a specific factory

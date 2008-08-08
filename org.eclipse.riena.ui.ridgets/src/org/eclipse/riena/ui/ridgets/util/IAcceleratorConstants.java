@@ -74,7 +74,7 @@ public interface IAcceleratorConstants {
 	/**
 	 * <code>PROPERTY_ACCELERATOR</code>
 	 */
-	String PROPERTY_ACCELERATOR = "accelerator";
+	String PROPERTY_ACCELERATOR = "accelerator"; //$NON-NLS-1$
 
 	/**
 	 * This flag indicates that the Shift key was down when the event occurred.

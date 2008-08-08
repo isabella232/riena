@@ -40,7 +40,7 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 		addUIControl(helloLabel, "labelFacade"); //$NON-NLS-1$
 		// getController().setLabelFacade(labelFacade);
 
-		Label someText = UIControlsFactory.createLabel(parent, "Data", SWT.LEFT);
+		Label someText = UIControlsFactory.createLabel(parent, "Data", SWT.LEFT); //$NON-NLS-1$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);

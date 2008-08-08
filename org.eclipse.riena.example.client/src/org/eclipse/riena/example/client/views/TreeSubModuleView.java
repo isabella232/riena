@@ -45,7 +45,7 @@ public class TreeSubModuleView extends SubModuleView<TreeSubModuleController> {
 	// ////////////////
 
 	private Group createTreeGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&Tree:");
+		Group group = UIControlsFactory.createGroup(parent, "&Tree:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
 		Tree tree = new Tree(group, SWT.FULL_SELECTION | SWT.MULTI);

@@ -68,7 +68,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		serializerFactory.addFactory(new AbstractSerializerFactory() {
 			@Override
 			public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) {
+				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) { //$NON-NLS-1$
 					return new JavaDeserializer(cl);
 				}
 				return null;
@@ -80,7 +80,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 			}
 		});
 		addSpecialDeserializer(serializerFactory);
-		logger.log(LogService.LOG_DEBUG, "initialized");
+		logger.log(LogService.LOG_DEBUG, "initialized"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -94,19 +94,19 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 
 		HessianRemoteServicePublisher publisher = getPublisher();
 		if (publisher == null) {
-			if (httpReq.getMethod().equals("GET")) {
-				if (httpReq.getRemoteHost().equals("127.0.0.1")) {
+			if (httpReq.getMethod().equals("GET")) { //$NON-NLS-1$
+				if (httpReq.getRemoteHost().equals("127.0.0.1")) { //$NON-NLS-1$
 					PrintWriter pw = new PrintWriter(res.getOutputStream());
-					pw.write("no webservices available");
+					pw.write("no webservices available"); //$NON-NLS-1$
 					pw.flush();
 					pw.close();
 					return;
 				} else {
-					httpRes.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Hessian requires POST");
+					httpRes.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Hessian requires POST"); //$NON-NLS-1$
 					return;
 				}
 			} else {
-				httpRes.sendError(HttpServletResponse.SC_NOT_FOUND, "webservice not found");
+				httpRes.sendError(HttpServletResponse.SC_NOT_FOUND, "webservice not found"); //$NON-NLS-1$
 				return;
 			}
 		}
@@ -116,25 +116,25 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 			requestURI = requestURI.substring(contextPath.length());
 		}
 		RemoteServiceDescription rsd = publisher.findService(requestURI);
-		log("call " + rsd);
-		if (httpReq.getMethod().equals("GET")) {
-			if (httpReq.getRemoteHost().equals("127.0.0.1")) {
+		log("call " + rsd); //$NON-NLS-1$
+		if (httpReq.getMethod().equals("GET")) { //$NON-NLS-1$
+			if (httpReq.getRemoteHost().equals("127.0.0.1")) { //$NON-NLS-1$
 				PrintWriter pw = new PrintWriter(res.getOutputStream());
 				if (rsd == null) {
-					pw.write("call received from browser, no remote service registered with this URL");
+					pw.write("call received from browser, no remote service registered with this URL"); //$NON-NLS-1$
 				} else {
-					pw.write("calls " + rsd);
+					pw.write("calls " + rsd); //$NON-NLS-1$
 				}
 				pw.flush();
 				pw.close();
 				return;
 			} else {
-				httpRes.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Hessian requires POST");
+				httpRes.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Hessian requires POST"); //$NON-NLS-1$
 				return;
 			}
 		}
 		if (rsd == null) {
-			httpRes.sendError(HttpServletResponse.SC_NOT_FOUND, "unknown url :" + httpReq.getRequestURI());
+			httpRes.sendError(HttpServletResponse.SC_NOT_FOUND, "unknown url :" + httpReq.getRequestURI()); //$NON-NLS-1$
 			return;
 		}
 		Object instance = rsd.getService();
@@ -145,7 +145,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 
 		int code = inp.read();
 		if (code != 'c') {
-			throw new IOException("expected 'c' in hessian input at " + code);
+			throw new IOException("expected 'c' in hessian input at " + code); //$NON-NLS-1$
 		}
 		int major = inp.read();
 		// int minor = inp.read();

@@ -24,7 +24,7 @@ public interface IMessageMarker extends IMarker {
 	/**
 	 * Name of the marker attribute that holds the message.
 	 */
-	String MESSAGE = "message";
+	String MESSAGE = "message"; //$NON-NLS-1$
 
 	/**
 	 * @return A message explaining the marker.

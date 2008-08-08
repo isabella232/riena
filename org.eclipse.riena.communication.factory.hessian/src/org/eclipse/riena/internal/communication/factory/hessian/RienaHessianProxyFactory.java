@@ -55,7 +55,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 		getSerializerFactory().addFactory(new AbstractSerializerFactory() {
 			@Override
 			public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) {
+				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) { //$NON-NLS-1$
 					return new JavaDeserializer(cl);
 				}
 				return null;
@@ -124,7 +124,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 		try {
 			this.url = new URL(urlStr);
 		} catch (MalformedURLException e) {
-			LOGGER.log(LogService.LOG_ERROR, "invalid url " + urlStr, e);
+			LOGGER.log(LogService.LOG_ERROR, "invalid url " + urlStr, e); //$NON-NLS-1$
 		}
 
 	}

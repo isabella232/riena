@@ -28,35 +28,35 @@ public interface IWindowAdapter extends IMarkableAdapter, IAcceleratorConstants 
 	/**
 	 * <code>TITLE_PROPERTY</code>
 	 */
-	String PROPERTY_TITLE = "title";
+	String PROPERTY_TITLE = "title"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_PACK</code>
 	 */
-	String PROPERTY_PACK = "pack";
+	String PROPERTY_PACK = "pack"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_TO_FRONT</code>
 	 */
-	String PROPERTY_TO_FRONT = "toFront";
+	String PROPERTY_TO_FRONT = "toFront"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_LOCATE_RELATIVE_TO_SCREEN</code>
 	 */
-	String PROPERTY_LOCATE_RELATIVE_TO_SCREEN = "locationRelativeToScreen";
+	String PROPERTY_LOCATE_RELATIVE_TO_SCREEN = "locationRelativeToScreen"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_LOCATE_RELATIVE_TO_DESKTOP</code>
 	 */
-	String PROPERTY_LOCATE_RELATIVE_TO_DESKTOP = "locationRelativeToDesktop";
+	String PROPERTY_LOCATE_RELATIVE_TO_DESKTOP = "locationRelativeToDesktop"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_DISPOSE</code>
 	 */
-	String PROPERTY_DISPOSE = "dispose";
+	String PROPERTY_DISPOSE = "dispose"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_ICON</code>
 	 */
-	String PROPERTY_ICON = "icon";
+	String PROPERTY_ICON = "icon"; //$NON-NLS-1$
 	/**
 	 * <code>PROPERTY_ICONIFIED</code>
 	 */
-	String PROPERTY_ICONIFIED = "iconified";
+	String PROPERTY_ICONIFIED = "iconified"; //$NON-NLS-1$
 
 	/**
 	 * get the title of the window.

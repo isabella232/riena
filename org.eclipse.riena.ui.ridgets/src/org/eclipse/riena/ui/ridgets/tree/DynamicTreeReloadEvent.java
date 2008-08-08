@@ -25,7 +25,7 @@ public class DynamicTreeReloadEvent extends EventObject {
 	/** Identifies the end of reload. */
 	public static final int END = 0;
 
-	private static final String TXT_PRECONDITION_TYPE = "Type must be one of DynamicTreeReloadEvent.BEGIN or DynamicTreeReloadEvent.END";
+	private static final String TXT_PRECONDITION_TYPE = "Type must be one of DynamicTreeReloadEvent.BEGIN or DynamicTreeReloadEvent.END"; //$NON-NLS-1$
 
 	private int type;
 

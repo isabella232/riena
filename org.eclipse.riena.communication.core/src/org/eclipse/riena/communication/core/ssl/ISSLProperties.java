@@ -15,7 +15,7 @@ package org.eclipse.riena.communication.core.ssl;
  */
 public interface ISSLProperties {
 
-	String EXTENSION_POINT_ID = "org.eclipse.riena.communication.core.ssl";
+	String EXTENSION_POINT_ID = "org.eclipse.riena.communication.core.ssl"; //$NON-NLS-1$
 
 	/**
 	 * @return the protocol

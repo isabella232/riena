@@ -48,7 +48,7 @@ public class ObjectTransactionFactoryImpl implements IObjectTransactionFactory {
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionFactory#createSubObjectTransaction(org.eclipse.riena.objecttransaction.IObjectTransaction)
 	 */
 	public IObjectTransaction createSubObjectTransaction(IObjectTransaction parentObjectTransaction) {
-		Assert.isNotNull(parentObjectTransaction, "Parameter 'parentObjectTransaction' must not be null.");
+		Assert.isNotNull(parentObjectTransaction, "Parameter 'parentObjectTransaction' must not be null."); //$NON-NLS-1$
 
 		IObjectTransaction objectTransaction = parentObjectTransaction.createSubObjectTransaction();
 		return objectTransaction;

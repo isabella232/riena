@@ -25,7 +25,7 @@ public class CommunicationConsole implements CommandProvider {
 	IRemoteServiceRegistry serviceRegistry;
 
 	public String getHelp() {
-		return "---riena communication---\n\tremotestatus - list all services";
+		return "---riena communication---\n\tremotestatus - list all services"; //$NON-NLS-1$
 	}
 
 	public void _remotestatus(CommandInterpreter ci) throws Exception {
@@ -45,7 +45,7 @@ public class CommunicationConsole implements CommandProvider {
 		for (RemoteServiceDescription rsDesc : rsDescs) {
 			if (rsDesc.getState() == RemoteServiceDescription.State.UNREGISTERED) {
 				// found = true;
-				System.out.println("Riena:: not published end point=(" + rsDesc + ")");
+				System.out.println("Riena:: not published end point=(" + rsDesc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
@@ -59,11 +59,11 @@ public class CommunicationConsole implements CommandProvider {
 		for (RemoteServiceDescription rsDesc : rsDescs) {
 			if (rsDesc.getState() == RemoteServiceDescription.State.REGISTERED) {
 				found = true;
-				System.out.println("Riena:: published end point=(" + rsDesc + ")");
+				System.out.println("Riena:: published end point=(" + rsDesc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		if (!found) {
-			System.out.println("Riena:: no OSGi services published");
+			System.out.println("Riena:: no OSGi services published"); //$NON-NLS-1$
 			return;
 		}
 
@@ -74,14 +74,14 @@ public class CommunicationConsole implements CommandProvider {
 			// System.out.println("Riena:: no OSGi services registered");
 			return;
 		}
-		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices("*");
+		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices("*"); //$NON-NLS-1$
 		if (rsRegs.size() == 0) {
-			System.out.println("Riena:: no Remote OSGi services registered");
+			System.out.println("Riena:: no Remote OSGi services registered"); //$NON-NLS-1$
 			return;
 		}
 		for (IRemoteServiceRegistration rsReg : rsRegs) {
 			IRemoteServiceReference rsRef = rsReg.getReference();
-			System.out.println("Riena:: registered remoteServiceRef=(" + rsRef + ")");
+			System.out.println("Riena:: registered remoteServiceRef=(" + rsRef + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

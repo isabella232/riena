@@ -30,14 +30,14 @@ public class ValidEmailAddress implements IValidator {
 		}
 		// note: null instanceof String == false
 		if (!(value instanceof String)) {
-			throw new ValidationFailure(getClass().getSimpleName() + " can only validate objects of type "
+			throw new ValidationFailure(getClass().getSimpleName() + " can only validate objects of type " //$NON-NLS-1$
 					+ String.class.getName());
 		}
 		final String toBeChecked = (String) value;
 		if (toBeChecked.length() == 0 || GenericValidator.isEmail(toBeChecked)) {
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, "String '" + toBeChecked + "' is no valid email address", this);
+		return ValidationRuleStatus.error(false, "String '" + toBeChecked + "' is no valid email address", this); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

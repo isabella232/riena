@@ -51,21 +51,21 @@ public final class State {
 
 	public String toString() {
 		if (state == CREATED_CODE) {
-			return "created";
+			return "created"; //$NON-NLS-1$
 		} else if (state == DELETED_CODE) {
-			return "deleted";
+			return "deleted"; //$NON-NLS-1$
 		} else if (state == MODIFIED_CODE) {
-			return "modified";
+			return "modified"; //$NON-NLS-1$
 		} else if (state == CLEAN_CODE) {
-			return "clean (unmodified)";
+			return "clean (unmodified)"; //$NON-NLS-1$
 		} else if (state == VANISHED_CODE) {
-			return "vanished (was created and then deleted)";
+			return "vanished (was created and then deleted)"; //$NON-NLS-1$
 		} else if (state == ADDED_CODE) {
-			return "add";
+			return "add"; //$NON-NLS-1$
 		} else if (state == REMOVED_CODE) {
-			return "remove";
+			return "remove"; //$NON-NLS-1$
 		}
-		return "unknown state ?????";
+		return "unknown state ?????"; //$NON-NLS-1$
 	}
 
 	/**
@@ -74,7 +74,7 @@ public final class State {
 	 */
 	public static String toString(State state) {
 		if (state == null) {
-			return "state is NULL ??";
+			return "state is NULL ??"; //$NON-NLS-1$
 		} else {
 			return state.toString();
 		}

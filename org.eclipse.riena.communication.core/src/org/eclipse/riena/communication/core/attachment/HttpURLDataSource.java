@@ -87,7 +87,7 @@ public class HttpURLDataSource implements IDataSource {
 				inputStream.reset();
 			}
 		} else {
-			throw new RuntimeException("no inputstream for http url " + httpUrlConnection.getURL());
+			throw new RuntimeException("no inputstream for http url " + httpUrlConnection.getURL()); //$NON-NLS-1$
 		}
 	}
 }

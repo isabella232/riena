@@ -30,8 +30,8 @@ public class MinLength implements IValidator {
 	public IStatus validate(final Object value) {
 		if (value == null) {
 			if (minLength > 0) {
-				return ValidationRuleStatus.error(false, "rule treats null as a blank string, which is shorter than "
-						+ minLength + " characters.", this);
+				return ValidationRuleStatus.error(false, "rule treats null as a blank string, which is shorter than " //$NON-NLS-1$
+						+ minLength + " characters.", this); //$NON-NLS-1$
 			}
 			return ValidationRuleStatus.ok();
 		}
@@ -40,10 +40,10 @@ public class MinLength implements IValidator {
 			if (string.length() >= minLength) {
 				return ValidationRuleStatus.ok();
 			}
-			return ValidationRuleStatus.error(false, "String ''" + string + "' is less than " + minLength
-					+ " characters long.", this);
+			return ValidationRuleStatus.error(false, "String ''" + string + "' is less than " + minLength //$NON-NLS-1$ //$NON-NLS-2$
+					+ " characters long.", this); //$NON-NLS-1$
 		}
-		throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
+		throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
 				+ String.class.getName());
 	}
 

@@ -49,7 +49,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	public RemoteServiceReference createProxy(RemoteServiceDescription endpoint) {
 		String uri = endpoint.getURL();
 		if (uri == null) {
-			uri = "http://localhost/" + PROTOCOL + endpoint.getPath();
+			uri = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
 		}
 		try {
 			RienaHessianProxyFactory mhpf = new RienaHessianProxyFactory();
@@ -67,7 +67,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			}
 			return serviceReference;
 		} catch (MalformedURLException e) {
-			throw new RuntimeException("MalformedURLException", e);
+			throw new RuntimeException("MalformedURLException", e); //$NON-NLS-1$
 		}
 	}
 

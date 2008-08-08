@@ -38,8 +38,8 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 	 */
 	public Object getVisibleChild(Object parent, int index) {
 
-		Assert.isNotNull(parent, "parent is null");
-		Assert.isTrue(parent instanceof IVisibleTreeNode, "parent is not an instance of IVisibleTreeNode");
+		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
+		Assert.isTrue(parent instanceof IVisibleTreeNode, "parent is not an instance of IVisibleTreeNode"); //$NON-NLS-1$
 
 		return ((IVisibleTreeNode) parent).getVisibleChildAt(index);
 	}
@@ -49,8 +49,8 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 	 */
 	public int getVisibleChildCount(Object parent) {
 
-		Assert.isNotNull(parent, "parent is null");
-		Assert.isTrue(parent instanceof IVisibleTreeNode, "parent is not an instance of IVisibleTreeNode");
+		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
+		Assert.isTrue(parent instanceof IVisibleTreeNode, "parent is not an instance of IVisibleTreeNode"); //$NON-NLS-1$
 
 		return ((IVisibleTreeNode) parent).getVisibleChildCount();
 	}
@@ -61,10 +61,10 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 	 */
 	public int getIndexOfVisibleChild(Object parent, Object child) {
 
-		Assert.isNotNull(parent, "parent is null");
-		Assert.isTrue(parent instanceof IVisibleTreeNode, "parent is not an instance of IVisibleTreeNode");
-		Assert.isNotNull(child, "child is null");
-		Assert.isTrue(child instanceof IVisibleTreeNode, "child is not an instance of IVisibleTreeNode");
+		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
+		Assert.isTrue(parent instanceof IVisibleTreeNode, "parent is not an instance of IVisibleTreeNode"); //$NON-NLS-1$
+		Assert.isNotNull(child, "child is null"); //$NON-NLS-1$
+		Assert.isTrue(child instanceof IVisibleTreeNode, "child is not an instance of IVisibleTreeNode"); //$NON-NLS-1$
 
 		return ((IVisibleTreeNode) parent).getVisibleIndex((IVisibleTreeNode) child);
 	}
@@ -74,8 +74,8 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 	 */
 	public boolean isVisibleLeaf(Object node) {
 
-		Assert.isNotNull(node, "node is null");
-		Assert.isTrue(node instanceof IVisibleTreeNode, "node is not an instance of IVisibleTreeNode");
+		Assert.isNotNull(node, "node is null"); //$NON-NLS-1$
+		Assert.isTrue(node instanceof IVisibleTreeNode, "node is not an instance of IVisibleTreeNode"); //$NON-NLS-1$
 
 		return ((IVisibleTreeNode) node).isVisibleLeaf();
 	}
@@ -122,7 +122,7 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 		DefaultTreeNode parent = (DefaultTreeNode) node.getParent();
 
 		if (parent == null) {
-			throw new UIBindingFailure("node does not have a parent.");
+			throw new UIBindingFailure("node does not have a parent."); //$NON-NLS-1$
 		} // end if
 
 		int removedNodeVisibleIndex = getIndex(parent, node);

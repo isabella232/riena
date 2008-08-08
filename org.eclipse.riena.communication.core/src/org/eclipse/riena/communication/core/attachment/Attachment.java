@@ -122,7 +122,7 @@ public class Attachment {
 	public File readAsFile(String fullFilePath) throws IOException {
 		InputStream input = readAsStream();
 		if (input == null) {
-			throw new IOException("no inputstream to save as file");
+			throw new IOException("no inputstream to save as file"); //$NON-NLS-1$
 		}
 		FileOutputStream output = new FileOutputStream(fullFilePath);
 		try {
@@ -153,7 +153,7 @@ public class Attachment {
 	 * @pre getType()==Type.FILE;
 	 */
 	protected File getInternalFile() {
-		Assert.isTrue(getType() == Type.FILE, "invalid type when getting File object");
+		Assert.isTrue(getType() == Type.FILE, "invalid type when getting File object"); //$NON-NLS-1$
 		return file;
 	}
 

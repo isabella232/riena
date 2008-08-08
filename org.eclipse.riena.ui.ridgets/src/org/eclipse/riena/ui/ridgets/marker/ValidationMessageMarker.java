@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.core.marker.IMessageMarker;
 
 public class ValidationMessageMarker extends AbstractMarker implements IMessageMarker {
 
-	private static final String MESSAGE_MARKER_ATTRIBUTE = "wrappedMessageMarker";
+	private static final String MESSAGE_MARKER_ATTRIBUTE = "wrappedMessageMarker"; //$NON-NLS-1$
 
 	private IValidator validationRule;
 

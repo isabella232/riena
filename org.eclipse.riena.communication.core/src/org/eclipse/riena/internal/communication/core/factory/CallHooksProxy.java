@@ -77,7 +77,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 						sHook.afterCall(context);
 					}
 				} else {
-					throw new RuntimeException("context is null, unexpected situation");
+					throw new RuntimeException("context is null, unexpected situation"); //$NON-NLS-1$
 				}
 			}
 		}

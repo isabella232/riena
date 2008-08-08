@@ -17,7 +17,7 @@ import org.osgi.framework.ServiceRegistration;
 public class Activator extends RienaActivator {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.security.simpleservices.simple.services";
+	public static final String PLUGIN_ID = "org.eclipse.riena.security.simpleservices.simple.services"; //$NON-NLS-1$
 
 	private ServiceRegistration memoryStore;
 	private ServiceRegistration filepermissionstore;
@@ -45,7 +45,7 @@ public class Activator extends RienaActivator {
 				ServiceDescriptor.newDefaultServiceProperties());
 
 		// bring up a simple authorization store for permissions
-		InputStream inputStream = this.getClass().getResourceAsStream("policy-def.xml");
+		InputStream inputStream = this.getClass().getResourceAsStream("policy-def.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
 		filepermissionstore = context.registerService(IPermissionStore.class.getName(), store, ServiceDescriptor
 				.newDefaultServiceProperties());

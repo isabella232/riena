@@ -75,7 +75,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "TransactedObject: objectId='" + objectId + "', version='" + version + "'";
+		return "TransactedObject: objectId='" + objectId + "', version='" + version + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**

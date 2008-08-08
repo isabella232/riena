@@ -38,12 +38,12 @@ public class MaxLength implements IValidator {
 			int length = string.length();
 
 			if (length > maxLength) {
-				return ValidationRuleStatus.error(true, "'" + string + "' must not be longer than " + maxLength
-						+ " characters.", this);
+				return ValidationRuleStatus.error(true, "'" + string + "' must not be longer than " + maxLength //$NON-NLS-1$ //$NON-NLS-2$
+						+ " characters.", this); //$NON-NLS-1$
 			}
 			return ValidationRuleStatus.ok();
 		} else {
-			throw new ValidationFailure("MaxLength can only validate objects of type String.");
+			throw new ValidationFailure("MaxLength can only validate objects of type String."); //$NON-NLS-1$
 		}
 	}
 

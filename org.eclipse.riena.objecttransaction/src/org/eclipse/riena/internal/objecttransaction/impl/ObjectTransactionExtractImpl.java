@@ -45,7 +45,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionExtract#addTransactedObject(org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public void addCleanTransactedObject(ITransactedObject transObject) {
-		Assert.isTrue((!contains(transObject.getObjectId())), "object must not exist in extract");
+		Assert.isTrue((!contains(transObject.getObjectId())), "object must not exist in extract"); //$NON-NLS-1$
 		deltas.add(new TransactionDelta(transObject.getObjectId(), State.CLEAN, transObject.getVersion()));
 	}
 
@@ -75,11 +75,11 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("----------extract--------------------\n");
+		sb.append("----------extract--------------------\n"); //$NON-NLS-1$
 		for (int i = 0; i < deltas.size(); i++) {
 			sb.append(deltas.get(i));
 		}
-		sb.append("----------extract--------------------\n");
+		sb.append("----------extract--------------------\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

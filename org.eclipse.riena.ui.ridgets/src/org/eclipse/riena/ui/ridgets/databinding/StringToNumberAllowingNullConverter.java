@@ -48,7 +48,7 @@ public class StringToNumberAllowingNullConverter extends Converter {
 	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
 	 */
 	public Object convert(Object fromObject) {
-		if ("".equals(fromObject) || fromObject == null) {
+		if ("".equals(fromObject) || fromObject == null) { //$NON-NLS-1$
 			if (delegate.getToType() == Double.TYPE) {
 				return 0.0;
 			} else if (delegate.getToType() == Float.TYPE) {

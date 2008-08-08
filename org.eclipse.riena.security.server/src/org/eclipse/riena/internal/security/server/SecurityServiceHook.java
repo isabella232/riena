@@ -39,16 +39,16 @@ import org.osgi.service.log.LogService;
 public class SecurityServiceHook implements IServiceHook {
 
 	/** <code>SESSIONID</code> */
-	public static final String SESSIONID = "ssoid";
+	public static final String SESSIONID = "ssoid"; //$NON-NLS-1$
 	/** <code>SSOID</code> used as Cookie name for the ssoid */
-	public final static String SSOID = "x-compeople-ssoid";
+	public final static String SSOID = "x-compeople-ssoid"; //$NON-NLS-1$
 	/**
 	 * <code>PRINCIPAL</code> the name of the id, under which the principal is
 	 * stored in the current messagecontext *
 	 */
-	public static final String PRINCIPAL = "principal";
+	public static final String PRINCIPAL = "principal"; //$NON-NLS-1$
 	/** <code>SET_SESSION</code> */
-	public static final String SET_SESSION = "set-ssoid";
+	public static final String SET_SESSION = "set-ssoid"; //$NON-NLS-1$
 
 	// private static final String UNSECURE_WEBSERVICES_ID =
 	// "spirit.security.server.UnsecureWebservices";
@@ -69,7 +69,7 @@ public class SecurityServiceHook implements IServiceHook {
 	 */
 	public SecurityServiceHook() {
 		super();
-		Inject.service(IGenericObjectCache.class.getName()).useFilter("(cache.type=PrincipalCache)").into(this)
+		Inject.service(IGenericObjectCache.class.getName()).useFilter("(cache.type=PrincipalCache)").into(this) //$NON-NLS-1$
 				.andStart(Activator.getDefault().getContext());
 		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
@@ -81,9 +81,9 @@ public class SecurityServiceHook implements IServiceHook {
 		// List<UnsecureWebservice> tempList =
 		// RegistryAccessor.fetchRegistry().getConfiguration(
 		// UNSECURE_WEBSERVICES_ID);
-		String appName = "???appname??????";// RuntimeInfo.getApplicationName();
+		String appName = "???appname??????";// RuntimeInfo.getApplicationName(); //$NON-NLS-1$
 		if (appName == null) {
-			appName = "<unknown>";
+			appName = "<unknown>"; //$NON-NLS-1$
 		}
 		// if (tempList.size() == 0) {
 		// LOGGER.log(LogService.LOG_INFO, appName +" : no unsecureWebservices
@@ -120,7 +120,7 @@ public class SecurityServiceHook implements IServiceHook {
 
 		if (!requiresSSOIDbyDefault) {
 			LOGGER.log(LogService.LOG_INFO, appName
-					+ ": defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is not required).");
+					+ ": defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is not required)."); //$NON-NLS-1$
 		}
 	}
 
@@ -196,15 +196,15 @@ public class SecurityServiceHook implements IServiceHook {
 			ssoid = null;
 		}
 
-		LOGGER.log(LogService.LOG_DEBUG, "before Service ssoid = " + ssoid);
+		LOGGER.log(LogService.LOG_DEBUG, "before Service ssoid = " + ssoid); //$NON-NLS-1$
 
 		if (ssoid == null && requiresSSOID) {
-			LOGGER.log(LogService.LOG_ERROR, "error in call to webservice {" + callback.getInterfaceName()
-					+ "} since it is not in the list of webservices that do not require a session but SSOID=null !!!");
-			if (System.getProperty("spirit.secure.webservices") == null
-					|| Boolean.getBoolean("spirit.secure.webservices")) {
-				throw new NotAuthorizedFailure("call to webservice " + callback.getInterfaceName()
-						+ " failed, no valid session was given but is required.");
+			LOGGER.log(LogService.LOG_ERROR, "error in call to webservice {" + callback.getInterfaceName() //$NON-NLS-1$
+					+ "} since it is not in the list of webservices that do not require a session but SSOID=null !!!"); //$NON-NLS-1$
+			if (System.getProperty("spirit.secure.webservices") == null //$NON-NLS-1$
+					|| Boolean.getBoolean("spirit.secure.webservices")) { //$NON-NLS-1$
+				throw new NotAuthorizedFailure("call to webservice " + callback.getInterfaceName() //$NON-NLS-1$
+						+ " failed, no valid session was given but is required."); //$NON-NLS-1$
 			}
 		}
 
@@ -215,17 +215,17 @@ public class SecurityServiceHook implements IServiceHook {
 			Principal[] principals = (Principal[]) principalCache.get(ssoid, SecurityServiceHook.class);
 			if (principals == null) {
 				principals = sessionService.findPrincipals(new Session(ssoid));
-				LOGGER.log(LogService.LOG_DEBUG, "sessionService found principal = " + Arrays.toString(principals));
+				LOGGER.log(LogService.LOG_DEBUG, "sessionService found principal = " + Arrays.toString(principals)); //$NON-NLS-1$
 				if (principals == null && requiresSSOID) {
-					LOGGER.log(LogService.LOG_ERROR, "ssoid {" + ssoid
-							+ "} found in request but SessionService could not find a Principal.");
-					throw new NotAuthorizedFailure("call to webservice with invalid ssoid");
+					LOGGER.log(LogService.LOG_ERROR, "ssoid {" + ssoid //$NON-NLS-1$
+							+ "} found in request but SessionService could not find a Principal."); //$NON-NLS-1$
+					throw new NotAuthorizedFailure("call to webservice with invalid ssoid"); //$NON-NLS-1$
 				}
 				if (principals != null) {
 					principalCache.put(ssoid, principals);
 				}
 			} else {
-				LOGGER.log(LogService.LOG_DEBUG, "found principal in cache = " + Arrays.toString(principals));
+				LOGGER.log(LogService.LOG_DEBUG, "found principal in cache = " + Arrays.toString(principals)); //$NON-NLS-1$
 			}
 			if (principals != null) {
 				Subject subject = new Subject();
@@ -233,7 +233,7 @@ public class SecurityServiceHook implements IServiceHook {
 					subject.getPrincipals().add(p);
 				}
 				subjectHolderService.fetchSubjectHolder().setSubject(subject);
-				callback.setProperty("riena.subject", subject);
+				callback.setProperty("riena.subject", subject); //$NON-NLS-1$
 			}
 		}
 
@@ -241,7 +241,7 @@ public class SecurityServiceHook implements IServiceHook {
 		if (ssoid != null) {
 			Session beforeSession = new Session(ssoid);
 			sessionHolderService.fetchSessionHolder().setSession(beforeSession);
-			callback.setProperty("de.compeople.ssoid", beforeSession);
+			callback.setProperty("de.compeople.ssoid", beforeSession); //$NON-NLS-1$
 		}
 
 	}
@@ -255,38 +255,38 @@ public class SecurityServiceHook implements IServiceHook {
 	 */
 	public void afterService(ServiceContext context) {
 		Session afterSession = sessionHolderService.fetchSessionHolder().getSession();
-		Session beforeSession = (Session) context.getProperty("de.compeople.ssoid");
+		Session beforeSession = (Session) context.getProperty("de.compeople.ssoid"); //$NON-NLS-1$
 		String ssoid = null;
 		if (afterSession != null) {
 			ssoid = afterSession.getSessionId();
 		}
 		if (beforeSession != null) {
-			LOGGER.log(LogService.LOG_DEBUG, "afterService after_ssoid=" + ssoid + " before_ssoid="
+			LOGGER.log(LogService.LOG_DEBUG, "afterService after_ssoid=" + ssoid + " before_ssoid=" //$NON-NLS-1$ //$NON-NLS-2$
 					+ beforeSession.getSessionId());
 		}
-		LOGGER.log(LogService.LOG_DEBUG, "afterService compare session instance before=" + beforeSession + " after="
+		LOGGER.log(LogService.LOG_DEBUG, "afterService compare session instance before=" + beforeSession + " after=" //$NON-NLS-1$ //$NON-NLS-2$
 				+ afterSession);
 		if (beforeSession != afterSession
 				|| (beforeSession != null && afterSession != null && !(beforeSession.getSessionId().equals(ssoid)))) {
-			if (ssoid == null || ssoid.equals("0")) {
+			if (ssoid == null || ssoid.equals("0")) { //$NON-NLS-1$
 				// delete cookie
-				Cookie cookie = new Cookie(SSOID, "");
-				cookie.setPath("/");
+				Cookie cookie = new Cookie(SSOID, ""); //$NON-NLS-1$
+				cookie.setPath("/"); //$NON-NLS-1$
 				context.addCookie(cookie);
-				LOGGER.log(LogService.LOG_DEBUG, "setting cookie to '0'");
+				LOGGER.log(LogService.LOG_DEBUG, "setting cookie to '0'"); //$NON-NLS-1$
 			} else {
 				Cookie cookie = new Cookie(SSOID, ssoid);
-				cookie.setPath("/");
+				cookie.setPath("/"); //$NON-NLS-1$
 				context.addCookie(cookie);
-				if (beforeSession != null && !(beforeSession.getSessionId().equals("0"))) {
-					LOGGER.log(LogService.LOG_WARNING, "CHANGING cookie setting from '" + beforeSession.getSessionId()
-							+ "' to '" + ssoid + "'");
+				if (beforeSession != null && !(beforeSession.getSessionId().equals("0"))) { //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_WARNING, "CHANGING cookie setting from '" + beforeSession.getSessionId() //$NON-NLS-1$
+							+ "' to '" + ssoid + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
-					LOGGER.log(LogService.LOG_DEBUG, "setting cookie to '" + ssoid + "'");
+					LOGGER.log(LogService.LOG_DEBUG, "setting cookie to '" + ssoid + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		} else {
-			LOGGER.log(LogService.LOG_DEBUG, "doing nothing in afterService");
+			LOGGER.log(LogService.LOG_DEBUG, "doing nothing in afterService"); //$NON-NLS-1$
 		}
 
 		sessionHolderService.fetchSessionHolder().setSession(null);

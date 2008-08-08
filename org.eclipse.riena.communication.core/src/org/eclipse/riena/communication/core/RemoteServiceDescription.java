@@ -311,7 +311,7 @@ public class RemoteServiceDescription {
 
 	@Override
 	public String toString() {
-		return "protocol=" + protocol + ", url=" + url + ", interface=" + serviceInterfaceClassName;
+		return "protocol=" + protocol + ", url=" + url + ", interface=" + serviceInterfaceClassName; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**

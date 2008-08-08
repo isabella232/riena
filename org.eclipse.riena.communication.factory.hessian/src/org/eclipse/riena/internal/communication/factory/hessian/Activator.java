@@ -38,7 +38,7 @@ public class Activator extends RienaActivator {
 		super.start(context);
 		Activator.plugin = this;
 		logger = getLogger(this.getClass().getName());
-		logger.log(LogService.LOG_INFO, "start hessian support on client");
+		logger.log(LogService.LOG_INFO, "start hessian support on client"); //$NON-NLS-1$
 		factory = new RemoteServiceFactoryHessian();
 		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
 		properties.put(IRemoteServiceFactory.PROP_PROTOCOL, factory.getProtocol());
@@ -57,7 +57,7 @@ public class Activator extends RienaActivator {
 		regFactory = null;
 
 		factory.dispose();
-		logger.log(LogService.LOG_INFO, "stop hessian support on client");
+		logger.log(LogService.LOG_INFO, "stop hessian support on client"); //$NON-NLS-1$
 		Activator.plugin = null;
 		super.stop(context);
 	}

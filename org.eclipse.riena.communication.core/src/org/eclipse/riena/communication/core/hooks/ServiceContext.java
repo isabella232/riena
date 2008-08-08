@@ -59,18 +59,18 @@ public class ServiceContext {
 	}
 
 	public Cookie[] getCookies() {
-		List<String> cookieValues = messageContext.getRequestHeaderValue("Cookie");
+		List<String> cookieValues = messageContext.getRequestHeaderValue("Cookie"); //$NON-NLS-1$
 		if (cookieValues == null || cookieValues.size() == 0) {
 			return null;
 		}
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		for (String temp : cookieValues) {
-			cookies.add(new Cookie(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1)));
+			cookies.add(new Cookie(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return cookies.toArray(new Cookie[cookies.size()]);
 	}
 
 	public void addCookie(Cookie cookie) {
-		messageContext.addResponseHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue());
+		messageContext.addResponseHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

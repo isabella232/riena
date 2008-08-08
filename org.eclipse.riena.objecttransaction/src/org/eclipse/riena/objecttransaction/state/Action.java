@@ -47,17 +47,17 @@ public final class Action {
 	 */
 	public String toString() {
 		if (actionCode == NEW_CODE) {
-			return "new";
+			return "new"; //$NON-NLS-1$
 		} else if (actionCode == SET_CODE) {
-			return "set";
+			return "set"; //$NON-NLS-1$
 		} else if (actionCode == ADD_CODE) {
-			return "add";
+			return "add"; //$NON-NLS-1$
 		} else if (actionCode == REMOVE_CODE) {
-			return "remove";
+			return "remove"; //$NON-NLS-1$
 		} else if (actionCode == DELETE_CODE) {
-			return "delete";
+			return "delete"; //$NON-NLS-1$
 		}
-		return "unknown state ?????";
+		return "unknown state ?????"; //$NON-NLS-1$
 	}
 
 	/**
@@ -66,7 +66,7 @@ public final class Action {
 	 */
 	public static String toString(Action action) {
 		if (action == null) {
-			return "action is NULL ??";
+			return "action is NULL ??"; //$NON-NLS-1$
 		} else {
 			return action.toString();
 		}

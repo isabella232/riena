@@ -16,21 +16,21 @@ package org.eclipse.riena.ui.ridgets;
 public interface IDateTextFieldRidget extends ITextFieldRidget {
 
 	/** <code>FORMAT_DDMMYYYY</code> */
-	String FORMAT_DDMMYYYY = "dd.MM.yyyy";
+	String FORMAT_DDMMYYYY = "dd.MM.yyyy"; //$NON-NLS-1$
 	/** <code>FORMAT_DDMMYY</code> */
-	String FORMAT_DDMMYY = "dd.MM.yy";
+	String FORMAT_DDMMYY = "dd.MM.yy"; //$NON-NLS-1$
 	/** <code>FORMAT_DDMM</code> */
-	String FORMAT_DDMM = "dd.MM";
+	String FORMAT_DDMM = "dd.MM"; //$NON-NLS-1$
 	/** <code>FORMAT_MMYYYY</code> */
-	String FORMAT_MMYYYY = "MM.yyyy";
+	String FORMAT_MMYYYY = "MM.yyyy"; //$NON-NLS-1$
 	/** <code>FORMAT_YYYY</code> */
-	String FORMAT_YYYY = "yyyy";
+	String FORMAT_YYYY = "yyyy"; //$NON-NLS-1$
 	/** <code>FORMAT_HHMMSS</code> */
-	String FORMAT_HHMMSS = "HH:mm:ss";
+	String FORMAT_HHMMSS = "HH:mm:ss"; //$NON-NLS-1$
 	/** <code>FORMAT_HHMM</code> */
-	String FORMAT_HHMM = "HH:mm";
+	String FORMAT_HHMM = "HH:mm"; //$NON-NLS-1$
 	/** <code>FORMAT_DDMMYYYYHHMM</code> */
-	String FORMAT_DDMMYYYYHHMM = "dd.MM.yyyy HH:mm";
+	String FORMAT_DDMMYYYYHHMM = "dd.MM.yyyy HH:mm"; //$NON-NLS-1$
 
 	/**
 	 * Sets the date pattern and adds validators and converters to convert to a

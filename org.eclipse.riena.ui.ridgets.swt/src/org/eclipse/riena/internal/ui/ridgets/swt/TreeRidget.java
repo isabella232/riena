@@ -390,7 +390,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		} else {
 			// TODO [ev] productize if it works for Thorsten
 			final Object root0 = treeRoots[0];
-			final String accessor = "get" + capitalize(childrenAccessor);
+			final String accessor = "get" + capitalize(childrenAccessor); //$NON-NLS-1$
 			List root0Children = ReflectionUtils.invoke(root0, accessor);
 			final List inputList = new ArrayList(root0Children);
 			viewer.setInput(inputList);
@@ -406,7 +406,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					}
 				}
 			};
-			ReflectionUtils.invoke(root0, "addPropertyChangeListener", listener);
+			ReflectionUtils.invoke(root0, "addPropertyChangeListener", listener); //$NON-NLS-1$
 		}
 	}
 

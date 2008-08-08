@@ -36,41 +36,41 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	/**
 	 * Bound property name for <code>selectedTreeNode</code>
 	 */
-	String PROPERTY_SELECTED_TREE_NODE = "selectedTreeNode";
+	String PROPERTY_SELECTED_TREE_NODE = "selectedTreeNode"; //$NON-NLS-1$
 	/**
 	 * Bound property name for <code>selectedTreeNode</code>
 	 */
-	String PROPERTY_SELECTED_TREE_NODE_LIST = "selectedTreeNodeList";
+	String PROPERTY_SELECTED_TREE_NODE_LIST = "selectedTreeNodeList"; //$NON-NLS-1$
 	/**
 	 * "Property" without value. Is fired to refresh the tree.
 	 */
-	String PROPERTY_REFRESH_TREE = "refreshTree";
+	String PROPERTY_REFRESH_TREE = "refreshTree"; //$NON-NLS-1$
 	/**
 	 * Bound property name for <code>expand</code>
 	 */
-	String PROPERTY_EXPAND = "expand";
+	String PROPERTY_EXPAND = "expand"; //$NON-NLS-1$
 	/**
 	 * Bound property name for <code>collapseTree</code>
 	 */
-	String PROPERTY_COLLAPSE_TREE = "collapseTree";
+	String PROPERTY_COLLAPSE_TREE = "collapseTree"; //$NON-NLS-1$
 	/**
 	 * Bound property name for <code>collapseTreeRecursive</code>
 	 */
-	String PROPERTY_COLLAPSE_TREE_RECURSIVE = "collapseTreeRecursive";
+	String PROPERTY_COLLAPSE_TREE_RECURSIVE = "collapseTreeRecursive"; //$NON-NLS-1$
 	/**
 	 * Action "property" to trigger the saving of the expansion and selection
 	 * state.
 	 */
-	String PROPERTY_SAVE_EXPANSION_AND_SELECTION_BY_VALUE = "saveExpansion";
+	String PROPERTY_SAVE_EXPANSION_AND_SELECTION_BY_VALUE = "saveExpansion"; //$NON-NLS-1$
 	/**
 	 * Action "property" to trigger the restoration of the expansion and
 	 * selection state.
 	 */
-	String PROPERTY_RESTORE_EXPANSION_AND_SELECTION_BY_VALUE = "restoreExpansion";
+	String PROPERTY_RESTORE_EXPANSION_AND_SELECTION_BY_VALUE = "restoreExpansion"; //$NON-NLS-1$
 	/**
 	 * Bound property name for <code>collapseTreeRecursive</code>
 	 */
-	String PROPERTY_SELECTIONTYPE = "selectionType";
+	String PROPERTY_SELECTIONTYPE = "selectionType"; //$NON-NLS-1$
 	/**
 	 * Comment for <code>SELECTION_TYPE_SINGLE</code>
 	 */

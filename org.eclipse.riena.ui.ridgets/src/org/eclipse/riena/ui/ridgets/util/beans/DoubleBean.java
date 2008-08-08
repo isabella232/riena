@@ -54,7 +54,7 @@ public class DoubleBean extends AbstractBean {
 		// System.out.println( "Double bean setValue: " + value.toString() );
 		Object old = this.value;
 		this.value = value;
-		firePropertyChanged("value", old, this.value);
+		firePropertyChanged("value", old, this.value); //$NON-NLS-1$
 	}
 
 	/**
