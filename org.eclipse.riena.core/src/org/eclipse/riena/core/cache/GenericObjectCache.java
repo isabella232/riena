@@ -15,11 +15,12 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.internal.GlobalSoftCacheEntry;
 import org.eclipse.riena.core.cache.internal.ICacheEntry;
 import org.eclipse.riena.core.cache.internal.SoftCacheEntry;
 import org.eclipse.riena.internal.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -29,40 +30,40 @@ import org.osgi.service.log.LogService;
  */
 public class GenericObjectCache implements IGenericObjectCache {
 
-	private static final String SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE = "spirit.core.base.internal.ReferenceQueue";
-	private static final String SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS = "spirit.core.base.internal.HardLinks";
+	private static final String SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE = "spirit.core.base.internal.ReferenceQueue"; //$NON-NLS-1$
+	private static final String SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS = "spirit.core.base.internal.HardLinks"; //$NON-NLS-1$
 	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class.getName());
-	private HashMap cacheEntries;
+	private HashMap<Object, Object> cacheEntries;
 	/** timeout in milliseconds * */
 	private long timeout;
 	/** minimum count of entries to keep * */
 	private int minimumSize;
-	private LinkedList hardLinks;
+	private LinkedList<Object> hardLinks;
 	/** Reference queue for cleared SoftReference objects. */
-	private ReferenceQueue queue;
+	private ReferenceQueue<Object> queue;
 	private int statHit;
 	private int statNotFound;
 	private int statMiss;
 	private int statTimeout;
 	private static int statDisplayCount;
 	private boolean globalCache; // default = false
-	private String name = "Cache : ";
+	private String name = "Cache : "; //$NON-NLS-1$
 
 	/**
 	 * Constructor.
 	 */
 	public GenericObjectCache() {
 		super();
-		LOGGER.log(LogService.LOG_DEBUG, "creating new GenericObjectCache instance");
-		cacheEntries = new HashMap();
-		queue = new ReferenceQueue();
-		hardLinks = new LinkedList();
+		LOGGER.log(LogService.LOG_DEBUG, "creating new GenericObjectCache instance"); //$NON-NLS-1$
+		cacheEntries = new HashMap<Object, Object>();
+		queue = new ReferenceQueue<Object>();
+		hardLinks = new LinkedList<Object>();
 	}
 
 	/**
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setHashMap(java.util.HashMap)
+	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setHashMap(HashMap)
 	 */
-	public void setHashMap(HashMap map) {
+	public void setHashMap(HashMap<Object, Object> map) {
 		cacheEntries = map;
 		globalCache = true;
 		synchronized (map) {
@@ -84,7 +85,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setName(java.lang.String)
 	 */
 	public void setName(String name) {
-		this.name = name + " : ";
+		this.name = name + " : "; //$NON-NLS-1$
 	}
 
 	/**
@@ -97,7 +98,8 @@ public class GenericObjectCache implements IGenericObjectCache {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#get(java.lang.Object)
+	 * @see
+	 * org.eclipse.riena.core.cache.IGenericObjectCache#get(java.lang.Object)
 	 */
 	public Object get(Object key) {
 		// Assert.isTrue(!isGlobalCache(),"get with single parameter cannot be
@@ -111,7 +113,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#get(Object,Class)
 	 */
 	public Object get(Object key, Class callingClass) {
-		LOGGER.log(LogService.LOG_DEBUG, "get = " + key);
+		LOGGER.log(LogService.LOG_DEBUG, "get = " + key); //$NON-NLS-1$
 		long timestamp = 0;
 		Object value = null;
 		synchronized (cacheEntries) {
@@ -187,14 +189,14 @@ public class GenericObjectCache implements IGenericObjectCache {
 	private void printStat() {
 		statDisplayCount++;
 		if (statDisplayCount > 100) {
-			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound
-					+ " / " + statMiss + " / " + statTimeout);
+			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound //$NON-NLS-1$ //$NON-NLS-2$
+					+ " / " + statMiss + " / " + statTimeout); //$NON-NLS-1$ //$NON-NLS-2$
 			statDisplayCount = 0;
 		}
 	}
 
 	public String getStatistic() {
-		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statMiss + " / "
+		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statMiss + " / " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				+ statTimeout;
 	}
 
@@ -218,7 +220,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 		// Assert.isTrue((!globalCache) || value instanceof
 		// Serializable,"objects in global caches must be
 		// serializable" );
-		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + " , " + value + "");
+		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + " , " + value + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		processQueue();
 		ICacheEntry entry;
 		if (globalCache) {
@@ -236,7 +238,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#clear()
 	 */
 	public void clear() {
-		LOGGER.log(LogService.LOG_DEBUG, "clear");
+		LOGGER.log(LogService.LOG_DEBUG, "clear"); //$NON-NLS-1$
 		synchronized (hardLinks) {
 			hardLinks.clear();
 		}
@@ -250,7 +252,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#remove(Object)
 	 */
 	public void remove(Object key) {
-		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key);
+		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key); //$NON-NLS-1$
 		processQueue();
 		synchronized (cacheEntries) {
 			cacheEntries.remove(key);
@@ -263,7 +265,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	public int size() {
 		processQueue();
 		synchronized (cacheEntries) {
-			LOGGER.log(LogService.LOG_DEBUG, "size returned = " + cacheEntries.size());
+			LOGGER.log(LogService.LOG_DEBUG, "size returned = " + cacheEntries.size()); //$NON-NLS-1$
 			return cacheEntries.size();
 		}
 	}
@@ -272,7 +274,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setTimeout(int)
 	 */
 	public void setTimeout(int milliseconds) {
-		LOGGER.log(LogService.LOG_DEBUG, "setTimeout = " + milliseconds);
+		LOGGER.log(LogService.LOG_DEBUG, "setTimeout = " + milliseconds); //$NON-NLS-1$
 		timeout = milliseconds;
 	}
 
@@ -301,12 +303,12 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setMinimumSize(int)
 	 */
 	public void setMinimumSize(int minSize) {
-		LOGGER.log(LogService.LOG_DEBUG, "setMinSize = " + minSize);
+		LOGGER.log(LogService.LOG_DEBUG, "setMinSize = " + minSize); //$NON-NLS-1$
 		minimumSize = minSize;
 	}
 
 	private void processQueue() {
-		LOGGER.log(LogService.LOG_DEBUG, "processQueue");
+		LOGGER.log(LogService.LOG_DEBUG, "processQueue"); //$NON-NLS-1$
 		SoftReference ref;
 		Object tempEntry;
 		Object key = null;
@@ -329,7 +331,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 			}
 		}
 		if (count > 0) {
-			LOGGER.log(LogService.LOG_INFO, "processQueue removed " + count + " entries");
+			LOGGER.log(LogService.LOG_INFO, "processQueue removed " + count + " entries"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

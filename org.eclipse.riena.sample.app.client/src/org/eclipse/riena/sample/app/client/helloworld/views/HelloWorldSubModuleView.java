@@ -13,6 +13,8 @@ package org.eclipse.riena.sample.app.client.helloworld.views;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.HelloWorldSubModuleController;
+
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -55,6 +57,10 @@ public class HelloWorldSubModuleView extends SubModuleView<HelloWorldSubModuleCo
 	@Override
 	protected HelloWorldSubModuleController createController(ISubModuleNode subModuleNode) {
 		return new HelloWorldSubModuleController(subModuleNode);
+	}
+
+	private void initializeToolBar() {
+		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
 }

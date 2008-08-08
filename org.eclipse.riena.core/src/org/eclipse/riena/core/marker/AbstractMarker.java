@@ -33,7 +33,7 @@ public abstract class AbstractMarker implements IMarker {
 	 * @see IMarker#getAttribute(String)
 	 */
 	public Object getAttribute(String name) {
-		Assert.isNotNull(name, "name must not be null");
+		Assert.isNotNull(name, "name must not be null"); //$NON-NLS-1$
 		return attributeMap.get(name);
 	}
 
@@ -59,7 +59,7 @@ public abstract class AbstractMarker implements IMarker {
 	 * @see IMarker#setAttribute(String, Object)
 	 */
 	public void setAttribute(String name, Object value) {
-		Assert.isNotNull(name, "name must not be null");
+		Assert.isNotNull(name, "name must not be null"); //$NON-NLS-1$
 		Object oldValue = attributeMap.get(name);
 		if ((value != null && !value.equals(oldValue)) || (value == null && oldValue != null)) {
 			attributeMap.put(name, value);

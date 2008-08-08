@@ -26,8 +26,8 @@ public class ProcessInfo {
 		Plain(), Dialog();
 	}
 
-	public static Style STYLE_PLAIN = Style.Plain;
-	public static Style STYLE_DIALOG = Style.Dialog;
+	public final static Style STYLE_PLAIN = Style.Plain;
+	public final static Style STYLE_DIALOG = Style.Dialog;
 
 	private String title;
 	private String icon;

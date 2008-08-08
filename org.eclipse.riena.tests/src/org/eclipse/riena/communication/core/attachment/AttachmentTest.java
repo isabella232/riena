@@ -146,7 +146,7 @@ public class AttachmentTest extends RienaTestCase {
 	 * sends a fixed resource back
 	 * 
 	 */
-	class SocketReader extends Thread {
+	static class SocketReader extends Thread {
 		private URL myUrl;
 		private int port;
 		private int count;

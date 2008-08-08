@@ -19,7 +19,7 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface IAuthenticationService {
 
-	String WS_ID = "/AuthenticationService";
+	String WS_ID = "/AuthenticationService"; //$NON-NLS-1$
 
 	/**
 	 * login operation.

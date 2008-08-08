@@ -25,13 +25,13 @@ public class ChoiceCredential extends AbstractCredential {
 	 */
 	public ChoiceCredential(String prompt, String[] choices, int defaultChoice, boolean multipleSelectionsAllowed) {
 		super(prompt);
-		this.choices = choices;
+		this.choices = choices.clone();
 		this.defaultChoice = defaultChoice;
 		this.multipleSelectionsAllowed = multipleSelectionsAllowed;
 	}
 
 	public String[] getChoices() {
-		return choices;
+		return choices.clone();
 	}
 
 	public int getDefaultChoice() {
@@ -43,11 +43,11 @@ public class ChoiceCredential extends AbstractCredential {
 	}
 
 	public int[] getSelections() {
-		return selections;
+		return selections.clone();
 	}
 
 	public void setSelections(int[] selections) {
-		this.selections = selections;
+		this.selections = selections.clone();
 	}
 
 }

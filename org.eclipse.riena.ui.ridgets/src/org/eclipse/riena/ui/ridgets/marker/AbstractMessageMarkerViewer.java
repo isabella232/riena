@@ -117,7 +117,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		return result;
 	}
 
-	protected class MessageMarkerComparator implements Comparator<IMessageMarker> {
+	protected static class MessageMarkerComparator implements Comparator<IMessageMarker> {
 
 		/**
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)

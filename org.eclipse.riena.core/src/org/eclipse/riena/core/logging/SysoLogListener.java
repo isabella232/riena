@@ -26,23 +26,23 @@ public class SysoLogListener implements LogListener {
 		String level;
 		switch (eEntry.getLevel()) {
 		case LogService.LOG_DEBUG:
-			level = "DEBUG";
+			level = "DEBUG"; //$NON-NLS-1$
 			break;
 		case LogService.LOG_WARNING:
-			level = "WARNING";
+			level = "WARNING"; //$NON-NLS-1$
 			break;
 		case LogService.LOG_ERROR:
-			level = "ERROR";
+			level = "ERROR"; //$NON-NLS-1$
 			break;
 		case LogService.LOG_INFO:
-			level = "INFO";
+			level = "INFO"; //$NON-NLS-1$
 			break;
 		default:
-			level = "UNKNOWN";
+			level = "UNKNOWN"; //$NON-NLS-1$
 			break;
 		}
 		buffer.append(level).append(' ');
-		buffer.append("[Thread-" + eEntry.getThreadID() + "] ");
+		buffer.append("[Thread-" + eEntry.getThreadID() + "] "); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append(eEntry.getLoggerName()).append(' ');
 		if (eEntry.getContext() != null) {
 			buffer.append(eEntry.getContext()).append(' ');

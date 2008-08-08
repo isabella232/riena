@@ -16,11 +16,6 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.internal.ui.ridgets.swt.DefaultRealm;
@@ -31,6 +26,12 @@ import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * Tests for the ValueBindingSupport.
@@ -245,7 +246,7 @@ public class ValueBindingSupportTest extends TestCase {
 	// helping clases
 	// ///////////////
 
-	private class EvenNumberOfCharacters implements IValidator {
+	private static class EvenNumberOfCharacters implements IValidator {
 
 		public IStatus validate(final Object value) {
 			if (value == null) {
@@ -264,7 +265,7 @@ public class ValueBindingSupportTest extends TestCase {
 
 	}
 
-	private class NotEndingWithDisaster implements IValidator {
+	private static class NotEndingWithDisaster implements IValidator {
 
 		public IStatus validate(final Object value) {
 			if (value == null) {

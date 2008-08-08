@@ -77,7 +77,7 @@ public class Person extends AbstractBean {
 	 * @return eye color
 	 */
 	public Integer getEyeColor() {
-		return new Integer(eyeColor);
+		return Integer.valueOf(eyeColor);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class Person extends AbstractBean {
 		int oldEyeColor = this.eyeColor;
 		this.eyeColor = newEyeColor;
 
-		firePropertyChanged(PROPERTY_EYE_COLOR, new Integer(oldEyeColor), new Integer(eyeColor));
+		firePropertyChanged(PROPERTY_EYE_COLOR, Integer.valueOf(oldEyeColor), Integer.valueOf(eyeColor));
 	}
 
 	/**

@@ -100,7 +100,7 @@ public class GlobalSoftCacheEntry extends SoftCacheEntry implements ICacheEntry 
 				byteArray = byteStream.toByteArray();
 				serializedValue = new SoftReference(new SerializedValue(byteArray), queue);
 			} catch (IOException e) {
-				throw new CacheFailure("error creating cache value", e);
+				throw new CacheFailure("error creating cache value", e); //$NON-NLS-1$
 			}
 		} else {
 			SerializedValue value = (SerializedValue) serializedValue.get();
@@ -115,7 +115,7 @@ public class GlobalSoftCacheEntry extends SoftCacheEntry implements ICacheEntry 
 			values.add(new SoftReference(obj, queue));
 			return obj;
 		} catch (Exception e) {
-			throw new CacheFailure("error creating cache value", e);
+			throw new CacheFailure("error creating cache value", e); //$NON-NLS-1$
 		}
 	}
 

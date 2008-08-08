@@ -104,7 +104,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
 		public boolean equals(Object obj) {
-			if (obj.getClass() != TypePair.class) {
+			if (obj == null || obj.getClass() != TypePair.class) {
 				return false;
 			}
 			TypePair other = (TypePair) obj;

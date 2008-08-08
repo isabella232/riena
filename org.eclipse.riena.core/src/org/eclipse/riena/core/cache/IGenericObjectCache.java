@@ -127,7 +127,7 @@ public interface IGenericObjectCache {
 	 * 
 	 * @param map
 	 */
-	void setHashMap(HashMap map);
+	void setHashMap(HashMap<Object, Object> map);
 
 	/**
 	 * Descriptive name for this cache (shown in logs)

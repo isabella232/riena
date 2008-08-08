@@ -20,6 +20,7 @@ import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.RienaPolicy;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
+
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
@@ -66,7 +67,7 @@ public class AuthorizationTest extends RienaTestCase {
 		Boolean result = (Boolean) Subject.doAsPrivileged(subject, new PrivilegedAction() {
 
 			public Object run() {
-				return new Boolean(new BusinessTestCase().hasPermission());
+				return Boolean.valueOf(new BusinessTestCase().hasPermission());
 			}
 		}, null);
 		assertTrue("BusinessTestCase must work with valid user", result.equals(Boolean.TRUE));
@@ -78,7 +79,7 @@ public class AuthorizationTest extends RienaTestCase {
 		Boolean result = (Boolean) Subject.doAsPrivileged(subject, new PrivilegedAction() {
 
 			public Object run() {
-				return new Boolean(new BusinessTestCase().hasPermission());
+				return Boolean.valueOf(new BusinessTestCase().hasPermission());
 			}
 		}, null);
 		assertTrue("BusinessTestCase must fail with invalid user", result.equals(Boolean.FALSE));

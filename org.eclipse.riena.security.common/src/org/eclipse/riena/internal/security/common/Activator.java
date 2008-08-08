@@ -27,7 +27,7 @@ import org.osgi.framework.ServiceRegistration;
 public class Activator extends RienaPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.security.common";
+	public static final String PLUGIN_ID = "org.eclipse.riena.security.common"; //$NON-NLS-1$
 
 	private ServiceRegistration sessionHolderService;
 	private ServiceRegistration securityCallHook;

@@ -15,7 +15,7 @@ import java.security.Principal;
 
 public interface IAuthorizationService {
 
-	String WS_ID = "/AuthorizationService";
+	String WS_ID = "/AuthorizationService"; //$NON-NLS-1$
 
 	public Permissions[] getPermissions(Principal[] principals);
 

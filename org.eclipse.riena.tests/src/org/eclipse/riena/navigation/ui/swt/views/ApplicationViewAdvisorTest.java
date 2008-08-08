@@ -103,7 +103,7 @@ public class ApplicationViewAdvisorTest extends TestCase {
 
 	}
 
-	private class DummyMenuManager extends MenuManager {
+	private static class DummyMenuManager extends MenuManager {
 
 		private Menu menu;
 

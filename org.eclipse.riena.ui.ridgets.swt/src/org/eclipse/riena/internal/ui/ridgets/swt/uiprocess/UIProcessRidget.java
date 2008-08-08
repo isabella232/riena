@@ -28,6 +28,7 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IProgressBoxRidget;
 import org.eclipse.riena.ui.swt.uiprocess.ICancelListener;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
+
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -56,7 +57,7 @@ public class UIProcessRidget extends AbstractRidget implements IProgressBoxRidge
 		contexts = new HashMap<Object, VisualizerContainer>();
 	}
 
-	class ContextDataComparator implements Comparator<VisualizerContainer> {
+	static class ContextDataComparator implements Comparator<VisualizerContainer> {
 
 		public int compare(VisualizerContainer o1, VisualizerContainer o2) {
 			int time1 = getVisualizerTime(o1);
@@ -102,7 +103,7 @@ public class UIProcessRidget extends AbstractRidget implements IProgressBoxRidge
 	/*
 	 * holds the progress of a visualized UiProcess
 	 */
-	private class Progress {
+	private static class Progress {
 		int totalWork = -1;
 		int completed = -1;
 	}

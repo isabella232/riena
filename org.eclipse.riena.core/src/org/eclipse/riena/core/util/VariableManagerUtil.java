@@ -52,7 +52,7 @@ public class VariableManagerUtil {
 		} catch (CoreException e) {
 			final IValueVariable existingValue = variableManager.getValueVariable((String) key);
 			if (existingValue.getValue().equals(value))
-				LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")");
+				LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			else
 				throw e;
 		}

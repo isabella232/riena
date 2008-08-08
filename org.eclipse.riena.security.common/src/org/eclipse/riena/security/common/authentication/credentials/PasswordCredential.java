@@ -28,11 +28,18 @@ public class PasswordCredential extends AbstractCredential {
 	}
 
 	public char[] getPassword() {
-		return password;
+		if (password == null) {
+			return null;
+		}
+		return password.clone();
 	}
 
 	public void setPassword(char[] password) {
-		this.password = password;
+		if (password != null) {
+			this.password = password.clone();
+		} else {
+			this.password = null;
+		}
 	}
 
 	public boolean isEchoOn() {

@@ -97,8 +97,8 @@ public class ExtensionMapper {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		final IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(extensionDesc.getExtensionPointId());
 		if (extensionPoint == null)
-			throw new IllegalArgumentException("Extension point " + extensionDesc.getExtensionPointId()
-					+ " does not exist");
+			throw new IllegalArgumentException("Extension point " + extensionDesc.getExtensionPointId() //$NON-NLS-1$
+					+ " does not exist"); //$NON-NLS-1$
 		final IExtension[] extensions = extensionPoint.getExtensions();
 		if (extensions.length == 0)
 			return (T[]) Array.newInstance(componentType, 0);
@@ -127,13 +127,13 @@ public class ExtensionMapper {
 		private final IExtension extension;
 
 		private Wrapper(final IExtensionPoint extensionPoint) {
-			Assert.isNotNull(extensionPoint, "extensionPoint must not be null.");
+			Assert.isNotNull(extensionPoint, "extensionPoint must not be null."); //$NON-NLS-1$
 			this.extensionPoint = extensionPoint;
 			this.extension = null;
 		}
 
 		private Wrapper(final IExtension extension) {
-			Assert.isNotNull(extension, "extension must not be null.");
+			Assert.isNotNull(extension, "extension must not be null."); //$NON-NLS-1$
 			this.extension = extension;
 			this.extensionPoint = null;
 		}
@@ -146,7 +146,7 @@ public class ExtensionMapper {
 		 * (java.lang.String)
 		 */
 		public Object createExecutableExtension(String propertyName) throws CoreException {
-			throw new UnsupportedOperationException("IExtension/Point does not support createExecutableExtension()");
+			throw new UnsupportedOperationException("IExtension/Point does not support createExecutableExtension()"); //$NON-NLS-1$
 		}
 
 		/*
@@ -233,7 +233,7 @@ public class ExtensionMapper {
 		 * ()
 		 */
 		public IExtension getDeclaringExtension() throws InvalidRegistryObjectException {
-			throw new UnsupportedOperationException("IExtensionPoint does not support getDeclaringExtension()");
+			throw new UnsupportedOperationException("IExtensionPoint does not support getDeclaringExtension()"); //$NON-NLS-1$
 		}
 
 		/*
@@ -271,7 +271,7 @@ public class ExtensionMapper {
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getParent()
 		 */
 		public Object getParent() throws InvalidRegistryObjectException {
-			throw new UnsupportedOperationException("IExtensionPoint does not support getParent()");
+			throw new UnsupportedOperationException("IExtensionPoint does not support getParent()"); //$NON-NLS-1$
 		}
 
 		/*
@@ -280,7 +280,7 @@ public class ExtensionMapper {
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getValue()
 		 */
 		public String getValue() throws InvalidRegistryObjectException {
-			throw new UnsupportedOperationException("IExtensionPoint does not support getValue()");
+			throw new UnsupportedOperationException("IExtensionPoint does not support getValue()"); //$NON-NLS-1$
 		}
 
 		/*
@@ -289,7 +289,7 @@ public class ExtensionMapper {
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getValueAsIs()
 		 */
 		public String getValueAsIs() throws InvalidRegistryObjectException {
-			throw new UnsupportedOperationException("IExtensionPoint does not support getValueAsIs()");
+			throw new UnsupportedOperationException("IExtensionPoint does not support getValueAsIs()"); //$NON-NLS-1$
 		}
 
 		/*

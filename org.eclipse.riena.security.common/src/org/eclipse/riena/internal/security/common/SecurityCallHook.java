@@ -27,7 +27,7 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public class SecurityCallHook implements ICallHook {
 
-	private static final String SSOID = "x-compeople-ssoid";
+	private static final String SSOID = "x-compeople-ssoid"; //$NON-NLS-1$
 	private ISessionHolderService shService;
 
 	public SecurityCallHook() {

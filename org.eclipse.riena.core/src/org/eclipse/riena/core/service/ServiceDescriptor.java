@@ -69,7 +69,7 @@ public class ServiceDescriptor {
 	 * @param clazz
 	 */
 	public ServiceDescriptor(String clazz) {
-		Assert.isNotNull(clazz, "Service clazz must not be null.");
+		Assert.isNotNull(clazz, "Service clazz must not be null."); //$NON-NLS-1$
 		this.clazz = clazz;
 	}
 
@@ -82,8 +82,8 @@ public class ServiceDescriptor {
 	 * @return this service descriptor
 	 */
 	public ServiceDescriptor useFilter(String filter) {
-		Assert.isTrue(this.filter == null, "Filter has already been set!");
-		Assert.isNotNull(filter, "Filter must not be null.");
+		Assert.isTrue(this.filter == null, "Filter has already been set!"); //$NON-NLS-1$
+		Assert.isNotNull(filter, "Filter must not be null."); //$NON-NLS-1$
 		this.filter = filter;
 		return this;
 	}
@@ -97,7 +97,7 @@ public class ServiceDescriptor {
 	 * @return this service descriptor
 	 */
 	public ServiceDescriptor useRanking() {
-		Assert.isTrue(!ranking, "Ranking has already been set!");
+		Assert.isTrue(!ranking, "Ranking has already been set!"); //$NON-NLS-1$
 		ranking = true;
 		return this;
 	}
@@ -111,7 +111,7 @@ public class ServiceDescriptor {
 	 * @return the injector responsible for tracking this service descriptor
 	 */
 	public ServiceInjector into(Object target) {
-		Assert.isNotNull(target, "Target must not be null.");
+		Assert.isNotNull(target, "Target must not be null."); //$NON-NLS-1$
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
 	}
 

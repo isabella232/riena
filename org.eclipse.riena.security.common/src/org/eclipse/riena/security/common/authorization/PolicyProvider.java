@@ -23,9 +23,9 @@ public class PolicyProvider {
 	}
 
 	public PermissionCollection getPermissions(Subject subject) {
-		System.out.println("PolicyProvider: getPermissions");
+		System.out.println("PolicyProvider: getPermissions"); //$NON-NLS-1$
 		Permissions permissions = new Permissions();
-		permissions.add(new FilePermission("foo.txt", "read"));
+		permissions.add(new FilePermission("foo.txt", "read")); //$NON-NLS-1$ //$NON-NLS-2$
 		return permissions;
 	}
 

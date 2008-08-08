@@ -37,19 +37,19 @@ public class LRUCache implements IGenericObjectCache {
 	private int statNotFound;
 	private int statTimeout;
 	private static int statDisplayCount;
-	private String name = "LRUCache : ";
+	private String name = "LRUCache : "; //$NON-NLS-1$
 
 	/**
 	 * 
 	 */
 	public LRUCache() {
 		super();
-		LOGGER.log(LogService.LOG_INFO, "creating new LRUCache instance");
+		LOGGER.log(LogService.LOG_INFO, "creating new LRUCache instance"); //$NON-NLS-1$
 	}
 
-	public void setHashMap(HashMap map) {
+	public void setHashMap(HashMap<Object, Object> map) {
 		if (!(map instanceof LRUHashMap)) {
-			throw new RuntimeException("global Hashmap must be a LRUHashMap");
+			throw new RuntimeException("global Hashmap must be a LRUHashMap"); //$NON-NLS-1$
 		}
 		lruMap = (LRUHashMap) map;
 	}
@@ -69,14 +69,14 @@ public class LRUCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setName(java.lang.String)
 	 */
 	public void setName(String name) {
-		this.name = name + " : ";
+		this.name = name + " : "; //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setTimeout(int)
 	 */
 	public void setTimeout(int milliseconds) {
-		LOGGER.log(LogService.LOG_INFO, "setTimeout = " + milliseconds);
+		LOGGER.log(LogService.LOG_INFO, "setTimeout = " + milliseconds); //$NON-NLS-1$
 		timeout = milliseconds;
 	}
 
@@ -85,7 +85,7 @@ public class LRUCache implements IGenericObjectCache {
 	}
 
 	public synchronized Object get(Object key) {
-		LOGGER.log(LogService.LOG_DEBUG, "get = " + key);
+		LOGGER.log(LogService.LOG_DEBUG, "get = " + key); //$NON-NLS-1$
 		ICacheEntry entry = (SimpleCacheEntry) lruMap.get(key);
 		/** do we find the entry * */
 		if (entry == null) {
@@ -115,13 +115,13 @@ public class LRUCache implements IGenericObjectCache {
 	private void printStat() {
 		statDisplayCount++;
 		if (statDisplayCount > 100) {
-			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Timeout " + statHit + " / " + statNotFound + " / " + statTimeout);
+			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Timeout " + statHit + " / " + statNotFound + " / " + statTimeout); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			statDisplayCount = 0;
 		}
 	}
 
 	public String getStatistic() {
-		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statTimeout;
+		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statTimeout; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class LRUCache implements IGenericObjectCache {
 	 *      java.lang.Object)
 	 */
 	public synchronized void put(Object key, Object value) {
-		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + ", " + value);
+		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + ", " + value); //$NON-NLS-1$ //$NON-NLS-2$
 		lruMap.put(key, new SimpleCacheEntry(value, key));
 	}
 
@@ -137,7 +137,7 @@ public class LRUCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#clear()
 	 */
 	public synchronized void clear() {
-		LOGGER.log(LogService.LOG_DEBUG, "clear");
+		LOGGER.log(LogService.LOG_DEBUG, "clear"); //$NON-NLS-1$
 		lruMap.clear();
 	}
 
@@ -145,7 +145,7 @@ public class LRUCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#remove(Object)
 	 */
 	public synchronized void remove(Object key) {
-		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key);
+		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key); //$NON-NLS-1$
 		lruMap.remove(key);
 	}
 
@@ -153,7 +153,7 @@ public class LRUCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#size()
 	 */
 	public synchronized int size() {
-		LOGGER.log(LogService.LOG_DEBUG, "size <= " + lruMap.size());
+		LOGGER.log(LogService.LOG_DEBUG, "size <= " + lruMap.size()); //$NON-NLS-1$
 		return lruMap.size();
 	}
 
@@ -165,7 +165,7 @@ public class LRUCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setMinimumSize(int)
 	 */
 	public void setMinimumSize(int minSize) {
-		LOGGER.log(LogService.LOG_INFO, "setMinSize = " + minSize);
+		LOGGER.log(LogService.LOG_INFO, "setMinSize = " + minSize); //$NON-NLS-1$
 		minimumSize = minSize;
 		lruMap = new LRUHashMap(minSize);
 	}

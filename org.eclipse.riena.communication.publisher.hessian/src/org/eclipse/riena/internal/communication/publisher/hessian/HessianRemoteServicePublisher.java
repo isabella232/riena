@@ -14,11 +14,12 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -51,8 +52,8 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see xeval.rcplabs.hessianx.server.IWebServicePublisher#publishService(RemoteServiceDescription
-	 *      rsd )
+	 * @seexeval.rcplabs.hessianx.server.IWebServicePublisher#publishService(
+	 * RemoteServiceDescription rsd )
 	 */
 	public synchronized String publishService(RemoteServiceDescription rsd) {
 		String localhost = "localhost";
@@ -71,7 +72,9 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see xeval.rcplabs.hessianx.server.IWebServicePublisher#unpublishService(java.lang.String)
+	 * @see
+	 * xeval.rcplabs.hessianx.server.IWebServicePublisher#unpublishService(java
+	 * .lang.String)
 	 */
 	public synchronized void unpublishService(String path) {
 		RemoteServiceDescription rsd = webServiceDescriptions.remove(SERVLET_PATH + path);
@@ -82,7 +85,8 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceProtocol#getProtocol()
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceProtocol#getProtocol()
 	 */
 	public String getProtocol() {
 		return PROTOCOL;
@@ -97,7 +101,7 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 		return mca;
 	}
 
-	class MsgCxtAcc implements IServiceMessageContextAccessor {
+	static class MsgCxtAcc implements IServiceMessageContextAccessor {
 		MsgCxtAcc() {
 			super();
 		}

@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.RienaStartupStatus;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.core.RienaStartupStatus;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -59,9 +60,9 @@ public class Activator extends RienaPlugin {
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		String stage;
 		try {
-			stage = variableManager.performStringSubstitution("Riena is running in stage '${riena.stage}'.");
+			stage = variableManager.performStringSubstitution("Riena is running in stage '${riena.stage}'."); //$NON-NLS-1$
 		} catch (CoreException e) {
-			stage = "No stage information set.";
+			stage = "No stage information set."; //$NON-NLS-1$
 		}
 		logger.log(LogService.LOG_INFO, stage);
 	}
@@ -79,8 +80,8 @@ public class Activator extends RienaPlugin {
 		for (Bundle bundle : bundles) {
 			boolean forceStart = Boolean.parseBoolean((String) bundle.getHeaders().get(RIENA_FORCE_START));
 			if (bundle.getState() != Bundle.ACTIVE
-					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals(
-							"org.eclipse.equinox.log"))) {
+					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals( //$NON-NLS-1$
+							"org.eclipse.equinox.log"))) { //$NON-NLS-1$
 				forceStart = true;
 			}
 			if (!forceStart)
@@ -94,17 +95,17 @@ public class Activator extends RienaPlugin {
 													 */) {
 				try {
 					bundle.start();
-					LOGGER.log(LogService.LOG_INFO, "Forced start: '" + bundle.getSymbolicName() + "' succesful.");
+					LOGGER.log(LogService.LOG_INFO, "Forced start: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
 				} catch (RuntimeException rte) {
-					LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName()
-							+ "' failed with exception.", rte);
+					LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() //$NON-NLS-1$
+							+ "' failed with exception.", rte); //$NON-NLS-1$
 					throw rte;
 				}
 			} else if (bundle.getState() == Bundle.INSTALLED) {
-				LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() + "' failed. Header '"
-						+ RIENA_FORCE_START + "' is set but is only in state INSTALLED (not RESOLVED).");
+				LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() + "' failed. Header '" //$NON-NLS-1$ //$NON-NLS-2$
+						+ RIENA_FORCE_START + "' is set but is only in state INSTALLED (not RESOLVED)."); //$NON-NLS-1$
 			} else if (bundle.getState() == Bundle.ACTIVE) {
-				LOGGER.log(LogService.LOG_DEBUG, "Forced start: '" + bundle.getSymbolicName() + "' is already ACTIVE.");
+				LOGGER.log(LogService.LOG_DEBUG, "Forced start: '" + bundle.getSymbolicName() + "' is already ACTIVE."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}

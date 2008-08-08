@@ -22,7 +22,6 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.eclipse.riena.security.common.authentication.AuthenticationTicket;
 import org.eclipse.riena.security.common.authentication.ClientLogin;
 
 /**
@@ -41,7 +40,7 @@ public class ClientRemoteLoginModule implements LoginModule {
 
 	String username;
 	String password;
-	AuthenticationTicket ticket;
+	// AuthenticationTicket ticket;
 	ClientLogin clientLogin;
 
 	/*
@@ -66,9 +65,10 @@ public class ClientRemoteLoginModule implements LoginModule {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject,
-	 *      javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 *      java.util.Map)
+	 * @see
+	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
+	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
+	 * java.util.Map)
 	 */
 	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
 			Map<String, ?> options) {

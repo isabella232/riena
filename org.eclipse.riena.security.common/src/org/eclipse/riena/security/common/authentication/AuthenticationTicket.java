@@ -46,7 +46,7 @@ public class AuthenticationTicket implements Serializable {
 	 */
 	public AuthenticationTicket(Session session) {
 		super();
-		assert session != null : "Missing session";
+		assert session != null : "Missing session"; //$NON-NLS-1$
 		this.session = session;
 		this.principals = new HashSet<Principal>();
 	}
@@ -84,6 +84,6 @@ public class AuthenticationTicket implements Serializable {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "AuthenticationTicket(session=" + getSession() + ",principals=" + getPrincipals() + ")";
+		return "AuthenticationTicket(session=" + getSession() + ",principals=" + getPrincipals() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 }

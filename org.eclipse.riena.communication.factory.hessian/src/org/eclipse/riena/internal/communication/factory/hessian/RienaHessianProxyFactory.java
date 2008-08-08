@@ -22,11 +22,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.util.ReflectionUtils;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
@@ -128,7 +129,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	}
 
-	class SpecificInputStreamDeserializer extends AbstractDeserializer {
+	static class SpecificInputStreamDeserializer extends AbstractDeserializer {
 		public Object readObject(AbstractHessianInput in) throws IOException {
 
 			byte[] bytes = in.readBytes();

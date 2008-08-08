@@ -65,7 +65,7 @@ public class ExtensionInjector {
 	 * @return itself
 	 */
 	public ExtensionInjector andStart(final BundleContext context) {
-		Assert.isTrue(!started, "ExtensionInjector already started.");
+		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
 		started = true;
 		this.context = context;
 		updateMethod = findUpdateMethod();
@@ -82,7 +82,7 @@ public class ExtensionInjector {
 			if (extensionRegistry == null)
 				// TODO Is this an error for that we should throw an exception?
 				LOGGER.log(LogService.LOG_ERROR,
-						"For some reason the extension registry has not been created. Tracking is not possible.");
+						"For some reason the extension registry has not been created. Tracking is not possible."); //$NON-NLS-1$
 			else {
 				injectorListener = new InjectorListener();
 				extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
@@ -99,8 +99,8 @@ public class ExtensionInjector {
 	 * @return itself
 	 */
 	public ExtensionInjector bind(final String bindMethodName) {
-		Assert.isNotNull(bindMethodName, "Bind method name must not be null");
-		Assert.isTrue(!started, "ExtensionInjector already started.");
+		Assert.isNotNull(bindMethodName, "Bind method name must not be null"); //$NON-NLS-1$
+		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
 		this.updateMethodName = bindMethodName;
 		return this;
 	}
@@ -111,7 +111,7 @@ public class ExtensionInjector {
 	 * @return itself
 	 */
 	public ExtensionInjector doNotTrack() {
-		Assert.isTrue(!started, "ExtensionInjector already started.");
+		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
 		track = false;
 		return this;
 	}
@@ -124,7 +124,7 @@ public class ExtensionInjector {
 	 * @return itself
 	 */
 	public ExtensionInjector specific() {
-		Assert.isTrue(!started, "ExtensionInjector already started.");
+		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
 		nonSpecific = false;
 		return this;
 	}
@@ -135,7 +135,7 @@ public class ExtensionInjector {
 	 * @return itself
 	 */
 	public ExtensionInjector doNotReplaceSymbols() {
-		Assert.isTrue(!started, "ExtensionInjector already started.");
+		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
 		symbolReplace = false;
 		return this;
 	}
@@ -151,7 +151,7 @@ public class ExtensionInjector {
 			IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 			if (extensionRegistry == null)
 				// TODO Is this an error for that we should throw an exception?
-				LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created.");
+				LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created."); //$NON-NLS-1$
 			else
 				extensionRegistry.removeListener(injectorListener);
 		}
@@ -183,9 +183,9 @@ public class ExtensionInjector {
 			}
 
 		} catch (SecurityException e) {
-			throw new IllegalStateException("Could not find 'bind' method.", e);
+			throw new IllegalStateException("Could not find 'bind' method.", e); //$NON-NLS-1$
 		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException("Could not find 'bind' method.", e);
+			throw new IllegalStateException("Could not find 'bind' method.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -201,8 +201,8 @@ public class ExtensionInjector {
 					return attempt;
 			}
 		}
-		throw new NoSuchMethodError("In class " + target.getClass() + " is no method matching " + updateMethodName
-				+ "(" + interfaceType + " )");
+		throw new NoSuchMethodError("In class " + target.getClass() + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
+				+ "(" + interfaceType + " )"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -220,17 +220,17 @@ public class ExtensionInjector {
 				candidates.add(method);
 
 		if (candidates.size() == 0)
-			throw new IllegalStateException("No suitable 'bind' method found.");
+			throw new IllegalStateException("No suitable 'bind' method found."); //$NON-NLS-1$
 
 		if (candidates.size() == 1)
 			if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0]))
 				return candidates.get(0);
 			else
-				throw new IllegalStateException("Found method " + candidates.get(0)
-						+ " does not match extension point constraints.");
+				throw new IllegalStateException("Found method " + candidates.get(0) //$NON-NLS-1$
+						+ " does not match extension point constraints."); //$NON-NLS-1$
 
 		if (candidates.size() > 2)
-			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method.");
+			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method."); //$NON-NLS-1$ //$NON-NLS-2$
 
 		if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0]))
 			return candidates.get(0);
@@ -238,7 +238,7 @@ public class ExtensionInjector {
 		if (matchesExtensionPointConstraint(candidates.get(1).getParameterTypes()[0]))
 			return candidates.get(1);
 
-		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method.");
+		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -263,7 +263,7 @@ public class ExtensionInjector {
 			Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
 			if (!matchesExtensionPointConstraint(beans.length))
 				LOGGER.log(LogService.LOG_ERROR,
-						"Number of extensions does not fullfil the extension point's constraints.");
+						"Number of extensions does not fullfil the extension point's constraints."); //$NON-NLS-1$
 			if (isArray) {
 				update(new Object[] { beans });
 			} else {
@@ -280,11 +280,11 @@ public class ExtensionInjector {
 		try {
 			updateMethod.invoke(target, params);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Calling 'bind' method fails.", e);
+			throw new IllegalStateException("Calling 'bind' method fails.", e); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Calling 'bind' method fails.", e);
+			throw new IllegalStateException("Calling 'bind' method fails.", e); //$NON-NLS-1$
 		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling 'bind' method fails.", e);
+			throw new IllegalStateException("Calling 'bind' method fails.", e); //$NON-NLS-1$
 		}
 	}
 

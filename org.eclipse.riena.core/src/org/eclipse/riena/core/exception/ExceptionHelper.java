@@ -36,19 +36,19 @@ public final class ExceptionHelper {
 	 * ExceptionInInitializerError!!!
 	 */
 
-	private static final String DOT_STR = ".";
+	private static final String DOT_STR = "."; //$NON-NLS-1$
 
 	/**
 	 * version ID (controlled by CVS).
 	 */
-	public static final String VERSION_ID = "$Id$";
+	public static final String VERSION_ID = "$Id$"; //$NON-NLS-1$
 
-	private static final String EMPTY_STR = "";
-	private static final String LINE_SEPARATOR = "\n";
-	private static final String ITEM_SEPARATOR = ",";
-	private static final String UNKNOWN = "<unknown>";
-	private static final String CALLER_CLASS_NOT_FOUND = "<caller class not found>";
-	private static final String DEFAULT_CLIENT_MSG = "Es ist ein Systemfehler aufgetreten - Referenz-ID: {ID}";
+	private static final String EMPTY_STR = ""; //$NON-NLS-1$
+	private static final String LINE_SEPARATOR = "\n"; //$NON-NLS-1$
+	private static final String ITEM_SEPARATOR = ","; //$NON-NLS-1$
+	private static final String UNKNOWN = "<unknown>"; //$NON-NLS-1$
+	private static final String CALLER_CLASS_NOT_FOUND = "<caller class not found>"; //$NON-NLS-1$
+	private static final String DEFAULT_CLIENT_MSG = "Es ist ein Systemfehler aufgetreten - Referenz-ID: {ID}"; //$NON-NLS-1$
 
 	private final static StackTraceElement[] EMPTY_STACKTRACE_ELEMENTS = new StackTraceElement[] {};
 
@@ -58,16 +58,16 @@ public final class ExceptionHelper {
 	/**
 	 * used to replace the failure id.
 	 */
-	public static final String PLACEHOLDER_FAILURE_ID_REGEX = "\\{ID\\}";
+	public static final String PLACEHOLDER_FAILURE_ID_REGEX = "\\{ID\\}"; //$NON-NLS-1$
 
 	/**
 	 * the attribute name to be used inside application classes. To determinate
 	 * the version of a class this attribute name will be looked for.
 	 */
-	public static final String VERSION_ID_ATTR_NAME = "VERSION_ID";
+	public static final String VERSION_ID_ATTR_NAME = "VERSION_ID"; //$NON-NLS-1$
 
 	static {
-		javaVersion = System.getProperty("java.version");
+		javaVersion = System.getProperty("java.version"); //$NON-NLS-1$
 	}
 
 	private ExceptionHelper() { /* utitlity class */
@@ -100,7 +100,7 @@ public final class ExceptionHelper {
 			if (steClassName.equals(className)) {
 				stackFlag = true;
 			} else {
-				if (stackFlag && !steClassName.startsWith("sun.") && !steClassName.startsWith("java.lang.reflect")) {
+				if (stackFlag && !steClassName.startsWith("sun.") && !steClassName.startsWith("java.lang.reflect")) { //$NON-NLS-1$ //$NON-NLS-2$
 					return steClassName;
 				}
 			}
@@ -198,13 +198,13 @@ public final class ExceptionHelper {
 		StringBuilder buffer = new StringBuilder();
 		for (int i = throwables.size() - 1; i > -1; i--) {
 			throwable = throwables.get(i);
-			buffer.append("Exception: ").append(throwable.getClass().getName()).append(": ").append(
+			buffer.append("Exception: ").append(throwable.getClass().getName()).append(": ").append( //$NON-NLS-1$ //$NON-NLS-2$
 					throwable.getMessage());
 
 			StackTraceElement[] trace = throwable.getStackTrace();
 
 			if (trace.length < 1 || trace[0].getClassName() == null) {
-				buffer.append("No Stacktrace available.");
+				buffer.append("No Stacktrace available."); //$NON-NLS-1$
 			} else {
 				for (StackTraceElement ste : trace) {
 					String className = EMPTY_STR;
@@ -214,19 +214,19 @@ public final class ExceptionHelper {
 						if (steClassName.lastIndexOf(DOT_STR) > 0) {
 							int locIx = steClassName.lastIndexOf(DOT_STR);
 							className = steClassName.substring(locIx + 1);
-							pkgName = ":" + steClassName.substring(0, locIx);
+							pkgName = ":" + steClassName.substring(0, locIx); //$NON-NLS-1$
 						} else {
 							className = steClassName;
 						}
 					}
 					buffer.append(LINE_SEPARATOR).append(className).append(DOT_STR).append(ste.getMethodName()).append(
-							"()").append(",").append(ste.getLineNumber()).append(pkgName);
+							"()").append(",").append(ste.getLineNumber()).append(pkgName); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			buffer.append(LINE_SEPARATOR);
 
 			if (i != 0) {
-				buffer.append(LINE_SEPARATOR).append("caused:").append(LINE_SEPARATOR);
+				buffer.append(LINE_SEPARATOR).append("caused:").append(LINE_SEPARATOR); //$NON-NLS-1$
 			}
 		}
 
@@ -321,7 +321,7 @@ public final class ExceptionHelper {
 			constructor = StackTraceElement.class.getDeclaredConstructor(new Class[] { String.class, String.class,
 					String.class, int.class });
 		} catch (NoSuchMethodException e) {
-			throw new ExceptionFailure("Could not get the constructor of StackTraceElement.", e);
+			throw new ExceptionFailure("Could not get the constructor of StackTraceElement.", e); //$NON-NLS-1$
 		}
 
 		try {
@@ -339,7 +339,7 @@ public final class ExceptionHelper {
 				String declaringClass = items[0];
 				String methodName = items[1];
 				String fileName;
-				if (items[2].equals("null")) {
+				if (items[2].equals("null")) { //$NON-NLS-1$
 					fileName = null;
 				} else {
 					fileName = items[2];
@@ -354,7 +354,7 @@ public final class ExceptionHelper {
 			return resultStackTrace;
 
 		} catch (Throwable e) {
-			throw new ExceptionFailure("Parsing of exception failed.", e);
+			throw new ExceptionFailure("Parsing of exception failed.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -365,7 +365,7 @@ public final class ExceptionHelper {
 	 * @pre map != null
 	 */
 	public static Object[] createArrayFromMap(Map<String, ? extends Object> map) {
-		Assert.isNotNull(map, "map should not be null");
+		Assert.isNotNull(map, "map should not be null"); //$NON-NLS-1$
 
 		String[] messagePartNames = Failure.getMessagePartNames();
 		Object[] args = new Object[messagePartNames.length];
@@ -387,11 +387,11 @@ public final class ExceptionHelper {
 		if (!(t instanceof Failure)) {
 			String msgText = null;
 			if (t instanceof AssertionFailedException) {
-				msgText = "Assertion violated";
+				msgText = "Assertion violated"; //$NON-NLS-1$
 			} else {
-				msgText = "Unexpected exception occurred";
+				msgText = "Unexpected exception occurred"; //$NON-NLS-1$
 			}
-			return new ExceptionFailure(msgText + ": " + t, t);
+			return new ExceptionFailure(msgText + ": " + t, t); //$NON-NLS-1$
 		}
 
 		return (Failure) t;

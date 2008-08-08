@@ -23,6 +23,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -151,7 +152,7 @@ public class InjectBindingManagerTest extends TestCase {
 
 	}
 
-	private final class BindingPropertyLocator implements IBindingPropertyLocator {
+	private static final class BindingPropertyLocator implements IBindingPropertyLocator {
 
 		public String locateBindingProperty(Object uiControl) {
 			Control control = (Control) uiControl;
@@ -162,7 +163,7 @@ public class InjectBindingManagerTest extends TestCase {
 	/**
 	 * This Mapper returns always the class <code>LabelRidget</code>.
 	 */
-	private class ControlRidgetMapper implements IControlRidgetMapper<Widget> {
+	private static class ControlRidgetMapper implements IControlRidgetMapper<Widget> {
 
 		/**
 		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addMapping(java.lang.Class,
@@ -196,7 +197,7 @@ public class InjectBindingManagerTest extends TestCase {
 
 	}
 
-	public class RidgetContainer implements IRidgetContainer {
+	public static class RidgetContainer implements IRidgetContainer {
 
 		private ILabelRidget label1;
 		private ILabelRidget label2;

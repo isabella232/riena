@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.swt.uiprocess.UiProcessWindow;
+
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
@@ -73,7 +74,7 @@ class VisualizerContainer extends HashMap<IProgressVisualizer, Integer> {
 			if (time1 > time2) {
 				return -1;
 			}
-			if (time1 == time2) {
+			if (time1.equals(time2)) {
 				return 0;
 			}
 

@@ -20,13 +20,14 @@ import java.util.Set;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 public class PermissionCache implements IPermissionCache {
@@ -38,8 +39,8 @@ public class PermissionCache implements IPermissionCache {
 
 	public PermissionCache() {
 		super();
-		permCache.setName("PermissionCache");
-		permCache.setHashMap(new HashMap<Subject, Permissions>());
+		permCache.setName("PermissionCache"); //$NON-NLS-1$
+		permCache.setHashMap(new HashMap<Object, Object>());
 		if (ContainerModel.isClient()) {
 			permCache.setMinimumSize(1);
 			permCache.setTimeout(999999000); // client permissions nearly
@@ -88,7 +89,7 @@ public class PermissionCache implements IPermissionCache {
 		}
 		if (missingPrincipals.size() > 0) {
 			if (authService == null) {
-				LOGGER.log(LogService.LOG_ERROR, "no authorization service to retrieve permissions");
+				LOGGER.log(LogService.LOG_ERROR, "no authorization service to retrieve permissions"); //$NON-NLS-1$
 				return null;
 			}
 			Principal[] mpArray = missingPrincipals.toArray(new Principal[missingPrincipals.size()]);

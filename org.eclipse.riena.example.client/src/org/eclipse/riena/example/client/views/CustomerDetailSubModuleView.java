@@ -1,12 +1,13 @@
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
 import org.eclipse.riena.internal.example.client.utils.UIControlsFactory;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -43,8 +44,13 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 	public void dispose() {
 	}
 
+	// public void basicCreatePartControl(Composite c) {
+	// return;
+	// }
+
 	@Override
 	public void basicCreatePartControl(Composite parent) {
+		// super.beforeCreatePartControl();
 
 		this.contentArea = parent;
 		contentArea.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
@@ -77,6 +83,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		nameLabel.setLayoutData(fd);
 
 		Text nameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		nameText.setData("binding_property", "lastname");
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(kundennummerText, 0, SWT.LEFT);
@@ -138,6 +145,9 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		fd.left = new FormAttachment(birthplaceText, 0, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		saveButton.setLayoutData(fd);
+
+		// super.addBoundUIControls(contentArea);
+		// super.afterCreatePartControl();
 	}
 
 	private Label createSectionLabel(Composite parent, String text) {
@@ -146,12 +156,4 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		return label;
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleNodeView#createController(org.eclipse.riena.navigation.ISubModuleNode)
-	 */
-	// @Override
-	// protected CustomerDetailSubModuleController
-	// createController(ISubModuleNode subModuleNode) {
-	// return new CustomerDetailSubModuleController(subModuleNode);
-	// }
 }

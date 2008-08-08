@@ -87,16 +87,16 @@ public abstract class ServiceInjector {
 	 * @return this injector
 	 */
 	public ServiceInjector andStart(BundleContext context) {
-		Assert.isNotNull(context, "Bundle context must be not null.");
-		Assert.isTrue(!started, "ServiceInjector already started!");
+		Assert.isNotNull(context, "Bundle context must be not null."); //$NON-NLS-1$
+		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
 		started = true;
 		this.context = context;
 		if (bindMethodName == null)
 			bindMethodName = DEFAULT_BIND_METHOD_NAME;
-		bindMethodProspects = collectMethods("Bind method", bindMethodName);
+		bindMethodProspects = collectMethods("Bind method", bindMethodName); //$NON-NLS-1$
 		if (unbindMethodName == null)
 			unbindMethodName = DEFAULT_UNBIND_METHOD_NAME;
-		unbindMethodProspects = collectMethods("Unbind method", unbindMethodName);
+		unbindMethodProspects = collectMethods("Unbind method", unbindMethodName); //$NON-NLS-1$
 
 		doStart();
 		// for sure
@@ -133,7 +133,7 @@ public abstract class ServiceInjector {
 	 * @return this injector
 	 */
 	public ServiceInjector bind(String bindMethodName) {
-		Assert.isTrue(!started, "ServiceInjector already started!");
+		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
 		this.bindMethodName = bindMethodName;
 		return this;
 	}
@@ -148,7 +148,7 @@ public abstract class ServiceInjector {
 	 * @return this injector
 	 */
 	public synchronized ServiceInjector unbind(String unbindMethodName) {
-		Assert.isTrue(!started, "ServiceInjector already started!");
+		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
 		this.unbindMethodName = unbindMethodName;
 		return this;
 	}
@@ -165,7 +165,7 @@ public abstract class ServiceInjector {
 		try {
 			context.addServiceListener(serviceListener, filter);
 		} catch (InvalidSyntaxException e) {
-			throw new IllegalArgumentException("The specified filter has syntax errors.", e);
+			throw new IllegalArgumentException("The specified filter has syntax errors.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -189,7 +189,7 @@ public abstract class ServiceInjector {
 		if (prospects.size() != 0)
 			return prospects;
 
-		throw new IllegalArgumentException(message + " '" + methodName + "' does not exist in target class '"
+		throw new IllegalArgumentException(message + " '" + methodName + "' does not exist in target class '" //$NON-NLS-1$ //$NON-NLS-2$
 				+ target.getClass().getName());
 	}
 
@@ -217,7 +217,7 @@ public abstract class ServiceInjector {
 		try {
 			return context.getServiceReferences(serviceDesc.getServiceClazz(), filter);
 		} catch (InvalidSyntaxException e) {
-			throw new IllegalArgumentException("The specified filter has syntax errors.", e);
+			throw new IllegalArgumentException("The specified filter has syntax errors.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -283,8 +283,8 @@ public abstract class ServiceInjector {
 			return targetedMethods.get(0);
 
 		if (targetedMethods.isEmpty()) {
-			LOGGER.log(LogService.LOG_ERROR, "Could not find a matching Bind/Unbind method from '" + methods
-					+ "' for target class '" + target.getClass().getName() + "'.");
+			LOGGER.log(LogService.LOG_ERROR, "Could not find a matching Bind/Unbind method from '" + methods //$NON-NLS-1$
+					+ "' for target class '" + target.getClass().getName() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 		// find most specific method
@@ -310,17 +310,17 @@ public abstract class ServiceInjector {
 		try {
 			method.invoke(target, service);
 		} catch (SecurityException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Security exception on invoking '" + method + "' on '"
-					+ target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Security exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
+					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
 		} catch (IllegalArgumentException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Illegal argument exception on invoking '" + method + "' on '"
-					+ target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Illegal argument exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
+					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Illegal access exception on invoking '" + method + "' on '"
-					+ target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Illegal access exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
+					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
 		} catch (InvocationTargetException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Invocation target exception on invoking '" + method + "' on '"
-					+ target.getClass().getName() + "'.", e);
+			LOGGER.log(LogService.LOG_ERROR, "Invocation target exception on invoking '" + method + "' on '" //$NON-NLS-1$ //$NON-NLS-2$
+					+ target.getClass().getName() + "'.", e); //$NON-NLS-1$
 		}
 	}
 

@@ -47,7 +47,7 @@ public class ReflectionUtilsTest extends TestCase {
 	 * Test creating an instance #3
 	 */
 	public void testNewInstance3() {
-		Object o = ReflectionUtils.newInstance("java.awt.Dimension", new Integer(2), new Integer(2));
+		Object o = ReflectionUtils.newInstance("java.awt.Dimension", Integer.valueOf(2), Integer.valueOf(2));
 		assertTrue(o instanceof Dimension);
 		Dimension dim = (Dimension) o;
 		assertEquals(new Dimension(2, 2), dim);

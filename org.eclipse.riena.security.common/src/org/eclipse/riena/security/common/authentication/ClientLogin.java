@@ -67,7 +67,7 @@ public class ClientLogin {
 		try {
 			AbstractCredential[] creds = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 			if (authenticationService == null) {
-				throw new AuthenticationFailure("no authentication service");
+				throw new AuthenticationFailure("no authentication service"); //$NON-NLS-1$
 			}
 			ticket = authenticationService.login(loginContext, creds);
 			subject = new Subject();

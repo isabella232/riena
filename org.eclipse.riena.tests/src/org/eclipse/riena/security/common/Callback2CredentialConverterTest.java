@@ -82,7 +82,8 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testMultipleCredentials() {
-		Callback[] callbacks = new Callback[] { new PasswordCallback("password", false), new TextInputCallback("textinp", "default-text") };
+		Callback[] callbacks = new Callback[] { new PasswordCallback("password", false),
+				new TextInputCallback("textinp", "default-text") };
 
 		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 2);
@@ -125,7 +126,7 @@ public class Callback2CredentialConverterTest extends TestCase {
 		assertTrue(mycb.getValue2().equals("valueTwo"));
 	}
 
-	public class MyCallback implements Callback {
+	public static class MyCallback implements Callback {
 		private String value1;
 		private String value2;
 

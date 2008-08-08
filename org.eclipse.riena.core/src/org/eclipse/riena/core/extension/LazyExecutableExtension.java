@@ -38,18 +38,18 @@ class LazyExecutableExtension implements InvocationHandler {
 			return null;
 		final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
 		if (bundle == null)
-			throw new IllegalStateException("Could not resolve bundle for configuration element "
+			throw new IllegalStateException("Could not resolve bundle for configuration element " //$NON-NLS-1$
 					+ configurationElement.getName());
 		try {
 			final Class<?> clazz = bundle.loadClass(className);
 			final Class<?>[] interfaces = clazz.getInterfaces();
 			if (interfaces.length == 0)
-				throw new IllegalStateException("Executable extension " + className + " within configuration element "
-						+ configurationElement.getName() + " does not have any interfaces, but they are required.");
+				throw new IllegalStateException("Executable extension " + className + " within configuration element " //$NON-NLS-1$ //$NON-NLS-2$
+						+ configurationElement.getName() + " does not have any interfaces, but they are required."); //$NON-NLS-1$
 			return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new LazyExecutableExtension(
 					configurationElement, name));
 		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Could not load class " + className + " from bundle "
+			throw new IllegalStateException("Could not load class " + className + " from bundle " //$NON-NLS-1$ //$NON-NLS-2$
 					+ bundle.getSymbolicName(), e);
 		}
 	}

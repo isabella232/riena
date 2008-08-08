@@ -21,7 +21,6 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -59,7 +58,7 @@ public class Activator extends RienaActivator {
 		regServiceRegistry = context.registerService(IRemoteServiceRegistry.class.getName(), serviceRegistry,
 				properties);
 
-		final Logger logger = getLogger(Activator.class.getName());
+		// final Logger logger = getLogger(Activator.class.getName());
 
 		// context.registerService(ICallHook.class.getName(), new ICallHook() {
 		//

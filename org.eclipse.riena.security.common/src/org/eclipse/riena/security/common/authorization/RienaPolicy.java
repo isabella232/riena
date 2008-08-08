@@ -63,8 +63,8 @@ public class RienaPolicy extends Policy {
 			return;
 		try {
 			Class<?> clz = RienaPolicy.class.getClassLoader().getSystemClassLoader().loadClass(
-					"org.eclipse.riena.security.common.policyproxy.PolicyProxy");
-			Method method = clz.getMethod("setRealPolicy", Policy.class);
+					"org.eclipse.riena.security.common.policyproxy.PolicyProxy"); //$NON-NLS-1$
+			Method method = clz.getMethod("setRealPolicy", Policy.class); //$NON-NLS-1$
 			method.invoke(clz, rp);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -96,7 +96,7 @@ public class RienaPolicy extends Policy {
 	 */
 	@Override
 	public PermissionCollection getPermissions(CodeSource codesource) {
-		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: codesource: getPermissions codesource="
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: codesource: getPermissions codesource=" //$NON-NLS-1$
 				+ codesource.getLocation());
 		return null;
 	}
@@ -108,12 +108,12 @@ public class RienaPolicy extends Policy {
 	 */
 	@Override
 	public void refresh() {
-		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: refresh");
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: refresh"); //$NON-NLS-1$
 	}
 
 	@Override
 	public PermissionCollection getPermissions(ProtectionDomain domain) {
-		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: domain: getPermissions domain="
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: domain: getPermissions domain=" //$NON-NLS-1$
 				+ domain.getCodeSource().getLocation());
 		return super.getPermissions(domain);
 	}
@@ -122,7 +122,7 @@ public class RienaPolicy extends Policy {
 	public boolean implies(ProtectionDomain domain, Permission permission) {
 		// System.out.print("(Y)");
 		if (/* permission instanceof AuthPermission && */domain.getCodeSource().getLocation().toString().contains(
-				"/org.eclipse.riena.security.common/")) {
+				"/org.eclipse.riena.security.common/")) { //$NON-NLS-1$
 			return true;
 		}
 
@@ -130,18 +130,18 @@ public class RienaPolicy extends Policy {
 		if (domain.getPrincipals() == null || domain.getPrincipals().length == 0) {
 			boolean result = defaultPolicy.implies(domain, permission);
 			if (!result) {
-				LOGGER.log(LogService.LOG_WARNING, "no right to do " + permission + " for "
-						+ domain.getCodeSource().getLocation() + " no principal");
+				LOGGER.log(LogService.LOG_WARNING, "no right to do " + permission + " for " //$NON-NLS-1$ //$NON-NLS-2$
+						+ domain.getCodeSource().getLocation() + " no principal"); //$NON-NLS-1$
 			}
 			return result;
 		}
 
 		// this branch is entered if there is at least one principal
-		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: implies ");
+		LOGGER.log(LogService.LOG_DEBUG, "rienapolicy: implies "); //$NON-NLS-1$
 		for (Principal p : domain.getPrincipals()) {
 			LOGGER.log(LogService.LOG_DEBUG, p.toString());
 		}
-		LOGGER.log(LogService.LOG_DEBUG, " " + permission);
+		LOGGER.log(LogService.LOG_DEBUG, " " + permission); //$NON-NLS-1$
 		boolean result;
 		if (permCache == null) {
 			result = defaultPolicy.implies(domain, permission);
@@ -154,8 +154,8 @@ public class RienaPolicy extends Policy {
 			}
 		}
 		if (!result) {
-			LOGGER.log(LogService.LOG_ERROR, "no right to do " + permission + " for "
-					+ domain.getCodeSource().getLocation() + " with principal");
+			LOGGER.log(LogService.LOG_ERROR, "no right to do " + permission + " for " //$NON-NLS-1$ //$NON-NLS-2$
+					+ domain.getCodeSource().getLocation() + " with principal"); //$NON-NLS-1$
 		}
 		return result;
 	}

@@ -52,7 +52,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 * @param representedName
 	 */
 	public SimplePrincipal(String proxyName, String representedName) {
-		this(proxyName + "," + representedName);
+		this(proxyName + "," + representedName); //$NON-NLS-1$
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 * @return string representation of object
 	 */
 	public String toString() {
-		return "(" + this.getClass().getSimpleName() + ":" + name + ")";
+		return "(" + this.getClass().getSimpleName() + ":" + name + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }

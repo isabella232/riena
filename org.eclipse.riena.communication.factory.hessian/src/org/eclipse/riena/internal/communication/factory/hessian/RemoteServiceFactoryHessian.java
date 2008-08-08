@@ -87,7 +87,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		return mca;
 	}
 
-	class CallMsgCtxAcc implements ICallMessageContextAccessor {
+	static class CallMsgCtxAcc implements ICallMessageContextAccessor {
 
 		private ThreadLocal<ICallMessageContext> contexts = new ThreadLocal<ICallMessageContext>();
 
@@ -101,7 +101,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			return contexts.get();
 		}
 
-		class MsgCtx implements ICallMessageContext {
+		static class MsgCtx implements ICallMessageContext {
 
 			private HashMap<String, List<String>> customRequestHeader;
 

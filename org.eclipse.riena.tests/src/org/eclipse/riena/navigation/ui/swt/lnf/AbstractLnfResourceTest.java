@@ -46,8 +46,8 @@ public class AbstractLnfResourceTest extends TestCase {
 	/**
 	 * Tests the class <code>dispose()</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testDispose() throws Exception {
 
@@ -63,8 +63,8 @@ public class AbstractLnfResourceTest extends TestCase {
 	/**
 	 * Tests the class <code>GetResource()</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testGetResource() throws Exception {
 
@@ -81,7 +81,7 @@ public class AbstractLnfResourceTest extends TestCase {
 
 	}
 
-	private class MockLnfResource extends AbstractLnfResource {
+	private static class MockLnfResource extends AbstractLnfResource {
 
 		/**
 		 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()

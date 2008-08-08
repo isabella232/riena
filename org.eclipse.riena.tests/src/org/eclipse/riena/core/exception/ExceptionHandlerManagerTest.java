@@ -15,8 +15,8 @@ import java.util.Hashtable;
 import junit.framework.Assert;
 
 import org.eclipse.riena.tests.RienaTestCase;
+
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -24,7 +24,8 @@ import org.osgi.framework.ServiceReference;
  */
 public class ExceptionHandlerManagerTest extends RienaTestCase {
 
-	public void setUp() throws BundleException {
+	public void setUp() throws Exception {
+		super.setUp();
 		startBundles("org\\.eclipse\\.riena\\.exception.*", null);
 	}
 

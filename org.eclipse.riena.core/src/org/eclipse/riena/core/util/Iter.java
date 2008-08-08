@@ -151,7 +151,7 @@ public final class Iter {
 		}
 
 		public void remove() {
-			throw new NoSuchMethodError("No remove() on an wrapped Enumeration!");
+			throw new NoSuchMethodError("No remove() on an wrapped Enumeration!"); //$NON-NLS-1$
 		}
 
 	}

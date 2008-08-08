@@ -99,6 +99,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 					PrintWriter pw = new PrintWriter(res.getOutputStream());
 					pw.write("no webservices available");
 					pw.flush();
+					pw.close();
 					return;
 				} else {
 					httpRes.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Hessian requires POST");
@@ -125,6 +126,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 					pw.write("calls " + rsd);
 				}
 				pw.flush();
+				pw.close();
 				return;
 			} else {
 				httpRes.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Hessian requires POST");
@@ -178,7 +180,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		staticDeSerMap.put(java.io.InputStream.class, new SpecificInputStreamDeserializer());
 	}
 
-	class SpecificInputStreamDeserializer extends AbstractDeserializer {
+	static class SpecificInputStreamDeserializer extends AbstractDeserializer {
 		public Object readObject(AbstractHessianInput in) throws IOException {
 
 			byte[] bytes = in.readBytes();

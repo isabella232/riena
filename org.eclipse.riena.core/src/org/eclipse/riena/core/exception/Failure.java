@@ -23,14 +23,14 @@ import java.util.Date;
  */
 public abstract class Failure extends RuntimeException {
 
-	private static final String UNKNOWN = "<unknown>";
-	private static final String NONE = "<none>";
-	private static final String NO_DETAILS = "No details.";
+	private static final String UNKNOWN = "<unknown>"; //$NON-NLS-1$
+	private static final String NONE = "<none>"; //$NON-NLS-1$
+	private static final String NO_DETAILS = "No details."; //$NON-NLS-1$
 
 	/**
 	 * version ID (controlled by CVS).
 	 */
-	public static final String VERSION_ID = "$Id$";
+	public static final String VERSION_ID = "$Id$"; //$NON-NLS-1$
 
 	private String javaVersion = UNKNOWN;
 
@@ -38,19 +38,19 @@ public abstract class Failure extends RuntimeException {
 	private String callerClassVersion = UNKNOWN;
 	private String callerMethodName = UNKNOWN;
 
-	private String id = "";
+	private String id = ""; //$NON-NLS-1$
 	private Date timestamp;
 
-	private String clientMsg = "";
-	private String serverMsg = "";
+	private String clientMsg = ""; //$NON-NLS-1$
+	private String serverMsg = ""; //$NON-NLS-1$
 
 	private String nativeErrorCode = NONE;
 
 	private static final int HEX_BASE = 16;
 
 	// package protected for unit test!!
-	static final String[] MESSAGE_PART_NAMES = { "serverMsg", "cause", "id", "timestamp", "callerClassName",
-			"callerClassVersion", "callerMethodName", "nativeErrorCode", "clientMsg", "javaVersion", "stacktrace" };
+	static final String[] MESSAGE_PART_NAMES = { "serverMsg", "cause", "id", "timestamp", "callerClassName", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"callerClassVersion", "callerMethodName", "nativeErrorCode", "clientMsg", "javaVersion", "stacktrace" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 	/**
 	 * constructor.
@@ -314,7 +314,7 @@ public abstract class Failure extends RuntimeException {
 	 */
 	public String getServerMsg() {
 		if (this.serverMsg == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else {
 			return this.serverMsg;
 		}

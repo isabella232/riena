@@ -65,7 +65,7 @@ public class BasicAuthenticationCallHook implements ICallHook {
 		if (subjectHolder != null) {
 			Subject subject = subjectHolder.getSubject();
 			if (subject != null) {
-				Object psw = (String) subject.getPrivateCredentials().iterator().next();
+				Object psw = subject.getPrivateCredentials().iterator().next();
 				String password;
 				if (psw != null && psw instanceof String) {
 					password = (String) psw;

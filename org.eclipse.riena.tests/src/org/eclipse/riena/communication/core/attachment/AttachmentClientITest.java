@@ -247,7 +247,8 @@ public final class AttachmentClientITest extends RienaTestCase {
 		out.close();
 
 		// attachService.sendFile(new Attachment(file));
-		file.delete();
+		boolean deleted = file.delete();
+		assertTrue(deleted);
 		assertFalse("file must be deleted by now", file.exists());
 
 	}
