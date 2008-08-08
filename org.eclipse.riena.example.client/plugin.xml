@@ -367,8 +367,8 @@
       <workAreaPresentation
             presentationId="org.eclipse.riena.example.sharedView"
             view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController">
-            viewShared="true"
+            viewController="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController"
+            viewShared="true">
       </workAreaPresentation>
       <workAreaPresentation
             presentationId="org.eclipse.riena.example.navigation"
