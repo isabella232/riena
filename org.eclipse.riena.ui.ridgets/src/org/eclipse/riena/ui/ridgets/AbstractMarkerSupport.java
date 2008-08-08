@@ -59,7 +59,6 @@ public abstract class AbstractMarkerSupport {
 			markers = new HashSet<IMarker>(1, 1.0f);
 		}
 		if (markers.add(marker)) {
-			// TODO scp updateMandatoryMarkers();
 			updateMarkers();
 			fireMarkerPropertyChangeEvent(oldValue);
 			marker.addAttributeChangeListener(markerAttributeChangeListener);
