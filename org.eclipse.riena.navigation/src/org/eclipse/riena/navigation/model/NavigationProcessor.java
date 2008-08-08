@@ -805,7 +805,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					return;
 			}
 		}
-		navigate(targetNode, sourceNode.getPresentationId(), null);
+		navigate(targetNode, sourceNode.getNodeId(), null);
 	}
 
 	/*

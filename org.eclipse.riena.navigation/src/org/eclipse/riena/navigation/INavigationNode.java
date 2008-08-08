@@ -379,7 +379,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	boolean isBlocked();
 
-	INavigationNodeId getPresentationId();
+	INavigationNodeId getNodeId();
 
 	/**
 	 * Creates the specified navigation node and adds it to the application

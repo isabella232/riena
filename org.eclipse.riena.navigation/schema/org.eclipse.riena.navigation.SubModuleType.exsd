@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="workAreaPresentation" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="subModuleType" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,23 +47,23 @@
       </complexType>
    </element>
 
-   <element name="workAreaPresentation">
+   <element name="subModuleType">
       <complexType>
-         <attribute name="presentationId" type="string">
+         <attribute name="typeId" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="viewShared" type="boolean">
+         <attribute name="shared" type="boolean" use="default" value="false">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="viewController" type="string">
+         <attribute name="controller" type="string">
             <annotation>
                <documentation>
                   

@@ -82,12 +82,12 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertFalse(subApplication.isActivated());
 		ISubApplicationNode secondSubApplication = applicationModel.getChild(1);
 		assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondSubApplication"),
-				secondSubApplication.getPresentationId());
+				secondSubApplication.getNodeId());
 		assertTrue(secondSubApplication.isActivated());
 		assertEquals(1, secondSubApplication.getChildren().size());
 		IModuleGroupNode secondModuleGroup = secondSubApplication.getChild(0);
 		assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"),
-				secondModuleGroup.getPresentationId());
+				secondModuleGroup.getNodeId());
 		assertTrue(secondModuleGroup.isActivated());
 		IModuleNode secondModule = secondModuleGroup.getChild(0);
 		ISubModuleNode secondSubModule = secondModule.getChild(0);

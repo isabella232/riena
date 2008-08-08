@@ -15,7 +15,7 @@ package org.eclipse.riena.navigation;
  * 
  * @author Erich Achilles
  */
-public interface INavigationNodePresentationDefiniton extends IPresentationDefinition {
+public interface INavigationNodeTypeDefiniton extends ITypeDefinition {
 
 	/**
 	 * Returns the ModuleComposer for this module presentation
@@ -27,6 +27,6 @@ public interface INavigationNodePresentationDefiniton extends IPresentationDefin
 	 * The id of this presentations parent presentation
 	 */
 
-	String getParentPresentationId();
+	String getParentTypeId();
 
 }

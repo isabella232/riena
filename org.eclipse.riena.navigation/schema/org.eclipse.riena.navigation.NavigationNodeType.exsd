@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="navigationNodePresentation" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="navigationNodeType" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,16 +47,16 @@
       </complexType>
    </element>
 
-   <element name="navigationNodePresentation">
+   <element name="navigationNodeType">
       <complexType>
-         <attribute name="presentationId" type="string">
+         <attribute name="typeId" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="nodeBuilder" type="string">
+         <attribute name="nodeBuilder" type="string" use="required">
             <annotation>
                <documentation>
                   
@@ -66,7 +66,7 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="parentPresentationId" type="string">
+         <attribute name="parentTypeId" type="string">
             <annotation>
                <documentation>
                   

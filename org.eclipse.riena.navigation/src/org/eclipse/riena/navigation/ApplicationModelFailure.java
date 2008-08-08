@@ -20,6 +20,11 @@ import org.eclipse.riena.core.exception.Failure;
 public class ApplicationModelFailure extends Failure {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5195851919605393494L;
+
+	/**
 	 * Creates a new instance of this failure.
 	 * 
 	 * @param msg

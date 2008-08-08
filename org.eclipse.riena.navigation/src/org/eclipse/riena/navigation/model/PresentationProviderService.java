@@ -17,10 +17,10 @@ import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
-import org.eclipse.riena.navigation.INavigationNodePresentationDefiniton;
-import org.eclipse.riena.navigation.IPresentationDefinition;
+import org.eclipse.riena.navigation.INavigationNodeTypeDefiniton;
 import org.eclipse.riena.navigation.IPresentationProviderService;
-import org.eclipse.riena.navigation.IWorkAreaPresentationDefinition;
+import org.eclipse.riena.navigation.ISubModuleTypeDefinition;
+import org.eclipse.riena.navigation.ITypeDefinition;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.osgi.service.log.LogService;
@@ -36,17 +36,17 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	// TODO: split off ... problem: navigation is gui-less ...
 
-	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.WorkAreaPresentation"; //$NON-NLS-1$
-	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.NavigationNodePresentation"; //$NON-NLS-1$
-	private PresentationExtensionInjectionHelper<IWorkAreaPresentationDefinition> targetWA;
-	private PresentationExtensionInjectionHelper<INavigationNodePresentationDefiniton> targetNN;
+	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.SubModuleType"; //$NON-NLS-1$
+	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.NavigationNodeType"; //$NON-NLS-1$
+	private PresentationExtensionInjectionHelper<ISubModuleTypeDefinition> targetWA;
+	private PresentationExtensionInjectionHelper<INavigationNodeTypeDefiniton> targetNN;
 
 	/**
 	 * Injects the extension point into a given target. The target returns a set
 	 * of presentation definitions
 	 */
-	private void inject(Class<? extends IPresentationDefinition> interfaceType, String wpID,
-			PresentationExtensionInjectionHelper<? extends IPresentationDefinition> target) {
+	private void inject(Class<? extends ITypeDefinition> interfaceType, String wpID,
+			PresentationExtensionInjectionHelper<? extends ITypeDefinition> target) {
 		Inject.extension(wpID).useType(interfaceType).into(target).andStart(Activator.getDefault().getContext());
 	}
 
@@ -54,10 +54,10 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * 
 	 */
 	public PresentationProviderService() {
-		targetWA = new PresentationExtensionInjectionHelper<IWorkAreaPresentationDefinition>();
-		inject(IWorkAreaPresentationDefinition.class, EP_WORKAREA, targetWA);
-		targetNN = new PresentationExtensionInjectionHelper<INavigationNodePresentationDefiniton>();
-		inject(INavigationNodePresentationDefiniton.class, EP_NAVNODE, targetNN);
+		targetWA = new PresentationExtensionInjectionHelper<ISubModuleTypeDefinition>();
+		inject(ISubModuleTypeDefinition.class, EP_WORKAREA, targetWA);
+		targetNN = new PresentationExtensionInjectionHelper<INavigationNodeTypeDefiniton>();
+		inject(INavigationNodeTypeDefiniton.class, EP_NAVNODE, targetNN);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class PresentationProviderService implements IPresentationProviderService
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG))
 				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
-			INavigationNodePresentationDefiniton presentationDefinition = getPresentationDefinitionNN(targetId);
+			INavigationNodeTypeDefiniton presentationDefinition = getPresentationDefinitionNN(targetId);
 			if (presentationDefinition != null) {
 				INavigationNodeBuilder builder = presentationDefinition.createNodeBuilder();
 				prepareNavigationNodeBuilder(targetId, builder);
@@ -81,8 +81,8 @@ public class PresentationProviderService implements IPresentationProviderService
 				if (argument != null && argument.getParentNodeId() != null) {
 					parentNode = provideNode(sourceNode, new NavigationNodeId(argument.getParentNodeId()), null);
 				} else {
-					parentNode = provideNode(sourceNode, new NavigationNodeId(presentationDefinition
-							.getParentPresentationId()), null);
+					parentNode = provideNode(sourceNode,
+							new NavigationNodeId(presentationDefinition.getParentTypeId()), null);
 				}
 				parentNode.addChild(targetNode);
 			} else {
@@ -106,13 +106,13 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @return
 	 */
-	protected IWorkAreaPresentationDefinition getPresentationDefinitionWA(String targetId) {
+	protected ISubModuleTypeDefinition getPresentationDefinitionWA(String targetId) {
 		if (targetWA == null || targetWA.getData().length == 0) {
 			return null;
 		} else {
-			IWorkAreaPresentationDefinition[] data = targetWA.getData();
+			ISubModuleTypeDefinition[] data = targetWA.getData();
 			for (int i = 0; i < data.length; i++) {
-				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId)) {
+				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId)) {
 					return data[i];
 				}
 			}
@@ -124,13 +124,13 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @return
 	 */
-	protected INavigationNodePresentationDefiniton getPresentationDefinitionNN(INavigationNodeId targetId) {
+	protected INavigationNodeTypeDefiniton getPresentationDefinitionNN(INavigationNodeId targetId) {
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
-			INavigationNodePresentationDefiniton[] data = targetNN.getData();
+			INavigationNodeTypeDefiniton[] data = targetNN.getData();
 			for (int i = 0; i < data.length; i++) {
-				if (data[i].getPresentationId() != null && data[i].getPresentationId().equals(targetId.getTypeId())) {
+				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId.getTypeId())) {
 					return data[i];
 				}
 
@@ -159,7 +159,7 @@ public class PresentationProviderService implements IPresentationProviderService
 		if (targetId == null) {
 			return null;
 		}
-		if (targetId.equals(node.getPresentationId())) {
+		if (targetId.equals(node.getNodeId())) {
 			return node;
 		}
 		for (INavigationNode<?> child : node.getChildren()) {
@@ -179,11 +179,11 @@ public class PresentationProviderService implements IPresentationProviderService
 	 *      (org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public Object provideView(INavigationNodeId nodeId) {
-		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(nodeId.getTypeId());
+		ISubModuleTypeDefinition presentationDefinition = getPresentationDefinitionWA(nodeId.getTypeId());
 		if (presentationDefinition != null) {
-			return presentationDefinition.getViewId();
+			return presentationDefinition.getView();
 		} else {
-			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId() + "'."); //$NON-NLS-2$
+			throw new ApplicationModelFailure("No presentation definition found for node '" + nodeId.getTypeId() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -191,12 +191,11 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#provideController(org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public IViewController provideController(INavigationNode<?> node) {
-		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(node.getPresentationId()
-				.getTypeId());
+		ISubModuleTypeDefinition presentationDefinition = getPresentationDefinitionWA(node.getNodeId().getTypeId());
 		IViewController viewController = null;
 
 		if (presentationDefinition != null) {
-			viewController = presentationDefinition.createViewController();
+			viewController = presentationDefinition.createController();
 		}
 
 		return viewController;
@@ -206,10 +205,10 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#isViewShared(org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public boolean isViewShared(INavigationNodeId targetId) {
-		IWorkAreaPresentationDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
+		ISubModuleTypeDefinition presentationDefinition = getPresentationDefinitionWA(targetId.getTypeId());
 
 		if (presentationDefinition != null) {
-			return presentationDefinition.isViewShared();
+			return presentationDefinition.isShared();
 		}
 		return false;
 	}

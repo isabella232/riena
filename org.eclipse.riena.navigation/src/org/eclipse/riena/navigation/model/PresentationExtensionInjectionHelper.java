@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IPresentationDefinition;
+import org.eclipse.riena.navigation.ITypeDefinition;
 
-public class PresentationExtensionInjectionHelper<E extends IPresentationDefinition> {
+public class PresentationExtensionInjectionHelper<E extends ITypeDefinition> {
 
 	private E[] data;
 

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.core.extension.MapName;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 
 /**
@@ -18,32 +17,33 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
  * 
  * @author Erich Achilles
  */
-public interface IWorkAreaPresentationDefinition extends IPresentationDefinition {
+public interface ISubModuleTypeDefinition extends ITypeDefinition {
 
 	/**
-	 * Returns the view controller for this work area presentation
+	 * Returns the view controller for this SubModuleType
 	 */
+	IViewController createController();
 
-	IViewController createViewController();
+	/**
+	 * Returns the view controller name
+	 */
+	String getController();
 
 	/**
 	 * Return true if the specified view should be a shared view, false
 	 * otherwise
 	 */
-
-	boolean isViewShared();
+	boolean isShared();
 
 	/**
 	 * Return an instance of a view
 	 * 
 	 */
-
 	Object createView();
 
 	/**
-	 * @return The view id.
+	 * Return an view name
 	 */
-	@MapName("view")
-	String getViewId();
+	String getView();
 
 }

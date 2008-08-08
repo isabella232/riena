@@ -51,11 +51,11 @@ public class SwtPresentationManager {
 	public SwtViewId getSwtViewId(INavigationNode<?> pNode) {
 		SwtViewId swtViewId = views.get(pNode);
 		if (swtViewId == null) {
-			INavigationNodeId presentationId = pNode.getPresentationId();
-			if (presentationId != null) {
-				String viewId = (String) getPresentationProviderService().provideView(presentationId);
+			INavigationNodeId nodeId = pNode.getNodeId();
+			if (nodeId != null) {
+				String viewId = (String) getPresentationProviderService().provideView(nodeId);
 				String secondaryId = null;
-				if (getPresentationProviderService().isViewShared(presentationId)) {
+				if (getPresentationProviderService().isViewShared(nodeId)) {
 					secondaryId = "shared"; //$NON-NLS-1$
 				} else {
 					secondaryId = getNextSecondaryId(viewId);

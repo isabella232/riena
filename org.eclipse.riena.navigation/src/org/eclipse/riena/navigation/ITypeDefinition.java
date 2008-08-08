@@ -15,11 +15,11 @@ package org.eclipse.riena.navigation;
  * 
  * @author Erich Achilles
  */
-public interface IPresentationDefinition {
+public interface ITypeDefinition {
 
 	/**
 	 * The id of this presentation
 	 */
 
-	String getPresentationId();
+	String getTypeId();
 }

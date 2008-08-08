@@ -49,7 +49,7 @@ import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
 		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L> {
 
-	private INavigationNodeId presentationId;
+	private INavigationNodeId nodeId;
 	private State state;
 	private String label;
 	private String icon;
@@ -874,6 +874,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#getParentOfType(java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	public <N extends INavigationNode<?>> N getParentOfType(Class<N> clazz) {
 
 		if (getParent() == null) {
@@ -935,14 +936,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#getPresentationId()
+	 * @see org.eclipse.riena.navigation.INavigationNode#getNodeId()
 	 */
-	public INavigationNodeId getPresentationId() {
-		return presentationId;
+	public INavigationNodeId getNodeId() {
+		return nodeId;
 	}
 
-	public void setPresentationId(INavigationNodeId presentationId) {
+	public void setPresentationId(INavigationNodeId nodeId) {
 		// TODO set via constructor, remove setter
-		this.presentationId = presentationId;
+		this.nodeId = nodeId;
 	}
 }

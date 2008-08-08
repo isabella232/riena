@@ -315,135 +315,134 @@
       </renderer>
    </extension>
    <extension
-         point="org.eclipse.riena.navigation.NavigationNodePresentation">
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigation"
+         point="org.eclipse.riena.navigation.NavigationNodeType">
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.navigation"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
-            parentPresentationId="application">
-      </navigationNodePresentation>
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigate"
+            parentTypeId="application">
+      </navigationNodeType>
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.navigate"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
-            parentPresentationId="org.eclipse.riena.example.navigation">
-      </navigationNodePresentation>
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.sharedViews"
+            parentTypeId="org.eclipse.riena.example.navigation">
+      </navigationNodeType>
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.sharedViews"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeBuilder"
-            parentPresentationId="playground">
-      </navigationNodePresentation>
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.uiProcesses"
+            parentTypeId="playground">
+      </navigationNodeType>
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.uiProcesses"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.UIProcessNodeBuilder"
-            parentPresentationId="playground">
-      </navigationNodePresentation>
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.playground"
+            parentTypeId="playground">
+      </navigationNodeType>
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.playground"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
-            parentPresentationId="playground">
-      </navigationNodePresentation>
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigate.comboAndList"
+            parentTypeId="playground">
+      </navigationNodeType>
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.navigate.comboAndList"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
-            parentPresentationId="org.eclipse.riena.example.navigation">
-      </navigationNodePresentation>
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.example.navigate.tableTextAndTree"
+            parentTypeId="org.eclipse.riena.example.navigation">
+      </navigationNodeType>
+      <navigationNodeType
+            typeId="org.eclipse.riena.example.navigate.tableTextAndTree"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
-            parentPresentationId="playground">
-      </navigationNodePresentation>
+            parentTypeId="playground">
+      </navigationNodeType>
    </extension>
-   <extension
-         point="org.eclipse.riena.navigation.WorkAreaPresentation">
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.customerDetail"
+   <extension point="org.eclipse.riena.navigation.SubModuleType">
+      <subModuleType
+            typeId="org.eclipse.riena.example.customerDetail"
             view="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.uiProcess"
+            controller="org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.uiProcess"
             view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.sharedView"
+            controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.sharedView"
             view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController"
-            viewShared="true">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.navigation"
+            shared="true"
+            controller="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.navigation"
             view="org.eclipse.riena.example.client.views.NavigationSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.NavigationSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.buttons"
+            controller="org.eclipse.riena.example.client.controllers.NavigationSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.buttons"
             view="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.RidgetsSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.marker"
+            controller="org.eclipse.riena.example.client.controllers.RidgetsSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.marker"
             view="org.eclipse.riena.example.client.views.MarkerSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.MarkerSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.focusable"
+            controller="org.eclipse.riena.example.client.controllers.MarkerSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.focusable"
             view="org.eclipse.riena.example.client.views.FocusableSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.FocusableSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.validation"
+            controller="org.eclipse.riena.example.client.controllers.FocusableSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.validation"
             view="org.eclipse.riena.example.client.views.ValidationSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.ValidationSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.choice"
+            controller="org.eclipse.riena.example.client.controllers.ValidationSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.choice"
             view="org.eclipse.riena.example.client.views.ChoiceSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.ChoiceSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.combo"
+            controller="org.eclipse.riena.example.client.controllers.ChoiceSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.combo"
             view="org.eclipse.riena.example.client.views.ComboSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.ComboSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.list"
+            controller="org.eclipse.riena.example.client.controllers.ComboSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.list"
             view="org.eclipse.riena.example.client.views.ListSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.ListSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.table"
+            controller="org.eclipse.riena.example.client.controllers.ListSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.table"
             view="org.eclipse.riena.example.client.views.TableSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.TableSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.text"
+            controller="org.eclipse.riena.example.client.controllers.TableSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.text"
             view="org.eclipse.riena.example.client.views.TextSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.TextSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.tree"
+            controller="org.eclipse.riena.example.client.controllers.TextSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.tree"
             view="org.eclipse.riena.example.client.views.TreeSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.TreeSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.treeTable"
+            controller="org.eclipse.riena.example.client.controllers.TreeSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.treeTable"
             view="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.TreeTableSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.systemProperties"
+            controller="org.eclipse.riena.example.client.controllers.TreeTableSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.systemProperties"
             view="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.statusLine"
+            controller="org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.statusLine"
             view="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.StatuslineSubModuleController">
-      </workAreaPresentation>
-      <workAreaPresentation
-            presentationId="org.eclipse.riena.example.navigate.form"
+            controller="org.eclipse.riena.example.client.controllers.StatuslineSubModuleController">
+      </subModuleType>
+      <subModuleType
+            typeId="org.eclipse.riena.example.navigate.form"
             view="org.eclipse.riena.example.client.views.NavigateSubModuleView"
-            viewController="org.eclipse.riena.example.client.controllers.NavigateSubModuleController">
-      </workAreaPresentation>
+            controller="org.eclipse.riena.example.client.controllers.NavigateSubModuleController">
+      </subModuleType>
    </extension> 
 </plugin>
