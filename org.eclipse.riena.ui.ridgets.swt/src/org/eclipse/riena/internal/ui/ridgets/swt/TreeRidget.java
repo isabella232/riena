@@ -18,9 +18,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
@@ -318,9 +320,20 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		treeRoots = new Object[model.length];
 		System.arraycopy(model, 0, treeRoots, 0, treeRoots.length);
 		if (viewer != null) {
+			List<Object> selection = getSelection();
 			Object[] expandedElements = viewer.getExpandedElements();
-			viewer.setInput(treeRoots);
-			viewer.setExpandedElements(expandedElements);
+			viewer.getControl().setRedraw(false);
+			try {
+				// IMPORTANT: next line removes listeners from old model
+				viewer.setInput(null);
+				viewer.setInput(treeRoots);
+				viewer.setExpandedElements(expandedElements);
+				// update expanded/collapsed icons
+				viewer.refresh();
+				viewer.setSelection(new StructuredSelection(selection));
+			} finally {
+				viewer.getControl().setRedraw(true);
+			}
 		}
 	}
 
@@ -346,13 +359,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * @deprecated temporary - TODO [ev] keep or remove?
 	 */
 	public void setRootsVisible(boolean showRoots) {
-		if (this.showRoots != showRoots) {
-			this.showRoots = showRoots;
-		}
-	}
-
-	public boolean isRootVisible() {
-		return showRoots;
+		this.showRoots = showRoots;
 	}
 
 	/**
@@ -500,7 +507,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * An operation that modifies the expansion state of the tree ridget.
 	 */
-	private static class ExpansionCommand {
+	private static final class ExpansionCommand {
 		/** An expansion modification */
 		final ExpansionState state;
 		/** The element to expand / collapse (only for COLLAPSE, EXPAND ops) */
@@ -535,8 +542,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					e.doit = false;
 					// set selection one item
 					TreeItem firstItem = control.getSelection()[0];
-					// (
-					// control);
 					control.setSelection(firstItem);
 					// fire event
 					Event event = new Event();
@@ -569,7 +574,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * have a valid input</li>
 	 * </ul>
 	 */
-	private static class TreeContentProvider extends ObservableListTreeContentProvider {
+	private final class TreeContentProvider extends ObservableListTreeContentProvider {
 
 		private boolean hasInput = false;
 
@@ -690,28 +695,26 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		 * Updates the icons of the parent elements on addition / removal
 		 */
 		public void handleSetChange(SetChangeEvent event) {
-			// TODO [ev] causes tree corruption, investigate
-
-			// if (viewerCP.hasInput()) { // continue only when viewer has input
-			// Set<Object> parents = new HashSet<Object>();
-			// for (Object element : event.diff.getAdditions()) {
-			// Object parent = structureAdvisor.getParent(element);
-			// if (parent != null) {
-			// parents.add(parent);
-			// }
-			// }
-			// for (Object element : event.diff.getRemovals()) {
-			// Object parent = structureAdvisor.getParent(element);
-			// if (parent != null) {
-			// parents.add(parent);
-			// }
-			// }
-			// for (Object parent : parents) {
-			// if (!viewer.isBusy()) {
-			// viewer.update(parent, null);
-			// }
-			// }
-			// }
+			if (viewerCP.hasInput()) { // continue only when viewer has input
+				Set<Object> parents = new HashSet<Object>();
+				for (Object element : event.diff.getAdditions()) {
+					Object parent = structureAdvisor.getParent(element);
+					if (parent != null) {
+						parents.add(parent);
+					}
+				}
+				for (Object element : event.diff.getRemovals()) {
+					Object parent = structureAdvisor.getParent(element);
+					if (parent != null) {
+						parents.add(parent);
+					}
+				}
+				for (Object parent : parents) {
+					if (!viewer.isBusy()) {
+						viewer.update(parent, null);
+					}
+				}
+			}
 		}
 	}
 
