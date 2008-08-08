@@ -122,7 +122,7 @@ public class NavigationViewPart extends ViewPart {
 		 */
 		@Override
 		public void childRemoved(ISubApplicationNode source, IModuleGroupNode child) {
-			unregisterModuleView(child);
+			unregisterModuleGroupView(child);
 			updateNavigationSize();
 		}
 
@@ -141,13 +141,15 @@ public class NavigationViewPart extends ViewPart {
 
 		@Override
 		public void childRemoved(IModuleGroupNode source, IModuleNode child) {
-			updateNavigationSize();
+			moduleNodesToViews.remove(child);
+			// updateNavigationSize();
 		}
 
 		@Override
 		public void disposed(IModuleGroupNode source) {
 			super.disposed(source);
-			unregisterModuleGroupView(moduleGroupNodesToViews.get(source), source);
+			unregisterModuleGroupView(source);
+			updateNavigationSize();
 
 		}
 	}
@@ -197,7 +199,7 @@ public class NavigationViewPart extends ViewPart {
 	 * @param moduleGroupNode
 	 *            - node whose according view should be unregistered
 	 */
-	public void unregisterModuleView(IModuleGroupNode moduleGroupNode) {
+	public void unregisterModuleGroupView(IModuleGroupNode moduleGroupNode) {
 		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
 			if (moduleGroupView.getNavigationNode() == moduleGroupNode) {
 				unregisterModuleGroupView(moduleGroupView, moduleGroupNode);
