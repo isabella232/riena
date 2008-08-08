@@ -25,6 +25,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
@@ -761,6 +762,70 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertEquals(2, ridget.getSelection().size());
 		assertEquals(2, control.getSelectionCount());
+	}
+
+	public void testSetRootsVisible() {
+		ITreeRidget ridget = getRidget();
+
+		assertTrue(ridget.getRootsVisible());
+
+		ridget.setRootsVisible(false);
+
+		assertFalse(ridget.getRootsVisible());
+
+		ridget.setRootsVisible(true);
+
+		assertTrue(ridget.getRootsVisible());
+	}
+
+	public void testSetRootsVisibleWithModel() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getUIControl();
+
+		ridget.setRootsVisible(false);
+		Object[] roots = { root };
+		getRidget().bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
+		ridget.expandTree();
+
+		assertEquals(3, TreeUtils.getItemCount(control));
+
+		ridget.updateFromModel();
+
+		assertEquals(3, TreeUtils.getItemCount(control));
+
+		ridget.setRootsVisible(true);
+
+		ridget.updateFromModel();
+		ridget.expandTree();
+
+		assertEquals(4, TreeUtils.getItemCount(control));
+	}
+
+	public void testSetRootsFalseDoesRefresh() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getUIControl();
+
+		ridget.setRootsVisible(false);
+		ridget.updateFromModel();
+
+		ridget.expandTree();
+
+		assertEquals(3, TreeUtils.getItemCount(control));
+
+		ITreeNode sibling = new TreeNode(root, "sibling");
+
+		assertEquals(4, TreeUtils.getItemCount(control));
+
+		List<ITreeNode> children = root.getChildren();
+		children.remove(sibling);
+		root.setChildren(children);
+
+		assertEquals(3, TreeUtils.getItemCount(control));
+
+		new TreeNode(rootChild1, "child");
+
+		assertEquals(4, TreeUtils.getItemCount(control));
 	}
 
 	// helping methods

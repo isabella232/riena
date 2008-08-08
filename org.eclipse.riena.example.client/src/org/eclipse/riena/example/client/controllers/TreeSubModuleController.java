@@ -20,7 +20,6 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.riena.example.client.views.TreeSubModuleView;
-import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -64,7 +63,7 @@ public class TreeSubModuleController extends SubModuleController {
 	private void bindModel() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		ITreeNode[] roots = createTreeInput();
-		((TreeRidget) tree).setRootsVisible(false);
+		tree.setRootsVisible(false);
 		tree.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
 		tree.setSelection(roots[0].getChildren().get(0));

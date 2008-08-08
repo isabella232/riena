@@ -185,4 +185,21 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 */
 	void removeDoubleClickListener(IActionListener listener);
 
+	/**
+	 * Returns true, if the roots of the tree shall be shown and false
+	 * otherwise.
+	 * <p>
+	 * The default setting is true.
+	 */
+	boolean getRootsVisible();
+
+	/**
+	 * Indicates that the roots of the tree should be shown, if the argument is
+	 * true, and not be shown otherwise.
+	 * 
+	 * @param showRoots
+	 *            true to show the roots, false otherwise
+	 */
+	void setRootsVisible(boolean showRoots);
+
 }

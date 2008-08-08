@@ -11,7 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -96,7 +95,7 @@ public class SWTModuleController extends ModuleController {
 	 * Binds the tree to a selection model and tree model.
 	 */
 	private void bindTree() {
-		((TreeRidget) tree).setRootsVisible(false);
+		tree.setRootsVisible(false);
 		INavigationNode<?>[] roots = createTreeRootNodes();
 		tree.bindToModel(roots, NavigationNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, "label"); //$NON-NLS-1$
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
