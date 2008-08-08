@@ -2,19 +2,19 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.riena.navigation.NavigationNodePresentation">
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.navigation.model.test.secondSubApplication"
+         point="org.eclipse.riena.navigation.NavigationNodeType">
+      <navigationNodeType
+            typeId="org.eclipse.riena.navigation.model.test.secondSubApplication"
             nodeBuilder="org.eclipse.riena.navigation.model.TestSecondSubApplicationNodeBuilder"
-            parentPresentationId="org.eclipse.riena.navigation.model.test.application">
-      </navigationNodePresentation>
+            parentTypeId="org.eclipse.riena.navigation.model.test.application">
+      </navigationNodeType>
    </extension> 
    <extension
-         point="org.eclipse.riena.navigation.NavigationNodePresentation">
-      <navigationNodePresentation
-            presentationId="org.eclipse.riena.navigation.model.test.secondModuleGroup"
+         point="org.eclipse.riena.navigation.NavigationNodeType">
+      <navigationNodeType
+            typeId="org.eclipse.riena.navigation.model.test.secondModuleGroup"
             nodeBuilder="org.eclipse.riena.navigation.model.TestSecondModuleGroupNodeBuilder"
-            parentPresentationId="org.eclipse.riena.navigation.model.test.secondSubApplication">
-      </navigationNodePresentation>
+            parentTypeId="org.eclipse.riena.navigation.model.test.secondSubApplication">
+      </navigationNodeType>
    </extension> 
 </plugin>
