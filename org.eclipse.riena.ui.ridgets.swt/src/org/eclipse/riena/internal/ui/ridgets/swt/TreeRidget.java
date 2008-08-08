@@ -24,12 +24,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
-
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -50,6 +44,11 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -316,6 +315,26 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		super.setSelection(candidate);
 	}
 
+	public boolean getRootsVisible() {
+		return showRoots;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation notes:
+	 * <ul>
+	 * <li>If showRoots is false, the children of the first entry in the array
+	 * of treeRoots will be shown at level-0 of the tree</li>
+	 * <li>This method must be ivoked before calling bindToModel(...). If
+	 * changed afterwards it requires a call to bindToModel() or
+	 * updateFromModel() to take effect.</li>
+	 * </ul>
+	 */
+	public void setRootsVisible(boolean showRoots) {
+		this.showRoots = showRoots;
+	}
+
 	@Override
 	public void updateFromModel() {
 		treeRoots = new Object[model.length];
@@ -327,7 +346,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			try {
 				// IMPORTANT: next line removes listeners from old model
 				viewer.setInput(null);
-				viewer.setInput(treeRoots);
+				if (showRoots) {
+					viewer.setInput(treeRoots);
+				} else {
+					final Object root0 = treeRoots[0];
+					final String accessor = "get" + capitalize(childrenAccessor); //$NON-NLS-1$
+					List<Object> root0Children = ReflectionUtils.invoke(root0, accessor);
+					List<Object> inputList = new ArrayList<Object>(root0Children);
+					viewer.setInput(inputList);
+				}
 				viewer.setExpandedElements(expandedElements);
 				// update expanded/collapsed icons
 				viewer.refresh();
@@ -354,13 +381,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				columns[i].setText(columnHeader);
 			}
 		}
-	}
-
-	/**
-	 * @deprecated temporary - TODO [ev] keep or remove?
-	 */
-	public void setRootsVisible(boolean showRoots) {
-		this.showRoots = showRoots;
 	}
 
 	/**
@@ -391,22 +411,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			// TODO [ev] productize if it works for Thorsten
 			final Object root0 = treeRoots[0];
 			final String accessor = "get" + capitalize(childrenAccessor); //$NON-NLS-1$
-			List root0Children = ReflectionUtils.invoke(root0, accessor);
-			final List inputList = new ArrayList(root0Children);
+			List<Object> root0Children = ReflectionUtils.invoke(root0, accessor);
+			List<Object> inputList = new ArrayList<Object>(root0Children);
 			viewer.setInput(inputList);
-			PropertyChangeListener listener = new PropertyChangeListener() {
-				private String ACCESSOR = childrenAccessor.toUpperCase();
-
-				public void propertyChange(PropertyChangeEvent evt) {
-					if (evt.getPropertyName().toUpperCase().endsWith(ACCESSOR)) {
-						List root0Children = ReflectionUtils.invoke(root0, accessor);
-						inputList.clear();
-						inputList.addAll(root0Children);
-						viewer.refresh();
-					}
-				}
-			};
-			ReflectionUtils.invoke(root0, "addPropertyChangeListener", listener); //$NON-NLS-1$
 		}
 	}
 
@@ -575,9 +582,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * have a valid input</li>
 	 * </ul>
 	 */
-	private static final class TreeContentProvider extends ObservableListTreeContentProvider {
+	private final class TreeContentProvider extends ObservableListTreeContentProvider {
 
 		private boolean hasInput = false;
+		private PropertyChangeListener listener;
+		private Object root0;
 
 		TreeContentProvider(IObservableFactory listFactory, TreeStructureAdvisor structureAdvisor) {
 			super(listFactory, structureAdvisor);
@@ -592,12 +601,41 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 
 		@Override
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		public synchronized void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 			// this is a workaround to allow our set change listener, which
 			// is in charge triggering an update of the tree icons, to skip the
 			// update when the viewer is in the process of disposing itself
 			// (newInput == null)
 			hasInput = (newInput != null);
+			if (oldInput instanceof List) {
+				if (listener != null) {
+					System.err.println("- " + listener.hashCode() + " from " + root0);
+					ReflectionUtils.invoke(root0, "removePropertyChangeListener", listener); //$NON-NLS-1$
+					listener = null;
+					root0 = null;
+				}
+			}
+			if (newInput instanceof List) {
+				Assert.isLegal(root0 == null);
+				Assert.isLegal(listener == null);
+				root0 = treeRoots[0];
+				listener = new PropertyChangeListener() {
+					private String ACCESSOR = childrenAccessor.toUpperCase();
+
+					public void propertyChange(PropertyChangeEvent evt) {
+						if (evt.getPropertyName().toUpperCase().endsWith(ACCESSOR)) {
+							String accessor = "get" + capitalize(childrenAccessor); //$NON-NLS-1$
+							List<Object> root0Children = ReflectionUtils.invoke(root0, accessor);
+							List<Object> newInputList = (List) newInput;
+							newInputList.clear();
+							newInputList.addAll(root0Children);
+							viewer.refresh();
+						}
+					}
+				};
+				ReflectionUtils.invoke(root0, "addPropertyChangeListener", listener); //$NON-NLS-1$
+				System.err.println("+ " + listener.hashCode() + " to  " + root0);
+			}
 			super.inputChanged(viewer, oldInput, newInput);
 		}
 
