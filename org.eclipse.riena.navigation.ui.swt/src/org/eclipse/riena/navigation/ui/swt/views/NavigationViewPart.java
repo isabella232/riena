@@ -147,7 +147,7 @@ public class NavigationViewPart extends ViewPart {
 		@Override
 		public void disposed(IModuleGroupNode source) {
 			super.disposed(source);
-			unregisterModuleGroupView(moduleGroupNodesToViews.get(source));
+			unregisterModuleGroupView(moduleGroupNodesToViews.get(source), source);
 
 		}
 	}
@@ -200,7 +200,7 @@ public class NavigationViewPart extends ViewPart {
 	public void unregisterModuleView(IModuleGroupNode moduleGroupNode) {
 		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
 			if (moduleGroupView.getNavigationNode() == moduleGroupNode) {
-				unregisterModuleGroupView(moduleGroupView);
+				unregisterModuleGroupView(moduleGroupView, moduleGroupNode);
 				break;
 			}
 		}
@@ -212,7 +212,8 @@ public class NavigationViewPart extends ViewPart {
 	 * @param moduleGroupView
 	 *            - view to remove
 	 */
-	private void unregisterModuleGroupView(ModuleGroupView moduleGroupView) {
+	private void unregisterModuleGroupView(ModuleGroupView moduleGroupView, IModuleGroupNode node) {
+		moduleGroupNodesToViews.remove(node);
 		moduleGroupViews.remove(moduleGroupView);
 	}
 
@@ -231,6 +232,7 @@ public class NavigationViewPart extends ViewPart {
 			yPos = moduleGroupView.calculateBounds(yPos);
 		}
 		bodyComposite.layout();
+		bodyComposite.redraw();
 	}
 
 	@Override

@@ -219,26 +219,13 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 			updateActivityToUi();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated
-		 * (org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void deactivated(IModuleGroupNode source) {
 			super.deactivated(source);
 			hidePrevious();
+			redraw();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed
-		 * (org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void disposed(IModuleGroupNode source) {
 			super.disposed(source);
@@ -510,7 +497,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 *            - view to remove
 	 */
 	public void unregisterModuleView(ModuleView moduleView) {
-		moduleView.getNavigationNode().removeListener(moduleListener);
+		// moduleView.getNavigationNode().removeListener(moduleListener);
 		registeredModuleViews.remove(moduleView);
 	}
 
