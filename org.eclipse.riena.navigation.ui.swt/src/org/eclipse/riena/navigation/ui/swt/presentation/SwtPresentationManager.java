@@ -54,14 +54,32 @@ public class SwtPresentationManager {
 			INavigationNodeId nodeId = pNode.getNodeId();
 			if (nodeId != null) {
 				String viewId = (String) getPresentationProviderService().provideView(nodeId);
-				String secondaryId = null;
-				if (getPresentationProviderService().isViewShared(nodeId)) {
-					secondaryId = "shared"; //$NON-NLS-1$
+				boolean isViewShared = getPresentationProviderService().isViewShared(nodeId);
+				viewShared.put(viewId, isViewShared);
+				if (isViewShared && pNode instanceof ISubModuleNode) {
+					ISubModuleNode subModuleNode = (ISubModuleNode) pNode;
+					activated.put(subModuleNode, subModuleNode.isActivated());
+					subModuleNode.addListener(subModuleNodeObserver);
+					if (views.get(pNode) == null) {
+						viewCounter.put(viewId, new Integer(0));
+					}
+					SwtViewId id = null;
+					if (viewCounter.get(viewId) == 0) {
+						// first node with this view
+						id = new SwtViewId(viewId, "shared"); //$NON-NLS-1$
+						views.put(pNode, id);
+						viewCounter.put(viewId, 1);
+					} else {
+						// view has been referenced already
+						id = views.get(getNavigationNode(viewId, null, ISubModuleNode.class, true));
+						views.put(pNode, id);
+					}
+					return id;
+
 				} else {
-					secondaryId = getNextSecondaryId(viewId);
+					swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
+					views.put(pNode, swtViewId);
 				}
-				swtViewId = new SwtViewId(viewId, secondaryId);
-				views.put(pNode, swtViewId);
 			}
 		}
 
@@ -72,10 +90,10 @@ public class SwtPresentationManager {
 
 		@Override
 		public void activated(ISubModuleNode source) {
-			markActivated(source);
+			markActivated(source, true);
 		}
 
-		private void markActivated(ISubModuleNode source) {
+		private void markActivated(ISubModuleNode source, boolean active) {
 			SwtViewId sourceId = views.get(source);
 			for (INavigationNode<?> node : views.keySet()) {
 				if (views.get(node) == sourceId) {
@@ -85,6 +103,19 @@ public class SwtPresentationManager {
 					}
 				}
 			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated
+		 * (org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void deactivated(ISubModuleNode source) {
+			super.deactivated(source);
+			markActivated(source, false);
 		}
 	}
 
@@ -170,7 +201,7 @@ public class SwtPresentationManager {
 			SwtViewId nextViewId = views.get(next);
 			if (nextViewId.getId().equals(pId) && //
 					(secondary == null || secondary.equals(nextViewId.getSecondary()))) {
-				if (ignoreSharedState || !isViewShared(pId) || activated.get(next)) {
+				if (ignoreSharedState || !isViewShared(pId) || next.isActivated()) {
 					return next.getTypecastedAdapter(pClass);
 				}
 			}
