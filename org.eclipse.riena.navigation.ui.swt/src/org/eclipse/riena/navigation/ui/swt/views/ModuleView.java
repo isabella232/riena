@@ -110,7 +110,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * Hides the body (that contains the tree) of the module.
 	 */
 	public void hideBody() {
-		getBody().setVisible(false);
+		if (!getBody().isDisposed()) {
+			getBody().setVisible(false);
+		}
 	}
 
 	/**

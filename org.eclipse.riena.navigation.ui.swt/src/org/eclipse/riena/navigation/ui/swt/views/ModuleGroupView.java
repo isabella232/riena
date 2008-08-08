@@ -11,7 +11,9 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -19,6 +21,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
+import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleGroupToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
@@ -53,17 +56,32 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	private PaintDelegation paintDelegation;
 	private SelectionListener selectionListener;
 	private List<IComponentUpdateListener> updateListeners;
-	private List<ModuleView> registeredModuleViews;
+	private Map<ModuleNode, ModuleView> registeredModuleViews;
 
 	public ModuleGroupView(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		updateListeners = new ArrayList<IComponentUpdateListener>();
-		registeredModuleViews = new ArrayList<ModuleView>();
+		registeredModuleViews = new LinkedHashMap<ModuleNode, ModuleView>();
 		new ModuleGroupToolTip(this);
 	}
 
+	protected List<ModuleView> getAllModuleViews() {
+		return new ArrayList<ModuleView>(registeredModuleViews.values());
+	}
+
+	protected ModuleNode getNodeForView(ModuleView view) {
+		for (ModuleNode node : registeredModuleViews.keySet()) {
+			ModuleView moduleView = registeredModuleViews.get(node);
+			if (moduleView.equals(view)) {
+				return node;
+			}
+		}
+
+		return null;
+	}
+
 	private void setInitialOpenView() {
-		for (ModuleView moduleView : registeredModuleViews) {
+		for (ModuleView moduleView : getAllModuleViews()) {
 			if (moduleView.isActivated()) {
 				openView = moduleView;
 				break;
@@ -120,7 +138,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 */
 	protected void updateActivityToUi() {
 		if (moduleGroupNode.isActivated()) {
-			for (ModuleView child : registeredModuleViews) {
+			for (ModuleView child : getAllModuleViews()) {
 				if (child.isActivated()) {
 					openModuleView(child);
 					break;
@@ -255,7 +273,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	@Override
 	public Point computeSize(int wHint, int hHint) {
 		GC gc = new GC(Display.getCurrent());
-		getRenderer().setItems(registeredModuleViews);
+		getRenderer().setItems(getAllModuleViews());
 		Point size = getRenderer().computeSize(gc, wHint, hHint);
 		gc.dispose();
 		return size;
@@ -270,7 +288,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 */
 	public ModuleView getItem(Point point) {
 
-		for (ModuleView moduleView : registeredModuleViews) {
+		for (ModuleView moduleView : getAllModuleViews()) {
 			if (moduleView.getBounds() == null) {
 				continue;
 			}
@@ -443,7 +461,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		 */
 		public void paintControl(PaintEvent e) {
 			setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
-			getRenderer().setItems(registeredModuleViews);
+			getRenderer().setItems(getAllModuleViews());
 			getRenderer().setActivated(getNavigationNode().isActivated());
 			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
 			getRenderer().setBounds(0, 0, size.x, size.y);
@@ -465,7 +483,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	public void registerModuleView(ModuleView moduleView) {
 		moduleView.getNavigationNode().addListener(moduleListener);
 		// we need that to calculate the bounds of the ModuleGroupView
-		registeredModuleViews.add(moduleView);
+		registeredModuleViews.put(moduleView.getNavigationNode(), moduleView);
 		// observer moduleView for expand/collapse
 		moduleView.addUpdateListener(new ModuleViewObserver());
 		if (moduleGroupNode.isActivated()) {
@@ -482,7 +500,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 *            - node whose according view should be unregistered
 	 */
 	public void unregisterModuleView(IModuleNode moduleNode) {
-		for (ModuleView moduleView : registeredModuleViews) {
+		for (ModuleView moduleView : getAllModuleViews()) {
 			if (moduleView.getNavigationNode() == moduleNode || moduleView.getNavigationNode() == null) {
 				unregisterModuleView(moduleView);
 				break;
@@ -497,8 +515,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	 *            - view to remove
 	 */
 	public void unregisterModuleView(ModuleView moduleView) {
-		// moduleView.getNavigationNode().removeListener(moduleListener);
-		registeredModuleViews.remove(moduleView);
+		ModuleNode node = getNodeForView(moduleView);
+		node.removeListener(moduleListener);
+		registeredModuleViews.remove(node);
 	}
 
 	private class ModuleViewObserver implements IComponentUpdateListener {
