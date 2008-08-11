@@ -145,6 +145,18 @@ public final class UIControlsFactory {
 		}
 	}
 
+	public static int getWidthHint(Text text, int numChars) {
+		GC gc = new GC(text.getDisplay());
+		try {
+			FontMetrics fm = gc.getFontMetrics();
+			int widthHint = fm.getAverageCharWidth() * numChars;
+			Point minSize = text.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+			return Math.max(widthHint, minSize.x);
+		} finally {
+			gc.dispose();
+		}
+	}
+
 	public static int getHeightHint(List list, int numItems) {
 		Assert.isLegal(numItems > 0, "numItems must be greater than 0"); //$NON-NLS-1$
 		int items = list.getItemHeight() * numItems;

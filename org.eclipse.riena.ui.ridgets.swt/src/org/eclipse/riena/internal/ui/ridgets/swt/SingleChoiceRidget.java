@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * TODO [ev] docs
+ * Ridget for a {@link ChoiceComposite} widget with single selection.
  */
 public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingleChoiceRidget {
 
@@ -69,7 +69,9 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						setSelection(e.widget.getData());
+						if (!e.widget.isDisposed()) {
+							setSelection(e.widget.getData());
+						}
 					}
 				});
 			}
@@ -143,7 +145,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 			rowObservableLabels = null;
 		}
 		this.selectionObservable = selectionObservable;
-		updateSelection();
+		updateSelectionFromModel();
 
 		bindUIControl();
 	}
@@ -166,17 +168,19 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		singleSelectionObservable.setValue(value);
 		// TODO [ev] use databinding
 		ChoiceComposite composite = getUIControl();
-		for (Control child : composite.getChildren()) {
-			Button button = (Button) child;
-			boolean isSelected = value != null && child.getData() == value;
-			button.setSelection(isSelected);
+		if (composite != null) {
+			for (Control child : composite.getChildren()) {
+				Button button = (Button) child;
+				boolean isSelected = value != null && child.getData() == value;
+				button.setSelection(isSelected);
+			}
 		}
 	}
 
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
-		updateSelection();
+		updateSelectionFromModel();
 	}
 
 	public IObservableList getObservableList() {
@@ -205,7 +209,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		}
 	}
 
-	private void updateSelection() {
+	private void updateSelectionFromModel() {
 		if (selectionObservable != null) {
 			setSelection(selectionObservable.getValue());
 		}

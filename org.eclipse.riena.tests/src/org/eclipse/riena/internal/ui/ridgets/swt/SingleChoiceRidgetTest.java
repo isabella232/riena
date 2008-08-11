@@ -19,14 +19,16 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests for the class {@link SingleChoiceRidget}.
  */
-public class SingleChoiceRidgetTest extends MarkableRidgetTest {
+public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	private OptionProvider optionProvider;
 
@@ -89,7 +91,7 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testUpdateFromModel() {
 		ISingleChoiceRidget ridget = getRidget();
-		Control control = getUIControl();
+		ChoiceComposite control = getUIControl();
 
 		ridget.updateFromModel();
 
@@ -102,7 +104,7 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	/**
 	 * Test method getUIControl().
 	 */
-	public final void testGetUIControl() {
+	public void testGetUIControl() {
 		ISingleChoiceRidget ridget = getRidget();
 		Control control = getUIControl();
 
@@ -112,7 +114,7 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	/**
 	 * Test method setSelection().
 	 */
-	public final void testSetSelection() {
+	public void testSetSelection() {
 		ISingleChoiceRidget ridget = getRidget();
 
 		ridget.updateFromModel();
@@ -120,14 +122,59 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals(optionProvider.getSelectedOption(), ridget.getSelection());
 
 		ridget.setSelection(optionProvider.getOptions().get(1));
+
 		assertEquals(ridget.getSelection(), optionProvider.getSelectedOption());
+
+		optionProvider.setSelectedOption(optionProvider.getOptions().get(0));
+
+		assertEquals(ridget.getSelection(), optionProvider.getOptions().get(1));
+
+		ridget.updateFromModel();
+
+		assertEquals(ridget.getSelection(), optionProvider.getOptions().get(0));
+	}
+
+	public void testSelectionIsAppliedToChildren() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		assertNotNull(ridget.getSelection());
+
+		Button selected1 = getSelectedControl(control);
+
+		assertEquals(optionProvider.getSelectedOption(), selected1.getText());
+		assertSame(optionProvider.getSelectedOption(), selected1.getData());
+
+		Object option2 = optionProvider.getOptions().get(1);
+		ridget.setSelection(option2);
+
+		Button selected2 = getSelectedControl(control);
+
+		assertNotSame(selected1, selected2);
+		assertEquals(optionProvider.getSelectedOption(), selected2.getText());
+		assertSame(optionProvider.getSelectedOption(), selected2.getData());
+	}
+
+	public void testColorsAreAppliedToChildren() {
+		Shell shell = getShell();
+		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		Color colorRed = shell.getDisplay().getSystemColor(SWT.COLOR_RED);
+		Color colorGreen = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+		control.setForeground(colorGreen);
+		control.setBackground(colorRed);
+		getRidget().setUIControl(control);
+
+		Button selected = getSelectedControl(control);
+
+		assertEquals(colorGreen, selected.getForeground());
+		assertEquals(colorRed, selected.getBackground());
 	}
 
 	/**
 	 * Test the methods addPropertyChangeListener() and
 	 * removePropertyChangeListener().
 	 */
-	public final void testAddRemovePropertyChangeListener() {
+	public void testAddRemovePropertyChangeListener() {
 		ISingleChoiceRidget ridget = getRidget();
 
 		// TODO [ev] use easymock here
@@ -153,7 +200,7 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	/**
 	 * Test method bindToModel() using labels.
 	 */
-	public final void testBindToModelUsingLabels() {
+	public void testBindToModelUsingLabels() {
 		ISingleChoiceRidget ridget = getRidget();
 		Composite control = getUIControl();
 		optionProvider = new OptionProvider();
@@ -216,17 +263,20 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	// helping methods
 	// ////////////////
 
-	private String getSelectedControlValue(Control control) {
-		Object result = null;
-		ChoiceComposite composite = (ChoiceComposite) control;
-		Control[] children = composite.getChildren();
-		for (int i = 0; result == null && i < children.length; i++) {
-			Button button = (Button) children[i];
-			if (button.getSelection()) {
-				result = button.getData();
+	private Button getSelectedControl(ChoiceComposite control) {
+		Button selected = null;
+		for (Control child : control.getChildren()) {
+			if (((Button) child).getSelection()) {
+				assertNull(selected);
+				selected = (Button) child;
 			}
 		}
-		return result != null ? result.toString() : null;
+		return selected;
+	}
+
+	private String getSelectedControlValue(ChoiceComposite control) {
+		Button button = getSelectedControl(control);
+		return button != null ? String.valueOf(button.getData()) : null;
 	}
 
 	// helping classes
@@ -264,25 +314,5 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			eventCounter++;
 		}
 	};
-
-	// TODO [ev] ex
-	// private static class TestSingleChoiceSwingRidget extends
-	// SingleChoiceSwingRidget
-	// {
-	//
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see de.compeople.scp.ui.ridgets.swing.MultipleChoiceSwingRidget#
-	// createOptionRidget()
-	// */
-	// @Override
-	// protected IToggleButtonRidget createOptionRidget() {
-	// IToggleButtonRidget optionRidget = super.createOptionRidget();
-	// optionRidgets.add(optionRidget);
-	// return optionRidget;
-	// }
-	//
-	// }
 
 }

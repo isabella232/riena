@@ -99,7 +99,9 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 
 		UIControlsFactory.createLabel(group, "Price"); //$NON-NLS-1$
 
-		Text txtPrice = UIControlsFactory.createText(group);
+		Text txtPrice = UIControlsFactory.createText(group, SWT.RIGHT);
+		int widthHint = UIControlsFactory.getWidthHint(txtPrice, 12);
+		GridDataFactory.swtDefaults().hint(widthHint, SWT.DEFAULT).applyTo(txtPrice);
 		addUIControl(txtPrice, "txtPrice"); //$NON-NLS-1$
 
 		Composite buttonComposite = createButtonComposite(group);

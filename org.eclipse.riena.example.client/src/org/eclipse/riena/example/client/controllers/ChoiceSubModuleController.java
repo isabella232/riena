@@ -22,9 +22,9 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
 /**
  * Controller for the {@link ChoiceSubModuleView} example.
@@ -41,34 +41,40 @@ public class ChoiceSubModuleController extends SubModuleController {
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
+		final CarConfig carConfig = new CarConfig();
 
 		final ISingleChoiceRidget compositeCarModel = (ISingleChoiceRidget) getRidget("compositeCarModel"); //$NON-NLS-1$
-		compositeCarModel.bindToModel(toList(CarModels.values()), null);
+		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig,
+				CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 
 		final ISingleChoiceRidget compositeCarExtras = (ISingleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
 		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package",
 				"Park Distance Control System", };
-		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), null, null);
+		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
+				CarConfig.PROP_OPTION);
+		compositeCarExtras.addMarker(new MandatoryMarker()); // TODO [ev] remove
 
 		final ISingleChoiceRidget compositeCarWarranty = (ISingleChoiceRidget) getRidget("compositeCarWarranty"); //$NON-NLS-1$
-		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), null);
+		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig,
+				CarConfig.PROP_WARRANTY));
+		compositeCarWarranty.addMarker(new MandatoryMarker());
 
 		final ISingleChoiceRidget compositeCarPlates = (ISingleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
-		compositeCarPlates.bindToModel(toList(carPlates), null);
+		compositeCarPlates.bindToModel(toList(carPlates), BeansObservables
+				.observeValue(carConfig, CarConfig.PROP_PLATE));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 
 		ITextFieldRidget txtPrice = (ITextFieldRidget) getRidget("txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
-				.observeValue(compositeCarModel, IChoiceRidget.PROPERTY_SELECTION), null, null);
+				.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
 		IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config");
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("preset.callback()");
 				compositeCarModel.setSelection(CarModels.BMW);
 				compositeCarExtras.setSelection(CarOptions.PDCS);
 				compositeCarWarranty.setSelection(CarWarranties.EXTENDED);
@@ -80,11 +86,11 @@ public class ChoiceSubModuleController extends SubModuleController {
 		buttonReset.setText("&Reset");
 		buttonReset.addListener(new IActionListener() {
 			public void callback() {
-				System.out.println("reset.callback()");
-				compositeCarModel.setSelection(null);
-				compositeCarExtras.setSelection(null);
-				compositeCarWarranty.setSelection(null);
-				compositeCarPlates.setSelection(null);
+				carConfig.reset();
+				compositeCarModel.updateFromModel();
+				compositeCarExtras.updateFromModel();
+				compositeCarWarranty.updateFromModel();
+				compositeCarPlates.updateFromModel();
 			}
 		});
 	}
@@ -98,6 +104,83 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 	// helping classes
 	// ////////////////
+
+	/**
+	 * Bean that holds a single car configuration composed of: model, option(s),
+	 * warranty, plate(s).
+	 */
+	private static final class CarConfig extends AbstractBean {
+		public static final String PROP_MODEL = "model"; //$NON-NLS-1$
+		public static final String PROP_OPTION = "option"; //$NON-NLS-1$
+		public static final String PROP_WARRANTY = "warranty"; //$NON-NLS-1$
+		public static final String PROP_PLATE = "plate"; //$NON-NLS-1$
+		public static final String PROP_PRICE = "price"; //$NON-NLS-1$
+
+		private CarModels model;
+		private CarOptions option;
+		private CarWarranties warranty;
+		private String plate;
+
+		public CarModels getModel() {
+			return model;
+		}
+
+		public void setModel(CarModels model) {
+			firePropertyChanged(PROP_MODEL, this.model, this.model = model);
+			firePropertyChanged(PROP_PRICE, null, getPrice());
+		}
+
+		public CarOptions getOption() {
+			return option;
+		}
+
+		public void setOption(CarOptions option) {
+			firePropertyChanged(PROP_OPTION, this.option, this.option = option);
+			firePropertyChanged(PROP_PRICE, null, getPrice());
+		}
+
+		public CarWarranties getWarranty() {
+			return warranty;
+		}
+
+		public void setWarranty(CarWarranties warranty) {
+			firePropertyChanged(PROP_WARRANTY, this.warranty, this.warranty = warranty);
+			firePropertyChanged(PROP_PRICE, null, getPrice());
+		}
+
+		public String getPlate() {
+			return plate;
+		}
+
+		public void setPlate(String plate) {
+			firePropertyChanged(PROP_PLATE, this.plate, this.plate = plate);
+			firePropertyChanged(PROP_PRICE, null, getPrice());
+		}
+
+		public void reset() {
+			setModel(null);
+			setOption(null);
+			setWarranty(null);
+			setPlate(null);
+		}
+
+		public long getPrice() {
+			long price = 0;
+			if (model != null) {
+				price += 100000;
+			}
+			if (option != null) {
+				price += 25000;
+			}
+			if (warranty == CarWarranties.EXTENDED) {
+				price += 10000;
+			}
+			if (plate != null) {
+				price += 200;
+			}
+			return price;
+		}
+	}
 
 	private enum CarModels {
 		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8");
