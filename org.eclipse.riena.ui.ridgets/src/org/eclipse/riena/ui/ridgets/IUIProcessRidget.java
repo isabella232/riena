@@ -16,10 +16,12 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 /**
  * The ridget visualizing a {@link UIProcess}
  */
-public interface IProgressBoxRidget extends IProgressVisualizerObserver, IRidget {
+public interface IUIProcessRidget extends IProgressVisualizerObserver, IRidget {
 
 	void activate();
 
 	void deactivate();
+
+	public void setContextLocator(IVisualContextManager contextLocator);
 
 }

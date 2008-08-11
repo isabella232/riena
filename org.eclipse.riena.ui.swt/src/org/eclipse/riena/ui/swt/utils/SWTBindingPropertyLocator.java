@@ -22,6 +22,12 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 			Control control = (Control) uiControl;
 			return (String) control.getData(BINDING_PROPERTY);
 		}
+
+		if (uiControl instanceof IPropertyNameProvider) {
+			IPropertyNameProvider nameProvider = (IPropertyNameProvider) uiControl;
+			return nameProvider.getPropertyName();
+		}
+
 		return null;
 	}
 }

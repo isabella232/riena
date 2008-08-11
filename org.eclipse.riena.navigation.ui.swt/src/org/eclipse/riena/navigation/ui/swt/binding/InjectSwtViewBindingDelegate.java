@@ -28,6 +28,11 @@ public class InjectSwtViewBindingDelegate extends DefaultSwtViewBindingDelegate 
 		super();
 	}
 
+	@SuppressWarnings("unchecked")
+	public InjectSwtViewBindingDelegate(IControlRidgetMapper ridgetMapper) {
+		super(ridgetMapper);
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate#createBindingManager(org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator,
 	 *      org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper)

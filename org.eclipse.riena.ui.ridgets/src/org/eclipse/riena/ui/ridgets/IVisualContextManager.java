@@ -8,9 +8,10 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
+package org.eclipse.riena.ui.ridgets;
 
 import java.util.List;
+
 
 /**
  * The {@link IVisualContextManager} helps determining the current active

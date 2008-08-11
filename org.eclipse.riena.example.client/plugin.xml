@@ -14,12 +14,12 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationPerspectiveFactory"
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
             id="subapplication.1"
             name="subapplication.1">
       </perspective>
       <perspective
-            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationPerspectiveFactory"
+            class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
             id="subapplication.2"
             name="subapplication.2">
       </perspective>

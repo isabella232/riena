@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.uiprocess;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -20,7 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Control for showing a progress or process info window.
  */
-public class UIProcessControl implements IProgressControl {
+public class UIProcessControl implements IProgressControl, IPropertyNameProvider {
 
 	private static final int UPDATE_DELAY = 200;
 
@@ -31,6 +32,8 @@ public class UIProcessControl implements IProgressControl {
 	private ListenerList cancelListeners = new ListenerList();
 
 	private ProcessUpdateThread processUpdateThread;
+
+	private String name;
 
 	public UIProcessControl(Shell parentShell) {
 		Assert.isNotNull(parentShell);
@@ -207,5 +210,13 @@ public class UIProcessControl implements IProgressControl {
 		for (Object listener : cancelListeners.getListeners()) {
 			ICancelListener.class.cast(listener).canceled(windowClosing);
 		}
+	}
+
+	public String getPropertyName() {
+		return name;
+	}
+
+	public void setPropertyName(String propertyName) {
+		this.name = propertyName;
 	}
 }

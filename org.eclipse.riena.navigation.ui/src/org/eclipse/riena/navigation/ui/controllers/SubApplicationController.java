@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -24,11 +27,14 @@ import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter;
-import org.eclipse.riena.ui.ridgets.IProgressBoxRidget;
+import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
+import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 
 /**
  * Implements the Controller for a Module Sub Application
@@ -43,7 +49,11 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	private IModuleGroupNodeListener moduleGroupNodeListener;
 	private NavigationTreeObserver navigationTreeObserver;
 	private IStatuslineRidget statuslineRidget;
-	private IProgressBoxRidget progressBoxRidget;
+	private IUIProcessRidget uiProcessRidget;
+
+	private NodeListener contextUpdater = new NodeListener();
+
+	private List<IContextUpdateListener> listeners = new ArrayList<IContextUpdateListener>();
 
 	/**
 	 * Create a new Controller, find the corresponding subApplication for the
@@ -104,6 +114,34 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private class NodeListener extends SimpleNavigationNodeAdapater {
+
+		@Override
+		public void activated(INavigationNode source) {
+			contextUpdated(source);
+		}
+
+		@Override
+		public void beforeDeactivated(INavigationNode source) {
+			for (IContextUpdateListener listener : listeners) {
+				listener.beforeContextUpdate(source);
+			}
+		}
+
+		@Override
+		public void deactivated(INavigationNode source) {
+			contextUpdated(source);
+		}
+
+		private void contextUpdated(INavigationNode source) {
+			for (IContextUpdateListener listener : listeners) {
+				listener.contextUpdated(source);
+			}
+		}
+
+	}
+
 	private class MySubModuleNodeListener extends SubModuleNodeListener {
 		/**
 		 * @see org.eclipse.riena.navigation.model.NavigationTreeAdapter#childAdded(org.eclipse.riena.navigation.ISubModuleNode,
@@ -133,8 +171,8 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 			if (getStatuslineRidget() != null) {
 				getStatuslineRidget().hidePopups();
 			}
-			if (getProgressBoxRidget() != null) {
-				getProgressBoxRidget().deactivate();
+			if (getUiProcessRidget() != null) {
+				getUiProcessRidget().deactivate();
 			}
 		}
 
@@ -147,8 +185,8 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		 */
 		@Override
 		public void afterActivated(ISubApplicationNode source) {
-			if (getProgressBoxRidget() != null) {
-				getProgressBoxRidget().activate();
+			if (getUiProcessRidget() != null) {
+				getUiProcessRidget().activate();
 			}
 		}
 
@@ -197,6 +235,53 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#
+	 * afterBind()
+	 */
+	@Override
+	public void afterBind() {
+		super.afterBind();
+		initRidgets();
+	}
+
+	private void initRidgets() {
+		initUiProcessRidget();
+	}
+
+	private void initUiProcessRidget() {
+		IUIProcessRidget uiProcessRidget = getUiProcessRidget();
+		uiProcessRidget.setContextLocator(new IVisualContextManager() {
+
+			@SuppressWarnings("unchecked")
+			public List<Object> getActiveContexts(List<Object> contexts) {
+				List nodes = new ArrayList();
+				for (Object object : contexts) {
+					if (object instanceof INavigationNode) {
+						INavigationNode<?> node = (INavigationNode) object;
+						if (node.isActivated()) {
+							nodes.add(node);
+						}
+					}
+				}
+				return nodes;
+			}
+
+			public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
+				if (context instanceof INavigationNode<?>) {
+					INavigationNode<?> node = (INavigationNode<?>) context;
+					node.addSimpleListener(contextUpdater);
+					listeners.add(listener);
+				}
+			}
+
+		});
+
+	}
+
 	/**
 	 * @return the statuslineRidget
 	 */
@@ -215,16 +300,16 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	/**
 	 * @return the progressBoxRidget
 	 */
-	public IProgressBoxRidget getProgressBoxRidget() {
-		return progressBoxRidget;
+	public IUIProcessRidget getUiProcessRidget() {
+		return uiProcessRidget;
 	}
 
 	/**
-	 * @param progressBoxRidget
+	 * @param uiProcessRidget
 	 *            the progressBoxRidget to set
 	 */
-	public void setProgressBoxRidget(IProgressBoxRidget progressBoxRidget) {
-		this.progressBoxRidget = progressBoxRidget;
+	public void setUiProcessRidget(IUIProcessRidget uiProcessRidget) {
+		this.uiProcessRidget = uiProcessRidget;
 	}
 
 }

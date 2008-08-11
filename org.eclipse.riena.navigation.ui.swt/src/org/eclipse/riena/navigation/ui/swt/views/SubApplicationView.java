@@ -1,20 +1,19 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IContextUpdateListener;
-import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IVisualContextManager;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
+import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPageLayout;
@@ -25,23 +24,56 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
+public class SubApplicationView implements INavigationNodeView<SubApplicationController, SubApplicationNode>,
+		IPerspectiveFactory {
 
+	private AbstractViewBindingDelegate binding;
 	private SubApplicationController subApplicationViewController;
-	private UIProcessRidget uiProcessRidget;
+	private SubApplicationNode subApplicationNode;
+
+	public SubApplicationView() {
+		binding = createBinding();
+	}
+
+	protected AbstractViewBindingDelegate createBinding() {
+		DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(new DefaultSwtControlRidgetMapper());
+		addMappings(ridgetMapper);
+		return new InjectSwtViewBindingDelegate(ridgetMapper);
+	}
+
+	private void addMappings(DelegatingRidgetMapper ridgetMapper) {
+		ridgetMapper.addMapping(UIProcessControl.class, UIProcessRidget.class);
+	}
+
+	public void bind(SubApplicationNode node) {
+		if (getNavigationNode().getPresentation() instanceof IViewController) {
+			IViewController viewController = (IViewController) node.getPresentation();
+			binding.injectRidgets(viewController);
+			binding.bind(viewController);
+			viewController.afterBind();
+		}
+	}
+
+	public void unbind() {
+		// TODO impl !!
+
+	}
 
 	/**
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
 	 */
 	public void createInitialLayout(IPageLayout layout) {
-		subApplicationViewController = createController(layout.getDescriptor().getId());
+		addUIControls();
+		subApplicationNode = (SubApplicationNode) locateSubApplication(layout.getDescriptor().getId());
+		subApplicationViewController = createController(subApplicationNode);
 		initializeListener(subApplicationViewController);
+		bind(subApplicationNode);
+		subApplicationViewController.afterBind();
 		doBaseLayout(layout);
 	}
 
-	protected SubApplicationController createController(String id) {
-		ISubApplicationNode subApplication = locateSubApplication(id);
-		return createController(subApplication);
+	private void addUIControls() {
+		initUIProcessRidget();
 	}
 
 	private ISubApplicationNode locateSubApplication(String id) {
@@ -76,6 +108,12 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 	protected void doBaseLayout(IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 		layout.setFixed(true);
+	}
+
+	private void initUIProcessRidget() {
+		UIProcessControl uiControl = new UIProcessControl(Display.getDefault().getShells()[0]);
+		uiControl.setPropertyName("uiProcessRidget"); //$NON-NLS-1$
+		binding.addUIControl(uiControl);
 	}
 
 	/**
@@ -122,74 +160,10 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 		private void checkBaseStructure() {
 			if (!navigationUp) {
 				createNavigation();
-				initUIProcessRidget();
 				createStatusLine();
 				navigationUp = true;
 			}
 		}
-
-		private void initUIProcessRidget() {
-			uiProcessRidget = new UIProcessRidget();
-			uiProcessRidget.setContextLocator(new IVisualContextManager() {
-
-				@SuppressWarnings("unchecked")
-				public List<Object> getActiveContexts(List<Object> contexts) {
-					List nodes = new ArrayList();
-					for (Object object : contexts) {
-						if (object instanceof INavigationNode) {
-							INavigationNode<?> node = (INavigationNode) object;
-							if (node.isActivated()) {
-								nodes.add(node);
-							}
-						}
-					}
-					return nodes;
-				}
-
-				public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
-					if (context instanceof INavigationNode<?>) {
-						INavigationNode<?> node = (INavigationNode<?>) context;
-						node.addSimpleListener(contextUpdater);
-						listeners.add(listener);
-					}
-				}
-
-			});
-			uiProcessRidget.setUIControl(new UIProcessControl(Display.getDefault().getShells()[0]));
-			subApplicationViewController.setProgressBoxRidget(uiProcessRidget);
-		}
-
-		@SuppressWarnings("unchecked")
-		private class NodeListener extends SimpleNavigationNodeAdapater {
-
-			@Override
-			public void activated(INavigationNode source) {
-				contextUpdated(source);
-			}
-
-			@Override
-			public void beforeDeactivated(INavigationNode source) {
-				for (IContextUpdateListener listener : listeners) {
-					listener.beforeContextUpdate(source);
-				}
-			}
-
-			@Override
-			public void deactivated(INavigationNode source) {
-				contextUpdated(source);
-			}
-
-			private void contextUpdated(INavigationNode source) {
-				for (IContextUpdateListener listener : listeners) {
-					listener.contextUpdated(source);
-				}
-			}
-
-		}
-
-		private NodeListener contextUpdater = new NodeListener();
-
-		private List<IContextUpdateListener> listeners = new ArrayList<IContextUpdateListener>();
 
 		protected String createNextId() {
 			return String.valueOf(System.currentTimeMillis());
@@ -252,6 +226,20 @@ public class SubApplicationPerspectiveFactory implements IPerspectiveFactory {
 			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		}
 
+	}
+
+	public void addUpdateListener(IComponentUpdateListener listener) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public int calculateBounds(int positionHint) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public SubApplicationNode getNavigationNode() {
+		return subApplicationNode;
 	}
 
 }

@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.binding;
 
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Widget;
 
@@ -19,18 +20,15 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class DefaultSwtViewBindingDelegate extends AbstractViewBindingDelegate {
 
-	/**
-	 * @param propertyStrategy
-	 * @param mapper
-	 */
 	public DefaultSwtViewBindingDelegate() {
-		super(new SWTBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
+		this(new DefaultSwtControlRidgetMapper());
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate#addUIControl(java.lang.Object,
-	 *      java.lang.String)
-	 */
+	@SuppressWarnings("unchecked")
+	public DefaultSwtViewBindingDelegate(IControlRidgetMapper mapper) {
+		super(new SWTBindingPropertyLocator(), mapper);
+	}
+
 	@Override
 	public void addUIControl(Object uiControl, String bindingId) {
 		super.addUIControl(uiControl, bindingId);

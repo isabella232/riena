@@ -25,10 +25,11 @@ import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
-import org.eclipse.riena.ui.ridgets.IProgressBoxRidget;
+import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
+import org.eclipse.riena.ui.ridgets.IVisualContextManager;
+import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 import org.eclipse.riena.ui.swt.uiprocess.ICancelListener;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
-
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
  * does not bind a {@link Control} but a {@link UIProcessControl}. Another
  * difference is that it does not hold any detail state of the uiProcessControl.
  */
-public class UIProcessRidget extends AbstractRidget implements IProgressBoxRidget {
+public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget {
 
 	private UIProcessControl uiProcessControl;
 
@@ -47,7 +48,7 @@ public class UIProcessRidget extends AbstractRidget implements IProgressBoxRidge
 
 	private Map<Object, VisualizerContainer> contexts;
 
-	private IVisualContextManager contextLocator;
+	public IVisualContextManager contextLocator;
 
 	private boolean focusAble;
 

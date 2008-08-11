@@ -8,7 +8,8 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
+package org.eclipse.riena.ui.ridgets;
+
 
 /**
  * Implementations can be used to observe changes of visual contexts registered

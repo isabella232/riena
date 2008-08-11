@@ -61,6 +61,6 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 	}
 
 	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {
-		return ((SubApplicationController) subApp.getPresentation()).getProgressBoxRidget();
+		return ((SubApplicationController) subApp.getPresentation()).getUiProcessRidget();
 	}
 }
