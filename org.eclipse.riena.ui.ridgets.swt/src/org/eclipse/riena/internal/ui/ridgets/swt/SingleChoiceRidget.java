@@ -147,12 +147,11 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 			value = newSelection;
 		}
 		singleSelectionObservable.setValue(value);
-		// TODO [ev] use databinding
 		ChoiceComposite composite = getUIControl();
 		if (composite != null) {
 			for (Control child : composite.getChildren()) {
 				Button button = (Button) child;
-				boolean isSelected = value != null && child.getData() == value;
+				boolean isSelected = (value != null) && (child.getData() == value);
 				button.setSelection(isSelected);
 			}
 		}
@@ -165,7 +164,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	}
 
 	public IObservableList getObservableList() {
-		return rowObservables; // TODO [ev] ok?
+		return rowObservables;
 	}
 
 	@Override
@@ -210,9 +209,23 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		}
 	}
 
+	private void updateMarkers() {
+		boolean isMandatoryDisabled = isDisableMandatoryMarker();
+		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			MandatoryMarker mMarker = (MandatoryMarker) marker;
+			mMarker.setDisabled(isMandatoryDisabled);
+		}
+	}
+
 	private void updateSelectionFromModel() {
 		if (selectionObservable != null) {
 			setSelection(selectionObservable.getValue());
+		}
+	}
+
+	private void updateSelectionFromRidget(Object newValue) {
+		if (selectionObservable != null) {
+			selectionObservable.setValue(newValue);
 		}
 	}
 
@@ -236,17 +249,9 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 			String key = IChoiceRidget.PROPERTY_SELECTION;
 			Object oldValue = diff.getOldValue();
 			Object newValue = diff.getNewValue();
+			updateMarkers();
+			updateSelectionFromRidget(newValue);
 			SingleChoiceRidget.this.firePropertyChange(key, oldValue, newValue);
-			// TODO [ev] refactor
-			boolean isMandatoryDisabled = isDisableMandatoryMarker();
-			for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-				MandatoryMarker mMarker = (MandatoryMarker) marker;
-				mMarker.setDisabled(isMandatoryDisabled);
-			}
-			// TODO [ev] refactor
-			if (selectionObservable != null) {
-				selectionObservable.setValue(newValue);
-			}
 		}
 	};
 

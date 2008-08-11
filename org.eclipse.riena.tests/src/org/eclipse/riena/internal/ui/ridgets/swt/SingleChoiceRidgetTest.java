@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -137,7 +138,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals(ridget.getSelection(), optionProvider.getOptions().get(0));
 	}
 
-	public void testSelectionIsAppliedToChildren() {
+	public void testUpdateSelectionFromRidget() {
 		ISingleChoiceRidget ridget = getRidget();
 		ChoiceComposite control = getUIControl();
 
@@ -156,6 +157,26 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertNotSame(selected1, selected2);
 		assertEquals(optionProvider.getSelectedOption(), selected2.getText());
 		assertSame(optionProvider.getSelectedOption(), selected2.getData());
+	}
+
+	public void testUpdateSelectionFromControl() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+		Button button0 = (Button) control.getChildren()[0];
+		Button button1 = (Button) control.getChildren()[1];
+
+		assertTrue(button0.getSelection());
+		assertFalse(button1.getSelection());
+
+		button1.setSelection(true);
+		Event event = new Event();
+		event.type = SWT.Selection;
+		event.widget = button1;
+		button1.notifyListeners(SWT.Selection, event);
+
+		assertFalse(button0.getSelection());
+		assertTrue(button1.getSelection());
+		assertEquals(optionProvider.getOptions().get(1), ridget.getSelection());
 	}
 
 	public void testColorsAreAppliedToChildren() {
