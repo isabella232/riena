@@ -918,21 +918,24 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 *            The node where we have navigate to and return from
 	 */
 	public void navigateBack() {
-		getNavigationProcessor().navigateBack(this);
+		if (getNavigationProcessor() != null)
+			getNavigationProcessor().navigateBack(this);
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyBack()
 	 */
 	public void historyBack() {
-		getNavigationProcessor().historyBack();
+		if (getNavigationProcessor() != null)
+			getNavigationProcessor().historyBack();
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyPrev()
 	 */
 	public void historyForward() {
-		getNavigationProcessor().historyForward();
+		if (getNavigationProcessor() != null)		
+			getNavigationProcessor().historyForward();
 	}
 
 	/**
