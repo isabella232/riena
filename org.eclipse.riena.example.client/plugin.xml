@@ -24,113 +24,93 @@
             name="subapplication.2">
       </perspective>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            allowMultiple="true"
+   <extension point="org.eclipse.ui.views">
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
             id="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
             name="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView">
       </view>
-      
-            <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
             id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
             name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
             id="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
             name="org.eclipse.riena.example.client.views.RidgetsSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
             id="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
             name="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.ChoiceSubModuleView"
             id="org.eclipse.riena.example.client.views.ChoiceSubModuleView"
             name="org.eclipse.riena.example.client.views.ChoiceSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.ComboSubModuleView"
             id="org.eclipse.riena.example.client.views.ComboSubModuleView"
             name="org.eclipse.riena.example.client.views.ComboSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.ListSubModuleView"
             id="org.eclipse.riena.example.client.views.ListSubModuleView"
             name="org.eclipse.riena.example.client.views.ListSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.TextSubModuleView"
             id="org.eclipse.riena.example.client.views.TextSubModuleView"
             name="org.eclipse.riena.example.client.views.TextSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.MarkerSubModuleView"
             id="org.eclipse.riena.example.client.views.MarkerSubModuleView"
             name="org.eclipse.riena.example.client.views.MarkerSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.FocusableSubModuleView"
             id="org.eclipse.riena.example.client.views.FocusableSubModuleView"
             name="org.eclipse.riena.example.client.views.FocusableSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.ValidationSubModuleView"
             id="org.eclipse.riena.example.client.views.ValidationSubModuleView"
             name="org.eclipse.riena.example.client.views.ValidationSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
             id="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
             name="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.TreeSubModuleView"
             id="org.eclipse.riena.example.client.views.TreeSubModuleView"
             name="org.eclipse.riena.example.client.views.TreeSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
             id="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
             name="org.eclipse.riena.example.client.views.TreeTableSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.TableSubModuleView"
             id="org.eclipse.riena.example.client.views.TableSubModuleView"
             name="org.eclipse.riena.example.client.views.TableSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
             id="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
             name="org.eclipse.riena.example.client.views.StatuslineSubModuleView">
       </view>
-      <view
-            allowMultiple="true"
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigateSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigateSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigateSubModuleView">
@@ -140,9 +120,7 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="subapplication.1">
-         <actionSet
-               id="org.eclipse.riena.example.client.actionSet">
-         </actionSet>
+         <actionSet id="org.eclipse.riena.example.client.actionSet"></actionSet>
       </perspectiveExtension>
    </extension>
    <extension
@@ -167,7 +145,15 @@
             id="org.eclipse.riena.example.client.certainPerspectiveCommand"
             name="Certain Perspective">
       </command>
-   </extension>
+            <command
+            id="org.eclipse.riena.example.client.histBackCommand"
+            name="History Backward">
+      </command>
+      <command
+            id="org.eclipse.riena.example.client.histForCommand"
+            name="History Forward">
+      </command>
+    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
@@ -237,6 +223,25 @@
                   style="push">
             </command>
          </menu>
+         <menu
+               id="navigationMenu"
+               label="Navigation menu"
+               mnemonic="N">
+            <command
+                  commandId="org.eclipse.riena.example.client.histBackCommand"
+                  icon="icons/backward.gif"
+                  id="org.eclipse.riena.example.client.histBackMenuItem"
+                  mnemonic="B"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.histForCommand"
+                  icon="icons/forward.gif"
+                  id="org.eclipse.riena.example.client.histForMenuItem"
+                  mnemonic="F"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
@@ -262,6 +267,20 @@
                   icon="icons/ledlightgreen.png"
                   label="Perspective"
                   mnemonic="P"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.histBackCommand"
+                  icon="icons/backward.gif"
+                  label="History Back"
+                  mnemonic="B"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.histForCommand"
+                  icon="icons/forward.gif"
+                  label="History Forward"
+                  mnemonic="F"
                   style="push">
             </command>
          </toolbar>
@@ -304,6 +323,14 @@
       <handler
             class="org.eclipse.riena.example.client.handler.ZoomOutHandler"
             commandId="org.eclipse.riena.example.client.zoomOutCommand">
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.HistoryBackwardHandler"
+            commandId="org.eclipse.riena.example.client.histBackCommand">
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.HistoryForwardHandler"
+            commandId="org.eclipse.riena.example.client.histForCommand">
       </handler>
    </extension>
    <extension
