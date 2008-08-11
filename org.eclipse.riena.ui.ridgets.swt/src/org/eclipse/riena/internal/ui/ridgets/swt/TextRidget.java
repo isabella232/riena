@@ -152,6 +152,21 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		}
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.ITextFieldRidget#getAlignment()
+	 */
+	public int getAlignment() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.ITextFieldRidget#setAlignment(int)
+	 */
+	public void setAlignment(int alignment) {
+		// TODO Auto-generated method stub
+	}
+
 	// helping methods
 	// ////////////////
 

@@ -22,6 +22,21 @@ public interface ITextFieldRidget extends IEditableRidget, IMarkableRidget {
 	 * @see #setText(String)
 	 */
 	String PROPERTY_TEXT = "text"; //$NON-NLS-1$
+	/**
+	 * Property name for <code>alignment</code>
+	 * 
+	 * @see #getAlignment()
+	 * @see #setAlignment(String)
+	 */
+	String PROPERTY_ALIGNMENT = "alignment"; //$NON-NLS-1$
+	/**
+	 * Property value for <code>alignment</code>: left alignment
+	 */
+	int ALIGNMENT_LEFT = 1;
+	/**
+	 * Property value for <code>alignment</code>: right alignment
+	 */
+	int ALIGNMENT_RIGHT = 2;
 
 	/**
 	 * Returns current text of the text field if directWriting is set to true.
@@ -65,4 +80,19 @@ public interface ITextFieldRidget extends IEditableRidget, IMarkableRidget {
 	 */
 	void setDirectWriting(boolean directWriting);
 
+	/**
+	 * Sets the horizontal alignment for this textfield.
+	 * 
+	 * @param alignment
+	 *            the alignment.
+	 */
+
+	void setAlignment(int alignment);
+
+	/**
+	 * Gets the horizontal alignment for this textfield.
+	 * 
+	 * @return the alignment.
+	 */
+	int getAlignment();
 }
