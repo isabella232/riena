@@ -64,6 +64,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 */
 	@Override
 	protected void injectRidget(IRidgetContainer ridgetContainer, String bindingProperty, IRidget ridget) {
+		super.injectRidget(ridgetContainer, bindingProperty, ridget);
 		try {
 			injectIntoController(ridget, ridgetContainer, bindingProperty);
 		} catch (ReflectionFailure e) {
