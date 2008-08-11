@@ -32,8 +32,8 @@ import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
-import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 
 /**
@@ -254,6 +254,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 
 	private void initUiProcessRidget() {
 		IUIProcessRidget uiProcessRidget = getUiProcessRidget();
+		if (uiProcessRidget == null) {
+			return;
+		}
 		uiProcessRidget.setContextLocator(new IVisualContextManager() {
 
 			@SuppressWarnings("unchecked")
