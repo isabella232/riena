@@ -132,6 +132,8 @@ public class MarkerSubModuleController extends SubModuleController {
 				for (IMarkableRidget ridget : markables) {
 					ridget.setMandatory(isMandatory);
 				}
+				// TODO [ev] clear ridgets when made mandatory
+				// TODO [ev] rewrite values when mandatory is removed
 			}
 		});
 
