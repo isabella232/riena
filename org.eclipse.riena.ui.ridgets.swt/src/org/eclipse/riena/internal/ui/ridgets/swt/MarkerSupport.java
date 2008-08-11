@@ -48,6 +48,12 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		updateUIControl();
 	}
 
+	@Override
+	protected void handleMarkerAttributesChanged() {
+		updateUIControl();
+		super.handleMarkerAttributesChanged();
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -137,7 +143,7 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	}
 
 	private void updateMandatory(Control control) {
-		if (ridget.isMandatory() && !ridget.isOutputOnly() && ridget.isEnabled()) {
+		if (ridget.isMandatory() && !ridget.isOutputOnly() && ridget.isEnabled() && !ridget.isDisableMandatoryMarker()) {
 			addMandatory(control);
 		} else {
 			clearMandatory(control);

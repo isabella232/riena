@@ -152,19 +152,19 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.ITextFieldRidget#getAlignment()
-	 */
-	public int getAlignment() {
-		// TODO Auto-generated method stub
-		return 0;
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return getText().length() > 0;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.ITextFieldRidget#setAlignment(int)
-	 */
+	public int getAlignment() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
 	public void setAlignment(int alignment) {
 		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
 	}
 
 	// helping methods
