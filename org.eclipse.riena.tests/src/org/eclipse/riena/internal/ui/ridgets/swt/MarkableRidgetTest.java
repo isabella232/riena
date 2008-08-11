@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -92,6 +93,29 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setMandatory(false);
 
 		assertFalse(ridget.isMandatory());
+	}
+
+	public void testIsDisableMandatoryMarker() {
+		IMarkableRidget ridget = (ITextFieldRidget) getRidget();
+		ridget.setMandatory(true);
+
+		assertFalse(ridget.isDisableMandatoryMarker());
+		assertTrue(ridget.isMandatory());
+
+		((ITextFieldRidget) ridget).setText("foo");
+
+		assertTrue(ridget.isDisableMandatoryMarker());
+		assertTrue(ridget.isMandatory());
+
+		((ITextFieldRidget) ridget).setText("   ");
+
+		assertTrue(ridget.isDisableMandatoryMarker());
+		assertTrue(ridget.isMandatory());
+
+		((ITextFieldRidget) ridget).setText("");
+
+		assertFalse(ridget.isDisableMandatoryMarker());
+		assertTrue(ridget.isMandatory());
 	}
 
 	public void testSetOutputOnly() {

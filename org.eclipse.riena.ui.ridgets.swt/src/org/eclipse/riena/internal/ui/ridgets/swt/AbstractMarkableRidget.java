@@ -37,9 +37,14 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 		updateMarkers();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: returns false always. Subclases should override, if
+	 * necessary.
+	 */
 	public boolean isDisableMandatoryMarker() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("not implemented yet"); //$NON-NLS-1$
+		return false;
 	}
 
 	public final boolean isErrorMarked() {

@@ -171,43 +171,13 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
-	public void testForwardMarkersToOptionRidgets() {
-		fail("TODO"); // TODO [ev] what to we test for here?
-		// SingleChoiceRidget ridget = (SingleChoiceRidget) getRidget();
-		//
-		// ErrorMarker errorMarker = new ErrorMarker();
-		// MandatoryMarker mandatoryMarker = new MandatoryMarker();
-		// OutputMarker outputMarker = new OutputMarker();
-		//
-		// ridget.addMarker(errorMarker);
-		// ridget.addMarker(mandatoryMarker);
-		// ridget.addMarker(outputMarker);
-		//
-		// assertEquals(3, ridget.getMarkers().size());
-		// for (IToggleButtonRidget optionRidget : ridget.getOptionRidgets()) {
-		// assertEquals(3, optionRidget.getMarkers().size());
-		// }
-		//
-		// ridget.removeMarker(mandatoryMarker);
-		//
-		// assertEquals(2, ridget.getMarkers().size());
-		// for (IToggleButtonRidget optionRidget : ridget.getOptionRidgets()) {
-		// assertEquals(2, optionRidget.getMarkers().size());
-		// }
-		//
-		// ridget.removeAllMarkers();
-		//
-		// assertEquals(0, ridget.getMarkers().size());
-		// for (IToggleButtonRidget optionRidget : ridget.getOptionRidgets()) {
-		// assertEquals(0, optionRidget.getMarkers().size());
-		// }
-	}
-
+	/**
+	 * Tests that the mandatory marker gets disabled when we have a selection.
+	 */
 	public void testDisableMandatoryMarkers() {
 		ISingleChoiceRidget ridget = getRidget();
 
 		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
-
 		optionProvider.setSelectedOption(null);
 		ridget.updateFromModel();
 		ridget.addMarker(mandatoryMarker);
@@ -223,6 +193,9 @@ public class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertFalse(mandatoryMarker.isDisabled());
 	}
 
+	/**
+	 * Tests that the isDisabledMandatoryMarker true when we have a selection.
+	 */
 	public void testIsDisableMandatoryMarker() {
 		ISingleChoiceRidget ridget = getRidget();
 
