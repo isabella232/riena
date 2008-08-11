@@ -11,6 +11,8 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -21,19 +23,27 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * TODO [ev] docs
+ * This composite presents a list of single or multiple choices. It is mapped to
+ * a {@link ISingleChoiceRidget} or {@link IMultipleChoiceRidget}.
  */
+// TODO [ev] this should be API - move to public package
 public class ChoiceComposite extends Composite {
 
 	private final boolean isMulti;
 	private int orientation;
 
 	/**
-	 * TODO [ev] docs
+	 * Create a new ChoiceComposite instance given its parent and style value.
+	 * The default orientation is <tt>SWT.VERTICAL</tt> (see also
+	 * {@link #setOrientation(int)}).
 	 * 
 	 * @param parent
+	 *            the parent Composite (non-null)
 	 * @param style
+	 *            the SWT style of the Composite
 	 * @param multipleSelection
+	 *            true to allow multiple selection (=check boxes), false for
+	 *            single selection (=radio buttons)
 	 */
 	public ChoiceComposite(Composite parent, int style, boolean multipleSelection) {
 		super(parent, style);
@@ -43,11 +53,27 @@ public class ChoiceComposite extends Composite {
 		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 	}
 
-	/** TODO [ev] DOCS */
+	/**
+	 * Returns the orientation of this ChoiceComposite.
+	 * 
+	 * @return one of <tt>SWT.VERTICAL</tt> or <tt>SWT.HORIZONTAL</tt>.
+	 */
+	public int getOrientation() {
+		return orientation;
+	}
+
+	/**
+	 * Returns true if this instance allows multiple selection, false otherwise.
+	 */
 	public final boolean isMultipleSelection() {
 		return isMulti;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The value will be propagated to children of this composite.
+	 */
 	@Override
 	public final void setBackground(Color color) {
 		setRedraw(false);
@@ -62,6 +88,11 @@ public class ChoiceComposite extends Composite {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The value will be propagated to children of this composite.
+	 */
 	@Override
 	public final void setForeground(Color color) {
 		setRedraw(false);
@@ -76,7 +107,14 @@ public class ChoiceComposite extends Composite {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Sets the orientation (vertical or horizontal) of the choices in this
+	 * composite.
+	 * 
+	 * @param orientation
+	 *            <tt>SWT.VERTICAL</tt> for vertical orientation or
+	 *            <tt>SWT.HORIZONTAL</tt> for horizontal orientation
+	 * @throws RuntimeException
+	 *             if orientation has an unsupported value
 	 */
 	public final void setOrientation(int orientation) {
 		Assert.isLegal(orientation == SWT.VERTICAL || orientation == SWT.HORIZONTAL);
