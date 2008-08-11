@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
-import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.core.RienaStartupStatus;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.RienaStartupStatus;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
@@ -87,12 +87,9 @@ public class Activator extends RienaPlugin {
 			if (!forceStart)
 				continue;
 
-			// TODO STARTING == LAZY, so start that also, STARTING is
-			// disabled, bundles with forceStart should not be LAZY
-			if (bundle.getState() == Bundle.RESOLVED/*
-													 * || bundle.getState() ==
-													 * Bundle.STARTING
-													 */) {
+			if (bundle.getState() == Bundle.RESOLVED
+					|| (bundle.getState() == Bundle.STARTING && Constants.ACTIVATION_LAZY.equals(bundle.getHeaders()
+							.get(Constants.BUNDLE_ACTIVATIONPOLICY)))) {
 				try {
 					bundle.start();
 					LOGGER.log(LogService.LOG_INFO, "Forced start: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
