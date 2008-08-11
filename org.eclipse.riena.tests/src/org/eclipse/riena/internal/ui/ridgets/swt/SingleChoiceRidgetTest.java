@@ -12,9 +12,12 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
@@ -177,7 +180,6 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	public void testAddRemovePropertyChangeListener() {
 		ISingleChoiceRidget ridget = getRidget();
 
-		// TODO [ev] use easymock here
 		TestPropertyChangeListener listener = new TestPropertyChangeListener();
 		ridget.updateFromModel();
 		ridget.addPropertyChangeListener(listener);
@@ -258,6 +260,86 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.setSelection(null);
 
 		assertFalse(ridget.isDisableMandatoryMarker());
+	}
+
+	public void testBindToModelWithObersables() {
+		ISingleChoiceRidget ridget = getRidget();
+
+		try {
+			ridget.bindToModel(null, BeansObservables.observeValue(optionProvider, "selectedOption"));
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(BeansObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+	}
+
+	public void testBindToModelWithBeans() {
+		ISingleChoiceRidget ridget = getRidget();
+
+		try {
+			ridget.bindToModel(null, "options", optionProvider, "selectedOption");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(optionProvider, null, optionProvider, "selectedOption");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(optionProvider, "options", null, "selectedOption");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(optionProvider, "options", optionProvider, null);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+	}
+
+	public void testBindToModelWithOptionLabelList() {
+		ISingleChoiceRidget ridget = getRidget();
+
+		try {
+			ridget.bindToModel(null, optionProvider.getOptionLabels(), optionProvider, "selectedOption");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(optionProvider.getOptions(), (List<String>) null, optionProvider, "selectedOption");
+		} catch (RuntimeException rex) {
+			fail();
+		}
+		try {
+			ridget.bindToModel(optionProvider.getOptions(), new ArrayList<String>(), optionProvider, "selectedOption");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), null, "selectedOption");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+		try {
+			ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider, null);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 	}
 
 	// helping methods

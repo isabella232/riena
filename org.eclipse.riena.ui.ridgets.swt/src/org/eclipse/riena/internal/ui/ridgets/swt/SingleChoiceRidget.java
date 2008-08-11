@@ -102,15 +102,16 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	}
 
 	public void bindToModel(IObservableList listObservableValue, IObservableValue selectionObservableValue) {
-		// TODO [ev] asserts
-		Assert.isNotNull(listObservableValue, "Cannot be null: listObservableValue"); //$NON-NLS-1$
+		Assert.isNotNull(listObservableValue, "listObservableValue"); //$NON-NLS-1$
+		Assert.isNotNull(selectionObservableValue, "selectionObservableValue"); //$NON-NLS-1$
 		bindToModel(listObservableValue, null, selectionObservableValue);
 	}
 
 	public void bindToModel(Object listBean, String listPropertyName, Object selectionBean, String selectionPropertyName) {
-		// TODO [ev] asserts
-		// Assert.isNotNull(listPropertyName, "Cannot be null: listPropertyName"); //$NON-NLS-1$
-		// Assert.isNotNull(selectionPropertyName, "Cannot be null: selectionPropertyName"); //$NON-NLS-1$
+		Assert.isNotNull(listBean, "listBean"); //$NON-NLS-1$
+		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
+		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
+		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = BeansObservables.observeList(Realm.getDefault(), listBean, listPropertyName);
 		IObservableValue value = BeansObservables.observeValue(selectionBean, selectionPropertyName);
 		bindToModel(list, null, value);
@@ -118,7 +119,9 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 
 	public void bindToModel(List<? extends Object> options, List<String> optionLabels, Object selectionBean,
 			String selectionPropertyName) {
-		// TODO [ev] asserts
+		Assert.isNotNull(options, "options"); //$NON-NLS-1$
+		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
+		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new WritableList(options, Object.class);
 		IObservableValue value = null;
 		if (selectionBean != null) {
@@ -126,28 +129,6 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 			value = BeansObservables.observeValue(selectionBean, selectionPropertyName);
 		}
 		bindToModel(list, optionLabels, value);
-	}
-
-	public void bindToModel(IObservableList options, List<String> optionLabels, IObservableValue selectionObservable) {
-		// TODO [ev] asserts
-		Assert.isNotNull(options);
-		if (optionLabels != null) {
-			String msg = "Mismatch between number of options and optionLabels"; //$NON-NLS-1$
-			Assert.isLegal(options.size() == optionLabels.size(), msg);
-		}
-
-		unbindUIControl();
-
-		rowObservables = options;
-		if (optionLabels != null) {
-			rowObservableLabels = optionLabels.toArray(new String[optionLabels.size()]);
-		} else {
-			rowObservableLabels = null;
-		}
-		this.selectionObservable = selectionObservable;
-		updateSelectionFromModel();
-
-		bindUIControl();
 	}
 
 	public Object getSelection() {
@@ -199,6 +180,26 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		if (rowObservables == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
 		}
+	}
+
+	private void bindToModel(IObservableList options, List<String> optionLabels, IObservableValue selectionObservable) {
+		if (optionLabels != null) {
+			String msg = "Mismatch between number of options and optionLabels"; //$NON-NLS-1$
+			Assert.isLegal(options.size() == optionLabels.size(), msg);
+		}
+
+		unbindUIControl();
+
+		rowObservables = options;
+		if (optionLabels != null) {
+			rowObservableLabels = optionLabels.toArray(new String[optionLabels.size()]);
+		} else {
+			rowObservableLabels = null;
+		}
+		this.selectionObservable = selectionObservable;
+		updateSelectionFromModel();
+
+		bindUIControl();
 	}
 
 	private void disposeChildren(Composite control) {
