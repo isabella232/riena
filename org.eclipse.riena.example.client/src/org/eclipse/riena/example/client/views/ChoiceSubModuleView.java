@@ -22,9 +22,7 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -32,7 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * SWT {@link ISingleChoiceRidget} and {@link IMultipleChoiceRidget} sample.
+ * SWT {@link ISingleChoiceRidget} and {@link IMultipleChoiceRidget} example.
  */
 public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController> {
 
@@ -59,13 +57,16 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 		Group group = UIControlsFactory.createGroup(parent, "James' Car Configurator:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).spacing(20, 20).applyTo(group);
 
+		GridDataFactory choiceLayoutFactory = GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true,
+				false);
+
 		// next row
 
 		Label lblModel = UIControlsFactory.createLabel(group, "Model"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblModel);
 
 		Composite compositeCarModel = new ChoiceComposite(group, SWT.NONE, false);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true, false).applyTo(compositeCarModel);
+		choiceLayoutFactory.applyTo(compositeCarModel);
 		addUIControl(compositeCarModel, "compositeCarModel"); //$NON-NLS-1$
 
 		// next row
@@ -73,35 +74,26 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 		Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblExtras);
 
-		Composite compositeCarExtras = new Composite(group, SWT.NONE);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).grab(true, false).applyTo(compositeCarExtras);
-		createCheck(compositeCarExtras, "Front Maschine Guns"); //$NON-NLS-1$
-		createCheck(compositeCarExtras, "Self Destruct Button"); //$NON-NLS-1$
-		createCheck(compositeCarExtras, "Underwater Package"); //$NON-NLS-1$
-		createCheck(compositeCarExtras, "Park Distance Control System"); //$NON-NLS-1$
-		compositeCarExtras.setLayout(new FillLayout(SWT.VERTICAL));
+		Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, false);
+		choiceLayoutFactory.applyTo(compositeCarExtras);
+		addUIControl(compositeCarExtras, "compositeCarExtras"); //$NON-NLS-1$
 
 		// next row
 
 		UIControlsFactory.createLabel(group, "Manufacturer's\nWarranty"); //$NON-NLS-1$
 
-		Composite compositeCarWarranty = new Composite(group, SWT.NONE);
-		createRadio(compositeCarWarranty, "Standard"); //$NON-NLS-1$
-		createRadio(compositeCarWarranty, "Extended"); //$NON-NLS-1$
-		compositeCarWarranty.setLayout(new FillLayout(SWT.VERTICAL));
+		Composite compositeCarWarranty = new ChoiceComposite(group, SWT.NONE, false);
+		choiceLayoutFactory.applyTo(compositeCarWarranty);
+		addUIControl(compositeCarWarranty, "compositeCarWarranty"); //$NON-NLS-1$
 
 		// next row
 
 		UIControlsFactory.createLabel(group, "License Plate(s)"); //$NON-NLS-1$
 
-		Composite compositeCarPlates = new Composite(group, SWT.NONE);
-		compositeCarPlates.setLayout(new RowLayout(SWT.HORIZONTAL));
-		createCheck(compositeCarPlates, "JM5B0ND"); //$NON-NLS-1$
-		createCheck(compositeCarPlates, "1 SPY"); //$NON-NLS-1$
-		createCheck(compositeCarPlates, "MNY PNY"); //$NON-NLS-1$
-		createCheck(compositeCarPlates, "BN D007"); //$NON-NLS-1$
-		createCheck(compositeCarPlates, "Q RULE2"); //$NON-NLS-1$
-		createCheck(compositeCarPlates, "MI64EVR"); //$NON-NLS-1$
+		ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, false);
+		compositeCarPlates.setOrientation(SWT.HORIZONTAL);
+		choiceLayoutFactory.applyTo(compositeCarPlates);
+		addUIControl(compositeCarPlates, "compositeCarPlates"); //$NON-NLS-1$
 
 		// next row
 
@@ -110,34 +102,24 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 		Text txtPrice = UIControlsFactory.createText(group);
 		addUIControl(txtPrice, "txtPrice"); //$NON-NLS-1$
 
-		createButtonComposite(group);
+		Composite buttonComposite = createButtonComposite(group);
+		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(buttonComposite);
 
 		return group;
 	}
 
 	private Composite createButtonComposite(Group group) {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
-		GridDataFactory.fillDefaults().grab(true, false).span(4, 1).applyTo(buttonComposite);
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
 
-		Button buttonReset = UIControlsFactory.createButton(buttonComposite);
-		GridDataFactory.fillDefaults().span(1, 1).grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonReset);
-		addUIControl(buttonReset, "buttonReset"); //$NON-NLS-1$
+		Button buttonPreset = UIControlsFactory.createButton(buttonComposite);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(buttonPreset);
+		addUIControl(buttonPreset, "buttonPreset"); //$NON-NLS-1$
 
-		Button buttonBMW = UIControlsFactory.createButton(buttonComposite);
-		GridDataFactory.fillDefaults().align(SWT.END, SWT.BEGINNING).applyTo(buttonBMW);
-		addUIControl(buttonBMW, "buttonBMW"); //$NON-NLS-1$
+		Button buttonReset = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonReset, "buttonReset"); //$NON-NLS-1$
 
 		return buttonComposite;
 	}
 
-	private void createRadio(Composite parent, String caption) {
-		Button b = UIControlsFactory.createButtonRadio(parent);
-		b.setText(caption);
-	}
-
-	private void createCheck(Composite parent, String caption) {
-		Button b = UIControlsFactory.createButtonCheck(parent);
-		b.setText(caption);
-	}
 }

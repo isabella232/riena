@@ -53,7 +53,6 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		Composite control = getUIControl();
 		if (control != null && rowObservables != null) {
 			disposeChildren(control);
-			control.setBackground(control.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 			Object[] values = rowObservables.toArray();
 			for (int i = 0; i < values.length; i++) {
 				Object value = values[i];
@@ -61,6 +60,8 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 
 				Button button = new Button(control, SWT.RADIO);
 				button.setText(caption);
+				button.setForeground(control.getForeground());
+				button.setBackground(control.getBackground());
 				button.setData(value);
 				if (value == singleSelectionObservable.getValue()) {
 					button.setSelection(true);
@@ -90,14 +91,6 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		disposeChildren(control);
 	}
 
-	private void disposeChildren(Composite control) {
-		if (control != null) {
-			for (Control child : control.getChildren()) {
-				child.dispose();
-			}
-		}
-	}
-
 	// public methods
 	// ///////////////
 
@@ -124,9 +117,12 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	public void bindToModel(List<? extends Object> options, List<String> optionLabels, Object selectionBean,
 			String selectionPropertyName) {
 		// TODO [ev] asserts
-		Assert.isNotNull(selectionPropertyName, "Cannot be null: selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new WritableList(options, Object.class);
-		IObservableValue value = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableValue value = null;
+		if (selectionBean != null) {
+			Assert.isNotNull(selectionPropertyName);
+			value = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		}
 		bindToModel(list, optionLabels, value);
 	}
 
@@ -198,6 +194,14 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	private void assertIsBoundToModel() {
 		if (rowObservables == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
+		}
+	}
+
+	private void disposeChildren(Composite control) {
+		if (control != null) {
+			for (Control child : control.getChildren()) {
+				child.dispose();
+			}
 		}
 	}
 
