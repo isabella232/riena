@@ -10,18 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.uibinding;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
@@ -30,13 +28,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * Tests of the class <code>DefaultBindingManager</code>.
+ * Tests of the class {@code DefaultBindingManager}
  */
-public class InjectBindingManagerTest extends TestCase {
+public class DefaultBindingManagerTest extends TestCase {
 
-	private static final String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
+	static final String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
 	private IBindingManager manager;
-	private RidgetContainer ridgetContainer;
+	private SubModuleController ridgetContainer;
 	private Shell shell;
 	private DefaultRealm realm;
 
@@ -47,8 +45,8 @@ public class InjectBindingManagerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		realm = new DefaultRealm();
-		manager = new InjectBindingManager(new BindingPropertyLocator(), new ControlRidgetMapper());
-		ridgetContainer = new RidgetContainer();
+		manager = new DefaultBindingManager(new BindingPropertyLocator(), new ControlRidgetMapper());
+		ridgetContainer = new SubModuleController();
 		shell = new Shell();
 	}
 
@@ -66,40 +64,99 @@ public class InjectBindingManagerTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method <code>injectRidget</code>.
+	 * Tests the method <code>injectRidgets</code>.
 	 * 
 	 * @throws Exception
 	 *             - handled by JUnit
 	 */
-	public void testInjectRidget() throws Exception {
+	public void testInjectRidgets() throws Exception {
 
+		List<Object> uiControls = new ArrayList<Object>(2);
 		Label label1 = new Label(shell, SWT.NONE);
+		label1.setData(BINDING_PROPERTY, "label1"); //$NON-NLS-1$
+		uiControls.add(label1);
+		Label label2 = new Label(shell, SWT.NONE);
+		label2.setData(BINDING_PROPERTY, "label2"); //$NON-NLS-1$
+		uiControls.add(label2);
 
-		IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
-
-		ReflectionUtils.invokeHidden(manager, "injectRidget", ridgetContainer, "label1", ridget);
+		manager.injectRidgets(ridgetContainer, uiControls);
 
 		// injected, but not binded
-		assertNotNull(ridgetContainer.getLabel1());
-		assertNull(ridgetContainer.getLabel1().getUIControl());
+		assertNotNull(ridgetContainer.getRidget("label1"));
+		assertNull(ridgetContainer.getRidget("label1").getUIControl());
+		// injected, but not binded
+		assertNotNull(ridgetContainer.getRidget("label2"));
+		assertNull(ridgetContainer.getRidget("label2").getUIControl());
+
+		label1.dispose();
+		label2.dispose();
 
 	}
 
 	/**
-	 * Tests the method <code>getRidget</code>.
+	 * Tests the method <code>bind</code>.
 	 * 
 	 * @throws Exception
 	 *             - handled by JUnit
 	 */
-	public void testGetRidget() throws Exception {
+	public void testBind() throws Exception {
+
+		List<Object> uiControls = new ArrayList<Object>(2);
+		Label label1 = new Label(shell, SWT.NONE);
+		label1.setData(BINDING_PROPERTY, "label1"); //$NON-NLS-1$
+		uiControls.add(label1);
+
+		manager.injectRidgets(ridgetContainer, uiControls);
+		manager.bind(ridgetContainer, uiControls);
+
+		// injected and binded
+		assertNotNull(ridgetContainer.getRidget("label1"));
+		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl());
+
+		label1.dispose();
+
+	}
+
+	/**
+	 * Tests the method <code>unbind</code>.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testUnbind() throws Exception {
+
+		List<Object> uiControls = new ArrayList<Object>(2);
+		Label label1 = new Label(shell, SWT.NONE);
+		label1.setData(BINDING_PROPERTY, "label1"); //$NON-NLS-1$
+		uiControls.add(label1);
+
+		manager.injectRidgets(ridgetContainer, uiControls);
+		manager.bind(ridgetContainer, uiControls);
+
+		// binded
+		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl());
+
+		manager.unbind(ridgetContainer, uiControls);
+
+		// unbinded
+		assertNull(ridgetContainer.getRidget("label1").getUIControl());
+
+		label1.dispose();
+
+	}
+
+	/**
+	 * Tests the method {@code createRidget}.
+	 */
+	public void testCreateRidget() {
 
 		Label label1 = new Label(shell, SWT.NONE);
 
 		IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
-		ReflectionUtils.invokeHidden(manager, "injectRidget", ridgetContainer, "label1", ridget);
+		assertNotNull(ridget);
+		assertTrue(ridget instanceof LabelRidget);
 
-		IRidget ridget1 = ReflectionUtils.invokeHidden(manager, "getRidget", "label1", ridgetContainer);
-		assertSame(ridget, ridget1);
+		label1.dispose();
 
 	}
 
@@ -144,63 +201,6 @@ public class InjectBindingManagerTest extends TestCase {
 		 */
 		public Class<? extends IRidget> getRidgetClass(Widget control) {
 			return LabelRidget.class;
-		}
-
-	}
-
-	public static class RidgetContainer implements IRidgetContainer {
-
-		private ILabelRidget label1;
-		private ILabelRidget label2;
-		private Map<String, IRidget> ridgets;
-
-		public RidgetContainer() {
-			ridgets = new HashMap<String, IRidget>();
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#addRidget(java.lang.String,
-		 *      org.eclipse.riena.ui.ridgets.IRidget)
-		 */
-		public void addRidget(String id, IRidget ridget) {
-			ridgets.put(id, ridget);
-
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidget(java.lang.String)
-		 */
-		public IRidget getRidget(String id) {
-			return ridgets.get(id);
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidgets()
-		 */
-		public Collection<? extends IRidget> getRidgets() {
-			return ridgets.values();
-		}
-
-		public ILabelRidget getLabel1() {
-			return label1;
-		}
-
-		public void setLabel1(ILabelRidget label1) {
-			this.label1 = label1;
-		}
-
-		public ILabelRidget getLabel2() {
-			return label2;
-		}
-
-		public void setLabel2(ILabelRidget label2) {
-			this.label2 = label2;
-		}
-
-		/**
-		 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-		 */
-		public void configureRidgets() {
 		}
 
 	}

@@ -17,6 +17,7 @@ import junit.framework.TestSuite;
 import org.eclipse.riena.ui.ridgets.databinding.GregorianCalendarToStringConverterTest;
 import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategyTest;
 import org.eclipse.riena.ui.ridgets.databinding.StringToGregorianCalendarConverterTest;
+import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManagerTest;
 import org.eclipse.riena.ui.ridgets.uibinding.InjectBindingManagerTest;
 import org.eclipse.riena.ui.ridgets.validation.tests.MaxLengthTest;
 import org.eclipse.riena.ui.ridgets.validation.tests.MaxNumberLengthTest;
@@ -44,6 +45,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(StringToGregorianCalendarConverterTest.class);
 		suite.addTestSuite(RidgetUpdateValueStrategyTest.class);
 		suite.addTestSuite(InjectBindingManagerTest.class);
+		suite.addTestSuite(DefaultBindingManagerTest.class);
 		suite.addTestSuite(MaxLengthTest.class);
 		suite.addTestSuite(MaxNumberLengthTest.class);
 		suite.addTestSuite(MinLengthTest.class);

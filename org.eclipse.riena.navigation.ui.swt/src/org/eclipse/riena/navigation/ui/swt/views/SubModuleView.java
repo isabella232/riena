@@ -162,12 +162,14 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			if (currentController != null) {
 				binding.unbind(currentController);
 			}
-			if (node2Controler.get(getCurrentNode()) == null && getCurrentNode() != null) {
+			if ((getCurrentNode() != null) && (node2Controler.get(getCurrentNode()) == null)) {
 				createViewFacade();
 			}
-			binding.bind(getController());
-			currentController = getController();
-			getController().afterBind();
+			if (getController() != null) {
+				currentController = getController();
+			}
+			binding.bind(currentController);
+			currentController.afterBind();
 		}
 	}
 
