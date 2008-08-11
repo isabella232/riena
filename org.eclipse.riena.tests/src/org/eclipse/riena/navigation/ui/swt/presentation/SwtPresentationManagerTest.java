@@ -42,7 +42,7 @@ public class SwtPresentationManagerTest extends RienaTestCase {
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
 		assertEquals("shared", swtViewId1.getSecondary());
 
-		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node1);
+		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
 		assertEquals("shared", swtViewId2.getSecondary());
 
