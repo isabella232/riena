@@ -23,8 +23,8 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 /**
  * This class manages the binding between UI-control and ridget. In contrast to
  * the {@link InjectBindingManager} which calls a setter method for each ridget
- * immediately after ridgit creation and addition to the
- * {@link IRidgetContainer} managed ridgit collection this
+ * immediately after ridget creation and addition to the
+ * {@link IRidgetContainer} managed ridget collection this
  * {@link IBindingManager} implementation only calls the method
  * {@link IInjectAllRidgets#configureRidgets()} once. Therefore the
  * {@link IRidgetContainer} is required to interface {@link IInjectAllRidgets}
