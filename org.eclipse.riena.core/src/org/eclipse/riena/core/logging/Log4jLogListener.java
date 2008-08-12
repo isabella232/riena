@@ -12,11 +12,11 @@ package org.eclipse.riena.core.logging;
 
 import org.apache.log4j.Logger;
 import org.eclipse.equinox.log.ExtendedLogEntry;
+import org.eclipse.equinox.log.SynchronousLogListener;
 import org.osgi.service.log.LogEntry;
-import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
 
-public class Log4jLogListener implements LogListener {
+public class Log4jLogListener implements SynchronousLogListener {
 
 	public void logged(LogEntry entry) {
 		ExtendedLogEntry extendedEntry = (ExtendedLogEntry) entry;

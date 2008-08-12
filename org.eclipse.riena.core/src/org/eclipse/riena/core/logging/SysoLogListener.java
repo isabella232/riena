@@ -13,11 +13,11 @@ package org.eclipse.riena.core.logging;
 import java.util.Date;
 
 import org.eclipse.equinox.log.ExtendedLogEntry;
+import org.eclipse.equinox.log.SynchronousLogListener;
 import org.osgi.service.log.LogEntry;
-import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
 
-public class SysoLogListener implements LogListener {
+public class SysoLogListener implements SynchronousLogListener {
 
 	public void logged(LogEntry entry) {
 		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
