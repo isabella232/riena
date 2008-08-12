@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.xml.DOMConfigurator;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
@@ -30,13 +27,12 @@ import org.osgi.service.log.LogListener;
  */
 public class LogUtil {
 
+	private BundleContext context;
+	private List<LogListener> logListeners = new ArrayList<LogListener>();
+
 	private static ExtendedLogService logService;
 	private static ExtendedLogReaderService logReaderService;
-	private List<LogListener> logListeners = new ArrayList<LogListener>();
 	private static boolean initialized = false;
-	private BundleContext context;
-	private static final String DEFAULT_CONFIGURATION = "/log4j.default.xml"; //$NON-NLS-1$
-	private String config = null;
 
 	public LogUtil(BundleContext context) {
 		this.context = context;
@@ -52,7 +48,7 @@ public class LogUtil {
 	 * @return
 	 */
 	public Logger getLogger(String name) {
-		return getLogger(DEFAULT_CONFIGURATION, name);
+		return getLogger(null, name);
 	}
 
 	/**
@@ -61,17 +57,15 @@ public class LogUtil {
 	 * <b>Note:</b> Use the log levels defined in
 	 * {@link org.osgi.service.log.LogService}
 	 * 
-	 * @param config
+	 * @param configuration
 	 *            name of the config file, specified relative ( example:
 	 *            "/log4j_example.xml")
 	 * @param name
 	 *            logger name
 	 * @return
 	 */
-	public Logger getLogger(String config, String name) {
-		Assert.isNotNull(config, "config must not be null"); //$NON-NLS-1$
-		this.config = config;
-		init();
+	public Logger getLogger(String configuration, String name) {
+		init(configuration);
 		return logService == null ? new ConsoleLogger(name) : logService.getLogger(name);
 	}
 
@@ -119,7 +113,7 @@ public class LogUtil {
 	/**
 	 * initialize LogUtil
 	 */
-	private void init() {
+	private void init(String configuration) {
 		synchronized (LogUtil.class) {
 			if (!initialized) {
 
@@ -128,33 +122,11 @@ public class LogUtil {
 
 				// define log destinations
 				logListeners.add(new SysoLogListener());
-				logListeners.add(new Log4jLogListener());
+				logListeners.add(new Log4jLogListener(context, configuration));
 
 				Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
 				Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
 				initialized = true;
-			}
-
-			// fetch the URL of given log4j configuration file via context
-			// the context is the context of the bundle from which the log was
-			// initiated
-			URL url = context.getBundle().getResource(config);
-
-			if (url != null) {
-				// workaround to fix class loader problems with log4j
-				// implementation. see "eclipse rich client platform, eclipse
-				// series, page 340.
-				Thread thread = Thread.currentThread();
-				ClassLoader loader = thread.getContextClassLoader();
-				thread.setContextClassLoader(this.getClass().getClassLoader());
-				try {
-					// configure the log4j with given config
-					DOMConfigurator.configure(url);
-				} finally {
-					thread.setContextClassLoader(loader);
-				}
-			} else {
-				// TODO: handle this ...
 			}
 		}
 	}
