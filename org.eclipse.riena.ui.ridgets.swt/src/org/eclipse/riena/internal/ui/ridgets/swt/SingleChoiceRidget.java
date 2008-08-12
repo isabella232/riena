@@ -123,12 +123,8 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new WritableList(options, Object.class);
-		IObservableValue value = null;
-		if (selectionBean != null) {
-			Assert.isNotNull(selectionPropertyName);
-			value = BeansObservables.observeValue(selectionBean, selectionPropertyName);
-		}
-		bindToModel(list, optionLabels, value);
+		IObservableValue selection = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		bindToModel(list, optionLabels, selection);
 	}
 
 	public Object getSelection() {
