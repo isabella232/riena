@@ -96,7 +96,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsDisableMandatoryMarker() {
-		IMarkableRidget ridget = (ITextFieldRidget) getRidget();
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
 		ridget.setMandatory(true);
 
 		assertFalse(ridget.isDisableMandatoryMarker());
