@@ -30,6 +30,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(StatuslineMessageTest.class);
 		suite.addTestSuite(StatuslineNumberTest.class);
 		suite.addTestSuite(SwtUtilitiesTest.class);
+		suite.addTestSuite(EmbeddedTitleBarTest.class);
 		return suite;
 	}
 

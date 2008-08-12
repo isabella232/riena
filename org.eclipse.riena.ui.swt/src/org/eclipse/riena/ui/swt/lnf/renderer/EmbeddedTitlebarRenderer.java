@@ -111,6 +111,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		if (getBounds() == null) {
+			return;
+		}
+
 		gc.setAdvanced(true);
 		gc.setAntialias(SWT.OFF);
 

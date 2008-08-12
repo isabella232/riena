@@ -116,6 +116,14 @@ public class EmbeddedTitleBar extends Canvas {
 	}
 
 	/**
+	 * @see org.eclipse.swt.widgets.Control#isFocusControl()
+	 */
+	@Override
+	public boolean isFocusControl() {
+		return false;
+	}
+
+	/**
 	 * @return the active
 	 */
 	public boolean isActive() {

@@ -67,6 +67,15 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
+	 * Returns the title of the title bar.
+	 * 
+	 * @return text of title
+	 */
+	public String getTitle() {
+		return text;
+	}
+
+	/**
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setIcon(java.lang.String)
 	 */
 	public void setIcon(String icon) {
@@ -75,6 +84,15 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		if (hasChanged(oldIcon, icon)) {
 			updateIconInControl();
 		}
+	}
+
+	/**
+	 * Returns the icon of the title bar.
+	 * 
+	 * @return icon
+	 */
+	public String getIcon() {
+		return icon;
 	}
 
 	/**
