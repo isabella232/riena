@@ -8,23 +8,26 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core;
+package org.eclipse.riena.core;
 
-import org.eclipse.riena.core.RienaStartupStatus;
+import org.eclipse.riena.internal.core.Activator;
 
 /**
- * 
+ * Utility to check the Riena status.
  */
-public class RienaStartupStatusSetter extends RienaStartupStatus {
+public class RienaStatus {
 
-	private boolean started;
-
-	public boolean isStarted() {
-		return started;
+	private RienaStatus() {
+		// Utility
 	}
 
-	void setStarted(boolean started) {
-		this.started = started;
+	/**
+	 * Riena already active?
+	 * 
+	 * @return
+	 */
+	public static boolean isActive() {
+		return Activator.getDefault().isActive();
 	}
 
 }

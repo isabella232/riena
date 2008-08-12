@@ -15,7 +15,6 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.core.RienaStartupStatus;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -25,12 +24,16 @@ import org.osgi.service.log.LogService;
 public class Activator extends RienaPlugin {
 
 	/**
-	 * 
+	 * Bundles marked with this header set to <code>true</code> will be started
+	 * by Riena.
 	 */
 	public static final String RIENA_FORCE_START = "Riena-ForceStart"; //$NON-NLS-1$
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.core"; //$NON-NLS-1$
+
+	// ´startup´ status of Riena
+	private boolean active = false;
 
 	// The shared instance
 	private static Activator plugin;
@@ -50,7 +53,7 @@ public class Activator extends RienaPlugin {
 		logStage(LOGGER);
 		startForcedRienaBundles(LOGGER);
 
-		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(true);
+		active = true;
 	}
 
 	/**
@@ -87,9 +90,7 @@ public class Activator extends RienaPlugin {
 			if (!forceStart)
 				continue;
 
-			if (bundle.getState() == Bundle.RESOLVED
-					|| (bundle.getState() == Bundle.STARTING && Constants.ACTIVATION_LAZY.equals(bundle.getHeaders()
-							.get(Constants.BUNDLE_ACTIVATIONPOLICY)))) {
+			if (bundle.getState() == Bundle.RESOLVED) {
 				try {
 					bundle.start();
 					LOGGER.log(LogService.LOG_INFO, "Forced start: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -98,6 +99,19 @@ public class Activator extends RienaPlugin {
 							+ "' failed with exception.", rte); //$NON-NLS-1$
 					throw rte;
 				}
+			} else if (bundle.getState() == Bundle.STARTING
+					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))
+					&& bundle.getBundleContext() == null) {
+				try {
+					bundle.start();
+					LOGGER.log(LogService.LOG_INFO,
+							"Forced <<lazy>> start(): '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
+				} catch (RuntimeException rte) {
+					LOGGER.log(LogService.LOG_ERROR, "Forced <<lazy>> start(): '" + bundle.getSymbolicName() //$NON-NLS-1$
+							+ "' failed with exception.", rte); //$NON-NLS-1$
+					throw rte;
+				}
+
 			} else if (bundle.getState() == Bundle.INSTALLED) {
 				LOGGER.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() + "' failed. Header '" //$NON-NLS-1$ //$NON-NLS-2$
 						+ RIENA_FORCE_START + "' is set but is only in state INSTALLED (not RESOLVED)."); //$NON-NLS-1$
@@ -112,7 +126,7 @@ public class Activator extends RienaPlugin {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		((RienaStartupStatusSetter) RienaStartupStatus.getInstance()).setStarted(false);
+		active = false;
 		Activator.plugin = null;
 		super.stop(context);
 	}
@@ -124,5 +138,14 @@ public class Activator extends RienaPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	/**
+	 * Riena status?
+	 * 
+	 * @return
+	 */
+	public boolean isActive() {
+		return active;
 	}
 }

@@ -8,25 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core;
+package org.eclipse.riena.core.monitor;
 
-import org.eclipse.riena.internal.core.RienaStartupStatusSetter;
-
-public abstract class RienaStartupStatus {
-
-	private static RienaStartupStatus myself = new RienaStartupStatusSetter();
-
-	/**
-	 * Get the riena startup status.<br>
-	 * <code>true</code> indicates that the
-	 * <code>org.eclipse.riena.core</code> plugin has been started.
-	 * 
-	 * @return startup status
-	 */
-	public static RienaStartupStatus getInstance() {
-		return myself;
-	}
-
-	public abstract boolean isStarted();
+/**
+ *
+ */
+public class MonitorEvent {
 
 }
