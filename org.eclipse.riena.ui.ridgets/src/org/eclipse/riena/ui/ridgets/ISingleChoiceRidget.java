@@ -30,12 +30,12 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	IObservableValue getSelectionObservable();
 
 	/**
-	 * @param listObservableValue
+	 * @param optionValues
 	 *            An observable list with a list of options.
-	 * @param selectionObservableValue
+	 * @param selectionValue
 	 *            An observable value holding the selection.
 	 */
-	void bindToModel(IObservableList listObservableValue, IObservableValue selectionObservableValue);
+	void bindToModel(IObservableList optionValues, IObservableValue selectionValue);
 
 	/**
 	 * @param listBean
