@@ -14,18 +14,17 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
-import org.eclipse.riena.core.RienaStartupStatus;
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -234,7 +233,7 @@ public class RemoteServiceFactory {
 	 * @return the serviceInstance references or <code>null</code>
 	 */
 	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
-		if (!RienaStartupStatus.getInstance().isStarted()) {
+		if (!RienaStatus.isActive()) {
 			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This will probably not work."); //$NON-NLS-1$
 		}
 
