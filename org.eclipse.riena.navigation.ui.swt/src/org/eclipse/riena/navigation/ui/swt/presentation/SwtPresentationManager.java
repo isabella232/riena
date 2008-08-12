@@ -61,7 +61,7 @@ public class SwtPresentationManager {
 					activated.put(subModuleNode, subModuleNode.isActivated());
 					subModuleNode.addListener(subModuleNodeObserver);
 					if (views.get(pNode) == null) {
-						viewCounter.put(viewId, new Integer(0));
+						viewCounter.put(viewId, 0);
 					}
 					SwtViewId id = null;
 					if (viewCounter.get(viewId) == 0) {
