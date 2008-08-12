@@ -17,10 +17,10 @@ import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogService;
 
 /**
- * The <code>PlatformLogBridge</code> can attach to the <code>Platform</code>
+ * The <code>PlatformLogListener</code> can attach to the <code>Platform</code>
  * log and route platform log events into Riena's logging.
  */
-public class PlatformLogBridge implements ILogListener {
+public class PlatformLogListener implements ILogListener {
 
 	/**
 	 * Attach to the <code>Platform</code> log.

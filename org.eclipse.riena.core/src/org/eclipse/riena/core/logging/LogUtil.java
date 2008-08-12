@@ -124,7 +124,7 @@ public class LogUtil {
 			if (!initialized) {
 
 				// Experimental: capture platform logs
-				new PlatformLogBridge().attach();
+				new PlatformLogListener().attach();
 
 				// define log destinations
 				logListeners.add(new SysoLogListener());
