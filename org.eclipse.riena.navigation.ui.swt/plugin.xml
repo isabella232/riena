@@ -55,11 +55,11 @@
             lnfkey="SubModuleView.renderer">
       </renderer>
       <renderer
-            class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.HoverBorderRenderer"
+            class="org.eclipse.riena.ui.swt.lnf.renderer.HoverBorderRenderer"
             lnfkey="SubModuleView.hoverBorderRenderer">
       </renderer>
       <renderer
-            class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer"
+            class="org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer"
             lnfkey="SubModuleView.titlebarRenderer">
       </renderer>
       <renderer

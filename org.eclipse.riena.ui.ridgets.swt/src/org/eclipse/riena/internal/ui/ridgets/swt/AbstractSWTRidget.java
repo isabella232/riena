@@ -211,7 +211,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		return image;
 	}
 
-	protected synchronized Image getMissingImage() {
+	public synchronized Image getMissingImage() {
 		if (missingImage == null) {
 			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
 		}

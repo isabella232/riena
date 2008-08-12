@@ -25,6 +25,15 @@ import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtViewBindingDelegate
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
@@ -34,10 +43,16 @@ import org.eclipse.ui.part.ViewPart;
  */
 public abstract class SubModuleView<C extends SubModuleController> extends ViewPart {
 
+	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
+
 	private Map<ISubModuleNode, C> node2Controler;
 	private AbstractViewBindingDelegate binding;
 	private C currentController;
+	private EmbeddedTitleBar title;
 
+	/**
+	 * Creates a new instance of {@code SubModuleView}.
+	 */
 	public SubModuleView() {
 		binding = createBinding();
 		node2Controler = new HashMap<ISubModuleNode, C>();
@@ -99,7 +114,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	public void setController(C controller) {
 		if (node2Controler.get(getCurrentNode()) == null) {
 			node2Controler.put(getCurrentNode(), controller);
-
 		}
 	}
 
@@ -115,10 +129,53 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		observeRoot();
 		setController(createController(getCurrentNode()));
 		setPartName(getController().getNavigationNode().getLabel());
-		basicCreatePartControl(parent);
+		Composite contentComposite = createContentComposite(parent);
+		basicCreatePartControl(contentComposite);
 		createViewFacade();
 		activate();
-		observeRoot();
+	}
+
+	/**
+	 * Creates the composite for the content of the view. Its a container that
+	 * holds the UI controls of the view.<br>
+	 * Above this container the title bar of the view is located.
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	private Composite createContentComposite(Composite parent) {
+
+		Color bgColor = LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND);
+		parent.setBackground(bgColor);
+
+		parent.setLayout(new FormLayout());
+
+		title = new EmbeddedTitleBar(parent, SWT.NONE);
+		addUIControl(title, WINDOW_RIDGET);
+		title.setActive(true);
+		FormData formData = new FormData();
+		// don't show the top border of the title => -1
+		formData.top = new FormAttachment(0, -1);
+		// don't show the left border of the title => -1
+		formData.left = new FormAttachment(0, -1);
+		// don't show the top border of the title, but show the bottom
+		// border => -1
+		formData.bottom = new FormAttachment(0, title.getSize().y - 1);
+		// don't show the right (and left) border of the title => 2
+		formData.right = new FormAttachment(100, 2);
+		title.setLayoutData(formData);
+
+		Composite contentComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		contentComposite.setBackground(bgColor);
+		formData = new FormData();
+		formData.top = new FormAttachment(title, 0, 0);
+		formData.left = new FormAttachment(0, 0);
+		formData.bottom = new FormAttachment(100);
+		formData.right = new FormAttachment(100);
+		contentComposite.setLayoutData(formData);
+
+		return contentComposite;
+
 	}
 
 	private void observeRoot() {
@@ -170,6 +227,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			}
 			binding.bind(currentController);
 			currentController.afterBind();
+			title.setActive(currentController.isActivated());
 		}
 	}
 
@@ -178,6 +236,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			setController(createController(getCurrentNode()));
 		}
 		binding.injectRidgets(getController());
+		if (getController().getWindowRidget() == null) {
+			getController().setWindowRidget((IWindowRidget) getController().getRidget(WINDOW_RIDGET));
+		}
 	}
 
 	protected IPresentationProviderService getPresentationDefinitionService() {

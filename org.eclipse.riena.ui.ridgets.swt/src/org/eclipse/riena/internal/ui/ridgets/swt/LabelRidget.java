@@ -87,7 +87,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	}
 
 	public void setText(String text) {
-		String oldValue = text;
+		String oldValue = this.text;
 		this.text = text;
 		updateTextInControl();
 		firePropertyChange(ILabelRidget.PROPERTY_TEXT, oldValue, this.text);

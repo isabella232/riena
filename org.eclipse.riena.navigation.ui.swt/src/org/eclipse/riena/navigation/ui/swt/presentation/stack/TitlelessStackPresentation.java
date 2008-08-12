@@ -17,13 +17,11 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.Statusline;
@@ -39,7 +37,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.presentations.PresentablePart;
 import org.eclipse.ui.presentations.IPresentablePart;
 import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackDropResult;
@@ -142,12 +139,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 			SubApplicationController controller = getSubApplicationViewController();
 			if (controller != null) {
 				binding.injectAndBind(controller);
-				// DefaultBindingManager defaultBindingManager =
-				// createBindingManager();
-				// List<Object> uiControls = new ArrayList<Object>(1);
-				// uiControls.add(getStatuslineWidget(statusLine.getControl()));
-				// defaultBindingManager.injectRidgets(controller, uiControls);
-				// defaultBindingManager.bind(controller, uiControls);
 			}
 
 		}
@@ -179,10 +170,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 		} else if (isStatusLine(toSelect)) {
 			Rectangle line = calcStatusLineBounds();
 			toSelect.setBounds(line);
-			// TODO - is this the correct place ???
-			initializeStatusLine();
 		} else if (toSelect != null) {
-			Rectangle inner = calcSubModuleInnerBounds(toSelect);
+			Rectangle inner = calcSubModuleInnerBounds();
 			toSelect.setBounds(inner);
 			if (current != null) {
 				current.setVisible(false);
@@ -207,7 +196,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 			statusLine.setBounds(line);
 		}
 		if (current != null) {
-			Rectangle inner = calcSubModuleInnerBounds(current);
+			Rectangle inner = calcSubModuleInnerBounds();
 			current.setBounds(inner);
 		}
 		parent.setVisible(true);
@@ -306,18 +295,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * 
 	 * @return inner bounds sub-module view
 	 */
-	private Rectangle calcSubModuleInnerBounds(IPresentablePart part) {
-
-		GC gc = new GC(part.getControl());
-		try {
-			return getSubModuleViewRenderer().computeInnerBounds(gc, calcSubModuleOuterBounds());
-		} finally {
-			gc.dispose();
-		}
+	private Rectangle calcSubModuleInnerBounds() {
+		return getSubModuleViewRenderer().computeInnerBounds(calcSubModuleOuterBounds());
 	}
 
 	/**
-	 * Calculates the (outer) bounds of the sub-module view.
+	 * Calculates the bounds of the sub-module view.
 	 * 
 	 * @return outer bounds sub-module view
 	 */
@@ -389,20 +372,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 			public void paintControl(PaintEvent e) {
 
 				if (current != null) {
+					// TODO: move to subModuleView !?!
 					SubModuleViewRenderer renderer = getRenderer();
 					if (renderer != null) {
-						renderer.setBounds(calcSubModuleOuterBounds());
-						// SwtViewId viewId = parts.get(current);
-						current.getControl().setBackground(
-								LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
-
-						PresentablePart part = (PresentablePart) current;
-						String fullId = part.getPane().getCompoundId();
-						SwtViewId viewId = new SwtViewId(fullId);
-
-						SubModuleNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(
-								viewId.getId(), viewId.getSecondary(), SubModuleNode.class);
-						renderer.paint(e.gc, node);
+						Rectangle bounds = calcSubModuleOuterBounds();
+						renderer.setBounds(bounds);
+						renderer.paint(e.gc, null);
 					}
 				}
 			}
@@ -419,8 +394,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 	/**
 	 * Returns the renderer of the sub-module view.<br>
-	 * Renderer renders the border and the title of the sub-module view and not
-	 * the content of the view.
+	 * Renderer renders the border of the sub-module view and not the content of
+	 * the view.
 	 * 
 	 * @return renderer of sub-module view
 	 */
@@ -463,18 +438,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 			}
 		}
 		throw new IllegalStateException("could not find Status line widget"); //$NON-NLS-1$
-	}
-
-	private void initializeStatusLine() {
-		// SubApplicationController controller =
-		// getSubApplicationViewController();
-		// if (controller != null) {
-		// DefaultBindingManager defaultBindingManager = createBindingManager();
-		// List<Object> uiControls = new ArrayList<Object>(1);
-		// uiControls.add(getStatuslineWidget(statusLine.getControl()));
-		// defaultBindingManager.injectRidgets(controller, uiControls);
-		// defaultBindingManager.bind(controller, uiControls);
-		// }
 	}
 
 	/**

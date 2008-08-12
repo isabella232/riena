@@ -10,14 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
@@ -40,46 +36,10 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
-		assert value instanceof ISubModuleNode;
-
-		ISubModuleNode node = (ISubModuleNode) value;
-
-		// title bar
-		getTitlebarRenderer().setActive(node.isActivated());
-		getTitlebarRenderer().setCloseable(false);
-		getTitlebarRenderer().setPressed(false);
-		getTitlebarRenderer().setHover(false);
-		getTitlebarRenderer().setIcon(node.getIcon());
-		Point titlebarSize = getTitlebarRenderer().computeSize(gc, getBounds().width - 2, 0);
-		Rectangle titlebarBounds = new Rectangle(getBounds().x + 1, getBounds().y + 1, titlebarSize.x, titlebarSize.y);
-		getTitlebarRenderer().setBounds(titlebarBounds);
-		getTitlebarRenderer().paint(gc, getTitle(node));
-
 		// border
-		getBorderRenderer().setActive(node.isActivated());
+		getBorderRenderer().setActive(true);
 		getBorderRenderer().setBounds(getBounds());
 		getBorderRenderer().paint(gc, null);
-
-	}
-
-	/**
-	 * Returns the text of the title bar.
-	 * 
-	 * @param node
-	 *            - node of active sub module
-	 * @return title
-	 */
-	private String getTitle(ISubModuleNode node) {
-
-		StringBuilder titleBuilder = new StringBuilder(node.getLabel());
-		INavigationNode<?> parent = node.getParent();
-		while ((parent != null) && !(parent instanceof ModuleGroupNode)) {
-			titleBuilder = titleBuilder.insert(0, " - "); //$NON-NLS-1$
-			titleBuilder = titleBuilder.insert(0, parent.getLabel());
-			parent = parent.getParent();
-		}
-
-		return titleBuilder.toString();
 
 	}
 
@@ -88,34 +48,36 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 */
 	public void dispose() {
 		getBorderRenderer().dispose();
-		getTitlebarRenderer().dispose();
-	}
-
-	public EmbeddedTitlebarRenderer getTitlebarRenderer() {
-		return getLnfTitlebarRenderer();
-	}
-
-	public EmbeddedBorderRenderer getBorderRenderer() {
-		return getLnfBorderRenderer();
 	}
 
 	/**
 	 * Computes the size of the space inside the outer bounds.
 	 * 
-	 * @param gc
-	 *            - <code>GC</code>
 	 * @param outerBounds
 	 *            - outer bounds
 	 * @return inner bounds
 	 */
-	public Rectangle computeInnerBounds(GC gc, Rectangle outerBounds) {
+	public Rectangle computeInnerBounds(Rectangle outerBounds) {
 
-		Rectangle borderInnerBounds = getBorderRenderer().computeInnerBounds(outerBounds);
-		Point titlebarSize = getTitlebarRenderer().computeSize(gc, outerBounds.width - 2, 0);
+		return getBorderRenderer().computeInnerBounds(outerBounds);
 
-		return new Rectangle(borderInnerBounds.x, borderInnerBounds.y + titlebarSize.y, borderInnerBounds.width,
-				borderInnerBounds.height - titlebarSize.y);
+	}
 
+	/**
+	 * Computes the size of the space outside the inner bounds.
+	 * 
+	 * @param innerBounds
+	 *            - inner bounds
+	 * @return outer bounds
+	 */
+	public Rectangle computeOuterBounds(Rectangle innerBounds) {
+
+		return getBorderRenderer().computeOuterBounds(innerBounds);
+
+	}
+
+	public EmbeddedBorderRenderer getBorderRenderer() {
+		return getLnfBorderRenderer();
 	}
 
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
@@ -124,17 +86,6 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedBorderRenderer();
-		}
-		return renderer;
-
-	}
-
-	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
-
-		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
-		if (renderer == null) {
-			renderer = new EmbeddedTitlebarRenderer();
 		}
 		return renderer;
 

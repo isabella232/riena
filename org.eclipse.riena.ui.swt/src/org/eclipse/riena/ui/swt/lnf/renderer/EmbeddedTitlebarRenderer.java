@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
+package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
@@ -223,10 +223,18 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * TODO remove: use only set Image
+	 */
+	@Deprecated
 	public String getIcon() {
 		return icon;
 	}
 
+	/**
+	 * TODO remove: use only set Image
+	 */
+	@Deprecated
 	public void setIcon(String icon) {
 		this.icon = icon;
 		setImage(ImageUtil.getImage(icon));
@@ -256,11 +264,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		this.hover = hover;
 	}
 
-	private Image getImage() {
+	public Image getImage() {
 		return image;
 	}
 
-	private void setImage(Image image) {
+	public void setImage(Image image) {
 		this.image = image;
 	}
 

@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.riena.ui.swt,
  org.eclipse.riena.ui.swt.lnf,
+ org.eclipse.riena.ui.swt.lnf.renderer,
  org.eclipse.riena.ui.swt.lnf.rienadefault,
  org.eclipse.riena.ui.swt.uiprocess,
  org.eclipse.riena.ui.swt.utils
