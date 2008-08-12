@@ -28,12 +28,12 @@ public interface IMultipleChoiceRidget extends IChoiceRidget {
 	IObservableList getObservableSelectionList();
 
 	/**
-	 * @param listObservableValue
+	 * @param optionValues
 	 *            An observable list with a list of options.
-	 * @param selectionObservableValue
+	 * @param selectionValues
 	 *            An observable value holding the list of selected options.
 	 */
-	void bindToModel(IObservableList listObservableValue, IObservableList selectionObservableValue);
+	void bindToModel(IObservableList optionValues, IObservableList selectionValues);
 
 	/**
 	 * @param listBean

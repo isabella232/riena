@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
@@ -67,6 +68,14 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	// testing methods
 	// ////////////////
+
+	/**
+	 * Test that the control is mapped to the expected ridget.
+	 */
+	public void testRidgetMapping() {
+		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		assertSame(SingleChoiceRidget.class, mapper.getRidgetClass(getUIControl()));
+	}
 
 	/**
 	 * Test method getObservableList().
@@ -138,6 +147,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals(ridget.getSelection(), optionProvider.getOptions().get(0));
 	}
 
+	/**
+	 * Test that ridget.setSelection() affects the model and the widget.
+	 */
 	public void testUpdateSelectionFromRidget() {
 		ISingleChoiceRidget ridget = getRidget();
 		ChoiceComposite control = getUIControl();
@@ -159,6 +171,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertSame(optionProvider.getSelectedOption(), selected2.getData());
 	}
 
+	/**
+	 * Test that control.setSelection() affects the ridget and the widget.
+	 */
 	public void testUpdateSelectionFromControl() {
 		ISingleChoiceRidget ridget = getRidget();
 		ChoiceComposite control = getUIControl();
@@ -179,6 +194,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals(optionProvider.getOptions().get(1), ridget.getSelection());
 	}
 
+	/**
+	 * Tests that colors from the ChoiceComposite are applied to children.
+	 */
 	public void testColorsAreAppliedToChildren() {
 		Shell shell = getShell();
 		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
@@ -266,6 +284,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	/**
 	 * Tests that the isDisabledMandatoryMarker true when we have a selection.
 	 */
+	@Override
 	public void testIsDisableMandatoryMarker() {
 		ISingleChoiceRidget ridget = getRidget();
 
@@ -283,7 +302,10 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertFalse(ridget.isDisableMandatoryMarker());
 	}
 
-	public void testBindToModelWithObersables() {
+	/**
+	 * Test validation of the bindToModel(...) method.
+	 */
+	public void testBindToModelWithObservables() {
 		ISingleChoiceRidget ridget = getRidget();
 
 		try {
@@ -300,6 +322,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
+	/**
+	 * Test validation of the bindToModel(...) method.
+	 */
 	public void testBindToModelWithBeans() {
 		ISingleChoiceRidget ridget = getRidget();
 
@@ -329,6 +354,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
+	/**
+	 * Test validation of the bindToModel(...) method.
+	 */
 	public void testBindToModelWithOptionLabelList() {
 		ISingleChoiceRidget ridget = getRidget();
 
