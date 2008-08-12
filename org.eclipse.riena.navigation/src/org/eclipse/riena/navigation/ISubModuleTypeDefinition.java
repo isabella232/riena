@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.extension.MapContributor;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.osgi.framework.Bundle;
 
 /**
  * A WorkAreaPresentationDefinition defines the work area to be activated.
@@ -36,14 +38,11 @@ public interface ISubModuleTypeDefinition extends ITypeDefinition {
 	boolean isShared();
 
 	/**
-	 * Return an instance of a view
-	 * 
-	 */
-	Object createView();
-
-	/**
 	 * Return an view name
 	 */
 	String getView();
+
+	@MapContributor
+	Bundle getContributingBundle();
 
 }
