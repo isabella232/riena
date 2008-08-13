@@ -74,7 +74,7 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 		Label lblExtras = UIControlsFactory.createLabel(group, "Extras"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblExtras);
 
-		Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, false);
+		Composite compositeCarExtras = new ChoiceComposite(group, SWT.NONE, true);
 		choiceLayoutFactory.applyTo(compositeCarExtras);
 		addUIControl(compositeCarExtras, "compositeCarExtras"); //$NON-NLS-1$
 
@@ -90,7 +90,7 @@ public class ChoiceSubModuleView extends SubModuleView<ChoiceSubModuleController
 
 		UIControlsFactory.createLabel(group, "License Plate(s)"); //$NON-NLS-1$
 
-		ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, false);
+		ChoiceComposite compositeCarPlates = new ChoiceComposite(group, SWT.NONE, true);
 		compositeCarPlates.setOrientation(SWT.HORIZONTAL);
 		choiceLayoutFactory.applyTo(compositeCarPlates);
 		addUIControl(compositeCarPlates, "compositeCarPlates"); //$NON-NLS-1$
