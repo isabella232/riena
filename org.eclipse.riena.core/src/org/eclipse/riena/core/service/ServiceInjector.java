@@ -78,6 +78,9 @@ public abstract class ServiceInjector {
 
 	/**
 	 * Start the binding/un-binding/tracking for the target.
+	 * <p>
+	 * If there are matching and available services than they will be bound
+	 * before returning from this method.
 	 * 
 	 * @throws some_kind_of_unchecked_exception
 	 *             if injector has already been started.
@@ -106,10 +109,17 @@ public abstract class ServiceInjector {
 		return this;
 	}
 
+	/**
+	 * The <code>doStart</code> method is required to bind all matching the
+	 * services with the target.
+	 */
 	protected abstract void doStart();
 
 	/**
-	 * Stops tracking the specified service
+	 * Stops tracking the specified service.
+	 * <p>
+	 * All prior bound services will be unbound before returning from this
+	 * method.
 	 */
 	public void stop() {
 		if (!started)
@@ -121,6 +131,10 @@ public abstract class ServiceInjector {
 		started = false;
 	}
 
+	/**
+	 * The <code>doStop></code> method is required to unbind all bound services
+	 * from the target.
+	 */
 	protected abstract void doStop();
 
 	/**
