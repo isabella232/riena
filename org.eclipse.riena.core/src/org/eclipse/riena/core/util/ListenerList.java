@@ -49,11 +49,6 @@ import java.lang.reflect.Array;
  */
 public class ListenerList<L> {
 
-	/**
-	 * The empty array singleton instance.
-	 */
-	private Object emptyArray = null;
-
 	public enum Mode {
 
 		/**
@@ -82,7 +77,10 @@ public class ListenerList<L> {
 	 */
 	private volatile L[] listeners;
 
-	private final Class<?> listenerClass;
+	/**
+	 * The empty array singleton instance.
+	 */
+	private final Object emptyArray;
 
 	@SuppressWarnings("unused")
 	private ListenerList() {
@@ -108,17 +106,11 @@ public class ListenerList<L> {
 	 * @param listenerClass
 	 *            the listener class (used internally for creating arrays)
 	 */
+	@SuppressWarnings("unchecked")
 	public ListenerList(Mode mode, Class<?> listenerClass) {
 		this.identity = mode == Mode.IDENTITY;
-		this.listenerClass = listenerClass;
-		this.listeners = emptyArray();
-	}
-
-	@SuppressWarnings("unchecked")
-	private final L[] emptyArray() {
-		if (emptyArray == null)
-			emptyArray = (L[]) Array.newInstance(listenerClass, 0);
-		return (L[]) emptyArray;
+		this.emptyArray = Array.newInstance(listenerClass, 0);
+		this.listeners = (L[]) emptyArray;
 	}
 
 	/**
@@ -193,7 +185,7 @@ public class ListenerList<L> {
 			L each = listeners[i];
 			if (identity ? listener == each : listener.equals(each)) {
 				if (oldSize == 1) {
-					listeners = emptyArray();
+					listeners = (L[]) emptyArray;
 				} else {
 					// Thread safety: create new array to avoid affecting
 					// concurrent readers
@@ -220,8 +212,9 @@ public class ListenerList<L> {
 	/**
 	 * Removes all listeners from this list.
 	 */
+	@SuppressWarnings("unchecked")
 	public synchronized void clear() {
-		listeners = emptyArray();
+		listeners = (L[]) emptyArray;
 	}
 
 }
