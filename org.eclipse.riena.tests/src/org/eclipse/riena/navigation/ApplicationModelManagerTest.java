@@ -24,7 +24,7 @@ public class ApplicationModelManagerTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		ApplicationModelManager.clear();
-		model = new ApplicationModel();
+		model = new ApplicationModel(null);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ApplicationModelManagerTest extends TestCase {
 	}
 
 	public void testAddNamedModel() throws Exception {
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel("MyModel"));
+		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
 		IApplicationModel rModel = ApplicationModelManager.getApplicationModel("MyModel");
 		assertNotNull(rModel);
 	}
@@ -54,8 +54,8 @@ public class ApplicationModelManagerTest extends TestCase {
 		assertTrue("duplicate default model registration didn't fire a ApplicationModelFailure", exOk);
 		exOk = false;
 		try {
-			ApplicationModelManager.registerApplicationModel(new ApplicationModel("MyModel"));
-			ApplicationModelManager.registerApplicationModel(new ApplicationModel("MyModel"));
+			ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
+			ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
 		} catch (ApplicationModelFailure f) {
 			exOk = true;
 		}
@@ -64,14 +64,14 @@ public class ApplicationModelManagerTest extends TestCase {
 
 	public void testGetDefaultModel() throws Exception {
 		ApplicationModelManager.registerApplicationModel(model);
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel("MyModel"));
+		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
 		IApplicationModel rModel = ApplicationModelManager.getApplicationModel();
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
 
 	public void testGetDefaultModelWhenNamedAndSingle() throws Exception {
-		model = new ApplicationModel("MyModel");
+		model = new ApplicationModel(null, "MyModel");
 		ApplicationModelManager.registerApplicationModel(model);
 		IApplicationModel rModel = ApplicationModelManager.getApplicationModel();
 		assertNotNull(rModel);
@@ -79,10 +79,10 @@ public class ApplicationModelManagerTest extends TestCase {
 	}
 
 	public void testGetNamedModel() throws Exception {
-		model = new ApplicationModel("MyModel");
+		model = new ApplicationModel(null, "MyModel");
 		ApplicationModelManager.registerApplicationModel(model);
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel("MyModell"));
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel("MyModel2"));
+		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModell"));
+		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel2"));
 		IApplicationModel rModel = ApplicationModelManager.getApplicationModel("MyModel");
 		assertNotNull(rModel);
 		assertSame(model, rModel);

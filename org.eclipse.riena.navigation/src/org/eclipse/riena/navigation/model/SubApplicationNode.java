@@ -11,42 +11,38 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 
 /**
  * Default implementation for the sub application
  */
-public class SubApplicationNode extends NavigationNode<ISubApplicationNode, IModuleGroupNode, ISubApplicationNodeListener>
-		implements ISubApplicationNode {
+public class SubApplicationNode extends
+		NavigationNode<ISubApplicationNode, IModuleGroupNode, ISubApplicationNodeListener> implements
+		ISubApplicationNode {
 
 	/**
+	 * Creates a SubApplicationNode
 	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 */
-	public SubApplicationNode() {
-		super();
+	public SubApplicationNode(INavigationNodeId nodeId) {
+		super(nodeId);
 	}
 
 	/**
-	 * @param children
-	 */
-	public SubApplicationNode(IModuleGroupNode... children) {
-		super(children);
-	}
-
-	/**
+	 * Creates a SubApplicationNode.
+	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 * @param label
-	 * @param children
+	 *            Label of the sub application displayed on the sub applications
+	 *            tab.
 	 */
-	public SubApplicationNode(String label, IModuleGroupNode... children) {
-		super(label, children);
-	}
-
-	/**
-	 * @param label
-	 */
-	public SubApplicationNode(String label) {
-		super(label);
+	public SubApplicationNode(INavigationNodeId nodeId, String label) {
+		super(nodeId, label);
 	}
 
 	@Override

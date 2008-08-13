@@ -191,7 +191,7 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 		}
 		ISubModuleNode node = getNode();
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
-		SubModuleNode cNode = new SubModuleNode(selected.getFirstName());
+		SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
 		cNode.setContext(selected);
 		presentation.present(cNode, CustomerDetailsSubModuleView.ID);
 		node.addChild(cNode);

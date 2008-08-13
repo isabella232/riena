@@ -175,7 +175,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleGroupNode createModuleGroupNode() {
 
-		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode("Added child Module Group to SubApplication"); //$NON-NLS-1$
+		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(null, "Added child Module Group to SubApplication"); //$NON-NLS-1$
 		IModuleNode newModuleNode = createModuleNode();
 		newModuleGroupNode.addChild(newModuleNode);
 
@@ -189,7 +189,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleNode createModuleNode() {
 
-		IModuleNode newModuleNode = new ModuleNode("Added child Module to Module Group"); //$NON-NLS-1$
+		IModuleNode newModuleNode = new ModuleNode(null, "Added child Module to Module Group"); //$NON-NLS-1$
 		ISubModuleNode newSubModuleNode = createSubModuleNode("Added child SubModule to Module"); //$NON-NLS-1$
 		newModuleNode.addChild(newSubModuleNode);
 
@@ -205,8 +205,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private ISubModuleNode createSubModuleNode(String label) {
 
-		SubModuleNode newSubModuleNode = new SubModuleNode(label);
-		newSubModuleNode.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
+		ISubModuleNode newSubModuleNode = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.navigation"), label); //$NON-NLS-1$
 
 		return newSubModuleNode;
 

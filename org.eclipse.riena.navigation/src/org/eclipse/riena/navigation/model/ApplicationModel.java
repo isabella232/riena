@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.IApplicationModelListener;
 
@@ -22,35 +23,28 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 		implements IApplicationModel {
 
 	/**
+	 * Creates an ApplicationModel node which is the root of an application
+	 * model tree.
 	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 */
-	public ApplicationModel() {
-		super();
+	public ApplicationModel(INavigationNodeId nodeId) {
+		super(nodeId);
 		initializeNavigationProcessor();
 	}
 
 	/**
-	 * @param children
-	 */
-	public ApplicationModel(ISubApplicationNode... children) {
-		super(children);
-		initializeNavigationProcessor();
-	}
-
-	/**
+	 * Creates an ApplicationModel node which is the root of an application
+	 * model tree.
+	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 * @param label
-	 * @param children
+	 *            Label of the application displayed in the title bar.
 	 */
-	public ApplicationModel(String label, ISubApplicationNode... children) {
-		super(label, children);
-		initializeNavigationProcessor();
-	}
-
-	/**
-	 * @param label
-	 */
-	public ApplicationModel(String label) {
-		super(label);
+	public ApplicationModel(INavigationNodeId nodeId, String label) {
+		super(nodeId, label);
 		initializeNavigationProcessor();
 	}
 

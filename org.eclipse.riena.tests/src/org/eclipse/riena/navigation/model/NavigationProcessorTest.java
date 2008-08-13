@@ -34,23 +34,19 @@ public class NavigationProcessorTest extends RienaTestCase {
 		super.setUp();
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
 
-		applicationModel = new ApplicationModel();
-		applicationModel.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.application"));
+		applicationModel = new ApplicationModel(new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.application"));
 		navigationProcessor = new NavigationProcessor();
 		applicationModel.setNavigationProcessor(navigationProcessor);
 
-		subApplication = new SubApplicationNode();
-		subApplication
-				.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subApplication"));
+		subApplication = new SubApplicationNode(new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.subApplication"));
 		applicationModel.addChild(subApplication);
-		moduleGroup = new ModuleGroupNode();
-		moduleGroup.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup"));
+		moduleGroup = new ModuleGroupNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup"));
 		subApplication.addChild(moduleGroup);
-		module = new ModuleNode();
-		module.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module"));
+		module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module"));
 		moduleGroup.addChild(module);
-		subModule = new SubModuleNode();
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule"));
+		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule"));
 		module.addChild(subModule);
 	}
 

@@ -66,10 +66,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private PropertyChangeSupport propertyChangeSupport;
 
 	/**
-	 * Create a new instance with empty children list
+	 * Creates a NavigationNode.
+	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 */
-	public NavigationNode() {
+	public NavigationNode(INavigationNodeId nodeId) {
 		super();
+		setNodeId(nodeId);
 
 		listeners = new LinkedList<L>();
 		propertyChangeSupport = new PropertyChangeSupport(this);
@@ -83,31 +87,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * Create a new instance with empty children list
+	 * Creates a NavigationNode.
+	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
+	 * @param pLabel
+	 *            The label of the node.
 	 */
-	public NavigationNode(String pLabel) {
-		this();
+	public NavigationNode(INavigationNodeId nodeId, String pLabel) {
+		this(nodeId);
 		setLabel(pLabel);
-	}
-
-	/**
-	 * Create a new instance an initialize the list
-	 */
-	public NavigationNode(C... pChildren) {
-		this();
-		for (C next : pChildren) {
-			addChild(next);
-		}
-	}
-
-	/**
-	 * Create a new instance an initialize the list
-	 */
-	public NavigationNode(String pLabel, C... pChildren) {
-		this(pLabel);
-		for (C next : pChildren) {
-			addChild(next);
-		}
 	}
 
 	public void setPresentation(IPresentation pPresentation) {
@@ -934,7 +923,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyPrev()
 	 */
 	public void historyForward() {
-		if (getNavigationProcessor() != null)		
+		if (getNavigationProcessor() != null)
 			getNavigationProcessor().historyForward();
 	}
 
@@ -945,8 +934,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return nodeId;
 	}
 
-	public void setPresentationId(INavigationNodeId nodeId) {
-		// TODO set via constructor, remove setter
+	public void setNodeId(INavigationNodeId nodeId) {
 		this.nodeId = nodeId;
 	}
 }

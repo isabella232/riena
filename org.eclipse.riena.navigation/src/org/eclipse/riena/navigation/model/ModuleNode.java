@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.IModuleNodeListener;
 
@@ -24,35 +25,26 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	private boolean closeable;
 
 	/**
+	 * Creates a ModuleNode.
 	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 */
-	public ModuleNode() {
-		super();
+	public ModuleNode(INavigationNodeId nodeId) {
+		super(nodeId);
 		initialize();
 	}
 
 	/**
-	 * @param children
-	 */
-	public ModuleNode(ISubModuleNode... children) {
-		super(children);
-		initialize();
-	}
-
-	/**
+	 * Creates a ModuleNode.
+	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 * @param label
-	 * @param children
+	 *            Label of the module displayed in the modules title bar.
 	 */
-	public ModuleNode(String label, ISubModuleNode... children) {
-		super(label, children);
-		initialize();
-	}
-
-	/**
-	 * @param label
-	 */
-	public ModuleNode(String label) {
-		super(label);
+	public ModuleNode(INavigationNodeId nodeId, String label) {
+		super(nodeId, label);
 		initialize();
 	}
 
@@ -113,8 +105,8 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * Calculates the number of the visible and expanded children below the
 	 * given node.
 	 * 
-	 * @param node -
-	 *            start node
+	 * @param node
+	 *            - start node
 	 * @return number of children
 	 */
 	private int calcDepth(INavigationNode<?> node) {

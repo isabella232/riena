@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.application;
 
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer.VisualizerFactory;
 import org.eclipse.riena.navigation.ApplicationModelManager;
 import org.eclipse.riena.navigation.IApplicationModel;
@@ -22,10 +25,6 @@ import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
-
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.equinox.app.IApplication;
-import org.eclipse.equinox.app.IApplicationContext;
 
 /**
  * Abstract application defining the basic structure of a Riena application
@@ -53,8 +52,7 @@ public abstract class AbstractApplication implements IApplication {
 	 *         model
 	 */
 	protected IApplicationModel createModel() {
-		ApplicationModel applicationModel = new ApplicationModel();
-		applicationModel.setPresentationId(new NavigationNodeId("application")); //$NON-NLS-1$
+		IApplicationModel applicationModel = new ApplicationModel(new NavigationNodeId("application"));
 		return applicationModel;
 	}
 

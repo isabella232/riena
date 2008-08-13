@@ -44,7 +44,7 @@ public class ApplicationViewAdvisorTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		winConfig = EasyMock.createNiceMock(IWorkbenchWindowConfigurer.class);
-		applicationModel = new ApplicationModel();
+		applicationModel = new ApplicationModel(null);
 		controller = new ApplicationController(applicationModel);
 		advisor = new ApplicationViewAdvisor(winConfig, controller);
 	}

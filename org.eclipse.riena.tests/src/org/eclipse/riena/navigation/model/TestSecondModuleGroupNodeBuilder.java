@@ -10,20 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.ISubModuleNode;
 
 public class TestSecondModuleGroupNodeBuilder implements INavigationNodeBuilder {
 
 	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId) {
-		ModuleGroupNode moduleGroup = new ModuleGroupNode();
-		moduleGroup.setPresentationId(navigationNodeId);
-		ModuleNode module = new ModuleNode();
-		module.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModule"));
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
+		IModuleNode module = new ModuleNode(
+				new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModule"));
 		moduleGroup.addChild(module);
-		SubModuleNode subModule = new SubModuleNode();
-		subModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondSubModule"));
+		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.secondSubModule"));
 		module.addChild(subModule);
 		return moduleGroup;
 	}

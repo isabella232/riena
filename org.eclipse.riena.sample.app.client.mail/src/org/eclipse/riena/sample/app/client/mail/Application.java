@@ -24,13 +24,13 @@ public class Application extends SwtApplication {
 	protected IApplicationModel createModel() {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 		
-		ApplicationModel app = new ApplicationModel("Riena Mail");
+		ApplicationModel app = new ApplicationModel(null, "Riena Mail");
 		
-		ISubApplicationNode subApp = new SubApplicationNode("Your Mail");
+		ISubApplicationNode subApp = new SubApplicationNode(null, "Your Mail");
 		app.addChild(subApp);
 		presentation.present(subApp, "rcp.mail.perspective");
 		
-		IModuleGroupNode groupMailboxes = new ModuleGroupNode("Mailboxes");
+		IModuleGroupNode groupMailboxes = new ModuleGroupNode(null, "Mailboxes");
 		subApp.addChild(groupMailboxes);
 		
 		IModuleNode moduleAccount1 = createModule("me@this.com", groupMailboxes);
@@ -47,7 +47,7 @@ public class Application extends SwtApplication {
 
 	private IModuleNode createModule(String caption,
 			                         IModuleGroupNode parent) {
-		IModuleNode module = new ModuleNode(caption);
+		IModuleNode module = new ModuleNode(null, caption);
 		parent.addChild(module);
 		return module;
 	}
@@ -55,7 +55,7 @@ public class Application extends SwtApplication {
 	private ISubModuleNode createSubMobule(String caption, 
 			                               IModuleNode parent, 
 			                               String viewId) {
-		ISubModuleNode subModule = new SubModuleNode(caption);
+		ISubModuleNode subModule = new SubModuleNode(null, caption);
 		parent.addChild(subModule);
 		SwtPresentationManagerAccessor.getManager().present(subModule, viewId);
 		return subModule;

@@ -33,16 +33,15 @@ public class SubModuleViewTest extends RienaTestCase {
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
 		subModuleNodeView = new TestView();
-		node = new SubModuleNode() {
+		node = new SubModuleNode(new NavigationNodeId("testId")) {
 			@Override
 			public <T> T getTypecastedAdapter(Class<T> clazz) {
 				if (clazz.equals(IApplicationModel.class)) {
-					return (T) new ApplicationModel();
+					return (T) new ApplicationModel(null);
 				}
 				return null;
 			}
 		};
-		node.setPresentationId(new NavigationNodeId("testId"));
 		node.setLabel("Test");
 	}
 

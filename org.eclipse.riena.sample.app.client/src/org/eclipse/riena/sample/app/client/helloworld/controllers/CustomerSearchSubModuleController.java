@@ -108,7 +108,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 			Customer selected = (Customer) selectedValue;
 			ISubModuleNode node = getNavigationNode();
 			SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
-			SubModuleNode cNode = new SubModuleNode(selected.getFirstName());
+			SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
 			cNode.setContext(selected);
 			presentation.present(cNode, CustomerDetailsSubModuleView.ID);
 			node.addChild(cNode);

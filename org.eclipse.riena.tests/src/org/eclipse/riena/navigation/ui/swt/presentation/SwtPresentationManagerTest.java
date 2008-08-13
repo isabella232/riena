@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.presentation;
 
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.tests.RienaTestCase;
@@ -33,10 +34,8 @@ public class SwtPresentationManagerTest extends RienaTestCase {
 
 	public void testGetSwtViewIdSharedView() throws Exception {
 
-		SubModuleNode node1 = new SubModuleNode();
-		node1.setPresentationId(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
-		SubModuleNode node2 = new SubModuleNode();
-		node2.setPresentationId(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
+		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
+		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
 
 		SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
@@ -50,10 +49,8 @@ public class SwtPresentationManagerTest extends RienaTestCase {
 
 	public void testGetSwtViewIdNotSharedView() throws Exception {
 
-		SubModuleNode node1 = new SubModuleNode();
-		node1.setPresentationId(new NavigationNodeId("testNotSharedViewId", "testInstanceId1"));
-		SubModuleNode node2 = new SubModuleNode();
-		node2.setPresentationId(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
+		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId1"));
+		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
 
 		SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());

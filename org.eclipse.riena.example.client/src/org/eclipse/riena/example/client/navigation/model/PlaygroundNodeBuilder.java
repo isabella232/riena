@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
@@ -29,62 +31,58 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 	 */
 	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId) {
 
-		ModuleGroupNode moduleGroup = new ModuleGroupNode("Playground"); //$NON-NLS-1$
-		moduleGroup.setPresentationId(navigationNodeId);
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId, "Playground"); //$NON-NLS-1$
 
-		IModuleNode playgroundModule = new ModuleNode("Playground"); //$NON-NLS-1$
+		IModuleNode playgroundModule = new ModuleNode(null, "Playground"); //$NON-NLS-1$
 		moduleGroup.addChild(playgroundModule);
 
-		SubModuleNode buttonsSubModule = new SubModuleNode("Buttons"); //$NON-NLS-1$
-		buttonsSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.buttons")); //$NON-NLS-1$
+		ISubModuleNode buttonsSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.buttons"), "Buttons"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(buttonsSubModule);
 
-		SubModuleNode choiceSubModule = new SubModuleNode("Choice"); //$NON-NLS-1$
-		choiceSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.choice")); //$NON-NLS-1$
+		ISubModuleNode choiceSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.choice"), "Choice"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(choiceSubModule);
 
-		SubModuleNode comboSubModule = new SubModuleNode("Combo"); //$NON-NLS-1$
-		comboSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.combo")); //$NON-NLS-1$
+		ISubModuleNode comboSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(comboSubModule);
 
-		SubModuleNode listSubModule = new SubModuleNode("List"); //$NON-NLS-1$
-		listSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.list")); //$NON-NLS-1$
+		ISubModuleNode listSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list"), "List"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(listSubModule);
 
-		SubModuleNode textSubModule = new SubModuleNode("Text"); //$NON-NLS-1$
-		textSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.text")); //$NON-NLS-1$
+		ISubModuleNode textSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(textSubModule);
 
-		SubModuleNode markerSubModule = new SubModuleNode("Marker"); //$NON-NLS-1$
-		markerSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.marker")); //$NON-NLS-1$
+		ISubModuleNode markerSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(markerSubModule);
 
-		SubModuleNode focusableSubModule = new SubModuleNode("Focusable"); //$NON-NLS-1$
-		focusableSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.focusable")); //$NON-NLS-1$
+		ISubModuleNode focusableSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.focusable"), "Focusable"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(focusableSubModule);
 
-		SubModuleNode validationSubModule = new SubModuleNode("Validation"); //$NON-NLS-1$
-		validationSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.validation")); //$NON-NLS-1$
+		ISubModuleNode validationSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.validation"), "Validation"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(validationSubModule);
 
-		SubModuleNode treeSubModule = new SubModuleNode("Tree"); //$NON-NLS-1$
-		treeSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.tree")); //$NON-NLS-1$
+		ISubModuleNode treeSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.tree"), "Tree"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(treeSubModule);
 
-		SubModuleNode treeTableSubModule = new SubModuleNode("Tree Table"); //$NON-NLS-1$
-		treeTableSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.treeTable")); //$NON-NLS-1$
+		ISubModuleNode treeTableSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.treeTable"), "Tree Table"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(treeTableSubModule);
 
-		SubModuleNode tableSubModule = new SubModuleNode("Table"); //$NON-NLS-1$
-		tableSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.table")); //$NON-NLS-1$
+		ISubModuleNode tableSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(tableSubModule);
 
-		SubModuleNode systemPropertiesSubModule = new SubModuleNode("System Properties"); //$NON-NLS-1$
-		systemPropertiesSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.systemProperties")); //$NON-NLS-1$
+		ISubModuleNode systemPropertiesSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.systemProperties"), "System Properties"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(systemPropertiesSubModule);
 
-		SubModuleNode statusLineSubModule = new SubModuleNode("Statusline"); //$NON-NLS-1$
-		statusLineSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.statusLine")); //$NON-NLS-1$
+		ISubModuleNode statusLineSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.statusLine"), "Statusline"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(statusLineSubModule);
 
 		return moduleGroup;

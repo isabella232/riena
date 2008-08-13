@@ -381,6 +381,8 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 
 	INavigationNodeId getNodeId();
 
+	void setNodeId(INavigationNodeId nodeId);
+
 	/**
 	 * Creates the specified navigation node and adds it to the application
 	 * model it does not already exist.
@@ -417,5 +419,4 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	void navigateBack();
 
-	void setPresentationId(INavigationNodeId id);
 }

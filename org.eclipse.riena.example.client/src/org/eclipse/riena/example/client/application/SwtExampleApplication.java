@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.application;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
@@ -68,13 +68,12 @@ public class SwtExampleApplication extends SwtApplication {
 	@Override
 	protected IApplicationModel createModel() {
 
-		SubApplicationNode subApplication = null;
-		IModuleGroupNode moduleGroup = null;
+		ISubApplicationNode subApplication = null;
 
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		final ApplicationModel applicationModel = new ApplicationModel("Riena Navigation Example"); //$NON-NLS-1$
-		applicationModel.setPresentationId(new NavigationNodeId("application")); //$NON-NLS-1$
+		final IApplicationModel applicationModel = new ApplicationModel(
+				new NavigationNodeId("application"), "Riena Navigation Example"); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationModel.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
 
 		// Navigation SubApplication
@@ -83,8 +82,7 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate")); //$NON-NLS-1$
 
 		// Playground SubApplication
-		subApplication = new SubApplicationNode("Playground"); //$NON-NLS-1$
-		subApplication.setPresentationId(new NavigationNodeId("playground")); //$NON-NLS-1$
+		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
 		applicationModel.addChild(subApplication);

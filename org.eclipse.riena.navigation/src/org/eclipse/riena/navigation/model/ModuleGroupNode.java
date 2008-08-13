@@ -12,42 +12,38 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
 
 /**
  * Default implementation for the module group node
  */
-public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNode, IModuleGroupNodeListener> implements IModuleGroupNode {
+public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNode, IModuleGroupNodeListener> implements
+		IModuleGroupNode {
 
 	private boolean presentWithSingleModule;
 
 	/**
+	 * Creates a ModuleGroupNode.
 	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 */
-	public ModuleGroupNode() {
-		super();
+	public ModuleGroupNode(INavigationNodeId nodeId) {
+		super(nodeId);
 	}
 
 	/**
-	 * @param children
-	 */
-	public ModuleGroupNode(IModuleNode... children) {
-		super(children);
-	}
-
-	/**
+	 * Creates a ModuleGroupNode.
+	 * 
+	 * @param nodeId
+	 *            Identifies the node in the application model tree.
 	 * @param label
-	 * @param children
+	 *            Label of the module group (not displayed). TODO remove this
+	 *            constructor.
 	 */
-	public ModuleGroupNode(String label, IModuleNode... children) {
-		super(label, children);
-	}
-
-	/**
-	 * @param label
-	 */
-	public ModuleGroupNode(String label) {
-		super(label);
+	public ModuleGroupNode(INavigationNodeId nodeId, String label) {
+		super(nodeId, label);
 	}
 
 	public boolean isPresentWithSingleModule() {

@@ -23,7 +23,7 @@ public class ModuleControllerTest extends TestCase {
 
 	public void testAfterBind() throws Exception {
 
-		ModuleNode node = new ModuleNode();
+		ModuleNode node = new ModuleNode(null);
 		node.setCloseable(true);
 		node.setLabel("Hello");
 		ModuleController controller = new ModuleController(node);

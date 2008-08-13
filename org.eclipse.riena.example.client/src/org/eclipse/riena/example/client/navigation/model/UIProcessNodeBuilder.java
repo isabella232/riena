@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
@@ -28,18 +30,16 @@ public class UIProcessNodeBuilder implements INavigationNodeBuilder {
 	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId)
 	 */
 	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId) {
-		ModuleGroupNode moduleGroup = new ModuleGroupNode("UIProcess"); //$NON-NLS-1$
-		moduleGroup.setPresentationId(navigationNodeId);
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId, "UIProcess"); //$NON-NLS-1$
 
-		IModuleNode uiProcessModule = new ModuleNode("UIProcess"); //$NON-NLS-1$
+		IModuleNode uiProcessModule = new ModuleNode(null, "UIProcess"); //$NON-NLS-1$
 		moduleGroup.addChild(uiProcessModule);
 
-		SubModuleNode uiPSubModule = new SubModuleNode("Demo1"); //$NON-NLS-1$
-		uiPSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.uiProcess")); //$NON-NLS-1$
+		ISubModuleNode uiPSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.uiProcess"), "Demo1"); //$NON-NLS-1$ //$NON-NLS-2$
 		uiProcessModule.addChild(uiPSubModule);
 
-		uiPSubModule = new SubModuleNode("Demo2"); //$NON-NLS-1$
-		uiPSubModule.setPresentationId(new NavigationNodeId("org.eclipse.riena.example.uiProcess")); //$NON-NLS-1$
+		uiPSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.uiProcess"), "Demo2"); //$NON-NLS-1$ //$NON-NLS-2$
 		uiProcessModule.addChild(uiPSubModule);
 		return moduleGroup;
 	}
