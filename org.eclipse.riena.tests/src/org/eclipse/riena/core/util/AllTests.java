@@ -24,8 +24,9 @@ public class AllTests extends TestCase {
 		// TODO fails!
 		// suite.addTestSuite(ContainerModelTest.class);
 		suite.addTestSuite(IterTest.class);
-		suite.addTestSuite(StringUtilsTest.class);
+		suite.addTestSuite(ListenerListTest.class);
 		suite.addTestSuite(ReflectionUtilsTest.class);
+		suite.addTestSuite(StringUtilsTest.class);
 		suite.addTestSuite(VariableManagerUtilTest.class);
 		return suite;
 	}
