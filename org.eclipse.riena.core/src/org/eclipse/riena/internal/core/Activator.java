@@ -109,7 +109,7 @@ public class Activator extends RienaPlugin {
 					LOGGER
 							.log(
 									LogService.LOG_WARNING,
-									"Forced <<lazy>> start(): '" + bundle.getSymbolicName() + "' failed but may succeed (bundle state is in transition)!"); //$NON-NLS-1$ //$NON-NLS-2$
+									"Forced <<lazy>> start(): '" + bundle.getSymbolicName() + "' failed but may succeed (bundle state is in transition)!", be); //$NON-NLS-1$ //$NON-NLS-2$
 				} catch (RuntimeException rte) {
 					LOGGER.log(LogService.LOG_ERROR, "Forced <<lazy>> start(): '" + bundle.getSymbolicName() //$NON-NLS-1$
 							+ "' failed with exception.", rte); //$NON-NLS-1$
