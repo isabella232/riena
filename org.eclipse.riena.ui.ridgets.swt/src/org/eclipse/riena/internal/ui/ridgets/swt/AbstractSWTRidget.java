@@ -219,6 +219,9 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	}
 
 	protected boolean hasChanged(Object oldValue, Object newValue) {
+		if (oldValue == null && newValue == null) {
+			return false;
+		}
 		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
 				|| !oldValue.equals(newValue);
 	}
