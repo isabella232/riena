@@ -11,22 +11,21 @@
 package org.eclipse.riena.navigation;
 
 /**
- * A modulePresentationDefinition defines the navigationModule to be activated.
- * 
- * @author Erich Achilles
+ * Interface for a NavigationNodeType extension that defines how to create a
+ * node or a subtree in the application model tree.
  */
 public interface INavigationNodeTypeDefiniton extends ITypeDefinition {
 
 	/**
-	 * Returns the ModuleComposer for this module presentation
+	 * @return A node builder that creates a node or a subtree for the
+	 *         application model tree.
 	 */
-
 	INavigationNodeBuilder createNodeBuilder();
 
 	/**
-	 * The id of this presentations parent presentation
+	 * @return ID of the parent indicating where to insert a node or subtree
+	 *         created with this definition in the application model tree.
 	 */
-
 	String getParentTypeId();
 
 }

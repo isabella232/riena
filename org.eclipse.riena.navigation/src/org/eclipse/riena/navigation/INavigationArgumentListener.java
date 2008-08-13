@@ -11,10 +11,20 @@
 package org.eclipse.riena.navigation;
 
 /**
- *
+ * Listener for changes performed on an argument Object that was passed to
+ * another node as part of an NavigationArgument during a navigation.
+ * 
+ * @see INavigationNode#navigate(INavigationNodeId, NavigationArgument)
  */
 public interface INavigationArgumentListener {
 
+	/**
+	 * Called when the Object passed as an argument during a navigation was
+	 * changed.
+	 * 
+	 * @param argument
+	 *            The changed argument.
+	 */
 	void valueChanged(Object argument);
 
 }

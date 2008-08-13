@@ -11,15 +11,13 @@
 package org.eclipse.riena.navigation;
 
 /**
- * Base interface for presentation definitions, carries the ID
- * 
- * @author Erich Achilles
+ * Base interface for type definitions.
  */
 public interface ITypeDefinition {
 
 	/**
-	 * The id of this presentation
+	 * @return The type part of the ID of a navigation node.
+	 * @see INavigationNodeId#getTypeId()
 	 */
-
 	String getTypeId();
 }

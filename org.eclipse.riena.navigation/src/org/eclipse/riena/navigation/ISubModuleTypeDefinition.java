@@ -15,30 +15,30 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.osgi.framework.Bundle;
 
 /**
- * A WorkAreaPresentationDefinition defines the work area to be activated.
- * 
- * @author Erich Achilles
+ * Interface for a SubModuleType extension that defines how an activated
+ * submodule appears in the work area.
  */
 public interface ISubModuleTypeDefinition extends ITypeDefinition {
 
 	/**
-	 * Returns the view controller for this SubModuleType
+	 * @return A controller that controlles the UI widgets in the view through
+	 *         ridgets (see org.eclipse.riena.ui.ridgets.IRidget)
 	 */
 	IViewController createController();
 
 	/**
-	 * Returns the view controller name
-	 */
-	String getController();
-
-	/**
-	 * Return true if the specified view should be a shared view, false
-	 * otherwise
+	 * Indicates whether the view is shared i.e. whether one instance of the
+	 * view should be used for all submodule instances.
+	 * 
+	 * @return true if the specified view should be a shared view, false
+	 *         otherwise
 	 */
 	boolean isShared();
 
 	/**
-	 * Return an view name
+	 * @return For the SWT-based Riena UI this is the ID of the view associated
+	 *         with the submodule. Must match the ID field of an
+	 *         "org.eclipse.ui.view" extension.
 	 */
 	String getView();
 
