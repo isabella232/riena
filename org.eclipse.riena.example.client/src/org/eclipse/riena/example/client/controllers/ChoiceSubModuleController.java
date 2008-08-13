@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
@@ -22,6 +26,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
@@ -48,22 +53,23 @@ public class ChoiceSubModuleController extends SubModuleController {
 				CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 
-		final ISingleChoiceRidget compositeCarExtras = (ISingleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
+		final IMultipleChoiceRidget compositeCarExtras = (IMultipleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
 		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package",
 				"Park Distance Control System", };
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
-				CarConfig.PROP_OPTION);
-		compositeCarExtras.addMarker(new MandatoryMarker()); // TODO [ev] remove
+				CarConfig.PROP_OPTIONS);
+		compositeCarExtras.updateFromModel();
 
 		final ISingleChoiceRidget compositeCarWarranty = (ISingleChoiceRidget) getRidget("compositeCarWarranty"); //$NON-NLS-1$
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig,
 				CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 
-		final ISingleChoiceRidget compositeCarPlates = (ISingleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
-		compositeCarPlates.bindToModel(toList(carPlates), BeansObservables
-				.observeValue(carConfig, CarConfig.PROP_PLATE));
+		final IMultipleChoiceRidget compositeCarPlates = (IMultipleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
+		compositeCarPlates.bindToModel(toList(carPlates), BeansObservables.observeList(Realm.getDefault(), carConfig,
+				CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
+		compositeCarPlates.updateFromModel();
 
 		ITextFieldRidget txtPrice = (ITextFieldRidget) getRidget("txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
@@ -76,9 +82,9 @@ public class ChoiceSubModuleController extends SubModuleController {
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
 				compositeCarModel.setSelection(CarModels.BMW);
-				compositeCarExtras.setSelection(CarOptions.PDCS);
+				compositeCarExtras.setSelection(Arrays.asList(new CarOptions[] { CarOptions.PDCS }));
 				compositeCarWarranty.setSelection(CarWarranties.EXTENDED);
-				compositeCarPlates.setSelection(carPlates[0]);
+				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
 			}
 		});
 		IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
@@ -111,15 +117,15 @@ public class ChoiceSubModuleController extends SubModuleController {
 	 */
 	private static final class CarConfig extends AbstractBean {
 		public static final String PROP_MODEL = "model"; //$NON-NLS-1$
-		public static final String PROP_OPTION = "option"; //$NON-NLS-1$
+		public static final String PROP_OPTIONS = "options"; //$NON-NLS-1$
 		public static final String PROP_WARRANTY = "warranty"; //$NON-NLS-1$
-		public static final String PROP_PLATE = "plate"; //$NON-NLS-1$
+		public static final String PROP_PLATES = "plates"; //$NON-NLS-1$
 		public static final String PROP_PRICE = "price"; //$NON-NLS-1$
 
 		private CarModels model;
-		private CarOptions option;
+		private List<CarOptions> options = new ArrayList<CarOptions>();
 		private CarWarranties warranty;
-		private String plate;
+		private List<String> plates = new ArrayList<String>();
 
 		public CarModels getModel() {
 			return model;
@@ -130,12 +136,12 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		public CarOptions getOption() {
-			return option;
+		public List<CarOptions> getOptions() {
+			return Collections.unmodifiableList(options);
 		}
 
-		public void setOption(CarOptions option) {
-			firePropertyChanged(PROP_OPTION, this.option, this.option = option);
+		public void setOptions(List<CarOptions> options) {
+			firePropertyChanged(PROP_OPTIONS, this.options, this.options = new ArrayList<CarOptions>(options));
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
@@ -148,20 +154,20 @@ public class ChoiceSubModuleController extends SubModuleController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		public String getPlate() {
-			return plate;
+		public List<String> getPlates() {
+			return Collections.unmodifiableList(plates);
 		}
 
-		public void setPlate(String plate) {
-			firePropertyChanged(PROP_PLATE, this.plate, this.plate = plate);
+		public void setPlates(List<String> plates) {
+			firePropertyChanged(PROP_PLATES, this.plates, this.plates = new ArrayList<String>(plates));
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
 		public void reset() {
 			setModel(null);
-			setOption(null);
+			setOptions(Collections.EMPTY_LIST);
 			setWarranty(null);
-			setPlate(null);
+			setPlates(Collections.EMPTY_LIST);
 		}
 
 		public long getPrice() {
@@ -169,15 +175,11 @@ public class ChoiceSubModuleController extends SubModuleController {
 			if (model != null) {
 				price += 100000;
 			}
-			if (option != null) {
-				price += 25000;
-			}
+			price += options.size() * 25000;
 			if (warranty == CarWarranties.EXTENDED) {
 				price += 10000;
 			}
-			if (plate != null) {
-				price += 200;
-			}
+			price += plates.size() * 200;
 			return price;
 		}
 	}

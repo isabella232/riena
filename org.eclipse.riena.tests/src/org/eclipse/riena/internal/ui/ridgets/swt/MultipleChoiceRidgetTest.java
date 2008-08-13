@@ -119,6 +119,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test method setSelection().
 	 */
 	public final void testSetSelection() throws Exception {
+		fail("TODO"); // TODO [ev] 8/13
 		IMultipleChoiceRidget ridget = getRidget();
 
 		final List<PropertyChangeEvent> events = newEventCatchingList(ridget, IChoiceRidget.PROPERTY_SELECTION);
@@ -144,6 +145,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	public final void testUserSetSelection() throws Exception {
+		fail("TODO"); // TODO [ev] 8/13
 		IMultipleChoiceRidget ridget = getRidget();
 		ChoiceComposite control = getUIControl();
 
@@ -256,6 +258,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	@Override
 	public void testIsDisableMandatoryMarker() {
+		fail("TODO"); // TODO [ev] 8/13
 		IMultipleChoiceRidget ridget = getRidget();
 
 		optionProvider.setSelectedOptions(null);

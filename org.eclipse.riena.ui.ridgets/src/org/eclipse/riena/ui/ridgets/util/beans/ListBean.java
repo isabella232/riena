@@ -20,6 +20,12 @@ import org.eclipse.core.runtime.Assert;
  * List bean provides a list value for simple adapter UI-Binding
  */
 public class ListBean extends AbstractBean {
+
+	/**
+	 * Name of the values property ("values").
+	 */
+	public static final String PROPERTY_VALUES = "values"; //$NON-NLS-1$
+
 	private List<?> values;
 
 	/**

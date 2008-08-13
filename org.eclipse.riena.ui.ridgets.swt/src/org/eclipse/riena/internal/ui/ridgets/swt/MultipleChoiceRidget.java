@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -26,6 +28,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.util.beans.ListBean;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,6 +40,13 @@ import org.eclipse.swt.widgets.Control;
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
  */
 public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMultipleChoiceRidget {
+
+	private static final IChangeListener DUMMY_LISTENER = new IChangeListener() {
+		public void handleChange(ChangeEvent event) {
+			// workaround for proper updateModelToTarget() behavior with
+			// POLICY_ON_REQUEST
+		}
+	};
 
 	private final WritableList optionsObservable;
 	private final WritableList selectionObservable;
@@ -51,11 +61,9 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		selectionObservable = new WritableList();
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(ChangeEvent event) {
-				System.out.println(".handleChange() " + selectionObservable.size());
 				updateMarkers();
 			}
 		});
-
 	}
 
 	@Override
@@ -67,7 +75,11 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
-		// TODO Auto-generated method stub
+		AbstractSWTRidget.assertType(uiControl, ChoiceComposite.class);
+		if (uiControl != null) {
+			ChoiceComposite composite = (ChoiceComposite) uiControl;
+			Assert.isTrue(composite.isMultipleSelection(), "expected multiple selection ChoiceComposite"); //$NON-NLS-1$
+		}
 	}
 
 	@Override
@@ -105,7 +117,12 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionList = new WritableList(optionValues, Object.class);
+		IObservableList optionList = BeansObservables.observeList(Realm.getDefault(), new ListBean(optionValues),
+				ListBean.PROPERTY_VALUES);
+		// IObservableList optionList =
+		// BeansObservables.observeList(Realm.getDefault(), new
+		// ListWrapper(optionValues),
+		// "values");
 		IObservableList selectionList = BeansObservables.observeList(Realm.getDefault(), selectionBean,
 				selectionPropertyName);
 		bindToModel(optionList, optionLabels, selectionList);
@@ -123,22 +140,30 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 	}
 
 	public IObservableList getObservableSelectionList() {
-		// TODO Auto-generated method stub
-		return null;
+		return selectionObservable;
 	}
 
 	public List getSelection() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList(selectionObservable);
 	}
 
 	public void setSelection(List selection) {
-		// TODO Auto-generated method stub
+		assertIsBoundToModel();
+		List oldSelection = new ArrayList(selectionObservable);
+		List newSelection = selection == null ? Collections.EMPTY_LIST : selection;
+		for (Object candidate : newSelection) {
+			if (!optionsObservable.contains(candidate)) {
+				throw new BindingException("candidate not in option list: " + candidate); //$NON-NLS-1$
+			}
+		}
+		selectionObservable.clear();
+		selectionObservable.addAll(newSelection);
+		updateChildren(getUIControl());
+		firePropertyChange(PROPERTY_SELECTION, oldSelection, newSelection);
 	}
 
 	public IObservableList getObservableList() {
-		// TODO Auto-generated method stub
-		return null;
+		return optionsObservable;
 	}
 
 	@Override
@@ -163,17 +188,22 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 
 		unbindUIControl();
 
+		// clear observables as they may be bound to another model
+		// must dispose old binding first to avoid updating old model
 		if (dbc != null) {
 			dbc.dispose();
 		}
 		optionsObservable.clear();
 		selectionObservable.clear();
 
+		// set up new binding
 		DataBindingContext dbc = new DataBindingContext();
 		optionsBinding = dbc.bindList(optionsObservable, optionValues, new UpdateListStrategy(
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
+		optionsBinding.getModel().addChangeListener(DUMMY_LISTENER);
 		selectionBinding = dbc.bindList(selectionObservable, selectionValues, new UpdateListStrategy(
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
+		selectionBinding.getModel().addChangeListener(DUMMY_LISTENER);
 		if (optionLabels != null) {
 			this.optionLabels = optionLabels.toArray(new String[optionLabels.size()]);
 		} else {
@@ -205,11 +235,9 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 						Object data = button.getData();
 						if (button.getSelection()) {
 							if (!selectionObservable.contains(data)) {
-								System.out.println("+ " + button.getData());
 								selectionObservable.add(data);
 							}
 						} else {
-							System.out.println("- " + button.getData());
 							selectionObservable.remove(data);
 						}
 					}
@@ -227,6 +255,16 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		}
 	}
 
+	private void updateChildren(Composite control) {
+		if (control != null && !control.isDisposed()) {
+			for (Control child : control.getChildren()) {
+				Button button = (Button) child;
+				boolean isSelected = selectionObservable.contains(button.getData());
+				button.setSelection(isSelected);
+			}
+		}
+	}
+
 	private void updateMarkers() {
 		boolean isMandatoryDisabled = isDisableMandatoryMarker();
 		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
@@ -234,8 +272,5 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 			mMarker.setDisabled(isMandatoryDisabled);
 		}
 	}
-
-	// helping classes
-	// ////////////////
 
 }
