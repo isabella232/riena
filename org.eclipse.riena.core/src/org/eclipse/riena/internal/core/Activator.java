@@ -100,12 +100,16 @@ public class Activator extends RienaPlugin {
 					throw rte;
 				}
 			} else if (bundle.getState() == Bundle.STARTING
-					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))
-					&& bundle.getBundleContext() == null) {
+					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
 				try {
 					bundle.start();
 					LOGGER.log(LogService.LOG_INFO,
 							"Forced <<lazy>> start(): '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
+				} catch (BundleException be) {
+					LOGGER
+							.log(
+									LogService.LOG_WARNING,
+									"Forced <<lazy>> start(): '" + bundle.getSymbolicName() + "' failed but may succeed (bundle state is in transition)!"); //$NON-NLS-1$ //$NON-NLS-2$
 				} catch (RuntimeException rte) {
 					LOGGER.log(LogService.LOG_ERROR, "Forced <<lazy>> start(): '" + bundle.getSymbolicName() //$NON-NLS-1$
 							+ "' failed with exception.", rte); //$NON-NLS-1$
