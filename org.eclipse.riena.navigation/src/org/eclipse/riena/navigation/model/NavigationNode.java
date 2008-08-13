@@ -893,18 +893,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId,
-	 *      java.lang.Object,
-	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
+	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public void navigate(INavigationNodeId targetId, NavigationArgument argument) {
 		getNavigationProcessor().navigate(this, targetId, argument);
 	}
 
 	/**
-	 * Navigates to the caller (the source node) of the given targetNode.
-	 * 
-	 * @param targetNode
-	 *            The node where we have navigate to and return from
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigateBack()
 	 */
 	public void navigateBack() {
 		if (getNavigationProcessor() != null)
@@ -934,6 +930,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return nodeId;
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#setNodeId(org.eclipse.riena.navigation.INavigationNodeId)
+	 */
 	public void setNodeId(INavigationNodeId nodeId) {
 		this.nodeId = nodeId;
 	}

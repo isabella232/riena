@@ -379,16 +379,32 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 */
 	boolean isBlocked();
 
+	/**
+	 * Returns the ID that identifies the node. The ID is used to find navigate
+	 * targets in the application model tree and to associated sub module nodes
+	 * with their views.
+	 * 
+	 * @see #navigate(INavigationNodeId)
+	 * @return The ID that identifies the node in the application model tree.
+	 */
 	INavigationNodeId getNodeId();
 
+	/**
+	 * Sets the ID of the node.
+	 * 
+	 * @param nodeId
+	 *            The ID that identifies the node in the application model tree.
+	 */
 	void setNodeId(INavigationNodeId nodeId);
 
 	/**
 	 * Creates the specified navigation node and adds it to the application
-	 * model it does not already exist.
+	 * model if does not already exist.
 	 * 
 	 * @param targetId
-	 *            Refers to an extension point describing the target node.
+	 *            ID of the node to create. Also refers to an extension point
+	 *            describing the target node that is used to create it if it
+	 *            does not exist.
 	 * @see INavigationNodeBuilder
 	 */
 	void create(INavigationNodeId targetId);
@@ -398,7 +414,9 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * navigates to it.
 	 * 
 	 * @param targetId
-	 *            Refers to an extension point describing the target node.
+	 *            ID of the node to navigate to. Also refers to an extension
+	 *            point describing the target node that is used to create it if
+	 *            it does not exist.
 	 * @see INavigationNodeBuilder
 	 */
 	void navigate(INavigationNodeId targetId);
@@ -407,15 +425,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Creates the specified navigation node (if it does not already exist) and
 	 * navigates to it.
 	 * 
-	 * @param targetId
-	 * @param argument
-	 *            Refers to an extension point describing the target node.
 	 * @see INavigationNodeBuilder
+	 * @param targetId
+	 *            ID of the node to navigate to. Also refers to an extension
+	 *            point describing the target node that is used to create it if
+	 *            it does not exist.
+	 * @param argument
+	 *            Contains information passed on to the target node and/or used
+	 *            during its creation.
 	 */
 	void navigate(INavigationNodeId targetId, NavigationArgument argument);
 
 	/**
-	 * Navigates back to the caller of a navigation.
+	 * Undoes the last navigate to this node i.e. activates the last source node
+	 * of a navigate(..)-call that lead to the activation of this node.
+	 * 
+	 * @see #navigate(INavigationNodeId)
 	 */
 	void navigateBack();
 

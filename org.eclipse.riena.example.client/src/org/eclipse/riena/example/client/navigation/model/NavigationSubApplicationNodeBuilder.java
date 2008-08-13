@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationNodeId;
@@ -28,9 +29,10 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAc
 public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId) {
+	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Navigation"); //$NON-NLS-1$

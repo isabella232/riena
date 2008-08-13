@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-
 /**
- * Class is a container for all additional navigation arguments.
+ * Contains additional information for a navigation passed on to the target node
+ * and/or used during its creation.
+ * 
+ * @see INavigationNode#navigate(INavigationNodeId, NavigationArgument)
  */
 public class NavigationArgument {
 	private Object argument;

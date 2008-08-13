@@ -16,10 +16,15 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationArgument;
 
 public class TestSecondModuleGroupNodeBuilder implements INavigationNodeBuilder {
 
-	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId) {
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 */
+	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 		IModuleNode module = new ModuleNode(
 				new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModule"));
