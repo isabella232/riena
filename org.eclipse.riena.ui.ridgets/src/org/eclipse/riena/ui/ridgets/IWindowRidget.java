@@ -21,8 +21,8 @@ public interface IWindowRidget extends IRidget {
 	/**
 	 * Sets the default button.
 	 * 
-	 * @param defaultButton -
-	 *            default button
+	 * @param defaultButton
+	 *            - default button
 	 */
 	void setDefaultButton(Object defaultButton);
 
@@ -32,4 +32,9 @@ public interface IWindowRidget extends IRidget {
 	 * @return
 	 */
 	public Object getDefaultButton();
+
+	public void setCloseable(boolean closeable);
+
+	public void setActive(boolean active);
+
 }

@@ -17,6 +17,8 @@ import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -29,12 +31,18 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	private String text = EMPTY_STRING;
 	private String icon;
 	private List<IWindowRidgetListener> windowRidgetListeners;
+	private boolean closeable;
+	private boolean active;
+	private IEmbeddedTitleBarListener titleBarListener;
 
 	/**
 	 * Creates a new instance of {@code EmbeddedTitleBarRidget}.
 	 */
 	public EmbeddedTitleBarRidget() {
+		closeable = true;
+		active = true;
 		windowRidgetListeners = new LinkedList<IWindowRidgetListener>();
+		titleBarListener = new TitleBarListener();
 	}
 
 	/**
@@ -54,6 +62,20 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	@Override
 	public EmbeddedTitleBar getUIControl() {
 		return (EmbeddedTitleBar) super.getUIControl();
+	}
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#setUIControl(java.lang.Object)
+	 */
+	@Override
+	public void setUIControl(Object uiControl) {
+		if (getUIControl() != null) {
+			getUIControl().removeEmbeddedTitleBarListener(titleBarListener);
+		}
+		super.setUIControl(uiControl);
+		if (getUIControl() != null) {
+			getUIControl().addEmbeddedTitleBarListener(titleBarListener);
+		}
 	}
 
 	/**
@@ -152,6 +174,26 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		// unused
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
+	 */
+	public void setActive(boolean active) {
+		if (this.active = active) {
+			this.active = active;
+			updateActive();
+		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setCloseable(boolean)
+	 */
+	public void setCloseable(boolean closeable) {
+		if (this.closeable != closeable) {
+			this.closeable = closeable;
+			updateCloseable();
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -180,6 +222,45 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 			// }
 			control.setImage(image);
 		}
+	}
+
+	private void updateCloseable() {
+		EmbeddedTitleBar control = getUIControl();
+		if (control != null) {
+			control.setCloseable(closeable);
+		}
+	}
+
+	private void updateActive() {
+		EmbeddedTitleBar control = getUIControl();
+		if (control != null) {
+			control.setActive(active);
+		}
+	}
+
+	/**
+	 * Listener of the title bar.
+	 */
+	private class TitleBarListener implements IEmbeddedTitleBarListener {
+
+		/**
+		 * @see org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener#windowActivated(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void windowActivated(MouseEvent e) {
+			for (IWindowRidgetListener listener : windowRidgetListeners) {
+				listener.activated();
+			}
+		}
+
+		/**
+		 * @see org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener#windowClosed(org.eclipse.swt.events.MouseEvent)
+		 */
+		public void windowClosed(MouseEvent e) {
+			for (IWindowRidgetListener listener : windowRidgetListeners) {
+				listener.closed();
+			}
+		}
+
 	}
 
 }

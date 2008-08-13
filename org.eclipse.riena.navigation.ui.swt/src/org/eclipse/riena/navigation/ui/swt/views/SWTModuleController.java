@@ -87,6 +87,7 @@ public class SWTModuleController extends ModuleController {
 	 */
 	@Override
 	public void afterBind() {
+		super.afterBind();
 		updateNavigationNodeMarkers();
 		bindTree();
 	}

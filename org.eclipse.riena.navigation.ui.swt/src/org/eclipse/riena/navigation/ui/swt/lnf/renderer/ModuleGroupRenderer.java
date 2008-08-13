@@ -56,49 +56,12 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		borderRenderer.setActive(isActivated());
 		borderRenderer.paint(gc, null);
 
-		// modules
-		Rectangle innerBorder = borderRenderer.computeInnerBounds(borderRenderer.getBounds());
-		int x = innerBorder.x + getModuleGroupPadding();
-		int y = innerBorder.y + getModuleGroupPadding();
-		int w = innerBorder.width - getModuleGroupPadding() * 2;
-		List<ModuleView> modules = getItems();
-		for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
-			ModuleView moduleView = iterator.next();
-			EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(moduleView);
-			// title bar
-			titlebarRenderer.setActive(moduleView.isActivated());
-			titlebarRenderer.setCloseable(moduleView.isCloseable());
-			titlebarRenderer.setPressed(moduleView.isPressed());
-			titlebarRenderer.setHover(moduleView.isHover());
-			titlebarRenderer.setIcon(moduleView.getIcon());
-			Point titlebarSize = titlebarRenderer.computeSize(gc, getBounds().width, 0);
-			Rectangle titlebarBounds = new Rectangle(x, y, w, titlebarSize.y);
-			titlebarRenderer.setBounds(titlebarBounds);
-			String label = moduleView.getLabel();
-			titlebarRenderer.paint(gc, label);
-
-			moduleView.setBounds(new Rectangle(x, y, w, titlebarSize.y));
-
-			y += titlebarSize.y;
-
-			if (moduleView.isActivated()) {
-				// body (normally: tree) of module
-				moduleView.getBody().layout();
-				moduleView.getBody().setBounds(x, y, w, moduleView.getOpenHeight() - 1);
-				moduleView.getBody().setVisible(true);
-				y += moduleView.getOpenHeight();
-				titlebarBounds.height += moduleView.getOpenHeight();
-			}
-
-			if (iterator.hasNext()) {
-				y += getModuleModuleGap();
-			} else {
-				y += getModuleGroupPadding();
-			}
-
-			computeTextBounds(gc, moduleView);
-
-		}
+		// List<ModuleView> modules = getItems();
+		// for (Iterator<ModuleView> iterator = modules.iterator();
+		// iterator.hasNext();) {
+		// ModuleView moduleView = iterator.next();
+		// moduleView.getBody().setVisible(moduleView.isActivated());
+		// }
 
 	}
 
@@ -135,13 +98,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		int h = getModuleGroupPadding();
 		for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
 			ModuleView moduleView = iterator.next();
-			EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(moduleView);
-			titlebarRenderer.setIcon(moduleView.getIcon());
-			Point titlebarSize = titlebarRenderer.computeSize(gc, wHint, 0);
-			h += titlebarSize.y;
-			if (moduleView.isActivated()) {
-				h += moduleView.getOpenHeight();
-			}
+			moduleView.updateModuleView();
+			h += moduleView.getBounds().height;
 			if (iterator.hasNext()) {
 				h += getModuleModuleGap();
 			} else {
@@ -261,7 +219,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return gap
 	 */
-	protected int getModuleModuleGap() {
+	public int getModuleModuleGap() {
 		return MODULE_MODULE_GAP;
 	}
 
@@ -270,7 +228,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return padding
 	 */
-	protected int getModuleGroupPadding() {
+	public int getModuleGroupPadding() {
 		return MODULE_GROUP_PADDING;
 	}
 

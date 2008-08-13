@@ -158,4 +158,13 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		return innerWidth + BORDER_WIDTH * 2;
 	}
 
+	/**
+	 * Returns the width of the border.
+	 * 
+	 * @return border width
+	 */
+	public int getBorderWidth() {
+		return BORDER_WIDTH;
+	}
+
 }

@@ -11,6 +11,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
@@ -24,6 +25,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
 import org.eclipse.swt.SWT;
@@ -71,6 +73,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Statusline.class, StatuslineRidget.class);
 		addMapping(StatuslineNumber.class, StatuslineNumberRidget.class);
 		addMapping(EmbeddedTitleBar.class, EmbeddedTitleBarRidget.class);
+		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
 	}
 
 	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz) {

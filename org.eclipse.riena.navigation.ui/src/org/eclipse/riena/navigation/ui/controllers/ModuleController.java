@@ -14,6 +14,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
  * Default implementation for a ModuleNodeViewController
@@ -21,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 public class ModuleController extends NavigationNodeController<IModuleNode> {
 
 	private IWindowRidget windowRidget;
+	private IWindowRidgetListener windowListener;
 	private boolean closeable;
 	private boolean dragEnabled;
 
@@ -33,27 +35,28 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		closeable = true;
 		dragEnabled = true;
 		getNavigationNode().addListener(new MyModuleNodeListener());
+		windowListener = new WindowListener();
+
 	}
 
+	/**
+	 * Listener observes the node of the module. If the lable or the icon
+	 * changed, the window ridget will be updated.
+	 */
 	private final class MyModuleNodeListener extends ModuleNodeListener {
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
-		 * (org.eclipse.riena.navigation.INavigationNode)
+
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
+		 *      (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void labelChanged(IModuleNode moduleNode) {
 			updateLabel();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
-		 * (org.eclipse.riena.navigation.INavigationNode)
+		/**
+		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
+		 *      (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void iconChanged(IModuleNode source) {
@@ -66,7 +69,13 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 *            the windowRidget to set
 	 */
 	public void setWindowRidget(IWindowRidget windowRidget) {
+		if (getWindowRidget() != null) {
+			getWindowRidget().removeWindowRidgetListener(windowListener);
+		}
 		this.windowRidget = windowRidget;
+		if (getWindowRidget() != null) {
+			getWindowRidget().addWindowRidgetListener(windowListener);
+		}
 	}
 
 	/**
@@ -91,6 +100,8 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		super.afterBind();
 		updateLabel();
 		updateIcon();
+		updateCloseable();
+		updateActive();
 	}
 
 	private void updateIcon() {
@@ -98,7 +109,21 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	private void updateLabel() {
-		windowRidget.setTitle(getNavigationNode().getLabel());
+		if (windowRidget != null) {
+			windowRidget.setTitle(getNavigationNode().getLabel());
+		}
+	}
+
+	private void updateCloseable() {
+		if (windowRidget != null) {
+			windowRidget.setCloseable(getNavigationNode().isCloseable());
+		}
+	}
+
+	private void updateActive() {
+		if (windowRidget != null) {
+			windowRidget.setActive(getNavigationNode().isActivated());
+		}
 	}
 
 	public boolean isPresentGroupMember() {
@@ -145,4 +170,23 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	public void setDragEnabled(boolean dragEnabled) {
 		this.dragEnabled = dragEnabled;
 	}
+
+	private class WindowListener implements IWindowRidgetListener {
+
+		/**
+		 * @see org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener#activated()
+		 */
+		public void activated() {
+			getNavigationNode().activate();
+		}
+
+		/**
+		 * @see org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener#closed()
+		 */
+		public void closed() {
+			getNavigationNode().dispose();
+		}
+
+	}
+
 }

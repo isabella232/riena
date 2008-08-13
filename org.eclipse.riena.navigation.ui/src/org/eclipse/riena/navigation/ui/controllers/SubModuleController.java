@@ -80,6 +80,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 		updateLabel();
 		updateIcon();
+		updateCloseable();
+		updateActive();
 	}
 
 	/**
@@ -104,6 +106,18 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	private void updateLabel() {
 		if (windowRidget != null) {
 			windowRidget.setTitle(getFullTitle());
+		}
+	}
+
+	private void updateCloseable() {
+		if (windowRidget != null) {
+			windowRidget.setCloseable(false);
+		}
+	}
+
+	private void updateActive() {
+		if (windowRidget != null) {
+			windowRidget.setActive(getNavigationNode().isActivated());
 		}
 	}
 

@@ -27,11 +27,16 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	private Shell shell;
 	private String toolTip = null;
 	private boolean blocked;
+	private boolean closeable;
+	private boolean active;
 
 	public ShellRidget() {
+		closeable = true;
+		active = true;
 	}
 
 	public ShellRidget(Shell shell) {
+		this();
 		setUIControl(shell);
 	}
 
@@ -182,6 +187,34 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 		}
 
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
+	 */
+	public void setActive(boolean active) {
+		if (this.active = active) {
+			this.active = active;
+			updateActive();
+		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setCloseable(boolean)
+	 */
+	public void setCloseable(boolean closeable) {
+		if (this.closeable != closeable) {
+			this.closeable = closeable;
+			updateCloseable();
+		}
+	}
+
+	private void updateCloseable() {
+		// TODO
+	}
+
+	private void updateActive() {
+		shell.setEnabled(active);
 	}
 
 }

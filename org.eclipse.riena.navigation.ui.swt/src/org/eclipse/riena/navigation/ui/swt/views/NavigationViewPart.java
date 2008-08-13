@@ -25,11 +25,15 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
@@ -159,11 +163,22 @@ public class NavigationViewPart extends ViewPart {
 		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(bodyComposite);
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
+
 		registerModuleGroupView(moduleGroupView);
 		// create controller. the controller is implicit registered as
 		// presentation in the node
 		new ModuleGroupController(moduleGroupNode);
 		moduleGroupView.bind((ModuleGroupNode) moduleGroupNode);
+
+		moduleGroupView.setLayout(new FormLayout());
+		Composite moduleGroupBody = new Composite(moduleGroupView, SWT.NONE);
+		FormData layoutData = new FormData();
+		int padding = getModuleGroupPadding();
+		layoutData.top = new FormAttachment(0, padding);
+		layoutData.left = new FormAttachment(0, padding);
+		layoutData.bottom = new FormAttachment(100, -padding);
+		layoutData.right = new FormAttachment(100, -padding);
+		moduleGroupBody.setLayoutData(layoutData);
 
 		// now it's time for the module views
 		for (IModuleNode moduleNode : moduleGroupNode.getChildren()) {
@@ -220,7 +235,12 @@ public class NavigationViewPart extends ViewPart {
 	}
 
 	private void createModuleView(IModuleNode moduleNode, ModuleGroupView moduleGroupView) {
-		ModuleView moduleView = viewFactory.createModuleView(moduleGroupView);
+
+		Composite moduleGroupBody = (Composite) moduleGroupView.getChildren()[0];
+		FormLayout layout = new FormLayout();
+		moduleGroupBody.setLayout(layout);
+
+		ModuleView moduleView = viewFactory.createModuleView(moduleGroupBody);
 		moduleNodesToViews.put(moduleNode, moduleView);
 		new SWTModuleController(moduleNode);
 		moduleView.bind((ModuleNode) moduleNode);
@@ -235,6 +255,42 @@ public class NavigationViewPart extends ViewPart {
 		}
 		bodyComposite.layout();
 		bodyComposite.redraw();
+	}
+
+	/**
+	 * Returns the renderer of the module group.
+	 * 
+	 * @return
+	 */
+	private ModuleGroupRenderer getModuleGroupRenderer() {
+
+		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.MODULE_GROUP_RENDERER);
+		if (renderer == null) {
+			renderer = new ModuleGroupRenderer();
+		}
+		return renderer;
+
+	}
+
+	/**
+	 * Returns the renderer of the module group.
+	 * 
+	 * @return
+	 */
+	private EmbeddedBorderRenderer getLnfBorderRenderer() {
+
+		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+		if (renderer == null) {
+			renderer = new EmbeddedBorderRenderer();
+		}
+		return renderer;
+
+	}
+
+	private int getModuleGroupPadding() {
+		return getModuleGroupRenderer().getModuleGroupPadding() + getLnfBorderRenderer().getBorderWidth();
 	}
 
 	@Override

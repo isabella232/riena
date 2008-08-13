@@ -18,6 +18,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
@@ -28,10 +29,6 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -50,11 +47,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	private static final int MODULE_GROUP_GAP = 3;
 
 	private ModuleGroupNode moduleGroupNode;
-	private ModuleView openView;
 	private ModuleGroupListener moduleGroupListener;
 	private ModuleListener moduleListener;
 	private PaintDelegation paintDelegation;
-	private SelectionListener selectionListener;
 	private List<IComponentUpdateListener> updateListeners;
 	private Map<ModuleNode, ModuleView> registeredModuleViews;
 
@@ -63,6 +58,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		updateListeners = new ArrayList<IComponentUpdateListener>();
 		registeredModuleViews = new LinkedHashMap<ModuleNode, ModuleView>();
 		new ModuleGroupToolTip(this);
+		setData(getClass().getName());
 	}
 
 	protected List<ModuleView> getAllModuleViews() {
@@ -80,15 +76,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		return null;
 	}
 
-	private void setInitialOpenView() {
-		for (ModuleView moduleView : getAllModuleViews()) {
-			if (moduleView.isActivated()) {
-				openView = moduleView;
-				break;
-			}
-		}
-	}
-
 	/**
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
 	 */
@@ -103,15 +90,11 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	protected void addListeners() {
 
 		moduleGroupListener = new ModuleGroupListener();
-		moduleListener = new ModuleListener();
 		getNavigationNode().addListener(moduleGroupListener);
+		moduleListener = new ModuleListener();
 
 		paintDelegation = new PaintDelegation();
 		addPaintListener(paintDelegation);
-		selectionListener = new SelectionListener();
-		addMouseListener(selectionListener);
-		addMouseTrackListener(selectionListener);
-		addMouseMoveListener(selectionListener);
 	}
 
 	/**
@@ -120,9 +103,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	public void unbind() {
 		getNavigationNode().removeListener(moduleGroupListener);
 		removePaintListener(paintDelegation);
-		removeMouseListener(selectionListener);
-		removeMouseTrackListener(selectionListener);
-		removeMouseMoveListener(selectionListener);
 		moduleGroupNode = null;
 	}
 
@@ -134,83 +114,25 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 	}
 
 	/**
-	 * 
+	 * The Listener fires updates, if a child (sub-module) is added or removed.
 	 */
-	protected void updateActivityToUi() {
-		if (moduleGroupNode.isActivated()) {
-			for (ModuleView child : getAllModuleViews()) {
-				if (child.isActivated()) {
-					openModuleView(child);
-					break;
-				}
-			}
-			fireUpdated(moduleGroupNode);
-		}
-	}
-
-	/**
-	 * Opens the given item.
-	 * 
-	 * @param moduleView
-	 *            - item to open
-	 */
-	protected void openModuleView(ModuleView moduleView) {
-
-		hidePrevious();
-		if (moduleView != openView) {
-			openView = moduleView;
-		}
-
-		// TODO else if (true) {
-		// openView = null;
-		// }
-		redraw();
-
-		moduleView.getNavigationNode().activate();
-
-	}
-
-	/**
-	 * Closes the current open module view.<br>
-	 * (Hides the body of the module view)
-	 */
-	public void closeCurrent() {
-		if (openView != null) {
-			hidePrevious();
-			openView = null;
-			redraw();
-		}
-
-	}
-
-	/**
-	 * Hides the current open item.<br>
-	 * (Hides the body of the module view)
-	 */
-	private void hidePrevious() {
-		// init openview at start
-		if (openView != null) {
-			openView.hideBody();
-		}
-
-	}
-
 	private final class ModuleListener extends ModuleNodeListener {
+
 		@Override
-		public void activated(IModuleNode source) {
-			super.activated(source);
-			updateActivityToUi();
+		public void childAdded(IModuleNode source, ISubModuleNode child) {
+			super.childAdded(source, child);
+			fireUpdated(child);
 		}
 
 		@Override
-		public void deactivated(IModuleNode source) {
-			super.deactivated(source);
-			updateActivityToUi();
+		public void childRemoved(IModuleNode source, ISubModuleNode child) {
+			super.childRemoved(source, child);
+			fireUpdated(child);
 		}
 	}
 
 	/**
-	 * The Listener fires updates, if a child is added or removed.
+	 * The Listener fires updates, if a child (module) is added or removed.
 	 */
 	private final class ModuleGroupListener extends ModuleGroupNodeListener {
 
@@ -219,28 +141,15 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 			fireUpdated(child);
 		}
 
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
-		 *      org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void childRemoved(IModuleGroupNode source, IModuleNode child) {
-			if ((openView != null) && (openView.getNavigationNode() == child)) {
-				closeCurrent();
-			}
 			unregisterModuleView(child);
 			fireUpdated(child);
 		}
 
 		@Override
-		public void activated(IModuleGroupNode source) {
-			updateActivityToUi();
-		}
-
-		@Override
 		public void deactivated(IModuleGroupNode source) {
 			super.deactivated(source);
-			hidePrevious();
 			redraw();
 		}
 
@@ -326,132 +235,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 
 	}
 
-	/**
-	 * After any mouse operation a method of this listener is called. The item
-	 * under the current mouse position is selected, pressed or "hovered".
-	 */
-	private class SelectionListener implements MouseListener, MouseTrackListener, MouseMoveListener {
-
-		private ModuleView mouseDownItem;
-		private ModuleView mouseHoverItem;
-
-		/**
-		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseUp(MouseEvent e) {
-
-			if (mouseDownItem == null) {
-				return;
-			}
-
-			Point point = new Point(e.x, e.y);
-			ModuleView moduleView = getClosingModuleView(point);
-			if (moduleView == mouseDownItem) {
-				IModuleNode node = moduleView.getNavigationNode();
-				if (!node.isDisposed()) {
-					node.dispose();
-				}
-			} else {
-				moduleView = getItem(point);
-				if (moduleView == mouseDownItem) {
-					openModuleView(moduleView);
-				}
-			}
-			fireUpdated(getNavigationNode());
-			setMouseNotDown();
-
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseDown(MouseEvent e) {
-			mouseDownItem = getItem(new Point(e.x, e.y));
-			if (mouseDownItem != null) {
-				mouseDownItem.setPressed(true);
-			}
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseDoubleClick(MouseEvent e) {
-			// nothing to do
-		}
-
-		/**
-		 * Sets everything in such a way that no mouse item is "down".
-		 */
-		private void setMouseNotDown() {
-			if (mouseDownItem != null) {
-				mouseDownItem.setPressed(false);
-			}
-			mouseDownItem = null;
-		}
-
-		/**
-		 * Sets everything in such a way that no mouse item is "hover".
-		 */
-		private void setMouseNotHover() {
-			if (mouseHoverItem != null) {
-				mouseHoverItem.setHover(false);
-			}
-			mouseHoverItem = null;
-		}
-
-		/**
-		 * Switches the hover state of the item under the given position.
-		 * 
-		 * @param x
-		 *            - x coordinate of the position
-		 * @param y
-		 *            - y coordinate of the position
-		 */
-		private void hoverOrNot(int x, int y) {
-
-			ModuleView item = getItem(new Point(x, y));
-			if ((item == null) || (item != mouseDownItem)) {
-				setMouseNotDown();
-			}
-			if ((item == null) || (item != mouseHoverItem)) {
-				setMouseNotHover();
-				mouseHoverItem = item;
-				if (mouseHoverItem != null) {
-					mouseHoverItem.setHover(true);
-				}
-			}
-
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseEnter(MouseEvent e) {
-			hoverOrNot(e.x, e.y);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseExit(MouseEvent e) {
-			hoverOrNot(e.x, e.y);
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseHover(MouseEvent e) {
-		}
-
-		/**
-		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseMove(MouseEvent e) {
-			hoverOrNot(e.x, e.y);
-		}
-
-	}
-
 	private class PaintDelegation implements PaintListener {
 
 		/**
@@ -486,10 +269,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		registeredModuleViews.put(moduleView.getNavigationNode(), moduleView);
 		// observer moduleView for expand/collapse
 		moduleView.addUpdateListener(new ModuleViewObserver());
-		if (moduleGroupNode.isActivated()) {
-			setInitialOpenView();
-		}
-
 	}
 
 	/**

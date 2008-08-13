@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 compeople AG and others.
+ * Copyright (c) 2007, 2008 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,15 +8,26 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.listener;
+package org.eclipse.riena.internal.ui.ridgets.swt;
 
 /**
- * Listener notifies, if something with the frame happens
+ *
  */
-public interface IWindowRidgetListener {
+public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
 
-	void closed();
+	/**
+	 * @return the closeable
+	 */
+	public boolean isCloseable() {
+		return getUIControl().isCloseable();
+	}
 
-	void activated();
+	/**
+	 * @param closeable
+	 *            the closeable to set
+	 */
+	public void setCloseable(boolean closeable) {
+		getUIControl().setCloseable(closeable);
+	}
 
 }

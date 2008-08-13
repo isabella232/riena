@@ -22,8 +22,10 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
@@ -35,6 +37,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
@@ -45,6 +48,8 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class ModuleView implements INavigationNodeView<SWTModuleController, ModuleNode> {
 
+	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
+
 	private AbstractViewBindingDelegate binding;
 	private Composite parent;
 	private Composite body;
@@ -52,8 +57,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private ModuleNode moduleNode;
 	private boolean pressed;
 	private boolean hover;
-	private Rectangle bounds;
-
+	private ModuleTitleBar title;
 	private NavigationTreeObserver navigationTreeObserver;
 	private List<IComponentUpdateListener> updateListeners;
 
@@ -78,62 +82,59 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	private void buildView() {
 
+		Control[] children = getParent().getChildren();
+
+		title = new ModuleTitleBar(getParent(), SWT.NONE);
+		binding.addUIControl(title, WINDOW_RIDGET);
+		FormData layoutData = new FormData();
+		if (children.length == 0) {
+			layoutData.top = new FormAttachment(0, 0);
+		} else {
+			layoutData.top = new FormAttachment(children[children.length - 1], getMouduleGroupRenderer()
+					.getModuleModuleGap());
+		}
+		layoutData.left = new FormAttachment(0, 0);
+		layoutData.right = new FormAttachment(100, 0);
+		layoutData.height = title.getSize().y;
+		title.setLayoutData(layoutData);
+
 		body = new Composite(getParent(), SWT.DOUBLE_BUFFERED);
-		// body.setLayout(new FillLayout());
-		body.setLayout(new FormLayout());
-		createSubModuleTree();
+		updateModuleView();
+		body.setLayoutData(layoutData);
+
+		createBodyContent(body);
 
 	}
 
-	public Composite getBody() {
+	private Composite getBody() {
 		return body;
 	}
 
 	/**
-	 * Creates the tree for the sub-modules.
+	 * Creates the content of the module body (default: the tree for the
+	 * sub-modules).
+	 * 
+	 * @param parent
+	 *            - body of the module
 	 */
-	protected void createSubModuleTree() {
+	protected void createBodyContent(Composite parent) {
 
-		subModuleTree = new Tree(getBody(), SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
+		parent.setLayout(new FormLayout());
+
+		subModuleTree = new Tree(parent, SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
 		subModuleTree.setLinesVisible(false);
 		binding.addUIControl(subModuleTree, "tree"); //$NON-NLS-1$
-		setLayoutData(subModuleTree);
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(0, 0);
+		formData.left = new FormAttachment(0, 0);
+		formData.right = new FormAttachment(100, 0);
+		formData.bottom = new FormAttachment(100, 0);
+		subModuleTree.setLayoutData(formData);
 
 		addListeners();
 
 		new SubModuleToolTip(subModuleTree);
 		setTreeBackGround();
-
-	}
-
-	/**
-	 * Hides the body (that contains the tree) of the module.
-	 */
-	public void hideBody() {
-		if (!getBody().isDisposed()) {
-			getBody().setVisible(false);
-		}
-	}
-
-	/**
-	 * The top and left position of the tree is outside the bounds of the body.
-	 * So <i>THE</i> root node of the tree is not visible. In SWT it is not
-	 * possible to hide the root of a tree.
-	 * 
-	 * @param tree
-	 */
-	private void setLayoutData(Tree tree) {
-
-		FormData formData = new FormData();
-		int itemHeight = subModuleTree.getItemHeight();
-		itemHeight = 0;
-		formData.top = new FormAttachment(getBody(), -itemHeight, 0);
-		int indentation = 20; // TODO don't use a fix value
-		indentation = 0;
-		formData.left = new FormAttachment(getBody(), -indentation, 0);
-		formData.right = new FormAttachment(100, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		subModuleTree.setLayoutData(formData);
 
 	}
 
@@ -378,22 +379,18 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	private class ModuleListener extends ModuleNodeListener {
 
+		/**
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
+		 */
 		@Override
-		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
-			resize();
+		public void activated(IModuleNode source) {
+			super.activated(source);
+			updateModuleView();
 		}
 
-		@Override
-		public void childRemoved(IModuleNode source, ISubModuleNode childRemoved) {
-			resize();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed
-		 * (org.eclipse.riena.navigation.INavigationNode)
+		/**
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed
+		 *      (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
 		public void disposed(IModuleNode source) {
@@ -425,7 +422,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * 
 	 * @return tree
 	 */
-	public Tree getTree() {
+	private Tree getTree() {
 		return subModuleTree;
 	}
 
@@ -436,32 +433,34 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	public int getOpenHeight() {
 		IModuleNode moduleNode = getNavigationNode();
-		int depth = moduleNode.calcDepth();
-		if (depth == 0) {
-			return 0;
+		if ((moduleNode != null) && (moduleNode.isActivated())) {
+			int depth = moduleNode.calcDepth();
+			if (depth == 0) {
+				return 0;
+			} else {
+				int itemHeight = getTree().getItemHeight();
+				return depth * itemHeight + 1;
+			}
 		} else {
-			int itemHeight = getTree().getItemHeight();
-			return depth * itemHeight + 1;
+			return 0;
 		}
+
 	}
 
 	/**
-	 * Returns a rectangle describing the size and location of this module item.
+	 * Returns a rectangle describing the size and location of this module.
 	 * 
 	 * @return the bounds
 	 */
 	public Rectangle getBounds() {
-		return bounds;
-	}
 
-	/**
-	 * Sets a rectangle describing the size and location of this module item.
-	 * 
-	 * @param bounds
-	 *            the bounds to set
-	 */
-	public void setBounds(Rectangle bounds) {
-		this.bounds = bounds;
+		Rectangle bounds = title.getBounds();
+
+		if (getNavigationNode().isActivated()) {
+			bounds.height += getBody().getSize().y;
+		}
+
+		return bounds;
 	}
 
 	/**
@@ -523,6 +522,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return the icon
 	 */
 	public String getIcon() {
+		if (getNavigationNode() == null) {
+			return null;
+		}
 		return getNavigationNode().getIcon();
 	}
 
@@ -530,6 +532,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return the activated
 	 */
 	public boolean isActivated() {
+		if (getNavigationNode() == null) {
+			return false;
+		}
 		return getNavigationNode().isActivated();
 	}
 
@@ -537,6 +542,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return the closeable
 	 */
 	public boolean isCloseable() {
+		if (getNavigationNode() == null) {
+			return false;
+		}
 		return getNavigationNode().isCloseable();
 	}
 
@@ -544,6 +552,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return the label
 	 */
 	public String getLabel() {
+		if (getNavigationNode() == null) {
+			return null;
+		}
 		return getNavigationNode().getLabel();
 	}
 
@@ -558,6 +569,42 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	public void addUpdateListener(IComponentUpdateListener listener) {
 		updateListeners.add(listener);
+	}
+
+	private ModuleGroupRenderer getMouduleGroupRenderer() {
+
+		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.MODULE_GROUP_RENDERER);
+		if (renderer == null) {
+			renderer = new ModuleGroupRenderer();
+		}
+		return renderer;
+
+	}
+
+	public void updateModuleView() {
+
+		boolean active = false;
+		if (getNavigationNode() != null) {
+			active = getNavigationNode().isActivated();
+		}
+
+		if (!SwtUtilities.isDisposed(getBody())) {
+			getBody().setVisible(active);
+			int height = getOpenHeight();
+			if (getBody().getSize().y != height) {
+				FormData formData = new FormData();
+				formData.top = new FormAttachment(title);
+				formData.left = new FormAttachment(0, 0);
+				formData.right = new FormAttachment(100, 0);
+				formData.height = height;
+				getBody().setLayoutData(formData);
+			}
+		}
+
+		getParent().layout();
+		title.setActive(active);
+
 	}
 
 }

@@ -21,7 +21,7 @@ public class ExampleModuleGroupRenderer extends ModuleGroupRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer#getModuleGroupPadding()
 	 */
 	@Override
-	protected int getModuleGroupPadding() {
+	public int getModuleGroupPadding() {
 		return 0;
 	}
 
@@ -29,7 +29,7 @@ public class ExampleModuleGroupRenderer extends ModuleGroupRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer#getModuleModuleGap()
 	 */
 	@Override
-	protected int getModuleModuleGap() {
+	public int getModuleModuleGap() {
 		return 0;
 	}
 

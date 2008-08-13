@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
@@ -35,6 +36,8 @@ public class EmbeddedTitleBar extends Canvas {
 	private Image image;
 	private String title;
 
+	protected ListenerList<IEmbeddedTitleBarListener> titleBarListeners;
+
 	/**
 	 * Constructs a new instance of {@code EmbeddedTitleBar} given its parent
 	 * and a style value describing its behavior and appearance.
@@ -48,12 +51,13 @@ public class EmbeddedTitleBar extends Canvas {
 	public EmbeddedTitleBar(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		addListeners();
+		titleBarListeners = new ListenerList<IEmbeddedTitleBarListener>(IEmbeddedTitleBarListener.class);
 	}
 
 	/**
 	 * Adds a {@code PaintListener} to this {@code EmbeddedTitleBar}.
 	 */
-	private void addListeners() {
+	protected void addListeners() {
 
 		addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
@@ -81,7 +85,7 @@ public class EmbeddedTitleBar extends Canvas {
 		getLnfTitlebarRenderer().setHover(isHover());
 		getLnfTitlebarRenderer().setImage(getImage());
 		Point titlebarSize = getLnfTitlebarRenderer().computeSize(gc, getBounds().width, 0);
-		Rectangle titlebarBounds = new Rectangle(getBounds().x, getBounds().y, titlebarSize.x, titlebarSize.y);
+		Rectangle titlebarBounds = new Rectangle(getBounds().x, 0, titlebarSize.x, titlebarSize.y);
 		getLnfTitlebarRenderer().setBounds(titlebarBounds);
 		getLnfTitlebarRenderer().paint(gc, getTitle());
 
@@ -92,7 +96,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * 
 	 * @return renderer
 	 */
-	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
+	protected EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
 		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
@@ -101,6 +105,14 @@ public class EmbeddedTitleBar extends Canvas {
 		}
 		return renderer;
 
+	}
+
+	public void addEmbeddedTitleBarListener(IEmbeddedTitleBarListener listener) {
+		titleBarListeners.add(listener);
+	}
+
+	public void removeEmbeddedTitleBarListener(IEmbeddedTitleBarListener listener) {
+		titleBarListeners.remove(listener);
 	}
 
 	/**
@@ -135,7 +147,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the active to set
 	 */
 	public void setActive(boolean active) {
-		this.active = active;
+		if (this.active != active) {
+			this.active = active;
+			redraw();
+		}
 	}
 
 	/**
@@ -150,7 +165,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the pressed to set
 	 */
 	public void setPressed(boolean pressed) {
-		this.pressed = pressed;
+		if (this.pressed != pressed) {
+			this.pressed = pressed;
+			redraw();
+		}
 	}
 
 	/**
@@ -165,7 +183,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the hover to set
 	 */
 	public void setHover(boolean hover) {
-		this.hover = hover;
+		if (this.hover != hover) {
+			this.hover = hover;
+			redraw();
+		}
 	}
 
 	/**
@@ -211,6 +232,19 @@ public class EmbeddedTitleBar extends Canvas {
 	 */
 	public Image getImage() {
 		return image;
+	}
+
+	protected boolean isOverClose(Point point) {
+
+		if (!isCloseable()) {
+			return false;
+		}
+
+		GC gc = new GC(this);
+		Rectangle closeBounds = getLnfTitlebarRenderer().computeCloseButtonBounds();
+		gc.dispose();
+		return closeBounds.contains(point);
+
 	}
 
 }

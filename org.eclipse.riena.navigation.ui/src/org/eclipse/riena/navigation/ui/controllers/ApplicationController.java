@@ -76,6 +76,9 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	private static class FrameListener implements IWindowRidgetListener {
 		public void closed() {
 		}
+
+		public void activated() {
+		}
 	}
 
 	/**
