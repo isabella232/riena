@@ -32,7 +32,7 @@ public class NavigateNodeBuilder extends NavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(INavigationNodeId nodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId, "Navigate"); //$NON-NLS-1$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
 		IModuleNode module = new ModuleNode(null, "Navigate"); //$NON-NLS-1$
 		module.setIcon(createIconPath(IExampleIcons.ICON_GREEN_LED));

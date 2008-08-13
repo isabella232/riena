@@ -33,7 +33,7 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 	 */
 	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId, "Playground"); //$NON-NLS-1$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 
 		IModuleNode playgroundModule = new ModuleNode(null, "Playground"); //$NON-NLS-1$
 		moduleGroup.addChild(playgroundModule);

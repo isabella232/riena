@@ -32,7 +32,7 @@ public class UIProcessNodeBuilder implements INavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId, "UIProcess"); //$NON-NLS-1$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 
 		IModuleNode uiProcessModule = new ModuleNode(null, "UIProcess"); //$NON-NLS-1$
 		moduleGroup.addChild(uiProcessModule);

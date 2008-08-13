@@ -175,7 +175,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleGroupNode createModuleGroupNode() {
 
-		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(null, "Added child Module Group to SubApplication"); //$NON-NLS-1$
+		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(null);
 		IModuleNode newModuleNode = createModuleNode();
 		newModuleGroupNode.addChild(newModuleNode);
 

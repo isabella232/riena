@@ -19,42 +19,39 @@ import org.osgi.framework.Bundle;
  * This class controls all aspects of the application's execution
  */
 public class Application extends SwtApplication {
-	
+
 	@Override
 	protected IApplicationModel createModel() {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
-		
+
 		ApplicationModel app = new ApplicationModel(null, "Riena Mail");
-		
+
 		ISubApplicationNode subApp = new SubApplicationNode(null, "Your Mail");
 		app.addChild(subApp);
 		presentation.present(subApp, "rcp.mail.perspective");
-		
-		IModuleGroupNode groupMailboxes = new ModuleGroupNode(null, "Mailboxes");
+
+		IModuleGroupNode groupMailboxes = new ModuleGroupNode(null);
 		subApp.addChild(groupMailboxes);
-		
+
 		IModuleNode moduleAccount1 = createModule("me@this.com", groupMailboxes);
 		presentation.registerView(View.ID, false);
 		createSubMobule("Inbox", moduleAccount1, View.ID);
 		createSubMobule("Drafts", moduleAccount1, View.ID);
 		createSubMobule("Sent", moduleAccount1, View.ID);
-		
+
 		IModuleNode moduleAccount2 = createModule("other@aol.com", groupMailboxes);
 		createSubMobule("Inbox", moduleAccount2, View.ID);
-		
- 		return app;
+
+		return app;
 	}
 
-	private IModuleNode createModule(String caption,
-			                         IModuleGroupNode parent) {
+	private IModuleNode createModule(String caption, IModuleGroupNode parent) {
 		IModuleNode module = new ModuleNode(null, caption);
 		parent.addChild(module);
 		return module;
 	}
-	
-	private ISubModuleNode createSubMobule(String caption, 
-			                               IModuleNode parent, 
-			                               String viewId) {
+
+	private ISubModuleNode createSubMobule(String caption, IModuleNode parent, String viewId) {
 		ISubModuleNode subModule = new SubModuleNode(null, caption);
 		parent.addChild(subModule);
 		SwtPresentationManagerAccessor.getManager().present(subModule, viewId);

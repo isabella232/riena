@@ -40,7 +40,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		presentation.present(subApplication, "subapplication.1"); //$NON-NLS-1$
 		subApplication.setSelected(true);
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(null, "Group 1.1"); //$NON-NLS-1$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
 		subApplication.addChild(moduleGroup);
 		IModuleNode module = new ModuleNode(null, "Module 1.1.1"); //$NON-NLS-1$
 		module.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
@@ -67,7 +67,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.navigation"), "Navigation"); //$NON-NLS-1$ //$NON-NLS-2$
 		module.addChild(subModule);
 
-		moduleGroup = new ModuleGroupNode(null, "Group 1.2"); //$NON-NLS-1$
+		moduleGroup = new ModuleGroupNode(null);
 		moduleGroup.setPresentWithSingleModule(false);
 		subApplication.addChild(moduleGroup);
 		module = new ModuleNode(null, "Module 1.2.1 (not closeable)"); //$NON-NLS-1$

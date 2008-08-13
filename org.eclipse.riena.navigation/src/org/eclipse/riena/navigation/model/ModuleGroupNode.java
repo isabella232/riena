@@ -33,19 +33,6 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 		super(nodeId);
 	}
 
-	/**
-	 * Creates a ModuleGroupNode.
-	 * 
-	 * @param nodeId
-	 *            Identifies the node in the application model tree.
-	 * @param label
-	 *            Label of the module group (not displayed). TODO remove this
-	 *            constructor.
-	 */
-	public ModuleGroupNode(INavigationNodeId nodeId, String label) {
-		super(nodeId, label);
-	}
-
 	public boolean isPresentWithSingleModule() {
 		return presentWithSingleModule;
 	}

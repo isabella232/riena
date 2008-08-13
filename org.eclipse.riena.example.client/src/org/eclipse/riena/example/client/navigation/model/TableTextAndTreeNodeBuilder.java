@@ -28,7 +28,7 @@ public class TableTextAndTreeNodeBuilder implements INavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public IModuleGroupNode buildNode(INavigationNodeId presentationId, NavigationArgument navigationArgument) {
-		IModuleGroupNode node = new ModuleGroupNode(presentationId, "Table,Text&Tree"); //$NON-NLS-1$
+		IModuleGroupNode node = new ModuleGroupNode(presentationId);
 		IModuleNode module = new ModuleNode(null, "Table,Text&Tree"); //$NON-NLS-1$
 		node.addChild(module);
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$

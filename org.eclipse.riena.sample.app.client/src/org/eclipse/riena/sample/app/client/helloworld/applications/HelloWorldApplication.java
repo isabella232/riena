@@ -54,7 +54,7 @@ public class HelloWorldApplication extends SwtApplication {
 		presentation.present(subApplication, "helloWorldSubApplication");
 		application.addChild(subApplication);
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(null, "ModuleGroup 1");
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
 		subApplication.addChild(moduleGroup);
 
 		// simple hello world
@@ -87,7 +87,7 @@ public class HelloWorldApplication extends SwtApplication {
 		ISubApplicationNode subApplication2 = new SubApplicationNode(null, "Simple Subapplication");
 		presentation.present(subApplication2, "org.eclipse.riena.sample.app.client.second");
 		application.addChild(subApplication2);
-		moduleGroup = new ModuleGroupNode(null, "ModuleGroup 1");
+		moduleGroup = new ModuleGroupNode(null);
 		subApplication2.addChild(moduleGroup);
 		IModuleNode module = new ModuleNode(null, "Module 1");
 		moduleGroup.addChild(module);
@@ -103,7 +103,9 @@ public class HelloWorldApplication extends SwtApplication {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#getBundle()
+	 * @see
+	 * org.eclipse.riena.navigation.ui.swt.application.SwtApplication#getBundle
+	 * ()
 	 */
 	@Override
 	protected Bundle getBundle() {

@@ -29,7 +29,7 @@ public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId, "Shared View Demo"); //$NON-NLS-1$
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 
 		IModuleNode sharedViewModule = new ModuleNode(null, "Shared View Demo"); //$NON-NLS-1$
 		sharedViewModule.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
