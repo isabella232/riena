@@ -11,8 +11,8 @@
 package org.eclipse.riena.ui.swt.uiprocess;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -29,7 +29,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	private UiProcessWindow processWindow;
 
-	private ListenerList cancelListeners = new ListenerList();
+	private ListenerList<ICancelListener> cancelListeners = new ListenerList<ICancelListener>(ICancelListener.class);
 
 	private ProcessUpdateThread processUpdateThread;
 
@@ -207,8 +207,8 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * @param windowClosing
 	 */
 	protected void fireCanceled(boolean windowClosing) {
-		for (Object listener : cancelListeners.getListeners()) {
-			ICancelListener.class.cast(listener).canceled(windowClosing);
+		for (ICancelListener listener : cancelListeners.getListeners()) {
+			listener.canceled(windowClosing);
 		}
 	}
 
