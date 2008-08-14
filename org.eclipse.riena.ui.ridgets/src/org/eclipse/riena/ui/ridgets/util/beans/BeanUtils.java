@@ -96,7 +96,7 @@ public final class BeanUtils {
 	 * </pre>
 	 * 
 	 * @param clazz
-	 * 		the class to test
+	 *            the class to test
 	 * @return true if the class supports bound properties, false otherwise
 	 */
 	public static boolean supportsBoundProperties(Class clazz) {
@@ -109,12 +109,12 @@ public final class BeanUtils {
 	 * behavior.
 	 * 
 	 * @param bean
-	 * 		the bean that holds the property
+	 *            the bean that holds the property
 	 * @param propertyName
-	 * 		the name of the Bean property
+	 *            the name of the Bean property
 	 * @return the <code>PropertyDescriptor</code>
 	 * @throws IntrospectionException
-	 * 		if an exception occurs during introspection.
+	 *             if an exception occurs during introspection.
 	 */
 	public static PropertyDescriptor getPropertyDescriptor(Object bean, String propertyName)
 			throws IntrospectionException {
@@ -155,7 +155,7 @@ public final class BeanUtils {
 	 * Returns a String which capitalizes the first letter of the string.
 	 * 
 	 * @param name
-	 * 		The string to capitalize.
+	 *            The string to capitalize.
 	 * @return The capitalized string.
 	 */
 	public static String capitalize(String name) {
@@ -172,16 +172,16 @@ public final class BeanUtils {
 	 * Bean introspection is used to determine the property descriptor.
 	 * 
 	 * @param bean
-	 * 		the bean that holds the property
+	 *            the bean that holds the property
 	 * @param propertyName
-	 * 		the name of the property to be accessed
+	 *            the name of the property to be accessed
 	 * @param getterName
-	 * 		the optional name of the property's getter
+	 *            the optional name of the property's getter
 	 * @param setterName
-	 * 		the optional name of the property's setter
+	 *            the optional name of the property's setter
 	 * @return the <code>PropertyDescriptor</code>
 	 * @throws PropertyNotFoundFailure
-	 * 		if the property could not be found
+	 *             if the property could not be found
 	 */
 	public static PropertyDescriptor getPropertyDescriptor(Object bean, String propertyName, String getterName,
 			String setterName) {
@@ -213,7 +213,7 @@ public final class BeanUtils {
 	 * PropertyChangeListener to instances of the given class.
 	 * 
 	 * @param clazz
-	 * 		the class that provides the adder method
+	 *            the class that provides the adder method
 	 * @return the method that adds multicast PropertyChangeListeners
 	 */
 	public static Method getPCLAdder(Class clazz) {
@@ -229,7 +229,7 @@ public final class BeanUtils {
 	 * PropertyChangeListener from instances of the given class.
 	 * 
 	 * @param clazz
-	 * 		the class that provides the remover method
+	 *            the class that provides the remover method
 	 * @return the method that removes multicast PropertyChangeListeners
 	 */
 	public static Method getPCLRemover(Class clazz) {
@@ -245,7 +245,7 @@ public final class BeanUtils {
 	 * specified property name to instances of the given class.
 	 * 
 	 * @param clazz
-	 * 		the class that provides the adder method
+	 *            the class that provides the adder method
 	 * @return the method that adds the PropertyChangeListeners
 	 */
 	public static Method getNamedPCLAdder(Class clazz) {
@@ -261,7 +261,7 @@ public final class BeanUtils {
 	 * a specified property name from instances of the given class.
 	 * 
 	 * @param clazz
-	 * 		the class that provides the remover method
+	 *            the class that provides the remover method
 	 * @return the method that removes the PropertyChangeListeners
 	 */
 	public static Method getNamedPCLRemover(Class clazz) {
@@ -279,13 +279,13 @@ public final class BeanUtils {
 	 * section 7.4.1 of the Java Beans specification for details.
 	 * 
 	 * @param bean
-	 * 		the bean to add the property change listener from
+	 *            the bean to add the property change listener from
 	 * @param listener
-	 * 		the listener to remove
+	 *            the listener to remove
 	 * @throws NullPointerException
-	 * 		if the bean or listener is null
+	 *             if the bean or listener is null
 	 * @throws PropertyNotBindableFailure
-	 * 		if the property change handler cannot be added successfully
+	 *             if the property change handler cannot be added successfully
 	 */
 	public static void addPropertyChangeListener(Object bean, PropertyChangeListener listener) {
 		if (listener == null) {
@@ -329,15 +329,15 @@ public final class BeanUtils {
 	 * </pre>
 	 * 
 	 * @param bean
-	 * 		the bean to add a property change handler
+	 *            the bean to add a property change handler
 	 * @param propertyName
-	 * 		the name of the property to be observed
+	 *            the name of the property to be observed
 	 * @param listener
-	 * 		the listener to add
+	 *            the listener to add
 	 * @throws NullPointerException
-	 * 		if the bean, propertyName or listener is null
+	 *             if the bean, propertyName or listener is null
 	 * @throws PropertyNotBindableFailure
-	 * 		if the property change handler cannot be added successfully
+	 *             if the property change handler cannot be added successfully
 	 */
 	public static void addPropertyChangeListener(Object bean, String propertyName, PropertyChangeListener listener) {
 
@@ -368,15 +368,15 @@ public final class BeanUtils {
 	 * Removes a property change listener from the given bean.
 	 * 
 	 * @param bean
-	 * 		the bean to remove the property change listener from
+	 *            the bean to remove the property change listener from
 	 * @param listener
-	 * 		the listener to remove
+	 *            the listener to remove
 	 * @throws NullPointerException
-	 * 		if the bean or listener is null
+	 *             if the bean or listener is null
 	 * @throws PropertyUnboundFailure
-	 * 		if the bean does not support bound properties
+	 *             if the bean does not support bound properties
 	 * @throws PropertyNotBindableFailure
-	 * 		if the property change handler cannot be removed successfully
+	 *             if the property change handler cannot be removed successfully
 	 */
 	public static void removePropertyChangeListener(Object bean, PropertyChangeListener listener) {
 		Class beanClass = bean.getClass();
@@ -410,15 +410,15 @@ public final class BeanUtils {
 	 * </pre>
 	 * 
 	 * @param bean
-	 * 		the bean to remove the property change listener from
+	 *            the bean to remove the property change listener from
 	 * @param propertyName
-	 * 		the name of the observed property
+	 *            the name of the observed property
 	 * @param listener
-	 * 		the listener to remove
+	 *            the listener to remove
 	 * @throws NullPointerException
-	 * 		if the bean, propertyName or listener is null
+	 *             if the bean, propertyName or listener is null
 	 * @throws PropertyNotBindableFailure
-	 * 		if the property change handler cannot be removed successfully
+	 *             if the property change handler cannot be removed successfully
 	 */
 	public static void removePropertyChangeListener(Object bean, String propertyName, PropertyChangeListener listener) {
 
@@ -450,12 +450,12 @@ public final class BeanUtils {
 	 * Returns the value of the specified property of the given non-null bean.
 	 * 
 	 * @param bean
-	 * 		the bean to read the value from
+	 *            the bean to read the value from
 	 * @param propertyDescriptor
-	 * 		describes the property to be read
+	 *            describes the property to be read
 	 * @return the bean's property value
 	 * @throws NullPointerException
-	 * 		if the bean is null
+	 *             if the bean is null
 	 */
 	public static Object getValue(Object bean, PropertyDescriptor propertyDescriptor) {
 		if (bean == null) {
@@ -468,6 +468,9 @@ public final class BeanUtils {
 		}
 
 		try {
+			if (!getter.isAccessible()) {
+				getter.setAccessible(true);
+			}
 			return getter.invoke(bean);
 		} catch (InvocationTargetException e) {
 			throw PropertyAccessFailure.createReadAccessException(bean, propertyDescriptor, e);
@@ -482,13 +485,13 @@ public final class BeanUtils {
 	 * read-only.
 	 * 
 	 * @param bean
-	 * 		the bean that holds the adapted property
+	 *            the bean that holds the adapted property
 	 * @param propertyDescriptor
-	 * 		describes the property to be set
+	 *            describes the property to be set
 	 * @param newValue
-	 * 		the property value to be set
+	 *            the property value to be set
 	 * @throws NullPointerException
-	 * 		if the bean is null
+	 *             if the bean is null
 	 */
 	public static void setValue(Object bean, PropertyDescriptor propertyDescriptor, Object newValue) {
 		if (bean == null) {
@@ -502,6 +505,9 @@ public final class BeanUtils {
 			throw new UnsupportedOperationException("The property '" + propertyDescriptor.getName() + "' is read-only."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		try {
+			if (!setter.isAccessible()) {
+				setter.setAccessible(true);
+			}
 			setter.invoke(bean, new Object[] { newValue });
 		} catch (InvocationTargetException e) {
 			throw PropertyAccessFailure.createWriteAccessException(bean, newValue, propertyDescriptor, e);
@@ -518,9 +524,9 @@ public final class BeanUtils {
 	 * calls the given method of the object
 	 * 
 	 * @param bean
-	 * 		the bean that holds the adapted property
+	 *            the bean that holds the adapted property
 	 * @param methodName
-	 * 		the method name to call
+	 *            the method name to call
 	 */
 	public static void callVoidMethod(Object bean, String methodName) {
 		try {
@@ -537,11 +543,11 @@ public final class BeanUtils {
 	 * calls the given method of the object
 	 * 
 	 * @param bean
-	 * 		the bean that holds the adapted property
+	 *            the bean that holds the adapted property
 	 * @param methodName
-	 * 		the method name to call
+	 *            the method name to call
 	 * @param param
-	 * 		the param to pass
+	 *            the param to pass
 	 */
 	public static void callSingleParamMethod(Object bean, String methodName, Object param) {
 		try {
@@ -560,13 +566,13 @@ public final class BeanUtils {
 	 * Calls the given method of the object
 	 * 
 	 * @param bean
-	 * 		- the bean that holds the adapted property
+	 *            - the bean that holds the adapted property
 	 * @param methodName
-	 * 		- the method name to call
+	 *            - the method name to call
 	 * @param paramClass
-	 * 		- the the class of the param
+	 *            - the the class of the param
 	 * @param param
-	 * 		- the param to pass
+	 *            - the param to pass
 	 */
 	public static void callSingleParamMethod(Object bean, String methodName, Class paramClass, Object param) {
 
