@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
@@ -29,6 +28,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
 /**
@@ -66,7 +66,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 
 		final IMultipleChoiceRidget compositeCarPlates = (IMultipleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
-		compositeCarPlates.bindToModel(toList(carPlates), BeansObservables.observeList(Realm.getDefault(), carConfig,
+		compositeCarPlates.bindToModel(toList(carPlates), new UnboundPropertyWritableList(carConfig,
 				CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();

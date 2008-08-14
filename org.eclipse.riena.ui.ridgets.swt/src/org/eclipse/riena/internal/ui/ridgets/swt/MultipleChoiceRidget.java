@@ -18,16 +18,15 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
-import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.beans.ListBean;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -40,13 +39,6 @@ import org.eclipse.swt.widgets.Control;
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
  */
 public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMultipleChoiceRidget {
-
-	private static final IChangeListener DUMMY_LISTENER = new IChangeListener() {
-		public void handleChange(ChangeEvent event) {
-			// workaround for proper updateModelToTarget() behavior with
-			// POLICY_ON_REQUEST
-		}
-	};
 
 	private final WritableList optionsObservable;
 	private final WritableList selectionObservable;
@@ -105,9 +97,8 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = BeansObservables.observeList(Realm.getDefault(), listBean, listPropertyName);
-		IObservableList selectionValues = BeansObservables.observeList(Realm.getDefault(), selectionBean,
-				selectionPropertyName);
+		IObservableList optionValues = new UnboundPropertyWritableList(listBean, listPropertyName);
+		IObservableList selectionValues = new UnboundPropertyWritableList(selectionBean, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValues);
 	}
 
@@ -116,10 +107,9 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionList = BeansObservables.observeList(Realm.getDefault(), new ListBean(optionValues),
+		IObservableList optionList = new UnboundPropertyWritableList(new ListBean(optionValues),
 				ListBean.PROPERTY_VALUES);
-		IObservableList selectionList = BeansObservables.observeList(Realm.getDefault(), selectionBean,
-				selectionPropertyName);
+		IObservableList selectionList = new UnboundPropertyWritableList(selectionBean, selectionPropertyName);
 		bindToModel(optionList, optionLabels, selectionList);
 	}
 
@@ -127,11 +117,19 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
+		if (optionsBinding.getModel() instanceof UnboundPropertyWritableList) {
+			((UnboundPropertyWritableList) optionsBinding.getModel()).updateFromBean();
+		}
 		optionsBinding.updateModelToTarget();
+		if (selectionBinding.getModel() instanceof UnboundPropertyWritableList) {
+			((UnboundPropertyWritableList) selectionBinding.getModel()).updateFromBean();
+		}
+		List oldSelection = new ArrayList(selectionObservable);
 		selectionBinding.updateModelToTarget();
 		ChoiceComposite control = getUIControl();
 		disposeChildren(control);
 		createChildren(control);
+		firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 	}
 
 	public IObservableList getObservableSelectionList() {
@@ -200,10 +198,8 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		DataBindingContext dbc = new DataBindingContext();
 		optionsBinding = dbc.bindList(optionsObservable, optionValues, new UpdateListStrategy(
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
-		optionsBinding.getModel().addChangeListener(DUMMY_LISTENER);
 		selectionBinding = dbc.bindList(selectionObservable, selectionValues, new UpdateListStrategy(
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
-		selectionBinding.getModel().addChangeListener(DUMMY_LISTENER);
 		if (optionLabels != null) {
 			this.optionLabels = optionLabels.toArray(new String[optionLabels.size()]);
 		} else {
@@ -235,10 +231,14 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 						Object data = button.getData();
 						if (button.getSelection()) {
 							if (!selectionObservable.contains(data)) {
+								List oldSelection = new ArrayList(selectionObservable);
 								selectionObservable.add(data);
+								firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 							}
 						} else {
+							List oldSelection = new ArrayList(selectionObservable);
 							selectionObservable.remove(data);
+							firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 						}
 					}
 				});
