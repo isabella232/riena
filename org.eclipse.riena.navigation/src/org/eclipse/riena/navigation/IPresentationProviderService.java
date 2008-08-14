@@ -21,7 +21,7 @@ public interface IPresentationProviderService {
 
 	/**
 	 * Returns a navigationNode identified by the given navigationNodeId. The
-	 * node is lazy created if it not yet exists.
+	 * node is created if it not yet exists.
 	 * 
 	 * @param sourceNode
 	 * @param targetId
