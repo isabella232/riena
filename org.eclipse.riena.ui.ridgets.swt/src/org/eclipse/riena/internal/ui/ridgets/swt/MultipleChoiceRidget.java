@@ -51,7 +51,6 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 	private final WritableList optionsObservable;
 	private final WritableList selectionObservable;
 
-	private DataBindingContext dbc;
 	private Binding optionsBinding;
 	private Binding selectionBinding;
 	private String[] optionLabels;
@@ -119,10 +118,6 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList optionList = BeansObservables.observeList(Realm.getDefault(), new ListBean(optionValues),
 				ListBean.PROPERTY_VALUES);
-		// IObservableList optionList =
-		// BeansObservables.observeList(Realm.getDefault(), new
-		// ListWrapper(optionValues),
-		// "values");
 		IObservableList selectionList = BeansObservables.observeList(Realm.getDefault(), selectionBean,
 				selectionPropertyName);
 		bindToModel(optionList, optionLabels, selectionList);
@@ -189,12 +184,17 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		unbindUIControl();
 
 		// clear observables as they may be bound to another model
-		// must dispose old binding first to avoid updating old model
-		if (dbc != null) {
-			dbc.dispose();
+		// must dispose old bindings first to avoid updating the old model
+		if (optionsBinding != null) {
+			optionsBinding.dispose();
+			optionsBinding = null;
+			optionsObservable.clear();
 		}
-		optionsObservable.clear();
-		selectionObservable.clear();
+		if (selectionBinding != null) {
+			selectionBinding.dispose();
+			selectionBinding = null;
+			selectionObservable.clear();
+		}
 
 		// set up new binding
 		DataBindingContext dbc = new DataBindingContext();
