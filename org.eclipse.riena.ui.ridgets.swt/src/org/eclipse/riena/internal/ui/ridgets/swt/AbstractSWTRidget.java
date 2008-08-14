@@ -102,7 +102,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	}
 
 	public final boolean isVisible() {
-		return uiControl == null ? visible : uiControl.isVisible();
+		return visible;
 	}
 
 	public void setVisible(boolean visible) {
