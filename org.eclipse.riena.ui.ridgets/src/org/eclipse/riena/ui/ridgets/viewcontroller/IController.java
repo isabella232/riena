@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
  * view. The type of the property must be a Ridget matching the type of the
  * UI-control.
  */
-public interface IViewController extends IRidgetContainer {
+public interface IController extends IRidgetContainer {
 
 	/**
 	 * Invoked after the controller was bound to a view.

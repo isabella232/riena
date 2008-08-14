@@ -21,13 +21,13 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 /**
  * Controller for a view that is or has a window.
  */
-public abstract class AbstractWindowViewController implements IViewController {
+public abstract class AbstractWindowController implements IController {
 
 	private IWindowRidget windowRidget;
 	private Map<String, IRidget> ridgets;
 	private boolean blocked;
 
-	public AbstractWindowViewController() {
+	public AbstractWindowController() {
 
 		super();
 
@@ -74,14 +74,14 @@ public abstract class AbstractWindowViewController implements IViewController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator)
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator)
 	 */
 	public void setUICallbackDispatcherFactory(IProgressVisualizerLocator uiprocessCallBackDispatcherFactory) {
 		// do nothing by default
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setBlocked(boolean)
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
@@ -89,7 +89,7 @@ public abstract class AbstractWindowViewController implements IViewController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#isBlocked()
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return this.blocked;

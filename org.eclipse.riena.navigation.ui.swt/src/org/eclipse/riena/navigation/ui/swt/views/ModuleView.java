@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -299,8 +299,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListenerTo(moduleNode);
 
-		if (getNavigationNode().getPresentation() instanceof IViewController) {
-			IViewController viewController = (IViewController) node.getPresentation();
+		if (getNavigationNode().getPresentation() instanceof IController) {
+			IController viewController = (IController) node.getPresentation();
 			binding.injectRidgets(viewController);
 			binding.bind(viewController);
 			viewController.afterBind();
@@ -313,8 +313,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	public void unbind() {
 
-		if (getNavigationNode().getPresentation() instanceof IViewController) {
-			IViewController viewController = (IViewController) getNavigationNode().getPresentation();
+		if (getNavigationNode().getPresentation() instanceof IController) {
+			IController viewController = (IController) getNavigationNode().getPresentation();
 			binding.unbind(viewController);
 		}
 

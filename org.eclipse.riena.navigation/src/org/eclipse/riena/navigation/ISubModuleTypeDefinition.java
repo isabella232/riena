@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.extension.MapContributor;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.osgi.framework.Bundle;
 
 /**
@@ -24,7 +24,7 @@ public interface ISubModuleTypeDefinition extends ITypeDefinition {
 	 * @return A controller that controlles the UI widgets in the view through
 	 *         ridgets (see org.eclipse.riena.ui.ridgets.IRidget)
 	 */
-	IViewController createController();
+	IController createController();
 
 	/**
 	 * Indicates whether the view is shared i.e. whether one instance of the

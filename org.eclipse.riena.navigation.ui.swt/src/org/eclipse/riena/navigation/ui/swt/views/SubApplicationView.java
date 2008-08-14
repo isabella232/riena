@@ -13,7 +13,7 @@ import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPageLayout;
@@ -46,8 +46,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	public void bind(SubApplicationNode node) {
-		if (getNavigationNode().getPresentation() instanceof IViewController) {
-			IViewController viewController = (IViewController) node.getPresentation();
+		if (getNavigationNode().getPresentation() instanceof IController) {
+			IController viewController = (IController) node.getPresentation();
 			binding.injectRidgets(viewController);
 			binding.bind(viewController);
 			viewController.afterBind();

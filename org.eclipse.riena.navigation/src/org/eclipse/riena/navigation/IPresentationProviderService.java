@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
  * Implementation of this service interface provides service methods to get
@@ -43,7 +43,7 @@ public interface IPresentationProviderService {
 	 * Returns the view controller for the work area presentation for the given
 	 * navigationNodeId
 	 */
-	IViewController provideController(INavigationNode<?> node);
+	IController provideController(INavigationNode<?> node);
 
 	/**
 	 * Return true if the specified view should be a shared view, false

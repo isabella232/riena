@@ -24,7 +24,7 @@ import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * View of a module group.
  */
-public class ModuleGroupView extends Composite implements INavigationNodeView<IViewController, ModuleGroupNode> {
+public class ModuleGroupView extends Composite implements INavigationNodeView<IController, ModuleGroupNode> {
 
 	private static final int MODULE_GROUP_GAP = 3;
 

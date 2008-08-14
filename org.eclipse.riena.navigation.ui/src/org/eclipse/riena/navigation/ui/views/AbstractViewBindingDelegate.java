@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
  * A delegate for the binding of view (UI controls) and controller (Ridgets).
@@ -70,7 +70,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param viewController
 	 *            - The controller which gets the ridgets injected.
 	 */
-	public void injectAndBind(IViewController viewController) {
+	public void injectAndBind(IController viewController) {
 		injectRidgets(viewController);
 		bind(viewController);
 	}
@@ -81,7 +81,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            - The controller which gets the ridgets injected.
 	 */
-	public void injectRidgets(IViewController viewController) {
+	public void injectRidgets(IController viewController) {
 		bindingManager.injectRidgets(viewController, uiControls);
 	}
 
@@ -91,7 +91,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            - The controller which holds the ridgets.
 	 */
-	public void bind(IViewController viewController) {
+	public void bind(IController viewController) {
 		bindingManager.bind(viewController, uiControls);
 	}
 
@@ -101,7 +101,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            - The controller which holds the ridgets.
 	 */
-	public void unbind(IViewController viewController) {
+	public void unbind(IController viewController) {
 		bindingManager.unbind(viewController, uiControls);
 	}
 

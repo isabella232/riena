@@ -30,14 +30,14 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
  * An abstract controller superclass that manages the navigation node of a
  * controller N - Type of the Navigation node
  */
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements
-		IPresentation, IViewController {
+		IPresentation, IController {
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
@@ -104,7 +104,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#afterBind()
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#afterBind()
 	 */
 	public void afterBind() {
 		updateNavigationNodeMarkers();
@@ -236,7 +236,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	// }
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#setBlocked(boolean)
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 		if (getNavigationNode() != null) {
@@ -266,7 +266,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IViewController#isBlocked()
+	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return getNavigationNode() != null && getNavigationNode().isBlocked();
