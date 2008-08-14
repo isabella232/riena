@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-
 /**
  * Manages the Navigation. Is called by a navigation node to navigate to it The
  * navigation processor works with the INavigationNode What does the navigation
@@ -20,19 +19,68 @@ package org.eclipse.riena.navigation;
  */
 public interface INavigationProcessor extends INavigationHistory, INavigationHistoryListernable {
 
+	/**
+	 * Activates a node. Checks which other nodes have to be activated or
+	 * deactivated before this node can be activated and calls the
+	 * allowsDeactivate() and allowsActivate() methods.
+	 * 
+	 * @see INavigationNode#activate()
+	 * @see INavigationNode#allowsActivate(INavigationContext)
+	 * @see INavigationNode#deactivate(INavigationContext)
+	 * @see INavigationNode#allowsDeactivate(INavigationContext)
+	 * @param toActivate
+	 *            The node to activate.
+	 */
 	void activate(INavigationNode<?> toActivate);
 
+	/**
+	 * Disposes a node. Checks which other nodes have to be disposed (children
+	 * and maybe parents it the node is their only child) and calls the
+	 * allowsDispose() methods.
+	 * 
+	 * @see INavigationNode#dispose()
+	 * @see INavigationNode#allowsDeactivate(INavigationContext)
+	 * @param toActivate
+	 *            The node to dispose.
+	 */
 	void dispose(INavigationNode<?> toDispose);
 
+	/**
+	 * Creates the specified navigation node and adds it to the application
+	 * model if does not already exist.
+	 * 
+	 * @param sourceNode
+	 *            An existing node in the application model tree.
+	 * @param targetId
+	 *            ID of the node to create. Also refers to an extension point
+	 *            used to create the target node if it does not exist.
+	 * @see INavigationNodeBuilder
+	 */
 	void create(INavigationNode<?> sourceNode, INavigationNodeId targetId);
 
+	/**
+	 * Navigates from the specified source node to the specified target node.
+	 * The target node is created and added to the application model if no node
+	 * with the specified id exists.
+	 * 
+	 * @param sourceNode
+	 *            The source node.
+	 * @param targetId
+	 *            ID of the target node. Also refers to an extension point used
+	 *            to create the target node if it does not exist.
+	 * @param argument
+	 *            Contains information passed on to the target node and/or used
+	 *            during its creation.
+	 * @see INavigationNodeBuilder
+	 */
 	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument);
 
 	/**
-	 * Navigates to the caller (the source node) of the given targetNode.
+	 * Undoes the last navigate to the specified target node i.e. activates the
+	 * last source node of a navigate(..)-call that lead to the activation of
+	 * the target node.
 	 * 
-	 * @param targetNode
-	 *            The node where we have navigate to and return from
+	 * @see #navigate(INavigationNode, INavigationNodeId, NavigationArgument)
 	 */
 	void navigateBack(INavigationNode<?> targetNode);
 }

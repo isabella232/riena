@@ -180,8 +180,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId, java.lang.Object,
-	 *      org.eclipse.riena.navigation.INavigationArgumentListener)
+	 *      org.eclipse.riena.navigation.INavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument) {
 		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument);
