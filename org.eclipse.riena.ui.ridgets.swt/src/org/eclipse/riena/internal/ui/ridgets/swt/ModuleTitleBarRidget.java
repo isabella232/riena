@@ -26,6 +26,7 @@ public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
 	 * @param closeable
 	 *            the closeable to set
 	 */
+	@Override
 	public void setCloseable(boolean closeable) {
 		getUIControl().setCloseable(closeable);
 	}

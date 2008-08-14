@@ -161,6 +161,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		// nothing to do
 	}

@@ -178,7 +178,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
-		if (this.active = active) {
+		if (this.active == active) {
 			this.active = active;
 			updateActive();
 		}

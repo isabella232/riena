@@ -193,7 +193,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
-		if (this.active = active) {
+		if (this.active == active) {
 			this.active = active;
 			updateActive();
 		}

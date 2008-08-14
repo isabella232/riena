@@ -139,6 +139,11 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	}
 
 	private boolean hasChanged(URL oldValue, URL newValue) {
+
+		if (oldValue == null && newValue == null) {
+			return false;
+		}
+
 		// avoid URL.equals(...) since it opens a network connection :(
 		if ((oldValue == null && newValue != null) || (oldValue != null && newValue == null)) {
 			return true;
