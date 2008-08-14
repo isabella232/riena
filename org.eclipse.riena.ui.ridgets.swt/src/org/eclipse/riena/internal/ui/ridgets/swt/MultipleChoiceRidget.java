@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.beans.ListBean;
 import org.eclipse.swt.SWT;
@@ -117,12 +118,12 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
-		if (optionsBinding.getModel() instanceof UnboundPropertyWritableList) {
-			((UnboundPropertyWritableList) optionsBinding.getModel()).updateFromBean();
+		if (optionsBinding.getModel() instanceof IUnboundPropertyObservable) {
+			((IUnboundPropertyObservable) optionsBinding.getModel()).updateFromBean();
 		}
 		optionsBinding.updateModelToTarget();
-		if (selectionBinding.getModel() instanceof UnboundPropertyWritableList) {
-			((UnboundPropertyWritableList) selectionBinding.getModel()).updateFromBean();
+		if (selectionBinding.getModel() instanceof IUnboundPropertyObservable) {
+			((IUnboundPropertyObservable) selectionBinding.getModel()).updateFromBean();
 		}
 		List oldSelection = new ArrayList(selectionObservable);
 		selectionBinding.updateModelToTarget();
