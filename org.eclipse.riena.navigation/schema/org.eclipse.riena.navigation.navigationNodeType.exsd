@@ -3,10 +3,10 @@
 <schema targetNamespace="org.eclipse.riena.navigation" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.navigation" id="org.eclipse.riena.navigation.NavigationNodePresentation" name="NavigationNodePresentation"/>
+         <meta.schema plugin="org.eclipse.riena.navigation" id="org.eclipse.riena.navigation.navigationNodeType" name="navigationNodeType"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         Defines how to create a node or a subtree in the application model tree.
       </documentation>
    </annotation>
 

@@ -342,7 +342,7 @@
       </renderer>
    </extension>
    <extension
-         point="org.eclipse.riena.navigation.NavigationNodeType">
+         point="org.eclipse.riena.navigation.navigationNodeType">
       <navigationNodeType
             typeId="org.eclipse.riena.example.navigation"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
@@ -379,7 +379,7 @@
             parentTypeId="playground">
       </navigationNodeType>
    </extension>
-   <extension point="org.eclipse.riena.navigation.SubModuleType">
+   <extension point="org.eclipse.riena.navigation.subModuleType">
       <subModuleType
             typeId="org.eclipse.riena.example.customerDetail"
             view="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"

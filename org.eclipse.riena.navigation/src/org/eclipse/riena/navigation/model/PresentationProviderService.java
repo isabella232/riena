@@ -36,8 +36,8 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	// TODO: split off ... problem: navigation is gui-less ...
 
-	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.SubModuleType"; //$NON-NLS-1$
-	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.NavigationNodeType"; //$NON-NLS-1$
+	private static final String EP_WORKAREA = "org.eclipse.riena.navigation.subModuleType"; //$NON-NLS-1$
+	private static final String EP_NAVNODE = "org.eclipse.riena.navigation.navigationNodeType"; //$NON-NLS-1$
 	private PresentationExtensionInjectionHelper<ISubModuleTypeDefinition> targetWA;
 	private PresentationExtensionInjectionHelper<INavigationNodeTypeDefiniton> targetNN;
 

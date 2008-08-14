@@ -3,10 +3,10 @@
 <schema targetNamespace="org.eclipse.riena.navigation" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.navigation" id="org.eclipse.riena.navigation.WorkAreaPresentation" name="WorkAreaPresentation"/>
+         <meta.schema plugin="org.eclipse.riena.navigation" id="org.eclipse.riena.navigation.subModuleType" name="subModuleType"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         Defines how an activated submodule appears in the work area.
       </documentation>
    </annotation>
 
