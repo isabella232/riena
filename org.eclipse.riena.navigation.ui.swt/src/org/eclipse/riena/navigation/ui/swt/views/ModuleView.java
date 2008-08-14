@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
@@ -28,7 +29,6 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -97,6 +97,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		layoutData.right = new FormAttachment(100, 0);
 		layoutData.height = title.getSize().y;
 		title.setLayoutData(layoutData);
+		new ModuleToolTip(title);
 
 		body = new Composite(getParent(), SWT.DOUBLE_BUFFERED);
 		updateModuleView();
@@ -135,22 +136,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 		new SubModuleToolTip(subModuleTree);
 		setTreeBackGround();
-
-	}
-
-	/**
-	 * Returns the renderer of the title bar.
-	 * 
-	 * @return
-	 */
-	public EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
-
-		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
-		if (renderer == null) {
-			renderer = new EmbeddedTitlebarRenderer();
-		}
-		return renderer;
 
 	}
 
@@ -398,14 +383,6 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			dispose();
 		}
 
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView
-	 *      #updateBounds(int)
-	 */
-	public int calculateBounds(int positionHint) {
-		return -1;
 	}
 
 	/**

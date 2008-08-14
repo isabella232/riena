@@ -366,13 +366,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 		parent.addPaintListener(new PaintListener() {
 
 			/**
-			 * Paints the border and the title bar of the current active
-			 * sub-module.
+			 * Paints the border of the current active sub-module.
 			 */
 			public void paintControl(PaintEvent e) {
 
 				if (current != null) {
-					// TODO: move to subModuleView !?!
 					SubModuleViewRenderer renderer = getRenderer();
 					if (renderer != null) {
 						Rectangle bounds = calcSubModuleOuterBounds();

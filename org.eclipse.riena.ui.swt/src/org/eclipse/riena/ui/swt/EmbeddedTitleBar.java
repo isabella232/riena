@@ -247,4 +247,16 @@ public class EmbeddedTitleBar extends Canvas {
 
 	}
 
+	public boolean isTextClipped() {
+
+		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		titlebarRenderer.setBounds(getBounds());
+		GC gc = new GC(this);
+		String clippedText = titlebarRenderer.getClippedText(gc, title);
+		gc.dispose();
+
+		return !title.equals(clippedText);
+
+	}
+
 }

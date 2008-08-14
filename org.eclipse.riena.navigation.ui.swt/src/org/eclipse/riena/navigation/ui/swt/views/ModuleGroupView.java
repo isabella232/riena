@@ -23,7 +23,6 @@ import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
-import org.eclipse.riena.navigation.ui.swt.component.ModuleGroupToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IViewController;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -33,7 +32,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -57,7 +55,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		updateListeners = new ArrayList<IComponentUpdateListener>();
 		registeredModuleViews = new LinkedHashMap<ModuleNode, ModuleView>();
-		new ModuleGroupToolTip(this);
 		setData(getClass().getName());
 	}
 
@@ -210,31 +207,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 
 	}
 
-	/**
-	 * Returns the module at the given point, if the point is over the close
-	 * "button".
-	 * 
-	 * @param point
-	 *            - point over module item
-	 * @return module item; or null, if not item was found
-	 */
-	protected ModuleView getClosingModuleView(Point point) {
-
-		ModuleView moduleView = getItem(point);
-
-		if (moduleView != null) {
-			GC gc = new GC(this);
-			Rectangle closeBounds = getRenderer().computeCloseButtonBounds(gc, moduleView);
-			if (!closeBounds.contains(point)) {
-				moduleView = null;
-			}
-			gc.dispose();
-		}
-
-		return moduleView;
-
-	}
-
 	private class PaintDelegation implements PaintListener {
 
 		/**
@@ -245,7 +217,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IV
 		public void paintControl(PaintEvent e) {
 			setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 			getRenderer().setItems(getAllModuleViews());
-			getRenderer().setActivated(getNavigationNode().isActivated());
 			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
 			getRenderer().setBounds(0, 0, size.x, size.y);
 			getRenderer().paint(e.gc, null);

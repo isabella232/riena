@@ -25,8 +25,8 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 	private final static int PADDING = 1;
 
 	/**
-	 * @param value -
-	 *            is ignored
+	 * @param value
+	 *            - is ignored
 	 * 
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
 	 *      java.lang.Object)
@@ -69,6 +69,7 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
+		// nothing to do
 	}
 
 }

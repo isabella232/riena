@@ -11,11 +11,10 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
-import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
-import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
@@ -27,22 +26,22 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
 /**
- * ToolTip for the modules (views) in the module group.<br>
+ * ToolTip for the modules (views).<br>
  * ToolTip is only displayed if the text of the module view was clipped.
  */
-public class ModuleGroupToolTip extends DefaultToolTip {
+public class ModuleToolTip extends DefaultToolTip {
 
-	private ModuleGroupView moduleGroupWidget;
+	private ModuleTitleBar titleBar;
 
 	/**
 	 * Creates new instance which add TooltipSupport to the control.
 	 * 
-	 * @param moduleGroupView
-	 *            TODO
+	 * @param titleBar
+	 *            - title bar of a module
 	 */
-	public ModuleGroupToolTip(ModuleGroupView moduleGroupView) {
-		super(moduleGroupView);
-		setModuleGroupView(moduleGroupView);
+	public ModuleToolTip(ModuleTitleBar titleBar) {
+		super(titleBar);
+		setTitleBar(titleBar);
 		setShift(new Point(0, 0));
 	}
 
@@ -73,12 +72,6 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 
 	}
 
-	private ModuleGroupRenderer getRenderer() {
-
-		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
-
-	}
-
 	/**
 	 * @see org.eclipse.jface.window.ToolTip#createToolTipContentArea(org.eclipse.swt.widgets.Event,
 	 *      org.eclipse.swt.widgets.Composite)
@@ -104,10 +97,7 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 			label.setFont(font);
 		}
 
-		ModuleView view = getModuleView(event);
-		if (view != null) {
-			label.setText(view.getNavigationNode().getLabel());
-		}
+		label.setText(getTitleBar().getTitle());
 
 		return label;
 
@@ -123,14 +113,7 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 
 		if (should) {
 			initLookAndFeel();
-			ModuleView view = getModuleView(event);
-			if (view != null) {
-				GC gc = new GC(getModuleGroupView());
-				should = getRenderer().isTextClipped(gc, view);
-				gc.dispose();
-			} else {
-				should = false;
-			}
+			should = getTitleBar().isTextClipped();
 		}
 
 		return should;
@@ -144,57 +127,44 @@ public class ModuleGroupToolTip extends DefaultToolTip {
 	@Override
 	public Point getLocation(Point tipSize, Event event) {
 
-		Point location = super.getLocation(tipSize, event);
-		ModuleView view = getModuleView(event);
-		if (view != null) {
-			GC gc = new GC(getModuleGroupView());
-			Rectangle textBounds = getRenderer().computeTextBounds(gc, view);
-			gc.dispose();
-			location = getModuleGroupView().toDisplay(textBounds.x, textBounds.y);
-		}
+		GC gc = new GC(getTitleBar());
+		Rectangle bounds = getLnfTitlebarRenderer().computeTextBounds(gc);
+		Point location = getTitleBar().toDisplay(bounds.x, 0);
+		gc.dispose();
 
 		return location;
 
 	}
 
 	/**
-	 * @return the moduleGroupWidget
-	 */
-	private ModuleGroupView getModuleGroupView() {
-		return moduleGroupWidget;
-	}
-
-	/**
-	 * @param moduleGroupWidget
-	 *            the moduleGroupWidget to set
-	 */
-	private void setModuleGroupView(ModuleGroupView moduleGroupWidget) {
-		this.moduleGroupWidget = moduleGroupWidget;
-	}
-
-	/**
-	 * Returns the module at the given point.
+	 * Returns the renderer of the title bar.
 	 * 
-	 * @param point
-	 *            - point over module view
-	 * @return module view; or null, if not module view was found
+	 * @return
 	 */
-	protected ModuleView getModuleView(Event event) {
+	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
-		Point point = new Point(event.x, event.y);
-
-		ModuleView view = getModuleGroupView().getItem(point);
-		if (view != null) {
-			GC gc = new GC(getModuleGroupView());
-			Rectangle textBounds = getRenderer().computeTextBounds(gc, view);
-			gc.dispose();
-			if (textBounds.contains(point)) {
-				return view;
-			}
+		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
+		if (renderer == null) {
+			renderer = new EmbeddedTitlebarRenderer();
 		}
+		return renderer;
 
-		return null;
+	}
 
+	/**
+	 * @param titleBar
+	 *            the titleBar to set
+	 */
+	private void setTitleBar(ModuleTitleBar titleBar) {
+		this.titleBar = titleBar;
+	}
+
+	/**
+	 * @return the titleBar
+	 */
+	private ModuleTitleBar getTitleBar() {
+		return titleBar;
 	}
 
 }

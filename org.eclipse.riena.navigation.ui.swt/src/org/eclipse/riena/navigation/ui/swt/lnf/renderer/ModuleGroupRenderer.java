@@ -18,11 +18,9 @@ import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * Renderer of the module group inside the navigation.
@@ -34,7 +32,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private static final int MODULE_WIDTH = 165;
 
 	private List<ModuleView> items;
-	private boolean activated;
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -53,15 +50,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		Point size = computeSize(gc, getBounds().width, 0);
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, size.y);
-		borderRenderer.setActive(isActivated());
+		borderRenderer.setActive(true);
 		borderRenderer.paint(gc, null);
-
-		// List<ModuleView> modules = getItems();
-		// for (Iterator<ModuleView> iterator = modules.iterator();
-		// iterator.hasNext();) {
-		// ModuleView moduleView = iterator.next();
-		// moduleView.getBody().setVisible(moduleView.isActivated());
-		// }
 
 	}
 
@@ -112,59 +102,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	}
 
-	/**
-	 * Returns the bounds of the close "button" of the title bar for the given
-	 * module item.
-	 * 
-	 * @param item
-	 *            - module item
-	 * @return bounds of close "button".
-	 */
-	public Rectangle computeCloseButtonBounds(GC gc, ModuleView item) {
-
-		if (!item.isCloseable()) {
-			return new Rectangle(0, 0, 0, 0);
-		}
-
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(item);
-		titlebarRenderer.setBounds(item.getBounds());
-		Rectangle closeBounds = titlebarRenderer.computeCloseButtonBounds();
-
-		return closeBounds;
-
-	}
-
-	/**
-	 * Returns the bounds of the text of the titlebar for the given module item.
-	 * 
-	 * @param moduleView
-	 *            - module item
-	 * @return bounds of text.
-	 */
-	public Rectangle computeTextBounds(GC gc, ModuleView moduleView) {
-
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(moduleView);
-		titlebarRenderer.setBounds(moduleView.getBounds());
-		Rectangle textBounds = titlebarRenderer.computeTextBounds(gc);
-
-		Rectangle closeBounds = computeCloseButtonBounds(gc, moduleView);
-		textBounds.width -= closeBounds.width;
-
-		return textBounds;
-
-	}
-
-	public boolean isTextClipped(GC gc, ModuleView item) {
-
-		String text = item.getLabel();
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer(item);
-		titlebarRenderer.setBounds(item.getBounds());
-		String clippedText = titlebarRenderer.getClippedText(gc, text);
-
-		return !text.equals(clippedText);
-
-	}
-
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
 		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
@@ -173,11 +110,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			renderer = new EmbeddedBorderRenderer();
 		}
 		return renderer;
-
-	}
-
-	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer(ModuleView moduleView) {
-		return moduleView.getLnfTitlebarRenderer();
 
 	}
 
@@ -197,21 +129,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 */
 	public void setItems(List<ModuleView> items) {
 		this.items = items;
-	}
-
-	/**
-	 * @return the activated
-	 */
-	public boolean isActivated() {
-		return activated;
-	}
-
-	/**
-	 * @param activated
-	 *            the activated to set
-	 */
-	public void setActivated(boolean activated) {
-		this.activated = activated;
 	}
 
 	/**

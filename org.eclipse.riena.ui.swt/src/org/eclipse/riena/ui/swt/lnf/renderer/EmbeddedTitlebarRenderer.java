@@ -15,7 +15,6 @@ import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -37,7 +36,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	private Image image;
 	private Color edgeColor;
-	private String icon;
 	private boolean active;
 	private boolean pressed;
 	private boolean hover;
@@ -46,7 +44,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	public EmbeddedTitlebarRenderer() {
 		super();
 		image = null;
-		icon = ""; //$NON-NLS-1$
 		active = false;
 		pressed = false;
 		hover = false;
@@ -227,23 +224,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	}
 
-	/**
-	 * TODO remove: use only set Image
-	 */
-	@Deprecated
-	public String getIcon() {
-		return icon;
-	}
-
-	/**
-	 * TODO remove: use only set Image
-	 */
-	@Deprecated
-	public void setIcon(String icon) {
-		this.icon = icon;
-		setImage(ImageUtil.getImage(icon));
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -351,6 +331,14 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * Clips the given text if the text it too long for the title bar.
+	 * 
+	 * @param gc
+	 * @param text
+	 *            - text to clip (if necessary)
+	 * @return text
+	 */
 	public String getClippedText(GC gc, String text) {
 
 		Rectangle textBounds = computeTextBounds(gc);

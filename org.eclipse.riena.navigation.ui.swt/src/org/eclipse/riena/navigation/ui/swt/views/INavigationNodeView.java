@@ -26,8 +26,6 @@ public interface INavigationNodeView<C extends IViewController, N extends INavig
 	 */
 	N getNavigationNode();
 
-	int calculateBounds(int yPositionHint);
-
 	void addUpdateListener(IComponentUpdateListener listener);
 
 }

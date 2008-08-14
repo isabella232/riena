@@ -198,13 +198,13 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 	}
 
+	/**
+	 * Creates the content of the sub module view.
+	 * 
+	 * @param parent
+	 *            - composite for the content of the sub module view
+	 */
 	protected abstract void basicCreatePartControl(Composite parent);
-
-	protected C createController(ISubModuleNode pSubModuleNode) {
-		C controller = (C) getPresentationDefinitionService().provideController(pSubModuleNode);
-		controller.setNavigationNode(pSubModuleNode);
-		return controller;
-	}
 
 	/**
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
@@ -241,11 +241,15 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 	}
 
-	protected IPresentationProviderService getPresentationDefinitionService() {
+	protected C createController(ISubModuleNode pSubModuleNode) {
+		C controller = (C) getPresentationDefinitionService().provideController(pSubModuleNode);
+		controller.setNavigationNode(pSubModuleNode);
+		return controller;
+	}
 
+	protected IPresentationProviderService getPresentationDefinitionService() {
 		// TODO: handling if no service found ???
 		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
-
 	}
 
 }

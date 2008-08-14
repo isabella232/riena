@@ -10,10 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+
 /**
- *
+ * Ridget for {@link ModuleTitleBarRidget}.
  */
 public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
+
+	/**
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
+	 *      (java.lang.Object)
+	 */
+	@Override
+	protected void checkUIControl(Object uiControl) {
+		AbstractSWTRidget.assertType(uiControl, ModuleTitleBarRidget.class);
+	}
 
 	/**
 	 * @return the closeable

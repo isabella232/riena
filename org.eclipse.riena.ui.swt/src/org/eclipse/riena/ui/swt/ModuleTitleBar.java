@@ -48,9 +48,10 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	}
 
 	/**
-	 * TODO
+	 * Informs all listeners that the module is activated.
 	 * 
 	 * @param event
+	 *            - origin mouse event
 	 */
 	private void fireActivated(MouseEvent event) {
 		for (IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {
@@ -59,9 +60,10 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	}
 
 	/**
-	 * TODO
+	 * Informs all listeners that the close button was clicked.
 	 * 
 	 * @param event
+	 *            - origin mouse event
 	 */
 	private void fireClosed(MouseEvent event) {
 		for (IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {

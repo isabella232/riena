@@ -91,7 +91,7 @@ public class UiProcessWindow extends ApplicationWindow implements IUIProcessWind
 		// progressBar
 		d = new FormData();
 		d.top = new FormAttachment(percent, 10);
-		d.width = (int) PROGRESS_BAR_WIDTH;
+		d.width = PROGRESS_BAR_WIDTH;
 		d.height = 15;
 
 		progressBar = new ProgressBar(parent, SWT.HORIZONTAL);
@@ -117,7 +117,7 @@ public class UiProcessWindow extends ApplicationWindow implements IUIProcessWind
 		cancel.setText("cancel"); //$NON-NLS-1$
 		d = new FormData();
 		d.top = new FormAttachment(progressBar, 10);
-		d.width = (int) CANCEL_BUTTON_WIDTH;
+		d.width = CANCEL_BUTTON_WIDTH;
 		d.left = new FormAttachment(0, (int) ((double) PROGRESS_BAR_WIDTH / 2 - (double) CANCEL_BUTTON_WIDTH / 2));
 		cancel.setLayoutData(d);
 
