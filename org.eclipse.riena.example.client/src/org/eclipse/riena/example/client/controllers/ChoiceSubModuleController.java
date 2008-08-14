@@ -52,10 +52,11 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarModel.bindToModel(toList(CarModels.values()), BeansObservables.observeValue(carConfig,
 				CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
+		compositeCarModel.updateFromModel();
 
 		final IMultipleChoiceRidget compositeCarExtras = (IMultipleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
-		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package",
-				"Park Distance Control System", };
+		String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
@@ -64,6 +65,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()), BeansObservables.observeValue(carConfig,
 				CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
+		compositeCarWarranty.updateFromModel();
 
 		final IMultipleChoiceRidget compositeCarPlates = (IMultipleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
 		compositeCarPlates.bindToModel(toList(carPlates), new UnboundPropertyWritableList(carConfig,
@@ -78,7 +80,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 				.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
 		IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$
-		buttonPreset.setText("&Quick Config");
+		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
 				compositeCarModel.setSelection(CarModels.BMW);
@@ -89,7 +91,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 		});
 		IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
 
-		buttonReset.setText("&Reset");
+		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {
 			public void callback() {
 				carConfig.reset();
@@ -165,9 +167,9 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		public void reset() {
 			setModel(null);
-			setOptions(Collections.EMPTY_LIST);
+			setOptions(new ArrayList<CarOptions>());
 			setWarranty(null);
-			setPlates(Collections.EMPTY_LIST);
+			setPlates(new ArrayList<String>());
 		}
 
 		public long getPrice() {
@@ -185,7 +187,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	}
 
 	private enum CarModels {
-		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8");
+		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String label;
 
@@ -214,5 +216,5 @@ public class ChoiceSubModuleController extends SubModuleController {
 		}
 	}
 
-	private String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" };
+	private String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 }

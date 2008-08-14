@@ -44,6 +44,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		optionProvider = new OptionProvider();
 
 		getRidget().bindToModel(optionProvider, "options", optionProvider, "selectedOption");
+		getRidget().updateFromModel();
 	}
 
 	@Override
@@ -248,6 +249,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider,
 				"selectedOption");
+		ridget.updateFromModel();
 
 		Object[] labels = optionProvider.getOptionLabels().toArray();
 		Control[] children = control.getChildren();

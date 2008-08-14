@@ -12,19 +12,25 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.List;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateListStrategy;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.ValueDiff;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.ridgets.IChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
+import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
+import org.eclipse.riena.ui.ridgets.util.beans.ListBean;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,43 +44,27 @@ import org.eclipse.swt.widgets.Control;
 public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingleChoiceRidget {
 
 	/** A single selected bean Object. */
-	private final WritableValue singleSelectionObservable;
+	private final WritableList optionsObservable;
+	private final WritableValue selectionObservable;
 
-	private IObservableList rowObservables;
-	private String[] rowObservableLabels;
-	private IObservableValue selectionObservable;
+	private Binding optionsBinding;
+	private Binding selectionBinding;
+	private String[] optionLabels;
 
 	public SingleChoiceRidget() {
-		singleSelectionObservable = new SingleSelectionObservable();
+		optionsObservable = new WritableList();
+		selectionObservable = new WritableValue();
+		selectionObservable.addChangeListener(new IChangeListener() {
+			public void handleChange(ChangeEvent event) {
+				updateMarkers();
+			}
+		});
 	}
 
 	@Override
 	protected void bindUIControl() {
-		Composite control = getUIControl();
-		if (control != null && rowObservables != null) {
-			disposeChildren(control);
-			Object[] values = rowObservables.toArray();
-			for (int i = 0; i < values.length; i++) {
-				Object value = values[i];
-				String caption = rowObservableLabels != null ? rowObservableLabels[i] : value.toString();
-
-				Button button = new Button(control, SWT.RADIO);
-				button.setText(caption);
-				button.setForeground(control.getForeground());
-				button.setBackground(control.getBackground());
-				button.setData(value);
-				if (value == singleSelectionObservable.getValue()) {
-					button.setSelection(true);
-				}
-				button.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						if (!e.widget.isDisposed()) {
-							setSelection(e.widget.getData());
-						}
-					}
-				});
-			}
+		if (optionsBinding != null) {
+			createChildren(getUIControl());
 		}
 	}
 
@@ -112,8 +102,8 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = BeansObservables.observeList(Realm.getDefault(), listBean, listPropertyName);
-		IObservableValue selectionValue = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableList optionValues = new UnboundPropertyWritableList(listBean, listPropertyName);
+		IObservableValue selectionValue = PojoObservables.observeValue(selectionBean, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValue);
 	}
 
@@ -122,57 +112,61 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList list = new WritableList(optionValues, Object.class);
-		IObservableValue selection = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableList list = new UnboundPropertyWritableList(new ListBean(optionValues), ListBean.PROPERTY_VALUES);
+		IObservableValue selection = PojoObservables.observeValue(selectionBean, selectionPropertyName);
 		bindToModel(list, optionLabels, selection);
-	}
-
-	public Object getSelection() {
-		return singleSelectionObservable.getValue();
-	}
-
-	@Deprecated
-	public IObservableValue getSelectionObservable() {
-		return singleSelectionObservable;
-	}
-
-	public void setSelection(Object newSelection) {
-		assertIsBoundToModel();
-		Object value = null;
-		if (newSelection != null && rowObservables.contains(newSelection)) {
-			value = newSelection;
-		}
-		singleSelectionObservable.setValue(value);
-		ChoiceComposite composite = getUIControl();
-		if (composite != null) {
-			for (Control child : composite.getChildren()) {
-				Button button = (Button) child;
-				boolean isSelected = (value != null) && (child.getData() == value);
-				button.setSelection(isSelected);
-			}
-		}
 	}
 
 	@Override
 	public void updateFromModel() {
+		assertIsBoundToModel();
 		super.updateFromModel();
-		updateSelectionFromModel();
+		if (optionsBinding.getModel() instanceof IUnboundPropertyObservable) {
+			((IUnboundPropertyObservable) optionsBinding.getModel()).updateFromBean();
+		}
+		optionsBinding.updateModelToTarget();
+		Object oldSelection = selectionObservable.getValue();
+		selectionBinding.updateModelToTarget();
+		ChoiceComposite control = getUIControl();
+		disposeChildren(control);
+		createChildren(control);
+		firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable.getValue());
+	}
+
+	public Object getSelection() {
+		return selectionObservable.getValue();
+	}
+
+	@Deprecated
+	public IObservableValue getSelectionObservable() {
+		return selectionObservable;
+	}
+
+	public void setSelection(Object candidate) {
+		assertIsBoundToModel();
+		if (candidate != null && !optionsObservable.contains(candidate)) {
+			throw new BindingException("candidate not in option list: " + candidate); //$NON-NLS-1$
+		}
+		Object oldSelection = selectionObservable.getValue();
+		selectionObservable.setValue(candidate);
+		updateChildren(getUIControl());
+		firePropertyChange(PROPERTY_SELECTION, oldSelection, candidate);
 	}
 
 	public IObservableList getObservableList() {
-		return rowObservables;
+		return optionsObservable;
 	}
 
 	@Override
 	public final boolean isDisableMandatoryMarker() {
-		return !(singleSelectionObservable.getValue() == null);
+		return selectionObservable != null && selectionObservable.getValue() != null;
 	}
 
 	// helping methods
 	// ////////////////
 
 	private void assertIsBoundToModel() {
-		if (rowObservables == null) {
+		if (optionsBinding == null || selectionBinding == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
 		}
 	}
@@ -185,22 +179,79 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 
 		unbindUIControl();
 
-		rowObservables = optionValues;
-		if (optionLabels != null) {
-			rowObservableLabels = optionLabels.toArray(new String[optionLabels.size()]);
-		} else {
-			rowObservableLabels = null;
+		// clear observables as they may be bound to another model
+		// must dispose old bindings first to avoid updating the old model
+		if (optionsBinding != null) {
+			optionsBinding.dispose();
+			optionsBinding = null;
+			optionsObservable.clear();
 		}
-		this.selectionObservable = selectionValue;
-		updateSelectionFromModel();
+		if (selectionBinding != null) {
+			selectionBinding.dispose();
+			selectionBinding = null;
+			selectionObservable.setValue(null);
+		}
+
+		// set up new binding
+		DataBindingContext dbc = new DataBindingContext();
+		optionsBinding = dbc.bindList(optionsObservable, optionValues, new UpdateListStrategy(
+				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
+		selectionBinding = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
+		if (optionLabels != null) {
+			this.optionLabels = optionLabels.toArray(new String[optionLabels.size()]);
+		} else {
+			this.optionLabels = null;
+		}
 
 		bindUIControl();
 	}
 
+	private void createChildren(Composite control) {
+		if (control != null && !control.isDisposed()) {
+			Object[] values = optionsObservable.toArray();
+			for (int i = 0; i < values.length; i++) {
+				Object value = values[i];
+				String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
+
+				Button button = new Button(control, SWT.RADIO);
+				button.setText(caption);
+				button.setForeground(control.getForeground());
+				button.setBackground(control.getBackground());
+				button.setData(value);
+				if (selectionObservable.getValue() == value) {
+					button.setSelection(true);
+				}
+				button.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						Button button = (Button) e.widget;
+						Object data = button.getData();
+						if (button.getSelection()) {
+							SingleChoiceRidget.this.setSelection(data);
+						}
+					}
+				});
+			}
+			control.layout(true);
+		}
+	}
+
 	private void disposeChildren(Composite control) {
-		if (control != null) {
+		if (control != null && !control.isDisposed()) {
 			for (Control child : control.getChildren()) {
 				child.dispose();
+			}
+		}
+	}
+
+	private void updateChildren(Composite control) {
+		if (control != null && !control.isDisposed()) {
+			Object selection = selectionObservable.getValue();
+			for (Control child : control.getChildren()) {
+				Button button = (Button) child;
+				boolean isSelected = (selection != null) && (child.getData() == selection);
+				button.setSelection(isSelected);
 			}
 		}
 	}
@@ -212,43 +263,5 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 			mMarker.setDisabled(isMandatoryDisabled);
 		}
 	}
-
-	private void updateSelectionFromModel() {
-		if (selectionObservable != null) {
-			setSelection(selectionObservable.getValue());
-		}
-	}
-
-	private void updateSelectionFromRidget(Object newValue) {
-		if (selectionObservable != null) {
-			selectionObservable.setValue(newValue);
-		}
-	}
-
-	// helping classes
-	// ////////////////
-
-	/**
-	 * Observable value bean for single selection. This class is used by this
-	 * ridget to monitor and maintain the selection state for single selection
-	 * and fire appropriate events.
-	 */
-	private final class SingleSelectionObservable extends WritableValue {
-
-		SingleSelectionObservable() {
-			super(null, Object.class);
-		}
-
-		@Override
-		protected void fireValueChange(ValueDiff diff) {
-			super.fireValueChange(diff);
-			String key = IChoiceRidget.PROPERTY_SELECTION;
-			Object oldValue = diff.getOldValue();
-			Object newValue = diff.getNewValue();
-			updateMarkers();
-			updateSelectionFromRidget(newValue);
-			SingleChoiceRidget.this.firePropertyChange(key, oldValue, newValue);
-		}
-	};
 
 }
