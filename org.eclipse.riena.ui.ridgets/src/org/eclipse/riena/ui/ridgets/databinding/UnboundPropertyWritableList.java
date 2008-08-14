@@ -38,12 +38,14 @@ public class UnboundPropertyWritableList extends WritableList implements IUnboun
 
 	public void updateFromBean() {
 		Object value = BeanUtils.getValue(bean, propertyDescriptor);
-		if (value instanceof Collection) {
+		if (value == null) {
+			clear();
+		} else if (value instanceof Collection) {
 			clear();
 			addAll((Collection) value);
 		} else {
 			throw new UIBindingFailure("The property '" + propertyDescriptor.getName() //$NON-NLS-1$
-					+ "' is not a java.util.Collection."); //$NON-NLS-1$
+					+ "'is not a java.util.Collection."); //$NON-NLS-1$
 		}
 	}
 
