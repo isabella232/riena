@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
  * Abstract application defining the basic structure of a Riena application
  */
 public abstract class AbstractApplication implements IApplication {
+	public static final String DEFAULT_APPLICATION_TYPEID = "application"; //$NON-NLS-1$
 
 	public Object start(IApplicationContext context) throws Exception {
 		IApplicationModel model = createModel();
@@ -52,7 +53,7 @@ public abstract class AbstractApplication implements IApplication {
 	 *         model
 	 */
 	protected IApplicationModel createModel() {
-		IApplicationModel applicationModel = new ApplicationModel(new NavigationNodeId("application"));
+		IApplicationModel applicationModel = new ApplicationModel(new NavigationNodeId(DEFAULT_APPLICATION_TYPEID));
 		return applicationModel;
 	}
 
