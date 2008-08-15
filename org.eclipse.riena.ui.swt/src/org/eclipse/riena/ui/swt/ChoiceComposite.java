@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.swt;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Control;
  * This composite presents a list of single or multiple choices. It is mapped to
  * a {@link ISingleChoiceRidget} or {@link IMultipleChoiceRidget}.
  */
-// TODO [ev] this should be API - move to public package
 public class ChoiceComposite extends Composite {
 
 	private final boolean isMulti;

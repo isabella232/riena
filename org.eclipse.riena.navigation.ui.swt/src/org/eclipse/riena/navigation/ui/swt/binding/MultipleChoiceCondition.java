@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.binding;
 
-import org.eclipse.riena.internal.ui.ridgets.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 
 /**
  * This mapping condition returns true if the given widget is a
