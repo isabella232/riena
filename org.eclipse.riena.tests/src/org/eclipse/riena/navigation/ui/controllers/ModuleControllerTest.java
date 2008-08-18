@@ -35,7 +35,7 @@ public class ModuleControllerTest extends TestCase {
 		assertEquals("Hello", shellRidget.getTitle());
 
 		node.setCloseable(false);
-		controller.afterBind();
+		controller.configureRidgets();
 		assertFalse(controller.isCloseable());
 
 	}
