@@ -13,11 +13,11 @@ package org.eclipse.riena.ui.ridgets.marker;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
-import org.eclipse.riena.internal.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.swt.widgets.Shell;
 
 /**

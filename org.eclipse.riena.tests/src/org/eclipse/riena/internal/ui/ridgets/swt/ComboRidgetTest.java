@@ -17,9 +17,9 @@ import java.util.Iterator;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 import org.eclipse.riena.ui.ridgets.util.beans.StringManager;

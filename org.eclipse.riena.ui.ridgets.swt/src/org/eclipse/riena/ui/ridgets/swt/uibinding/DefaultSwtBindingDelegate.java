@@ -8,24 +8,23 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.binding;
+package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
-import org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- *
+ * TODO [ev] docs
  */
-public class DefaultSwtViewBindingDelegate extends AbstractViewBindingDelegate {
+public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 
-	public DefaultSwtViewBindingDelegate() {
+	public DefaultSwtBindingDelegate() {
 		this(new DefaultSwtControlRidgetMapper());
 	}
 
 	@SuppressWarnings("unchecked")
-	public DefaultSwtViewBindingDelegate(IControlRidgetMapper mapper) {
+	public DefaultSwtBindingDelegate(IControlRidgetMapper mapper) {
 		super(new SWTBindingPropertyLocator(), mapper);
 	}
 

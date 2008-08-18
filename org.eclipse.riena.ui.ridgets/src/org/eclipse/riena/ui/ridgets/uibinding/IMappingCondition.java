@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.binding;
+package org.eclipse.riena.ui.ridgets.uibinding;
 
 /**
  * A mapping condition; used by the {@link DefaultSwtControlRidgetMapper}.
@@ -19,7 +19,6 @@ package org.eclipse.riena.navigation.ui.swt.binding;
  * 
  * @see DefaultSwtControlRidgetMapper#addMapping(Class, Class,
  *      IMappingCondition)
- * @see TreeWithColumnsCondition
  */
 public interface IMappingCondition {
 	/**

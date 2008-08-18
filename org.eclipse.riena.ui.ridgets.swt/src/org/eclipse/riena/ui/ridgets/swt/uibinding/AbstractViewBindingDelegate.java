@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.views;
+package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import java.util.ArrayList;
 import java.util.List;

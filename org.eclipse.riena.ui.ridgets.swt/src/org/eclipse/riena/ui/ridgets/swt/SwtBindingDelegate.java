@@ -8,22 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.binding;
+package org.eclipse.riena.ui.ridgets.swt;
 
-import org.eclipse.swt.widgets.Tree;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
+import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
- * This mapping condition returns true if the given widget is a {@link Tree}
- * with one or more columns.
+ * TODO [ev] docs
  */
-final class TreeWithColumnsCondition implements IMappingCondition {
+public class SwtBindingDelegate extends DefaultSwtBindingDelegate {
 
-	public boolean isMatch(Object widget) {
-		boolean result = false;
-		if (widget instanceof Tree) {
-			result = ((Tree) widget).getColumnCount() > 0;
-		}
-		return result;
+	@Override
+	public void bind(IController viewController) {
+		// TODO [ev] discuss - move this to DefaultSwtViewBindingDelegate ?
+		super.bind(viewController);
+		viewController.afterBind();
 	}
-
 }

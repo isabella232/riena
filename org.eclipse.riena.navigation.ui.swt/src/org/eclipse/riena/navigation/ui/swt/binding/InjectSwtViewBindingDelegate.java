@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.binding;
 
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
@@ -18,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.uibinding.InjectBindingManager;
 /**
  *
  */
-public class InjectSwtViewBindingDelegate extends DefaultSwtViewBindingDelegate {
+public class InjectSwtViewBindingDelegate extends DefaultSwtBindingDelegate {
 
 	/**
 	 * @param propertyStrategy
@@ -34,7 +35,7 @@ public class InjectSwtViewBindingDelegate extends DefaultSwtViewBindingDelegate 
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.views.AbstractViewBindingDelegate#createBindingManager(org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator,
+	 * @see org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate#createBindingManager(org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator,
 	 *      org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper)
 	 */
 	@Override

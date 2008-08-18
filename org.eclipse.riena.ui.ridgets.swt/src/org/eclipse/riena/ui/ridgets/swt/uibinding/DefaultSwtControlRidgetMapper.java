@@ -1,4 +1,4 @@
-package org.eclipse.riena.navigation.ui.swt.binding;
+package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
@@ -122,7 +123,6 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 
 	public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
 		// TODO Auto-generated method stub
-
 	}
 
 	// helping classes

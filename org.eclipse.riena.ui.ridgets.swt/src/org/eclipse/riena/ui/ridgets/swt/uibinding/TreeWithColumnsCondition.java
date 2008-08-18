@@ -8,21 +8,23 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.binding;
+package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
-import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
+import org.eclipse.swt.widgets.Tree;
 
 /**
- * This mapping condition returns true if the given widget is a
- * {@link ChoiceComposite} that supports <b>multiple selection</b>.
+ * This mapping condition returns true if the given widget is a {@link Tree}
+ * with one or more columns.
  */
-final class MultipleChoiceCondition implements IMappingCondition {
+public final class TreeWithColumnsCondition implements IMappingCondition {
 
 	public boolean isMatch(Object widget) {
 		boolean result = false;
-		if (widget instanceof ChoiceComposite) {
-			result = ((ChoiceComposite) widget).isMultipleSelection();
+		if (widget instanceof Tree) {
+			result = ((Tree) widget).getColumnCount() > 0;
 		}
 		return result;
 	}
+
 }

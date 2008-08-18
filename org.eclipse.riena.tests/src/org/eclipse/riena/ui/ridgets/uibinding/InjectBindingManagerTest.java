@@ -17,11 +17,11 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
