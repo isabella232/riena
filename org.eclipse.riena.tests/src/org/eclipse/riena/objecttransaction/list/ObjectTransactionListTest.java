@@ -872,8 +872,8 @@ public class ObjectTransactionListTest extends RienaTestCase {
 		Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
 		kunde.setNachname("Miller");
-		assertTrue("vorname=john", kunde.getVorname().equals("john"));
-		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
+		assertEquals("vorname=john", "john", kunde.getVorname());
+		assertEquals("nachname=Miller", "Miller", kunde.getNachname());
 
 		Vertrag v1 = new Vertrag("0815");
 		v1.setVertragsBeschreibung("mein erster Vertrag");
@@ -882,19 +882,19 @@ public class ObjectTransactionListTest extends RienaTestCase {
 		Vertrag v2 = new Vertrag("0816");
 		v2.setVertragsBeschreibung("noch ein Vertrag");
 		kunde.addVertrag(v2);
-		assertTrue("anzahl verträge bei kunde ist falsch", kunde.listVertrag().length == 2);
+		assertEquals("anzahl verträge bei kunde ist falsch", 2, kunde.listVertrag().length);
 
 		// making changes to the object
 		objectTransaction.setCleanModus(false);
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
-		assertTrue("reihenfolge: erste Vertrag ist nicht 0815", kunde.listVertrag()[0] == v1);
-		assertTrue("reihenfolge: zweiter Vertrag ist nicht 0816", kunde.listVertrag()[1] == v2);
+		assertSame("reihenfolge: erste Vertrag ist nicht 0815", kunde.listVertrag()[0], v1);
+		assertSame("reihenfolge: zweiter Vertrag ist nicht 0816", kunde.listVertrag()[1], v2);
 
 		kunde.removeVertrag("0815");
-		assertTrue("anzahl verträge bei kunde ist falsch", kunde.listVertrag().length == 1);
+		assertEquals("anzahl verträge bei kunde ist falsch", 1, kunde.listVertrag().length);
 
-		assertTrue("reihenfolge: erste Vertrag ist nicht 0816", kunde.listVertrag()[0] == v2);
+		assertSame("reihenfolge: erste Vertrag ist nicht 0816", kunde.listVertrag()[0], v2);
 
 		// extracting recorded changes
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
@@ -908,8 +908,8 @@ public class ObjectTransactionListTest extends RienaTestCase {
 		kunde2.setVorname("john");
 		kunde2.setNachname("Miller");
 
-		assertTrue("vorname=john", kunde2.getVorname().equals("john"));
-		assertTrue("nachname=Miller", kunde2.getNachname().equals("Miller"));
+		assertEquals("vorname=john", "john", kunde2.getVorname());
+		assertEquals("nachname=Miller", "Miller", kunde2.getNachname());
 
 		v1 = new Vertrag("0815");
 		v1.setVertragsBeschreibung("mein erster Vertrag");
@@ -918,21 +918,21 @@ public class ObjectTransactionListTest extends RienaTestCase {
 		v2 = new Vertrag("0816");
 		v2.setVertragsBeschreibung("noch ein Vertrag");
 		kunde2.addVertrag(v2);
-		assertTrue("anzahl verträge bei kunde ist falsch", kunde2.listVertrag().length == 2);
-		assertTrue("reihenfolge: erste Vertrag ist nicht 0815", kunde2.listVertrag()[0] == v1);
-		assertTrue("reihenfolge: zweiter Vertrag ist nicht 0816", kunde2.listVertrag()[1] == v2);
+		assertEquals("anzahl verträge bei kunde ist falsch", 2, kunde2.listVertrag().length);
+		assertSame("reihenfolge: erste Vertrag ist nicht 0815", kunde2.listVertrag()[0], v1);
+		assertSame("reihenfolge: zweiter Vertrag ist nicht 0816", kunde2.listVertrag()[1], v2);
 
 		// apply the changes from the other objecttransaction's extract
 		objectTransaction2.setCleanModus(false);
 		objectTransaction2.importExtract(extract);
 		// ---> properties have changed
-		assertTrue("vorname=john", kunde2.getVorname().equals("jane"));
-		assertTrue("nachname=Miller", kunde2.getNachname().equals("Stewart"));
-		assertTrue("vertrag 0815 must return null", kunde2.getVertrag("0815") == null);
-		assertTrue("anzahl verträge bei kunde ist falsch", kunde2.listVertrag().length == 1);
-		assertTrue("reihenfolge: erste Vertrag ist nicht 0816", kunde2.listVertrag()[0] == v2);
+		assertEquals("vorname=john", "jane", kunde2.getVorname());
+		assertEquals("nachname=Miller", "Stewart", kunde2.getNachname());
+		assertNull("vertrag 0815 must return null", kunde2.getVertrag("0815"));
+		assertEquals("anzahl verträge bei kunde ist falsch", 1, kunde2.listVertrag().length);
+		assertSame("reihenfolge: erste Vertrag ist nicht 0816", kunde2.listVertrag()[0], v2);
 		kunde.removeVertrag("0816");
-		assertTrue("anzahl verträge bei kunde ist falsch", kunde2.listVertrag().length == 0);
+		assertEquals("anzahl verträge bei kunde ist falsch", 0, kunde2.listVertrag().length);
 	}
 
 	/**

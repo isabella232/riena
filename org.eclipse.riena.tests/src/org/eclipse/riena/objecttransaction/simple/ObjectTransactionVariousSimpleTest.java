@@ -241,11 +241,11 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportOnlyModifedObjectsToExtract();
 		TransactionDelta[] deltas = extract.getDeltas();
-		assertTrue("should be only two transaction delta", deltas.length == 2);
-		assertTrue("single delta should reference v2", deltas[0].getObjectId() == v2.getObjectId());
-		assertTrue("delta status must be modified", deltas[0].getState().equals(State.CREATED));
-		assertTrue("single delta should reference kunde", deltas[1].getObjectId() == kunde.getObjectId());
-		assertTrue("delta status must be modified", deltas[1].getState().equals(State.MODIFIED));
+		assertEquals("should be only two transaction delta", 2, deltas.length);
+		assertSame("single delta should reference v2", deltas[0].getObjectId(), v2.getObjectId());
+		assertEquals("delta status must be modified", State.CREATED, deltas[0].getState());
+		assertSame("single delta should reference kunde", deltas[1].getObjectId(), kunde.getObjectId());
+		assertEquals("delta status must be modified", State.MODIFIED, deltas[1].getState());
 	}
 
 	/**
@@ -270,13 +270,13 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 		IObjectTransactionExtract extract = objectTransaction.exportOnlyModifedObjectsToExtract();
 		TransactionDelta[] deltas = extract.getDeltas();
-		assertTrue("should be only three transaction delta", deltas.length == 3);
-		assertTrue("single delta should reference v1", deltas[0].getObjectId() == v2.getObjectId());
-		assertTrue("delta status must be modified", deltas[0].getState().equals(State.CREATED));
-		assertTrue("single delta should reference v2", deltas[1].getObjectId() == v1.getObjectId());
-		assertTrue("delta status must be modified", deltas[1].getState().equals(State.CREATED));
-		assertTrue("single delta should reference kunde", deltas[2].getObjectId() == kunde.getObjectId());
-		assertTrue("delta status must be modified", deltas[2].getState().equals(State.MODIFIED));
+		assertEquals("should be only three transaction delta", 3, deltas.length);
+		assertSame("single delta should reference v1", deltas[0].getObjectId(), v2.getObjectId());
+		assertEquals("delta status must be modified", State.CREATED, deltas[0].getState());
+		assertSame("single delta should reference v2", deltas[1].getObjectId(), v1.getObjectId());
+		assertEquals("delta status must be modified", State.CREATED, deltas[1].getState());
+		assertSame("single delta should reference kunde", deltas[2].getObjectId(), kunde.getObjectId());
+		assertEquals("delta status must be modified", State.MODIFIED, deltas[2].getState());
 	}
 
 	/**
