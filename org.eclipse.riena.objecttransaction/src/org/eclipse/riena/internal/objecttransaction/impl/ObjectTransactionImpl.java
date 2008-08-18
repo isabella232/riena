@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.objecttransaction.Activator;
 import org.eclipse.riena.objecttransaction.IObjectId;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
@@ -38,6 +36,9 @@ import org.eclipse.riena.objecttransaction.delta.TransactionDelta;
 import org.eclipse.riena.objecttransaction.state.Action;
 import org.eclipse.riena.objecttransaction.state.State;
 import org.eclipse.riena.objecttransaction.state.StateMachine;
+
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -186,7 +187,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	}
 
 	/*
-	 * @see org.eclipse.riena.objecttransaction.IObjectTransaction#exportOnlyModifedObjectsToExtract()
+	 * @seeorg.eclipse.riena.objecttransaction.IObjectTransaction#
+	 * exportOnlyModifedObjectsToExtract()
 	 */
 	public IObjectTransactionExtract exportOnlyModifedObjectsToExtract() {
 		// first export regular modified objects
@@ -1074,6 +1076,8 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		for (ITransactedObject transObject : involvedTransactedObjects.values()) {
 			if (!(parentTransaction.involvedTransactedObjects.get(transObject.getObjectId()) != null)) {
 				parentTransaction.involvedTransactedObjects.put(transObject.getObjectId(), transObject);
+			}
+			if (!(parentTransaction.changesInTransaction.get(transObject.getObjectId()) != null)) {
 				parentTransaction.changesInTransaction.put(transObject.getObjectId(), new TransactionDelta(transObject
 						.getObjectId(), State.CLEAN, transObject.getVersion()));
 			}
