@@ -24,6 +24,6 @@ public interface IPermissionStore {
 	 * @param principal
 	 * @return
 	 */
-	public Permissions loadPermissions(Principal principal);
+	Permissions loadPermissions(Principal principal);
 
 }

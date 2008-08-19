@@ -27,7 +27,6 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
@@ -39,6 +38,8 @@ import org.eclipse.riena.security.common.authentication.credentials.AbstractCred
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
+
+import org.eclipse.equinox.log.Logger;
 
 /**
  * The <code>AuthenticationService</code> will perform the authentication

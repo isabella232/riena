@@ -16,9 +16,9 @@ import org.eclipse.riena.security.common.session.Session;
 
 /**
  * This Provider allows to supply your own implementation to construct the
- * <code>Session</code> object. See comment below. You always have to
- * construct the <code>Session</code> object, however you can bring in your
- * own algorithm for supplying the ID.
+ * <code>Session</code> object. See comment below. You always have to construct
+ * the <code>Session</code> object, however you can bring in your own algorithm
+ * for supplying the ID.
  * 
  */
 public interface ISessionProvider {

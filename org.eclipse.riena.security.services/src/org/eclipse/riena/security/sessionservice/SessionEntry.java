@@ -16,69 +16,68 @@ import java.util.Set;
 
 import org.eclipse.riena.security.common.session.Session;
 
-
 /**
  * Entry of a session store
  * 
  */
 public class SessionEntry {
 
-    /** <code>session</code> */
-    private Session session;
-    /** <code>principals</code> */
-    private Set<Principal> principalSet;
+	/** <code>session</code> */
+	private Session session;
+	/** <code>principals</code> */
+	private Set<Principal> principalSet;
 
-    private boolean valid;
+	private boolean valid;
 
-    /**
-     * Creates a new instance of <code>SessionEntry</code>
-     * 
-     * @param session
-     * @param principal
-     * @param credential
-     */
-    public SessionEntry(Session session, Principal[] principals) {
-        this.session = session;
-        principalSet = new HashSet<Principal>();
-        for (Principal p:principals) {
-        	principalSet.add(p);
-        }
-        this.valid = true;
-    }
+	/**
+	 * Creates a new instance of <code>SessionEntry</code>
+	 * 
+	 * @param session
+	 * @param principal
+	 * @param credential
+	 */
+	public SessionEntry(Session session, Principal[] principals) {
+		this.session = session;
+		principalSet = new HashSet<Principal>();
+		for (Principal p : principals) {
+			principalSet.add(p);
+		}
+		this.valid = true;
+	}
 
-    /**
-     * @return Returns the session.
-     */
-    public Session getSession() {
-        return session;
-    }
+	/**
+	 * @return Returns the session.
+	 */
+	public Session getSession() {
+		return session;
+	}
 
-    /**
-     * @param session
-     *            The session to set.
-     */
-    public void setSession(Session session) {
-        this.session = session;
-    }
+	/**
+	 * @param session
+	 *            The session to set.
+	 */
+	public void setSession(Session session) {
+		this.session = session;
+	}
 
-    /**
-     * @return Returns the userid.
-     */
-    public Set<Principal> getPrincipals() {
-        return principalSet;
-    }
+	/**
+	 * @return Returns the userid.
+	 */
+	public Set<Principal> getPrincipals() {
+		return principalSet;
+	}
 
-    /**
-     * @return true if valid
-     */
-    public boolean getValid() {
-        return valid;
-    }
+	/**
+	 * @return true if valid
+	 */
+	public boolean getValid() {
+		return valid;
+	}
 
-    /**
-     * @param valid
-     */
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
+	/**
+	 * @param valid
+	 */
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
 }
