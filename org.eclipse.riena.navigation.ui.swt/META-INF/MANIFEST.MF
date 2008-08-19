@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.databinding,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.swt
-Eclipse-LazyStart: true 
+Bundle-ActivationPolicy: lazy 
 Export-Package: org.eclipse.riena.navigation.ui.swt.application,
  org.eclipse.riena.navigation.ui.swt.binding,
  org.eclipse.riena.navigation.ui.swt.component;x-friends:="org.eclipse.riena.tests",
