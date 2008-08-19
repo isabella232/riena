@@ -12,20 +12,21 @@ package org.eclipse.riena.ui.ridgets.tree;
 
 import java.io.Serializable;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
- * Class <code>ChangeVisibilityTreeModel</code> provides an interface to
- * change the visibility of its nodes.
+ * Class <code>ChangeVisibilityTreeModel</code> provides an interface to change
+ * the visibility of its nodes.
  */
 public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisibleTreeModel {
 
 	/**
 	 * Creates a tree in which any node can have children.
 	 * 
-	 * @param root -
-	 *            the root of the tree.
+	 * @param root
+	 *            - the root of the tree.
 	 */
 	public ChangeVisibilityTreeModel(ITreeNode root) {
 
@@ -114,8 +115,7 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeModel#removeNodeFromParent(
-	 *      de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeNode)
+	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeModel#removeNodeFromParent(de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeNode)
 	 */
 	public void removeNodeFromParent(DefaultTreeNode node) {
 
@@ -139,5 +139,4 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 			fireTreeNodesRemoved(this, parent, childIndex, removedArray);
 		}
 	}
-
 }

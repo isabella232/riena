@@ -110,13 +110,13 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @throws RuntimeException
 	 *             if columnIndex is out of range
 	 */
-	public void setComparator(int columnIndex, Comparator<Object> comparator);
+	void setComparator(int columnIndex, Comparator<Object> comparator);
 
 	/**
 	 * Return true, if this table allows columns to be re-arranged by the user.
 	 * The default value is false.
 	 */
-	public boolean hasMoveableColumns();
+	boolean hasMoveableColumns();
 
 	/**
 	 * Set to true, if this table should allow columns to be re-arranged by the
@@ -126,5 +126,5 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 *            true, if column should be re-arrangable by the user; false
 	 *            otherwise.
 	 */
-	public void setMoveableColumns(boolean moveableColumns);
+	void setMoveableColumns(boolean moveableColumns);
 }

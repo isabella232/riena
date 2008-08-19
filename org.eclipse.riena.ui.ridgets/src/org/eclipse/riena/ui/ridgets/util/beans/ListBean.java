@@ -74,6 +74,5 @@ public class ListBean extends AbstractBean {
 		Object old = this.values;
 		this.values = values;
 		firePropertyChanged("values", old, this.values); //$NON-NLS-1$
-
 	}
 }

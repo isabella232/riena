@@ -62,6 +62,6 @@ public interface IMatrixRidget extends IRidget {
 	 * @param showHeader
 	 *            if true, header of matrix is shown
 	 */
-	public void setShowHeader(boolean showHeader);
+	void setShowHeader(boolean showHeader);
 
 }

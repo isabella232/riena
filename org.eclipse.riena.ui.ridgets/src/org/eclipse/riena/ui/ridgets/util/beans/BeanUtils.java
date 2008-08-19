@@ -20,9 +20,10 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -590,5 +591,4 @@ public final class BeanUtils {
 		} // end try
 
 	} // end method
-
 }

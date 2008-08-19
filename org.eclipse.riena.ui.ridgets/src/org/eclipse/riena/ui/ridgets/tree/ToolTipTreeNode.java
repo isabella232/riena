@@ -23,8 +23,8 @@ public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip
 	 * Constructor. Creates a tree node with no parent, no children and
 	 * initializes it with the specified user object.
 	 * 
-	 * @param userObject -
-	 *            an Object provided by the user that constitutes the node's
+	 * @param userObject
+	 *            - an Object provided by the user that constitutes the node's
 	 *            data.
 	 */
 	public ToolTipTreeNode(Object userObject) {

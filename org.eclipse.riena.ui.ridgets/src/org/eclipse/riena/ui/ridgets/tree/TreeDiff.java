@@ -17,7 +17,7 @@ import org.eclipse.core.databinding.observable.IObservablesListener;
  */
 public abstract class TreeDiff {
 
-	public final ITreeNode node;
+	private final ITreeNode node;
 
 	/**
 	 * 

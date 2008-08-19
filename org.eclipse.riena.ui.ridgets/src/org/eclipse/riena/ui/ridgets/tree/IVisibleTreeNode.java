@@ -21,8 +21,8 @@ public interface IVisibleTreeNode extends Serializable {
 	/**
 	 * Returns the visible child <code>ITreeNode</code> at the given index.
 	 * 
-	 * @param childIndex -
-	 *            index of the visible child.
+	 * @param childIndex
+	 *            - index of the visible child.
 	 * @return visible child at the given index.
 	 */
 	IVisibleTreeNode getVisibleChildAt(int childIndex);

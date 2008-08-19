@@ -12,9 +12,10 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
  * A UI-toolkit independent Ridget (Riena widget) wrapping and extending an
@@ -111,8 +112,8 @@ public interface IRidget {
 	 * Adds the specified focus listener to receive focus events from this
 	 * ridget when it gains the focus.
 	 * 
-	 * @param listener -
-	 *            focus listener to be added
+	 * @param listener
+	 *            - focus listener to be added
 	 */
 	void addFocusListener(IFocusListener listener);
 
@@ -120,8 +121,8 @@ public interface IRidget {
 	 * Removes the specified focus listener so that it no longer receives focus
 	 * events from this component.
 	 * 
-	 * @param listener -
-	 *            focus listener to be removed
+	 * @param listener
+	 *            - focus listener to be removed
 	 */
 	void removeFocusListener(IFocusListener listener);
 
@@ -172,8 +173,8 @@ public interface IRidget {
 	/**
 	 * Sets if the ridget can gain the focus or not.
 	 * 
-	 * @param focusable -
-	 *            true if the adapter can gain the focus; otherwise false
+	 * @param focusable
+	 *            - true if the adapter can gain the focus; otherwise false
 	 */
 	void setFocusable(boolean focusable);
 
@@ -193,13 +194,13 @@ public interface IRidget {
 	 * 
 	 * @param blocked
 	 */
-	public void setBlocked(boolean blocked);
+	void setBlocked(boolean blocked);
 
 	/**
 	 * Returns true if user input for the ridgetis blocked.
 	 * 
 	 * @return true if input is blocked for the ridget
 	 */
-	public boolean isBlocked();
+	boolean isBlocked();
 
 }

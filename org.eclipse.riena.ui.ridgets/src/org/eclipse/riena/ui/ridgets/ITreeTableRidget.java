@@ -89,6 +89,6 @@ public interface ITreeTableRidget extends ITreeRidget, ISortableByColumn {
 	 * @throws RuntimeException
 	 *             if columnIndex is out of range
 	 */
-	public void setComparator(int columnIndex, Comparator<Object> comparator);
+	void setComparator(int columnIndex, Comparator<Object> comparator);
 
 }

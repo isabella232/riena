@@ -13,9 +13,10 @@ package org.eclipse.riena.ui.ridgets.util.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
+
+import org.eclipse.core.runtime.Assert;
 
 /**
  * Bean that stores information about a single word (Strin). It is used in

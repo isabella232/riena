@@ -31,10 +31,9 @@ public interface IWindowRidget extends IRidget {
 	 * 
 	 * @return
 	 */
-	public Object getDefaultButton();
+	Object getDefaultButton();
 
-	public void setCloseable(boolean closeable);
+	void setCloseable(boolean closeable);
 
-	public void setActive(boolean active);
-
+	void setActive(boolean active);
 }

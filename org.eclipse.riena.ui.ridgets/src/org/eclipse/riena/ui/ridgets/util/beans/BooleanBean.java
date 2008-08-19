@@ -62,5 +62,4 @@ public class BooleanBean extends AbstractBean {
 			firePropertyChanged("value", old, this.value); //$NON-NLS-1$
 		}
 	}
-
 }

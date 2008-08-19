@@ -17,8 +17,8 @@ import org.eclipse.core.databinding.observable.IObservablesListener;
  */
 public class TreeNodeValueDiff extends TreeDiff {
 
-	public final Object oldValue;
-	public final Object newValue;
+	private final Object oldValue;
+	private final Object newValue;
 
 	/**
 	 * 
@@ -39,8 +39,10 @@ public class TreeNodeValueDiff extends TreeDiff {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.TreeDiff#dispatch(org.eclipse.riena.ui.ridgets.tree.TreeModelEvent,
-	 *      org.eclipse.core.databinding.observable.IObservablesListener)
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.tree.TreeDiff#dispatch(org.eclipse.riena
+	 * .ui.ridgets.tree.TreeModelEvent,
+	 * org.eclipse.core.databinding.observable.IObservablesListener)
 	 */
 	@Override
 	protected void dispatch(TreeModelEvent event, IObservablesListener listener) {

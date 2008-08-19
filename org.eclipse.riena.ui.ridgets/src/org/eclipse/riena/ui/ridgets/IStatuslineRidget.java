@@ -73,5 +73,4 @@ public interface IStatuslineRidget extends IComplexRidget {
 	 * @return the statuslineNumer
 	 */
 	IStatuslineNumberRidget getStatuslineNumberRidget();
-
 }

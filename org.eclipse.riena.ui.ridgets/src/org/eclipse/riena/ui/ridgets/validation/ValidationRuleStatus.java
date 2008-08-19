@@ -10,17 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
+import org.eclipse.riena.internal.ui.ridgets.Activator;
+
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
  * Result of a validation performed by an IValidationRule. Extends the IStatus
  * by adding some specific code for validation of Ridgets.
  */
-public class ValidationRuleStatus extends Status implements IValidationRuleStatus {
+public final class ValidationRuleStatus extends Status implements IValidationRuleStatus {
 
 	private IValidator source;
 

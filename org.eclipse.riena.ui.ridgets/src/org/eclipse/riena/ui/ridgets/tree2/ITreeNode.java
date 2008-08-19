@@ -71,14 +71,14 @@ public interface ITreeNode {
 	 * 
 	 * @return a List of ITreeNodes; never null; may be empty
 	 */
-	public List<ITreeNode> getChildren();
+	List<ITreeNode> getChildren();
 
 	/**
 	 * Return the value object for this node
 	 * 
 	 * @return an Object instance (may be null)
 	 */
-	public Object getValue();
+	Object getValue();
 
 	/**
 	 * Set the children object for this node.
@@ -89,7 +89,7 @@ public interface ITreeNode {
 	 * @param children
 	 *            a List of ITreeNodes; may be null.
 	 */
-	public void setChildren(List<ITreeNode> children);
+	void setChildren(List<ITreeNode> children);
 
 	/**
 	 * Set teh value object for this node
@@ -97,7 +97,7 @@ public interface ITreeNode {
 	 * @param newValue
 	 *            an Object instance (may be null)
 	 */
-	public void setValue(Object newValue);
+	void setValue(Object newValue);
 
 	/**
 	 * Returns the parent tree node <code>ITreeNode</code> of the receiver.

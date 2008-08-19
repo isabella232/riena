@@ -86,8 +86,8 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	 */
 	private class TypePair {
 
-		public final Object fromType;
-		public final Object toType;
+		private final Object fromType;
+		private final Object toType;
 
 		/**
 		 * Construct a pair with from- and to-type.

@@ -22,6 +22,6 @@ public interface IUIProcessRidget extends IProgressVisualizerObserver, IRidget {
 
 	void deactivate();
 
-	public void setContextLocator(IVisualContextManager contextLocator);
+	void setContextLocator(IVisualContextManager contextLocator);
 
 }

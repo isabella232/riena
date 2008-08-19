@@ -41,16 +41,15 @@ public class GregorianCalendarBean extends AbstractBean {
 	/**
 	 * Sets the value of this bean
 	 * 
-	 * @param value -
-	 *            value to set
+	 * @param value
+	 *            - value to set
 	 */
 	public void setValue(GregorianCalendar value) {
-		if (value != null) {
-			// System.out.println( "Greg bean setValue: " + value.toString() );
-		} else {
-			// System.out.println( "Greg bean setValue: " + null );
-
-		}
+		// if (value != null) {
+		// System.out.println( "Greg bean setValue: " + value.toString() );
+		// } else {
+		// System.out.println( "Greg bean setValue: " + null );
+		// }
 		Object old = this.value;
 		this.value = value;
 		firePropertyChanged("value", old, this.value); //$NON-NLS-1$

@@ -314,5 +314,4 @@ public interface ITreeAdapter extends IMarkableAdapter {
 	 *            <code>SELECTION_TYPE_MULI</code>)
 	 */
 	void setSelectionType(int selectionType);
-
 }

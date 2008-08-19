@@ -125,8 +125,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#hasFocus()
 	 */
 	public boolean hasFocus() {
-		Collection<? extends IRidget> ridgets = getRidgets();
-		for (IRidget ridget : ridgets) {
+		Collection<? extends IRidget> myRidgets = getRidgets();
+		for (IRidget ridget : myRidgets) {
 			if (ridget.hasFocus()) {
 				return true;
 			}

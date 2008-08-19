@@ -102,5 +102,4 @@ public final class PropertyAccessFailure extends PropertyFailure {
 
 		return new PropertyAccessFailure(message, cause);
 	}
-
 }

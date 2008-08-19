@@ -46,7 +46,7 @@ public interface ISortableByColumn {
 	 * @return <code>true</code> if and only if the currently sorted column is
 	 *         in ascending order. Otherwise <code>false</code>
 	 */
-	public boolean isSortedAscending();
+	boolean isSortedAscending();
 
 	/**
 	 * Set the sort order of the currently sorted column.
@@ -57,13 +57,13 @@ public interface ISortableByColumn {
 	 *            <code>true</code> for ascending order, <code>false</code> for
 	 *            descending order.
 	 */
-	public void setSortedAscending(boolean ascending);
+	void setSortedAscending(boolean ascending);
 
 	/**
 	 * @return the 0-based index of the currently sorted column or
 	 *         <code>-1</code> if no column is currently sorted.
 	 */
-	public int getSortedColumn();
+	int getSortedColumn();
 
 	/**
 	 * Set the index of the column the table is sorted by. The sort order
@@ -79,7 +79,7 @@ public interface ISortableByColumn {
 	 * @throws RuntimeException
 	 *             if <code>columnIndex</code> is out of range
 	 */
-	public void setSortedColumn(int columnIndex);
+	void setSortedColumn(int columnIndex);
 
 	/**
 	 * Returns <code>true</code> if and only if the column at columnIndex is
@@ -94,7 +94,7 @@ public interface ISortableByColumn {
 	 * @throws RuntimeException
 	 *             if <code>columnIndex</code> is out of range
 	 */
-	public boolean isColumnSortable(int columnIndex);
+	boolean isColumnSortable(int columnIndex);
 
 	/**
 	 * Set the sortability of column at columnIndex.
@@ -120,5 +120,5 @@ public interface ISortableByColumn {
 	 * @throws RuntimeException
 	 *             if <code>columnIndex</code> is out of range
 	 */
-	public void setColumnSortable(int columnIndex, boolean sortable);
+	void setColumnSortable(int columnIndex, boolean sortable);
 }

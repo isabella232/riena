@@ -66,7 +66,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 *            Individual array entries may be null, which will show an empty
 	 *            title in the header of that column.
 	 */
-	public void bindToModel(Object rowBeansBean, String rowBeansPropertyName, Class<? extends Object> rowBeanClass,
+	void bindToModel(Object rowBeansBean, String rowBeansPropertyName, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] headerNames);
 
 	/**
@@ -75,13 +75,13 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @return true if some detail changed
 	 */
-	public boolean isDetailsChanged();
+	boolean isDetailsChanged();
 
 	/**
 	 * Clears the detail ridgets, that is, empty textfields, uncheck checkboxes
 	 * and so on.
 	 */
-	public void clearDetails();
+	void clearDetails();
 
 	/**
 	 * Creates a workingCopyObject. The workingCopyObject represents the model
@@ -90,7 +90,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @return
 	 */
-	public E createWorkingCopyObject();
+	E createWorkingCopyObject();
 
 	/**
 	 * States whether the input is valid. For example checks if a textfield
@@ -98,7 +98,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @return true if input is valid
 	 */
-	public boolean isInputValid();
+	boolean isInputValid();
 
 	/**
 	 * Copies the content of one given bean instance into another given bean
@@ -111,19 +111,19 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 *            the target bean
 	 * @return returns the target bean
 	 */
-	public E copyBean(E from, E to);
+	E copyBean(E from, E to);
 
 	/**
 	 * Updates all details from the model. Typically an implementation calls
 	 * updateFromModel for every given detail ridget.
 	 */
-	public void updateDetails();
+	void updateDetails();
 
 	/**
 	 * Adds a new bean instance which represents the actual content of the
 	 * details to the master model.
 	 */
-	public void addToMaster();
+	void addToMaster();
 
 	/**
 	 * Returns a bean which represents the content of the bean behind the
@@ -131,7 +131,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @return the actual selecetion of the master
 	 */
-	public E getMasterSelection();
+	E getMasterSelection();
 
 	/**
 	 * Returns the workingCopy object. The workingCopyObject represents the
@@ -140,7 +140,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @return
 	 */
-	public E getWorkingCopy();
+	E getWorkingCopy();
 
 	/**
 	 * Set the new selection exactly like interactive selection change.
@@ -150,7 +150,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * @param triggerChanged
 	 *            if true, a selection changes should be triggered
 	 */
-	public void setSelection(final E newSelection, boolean triggerChanged);
+	void setSelection(final E newSelection, boolean triggerChanged);
 
 	/**
 	 * This method is called by the Master Detail ridget when the selection is
@@ -158,19 +158,19 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @param newSelection
 	 */
-	public void selectionChanged(E newSelection);
+	void selectionChanged(E newSelection);
 
 	/**
 	 * Copies the content of the actually selected master bean to the detail
 	 * fields.
 	 */
-	public void copyFromMasterToDetails();
+	void copyFromMasterToDetails();
 
 	/**
 	 * Copies the content of the details into the bean behind the actual
 	 * selected row of the master. If nothing is selected, a new bean is added
 	 * to the master model.
 	 */
-	public boolean copyFromDetailsToMaster();
+	boolean copyFromDetailsToMaster();
 
 }

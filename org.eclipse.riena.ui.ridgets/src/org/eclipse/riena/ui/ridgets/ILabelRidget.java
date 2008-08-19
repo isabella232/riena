@@ -51,13 +51,12 @@ public interface ILabelRidget extends IValueRidget {
 	/**
 	 * Sets the location of the icon. <br>
 	 * Sets the ID of the icon. <br>
-	 * Beware of the method setIcon(String). The latest set icon is displayed.
-	 * <br>
+	 * Beware of the method setIcon(String). The latest set icon is displayed. <br>
 	 * 
 	 * @see #setIcon(String)
 	 * 
-	 * @param location -
-	 *            the URL for the image.
+	 * @param location
+	 *            - the URL for the image.
 	 */
 	void setIconLocation(URL location);
 
@@ -75,8 +74,8 @@ public interface ILabelRidget extends IValueRidget {
 	 * 
 	 * @see #setIconLocation(URL)
 	 * 
-	 * @param icon -
-	 *            icon name.
+	 * @param icon
+	 *            - icon name.
 	 */
 	void setIcon(String icon);
 

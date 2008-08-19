@@ -19,8 +19,8 @@ import org.eclipse.core.databinding.observable.IObservablesListener;
  */
 public class TreeNodesInsertedDiff extends TreeDiff {
 
-	public final int[] childIndices;
-	public final Serializable[] children;
+	private final int[] childIndices;
+	private final Serializable[] children;
 
 	/**
 	 * 
@@ -41,8 +41,10 @@ public class TreeNodesInsertedDiff extends TreeDiff {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.TreeDiff#dispatch(org.eclipse.riena.ui.ridgets.tree.TreeModelEvent,
-	 *      org.eclipse.core.databinding.observable.IObservablesListener)
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.tree.TreeDiff#dispatch(org.eclipse.riena
+	 * .ui.ridgets.tree.TreeModelEvent,
+	 * org.eclipse.core.databinding.observable.IObservablesListener)
 	 */
 	@Override
 	protected void dispatch(TreeModelEvent event, IObservablesListener listener) {

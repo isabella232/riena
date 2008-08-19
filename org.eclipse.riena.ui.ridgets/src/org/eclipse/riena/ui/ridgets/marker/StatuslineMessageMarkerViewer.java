@@ -38,7 +38,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	enum Severity {
 		NONE(0), INFO(1), WARNING(2), ERROR(3);
-		int index;
+		private int index;
 
 		Severity(int index) {
 			this.index = index;

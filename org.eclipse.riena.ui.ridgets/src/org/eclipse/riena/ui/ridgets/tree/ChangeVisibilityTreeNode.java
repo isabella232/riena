@@ -27,8 +27,8 @@ public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibl
 	 * Constructor. Creates a tree node with no parent, no children and
 	 * initializes it with the specified user object.
 	 * 
-	 * @param userObject -
-	 *            an Object provided by the user that constitutes the node's
+	 * @param userObject
+	 *            - an Object provided by the user that constitutes the node's
 	 *            data.
 	 */
 	public ChangeVisibilityTreeNode(Object userObject) {
@@ -81,6 +81,10 @@ public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibl
 
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.IVisibleTreeNode#
+	 *     
+	 *     
+	 *     
+	 *     
 	 *      getVisibleIndex(de.compeople.spirit.core.client.uibinding.adapter.tree.IVisibleTreeNode)
 	 */
 	public int getVisibleIndex(IVisibleTreeNode node) {

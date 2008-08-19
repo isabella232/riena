@@ -207,5 +207,4 @@ public interface IWindowAdapter extends IMarkableAdapter, IAcceleratorConstants 
 	 *            The new window closing policy.
 	 */
 	void setWindowClosingPolicy(IWindowClosingPolicy windowClosingPolicy);
-
 }
