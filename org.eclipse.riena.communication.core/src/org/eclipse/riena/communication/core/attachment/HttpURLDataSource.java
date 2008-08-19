@@ -37,9 +37,9 @@ public class HttpURLDataSource implements IDataSource {
 	 * @pre httpURLConnection != null
 	 */
 	public HttpURLDataSource(URL url) throws IOException {
-		HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
-		assert httpUrlConnection != null;
-		this.httpUrlConnection = httpUrlConnection;
+		HttpURLConnection myHttpUrlConnection = (HttpURLConnection) url.openConnection();
+		assert myHttpUrlConnection != null;
+		this.httpUrlConnection = myHttpUrlConnection;
 	}
 
 	/**

@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.publisher;
 
 import org.eclipse.riena.communication.core.IRemoteServiceProtocol;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
-import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 
 /**
@@ -50,7 +49,7 @@ import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor
  * 
  * @see IRemoteServiceProtocol
  * @see RemoteServiceDescription
- * @see IRemoteServiceFactory
+ * @see org.eclipse.riena.communication.core.factory.IRemoteServiceFactory
  */
 public interface IServicePublisher extends IRemoteServiceProtocol {
 

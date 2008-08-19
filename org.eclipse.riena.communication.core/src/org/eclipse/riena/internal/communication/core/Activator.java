@@ -102,10 +102,12 @@ public class Activator extends RienaActivator {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		if (sslInjector != null)
+		if (sslInjector != null) {
 			sslInjector.stop();
-		if (sslConfigServiceReference != null)
+		}
+		if (sslConfigServiceReference != null) {
 			context.ungetService(sslConfigServiceReference);
+		}
 
 		regServiceRegistry.unregister();
 		regServiceRegistry = null;

@@ -13,6 +13,8 @@ package org.eclipse.riena.communication.core.hooks;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList;
+
 public interface ICallMessageContext {
 
 	void addRequestHeader(String name, String value);
@@ -22,5 +24,7 @@ public interface ICallMessageContext {
 	Map<String, List<String>> listResponseHeaders();
 
 	List<String> getResponseHeaderValues(String name);
+
+	IProgressMonitorList getProgressMonitorList();
 
 }

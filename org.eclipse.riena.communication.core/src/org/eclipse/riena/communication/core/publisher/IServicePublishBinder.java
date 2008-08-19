@@ -11,6 +11,7 @@
 package org.eclipse.riena.communication.core.publisher;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -18,10 +19,10 @@ import org.osgi.framework.ServiceReference;
  */
 public interface IServicePublishBinder {
 
-	public abstract void publish(ServiceReference ref, String url, String protocol);
+	void publish(ServiceReference ref, String url, String protocol);
 
-	public abstract void unpublish(ServiceReference serviceReference);
+	void unpublish(ServiceReference serviceReference);
 
-	public RemoteServiceDescription[] getAllServices();
+	RemoteServiceDescription[] getAllServices();
 
 }

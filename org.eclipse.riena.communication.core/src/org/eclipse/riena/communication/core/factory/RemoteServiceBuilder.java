@@ -11,9 +11,8 @@
 package org.eclipse.riena.communication.core.factory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
-import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
@@ -29,10 +28,11 @@ import org.osgi.service.component.ComponentContext;
  * <ul>
  * <li>'riena.interface' - defines the the interface class of the "remote OSGi
  * Service. The OSGi Service become registered with this name too</li>
- * <li>'riena.remote.path' - defines the context path for the remote service
- * end point</li>
+ * <li>'riena.remote.path' - defines the context path for the remote service end
+ * point</li>
  * <li>'riena.remote.protocol' - defines the web service protocol. See also
- * {@link IServicePublisher} and {@link IRemoteServiceFactory}
+ * {@link org.eclipse.riena.communication.core.publisher.IServicePublisher} and
+ * {@link IRemoteServiceFactory}
  * <li>
  * </ul>
  * <p>
@@ -42,7 +42,8 @@ import org.osgi.service.component.ComponentContext;
  * &lt;component name=&quot;foo.my.component&quot;
  * immediate=&quot;true&quot;&gt;<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;&lt;implementation
- * class=&quot;org.eclipse.riena.communication.core.factory.RemoteServiceBuilder&quot;/&gt;<br>
+ * class=&quot;org.eclipse.riena.communication
+ * .core.factory.RemoteServiceBuilder&quot;/&gt;<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;&lt;property name=&quot;riena.interface&quot;
  * value=&quot;foo.my.service.MyService&quot;/&gt;<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;&lt;property name=&quot;riena.remote.path&quot;
@@ -70,10 +71,11 @@ public class RemoteServiceBuilder {
 	/**
 	 * Creates a proxy reference for a end point described by Service
 	 * Declaration. Register the proxy reference as remote service into the
-	 * {@link IRemoteServiceRegistry}. The "remote" service become registered
-	 * as OSGi Service within this client container. The property
-	 * "riena.interface" defines the interface type and OSGi Service name. The
-	 * context holds the declarated properties for the remote end point.
+	 * {@link org.eclipse.riena.communication.core.IRemoteServiceRegistry}. The
+	 * "remote" service become registered as OSGi Service within this client
+	 * container. The property "riena.interface" defines the interface type and
+	 * OSGi Service name. The context holds the declarated properties for the
+	 * remote end point.
 	 * 
 	 * @param context
 	 */
@@ -93,7 +95,8 @@ public class RemoteServiceBuilder {
 	}
 
 	/**
-	 * Unregister the "remote" service from the {@link IRemoteServiceRegistry}.
+	 * Unregister the "remote" service from the
+	 * {@link org.eclipse.riena.communication.core.IRemoteServiceRegistry}.
 	 * 
 	 * @param bundle
 	 * @param reg

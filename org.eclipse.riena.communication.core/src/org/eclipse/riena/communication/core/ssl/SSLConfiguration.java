@@ -28,9 +28,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.internal.communication.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -64,9 +65,8 @@ public class SSLConfiguration {
 	public void configure(ISSLProperties properties) {
 		configured = false;
 
-		LOGGER
-				.log(LogService.LOG_INFO, "Configuring SSL protocol '" + protocol + "' with keystore '" + keystore //$NON-NLS-1$ //$NON-NLS-2$
-						+ "'."); //$NON-NLS-1$
+		LOGGER.log(LogService.LOG_INFO, "Configuring SSL protocol '" + protocol + "' with keystore '" + keystore //$NON-NLS-1$ //$NON-NLS-2$
+				+ "'."); //$NON-NLS-1$
 
 		if (properties == null) {
 			LOGGER.log(LogService.LOG_INFO, "No configuration given!."); //$NON-NLS-1$
@@ -190,14 +190,16 @@ public class SSLConfiguration {
 
 		// keystore location a file?
 		File keystoreFile = new File(keystore);
-		if (keystoreFile.canRead())
+		if (keystoreFile.canRead()) {
 			return keystoreFile.toURL();
+		}
 
 		LOGGER.log(LogService.LOG_DEBUG, "Keystore " + keystore + " is not a file."); //$NON-NLS-1$ //$NON-NLS-2$
 		// maybe it is a resource?
 		URL keystoreUrl = SSLConfiguration.class.getClassLoader().getResource(keystore);
-		if (keystoreUrl != null)
+		if (keystoreUrl != null) {
 			return keystoreUrl;
+		}
 
 		LOGGER.log(LogService.LOG_DEBUG, "Keystore " + keystore + " is not a resource."); //$NON-NLS-1$ //$NON-NLS-2$
 		// and finally a url?
@@ -212,12 +214,15 @@ public class SSLConfiguration {
 	 * Restore previous settings.
 	 */
 	public void restore() {
-		if (previousHttpsProtocol != null)
+		if (previousHttpsProtocol != null) {
 			System.setProperty(HTTPS_PROTOCOLS_PROPERTY_KEY, previousHttpsProtocol);
-		if (previousSSLSocketFactor != null)
+		}
+		if (previousSSLSocketFactor != null) {
 			HttpsURLConnection.setDefaultSSLSocketFactory(previousSSLSocketFactor);
-		if (previousHostNameVerifier != null)
+		}
+		if (previousHostNameVerifier != null) {
 			HttpsURLConnection.setDefaultHostnameVerifier(previousHostNameVerifier);
+		}
 	}
 
 	/*
@@ -227,5 +232,4 @@ public class SSLConfiguration {
 	public String toString() {
 		return "SSLConfiguration: " + protocol + ", " + keystore; //$NON-NLS-1$ //$NON-NLS-2$
 	}
-
 }

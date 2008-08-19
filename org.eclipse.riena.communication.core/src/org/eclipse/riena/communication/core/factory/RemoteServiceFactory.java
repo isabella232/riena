@@ -14,8 +14,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -25,6 +23,9 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -378,9 +379,9 @@ public class RemoteServiceFactory {
 
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (delegateHandler == null) {
-				throw new RuntimeException(
-						"LazyProxy: missing IRemoteServiceFactory to create proxy for " + "protocol=" + rsd.getProtocol() + " url=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-								+ rsd.getURL() + " interface=" + rsd.getServiceInterfaceClassName()); //$NON-NLS-1$
+				throw new RuntimeException("LazyProxy: missing IRemoteServiceFactory to create proxy for " //$NON-NLS-1$
+						+ "protocol=" + rsd.getProtocol() + " url=" + rsd.getURL() + " interface=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						+ rsd.getServiceInterfaceClassName());
 			}
 
 			return delegateHandler.invoke(proxy, method, args);
