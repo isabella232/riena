@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
-	public DefaultSwtControlRidgetMapper delegate;
+	private DefaultSwtControlRidgetMapper delegate;
 
 	private Map<Class<? extends Object>, Class<? extends IRidget>> mappings;
 

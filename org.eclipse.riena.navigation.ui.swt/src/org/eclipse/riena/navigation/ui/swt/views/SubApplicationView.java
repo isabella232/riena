@@ -119,7 +119,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
-	private class MySubModuleNodeListener extends SubModuleNodeListener {
+	private static class MySubModuleNodeListener extends SubModuleNodeListener {
 
 		private boolean navigationUp = false;
 

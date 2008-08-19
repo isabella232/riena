@@ -15,11 +15,12 @@ package org.eclipse.riena.navigation.ui.swt.presentation;
  * SwtPresentationManager
  * 
  */
-public class SwtPresentationManagerAccessor {
+public final class SwtPresentationManagerAccessor {
 
-	private static SwtPresentationManager manager;
+	private static volatile SwtPresentationManager manager;
 
 	private SwtPresentationManagerAccessor() {
+		// utility
 	}
 
 	public static SwtPresentationManager getManager() {

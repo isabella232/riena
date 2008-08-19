@@ -371,11 +371,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 			public void paintControl(PaintEvent e) {
 
 				if (current != null) {
-					SubModuleViewRenderer renderer = getRenderer();
-					if (renderer != null) {
+					SubModuleViewRenderer viewRenderer = getRenderer();
+					if (viewRenderer != null) {
 						Rectangle bounds = calcSubModuleOuterBounds();
-						renderer.setBounds(bounds);
-						renderer.paint(e.gc, null);
+						viewRenderer.setBounds(bounds);
+						viewRenderer.paint(e.gc, null);
 					}
 				}
 			}

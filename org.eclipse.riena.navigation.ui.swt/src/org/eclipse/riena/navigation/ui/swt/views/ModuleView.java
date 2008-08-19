@@ -409,9 +409,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * @return height.
 	 */
 	public int getOpenHeight() {
-		IModuleNode moduleNode = getNavigationNode();
-		if ((moduleNode != null) && (moduleNode.isActivated())) {
-			int depth = moduleNode.calcDepth();
+		IModuleNode navigationNode = getNavigationNode();
+		if ((navigationNode != null) && (navigationNode.isActivated())) {
+			int depth = navigationNode.calcDepth();
 			if (depth == 0) {
 				return 0;
 			} else {

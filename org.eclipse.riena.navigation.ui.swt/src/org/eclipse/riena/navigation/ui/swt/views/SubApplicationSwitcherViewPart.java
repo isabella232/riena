@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -55,7 +53,7 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 	 * @return application model
 	 */
 	private ApplicationModel getApplicationModel() {
-			return model;
+		return model;
 	}
 
 	/**

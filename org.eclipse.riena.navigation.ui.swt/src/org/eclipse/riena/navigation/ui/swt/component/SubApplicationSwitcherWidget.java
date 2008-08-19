@@ -40,13 +40,13 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	/**
 	 * Creates a new widget.
 	 * 
-	 * @param parent -
-	 *            a composite control which will be the parent of the new
+	 * @param parent
+	 *            - a composite control which will be the parent of the new
 	 *            instance
-	 * @param style -
-	 *            the style of control to construct
-	 * @param applicationModel -
-	 *            the model of the application
+	 * @param style
+	 *            - the style of control to construct
+	 * @param applicationModel
+	 *            - the model of the application
 	 */
 	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationModel applicationModel) {
 
@@ -122,8 +122,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	/**
 	 * Returns the sub-application at the given point.
 	 * 
-	 * @param point -
-	 *            point over sub-application item
+	 * @param point
+	 *            - point over sub-application item
 	 * @return module item; or null, if not item was found
 	 */
 	private SubApplicationItem getItem(Point point) {
@@ -151,8 +151,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * Creates for every sub-application of the given application an item and
 	 * registers it.
 	 * 
-	 * @param applicationModel -
-	 *            model of the application
+	 * @param applicationModel
+	 *            - model of the application
 	 */
 	private void registerItems(IApplicationModel applicationModel) {
 
