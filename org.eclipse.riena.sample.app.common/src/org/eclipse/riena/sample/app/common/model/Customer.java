@@ -38,6 +38,15 @@ public class Customer {
 	 * db4o - id
 	 */
 	private long id = -1;
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getId() {
+		return id;
+	}
+
 	private transient PropertyChangeSupport propertyChangeSupport;
 
 	private Integer customerNumber;

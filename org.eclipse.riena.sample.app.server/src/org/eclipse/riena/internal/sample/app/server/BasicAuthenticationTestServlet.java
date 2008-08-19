@@ -31,7 +31,7 @@ public class BasicAuthenticationTestServlet extends HttpServlet {
 		// userid=scp,
 		// password=scptestpassword
 		if (auth != null && auth.equals(correctAuth)) {
-			resp.getOutputStream().write(new String("OK").getBytes());
+			resp.getOutputStream().write("OK".getBytes());
 		} else {
 			resp.sendError(401);
 		}

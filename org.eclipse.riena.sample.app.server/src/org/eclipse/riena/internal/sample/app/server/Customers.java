@@ -75,7 +75,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 	 * @param customer
 	 */
 	private void storeInternal(Customer customer) {
-		customer.id = customer.getCustomerNumber();
+		customer.setId(customer.getCustomerNumber());
 		customers.put(customer.getCustomerNumber(), customer);
 
 	}
@@ -115,7 +115,8 @@ public class Customers implements ICustomers, ICustomerSearch {
 
 	private boolean isIdentical(Customer customer, Customer searchedCustomer) {
 
-		if (searchedCustomer.getCustomerNumber() != null && !searchedCustomer.getCustomerNumber().equals(customer.getCustomerNumber())) {
+		if (searchedCustomer.getCustomerNumber() != null
+				&& !searchedCustomer.getCustomerNumber().equals(customer.getCustomerNumber())) {
 			return false;
 		}
 

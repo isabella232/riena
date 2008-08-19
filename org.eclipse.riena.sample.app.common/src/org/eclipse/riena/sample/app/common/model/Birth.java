@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.common.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -67,7 +66,6 @@ public class Birth {
 	public void setBirthDay(Date day) {
 
 		this.birthDay = day;
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
 	} // end method
 

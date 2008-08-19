@@ -20,7 +20,6 @@ import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -37,7 +36,6 @@ public class Activator extends RienaPlugin {
 	private HelloWorldService helloWorldService;
 	private ServiceRegistration regHelloWorldService;
 	private ServiceRegistration regAttachmentService;
-	private ServiceRegistration regExceptionService;
 
 	// The shared instance
 	private static Activator plugin;
