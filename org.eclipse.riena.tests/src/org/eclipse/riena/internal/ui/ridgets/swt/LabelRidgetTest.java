@@ -131,8 +131,8 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * For LabelRidgets, ensure that <b>no</b> updates are made to the model
-	 * from the ridget.
+	 * For LabelRidgets, ensure that updates are made to the model from the
+	 * ridget.
 	 */
 	public void testUpdateFromRidget() {
 		ILabelRidget ridget = getRidget();
@@ -150,7 +150,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setText(LABEL);
 
-		assertEquals("NewLabel", bean.getProperty());
+		assertEquals(LABEL, bean.getProperty());
 		assertEquals(LABEL, ridget.getText());
 		assertEquals(LABEL, control.getText());
 	}
