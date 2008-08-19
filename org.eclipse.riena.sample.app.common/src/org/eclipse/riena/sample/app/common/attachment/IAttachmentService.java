@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.common.attachment;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -51,14 +50,14 @@ public interface IAttachmentService {
 
 	/**
 	 * @return Attachment
-	 * @throws FileNotFoundException
+	 * 
 	 */
 	Attachment returnAttachment() throws IOException;
 
 	/**
 	 * @param attachmentName
 	 * @return Attachment
-	 * @throws FileNotFoundException
+	 * 
 	 * @pre new File(attachmentName).exists()==true
 	 */
 	Attachment returnAttachmentForRequest(String attachmentName) throws IOException;

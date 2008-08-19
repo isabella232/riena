@@ -32,14 +32,14 @@ public class Address implements Cloneable {
 	/**
 	 * Creates an address and sets the given values
 	 * 
-	 * @param country -
-	 *            the country to set
-	 * @param zipCode -
-	 *            the zip code to set
-	 * @param city -
-	 *            the city to set
-	 * @param street -
-	 *            the street to set
+	 * @param country
+	 *            - the country to set
+	 * @param zipCode
+	 *            - the zip code to set
+	 * @param city
+	 *            - the city to set
+	 * @param street
+	 *            - the street to set
 	 */
 	public Address(String country, String zipCode, String city, String street) {
 
@@ -66,8 +66,8 @@ public class Address implements Cloneable {
 	/**
 	 * Sets the given city
 	 * 
-	 * @param city -
-	 *            the city to set
+	 * @param city
+	 *            - the city to set
 	 */
 	public void setCity(String city) {
 
@@ -89,8 +89,8 @@ public class Address implements Cloneable {
 	/**
 	 * Sets the given street
 	 * 
-	 * @param street -
-	 *            the street to set
+	 * @param street
+	 *            - the street to set
 	 */
 	public void setStreet(String street) {
 
@@ -112,8 +112,8 @@ public class Address implements Cloneable {
 	/**
 	 * Sets the given zip code
 	 * 
-	 * @param zipCode -
-	 *            the zip code to set
+	 * @param zipCode
+	 *            - the zip code to set
 	 */
 	public void setZipCode(String zipCode) {
 
@@ -135,8 +135,8 @@ public class Address implements Cloneable {
 	/**
 	 * Sets the given country
 	 * 
-	 * @param country -
-	 *            the country to set
+	 * @param country
+	 *            - the country to set
 	 */
 	public void setCountry(String country) {
 
@@ -150,6 +150,7 @@ public class Address implements Cloneable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 
+		super.clone();
 		Address clone = new Address();
 		clone.setCity(getCity());
 		clone.setCountry(getCountry());
