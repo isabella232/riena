@@ -20,13 +20,13 @@ public interface INavigationHistory {
 	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
 	 */
-	public void historyBack();
+	void historyBack();
 
 	/**
 	 * Navigates one step forward in the navigation history
 	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
 	 */
-	public void historyForward();
+	void historyForward();
 
 }

@@ -21,23 +21,21 @@ import org.eclipse.riena.navigation.INavigationNode;
  */
 public class NavigationHistoryEvent implements INavigationHistoryEvent {
 
-	List<INavigationNode<?>> historyNodes = null;
+	private List<INavigationNode<?>> historyNodes = null;
 
 	public NavigationHistoryEvent(List<INavigationNode<?>> list) {
 		historyNodes = list;
 	}
 
 	/**
-	 * @see
-	 * org.eclipse.riena.navigation.INavigationHistoryEvent#getHistoryNodes()
+	 * @see org.eclipse.riena.navigation.INavigationHistoryEvent#getHistoryNodes()
 	 */
 	public List<INavigationNode<?>> getHistoryNodes() {
 		return historyNodes;
 	}
 
 	/**
-	 * @see
-	 * org.eclipse.riena.navigation.INavigationHistoryEvent#getHistorySize()
+	 * @see org.eclipse.riena.navigation.INavigationHistoryEvent#getHistorySize()
 	 */
 	public int getHistorySize() {
 		return historyNodes.size();

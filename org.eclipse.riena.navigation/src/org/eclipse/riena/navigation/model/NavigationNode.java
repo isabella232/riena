@@ -745,9 +745,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#allowsDispose(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public boolean allowsDispose(INavigationContext context) {
-		IPresentation presentation = getPresentation();
-		if (presentation != null) {
-			return presentation.allowsDispose(this, context);
+		IPresentation pres = getPresentation();
+		if (pres != null) {
+			return pres.allowsDispose(this, context);
 		} else {
 			return true;
 		}
@@ -903,24 +903,27 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigateBack()
 	 */
 	public void navigateBack() {
-		if (getNavigationProcessor() != null)
+		if (getNavigationProcessor() != null) {
 			getNavigationProcessor().navigateBack(this);
+		}
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyBack()
 	 */
 	public void historyBack() {
-		if (getNavigationProcessor() != null)
+		if (getNavigationProcessor() != null) {
 			getNavigationProcessor().historyBack();
+		}
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationHistory#historyPrev()
 	 */
 	public void historyForward() {
-		if (getNavigationProcessor() != null)
+		if (getNavigationProcessor() != null) {
 			getNavigationProcessor().historyForward();
+		}
 	}
 
 	/**

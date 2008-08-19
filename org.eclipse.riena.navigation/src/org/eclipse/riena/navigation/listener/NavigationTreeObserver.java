@@ -26,16 +26,16 @@ import org.eclipse.riena.navigation.INavigationNode.State;
  */
 public class NavigationTreeObserver {
 
-	IApplicationModelListener applicationModelListener;
-	Set<IApplicationModelListener> applicationModelListeners;
-	ISubApplicationNodeListener subApplicationListener;
-	Set<ISubApplicationNodeListener> subApplicationListeners;
-	IModuleGroupNodeListener moduleGroupNodeListener;
-	Set<IModuleGroupNodeListener> moduleGroupNodeListeners;
-	IModuleNodeListener moduleNodeListener;
-	Set<IModuleNodeListener> moduleNodeListeners;
-	ISubModuleNodeListener subModuleNodeListener;
-	Set<ISubModuleNodeListener> subModuleNodeListeners;
+	private IApplicationModelListener applicationModelListener;
+	private Set<IApplicationModelListener> applicationModelListeners;
+	private ISubApplicationNodeListener subApplicationListener;
+	private Set<ISubApplicationNodeListener> subApplicationListeners;
+	private IModuleGroupNodeListener moduleGroupNodeListener;
+	private Set<IModuleGroupNodeListener> moduleGroupNodeListeners;
+	private IModuleNodeListener moduleNodeListener;
+	private Set<IModuleNodeListener> moduleNodeListeners;
+	private ISubModuleNodeListener subModuleNodeListener;
+	private Set<ISubModuleNodeListener> subModuleNodeListeners;
 
 	/**
 	 * creates the instance

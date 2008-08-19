@@ -17,12 +17,12 @@ public class PresentationExtensionInjectionHelper<E extends ITypeDefinition> {
 	private E[] data;
 
 	public void update(E[] data) {
-		this.data = data;
+		this.data = data.clone();
 
 	}
 
 	public E[] getData() {
-		return data;
+		return data.clone();
 	}
 
 }

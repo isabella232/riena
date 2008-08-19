@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.IPresentationProviderService;
 /**
  *
  */
-public class PresentationProviderServiceAccessor {
+public final class PresentationProviderServiceAccessor {
 	private static PresentationProviderServiceAccessor psa = null;
 	private IPresentationProviderService service = null;
 
@@ -31,8 +31,9 @@ public class PresentationProviderServiceAccessor {
 	}
 
 	static public PresentationProviderServiceAccessor current() {
-		if (psa == null)
+		if (psa == null) {
 			return initPresentationServiceAccessor();
+		}
 		return psa;
 	}
 

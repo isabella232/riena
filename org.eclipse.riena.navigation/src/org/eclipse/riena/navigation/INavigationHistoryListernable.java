@@ -24,12 +24,12 @@ public interface INavigationHistoryListernable {
 	 * 
 	 * @return the amount of navigation nodes on the navigation stack
 	 */
-	public int getHistoryBackSize();
+	int getHistoryBackSize();
 
 	/**
 	 * Answer the current size of the forward navigation history
 	 * 
 	 * @return the amount of navigation nodes on the navigation stack
 	 */
-	public int getHistoryForwardSize();
+	int getHistoryForwardSize();
 }

@@ -69,8 +69,9 @@ public class PresentationProviderService implements IPresentationProviderService
 			NavigationArgument argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
-			if (LOGGER.isLoggable(LogService.LOG_DEBUG))
-				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
+			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
+				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId);
+			}
 			INavigationNodeTypeDefiniton navigationNodeTypeDefiniton = getNavigationNodeTypeDefinition(targetId);
 			if (navigationNodeTypeDefiniton != null) {
 				INavigationNodeBuilder builder = navigationNodeTypeDefiniton.createNodeBuilder();

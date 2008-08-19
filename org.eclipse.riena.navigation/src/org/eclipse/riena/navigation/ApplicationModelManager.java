@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Stefan Flick
  */
 public class ApplicationModelManager {
-	private static String DEFAULT_MODEL_NAME = "default"; //$NON-NLS-1$
+	private static String defaultModelName = "default"; //$NON-NLS-1$
 	private static Map<String, IApplicationModel> modelMap = new HashMap<String, IApplicationModel>();
 
 	/**
@@ -32,7 +32,7 @@ public class ApplicationModelManager {
 	 *         present. Usually only one (the default model) model is used.
 	 */
 	public static IApplicationModel getApplicationModel() {
-		IApplicationModel model = getApplicationModel(DEFAULT_MODEL_NAME);
+		IApplicationModel model = getApplicationModel(defaultModelName);
 		if (model == null && modelMap.size() == 1) {
 			// fallback strategy
 			return modelMap.values().iterator().next();
@@ -52,8 +52,9 @@ public class ApplicationModelManager {
 	 */
 	public static IApplicationModel getApplicationModel(String name) {
 		String modelName = name;
-		if (modelName == null)
-			modelName = DEFAULT_MODEL_NAME;
+		if (modelName == null) {
+			modelName = defaultModelName;
+		}
 		return modelMap.get(modelName);
 	}
 
@@ -77,10 +78,12 @@ public class ApplicationModelManager {
 	 */
 	public static synchronized void registerApplicationModel(IApplicationModel model) {
 		String modelName = model.getLabel();
-		if (modelName == null)
-			modelName = DEFAULT_MODEL_NAME;
-		if (modelMap.containsKey(modelName))
+		if (modelName == null) {
+			modelName = defaultModelName;
+		}
+		if (modelMap.containsKey(modelName)) {
 			throw new ApplicationModelFailure("ApplicationModel '" + modelName + "' already registered"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		modelMap.put(modelName, model);
 		return;
 	}

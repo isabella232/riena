@@ -39,7 +39,7 @@ import org.eclipse.riena.navigation.NavigationArgument;
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 	// private static Logger LOGGER =
 	// Activator.getDefault().getLogger(NavigationProcessor.class.getName());
-	private static int MAX_STACKSIZE = 20;
+	private static int maxStacksize = 20;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
@@ -87,13 +87,15 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	private void buildHistory(INavigationNode<?> toActivate) {
 		// filter out unnavigatable nodes
-		if (!(toActivate instanceof ISubModuleNode) || toActivate.isDisposed())
+		if (!(toActivate instanceof ISubModuleNode) || toActivate.isDisposed()) {
 			return;
+		}
 		if (histBack.isEmpty() || !histBack.peek().equals(toActivate)) {
 			histBack.push(toActivate);
 			// limit the stack size and remove older elements
-			if (histBack.size() > MAX_STACKSIZE)
+			if (histBack.size() > maxStacksize) {
 				histBack.remove(histBack.firstElement());
+			}
 			fireBackHistoryChangedEvent();
 		}
 		// is forewarding history top stack element equals node toActivate,
@@ -156,15 +158,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			histBack.remove(toDispose);
 			bhc = true;
 		}
-		if (bhc)
+		if (bhc) {
 			fireBackHistoryChangedEvent();
+		}
 		boolean fhc = false;
 		while (histForward.contains(toDispose)) {
 			histForward.remove(toDispose);
 			fhc = true;
 		}
-		if (fhc)
+		if (fhc) {
 			fireForewardHistoryChangedEvent();
+		}
 		if (navigationMap.containsKey(toDispose)) {
 			navigationMap.remove(toDispose);
 		}
@@ -185,8 +189,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument) {
 		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument);
-		if (targetNode == null)
+		if (targetNode == null) {
 			return;
+		}
 		navigationMap.put(targetNode, sourceNode);
 		targetNode.activate();
 	}
@@ -492,7 +497,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private class NavigationContext implements INavigationContext {
+	private static class NavigationContext implements INavigationContext {
 
 		private List<INavigationNode<?>> toDeactivate;
 		private List<INavigationNode<?>> toActivate;
@@ -700,13 +705,15 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void historyBack() {
 		try {
-			if (getHistoryBackSize() == 0)
+			if (getHistoryBackSize() == 0) {
 				return;
+			}
 			INavigationNode<?> current = histBack.pop();// skip self
 			fireBackHistoryChangedEvent();
 			histForward.push(current);
-			if (histForward.size() > MAX_STACKSIZE)
+			if (histForward.size() > maxStacksize) {
 				histForward.remove(histForward.firstElement());
+			}
 			fireForewardHistoryChangedEvent();
 			INavigationNode<?> node = histBack.peek();// activate parent
 			if (node != null) {
@@ -723,8 +730,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private void fireBackHistoryChangedEvent() {
 		// if (LOGGER.isLoggable(LogService.LOG_DEBUG))
 		// LOGGER.log(LogService.LOG_DEBUG, "BACK " + histBack.size() + "," + histBack);//$NON-NLS-1$ //$NON-NLS-2$
-		if (navigationListener.size() == 0)
+		if (navigationListener.size() == 0) {
 			return;
+		}
 		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, histBack.size() - 1));
 		for (INavigationHistoryListener listener : navigationListener) {
 			listener.backHistoryChanged(event);
@@ -757,8 +765,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// if (LOGGER.isLoggable(LogService.LOG_DEBUG))
 		// LOGGER.log(LogService.LOG_DEBUG, "FORW " //$NON-NLS-1$
 		// + histForward.size() + "," + histForward); //$NON-NLS-1$
-		if (navigationListener.size() == 0)
+		if (navigationListener.size() == 0) {
 			return;
+		}
 		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, histForward.size()));
 		for (INavigationHistoryListener listener : navigationListener) {
 			listener.backHistoryChanged(event);
@@ -801,8 +810,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			sourceNode = navigationMap.get(lookupNode);
 			if (sourceNode == null) {
 				lookupNode = lookupNode.getParent();
-				if (lookupNode == null)
+				if (lookupNode == null) {
 					return;
+				}
 			}
 		}
 		navigate(targetNode, sourceNode.getNodeId(), null);
@@ -816,8 +826,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
 	public synchronized void addNavigationHistoryListener(INavigationHistoryListener listener) {
-		if (!navigationListener.contains(listener))
+		if (!navigationListener.contains(listener)) {
 			navigationListener.add(listener);
+		}
 	}
 
 	/*

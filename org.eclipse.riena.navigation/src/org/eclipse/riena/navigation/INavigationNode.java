@@ -205,12 +205,12 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * @return the Presentation of this node
 	 */
-	public IPresentation getPresentation();
+	IPresentation getPresentation();
 
 	/**
 	 * Look for the next in the hierarchy available presentation
 	 */
-	public IPresentation getNextPresentation();
+	IPresentation getNextPresentation();
 
 	void setPresentation(IPresentation pPresentation);
 
