@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
@@ -141,6 +142,13 @@ public class MaxNumberLengthTest extends TestCase {
 	public void testArabLocale() throws Exception {
 		// locale has a comma as grouping-separator character and
 		// features a trailing minus instead of a leading one
+
+		if (!TestUtils.isArabLocaleAvailable()) {
+			System.err
+					.println(getClass().getName()
+							+ ".testArabLocale(): Skipping test because no Arab locale is available. Use international JRE to run all tests.");
+			return;
+		}
 
 		final MaxNumberLength maxNumberLength = new MaxNumberLength(7, new Locale("ar", "AE"));
 

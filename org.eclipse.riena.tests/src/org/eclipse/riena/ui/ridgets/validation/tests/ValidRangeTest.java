@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 
 /**
@@ -83,6 +84,14 @@ public class ValidRangeTest extends TestCase {
 	 *             Handled by JUnit.
 	 */
 	public void testRangeArabLocale() throws Exception {
+
+		if (!TestUtils.isArabLocaleAvailable()) {
+			System.err
+					.println(getClass().getName()
+							+ ".testRangeArabLocale(): Skipping test because no Arab locale is available. Use international JRE to run all tests.");
+			return;
+		}
+
 		// Arab locales have a trailing minus
 		ValidRange rule = new ValidRange(0, 10, new Locale("ar", "AE"));
 		assertTrue(rule.validate(null).isOK());
