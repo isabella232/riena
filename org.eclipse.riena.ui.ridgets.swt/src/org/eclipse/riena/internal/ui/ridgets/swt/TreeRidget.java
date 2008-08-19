@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -44,11 +50,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -224,8 +225,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor) {
-		String[] valueAccessors = new String[] { valueAccessor };
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, null);
+		String[] myValueAccessors = new String[] { valueAccessor };
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, null);
 	}
 
 	/** @deprecated */
@@ -502,9 +503,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	private static final class ExpansionCommand {
 		/** An expansion modification */
-		final ExpansionState state;
+		private final ExpansionState state;
 		/** The element to expand / collapse (only for COLLAPSE, EXPAND ops) */
-		final Object element;
+		private final Object element;
 
 		/**
 		 * Creates a new ExpansionCommand instance.
@@ -598,7 +599,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			refresh();
 		}
 
-		final void refresh() {
+		void refresh() {
 			List<Object> rootChildren = ReflectionUtils.invoke(root0, accessor);
 			clear();
 			addAll(rootChildren);

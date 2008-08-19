@@ -134,7 +134,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	private static final class FakeImages {
 
-		private Map<String, Image> IMAGES = new HashMap<String, Image>();
+		private final static Map<String, Image> IMAGES = new HashMap<String, Image>();
 
 		/**
 		 * Returns the an image for the given key. Multiple invocation return

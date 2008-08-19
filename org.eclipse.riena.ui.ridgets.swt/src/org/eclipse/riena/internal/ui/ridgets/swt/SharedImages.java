@@ -42,6 +42,10 @@ public final class SharedImages {
 		doPut(reg, IMG_UNCHECKED, "/icons/obj16/checkbox_unchecked.gif"); //$NON-NLS-1$
 	}
 
+	private SharedImages() {
+		super();
+	}
+
 	// helping methods
 	// ////////////////
 

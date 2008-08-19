@@ -14,12 +14,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
+
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -302,9 +303,9 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			if (event.type == SWT.EraseItem) {
 				// indicate we are responsible for drawing the cell's content
 				event.detail &= ~SWT.FOREGROUND;
-			} else if (event.type == SWT.PaintItem) {
-				// paint nothing to leave the cell blank
-			}
+			} // else if (event.type == SWT.PaintItem) {
+			// paint nothing to leave the cell blank
+			// }
 		}
 	}
 

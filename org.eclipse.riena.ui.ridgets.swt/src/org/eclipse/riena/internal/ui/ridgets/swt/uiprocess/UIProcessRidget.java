@@ -26,10 +26,11 @@ import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
-import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
+import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 import org.eclipse.riena.ui.swt.uiprocess.ICancelListener;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
+
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -48,7 +49,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	private Map<Object, VisualizerContainer> contexts;
 
-	public IVisualContextManager contextLocator;
+	private IVisualContextManager contextLocator;
 
 	private boolean focusAble;
 
@@ -104,9 +105,13 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	/*
 	 * holds the progress of a visualized UiProcess
 	 */
-	private static class Progress {
-		int totalWork = -1;
-		int completed = -1;
+	private final static class Progress {
+		private int totalWork = -1;
+		private int completed = -1;
+
+		private Progress() {
+			super();
+		}
 	}
 
 	private void showProcessing() {

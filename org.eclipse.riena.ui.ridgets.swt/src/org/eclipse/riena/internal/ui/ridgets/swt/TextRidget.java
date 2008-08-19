@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
+
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -56,7 +57,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 	 * @deprecated use BeansObservables.observeValue(ridget instance,
 	 *             ITextFieldRidget.PROPERTY_TEXT);
 	 */
-	public final IObservableValue getRidgetObservable() {
+	public IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ITextFieldRidget.PROPERTY_TEXT);
 	}
 

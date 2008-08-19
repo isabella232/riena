@@ -12,12 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 
-import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -162,9 +163,9 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (ridget.isOutputOnly() && ridget.isEnabled()) {
 			clearMandatory(control);
 			clearOutput(control);
-			if (ridget.isMandatory())
+			if (ridget.isMandatory()) {
 				addOutput(control, Activator.getSharedColor(SharedColors.COLOR_MANDATORY_OUTPUT));
-			else {
+			} else {
 				addOutput(control, Activator.getSharedColor(SharedColors.COLOR_OUTPUT));
 			}
 		} else {
