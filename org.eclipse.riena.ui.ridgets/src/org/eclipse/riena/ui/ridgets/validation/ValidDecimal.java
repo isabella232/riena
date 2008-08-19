@@ -48,24 +48,45 @@ public class ValidDecimal implements IValidator {
 	 * partialChecking and the given Locale.
 	 * 
 	 * @param locale
-	 *            the locale
+	 *            the locale.
 	 */
 	public ValidDecimal(final Locale locale) {
 		this(false, locale);
 	}
 
 	/**
-	 * Constructs a decimal type check plausibilisation rule
+	 * Constructs a decimal type check plausibilisation rule.
 	 * 
 	 * @param partialCheckSupported
-	 *            <tt>true</tt> if partial checking is required
+	 *            <tt>true</tt> if partial checking is required.
 	 * @param locale
-	 *            the locale
+	 *            the locale.
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, final Locale locale) {
+		this(partialCheckSupported, 15, 2, false, locale);
+	}
+
+	/**
+	 * Constructs a decimal type check plausibilisation rule.
+	 * 
+	 * @param partialCheckSupported
+	 *            <tt>true</tt> if partial checking is required.
+	 * @param numberOfFractionDigits
+	 *            number of fraction digits.
+	 * @param maxLength
+	 *            number of integer digits.
+	 * @param withSign
+	 *            use sign or not.
+	 * @param locale
+	 *            the locale.
+	 */
+	public ValidDecimal(final boolean partialCheckSupported, int numberOfFractionDigits, int maxLength,
+			boolean withSign, final Locale locale) {
 		this.partialCheckSupported = partialCheckSupported;
 		format = (DecimalFormat) DecimalFormat.getInstance(locale);
-		format.setMaximumFractionDigits(15);
+		format.setMaximumFractionDigits(numberOfFractionDigits);
+		format.setMaximumIntegerDigits(maxLength);
+		// TODO: Configure format with withSign?!
 		symbols = format.getDecimalFormatSymbols();
 	}
 
