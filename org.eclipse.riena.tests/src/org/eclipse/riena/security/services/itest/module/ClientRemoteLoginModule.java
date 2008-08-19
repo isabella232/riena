@@ -30,13 +30,7 @@ import org.eclipse.riena.security.common.authentication.ClientLogin;
  */
 public class ClientRemoteLoginModule implements LoginModule {
 
-	private Subject subject;
 	private CallbackHandler callbackHandler;
-	private Map<String, ?> sharedState;
-	private Map<String, ?> options;
-
-	// configurable option
-	private boolean debug = false;
 
 	String username;
 	String password;
@@ -72,14 +66,8 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 */
 	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
 			Map<String, ?> options) {
-		this.subject = subject;
 		this.callbackHandler = callbackHandler;
-		this.sharedState = sharedState;
-		this.options = options;
 		this.clientLogin = new ClientLogin("Test", subject);
-
-		// initialize any configured options
-		debug = Boolean.valueOf((String) options.get("debug"));
 	}
 
 	/*

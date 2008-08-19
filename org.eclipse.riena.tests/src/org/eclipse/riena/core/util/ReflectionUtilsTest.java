@@ -240,6 +240,7 @@ public class ReflectionUtilsTest extends TestCase {
 
 	public static class HaeshMaep<K, V> extends HashMap<K, V> {
 
+		private static final long serialVersionUID = 1L;
 		protected static boolean created;
 
 		/**

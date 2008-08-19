@@ -17,6 +17,8 @@ import java.security.Permission;
  */
 public class TestcasePermission extends Permission {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @param name
 	 */

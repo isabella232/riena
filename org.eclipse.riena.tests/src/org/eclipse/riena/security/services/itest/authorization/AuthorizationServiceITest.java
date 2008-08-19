@@ -103,8 +103,8 @@ public class AuthorizationServiceITest extends RienaTestCase {
 			cust.setLastName("Solo");
 			cust.setFirstName("Han");
 			cust.setCustomerNumber(1);
-			Customer[] foundCustomers = cs.findCustomer(cust);
-			assertFalse("findCustomer must not work for testuser2 since it has to authorization", true);
+			cs.findCustomer(cust);
+			fail("findCustomer must not work for testuser2 since it has to authorization");
 			// assertTrue(foundCustomers != null);
 			// assertTrue(foundCustomers.length > 0);
 			// assertTrue(foundCustomers[0].getLastName().equals("Solo"));

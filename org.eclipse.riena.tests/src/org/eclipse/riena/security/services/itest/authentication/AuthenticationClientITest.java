@@ -112,8 +112,8 @@ public class AuthenticationClientITest extends RienaTestCase {
 			PasswordCredential pc = new PasswordCredential("password: ", false);
 			pc.setPassword("jane".toCharArray());
 			creds[1] = pc;
-			AuthenticationTicket ticket = authenticationService.login("Test", creds);
-			throw new RuntimeException("exception expected");
+			authenticationService.login("Test", creds);
+			fail("exception expected");
 		} catch (AuthenticationFailure e) {
 			// ok();
 		}

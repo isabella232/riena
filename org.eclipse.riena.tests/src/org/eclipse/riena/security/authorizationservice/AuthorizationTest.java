@@ -16,18 +16,14 @@ import java.security.PrivilegedAction;
 import javax.security.auth.Subject;
 
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
-import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.RienaPolicy;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 public class AuthorizationTest extends RienaTestCase {
 
 	private ServiceRegistration fileStoreReg;
-	private ServiceRegistration authorizationServiceReg;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -37,7 +33,9 @@ public class AuthorizationTest extends RienaTestCase {
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
 		fileStoreReg = getContext().registerService(IPermissionStore.class.getName(), store, null);
-		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
+		// ServiceReference ref =
+		// getContext().getServiceReference(IAuthorizationService
+		// .class.getName());
 		// if (ref != null) {
 		// ref.getBundle().stop();
 		// }
@@ -62,7 +60,6 @@ public class AuthorizationTest extends RienaTestCase {
 	public void testWithValidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
-		Object x = System.getSecurityManager().getSecurityContext();
 
 		Boolean result = (Boolean) Subject.doAsPrivileged(subject, new PrivilegedAction() {
 

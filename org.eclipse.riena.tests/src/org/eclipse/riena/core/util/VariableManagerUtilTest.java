@@ -22,7 +22,6 @@ import org.eclipse.riena.tests.RienaTestCase;
 public class VariableManagerUtilTest extends RienaTestCase {
 
 	private static Field fgManager;
-	private static final String REF_KEY = "ref";
 	private static final String WWW_ECLIPSE_ORG = "www.eclipse.org";
 
 	static {

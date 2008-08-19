@@ -32,11 +32,6 @@ public class LocalLoginModule implements LoginModule {
 
 	private Subject subject;
 	private CallbackHandler callbackHandler;
-	private Map<String, ?> sharedState;
-	private Map<String, ?> options;
-
-	// configurable option
-	private boolean debug = false;
 
 	String username;
 	String password;
@@ -64,19 +59,15 @@ public class LocalLoginModule implements LoginModule {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject,
-	 *      javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 *      java.util.Map)
+	 * @see
+	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
+	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
+	 * java.util.Map)
 	 */
 	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
 			Map<String, ?> options) {
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
-		this.sharedState = sharedState;
-		this.options = options;
-
-		// initialize any configured options
-		debug = Boolean.valueOf((String) options.get("debug"));
 	}
 
 	/*

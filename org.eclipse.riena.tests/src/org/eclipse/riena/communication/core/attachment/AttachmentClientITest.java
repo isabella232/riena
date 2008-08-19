@@ -33,15 +33,12 @@ import org.eclipse.riena.tests.RienaTestCase;
  */
 public final class AttachmentClientITest extends RienaTestCase {
 
-	private static final String ATTACHMENTSERVICE = "spirit.examples.itest.attachmentservice";
-	private static final String PROXIEDATTACHMENTSERVICE = "spirit.examples.itest.proxied.attachmentservice";
 	private static final String STRING1 = "das sind testdaten, die wir mal einfach so verschicken um et+das sind "
 			+ "testdaten, die wir mal einfach so verschicken um et";
 	private static final String STRING2 = "first+das sind testdaten, die wir mal einfach so verschicken um et+second+"
 			+ "das sind testdaten, die wir mal einfach so verschicken um et+third+2";
 	private static final String TESTDATA1 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen.";
 	private static final String TESTDATA2 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen. (2.test)";
-	private static final String TESTDATA3 = "";
 	private IAttachmentService attachService;
 	private IRemoteServiceRegistration regAttachmentService;
 

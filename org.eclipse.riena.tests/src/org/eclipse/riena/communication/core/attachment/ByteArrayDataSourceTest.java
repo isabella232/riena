@@ -26,7 +26,6 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	private IDataSource dataSourceMock;
 	private MockControl dataSourceControl;
 	private final static String NAME = "Test";
-	private final static String CONTENT_TYPE = "text/plain";
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
