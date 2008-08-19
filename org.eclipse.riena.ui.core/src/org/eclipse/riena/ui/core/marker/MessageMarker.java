@@ -39,8 +39,8 @@ public class MessageMarker extends AbstractMarker implements IMessageMarker {
 	/**
 	 * Basic constructor for the Message marker
 	 * 
-	 * @param pMessage -
-	 *            the Message of the Marker
+	 * @param pMessage
+	 *            - the Message of the Marker
 	 */
 	public MessageMarker(String pMessage) {
 		super();

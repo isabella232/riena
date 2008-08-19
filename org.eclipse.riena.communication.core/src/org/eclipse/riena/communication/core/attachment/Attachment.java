@@ -199,5 +199,4 @@ public class Attachment {
 		internalDataSource = null;
 		return this;
 	}
-
 }

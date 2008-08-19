@@ -15,13 +15,13 @@ import org.eclipse.riena.ui.core.resource.internal.IconState;
 
 /**
  * Describes how the icons of the application are maintained. Icons are
- * identified by a <code>String</code>, an icon ID that should be created
- * using the icon manager. The information required to get the actual icon file
- * is passed to the icon manager when creating the icon ID and will be stored
- * for later retrieval.
+ * identified by a <code>String</code>, an icon ID that should be created using
+ * the icon manager. The information required to get the actual icon file is
+ * passed to the icon manager when creating the icon ID and will be stored for
+ * later retrieval.
  * 
- * The <code>String</code> ID is used throughout the application rather than
- * an icon object for downward compatibility reasons.
+ * The <code>String</code> ID is used throughout the application rather than an
+ * icon object for downward compatibility reasons.
  */
 public interface IIconManager {
 

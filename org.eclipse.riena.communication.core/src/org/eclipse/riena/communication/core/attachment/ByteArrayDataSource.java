@@ -82,5 +82,4 @@ public class ByteArrayDataSource implements IDataSource {
 	public void checkValid() {
 		return;
 	}
-
 }
