@@ -11,8 +11,6 @@
 package org.eclipse.riena.core.extension;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.riena.core.extension.MapContributor;
-import org.eclipse.riena.core.extension.MapName;
 import org.osgi.framework.Bundle;
 
 /**

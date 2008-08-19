@@ -15,9 +15,6 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
-
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
@@ -27,6 +24,8 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -56,8 +55,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		String[] columnProperties = { "word", "upperCase" };
 		IObservableMap[] attrMap = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
 
-		Shell shell = new Shell(display);
-		viewer = new TreeViewer(createTree(shell));
+		Shell aShell = new Shell(display);
+		viewer = new TreeViewer(createTree(aShell));
 		labelProvider = new TreeRidgetLabelProvider(viewer, attrMap);
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);

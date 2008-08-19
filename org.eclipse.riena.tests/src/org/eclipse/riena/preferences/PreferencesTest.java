@@ -34,8 +34,9 @@ public class PreferencesTest extends TestCase {
 	 */
 	private void diggIn(Preferences prefs, int i) throws BackingStoreException {
 		String indent = "";
-		for (int j = 0; j < i; j++)
+		for (int j = 0; j < i; j++) {
 			indent = indent + "  ";
+		}
 		System.out.println(indent + prefs.name() + "(" + prefs.absolutePath() + "," + prefs.getClass() + ")");
 		String[] keys = prefs.keys();
 		for (String key : keys) {

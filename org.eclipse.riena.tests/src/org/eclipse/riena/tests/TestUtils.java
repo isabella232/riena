@@ -17,6 +17,10 @@ import java.util.Locale;
  */
 public class TestUtils {
 
+	private TestUtils() {
+		// utility class
+	}
+
 	public static boolean isArabLocaleAvailable() {
 		Locale arabLocale = new Locale("ar", "AE");
 		for (Locale availableLocale : Locale.getAvailableLocales()) {

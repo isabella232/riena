@@ -146,51 +146,51 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 
 		assertEquals("foo", ridget.getToolTipText());
 
-		Control control = getUIControl();
-		control.setToolTipText(null);
-		ridget.setUIControl(control);
+		Control aControl = getUIControl();
+		aControl.setToolTipText(null);
+		ridget.setUIControl(aControl);
 
 		assertEquals("foo", ridget.getToolTipText());
 		assertEquals("foo", ((Control) ridget.getUIControl()).getToolTipText());
 	}
 
 	public void testGetFocusable() {
-		IRidget ridget = getRidget();
+		IRidget aRidget = getRidget();
 
-		assertTrue(ridget.isFocusable());
+		assertTrue(aRidget.isFocusable());
 
-		ridget.setFocusable(false);
+		aRidget.setFocusable(false);
 
-		assertFalse(ridget.isFocusable());
+		assertFalse(aRidget.isFocusable());
 
-		ridget.setFocusable(true);
+		aRidget.setFocusable(true);
 
-		assertTrue(ridget.isFocusable());
+		assertTrue(aRidget.isFocusable());
 	}
 
 	public void testSetFocusable() {
-		IRidget ridget = getRidget();
-		Control control = getUIControl();
-		otherControl.moveAbove(control);
+		IRidget aRidget = getRidget();
+		Control aControl = getUIControl();
+		otherControl.moveAbove(aControl);
 
-		control.setFocus();
-		if (control.isFocusControl()) { // skip if control cannot receive focus
+		aControl.setFocus();
+		if (aControl.isFocusControl()) { // skip if control cannot receive focus
 
-			ridget.setFocusable(false);
+			aRidget.setFocusable(false);
 			otherControl.setFocus();
 
 			assertTrue(otherControl.isFocusControl());
 
 			UITestHelper.sendString(otherControl.getDisplay(), "\t");
 
-			assertFalse(control.isFocusControl());
+			assertFalse(aControl.isFocusControl());
 
-			ridget.setFocusable(true);
+			aRidget.setFocusable(true);
 
 			otherControl.setFocus();
 			UITestHelper.sendString(otherControl.getDisplay(), "\t");
 
-			assertTrue(control.isFocusControl());
+			assertTrue(aControl.isFocusControl());
 		}
 	}
 

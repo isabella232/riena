@@ -74,8 +74,8 @@ public class ToggleButtonRidgetTest extends TestCase {
 		Button buttonPush = new Button(shell, SWT.PUSH);
 		assertNotSame(ToggleButtonRidget.class, mapper.getRidgetClass(buttonPush));
 
-		Button button = new Button(shell, SWT.NONE);
-		assertNotSame(ToggleButtonRidget.class, mapper.getRidgetClass(button));
+		Button aButton = new Button(shell, SWT.NONE);
+		assertNotSame(ToggleButtonRidget.class, mapper.getRidgetClass(aButton));
 	}
 
 	public void testSetUIControl() throws Exception {

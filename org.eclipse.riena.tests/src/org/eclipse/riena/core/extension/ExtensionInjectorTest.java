@@ -199,7 +199,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		assertEquals(2.7182818284590452d, target.getData().getDoubleNumber());
 		assertEquals(3.14159f, target.getData().getFloatNumber());
 		assertEquals(123, target.getData().getIntegerNumber());
-		assertEquals(1234567890l, target.getData().getLongNumber());
+		assertEquals(1234567890L, target.getData().getLongNumber());
 		assertEquals(1, target.getData().getShortNumber());
 		assertEquals('#', target.getData().getDelimCharacter());
 
@@ -425,14 +425,15 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				getContext());
 		assertEquals(3, target.getExtData().length);
 		for (IExtData data : target.getExtData()) {
-			if (data.getTest()[0].getText().equals("test1"))
+			if (data.getTest()[0].getText().equals("test1")) {
 				assertEquals("java.lang.String", data.getTest()[0].createObjectType().getClass().getName());
-			else if (data.getTest()[0].getText().equals("test2"))
+			} else if (data.getTest()[0].getText().equals("test2")) {
 				assertEquals("java.util.HashMap", data.getTest()[0].createObjectType().getClass().getName());
-			else if (data.getTest()[0].getText().equals("test3"))
+			} else if (data.getTest()[0].getText().equals("test3")) {
 				assertEquals("java.util.ArrayList", data.getTest()[0].createObjectType().getClass().getName());
-			else
+			} else {
 				fail("Argh!");
+			}
 		}
 		removeExtension("core.test.extpoint.id1");
 		removeExtension("core.test.extpoint.id2");
@@ -452,12 +453,13 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		for (IExtData extData : target.getExtData()) {
 			assertEquals(2, extData.getTest().length);
 			for (IData data : extData.getTest()) {
-				if (data.getText().equals("test-a1"))
+				if (data.getText().equals("test-a1")) {
 					assertEquals("java.lang.String", data.createObjectType().getClass().getName());
-				else if (data.getText().equals("test-a2"))
+				} else if (data.getText().equals("test-a2")) {
 					assertEquals("java.lang.StringBuffer", data.createObjectType().getClass().getName());
-				else
+				} else {
 					fail("Argh!");
+				}
 			}
 		}
 		removeExtension("core.test.extpoint.id-a");

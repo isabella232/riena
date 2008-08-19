@@ -92,7 +92,7 @@ public class Callback2CredentialConverterTest extends TestCase {
 		PasswordCredential pc = (PasswordCredential) credentials[0];
 		TextInputCredential tic = (TextInputCredential) credentials[1];
 		assertTrue(pc.getPrompt().equals("password"));
-		assertTrue(pc.isEchoOn() == false);
+		assertFalse(pc.isEchoOn());
 		assertTrue(tic.getPrompt().equals("textinp"));
 		assertTrue(tic.getDefaultText().equals("default-text"));
 		assertTrue(tic.getText() == null);
@@ -104,7 +104,7 @@ public class Callback2CredentialConverterTest extends TestCase {
 		PasswordCallback pcb = (PasswordCallback) callbacksReturned[0];
 		TextInputCallback ticb = (TextInputCallback) callbacksReturned[1];
 		assertTrue(pcb.getPrompt().equals("password"));
-		assertTrue(pcb.isEchoOn() == false);
+		assertFalse(pcb.isEchoOn());
 		assertTrue(ticb.getPrompt().equals("textinp"));
 		assertTrue(ticb.getDefaultText().equals("default-text"));
 		assertTrue(ticb.getText() == null);

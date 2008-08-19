@@ -104,8 +104,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testGetEmptySelectionItem() {
 		Combo control = getUIControl();
 		ComboRidget ridget = getRidget();
-		StringManager manager = new StringManager("A", "B", "C", "D", "E");
-		ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
 		assertNull(ridget.getEmptySelectionItem());
@@ -210,12 +210,12 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelWithStrings() {
-		final StringManager manager = new StringManager("A", "B", "C", "D", "E");
-		Iterator<String> it = manager.getItems().iterator();
-		final String selection1 = it.next();
-		final String selection2 = it.next();
-		final String selection3 = it.next();
-		manager.setSelectedItem(selection1);
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		Iterator<String> it = aManager.getItems().iterator();
+		final String aSelection1 = it.next();
+		final String aSelection2 = it.next();
+		final String aSelection3 = it.next();
+		aManager.setSelectedItem(aSelection1);
 
 		Runnable runnable = new Runnable() {
 			public void run() {
@@ -224,34 +224,34 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 				assertEquals(-1, control.getSelectionIndex());
 				assertEquals(0, control.getItemCount());
-				ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 				assertEquals(-1, control.getSelectionIndex());
 				assertEquals(0, control.getItemCount());
 
 				ridget.updateFromModel();
 
-				assertEquals(manager.getItems().size(), control.getItemCount());
-				assertEquals(selection1, getSelectedString(control));
+				assertEquals(aManager.getItems().size(), control.getItemCount());
+				assertEquals(aSelection1, getSelectedString(control));
 
 				for (int i = 0; i < control.getItemCount(); i++) {
-					if (!manager.getItems().contains(control.getItem(i))) {
+					if (!aManager.getItems().contains(control.getItem(i))) {
 						fail();
 					}
 				}
 
-				manager.setSelectedItem(selection2);
+				aManager.setSelectedItem(aSelection2);
 
-				assertEquals(selection1, getSelectedString(control));
+				assertEquals(aSelection1, getSelectedString(control));
 
 				ridget.updateFromModel();
 
-				assertEquals(selection2, getSelectedString(control));
+				assertEquals(aSelection2, getSelectedString(control));
 
 				control.select(2);
 
-				assertEquals(selection3, getSelectedString(control));
-				assertEquals(selection3, control.getText());
-				assertEquals(selection3, manager.getSelectedItem());
+				assertEquals(aSelection3, getSelectedString(control));
+				assertEquals(aSelection3, control.getText());
+				assertEquals(aSelection3, aManager.getSelectedItem());
 			}
 		};
 		getUIControl().getDisplay().syncExec(runnable);
@@ -327,16 +327,16 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testGetObservableListWithStrings() {
 		Runnable runnable = new Runnable() {
 			public void run() {
-				StringManager manager = new StringManager("A", "B", "C", "D", "E");
+				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 
 				ComboRidget ridget = getRidget();
-				ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 
 				assertEquals(0, ridget.getObservableList().size());
 
 				ridget.updateFromModel();
 
-				assertEquals(manager.getItems().size(), ridget.getObservableList().size());
+				assertEquals(aManager.getItems().size(), ridget.getObservableList().size());
 				for (String item : new String[] { "A", "B", "C", "D", "E" }) {
 					assertTrue(ridget.getObservableList().contains(item));
 				}
@@ -348,10 +348,10 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testGetSelectionIndex() {
 		Runnable runnable = new Runnable() {
 			public void run() {
-				StringManager manager = new StringManager("A", "B", "C", "D", "E");
+				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 
 				ComboRidget ridget = getRidget();
-				ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 				ridget.updateFromModel();
 
 				assertEquals(-1, getRidget().getSelectionIndex());
@@ -370,8 +370,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		Runnable runnable = new Runnable() {
 			public void run() {
 				ComboRidget ridget = getRidget();
-				StringManager manager = new StringManager("A", "B", "C", "D", "E");
-				ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 				ridget.updateFromModel();
 
 				assertEquals(null, getRidget().getSelection());
@@ -392,8 +392,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		Runnable runnable = new Runnable() {
 			public void run() {
 				ComboRidget ridget = getRidget();
-				StringManager manager = new StringManager("A", "B", "C", "D", "E");
-				ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 				ridget.updateFromModel();
 
 				IObservableValue selectionObservable = getRidget().getSelectionObservable();
@@ -415,8 +415,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetSelectionInt() {
 		ComboRidget ridget = getRidget();
 		Combo control = ridget.getUIControl();
-		StringManager manager = new StringManager("A", "B", "C", "D", "E");
-		ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
 		assertEquals(null, ridget.getSelection());
@@ -458,8 +458,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetSelectionString() {
 		ComboRidget ridget = getRidget();
 		Combo control = ridget.getUIControl();
-		StringManager manager = new StringManager("A", "B", "C", "D", "E");
-		ridget.bindToModel(manager, "items", String.class, null, manager, "selectedItem");
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
 		assertEquals(null, ridget.getSelection());

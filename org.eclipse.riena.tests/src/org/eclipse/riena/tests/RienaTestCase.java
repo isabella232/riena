@@ -75,8 +75,9 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		for (ServiceReference reference : services.values())
+		for (ServiceReference reference : services.values()) {
 			context.ungetService(reference);
+		}
 
 		services.clear();
 
@@ -114,11 +115,13 @@ public abstract class RienaTestCase extends TestCase {
 	 * Print the current test´s name.
 	 */
 	protected void printTestName() {
-		if (!print)
+		if (!print) {
 			return;
+		}
 		System.out.println(getName());
-		for (int i = 0; i < getName().length(); i++)
+		for (int i = 0; i < getName().length(); i++) {
 			System.out.print('-');
+		}
 		System.out.println();
 	}
 
@@ -128,8 +131,9 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param string
 	 */
 	protected void print(String string) {
-		if (!print)
+		if (!print) {
 			return;
+		}
 		System.out.print(string);
 	}
 
@@ -139,8 +143,9 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param string
 	 */
 	protected void println(String string) {
-		if (!print)
+		if (!print) {
 			return;
+		}
 		System.out.println(string);
 	}
 
@@ -193,11 +198,13 @@ public abstract class RienaTestCase extends TestCase {
 	@SuppressWarnings("unchecked")
 	protected <T> T getService(Class<T> serviceClass) {
 		ServiceReference reference = context.getServiceReference(serviceClass.getName());
-		if (reference == null)
+		if (reference == null) {
 			return null;
+		}
 		Object service = context.getService(reference);
-		if (service == null)
+		if (service == null) {
 			return null;
+		}
 		services.put(service, reference);
 		return (T) service;
 	}
@@ -209,8 +216,9 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	protected void ungetService(Object service) {
 		ServiceReference reference = services.get(service);
-		if (reference == null)
+		if (reference == null) {
 			return;
+		}
 		context.ungetService(reference);
 	}
 
@@ -311,10 +319,12 @@ public abstract class RienaTestCase extends TestCase {
 		Pattern exclude = Pattern.compile(excludePattern);
 
 		Bundle[] bundles = context.getBundles();
-		for (Bundle bundle : bundles)
+		for (Bundle bundle : bundles) {
 			if (inlcude.matcher(bundle.getSymbolicName()).matches()
-					&& !(exclude.matcher(bundle.getSymbolicName()).matches()))
+					&& !(exclude.matcher(bundle.getSymbolicName()).matches())) {
 				closure.execute(bundle);
+			}
+		}
 	}
 
 	protected interface IClosure {

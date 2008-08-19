@@ -84,8 +84,9 @@ public class Target {
 
 	public int count(String method, Class<?> clazz) {
 		List<Class<?>> deps4method = deps.get(key(method, clazz));
-		if (deps4method != null)
+		if (deps4method != null) {
 			return deps4method.size();
+		}
 		return 0;
 	}
 
@@ -104,8 +105,9 @@ public class Target {
 
 	private void remove(String method, Class<?> depClass) {
 		List<Class<?>> deps4method = deps.get(key(method, depClass));
-		if (deps4method != null)
+		if (deps4method != null) {
 			deps4method.remove(depClass);
+		}
 	}
 
 	private String key(String methodKey, Class<?> type) {
