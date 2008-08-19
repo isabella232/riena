@@ -14,6 +14,7 @@ Export-Package: org.eclipse.riena.communication.core,
  org.eclipse.riena.communication.core.attachment,
  org.eclipse.riena.communication.core.factory,
  org.eclipse.riena.communication.core.hooks,
+ org.eclipse.riena.communication.core.progressmonitor,
  org.eclipse.riena.communication.core.publisher,
  org.eclipse.riena.communication.core.ssl;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.communication.core.util
