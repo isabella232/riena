@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
@@ -24,7 +23,8 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * This composite presents a list of single or multiple choices. It is mapped to
- * a {@link ISingleChoiceRidget} or {@link IMultipleChoiceRidget}.
+ * a {@link org.eclipse.riena.ui.ridgets.ISingleChoiceRidget} or
+ * {@link org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget}.
  */
 public class ChoiceComposite extends Composite {
 

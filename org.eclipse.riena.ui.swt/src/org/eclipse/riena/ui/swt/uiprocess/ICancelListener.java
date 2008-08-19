@@ -10,19 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
-import org.eclipse.jface.window.ApplicationWindow;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
- * Such a listener can be used to observe the {@link ApplicationWindow}´s cancel
- * state
+ * Such a listener can be used to observe the
+ * {@link org.eclipse.jface.window.ApplicationWindow}´s cancel state
  */
 public interface ICancelListener {
 
 	/**
 	 * notifies that either the window is closed or the cancel button is
-	 * pressed. Closing the window leads to all {@link UIProcess} being stopped.
-	 * Cancel only stops the current visualized {@link UIProcess}.
+	 * pressed. Closing the window leads to all
+	 * {@link org.eclipse.riena.ui.core.uiprocess.UIProcess} being stopped.
+	 * Cancel only stops the current visualized
+	 * {@link org.eclipse.riena.ui.core.uiprocess.UIProcess}.
 	 * 
 	 * @param windowClosing
 	 *            - flag indicating if the whole window has been closed

@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.swt.utils;
 
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+
 import org.eclipse.swt.widgets.Control;
 
 public class SWTBindingPropertyLocator implements IBindingPropertyLocator {

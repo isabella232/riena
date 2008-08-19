@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.internal.util.BundleUtility;
 import org.osgi.framework.Bundle;
 
@@ -19,7 +20,7 @@ import org.osgi.framework.Bundle;
  * <code>LnfManager</code> manages the current look and feel of the riena
  * (navigation) widgets.
  */
-public class LnfManager {
+public final class LnfManager {
 
 	private final static String DEFAULT_LNF_CLASSNAME = RienaDefaultLnf.class.getName();
 	private static String lnfClassName;
@@ -41,8 +42,8 @@ public class LnfManager {
 		if (lnf == null) {
 			String className = getLnfClassName();
 			try {
-				RienaDefaultLnf lnf = createLnf(className);
-				setLnf(lnf);
+				RienaDefaultLnf myLnf = createLnf(className);
+				setLnf(myLnf);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new Error("can't load " + className); //$NON-NLS-1$
@@ -75,7 +76,7 @@ public class LnfManager {
 
 		Class<?> lnfClass = null;
 		if (lnfClassName.contains(":")) { //$NON-NLS-1$
-			String parts[] = lnfClassName.split(":"); //$NON-NLS-1$
+			String[] parts = lnfClassName.split(":"); //$NON-NLS-1$
 			String pluginID = parts[0];
 			String classPath = parts[1];
 			Bundle bundle = Platform.getBundle(pluginID);

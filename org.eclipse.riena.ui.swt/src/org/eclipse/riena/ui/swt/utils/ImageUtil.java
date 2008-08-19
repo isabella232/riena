@@ -10,17 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Utility class to manage images.
  */
-public class ImageUtil {
+public final class ImageUtil {
 
 	private ImageUtil() {
 		// utility class
@@ -46,7 +47,7 @@ public class ImageUtil {
 		Image image = imageRegistry.get(fullPath);
 		if ((image == null) || (image.isDisposed())) {
 			ImageDescriptor descriptor = null;
-			String parts[] = fullPath.split(":"); //$NON-NLS-1$
+			String[] parts = fullPath.split(":"); //$NON-NLS-1$
 			if (parts.length < 2) {
 				return null;
 			} else {

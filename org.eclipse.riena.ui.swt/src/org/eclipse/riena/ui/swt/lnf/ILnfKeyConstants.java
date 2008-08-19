@@ -12,8 +12,10 @@ package org.eclipse.riena.ui.swt.lnf;
 
 /**
  * Keys of the look and feel of riena.
+ * 
+ * @TODO why does this CLASS has a name normally used for INTERFACES
  */
-public class ILnfKeyConstants {
+public final class ILnfKeyConstants {
 
 	/**
 	 * Color keys
@@ -161,5 +163,9 @@ public class ILnfKeyConstants {
 	public static final String SUB_MODULE_VIEW_HOVER_BORDER_RENDERER = "SubModuleView.hoverBorderRenderer"; //$NON-NLS-1$
 	public static final String SUB_MODULE_VIEW_TITLEBAR_RENDERER = "SubModuleView.titlebarRenderer"; //$NON-NLS-1$
 	public static final String SUB_MODULE_VIEW_BORDER_RENDERER = "SubModuleView.borderRenderer"; //$NON-NLS-1$
+
+	private ILnfKeyConstants() {
+		super();
+	}
 
 }
