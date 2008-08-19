@@ -12,6 +12,8 @@ package org.eclipse.riena.internal.communication.factory.hessian;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,6 +26,7 @@ import java.util.Map;
 
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.util.ReflectionUtils;
 
@@ -35,6 +38,7 @@ import org.osgi.service.log.LogService;
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
+import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
@@ -89,6 +93,62 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 		}
 		CONNECTIONS.set((HttpURLConnection) connection);
 		return connection;
+	}
+
+	@Override
+	public AbstractHessianInput getHessianInput(final InputStream is) {
+		final IProgressMonitorList progressMonitorList = mca.getMessageContext().getProgressMonitorList();
+		if (progressMonitorList == null) {
+			return super.getHessianInput(is);
+		} else {
+			return super.getHessianInput(new InputStream() {
+
+				private int progressBytes = 0;
+				private int totalProgressBytes = 0;
+
+				@Override
+				public int read() throws IOException {
+					int b = is.read();
+					if (b == -1 || progressBytes > IProgressMonitorList.BYTE_COUNT_INCR) {
+						totalProgressBytes += progressBytes;
+						progressBytes = 0;
+						progressMonitorList.fireReadEvent(-1, totalProgressBytes);
+					}
+					if (b == -1) {
+						return b;
+					}
+
+					progressBytes++;
+					return b;
+				}
+
+			});
+		}
+	}
+
+	@Override
+	public AbstractHessianOutput getHessianOutput(final OutputStream os) {
+		final IProgressMonitorList progressMonitorList = mca.getMessageContext().getProgressMonitorList();
+		if (progressMonitorList == null) {
+			return super.getHessianOutput(os);
+		} else {
+			return super.getHessianOutput(new OutputStream() {
+
+				private int progressBytes = 0;
+				private int totalProgressBytes = 0;
+
+				@Override
+				public void write(int b) throws IOException {
+					os.write(b);
+					if (progressBytes > IProgressMonitorList.BYTE_COUNT_INCR) {
+						totalProgressBytes += progressBytes;
+						progressBytes = 0;
+						progressMonitorList.fireReadEvent(-1, totalProgressBytes);
+					}
+				}
+
+			});
+		}
 	}
 
 	@Override

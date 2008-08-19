@@ -12,17 +12,18 @@ package org.eclipse.riena.internal.communication.console;
 
 import java.util.List;
 
-import org.eclipse.osgi.framework.console.CommandInterpreter;
-import org.eclipse.osgi.framework.console.CommandProvider;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 
+import org.eclipse.osgi.framework.console.CommandInterpreter;
+import org.eclipse.osgi.framework.console.CommandProvider;
+
 public class CommunicationConsole implements CommandProvider {
-	IServicePublishBinder servicePublisher;
-	IRemoteServiceRegistry serviceRegistry;
+	private IServicePublishBinder servicePublisher;
+	private IRemoteServiceRegistry serviceRegistry;
 
 	public String getHelp() {
 		return "---riena communication---\n\tremotestatus - list all services"; //$NON-NLS-1$

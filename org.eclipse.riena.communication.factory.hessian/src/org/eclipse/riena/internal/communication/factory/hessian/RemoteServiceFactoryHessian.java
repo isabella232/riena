@@ -22,6 +22,9 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.factory.RemoteServiceReference;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList;
+import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorRegistry;
+import org.eclipse.riena.core.injector.Inject;
 
 /**
  * This is a Hessian based implementation of {@link IRemoteServiceFactory}.
@@ -39,6 +42,7 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private final ICallMessageContextAccessor mca = new CallMsgCtxAcc();
 	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
+	private IProgressMonitorRegistry progressMonitorRegistry;
 
 	/*
 	 * (non-Javadoc)
@@ -60,6 +64,9 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			RemoteServiceReference serviceReference = new RemoteServiceReference(endpoint);
 			// set the create proxy as service instance
 			serviceReference.setServiceInstance(service);
+			// inject progressmonitor registry into THIS
+			Inject.service(IProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
+					Activator.getDefault().getContext());
 			// the hessian proxy factory also implements ManagedService
 			if (endpoint.getConfigPID() != null) {
 				serviceReference.setConfigServiceInstance(mhpf);
@@ -68,6 +75,16 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			return serviceReference;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("MalformedURLException", e); //$NON-NLS-1$
+		}
+	}
+
+	public void bind(IProgressMonitorRegistry pmr) {
+		this.progressMonitorRegistry = pmr;
+	}
+
+	public void unbind(IProgressMonitorRegistry pmr) {
+		if (this.progressMonitorRegistry == pmr) {
+			this.progressMonitorRegistry = null;
 		}
 	}
 
@@ -87,12 +104,12 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		return mca;
 	}
 
-	static class CallMsgCtxAcc implements ICallMessageContextAccessor {
+	class CallMsgCtxAcc implements ICallMessageContextAccessor {
 
 		private ThreadLocal<ICallMessageContext> contexts = new ThreadLocal<ICallMessageContext>();
 
 		public ICallMessageContext createMessageContext(Object proxy) {
-			ICallMessageContext mc = new MsgCtx();
+			ICallMessageContext mc = new MsgCtx(proxy);
 			contexts.set(mc);
 			return mc;
 		}
@@ -101,9 +118,19 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			return contexts.get();
 		}
 
-		static class MsgCtx implements ICallMessageContext {
+		class MsgCtx implements ICallMessageContext {
 
 			private HashMap<String, List<String>> customRequestHeader;
+			private IProgressMonitorList progressMonitorList;
+
+			public MsgCtx(Object proxy) {
+				super();
+				if (progressMonitorRegistry != null) {
+					progressMonitorList = progressMonitorRegistry.getProgressMonitors(proxy);
+				} else {
+					progressMonitorList = null;
+				}
+			}
 
 			public List<String> getResponseHeaderValues(String name) {
 				Map<String, List<String>> headers = listResponseHeaders();
@@ -135,6 +162,10 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 					customRequestHeader.put(name, hValues);
 				}
 				hValues.add(value);
+			}
+
+			public IProgressMonitorList getProgressMonitorList() {
+				return progressMonitorList;
 			}
 		}
 	}

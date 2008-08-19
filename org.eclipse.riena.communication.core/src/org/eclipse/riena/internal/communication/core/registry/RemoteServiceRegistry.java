@@ -18,11 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.internal.communication.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -37,7 +38,7 @@ import org.osgi.service.log.LogService;
  */
 public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	private Map<String, IRemoteServiceRegistration> registeredServices;
-	private Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceRegistry.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceRegistry.class.getName());
 
 	public synchronized void start() {
 		registeredServices = new HashMap<String, IRemoteServiceRegistration>();
@@ -59,8 +60,9 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistry#registerService
-	 *      (org.eclipse.riena.communication.core.IRemoteServiceReference)
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#registerService
+	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference) {
 
@@ -119,8 +121,9 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceRegistry#unregisterService
-	 *      (org.eclipse.riena.communication.core.IRemoteServiceReference)
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#unregisterService
+	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
 	public void unregisterService(IRemoteServiceReference reference) {
 		assert reference != null : "RemoteServiceReference must not be null"; //$NON-NLS-1$

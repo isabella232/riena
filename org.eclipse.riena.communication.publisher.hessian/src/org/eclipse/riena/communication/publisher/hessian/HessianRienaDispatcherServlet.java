@@ -58,7 +58,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 
 	private SerializerFactory serializerFactory = null;
 
-	private final static Logger logger = new ConsoleLogger(HessianRienaDispatcherServlet.class.getName());
+	private final static Logger LOGGER = new ConsoleLogger(HessianRienaDispatcherServlet.class.getName());
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -80,7 +80,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 			}
 		});
 		addSpecialDeserializer(serializerFactory);
-		logger.log(LogService.LOG_DEBUG, "initialized"); //$NON-NLS-1$
+		LOGGER.log(LogService.LOG_DEBUG, "initialized"); //$NON-NLS-1$
 	}
 
 	@Override
