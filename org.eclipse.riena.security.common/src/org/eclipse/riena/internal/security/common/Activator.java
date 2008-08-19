@@ -71,6 +71,7 @@ public class Activator extends RienaPlugin {
 		sessionHolderService.unregister();
 		securityCallHook.unregister();
 		principalHolderService.unregister();
+		permissionCache.unregister();
 		Activator.plugin = null;
 		super.stop(context);
 	}

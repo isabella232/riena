@@ -11,37 +11,38 @@
 package org.eclipse.riena.security.common.session;
 
 /**
- * Stores the session and the principal location in the Webservice (axis) context
+ * Stores the session and the principal location in the Webservice (axis)
+ * context
  * 
  */
 public interface ISessionHolder {
 
-    /**
-     * Returns the current session
-     * 
-     * @return current session
-     */
-    Session getSession();
+	/**
+	 * Returns the current session
+	 * 
+	 * @return current session
+	 */
+	Session getSession();
 
-    /**
-     * Sets the current session
-     * 
-     * @param session
-     *            current session.
-     */
-    void setSession(Session session);
+	/**
+	 * Sets the current session
+	 * 
+	 * @param session
+	 *            current session.
+	 */
+	void setSession(Session session);
 
-    /**
-     * Set JSessionId
-     * 
-     * @param value
-     */
-    void setJSessionCookieValue(String value);
+	/**
+	 * Set JSessionId
+	 * 
+	 * @param value
+	 */
+	void setJSessionCookieValue(String value);
 
-    /**
-     * Return JSessionId
-     * 
-     * @return
-     */
-    String getJSessionCookieValue();
+	/**
+	 * Return JSessionId
+	 * 
+	 * @return
+	 */
+	String getJSessionCookieValue();
 }

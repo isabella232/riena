@@ -17,12 +17,12 @@ import javax.security.auth.Subject;
 
 public interface IPermissionCache {
 
-	public Permissions getPermissions(Subject subject);
+	Permissions getPermissions(Subject subject);
 
-	public Permissions getPermissions(Principal[] principals);
+	Permissions getPermissions(Principal[] principals);
 
-	public void purgePermissions(Principal principal);
+	void purgePermissions(Principal principal);
 
-	public void purgePermissions(Subject subject);
+	void purgePermissions(Subject subject);
 
 }

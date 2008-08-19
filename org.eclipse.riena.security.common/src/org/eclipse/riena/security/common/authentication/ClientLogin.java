@@ -29,7 +29,7 @@ public class ClientLogin {
 
 	private IAuthenticationService authenticationService;
 	private ISubjectHolderService subjectHolderService;
-	private String loginContext;
+	private final String loginContext;
 	private AuthenticationTicket ticket;
 	private Subject subject;
 

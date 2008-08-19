@@ -17,6 +17,6 @@ public interface IAuthorizationService {
 
 	String WS_ID = "/AuthorizationService"; //$NON-NLS-1$
 
-	public Permissions[] getPermissions(Principal[] principals);
+	Permissions[] getPermissions(Principal[] principals);
 
 }

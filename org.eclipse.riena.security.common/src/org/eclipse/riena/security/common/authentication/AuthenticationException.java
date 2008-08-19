@@ -12,25 +12,26 @@
 package org.eclipse.riena.security.common.authentication;
 
 /**
- * Checked Exception which indicates an non-fatal error situation caused by the authentication module.
+ * Checked Exception which indicates an non-fatal error situation caused by the
+ * authentication module.
  * 
  */
 public class AuthenticationException extends Exception {
 
-    /**
-     * constructor.
-     */
-    public AuthenticationException() {
-        super();
-    }
+	/**
+	 * constructor.
+	 */
+	public AuthenticationException() {
+		super();
+	}
 
-    /**
-     * constructor.
-     * 
-     * @param message
-     *            the detail message
-     */
-    public AuthenticationException(String message) {
-        super(message);
-    }
+	/**
+	 * constructor.
+	 * 
+	 * @param message
+	 *            the detail message
+	 */
+	public AuthenticationException(String message) {
+		super(message);
+	}
 }

@@ -10,43 +10,43 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common;
 
-
 import javax.security.auth.Subject;
 
 /**
- * A <code>ISubjectHolder</code> implementation retrieves the current principal, i.e. on the client the currently
- * logged on user and on the server the user bound to the current session.
+ * A <code>ISubjectHolder</code> implementation retrieves the current principal,
+ * i.e. on the client the currently logged on user and on the server the user
+ * bound to the current session.
  * 
  */
 public interface ISubjectHolder {
 
-    /**
-     * Get the current principal
-     * 
-     * @return current principal
-     */
-    Subject getSubject();
+	/**
+	 * Get the current principal
+	 * 
+	 * @return current principal
+	 */
+	Subject getSubject();
 
-    /**
-     * Set the current principal
-     * 
-     * @param subject
-     *            current subject
-     */
-    void setSubject(Subject subject);
+	/**
+	 * Set the current principal
+	 * 
+	 * @param subject
+	 *            current subject
+	 */
+	void setSubject(Subject subject);
 
-    /**
-     * Adds the given principal change listener
-     * 
-     * @param listener
-     */
-    void addSubjectChangeListener(ISubjectChangeListener listener);
+	/**
+	 * Adds the given principal change listener
+	 * 
+	 * @param listener
+	 */
+	void addSubjectChangeListener(ISubjectChangeListener listener);
 
-    /**
-     * Removes the given principal change listener
-     * 
-     * @param listener
-     */
-    void removeSubjectChangeListener(ISubjectChangeListener listener);
+	/**
+	 * Removes the given principal change listener
+	 * 
+	 * @param listener
+	 */
+	void removeSubjectChangeListener(ISubjectChangeListener listener);
 
 }

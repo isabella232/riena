@@ -26,7 +26,7 @@ import org.eclipse.riena.security.common.ISubjectHolderService;
  * permissions in the code. The Sentinel also says true or false which is easier
  * to handle than an AccessControlException.
  */
-public class Sentinel {
+public final class Sentinel {
 
 	private static Sentinel singletonSentinel = new Sentinel();
 	private IPermissionCache permCache;
@@ -78,7 +78,7 @@ public class Sentinel {
 	 * allowed for this subject
 	 * 
 	 * @param permission
-	 * 		permission to be checked
+	 *            permission to be checked
 	 * @return
 	 */
 	public static boolean checkAccess(Permission permission) {

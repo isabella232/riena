@@ -33,7 +33,11 @@ import org.eclipse.riena.security.common.authentication.credentials.TextOutputCr
  * this class converts between JAAS callbacks and credential object so that they
  * can be easily transported to a remote service
  */
-public class Callback2CredentialConverter {
+public final class Callback2CredentialConverter {
+
+	private Callback2CredentialConverter() {
+		// utility
+	}
 
 	/**
 	 * Convert Callback objects to AbstractCredential objects
@@ -50,52 +54,41 @@ public class Callback2CredentialConverter {
 				NameCredential nc = new NameCredential(ncb.getPrompt(), ncb.getDefaultName());
 				nc.setName(ncb.getName());
 				creds[i++] = nc;
+			} else if (cb instanceof PasswordCallback) {
+				PasswordCallback pcb = (PasswordCallback) cb;
+				PasswordCredential pc = new PasswordCredential(pcb.getPrompt(), pcb.isEchoOn());
+				pc.setPassword(pcb.getPassword());
+				creds[i++] = pc;
+			} else if (cb instanceof ConfirmationCallback) {
+				ConfirmationCallback ccb = (ConfirmationCallback) cb;
+				ConfirmationCredential ccc = new ConfirmationCredential(ccb.getMessageType(), ccb.getOptionType(), ccb
+						.getDefaultOption());
+				ccc.setSelectedIndex(ccb.getSelectedIndex());
+				creds[i++] = ccc;
+			} else if (cb instanceof TextInputCallback) {
+				TextInputCallback ticb = (TextInputCallback) cb;
+				TextInputCredential tic = new TextInputCredential(ticb.getPrompt(), ticb.getDefaultText());
+				tic.setText(ticb.getText());
+				creds[i++] = tic;
+			} else if (cb instanceof TextOutputCallback) {
+				TextOutputCallback tocb = (TextOutputCallback) cb;
+				TextOutputCredential toc = new TextOutputCredential(tocb.getMessageType(), tocb.getMessage());
+				creds[i++] = toc;
+			} else if (cb instanceof LanguageCallback) {
+				LanguageCallback lcb = (LanguageCallback) cb;
+				LanguageCredential lc = new LanguageCredential(lcb.getLocale());
+				creds[i++] = lc;
+			} else if (cb instanceof ChoiceCallback) {
+				ChoiceCallback ccb = (ChoiceCallback) cb;
+				ChoiceCredential cc = new ChoiceCredential(ccb.getPrompt(), ccb.getChoices(), ccb.getDefaultChoice(),
+						ccb.allowMultipleSelections());
+				cc.setSelections(ccb.getSelectedIndexes());
+				creds[i++] = cc;
 			} else {
-				if (cb instanceof PasswordCallback) {
-					PasswordCallback pcb = (PasswordCallback) cb;
-					PasswordCredential pc = new PasswordCredential(pcb.getPrompt(), pcb.isEchoOn());
-					pc.setPassword(pcb.getPassword());
-					creds[i++] = pc;
-				} else {
-					if (cb instanceof ConfirmationCallback) {
-						ConfirmationCallback ccb = (ConfirmationCallback) cb;
-						ConfirmationCredential ccc = new ConfirmationCredential(ccb.getMessageType(), ccb.getOptionType(), ccb.getDefaultOption());
-						ccc.setSelectedIndex(ccb.getSelectedIndex());
-						creds[i++] = ccc;
-					} else {
-						if (cb instanceof TextInputCallback) {
-							TextInputCallback ticb = (TextInputCallback) cb;
-							TextInputCredential tic = new TextInputCredential(ticb.getPrompt(), ticb.getDefaultText());
-							tic.setText(ticb.getText());
-							creds[i++] = tic;
-						} else {
-							if (cb instanceof TextOutputCallback) {
-								TextOutputCallback tocb = (TextOutputCallback) cb;
-								TextOutputCredential toc = new TextOutputCredential(tocb.getMessageType(), tocb.getMessage());
-								creds[i++] = toc;
-
-							} else {
-								if (cb instanceof LanguageCallback) {
-									LanguageCallback lcb = (LanguageCallback) cb;
-									LanguageCredential lc = new LanguageCredential(lcb.getLocale());
-									creds[i++] = lc;
-								} else {
-									if (cb instanceof ChoiceCallback) {
-										ChoiceCallback ccb = (ChoiceCallback) cb;
-										ChoiceCredential cc = new ChoiceCredential(ccb.getPrompt(), ccb.getChoices(), ccb.getDefaultChoice(), ccb
-												.allowMultipleSelections());
-										cc.setSelections(ccb.getSelectedIndexes());
-										creds[i++] = cc;
-									} else {
-										CustomCredential cc = new CustomCredential(cb);
-										creds[i++] = cc;
-									}
-								}
-							}
-						}
-					}
-				}
+				CustomCredential cc = new CustomCredential(cb);
+				creds[i++] = cc;
 			}
+
 		}
 
 		return creds;
@@ -115,53 +108,41 @@ public class Callback2CredentialConverter {
 				}
 				ncb.setName(nc.getName());
 				callbacks[i++] = ncb;
-			} else {
-				if (cred instanceof PasswordCredential) {
-					PasswordCredential pc = (PasswordCredential) cred;
-					PasswordCallback pcb = new PasswordCallback(pc.getPrompt(), pc.isEchoOn());
-					pcb.setPassword(pc.getPassword());
-					callbacks[i++] = pcb;
-				} else {
-					if (cred instanceof ConfirmationCredential) {
-						ConfirmationCredential cc = (ConfirmationCredential) cred;
-						ConfirmationCallback ccb = new ConfirmationCallback(cc.getMessageType(), cc.getOptionType(), cc.getDefaultOption());
-						ccb.setSelectedIndex(cc.getSelectedIndex());
-						callbacks[i++] = ccb;
-					} else {
-						if (cred instanceof TextInputCredential) {
-							TextInputCredential tic = (TextInputCredential) cred;
-							TextInputCallback ticb = new TextInputCallback(tic.getPrompt(), tic.getDefaultText());
-							ticb.setText(tic.getText());
-							callbacks[i++] = ticb;
-						} else {
-							if (cred instanceof TextOutputCredential) {
-								TextOutputCredential toc = (TextOutputCredential) cred;
-								TextOutputCallback tocb = new TextOutputCallback(toc.getMessageType(), toc.getMessage());
-								callbacks[i++] = tocb;
-							} else {
-								if (cred instanceof LanguageCredential) {
-									LanguageCredential lc = (LanguageCredential) cred;
-									LanguageCallback lcb = new LanguageCallback();
-									lcb.setLocale(lc.getLocale());
-									callbacks[i++] = lcb;
-								} else {
-									if (cred instanceof ChoiceCredential) {
-										ChoiceCredential cc = (ChoiceCredential) cred;
-										ChoiceCallback ccb = new ChoiceCallback(cc.getPrompt(), cc.getChoices(), cc.getDefaultChoice(), cc
-												.isMultipleSelectionsAllowed());
-										callbacks[i++] = ccb;
-									} else {
-										if (cred instanceof CustomCredential) {
-											callbacks[i++] = ((CustomCredential) cred).getCallback();
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+			} else if (cred instanceof PasswordCredential) {
+				PasswordCredential pc = (PasswordCredential) cred;
+				PasswordCallback pcb = new PasswordCallback(pc.getPrompt(), pc.isEchoOn());
+				pcb.setPassword(pc.getPassword());
+				callbacks[i++] = pcb;
+			} else if (cred instanceof ConfirmationCredential) {
+				ConfirmationCredential cc = (ConfirmationCredential) cred;
+				ConfirmationCallback ccb = new ConfirmationCallback(cc.getMessageType(), cc.getOptionType(), cc
+						.getDefaultOption());
+				ccb.setSelectedIndex(cc.getSelectedIndex());
+				callbacks[i++] = ccb;
+			} else if (cred instanceof TextInputCredential) {
+				TextInputCredential tic = (TextInputCredential) cred;
+				TextInputCallback ticb = new TextInputCallback(tic.getPrompt(), tic.getDefaultText());
+				ticb.setText(tic.getText());
+				callbacks[i++] = ticb;
+			} else if (cred instanceof TextOutputCredential) {
+				TextOutputCredential toc = (TextOutputCredential) cred;
+				TextOutputCallback tocb = new TextOutputCallback(toc.getMessageType(), toc.getMessage());
+				callbacks[i++] = tocb;
+			} else if (cred instanceof LanguageCredential) {
+				LanguageCredential lc = (LanguageCredential) cred;
+				LanguageCallback lcb = new LanguageCallback();
+				lcb.setLocale(lc.getLocale());
+				callbacks[i++] = lcb;
+			} else if (cred instanceof ChoiceCredential) {
+				ChoiceCredential cc = (ChoiceCredential) cred;
+				ChoiceCallback ccb = new ChoiceCallback(cc.getPrompt(), cc.getChoices(), cc.getDefaultChoice(), cc
+						.isMultipleSelectionsAllowed());
+				callbacks[i++] = ccb;
+			} else if (cred instanceof CustomCredential) {
+				callbacks[i++] = ((CustomCredential) cred).getCallback();
 			}
 		}
+
 		return callbacks;
 	}
 }

@@ -12,8 +12,8 @@ package org.eclipse.riena.security.common.authentication.credentials;
 
 public class NameCredential extends AbstractCredential {
 
-	String defaultName;
-	String name;
+	private String defaultName;
+	private String name;
 
 	public NameCredential(String prompt) {
 		super(prompt);

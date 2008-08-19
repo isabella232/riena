@@ -34,7 +34,7 @@ public class RienaPolicy extends Policy {
 
 	private static Policy defaultPolicy;
 	private IPermissionCache permCache;
-	private Logger LOGGER = Activator.getDefault().getLogger(RienaPolicy.class.getName());
+	private static final Logger LOGGER = Activator.getDefault().getLogger(RienaPolicy.class.getName());
 
 	public RienaPolicy() {
 		super();
@@ -59,8 +59,10 @@ public class RienaPolicy extends Policy {
 		RienaPolicy rp = new RienaPolicy();
 		Policy.setPolicy(rp);
 		defaultPolicy = new PolicyFile();
-		if (true)
+		// TODO Is this true!!!
+		if (true) {
 			return;
+		}
 		try {
 			Class<?> clz = RienaPolicy.class.getClassLoader().getSystemClassLoader().loadClass(
 					"org.eclipse.riena.security.common.policyproxy.PolicyProxy"); //$NON-NLS-1$

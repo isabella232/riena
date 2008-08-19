@@ -20,22 +20,21 @@ import java.util.Set;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 public class PermissionCache implements IPermissionCache {
 
-	private GenericObjectCache permCache = new GenericObjectCache();
-	private Logger LOGGER = Activator.getDefault().getLogger(PermissionCache.class.getName());
+	private final GenericObjectCache permCache = new GenericObjectCache();
+	private IAuthorizationService authService;
 
-	public IAuthorizationService authService;
+	private static final Logger LOGGER = Activator.getDefault().getLogger(PermissionCache.class.getName());
 
 	public PermissionCache() {
 		super();

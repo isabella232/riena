@@ -13,7 +13,11 @@ package org.eclipse.riena.security.common.authorization;
 /**
  * 
  */
-public class PermissionClassFactory {
+public final class PermissionClassFactory {
+
+	private PermissionClassFactory() {
+		// utility
+	}
 
 	public static Class retrieveClass(String permissionClass) throws ClassNotFoundException {
 		return Class.forName(permissionClass);
