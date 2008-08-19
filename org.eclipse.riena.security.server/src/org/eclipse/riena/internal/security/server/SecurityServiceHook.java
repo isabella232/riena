@@ -16,6 +16,7 @@ import java.util.Arrays;
 import javax.security.auth.Subject;
 import javax.servlet.http.Cookie;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
@@ -25,8 +26,6 @@ import org.eclipse.riena.security.common.NotAuthorizedFailure;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -154,12 +153,12 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
-	public void bind(ISessionHolderService ISessionHolderService) {
-		this.sessionHolderService = ISessionHolderService;
+	public void bind(ISessionHolderService sessionHolderService) {
+		this.sessionHolderService = sessionHolderService;
 	}
 
-	public void unbind(ISessionHolderService ISessionHolderService) {
-		if (this.sessionHolderService == ISessionHolderService) {
+	public void unbind(ISessionHolderService sessionHolderService) {
+		if (this.sessionHolderService == sessionHolderService) {
 			this.sessionHolderService = null;
 		}
 	}
