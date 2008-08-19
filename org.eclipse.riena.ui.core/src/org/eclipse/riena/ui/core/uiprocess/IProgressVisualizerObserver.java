@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface IProgressVisualizerObserver {
 
-	public List<IProgressVisualizer> getProgressVisualizers();
+	List<IProgressVisualizer> getProgressVisualizers();
 
 	void addProgressVisualizer(IProgressVisualizer aVisualizer);
 
