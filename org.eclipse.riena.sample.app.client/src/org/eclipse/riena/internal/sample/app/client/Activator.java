@@ -2,7 +2,6 @@ package org.eclipse.riena.internal.sample.app.client;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -19,7 +18,7 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	private static BundleContext CONTEXT;
+	private static BundleContext bundleContext;
 	private IRemoteServiceRegistration helloWorldServiceReg;
 	private IRemoteServiceRegistration customerSearchService;
 
@@ -36,10 +35,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		// hack to force riena.core to load
-		Class<?> clazz = ReflectionUtils.class;
 
 		plugin = this;
-		CONTEXT = context;
+		bundleContext = context;
 
 		// register hessian proxy for riena remote service
 		helloWorldServiceReg = new RemoteServiceFactory().createAndRegisterProxy(IHelloWorldService.class,
@@ -55,13 +53,15 @@ public class Activator extends AbstractUIPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
-		CONTEXT = null;
+		bundleContext = null;
 
 		if (helloWorldServiceReg != null) {
 			helloWorldServiceReg.unregister();
@@ -84,7 +84,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static BundleContext getContext() {
-		return CONTEXT;
+		return bundleContext;
 	}
 
 }

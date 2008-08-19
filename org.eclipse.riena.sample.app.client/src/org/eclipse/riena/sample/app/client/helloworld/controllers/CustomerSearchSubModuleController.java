@@ -33,7 +33,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	private ITextFieldRidget lastNameRidget;
 
 	private ResultContainer searchResult;
-	WritableValue tableSelection;
+	private WritableValue tableSelection;
 
 	private Customer sample;
 
@@ -127,7 +127,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 		}
 	}
 
-	public class ResultContainer {
+	public static class ResultContainer {
 
 		private List<Customer> list = new ArrayList<Customer>();
 

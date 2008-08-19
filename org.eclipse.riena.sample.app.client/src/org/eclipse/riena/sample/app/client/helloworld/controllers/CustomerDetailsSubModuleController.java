@@ -115,7 +115,7 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 		this.saveFacade = saveFacade;
 	}
 
-	private class SaveCallback implements IActionListener {
+	private static class SaveCallback implements IActionListener {
 
 		public void callback() {
 			System.out.println("Save is not implemented"); //$NON-NLS-1$
@@ -123,7 +123,7 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 
 	}
 
-	private class OffersCallback implements IActionListener {
+	private static class OffersCallback implements IActionListener {
 
 		public void callback() {
 			System.out.println("Offers is not implemented"); //$NON-NLS-1$

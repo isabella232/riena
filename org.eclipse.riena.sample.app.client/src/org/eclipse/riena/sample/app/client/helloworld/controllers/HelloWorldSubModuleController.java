@@ -45,7 +45,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 	/**
 	 * The model of this sub module controller.
 	 */
-	private class TxtBean {
+	private static class TxtBean {
 
 		private String txt;
 		private String name;

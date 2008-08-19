@@ -186,9 +186,7 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 
 	protected void openCustomer() {
 		Customer selected = ((Customer) searchResultTable.getSelection()[0].getData());
-		if (selected != null) {
 
-		}
 		ISubModuleNode node = getNode();
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 		SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
