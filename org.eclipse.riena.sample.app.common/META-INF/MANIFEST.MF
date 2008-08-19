@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0.M4
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.security.common,
  org.eclipse.riena.communication.core
-Eclipse-LazyStart: false
 Export-Package: org.eclipse.riena.sample.app.common.attachment,
  org.eclipse.riena.sample.app.common.exception,
  org.eclipse.riena.sample.app.common.model
