@@ -253,7 +253,6 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	}
 
 	private void initUiProcessRidget() {
-		IUIProcessRidget uiProcessRidget = getUiProcessRidget();
 		if (uiProcessRidget == null) {
 			return;
 		}
