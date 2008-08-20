@@ -23,8 +23,6 @@ import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -54,7 +52,7 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		selectionObservable = new WritableList();
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(ChangeEvent event) {
-				updateMarkers();
+				disableMandatoryMarkers(hasInput());
 			}
 		});
 	}
@@ -163,7 +161,7 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 
 	@Override
 	public boolean isDisableMandatoryMarker() {
-		return selectionObservable != null && selectionObservable.size() > 0;
+		return hasInput();
 	}
 
 	// helping methods
@@ -257,6 +255,10 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 		}
 	}
 
+	private boolean hasInput() {
+		return selectionObservable != null && selectionObservable.size() > 0;
+	}
+
 	private void updateChildren(Composite control) {
 		if (control != null && !control.isDisposed()) {
 			for (Control child : control.getChildren()) {
@@ -264,14 +266,6 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 				boolean isSelected = selectionObservable.contains(button.getData());
 				button.setSelection(isSelected);
 			}
-		}
-	}
-
-	private void updateMarkers() {
-		boolean isMandatoryDisabled = isDisableMandatoryMarker();
-		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-			MandatoryMarker mMarker = (MandatoryMarker) marker;
-			mMarker.setDisabled(isMandatoryDisabled);
 		}
 	}
 

@@ -160,21 +160,6 @@ public class MarkerSubModuleController extends SubModuleController {
 					choiceFlavor.setSelection(null);
 					listPersons.setSelection((Object) null);
 					buttonToggle.setSelected(false);
-				} else {
-					textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
-					textPrice.setText("-29,99"); //$NON-NLS-1$
-					comboAge.setSelection(1);
-					radioRed.setSelected(true);
-					radioWhite.setSelected(false);
-					radioRose.setSelected(false);
-					choiceType.setSelection("red"); //$NON-NLS-1$
-					checkDry.setSelected(true);
-					checkSweet.setSelected(false);
-					checkSour.setSelected(false);
-					checkSpicy.setSelected(true);
-					choiceFlavor.setSelection(Arrays.asList("dry", "spicy")); //$NON-NLS-1$ //$NON-NLS-2$
-					listPersons.setSelection(0);
-					buttonToggle.setSelected(true);
 				}
 			}
 		});

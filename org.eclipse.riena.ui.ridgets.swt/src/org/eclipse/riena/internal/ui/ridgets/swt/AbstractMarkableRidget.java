@@ -44,6 +44,7 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 	 * necessary.
 	 */
 	public boolean isDisableMandatoryMarker() {
+		// TODO [ev] remove or use template method
 		return false;
 	}
 
@@ -152,6 +153,19 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 	public final void setVisible(boolean visible) {
 		super.setVisible(visible);
 		updateMarkers();
+	}
+
+	// protected methods
+	// //////////////////
+
+	/**
+	 * TODO [ev] docs
+	 */
+	protected final void disableMandatoryMarkers(boolean disable) {
+		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			MandatoryMarker mMarker = (MandatoryMarker) marker;
+			mMarker.setDisabled(disable);
+		}
 	}
 
 	// helping methods

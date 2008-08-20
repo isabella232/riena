@@ -25,8 +25,6 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -57,7 +55,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		selectionObservable = new WritableValue();
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(ChangeEvent event) {
-				updateMarkers();
+				disableMandatoryMarkers(hasInput());
 			}
 		});
 	}
@@ -157,10 +155,10 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	public IObservableList getObservableList() {
 		return optionsObservable;
 	}
-
+	
 	@Override
 	public final boolean isDisableMandatoryMarker() {
-		return selectionObservable != null && selectionObservable.getValue() != null;
+		return hasInput();
 	}
 
 	// helping methods
@@ -246,6 +244,10 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		}
 	}
 
+	private boolean hasInput() {
+		return selectionObservable != null && selectionObservable.getValue() != null;
+	}
+
 	private void updateChildren(Composite control) {
 		if (control != null && !control.isDisposed()) {
 			Object selection = selectionObservable.getValue();
@@ -254,14 +256,6 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 				boolean isSelected = (selection != null) && (child.getData() == selection);
 				button.setSelection(isSelected);
 			}
-		}
-	}
-
-	private void updateMarkers() {
-		boolean isMandatoryDisabled = isDisableMandatoryMarker();
-		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-			MandatoryMarker mMarker = (MandatoryMarker) marker;
-			mMarker.setDisabled(isMandatoryDisabled);
 		}
 	}
 

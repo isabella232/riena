@@ -20,6 +20,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValidationTime;
@@ -967,6 +968,73 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setOutputOnly(false);
 
 		assertFalse(control.getEditable());
+	}
+
+	/**
+	 * Tests that the mandatory marker gets disabled when we have text
+	 */
+	public void testDisableMandatoryMarkers() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		ridget.addMarker(mandatoryMarker);
+
+		ridget.setText("");
+
+		assertFalse(mandatoryMarker.isDisabled());
+
+		ridget.setText("foo");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		ridget.setText("");
+
+		assertFalse(mandatoryMarker.isDisabled());
+
+		ridget.setText("foo");
+		control.selectAll();
+		control.setFocus();
+		// delete all in control and tab out to update
+		UITestHelper.sendString(control.getDisplay(), "\b\t");
+
+		assertFalse(mandatoryMarker.isDisabled());
+
+		control.setFocus();
+		// type 'bar' and tab out to update
+		UITestHelper.sendString(control.getDisplay(), "bar\t");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		bean.setProperty("");
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.updateFromModel();
+
+		assertFalse(mandatoryMarker.isDisabled());
+
+		bean.setProperty("baz");
+		ridget.updateFromModel();
+
+		assertTrue(mandatoryMarker.isDisabled());
+	}
+
+	/**
+	 * Tests that the isDisabledMandatoryMarker true when we have text
+	 */
+	public void testIsDisableMandatoryMarker() {
+		ITextFieldRidget ridget = getRidget();
+
+		ridget.setText("foo");
+
+		assertTrue(ridget.isDisableMandatoryMarker());
+
+		ridget.setText("");
+
+		assertFalse(ridget.isDisableMandatoryMarker());
+
+		ridget.setText("  ");
+
+		assertTrue(ridget.isDisableMandatoryMarker());
 	}
 
 	// helping methods

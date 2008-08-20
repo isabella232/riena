@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
-
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -112,6 +111,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		String oldValue = textValue;
 		textValue = text;
 		forceTextToControl(textValue);
+		disableMandatoryMarkers(hasInput());
 		IStatus onEdit = checkOnEditRules(text);
 		validationRulesChecked(onEdit);
 		if (onEdit.isOK()) {
@@ -155,7 +155,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 
 	@Override
 	public boolean isDisableMandatoryMarker() {
-		return getText().length() > 0;
+		return hasInput();
 	}
 
 	public int getAlignment() {
@@ -195,14 +195,25 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		}
 	}
 
+	private boolean hasInput() {
+		return textValue.length() > 0;
+	}
+
 	private synchronized void updateTextValue() {
 		String oldValue = textValue;
 		String newValue = getUIControl().getText();
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
+			disableMandatoryMarkers(hasInput());
 			if (checkOnEditRules(newValue).isOK()) {
 				firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
 			}
+		}
+	}
+
+	private synchronized void updateTextValueWhenDirectWriting() {
+		if (isDirectWriting) {
+			updateTextValue();
 		}
 	}
 
@@ -249,9 +260,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 	 */
 	private final class SyncModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
-			if (isDirectWriting) {
-				updateTextValue();
-			}
+			updateTextValueWhenDirectWriting();
 		}
 	}
 
