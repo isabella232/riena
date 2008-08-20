@@ -36,4 +36,24 @@ public interface INavigationNodeId {
 	 */
 	String getInstanceId();
 
+	/**
+	 * Set the type of a node. Nodes of the same type are created using the same
+	 * node builder. Sub module nodes of the same type use the same type of
+	 * view. Both is configured using extensions (NavigationNodeType and
+	 * SubModuleType). This typeId is used to find the right extension.
+	 * 
+	 * @see INavigationNodeBuilder
+	 * @return The type ID of a navigation node.
+	 */
+	void setTypeId(String typeId);
+
+	/**
+	 * Set the optional instance ID. This is used to differentiate between nodes
+	 * of the same type. E.g. two nodes representing employees that have the
+	 * same type ID could use the social security number as instance ID.
+	 * 
+	 * @return The instance ID of a navigation node.
+	 */
+	void setInstanceId(String instanceId);
+
 }

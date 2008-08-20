@@ -88,4 +88,18 @@ public class NavigationNodeId implements INavigationNodeId {
 		return (string1 == null && string2 == null) || (string1 != null && string1.equals(string2));
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNodeId#setInstanceId(java.lang.String)
+	 */
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNodeId#setTypeId(java.lang.String)
+	 */
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
+	}
+
 }
