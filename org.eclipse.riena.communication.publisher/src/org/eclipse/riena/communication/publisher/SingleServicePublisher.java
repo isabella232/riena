@@ -70,7 +70,7 @@ public class SingleServicePublisher {
 		Assert.isNotNull(protocol);
 
 		try {
-			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(serviceName, filter);
+			ServiceReference[] refs = this.context.getServiceReferences(serviceName, filter);
 			if (refs != null) {
 				for (ServiceReference ref : refs) {
 					publish(ref);

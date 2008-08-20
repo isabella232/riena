@@ -51,7 +51,7 @@ public class ProgressMonitorRegistryImpl implements IProgressMonitorRegistry {
 	public IProgressMonitorList getProgressMonitors(Object callProxy) {
 		List<IProgressMonitor> pmList = progressMonitors.get(callProxy);
 		if (pmList == null) {
-			return new ProgressMonitorListImpl(null);
+			return new ProgressMonitorListImpl(new IProgressMonitor[0]);
 		}
 		return new ProgressMonitorListImpl(pmList.toArray(new IProgressMonitor[pmList.size()]));
 	}

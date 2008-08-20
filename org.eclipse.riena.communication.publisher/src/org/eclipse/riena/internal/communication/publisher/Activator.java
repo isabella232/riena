@@ -121,7 +121,7 @@ public class Activator extends RienaActivator {
 		super.stop(context);
 	}
 
-	class UpdateNotifierRemoteService implements ServiceListener {
+	static class UpdateNotifierRemoteService implements ServiceListener {
 		ServicePublishEventDispatcher dispatcher;
 
 		UpdateNotifierRemoteService(ServicePublishEventDispatcher dispatcher) {

@@ -12,12 +12,13 @@ package org.eclipse.riena.communication.publisher;
 
 import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PATH;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.publisher.Activator;
+
+import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
@@ -31,12 +32,12 @@ public class MultiServicePublisher {
 
 	private String filter;
 	private BundleContext context;
-	private String url;
 	private String protocol;
 
 	private IServicePublishBinder binder;
 
-	// public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE + "=true)("
+	// public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE +
+	// "=true)("
 	// + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
 	public MultiServicePublisher() {
@@ -62,7 +63,7 @@ public class MultiServicePublisher {
 		this.context = context;
 
 		try {
-			ServiceReference[] refs = Activator.getDefault().getContext().getServiceReferences(null, filter);
+			ServiceReference[] refs = this.context.getServiceReferences(null, filter);
 			if (refs != null) {
 				for (ServiceReference ref : refs) {
 					publish(ref);
