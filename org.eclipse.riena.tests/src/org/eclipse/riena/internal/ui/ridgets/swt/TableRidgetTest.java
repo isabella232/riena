@@ -11,9 +11,13 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
@@ -178,6 +182,13 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	public void testUpdateFromModel() {
 		ITableRidget ridget = getRidget();
 		Table control = getUIControl();
+		final List<ChangeEvent> changeEvents = new ArrayList<ChangeEvent>();
+		IChangeListener listener = new IChangeListener() {
+			public void handleChange(ChangeEvent event) {
+				changeEvents.add(event);
+			}
+		};
+		ridget.getObservableList().addChangeListener(listener);
 
 		int oldCount = manager.getPersons().size();
 
@@ -191,12 +202,14 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(newCount, manager.getPersons().size());
 		assertEquals(oldCount, ridget.getObservableList().size());
 		assertEquals(oldCount, control.getItemCount());
+		assertEquals(0, changeEvents.size());
 
 		ridget.updateFromModel();
 
 		assertEquals(newCount, manager.getPersons().size());
 		assertEquals(newCount, ridget.getObservableList().size());
 		assertEquals(newCount, control.getItemCount());
+		assertEquals(1, changeEvents.size());
 	}
 
 	public void testUpdateFromModelPreservesSelection() {

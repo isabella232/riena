@@ -41,8 +41,7 @@ public class UnboundPropertyWritableList extends WritableList implements IUnboun
 		if (value == null) {
 			clear();
 		} else if (value instanceof Collection) {
-			clear();
-			addAll((Collection) value);
+			updateWrappedList(new ArrayList<Object>((Collection<?>) value));
 		} else {
 			throw new UIBindingFailure("The property '" + propertyDescriptor.getName() //$NON-NLS-1$
 					+ "'is not a java.util.Collection."); //$NON-NLS-1$
