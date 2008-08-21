@@ -67,7 +67,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	@SuppressWarnings("unchecked")
 	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
 			NavigationArgument argument) {
-		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
+		INavigationNode<?> targetNode = getRootNode(sourceNode).findNode(targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
 				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId);
@@ -148,27 +148,6 @@ public class PresentationProviderService implements IPresentationProviderService
 			return node;
 		}
 		return getRootNode(node.getParent());
-	}
-
-	/**
-	 * @param node
-	 * @param targetId
-	 * @return
-	 */
-	protected INavigationNode<?> findNode(INavigationNode<?> node, INavigationNodeId targetId) {
-		if (targetId == null) {
-			return null;
-		}
-		if (targetId.equals(node.getNodeId())) {
-			return node;
-		}
-		for (INavigationNode<?> child : node.getChildren()) {
-			INavigationNode<?> foundNode = findNode(child, targetId);
-			if (foundNode != null) {
-				return foundNode;
-			}
-		}
-		return null;
 	}
 
 	/**
