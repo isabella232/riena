@@ -195,6 +195,17 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	C getChild(int pIndex);
 
 	/**
+	 * Searches for a node with the specified ID in the application model tree
+	 * tree from this node on downwards including this node.
+	 * 
+	 * @param nodeId
+	 *            ID of the requested node
+	 * @return A node with the specified ID that is either this node or a
+	 *         descendant of this node or null if no such node exists
+	 */
+	INavigationNode<?> findNode(INavigationNodeId nodeId);
+
+	/**
 	 * @param pChild
 	 *            - the child to find
 	 * @return the index of the child starting at 0 or -1 if the passed child is

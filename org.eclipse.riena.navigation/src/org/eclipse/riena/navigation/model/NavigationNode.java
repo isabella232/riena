@@ -271,12 +271,30 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		// TODO do something if the node cannot be removed
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#getChild(int)
+	 */
 	public C getChild(int index) {
 		if (children != null && children.size() > index) {
 			return children.get(index);
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationNode#findNode(org.eclipse.riena.navigation.INavigationNodeId)
+	 */
+	public INavigationNode<?> findNode(INavigationNodeId nodeId) {
+		if (getNodeId() != null && getNodeId().equals(nodeId)) {
+			return this;
+		}
+		for (C child : children) {
+			if (child.findNode(nodeId) != null) {
+				return child.findNode(nodeId);
+			}
+		}
+		return null;
 	}
 
 	/**
