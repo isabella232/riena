@@ -79,7 +79,7 @@ public class PresentationProviderService implements IPresentationProviderService
 				targetNode = builder.buildNode(targetId, argument);
 				INavigationNode parentNode = null;
 				if (argument != null && argument.getParentNodeId() != null) {
-					parentNode = provideNode(sourceNode, new NavigationNodeId(argument.getParentNodeId()), null);
+					parentNode = provideNode(sourceNode, argument.getParentNodeId(), null);
 				} else {
 					parentNode = provideNode(sourceNode, new NavigationNodeId(navigationNodeTypeDefiniton
 							.getParentTypeId()), null);

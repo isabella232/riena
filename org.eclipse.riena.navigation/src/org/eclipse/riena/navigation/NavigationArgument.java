@@ -18,7 +18,7 @@ package org.eclipse.riena.navigation;
  */
 public class NavigationArgument {
 	private Object argument;
-	private String parentNodeId;
+	private INavigationNodeId parentNodeId;
 	private INavigationArgumentListener argumentListener;
 
 	/**
@@ -26,7 +26,8 @@ public class NavigationArgument {
 	 * @param argumentListener
 	 * @param parentNodeId
 	 */
-	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener, String parentNodeId) {
+	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener,
+			INavigationNodeId parentNodeId) {
 		super();
 		this.argument = argument;
 		this.argumentListener = argumentListener;
@@ -69,7 +70,7 @@ public class NavigationArgument {
 	/**
 	 * @return the parentNodeId
 	 */
-	public String getParentNodeId() {
+	public INavigationNodeId getParentNodeId() {
 		return parentNodeId;
 	}
 
@@ -77,7 +78,7 @@ public class NavigationArgument {
 	 * @param parentNodeId
 	 *            the parentNodeId to set
 	 */
-	public void setParentNode(String parentNodeId) {
+	public void setParentNode(INavigationNodeId parentNodeId) {
 		this.parentNodeId = parentNodeId;
 	}
 
