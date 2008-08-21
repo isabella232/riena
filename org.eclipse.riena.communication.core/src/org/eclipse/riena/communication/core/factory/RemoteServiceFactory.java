@@ -413,11 +413,17 @@ public class RemoteServiceFactory {
 		}
 
 		public void dispose() {
-			delegateReference.dispose();
+			if (delegateReference != null) {
+				delegateReference.dispose();
+			}
 		}
 
 		public boolean equals(Object obj) {
-			return delegateReference.equals(obj);
+			if (delegateReference != null) {
+				return delegateReference.equals(obj);
+			} else {
+				return false;
+			}
 		}
 
 		public ManagedService getConfigServiceInstance() {
@@ -428,6 +434,9 @@ public class RemoteServiceFactory {
 		}
 
 		public ServiceRegistration getConfigServiceRegistration() {
+			if (delegateReference == null) {
+				return null;
+			}
 			return delegateReference.getConfigServiceRegistration();
 		}
 
@@ -465,19 +474,36 @@ public class RemoteServiceFactory {
 		}
 
 		public String getURL() {
-			return delegateReference.getURL();
+			if (delegateReference != null) {
+				return delegateReference.getURL();
+			}
+			return null;
 		}
 
 		public int hashCode() {
-			return delegateReference.hashCode();
+			if (delegateReference != null) {
+				return delegateReference.hashCode();
+			} else {
+				return this.getClass().hashCode();
+			}
 		}
 
 		public void setConfigServiceInstance(ManagedService configServiceInstance) {
-			delegateReference.setConfigServiceInstance(configServiceInstance);
+			if (delegateReference != null) {
+				delegateReference.setConfigServiceInstance(configServiceInstance);
+			} else {
+				throw new RuntimeException(
+						"trying to set configServiceInstance a lazy service that wasnt instantiated yet, delegate not set");
+			}
 		}
 
 		public void setConfigServiceRegistration(ServiceRegistration configServiceRegistration) {
-			delegateReference.setConfigServiceRegistration(configServiceRegistration);
+			if (delegateReference != null) {
+				delegateReference.setConfigServiceRegistration(configServiceRegistration);
+			} else {
+				throw new RuntimeException(
+						"trying to set configServiceRegistration a lazy service that wasnt instantiated yet, delegate not set");
+			}
 		}
 
 		public void setHostId(String hostId) {
@@ -489,7 +515,12 @@ public class RemoteServiceFactory {
 		}
 
 		public void setServiceInstance(Object serviceInstance) {
-			delegateReference.setServiceInstance(serviceInstance);
+			if (delegateReference != null) {
+				delegateReference.setServiceInstance(serviceInstance);
+			} else {
+				throw new RuntimeException(
+						"trying to set serviceInstance for lazyRemoteServiceReference with no delegate");
+			}
 		}
 
 		public void setServiceRegistration(ServiceRegistration serviceRegistration) {
@@ -497,7 +528,10 @@ public class RemoteServiceFactory {
 		}
 
 		public String toString() {
-			return delegateReference.toString();
+			if (delegateReference != null) {
+				return delegateReference.toString();
+			}
+			return super.toString();
 		}
 
 	}
