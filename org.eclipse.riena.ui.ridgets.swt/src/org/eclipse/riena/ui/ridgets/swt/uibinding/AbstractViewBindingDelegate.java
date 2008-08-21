@@ -67,12 +67,12 @@ public abstract class AbstractViewBindingDelegate {
 	/**
 	 * Injects and binds UI controls to their ridgets in the controller.
 	 * 
-	 * @param viewController
+	 * @param controller
 	 *            - The controller which gets the ridgets injected.
 	 */
-	public void injectAndBind(IController viewController) {
-		injectRidgets(viewController);
-		bind(viewController);
+	public void injectAndBind(IController controller) {
+		injectRidgets(controller);
+		bind(controller);
 	}
 
 	/**
@@ -81,8 +81,8 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            - The controller which gets the ridgets injected.
 	 */
-	public void injectRidgets(IController viewController) {
-		bindingManager.injectRidgets(viewController, uiControls);
+	public void injectRidgets(IController controller) {
+		bindingManager.injectRidgets(controller, uiControls);
 	}
 
 	/**
@@ -91,8 +91,8 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            - The controller which holds the ridgets.
 	 */
-	public void bind(IController viewController) {
-		bindingManager.bind(viewController, uiControls);
+	public void bind(IController controller) {
+		bindingManager.bind(controller, uiControls);
 	}
 
 	/**
@@ -101,8 +101,8 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            - The controller which holds the ridgets.
 	 */
-	public void unbind(IController viewController) {
-		bindingManager.unbind(viewController, uiControls);
+	public void unbind(IController controller) {
+		bindingManager.unbind(controller, uiControls);
 	}
 
 }

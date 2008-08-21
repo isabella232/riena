@@ -84,7 +84,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	/**
 	 * A pair of to types.
 	 */
-	private class TypePair {
+	private static class TypePair {
 
 		private final Object fromType;
 		private final Object toType;
@@ -104,7 +104,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
 		public boolean equals(Object obj) {
-			if (obj == null || obj.getClass() != TypePair.class) {
+			if (obj == null || obj.getClass() != this.getClass()) {
 				return false;
 			}
 			TypePair other = (TypePair) obj;

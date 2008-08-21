@@ -10,19 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.uibinding;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-import org.eclipse.riena.ui.ridgets.util.beans.BeanUtils;
+import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -77,7 +79,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 
 	private void injectIntoController(IRidget ridget, IRidgetContainer controller, String bindingProperty) {
 		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
-		BeanUtils.setValue(controller, desc, ridget);
+		BeanPropertyAccessor.setPropertyValue(controller, desc, ridget);
 	}
 
 	private PropertyDescriptor getPropertyDescriptor(String bindingProperty, IRidgetContainer ridgetContainer) {
@@ -90,10 +92,18 @@ public class InjectBindingManager extends DefaultBindingManager {
 
 	private PropertyDescriptor createPropertyDescriptor(String bindingProperty, IRidgetContainer ridgetContainer) {
 		try {
-			PropertyDescriptor desc = BeanUtils.getPropertyDescriptor(ridgetContainer, bindingProperty);
+			PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(ridgetContainer, bindingProperty);
 			binding2PropertyDesc.put(bindingProperty, desc);
 			return desc;
-		} catch (IntrospectionException e) {
+		} catch (IllegalAccessException e) {
+			UIBindingFailure bindingFailure = new UIBindingFailure("Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
+					+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
+		} catch (InvocationTargetException e) {
+			UIBindingFailure bindingFailure = new UIBindingFailure("Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
+					+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
+		} catch (NoSuchMethodException e) {
 			UIBindingFailure bindingFailure = new UIBindingFailure("Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
 					+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
@@ -108,7 +118,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	@Override
 	protected IRidget getRidget(String bindingProperty, IRidgetContainer controller) {
 		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
-		return (IRidget) BeanUtils.getValue(controller, desc);
+		return (IRidget) BeanPropertyAccessor.getPropertyValue(controller, desc);
 	}
 
 }

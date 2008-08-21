@@ -297,7 +297,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	private void saveVisualizerStartupTime(IProgressVisualizer visualizer, VisualizerContainer contextData) {
 		long time = System.currentTimeMillis();
-		contextData.put(visualizer, new Integer((int) time));
+		contextData.put(visualizer, Integer.valueOf((int) time));
 	}
 
 	private void observeProcessInfo(ProcessInfo processInfo) {

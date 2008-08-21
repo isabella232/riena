@@ -28,16 +28,16 @@ public class TreeNodesRemovedDiff extends TreeDiff {
 	public TreeNodesRemovedDiff(ITreeNode parent, int[] childIndices, Serializable[] children) {
 
 		super(parent);
-		this.childIndices = childIndices;
-		this.children = children;
+		this.childIndices = childIndices.clone();
+		this.children = children.clone();
 	}
 
 	public int[] getChildIndices() {
-		return childIndices;
+		return childIndices.clone();
 	}
 
 	public Object[] getChildren() {
-		return children;
+		return children.clone();
 	}
 
 	/*

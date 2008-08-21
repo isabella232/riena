@@ -47,10 +47,12 @@ public class StringToGregorianCalendarConverter extends Converter {
 		}
 
 		try {
-			Date date = FORMAT.parse(fromObject.toString());
-			Calendar calendar = GregorianCalendar.getInstance();
-			calendar.setTime(date);
-			return calendar;
+			synchronized (FORMAT) {
+				Date date = FORMAT.parse(fromObject.toString());
+				Calendar calendar = GregorianCalendar.getInstance();
+				calendar.setTime(date);
+				return calendar;
+			}
 		} catch (ParseException e) {
 			throw new ConversionFailure("Cannot convert \"" + fromObject + "\" to GregorianCalendar.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}

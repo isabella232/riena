@@ -41,7 +41,9 @@ public class GregorianCalendarToStringConverter extends Converter {
 
 		if ((fromObject != null) && (fromObject.getClass() == getFromType())) {
 			GregorianCalendar calendar = (GregorianCalendar) fromObject;
-			return FORMAT.format(calendar.getTime());
+			synchronized (FORMAT) {
+				return FORMAT.format(calendar.getTime());
+			}
 		}
 		return ""; //$NON-NLS-1$
 

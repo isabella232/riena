@@ -302,7 +302,9 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			if (event.type == SWT.EraseItem) {
 				// indicate we are responsible for drawing the cell's content
 				event.detail &= ~SWT.FOREGROUND;
-			}
+			} // else if (event.type == SWT.PaintItem) {
+			// paint nothing to leave the cell blank
+			// }
 		}
 	}
 

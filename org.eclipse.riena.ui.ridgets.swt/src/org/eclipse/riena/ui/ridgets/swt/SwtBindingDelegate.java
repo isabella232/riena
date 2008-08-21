@@ -19,9 +19,9 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 public class SwtBindingDelegate extends DefaultSwtBindingDelegate {
 
 	@Override
-	public void bind(IController viewController) {
+	public void bind(IController controller) {
 		// TODO [ev] discuss - move this to DefaultSwtViewBindingDelegate ?
-		super.bind(viewController);
-		viewController.afterBind();
+		super.bind(controller);
+		controller.afterBind();
 	}
 }
