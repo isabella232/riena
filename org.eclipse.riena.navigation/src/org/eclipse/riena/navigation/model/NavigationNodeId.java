@@ -50,9 +50,11 @@ public class NavigationNodeId implements INavigationNodeId {
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof INavigationNodeId) {
+			if (!getClass().equals(other.getClass())) {
+				return false;
+			}
 			INavigationNodeId otherId = (INavigationNodeId) other;
-			return equals(typeId, ((INavigationNodeId) other).getTypeId())
-					&& equals(instanceId, otherId.getInstanceId());
+			return equals(typeId, otherId.getTypeId()) && equals(instanceId, otherId.getInstanceId());
 		}
 		return false;
 	}
