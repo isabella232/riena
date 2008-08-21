@@ -11,8 +11,7 @@
 package org.eclipse.riena.ui.ridgets.util.beans;
 
 /**
- * A runtime exception that describes access problems when getting/setting a
- * Java Bean property.
+ * A runtime exception that is thrown if access to bean properties fails
  */
 public class PropertyAccessFailure extends PropertyFailure {
 
