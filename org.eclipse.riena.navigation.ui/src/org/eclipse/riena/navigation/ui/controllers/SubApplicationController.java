@@ -254,7 +254,11 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 
 	private void initUiProcessRidget() {
 		if (uiProcessRidget == null) {
-			return;
+			// fallback
+			uiProcessRidget = (IUIProcessRidget) getRidget("uiProcessRidget"); //$NON-NLS-1$
+			if (uiProcessRidget == null) {
+				return;
+			}
 		}
 		uiProcessRidget.setContextLocator(new IVisualContextManager() {
 
