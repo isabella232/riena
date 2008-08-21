@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation.model;
 import org.eclipse.riena.navigation.INavigationNodeId;
 
 /**
- *
+ * ID of a navigation node.
  */
 public class NavigationNodeId implements INavigationNodeId {
 
@@ -86,20 +86,6 @@ public class NavigationNodeId implements INavigationNodeId {
 
 	private boolean equals(String string1, String string2) {
 		return (string1 == null && string2 == null) || (string1 != null && string1.equals(string2));
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeId#setInstanceId(java.lang.String)
-	 */
-	public void setInstanceId(String instanceId) {
-		this.instanceId = instanceId;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeId#setTypeId(java.lang.String)
-	 */
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
 	}
 
 }
