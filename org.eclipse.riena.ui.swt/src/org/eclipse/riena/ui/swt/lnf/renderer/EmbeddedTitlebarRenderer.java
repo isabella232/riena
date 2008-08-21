@@ -16,6 +16,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -295,6 +296,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		Image closeImage = lnf.getImage(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON);
+		// if no close icon was found, return 0 sized bounds
+		if (closeImage == null) {
+			return closeBounds;
+		}
 		closeBounds.width = closeImage.getImageData().width;
 		closeBounds.height = closeImage.getImageData().height;
 		closeBounds.x = getBounds().x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING;
