@@ -1,3 +1,7 @@
+/*
+ * NanoHTTPD version 1.1, Copyright &copy; 2001,2005-2007 Jarno Elonen
+ * (elonen@iki.fi, http://iki.fi/elonen/)
+ */
 package org.eclipse.riena.tests.nanohttp;
 
 import java.io.BufferedReader;
@@ -31,24 +35,24 @@ import java.util.TimeZone;
  * <b>Features + limitations: </b>
  * <ul>
  * 
- * <li> Only one Java file </li>
- * <li> Java 1.1 compatible </li>
- * <li> Released as open source, Modified BSD licence </li>
- * <li> No fixed config files, logging, authorization etc. (Implement yourself
- * if you need them.) </li>
- * <li> Supports parameter parsing of GET and POST methods </li>
- * <li> Supports both dynamic content and file serving </li>
- * <li> Never caches anything </li>
- * <li> Doesn't limit bandwidth, request time or simultaneous connections </li>
- * <li> Default code serves files and shows all HTTP parameters and headers</li>
- * <li> File server supports directory listing, index.html and index.htm </li>
- * <li> File server does the 301 redirection trick for directories without '/'</li>
- * <li> File server supports simple skipping for files (continue download) </li>
- * <li> File server uses current directory as a web root </li>
- * <li> File server serves also very long files without memory overhead </li>
- * <li> Contains a built-in list of most common mime types </li>
- * <li> All header names are converted lowercase so they don't vary between
- * browsers/clients </li>
+ * <li>Only one Java file</li>
+ * <li>Java 1.1 compatible</li>
+ * <li>Released as open source, Modified BSD licence</li>
+ * <li>No fixed config files, logging, authorization etc. (Implement yourself if
+ * you need them.)</li>
+ * <li>Supports parameter parsing of GET and POST methods</li>
+ * <li>Supports both dynamic content and file serving</li>
+ * <li>Never caches anything</li>
+ * <li>Doesn't limit bandwidth, request time or simultaneous connections</li>
+ * <li>Default code serves files and shows all HTTP parameters and headers</li>
+ * <li>File server supports directory listing, index.html and index.htm</li>
+ * <li>File server does the 301 redirection trick for directories without '/'</li>
+ * <li>File server supports simple skipping for files (continue download)</li>
+ * <li>File server uses current directory as a web root</li>
+ * <li>File server serves also very long files without memory overhead</li>
+ * <li>Contains a built-in list of most common mime types</li>
+ * <li>All header names are converted lowercase so they don't vary between
+ * browsers/clients</li>
  * 
  * </ul>
  * 
@@ -56,10 +60,10 @@ import java.util.TimeZone;
  * <b>Ways to use: </b>
  * <ul>
  * 
- * <li> Run as a standalone app, serves files from current directory and shows
+ * <li>Run as a standalone app, serves files from current directory and shows
  * requests</li>
- * <li> Subclass serve() and embed to your own program </li>
- * <li> Call serveFile() from serve() with your own base directory </li>
+ * <li>Subclass serve() and embed to your own program</li>
+ * <li>Call serveFile() from serve() with your own base directory</li>
  * 
  * </ul>
  * 
