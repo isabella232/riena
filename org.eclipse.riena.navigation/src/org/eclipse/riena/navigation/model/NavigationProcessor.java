@@ -192,8 +192,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (targetNode == null) {
 			return;
 		}
-		navigationMap.put(targetNode, sourceNode);
-		targetNode.activate();
+		INavigationNode<?> activateNode = targetNode.findNode(targetId);
+		if (activateNode != null) {
+			navigationMap.put(activateNode, sourceNode);
+			activateNode.activate();
+		} else {
+			navigationMap.put(targetNode, sourceNode);
+			targetNode.activate();
+		}
 	}
 
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,

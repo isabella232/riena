@@ -290,8 +290,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			return this;
 		}
 		for (C child : children) {
-			if (child.findNode(nodeId) != null) {
-				return child.findNode(nodeId);
+			INavigationNode<?> foundChild = child.findNode(nodeId);
+			if (foundChild != null) {
+				return foundChild;
 			}
 		}
 		return null;
