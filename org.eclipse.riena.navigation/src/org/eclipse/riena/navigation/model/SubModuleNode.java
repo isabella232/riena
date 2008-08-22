@@ -24,7 +24,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 * Creates a SubModuleNode.
 	 */
 	public SubModuleNode() {
-		this(null);
+		super(null);
 	}
 
 	/**
@@ -48,6 +48,17 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 */
 	public SubModuleNode(INavigationNodeId nodeId, String label) {
 		super(nodeId, label);
+	}
+
+	/**
+	 * Creates a SubModuleNode.
+	 * 
+	 * @param label
+	 *            Label of the sub module displayed in the sub modules title
+	 *            bar.
+	 */
+	public SubModuleNode(String label) {
+		this(null, label);
 	}
 
 }
