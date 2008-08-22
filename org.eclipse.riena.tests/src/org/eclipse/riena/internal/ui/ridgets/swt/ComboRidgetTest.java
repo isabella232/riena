@@ -102,8 +102,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetEmptySelectionItem() {
-		Combo control = getUIControl();
 		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
 		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
@@ -128,85 +128,77 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testBindToModelWithDomainObjects() {
 		manager.setSelectedPerson(selection1);
-		Runnable runnable = new Runnable() {
-			public void run() {
-				Combo control = getUIControl();
-				ComboRidget ridget = getRidget();
 
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
-				ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
 
-				ridget.updateFromModel();
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
 
-				assertEquals(selection1.toString(), getSelectedString(control));
-				assertEquals(manager.getPersons().size(), control.getItemCount());
+		ridget.updateFromModel();
 
-				for (int i = 0; i < control.getItemCount(); i++) {
-					String item = control.getItem(i);
-					if (!find(manager, item)) {
-						fail();
-					}
-				}
+		assertEquals(selection1.toString(), getSelectedString(control));
+		assertEquals(manager.getPersons().size(), control.getItemCount());
 
-				manager.setSelectedPerson(selection2);
-
-				assertEquals(selection1.toString(), getSelectedString(control));
-
-				ridget.updateFromModel();
-
-				assertEquals(selection2.toString(), getSelectedString(control));
-
-				control.select(2);
-
-				assertEquals(selection3.toString(), getSelectedString(control));
+		for (int i = 0; i < control.getItemCount(); i++) {
+			String item = control.getItem(i);
+			if (!find(manager, item)) {
+				fail();
 			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		}
+
+		manager.setSelectedPerson(selection2);
+
+		assertEquals(selection1.toString(), getSelectedString(control));
+
+		ridget.updateFromModel();
+
+		assertEquals(selection2.toString(), getSelectedString(control));
+
+		control.select(2);
+
+		assertEquals(selection3.toString(), getSelectedString(control));
 	}
 
 	public void testBindToModelWithDomainObjectsUsingColumnPropertyName() {
 		manager.setSelectedPerson(selection1);
-		Runnable runnable = new Runnable() {
-			public void run() {
-				Combo control = getUIControl();
-				ComboRidget ridget = getRidget();
 
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
-				ridget.bindToModel(manager, "persons", String.class, "getListEntry", manager, "selectedPerson");
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
 
-				ridget.updateFromModel();
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
+		ridget.bindToModel(manager, "persons", String.class, "getListEntry", manager, "selectedPerson");
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
 
-				assertEquals(selection1.getListEntry(), getSelectedString(control));
-				assertEquals(selection1.getListEntry(), control.getText());
-				checkPersonList(manager);
-				assertEquals(selection1, manager.getSelectedPerson());
+		ridget.updateFromModel();
 
-				manager.setSelectedPerson(selection2);
+		assertEquals(selection1.getListEntry(), getSelectedString(control));
+		assertEquals(selection1.getListEntry(), control.getText());
+		checkPersonList(manager);
+		assertEquals(selection1, manager.getSelectedPerson());
 
-				assertEquals(selection1.getListEntry(), getSelectedString(control));
-				assertEquals(selection1.getListEntry(), control.getText());
-				assertEquals(selection2, manager.getSelectedPerson());
+		manager.setSelectedPerson(selection2);
 
-				ridget.updateFromModel();
+		assertEquals(selection1.getListEntry(), getSelectedString(control));
+		assertEquals(selection1.getListEntry(), control.getText());
+		assertEquals(selection2, manager.getSelectedPerson());
 
-				assertEquals(selection2, manager.getSelectedPerson());
-				assertEquals(selection2.getListEntry(), getSelectedString(control));
-				assertEquals(selection2.getListEntry(), control.getText());
+		ridget.updateFromModel();
 
-				control.select(2);
+		assertEquals(selection2, manager.getSelectedPerson());
+		assertEquals(selection2.getListEntry(), getSelectedString(control));
+		assertEquals(selection2.getListEntry(), control.getText());
 
-				assertEquals(selection3.getListEntry(), getSelectedString(control));
-				assertEquals(selection3.getListEntry(), control.getText());
-				assertEquals(selection3, manager.getSelectedPerson());
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		control.select(2);
+
+		assertEquals(selection3.getListEntry(), getSelectedString(control));
+		assertEquals(selection3.getListEntry(), control.getText());
+		assertEquals(selection3, manager.getSelectedPerson());
 	}
 
 	public void testBindToModelWithStrings() {
@@ -217,199 +209,180 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		final String aSelection3 = it.next();
 		aManager.setSelectedItem(aSelection1);
 
-		Runnable runnable = new Runnable() {
-			public void run() {
-				Combo control = getUIControl();
-				ComboRidget ridget = getRidget();
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
 
-				assertEquals(-1, control.getSelectionIndex());
-				assertEquals(0, control.getItemCount());
-				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
-				assertEquals(-1, control.getSelectionIndex());
-				assertEquals(0, control.getItemCount());
+		assertEquals(-1, control.getSelectionIndex());
+		assertEquals(0, control.getItemCount());
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		assertEquals(-1, control.getSelectionIndex());
+		assertEquals(0, control.getItemCount());
 
-				ridget.updateFromModel();
+		ridget.updateFromModel();
 
-				assertEquals(aManager.getItems().size(), control.getItemCount());
-				assertEquals(aSelection1, getSelectedString(control));
+		assertEquals(aManager.getItems().size(), control.getItemCount());
+		assertEquals(aSelection1, getSelectedString(control));
 
-				for (int i = 0; i < control.getItemCount(); i++) {
-					if (!aManager.getItems().contains(control.getItem(i))) {
-						fail();
-					}
-				}
-
-				aManager.setSelectedItem(aSelection2);
-
-				assertEquals(aSelection1, getSelectedString(control));
-
-				ridget.updateFromModel();
-
-				assertEquals(aSelection2, getSelectedString(control));
-
-				control.select(2);
-
-				assertEquals(aSelection3, getSelectedString(control));
-				assertEquals(aSelection3, control.getText());
-				assertEquals(aSelection3, aManager.getSelectedItem());
+		for (int i = 0; i < control.getItemCount(); i++) {
+			if (!aManager.getItems().contains(control.getItem(i))) {
+				fail();
 			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		}
+
+		aManager.setSelectedItem(aSelection2);
+
+		assertEquals(aSelection1, getSelectedString(control));
+
+		ridget.updateFromModel();
+
+		assertEquals(aSelection2, getSelectedString(control));
+
+		control.select(2);
+
+		assertEquals(aSelection3, getSelectedString(control));
+		assertEquals(aSelection3, control.getText());
+		assertEquals(aSelection3, aManager.getSelectedItem());
+	}
+
+	public void testBindToModelWithNoControl() {
+		ComboRidget ridget = new ComboRidget();
+		Combo control = new Combo(getShell(), SWT.READ_ONLY);
+
+		ridget.bindToModel(manager, "persons", String.class, "getListEntry", manager, "selectedPerson");
+		ridget.updateFromModel();
+
+		assertEquals(0, control.getItemCount());
+
+		ridget.setUIControl(control);
+
+		assertEquals(manager.getPersons().size(), control.getItemCount());
 	}
 
 	public void testFirePropertyChangeSelection() {
 		manager.setSelectedPerson(selection1);
-		Runnable runnable = new Runnable() {
-			public void run() {
-				Combo control = getUIControl();
-				ComboRidget ridget = getRidget();
 
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
-				ridget.bindToModel(manager, "persons", String.class, "getListEntry", manager, "selectedPerson");
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
 
-				ridget.updateFromModel();
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
+		ridget.bindToModel(manager, "persons", String.class, "getListEntry", manager, "selectedPerson");
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
 
-				expectPropertyChangeEvents(new SelectionPropertyChangeEvent(selection1, selection2));
-				control.select(1);
-				verifyPropertyChangeEvents();
+		ridget.updateFromModel();
 
-				expectNoPropertyChangeEvent();
-				control.select(1);
-				verifyPropertyChangeEvents();
+		expectPropertyChangeEvents(new SelectionPropertyChangeEvent(selection1, selection2));
+		control.select(1);
+		verifyPropertyChangeEvents();
 
-				expectPropertyChangeEvents(new SelectionPropertyChangeEvent(selection2, selection3),
-						new SelectionPropertyChangeEvent(selection3, selection1));
-				control.select(2);
-				control.select(0);
-				verifyPropertyChangeEvents();
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		expectNoPropertyChangeEvent();
+		control.select(1);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvents(new SelectionPropertyChangeEvent(selection2, selection3),
+				new SelectionPropertyChangeEvent(selection3, selection1));
+		control.select(2);
+		control.select(0);
+		verifyPropertyChangeEvents();
 	}
 
 	public void testUpdateSelection() {
 		manager.setSelectedPerson(selection1);
-		Runnable runnable = new Runnable() {
-			public void run() {
-				Combo control = getUIControl();
-				ComboRidget ridget = getRidget();
 
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
-				ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
-				assertEquals(null, getSelectedString(control));
-				assertEquals(0, control.getItemCount());
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
 
-				ridget.updateFromModel();
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		assertEquals(null, getSelectedString(control));
+		assertEquals(0, control.getItemCount());
 
-				assertEquals(selection1.toString(), getSelectedString(control));
+		ridget.updateFromModel();
 
-				// ComboBoxSwingRidget.RidgetBasedComboBoxModel.temporaryItem
-				// will be set
-				control.select(2);
-				manager.setSelectedPerson(selection2);
+		assertEquals(selection1.toString(), getSelectedString(control));
 
-				assertEquals(selection3.toString(), getSelectedString(control));
-				assertEquals(selection2, manager.getSelectedPerson());
+		// ComboBoxSwingRidget.RidgetBasedComboBoxModel.temporaryItem
+		// will be set
+		control.select(2);
+		manager.setSelectedPerson(selection2);
 
-				ridget.updateFromModel();
+		assertEquals(selection3.toString(), getSelectedString(control));
+		assertEquals(selection2, manager.getSelectedPerson());
 
-				assertEquals(selection2.toString(), getSelectedString(control));
-				assertEquals(selection2, manager.getSelectedPerson());
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		ridget.updateFromModel();
+
+		assertEquals(selection2.toString(), getSelectedString(control));
+		assertEquals(selection2, manager.getSelectedPerson());
 	}
 
 	public void testGetObservableListWithStrings() {
-		Runnable runnable = new Runnable() {
-			public void run() {
-				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 
-				ComboRidget ridget = getRidget();
-				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ComboRidget ridget = getRidget();
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 
-				assertEquals(0, ridget.getObservableList().size());
+		assertEquals(0, ridget.getObservableList().size());
 
-				ridget.updateFromModel();
+		ridget.updateFromModel();
 
-				assertEquals(aManager.getItems().size(), ridget.getObservableList().size());
-				for (String item : new String[] { "A", "B", "C", "D", "E" }) {
-					assertTrue(ridget.getObservableList().contains(item));
-				}
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		assertEquals(aManager.getItems().size(), ridget.getObservableList().size());
+		for (String item : new String[] { "A", "B", "C", "D", "E" }) {
+			assertTrue(ridget.getObservableList().contains(item));
+		}
 	}
 
 	public void testGetSelectionIndex() {
-		Runnable runnable = new Runnable() {
-			public void run() {
-				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 
-				ComboRidget ridget = getRidget();
-				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
-				ridget.updateFromModel();
+		ComboRidget ridget = getRidget();
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
 
-				assertEquals(-1, getRidget().getSelectionIndex());
+		assertEquals(-1, getRidget().getSelectionIndex());
 
-				getUIControl().select(1);
-				assertEquals(1, getRidget().getSelectionIndex());
+		getUIControl().select(1);
+		assertEquals(1, getRidget().getSelectionIndex());
 
-				ridget.setUIControl(null);
-				assertEquals(1, getRidget().getSelectionIndex());
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		ridget.setUIControl(null);
+		assertEquals(1, getRidget().getSelectionIndex());
 	}
 
 	public void testGetSelection() {
-		Runnable runnable = new Runnable() {
-			public void run() {
-				ComboRidget ridget = getRidget();
-				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
-				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
-				ridget.updateFromModel();
+		ComboRidget ridget = getRidget();
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
 
-				assertEquals(null, getRidget().getSelection());
+		assertEquals(null, getRidget().getSelection());
 
-				getUIControl().select(1);
+		getUIControl().select(1);
 
-				assertEquals("B", getRidget().getSelection());
+		assertEquals("B", getRidget().getSelection());
 
-				ridget.setUIControl(null);
+		ridget.setUIControl(null);
 
-				assertEquals("B", getRidget().getSelection());
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		assertEquals("B", getRidget().getSelection());
 	}
 
 	public void testGetSelectionObservable() {
-		Runnable runnable = new Runnable() {
-			public void run() {
-				ComboRidget ridget = getRidget();
-				StringManager aManager = new StringManager("A", "B", "C", "D", "E");
-				ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
-				ridget.updateFromModel();
+		ComboRidget ridget = getRidget();
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
 
-				IObservableValue selectionObservable = getRidget().getSelectionObservable();
+		IObservableValue selectionObservable = getRidget().getSelectionObservable();
 
-				assertEquals(null, selectionObservable.getValue());
+		assertEquals(null, selectionObservable.getValue());
 
-				getUIControl().select(1);
+		getUIControl().select(1);
 
-				assertEquals("B", selectionObservable.getValue());
+		assertEquals("B", selectionObservable.getValue());
 
-				ridget.setUIControl(null);
+		ridget.setUIControl(null);
 
-				assertEquals("B", selectionObservable.getValue());
-			}
-		};
-		getUIControl().getDisplay().syncExec(runnable);
+		assertEquals("B", selectionObservable.getValue());
 	}
 
 	public void testSetSelectionInt() {
@@ -495,6 +468,17 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(null, ridget.getSelection());
 		assertEquals(-1, control.getSelectionIndex());
+	}
+
+	public void testSetSelectionWhenNotBoundToModel() {
+		ComboRidget ridget = getRidget();
+
+		try {
+			ridget.setSelection(new Object());
+			fail();
+		} catch (BindingException bex) {
+			// expected
+		}
 	}
 
 	// helping methods
