@@ -28,7 +28,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 
 /**
  * Example for various marker types.
@@ -135,11 +139,37 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		addUIControl(choiceFlavor, "choiceFlavor"); //$NON-NLS-1$
 
 		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:"); //$NON-NLS-1$
-		List listPersons = UIControlsFactory.createList(group, false, true);
 		vFillFactory.applyTo(lblReviewed);
+		composite = createComposite(group);
+		List listPersons = UIControlsFactory.createList(composite, false, true);
 		int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
-		hFillFactory.hint(SWT.DEFAULT, hHint).applyTo(listPersons);
+		hFillFactory.hint(225, hHint).applyTo(listPersons);
 		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
+
+		Table tablePersons = new Table(composite, SWT.V_SCROLL | SWT.BORDER);
+		tablePersons.setLinesVisible(true);
+		tablePersons.setHeaderVisible(true);
+		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
+		tac1.setWidth(100);
+		TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);
+		tac2.setWidth(100);
+		hFillFactory.hint(225, hHint).applyTo(tablePersons);
+		addUIControl(tablePersons, "tablePersons"); //$NON-NLS-1$
+
+		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, hHint).applyTo(tablePersons);
+		Tree treePersons = new Tree(composite, SWT.V_SCROLL | SWT.BORDER);
+		hFillFactory.hint(200, hHint).applyTo(treePersons);
+		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
+
+		Tree treePersonsWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER);
+		treePersonsWCols.setLinesVisible(true);
+		treePersonsWCols.setHeaderVisible(true);
+		TreeColumn trc1 = new TreeColumn(treePersonsWCols, SWT.NONE);
+		trc1.setWidth(100);
+		TreeColumn trc2 = new TreeColumn(treePersonsWCols, SWT.NONE);
+		trc2.setWidth(100);
+		hFillFactory.hint(225, hHint).applyTo(treePersonsWCols);
+		addUIControl(treePersonsWCols, "treePersonsWCols"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
 		composite = createComposite(group);

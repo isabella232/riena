@@ -23,6 +23,7 @@ import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
@@ -30,6 +31,9 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
+import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
@@ -41,8 +45,6 @@ public class MarkerSubModuleController extends SubModuleController {
 
 	/** Manages a collection of persons. */
 	private final PersonManager manager;
-	private IComboBoxRidget comboAge;
-	private ITableRidget listPersons;
 
 	public MarkerSubModuleController() {
 		this(null);
@@ -52,28 +54,6 @@ public class MarkerSubModuleController extends SubModuleController {
 		super(navigationNode);
 		manager = new PersonManager(PersonFactory.createPersonList());
 		manager.setSelectedPerson(manager.getPersons().iterator().next());
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		bindModels();
-	}
-
-	private void bindModels() {
-
-		List<String> ages = Arrays.asList(new String[] { "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
-		comboAge.updateFromModel();
-		comboAge.setSelection(0);
-
-		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		listPersons.updateFromModel();
-
 	}
 
 	/**
@@ -88,7 +68,12 @@ public class MarkerSubModuleController extends SubModuleController {
 		// TODO [ev] could use a validation rule here to add / remove the marker
 		textPrice.addMarker(new NegativeMarker());
 
-		comboAge = (IComboBoxRidget) getRidget("comboAge"); //$NON-NLS-1$
+		final IComboBoxRidget comboAge = (IComboBoxRidget) getRidget("comboAge"); //$NON-NLS-1$
+		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
+		comboAge.updateFromModel();
+		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
+		comboAge.setSelection(1);
 
 		final IToggleButtonRidget radioRed = (IToggleButtonRidget) getRidget("radioRed"); //$NON-NLS-1$
 		radioRed.setText("red"); //$NON-NLS-1$
@@ -119,7 +104,30 @@ public class MarkerSubModuleController extends SubModuleController {
 		choiceFlavor.updateFromModel();
 		choiceFlavor.setSelection(Arrays.asList("dry")); //$NON-NLS-1$
 
-		listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
+		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
+		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		listPersons.updateFromModel();
+
+		final ITableRidget tablePersons = (ITableRidget) getRidget("tablePersons"); //$NON-NLS-1$
+		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		tablePersons.bindToModel(manager, "persons", Person.class, colValues, colHeaders); //$NON-NLS-1$
+		tablePersons.updateFromModel();
+
+		final ITreeRidget treePersons = (ITreeRidget) getRidget("treePersons"); //$NON-NLS-1$
+		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
+		treePersons.updateFromModel();
+
+		final IGroupedTreeTableRidget treePersonsWCols = (IGroupedTreeTableRidget) getRidget("treePersonsWCols"); //$NON-NLS-1$
+		treePersonsWCols.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		treePersonsWCols.setGroupingEnabled(true);
+		treePersonsWCols.bindToModel(createTreeRoots(), TreeNode.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, new String[] { "value", "value" }, colHeaders); //$NON-NLS-1$ //$NON-NLS-2$
+		treePersonsWCols.updateFromModel();
 
 		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
 		buttonToggle.setText("Toggle Me"); //$NON-NLS-1$
@@ -129,7 +137,7 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		final IMarkableRidget markables[] = new IMarkableRidget[] { textName, textPrice, comboAge, radioRed,
 				radioWhite, radioRose, choiceType, checkDry, checkSweet, checkSour, checkSpicy, choiceFlavor,
-				listPersons, buttonToggle, buttonPush };
+				listPersons, tablePersons, treePersons, treePersonsWCols, buttonToggle, buttonPush };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
@@ -148,7 +156,12 @@ public class MarkerSubModuleController extends SubModuleController {
 				if (isMandatory) {
 					textName.setText(""); //$NON-NLS-1$
 					textPrice.setText(""); //$NON-NLS-1$
-					comboAge.setSelection(-1);
+					try {
+						comboAge.setSelection("<nonex>");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					comboAge.setSelection("<none>");
 					radioRed.setSelected(false);
 					radioWhite.setSelected(false);
 					radioRose.setSelected(false);
@@ -159,6 +172,9 @@ public class MarkerSubModuleController extends SubModuleController {
 					checkSpicy.setSelected(false);
 					choiceFlavor.setSelection(null);
 					listPersons.setSelection((Object) null);
+					tablePersons.setSelection((Object) null);
+					treePersons.setSelection((Object) null);
+					treePersonsWCols.setSelection((Object) null);
 					buttonToggle.setSelected(false);
 				}
 			}
@@ -203,5 +219,15 @@ public class MarkerSubModuleController extends SubModuleController {
 				}
 			}
 		});
+	}
+
+	private ITreeNode[] createTreeRoots() {
+		ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
+		new TreeNode(rootA, new Person("Albinus", "Albert")); //$NON-NLS-1$ //$NON-NLS-2$
+		new TreeNode(rootA, new Person("Aurelius", "Mark")); //$NON-NLS-1$ //$NON-NLS-2$
+		ITreeNode rootB = new TreeNode("B"); //$NON-NLS-1$
+		new TreeNode(rootB, new Person("Barker", "Clyve")); //$NON-NLS-1$ //$NON-NLS-2$
+		new TreeNode(rootB, new Person("Barclay", "Bob")); //$NON-NLS-1$ //$NON-NLS-2$
+		return new ITreeNode[] { rootA, rootB };
 	}
 }
