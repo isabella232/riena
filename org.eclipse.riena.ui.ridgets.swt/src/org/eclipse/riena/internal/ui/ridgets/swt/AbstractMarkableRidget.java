@@ -37,16 +37,7 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 		updateMarkers();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Implementation note: returns false always. Subclases should override, if
-	 * necessary.
-	 */
-	public boolean isDisableMandatoryMarker() {
-		// TODO [ev] remove or use template method
-		return false;
-	}
+	abstract public boolean isDisableMandatoryMarker();
 
 	public final boolean isErrorMarked() {
 		return !getMarkersOfType(ErrorMarker.class).isEmpty();
@@ -68,6 +59,9 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 	public synchronized final void addMarker(IMarker marker) {
 		if (markerSupport == null) {
 			markerSupport = new MarkerSupport(this, propertyChangeSupport);
+		}
+		if (marker instanceof MandatoryMarker) {
+			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
 		}
 		markerSupport.addMarker(marker);
 	}

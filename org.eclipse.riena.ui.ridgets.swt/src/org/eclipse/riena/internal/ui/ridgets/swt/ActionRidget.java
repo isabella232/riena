@@ -54,9 +54,6 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#getUIControl()
-	 */
 	@Override
 	public Button getUIControl() {
 		return (Button) super.getUIControl();
@@ -74,31 +71,33 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		actionObserver.removeListener(listener);
 	}
 
-	public final String getText() {
-		return text;
-	}
-
-	public final void setText(String newText) {
-		this.text = newText;
-		updateText();
-	}
-
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#getIcon()
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
 	 */
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
 	public String getIcon() {
 		return icon;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#setIcon(java.lang.String)
-	 */
+	public final String getText() {
+		return text;
+	}
+
 	public void setIcon(String icon) {
 		String oldIcon = this.icon;
 		this.icon = icon;
 		if (hasChanged(oldIcon, icon)) {
 			updateIconInControl();
 		}
+	}
+
+	public final void setText(String newText) {
+		this.text = newText;
+		updateText();
 	}
 
 	// helping methods

@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.util.IComboBoxEntryFactory;
-
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -28,6 +23,10 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
+import org.eclipse.riena.ui.ridgets.util.IComboBoxEntryFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -117,9 +116,6 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 		selectionValidator.enableBinding(false);
 		listBinding.updateModelToTarget();
 		selectionValidator.enableBinding(true);
-		// comboBoxModel.resetValueCache();
-		// comboBoxModel.fireContentsChanged(comboBoxModel, 0,
-		// comboBoxModel.getSize());
 		selectionBinding.updateModelToTarget();
 	}
 
@@ -136,7 +132,6 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 				selectionValidator), new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST)
 				.setConverter(objToStrConverter));
 		this.renderingMethod = renderingMethod;
-		// comboBoxModel.setData(rowBeans);
 	}
 
 	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
@@ -204,6 +199,11 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 
 	public void setEditable(boolean editable) {
 		throw new UnsupportedOperationException(); // TODO implement
+	}
+
+	public boolean isDisableMandatoryMarker() {
+		// TODO [ev] implement
+		return true;
 	}
 
 	public boolean isListMutable() {

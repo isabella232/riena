@@ -79,6 +79,14 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 		return text;
 	}
 
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
 	public void setIcon(String icon) {
 		String oldIcon = this.icon;
 		this.icon = icon;

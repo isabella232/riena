@@ -87,6 +87,14 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		}
 	}
 
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
 	public boolean isSelected() {
 		return selected;
 	}

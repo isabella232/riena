@@ -24,11 +24,15 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Diffs;
 import org.eclipse.core.databinding.observable.IObservable;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.ListDiff;
 import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.ValueDiff;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
@@ -57,6 +61,16 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 	public AbstractSelectableRidget() {
 		singleSelectionObservable = new SingleSelectionObservable();
 		multiSelectionObservable = new MultiSelectionObservable();
+		singleSelectionObservable.addValueChangeListener(new IValueChangeListener() {
+			public void handleValueChange(ValueChangeEvent event) {
+				disableMandatoryMarkers(hasInput());
+			}
+		});
+		multiSelectionObservable.addListChangeListener(new IListChangeListener() {
+			public void handleListChange(ListChangeEvent event) {
+				disableMandatoryMarkers(hasInput());
+			}
+		});
 	}
 
 	public final void bindMultiSelectionToModel(IObservableList modelObservableList) {
@@ -122,6 +136,11 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 
 	public final IObservableValue getSingleSelectionObservable() {
 		return singleSelectionObservable;
+	}
+
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return hasInput();
 	}
 
 	public void setSelection(List<?> newSelection) {
@@ -209,6 +228,10 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 			}
 		}
 		return result;
+	}
+
+	private boolean hasInput() {
+		return !getSelection().isEmpty();
 	}
 
 	// helping classes
