@@ -49,6 +49,16 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	}
 
 	/**
+	 * Creates a ModuleNode.
+	 * 
+	 * @param label
+	 *            Label of the module displayed in the modules title bar.
+	 */
+	public ModuleNode(String label) {
+		this(null, label);
+	}
+
+	/**
 	 * Initializes the properties of the module.
 	 */
 	private void initialize() {

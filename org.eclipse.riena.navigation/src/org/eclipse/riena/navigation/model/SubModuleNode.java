@@ -22,6 +22,13 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 
 	/**
 	 * Creates a SubModuleNode.
+	 */
+	public SubModuleNode() {
+		this(null);
+	}
+
+	/**
+	 * Creates a SubModuleNode.
 	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.

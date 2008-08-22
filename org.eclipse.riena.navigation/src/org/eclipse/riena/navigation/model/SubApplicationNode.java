@@ -45,6 +45,17 @@ public class SubApplicationNode extends
 		super(nodeId, label);
 	}
 
+	/**
+	 * Creates a SubApplicationNode.
+	 * 
+	 * @param label
+	 *            Label of the sub application displayed on the sub applications
+	 *            tab.
+	 */
+	public SubApplicationNode(String label) {
+		super(null, label);
+	}
+
 	@Override
 	protected void addChildParent(IModuleGroupNode child) {
 		child.setParent(this);

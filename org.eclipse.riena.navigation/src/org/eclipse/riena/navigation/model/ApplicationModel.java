@@ -44,8 +44,19 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 *            Label of the application displayed in the title bar.
 	 */
 	public ApplicationModel(INavigationNodeId nodeId, String label) {
-		super(nodeId, label);
-		initializeNavigationProcessor();
+		this(nodeId);
+		setLabel(label);
+	}
+
+	/**
+	 * Creates an ApplicationModel node which is the root of an application
+	 * model tree.
+	 * 
+	 * @param label
+	 *            Label of the application displayed in the title bar.
+	 */
+	public ApplicationModel(String label) {
+		this(null, label);
 	}
 
 	/**

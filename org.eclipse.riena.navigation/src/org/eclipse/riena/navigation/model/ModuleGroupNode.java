@@ -24,6 +24,13 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 	private boolean presentWithSingleModule;
 
 	/**
+	 * Creates a ModuleGroupNode
+	 */
+	public ModuleGroupNode() {
+		this(null);
+	}
+
+	/**
 	 * Creates a ModuleGroupNode.
 	 * 
 	 * @param nodeId
