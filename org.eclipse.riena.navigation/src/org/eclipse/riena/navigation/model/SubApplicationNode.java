@@ -25,6 +25,14 @@ public class SubApplicationNode extends
 	/**
 	 * Creates a SubApplicationNode
 	 * 
+	 */
+	public SubApplicationNode() {
+		super(null);
+	}
+
+	/**
+	 * Creates a SubApplicationNode
+	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */

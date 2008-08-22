@@ -24,7 +24,7 @@ public class ApplicationModelManagerTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		ApplicationModelManager.clear();
-		model = new ApplicationModel(null);
+		model = new ApplicationModel();
 	}
 
 	@Override

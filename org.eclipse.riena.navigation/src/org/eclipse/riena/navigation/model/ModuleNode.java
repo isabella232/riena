@@ -27,6 +27,15 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	/**
 	 * Creates a ModuleNode.
 	 * 
+	 */
+	public ModuleNode() {
+		super(null);
+		initialize();
+	}
+
+	/**
+	 * Creates a ModuleNode.
+	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */

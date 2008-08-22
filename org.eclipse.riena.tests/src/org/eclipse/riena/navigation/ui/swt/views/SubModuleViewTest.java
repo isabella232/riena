@@ -20,6 +20,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.tests.RienaTestCase;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -43,7 +44,7 @@ public class SubModuleViewTest extends RienaTestCase {
 			@Override
 			public <T> T getTypecastedAdapter(Class<T> clazz) {
 				if (clazz.equals(IApplicationModel.class)) {
-					return (T) new ApplicationModel(null);
+					return (T) new ApplicationModel();
 				}
 				return null;
 			}

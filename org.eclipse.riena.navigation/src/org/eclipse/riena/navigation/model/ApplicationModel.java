@@ -26,6 +26,15 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 * Creates an ApplicationModel node which is the root of an application
 	 * model tree.
 	 * 
+	 */
+	public ApplicationModel() {
+		super(null);
+	}
+
+	/**
+	 * Creates an ApplicationModel node which is the root of an application
+	 * model tree.
+	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */

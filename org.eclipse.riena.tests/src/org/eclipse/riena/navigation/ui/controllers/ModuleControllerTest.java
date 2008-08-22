@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.navigation.model.ModuleNode;
+
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -23,7 +24,7 @@ public class ModuleControllerTest extends TestCase {
 
 	public void testAfterBind() throws Exception {
 
-		ModuleNode node = new ModuleNode(null);
+		ModuleNode node = new ModuleNode();
 		node.setCloseable(true);
 		node.setLabel("Hello");
 		ModuleController controller = new ModuleController(node);
