@@ -54,7 +54,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		parent.setPresentation(new ModuleController(parent));
 		parent.addChild(node);
 		subModuleNodeView.createPartControl(new Shell());
-		// node.activate();
+		// node.activate(); Bug after refactoring
 	}
 
 	public void testCreateController() throws Exception {
