@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
@@ -84,7 +83,19 @@ public class ChoiceComposite extends Composite {
 		} finally {
 			setRedraw(true);
 		}
+	}
 
+	@Override
+	public final void setEnabled(boolean enabled) {
+		setRedraw(false);
+		try {
+			super.setEnabled(enabled);
+			for (Control child : getChildren()) {
+				child.setEnabled(enabled);
+			}
+		} finally {
+			setRedraw(true);
+		}
 	}
 
 	/**

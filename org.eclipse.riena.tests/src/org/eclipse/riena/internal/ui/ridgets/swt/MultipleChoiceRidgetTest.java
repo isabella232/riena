@@ -401,6 +401,26 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
+	 * Tests that enablement from the ChoiceComposite is applied to children.
+	 */
+	public void testEnablementIsAppliedToChildren() {
+		Shell shell = getShell();
+		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
+
+		assertTrue(control.isEnabled());
+
+		getRidget().setEnabled(false);
+		getRidget().setUIControl(control);
+
+		assertFalse(control.isEnabled());
+		Control[] children = control.getChildren();
+		assertTrue(children.length > 0);
+		for (Control child : children) {
+			assertFalse("control should be disabled: " + child, child.isEnabled());
+		}
+	}
+
+	/**
 	 * Test validation of the bindToModel(...) method.
 	 */
 	public void testBindToModelWithObservables() {

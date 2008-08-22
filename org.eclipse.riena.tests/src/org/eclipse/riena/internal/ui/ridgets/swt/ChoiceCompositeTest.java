@@ -118,4 +118,22 @@ public class ChoiceCompositeTest extends TestCase {
 		assertEquals(colorRed, child1.getBackground());
 	}
 
+	public void testSetEnabled() {
+		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		Button child1 = new Button(control, SWT.RADIO);
+
+		assertTrue(control.getEnabled());
+		assertTrue(child1.getEnabled());
+
+		control.setEnabled(false);
+
+		assertFalse(control.getEnabled());
+		assertFalse(child1.getEnabled());
+
+		control.setEnabled(true);
+
+		assertTrue(control.getEnabled());
+		assertTrue(child1.getEnabled());
+	}
+
 }

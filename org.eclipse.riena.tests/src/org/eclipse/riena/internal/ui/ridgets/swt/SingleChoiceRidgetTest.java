@@ -215,6 +215,24 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
+	 * Tests that enablement from the ChoiceComposite is applied to children.
+	 */
+	public void testEnablementIsAppliedToChildren() {
+		Shell shell = getShell();
+		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+
+		assertTrue(control.isEnabled());
+
+		getRidget().setEnabled(false);
+		getRidget().setUIControl(control);
+
+		Button selected = getSelectedControl(control);
+
+		assertFalse(control.isEnabled());
+		assertFalse(selected.isEnabled());
+	}
+
+	/**
 	 * Test the methods addPropertyChangeListener() and
 	 * removePropertyChangeListener().
 	 */
