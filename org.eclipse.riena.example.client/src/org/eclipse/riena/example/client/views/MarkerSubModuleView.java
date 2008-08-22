@@ -94,7 +94,6 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 		Composite composite;
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);
-		GridDataFactory vFillFactory = GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING);
 
 		UIControlsFactory.createLabel(group, "Name:"); //$NON-NLS-1$
 		Text textName = UIControlsFactory.createText(group);
@@ -107,43 +106,26 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Age:"); //$NON-NLS-1$
-		Combo comboAge = UIControlsFactory.createCombo(group);
+		final Combo comboAge = UIControlsFactory.createCombo(group);
 		hFillFactory.applyTo(comboAge);
 		addUIControl(comboAge, "comboAge"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Type:"); //$NON-NLS-1$
-		composite = createComposite(group);
-		Button radioRed = UIControlsFactory.createButtonRadio(composite);
-		addUIControl(radioRed, "radioRed"); //$NON-NLS-1$
-		Button radioWhite = UIControlsFactory.createButtonRadio(composite);
-		addUIControl(radioWhite, "radioWhite"); //$NON-NLS-1$
-		Button radioRose = UIControlsFactory.createButtonRadio(composite);
-		addUIControl(radioRose, "radioRose"); //$NON-NLS-1$
-		ChoiceComposite choiceType = new ChoiceComposite(composite, SWT.BORDER, false);
+		ChoiceComposite choiceType = new ChoiceComposite(group, SWT.BORDER, false);
 		choiceType.setOrientation(SWT.HORIZONTAL);
 		addUIControl(choiceType, "choiceType"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Flavor:"); //$NON-NLS-1$
-		composite = createComposite(group);
-		Button checkDry = UIControlsFactory.createButtonCheck(composite);
-		checkDry.setSelection(true);
-		addUIControl(checkDry, "checkDry"); //$NON-NLS-1$
-		Button checkSweet = UIControlsFactory.createButtonCheck(composite);
-		addUIControl(checkSweet, "checkSweet"); //$NON-NLS-1$
-		Button checkSour = UIControlsFactory.createButtonCheck(composite);
-		addUIControl(checkSour, "checkSour"); //$NON-NLS-1$
-		Button checkSpicy = UIControlsFactory.createButtonCheck(composite);
-		addUIControl(checkSpicy, "checkSpicy"); //$NON-NLS-1$
-		ChoiceComposite choiceFlavor = new ChoiceComposite(composite, SWT.BORDER, true);
+		ChoiceComposite choiceFlavor = new ChoiceComposite(group, SWT.BORDER, true);
 		choiceFlavor.setOrientation(SWT.HORIZONTAL);
 		addUIControl(choiceFlavor, "choiceFlavor"); //$NON-NLS-1$
 
 		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:"); //$NON-NLS-1$
-		vFillFactory.applyTo(lblReviewed);
+		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
 		composite = createComposite(group);
 		List listPersons = UIControlsFactory.createList(composite, false, true);
 		int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
-		hFillFactory.hint(225, hHint).applyTo(listPersons);
+		hFillFactory.hint(150, hHint).applyTo(listPersons);
 		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
 		Table tablePersons = new Table(composite, SWT.V_SCROLL | SWT.BORDER);
@@ -152,31 +134,36 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
 		tac1.setWidth(100);
 		TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);
-		tac2.setWidth(100);
-		hFillFactory.hint(225, hHint).applyTo(tablePersons);
+		tac2.setWidth(50);
+		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 		addUIControl(tablePersons, "tablePersons"); //$NON-NLS-1$
 
-		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, hHint).applyTo(tablePersons);
 		Tree treePersons = new Tree(composite, SWT.V_SCROLL | SWT.BORDER);
-		hFillFactory.hint(200, hHint).applyTo(treePersons);
+		hFillFactory.hint(150, hHint).applyTo(treePersons);
 		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
 
 		Tree treePersonsWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER);
 		treePersonsWCols.setLinesVisible(true);
 		treePersonsWCols.setHeaderVisible(true);
 		TreeColumn trc1 = new TreeColumn(treePersonsWCols, SWT.NONE);
-		trc1.setWidth(100);
+		trc1.setWidth(120);
 		TreeColumn trc2 = new TreeColumn(treePersonsWCols, SWT.NONE);
-		trc2.setWidth(100);
-		hFillFactory.hint(225, hHint).applyTo(treePersonsWCols);
+		trc2.setWidth(40);
+		hFillFactory.hint(200, hHint).applyTo(treePersonsWCols);
 		addUIControl(treePersonsWCols, "treePersonsWCols"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Buttons:"); //$NON-NLS-1$
 		composite = createComposite(group);
 		Button buttonToggle = UIControlsFactory.createButtonToggle(composite);
 		addUIControl(buttonToggle, "buttonToggle"); //$NON-NLS-1$
 		Button buttonPush = UIControlsFactory.createButton(composite);
 		addUIControl(buttonPush, "buttonPush"); //$NON-NLS-1$
+		Button buttonRadioA = UIControlsFactory.createButtonRadio(composite);
+		addUIControl(buttonRadioA, "buttonRadioA"); //$NON-NLS-1$
+		Button buttonRadioB = UIControlsFactory.createButtonRadio(composite);
+		addUIControl(buttonRadioB, "buttonRadioB"); //$NON-NLS-1$
+		Button buttonCheck = UIControlsFactory.createButtonCheck(composite);
+		addUIControl(buttonCheck, "buttonCheck"); //$NON-NLS-1$
 
 		return group;
 	}

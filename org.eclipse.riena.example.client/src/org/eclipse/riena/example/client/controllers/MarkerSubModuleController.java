@@ -17,7 +17,6 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -35,26 +34,13 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
+import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 
 /**
  * Controller for the {@link TextSubModuleView} example.
  */
 public class MarkerSubModuleController extends SubModuleController {
-
-	/** Manages a collection of persons. */
-	private final PersonManager manager;
-
-	public MarkerSubModuleController() {
-		this(null);
-	}
-
-	public MarkerSubModuleController(ISubModuleNode navigationNode) {
-		super(navigationNode);
-		manager = new PersonManager(PersonFactory.createPersonList());
-		manager.setSelectedPerson(manager.getPersons().iterator().next());
-	}
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
@@ -64,9 +50,8 @@ public class MarkerSubModuleController extends SubModuleController {
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
 		final ITextFieldRidget textPrice = (ITextFieldRidget) getRidget("textPrice"); //$NON-NLS-1$
-		textPrice.setText("-29,99"); //$NON-NLS-1$
-		// TODO [ev] could use a validation rule here to add / remove the marker
 		textPrice.addMarker(new NegativeMarker());
+		textPrice.setText("-29,99"); //$NON-NLS-1$
 
 		final IComboBoxRidget comboAge = (IComboBoxRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -75,28 +60,11 @@ public class MarkerSubModuleController extends SubModuleController {
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(1);
 
-		final IToggleButtonRidget radioRed = (IToggleButtonRidget) getRidget("radioRed"); //$NON-NLS-1$
-		radioRed.setText("red"); //$NON-NLS-1$
-		final IToggleButtonRidget radioWhite = (IToggleButtonRidget) getRidget("radioWhite"); //$NON-NLS-1$
-		radioWhite.setText("white"); //$NON-NLS-1$
-		final IToggleButtonRidget radioRose = (IToggleButtonRidget) getRidget("radioRose"); //$NON-NLS-1$
-		radioRose.setText("rose"); //$NON-NLS-1$
-
 		final ISingleChoiceRidget choiceType = (ISingleChoiceRidget) getRidget("choiceType"); //$NON-NLS-1$
 		choiceType.bindToModel(Arrays.asList("red", "white", "rose"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				TestBean.PROPERTY);
 		choiceType.updateFromModel();
 		choiceType.setSelection("red"); //$NON-NLS-1$
-
-		final IToggleButtonRidget checkDry = (IToggleButtonRidget) getRidget("checkDry"); //$NON-NLS-1$
-		checkDry.setText("dry"); //$NON-NLS-1$
-		checkDry.setSelected(true);
-		final IToggleButtonRidget checkSweet = (IToggleButtonRidget) getRidget("checkSweet"); //$NON-NLS-1$
-		checkSweet.setText("sweet"); //$NON-NLS-1$
-		final IToggleButtonRidget checkSour = (IToggleButtonRidget) getRidget("checkSour"); //$NON-NLS-1$
-		checkSour.setText("sour"); //$NON-NLS-1$
-		final IToggleButtonRidget checkSpicy = (IToggleButtonRidget) getRidget("checkSpicy"); //$NON-NLS-1$
-		checkSpicy.setText("spicy"); //$NON-NLS-1$
 
 		final IMultipleChoiceRidget choiceFlavor = (IMultipleChoiceRidget) getRidget("choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.bindToModel(Arrays.asList("dry", "sweet", "sour", "spicy"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -106,14 +74,14 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		listPersons.bindToModel(createPersonList(), Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$
 		listPersons.updateFromModel();
 
 		final ITableRidget tablePersons = (ITableRidget) getRidget("tablePersons"); //$NON-NLS-1$
 		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
-		tablePersons.bindToModel(manager, "persons", Person.class, colValues, colHeaders); //$NON-NLS-1$
+		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		tablePersons.updateFromModel();
 
 		final ITreeRidget treePersons = (ITreeRidget) getRidget("treePersons"); //$NON-NLS-1$
@@ -125,19 +93,27 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IGroupedTreeTableRidget treePersonsWCols = (IGroupedTreeTableRidget) getRidget("treePersonsWCols"); //$NON-NLS-1$
 		treePersonsWCols.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		treePersonsWCols.setGroupingEnabled(true);
-		treePersonsWCols.bindToModel(createTreeRoots(), TreeNode.class, ITreeNode.PROPERTY_CHILDREN,
-				ITreeNode.PROPERTY_PARENT, new String[] { "value", "value" }, colHeaders); //$NON-NLS-1$ //$NON-NLS-2$
+		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
+		colHeaders = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
+		treePersonsWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, colValues, colHeaders);
 		treePersonsWCols.updateFromModel();
 
 		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
-		buttonToggle.setText("Toggle Me"); //$NON-NLS-1$
+		buttonToggle.setText("Toggle"); //$NON-NLS-1$
 		buttonToggle.setSelected(true);
 		final IActionRidget buttonPush = (IActionRidget) getRidget("buttonPush"); //$NON-NLS-1$
-		buttonPush.setText("Push Me"); //$NON-NLS-1$
+		buttonPush.setText("Push"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonRadioA = (IToggleButtonRidget) getRidget("buttonRadioA"); //$NON-NLS-1$
+		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
+		buttonRadioB.setText("Radio B"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
+		buttonCheck.setText("Check"); //$NON-NLS-1$
 
-		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, radioRed,
-				radioWhite, radioRose, choiceType, checkDry, checkSweet, checkSour, checkSpicy, choiceFlavor,
-				listPersons, tablePersons, treePersons, treePersonsWCols, buttonToggle, buttonPush };
+		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, choiceType,
+				choiceFlavor, listPersons, tablePersons, treePersons, treePersonsWCols, buttonToggle, buttonPush,
+				buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
@@ -152,30 +128,20 @@ public class MarkerSubModuleController extends SubModuleController {
 				for (IMarkableRidget ridget : markables) {
 					ridget.setMandatory(isMandatory);
 				}
-				// TODO [ev] consider using a value object instead
 				if (isMandatory) {
 					textName.setText(""); //$NON-NLS-1$
 					textPrice.setText(""); //$NON-NLS-1$
-					try {
-						comboAge.setSelection("<nonex>");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					comboAge.setSelection("<none>");
-					radioRed.setSelected(false);
-					radioWhite.setSelected(false);
-					radioRose.setSelected(false);
+					comboAge.setSelection("<none>"); //$NON-NLS-1$
 					choiceType.setSelection(null);
-					checkDry.setSelected(false);
-					checkSweet.setSelected(false);
-					checkSour.setSelected(false);
-					checkSpicy.setSelected(false);
 					choiceFlavor.setSelection(null);
 					listPersons.setSelection((Object) null);
 					tablePersons.setSelection((Object) null);
 					treePersons.setSelection((Object) null);
 					treePersonsWCols.setSelection((Object) null);
 					buttonToggle.setSelected(false);
+					buttonRadioA.setSelected(false);
+					buttonRadioB.setSelected(false);
+					buttonCheck.setSelected(false);
 				}
 			}
 		});
@@ -221,6 +187,13 @@ public class MarkerSubModuleController extends SubModuleController {
 		});
 	}
 
+	// helping methods
+	// ////////////////
+
+	private WritableList createPersonList() {
+		return new WritableList(PersonFactory.createPersonList(), Person.class);
+	}
+
 	private ITreeNode[] createTreeRoots() {
 		ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
 		new TreeNode(rootA, new Person("Albinus", "Albert")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -230,4 +203,19 @@ public class MarkerSubModuleController extends SubModuleController {
 		new TreeNode(rootB, new Person("Barclay", "Bob")); //$NON-NLS-1$ //$NON-NLS-2$
 		return new ITreeNode[] { rootA, rootB };
 	}
+
+	private WordNode[] createTreeTableRoots() {
+		WordNode rootA = new WordNode("A"); //$NON-NLS-1$
+		WordNode rootB = new WordNode("B"); //$NON-NLS-1$
+		new WordNode(rootA, "Astoria"); //$NON-NLS-1$
+		new WordNode(rootA, "Ashland"); //$NON-NLS-1$
+		new WordNode(rootA, "Aurora"); //$NON-NLS-1$
+		new WordNode(rootA, "Alpine"); //$NON-NLS-1$
+		new WordNode(rootB, "Boring"); //$NON-NLS-1$
+		new WordNode(rootB, "Bend"); //$NON-NLS-1$
+		new WordNode(rootB, "Beaverton"); //$NON-NLS-1$
+		new WordNode(rootB, "Bridgeport"); //$NON-NLS-1$
+		return new WordNode[] { rootA, rootB };
+	}
+
 }

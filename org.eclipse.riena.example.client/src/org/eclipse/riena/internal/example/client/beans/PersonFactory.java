@@ -11,7 +11,7 @@
 package org.eclipse.riena.internal.example.client.beans;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 
@@ -27,8 +27,8 @@ public final class PersonFactory {
 	/**
 	 * Create a collection of persons.
 	 */
-	public static Collection<Person> createPersonList() {
-		Collection<Person> newList = new ArrayList<Person>();
+	public static List<Person> createPersonList() {
+		List<Person> newList = new ArrayList<Person>();
 
 		Person person = new Person("Doe", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
