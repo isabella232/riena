@@ -62,8 +62,9 @@ public abstract class RienaActivator implements BundleActivator {
 	 * @return the logger
 	 */
 	public synchronized Logger getLogger(String name) {
-		if (logUtil == null)
+		if (logUtil == null) {
 			logUtil = new LogUtil(context);
+		}
 		return logUtil.getLogger(name);
 	}
 }

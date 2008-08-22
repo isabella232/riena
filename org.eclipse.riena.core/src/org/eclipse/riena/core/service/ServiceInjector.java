@@ -94,11 +94,13 @@ public abstract class ServiceInjector {
 		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
 		started = true;
 		this.context = context;
-		if (bindMethodName == null)
+		if (bindMethodName == null) {
 			bindMethodName = DEFAULT_BIND_METHOD_NAME;
+		}
 		bindMethodProspects = collectMethods("Bind method", bindMethodName); //$NON-NLS-1$
-		if (unbindMethodName == null)
+		if (unbindMethodName == null) {
 			unbindMethodName = DEFAULT_UNBIND_METHOD_NAME;
+		}
 		unbindMethodProspects = collectMethods("Unbind method", unbindMethodName); //$NON-NLS-1$
 
 		doStart();
@@ -122,8 +124,9 @@ public abstract class ServiceInjector {
 	 * method.
 	 */
 	public void stop() {
-		if (!started)
+		if (!started) {
 			return;
+		}
 		unregisterServiceListener();
 		doStop();
 		bindMethodProspects = null;
@@ -174,8 +177,9 @@ public abstract class ServiceInjector {
 	 * class.
 	 */
 	protected void registerServiceListener() {
-		if (serviceListener == null)
+		if (serviceListener == null) {
 			serviceListener = new InjectorServiceListener();
+		}
 		try {
 			context.addServiceListener(serviceListener, filter);
 		} catch (InvalidSyntaxException e) {
@@ -187,8 +191,9 @@ public abstract class ServiceInjector {
 	 * Unregisters the listener for service events.
 	 */
 	private void unregisterServiceListener() {
-		if (serviceListener == null)
+		if (serviceListener == null) {
 			return;
+		}
 		context.removeServiceListener(serviceListener);
 		serviceListener = null;
 	}
@@ -196,12 +201,15 @@ public abstract class ServiceInjector {
 	private List<Method> collectMethods(String message, String methodName) {
 		List<Method> prospects = new ArrayList<Method>();
 		Method[] methods = target.getClass().getMethods();
-		for (Method method : methods)
-			if (method.getName().equals(methodName) && method.getParameterTypes().length == 1)
+		for (Method method : methods) {
+			if (method.getName().equals(methodName) && method.getParameterTypes().length == 1) {
 				prospects.add(method);
+			}
+		}
 
-		if (prospects.size() != 0)
+		if (prospects.size() != 0) {
 			return prospects;
+		}
 
 		throw new IllegalArgumentException(message + " '" + methodName + "' does not exist in target class '" //$NON-NLS-1$ //$NON-NLS-2$
 				+ target.getClass().getName());
@@ -214,6 +222,9 @@ public abstract class ServiceInjector {
 			break;
 		case ServiceEvent.UNREGISTERING:
 			doUnbind(event.getServiceReference());
+			break;
+		default:
+			// ignore
 			break;
 		}
 	}
@@ -242,12 +253,14 @@ public abstract class ServiceInjector {
 	 * @return the bind method
 	 */
 	protected void invokeBindMethod(ServiceReference serviceRef) {
-		if (serviceRef == null)
+		if (serviceRef == null) {
 			return;
+		}
 		// increments service use count, now it is ´1´
 		Object service = context.getService(serviceRef);
-		if (service == null)
+		if (service == null) {
 			return;
+		}
 		invokeMethod(bindMethodProspects, service);
 	}
 
@@ -258,13 +271,15 @@ public abstract class ServiceInjector {
 	 * @return the unbind method
 	 */
 	protected void invokeUnbindMethod(ServiceReference serviceRef) {
-		if (serviceRef == null)
+		if (serviceRef == null) {
 			return;
+		}
 		// need to get the service object, increments the use count, now it is
 		// ´2´
 		Object service = context.getService(serviceRef);
-		if (service == null)
+		if (service == null) {
 			return;
+		}
 		invokeMethod(unbindMethodProspects, service);
 		// decrement the use count from prior getService(), now it is ´1´
 		context.ungetService(serviceRef);
@@ -276,8 +291,9 @@ public abstract class ServiceInjector {
 		assert service != null;
 
 		Method method = findMatchingMethod(methods, service);
-		if (method == null)
+		if (method == null) {
 			return;
+		}
 		invoke(method, service);
 	}
 
@@ -289,12 +305,14 @@ public abstract class ServiceInjector {
 		List<Method> targetedMethods = new ArrayList<Method>(1);
 		for (Method method : methods) {
 			Class<?>[] parameterTypes = method.getParameterTypes();
-			if (parameterTypes[0].isAssignableFrom(parameterType))
+			if (parameterTypes[0].isAssignableFrom(parameterType)) {
 				targetedMethods.add(method);
+			}
 		}
 
-		if (targetedMethods.size() == 1)
+		if (targetedMethods.size() == 1) {
 			return targetedMethods.get(0);
+		}
 
 		if (targetedMethods.isEmpty()) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not find a matching Bind/Unbind method from '" + methods //$NON-NLS-1$
@@ -304,9 +322,11 @@ public abstract class ServiceInjector {
 		// find most specific method
 		Class<?> superType = parameterType;
 		while (superType != null) {
-			for (Method method : targetedMethods)
-				if (!method.getParameterTypes()[0].isAssignableFrom(superType))
+			for (Method method : targetedMethods) {
+				if (!method.getParameterTypes()[0].isAssignableFrom(superType)) {
 					return method;
+				}
+			}
 			superType = superType.getSuperclass();
 		}
 
@@ -344,8 +364,9 @@ public abstract class ServiceInjector {
 	class InjectorServiceListener implements ServiceListener {
 		public void serviceChanged(ServiceEvent event) {
 			int eventType = event.getType();
-			if (eventType == ServiceEvent.REGISTERED || eventType == ServiceEvent.UNREGISTERING)
+			if (eventType == ServiceEvent.REGISTERED || eventType == ServiceEvent.UNREGISTERING) {
 				handleEvent(event);
+			}
 		}
 	}
 

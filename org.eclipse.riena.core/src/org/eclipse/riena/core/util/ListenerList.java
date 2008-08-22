@@ -125,12 +125,15 @@ public class ListenerList<L> {
 		// This method is synchronized to protect against multiple threads
 		// adding or removing listeners concurrently. This does not block
 		// concurrent readers.
-		if (listener == null)
+		if (listener == null) {
 			throw new IllegalArgumentException();
+		}
 		// check for duplicates
-		for (L each : listeners)
-			if (identity ? listener == each : listener.equals(each))
+		for (L each : listeners) {
+			if (identity ? listener == each : listener.equals(each)) {
 				return;
+			}
+		}
 
 		// Thread safety: create new array to avoid affecting concurrent readers
 		final int oldSize = listeners.length;
@@ -178,8 +181,9 @@ public class ListenerList<L> {
 		// This method is synchronized to protect against multiple threads
 		// adding or removing listeners concurrently. This does not block
 		// concurrent readers.
-		if (listener == null)
+		if (listener == null) {
 			throw new IllegalArgumentException();
+		}
 		final int oldSize = listeners.length;
 		for (int i = 0; i < oldSize; ++i) {
 			L each = listeners[i];

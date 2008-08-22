@@ -50,14 +50,18 @@ public class RankingInjector extends ServiceInjector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#bind(org.osgi.framework.ServiceReference)
+	 * @see
+	 * org.eclipse.riena.core.service.ServiceInjector#bind(org.osgi.framework
+	 * .ServiceReference)
 	 */
 	@Override
 	protected void doBind(ServiceReference serviceRef) {
-		if (serviceRef == null)
+		if (serviceRef == null) {
 			return;
-		if (trackedServiceRef != null && serviceRef.compareTo(trackedServiceRef) > 0)
+		}
+		if (trackedServiceRef != null && serviceRef.compareTo(trackedServiceRef) > 0) {
 			return;
+		}
 
 		invokeUnbindMethod(trackedServiceRef);
 		invokeBindMethod(serviceRef);
@@ -65,14 +69,18 @@ public class RankingInjector extends ServiceInjector {
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#unbind(org.osgi.framework.ServiceReference)
+	 * @see
+	 * org.eclipse.riena.core.service.ServiceInjector#unbind(org.osgi.framework
+	 * .ServiceReference)
 	 */
 	@Override
 	protected void doUnbind(ServiceReference serviceRef) {
-		if (serviceRef == null)
+		if (serviceRef == null) {
 			return;
-		if (serviceRef.compareTo(trackedServiceRef) != 0)
+		}
+		if (serviceRef.compareTo(trackedServiceRef) != 0) {
 			return;
+		}
 		invokeUnbindMethod(serviceRef);
 		ServiceReference highest = getCurrentHighest();
 		if (highest == null) {
@@ -96,10 +104,12 @@ public class RankingInjector extends ServiceInjector {
 	 * @return
 	 */
 	private static ServiceReference highestServiceRef(ServiceReference[] serviceRefs) {
-		if (serviceRefs == null)
+		if (serviceRefs == null) {
 			return null;
-		if (serviceRefs.length == 1)
+		}
+		if (serviceRefs.length == 1) {
 			return serviceRefs[0];
+		}
 		Arrays.sort(serviceRefs, new ObjectRankingComparator());
 		return serviceRefs[0];
 	}

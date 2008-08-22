@@ -94,8 +94,9 @@ public class LogUtil {
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
 		LogUtil.logReaderService = logReaderService;
-		for (LogListener logListener : logListeners)
+		for (LogListener logListener : logListeners) {
 			LogUtil.logReaderService.addLogListener(logListener, new LogAlwaysFilter());
+		}
 	}
 
 	/**
@@ -104,8 +105,9 @@ public class LogUtil {
 	 * @param logReaderService
 	 */
 	public void unbind(ExtendedLogReaderService logReaderService) {
-		for (LogListener logListener : logListeners)
+		for (LogListener logListener : logListeners) {
 			LogUtil.logReaderService.removeLogListener(logListener);
+		}
 
 		LogUtil.logReaderService = null;
 	}

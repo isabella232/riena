@@ -42,9 +42,11 @@ public class FilterInjector extends ServiceInjector {
 		// service is registered between getServiceReferences and
 		// registerServiceListener()
 		registerServiceListener();
-		if (serviceRefs != null)
-			for (ServiceReference serviceRef : serviceRefs)
+		if (serviceRefs != null) {
+			for (ServiceReference serviceRef : serviceRefs) {
 				doBind(serviceRef);
+			}
+		}
 	}
 
 	/*
@@ -58,32 +60,39 @@ public class FilterInjector extends ServiceInjector {
 		synchronized (trackedServiceRefs) {
 			serviceRefs = trackedServiceRefs.toArray(new ServiceReference[trackedServiceRefs.size()]);
 		}
-		for (ServiceReference serviceRef : serviceRefs)
+		for (ServiceReference serviceRef : serviceRefs) {
 			doUnbind(serviceRef);
+		}
 		trackedServiceRefs = null;
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#doBind(org.osgi.framework.ServiceReference)
+	 * @see
+	 * org.eclipse.riena.core.service.ServiceInjector#doBind(org.osgi.framework
+	 * .ServiceReference)
 	 */
 	@Override
 	protected void doBind(ServiceReference serviceRef) {
 		synchronized (trackedServiceRefs) {
-			if (trackedServiceRefs.contains(serviceRef))
+			if (trackedServiceRefs.contains(serviceRef)) {
 				return;
+			}
 			invokeBindMethod(serviceRef);
 			trackedServiceRefs.add(serviceRef);
 		}
 	}
 
 	/*
-	 * @see org.eclipse.riena.core.service.ServiceInjector#doUnbind(org.osgi.framework.ServiceReference)
+	 * @see
+	 * org.eclipse.riena.core.service.ServiceInjector#doUnbind(org.osgi.framework
+	 * .ServiceReference)
 	 */
 	@Override
 	protected void doUnbind(ServiceReference serviceRef) {
 		synchronized (trackedServiceRefs) {
-			if (!trackedServiceRefs.contains(serviceRef))
+			if (!trackedServiceRefs.contains(serviceRef)) {
 				return;
+			}
 			invokeUnbindMethod(serviceRef);
 			trackedServiceRefs.remove(serviceRef);
 		}

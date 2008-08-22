@@ -270,8 +270,7 @@ public final class ExceptionHelper {
 	 * Warning: This method is dodgy! <br>
 	 * <p>
 	 * It is a hack and a workaround. <br>
-	 * The method deserializes StackTraceInformation to build up an exception.
-	 * <br>
+	 * The method deserializes StackTraceInformation to build up an exception. <br>
 	 * Within JDK1.4 <code>stackTraceElement</code> does not have an public
 	 * constructor <br>
 	 * or set-methods. <br>
@@ -290,8 +289,8 @@ public final class ExceptionHelper {
 	 * </code><br>
 	 * <p>
 	 * The stacktrace string has the following format: <br>
-	 * sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	 * <br>
+	 * sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java
+	 * :39) <br>
 	 * which is <code>declaringClass.methodName(fileName:lineNumber)</code>.<br>
 	 * 
 	 * @param stacktrace

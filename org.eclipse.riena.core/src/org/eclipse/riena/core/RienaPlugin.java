@@ -65,8 +65,9 @@ public abstract class RienaPlugin extends Plugin {
 	 * @return the logger
 	 */
 	public synchronized Logger getLogger(String name) {
-		if (logUtil == null)
+		if (logUtil == null) {
 			logUtil = new LogUtil(context);
+		}
 		return logUtil.getLogger(name);
 	}
 

@@ -14,8 +14,8 @@ import java.util.Map;
 
 /**
  * A <code>IMarker</code> is used to mark an adapter, resp. its associated UI
- * control. Implementations supported by Spirit are and
- * {@link MandatoryMarker MandatoryMarker}{@link ErrorMarker ErrorMarker}.
+ * control. Implementations supported by Spirit are and {@link MandatoryMarker
+ * MandatoryMarker}{@link ErrorMarker ErrorMarker}.
  * 
  */
 public interface IMarker {

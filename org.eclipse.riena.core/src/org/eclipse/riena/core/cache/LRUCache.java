@@ -66,7 +66,9 @@ public class LRUCache implements IGenericObjectCache {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setName(java.lang.String)
+	 * @see
+	 * org.eclipse.riena.core.cache.IGenericObjectCache#setName(java.lang.String
+	 * )
 	 */
 	public void setName(String name) {
 		this.name = name + " : "; //$NON-NLS-1$
@@ -115,7 +117,10 @@ public class LRUCache implements IGenericObjectCache {
 	private void printStat() {
 		statDisplayCount++;
 		if (statDisplayCount > 100) {
-			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Timeout " + statHit + " / " + statNotFound + " / " + statTimeout); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			LOGGER.log(LogService.LOG_INFO, name + "Hit / NotFound / Timeout " //$NON-NLS-1$
+					+ statHit + " / " //$NON-NLS-1$
+					+ statNotFound + " / " //$NON-NLS-1$
+					+ statTimeout);
 			statDisplayCount = 0;
 		}
 	}

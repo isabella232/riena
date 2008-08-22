@@ -15,7 +15,7 @@ import org.eclipse.riena.internal.core.Activator;
 /**
  * Utility to check the Riena status.
  */
-public class RienaStatus {
+public final class RienaStatus {
 
 	private RienaStatus() {
 		// Utility

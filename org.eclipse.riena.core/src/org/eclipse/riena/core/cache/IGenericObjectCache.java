@@ -20,8 +20,8 @@ import java.util.HashMap;
  * <ul>
  * <li>timeout: xxxx milliseconds after the timeout, an item is no longer valid
  * if found in the cache and automatically removed.</li>
- * <li>GC: if garbage collection is started because of low memory in the JVM,
- * it can remove any entry in the GenericObjectCache.</li>
+ * <li>GC: if garbage collection is started because of low memory in the JVM, it
+ * can remove any entry in the GenericObjectCache.</li>
  * <li>minSize: minSize specifies a number of minimum entries that are held in
  * the cache even if garbage collection occurs. However these minSize entries
  * will still be checked against the timeout.</li>
@@ -59,8 +59,7 @@ public interface IGenericObjectCache {
 	Object get(Object key, Class callingClass);
 
 	/**
-	 * Put some object <code>value</code> with <code>key</code> into the
-	 * cache.
+	 * Put some object <code>value</code> with <code>key</code> into the cache.
 	 * 
 	 * @param key
 	 *            the key for looking up the object.

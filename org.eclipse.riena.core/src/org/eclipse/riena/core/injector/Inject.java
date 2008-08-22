@@ -19,6 +19,10 @@ import org.eclipse.riena.core.service.ServiceDescriptor;
  */
 public final class Inject {
 
+	private Inject() {
+		// utility
+	}
+
 	/**
 	 * @see ServiceDescriptor
 	 * 

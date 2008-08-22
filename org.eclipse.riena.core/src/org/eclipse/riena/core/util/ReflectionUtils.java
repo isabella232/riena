@@ -258,8 +258,9 @@ public final class ReflectionUtils {
 		while (clazz != null) {
 			Method method = findMatchingMethod(clazz, methodName, clazzes);
 			if (method != null) {
-				if (open)
+				if (open) {
 					method.setAccessible(true);
+				}
 				try {
 					return (T) method.invoke(instance, args);
 				} catch (InvocationTargetException ite) {
@@ -385,8 +386,9 @@ public final class ReflectionUtils {
 		}
 
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			if (instance == null)
+			if (instance == null) {
 				instance = clazz != null ? newInstance(clazz, params) : newInstance(clazzName, params);
+			}
 			// try {
 			return ReflectionUtils.invoke(instance, method.getName(), args);
 			// } catch (Throwable e) {
@@ -403,19 +405,23 @@ public final class ReflectionUtils {
 		assert clazz != null;
 
 		try {
-			if (clazzes == null)
+			if (clazzes == null) {
 				return clazz.getConstructor();
+			}
 
 			Constructor[] constructors = clazz.getConstructors();
 			for (Constructor constructor : constructors) {
 				Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
 				if (expectedParameterTypes.length == clazzes.length) {
 					boolean stop = false;
-					for (int j = 0; j < expectedParameterTypes.length && !stop; j++)
-						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]))
+					for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
+						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
 							stop = true;
-					if (!stop)
+						}
+					}
+					if (!stop) {
 						return constructor;
+					}
 				}
 			}
 			throw new ReflectionFailure("Could not find a matching constructor for " + clazz.getName()); //$NON-NLS-1$
@@ -429,8 +435,9 @@ public final class ReflectionUtils {
 		assert name != null;
 
 		try {
-			if (clazzes == null)
+			if (clazzes == null) {
 				return clazz.getDeclaredMethod(name);
+			}
 
 			Method[] methods = clazz.getDeclaredMethods();
 			for (Method method : methods) {
@@ -438,11 +445,14 @@ public final class ReflectionUtils {
 					Class<?>[] expectedParameterTypes = method.getParameterTypes();
 					if (expectedParameterTypes.length == clazzes.length) {
 						boolean stop = false;
-						for (int j = 0; j < expectedParameterTypes.length && !stop; j++)
-							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]))
+						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
+							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
 								stop = true;
-						if (!stop)
+							}
+						}
+						if (!stop) {
 							return method;
+						}
 					}
 				}
 			}

@@ -28,8 +28,9 @@ public class Log4jLogListener implements SynchronousLogListener {
 	public static final String DEFAULT_CONFIGURATION = "/log4j.default.xml"; //$NON-NLS-1$
 
 	public Log4jLogListener(BundleContext context, String configuration) {
-		if (configuration == null)
+		if (configuration == null) {
 			configuration = DEFAULT_CONFIGURATION;
+		}
 
 		// fetch the URL of given log4j configuration file via context
 		// the context is the context of the bundle from which the log was

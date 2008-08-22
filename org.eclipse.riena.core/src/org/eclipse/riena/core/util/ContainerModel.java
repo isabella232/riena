@@ -26,7 +26,7 @@ import org.osgi.service.log.LogService;
  * assumes a server model. In any case, it creates a LOG_INFO entry to post what
  * it has chosen.
  */
-public class ContainerModel {
+public final class ContainerModel {
 
 	/**
 	 * System property defining the container type.
@@ -47,6 +47,10 @@ public class ContainerModel {
 	static {
 		// This makes the init code available for testing!!
 		initialize();
+	}
+
+	private ContainerModel() {
+		// utility
 	}
 
 	/**

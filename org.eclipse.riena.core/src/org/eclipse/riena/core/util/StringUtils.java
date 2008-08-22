@@ -26,7 +26,7 @@ public final class StringUtils {
 	 * @param sequence
 	 * @return
 	 */
-	public static final boolean isEmpty(final CharSequence sequence) {
+	public static boolean isEmpty(final CharSequence sequence) {
 		return sequence == null || sequence.length() == 0;
 	}
 
@@ -37,7 +37,7 @@ public final class StringUtils {
 	 * @param sequence
 	 * @return
 	 */
-	public static final boolean isGiven(final CharSequence sequence) {
+	public static boolean isGiven(final CharSequence sequence) {
 		return sequence != null && sequence.length() != 0;
 	}
 
@@ -48,7 +48,7 @@ public final class StringUtils {
 	 * @param string
 	 * @return
 	 */
-	public static final boolean isDeepEmpty(final String string) {
+	public static boolean isDeepEmpty(final String string) {
 		return string == null || string.trim().length() == 0;
 	}
 
@@ -56,16 +56,18 @@ public final class StringUtils {
 	 * Tests equality of the given strings.
 	 * 
 	 * @param sequence1
-	 * 		candidate 1, may be null
+	 *            candidate 1, may be null
 	 * @param sequence2
-	 * 		candidate 2, may be null
+	 *            candidate 2, may be null
 	 * @return
 	 */
-	public static final boolean equals(final CharSequence sequence1, final CharSequence sequence2) {
-		if (sequence1 == sequence2)
+	public static boolean equals(final CharSequence sequence1, final CharSequence sequence2) {
+		if (sequence1 == sequence2) {
 			return true;
-		if (sequence1 == null || sequence2 == null)
+		}
+		if (sequence1 == null || sequence2 == null) {
 			return false;
+		}
 		return sequence1.equals(sequence2);
 	}
 

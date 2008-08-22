@@ -16,14 +16,13 @@ import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.log.LogService;
 
 /**
  * The <code>VariableManagerUtil</code> is lightweight wrapper for the
  * <code>StringVariableManager</code>.
  */
-public class VariableManagerUtil {
+public final class VariableManagerUtil {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(VariableManagerUtil.class.getName());
 
@@ -41,7 +40,7 @@ public class VariableManagerUtil {
 	 * 
 	 * @param key
 	 * @param value
-	 * @throws ConfigurationException
+	 * @throws CoreException
 	 */
 	public static void addVariable(final String key, final String value) throws CoreException {
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
@@ -51,10 +50,11 @@ public class VariableManagerUtil {
 			variableManager.addVariables(variables);
 		} catch (CoreException e) {
 			final IValueVariable existingValue = variableManager.getValueVariable((String) key);
-			if (existingValue.getValue().equals(value))
+			if (existingValue.getValue().equals(value)) {
 				LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			else
+			} else {
 				throw e;
+			}
 		}
 	}
 
