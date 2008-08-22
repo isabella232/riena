@@ -65,13 +65,19 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 	void runUIProcess() {
 
 		UIProcess p = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
+
+			@Override
+			public void initialUpdateUI(int totalWork) {
+				super.initialUpdateUI(totalWork);
+				setBlocked(true);
+			}
+
 			@Override
 			public boolean runJob(IProgressMonitor monitor) {
 				try {
-					Thread.sleep(4000);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					e.printStackTrace();
+					Thread.sleep(2500);
+				} catch (InterruptedException e1) {
+
 				}
 				for (int i = 0; i <= 10; i++) {
 					if (monitor.isCanceled()) {
@@ -79,15 +85,20 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 						return false;
 					}
 					try {
-						Thread.sleep(500);
+						Thread.sleep(800);
 					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
 						e.printStackTrace();
 					}
 					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 					monitor.worked(i);
 				}
 				return true;
+			}
+
+			@Override
+			public void finalUpdateUI() {
+				super.finalUpdateUI();
+				setBlocked(false);
 			}
 
 			@Override
@@ -114,9 +125,8 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 							e.printStackTrace();
 						}
 						monitor.worked(i);
-						if (monitor.isCanceled()) {
+						if (monitor.isCanceled())
 							return Status.CANCEL_STATUS;
-						}
 					}
 				} finally {
 					monitor.done();

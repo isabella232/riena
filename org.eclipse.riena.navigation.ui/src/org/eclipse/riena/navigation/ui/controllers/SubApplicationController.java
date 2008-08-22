@@ -292,6 +292,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * @return the statuslineRidget
 	 */
 	public IStatuslineRidget getStatuslineRidget() {
+		if (statuslineRidget == null) {
+			statuslineRidget = (IStatuslineRidget) getRidget("statuslineRidget"); //$NON-NLS-1$
+		}
 		return statuslineRidget;
 	}
 

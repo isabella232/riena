@@ -31,6 +31,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -49,6 +50,14 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private AbstractViewBindingDelegate binding;
 	private C currentController;
 	private EmbeddedTitleBar title;
+
+	private Composite parentComposite;
+
+	private Cursor cursorWait;
+
+	private Cursor cursorArrow;
+
+	private Composite contentComposite;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -126,13 +135,22 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
+		this.parentComposite = parent;
 		observeRoot();
 		setController(createController(getCurrentNode()));
 		setPartName(getController().getNavigationNode().getLabel());
 		Composite contentComposite = createContentComposite(parent);
 		basicCreatePartControl(contentComposite);
 		createViewFacade();
-		activate();
+		doBinding();
+	}
+
+	protected Composite getParentComposite() {
+		return parentComposite;
+	}
+
+	protected Composite getContentComposite() {
+		return contentComposite;
 	}
 
 	/**
@@ -165,7 +183,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		formData.right = new FormAttachment(100, 2);
 		title.setLayoutData(formData);
 
-		Composite contentComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		contentComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		contentComposite.setBackground(bgColor);
 		formData = new FormData();
 		formData.top = new FormAttachment(title, 0, 0);
@@ -174,8 +192,19 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		formData.right = new FormAttachment(100);
 		contentComposite.setLayoutData(formData);
 
-		return contentComposite;
+		// initialize cursors
+		cursorWait = createWaitCursor();
+		cursorArrow = createArrowCursor();
 
+		return contentComposite;
+	}
+
+	protected Cursor createArrowCursor() {
+		return getSite().getShell().getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
+	}
+
+	protected Cursor createWaitCursor() {
+		return getSite().getShell().getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 	}
 
 	private void observeRoot() {
@@ -188,14 +217,30 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		navigationTreeObserver.addListenerTo(node.getTypecastedAdapter(IApplicationModel.class));
 	}
 
+	protected void activate(ISubModuleNode source) {
+		SwtViewId id = SwtPresentationManagerAccessor.getManager().getSwtViewId(source);
+		if (getViewSite().getId().equals(id.getId())) {
+			doBinding();
+		}
+	}
+
 	private final class MySubModuleNodeListener extends SubModuleNodeListener {
 		@Override
 		public void activated(ISubModuleNode source) {
-			SwtViewId id = SwtPresentationManagerAccessor.getManager().getSwtViewId(source);
-			if (getViewSite().getId().equals(id.getId())) {
-				activate();
-			}
+			activate(source);
 		}
+
+		@Override
+		public void block(ISubModuleNode source, boolean block) {
+			super.block(source, block);
+			blockView(block);
+		}
+
+	}
+
+	protected void blockView(boolean block) {
+		parentComposite.setCursor(block ? cursorWait : cursorArrow);
+		contentComposite.setEnabled(!block);
 	}
 
 	/**
@@ -211,10 +256,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 */
 	@Override
 	public void setFocus() {
-		activate();
+		doBinding();
 	}
 
-	protected void activate() {
+	protected void doBinding() {
 		if (currentController != getController()) {
 			if (currentController != null) {
 				binding.unbind(currentController);

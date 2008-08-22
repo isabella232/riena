@@ -10,18 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.tests.RienaTestCase;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -36,32 +40,57 @@ public class SubModuleViewTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
+		ApplicationModel appModel = new ApplicationModel();
+		SubApplicationNode subAppNode = new SubApplicationNode();
+		appModel.addChild(subAppNode);
+		ModuleGroupNode mgNode = new ModuleGroupNode(null);
+		subAppNode.addChild(mgNode);
+		IModuleNode parent = new ModuleNode(null, "TestModuleLabel") {
+
+		};
+		mgNode.addChild(parent);
 
 		subModuleNodeView = new TestView();
 		node = new SubModuleNode(new NavigationNodeId("testId"), "TestSubModuleLabel");
-
-		IModuleNode parent = new ModuleNode(null, "TestModuleLabel") {
-			@Override
-			public <T> T getTypecastedAdapter(Class<T> clazz) {
-				if (clazz.equals(IApplicationModel.class)) {
-					return (T) new ApplicationModel();
-				}
-				return null;
-			}
-		};
 		parent.setPresentation(new ModuleController(parent));
 		parent.addChild(node);
+		subModuleNodeView.createPartControl(new Shell());
+		node.activate();
 	}
 
 	public void testCreateController() throws Exception {
-
-		subModuleNodeView.createPartControl(new Shell());
 
 		assertTrue(subModuleNodeView.getController() instanceof SubModuleController);
 		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
 
+	public void testBlocking() {
+		node.setBlocked(true);
+		Composite parentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
+		Composite contentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
+		assertFalse(contentComposite.isEnabled());
+		assertSame(waitCursor, parentComposite.getCursor());
+		node.setBlocked(false);
+		assertTrue(contentComposite.isEnabled());
+		assertSame(arrowCursor, parentComposite.getCursor());
+	}
+
+	private Cursor waitCursor;
+	private Cursor arrowCursor;
+
 	private class TestView extends SubModuleView<SubModuleController> {
+
+		@Override
+		protected Cursor createWaitCursor() {
+			waitCursor = Display.getDefault().getSystemCursor(SWT.CURSOR_WAIT);
+			return waitCursor;
+		}
+
+		@Override
+		protected Cursor createArrowCursor() {
+			arrowCursor = Display.getDefault().getSystemCursor(SWT.CURSOR_ARROW);
+			return arrowCursor;
+		}
 
 		@Override
 		protected ISubModuleNode getCurrentNode() {
@@ -69,8 +98,11 @@ public class SubModuleViewTest extends RienaTestCase {
 		}
 
 		@Override
+		protected void activate(ISubModuleNode source) {
+		}
+
+		@Override
 		protected void basicCreatePartControl(Composite parent) {
-			// ignore
 		}
 	}
 

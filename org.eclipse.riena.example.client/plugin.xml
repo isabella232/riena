@@ -115,6 +115,13 @@
             id="org.eclipse.riena.example.client.views.NavigateSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigateSubModuleView">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.BlockingSubModuleView"
+            id="org.eclipse.riena.example.client.views.BlockingSubModuleView"
+            name="org.eclipse.riena.example.client.views.BlockingSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -470,6 +477,12 @@
             typeId="org.eclipse.riena.example.navigate.form"
             view="org.eclipse.riena.example.client.views.NavigateSubModuleView"
             controller="org.eclipse.riena.example.client.controllers.NavigateSubModuleController">
+      </subModuleType>
+      <subModuleType
+            controller="org.eclipse.riena.example.client.controllers.BlockingSubModuleController"
+            shared="false"
+            typeId="org.eclipse.riena.example.blocking"
+            view="org.eclipse.riena.example.client.views.BlockingSubModuleView">
       </subModuleType>
    </extension> 
 </plugin>

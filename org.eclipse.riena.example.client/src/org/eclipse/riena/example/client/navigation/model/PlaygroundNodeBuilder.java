@@ -87,6 +87,10 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 				"org.eclipse.riena.example.statusLine"), "Statusline"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(statusLineSubModule);
 
+		ISubModuleNode blockingSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.blocking"), "Blocking"); //$NON-NLS-1$ //$NON-NLS-2$
+		playgroundModule.addChild(blockingSubModule);
+
 		return moduleGroup;
 	}
 
