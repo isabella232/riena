@@ -16,12 +16,13 @@ import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodeTypeDefiniton;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleTypeDefinition;
 import org.eclipse.riena.navigation.ITypeDefinition;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.osgi.service.log.LogService;
 
@@ -61,11 +62,11 @@ public class PresentationProviderService implements IPresentationProviderService
 
 	/**
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	@SuppressWarnings("unchecked")
-	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
+	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
@@ -98,7 +99,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @param builder
 	 */
-	protected void prepareNavigationNodeBuilder(INavigationNodeId targetId, INavigationNodeBuilder builder) {
+	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationNodeBuilder builder) {
 		// can be overwritten by subclass
 	}
 
@@ -124,7 +125,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @return
 	 */
-	protected INavigationNodeTypeDefiniton getNavigationNodeTypeDefinition(INavigationNodeId targetId) {
+	protected INavigationNodeTypeDefiniton getNavigationNodeTypeDefinition(NavigationNodeId targetId) {
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
@@ -155,7 +156,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @param targetId
 	 * @return
 	 */
-	protected INavigationNode<?> findNode(INavigationNode<?> node, INavigationNodeId targetId) {
+	protected INavigationNode<?> findNode(INavigationNode<?> node, NavigationNodeId targetId) {
 		if (targetId == null) {
 			return null;
 		}
@@ -176,9 +177,9 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * view id for the given navigationNodeId
 	 * 
 	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createView
-	 *      (org.eclipse.riena.navigation.INavigationNodeId)
+	 *      (org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public Object provideView(INavigationNodeId nodeId) {
+	public Object provideView(NavigationNodeId nodeId) {
 		ISubModuleTypeDefinition subModuleTypeDefinition = getSubModuleTypeDefinition(nodeId.getTypeId());
 		if (subModuleTypeDefinition != null) {
 			return subModuleTypeDefinition.getView();
@@ -202,9 +203,9 @@ public class PresentationProviderService implements IPresentationProviderService
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#isViewShared(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#isViewShared(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public boolean isViewShared(INavigationNodeId targetId) {
+	public boolean isViewShared(NavigationNodeId targetId) {
 		ISubModuleTypeDefinition subModuleTypeDefinition = getSubModuleTypeDefinition(targetId.getTypeId());
 
 		if (subModuleTypeDefinition != null) {

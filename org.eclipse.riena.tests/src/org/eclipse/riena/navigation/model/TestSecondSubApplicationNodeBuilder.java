@@ -12,17 +12,17 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 
 public class TestSecondSubApplicationNodeBuilder implements INavigationNodeBuilder {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(INavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId);
 		return subApplication;
 	}

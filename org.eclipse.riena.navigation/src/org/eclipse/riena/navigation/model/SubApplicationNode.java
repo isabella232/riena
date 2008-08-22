@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 
@@ -36,7 +36,7 @@ public class SubApplicationNode extends
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public SubApplicationNode(INavigationNodeId nodeId) {
+	public SubApplicationNode(NavigationNodeId nodeId) {
 		super(nodeId);
 	}
 
@@ -49,7 +49,7 @@ public class SubApplicationNode extends
 	 *            Label of the sub application displayed on the sub applications
 	 *            tab.
 	 */
-	public SubApplicationNode(INavigationNodeId nodeId, String label) {
+	public SubApplicationNode(NavigationNodeId nodeId, String label) {
 		super(nodeId, label);
 	}
 

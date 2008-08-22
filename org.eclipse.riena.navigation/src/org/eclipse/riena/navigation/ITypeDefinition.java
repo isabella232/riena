@@ -17,7 +17,7 @@ public interface ITypeDefinition {
 
 	/**
 	 * @return The type part of the ID of a navigation node.
-	 * @see INavigationNodeId#getTypeId()
+	 * @see NavigationNodeId#getTypeId()
 	 */
 	String getTypeId();
 }

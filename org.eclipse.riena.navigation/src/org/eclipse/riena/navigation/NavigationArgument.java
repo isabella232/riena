@@ -14,11 +14,11 @@ package org.eclipse.riena.navigation;
  * Contains additional information for a navigation passed on to the target node
  * and/or used during its creation.
  * 
- * @see INavigationNode#navigate(INavigationNodeId, NavigationArgument)
+ * @see INavigationNode#navigate(NavigationNodeId, NavigationArgument)
  */
 public class NavigationArgument {
 	private Object argument;
-	private INavigationNodeId parentNodeId;
+	private NavigationNodeId parentNodeId;
 	private INavigationArgumentListener argumentListener;
 
 	/**
@@ -27,7 +27,7 @@ public class NavigationArgument {
 	 * @param parentNodeId
 	 */
 	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener,
-			INavigationNodeId parentNodeId) {
+			NavigationNodeId parentNodeId) {
 		super();
 		this.argument = argument;
 		this.argumentListener = argumentListener;
@@ -70,7 +70,7 @@ public class NavigationArgument {
 	/**
 	 * @return the parentNodeId
 	 */
-	public INavigationNodeId getParentNodeId() {
+	public NavigationNodeId getParentNodeId() {
 		return parentNodeId;
 	}
 
@@ -78,7 +78,7 @@ public class NavigationArgument {
 	 * @param parentNodeId
 	 *            the parentNodeId to set
 	 */
-	public void setParentNode(INavigationNodeId parentNodeId) {
+	public void setParentNode(NavigationNodeId parentNodeId) {
 		this.parentNodeId = parentNodeId;
 	}
 

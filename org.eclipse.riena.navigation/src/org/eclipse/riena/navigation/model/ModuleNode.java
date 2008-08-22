@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.IModuleNodeListener;
 
@@ -39,7 +39,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ModuleNode(INavigationNodeId nodeId) {
+	public ModuleNode(NavigationNodeId nodeId) {
 		super(nodeId);
 		initialize();
 	}
@@ -52,7 +52,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * @param label
 	 *            Label of the module displayed in the modules title bar.
 	 */
-	public ModuleNode(INavigationNodeId nodeId, String label) {
+	public ModuleNode(NavigationNodeId nodeId, String label) {
 		super(nodeId, label);
 		initialize();
 	}

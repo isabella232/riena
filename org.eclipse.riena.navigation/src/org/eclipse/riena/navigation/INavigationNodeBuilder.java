@@ -23,8 +23,8 @@ public interface INavigationNodeBuilder {
 	 * navigate(..) or create(..)-calls and a new node will be build every time.
 	 * This may be desired though.
 	 * 
-	 * @see INavigationNode#navigate(INavigationNodeId)
-	 * @see INavigationNode#create(INavigationNodeId)
+	 * @see INavigationNode#navigate(NavigationNodeId)
+	 * @see INavigationNode#create(NavigationNodeId)
 	 * @param nodeId
 	 *            The ID of the node to create.
 	 * @param navigationArgument
@@ -32,6 +32,6 @@ public interface INavigationNodeBuilder {
 	 *            be null.
 	 * @return The created node or subtree root node.
 	 */
-	INavigationNode<?> buildNode(INavigationNodeId nodeId, NavigationArgument navigationArgument);
+	INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument);
 
 }

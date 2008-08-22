@@ -15,6 +15,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.tests.RienaTestCase;
 
 /**

@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
 
 /**
@@ -36,7 +36,7 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ModuleGroupNode(INavigationNodeId nodeId) {
+	public ModuleGroupNode(NavigationNodeId nodeId) {
 		super(nodeId);
 	}
 

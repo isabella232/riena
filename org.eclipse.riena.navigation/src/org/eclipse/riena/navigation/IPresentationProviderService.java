@@ -28,7 +28,7 @@ public interface IPresentationProviderService {
 	 * @param argument
 	 * @return
 	 */
-	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
+	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument);
 
 	/**
@@ -37,7 +37,7 @@ public interface IPresentationProviderService {
 	 * 
 	 * @return the view id of the matching view
 	 */
-	Object provideView(INavigationNodeId targetId);
+	Object provideView(NavigationNodeId targetId);
 
 	/**
 	 * Returns the view controller for the work area presentation for the given
@@ -49,7 +49,7 @@ public interface IPresentationProviderService {
 	 * Return true if the specified view should be a shared view, false
 	 * otherwise
 	 */
-	boolean isViewShared(INavigationNodeId targetId);
+	boolean isViewShared(NavigationNodeId targetId);
 
 	/**
 	 * Perform some housekeeping

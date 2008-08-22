@@ -26,7 +26,7 @@ import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.IPresentation;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
@@ -49,7 +49,7 @@ import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 public abstract class NavigationNode<S extends INavigationNode<C>, C extends INavigationNode<?>, L extends INavigationNodeListener<S, C>>
 		extends TypecastingObject implements INavigationNode<C>, INavigationNodeListenerable<S, C, L> {
 
-	private INavigationNodeId nodeId;
+	private NavigationNodeId nodeId;
 	private State state;
 	private String label;
 	private String icon;
@@ -71,7 +71,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public NavigationNode(INavigationNodeId nodeId) {
+	public NavigationNode(NavigationNodeId nodeId) {
 		super();
 		setNodeId(nodeId);
 
@@ -94,7 +94,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @param pLabel
 	 *            The label of the node.
 	 */
-	public NavigationNode(INavigationNodeId nodeId, String pLabel) {
+	public NavigationNode(NavigationNodeId nodeId, String pLabel) {
 		this(nodeId);
 		setLabel(pLabel);
 	}
@@ -283,9 +283,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#findNode(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.INavigationNode#findNode(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public INavigationNode<?> findNode(INavigationNodeId nodeId) {
+	public INavigationNode<?> findNode(NavigationNodeId nodeId) {
 		if (getNodeId() != null && getNodeId().equals(nodeId)) {
 			return this;
 		}
@@ -897,24 +897,24 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#create(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.INavigationNode#create(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public void create(INavigationNodeId targetId) {
+	public void create(NavigationNodeId targetId) {
 		getNavigationProcessor().create(this, targetId);
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public void navigate(INavigationNodeId targetId) {
+	public void navigate(NavigationNodeId targetId) {
 		navigate(targetId, null);
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.INavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationNode#navigate(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public void navigate(INavigationNodeId targetId, NavigationArgument argument) {
+	public void navigate(NavigationNodeId targetId, NavigationArgument argument) {
 		getNavigationProcessor().navigate(this, targetId, argument);
 	}
 
@@ -948,14 +948,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNode#getNodeId()
 	 */
-	public INavigationNodeId getNodeId() {
+	public NavigationNodeId getNodeId() {
 		return nodeId;
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#setNodeId(org.eclipse.riena.navigation.INavigationNodeId)
+	 * @see org.eclipse.riena.navigation.INavigationNode#setNodeId(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public void setNodeId(INavigationNodeId nodeId) {
+	public void setNodeId(NavigationNodeId nodeId) {
 		this.nodeId = nodeId;
 	}
 }

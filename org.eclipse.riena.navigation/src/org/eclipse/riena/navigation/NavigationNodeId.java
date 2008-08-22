@@ -8,14 +8,13 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.model;
-
-import org.eclipse.riena.navigation.INavigationNodeId;
+package org.eclipse.riena.navigation;
 
 /**
- * ID of a navigation node.
+ * An ID that identifies a node in the application model tree. The ID is used to
+ * find navigate targets and to associated sub module nodes with their views.
  */
-public class NavigationNodeId implements INavigationNodeId {
+public class NavigationNodeId {
 
 	private String instanceId;
 	private String typeId;
@@ -31,14 +30,24 @@ public class NavigationNodeId implements INavigationNodeId {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeId#getTypeId()
+	 * Returns the type of a node. Nodes of the same type are created using the
+	 * same node builder. Sub module nodes of the same type use the same type of
+	 * view. Both is configured using extensions (NavigationNodeType and
+	 * SubModuleType). This typeId is used to find the right extension.
+	 * 
+	 * @see INavigationNodeBuilder
+	 * @return The type ID of a navigation node.
 	 */
 	public String getTypeId() {
 		return typeId;
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeId#getInstanceId()
+	 * The optional instance ID is used to differentiate between nodes of the
+	 * same type. E.g. two nodes representing employees that have the same type
+	 * ID could use the social security number as instance ID.
+	 * 
+	 * @return The instance ID of a navigation node.
 	 */
 	public String getInstanceId() {
 		return instanceId;
@@ -49,11 +58,11 @@ public class NavigationNodeId implements INavigationNodeId {
 	 */
 	@Override
 	public boolean equals(Object other) {
-		if (other instanceof INavigationNodeId) {
+		if (other instanceof NavigationNodeId) {
 			if (!getClass().equals(other.getClass())) {
 				return false;
 			}
-			INavigationNodeId otherId = (INavigationNodeId) other;
+			NavigationNodeId otherId = (NavigationNodeId) other;
 			return equals(typeId, otherId.getTypeId()) && equals(instanceId, otherId.getInstanceId());
 		}
 		return false;

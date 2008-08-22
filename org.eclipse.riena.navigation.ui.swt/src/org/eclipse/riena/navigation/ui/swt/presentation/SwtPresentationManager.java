@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
@@ -51,7 +51,7 @@ public class SwtPresentationManager {
 	public SwtViewId getSwtViewId(INavigationNode<?> pNode) {
 		SwtViewId swtViewId = views.get(pNode);
 		if (swtViewId == null) {
-			INavigationNodeId nodeId = pNode.getNodeId();
+			NavigationNodeId nodeId = pNode.getNodeId();
 			if (nodeId != null) {
 				String viewId = (String) getPresentationProviderService().provideView(nodeId);
 				boolean isViewShared = getPresentationProviderService().isViewShared(nodeId);

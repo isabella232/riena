@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
 
@@ -33,7 +33,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public SubModuleNode(INavigationNodeId nodeId) {
+	public SubModuleNode(NavigationNodeId nodeId) {
 		super(nodeId);
 	}
 
@@ -46,7 +46,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 *            Label of the sub module displayed in the sub modules title
 	 *            bar.
 	 */
-	public SubModuleNode(INavigationNodeId nodeId, String label) {
+	public SubModuleNode(NavigationNodeId nodeId, String label) {
 		super(nodeId, label);
 	}
 

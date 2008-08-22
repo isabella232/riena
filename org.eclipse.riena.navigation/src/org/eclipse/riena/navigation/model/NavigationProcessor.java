@@ -27,7 +27,7 @@ import org.eclipse.riena.navigation.INavigationHistory;
 import org.eclipse.riena.navigation.INavigationHistoryEvent;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -176,18 +176,18 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#create(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId)
+	 *      org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public void create(INavigationNode<?> sourceNode, INavigationNodeId targetId) {
+	public void create(INavigationNode<?> sourceNode, NavigationNodeId targetId) {
 		provideNode(sourceNode, targetId, null);
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument) {
+	public void navigate(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument) {
 		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument);
 		if (targetNode == null) {
 			return;
@@ -202,7 +202,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, INavigationNodeId targetId,
+	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 		INavigationNode<?> targetNode = getPresentationDefinitionService().provideNode(sourceNode, targetId, argument);
 		return targetNode;

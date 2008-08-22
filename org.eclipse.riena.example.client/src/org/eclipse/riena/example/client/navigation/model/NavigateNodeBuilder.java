@@ -14,12 +14,12 @@ import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
-import org.eclipse.riena.navigation.model.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 
 /**
@@ -28,10 +28,10 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 public class NavigateNodeBuilder extends NavigationNodeBuilder {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.INavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?> buildNode(INavigationNodeId nodeId, NavigationArgument navigationArgument) {
+	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
 		IModuleNode module = new ModuleNode(null, "Navigate"); //$NON-NLS-1$

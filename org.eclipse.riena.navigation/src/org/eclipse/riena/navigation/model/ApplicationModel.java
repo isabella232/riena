@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
-import org.eclipse.riena.navigation.INavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.IApplicationModelListener;
 
@@ -38,7 +38,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ApplicationModel(INavigationNodeId nodeId) {
+	public ApplicationModel(NavigationNodeId nodeId) {
 		super(nodeId);
 		initializeNavigationProcessor();
 	}
@@ -52,7 +52,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 * @param label
 	 *            Label of the application displayed in the title bar.
 	 */
-	public ApplicationModel(INavigationNodeId nodeId, String label) {
+	public ApplicationModel(NavigationNodeId nodeId, String label) {
 		this(nodeId);
 		setLabel(label);
 	}

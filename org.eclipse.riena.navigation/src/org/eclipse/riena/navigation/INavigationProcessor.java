@@ -56,7 +56,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            used to create the target node if it does not exist.
 	 * @see INavigationNodeBuilder
 	 */
-	void create(INavigationNode<?> sourceNode, INavigationNodeId targetId);
+	void create(INavigationNode<?> sourceNode, NavigationNodeId targetId);
 
 	/**
 	 * Navigates from the specified source node to the specified target node.
@@ -73,14 +73,14 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 *            during its creation.
 	 * @see INavigationNodeBuilder
 	 */
-	void navigate(INavigationNode<?> sourceNode, INavigationNodeId targetId, NavigationArgument argument);
+	void navigate(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Undoes the last navigate to the specified target node i.e. activates the
 	 * last source node of a navigate(..)-call that lead to the activation of
 	 * the target node.
 	 * 
-	 * @see #navigate(INavigationNode, INavigationNodeId, NavigationArgument)
+	 * @see #navigate(INavigationNode, NavigationNodeId, NavigationArgument)
 	 */
 	void navigateBack(INavigationNode<?> targetNode);
 }

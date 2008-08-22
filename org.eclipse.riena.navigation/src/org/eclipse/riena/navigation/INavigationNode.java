@@ -203,7 +203,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @return A node with the specified ID that is either this node or a
 	 *         descendant of this node or null if no such node exists
 	 */
-	INavigationNode<?> findNode(INavigationNodeId nodeId);
+	INavigationNode<?> findNode(NavigationNodeId nodeId);
 
 	/**
 	 * @param pChild
@@ -395,10 +395,10 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * targets in the application model tree and to associated sub module nodes
 	 * with their views.
 	 * 
-	 * @see #navigate(INavigationNodeId)
+	 * @see #navigate(NavigationNodeId)
 	 * @return The ID that identifies the node in the application model tree.
 	 */
-	INavigationNodeId getNodeId();
+	NavigationNodeId getNodeId();
 
 	/**
 	 * Sets the ID of the node.
@@ -406,7 +406,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @param nodeId
 	 *            The ID that identifies the node in the application model tree.
 	 */
-	void setNodeId(INavigationNodeId nodeId);
+	void setNodeId(NavigationNodeId nodeId);
 
 	/**
 	 * Creates the specified navigation node and adds it to the application
@@ -418,7 +418,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            does not exist.
 	 * @see INavigationNodeBuilder
 	 */
-	void create(INavigationNodeId targetId);
+	void create(NavigationNodeId targetId);
 
 	/**
 	 * Creates the specified navigation node (if it does not already exist) and
@@ -430,7 +430,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            it does not exist.
 	 * @see INavigationNodeBuilder
 	 */
-	void navigate(INavigationNodeId targetId);
+	void navigate(NavigationNodeId targetId);
 
 	/**
 	 * Creates the specified navigation node (if it does not already exist) and
@@ -445,13 +445,13 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            Contains information passed on to the target node and/or used
 	 *            during its creation.
 	 */
-	void navigate(INavigationNodeId targetId, NavigationArgument argument);
+	void navigate(NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Undoes the last navigate to this node i.e. activates the last source node
 	 * of a navigate(..)-call that lead to the activation of this node.
 	 * 
-	 * @see #navigate(INavigationNodeId)
+	 * @see #navigate(NavigationNodeId)
 	 */
 	void navigateBack();
 

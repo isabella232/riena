@@ -11,7 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.NavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;

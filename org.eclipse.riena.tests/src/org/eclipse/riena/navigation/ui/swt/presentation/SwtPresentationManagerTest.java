@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.presentation;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.NavigationNodeId;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.tests.RienaTestCase;
 
