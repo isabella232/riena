@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.rcpmail;
 
-import org.eclipse.riena.ui.ridgets.swt.SwtBindingDelegate;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -20,20 +20,20 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 
 public class NavigationView extends ViewPart {
-	public static final String ID = "org.eclipse.riena.sample.app.client.rcpmail.navigationView";
-	
-	private SwtBindingDelegate delegate = new SwtBindingDelegate();
+	public static final String ID = "org.eclipse.riena.sample.app.client.rcpmail.navigationView"; //$NON-NLS-1$
+
+	private DefaultSwtBindingDelegate delegate = new DefaultSwtBindingDelegate();
 	private IController controller = new NavigationViewController();
 	private Tree tree;
 
 	/**
-     * This is a callback that will allow us to create the viewer and initialize
-     * it.
-     */
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
+	 */
 	public void createPartControl(Composite parent) {
 		tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		delegate.addUIControl(tree, "tree");
-		
+		delegate.addUIControl(tree, "tree"); //$NON-NLS-1$
+
 		delegate.injectAndBind(controller);
 		parent.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

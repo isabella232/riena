@@ -20,34 +20,31 @@ import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
  */
 public class NavigationViewController extends AbstractRidgetController {
 
-	public void afterBind() {
-		ITreeRidget tree = (ITreeRidget) getRidget("tree");
-		tree.bindToModel(createDummyModel(), 
-				         ITreeNode.class, 
-				         ITreeNode.PROPERTY_CHILDREN, 
-				         ITreeNode.PROPERTY_PARENT, 
-				         ITreeNode.PROPERTY_VALUE);
+	@Override
+	public void configureRidgets() {
+		ITreeRidget tree = (ITreeRidget) getRidget("tree"); //$NON-NLS-1$
+		tree.bindToModel(createDummyModel(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE);
 		tree.updateFromModel();
 	}
-	
+
 	// helping methods
-	//////////////////
-	
-    /**
-     * We will set up a dummy model to initialize tree heararchy. In real
-     * code, you will connect to a real model.
-     * TODO [ev] more docs
-     */
-    private ITreeNode[] createDummyModel() {
-    	TreeNode root1 = new TreeNode("me@this.com");
-    	new TreeNode(root1, "Inbox");
-    	new TreeNode(root1, "Drafts");
-    	new TreeNode(root1, "Sent");
+	// ////////////////
 
-        TreeNode root2 = new TreeNode("other@aol.com");
-        new TreeNode(root2, "Inbox");
+	/**
+	 * We will set up a dummy model to initialize tree heararchy. In real code,
+	 * you will connect to a real model. TODO [ev] more docs
+	 */
+	private ITreeNode[] createDummyModel() {
+		TreeNode root1 = new TreeNode("me@this.com"); //$NON-NLS-1$
+		new TreeNode(root1, "Inbox"); //$NON-NLS-1$
+		new TreeNode(root1, "Drafts"); //$NON-NLS-1$
+		new TreeNode(root1, "Sent"); //$NON-NLS-1$
 
-        return new ITreeNode[] { root1, root2 };
-    }
+		TreeNode root2 = new TreeNode("other@aol.com"); //$NON-NLS-1$
+		new TreeNode(root2, "Inbox"); //$NON-NLS-1$
+
+		return new ITreeNode[] { root1, root2 };
+	}
 
 }

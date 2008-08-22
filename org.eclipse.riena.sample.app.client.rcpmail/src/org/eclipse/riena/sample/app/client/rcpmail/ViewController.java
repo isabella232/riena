@@ -20,62 +20,72 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
  */
 public class ViewController extends AbstractRidgetController {
 
+	/**
+	 * TODO [ev] docs
+	 */
 	private static class MailMessage {
-		private String subject = "This a message about the cool Eclipse RCP!";
-		private String from = "nicole@mail.org";
-		private String date = "10:34 am";
-		private String message = "This RCP Application was generated from the PDE Plug-in Project wizard. This sample shows how to:\n"+
-		"- add a top-level menu and toolbar with actions\n"+
-		"- add keybindings to actions\n" +
-		"- create views that can't be closed and\n"+
-		"  multiple instances of the same view\n"+
-		"- perspectives with placeholders for new views\n"+
-		"- use the default about dialog\n"+
-		"- create a product definition\n";
-		
+		private String subject = "This a message about the cool Eclipse RCP!"; //$NON-NLS-1$
+		private String from = "nicole@mail.org"; //$NON-NLS-1$
+		private String date = "10:34 am"; //$NON-NLS-1$
+		private String message = "This RCP Application was generated from the PDE Plug-in Project wizard. This sample shows how to:\n" + //$NON-NLS-1$
+				"- add a top-level menu and toolbar with actions\n" + //$NON-NLS-1$
+				"- add keybindings to actions\n" + //$NON-NLS-1$
+				"- create views that can't be closed and\n" + //$NON-NLS-1$
+				"  multiple instances of the same view\n" + //$NON-NLS-1$
+				"- perspectives with placeholders for new views\n" + //$NON-NLS-1$
+				"- use the default about dialog\n" + //$NON-NLS-1$
+				"- create a product definition\n"; //$NON-NLS-1$
+
 		public String getDate() {
 			return date;
 		}
+
 		public String getFrom() {
 			return from;
 		}
+
 		public String getMessage() {
 			return message;
 		}
+
 		public String getSubject() {
 			return subject;
 		}
+
 		public void setDate(String date) {
 			this.date = date;
 		}
+
 		public void setFrom(String from) {
 			this.from = from;
 		}
+
 		public void setMessage(String message) {
 			this.message = message;
 		}
+
 		public void setSubject(String subject) {
 			this.subject = subject;
 		}
 	}
-	
+
 	private MailMessage message = new MailMessage();
-	
-	public void afterBind() {
-		ILabelRidget lblSubject = (ILabelRidget) getRidget("subject");
-		lblSubject.bindToModel(PojoObservables.observeValue(message, "subject"));
+
+	public void configureRidgets() {
+		ILabelRidget lblSubject = (ILabelRidget) getRidget("subject"); //$NON-NLS-1$
+		lblSubject.bindToModel(PojoObservables.observeValue(message, "subject")); //$NON-NLS-1$
 		lblSubject.updateFromModel();
-		
-		ILabelRidget lblFrom = (ILabelRidget) getRidget("from");
-		lblFrom.bindToModel(PojoObservables.observeValue(message, "from"));
+
+		ILabelRidget lblFrom = (ILabelRidget) getRidget("from"); //$NON-NLS-1$
+		lblFrom.bindToModel(PojoObservables.observeValue(message, "from")); //$NON-NLS-1$
 		lblFrom.updateFromModel();
-		
-		ILabelRidget lblDate = (ILabelRidget) getRidget("date");
-		lblDate.bindToModel(PojoObservables.observeValue(message, "date"));
+
+		ILabelRidget lblDate = (ILabelRidget) getRidget("date"); //$NON-NLS-1$
+		lblDate.bindToModel(PojoObservables.observeValue(message, "date")); //$NON-NLS-1$
 		lblDate.updateFromModel();
-		
-		ITextFieldRidget txtMessage = (ITextFieldRidget) getRidget("message");
-		txtMessage.bindToModel(PojoObservables.observeValue(message, "message"));
+
+		ITextFieldRidget txtMessage = (ITextFieldRidget) getRidget("message"); //$NON-NLS-1$
+		txtMessage.bindToModel(PojoObservables.observeValue(message, "message")); //$NON-NLS-1$
 		txtMessage.setOutputOnly(true);
 		txtMessage.updateFromModel();
 	}

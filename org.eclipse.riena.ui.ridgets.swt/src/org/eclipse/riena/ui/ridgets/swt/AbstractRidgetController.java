@@ -34,6 +34,10 @@ public abstract class AbstractRidgetController implements IController {
 		map.put(id, ridget);
 	}
 
+	public final void afterBind() {
+		// does nothing and is not called automatically
+	}
+
 	public final IRidget getRidget(String id) {
 		return map.get(id);
 	}
@@ -41,15 +45,13 @@ public abstract class AbstractRidgetController implements IController {
 	public final Collection<? extends IRidget> getRidgets() {
 		return Collections.unmodifiableCollection(map.values());
 	}
-	
-	public void configureRidgets() {
-		// does nothing, children may overide
-	}
-	
+
+	public abstract void configureRidgets();
+
 	public boolean isBlocked() {
 		return isBlocked;
 	}
-	
+
 	public void setBlocked(boolean blocked) {
 		isBlocked = blocked;
 	}
