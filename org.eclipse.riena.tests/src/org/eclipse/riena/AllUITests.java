@@ -15,14 +15,18 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Tests all test cases within this bundle
+ * Tests all test cases within this bundle related to UI
  */
-public class AllTests extends TestCase {
-
+public class AllUITests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTest(AllNonUITests.suite());
-		suite.addTest(AllUITests.suite());
+		suite.addTest(org.eclipse.riena.navigation.ui.AllTests.suite());
+		suite.addTest(org.eclipse.riena.navigation.ui.swt.AllTests.suite());
+		suite.addTest(org.eclipse.riena.internal.ui.ridgets.swt.AllTests.suite());
+		suite.addTest(org.eclipse.riena.ui.ridgets.AllTests.suite());
+		suite.addTest(org.eclipse.riena.ui.ridgets.marker.AllTests.suite());
+		suite.addTest(org.eclipse.riena.ui.swt.AllTests.suite());
 		return suite;
 	}
+
 }

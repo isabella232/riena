@@ -15,14 +15,21 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Tests all test cases within this bundle
+ * Tests all test cases within this bundle NOT related to UI
  */
-public class AllTests extends TestCase {
-
+public class AllNonUITests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTest(AllNonUITests.suite());
-		suite.addTest(AllUITests.suite());
+		suite.addTest(org.eclipse.riena.communication.core.AllTests.suite());
+		suite.addTest(org.eclipse.riena.communication.core.ssl.AllTests.suite());
+		suite.addTest(org.eclipse.riena.communication.core.attachment.AllTests.suite());
+		suite.addTest(org.eclipse.riena.core.AllTests.suite());
+		suite.addTest(org.eclipse.riena.exceptionmanager.AllTests.suite());
+		suite.addTest(org.eclipse.riena.security.AllTests.suite());
+		suite.addTest(org.eclipse.riena.objecttransaction.AllTests.suite());
+		suite.addTest(org.eclipse.riena.navigation.AllTests.suite());
+		suite.addTest(org.eclipse.riena.core.util.AllTests.suite());
 		return suite;
 	}
+
 }
