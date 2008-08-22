@@ -152,10 +152,10 @@ public class UiProcessWindow extends ApplicationWindow implements IUIProcessWind
 		open();
 	}
 
-	// @Override
-	// protected int getShellStyle() {
-	// return SWT.TOOL | SWT.CLOSE | SWT.APPLICATION_MODAL;
-	// }
+	@Override
+	protected int getShellStyle() {
+		return SWT.CLOSE;
+	}
 
 	@Override
 	protected boolean showTopSeperator() {
