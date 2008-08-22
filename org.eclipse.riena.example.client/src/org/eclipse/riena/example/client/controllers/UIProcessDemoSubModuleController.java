@@ -69,8 +69,9 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 			public boolean runJob(IProgressMonitor monitor) {
 				try {
 					Thread.sleep(4000);
-				} catch (InterruptedException e1) {
-
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					e.printStackTrace();
 				}
 				for (int i = 0; i <= 10; i++) {
 					if (monitor.isCanceled()) {
@@ -80,6 +81,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
 						e.printStackTrace();
 					}
 					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -112,8 +114,9 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 							e.printStackTrace();
 						}
 						monitor.worked(i);
-						if (monitor.isCanceled())
+						if (monitor.isCanceled()) {
 							return Status.CANCEL_STATUS;
+						}
 					}
 				} finally {
 					monitor.done();

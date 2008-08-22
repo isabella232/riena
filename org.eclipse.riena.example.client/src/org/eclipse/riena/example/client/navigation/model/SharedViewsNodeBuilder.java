@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.application.IExampleIcons;
+import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -32,7 +32,7 @@ public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 
 		IModuleNode sharedViewModule = new ModuleNode(null, "Shared View Demo"); //$NON-NLS-1$
-		sharedViewModule.setIcon(createIconPath(IExampleIcons.ICON_SAMPLE));
+		sharedViewModule.setIcon(createIconPath(ExampleIcons.ICON_SAMPLE));
 		moduleGroup.addChild(sharedViewModule);
 
 		ISubModuleNode sharedViewSm1 = new SubModuleNode(new NavigationNodeId(

@@ -177,11 +177,11 @@ public class ChoiceSubModuleController extends SubModuleController {
 			if (model != null) {
 				price += 100000;
 			}
-			price += options.size() * 25000;
+			price += ((long) options.size()) * 25000L;
 			if (warranty == CarWarranties.EXTENDED) {
 				price += 10000;
 			}
-			price += plates.size() * 200;
+			price += ((long) plates.size()) * 200L;
 			return price;
 		}
 	}

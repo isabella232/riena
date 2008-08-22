@@ -18,7 +18,7 @@ import org.eclipse.riena.ui.ridgets.util.beans.Person;
 /**
  * Creates a collection of persons.
  */
-public class PersonFactory {
+public final class PersonFactory {
 
 	private PersonFactory() {
 		// prevent instantation

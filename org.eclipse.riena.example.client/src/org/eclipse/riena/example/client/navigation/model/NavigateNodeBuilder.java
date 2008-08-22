@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.application.IExampleIcons;
+import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -35,7 +35,7 @@ public class NavigateNodeBuilder extends NavigationNodeBuilder {
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
 		IModuleNode module = new ModuleNode(null, "Navigate"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_GREEN_LED));
+		module.setIcon(createIconPath(ExampleIcons.ICON_GREEN_LED));
 		moduleGroup.addChild(module);
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$

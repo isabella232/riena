@@ -85,7 +85,7 @@ public class FocusableSubModuleController extends SubModuleController {
 	// helping classes
 	// ////////////////
 
-	private static class ChangeFocusableCallback implements IActionListener {
+	private static final class ChangeFocusableCallback implements IActionListener {
 		private final IToggleButtonRidget buttonCheck;
 		private final ITextFieldRidget textRidget;
 

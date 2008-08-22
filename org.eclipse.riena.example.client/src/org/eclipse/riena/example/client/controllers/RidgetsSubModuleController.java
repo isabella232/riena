@@ -77,7 +77,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 	/**
 	 * The model of this sub module controller.
 	 */
-	private class RidgetsModel {
+	private static class RidgetsModel {
 
 		private boolean toggleOneSelected;
 		private boolean checkOneSelected;

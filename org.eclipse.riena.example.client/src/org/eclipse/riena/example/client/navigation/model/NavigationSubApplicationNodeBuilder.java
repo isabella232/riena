@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
-import org.eclipse.riena.example.client.application.IExampleIcons;
+import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -36,18 +36,18 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Navigation"); //$NON-NLS-1$
-		subApplication.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
+		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "subapplication.1"); //$NON-NLS-1$
 		subApplication.setSelected(true);
 
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
 		subApplication.addChild(moduleGroup);
 		IModuleNode module = new ModuleNode(null, "Module 1.1.1"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_APPLICATION));
+		module.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 		moduleGroup.addChild(module);
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setIcon(createIconPath(IExampleIcons.ICON_FILE));
+		subModule.setIcon(createIconPath(ExampleIcons.ICON_FILE));
 		module.addChild(subModule);
 
 		ISubModuleNode subModule2 = new SubModuleNode(
@@ -58,7 +58,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.2"); //$NON-NLS-1$ //$NON-NLS-2$
 		module.addChild(subModule);
 		module = new ModuleNode(null, "Module 1.1.2 (closeable)"); //$NON-NLS-1$
-		module.setIcon(createIconPath(IExampleIcons.ICON_HOMEFOLDER));
+		module.setIcon(createIconPath(ExampleIcons.ICON_HOMEFOLDER));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.2.1"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -72,7 +72,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		subApplication.addChild(moduleGroup);
 		module = new ModuleNode(null, "Module 1.2.1 (not closeable)"); //$NON-NLS-1$
 		module.setCloseable(false);
-		module.setIcon(createIconPath(IExampleIcons.ICON_RED_LED));
+		module.setIcon(createIconPath(ExampleIcons.ICON_RED_LED));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.2.1.1"); //$NON-NLS-1$ //$NON-NLS-2$

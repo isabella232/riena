@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public final class UIControlsFactory {
 
-	private static Color SHARED_BG_COLOR;
+	private static final Color SHARED_BG_COLOR;
 
 	static {
 		SHARED_BG_COLOR = LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND);

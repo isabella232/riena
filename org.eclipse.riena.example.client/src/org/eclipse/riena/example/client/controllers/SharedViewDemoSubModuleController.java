@@ -46,7 +46,7 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		}
 	}
 
-	private class TxtBean {
+	private static class TxtBean {
 		private String txt;
 		private String name;
 

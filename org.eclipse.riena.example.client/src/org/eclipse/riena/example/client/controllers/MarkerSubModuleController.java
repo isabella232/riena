@@ -135,7 +135,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IActionRidget buttonPush = (IActionRidget) getRidget("buttonPush"); //$NON-NLS-1$
 		buttonPush.setText("Push Me"); //$NON-NLS-1$
 
-		final IMarkableRidget markables[] = new IMarkableRidget[] { textName, textPrice, comboAge, radioRed,
+		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, radioRed,
 				radioWhite, radioRose, choiceType, checkDry, checkSweet, checkSour, checkSpicy, choiceFlavor,
 				listPersons, tablePersons, treePersons, treePersonsWCols, buttonToggle, buttonPush };
 

@@ -38,7 +38,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 		WARNING("Warning"), //$NON-NLS-1$
 		ERROR("Error"); //$NON-NLS-1$
 
-		String text;
+		private final String text;
 
 		Severity(String text) {
 			this.text = text;
@@ -223,7 +223,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 	/**
 	 * THe model of the sub-module.
 	 */
-	public class StatuslineModel {
+	public static class StatuslineModel {
 
 		private String messageText;
 		private String numberText;
