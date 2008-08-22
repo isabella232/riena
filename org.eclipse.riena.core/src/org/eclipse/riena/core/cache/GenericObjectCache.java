@@ -25,6 +25,8 @@ import org.osgi.service.log.LogService;
 /**
  * Class implements a generic object cache.
  * 
+ * TODO Check empty try-catch blocks
+ * 
  * @author Christian Campo
  */
 public class GenericObjectCache implements IGenericObjectCache {
