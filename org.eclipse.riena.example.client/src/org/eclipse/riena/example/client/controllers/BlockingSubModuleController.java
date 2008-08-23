@@ -12,6 +12,7 @@ package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -23,6 +24,14 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 public class BlockingSubModuleController extends SubModuleController {
 
 	public static final String RIDGET_BLOCK_SUB_MODULE = "blockSubModule"; //$NON-NLS-1$
+
+	public BlockingSubModuleController() {
+		super();
+	}
+
+	public BlockingSubModuleController(ISubModuleNode navigationNode) {
+		super(navigationNode);
+	}
 
 	@Override
 	public void configureRidgets() {
