@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -39,14 +40,13 @@ public class SubModuleViewTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
+
 		ApplicationModel appModel = new ApplicationModel();
 		SubApplicationNode subAppNode = new SubApplicationNode();
 		appModel.addChild(subAppNode);
 		ModuleGroupNode mgNode = new ModuleGroupNode(null);
 		subAppNode.addChild(mgNode);
-		IModuleNode parent = new ModuleNode(null, "TestModuleLabel") {
-
-		};
+		IModuleNode parent = new ModuleNode(null, "TestModuleLabel");
 		mgNode.addChild(parent);
 
 		subModuleNodeView = new TestView();
@@ -54,7 +54,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		parent.setPresentation(new ModuleController(parent));
 		parent.addChild(node);
 		subModuleNodeView.createPartControl(new Shell());
-		// node.activate(); Bug after refactoring
+		node.activate();
 	}
 
 	public void testCreateController() throws Exception {
@@ -63,18 +63,16 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
 
-	// public void testBlocking() {
-	// node.setBlocked(true);
-	// Composite parentComposite =
-	// ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
-	// Composite contentComposite =
-	// ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
-	// assertFalse(contentComposite.isEnabled());
-	// assertSame(waitCursor, parentComposite.getCursor());
-	// node.setBlocked(false);
-	// assertTrue(contentComposite.isEnabled());
-	// assertSame(arrowCursor, parentComposite.getCursor());
-	// }
+	public void testBlocking() {
+		node.setBlocked(true);
+		Composite parentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
+		Composite contentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
+		assertFalse(contentComposite.isEnabled());
+		assertSame(waitCursor, parentComposite.getCursor());
+		node.setBlocked(false);
+		assertTrue(contentComposite.isEnabled());
+		assertSame(arrowCursor, parentComposite.getCursor());
+	}
 
 	private Cursor waitCursor;
 	private Cursor arrowCursor;
