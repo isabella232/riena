@@ -16,12 +16,14 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 
 /**
- * TODO [ev] docs
+ * Ridget controller used by the {@link View}.
+ * 
+ * @see View
  */
 public class ViewController extends AbstractRidgetController {
 
 	/**
-	 * TODO [ev] docs
+	 * Mock object holding the data of a single message.
 	 */
 	private static class MailMessage {
 		private String subject = "This a message about the cool Eclipse RCP!"; //$NON-NLS-1$

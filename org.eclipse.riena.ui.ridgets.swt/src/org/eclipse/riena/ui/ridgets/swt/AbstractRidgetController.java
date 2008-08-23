@@ -16,10 +16,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
- * TODO [ev] docs
+ * Controller for using ridgets in a regular SWT view.
+ * <p>
+ * Your controller will receive its ridgets from a binding delegate. Your
+ * subclass must implement the {@link #configureRidgets()} method. References to
+ * your ridgets can obtained using {@link #getRidget(String)}.
+ * </p>
+ * Here's an example showing how this class is used in a <b>regular</b>
+ * ViewPart:
+ * 
+ * <pre>
+ * tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+ * delegate.addUIControl(tree, &quot;tree&quot;); // DefaultSwtBindingDelegate delegate
+ * 
+ * delegate.injectAndBind(controller);
+ * parent.addDisposeListener(new DisposeListener() {
+ * 	public void widgetDisposed(DisposeEvent e) {
+ * 		delegate.unbind(controller);
+ * 	}
+ * });
+ * </pre>
+ * 
+ * And here's the corresponding controller:
+ * 
+ * <pre>
+ * public class NavigationViewController extends AbstractRidgetController {
+ * 	public void configureRidgets() {
+ * 		ITreeRidget tree = (ITreeRidget) getRidget(&quot;tree&quot;);
+ * 		// ...
+ * 	}
+ * }
+ * </pre>
+ * 
+ * If you use the Riena UI / Navigation you should look at the classes
+ * SubModuleController and SubModuleView (and their subclasses) instead.
+ * 
+ * @see DefaultSwtBindingDelegate
  */
 public abstract class AbstractRidgetController implements IController {
 

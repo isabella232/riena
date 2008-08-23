@@ -153,7 +153,11 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 	// //////////////////
 
 	/**
-	 * TODO [ev] docs
+	 * Iterates over the MandatoryMarker instances held by this ridget changing
+	 * their disabled state to given value.
+	 * 
+	 * @param disable
+	 *            the new disabled state
 	 */
 	protected final void disableMandatoryMarkers(boolean disable) {
 		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {

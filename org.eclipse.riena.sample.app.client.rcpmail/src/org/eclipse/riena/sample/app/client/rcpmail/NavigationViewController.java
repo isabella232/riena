@@ -16,7 +16,9 @@ import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 
 /**
- * TODO [ev] docs
+ * Ridget controller used by the {@link NavigationView}.
+ * 
+ * @see NavigationView
  */
 public class NavigationViewController extends AbstractRidgetController {
 
@@ -32,8 +34,12 @@ public class NavigationViewController extends AbstractRidgetController {
 	// ////////////////
 
 	/**
-	 * We will set up a dummy model to initialize tree heararchy. In real code,
-	 * you will connect to a real model. TODO [ev] more docs
+	 * We set up a dummy model to show in the tree ridget. In real code, we
+	 * would use a real model. The tree ridget can bind to any bean that
+	 * satisfies the properties required by
+	 * {@link ITreeRidget#bindToModel(Object[], Class, String, String, String)}.
+	 * 
+	 * @return an ITreeNode[] instance; never null
 	 */
 	private ITreeNode[] createDummyModel() {
 		TreeNode root1 = new TreeNode("me@this.com"); //$NON-NLS-1$

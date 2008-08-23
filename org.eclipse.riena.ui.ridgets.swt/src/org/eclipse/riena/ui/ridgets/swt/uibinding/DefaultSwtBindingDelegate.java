@@ -10,12 +10,34 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
+import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * TODO [ev] docs
+ * This class is responsible for managing a list of SWT widgets, creating
+ * appropriate ridgets for them and passing those ridgets to a given controller.
+ * <p>
+ * Here's an example of how to use this class to create ridgets for your widgets
+ * in a <b>regular</b> ViewPart.
+ * 
+ * <pre>
+ * tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+ * delegate.addUIControl(tree, &quot;tree&quot;);
+ * 
+ * delegate.injectAndBind(controller);
+ * parent.addDisposeListener(new DisposeListener() {
+ * 	public void widgetDisposed(DisposeEvent e) {
+ * 		delegate.unbind(controller);
+ * 	}
+ * });
+ * </pre>
+ * 
+ * If you use the Riena UI / Navigation you should look at the classes
+ * SubModuleController and SubModuleView (and their subclasses) instead.
+ * 
+ * @see AbstractRidgetController
  */
 public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 

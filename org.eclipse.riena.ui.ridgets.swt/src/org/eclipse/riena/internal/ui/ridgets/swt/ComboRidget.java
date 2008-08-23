@@ -39,14 +39,18 @@ import org.eclipse.swt.widgets.Combo;
  */
 public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidget {
 
-	// TODO [ev] docs and comments
-
-	/** List of choices (Objects) */
+	/** List of choices (Objects). */
 	private final IObservableList rowObservables;
-	/** The current selection */
+	/** An observable with the current selection. */
 	private final IObservableValue selectionObservable;
+	/**
+	 * Converts from objects (rowObsservables) to strings (Combo) using the
+	 * renderingMethod.
+	 */
 	private final Converter objToStrConverter;
+	/** Convers from strings (Combo) to objects (rowObservables). */
 	private final Converter strToObjConverter;
+	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
 
 	/** If this item is selected, treat it as if nothing is selected */
@@ -59,9 +63,25 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	/** A string used for converting from Object to String */
 	private String renderingMethod;
 
+	/**
+	 * Binding between the list of choices in the combo and the rowObservables.
+	 * May be null, when there is no control or model.
+	 */
 	private Binding listBindingInternal;
+	/**
+	 * Binding between the rowObservables and the list of choices from the
+	 * model. May be null, when there is no model.
+	 */
 	private Binding listBindingExternal;
+	/**
+	 * Binding between the selection in the combo and the selectionObservable.
+	 * May be null, when there is no control or model.
+	 */
 	private Binding selectionBindingInternal;
+	/**
+	 * Binding between the selectionObservable and the selection in the model.
+	 * May be null, when there is no model.
+	 */
 	private Binding selectionBindingExternal;
 
 	public ComboRidget() {
@@ -101,8 +121,10 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	protected void bindUIControl() {
 		Combo control = getUIControl();
 		if (rowObservablesModel != null) {
+			// These binding are only necessary when we have a model
 			DataBindingContext dbc = new DataBindingContext();
 			if (control != null) {
+				// These bindings are only necessary when we have a Combo
 				listBindingInternal = dbc.bindList(SWTObservables.observeItems(control), rowObservables,
 						new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE).setConverter(strToObjConverter),
 						new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST).setConverter(objToStrConverter));
@@ -139,6 +161,8 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
+		// "internal" bindings may be null when we are unbound (no control).
+		// Therefore we need to check against null
 		if (listBindingInternal != null) {
 			if (listBindingInternal.getModel() instanceof UnboundPropertyWritableList) {
 				((UnboundPropertyWritableList) listBindingInternal.getModel()).updateFromBean();
