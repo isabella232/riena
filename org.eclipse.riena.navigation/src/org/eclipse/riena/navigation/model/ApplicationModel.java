@@ -12,8 +12,8 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.IApplicationModelListener;
 
 /**
@@ -29,6 +29,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 */
 	public ApplicationModel() {
 		super(null);
+		initializeNavigationProcessor();
 	}
 
 	/**
