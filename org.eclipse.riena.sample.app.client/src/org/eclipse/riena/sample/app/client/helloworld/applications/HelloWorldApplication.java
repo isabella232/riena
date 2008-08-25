@@ -27,6 +27,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAc
 import org.eclipse.riena.sample.app.client.helloworld.views.CustomerSearchSubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.views.HelloServerSubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.views.HelloWorldSubModuleView;
+
 import org.osgi.framework.Bundle;
 
 /**
@@ -49,49 +50,49 @@ public class HelloWorldApplication extends SwtApplication {
 
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		application = new ApplicationModel(null, "Hello World Application");
-		ISubApplicationNode subApplication = new SubApplicationNode(null, "Riena Samples");
+		application = new ApplicationModel("Hello World Application");
+		ISubApplicationNode subApplication = new SubApplicationNode("Riena Samples");
 		presentation.present(subApplication, "helloWorldSubApplication");
 		application.addChild(subApplication);
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
+		IModuleGroupNode moduleGroup = new ModuleGroupNode();
 		subApplication.addChild(moduleGroup);
 
 		// simple hello world
-		IModuleNode helloWorldModule = new ModuleNode(null, "Hello World");
+		IModuleNode helloWorldModule = new ModuleNode("Hello World");
 		moduleGroup.addChild(helloWorldModule);
 
-		ISubModuleNode helloWorldSubModule = new SubModuleNode(null, "Hello World");
+		ISubModuleNode helloWorldSubModule = new SubModuleNode("Hello World");
 		presentation.registerView(HelloWorldSubModuleView.ID, false);
 		presentation.present(helloWorldSubModule, HelloWorldSubModuleView.ID);
 		helloWorldModule.addChild(helloWorldSubModule);
 
 		// hello server
 		presentation.registerView(HelloServerSubModuleView.ID, false);
-		IModuleNode helloServerModule = new ModuleNode(null, "Hello Server");
+		IModuleNode helloServerModule = new ModuleNode("Hello Server");
 		moduleGroup.addChild(helloServerModule);
 
-		ISubModuleNode helloServerSubModule = new SubModuleNode(null, "Hello Server");
+		ISubModuleNode helloServerSubModule = new SubModuleNode("Hello Server");
 		presentation.present(helloServerSubModule, HelloServerSubModuleView.ID);
 		helloServerModule.addChild(helloServerSubModule);
 
 		// customer search sample
 		presentation.registerView(CustomerSearchSubModuleView.ID, false);
-		IModuleNode cSearchModule = new ModuleNode(null, "Customer Search");
+		IModuleNode cSearchModule = new ModuleNode("Customer Search");
 		moduleGroup.addChild(cSearchModule);
 
-		ISubModuleNode cSearchSubModule = new SubModuleNode(null, "Customer Search");
+		ISubModuleNode cSearchSubModule = new SubModuleNode("Customer Search");
 		presentation.present(cSearchSubModule, CustomerSearchSubModuleView.ID);
 		cSearchModule.addChild(cSearchSubModule);
 
-		ISubApplicationNode subApplication2 = new SubApplicationNode(null, "Simple Subapplication");
+		ISubApplicationNode subApplication2 = new SubApplicationNode("Simple Subapplication");
 		presentation.present(subApplication2, "org.eclipse.riena.sample.app.client.second");
 		application.addChild(subApplication2);
-		moduleGroup = new ModuleGroupNode(null);
+		moduleGroup = new ModuleGroupNode();
 		subApplication2.addChild(moduleGroup);
-		IModuleNode module = new ModuleNode(null, "Module 1");
+		IModuleNode module = new ModuleNode("Module 1");
 		moduleGroup.addChild(module);
-		helloWorldSubModule = new SubModuleNode(null, "Hello World");
+		helloWorldSubModule = new SubModuleNode("Hello World");
 		presentation.registerView(HelloWorldSubModuleView.ID, false);
 		presentation.present(helloWorldSubModule, HelloWorldSubModuleView.ID);
 		module.addChild(helloWorldSubModule);
