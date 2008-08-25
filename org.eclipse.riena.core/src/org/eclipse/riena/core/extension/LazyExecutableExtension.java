@@ -21,11 +21,11 @@ import org.osgi.framework.Bundle;
 /**
  * An invocation handler that lazily creates an executable extension on demand.
  */
-class LazyExecutableExtension implements InvocationHandler {
+final class LazyExecutableExtension implements InvocationHandler {
 
 	private final IConfigurationElement configurationElement;
 	private final String name;
-	private Object delegate;
+	private volatile Object delegate;
 
 	/**
 	 * @param configurationElement
@@ -34,18 +34,21 @@ class LazyExecutableExtension implements InvocationHandler {
 	 */
 	static Object newInstance(final IConfigurationElement configurationElement, final String name) {
 		final String className = configurationElement.getAttribute(name);
-		if (className == null)
+		if (className == null) {
 			return null;
+		}
 		final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
-		if (bundle == null)
+		if (bundle == null) {
 			throw new IllegalStateException("Could not resolve bundle for configuration element " //$NON-NLS-1$
 					+ configurationElement.getName());
+		}
 		try {
 			final Class<?> clazz = bundle.loadClass(className);
 			final Class<?>[] interfaces = clazz.getInterfaces();
-			if (interfaces.length == 0)
+			if (interfaces.length == 0) {
 				throw new IllegalStateException("Executable extension " + className + " within configuration element " //$NON-NLS-1$ //$NON-NLS-2$
 						+ configurationElement.getName() + " does not have any interfaces, but they are required."); //$NON-NLS-1$
+			}
 			return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new LazyExecutableExtension(
 					configurationElement, name));
 		} catch (ClassNotFoundException e) {
@@ -67,8 +70,9 @@ class LazyExecutableExtension implements InvocationHandler {
 	 */
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		synchronized (this) {
-			if (delegate == null)
+			if (delegate == null) {
 				delegate = configurationElement.createExecutableExtension(name);
+			}
 		}
 		return method.invoke(delegate, args);
 	}

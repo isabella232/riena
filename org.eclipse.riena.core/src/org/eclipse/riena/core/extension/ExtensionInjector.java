@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
@@ -36,7 +36,7 @@ public class ExtensionInjector {
 	private final ExtensionDescriptor extensionDesc;
 	private final Object target;
 
-	private BundleContext context;
+	// private BundleContext context;
 	private boolean started;
 	private boolean track = true;
 	private boolean symbolReplace = true;
@@ -47,7 +47,7 @@ public class ExtensionInjector {
 	private boolean isArray;
 	private Class<?> componentType;
 
-	private final static Logger LOGGER = new ConsoleLogger(ExtensionInjector.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ExtensionInjector.class.getName());
 
 	/**
 	 * @param extensionDesc
@@ -67,7 +67,10 @@ public class ExtensionInjector {
 	public ExtensionInjector andStart(final BundleContext context) {
 		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
 		started = true;
-		this.context = context;
+		// Currently not used (or better no longer used).
+		// However would like to keep the method signature so that it is in sync
+		// with the service injector.
+		// this.context = context;
 		updateMethod = findUpdateMethod();
 		Class<?> paramaterType = updateMethod.getParameterTypes()[0];
 		isArray = paramaterType.isArray();
@@ -79,11 +82,11 @@ public class ExtensionInjector {
 
 		if (track) {
 			IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
-			if (extensionRegistry == null)
+			if (extensionRegistry == null) {
 				// TODO Is this an error for that we should throw an exception?
 				LOGGER.log(LogService.LOG_ERROR,
 						"For some reason the extension registry has not been created. Tracking is not possible."); //$NON-NLS-1$
-			else {
+			} else {
 				injectorListener = new InjectorListener();
 				extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
 			}
@@ -144,22 +147,22 @@ public class ExtensionInjector {
 	 * Stop the extension injector.
 	 */
 	public void stop() {
-		if (!started)
+		if (!started) {
 			return;
+		}
 
 		if (track) {
 			IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
-			if (extensionRegistry == null)
+			if (extensionRegistry == null) {
 				// TODO Is this an error for that we should throw an exception?
 				LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created."); //$NON-NLS-1$
-			else
+			} else {
 				extensionRegistry.removeListener(injectorListener);
+			}
 		}
 		injectorListener = null;
 	}
 
-	/**
-	 */
 	private Method findUpdateMethod() {
 		return extensionDesc.getInterfaceType() == null ? findUpdateMethodForUnkownType()
 				: findUpdateMethodForKownType();
@@ -172,8 +175,9 @@ public class ExtensionInjector {
 	 */
 	private Method findUpdateMethodForKownType() {
 		try {
-			if (extensionDesc.requiresArrayUpdateMethod())
+			if (extensionDesc.requiresArrayUpdateMethod()) {
 				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), true);
+			}
 
 			try {
 				return seekMatchingUpdateMethod(extensionDesc.getInterfaceType(), false);
@@ -197,8 +201,9 @@ public class ExtensionInjector {
 		} catch (NoSuchMethodException e) {
 			for (Class<?> superInterfaceType : interfaceType.getInterfaces()) {
 				Method attempt = seekMatchingUpdateMethod(superInterfaceType, isArray);
-				if (attempt != null)
+				if (attempt != null) {
 					return attempt;
+				}
 			}
 		}
 		throw new NoSuchMethodError("In class " + target.getClass() + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
@@ -214,29 +219,37 @@ public class ExtensionInjector {
 	private Method findUpdateMethodForUnkownType() {
 		List<Method> candidates = new ArrayList<Method>();
 		Method[] methods = target.getClass().getMethods();
-		for (Method method : methods)
+		for (Method method : methods) {
 			if (method.getName().equals(updateMethodName) && method.getParameterTypes().length == 1
-					&& isInterface(method.getParameterTypes()[0]))
+					&& isInterface(method.getParameterTypes()[0])) {
 				candidates.add(method);
+			}
+		}
 
-		if (candidates.size() == 0)
+		if (candidates.size() == 0) {
 			throw new IllegalStateException("No suitable 'bind' method found."); //$NON-NLS-1$
+		}
 
-		if (candidates.size() == 1)
-			if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0]))
+		if (candidates.size() == 1) {
+			if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0])) {
 				return candidates.get(0);
-			else
+			} else {
 				throw new IllegalStateException("Found method " + candidates.get(0) //$NON-NLS-1$
 						+ " does not match extension point constraints."); //$NON-NLS-1$
+			}
+		}
 
-		if (candidates.size() > 2)
+		if (candidates.size() > 2) {
 			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
-		if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0]))
+		if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0])) {
 			return candidates.get(0);
+		}
 
-		if (matchesExtensionPointConstraint(candidates.get(1).getParameterTypes()[0]))
+		if (matchesExtensionPointConstraint(candidates.get(1).getParameterTypes()[0])) {
 			return candidates.get(1);
+		}
 
 		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -261,17 +274,19 @@ public class ExtensionInjector {
 	void populateInterfaceBeans(boolean onStart) {
 		try {
 			Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
-			if (!matchesExtensionPointConstraint(beans.length))
+			if (!matchesExtensionPointConstraint(beans.length)) {
 				LOGGER.log(LogService.LOG_ERROR,
 						"Number of extensions does not fullfil the extension point's constraints."); //$NON-NLS-1$
+			}
 			if (isArray) {
 				update(new Object[] { beans });
 			} else {
 				update(new Object[] { beans.length > 0 ? beans[0] : null });
 			}
 		} catch (IllegalArgumentException e) {
-			if (onStart)
+			if (onStart) {
 				throw e;
+			}
 			update(new Object[] { null });
 		}
 	}

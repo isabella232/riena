@@ -10,24 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.reflect.Proxy;
+
+import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
- * Maps to the <code>getContributor</code> of an extension element. The return
- * type of the annotated method must be {@link org.osgi.framework.Bundle}, e.g.
- * 
- * <pre>
- * 
- * @MapContributor()
- * Bundle getContributingBundle();
- * 
- *                              </pre>
+ * Factory for interface beans.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface MapContributor {
+final class InterfaceBeanFactory {
 
+	private InterfaceBeanFactory() {
+		// utility
+	}
+
+	static Object newInstance(boolean symbolReplace, Class<?> interfaceType, IConfigurationElement configurationElement) {
+		return Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType },
+				new InterfaceBeanHandler(interfaceType, symbolReplace, configurationElement));
+	}
 }

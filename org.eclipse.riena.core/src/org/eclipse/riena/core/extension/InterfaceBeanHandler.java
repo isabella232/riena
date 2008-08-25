@@ -10,16 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
-import static org.eclipse.riena.core.extension.InterfaceBean.MethodKind.CREATE;
-import static org.eclipse.riena.core.extension.InterfaceBean.MethodKind.GET;
-import static org.eclipse.riena.core.extension.InterfaceBean.MethodKind.IS;
+import static org.eclipse.riena.core.extension.InterfaceBeanHandler.MethodKind.OTHER;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,133 +26,125 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
 
 /**
  * InvocationHandler for proxies that map to configuration elements.
  */
-class InterfaceBean implements InvocationHandler {
+final class InterfaceBeanHandler implements InvocationHandler {
 
 	private final Class<?> interfaceType;
 	private final IConfigurationElement configurationElement;
 	private final boolean symbolReplace;
-	private final Map<Method, Object> resolved;
-	private static final String[] ALLOWED_PREFIXES = { GET.toString(), IS.toString(), CREATE.toString() };
+	private final Map<Method, Result> resolved;
 
-	private final static Logger LOGGER = new ConsoleLogger(ExtensionMapper.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(InterfaceBeanHandler.class.getName());
 
-	static Object newInstance(boolean symbolReplace, Class<?> interfaceType, IConfigurationElement configurationElement) {
-		return Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType }, new InterfaceBean(
-				interfaceType, symbolReplace, configurationElement));
-	}
-
-	private InterfaceBean(Class<?> interfaceType, boolean symbolReplace, IConfigurationElement configurationElement) {
+	InterfaceBeanHandler(final Class<?> interfaceType, final boolean symbolReplace,
+			final IConfigurationElement configurationElement) {
 		this.interfaceType = interfaceType;
 		this.configurationElement = configurationElement;
 		this.symbolReplace = symbolReplace;
-		this.resolved = new HashMap<Method, Object>();
+		this.resolved = new HashMap<Method, Result>();
+		if (!interfaceType.isAnnotationPresent(ExtensionInterface.class)) {
+			LOGGER.log(LogService.LOG_WARNING, "The interface '" + interfaceType.getName() //$NON-NLS-1$
+					+ "' is NOT annotated with @" + ExtensionInterface.class.getSimpleName() + " but it should!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
 	/*
 	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
 	 * java.lang.reflect.Method, java.lang.Object[])
 	 */
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		final MethodKind methodKind = MethodKind.of(method);
-		if (methodKind == GET || methodKind == IS) {
-			// those results will be cached
-			synchronized (resolved) {
-				Object result = resolved.get(method);
-				if (result == null) {
-					result = invokeNonCached(method, methodKind);
+		synchronized (resolved) {
+			Result result = resolved.get(method);
+			if (result == null) {
+				result = invoke(method, args, methodKind);
+				if (result.cash) {
 					resolved.put(method, result);
 				}
-				return result;
 			}
+			return result.object;
 		}
-		if (methodKind == CREATE) {
-			// obviously those will NOT be cached
-			String name = getAttributeName(method, methodKind);
-			if (configurationElement.getAttribute(name) == null)
-				return null;
-			if (method.isAnnotationPresent(CreateLazy.class))
-				return LazyExecutableExtension.newInstance(configurationElement, name);
-			return configurationElement.createExecutableExtension(name);
-		}
-		if (method.getParameterTypes().length == 0) {
-			if (method.getName().equals("toString")) //$NON-NLS-1$
-				return toString();
-			if (method.getName().equals("hashCode")) //$NON-NLS-1$
-				return hashCode();
-			if (method.getName().equals("clone")) //$NON-NLS-1$
-				return clone();
-			if (method.getName().equals("finalize")) //$NON-NLS-1$
-				finalize();
-		}
-		if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == Object.class
-				&& method.getName().equals("equals")) //$NON-NLS-1$
-			return equals(args[0]);
-		throw new UnsupportedOperationException("Only " + Arrays.toString(ALLOWED_PREFIXES) + " are supported."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	private Object invokeNonCached(final Method method, final MethodKind methodKind) {
+	private Result invoke(final Method method, final Object[] args, final MethodKind methodKind) throws Throwable {
+		if (method.getParameterTypes().length == 0) {
+			if (method.getName().equals("toString")) { //$NON-NLS-1$
+				return Result.cache(proxiedToString());
+			} else if (method.getName().equals("hashCode")) { //$NON-NLS-1$
+				return Result.cache(proxiedHashCode());
+			}
+		}
+		if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == Object.class
+				&& method.getName().equals("equals")) { //$NON-NLS-1$
+			return Result.noCache(proxiedEquals(args[0]));
+		}
 		final Class<?> returnType = method.getReturnType();
 		final String name = getAttributeName(method, methodKind);
-		if (returnType == String.class && name == null)
-			return modify(configurationElement.getValue());
-		if (returnType == String.class)
-			return modify(configurationElement.getAttribute(name));
-		if (returnType.isPrimitive())
-			return coerce(returnType, modify(configurationElement.getAttribute(name)));
-		if (returnType == Bundle.class && method.isAnnotationPresent(MapContributor.class))
-			return ContributorFactoryOSGi.resolve(configurationElement.getContributor());
-		if (returnType.isInterface()) {
+		if (returnType == String.class) {
+			return Result.cache(modify(method.isAnnotationPresent(MapValue.class) ? configurationElement.getValue()
+					: configurationElement.getAttribute(name)));
+		}
+		if (returnType.isPrimitive()) {
+			return Result.cache(coerce(returnType, modify(configurationElement.getAttribute(name))));
+		}
+		if (returnType == Bundle.class) {
+			return Result.cache(ContributorFactoryOSGi.resolve(configurationElement.getContributor()));
+		}
+		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
-			if (cfgElements.length == 0)
+			if (cfgElements.length == 0) {
 				return null;
-			if (cfgElements.length == 1)
-				return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
-						new InterfaceBean(returnType, symbolReplace, cfgElements[0]));
+			}
+			if (cfgElements.length == 1) {
+				return Result.cache(Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
+						new InterfaceBeanHandler(returnType, symbolReplace, cfgElements[0])));
+			}
 			throw new IllegalStateException(
-					"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for: " + method); //$NON-NLS-1$
+					"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for: " //$NON-NLS-1$
+							+ method);
 		}
 		if (returnType.isArray() && returnType.getComponentType().isInterface()) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
 			final Object[] result = (Object[]) Array.newInstance(returnType.getComponentType(), cfgElements.length);
 			for (int i = 0; i < cfgElements.length; i++) {
 				result[i] = Proxy.newProxyInstance(returnType.getComponentType().getClassLoader(),
-						new Class[] { returnType.getComponentType() }, new InterfaceBean(returnType.getComponentType(),
-								symbolReplace, cfgElements[i]));
+						new Class[] { returnType.getComponentType() }, new InterfaceBeanHandler(returnType
+								.getComponentType(), symbolReplace, cfgElements[i]));
 			}
-			return result;
+			return Result.cache(result);
 		}
 
-		throw new UnsupportedOperationException("property for method " + method.getName() + " not found."); //$NON-NLS-1$ //$NON-NLS-2$
+		if (method.getReturnType() == Void.class || (args != null && args.length > 0)) {
+			throw new UnsupportedOperationException("Can not handle method '" + method + "' in '" //$NON-NLS-1$ //$NON-NLS-2$
+					+ interfaceType.getName() + "'."); //$NON-NLS-1$
+		}
+		// Now try to create a fresh instance,i.e.
+		// createExecutableExtension() ()
+		if (configurationElement.getAttribute(name) == null) {
+			return null;
+		}
+		if (method.isAnnotationPresent(CreateLazy.class)) {
+			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, name));
+		}
+		return Result.noCache(configurationElement.createExecutableExtension(name));
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException("Cloning a interface bean is not supported."); //$NON-NLS-1$
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override
-	public boolean equals(Object obj) {
+	public boolean proxiedEquals(final Object obj) {
 		try {
 			InvocationHandler handler = Proxy.getInvocationHandler(obj);
-			if (handler instanceof InterfaceBean)
-				return configurationElement.equals(((InterfaceBean) handler).configurationElement);
+			if (handler instanceof InterfaceBeanHandler) {
+				return configurationElement.equals(((InterfaceBeanHandler) handler).configurationElement);
+			}
 		} catch (IllegalArgumentException e) {
 			// fall thru
 		}
@@ -165,20 +154,9 @@ class InterfaceBean implements InvocationHandler {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Object#finalize()
-	 */
-	@Override
-	protected void finalize() throws Throwable {
-		// nothing
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override
-	public int hashCode() {
+	public int proxiedHashCode() {
 		return configurationElement.hashCode();
 	}
 
@@ -187,8 +165,7 @@ class InterfaceBean implements InvocationHandler {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
-	public String toString() {
+	public String proxiedToString() {
 		final StringBuilder bob = new StringBuilder("Dynamic proxy for "); //$NON-NLS-1$
 		bob.append(interfaceType.getName()).append(':');
 		final String[] names = configurationElement.getAttributeNames();
@@ -201,51 +178,80 @@ class InterfaceBean implements InvocationHandler {
 
 	private String getAttributeName(final Method method, final MethodKind methodKind) {
 		final Annotation annotation = method.getAnnotation(MapName.class);
-		if (annotation != null)
+		if (annotation != null) {
 			return ((MapName) annotation).value();
-		if (method.isAnnotationPresent(MapValue.class))
-			return null;
+		}
 
 		// No annotations
-		if (method.getName().equals(methodKind.prefix))
+		if (methodKind == OTHER) {
 			return null;
+		}
 		final String name = method.getName().substring(methodKind.prefix.length());
 		return name.substring(0, 1).toLowerCase() + name.substring(1);
 	}
 
 	private Object coerce(final Class<?> toType, final String value) {
-		if (toType == Long.TYPE)
+		if (toType == Long.TYPE) {
 			return Long.valueOf(value);
-		if (toType == Integer.TYPE)
+		}
+		if (toType == Integer.TYPE) {
 			return Integer.valueOf(value);
-		if (toType == Boolean.TYPE)
+		}
+		if (toType == Boolean.TYPE) {
 			return Boolean.valueOf(value);
-		if (toType == Float.TYPE)
+		}
+		if (toType == Float.TYPE) {
 			return Float.valueOf(value);
-		if (toType == Double.TYPE)
+		}
+		if (toType == Double.TYPE) {
 			return Double.valueOf(value);
-		if (toType == Short.TYPE)
+		}
+		if (toType == Short.TYPE) {
 			return Short.valueOf(value);
-		if (toType == Character.TYPE)
+		}
+		if (toType == Character.TYPE) {
 			return Character.valueOf(value.charAt(0));
-		if (toType == Byte.TYPE)
+		}
+		if (toType == Byte.TYPE) {
 			return Byte.valueOf(value);
+		}
 		return value;
 	}
 
 	private String modify(final String value) {
-		if (!symbolReplace || value == null)
+		if (!symbolReplace || value == null) {
 			return value;
+		}
 
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-		if (variableManager == null)
+		if (variableManager == null) {
 			return value;
+		}
 
 		try {
 			return variableManager.performStringSubstitution(value);
 		} catch (CoreException e) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not perfrom string substitution for '" + value + "' .", e); //$NON-NLS-1$ //$NON-NLS-2$
 			return value;
+		}
+	}
+
+	private final static class Result {
+
+		private final Object object;
+		private final boolean cash;
+
+		private static Result noCache(final Object object) {
+			return new Result(object, false);
+		}
+
+		private static Result cache(final Object object) {
+			return new Result(object, true);
+		}
+
+		private Result(final Object object, final boolean cash) {
+			this.object = object;
+			this.cash = cash;
 		}
 	}
 
@@ -268,12 +274,13 @@ class InterfaceBean implements InvocationHandler {
 		 */
 		private static MethodKind of(final Method method) {
 			final String name = method.getName();
-			if (name.startsWith(GET.prefix))
+			if (name.startsWith(GET.prefix)) {
 				return GET;
-			if (name.startsWith(IS.prefix))
+			} else if (name.startsWith(IS.prefix)) {
 				return IS;
-			if (name.startsWith(CREATE.prefix))
+			} else if (name.startsWith(CREATE.prefix)) {
 				return CREATE;
+			}
 			return OTHER;
 		}
 
@@ -288,4 +295,5 @@ class InterfaceBean implements InvocationHandler {
 		}
 
 	}
+
 }
