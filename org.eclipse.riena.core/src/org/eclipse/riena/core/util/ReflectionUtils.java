@@ -298,7 +298,6 @@ public final class ReflectionUtils {
 	public static void setHidden(Object instance, String fieldName, Object value) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
-		Assert.isNotNull(value, "value must be given!"); //$NON-NLS-1$
 
 		Class<?> clazz = getClass(instance);
 		try {
