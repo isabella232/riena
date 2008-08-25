@@ -162,12 +162,11 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
-		getShowMessage().setText("Show"); //$NON-NLS-1$
 		getShowMessage().addListener(new MessageListener());
 
-		getShowNumber().setText("Show"); //$NON-NLS-1$
 		getShowNumber().addListener(new NumberListener());
 
 	}

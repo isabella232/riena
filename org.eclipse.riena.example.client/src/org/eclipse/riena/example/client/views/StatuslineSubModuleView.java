@@ -78,6 +78,7 @@ public class StatuslineSubModuleView extends SubModuleView<StatuslineSubModuleCo
 		addUIControl(severityCombo, "severity"); //$NON-NLS-1$
 
 		Button showBtn = UIControlsFactory.createButton(group);
+		showBtn.setText("Show"); //$NON-NLS-1$
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.BEGINNING;
 		gridData.horizontalSpan = 2;
@@ -109,6 +110,7 @@ public class StatuslineSubModuleView extends SubModuleView<StatuslineSubModuleCo
 		addUIControl(text, "numberText"); //$NON-NLS-1$
 
 		Button showBtn = UIControlsFactory.createButton(group);
+		showBtn.setText("Show"); //$NON-NLS-1$
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.BEGINNING;
 		gridData.horizontalSpan = 2;

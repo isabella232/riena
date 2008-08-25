@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -174,6 +175,30 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
 		assertNull(ridget.getIcon());
 		assertNull(control.getImage());
+	}
+
+	/**
+	 * Tests the method {@code initText}
+	 */
+	public void testInitText() {
+
+		IActionRidget ridget = getRidget();
+		Button control = (Button) ridget.getUIControl();
+
+		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
+		ridget.setText(null);
+		control.setText("Hello!");
+
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
+		assertEquals("Hello!", ridget.getText());
+		assertEquals("Hello!", control.getText());
+		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized"));
+
+		control.setText("World");
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
+		assertEquals("Hello!", ridget.getText());
+		assertEquals("World", control.getText());
+
 	}
 
 	// helping methods

@@ -23,9 +23,11 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 	private String text;
 	private String icon;
 	private ActionObserver actionObserver;
+	private boolean textAlreadyInitialized;
 
 	public ActionRidget() {
 		actionObserver = new ActionObserver();
+		textAlreadyInitialized = false;
 	}
 
 	@Override
@@ -38,11 +40,20 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 		Button control = getUIControl();
 		if (control != null) {
 			button = control;
-			if (text == null) {
-				text = button.getText();
-			}
+			initText();
 			button.addSelectionListener(actionObserver);
 			updateText();
+		}
+	}
+
+	/**
+	 * If the text of the ridget has no value, initialize it with the text of
+	 * the UI control.
+	 */
+	private void initText() {
+		if ((text == null) && (!textAlreadyInitialized)) {
+			text = getUIControl().getText();
+			textAlreadyInitialized = true;
 		}
 	}
 
@@ -75,6 +86,7 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 	 * Always returns true because mandatory markers do not make sense for this
 	 * ridget.
 	 */
+	@Override
 	public boolean isDisableMandatoryMarker() {
 		return true;
 	}
