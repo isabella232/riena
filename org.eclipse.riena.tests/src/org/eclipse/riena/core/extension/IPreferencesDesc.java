@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
-
 /**
  *
  */
+@ExtensionInterface
 public interface IPreferencesDesc {
 
 	IScopeDesc[] getScope();

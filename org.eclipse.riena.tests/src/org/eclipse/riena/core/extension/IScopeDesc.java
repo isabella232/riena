@@ -16,6 +16,7 @@ import org.osgi.framework.Bundle;
 /**
  *
  */
+@ExtensionInterface
 public interface IScopeDesc {
 
 	String getName();
@@ -26,6 +27,5 @@ public interface IScopeDesc {
 	@MapName("class")
 	String getScope();
 
-	@MapContributor()
 	Bundle getContributingBundle();
 }

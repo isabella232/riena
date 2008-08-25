@@ -373,7 +373,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		assertFalse(target.getData()[0].equals(target.getData()[1]));
 		assertFalse(target.getData()[0].equals("no"));
 		assertTrue(
-				"This test is based on the fact that the hasCode for IConfigurationElement is based on a handle which is a different int for every element.",
+				"This test is based on the fact that the hashCode for IConfigurationElement is based on a handle which is a different int for every element.",
 				target.getData()[0].hashCode() != target.getData()[1].hashCode());
 
 		removeExtension("core.test.extpoint.id1");
@@ -466,5 +466,28 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 	}
+
+	// public void testMasses() {
+	// printTestName();
+	// addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+	// final int A_LOT = 1500;
+	// StopWatch watch = new StopWatch("MassTest (" + A_LOT + ")");
+	// watch.start();
+	// for (int i = 0; i < A_LOT; i++) {
+	// addPluginXml(ExtensionInjectorTest.class, "plugin_ext.xml");
+	// }
+	// watch.elapsed("add").reset();
+	// ConfigurableThingMultipleData target = new
+	// ConfigurableThingMultipleData();
+	// ExtensionInjector injector =
+	// Inject.extension("core.test.extpoint").into(target
+	// ).andStart(getContext());
+	// watch.elapsed("inject").reset();
+	// System.out.println("Injected: " + target.getData().length);
+	// for (IData data : target.getData()) {
+	// data.getText();
+	// }
+	// watch.elapsed("cycle for getText()").reset();
+	// }
 
 }

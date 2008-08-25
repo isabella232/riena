@@ -13,6 +13,7 @@ package org.eclipse.riena.core.extension;
 /**
  *
  */
+@ExtensionInterface
 public interface IData3 {
 
 	String getId();

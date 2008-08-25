@@ -16,6 +16,7 @@ import org.osgi.framework.Bundle;
 /**
  *
  */
+@ExtensionInterface
 public interface IModifierDesc {
 
 	@MapName("class")
@@ -24,6 +25,5 @@ public interface IModifierDesc {
 	@MapName("class")
 	String getModifier();
 
-	@MapContributor()
 	Bundle getContributingBundle();
 }

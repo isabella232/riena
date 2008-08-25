@@ -16,6 +16,7 @@ import org.osgi.framework.Bundle;
 /**
  *
  */
+@ExtensionInterface
 public interface IInitializerDesc {
 
 	@MapName("class")
@@ -24,6 +25,5 @@ public interface IInitializerDesc {
 	@MapName("class")
 	String getInitializer();
 
-	@MapContributor()
 	Bundle getContributingBundle();
 }
