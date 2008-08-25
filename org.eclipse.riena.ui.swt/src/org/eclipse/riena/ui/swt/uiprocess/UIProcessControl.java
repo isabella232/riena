@@ -27,7 +27,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	private boolean processing;
 
-	private UiProcessWindow processWindow;
+	private UIProcessWindow processWindow;
 
 	private ListenerList<ICancelListener> cancelListeners = new ListenerList<ICancelListener>(ICancelListener.class);
 
@@ -42,7 +42,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	private void createProcessWindow(Shell parentShell) {
 		// create window
-		processWindow = new UiProcessWindow(parentShell, this);
+		processWindow = new UIProcessWindow(parentShell, this);
 		// observe window
 		processWindow.addProcessWindowListener(new IProcessWindowListener() {
 

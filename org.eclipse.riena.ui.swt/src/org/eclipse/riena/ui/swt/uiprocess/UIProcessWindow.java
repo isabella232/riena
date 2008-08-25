@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * 
  */
-public class UiProcessWindow extends ApplicationWindow implements IUIProcessWindow {
+public class UIProcessWindow extends ApplicationWindow implements IUIProcessWindow {
 
 	private static final int CANCEL_BUTTON_WIDTH = 70;
 	private static final int PROGRESS_BAR_WIDTH = 210;
@@ -41,7 +41,7 @@ public class UiProcessWindow extends ApplicationWindow implements IUIProcessWind
 	private Label percent;
 	private UIProcessControl progressControl;
 
-	public UiProcessWindow(Shell parentShell, UIProcessControl progressControl) {
+	public UIProcessWindow(Shell parentShell, UIProcessControl progressControl) {
 		super(parentShell);
 		this.progressControl = progressControl;
 		windowListeners = new HashSet<IProcessWindowListener>();
