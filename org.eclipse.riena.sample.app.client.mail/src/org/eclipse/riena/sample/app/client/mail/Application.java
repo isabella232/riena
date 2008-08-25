@@ -34,23 +34,23 @@ public class Application extends SwtApplication {
 	protected IApplicationModel createModel() {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		ApplicationModel app = new ApplicationModel(null, "Riena Mail");
+		ApplicationModel app = new ApplicationModel(null, "Riena Mail"); //$NON-NLS-1$
 
-		ISubApplicationNode subApp = new SubApplicationNode(null, "Your Mail");
+		ISubApplicationNode subApp = new SubApplicationNode(null, "Your Mail"); //$NON-NLS-1$
 		app.addChild(subApp);
-		presentation.present(subApp, "rcp.mail.perspective");
+		presentation.present(subApp, "rcp.mail.perspective"); //$NON-NLS-1$
 
 		IModuleGroupNode groupMailboxes = new ModuleGroupNode(null);
 		subApp.addChild(groupMailboxes);
 
-		IModuleNode moduleAccount1 = createModule("me@this.com", groupMailboxes);
+		IModuleNode moduleAccount1 = createModule("me@this.com", groupMailboxes); //$NON-NLS-1$
 		presentation.registerView(View.ID, false);
-		createSubMobule("Inbox", moduleAccount1, View.ID);
-		createSubMobule("Drafts", moduleAccount1, View.ID);
-		createSubMobule("Sent", moduleAccount1, View.ID);
+		createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
+		createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
+		createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
 
-		IModuleNode moduleAccount2 = createModule("other@aol.com", groupMailboxes);
-		createSubMobule("Inbox", moduleAccount2, View.ID);
+		IModuleNode moduleAccount2 = createModule("other@aol.com", groupMailboxes); //$NON-NLS-1$
+		createSubMobule("Inbox", moduleAccount2, View.ID); //$NON-NLS-1$
 
 		return app;
 	}

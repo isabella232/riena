@@ -29,10 +29,10 @@ public class OpenViewHandler extends AbstractHandler implements IHandler {
 			HandlerUtil.getActiveWorkbenchWindowChecked(event).getActivePage().showView(View.ID,
 					Integer.toString(instanceNum++), IWorkbenchPage.VIEW_ACTIVATE);
 		} catch (PartInitException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Error opening view:"
+			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Error opening view:" //$NON-NLS-1$ //$NON-NLS-2$
 					+ e.getMessage());
 		} catch (ExecutionException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Error opening view:"
+			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Error opening view:" //$NON-NLS-1$ //$NON-NLS-2$
 					+ e.getMessage());
 		}
 		return null;
