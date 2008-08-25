@@ -22,24 +22,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenViewHandler extends AbstractHandler implements IHandler {
 
-	// private final IWorkbenchWindow window;
 	private int instanceNum = 0;
-
-	// private final String viewId;
-
-	// public OpenViewHandler(IWorkbenchWindow window, String label, String
-	// viewId) {
-	// this.window = window;
-	// this.viewId = viewId;
-	// setText(label);
-	// // The id is used to refer to the action in a menu or toolbar
-	// setId(ICommandIds.CMD_OPEN);
-	// // Associate the action with a pre-defined command, to allow key
-	// // bindings.
-	// setActionDefinitionId(ICommandIds.CMD_OPEN);
-	// setImageDescriptor(org.eclipse.riena.sample.app.client.mail.Activator.
-	// getImageDescriptor("/icons/sample2.gif"));
-	// }
 
 	public Object execute(ExecutionEvent event) {
 		try {
