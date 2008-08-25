@@ -30,12 +30,15 @@ import org.eclipse.swt.widgets.Button;
  */
 public class ToggleButtonRidget extends AbstractValueRidget implements IToggleButtonRidget {
 
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 	private final ActionObserver actionObserver;
 	private Binding controlBinding;
 	private String text;
 	private String icon;
 	private boolean selected;
 	private boolean blocked;
+	private boolean textAlreadyInitialized;
 
 	public ToggleButtonRidget() {
 		this(null);
@@ -44,6 +47,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	public ToggleButtonRidget(Button button) {
 		super();
 		actionObserver = new ActionObserver();
+		textAlreadyInitialized = false;
 		setUIControl(button);
 	}
 
@@ -75,7 +79,24 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		if (control != null) {
 			controlBinding = context.bindValue(SWTObservables.observeSelection(control), BeansObservables.observeValue(
 					this, IToggleButtonRidget.PROPERTY_SELECTED), null, null);
+			initText();
 			updateText();
+		}
+	}
+
+	/**
+	 * If the text of the ridget has no value, initialize it with the text of
+	 * the UI control.
+	 */
+	private void initText() {
+		if ((text == null) && (!textAlreadyInitialized)) {
+			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
+				text = getUIControl().getText();
+				if (text == null) {
+					text = EMPTY_STRING;
+				}
+				textAlreadyInitialized = true;
+			}
 		}
 	}
 
@@ -91,6 +112,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	 * Always returns true because mandatory markers do not make sense for this
 	 * ridget.
 	 */
+	@Override
 	public boolean isDisableMandatoryMarker() {
 		return true;
 	}
@@ -161,8 +183,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	private void updateText() {
 		Button button = getUIControl();
 		if (button != null) {
-			String buttonText = text == null ? "" : text; //$NON-NLS-1$
-			button.setText(buttonText);
+			button.setText(text);
 		}
 	}
 

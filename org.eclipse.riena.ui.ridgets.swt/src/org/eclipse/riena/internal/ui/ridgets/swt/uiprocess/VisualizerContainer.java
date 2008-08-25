@@ -17,8 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
-import org.eclipse.riena.ui.swt.uiprocess.UiProcessWindow;
-
 import org.eclipse.swt.graphics.Rectangle;
 
 /**

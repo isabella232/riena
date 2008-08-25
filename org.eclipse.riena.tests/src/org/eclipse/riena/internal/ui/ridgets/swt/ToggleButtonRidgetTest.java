@@ -195,10 +195,12 @@ public class ToggleButtonRidgetTest extends TestCase {
 		assertEquals("", ridget.getText());
 		assertEquals("", button.getText());
 
-		ridget.setText(null);
-
-		assertEquals(null, ridget.getText());
-		assertEquals("", button.getText());
+		try {
+			ridget.setText(null);
+			fail();
+		} catch (IllegalArgumentException iae) {
+			// expected
+		}
 
 		ridget.setText(LABEL);
 
@@ -238,6 +240,29 @@ public class ToggleButtonRidgetTest extends TestCase {
 		Image missingImage = ReflectionUtils.invokeHidden(ridget, "getMissingImage", new Object[] {});
 		assertEquals("nonsense", ridget.getIcon());
 		assertEquals(missingImage, control.getImage());
+
+	}
+
+	/**
+	 * Tests the method {@code initText}
+	 */
+	public final void testInitText() {
+
+		Button control = ridget.getUIControl();
+
+		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
+		ReflectionUtils.setHidden(ridget, "text", null);
+		control.setText("Hello!");
+
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
+		assertEquals("Hello!", ridget.getText());
+		assertEquals("Hello!", control.getText());
+		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized"));
+
+		control.setText("World");
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
+		assertEquals("Hello!", ridget.getText());
+		assertEquals("World", control.getText());
 
 	}
 

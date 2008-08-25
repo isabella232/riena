@@ -85,9 +85,9 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Test method get/setLabel().
+	 * Test method get/setText.
 	 */
-	public final void testSetLabel() throws Exception {
+	public final void testSetText() throws Exception {
 		ILabelRidget ridget = getRidget();
 		Label control = (Label) ridget.getUIControl();
 

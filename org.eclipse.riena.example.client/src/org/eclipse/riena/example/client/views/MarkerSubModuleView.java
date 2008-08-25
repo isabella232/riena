@@ -157,12 +157,16 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Button buttonToggle = UIControlsFactory.createButtonToggle(composite);
 		addUIControl(buttonToggle, "buttonToggle"); //$NON-NLS-1$
 		Button buttonPush = UIControlsFactory.createButton(composite);
+		buttonPush.setText("Push"); //$NON-NLS-1$
 		addUIControl(buttonPush, "buttonPush"); //$NON-NLS-1$
 		Button buttonRadioA = UIControlsFactory.createButtonRadio(composite);
+		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
 		addUIControl(buttonRadioA, "buttonRadioA"); //$NON-NLS-1$
 		Button buttonRadioB = UIControlsFactory.createButtonRadio(composite);
+		buttonRadioB.setText("Radio B"); //$NON-NLS-1$
 		addUIControl(buttonRadioB, "buttonRadioB"); //$NON-NLS-1$
 		Button buttonCheck = UIControlsFactory.createButtonCheck(composite);
+		buttonCheck.setText("Check"); //$NON-NLS-1$
 		addUIControl(buttonCheck, "buttonCheck"); //$NON-NLS-1$
 
 		return group;

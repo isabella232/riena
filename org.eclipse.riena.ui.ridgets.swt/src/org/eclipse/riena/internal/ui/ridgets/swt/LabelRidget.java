@@ -36,6 +36,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	}
 
 	public LabelRidget(Label label) {
+		textAlreadyInitialized = false;
 		setUIControl(label);
 	}
 

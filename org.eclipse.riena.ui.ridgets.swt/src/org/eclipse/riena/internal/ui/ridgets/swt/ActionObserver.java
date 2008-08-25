@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,7 +22,7 @@ import org.eclipse.swt.events.SelectionEvent;
  */
 class ActionObserver extends SelectionAdapter {
 
-	private List<IActionListener> actionListeners;
+	private ListenerList<IActionListener> actionListeners;
 
 	ActionObserver() {
 		super();
@@ -38,7 +36,7 @@ class ActionObserver extends SelectionAdapter {
 	void addListener(IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (actionListeners == null) {
-			actionListeners = new ArrayList<IActionListener>();
+			actionListeners = new ListenerList<IActionListener>(IActionListener.class);
 		}
 		actionListeners.add(listener);
 	}
@@ -51,7 +49,7 @@ class ActionObserver extends SelectionAdapter {
 
 	void fireAction() {
 		if (actionListeners != null) {
-			for (IActionListener listener : actionListeners) {
+			for (IActionListener listener : actionListeners.getListeners()) {
 				listener.callback();
 			}
 		}

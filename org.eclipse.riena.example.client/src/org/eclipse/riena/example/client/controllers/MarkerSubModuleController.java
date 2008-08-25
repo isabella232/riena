@@ -45,6 +45,7 @@ public class MarkerSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		final ITextFieldRidget textName = (ITextFieldRidget) getRidget("textName"); //$NON-NLS-1$
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
@@ -103,13 +104,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		buttonToggle.setText("Toggle"); //$NON-NLS-1$
 		buttonToggle.setSelected(true);
 		final IActionRidget buttonPush = (IActionRidget) getRidget("buttonPush"); //$NON-NLS-1$
-		buttonPush.setText("Push"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonRadioA = (IToggleButtonRidget) getRidget("buttonRadioA"); //$NON-NLS-1$
-		buttonRadioA.setText("Radio A"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
-		buttonRadioB.setText("Radio B"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
-		buttonCheck.setText("Check"); //$NON-NLS-1$
 
 		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, choiceType,
 				choiceFlavor, listPersons, tablePersons, treePersons, treePersonsWCols, buttonToggle, buttonPush,
