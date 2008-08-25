@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.extension.ExtensionInterface;
+
 /**
  * Interface for a NavigationNodeType extension that defines how to create a
  * node or a subtree in the application model tree.
  */
+@ExtensionInterface
 public interface INavigationNodeTypeDefiniton extends ITypeDefinition {
 
 	/**

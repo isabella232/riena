@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
 
 /**
  * Descriptor of a renderer.
  */
+@ExtensionInterface
 public interface ILnfRendererDesc {
 
 	/**

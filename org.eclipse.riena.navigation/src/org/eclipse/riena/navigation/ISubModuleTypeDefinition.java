@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.core.extension.MapContributor;
+import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.osgi.framework.Bundle;
 
@@ -18,6 +18,7 @@ import org.osgi.framework.Bundle;
  * Interface for a SubModuleType extension that defines how an activated
  * submodule appears in the work area.
  */
+@ExtensionInterface
 public interface ISubModuleTypeDefinition extends ITypeDefinition {
 
 	/**
@@ -42,7 +43,6 @@ public interface ISubModuleTypeDefinition extends ITypeDefinition {
 	 */
 	String getView();
 
-	@MapContributor
 	Bundle getContributingBundle();
 
 }

@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.ssl;
 
+import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.internal.communication.core.Activator;
+
 /**
  * SSl properties for the ssl configuration
  */
+@ExtensionInterface
 public interface ISSLProperties {
 
-	String EXTENSION_POINT_ID = "org.eclipse.riena.communication.core.ssl"; //$NON-NLS-1$
+	String EXTENSION_POINT_ID = Activator.PLUGIN_ID + ".ssl"; //$NON-NLS-1$
 
 	/**
 	 * @return the protocol
