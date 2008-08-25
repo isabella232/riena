@@ -78,7 +78,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 
 	@Override
 	protected void bindUIControl() {
-		final List control = (List) getUIControl();
+		final List control = getUIControl();
 		if (control != null && rowObservables != null) {
 			viewer = new ListViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
