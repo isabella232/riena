@@ -85,5 +85,51 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="org.eclipse.riena.sample.app.client.mail.toolbar">
+            <command
+                  commandId="rcp.mail.open"
+                  icon="icons/sample2.gif"
+                  style="push">
+            </command>
+            <command
+                  commandId="rcp.mail.openMessage"
+                  icon="icons/sample3.gif"
+                  style="push">
+            </command>
+         </toolbar>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="File">
+            <command
+                  commandId="rcp.mail.openMessage"
+                  label="Open Message"
+                  style="push">
+            </command>
+            <command
+                  commandId="rcp.mail.open"
+                  label="Open Another Message View"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.riena.sample.app.client.mail.OpenViewHandler"
+            commandId="rcp.mail.open">
+      </handler>
+      <handler
+            class="org.eclipse.riena.sample.app.client.mail.MessagePopupHandler"
+            commandId="rcp.mail.openMessage">
+      </handler>
+   </extension>
 
 </plugin>
