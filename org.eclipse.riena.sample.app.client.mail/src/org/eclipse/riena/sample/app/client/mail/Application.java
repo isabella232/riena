@@ -14,6 +14,7 @@ import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationModel;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
@@ -27,6 +28,8 @@ import org.osgi.framework.Bundle;
  */
 public class Application extends SwtApplication {
 
+	public static final String ID_GROUP_MBOXES = "rcp.mail.groupMailboxes"; //$NON-NLS-1$
+
 	@Override
 	protected IApplicationModel createModel() {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
@@ -37,10 +40,8 @@ public class Application extends SwtApplication {
 		app.addChild(subApp);
 		presentation.present(subApp, "rcp.mail.perspective"); //$NON-NLS-1$
 
-		IModuleGroupNode groupMailboxes = new ModuleGroupNode();
+		IModuleGroupNode groupMailboxes = new ModuleGroupNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		subApp.addChild(groupMailboxes);
-		// hack 'til we have a better way
-		OpenViewHandler.setGroup(groupMailboxes);
 
 		IModuleNode moduleAccount1 = NodeFactory.createModule("me@this.com", groupMailboxes); //$NON-NLS-1$
 		moduleAccount1.setCloseable(false);

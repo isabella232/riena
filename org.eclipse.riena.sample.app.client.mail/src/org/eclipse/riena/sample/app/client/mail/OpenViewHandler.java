@@ -13,8 +13,11 @@ package org.eclipse.riena.sample.app.client.mail;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.riena.navigation.ApplicationModelManager;
+import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 
 /**
@@ -22,22 +25,17 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAc
  */
 public class OpenViewHandler extends AbstractHandler implements IHandler {
 
-	private static IModuleGroupNode GROUP;
 	private int count = 0;
 
-	public static void setGroup(IModuleGroupNode group) {
-		GROUP = group;
-	}
-
 	public Object execute(ExecutionEvent event) {
-		if (GROUP != null) {
-			String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-			IModuleNode moduleAccount1 = NodeFactory.createModule(title, GROUP);
-			SwtPresentationManagerAccessor.getManager().registerView(View.ID, false);
-			NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
-			NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
-			NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
-		}
+		IApplicationModel model = ApplicationModelManager.getApplicationModel();
+		IModuleGroupNode group = (IModuleGroupNode) model.findNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
+		String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		IModuleNode moduleAccount1 = NodeFactory.createModule(title, group);
+		SwtPresentationManagerAccessor.getManager().registerView(View.ID, false);
+		NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
+		NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
+		NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
 		return null;
 	}
 }
