@@ -73,7 +73,7 @@
             name="RCP Product">
          <property
                name="aboutText"
-               value="RCP Mail template created by PDE">
+               value="RCP Mail template created by PDE and customized by the Riena Team">
          </property>
          <property
                name="windowImages"
@@ -106,7 +106,7 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               label="File">
+               label="&amp;File">
             <command
                   commandId="rcp.mail.openMessage"
                   label="Open Message"
@@ -115,6 +115,23 @@
             <command
                   commandId="rcp.mail.open"
                   label="Open Another Message View"
+                  style="push">
+            </command>
+            <separator
+                  name="org.eclipse.riena.sample.app.client.mail.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="&amp;Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="&amp;Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="&amp;About"
                   style="push">
             </command>
          </menu>
