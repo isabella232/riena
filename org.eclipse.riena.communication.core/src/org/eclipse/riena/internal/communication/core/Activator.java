@@ -20,7 +20,6 @@ import org.eclipse.riena.core.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -31,6 +30,9 @@ import org.osgi.framework.ServiceRegistration;
  * 
  */
 public class Activator extends RienaActivator {
+
+	// The plug-in ID
+	public static final String PLUGIN_ID = "org.eclipse.riena.communication.core"; //$NON-NLS-1$
 
 	private RemoteServiceRegistry serviceRegistry;
 	private ServiceRegistration regServiceRegistry;
