@@ -48,6 +48,9 @@ public interface IData {
 
 	Bundle getContributingBundle();
 
+	@MapName("objectType")
+	Class<?> getLazyThingType();
+
 	@CreateLazy()
 	@MapName("objectType")
 	ILazyThing createLazyThing();

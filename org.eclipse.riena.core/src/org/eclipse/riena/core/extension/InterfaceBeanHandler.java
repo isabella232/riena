@@ -96,10 +96,21 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		if (returnType == Bundle.class) {
 			return Result.cache(ContributorFactoryOSGi.resolve(configurationElement.getContributor()));
 		}
+		if (returnType == Class.class) {
+			String value = configurationElement.getAttribute(name);
+			if (value == null) {
+				return Result.cache(null);
+			}
+			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
+			if (bundle == null) {
+				return Result.cache(null);
+			}
+			return Result.cache(bundle.loadClass(value));
+		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
 			if (cfgElements.length == 0) {
-				return null;
+				return Result.cache(null);
 			}
 			if (cfgElements.length == 1) {
 				return Result.cache(Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },

@@ -396,6 +396,20 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
+	public void testGetClassType() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext7.xml");
+		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				getContext());
+		assertEquals(1, target.getData().length);
+		assertEquals(LazyThing.class, target.getData()[0].getLazyThingType());
+		removeExtension("core.test.extpoint.id7");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
 	public void testLazyCreate() {
 		printTestName();
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
