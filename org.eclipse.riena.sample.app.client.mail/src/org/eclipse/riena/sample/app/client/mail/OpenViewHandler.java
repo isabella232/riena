@@ -12,28 +12,31 @@ package org.eclipse.riena.sample.app.client.mail;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 
+/**
+ * Creates a new module group with an associated message view.
+ */
 public class OpenViewHandler extends AbstractHandler implements IHandler {
 
-	private int instanceNum = 0;
+	private static IModuleGroupNode GROUP;
+	private int count = 0;
+
+	public static void setGroup(IModuleGroupNode group) {
+		GROUP = group;
+	}
 
 	public Object execute(ExecutionEvent event) {
-		try {
-			HandlerUtil.getActiveWorkbenchWindowChecked(event).getActivePage().showView(View.ID,
-					Integer.toString(instanceNum++), IWorkbenchPage.VIEW_ACTIVATE);
-		} catch (PartInitException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Error opening view:" //$NON-NLS-1$ //$NON-NLS-2$
-					+ e.getMessage());
-		} catch (ExecutionException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Error opening view:" //$NON-NLS-1$ //$NON-NLS-2$
-					+ e.getMessage());
+		if (GROUP != null) {
+			String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+			IModuleNode moduleAccount1 = NodeFactory.createModule(title, GROUP);
+			SwtPresentationManagerAccessor.getManager().registerView(View.ID, false);
+			NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
+			NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
+			NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
 		}
 		return null;
 	}
