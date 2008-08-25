@@ -35,7 +35,7 @@ public final class SnippetHelloWorld {
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
 			ILabelRidget ridget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
-			ridget.bindToModel(PojoObservables.observeValue(new HelloModel(), "text"));
+			ridget.bindToModel(PojoObservables.observeValue(new HelloModel(), "text")); //$NON-NLS-1$
 			ridget.updateFromModel();
 
 			shell.pack();
@@ -51,7 +51,7 @@ public final class SnippetHelloWorld {
 	}
 
 	private static final class HelloModel {
-		private String text = "Hello Riena !";
+		private String text = "Hello Riena !"; //$NON-NLS-1$
 
 		public String getText() {
 			return text;

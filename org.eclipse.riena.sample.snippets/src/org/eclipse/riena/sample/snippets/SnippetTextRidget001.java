@@ -33,15 +33,14 @@ public final class SnippetTextRidget001 {
 		Display display = Display.getDefault();
 		try {
 			Shell shell = new Shell();
-			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10)
-					.spacing(20, 10).applyTo(shell);
+			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			createLabel(shell, "Input (>5):");
+			createLabel(shell, "Input (>5):"); //$NON-NLS-1$
 			Text text = new Text(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
 
-			createLabel(shell, "Output:");
-			Label label = createLabel(shell, "");
+			createLabel(shell, "Output:"); //$NON-NLS-1$
+			Label label = createLabel(shell, ""); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
 			ILabelRidget labelRidget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
@@ -50,7 +49,7 @@ public final class SnippetTextRidget001 {
 			textRidget.addValidationRule(new MinLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 			textRidget.setDirectWriting(true);
 			textRidget.bindToModel(BeansObservables.observeValue(labelRidget, ILabelRidget.PROPERTY_TEXT));
-			textRidget.setText("more");
+			textRidget.setText("more"); //$NON-NLS-1$
 
 			shell.setSize(200, 200);
 			shell.open();
