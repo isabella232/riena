@@ -14,6 +14,7 @@ import java.net.URL;
 
 import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -310,6 +311,30 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(LABEL2, ridget.getText());
 		assertEquals(LABEL2, control.getText());
+	}
+
+	/**
+	 * Tests the method {@code initText}
+	 */
+	public void testInitText() {
+
+		ILabelRidget ridget = getRidget();
+		Label control = (Label) ridget.getUIControl();
+
+		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
+		ReflectionUtils.setHidden(ridget, "text", null);
+		control.setText("Hello!");
+
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
+		assertEquals("Hello!", ridget.getText());
+		assertEquals("Hello!", control.getText());
+		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized"));
+
+		control.setText("World");
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
+		assertEquals("Hello!", ridget.getText());
+		assertEquals("World", control.getText());
+
 	}
 
 }

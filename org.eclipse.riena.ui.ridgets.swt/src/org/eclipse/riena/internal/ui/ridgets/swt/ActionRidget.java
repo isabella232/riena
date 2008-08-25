@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Button;
 
 public class ActionRidget extends AbstractMarkableRidget implements IActionRidget {
 
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 	private Button button;
 	private String text;
 	private String icon;
@@ -52,8 +54,13 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 	 */
 	private void initText() {
 		if ((text == null) && (!textAlreadyInitialized)) {
-			text = getUIControl().getText();
-			textAlreadyInitialized = true;
+			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
+				text = getUIControl().getText();
+				if (text == null) {
+					text = EMPTY_STRING;
+				}
+				textAlreadyInitialized = true;
+			}
 		}
 	}
 
@@ -117,8 +124,7 @@ public class ActionRidget extends AbstractMarkableRidget implements IActionRidge
 
 	private void updateText() {
 		if (button != null) {
-			String buttonText = text == null ? "" : text; //$NON-NLS-1$
-			button.setText(buttonText);
+			button.setText(text);
 		}
 	}
 

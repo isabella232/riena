@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -64,7 +65,8 @@ public class StatuslineSubModuleView extends SubModuleView<StatuslineSubModuleCo
 		Group group = UIControlsFactory.createGroup(parent, "Message:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
-		UIControlsFactory.createLabel(group, "Text:"); //$NON-NLS-1$
+		Label label = UIControlsFactory.createLabel(group, "Text:"); //$NON-NLS-1$
+		addUIControl(label, "textLabel"); //$NON-NLS-1$
 
 		Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
 		GridData gridData = new GridData();
@@ -72,7 +74,8 @@ public class StatuslineSubModuleView extends SubModuleView<StatuslineSubModuleCo
 		text.setLayoutData(gridData);
 		addUIControl(text, "messageText"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Severity:"); //$NON-NLS-1$
+		label = UIControlsFactory.createLabel(group, "Severity:"); //$NON-NLS-1$
+		addUIControl(label, "severityLabel"); //$NON-NLS-1$
 
 		Combo severityCombo = UIControlsFactory.createCombo(group);
 		addUIControl(severityCombo, "severity"); //$NON-NLS-1$
@@ -101,7 +104,8 @@ public class StatuslineSubModuleView extends SubModuleView<StatuslineSubModuleCo
 		Group group = UIControlsFactory.createGroup(parent, "Number:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(2).applyTo(group);
 
-		UIControlsFactory.createLabel(group, "Number:"); //$NON-NLS-1$
+		Label label = UIControlsFactory.createLabel(group, "Number:"); //$NON-NLS-1$
+		addUIControl(label, "numberLabel"); //$NON-NLS-1$
 
 		Text text = new Text(group, SWT.BORDER | SWT.SINGLE);
 		GridData gridData = new GridData();

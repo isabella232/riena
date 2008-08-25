@@ -137,10 +137,12 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals("", control.getText());
 
-		ridget.setText(null);
-
-		assertEquals(null, ridget.getText());
-		assertEquals("", control.getText());
+		try {
+			ridget.setText(null);
+			fail();
+		} catch (IllegalArgumentException iae) {
+			// expected
+		}
 
 		ridget.setText(LABEL);
 
@@ -186,7 +188,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		Button control = (Button) ridget.getUIControl();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
-		ridget.setText(null);
+		ReflectionUtils.setHidden(ridget, "text", null);
 		control.setText("Hello!");
 
 		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});

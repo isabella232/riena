@@ -26,10 +26,10 @@ import org.eclipse.swt.widgets.Label;
 public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
-	private String text = EMPTY_STRING;
+	private String text;
 	private String icon;
 	private URL iconLocation;
+	private boolean textAlreadyInitialized;
 
 	public LabelRidget() {
 		this(null);
@@ -54,7 +54,24 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 
 	@Override
 	protected void bindUIControl() {
+		initText();
 		updateTextInControl();
+	}
+
+	/**
+	 * If the text of the ridget has no value, initialize it with the text of
+	 * the UI control.
+	 */
+	private void initText() {
+		if ((text == null) && (!textAlreadyInitialized)) {
+			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
+				text = getUIControl().getText();
+				if (text == null) {
+					text = EMPTY_STRING;
+				}
+				textAlreadyInitialized = true;
+			}
+		}
 	}
 
 	@Override
@@ -83,6 +100,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	 * Always returns true because mandatory markers do not make sense for this
 	 * ridget.
 	 */
+	@Override
 	public boolean isDisableMandatoryMarker() {
 		return true;
 	}
