@@ -54,10 +54,39 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * 
 	 */
 	public PresentationProviderService() {
+
 		targetWA = new PresentationExtensionInjectionHelper<ISubModuleTypeDefinition>();
-		inject(ISubModuleTypeDefinition.class, EP_SUBMODULETYPE, targetWA);
+		inject(getSubModuleTypeDefinitionIFSafe(), EP_SUBMODULETYPE, targetWA);
 		targetNN = new PresentationExtensionInjectionHelper<INavigationNodeTypeDefiniton>();
-		inject(INavigationNodeTypeDefiniton.class, EP_NAVNODETYPE, targetNN);
+		inject(getNavigationNodeTypeDefinitonIFSafe(), EP_NAVNODETYPE, targetNN);
+	}
+
+	private Class<? extends ISubModuleTypeDefinition> getSubModuleTypeDefinitionIFSafe() {
+
+		if (getSubModuleTypeDefinitionIF() != null && getSubModuleTypeDefinitionIF().isInterface()) {
+			return getSubModuleTypeDefinitionIF();
+		} else {
+			return ISubModuleTypeDefinition.class;
+		}
+	}
+
+	private Class<? extends INavigationNodeTypeDefiniton> getNavigationNodeTypeDefinitonIFSafe() {
+
+		if (getNavigationNodeTypeDefinitonIF() != null && getNavigationNodeTypeDefinitonIF().isInterface()) {
+			return getNavigationNodeTypeDefinitonIF();
+		} else {
+			return INavigationNodeTypeDefiniton.class;
+		}
+	}
+
+	public Class<? extends INavigationNodeTypeDefiniton> getNavigationNodeTypeDefinitonIF() {
+
+		return INavigationNodeTypeDefiniton.class;
+	}
+
+	public Class<? extends ISubModuleTypeDefinition> getSubModuleTypeDefinitionIF() {
+
+		return ISubModuleTypeDefinition.class;
 	}
 
 	/**
