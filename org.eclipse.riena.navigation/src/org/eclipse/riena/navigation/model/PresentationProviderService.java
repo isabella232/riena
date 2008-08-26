@@ -13,10 +13,8 @@ package org.eclipse.riena.navigation.model;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.INavigationNodeTypeDefiniton;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleTypeDefinition;
@@ -38,7 +36,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	// TODO: split off ... problem: navigation is gui-less ...
 	private static final String EP_SUBMODULETYPE = "org.eclipse.riena.navigation.subModuleType"; //$NON-NLS-1$
 	private static final String EP_NAVNODETYPE = "org.eclipse.riena.navigation.navigationNodeType"; //$NON-NLS-1$
-	private PresentationExtensionInjectionHelper<ISubModuleTypeDefinition> targetWA;
+	private PresentationExtensionInjectionHelper<ISubModuleTypeDefinition> targetSM;
 	private PresentationExtensionInjectionHelper<INavigationNodeTypeDefiniton> targetNN;
 
 	/**
@@ -54,9 +52,8 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * 
 	 */
 	public PresentationProviderService() {
-
-		targetWA = new PresentationExtensionInjectionHelper<ISubModuleTypeDefinition>();
-		inject(getSubModuleTypeDefinitionIFSafe(), EP_SUBMODULETYPE, targetWA);
+		targetSM = new PresentationExtensionInjectionHelper<ISubModuleTypeDefinition>();
+		inject(getSubModuleTypeDefinitionIFSafe(), EP_SUBMODULETYPE, targetSM);
 		targetNN = new PresentationExtensionInjectionHelper<INavigationNodeTypeDefiniton>();
 		inject(getNavigationNodeTypeDefinitonIFSafe(), EP_NAVNODETYPE, targetNN);
 	}
@@ -95,12 +92,12 @@ public class PresentationProviderService implements IPresentationProviderService
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	@SuppressWarnings("unchecked")
-	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
+	protected INavigationNode<?> _provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
-				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId);
+				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
 			}
 			INavigationNodeTypeDefiniton navigationNodeTypeDefiniton = getNavigationNodeTypeDefinition(targetId);
 			if (navigationNodeTypeDefiniton != null) {
@@ -109,16 +106,27 @@ public class PresentationProviderService implements IPresentationProviderService
 				targetNode = builder.buildNode(targetId, argument);
 				INavigationNode parentNode = null;
 				if (argument != null && argument.getParentNodeId() != null) {
-					parentNode = provideNode(sourceNode, argument.getParentNodeId(), null);
+					parentNode = _provideNode(sourceNode, argument.getParentNodeId(), null);
 				} else {
-					parentNode = provideNode(sourceNode, new NavigationNodeId(navigationNodeTypeDefiniton
+					parentNode = _provideNode(sourceNode, new NavigationNodeId(navigationNodeTypeDefiniton
 							.getParentTypeId()), null);
 				}
 				parentNode.addChild(targetNode);
 			} else {
-				// TODO throw some new type of failure
+				throw new ExtensionPointFailure("NavigationNodeType not found. ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
 		}
+		return targetNode;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
+	 *      org.eclipse.riena.navigation.NavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 */
+	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
+			NavigationArgument argument) {
+		final INavigationNode<?> targetNode = _provideNode(sourceNode, targetId, argument);
 		return targetNode;
 	}
 
@@ -137,10 +145,10 @@ public class PresentationProviderService implements IPresentationProviderService
 	 * @return
 	 */
 	protected ISubModuleTypeDefinition getSubModuleTypeDefinition(String targetId) {
-		if (targetWA == null || targetWA.getData().length == 0) {
+		if (targetSM == null || targetSM.getData().length == 0) {
 			return null;
 		} else {
-			ISubModuleTypeDefinition[] data = targetWA.getData();
+			ISubModuleTypeDefinition[] data = targetSM.getData();
 			for (int i = 0; i < data.length; i++) {
 				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId)) {
 					return data[i];
@@ -213,7 +221,7 @@ public class PresentationProviderService implements IPresentationProviderService
 		if (subModuleTypeDefinition != null) {
 			return subModuleTypeDefinition.getView();
 		} else {
-			throw new ApplicationModelFailure("No subnodetype definition found for node '" + nodeId.getTypeId() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new ExtensionPointFailure("SubModuleType not found. ID=" + nodeId.getTypeId()); //$NON-NLS-1$
 		}
 	}
 

@@ -14,57 +14,82 @@ package org.eclipse.riena.navigation;
  * Contains additional information for a navigation passed on to the target node
  * and/or used during its creation.
  * 
- * @see INavigationNode#navigate(NavigationNodeId, NavigationArgument)
+ * @see INavigationNode#navigate(INavigationNodeId, NavigationArgument)
+ */
+/**
+ *
  */
 public class NavigationArgument {
-	private Object argument;
+	private Object inputParameter;
 	private NavigationNodeId parentNodeId;
 	private INavigationArgumentListener argumentListener;
+	private boolean navigateAsync = false;
 
 	/**
-	 * @param argument
+	 * @return the navigateAsync
+	 */
+	public boolean isNavigateAsync() {
+		return navigateAsync;
+	}
+
+	/**
+	 * @param navigateAsync
+	 *            the navigateAsync to set
+	 */
+	public void setNavigateAsync(boolean navigateAsync) {
+		this.navigateAsync = navigateAsync;
+	}
+
+	/**
+	 * @param inputParameter
 	 * @param argumentListener
 	 * @param parentNodeId
 	 */
 	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener,
 			NavigationNodeId parentNodeId) {
 		super();
-		this.argument = argument;
+		this.inputParameter = argument;
 		this.argumentListener = argumentListener;
 		this.parentNodeId = parentNodeId;
 	}
 
 	/**
-	 * @param argument
 	 */
-	public NavigationArgument(Object argument) {
+	public NavigationArgument() {
 		super();
-		this.argument = argument;
 	}
 
 	/**
-	 * @param argument
+	 * @param inputParameter
+	 */
+	public NavigationArgument(Object argument) {
+		super();
+		this.inputParameter = argument;
+	}
+
+	/**
+	 * @param inputParameter
 	 * @param argumentListener
 	 */
 	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener) {
 		super();
-		this.argument = argument;
+		this.inputParameter = argument;
 		this.argumentListener = argumentListener;
 	}
 
 	/**
 	 * @return the externalParameter
 	 */
-	public Object getExternalParameter() {
-		return argument;
+	public Object getInputParameter() {
+		return inputParameter;
 	}
 
 	/**
 	 * @param externalParameter
 	 *            the externalParameter to set
 	 */
-	public void setExternalParameter(Object externalParameter) {
-		this.argument = externalParameter;
+	public void setInputParameter(Object externalParameter) {
+		this.inputParameter = externalParameter;
 	}
 
 	/**

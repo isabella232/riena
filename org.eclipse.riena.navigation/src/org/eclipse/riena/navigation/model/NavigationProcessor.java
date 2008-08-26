@@ -21,24 +21,28 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
 import org.eclipse.riena.navigation.INavigationHistoryEvent;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.osgi.service.log.LogService;
 
 /**
  * Default implementation for the navigation processor
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
-	// private static Logger LOGGER =
-	// Activator.getDefault().getLogger(NavigationProcessor.class.getName());
+	private static Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class.getName());
 	private static int maxStacksize = 20;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
@@ -187,8 +191,22 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public void navigate(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument) {
-		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, argument);
+	public void navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument navigation) {
+		if (navigation != null && navigation.isNavigateAsync()) {
+			navigateAsync(sourceNode, targetId, navigation);
+		} else
+			navigateSync(sourceNode, targetId, navigation);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
+	 *      org.eclipse.riena.navigation.NavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 */
+	private void navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument navigation) {
+		INavigationNode<?> targetNode = provideNode(sourceNode, targetId, navigation);
 		if (targetNode == null) {
 			return;
 		}
@@ -200,6 +218,54 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			navigationMap.put(targetNode, sourceNode);
 			targetNode.activate();
 		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
+	 *      org.eclipse.riena.navigation.NavigationNodeId,
+	 *      org.eclipse.riena.navigation.NavigationArgument)
+	 */
+	private void navigateAsync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument navigation) {
+		final boolean debug = LOGGER.isLoggable(LogService.LOG_DEBUG);
+		if (debug)
+			LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " started..."); //$NON-NLS-1$ //$NON-NLS-2$
+		UIProcess p = new UIProcess("navigate", true, sourceNode) { //$NON-NLS-1$
+			INavigationNode<?> targetNode;
+
+			@Override
+			public boolean runJob(IProgressMonitor monitor) {
+				targetNode = provideNode(sourceNode, targetId, navigation);
+				return true;
+			}
+
+			@Override
+			public void finalUpdateUI() {
+				if (targetNode != null) {
+					INavigationNode<?> activateNode = targetNode.findNode(targetId);
+					if (activateNode != null) {
+						navigationMap.put(activateNode, sourceNode);
+						// TODO FLASHING but no activation
+						// activateNode.activate();
+					} else {
+						navigationMap.put(targetNode, sourceNode);
+						// TODO FLASHING but no activation
+						// targetNode.activate();
+					}
+				}
+				if (debug)
+					LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " completed"); //$NON-NLS-1$//$NON-NLS-2$
+			}
+
+			@Override
+			protected int getTotalWork() {
+				return 10;
+			}
+		};
+		// TODO must be set?
+		p.setNote("sample uiProcess note"); //$NON-NLS-1$ 
+		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
+		p.start();
 	}
 
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
