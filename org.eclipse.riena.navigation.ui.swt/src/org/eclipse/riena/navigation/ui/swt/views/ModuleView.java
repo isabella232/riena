@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -59,12 +57,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private boolean hover;
 	private ModuleTitleBar title;
 	private NavigationTreeObserver navigationTreeObserver;
-	private List<IComponentUpdateListener> updateListeners;
+	private ListenerList<IComponentUpdateListener> updateListeners;
 
 	public ModuleView(Composite parent) {
 		this.parent = parent;
 		binding = createBinding();
-		updateListeners = new ArrayList<IComponentUpdateListener>();
+		updateListeners = new ListenerList<IComponentUpdateListener>(IComponentUpdateListener.class);
 		buildView();
 	}
 
@@ -536,7 +534,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	}
 
 	protected void fireUpdated(INavigationNode<?> node) {
-		for (IComponentUpdateListener listener : updateListeners) {
+		for (IComponentUpdateListener listener : updateListeners.getListeners()) {
 			listener.update(node);
 		}
 	}

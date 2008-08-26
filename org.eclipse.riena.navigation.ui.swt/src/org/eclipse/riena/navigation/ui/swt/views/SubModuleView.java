@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.IPresentationProviderService;
@@ -20,6 +21,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -42,7 +44,8 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * Abstract implementation for a sub module view
  */
-public abstract class SubModuleView<C extends SubModuleController> extends ViewPart {
+public abstract class SubModuleView<C extends SubModuleController> extends ViewPart implements
+		INavigationNodeView<SWTModuleController, SubModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 
@@ -50,14 +53,12 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private AbstractViewBindingDelegate binding;
 	private C currentController;
 	private EmbeddedTitleBar title;
+	private ListenerList<IComponentUpdateListener> updateListeners;
 
 	private Composite parentComposite;
-
-	private Cursor cursorWait;
-
-	private Cursor cursorArrow;
-
 	private Composite contentComposite;
+	private Cursor cursorWait;
+	private Cursor cursorArrow;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -65,6 +66,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	public SubModuleView() {
 		binding = createBinding();
 		node2Controler = new HashMap<ISubModuleNode, C>();
+		updateListeners = new ListenerList<IComponentUpdateListener>(IComponentUpdateListener.class);
 	}
 
 	/**
@@ -113,7 +115,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @return the controller
 	 */
 	public C getController() {
-		return node2Controler.get(getCurrentNode());
+		return node2Controler.get(getNavigationNode());
 	}
 
 	/**
@@ -121,13 +123,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 *            the controller to set
 	 */
 	public void setController(C controller) {
-		if (node2Controler.get(getCurrentNode()) == null) {
-			node2Controler.put(getCurrentNode(), controller);
+		if (node2Controler.get(getNavigationNode()) == null) {
+			node2Controler.put(getNavigationNode(), controller);
 		}
-	}
-
-	protected ISubModuleNode getCurrentNode() {
-		return getSubModuleNode(this.getViewSite().getId(), this.getViewSite().getSecondaryId());
 	}
 
 	/**
@@ -137,7 +135,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	public void createPartControl(Composite parent) {
 		this.parentComposite = parent;
 		observeRoot();
-		setController(createController(getCurrentNode()));
+		setController(createController(getNavigationNode()));
 		setPartName(getController().getNavigationNode().getLabel());
 		Composite contentComposite = createContentComposite(parent);
 		basicCreatePartControl(contentComposite);
@@ -208,7 +206,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	private void observeRoot() {
-		INavigationNode<?> node = getCurrentNode();
+		INavigationNode<?> node = getNavigationNode();
 		while (node.getParent() != null) {
 			node = node.getParent();
 		}
@@ -227,6 +225,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private final class MySubModuleNodeListener extends SubModuleNodeListener {
 		@Override
 		public void activated(ISubModuleNode source) {
+			super.activated(source);
 			activate(source);
 		}
 
@@ -259,26 +258,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		doBinding();
 	}
 
-	protected void doBinding() {
-		if (currentController != getController()) {
-			if (currentController != null) {
-				binding.unbind(currentController);
-			}
-			if ((getCurrentNode() != null) && (node2Controler.get(getCurrentNode()) == null)) {
-				createViewFacade();
-			}
-			if (getController() != null) {
-				currentController = getController();
-			}
-			binding.bind(currentController);
-			currentController.afterBind();
-			title.setActive(currentController.isActivated());
-		}
-	}
-
 	protected void createViewFacade() {
-		if (!node2Controler.containsKey(getCurrentNode())) {
-			setController(createController(getCurrentNode()));
+		if (!node2Controler.containsKey(getNavigationNode())) {
+			setController(createController(getNavigationNode()));
 		}
 		binding.injectRidgets(getController());
 		if (getController().getWindowRidget() == null) {
@@ -295,6 +277,66 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	protected IPresentationProviderService getPresentationDefinitionService() {
 		// TODO: handling if no service found ???
 		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
+	}
+
+	private void doBinding() {
+		bind(getNavigationNode());
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#
+	 *      addUpdateListener
+	 *      (org.eclipse.riena.navigation.ui.swt.views.IComponentUpdateListener)
+	 */
+	public void addUpdateListener(IComponentUpdateListener listener) {
+		updateListeners.add(listener);
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org
+	 *      .eclipse.riena.navigation.INavigationNode)
+	 */
+	public void bind(SubModuleNode node) {
+		if (currentController != getController()) {
+			if (currentController != null) {
+				binding.unbind(currentController);
+			}
+			if ((getNavigationNode() != null) && (node2Controler.get(getNavigationNode()) == null)) {
+				createViewFacade();
+			}
+			if (getController() != null) {
+				currentController = getController();
+			}
+			binding.bind(currentController);
+			currentController.afterBind();
+			title.setActive(currentController.isActivated());
+		}
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#
+	 *      getNavigationNode ()
+	 */
+	public SubModuleNode getNavigationNode() {
+		return (SubModuleNode) getSubModuleNode(this.getViewSite().getId(), this.getViewSite().getSecondaryId());
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#unbind()
+	 */
+	public void unbind() {
+
+		SubModuleNode node = getNavigationNode();
+		if (node == null) {
+			return;
+		}
+
+		C controller = node2Controler.get(node);
+		if (controller != null) {
+			binding.unbind(controller);
+			node2Controler.remove(node);
+		}
+
 	}
 
 }

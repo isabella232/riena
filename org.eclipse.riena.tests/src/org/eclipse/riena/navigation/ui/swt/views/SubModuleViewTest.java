@@ -92,7 +92,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		}
 
 		@Override
-		protected ISubModuleNode getCurrentNode() {
+		public SubModuleNode getNavigationNode() {
 			return node;
 		}
 

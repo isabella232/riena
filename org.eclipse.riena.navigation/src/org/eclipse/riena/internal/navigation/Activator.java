@@ -14,7 +14,6 @@ import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.model.PresentationProviderService;
-
 import org.osgi.framework.BundleContext;
 
 /**
@@ -41,6 +40,7 @@ public class Activator extends RienaPlugin {
 	 * @see
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
@@ -57,6 +57,7 @@ public class Activator extends RienaPlugin {
 	 * @see
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
 		if (service != null) {
