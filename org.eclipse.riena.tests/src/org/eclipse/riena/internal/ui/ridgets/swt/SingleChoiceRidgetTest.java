@@ -413,13 +413,14 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
-	public void testCannotBeChangedFromUIWhenDisabled() {
+	public void testOutputCannotBeChangedFromUI() {
 		ISingleChoiceRidget ridget = getRidget();
 		Button button1 = (Button) getUIControl().getChildren()[0];
 		Button button2 = (Button) getUIControl().getChildren()[1];
 
 		assertTrue(button1.getSelection());
 		assertFalse(button2.getSelection());
+		assertEquals("Option A", ridget.getSelection());
 
 		ridget.setOutputOnly(true);
 		button2.setFocus();
@@ -427,6 +428,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertTrue(button1.getSelection());
 		assertFalse(button2.getSelection());
+		assertEquals("Option A", ridget.getSelection());
 
 		ridget.setOutputOnly(false);
 		button2.setFocus();
@@ -434,6 +436,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertFalse(button1.getSelection());
 		assertTrue(button2.getSelection());
+		assertEquals("Option B", ridget.getSelection());
 	}
 
 	// helping methods

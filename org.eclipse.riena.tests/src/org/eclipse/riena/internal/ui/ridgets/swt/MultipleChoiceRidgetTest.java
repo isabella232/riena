@@ -512,7 +512,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
-	public void testCannotBeChangedFromUIWhenDisabled() {
+	public void testOutputCannotBeChangedFromUI() {
 		IMultipleChoiceRidget ridget = getRidget();
 		Button button1 = (Button) getUIControl().getChildren()[0];
 		Button button2 = (Button) getUIControl().getChildren()[1];
@@ -521,6 +521,9 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertTrue(button1.getSelection());
 		assertTrue(button2.getSelection());
 		assertFalse(button3.getSelection());
+		assertEquals(2, ridget.getSelection().size());
+		assertTrue(ridget.getSelection().contains("Option A"));
+		assertTrue(ridget.getSelection().contains("Option B"));
 
 		ridget.setOutputOnly(true);
 		button1.setFocus();
@@ -531,6 +534,9 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertTrue(button1.getSelection());
 		assertTrue(button2.getSelection());
 		assertFalse(button3.getSelection());
+		assertEquals(2, ridget.getSelection().size());
+		assertTrue(ridget.getSelection().contains("Option A"));
+		assertTrue(ridget.getSelection().contains("Option B"));
 
 		ridget.setOutputOnly(false);
 		button1.setFocus();
@@ -541,6 +547,9 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertFalse(button1.getSelection());
 		assertTrue(button2.getSelection());
 		assertTrue(button3.getSelection());
+		assertEquals(2, ridget.getSelection().size());
+		assertTrue(ridget.getSelection().contains("Option B"));
+		assertTrue(ridget.getSelection().contains("Option C"));
 	}
 
 	// helping methods

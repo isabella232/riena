@@ -17,6 +17,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -479,6 +480,31 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		} catch (BindingException bex) {
 			// expected
 		}
+	}
+
+	public void testOutputCannotBeChangedFromUI() {
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
+		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
+
+		assertNull(ridget.getSelection());
+		assertEquals(-1, control.getSelectionIndex());
+
+		ridget.setOutputOnly(true);
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "A");
+
+		assertNull(ridget.getSelection());
+		assertEquals(-1, control.getSelectionIndex());
+
+		ridget.setOutputOnly(false);
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "A");
+
+		assertEquals("A", ridget.getSelection());
+		assertEquals(0, control.getSelectionIndex());
 	}
 
 	// helping methods

@@ -26,9 +26,11 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.IComboBoxEntryFactory;
 import org.eclipse.swt.SWT;
@@ -52,6 +54,8 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	private final Converter strToObjConverter;
 	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
+	/** IValueChangeListener that allows or cancels a value change */
+	private final IValueChangeListener valueChangeValidator;
 
 	/** If this item is selected, treat it as if nothing is selected */
 	private Object emptySelection;
@@ -99,6 +103,7 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 		objToStrConverter = new ObjectToStringConverter();
 		strToObjConverter = new StringToObjectConverter();
 		selectionValidator = new SelectionBindingValidator();
+		valueChangeValidator = new ValueChangeValidator();
 	}
 
 	@Override
@@ -127,9 +132,11 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 				// These bindings are only necessary when we have a Combo
 				listBindingInternal = dbc.bindList(SWTObservables.observeItems(control), rowObservables,
 						new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE).setConverter(strToObjConverter),
-						new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST).setConverter(objToStrConverter));
+						new UpdateListStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
 				listBindingInternal.updateModelToTarget();
-				selectionBindingInternal = dbc.bindValue(SWTObservables.observeSelection(control), selectionObservable,
+				ISWTObservableValue controlSelection = SWTObservables.observeSelection(control);
+				controlSelection.addValueChangeListener(valueChangeValidator);
+				selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable,
 						new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter)
 								.setAfterGetValidator(selectionValidator), new UpdateValueStrategy(
 								UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
@@ -343,7 +350,7 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	/**
 	 * Convert from model object to combo box items (strings).
 	 */
-	private class ObjectToStringConverter extends Converter {
+	private final class ObjectToStringConverter extends Converter {
 		public ObjectToStringConverter() {
 			super(Object.class, String.class);
 		}
@@ -356,7 +363,7 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	/**
 	 * Convert from combo box items (strings) to model objects.
 	 */
-	private class StringToObjectConverter extends Converter {
+	private final class StringToObjectConverter extends Converter {
 		public StringToObjectConverter() {
 			super(String.class, Object.class);
 		}
@@ -367,18 +374,53 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	}
 
 	/**
-	 * This validator can be used to interrupt an update request.
+	 * This validator can be used to interrupt an update request
 	 */
-	private static class SelectionBindingValidator implements IValidator {
+	private final class SelectionBindingValidator implements IValidator {
 
 		private boolean isEnabled = true;
 
 		public IStatus validate(Object value) {
-			return isEnabled ? Status.OK_STATUS : Status.CANCEL_STATUS;
+			IStatus result = Status.OK_STATUS;
+			// disallow control to ridget update, isEnabled == false || output
+			if (!isEnabled || isOutputOnly()) {
+				result = Status.CANCEL_STATUS;
+			}
+			return result;
 		}
 
 		void enableBinding(final boolean isEnabled) {
 			this.isEnabled = isEnabled;
 		}
+	}
+
+	/**
+	 * Ensures the user cannot change the Combo when isOutputOnly is enabled.
+	 * 
+	 * @see IMarkableRidget#setOutputOnly(boolean)
+	 */
+	private final class ValueChangeValidator implements IValueChangeListener {
+
+		private volatile boolean changing = false;
+
+		public void handleValueChange(ValueChangeEvent event) {
+			if (changing || !isOutputOnly()) {
+				return;
+			}
+			changing = true;
+			try {
+				Combo combo = getUIControl();
+				String oldValue = (String) event.diff.getOldValue();
+				int index = oldValue != null ? combo.indexOf(oldValue) : -1;
+				if (index > -1) {
+					combo.select(index);
+				} else {
+					combo.deselectAll();
+				}
+			} finally {
+				changing = false;
+			}
+		}
+
 	}
 }
