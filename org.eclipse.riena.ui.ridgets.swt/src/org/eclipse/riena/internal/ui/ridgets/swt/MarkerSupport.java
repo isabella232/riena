@@ -25,7 +25,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
@@ -35,7 +34,6 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	private static final FieldDecoration DEC_ERROR = FieldDecorationRegistry.getDefault().getFieldDecoration(
 			FieldDecorationRegistry.DEC_ERROR);
 
-	private Boolean preOutputEditable;
 	private Color preOutputBg;
 	private Color preMandatoryBg;
 	private Color preNegativeFg;
@@ -93,11 +91,6 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (preOutputBg == null) {
 			preOutputBg = control.getBackground();
 			control.setBackground(color);
-			if (control instanceof Text) {
-				Text text = (Text) control;
-				preOutputEditable = Boolean.valueOf(text.getEditable());
-				text.setEditable(false);
-			}
 		}
 	}
 
@@ -126,10 +119,6 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 			control.setBackground(preOutputBg);
 			preOutputBg = null;
 		}
-		if (preOutputEditable != null && control instanceof Text) {
-			((Text) control).setEditable(preOutputEditable.booleanValue());
-		}
-		preOutputEditable = null;
 	}
 
 	private boolean isMandatory(IMarkableRidget ridget) {

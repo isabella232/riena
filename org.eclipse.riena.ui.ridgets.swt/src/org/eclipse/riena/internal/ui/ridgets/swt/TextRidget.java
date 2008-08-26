@@ -71,6 +71,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		if (control != null) {
 			control.setText(textValue);
 			control.setSelection(0, 0); // move cursor to 0
+			control.setEditable(isOutputOnly() ? false : true);
 			control.addKeyListener(crKeyListener);
 			control.addFocusListener(focusListener);
 			control.addModifyListener(modifyListener);
@@ -166,6 +167,15 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 	public void setAlignment(int alignment) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void setOutputOnly(boolean outputOnly) {
+		super.setOutputOnly(outputOnly);
+		Text control = getUIControl();
+		if (control != null && !control.isDisposed()) {
+			control.setEditable(isOutputOnly() ? false : true);
+		}
 	}
 
 	// helping methods

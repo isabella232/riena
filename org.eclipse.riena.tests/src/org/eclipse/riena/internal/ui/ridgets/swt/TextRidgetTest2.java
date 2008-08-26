@@ -1037,6 +1037,32 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isDisableMandatoryMarker());
 	}
 
+	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+
+		ridget.setText("foo");
+
+		assertEquals("foo", control.getText());
+		assertEquals("foo", ridget.getText());
+
+		ridget.setOutputOnly(true);
+		control.selectAll();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "bar\t");
+
+		assertEquals("foo", control.getText());
+		assertEquals("foo", ridget.getText());
+
+		ridget.setOutputOnly(false);
+		control.selectAll();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "bar\t");
+
+		assertEquals("bar", control.getText());
+		assertEquals("bar", ridget.getText());
+	}
+
 	// helping methods
 	// ////////////////
 

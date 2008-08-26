@@ -113,7 +113,7 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 		return !getMarkersOfType(OutputMarker.class).isEmpty();
 	}
 
-	public final void setOutputOnly(boolean outputOnly) {
+	public void setOutputOnly(boolean outputOnly) {
 		if (!outputOnly) {
 			if (outputMarker != null) {
 				removeMarker(outputMarker);
