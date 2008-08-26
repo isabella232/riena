@@ -121,8 +121,8 @@ public class ExtensionInjector {
 
 	/**
 	 * Explicitly force specific injection, i.e. the injected types reflect that
-	 * they come from different extensions. Otherwise (which is the default) it
-	 * will not be differentiated.
+	 * they are contributed from different extensions. Otherwise (which is the
+	 * default) it will not be differentiated.
 	 * 
 	 * @return itself
 	 */
