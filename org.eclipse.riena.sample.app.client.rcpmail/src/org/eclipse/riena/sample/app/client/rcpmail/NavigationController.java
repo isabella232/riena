@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
  * 
  * @see NavigationView
  */
-public class NavigationViewController extends AbstractRidgetController {
+public class NavigationController extends AbstractRidgetController {
 
 	@Override
 	public void configureRidgets() {

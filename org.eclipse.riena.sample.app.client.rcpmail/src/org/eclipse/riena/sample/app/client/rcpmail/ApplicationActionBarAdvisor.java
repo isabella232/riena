@@ -65,7 +65,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
 		register(newWindowAction);
 
-		openViewAction = new OpenViewAction(window, "Open Another Message View", View.ID); //$NON-NLS-1$
+		openViewAction = new OpenViewAction(window, "Open Another Message View", MessageView.ID); //$NON-NLS-1$
 		register(openViewAction);
 
 		messagePopupAction = new MessagePopupAction("Open Message", window); //$NON-NLS-1$

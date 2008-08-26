@@ -16,11 +16,11 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 
 /**
- * Ridget controller used by the {@link View}.
+ * Ridget controller used by the {@link MessageView}.
  * 
- * @see View
+ * @see MessageView
  */
-public class ViewController extends AbstractRidgetController {
+public class MessageController extends AbstractRidgetController {
 
 	/**
 	 * Mock object holding the data of a single message.
@@ -73,6 +73,7 @@ public class ViewController extends AbstractRidgetController {
 
 	private MailMessage message = new MailMessage();
 
+	@Override
 	public void configureRidgets() {
 		ILabelRidget lblSubject = (ILabelRidget) getRidget("subject"); //$NON-NLS-1$
 		lblSubject.bindToModel(PojoObservables.observeValue(message, "subject")); //$NON-NLS-1$

@@ -23,7 +23,7 @@ public class NavigationView extends ViewPart {
 	public static final String ID = "org.eclipse.riena.sample.app.client.rcpmail.navigationView"; //$NON-NLS-1$
 
 	private DefaultSwtBindingDelegate delegate = new DefaultSwtBindingDelegate();
-	private IController controller = new NavigationViewController();
+	private IController controller = new NavigationController();
 	private Tree tree;
 
 	/**

@@ -25,7 +25,7 @@
             name="Message"
             allowMultiple="true"
             icon="icons/sample2.gif"
-            class="org.eclipse.riena.sample.app.client.rcpmail.View"
+            class="org.eclipse.riena.sample.app.client.rcpmail.MessageView"
             id="org.eclipse.riena.sample.app.client.rcpmail.view">
       </view>
       <view

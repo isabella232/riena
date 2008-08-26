@@ -24,12 +24,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
-public class View extends ViewPart {
+public class MessageView extends ViewPart {
 
 	public static final String ID = "org.eclipse.riena.sample.app.client.rcpmail.view"; //$NON-NLS-1$
 
 	private DefaultSwtBindingDelegate delegate = new DefaultSwtBindingDelegate();
-	private IController controller = new ViewController();
+	private IController controller = new MessageController();
 
 	@Override
 	public void createPartControl(Composite parent) {
