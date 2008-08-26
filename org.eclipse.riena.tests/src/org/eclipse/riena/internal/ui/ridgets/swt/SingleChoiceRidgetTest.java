@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
@@ -410,6 +411,29 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		} catch (RuntimeException rex) {
 			// expected
 		}
+	}
+
+	public void testCannotBeChangedFromUIWhenDisabled() {
+		ISingleChoiceRidget ridget = getRidget();
+		Button button1 = (Button) getUIControl().getChildren()[0];
+		Button button2 = (Button) getUIControl().getChildren()[1];
+
+		assertTrue(button1.getSelection());
+		assertFalse(button2.getSelection());
+
+		ridget.setOutputOnly(true);
+		button2.setFocus();
+		UITestHelper.sendString(button2.getDisplay(), " ");
+
+		assertTrue(button1.getSelection());
+		assertFalse(button2.getSelection());
+
+		ridget.setOutputOnly(false);
+		button2.setFocus();
+		UITestHelper.sendString(button2.getDisplay(), " ");
+
+		assertFalse(button1.getSelection());
+		assertTrue(button2.getSelection());
 	}
 
 	// helping methods

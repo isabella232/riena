@@ -155,7 +155,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	public IObservableList getObservableList() {
 		return optionsObservable;
 	}
-	
+
 	@Override
 	public final boolean isDisableMandatoryMarker() {
 		return hasInput();
@@ -227,7 +227,12 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 						Button button = (Button) e.widget;
 						Object data = button.getData();
 						if (button.getSelection()) {
-							SingleChoiceRidget.this.setSelection(data);
+							if (isOutputOnly()) {
+								// silently revert UI change
+								updateChildren(getUIControl());
+							} else {
+								SingleChoiceRidget.this.setSelection(data);
+							}
 						}
 					}
 				});
@@ -245,7 +250,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 	}
 
 	private boolean hasInput() {
-		return selectionObservable != null && selectionObservable.getValue() != null;
+		return selectionObservable.getValue() != null;
 	}
 
 	private void updateChildren(Composite control) {

@@ -229,16 +229,21 @@ public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMul
 					public void widgetSelected(SelectionEvent e) {
 						Button button = (Button) e.widget;
 						Object data = button.getData();
-						if (button.getSelection()) {
-							if (!selectionObservable.contains(data)) {
+						if (isOutputOnly()) {
+							// silently revert button state
+							updateChildren(getUIControl());
+						} else {
+							if (button.getSelection()) {
+								if (!selectionObservable.contains(data)) {
+									List oldSelection = new ArrayList(selectionObservable);
+									selectionObservable.add(data);
+									firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
+								}
+							} else {
 								List oldSelection = new ArrayList(selectionObservable);
-								selectionObservable.add(data);
+								selectionObservable.remove(data);
 								firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 							}
-						} else {
-							List oldSelection = new ArrayList(selectionObservable);
-							selectionObservable.remove(data);
-							firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 						}
 					}
 				});

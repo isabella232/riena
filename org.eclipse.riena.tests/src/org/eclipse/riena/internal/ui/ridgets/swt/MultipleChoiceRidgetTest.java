@@ -512,6 +512,37 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
+	public void testCannotBeChangedFromUIWhenDisabled() {
+		IMultipleChoiceRidget ridget = getRidget();
+		Button button1 = (Button) getUIControl().getChildren()[0];
+		Button button2 = (Button) getUIControl().getChildren()[1];
+		Button button3 = (Button) getUIControl().getChildren()[2];
+
+		assertTrue(button1.getSelection());
+		assertTrue(button2.getSelection());
+		assertFalse(button3.getSelection());
+
+		ridget.setOutputOnly(true);
+		button1.setFocus();
+		UITestHelper.sendString(button1.getDisplay(), " ");
+		button3.setFocus();
+		UITestHelper.sendString(button3.getDisplay(), " ");
+
+		assertTrue(button1.getSelection());
+		assertTrue(button2.getSelection());
+		assertFalse(button3.getSelection());
+
+		ridget.setOutputOnly(false);
+		button1.setFocus();
+		UITestHelper.sendString(button1.getDisplay(), " ");
+		button3.setFocus();
+		UITestHelper.sendString(button3.getDisplay(), " ");
+
+		assertFalse(button1.getSelection());
+		assertTrue(button2.getSelection());
+		assertTrue(button3.getSelection());
+	}
+
 	// helping methods
 	// ////////////////
 
