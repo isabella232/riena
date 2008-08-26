@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -27,7 +29,6 @@ import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleS
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
@@ -52,7 +53,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
 
-	private ListenerList<IActionListener> doubleClickListeners;
+	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private ListViewer viewer;
 	private Class<?> rowBeanClass;
@@ -134,7 +135,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	public void addDoubleClickListener(IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
-			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
+			doubleClickListeners = new ArrayList<IActionListener>();
 		}
 		doubleClickListeners.add(listener);
 	}
@@ -329,7 +330,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			if (doubleClickListeners != null) {
-				for (IActionListener listener : doubleClickListeners.getListeners()) {
+				for (IActionListener listener : doubleClickListeners) {
 					listener.callback();
 				}
 			}

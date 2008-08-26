@@ -17,6 +17,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +44,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
@@ -70,7 +70,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private final DoubleClickForwarder doubleClickForwarder;
 	private final Queue<ExpansionCommand> expansionStack;
 
-	private ListenerList<IActionListener> doubleClickListeners;
+	private Collection<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
 
@@ -209,7 +209,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public void addDoubleClickListener(IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
-			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
+			doubleClickListeners = new ArrayList<IActionListener>();
 		}
 		doubleClickListeners.add(listener);
 	}
@@ -553,7 +553,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			if (doubleClickListeners != null) {
-				for (IActionListener listener : doubleClickListeners.getListeners()) {
+				for (IActionListener listener : doubleClickListeners) {
 					listener.callback();
 				}
 			}
