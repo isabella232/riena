@@ -17,12 +17,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
+import org.eclipse.riena.ui.swt.uiprocess.UIProcessWindow;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * A {@link VisualizerContainer} is related to a visual context in the
  * {@link UIProcessRidget}. The container holds all {@link IProgressVisualizer}
- * for the context and the bounds of the {@link UiProcessWindow} in the context.
+ * for the context and the bounds of the {@link UIProcessWindow} in the context.
  * Inside it maps {@link IProgressVisualizer} to their activation time.
  * 
  */
@@ -81,7 +82,7 @@ class VisualizerContainer extends HashMap<IProgressVisualizer, Integer> {
 	}
 
 	/**
-	 * manage bounds of the {@link UiProcessWindow}
+	 * manage bounds of the {@link UIProcessWindow}
 	 */
 
 	public void setBounds(Rectangle bounds) {
