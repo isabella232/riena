@@ -136,7 +136,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		} else if (isStatusLine(newPart)) {
 			statusLine = newPart;
 			binding.addUIControl(getStatuslineWidget(statusLine.getControl()));
-			SubApplicationController controller = getSubApplicationViewController();
+			SubApplicationController controller = getSubApplicationController();
 			if (controller != null) {
 				binding.injectAndBind(controller);
 			}
@@ -451,7 +451,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (hasListener) {
 			return;
 		}
-		SubApplicationController controller = getSubApplicationViewController();
+		SubApplicationController controller = getSubApplicationController();
 		if (controller != null) {
 			NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 			navigationTreeObserver.addListener(new SubModuleNodeListener() {
@@ -466,11 +466,11 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Return the SubApplicationViewController instance for this presentation.
+	 * Return the SubApplicationController instance for this presentation.
 	 * 
-	 * @return a SubApplicationViewController instance or null
+	 * @return a SubApplicationController instance or null
 	 */
-	private SubApplicationController getSubApplicationViewController() {
+	private SubApplicationController getSubApplicationController() {
 		SubApplicationController result = null;
 		IWorkbenchPage page = getActivePage();
 		if (page != null) {

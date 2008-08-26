@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
- * Default implementation for a ModuleNodeViewController
+ * Default implementation for a ModuleController.
  */
 public class ModuleController extends NavigationNodeController<IModuleNode> {
 

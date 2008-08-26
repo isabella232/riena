@@ -142,7 +142,7 @@
       </command>
       <command
             id="org.eclipse.riena.example.client.certainViewCommand"
-            name="Certain View">
+            name="Certain View (Combo)">
       </command>
       <command
             id="org.eclipse.riena.example.client.zoomOutCommand"
@@ -150,7 +150,7 @@
       </command>
       <command
             id="org.eclipse.riena.example.client.certainPerspectiveCommand"
-            name="Certain Perspective">
+            name="Certain Perspective (Playground)">
       </command>
             <command
             id="org.eclipse.riena.example.client.histBackCommand"

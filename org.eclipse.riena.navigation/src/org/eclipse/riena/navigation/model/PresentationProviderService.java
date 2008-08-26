@@ -21,7 +21,7 @@ import org.eclipse.riena.navigation.ISubModuleTypeDefinition;
 import org.eclipse.riena.navigation.ITypeDefinition;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.osgi.service.log.LogService;
 
 /**
@@ -230,13 +230,13 @@ public class PresentationProviderService implements IPresentationProviderService
 	 */
 	public IController provideController(INavigationNode<?> node) {
 		ISubModuleTypeDefinition subModuleTypeDefinition = getSubModuleTypeDefinition(node.getNodeId().getTypeId());
-		IController viewController = null;
+		IController controller = null;
 
 		if (subModuleTypeDefinition != null) {
-			viewController = subModuleTypeDefinition.createController();
+			controller = subModuleTypeDefinition.createController();
 		}
 
-		return viewController;
+		return controller;
 	}
 
 	/**

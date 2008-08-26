@@ -35,7 +35,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	public Object createView(IApplicationContext context, IApplicationModel pModel) {
 		Display display = PlatformUI.createDisplay();
 		try {
-			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationViewController(pModel));
+			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pModel));
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
@@ -46,7 +46,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	protected ApplicationController createApplicationViewController(IApplicationModel pModel) {
+	protected ApplicationController createApplicationController(IApplicationModel pModel) {
 		return new ApplicationController(pModel);
 	}
 

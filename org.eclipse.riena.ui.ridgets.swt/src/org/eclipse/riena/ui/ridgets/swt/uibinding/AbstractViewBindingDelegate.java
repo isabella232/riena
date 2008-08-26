@@ -13,11 +13,11 @@ package org.eclipse.riena.ui.ridgets.swt.uibinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
  * A delegate for the binding of view (UI controls) and controller (Ridgets).

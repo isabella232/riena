@@ -30,7 +30,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * An abstract controller superclass that manages the navigation node of a
@@ -104,7 +104,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#afterBind()
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#afterBind()
 	 */
 	public void afterBind() {
 		updateNavigationNodeMarkers();
@@ -236,7 +236,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	// }
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#setBlocked(boolean)
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 		if (getNavigationNode() != null) {
@@ -266,13 +266,13 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#isBlocked()
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return getNavigationNode() != null && getNavigationNode().isBlocked();
 	}
 
-	public NavigationNodeController<?> getParentViewController() {
+	public NavigationNodeController<?> getParentController() {
 		if ((getNavigationNode() != null) && (getNavigationNode().getParent() == null)) {
 			return null;
 		} else {

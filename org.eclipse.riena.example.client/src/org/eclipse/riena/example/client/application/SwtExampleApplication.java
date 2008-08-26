@@ -54,13 +54,11 @@ public class SwtExampleApplication extends SwtApplication {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#
-	 *      createApplicationViewController
-	 *      (org.eclipse.riena.navigation.IApplicationModel)
+	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#createApplicationController(org.eclipse.riena.navigation.IApplicationModel)
 	 */
 	@Override
-	protected ApplicationController createApplicationViewController(IApplicationModel model) {
-		ApplicationController controller = super.createApplicationViewController(model);
+	protected ApplicationController createApplicationController(IApplicationModel model) {
+		ApplicationController controller = super.createApplicationController(model);
 		controller.setMenubarVisible(true);
 		return controller;
 	}

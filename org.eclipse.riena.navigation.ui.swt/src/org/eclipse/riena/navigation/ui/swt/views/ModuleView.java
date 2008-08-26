@@ -24,8 +24,8 @@ import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -300,10 +300,10 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		navigationTreeObserver.addListenerTo(moduleNode);
 
 		if (getNavigationNode().getPresentation() instanceof IController) {
-			IController viewController = (IController) node.getPresentation();
-			binding.injectRidgets(viewController);
-			binding.bind(viewController);
-			viewController.afterBind();
+			IController controller = (IController) node.getPresentation();
+			binding.injectRidgets(controller);
+			binding.bind(controller);
+			controller.afterBind();
 		}
 
 	}
@@ -314,8 +314,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	public void unbind() {
 
 		if (getNavigationNode().getPresentation() instanceof IController) {
-			IController viewController = (IController) getNavigationNode().getPresentation();
-			binding.unbind(viewController);
+			IController controller = (IController) getNavigationNode().getPresentation();
+			binding.unbind(controller);
 		}
 
 		navigationTreeObserver.removeListenerFrom(moduleNode);

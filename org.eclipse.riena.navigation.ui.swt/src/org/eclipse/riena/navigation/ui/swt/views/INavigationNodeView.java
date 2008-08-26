@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 public interface INavigationNodeView<C extends IController, N extends INavigationNode<?>> {
 

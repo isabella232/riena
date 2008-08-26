@@ -21,9 +21,9 @@ import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPageLayout;
@@ -38,7 +38,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		IPerspectiveFactory {
 
 	private AbstractViewBindingDelegate binding;
-	private SubApplicationController subApplicationViewController;
+	private SubApplicationController subApplicationController;
 	private SubApplicationNode subApplicationNode;
 
 	public SubApplicationView() {
@@ -57,10 +57,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	public void bind(SubApplicationNode node) {
 		if (getNavigationNode().getPresentation() instanceof IController) {
-			IController viewController = (IController) node.getPresentation();
-			binding.injectRidgets(viewController);
-			binding.bind(viewController);
-			viewController.afterBind();
+			IController controller = (IController) node.getPresentation();
+			binding.injectRidgets(controller);
+			binding.bind(controller);
+			controller.afterBind();
 		}
 	}
 
@@ -75,10 +75,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	public void createInitialLayout(IPageLayout layout) {
 		addUIControls();
 		subApplicationNode = (SubApplicationNode) locateSubApplication(layout.getDescriptor().getId());
-		subApplicationViewController = createController(subApplicationNode);
-		initializeListener(subApplicationViewController);
+		subApplicationController = createController(subApplicationNode);
+		initializeListener(subApplicationController);
 		bind(subApplicationNode);
-		subApplicationViewController.afterBind();
+		subApplicationController.afterBind();
 		doBaseLayout(layout);
 	}
 

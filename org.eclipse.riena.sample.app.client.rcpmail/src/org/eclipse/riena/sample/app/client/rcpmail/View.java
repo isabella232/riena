@@ -11,8 +11,8 @@
 package org.eclipse.riena.sample.app.client.rcpmail;
 
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -31,6 +31,7 @@ public class View extends ViewPart {
 	private DefaultSwtBindingDelegate delegate = new DefaultSwtBindingDelegate();
 	private IController controller = new ViewController();
 
+	@Override
 	public void createPartControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -78,6 +79,7 @@ public class View extends ViewPart {
 		});
 	}
 
+	@Override
 	public void setFocus() {
 	}
 }

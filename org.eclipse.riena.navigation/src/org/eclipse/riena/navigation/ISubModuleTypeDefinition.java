@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.osgi.framework.Bundle;
 
 /**

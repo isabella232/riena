@@ -102,30 +102,32 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.addListener(listener1);
 		ridget.addListener(listener2);
+		// listener2 will not be added again
+		// if the same instance is already added
 		ridget.addListener(listener2);
 
 		fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
-		assertEquals(2, listener2.getCount());
+		assertEquals(1, listener2.getCount());
 
 		ridget.removeListener(listener1);
 		fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
-		assertEquals(4, listener2.getCount());
+		assertEquals(2, listener2.getCount());
 
 		ridget.removeListener(listener2);
 		fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
-		assertEquals(5, listener2.getCount());
+		assertEquals(2, listener2.getCount());
 
 		ridget.removeListener(listener2);
 		fireSelectionEvent(control);
 
 		assertEquals(1, listener1.getCount());
-		assertEquals(5, listener2.getCount());
+		assertEquals(2, listener2.getCount());
 	}
 
 	public final void testSetText() throws Exception {

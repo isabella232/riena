@@ -12,13 +12,12 @@ package org.eclipse.riena.example.client.handler;
 
 import java.util.List;
 
+import org.eclipse.riena.navigation.ApplicationModelManager;
+import org.eclipse.riena.navigation.IApplicationModel;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * 
@@ -47,11 +46,24 @@ public class CertainViewHandler extends DummyHandler {
 		return msg;
 	}
 
+	// private ISubApplicationNode getActiveSubApplication() {
+	// String perspectiveId = getActivePage().getPerspective().getId();
+	// ISubApplicationNode node =
+	// SwtPresentationManagerAccessor.getManager().getNavigationNode
+	// (perspectiveId,
+	// ISubApplicationNode.class);
+	// return node;
+	// }
+
 	private ISubApplicationNode getActiveSubApplication() {
-		String perspectiveId = getActivePage().getPerspective().getId();
-		ISubApplicationNode node = SwtPresentationManagerAccessor.getManager().getNavigationNode(perspectiveId,
-				ISubApplicationNode.class);
-		return node;
+		IApplicationModel parent = ApplicationModelManager.getApplicationModel();
+		List<ISubApplicationNode> children = parent.getChildren();
+		for (ISubApplicationNode subAppNode : children) {
+			if (subAppNode.isActivated()) {
+				return subAppNode;
+			}
+		}
+		return null;
 	}
 
 	private IModuleGroupNode getActiveModuleGroup() {
@@ -117,14 +129,15 @@ public class CertainViewHandler extends DummyHandler {
 		return node;
 
 	}
-
-	/**
-	 * Returns the currently active page.
-	 * 
-	 * @return active page
-	 */
-	private IWorkbenchPage getActivePage() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-	}
+	//
+	// /**
+	// * Returns the currently active page.
+	// *
+	// * @return active page
+	// */
+	// private IWorkbenchPage getActivePage() {
+	// return
+	// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	// }
 
 }

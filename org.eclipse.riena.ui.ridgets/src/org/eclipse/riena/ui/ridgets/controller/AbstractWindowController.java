@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.viewcontroller;
+package org.eclipse.riena.ui.ridgets.controller;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -74,14 +74,14 @@ public abstract class AbstractWindowController implements IController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator)
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator)
 	 */
 	public void setUICallbackDispatcherFactory(IProgressVisualizerLocator uiprocessCallBackDispatcherFactory) {
 		// do nothing by default
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#setBlocked(boolean)
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
@@ -89,7 +89,7 @@ public abstract class AbstractWindowController implements IController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.viewcontroller.IController#isBlocked()
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return this.blocked;

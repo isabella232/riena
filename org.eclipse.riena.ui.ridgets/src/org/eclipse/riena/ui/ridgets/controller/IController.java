@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.viewcontroller;
+package org.eclipse.riena.ui.ridgets.controller;
 
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 

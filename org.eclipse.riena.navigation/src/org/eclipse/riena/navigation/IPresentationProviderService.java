@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * Implementation of this service interface provides service methods to get

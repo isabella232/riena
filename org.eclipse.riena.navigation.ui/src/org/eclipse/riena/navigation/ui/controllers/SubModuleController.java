@@ -18,10 +18,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
- * Default implementation for a SubModuleNodeViewController
- */
-/**
- * 
+ * Default implementation for a SubModuleController.
  */
 public class SubModuleController extends NavigationNodeController<ISubModuleNode> {
 

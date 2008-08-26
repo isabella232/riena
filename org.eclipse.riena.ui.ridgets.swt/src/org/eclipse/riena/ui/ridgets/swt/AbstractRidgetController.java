@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
-import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
 
 /**
  * Controller for using ridgets in a regular SWT view.
@@ -44,7 +44,7 @@ import org.eclipse.riena.ui.ridgets.viewcontroller.IController;
  * And here's the corresponding controller:
  * 
  * <pre>
- * public class NavigationViewController extends AbstractRidgetController {
+ * public class NavigationController extends AbstractRidgetController {
  * 	public void configureRidgets() {
  * 		ITreeRidget tree = (ITreeRidget) getRidget(&quot;tree&quot;);
  * 		// ...
