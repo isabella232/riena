@@ -17,6 +17,7 @@ import java.util.Comparator;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -393,6 +394,54 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		} catch (UnsupportedOperationException ex) {
 			// expected
 		}
+	}
+
+	public void testOutputSingleSelectionCannotBeChangedFromUI() {
+		ListRidget ridget = getRidget();
+		List control = getUIControl();
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(-1, ridget.getSelectionIndex());
+
+		ridget.setOutputOnly(true);
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), " ");
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(-1, ridget.getSelectionIndex());
+
+		ridget.setOutputOnly(false);
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), " ");
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(0, ridget.getSelectionIndex());
+	}
+
+	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
+		ListRidget ridget = getRidget();
+		List control = getUIControl();
+
+		ridget.setSelectionType(SelectionType.MULTI);
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(-1, ridget.getSelectionIndex());
+
+		ridget.setOutputOnly(true);
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), " ");
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(-1, ridget.getSelectionIndex());
+
+		ridget.setOutputOnly(false);
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), " ");
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(0, ridget.getSelectionIndex());
 	}
 
 	// helping methods
