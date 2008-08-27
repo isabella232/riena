@@ -14,8 +14,8 @@ import org.eclipse.riena.core.extension.ExtensionDescriptor;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 
 /**
- * This <i>helper</i> class is the entry point to the injector <i>micro
- * framework</i> of riena.
+ * This class that begins an sentence for the injector <i>micro framework</i> of
+ * riena.
  */
 public final class Inject {
 
@@ -36,11 +36,11 @@ public final class Inject {
 	/**
 	 * @see ExtensionDescriptor
 	 * 
-	 * @param extensionId
+	 * @param extensionPointId
 	 * @return
 	 */
-	public static ExtensionDescriptor extension(String extensionId) {
-		return new ExtensionDescriptor(extensionId);
+	public static ExtensionDescriptor extension(String extensionPointId) {
+		return new ExtensionDescriptor(extensionPointId);
 	}
 
 }
