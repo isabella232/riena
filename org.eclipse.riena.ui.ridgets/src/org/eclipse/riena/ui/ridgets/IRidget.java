@@ -12,10 +12,9 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
-
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
  * A UI-toolkit independent Ridget (Riena widget) wrapping and extending an
@@ -190,17 +189,17 @@ public interface IRidget {
 	void setToolTipText(String toolTipText);
 
 	/**
-	 * Blocks of unblocks the user input for the ridget.
+	 * Blocks or unblocks the user input for the ridget.
 	 * 
 	 * @param blocked
+	 *            true if input is blocked for the ridget, else false.
 	 */
 	void setBlocked(boolean blocked);
 
 	/**
-	 * Returns true if user input for the ridgetis blocked.
+	 * Returns, if user input for the ridget is blocked.
 	 * 
-	 * @return true if input is blocked for the ridget
+	 * @return true if input is blocked for the ridget, else false.
 	 */
 	boolean isBlocked();
-
 }
