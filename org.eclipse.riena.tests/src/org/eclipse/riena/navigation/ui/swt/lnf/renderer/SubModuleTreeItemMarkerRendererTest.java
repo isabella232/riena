@@ -17,6 +17,7 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
@@ -135,7 +136,8 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 		Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
 		Image noMarkersImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
 		GC noMarkersGC = new GC(noMarkersImage);
-		renderer.paintMarkers(noMarkersGC, markers, item);
+		// renderer.paintMarkers(noMarkersGC, markers, item);
+		ReflectionUtils.invokeHidden(renderer, "paintMarkers", noMarkersGC, markers, item);
 		byte[] noMarkersBytes = noMarkersImage.getImageData().data;
 		noMarkersGC.dispose();
 		SwtUtilities.disposeResource(noMarkersImage);
@@ -143,7 +145,7 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 		// no marker -> no marker image is drawn
 		Image paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
 		GC paintGC = new GC(paintImage);
-		renderer.paintMarkers(paintGC, markers, item);
+		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
 		byte[] paintBytes = paintImage.getImageData().data;
 		paintGC.dispose();
 		SwtUtilities.disposeResource(paintImage);
@@ -153,7 +155,7 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 		markers.add(new ErrorMarker());
 		paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
 		paintGC = new GC(paintImage);
-		renderer.paintMarkers(paintGC, markers, item);
+		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
 		paintBytes = paintImage.getImageData().data;
 		paintGC.dispose();
 		SwtUtilities.disposeResource(paintImage);
@@ -163,7 +165,7 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 		item.setImage((Image) null);
 		paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
 		paintGC = new GC(paintImage);
-		renderer.paintMarkers(paintGC, markers, item);
+		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
 		paintBytes = paintImage.getImageData().data;
 		paintGC.dispose();
 		SwtUtilities.disposeResource(paintImage);
