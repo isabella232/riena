@@ -17,7 +17,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -102,7 +102,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList optionValues = new UnboundPropertyWritableList(listBean, listPropertyName);
-		IObservableValue selectionValue = PojoObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableValue selectionValue = BeansObservables.observeValue(selectionBean, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValue);
 	}
 
@@ -112,7 +112,7 @@ public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingl
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new UnboundPropertyWritableList(new ListBean(optionValues), ListBean.PROPERTY_VALUES);
-		IObservableValue selection = PojoObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableValue selection = BeansObservables.observeValue(selectionBean, selectionPropertyName);
 		bindToModel(list, optionLabels, selection);
 	}
 

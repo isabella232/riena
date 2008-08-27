@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -427,15 +427,14 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		IMultipleChoiceRidget ridget = getRidget();
 
 		try {
-			ridget
-					.bindToModel(null, PojoObservables.observeList(Realm.getDefault(), optionProvider,
-							"selectedOptions"));
+			ridget.bindToModel(null, BeansObservables
+					.observeList(Realm.getDefault(), optionProvider, "selectedOptions"));
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
 		}
 		try {
-			ridget.bindToModel(PojoObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
+			ridget.bindToModel(BeansObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
