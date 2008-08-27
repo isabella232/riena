@@ -121,11 +121,11 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		return toolTip;
 	}
 
-	public boolean isBlocked() {
+	public final boolean isBlocked() {
 		return blocked;
 	}
 
-	public void setBlocked(boolean blocked) {
+	public final void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 	}
 

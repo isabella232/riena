@@ -37,7 +37,6 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	private String text;
 	private String icon;
 	private boolean selected;
-	private boolean blocked;
 	private boolean textAlreadyInitialized;
 
 	public ToggleButtonRidget() {
@@ -199,27 +198,6 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 			}
 			control.setImage(image);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
-	 */
-	@Override
-	public boolean isBlocked() {
-		return blocked;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
-	 */
-	@Override
-	public void setBlocked(boolean blocked) {
-		this.blocked = blocked;
-
 	}
 
 }
