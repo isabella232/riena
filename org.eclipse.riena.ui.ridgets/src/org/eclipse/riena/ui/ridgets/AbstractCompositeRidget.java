@@ -167,20 +167,15 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#getToolTipText()
 	 */
 	public String getToolTipText() {
 		return toolTip;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
 	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;
