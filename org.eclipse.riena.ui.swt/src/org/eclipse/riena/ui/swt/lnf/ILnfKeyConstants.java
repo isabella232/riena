@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+
 /**
  * Keys of the look and feel of riena.
  * 
@@ -114,6 +117,8 @@ public final class ILnfKeyConstants {
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
+	public static final String SUB_MODULE_TREE_MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 
@@ -158,6 +163,8 @@ public final class ILnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_RENDERER = "SubApplication.switcherRenderer"; //$NON-NLS-1$
 
 	public static final String MODULE_GROUP_RENDERER = "ModuleGroup.renderer"; //$NON-NLS-1$
+
+	public static final String SUB_MODULE_TREE_ITEM_MARKER_RENDERER = "SubModuleTreeItemMarker.renderer"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_VIEW_RENDERER = "SubModuleView.renderer"; //$NON-NLS-1$
 	public static final String SUB_MODULE_VIEW_HOVER_BORDER_RENDERER = "SubModuleView.hoverBorderRenderer"; //$NON-NLS-1$

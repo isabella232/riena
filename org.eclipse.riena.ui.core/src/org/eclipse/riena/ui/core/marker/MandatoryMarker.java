@@ -21,10 +21,12 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	 * Attribute holding the disabled state.
 	 */
 	public static final String ATTRIBUTE_DISABLED = "disabled"; //$NON-NLS-1$
+	public static final String MARKER_KEY = "MandatoryMarker"; //$NON-NLS-1$
 
 	/**
 	 * @see Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder("MandatoryMarker["); //$NON-NLS-1$
 		buffer.append("attributes="); //$NON-NLS-1$
@@ -37,7 +39,7 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
 	 */
 	public String getIconConfiguationKey() {
-		return "MandatoryMarker"; //$NON-NLS-1$
+		return MARKER_KEY;
 	}
 
 	/**

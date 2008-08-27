@@ -23,7 +23,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 
 	/**
 	 * Creates an new instance of <code>SubModuleViewRenderer</code> and sets
-	 * the renderer of the border and the titlebar.
+	 * the renderer of the border and the title bar.
 	 */
 	public SubModuleViewRenderer() {
 		super();

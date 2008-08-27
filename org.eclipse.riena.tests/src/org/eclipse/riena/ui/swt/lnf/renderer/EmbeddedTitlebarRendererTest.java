@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.lnf.rienadefault;
+package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import junit.framework.TestCase;
 

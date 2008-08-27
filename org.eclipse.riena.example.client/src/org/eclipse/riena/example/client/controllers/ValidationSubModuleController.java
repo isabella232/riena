@@ -52,6 +52,7 @@ public class ValidationSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		final ITextFieldRidget txtNumbersOnly = (ITextFieldRidget) getRidget("txtNumbersOnly"); //$NON-NLS-1$

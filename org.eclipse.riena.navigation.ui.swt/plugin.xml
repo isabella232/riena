@@ -66,6 +66,10 @@
             class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer"
             lnfkey="SubModuleView.borderRenderer">
       </renderer>
+      <renderer
+            class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer"
+            lnfkey="SubModuleTreeItemMarker.renderer">
+      </renderer>
    </extension>
    
 </plugin>

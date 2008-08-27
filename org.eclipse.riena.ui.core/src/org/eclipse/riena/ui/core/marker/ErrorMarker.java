@@ -17,9 +17,12 @@ import org.eclipse.riena.core.marker.AbstractMarker;
  */
 public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 
+	public static final String MARKER_KEY = "ErrorMarker"; //$NON-NLS-1$
+
 	/**
 	 * @see Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder("ErrorMarker["); //$NON-NLS-1$
 		buffer.append("attributes="); //$NON-NLS-1$
@@ -32,6 +35,6 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
 	 */
 	public String getIconConfiguationKey() {
-		return "ErrorMarker"; //$NON-NLS-1$
+		return MARKER_KEY;
 	}
 }

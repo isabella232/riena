@@ -22,6 +22,7 @@ import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
@@ -251,6 +252,26 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 		});
 
+		getTree().addListener(SWT.PaintItem, new Listener() {
+
+			public void handleEvent(Event event) {
+				paintTreeItem(event);
+			}
+
+		});
+
+	}
+
+	/**
+	 * Paints the markers of the given tree item.
+	 * 
+	 * @param event
+	 *            - the event which occurred
+	 */
+	private void paintTreeItem(Event event) {
+		SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();
+		renderer.setBounds(event.x, event.y, event.width, event.height);
+		renderer.paint(event.gc, event.item);
 	}
 
 	/**
@@ -352,6 +373,14 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		@Override
 		public void activated(ISubModuleNode source) {
 			resize();
+		}
+
+		/**
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void markersChanged(ISubModuleNode source) {
+			getTree().redraw();
 		}
 
 	}
@@ -546,12 +575,33 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		updateListeners.add(listener);
 	}
 
+	/**
+	 * Returns the renderer that paints a module group.
+	 * 
+	 * @return renderer
+	 */
 	private ModuleGroupRenderer getMouduleGroupRenderer() {
 
 		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupRenderer();
+		}
+		return renderer;
+
+	}
+
+	/**
+	 * Returns the renderer that paints the markers of a tree item.
+	 * 
+	 * @return renderer
+	 */
+	private SubModuleTreeItemMarkerRenderer getTreeItemRenderer() {
+
+		SubModuleTreeItemMarkerRenderer renderer = (SubModuleTreeItemMarkerRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER);
+		if (renderer == null) {
+			renderer = new SubModuleTreeItemMarkerRenderer();
 		}
 		return renderer;
 
