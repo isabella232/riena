@@ -18,9 +18,13 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
@@ -69,6 +73,16 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 		doubleClickForwarder = new DoubleClickForwarder();
 		isSortedAscending = true;
 		sortedColumn = -1;
+		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
+			public void handleValueChange(ValueChangeEvent event) {
+				disableMandatoryMarkers(hasInput());
+			}
+		});
+		getMultiSelectionObservable().addListChangeListener(new IListChangeListener() {
+			public void handleListChange(ListChangeEvent event) {
+				disableMandatoryMarkers(hasInput());
+			}
+		});
 	}
 
 	@Override
@@ -207,6 +221,11 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 		return comparator != null;
 	}
 
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return hasInput();
+	}
+
 	public boolean isSortedAscending() {
 		return isSortedAscending;
 	}
@@ -285,6 +304,10 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 
 	// helping methods
 	// ////////////////
+
+	private boolean hasInput() {
+		return !getSelection().isEmpty();
+	}
 
 	private void updateComparator() {
 		if (viewer != null) {
