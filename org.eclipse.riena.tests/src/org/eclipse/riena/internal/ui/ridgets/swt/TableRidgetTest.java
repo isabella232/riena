@@ -301,7 +301,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
 
 		assertEquals(1, listener1.getCount());
-		assertEquals(2, listener2.getCount());
+		assertEquals(1, listener2.getCount());
 
 		ridget.removeDoubleClickListener(listener1);
 
