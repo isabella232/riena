@@ -221,51 +221,93 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
+	 * 
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
+
 	private void navigateAsync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-			final NavigationArgument navigation) {
+
+	final NavigationArgument navigation) {
+
 		final boolean debug = LOGGER.isLoggable(LogService.LOG_DEBUG);
+
 		if (debug)
+
 			LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " started..."); //$NON-NLS-1$ //$NON-NLS-2$
+
 		UIProcess p = new UIProcess("navigate", true, sourceNode) { //$NON-NLS-1$
+
 			INavigationNode<?> targetNode;
+
+			final long startTime = System.currentTimeMillis();
 
 			@Override
 			public boolean runJob(IProgressMonitor monitor) {
+
 				targetNode = provideNode(sourceNode, targetId, navigation);
+
 				return true;
+
+			}
+
+			private void activateOrFlash(INavigationNode<?> activationNode) {
+
+				if (System.currentTimeMillis() - startTime < 200) {
+
+					activationNode.activate();
+
+				} else {
+
+					// TODO FLASHING but no activation
+
+				}
+
 			}
 
 			@Override
 			public void finalUpdateUI() {
+
 				if (targetNode != null) {
+
 					INavigationNode<?> activateNode = targetNode.findNode(targetId);
-					if (activateNode != null) {
-						navigationMap.put(activateNode, sourceNode);
-						// TODO FLASHING but no activation
-						// activateNode.activate();
-					} else {
-						navigationMap.put(targetNode, sourceNode);
-						// TODO FLASHING but no activation
-						// targetNode.activate();
+
+					if (activateNode == null) {
+
+						activateNode = targetNode;
+
 					}
+
+					navigationMap.put(activateNode, sourceNode);
+
+					activateOrFlash(activateNode);
+
 				}
+
 				if (debug)
+
 					LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " completed"); //$NON-NLS-1$//$NON-NLS-2$
+
 			}
 
 			@Override
 			protected int getTotalWork() {
+
 				return 10;
+
 			}
+
 		};
+
 		// TODO must be set?
+
 		p.setNote("sample uiProcess note"); //$NON-NLS-1$ 
+
 		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
+
 		p.start();
+
 	}
 
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
