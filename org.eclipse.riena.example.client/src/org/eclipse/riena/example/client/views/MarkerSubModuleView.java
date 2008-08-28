@@ -125,26 +125,27 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
 		composite = createComposite(group);
+
 		List listPersons = UIControlsFactory.createList(composite, false, true);
 		int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
 		hFillFactory.hint(150, hHint).applyTo(listPersons);
 		addUIControl(listPersons, "listPersons"); //$NON-NLS-1$
 
-		Table tablePersons = new Table(composite, SWT.V_SCROLL | SWT.BORDER);
+		Table tablePersons = new Table(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		tablePersons.setLinesVisible(true);
 		tablePersons.setHeaderVisible(true);
 		TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
 		tac1.setWidth(100);
 		TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);
-		tac2.setWidth(50);
+		tac2.setWidth(70);
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 		addUIControl(tablePersons, "tablePersons"); //$NON-NLS-1$
 
-		Tree treePersons = new Tree(composite, SWT.V_SCROLL | SWT.BORDER);
+		Tree treePersons = new Tree(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		hFillFactory.hint(150, hHint).applyTo(treePersons);
 		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
 
-		Tree treePersonsWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER);
+		Tree treePersonsWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		treePersonsWCols.setLinesVisible(true);
 		treePersonsWCols.setHeaderVisible(true);
 		TreeColumn trc1 = new TreeColumn(treePersonsWCols, SWT.NONE);
