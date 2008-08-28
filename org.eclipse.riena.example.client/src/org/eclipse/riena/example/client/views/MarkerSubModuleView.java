@@ -90,7 +90,9 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 	private Group createControlsGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).applyTo(group);
+		int defaultVSpacing = new GridLayout().verticalSpacing;
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
+				.applyTo(group);
 
 		Composite composite;
 		GridDataFactory hFillFactory = GridDataFactory.fillDefaults().grab(true, false);

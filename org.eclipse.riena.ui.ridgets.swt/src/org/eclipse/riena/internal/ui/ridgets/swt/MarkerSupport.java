@@ -14,8 +14,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
@@ -31,9 +29,6 @@ import org.eclipse.swt.widgets.Control;
  * Helper class for SWT Ridgets to delegate their marker issues to.
  */
 public final class MarkerSupport extends AbstractMarkerSupport {
-
-	private static final FieldDecoration DEC_ERROR = FieldDecorationRegistry.getDefault().getFieldDecoration(
-			FieldDecorationRegistry.DEC_ERROR);
 
 	private Color preOutputBg;
 	private Color preMandatoryBg;
@@ -60,10 +55,10 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 
 	private void addError(Control control) {
 		if (errorDecoration == null) {
-			errorDecoration = new ControlDecoration(control, SWT.LEFT | SWT.CENTER);
+			errorDecoration = new ControlDecoration(control, SWT.LEFT | SWT.TOP);
 			// setMargin has to be before setImage!
 			errorDecoration.setMarginWidth(1);
-			errorDecoration.setImage(DEC_ERROR.getImage());
+			errorDecoration.setImage(Activator.getSharedImage(SharedImages.IMG_ERROR_DECO));
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					errorDecoration.dispose();
