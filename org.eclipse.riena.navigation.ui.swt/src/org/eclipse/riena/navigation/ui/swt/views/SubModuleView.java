@@ -232,7 +232,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
 			super.block(source, block);
-			blockView(block);
+			if (source.equals(getNavigationNode())) {
+				getController().blockRidgets(getController().getRidgets(), block);
+				blockView(block);
+			}
 		}
 
 	}
