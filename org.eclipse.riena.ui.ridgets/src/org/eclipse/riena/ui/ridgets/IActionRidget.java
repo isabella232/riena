@@ -18,8 +18,7 @@ public interface IActionRidget extends IMarkableRidget {
 	/**
 	 * Add an action listener to call back.
 	 * <p>
-	 * The same listener may be added more than once, and will be called as many
-	 * times as it is added.
+	 * Adding the same listener several times has no effect.
 	 * 
 	 * @param listener
 	 *            a non-null action listener.
@@ -31,8 +30,7 @@ public interface IActionRidget extends IMarkableRidget {
 	 * #addListener(java.beans.EventHandler.create(IActionListener.class,
 	 * target, method))
 	 * <p>
-	 * The same listener may be added more than once, and will be called as many
-	 * times as it is added.
+	 * Adding the same listener several times has no effect.
 	 * 
 	 * @see java.beans.EventHandler#create(Class, Object, String)
 	 * @param target

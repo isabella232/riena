@@ -166,8 +166,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * Adds the listener to the collection of listeners who will be notified
 	 * when the bound control is double-clicked.
 	 * <p>
-	 * The same listener may be added more than once, and will be called as many
-	 * times as it is added.
+	 * Adding the same listener several times has no effect.
 	 * 
 	 * @param listener
 	 *            a non-null {@link IActionListener} instance
