@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
@@ -109,10 +110,11 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 	 * the model as well.
 	 */
 	public synchronized void setText(String text) {
+		Assert.isNotNull(text);
 		String oldValue = textValue;
 		textValue = text;
 		forceTextToControl(textValue);
-		disableMandatoryMarkers(hasInput());
+		disableMandatoryMarkers(textValue.length() > 0);
 		IStatus onEdit = checkOnEditRules(text);
 		validationRulesChecked(onEdit);
 		if (onEdit.isOK()) {
@@ -156,7 +158,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 
 	@Override
 	public boolean isDisableMandatoryMarker() {
-		return hasInput();
+		return textValue.length() > 0;
 	}
 
 	public int getAlignment() {
@@ -205,16 +207,11 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		}
 	}
 
-	private boolean hasInput() {
-		return textValue.length() > 0;
-	}
-
 	private synchronized void updateTextValue() {
 		String oldValue = textValue;
 		String newValue = getUIControl().getText();
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
-			disableMandatoryMarkers(hasInput());
 			if (checkOnEditRules(newValue).isOK()) {
 				firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
 			}
@@ -271,6 +268,8 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 	private final class SyncModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
 			updateTextValueWhenDirectWriting();
+			boolean hasText = ((Text) e.widget).getText().length() > 0;
+			disableMandatoryMarkers(hasText);
 		}
 	}
 

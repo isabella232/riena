@@ -544,9 +544,6 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		DateBean dateBean = new DateBean();
 		dateBean.setValue(new Date(0));
 
-		// fail("TODO - implement segmentend date text field");
-		// TODO control = UIControlsFactory.createSegmentedDateTextField();
-
 		ridget.addValidationRule(new ValidIntermediateDate("dd.MM.yyyy"), ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.setUIControlToModelConverter(new StringToDateConverter("dd.MM.yyyy"));
 		ridget.setModelToUIControlConverter(new DateToStringConverter("dd.MM.yyyy"));
@@ -947,13 +944,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that the mandatory marker gets disabled when we have text
+	 * Tests that the mandatory marker is enabled/disabled when calling {@code
+	 * setText(string)}.
 	 */
-	public void testDisableMandatoryMarkers() {
+	public void testDisableMandatoryMarkersSetText() {
 		ITextFieldRidget ridget = getRidget();
-		Text control = getUIControl();
-
-		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget.addMarker(mandatoryMarker);
 
 		ridget.setText("");
@@ -967,20 +963,20 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setText("");
 
 		assertFalse(mandatoryMarker.isDisabled());
+	}
+
+	/**
+	 * Tests that the manddatory marker is enabled/disabled when updated from
+	 * the model.
+	 */
+	public void testDisableMandatoryMarkersUpdateFromModel() {
+		ITextFieldRidget ridget = getRidget();
+		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		ridget.addMarker(mandatoryMarker);
 
 		ridget.setText("foo");
-		control.selectAll();
-		control.setFocus();
-		// delete all in control and tab out to update
-		UITestHelper.sendString(control.getDisplay(), "\b\t");
 
-		assertFalse(mandatoryMarker.isDisabled());
-
-		control.setFocus();
-		// type 'bar' and tab out to update
-		UITestHelper.sendString(control.getDisplay(), "bar\t");
-
-		assertTrue(mandatoryMarker.isDisabled());
+		assertTrue(ridget.isDisableMandatoryMarker());
 
 		bean.setProperty("");
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -992,6 +988,80 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertTrue(mandatoryMarker.isDisabled());
+	}
+
+	/**
+	 * Tests that the mandatory marker is enabled/disabled when typing.
+	 */
+	public void testDisableMandatoryMarkers() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		ridget.addMarker(mandatoryMarker);
+
+		assertFalse(ridget.isDirectWriting());
+
+		ridget.setText("foo");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		control.selectAll();
+		control.setFocus();
+		// delete all in control
+		UITestHelper.sendString(control.getDisplay(), "\b");
+
+		assertFalse(mandatoryMarker.isDisabled());
+
+		// type 'x'
+		UITestHelper.sendString(control.getDisplay(), "x");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		// tab out
+		UITestHelper.sendString(control.getDisplay(), "\t");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		// delete
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b");
+
+		assertFalse(mandatoryMarker.isDisabled());
+	}
+
+	/**
+	 * Tests that the mandatory marker is enabled/disabled when typing in
+	 * "direct writing" mode.
+	 */
+	public void testDisableMandatoryMarkersDirectWriting() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		ridget.addMarker(mandatoryMarker);
+		ridget.setDirectWriting(true);
+
+		assertTrue(ridget.isDirectWriting());
+
+		ridget.setText("foo");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		control.selectAll();
+		control.setFocus();
+		// delete all in control
+		UITestHelper.sendString(control.getDisplay(), "\b");
+
+		assertFalse(mandatoryMarker.isDisabled());
+
+		// type 'x'
+		UITestHelper.sendString(control.getDisplay(), "x");
+
+		assertTrue(mandatoryMarker.isDisabled());
+
+		// delete
+		UITestHelper.sendString(control.getDisplay(), "\b");
+
+		assertFalse(mandatoryMarker.isDisabled());
 	}
 
 	/**
@@ -1052,6 +1122,19 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertEquals("bar", control.getText());
 		assertEquals("bar", ridget.getText());
+	}
+
+	/**
+	 * Test that null is not allowed in {@code setText(string)}.
+	 */
+	public void testSetTextNull() {
+		ITextFieldRidget ridget = getRidget();
+		try {
+			ridget.setText(null);
+			fail();
+		} catch (RuntimeException rex) {
+			// ok
+		}
 	}
 
 	// helping methods
