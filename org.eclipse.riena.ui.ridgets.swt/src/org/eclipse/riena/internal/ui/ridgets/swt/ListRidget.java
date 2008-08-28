@@ -334,23 +334,37 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			List control = (List) e.widget;
 			if (isOutputOnly()) {
-				// undo user selection when "output only"
-				viewer.setSelection(new StructuredSelection(getSelection()));
-				// TODO [ev] redraw to remove cheese when navigating with kb
+				revertSelection(control);
 			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
-				List control = (List) e.widget;
 				if (control.getSelectionCount() > 1) {
 					// ignore this event
 					e.doit = false;
-					// set selection to most recent item
-					control.setSelection(control.getSelectionIndex());
-					// fire event
-					Event event = new Event();
-					event.type = SWT.Selection;
-					event.doit = true;
-					control.notifyListeners(SWT.Selection, event);
+					selectFirstItem(control);
 				}
+			}
+		}
+
+		private void selectFirstItem(List control) {
+			// set selection to most recent item
+			control.setSelection(control.getSelectionIndex());
+			// fire event
+			Event event = new Event();
+			event.type = SWT.Selection;
+			event.doit = true;
+			control.notifyListeners(SWT.Selection, event);
+		}
+
+		private void revertSelection(List control) {
+			control.setRedraw(false);
+			try {
+				// undo user selection when "output only"
+				viewer.setSelection(new StructuredSelection(getSelection()));
+			} finally {
+				// redraw control to remove "cheese" that is caused when
+				// using the keyboard to select the next row
+				control.setRedraw(true);
 			}
 		}
 	}
