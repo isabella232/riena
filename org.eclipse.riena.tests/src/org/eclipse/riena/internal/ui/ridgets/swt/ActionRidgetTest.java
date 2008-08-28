@@ -185,7 +185,6 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests the method {@code initText}
 	 */
 	public void testInitText() {
-
 		IActionRidget ridget = getRidget();
 		Button control = (Button) ridget.getUIControl();
 
@@ -202,7 +201,64 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
 		assertEquals("Hello!", ridget.getText());
 		assertEquals("World", control.getText());
+	}
 
+	/**
+	 * Tests that control is hidden when the ActionRidget is "output only".
+	 */
+	public void testOutputRidgetNotVisible() {
+		IActionRidget ridget = getRidget();
+		Button control = getUIControl();
+
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(control.isVisible());
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertFalse(control.isVisible());
+
+		ridget.setOutputOnly(false);
+
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(control.isVisible());
+
+		ridget.setOutputOnly(true);
+		ridget.setVisible(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(false);
+		ridget.setOutputOnly(false);
+
+		assertFalse(ridget.isOutputOnly());
+		assertFalse(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(true);
+		ridget.setOutputOnly(false);
+
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(ridget.isVisible());
+		assertTrue(control.isVisible());
+
+		ridget.setVisible(false);
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertFalse(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(true);
+		ridget.setOutputOnly(true);
+		ridget.setVisible(false);
+		ridget.setVisible(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(ridget.isVisible());
+		assertFalse(control.isVisible());
 	}
 
 	// helping methods

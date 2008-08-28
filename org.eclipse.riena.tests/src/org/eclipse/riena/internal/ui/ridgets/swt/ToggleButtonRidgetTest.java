@@ -21,6 +21,7 @@ import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
@@ -48,14 +49,15 @@ public class ToggleButtonRidgetTest extends TestCase {
 		button = new Button(shell, SWT.CHECK);
 		ridget = new ToggleButtonRidget();
 		ridget.setUIControl(button);
+		shell.setLayout(new FillLayout());
+		shell.setSize(100, 100);
+		shell.setLocation(100, 100);
+		shell.open();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		ridget = null;
-		button.dispose();
-		button = null;
 		shell.dispose();
 		shell = null;
 		realm.dispose();
@@ -247,7 +249,6 @@ public class ToggleButtonRidgetTest extends TestCase {
 	 * Tests the method {@code initText}
 	 */
 	public final void testInitText() {
-
 		Button control = ridget.getUIControl();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
@@ -264,6 +265,64 @@ public class ToggleButtonRidgetTest extends TestCase {
 		assertEquals("Hello!", ridget.getText());
 		assertEquals("World", control.getText());
 
+	}
+
+	/**
+	 * Tests that control is hidden when the ToggleButtonRidget is
+	 * "output only".
+	 */
+	public void testOutputRidgetNotVisible() {
+		Button control = ridget.getUIControl();
+
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(control.isVisible());
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertFalse(control.isVisible());
+
+		ridget.setOutputOnly(false);
+
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(control.isVisible());
+
+		ridget.setOutputOnly(true);
+		ridget.setVisible(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(false);
+		ridget.setOutputOnly(false);
+
+		assertFalse(ridget.isOutputOnly());
+		assertFalse(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(true);
+		ridget.setOutputOnly(false);
+
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(ridget.isVisible());
+		assertTrue(control.isVisible());
+
+		ridget.setVisible(false);
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertFalse(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(true);
+		ridget.setOutputOnly(true);
+		ridget.setVisible(false);
+		ridget.setVisible(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(ridget.isVisible());
+		assertFalse(control.isVisible());
 	}
 
 	// helping classes

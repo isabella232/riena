@@ -24,6 +24,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 
@@ -96,6 +97,9 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (control instanceof List) {
 			control.setEnabled(false);
 		}
+		if (control instanceof Button) {
+			control.setVisible(false);
+		}
 	}
 
 	private void clearError() {
@@ -123,6 +127,9 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 			control.setBackground(preOutputBg);
 			preOutputBg = null;
 		}
+		if (control instanceof Button) {
+			control.setVisible(ridget.isVisible());
+		}
 	}
 
 	private boolean isMandatory(IMarkableRidget ridget) {
@@ -140,7 +147,11 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 
 	private void updateError(Control control) {
 		if (ridget.isErrorMarked() && ridget.isEnabled() && ridget.isVisible()) {
-			addError(control);
+			if (!(control instanceof Button && ridget.isOutputOnly())) {
+				addError(control);
+			} else {
+				clearError();
+			}
 		} else {
 			clearError();
 		}
