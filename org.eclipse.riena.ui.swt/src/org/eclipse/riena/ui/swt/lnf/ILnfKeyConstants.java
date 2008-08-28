@@ -117,8 +117,8 @@ public final class ILnfKeyConstants {
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
-	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
-	public static final String SUB_MODULE_TREE_MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
+	public static final String ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
+	public static final String MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 
