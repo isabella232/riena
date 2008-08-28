@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -31,11 +33,13 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.ValidationTime;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
  * Controller for the {@link TextSubModuleView} example.
@@ -145,10 +149,25 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkError.setText("&error"); //$NON-NLS-1$
 		checkError.addListener(new IActionListener() {
+			private IValidator alwaysWrong = new AlwaysWrongValidator();
+
 			public void callback() {
 				boolean isError = checkError.isSelected();
 				for (IMarkableRidget ridget : markables) {
 					ridget.setErrorMarked(isError);
+				}
+				/*
+				 * using this "always wrong" validator for purposes of this
+				 * demo. It prevents the error marker being removed from the
+				 * text field on the next revalidation (i.e. when the user
+				 * types).
+				 */
+				if (isError) {
+					textName.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
+					textPrice.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
+				} else {
+					textName.removeValidationRule(alwaysWrong);
+					textPrice.removeValidationRule(alwaysWrong);
 				}
 			}
 		});
@@ -213,6 +232,19 @@ public class MarkerSubModuleController extends SubModuleController {
 		new WordNode(rootB, "Beaverton"); //$NON-NLS-1$
 		new WordNode(rootB, "Bridgeport"); //$NON-NLS-1$
 		return new WordNode[] { rootA, rootB };
+	}
+
+	// helping classes
+	// ////////////////
+
+	/**
+	 * Validator that always returns an error status.
+	 */
+	private static final class AlwaysWrongValidator implements IValidator {
+		public IStatus validate(Object value) {
+			return ValidationRuleStatus.error(false, "", this); //$NON-NLS-1$
+		}
+
 	}
 
 }
