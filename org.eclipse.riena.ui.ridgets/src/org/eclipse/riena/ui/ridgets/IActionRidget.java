@@ -11,7 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * 
+ * A ridget for UI controls that allow an action to be performed on them, like
+ * clicking a button.
  */
 public interface IActionRidget extends IMarkableRidget {
 
