@@ -397,8 +397,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * Tests that for single selection lists, the ridget selection state and the
-	 * ui selection state cannot be changed by the user when ridget is set to
+	 * Tests that for single selection, the ridget selection state and the ui
+	 * selection state cannot be changed by the user when ridget is set to
 	 * "output only".
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
@@ -412,6 +412,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		ridget.setOutputOnly(true);
 		control.setFocus();
+		// press space to select row 0
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(0, ridget.getSelection().size());
@@ -419,6 +420,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		ridget.setOutputOnly(false);
 		control.setFocus();
+		// press space to select row 0
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(1, ridget.getSelection().size());
@@ -426,8 +428,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * Tests that for multi selection lists, the ridget selection state and the
-	 * ui selection state cannot be changed by the user when ridget is set to
+	 * Tests that for multiple selection, the ridget selection state and the ui
+	 * selection state cannot be changed by the user when ridget is set to
 	 * "output only".
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
@@ -441,6 +443,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		ridget.setOutputOnly(true);
 		control.setFocus();
+		// press space to select row 0
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(0, ridget.getSelection().size());
@@ -448,6 +451,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		ridget.setOutputOnly(false);
 		control.setFocus();
+		// press space to select row 0
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(1, ridget.getSelection().size());

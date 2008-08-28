@@ -24,7 +24,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -105,11 +104,14 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
 			dbc = new DataBindingContext();
+			// viewer to single selection binding
 			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
 			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			IObservableList viewerSelections = new SelectionProviderMultipleSelectionObservableList(dbc
-					.getValidationRealm(), viewer, Object.class);
+					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+			// viewer to to multi selection binding
+			IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
+					viewer, Object.class, this);
 			dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
 					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 
@@ -405,13 +407,20 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	// ////////////////
 
 	/**
-	 * Disallows multiple selection is the selection type of the ridget is
-	 * {@link ISelectableRidget.SelectionType#SINGLE}.
+	 * Enforces selection in the control:
+	 * <ul>
+	 * <li>disallows selection changes when the ridget is "output only"</li>
+	 * <li>disallows multiple selection is the selection type of the ridget is
+	 * {@link ISelectableRidget.SelectionType#SINGLE}</li>
+	 * </ul>
 	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			if (SelectionType.SINGLE.equals(getSelectionType())) {
+			if (isOutputOnly()) {
+				// undo user selection when "output only"
+				viewer.setSelection(new StructuredSelection(getSelection()));
+			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
 				Table control = (Table) e.widget;
 				if (control.getSelectionCount() > 1) {
 					// ignore this event

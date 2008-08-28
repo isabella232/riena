@@ -21,6 +21,11 @@ import org.eclipse.swt.widgets.Shell;
  */
 public final class UITestHelper {
 
+	/** Keycode for 'arrow down' (16777218) */
+	public static final int KC_ARROW_DOWN = 16777218;
+	/** Keycode for 'arrow up' (16777217) */
+	public static final int KC_ARROW_UP = 16777217;
+
 	private UITestHelper() {
 		// prevent instantiation
 	}
