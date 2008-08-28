@@ -185,27 +185,28 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		return size;
 	}
 
-	/**
-	 * Returns the module at the given point.
-	 * 
-	 * @param point
-	 *            - point over module item
-	 * @return module item; or null, if not item was found
-	 */
-	public ModuleView getItem(Point point) {
-
-		for (ModuleView moduleView : getAllModuleViews()) {
-			if (moduleView.getBounds() == null) {
-				continue;
-			}
-			if (moduleView.getBounds().contains(point)) {
-				return moduleView;
-			}
-		}
-
-		return null;
-
-	}
+	//
+	// /**
+	// * Returns the module at the given point.
+	// *
+	// * @param point
+	// * - point over module item
+	// * @return module item; or null, if not item was found
+	// */
+	// public ModuleView getItem(Point point) {
+	//
+	// for (ModuleView moduleView : getAllModuleViews()) {
+	// if (moduleView.getBounds() == null) {
+	// continue;
+	// }
+	// if (moduleView.getBounds().contains(point)) {
+	// return moduleView;
+	// }
+	// }
+	//
+	// return null;
+	//
+	// }
 
 	private class PaintDelegation implements PaintListener {
 

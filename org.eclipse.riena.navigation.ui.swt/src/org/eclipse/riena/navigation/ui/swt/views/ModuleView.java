@@ -81,26 +81,13 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	private void buildView() {
 
-		Control[] children = getParent().getChildren();
-
 		title = new ModuleTitleBar(getParent(), SWT.NONE);
 		binding.addUIControl(title, WINDOW_RIDGET);
-		FormData layoutData = new FormData();
-		if (children.length == 0) {
-			layoutData.top = new FormAttachment(0, 0);
-		} else {
-			layoutData.top = new FormAttachment(children[children.length - 1], getMouduleGroupRenderer()
-					.getModuleModuleGap());
-		}
-		layoutData.left = new FormAttachment(0, 0);
-		layoutData.right = new FormAttachment(100, 0);
-		layoutData.height = title.getSize().y;
-		title.setLayoutData(layoutData);
+		layoutTitle();
 		new ModuleToolTip(title);
 
 		body = new Composite(getParent(), SWT.DOUBLE_BUFFERED);
 		updateModuleView();
-		body.setLayoutData(layoutData);
 
 		createBodyContent(body);
 
@@ -417,6 +404,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	public void dispose() {
 		unbind();
+		// getBody().setVisible(false);
+		// getBody().setBounds(0, 0, 0, 0);
+		SwtUtilities.disposeWidget(title);
 		SwtUtilities.disposeWidget(getBody());
 		SwtUtilities.disposeWidget(getTree());
 	}
@@ -614,6 +604,10 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			active = getNavigationNode().isActivated();
 		}
 
+		if (!SwtUtilities.isDisposed(title)) {
+			layoutTitle();
+		}
+
 		if (!SwtUtilities.isDisposed(getBody())) {
 			getBody().setVisible(active);
 			int height = getOpenHeight();
@@ -629,6 +623,32 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 		getParent().layout();
 		title.setActive(active);
+
+	}
+
+	private void layoutTitle() {
+
+		Control[] children = getParent().getChildren();
+		FormData formData = new FormData();
+		int index = -1;
+		for (int i = 0; i < children.length; i++) {
+			if (children[i] == title) {
+				index = i;
+				break;
+			}
+		}
+		if (index == 0) {
+			formData.top = new FormAttachment(0, 0);
+		} else if (index < 0) {
+			formData.top = new FormAttachment(children[children.length - 1], getMouduleGroupRenderer()
+					.getModuleModuleGap());
+		} else {
+			formData.top = new FormAttachment(children[index - 1], getMouduleGroupRenderer().getModuleModuleGap());
+		}
+		formData.left = new FormAttachment(0, 0);
+		formData.right = new FormAttachment(100, 0);
+		formData.height = title.getSize().y;
+		title.setLayoutData(formData);
 
 	}
 

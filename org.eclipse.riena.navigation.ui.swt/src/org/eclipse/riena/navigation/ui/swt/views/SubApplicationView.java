@@ -224,7 +224,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			if (viewRef != null) {
 				IViewPart view = viewRef.getView(false);
 				if (view instanceof INavigationNodeView) {
-					((INavigationNodeView<?, ?>) view).unbind();
+					// ((INavigationNodeView<?, ?>) view).unbind();
 				}
 				getActivePage().hideView(view);
 			}
