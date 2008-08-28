@@ -302,6 +302,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	public void bind(SubModuleNode node) {
 		if (currentController != getController()) {
 			if (currentController != null) {
+				if (currentController.getNavigationNode().isDisposed()) {
+					return;
+				}
 				binding.unbind(currentController);
 			}
 			if ((getNavigationNode() != null) && (node2Controler.get(getNavigationNode()) == null)) {
