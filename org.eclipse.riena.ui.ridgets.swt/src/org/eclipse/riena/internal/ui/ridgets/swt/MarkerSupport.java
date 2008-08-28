@@ -26,7 +26,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.List;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
@@ -93,9 +92,6 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (preOutputBg == null) {
 			preOutputBg = control.getBackground();
 			control.setBackground(color);
-		}
-		if (control instanceof List) {
-			control.setEnabled(false);
 		}
 		if (control instanceof Button) {
 			control.setVisible(false);

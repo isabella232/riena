@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
@@ -23,11 +24,15 @@ import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -106,11 +111,14 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 			StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
 			dbc = new DataBindingContext();
+			// viewer to single selection binding
 			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
 			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			IObservableList viewerSelections = new SelectionProviderMultipleSelectionObservableList(dbc
-					.getValidationRealm(), viewer, Object.class);
+					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator()),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+			// viewer to to multi selection binding
+			IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
+					viewer, Object.class);
 			dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
 					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 
@@ -328,7 +336,10 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			if (SelectionType.SINGLE.equals(getSelectionType())) {
+			if (isOutputOnly()) {
+				// undo user selection when "output only"
+				viewer.setSelection(new StructuredSelection(getSelection()));
+			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
 				List control = (List) e.widget;
 				if (control.getSelectionCount() > 1) {
 					// ignore this event
@@ -359,4 +370,37 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 		}
 	}
 
+	/**
+	 * This validator will cancel a ui-to-model update when the ridget is set to
+	 * "output only". This prevents the user from modifying the ridget selection
+	 * observable when the ridget is in "output only" mode.
+	 */
+	private final class OutputAwareValidator implements IValidator {
+		public IStatus validate(Object value) {
+			return isOutputOnly() ? Status.CANCEL_STATUS : Status.OK_STATUS;
+		}
+	}
+
+	/**
+	 * Creates an observable list based on the current selection of a given
+	 * selection provider. This observable will discard updates when the ridget
+	 * is set to "output only". This prevents the user from modifying the
+	 * multiple selection observable (at the other end of the binding) when the
+	 * ridget is in "output only" mode.
+	 */
+	private final class OutputAwareMultipleSelectionObservableList extends
+			SelectionProviderMultipleSelectionObservableList {
+
+		public OutputAwareMultipleSelectionObservableList(Realm realm, ISelectionProvider selectionProvider,
+				Object elementType) {
+			super(realm, selectionProvider, elementType);
+		}
+
+		@Override
+		protected void updateWrappedList(java.util.List newList) {
+			if (!isOutputOnly()) {
+				super.updateWrappedList(newList);
+			}
+		}
+	};
 }

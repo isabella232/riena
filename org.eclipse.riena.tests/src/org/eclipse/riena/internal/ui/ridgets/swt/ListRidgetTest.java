@@ -396,6 +396,11 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		}
 	}
 
+	/**
+	 * Tests that for single selection lists, the ridget selection state and the
+	 * ui selection state cannot be changed by the user when ridget is set to
+	 * "output only".
+	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
@@ -403,23 +408,28 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		ridget.setSelectionType(SelectionType.SINGLE);
 
 		assertEquals(0, ridget.getSelection().size());
-		assertEquals(-1, ridget.getSelectionIndex());
+		assertEquals(0, control.getSelectionCount());
 
 		ridget.setOutputOnly(true);
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(0, ridget.getSelection().size());
-		assertEquals(-1, ridget.getSelectionIndex());
+		assertEquals(0, control.getSelectionCount());
 
 		ridget.setOutputOnly(false);
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(1, ridget.getSelection().size());
-		assertEquals(0, ridget.getSelectionIndex());
+		assertEquals(1, control.getSelectionCount());
 	}
 
+	/**
+	 * Tests that for multi selection lists, the ridget selection state and the
+	 * ui selection state cannot be changed by the user when ridget is set to
+	 * "output only".
+	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
@@ -427,21 +437,44 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		ridget.setSelectionType(SelectionType.MULTI);
 
 		assertEquals(0, ridget.getSelection().size());
-		assertEquals(-1, ridget.getSelectionIndex());
+		assertEquals(0, control.getSelectionCount());
 
 		ridget.setOutputOnly(true);
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(0, ridget.getSelection().size());
-		assertEquals(-1, ridget.getSelectionIndex());
+		assertEquals(0, control.getSelectionCount());
 
 		ridget.setOutputOnly(false);
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), " ");
 
 		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+	}
+
+	/**
+	 * Tests that toggling output state on/off does not change the selection.
+	 */
+	public void testTogglingOutputDoesNotChangeSelection() {
+		ListRidget ridget = getRidget();
+
+		ridget.setSelection(0);
+
 		assertEquals(0, ridget.getSelectionIndex());
+
+		ridget.setOutputOnly(true);
+
+		assertEquals(0, ridget.getSelectionIndex());
+
+		ridget.setSelection((Object) null);
+
+		assertEquals(-1, ridget.getSelectionIndex());
+
+		ridget.setOutputOnly(false);
+
+		assertEquals(-1, ridget.getSelectionIndex());
 	}
 
 	// helping methods
