@@ -29,7 +29,6 @@ import org.eclipse.riena.tests.RienaTestCase;
 /**
  * Integration test for testing attachment together with the AttachmentService.
  * 
- * @author Christian Campo
  */
 public final class AttachmentClientITest extends RienaTestCase {
 

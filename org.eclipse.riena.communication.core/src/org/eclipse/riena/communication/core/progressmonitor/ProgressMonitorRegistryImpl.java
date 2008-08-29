@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.progressmonitor;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
 
 /**
  * Maintains the progressMonitors that are interested in watched remoteservice
@@ -32,6 +36,13 @@ public class ProgressMonitorRegistryImpl implements IProgressMonitorRegistry {
 	 * int)
 	 */
 	public void addProgressMonitor(Object callProxy, IProgressMonitor monitor, int monitorType) {
+		// TODO very awful hack !!!!!
+		if (Proxy.isProxyClass(callProxy.getClass())) {
+			InvocationHandler invocationHandler = Proxy.getInvocationHandler(callProxy);
+			if (invocationHandler instanceof CallHooksProxy) {
+				callProxy = ((CallHooksProxy) invocationHandler).getCallProxy();
+			}
+		}
 		List<IProgressMonitor> pmList = progressMonitors.get(callProxy);
 		if (pmList == null) {
 			pmList = new ArrayList<IProgressMonitor>();
@@ -49,6 +60,7 @@ public class ProgressMonitorRegistryImpl implements IProgressMonitorRegistry {
 	 * #getProgressMonitors(java.lang.Object)
 	 */
 	public IProgressMonitorList getProgressMonitors(Object callProxy) {
+		// callProxy.equals(new Object());
 		List<IProgressMonitor> pmList = progressMonitors.get(callProxy);
 		if (pmList == null) {
 			return new ProgressMonitorListImpl(new IProgressMonitor[0]);

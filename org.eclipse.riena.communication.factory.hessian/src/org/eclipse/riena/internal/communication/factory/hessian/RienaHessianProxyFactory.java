@@ -145,6 +145,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 						progressBytes = 0;
 						progressMonitorList.fireReadEvent(-1, totalProgressBytes);
 					}
+					progressBytes++;
 				}
 
 			});
