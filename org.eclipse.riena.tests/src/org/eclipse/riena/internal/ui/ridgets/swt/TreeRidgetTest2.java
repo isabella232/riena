@@ -828,6 +828,95 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(4, TreeUtils.getItemCount(control));
 	}
 
+	/**
+	 * Tests that for single selection, the ridget selection state and the ui
+	 * selection state cannot be changed by the user when ridget is set to
+	 * "output only".
+	 */
+	public void testOutputSingleSelectionCannotBeChangedFromUI() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getUIControl();
+
+		ridget.setSelectionType(SelectionType.SINGLE);
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, control.getSelectionCount());
+
+		ridget.setOutputOnly(true);
+		control.setFocus();
+		// move down and up to select row 0; space does not select in tables
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_UP);
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, control.getSelectionCount());
+
+		ridget.setOutputOnly(false);
+		control.setFocus();
+		// move down and up to select row 0; space does not select in tables
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_UP);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+	}
+
+	/**
+	 * Tests that for multiple selection, the ridget selection state and the ui
+	 * selection state cannot be changed by the user when ridget is set to
+	 * "output only".
+	 */
+	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getUIControl();
+
+		ridget.setSelectionType(SelectionType.MULTI);
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, control.getSelectionCount());
+
+		ridget.setOutputOnly(true);
+		control.setFocus();
+		// move down and up to select row 0; space does not select in tables
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_UP);
+
+		assertEquals(0, ridget.getSelection().size());
+		assertEquals(0, control.getSelectionCount());
+
+		ridget.setOutputOnly(false);
+		control.setFocus();
+		// move down and up to select row 0; space does not select in tables
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_UP);
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+	}
+
+	/**
+	 * Tests that toggling output state on/off does not change the selection.
+	 */
+	public void testTogglingOutputDoesNotChangeSelection() {
+		ITreeRidget ridget = getRidget();
+
+		ridget.setSelection(root);
+
+		assertEquals(1, ridget.getSelection().size());
+
+		ridget.setOutputOnly(true);
+
+		assertEquals(1, ridget.getSelection().size());
+
+		ridget.setSelection((Object) null);
+
+		assertEquals(0, ridget.getSelection().size());
+
+		ridget.setOutputOnly(false);
+
+		assertEquals(0, ridget.getSelection().size());
+	}
+
 	// helping methods
 	// ////////////////
 

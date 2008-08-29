@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.internal.databinding.viewers.SelectionProviderMultipleSelectionObservableList;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -426,11 +425,14 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		StructuredSelection currentSelection = new StructuredSelection(getSelection());
 
 		dbc = new DataBindingContext();
+		// viewer to single selection binding
 		IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
 		dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		IObservableList viewerSelections = new SelectionProviderMultipleSelectionObservableList(dbc
-				.getValidationRealm(), viewer, Object.class);
+				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		// viewer to multi selection binding
+		IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
+				viewer, Object.class, this);
 		dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 
@@ -537,8 +539,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			if (SelectionType.SINGLE.equals(getSelectionType())) {
-				Tree control = (Tree) e.widget;
+			Tree control = (Tree) e.widget;
+			if (isOutputOnly()) {
+				viewer.setSelection(new StructuredSelection(getSelection()));
+			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
 				if (control.getSelectionCount() > 1) {
 					// ignore this event
 					e.doit = false;
