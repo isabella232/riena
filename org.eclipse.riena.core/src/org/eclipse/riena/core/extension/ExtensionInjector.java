@@ -38,7 +38,6 @@ public class ExtensionInjector {
 
 	// private BundleContext context;
 	private boolean started;
-	private boolean track = true;
 	private boolean symbolReplace = true;
 	private boolean nonSpecific = true;
 	private String updateMethodName = "update"; //$NON-NLS-1$
@@ -80,16 +79,14 @@ public class ExtensionInjector {
 				: isArray ? paramaterType.getComponentType() : paramaterType;
 		populateInterfaceBeans(true);
 
-		if (track) {
-			IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
-			if (extensionRegistry == null) {
-				// TODO Is this an error for that we should throw an exception?
-				LOGGER.log(LogService.LOG_ERROR,
-						"For some reason the extension registry has not been created. Tracking is not possible."); //$NON-NLS-1$
-			} else {
-				injectorListener = new InjectorListener();
-				extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
-			}
+		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
+		if (extensionRegistry == null) {
+			// TODO Is this an error for that we should throw an exception?
+			LOGGER.log(LogService.LOG_ERROR,
+					"For some reason the extension registry has not been created. Tracking is not possible."); //$NON-NLS-1$
+		} else {
+			injectorListener = new InjectorListener();
+			extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
 		}
 		return this;
 	}
@@ -101,10 +98,22 @@ public class ExtensionInjector {
 	 * @param bindMethodName
 	 * @return itself
 	 */
+	@Deprecated
 	public ExtensionInjector bind(final String bindMethodName) {
-		Assert.isNotNull(bindMethodName, "Bind method name must not be null"); //$NON-NLS-1$
+		return update(bindMethodName);
+	}
+
+	/**
+	 * Define the update method name.<br>
+	 * If not given 'update' will be assumed.
+	 * 
+	 * @param updateMethodName
+	 * @return itself
+	 */
+	public ExtensionInjector update(final String updateMethodName) {
+		Assert.isNotNull(updateMethodName, "Update method name must not be null"); //$NON-NLS-1$
 		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
-		this.updateMethodName = bindMethodName;
+		this.updateMethodName = updateMethodName;
 		return this;
 	}
 
@@ -113,9 +122,10 @@ public class ExtensionInjector {
 	 * 
 	 * @return itself
 	 */
+	@Deprecated
 	public ExtensionInjector doNotTrack() {
 		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
-		track = false;
+		// track = false;
 		return this;
 	}
 
@@ -151,14 +161,15 @@ public class ExtensionInjector {
 			return;
 		}
 
-		if (track) {
-			IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
-			if (extensionRegistry == null) {
-				// TODO Is this an error for that we should throw an exception?
-				LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created."); //$NON-NLS-1$
-			} else {
-				extensionRegistry.removeListener(injectorListener);
-			}
+		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
+		if (extensionRegistry == null) {
+			// TODO Is this an error for that we should throw an exception?
+			LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created."); //$NON-NLS-1$
+		} else {
+			extensionRegistry.removeListener(injectorListener);
+
+			// cleanup
+			update(new Object[] { null });
 		}
 		injectorListener = null;
 	}
@@ -196,11 +207,11 @@ public class ExtensionInjector {
 	private Method seekMatchingUpdateMethod(final Class<?> interfaceType, final boolean isArray)
 			throws SecurityException, NoSuchMethodException {
 		try {
-			Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
+			final Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
 			return target.getClass().getMethod(updateMethodName, seeking);
 		} catch (NoSuchMethodException e) {
-			for (Class<?> superInterfaceType : interfaceType.getInterfaces()) {
-				Method attempt = seekMatchingUpdateMethod(superInterfaceType, isArray);
+			for (final Class<?> superInterfaceType : interfaceType.getInterfaces()) {
+				final Method attempt = seekMatchingUpdateMethod(superInterfaceType, isArray);
 				if (attempt != null) {
 					return attempt;
 				}
@@ -217,11 +228,11 @@ public class ExtensionInjector {
 	 * @return
 	 */
 	private Method findUpdateMethodForUnkownType() {
-		List<Method> candidates = new ArrayList<Method>();
-		Method[] methods = target.getClass().getMethods();
-		for (Method method : methods) {
+		final List<Method> candidates = new ArrayList<Method>();
+		final Method[] methods = target.getClass().getMethods();
+		for (final Method method : methods) {
 			if (method.getName().equals(updateMethodName) && method.getParameterTypes().length == 1
-					&& isInterface(method.getParameterTypes()[0])) {
+					&& isExtensionInterface(method.getParameterTypes()[0])) {
 				candidates.add(method);
 			}
 		}
@@ -258,9 +269,9 @@ public class ExtensionInjector {
 	 * @param type
 	 * @return
 	 */
-	private boolean isInterface(Class<?> type) {
+	private boolean isExtensionInterface(Class<?> type) {
 		type = type.isArray() ? type.getComponentType() : type;
-		return type.isInterface();
+		return type.isInterface() && type.isAnnotationPresent(ExtensionInterface.class);
 	}
 
 	/**
@@ -273,7 +284,7 @@ public class ExtensionInjector {
 
 	void populateInterfaceBeans(boolean onStart) {
 		try {
-			Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
+			final Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
 			if (!matchesExtensionPointConstraint(beans.length)) {
 				LOGGER.log(LogService.LOG_ERROR,
 						"Number of extensions does not fullfil the extension point's constraints."); //$NON-NLS-1$
@@ -317,7 +328,7 @@ public class ExtensionInjector {
 		 * org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse
 		 * .core. runtime.IExtension[])
 		 */
-		public void added(IExtension[] extensions) {
+		public void added(final IExtension[] extensions) {
 			populateInterfaceBeans(false);
 		}
 
@@ -326,7 +337,7 @@ public class ExtensionInjector {
 		 * org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse
 		 * .core. runtime.IExtensionPoint[])
 		 */
-		public void added(IExtensionPoint[] extensionPoints) {
+		public void added(final IExtensionPoint[] extensionPoints) {
 			// We don´t care about other extension points. We only listen to the
 			// extensions for the id <code>extensionDesc</code>!
 		}
@@ -336,7 +347,7 @@ public class ExtensionInjector {
 		 * org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse
 		 * .core. runtime.IExtension[])
 		 */
-		public void removed(IExtension[] extensions) {
+		public void removed(final IExtension[] extensions) {
 			populateInterfaceBeans(false);
 		}
 
@@ -345,7 +356,7 @@ public class ExtensionInjector {
 		 * org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse
 		 * .core. runtime.IExtensionPoint[])
 		 */
-		public void removed(IExtensionPoint[] extensionPoints) {
+		public void removed(final IExtensionPoint[] extensionPoints) {
 			// We don´t care about other extension points. We only listen to the
 			// extensions for the id <code>extensionDesc</code>!
 		}
