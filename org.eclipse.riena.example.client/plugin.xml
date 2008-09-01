@@ -122,6 +122,13 @@
             name="org.eclipse.riena.example.client.views.BlockingSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
+            id="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
+            name="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -483,6 +490,11 @@
             shared="false"
             typeId="org.eclipse.riena.example.blocking"
             view="org.eclipse.riena.example.client.views.BlockingSubModuleView">
+      </subModuleType>
+      <subModuleType
+            shared="false"
+            typeId="org.eclipse.riena.example.noController"
+            view="org.eclipse.riena.example.client.views.NoControllerSubModuleView">
       </subModuleType>
    </extension> 
 </plugin>

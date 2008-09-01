@@ -14,7 +14,6 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -90,6 +89,10 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 		ISubModuleNode blockingSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.blocking"), "Blocking"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(blockingSubModule);
+
+		ISubModuleNode noControllerSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.noController"), "View without Controller"); //$NON-NLS-1$ //$NON-NLS-2$
+		playgroundModule.addChild(noControllerSubModule);
 
 		return moduleGroup;
 	}

@@ -135,8 +135,11 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	public void createPartControl(Composite parent) {
 		this.parentComposite = parent;
 		observeRoot();
-		setController(createController(getNavigationNode()));
-		setPartName(getController().getNavigationNode().getLabel());
+		C controller = createController(getNavigationNode());
+		setController(controller);
+		if (controller != null) {
+			setPartName(controller.getNavigationNode().getLabel());
+		}
 		Composite contentComposite = createContentComposite(parent);
 		basicCreatePartControl(contentComposite);
 		createViewFacade();
@@ -265,15 +268,19 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		if (!node2Controler.containsKey(getNavigationNode())) {
 			setController(createController(getNavigationNode()));
 		}
-		binding.injectRidgets(getController());
-		if (getController().getWindowRidget() == null) {
-			getController().setWindowRidget((IWindowRidget) getController().getRidget(WINDOW_RIDGET));
+		if (getController() != null) {
+			binding.injectRidgets(getController());
+			if (getController().getWindowRidget() == null) {
+				getController().setWindowRidget((IWindowRidget) getController().getRidget(WINDOW_RIDGET));
+			}
 		}
 	}
 
 	protected C createController(ISubModuleNode pSubModuleNode) {
 		C controller = (C) getPresentationDefinitionService().provideController(pSubModuleNode);
-		controller.setNavigationNode(pSubModuleNode);
+		if (controller != null) {
+			controller.setNavigationNode(pSubModuleNode);
+		}
 		return controller;
 	}
 
