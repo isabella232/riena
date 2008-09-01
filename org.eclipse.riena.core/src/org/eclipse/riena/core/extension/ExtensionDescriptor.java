@@ -16,12 +16,12 @@ import org.osgi.framework.BundleContext;
 /**
  * ExtensionDescriptor and ExtensionInjector simplify locating configuration
  * (extensions) and injects them into a target object. To do so the
- * ExtensionInjector may track the extension registry for changes of appearing
- * and disappearing extensions and injects them into the target. A target object
+ * ExtensionInjector tracks the extension registry for changes of appearing and
+ * disappearing extensions and injects them into the target. A target object
  * defines a named and typed bind (update) method. The ExtensionInjector calls
- * the bind method when the specified extension/point was registered or
+ * the update method when the specified extension/point was registered or
  * modified.<br>
- * The type of the bind method can be either of type array of <i>interface
+ * The type of the update method can be either of type array of <i>interface
  * type</i> or just <i>interface type</i>. The <i>interface type</i> is just a
  * simple java interface with <i>getters</i> where their name corresponds to
  * attribute names or element names for nested extensions of an extension.<br>
@@ -38,7 +38,7 @@ import org.osgi.framework.BundleContext;
  * <ol>
  * <li>Inject.extension("id1").into(target).andStart(context)</li>
  * <li>
- * Inject.extension("id2").useType(interface).into(target).bind("configure").
+ * Inject.extension("id2").useType(interface).into(target).update("configure").
  * andStart(context)</li>
  * <li>Inject.extension("id3").expectExactly(1).into(target).andStart(context)</li>
  * <li>..</li>
@@ -47,7 +47,7 @@ import org.osgi.framework.BundleContext;
  * This fluent interface makes a few assumptions (defaults) that makes writing
  * extension injectors short and expressive , e.g. item one the list, means try
  * to retrieve <i>interface type</i> by reflection, expect zero to ´unbound´
- * occurrences of extensions and the bind method name is "update".
+ * occurrences of extensions and the update method name is "update".
  * <p>
  * The expected cardinality of extensions (min/max occurrences) can be specified
  * with <code>expectingMinMax()</code> or with <code>expectingExactly()</code>.
@@ -75,12 +75,12 @@ public class ExtensionDescriptor {
 	/**
 	 * Define the interface type used as a bean for injecting. <br>
 	 * If not defined the extension injector tries to figure it out by
-	 * reflection and the name of the ´bind´ method.
+	 * reflection and the name of the ´update´ method.
 	 * 
 	 * @param interfaceType
 	 * @return itself
 	 */
-	public ExtensionDescriptor useType(Class<?> interfaceType) {
+	public ExtensionDescriptor useType(final Class<?> interfaceType) {
 		Assert.isNotNull(interfaceType, "Interface type must not be null."); //$NON-NLS-1$
 		Assert.isTrue(interfaceType.isInterface(), "Interface type must be an interface."); //$NON-NLS-1$
 		Assert.isTrue(this.interfaceType == null, "Interface type has already been set."); //$NON-NLS-1$
@@ -107,7 +107,7 @@ public class ExtensionDescriptor {
 	 * @param target
 	 * @return itself
 	 */
-	public ExtensionInjector into(Object target) {
+	public ExtensionInjector into(final Object target) {
 		Assert.isNotNull(target, "The target must not be null."); //$NON-NLS-1$
 		return new ExtensionInjector(this, target);
 	}
@@ -122,7 +122,7 @@ public class ExtensionDescriptor {
 	 * @param max
 	 * @return itself
 	 */
-	public ExtensionDescriptor expectingMinMax(int min, int max) {
+	public ExtensionDescriptor expectingMinMax(final int min, final int max) {
 		Assert.isLegal(max >= min, "min must not be greater than max."); //$NON-NLS-1$
 		Assert.isLegal(min >= 0, "min must be greater or equal than zero."); //$NON-NLS-1$
 		Assert.isLegal(max > 0, "max must be greater than zero."); //$NON-NLS-1$
@@ -138,7 +138,7 @@ public class ExtensionDescriptor {
 	 * @param exactly
 	 * @return itself
 	 */
-	public ExtensionDescriptor expectingExactly(int exactly) {
+	public ExtensionDescriptor expectingExactly(final int exactly) {
 		return expectingMinMax(exactly, exactly);
 	}
 
