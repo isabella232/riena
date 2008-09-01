@@ -138,7 +138,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
-				.into(target).bind("configure").andStart(getContext());
+				.into(target).update("configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getValue().contains("And Now for Something Completely Different!"));
 		assertTrue(target.getData().getRequired());
@@ -156,7 +156,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
-				.into(target).bind("configure").andStart(getContext());
+				.into(target).update("configure").andStart(getContext());
 		assertNotNull(target.getData());
 		String created1 = (String) target.getData().createObjectType();
 		String created2 = (String) target.getData().createObjectType();
@@ -172,7 +172,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).update(
 				"configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertFalse(target.getData().getRequired());
@@ -189,7 +189,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext4.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).update(
 				"configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getRequired());
@@ -249,7 +249,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext5.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).update(
 				"configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertTrue(target.getData().getRequired());
@@ -266,7 +266,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext6.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).update(
 				"configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertFalse(target.getData().getRequired());
@@ -296,7 +296,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext6.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).bind(
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).update(
 				"configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertFalse(target.getData().getRequired());
@@ -343,7 +343,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1-sub.xml");
 		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
 		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(ISubData.class).expectingExactly(1)
-				.into(target).bind("configure").andStart(getContext());
+				.into(target).update("configure").andStart(getContext());
 		assertNotNull(target.getData());
 		assertEquals("Dynamic proxy for " + ISubData.class.getName()
 				+ ":subText=SubSub,required=true,objectType=java.lang.String,text=test1", target.getData().toString());

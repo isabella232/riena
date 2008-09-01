@@ -69,8 +69,8 @@ public class Activator extends RienaActivator {
 		sslConfigServiceReference = context.getServiceReference(SSLConfiguration.class.getName());
 		SSLConfiguration config = (SSLConfiguration) context.getService(sslConfigServiceReference);
 		if (config != null) {
-			sslInjector = Inject.extension(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).into(config).bind(
-					"configure"); //$NON-NLS-1$
+			sslInjector = Inject.extension(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).into(config)
+					.update("configure"); //$NON-NLS-1$
 			sslInjector.andStart(context);
 		}
 
