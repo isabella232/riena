@@ -42,6 +42,16 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 		return MARKER_KEY;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.core.marker.IIconizableMarker#getPositionOfMarker()
+	 */
+	public MarkerPosition getPositionOfMarker() {
+		return MarkerPosition.BOTTOM_LEFT;
+	}
+
 	/**
 	 * Returns the disabled state.
 	 * 

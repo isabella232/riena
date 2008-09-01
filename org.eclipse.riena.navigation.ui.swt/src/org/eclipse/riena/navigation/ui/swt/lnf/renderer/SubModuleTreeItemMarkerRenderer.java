@@ -14,13 +14,14 @@ import java.util.Collection;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
@@ -28,6 +29,9 @@ import org.eclipse.swt.widgets.TreeItem;
  * navigation tree.
  */
 public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
+
+	private TreeItem item;
+	private Runnable updater;
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -40,7 +44,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		Assert.isNotNull(value);
 		Assert.isTrue(value instanceof TreeItem);
 
-		TreeItem item = (TreeItem) value;
+		item = (TreeItem) value;
 		SubModuleNode node = (SubModuleNode) item.getData();
 		if (node == null) {
 			return;
@@ -58,12 +62,10 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @param gc
 	 *            - graphics context
-	 * @param markers
-	 *            - collection of markers
 	 * @param item
 	 *            - tree item
 	 */
-	protected void paintMarkers(GC gc, Collection<IIconizableMarker> markers, TreeItem item) {
+	protected void paintMarkers(final GC gc, final Collection<IIconizableMarker> markers, final TreeItem item) {
 
 		Image itemImage = item.getImage();
 		if (itemImage == null) {
@@ -78,19 +80,25 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 					continue;
 				}
 			}
+			if (iconizableMarker instanceof UIProcessFinishedMarker) {
+				UIProcessFinishedMarker processMarker = (UIProcessFinishedMarker) iconizableMarker;
+				if (!processMarker.isActivated()) {
+					// the flasher for the UI process finished marker was not
+					// starter (activated) already
+					startFlasher(processMarker);
+					continue;
+				} else if (!processMarker.isOn()) {
+					// the marker (the image of the marker) is not visible at
+					// the moment
+					continue;
+				}
+			}
 
 			String key = iconizableMarker.getIconConfiguationKey();
 			Image markerImage = LnfManager.getLnf().getImage(key);
 			if (markerImage != null) {
-				int x = getBounds().x;
-				x += itemImage.getImageData().x;
-				if (iconizableMarker instanceof ErrorMarker) {
-					x += itemImage.getImageData().width - markerImage.getImageData().width;
-				}
-				int y = getBounds().y;
-				y += itemImage.getImageData().y;
-				y += itemImage.getImageData().height - markerImage.getImageData().height;
-				gc.drawImage(markerImage, x, y);
+				Point pos = calcMarkerCoordinates(itemImage, markerImage, iconizableMarker.getPositionOfMarker());
+				gc.drawImage(markerImage, pos.x, pos.y);
 			}
 
 		}
@@ -98,10 +106,81 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
+	 * Calculates the x- and y-coordinates of the marker image.
+	 * 
+	 * @param itemImage
+	 *            - image of the item
+	 * @param markerImage
+	 *            - image of the marker
+	 * @param position
+	 *            - position of the marker
+	 * @return x- and y-coordinates
+	 */
+	private Point calcMarkerCoordinates(Image itemImage, Image markerImage,
+			final IIconizableMarker.MarkerPosition position) {
+
+		int x = getBounds().x;
+		x += itemImage.getImageData().x;
+		int y = getBounds().y;
+		y += itemImage.getImageData().y;
+
+		switch (position) {
+		case TOP_RIGHT:
+			x += itemImage.getImageData().width - markerImage.getImageData().width;
+			break;
+		case BOTTOM_LEFT:
+			y += itemImage.getImageData().height - markerImage.getImageData().height;
+			break;
+		case BOTTOM_RIGHT:
+			x += itemImage.getImageData().width - markerImage.getImageData().width;
+			y += itemImage.getImageData().height - markerImage.getImageData().height;
+			break;
+		default:
+			break;
+		}
+
+		return new Point(x, y);
+
+	}
+
+	/**
+	 * Creates and starts the flasher of a finished UI process.
+	 * 
+	 * @param processMarker
+	 *            - marker of finished UI process.
+	 */
+	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
+
+		if (updater == null) {
+			updater = new MarkerUpdater();
+		}
+
+		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
+		processMarker.activate();
+		flasher.start();
+
+	}
+
+	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		// nothing to do
+		updater = null;
+		item = null;
+	}
+
+	/**
+	 * This class updates (redraws) the tree, so that the marker are also
+	 * updated (redrawn).
+	 */
+	private class MarkerUpdater implements Runnable {
+
+		/**
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			item.getParent().redraw();
+		}
 	}
 
 }

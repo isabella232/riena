@@ -18,6 +18,10 @@ import org.eclipse.riena.core.marker.IMarker;
  */
 public interface IIconizableMarker extends IMarker {
 
+	enum MarkerPosition {
+		TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
+	}
+
 	/**
 	 * Returns the key to the configuration of the marker icon. What this
 	 * configuration looks like and where it is located depends on the UI
@@ -26,5 +30,12 @@ public interface IIconizableMarker extends IMarker {
 	 * @return The key to the configuration of the marker icon.
 	 */
 	String getIconConfiguationKey();
+
+	/**
+	 * Returns the position of the marker.
+	 * 
+	 * @return position
+	 */
+	MarkerPosition getPositionOfMarker();
 
 }

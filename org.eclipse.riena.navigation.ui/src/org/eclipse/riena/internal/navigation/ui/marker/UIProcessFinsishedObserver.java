@@ -52,6 +52,7 @@ public class UIProcessFinsishedObserver extends ProgressVisualizerObserverAdapte
 		return baseNode;
 	}
 
+	@Override
 	public void finalUpdateUI(IProgressVisualizer visualizer) {
 		getMarkupStrategy().applyUIProcessMarker(getBaseNode(), uiProcessFinishedMarker);
 	}

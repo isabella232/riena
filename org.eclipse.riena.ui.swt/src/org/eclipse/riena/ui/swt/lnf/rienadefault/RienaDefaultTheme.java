@@ -63,6 +63,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_INFO = PATH_ICONS + PATH_SEPARATOR + "statusline_info.gif"; //$NON-NLS-1$
 	private static final String IMAGE_ERROR_MARKER = PATH_ICONS + PATH_SEPARATOR + "errorMarker.png"; //$NON-NLS-1$
 	private static final String IMAGE_MANDATORY_MARKER = PATH_ICONS + PATH_SEPARATOR + "mandatoryMarker.png"; //$NON-NLS-1$
+	private static final String IMAGE_PROCESS_FINISHED_MARKER = PATH_ICONS + PATH_SEPARATOR
+			+ "processFinishedMarker.png"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
@@ -203,6 +205,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 		table.put(ILnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
 		table.put(ILnfKeyConstants.MANDATORY_MARKER_ICON, new ImageLnfResource(IMAGE_MANDATORY_MARKER));
+		table.put(ILnfKeyConstants.PROCESSED_FINISHED_MARKER_ICON, new ImageLnfResource(IMAGE_PROCESS_FINISHED_MARKER));
 		// table.put(ILnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));

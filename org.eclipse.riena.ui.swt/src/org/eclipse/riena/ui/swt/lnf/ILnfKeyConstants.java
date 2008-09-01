@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 
 /**
  * Keys of the look and feel of riena.
@@ -119,6 +120,7 @@ public final class ILnfKeyConstants {
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
 	public static final String ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
 	public static final String MANDATORY_MARKER_ICON = MandatoryMarker.MARKER_KEY;
+	public static final String PROCESSED_FINISHED_MARKER_ICON = UIProcessFinishedMarker.MARKER_KEY;
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
 
