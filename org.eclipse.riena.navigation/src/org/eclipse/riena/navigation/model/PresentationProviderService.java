@@ -258,4 +258,16 @@ public class PresentationProviderService implements IPresentationProviderService
 		// TODO: implement, does nothing special yet
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.IPresentationProviderService#
+	 * getSubModuleTypeDefitinions()
+	 */
+	public ISubModuleTypeDefinition[] getSubModuleTypeDefitinions() {
+		if (targetSM != null) {
+			return targetSM.getData();
+		}
+		return null;
+	}
 }

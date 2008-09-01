@@ -28,8 +28,7 @@ public interface IPresentationProviderService {
 	 * @param argument
 	 * @return
 	 */
-	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
-			NavigationArgument argument);
+	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
 	 * Return an Object representing a instance of a view. In case of SWT/Riena
@@ -55,4 +54,6 @@ public interface IPresentationProviderService {
 	 * Perform some housekeeping
 	 */
 	void cleanUp();
+
+	ISubModuleTypeDefinition[] getSubModuleTypeDefitinions();
 }
