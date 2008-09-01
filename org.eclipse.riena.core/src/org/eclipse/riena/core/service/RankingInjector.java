@@ -26,7 +26,7 @@ public class RankingInjector extends ServiceInjector {
 	 * @param serviceId
 	 * @param target
 	 */
-	RankingInjector(ServiceDescriptor serviceId, Object target) {
+	RankingInjector(final ServiceDescriptor serviceId, final Object target) {
 		super(serviceId, target);
 	}
 
@@ -35,7 +35,7 @@ public class RankingInjector extends ServiceInjector {
 	 */
 	@Override
 	protected void doStart() {
-		ServiceReference serviceRef = getCurrentHighest();
+		final ServiceReference serviceRef = getCurrentHighest();
 		registerServiceListener();
 		doBind(serviceRef);
 	}
@@ -55,7 +55,7 @@ public class RankingInjector extends ServiceInjector {
 	 * .ServiceReference)
 	 */
 	@Override
-	protected void doBind(ServiceReference serviceRef) {
+	protected void doBind(final ServiceReference serviceRef) {
 		if (serviceRef == null) {
 			return;
 		}
@@ -74,7 +74,7 @@ public class RankingInjector extends ServiceInjector {
 	 * .ServiceReference)
 	 */
 	@Override
-	protected void doUnbind(ServiceReference serviceRef) {
+	protected void doUnbind(final ServiceReference serviceRef) {
 		if (serviceRef == null) {
 			return;
 		}
@@ -82,7 +82,7 @@ public class RankingInjector extends ServiceInjector {
 			return;
 		}
 		invokeUnbindMethod(serviceRef);
-		ServiceReference highest = getCurrentHighest();
+		final ServiceReference highest = getCurrentHighest();
 		if (highest == null) {
 			trackedServiceRef = null;
 			return;
@@ -95,7 +95,7 @@ public class RankingInjector extends ServiceInjector {
 	 * @return
 	 */
 	private ServiceReference getCurrentHighest() {
-		ServiceReference[] serviceRefs = getServiceReferences();
+		final ServiceReference[] serviceRefs = getServiceReferences();
 		return highestServiceRef(serviceRefs);
 	}
 
@@ -103,7 +103,7 @@ public class RankingInjector extends ServiceInjector {
 	 * @param serviceRefs
 	 * @return
 	 */
-	private static ServiceReference highestServiceRef(ServiceReference[] serviceRefs) {
+	private static ServiceReference highestServiceRef(final ServiceReference[] serviceRefs) {
 		if (serviceRefs == null) {
 			return null;
 		}

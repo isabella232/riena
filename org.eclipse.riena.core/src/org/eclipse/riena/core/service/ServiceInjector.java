@@ -43,10 +43,10 @@ public abstract class ServiceInjector {
 	 */
 	public static final String DEFAULT_UNBIND_METHOD_NAME = "unbind"; //$NON-NLS-1$
 
-	private ServiceDescriptor serviceDesc;
+	private final ServiceDescriptor serviceDesc;
+	private final Object target;
 	private BundleContext context = null;
 	private String filter;
-	private Object target;
 	private String bindMethodName = null;
 	private List<Method> bindMethodProspects = null;
 	private String unbindMethodName = null;
@@ -63,7 +63,7 @@ public abstract class ServiceInjector {
 	 * @param serviceDesc
 	 * @param target
 	 */
-	ServiceInjector(ServiceDescriptor serviceDesc, Object target) {
+	ServiceInjector(final ServiceDescriptor serviceDesc, final Object target) {
 		this.serviceDesc = serviceDesc;
 		this.target = target;
 		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
@@ -89,7 +89,7 @@ public abstract class ServiceInjector {
 	 * @param context
 	 * @return this injector
 	 */
-	public ServiceInjector andStart(BundleContext context) {
+	public ServiceInjector andStart(final BundleContext context) {
 		Assert.isNotNull(context, "Bundle context must be not null."); //$NON-NLS-1$
 		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
 		started = true;
@@ -164,7 +164,7 @@ public abstract class ServiceInjector {
 	 * @param unbindMethodName
 	 * @return this injector
 	 */
-	public synchronized ServiceInjector unbind(String unbindMethodName) {
+	public synchronized ServiceInjector unbind(final String unbindMethodName) {
 		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
 		this.unbindMethodName = unbindMethodName;
 		return this;
@@ -198,7 +198,7 @@ public abstract class ServiceInjector {
 		serviceListener = null;
 	}
 
-	private List<Method> collectMethods(String message, String methodName) {
+	private List<Method> collectMethods(final String message, final String methodName) {
 		List<Method> prospects = new ArrayList<Method>();
 		Method[] methods = target.getClass().getMethods();
 		for (Method method : methods) {
@@ -215,7 +215,7 @@ public abstract class ServiceInjector {
 				+ target.getClass().getName());
 	}
 
-	protected void handleEvent(ServiceEvent event) {
+	protected void handleEvent(final ServiceEvent event) {
 		switch (event.getType()) {
 		case ServiceEvent.REGISTERED:
 			doBind(event.getServiceReference());
@@ -229,9 +229,9 @@ public abstract class ServiceInjector {
 		}
 	}
 
-	protected abstract void doBind(ServiceReference serviceRef);
+	protected abstract void doBind(final ServiceReference serviceRef);
 
-	protected abstract void doUnbind(ServiceReference serviceRef);
+	protected abstract void doUnbind(final ServiceReference serviceRef);
 
 	/**
 	 * Get all service references for the service.
@@ -252,7 +252,7 @@ public abstract class ServiceInjector {
 	 * @param service
 	 * @return the bind method
 	 */
-	protected void invokeBindMethod(ServiceReference serviceRef) {
+	protected void invokeBindMethod(final ServiceReference serviceRef) {
 		if (serviceRef == null) {
 			return;
 		}
@@ -270,7 +270,7 @@ public abstract class ServiceInjector {
 	 * @param service
 	 * @return the unbind method
 	 */
-	protected void invokeUnbindMethod(ServiceReference serviceRef) {
+	protected void invokeUnbindMethod(final ServiceReference serviceRef) {
 		if (serviceRef == null) {
 			return;
 		}
@@ -287,7 +287,7 @@ public abstract class ServiceInjector {
 		context.ungetService(serviceRef);
 	}
 
-	private void invokeMethod(List<Method> methods, Object service) {
+	private void invokeMethod(final List<Method> methods, final Object service) {
 		assert service != null;
 
 		Method method = findMatchingMethod(methods, service);
@@ -297,7 +297,7 @@ public abstract class ServiceInjector {
 		invoke(method, service);
 	}
 
-	private Method findMatchingMethod(List<Method> methods, Object service) {
+	private Method findMatchingMethod(final List<Method> methods, final Object service) {
 		assert methods != null;
 		assert service != null;
 
@@ -337,7 +337,7 @@ public abstract class ServiceInjector {
 	 * @param method
 	 * @param service
 	 */
-	private void invoke(Method method, Object service) {
+	private void invoke(final Method method, final Object service) {
 		assert method != null;
 		assert service != null;
 
@@ -362,7 +362,7 @@ public abstract class ServiceInjector {
 	 * The service listener for this injector.
 	 */
 	class InjectorServiceListener implements ServiceListener {
-		public void serviceChanged(ServiceEvent event) {
+		public void serviceChanged(final ServiceEvent event) {
 			int eventType = event.getType();
 			if (eventType == ServiceEvent.REGISTERED || eventType == ServiceEvent.UNREGISTERING) {
 				handleEvent(event);

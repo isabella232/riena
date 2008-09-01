@@ -26,7 +26,7 @@ public class FilterInjector extends ServiceInjector {
 	 * @param serviceId
 	 * @param target
 	 */
-	FilterInjector(ServiceDescriptor serviceId, Object target) {
+	FilterInjector(final ServiceDescriptor serviceId, final Object target) {
 		super(serviceId, target);
 	}
 
@@ -36,14 +36,14 @@ public class FilterInjector extends ServiceInjector {
 	@Override
 	protected void doStart() {
 		trackedServiceRefs = new ArrayList<ServiceReference>(1);
-		ServiceReference[] serviceRefs = getServiceReferences();
+		final ServiceReference[] serviceRefs = getServiceReferences();
 
 		// register service listener early because its very likely that no
 		// service is registered between getServiceReferences and
 		// registerServiceListener()
 		registerServiceListener();
 		if (serviceRefs != null) {
-			for (ServiceReference serviceRef : serviceRefs) {
+			for (final ServiceReference serviceRef : serviceRefs) {
 				doBind(serviceRef);
 			}
 		}
@@ -56,11 +56,11 @@ public class FilterInjector extends ServiceInjector {
 	protected void doStop() {
 		// copy list to array so that I iterate through array and still
 		// remove entries from List concurrently
-		ServiceReference[] serviceRefs;
+		final ServiceReference[] serviceRefs;
 		synchronized (trackedServiceRefs) {
 			serviceRefs = trackedServiceRefs.toArray(new ServiceReference[trackedServiceRefs.size()]);
 		}
-		for (ServiceReference serviceRef : serviceRefs) {
+		for (final ServiceReference serviceRef : serviceRefs) {
 			doUnbind(serviceRef);
 		}
 		trackedServiceRefs = null;
@@ -72,7 +72,7 @@ public class FilterInjector extends ServiceInjector {
 	 * .ServiceReference)
 	 */
 	@Override
-	protected void doBind(ServiceReference serviceRef) {
+	protected void doBind(final ServiceReference serviceRef) {
 		synchronized (trackedServiceRefs) {
 			if (trackedServiceRefs.contains(serviceRef)) {
 				return;
@@ -88,7 +88,7 @@ public class FilterInjector extends ServiceInjector {
 	 * .ServiceReference)
 	 */
 	@Override
-	protected void doUnbind(ServiceReference serviceRef) {
+	protected void doUnbind(final ServiceReference serviceRef) {
 		synchronized (trackedServiceRefs) {
 			if (!trackedServiceRefs.contains(serviceRef)) {
 				return;

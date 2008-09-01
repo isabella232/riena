@@ -23,7 +23,8 @@ final class InterfaceBeanFactory {
 		// utility
 	}
 
-	static Object newInstance(boolean symbolReplace, Class<?> interfaceType, IConfigurationElement configurationElement) {
+	static Object newInstance(final boolean symbolReplace, final Class<?> interfaceType,
+			final IConfigurationElement configurationElement) {
 		return Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType },
 				new InterfaceBeanHandler(interfaceType, symbolReplace, configurationElement));
 	}

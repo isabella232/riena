@@ -29,7 +29,7 @@ public final class Inject {
 	 * @param clazz
 	 * @return
 	 */
-	public static ServiceDescriptor service(String clazz) {
+	public static ServiceDescriptor service(final String clazz) {
 		return new ServiceDescriptor(clazz);
 	}
 
@@ -39,7 +39,7 @@ public final class Inject {
 	 * @param extensionPointId
 	 * @return
 	 */
-	public static ExtensionDescriptor extension(String extensionPointId) {
+	public static ExtensionDescriptor extension(final String extensionPointId) {
 		return new ExtensionDescriptor(extensionPointId);
 	}
 

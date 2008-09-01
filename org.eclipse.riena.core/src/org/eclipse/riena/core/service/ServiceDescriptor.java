@@ -31,8 +31,11 @@ import org.osgi.framework.Constants;
  * interface´ allowing constructs like:
  * <ol>
  * <li>Inject.service("id1").into(target).andStart(context)</li>
- * <li>Inject.service("id2").useFilter(filter).into(target).bind("register").unbind("unregister").andStart(context)</li>
- * <li>Inject.service("id3").useRanking().into(target).bind("register").unbind("unregister").andStart(context)</li>
+ * <li>
+ * Inject.service("id2").useFilter(filter).into(target).bind("register").unbind
+ * ("unregister").andStart(context)</li>
+ * <li>Inject.service("id3").useRanking().into(target).bind("register").unbind(
+ * "unregister").andStart(context)</li>
  * <li>..</li>
  * </ol>
  * <p>
@@ -68,7 +71,7 @@ public class ServiceDescriptor {
 	 *             if service descriptor is null.
 	 * @param clazz
 	 */
-	public ServiceDescriptor(String clazz) {
+	public ServiceDescriptor(final String clazz) {
 		Assert.isNotNull(clazz, "Service clazz must not be null."); //$NON-NLS-1$
 		this.clazz = clazz;
 	}
@@ -81,7 +84,7 @@ public class ServiceDescriptor {
 	 *             if a filter has already been set.
 	 * @return this service descriptor
 	 */
-	public ServiceDescriptor useFilter(String filter) {
+	public ServiceDescriptor useFilter(final String filter) {
 		Assert.isTrue(this.filter == null, "Filter has already been set!"); //$NON-NLS-1$
 		Assert.isNotNull(filter, "Filter must not be null."); //$NON-NLS-1$
 		this.filter = filter;
@@ -110,7 +113,7 @@ public class ServiceDescriptor {
 	 *             on target == null
 	 * @return the injector responsible for tracking this service descriptor
 	 */
-	public ServiceInjector into(Object target) {
+	public ServiceInjector into(final Object target) {
 		Assert.isNotNull(target, "Target must not be null."); //$NON-NLS-1$
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
 	}
