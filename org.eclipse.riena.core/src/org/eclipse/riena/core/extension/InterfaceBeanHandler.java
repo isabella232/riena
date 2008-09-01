@@ -99,18 +99,18 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		if (returnType == Class.class) {
 			String value = configurationElement.getAttribute(name);
 			if (value == null) {
-				return Result.cache(null);
+				return Result.CACHED_NULL;
 			}
 			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
 			if (bundle == null) {
-				return Result.cache(null);
+				return Result.CACHED_NULL;
 			}
 			return Result.cache(bundle.loadClass(value));
 		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(name);
 			if (cfgElements.length == 0) {
-				return Result.cache(null);
+				return Result.CACHED_NULL;
 			}
 			if (cfgElements.length == 1) {
 				return Result.cache(Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
@@ -138,7 +138,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		// Now try to create a fresh instance,i.e.
 		// createExecutableExtension() ()
 		if (configurationElement.getAttribute(name) == null) {
-			return null;
+			return Result.CACHED_NULL;
 		}
 		if (method.isAnnotationPresent(CreateLazy.class)) {
 			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, name));
@@ -251,6 +251,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 
 		private final Object object;
 		private final boolean cash;
+
+		private static final Result CACHED_NULL = Result.cache(null);
 
 		private static Result noCache(final Object object) {
 			return new Result(object, false);
