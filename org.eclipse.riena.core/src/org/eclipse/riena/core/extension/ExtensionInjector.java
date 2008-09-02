@@ -306,11 +306,11 @@ public class ExtensionInjector {
 		try {
 			updateMethod.invoke(target, params);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Calling 'bind' method fails.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Calling 'update' method fails.", e); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Calling 'bind' method fails.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Calling 'update' method fails.", e); //$NON-NLS-1$
 		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling 'bind' method fails.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Calling 'update' method fails.", e.getCause()); //$NON-NLS-1$
 		}
 	}
 
