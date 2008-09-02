@@ -15,17 +15,22 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.equinox.log.ExtendedLogEntry;
-import org.eclipse.equinox.log.SynchronousLogListener;
+import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogEntry;
+import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
 
-public class Log4jLogListener implements SynchronousLogListener {
+public class Log4jLogListener implements LogListener {
 
 	/**
 	 * The default log4j configuration file (xml).
 	 */
 	public static final String DEFAULT_CONFIGURATION = "/log4j.default.xml"; //$NON-NLS-1$
+
+	public Log4jLogListener() {
+		this(Activator.getDefault().getContext(), null);
+	}
 
 	public Log4jLogListener(BundleContext context, String configuration) {
 		if (configuration == null) {

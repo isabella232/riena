@@ -12,12 +12,14 @@ package org.eclipse.riena.core.logging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.core.logging.ILogListenerDefinition;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
@@ -29,10 +31,11 @@ public class LogUtil {
 
 	private BundleContext context;
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
+	private ILogListenerDefinition[] listenerDescs;
 
 	private static ExtendedLogService logService;
 	private static ExtendedLogReaderService logReaderService;
-	private static boolean initialized = false;
+	private static AtomicBoolean initialized = new AtomicBoolean(false);
 
 	public LogUtil(BundleContext context) {
 		this.context = context;
@@ -48,24 +51,7 @@ public class LogUtil {
 	 * @return
 	 */
 	public Logger getLogger(String name) {
-		return getLogger(null, name);
-	}
-
-	/**
-	 * Get the logger for the specified category where log4j is configured by a
-	 * given config xml.<br>
-	 * <b>Note:</b> Use the log levels defined in
-	 * {@link org.osgi.service.log.LogService}
-	 * 
-	 * @param configuration
-	 *            name of the config file, specified relative ( example:
-	 *            "/log4j_example.xml")
-	 * @param name
-	 *            logger name
-	 * @return
-	 */
-	public Logger getLogger(String configuration, String name) {
-		init(configuration);
+		init();
 		return logService == null ? new ConsoleLogger(name) : logService.getLogger(name);
 	}
 
@@ -94,8 +80,16 @@ public class LogUtil {
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
 		LogUtil.logReaderService = logReaderService;
-		for (LogListener logListener : logListeners) {
-			LogUtil.logReaderService.addLogListener(logListener, new LogAlwaysFilter());
+		if (listenerDescs == null) {
+			return;
+		}
+		for (ILogListenerDefinition logListenerDesc : listenerDescs) {
+			LogListener listener = logListenerDesc.createLogListener();
+			if (logListenerDesc.asSync()) {
+				listener = new SynchronousLogListenerAdapter(listener);
+			}
+			logListeners.add(listener);
+			LogUtil.logReaderService.addLogListener(listener, new LogAlwaysFilter());
 		}
 	}
 
@@ -112,24 +106,27 @@ public class LogUtil {
 		LogUtil.logReaderService = null;
 	}
 
+	public void update(final ILogListenerDefinition[] listenerDescs) {
+		this.listenerDescs = listenerDescs;
+	}
+
 	/**
 	 * initialize LogUtil
 	 */
-	private void init(String configuration) {
-		synchronized (LogUtil.class) {
-			if (!initialized) {
-
-				// Experimental: capture platform logs
-				new PlatformLogListener().attach();
-
-				// define log destinations
-				logListeners.add(new SysoLogListener());
-				logListeners.add(new Log4jLogListener(context, configuration));
-
-				Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
-				Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
-				initialized = true;
+	private void init() {
+		synchronized (initialized) {
+			if (initialized.getAndSet(true)) {
+				return;
 			}
+
+			// Experimental: capture platform logs
+			new PlatformLogListener().attach();
+
+			// get log listeners
+			Inject.extension(ILogListenerDefinition.EXTENSION_POINT).into(this).andStart(context);
+
+			Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
+			Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
 		}
 	}
 

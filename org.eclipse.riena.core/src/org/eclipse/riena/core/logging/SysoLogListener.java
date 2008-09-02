@@ -13,11 +13,11 @@ package org.eclipse.riena.core.logging;
 import java.util.Date;
 
 import org.eclipse.equinox.log.ExtendedLogEntry;
-import org.eclipse.equinox.log.SynchronousLogListener;
 import org.osgi.service.log.LogEntry;
+import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
 
-public class SysoLogListener implements SynchronousLogListener {
+public class SysoLogListener implements LogListener {
 
 	public void logged(LogEntry entry) {
 		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
@@ -42,7 +42,7 @@ public class SysoLogListener implements SynchronousLogListener {
 			break;
 		}
 		buffer.append(level).append(' ');
-		buffer.append("[Thread-" + eEntry.getThreadID() + "] "); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append("[" + eEntry.getThreadName() + "] "); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append(eEntry.getLoggerName()).append(' ');
 		if (eEntry.getContext() != null) {
 			buffer.append(eEntry.getContext()).append(' ');
