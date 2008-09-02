@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -24,7 +24,7 @@ import org.eclipse.riena.tests.RienaTestCase;
 public class NavigationProcessorTest extends RienaTestCase {
 
 	private NavigationProcessor navigationProcessor;
-	private IApplicationModel applicationModel;
+	private IApplicationNode applicationNode;
 	private ISubApplicationNode subApplication;
 	private IModuleGroupNode moduleGroup;
 	private IModuleNode module;
@@ -35,14 +35,14 @@ public class NavigationProcessorTest extends RienaTestCase {
 		super.setUp();
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
 
-		applicationModel = new ApplicationModel(new NavigationNodeId(
+		applicationNode = new ApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.application"));
 		navigationProcessor = new NavigationProcessor();
-		applicationModel.setNavigationProcessor(navigationProcessor);
+		applicationNode.setNavigationProcessor(navigationProcessor);
 
 		subApplication = new SubApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subApplication"));
-		applicationModel.addChild(subApplication);
+		applicationNode.addChild(subApplication);
 		moduleGroup = new ModuleGroupNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup"));
 		subApplication.addChild(moduleGroup);
 		module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module"));
@@ -70,14 +70,14 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 		subModule.activate();
 
-		assertEquals(1, applicationModel.getChildren().size());
+		assertEquals(1, applicationNode.getChildren().size());
 		assertTrue(subApplication.isActivated());
 
 		subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
 
-		assertEquals(2, applicationModel.getChildren().size());
+		assertEquals(2, applicationNode.getChildren().size());
 		assertFalse(subApplication.isActivated());
-		ISubApplicationNode secondSubApplication = applicationModel.getChild(1);
+		ISubApplicationNode secondSubApplication = applicationNode.getChild(1);
 		assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondSubApplication"),
 				secondSubApplication.getNodeId());
 		assertTrue(secondSubApplication.isActivated());
@@ -101,8 +101,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 		assertFalse(subApplication.isActivated());
 		assertFalse(subModule.isActivated());
-		assertEquals(2, applicationModel.getChildren().size());
-		assertSame(secondSubApplication, applicationModel.getChild(1));
+		assertEquals(2, applicationNode.getChildren().size());
+		assertSame(secondSubApplication, applicationNode.getChild(1));
 		assertTrue(secondSubApplication.isActivated());
 		assertEquals(1, secondSubApplication.getChildren().size());
 		assertSame(secondModuleGroup, secondSubApplication.getChild(0));

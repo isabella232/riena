@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -26,11 +26,11 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 
 	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.subApplicationSwitcherView"; //$NON-NLS-1$
 
-	private ApplicationModel model;
+	private ApplicationNode node;
 
-	public SubApplicationSwitcherViewPart(ApplicationModel model) {
+	public SubApplicationSwitcherViewPart(ApplicationNode node) {
 		super();
-		this.model = model;
+		this.node = node;
 	}
 
 	/**
@@ -52,8 +52,8 @@ public class SubApplicationSwitcherViewPart extends ViewPart {
 	 * 
 	 * @return application model
 	 */
-	private ApplicationModel getApplicationModel() {
-		return model;
+	private ApplicationNode getApplicationModel() {
+		return node;
 	}
 
 	/**

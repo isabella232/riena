@@ -12,19 +12,19 @@ package org.eclipse.riena.navigation;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 
 /**
  * Tests of the class <code>DefaultSwtControlRidgetMapper</code>
  */
-public class ApplicationModelManagerTest extends TestCase {
+public class ApplicationNodeManagerTest extends TestCase {
 
-	IApplicationModel model = null;
+	IApplicationNode model = null;
 
 	@Override
 	protected void setUp() throws Exception {
-		ApplicationModelManager.clear();
-		model = new ApplicationModel();
+		ApplicationNodeManager.clear();
+		model = new ApplicationNode();
 	}
 
 	@Override
@@ -32,30 +32,30 @@ public class ApplicationModelManagerTest extends TestCase {
 	}
 
 	public void testAddDefaultModel() throws Exception {
-		ApplicationModelManager.registerApplicationModel(model);
-		IApplicationModel rModel = ApplicationModelManager.getApplicationModel();
+		ApplicationNodeManager.registerApplicationNode(model);
+		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
 		assertNotNull(rModel);
 	}
 
 	public void testAddNamedModel() throws Exception {
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
-		IApplicationModel rModel = ApplicationModelManager.getApplicationModel("MyModel");
+		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
+		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode("MyModel");
 		assertNotNull(rModel);
 	}
 
 	public void testApplicationModelFailure() throws Exception {
 		boolean exOk = false;
 		try {
-			ApplicationModelManager.registerApplicationModel(model);
-			ApplicationModelManager.registerApplicationModel(model);
+			ApplicationNodeManager.registerApplicationNode(model);
+			ApplicationNodeManager.registerApplicationNode(model);
 		} catch (ApplicationModelFailure f) {
 			exOk = true;
 		}
 		assertTrue("duplicate default model registration didn't fire a ApplicationModelFailure", exOk);
 		exOk = false;
 		try {
-			ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
-			ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
+			ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
+			ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
 		} catch (ApplicationModelFailure f) {
 			exOk = true;
 		}
@@ -63,27 +63,27 @@ public class ApplicationModelManagerTest extends TestCase {
 	}
 
 	public void testGetDefaultModel() throws Exception {
-		ApplicationModelManager.registerApplicationModel(model);
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel"));
-		IApplicationModel rModel = ApplicationModelManager.getApplicationModel();
+		ApplicationNodeManager.registerApplicationNode(model);
+		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
+		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
 
 	public void testGetDefaultModelWhenNamedAndSingle() throws Exception {
-		model = new ApplicationModel(null, "MyModel");
-		ApplicationModelManager.registerApplicationModel(model);
-		IApplicationModel rModel = ApplicationModelManager.getApplicationModel();
+		model = new ApplicationNode(null, "MyModel");
+		ApplicationNodeManager.registerApplicationNode(model);
+		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
 
 	public void testGetNamedModel() throws Exception {
-		model = new ApplicationModel(null, "MyModel");
-		ApplicationModelManager.registerApplicationModel(model);
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModell"));
-		ApplicationModelManager.registerApplicationModel(new ApplicationModel(null, "MyModel2"));
-		IApplicationModel rModel = ApplicationModelManager.getApplicationModel("MyModel");
+		model = new ApplicationNode(null, "MyModel");
+		ApplicationNodeManager.registerApplicationNode(model);
+		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModell"));
+		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel2"));
+		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode("MyModel");
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}

@@ -12,14 +12,13 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import junit.framework.TestCase;
 
+import org.easymock.EasyMock;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-
-import org.easymock.EasyMock;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
@@ -36,7 +35,7 @@ public class ApplicationViewAdvisorTest extends TestCase {
 
 	private ApplicationViewAdvisor advisor;
 	private IWorkbenchWindowConfigurer winConfig;
-	private ApplicationModel applicationModel;
+	private ApplicationNode applicationNode;
 	private ApplicationController controller;
 
 	/**
@@ -45,8 +44,8 @@ public class ApplicationViewAdvisorTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		winConfig = EasyMock.createNiceMock(IWorkbenchWindowConfigurer.class);
-		applicationModel = new ApplicationModel();
-		controller = new ApplicationController(applicationModel);
+		applicationNode = new ApplicationNode();
+		controller = new ApplicationController(applicationNode);
 		advisor = new ApplicationViewAdvisor(winConfig, controller);
 	}
 
@@ -55,7 +54,7 @@ public class ApplicationViewAdvisorTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		applicationModel = null;
+		applicationNode = null;
 		controller = null;
 		winConfig = null;
 		advisor.dispose();

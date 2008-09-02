@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.application;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
@@ -29,13 +29,13 @@ public abstract class SwtApplication extends AbstractApplication {
 
 	/**
 	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#createView(org.eclipse.equinox.app.IApplicationContext,
-	 *      org.eclipse.riena.navigation.IApplicationModel)
+	 *      org.eclipse.riena.navigation.IApplicationNode)
 	 */
 	@Override
-	public Object createView(IApplicationContext context, IApplicationModel pModel) {
+	public Object createView(IApplicationContext context, IApplicationNode pNode) {
 		Display display = PlatformUI.createDisplay();
 		try {
-			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pModel));
+			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode));
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
@@ -46,7 +46,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	protected ApplicationController createApplicationController(IApplicationModel pModel) {
+	protected ApplicationController createApplicationController(IApplicationNode pModel) {
 		return new ApplicationController(pModel);
 	}
 

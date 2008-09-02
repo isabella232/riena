@@ -12,10 +12,10 @@ package org.eclipse.riena.example.client.application;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.example.client.Activator;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
@@ -54,46 +54,46 @@ public class SwtExampleApplication extends SwtApplication {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#createApplicationController(org.eclipse.riena.navigation.IApplicationModel)
+	 * @see org.eclipse.riena.navigation.ui.swt.application.SwtApplication#createApplicationController(org.eclipse.riena.navigation.IApplicationNode)
 	 */
 	@Override
-	protected ApplicationController createApplicationController(IApplicationModel model) {
-		ApplicationController controller = super.createApplicationController(model);
+	protected ApplicationController createApplicationController(IApplicationNode node) {
+		ApplicationController controller = super.createApplicationController(node);
 		controller.setMenubarVisible(true);
 		return controller;
 	}
 
 	@Override
-	protected IApplicationModel createModel() {
+	protected IApplicationNode createModel() {
 
 		ISubApplicationNode subApplication = null;
 
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		final IApplicationModel applicationModel = new ApplicationModel(
+		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Riena Navigation Example"); //$NON-NLS-1$ //$NON-NLS-2$
-		applicationModel.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
+		applicationNode.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 
 		// Navigation SubApplication
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
 
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.navigate")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigate")); //$NON-NLS-1$
 
 		// Playground SubApplication
 		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_SAMPLE));
 		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
-		applicationModel.addChild(subApplication);
+		applicationNode.addChild(subApplication);
 
 		// shared view demo
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
 
 		// uiProcess demo
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.uiProcesses")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.uiProcesses")); //$NON-NLS-1$
 
-		applicationModel.create(new NavigationNodeId("org.eclipse.riena.example.playground")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.playground")); //$NON-NLS-1$
 
-		return applicationModel;
+		return applicationNode;
 	}
 
 	@Override

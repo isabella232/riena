@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.listener;
 
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
  * Special listener for the application model
  */
-public interface IApplicationModelListener extends INavigationNodeListener<IApplicationModel, ISubApplicationNode> {
+public interface IApplicationNodeListener extends INavigationNodeListener<IApplicationNode, ISubApplicationNode> {
 
 }

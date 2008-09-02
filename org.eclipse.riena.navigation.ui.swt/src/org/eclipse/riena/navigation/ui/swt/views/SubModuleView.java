@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -215,7 +215,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new MySubModuleNodeListener());
-		navigationTreeObserver.addListenerTo(node.getTypecastedAdapter(IApplicationModel.class));
+		navigationTreeObserver.addListenerTo(node.getTypecastedAdapter(IApplicationNode.class));
 	}
 
 	protected void activate(ISubModuleNode source) {

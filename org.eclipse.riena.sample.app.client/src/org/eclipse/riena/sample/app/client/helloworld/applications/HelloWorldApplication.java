@@ -11,12 +11,12 @@
 package org.eclipse.riena.sample.app.client.helloworld.applications;
 
 import org.eclipse.riena.internal.sample.app.client.Activator;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
@@ -38,7 +38,7 @@ import org.osgi.framework.Bundle;
  */
 public class HelloWorldApplication extends SwtApplication {
 
-	private IApplicationModel application;
+	private IApplicationNode application;
 
 	/**
 	 * Creates the model of the application "Hello world".
@@ -46,11 +46,11 @@ public class HelloWorldApplication extends SwtApplication {
 	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#createModel()
 	 */
 	@Override
-	protected IApplicationModel createModel() {
+	protected IApplicationNode createModel() {
 
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		application = new ApplicationModel("Hello World Application");
+		application = new ApplicationNode("Hello World Application");
 		ISubApplicationNode subApplication = new SubApplicationNode("Riena Samples");
 		presentation.present(subApplication, "helloWorldSubApplication");
 		application.addChild(subApplication);

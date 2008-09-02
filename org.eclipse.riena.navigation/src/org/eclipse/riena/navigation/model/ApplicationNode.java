@@ -10,42 +10,42 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.listener.IApplicationModelListener;
+import org.eclipse.riena.navigation.listener.IApplicationNodeListener;
 
 /**
- * Default implementation for the ApplicationModel
+ * Default implementation for the ApplicationNode
  */
-public class ApplicationModel extends NavigationNode<IApplicationModel, ISubApplicationNode, IApplicationModelListener>
-		implements IApplicationModel {
+public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplicationNode, IApplicationNodeListener>
+		implements IApplicationNode {
 
 	/**
-	 * Creates an ApplicationModel node which is the root of an application
+	 * Creates an ApplicationNode node which is the root of an application
 	 * model tree.
 	 * 
 	 */
-	public ApplicationModel() {
+	public ApplicationNode() {
 		super(null);
 		initializeNavigationProcessor();
 	}
 
 	/**
-	 * Creates an ApplicationModel node which is the root of an application
+	 * Creates an ApplicationNode node which is the root of an application
 	 * model tree.
 	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ApplicationModel(NavigationNodeId nodeId) {
+	public ApplicationNode(NavigationNodeId nodeId) {
 		super(nodeId);
 		initializeNavigationProcessor();
 	}
 
 	/**
-	 * Creates an ApplicationModel node which is the root of an application
+	 * Creates an ApplicationNode node which is the root of an application
 	 * model tree.
 	 * 
 	 * @param nodeId
@@ -53,19 +53,19 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	 * @param label
 	 *            Label of the application displayed in the title bar.
 	 */
-	public ApplicationModel(NavigationNodeId nodeId, String label) {
+	public ApplicationNode(NavigationNodeId nodeId, String label) {
 		this(nodeId);
 		setLabel(label);
 	}
 
 	/**
-	 * Creates an ApplicationModel node which is the root of an application
+	 * Creates an ApplicationNode node which is the root of an application
 	 * model tree.
 	 * 
 	 * @param label
 	 *            Label of the application displayed in the title bar.
 	 */
-	public ApplicationModel(String label) {
+	public ApplicationNode(String label) {
 		this(null, label);
 	}
 

@@ -13,21 +13,21 @@ package org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer;
 import java.util.List;
 
 import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
-import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator;
+import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 import org.eclipse.riena.ui.core.uiprocess.ProgressVisualizer;
 
 public class VisualizerFactory implements IProgressVisualizerLocator {
 
-	private IApplicationModel applicationModel;
+	private IApplicationNode applicationNode;
 
-	public VisualizerFactory(IApplicationModel applicationModel) {
-		this.applicationModel = applicationModel;
+	public VisualizerFactory(IApplicationNode applicationNode) {
+		this.applicationNode = applicationNode;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,8 +41,7 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 				aVisualizer.addObserver(createObserver(node));
 				for (ISubApplicationNode aSubApplicationNode : getSubApplications()) {
 					if (aSubApplicationNode.getPresentation() != null
-							&& ((SubApplicationController) aSubApplicationNode.getPresentation())
-									.getStatuslineRidget() != null) {
+							&& ((SubApplicationController) aSubApplicationNode.getPresentation()).getStatuslineRidget() != null) {
 						aVisualizer.addObserver(((SubApplicationController) aSubApplicationNode.getPresentation())
 								.getStatuslineRidget().getStatuslineProcessRidget());
 					}
@@ -57,7 +56,7 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 	}
 
 	private List<ISubApplicationNode> getSubApplications() {
-		return applicationModel.getChildren();
+		return applicationNode.getChildren();
 	}
 
 	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {

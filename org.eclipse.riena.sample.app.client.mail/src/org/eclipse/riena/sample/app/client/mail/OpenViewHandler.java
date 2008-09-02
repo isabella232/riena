@@ -13,8 +13,8 @@ package org.eclipse.riena.sample.app.client.mail;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.riena.navigation.ApplicationModelManager;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -28,8 +28,8 @@ public class OpenViewHandler extends AbstractHandler implements IHandler {
 	private int count = 0;
 
 	public Object execute(ExecutionEvent event) {
-		IApplicationModel model = ApplicationModelManager.getApplicationModel();
-		IModuleGroupNode group = (IModuleGroupNode) model.findNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
+		IApplicationNode node = ApplicationNodeManager.getApplicationNode();
+		IModuleGroupNode group = (IModuleGroupNode) node.findNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		IModuleNode moduleAccount1 = NodeFactory.createModule(title, group);
 		SwtPresentationManagerAccessor.getManager().registerView(View.ID, false);

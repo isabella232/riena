@@ -8,15 +8,15 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.listener;
+package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.listener.IApplicationNodeListener;
+import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 
 /**
- * Default implementation for IApplicationModelListener
+ * Describes the riena mode of an application consisting of sub applications
  */
-public class ApplicationModelListener extends NavigationNodeListener<IApplicationModel, ISubApplicationNode> implements
-		IApplicationModelListener {
-
+public interface IApplicationNode extends INavigationNode<ISubApplicationNode>,
+		INavigationNodeListenerable<IApplicationNode, ISubApplicationNode, IApplicationNodeListener>,
+		INavigationHistoryListenerable {
 }

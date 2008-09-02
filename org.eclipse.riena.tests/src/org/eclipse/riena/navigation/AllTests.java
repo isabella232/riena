@@ -22,7 +22,7 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTest(org.eclipse.riena.navigation.model.AllTests.suite());
-		suite.addTestSuite(ApplicationModelManagerTest.class);
+		suite.addTestSuite(ApplicationNodeManagerTest.class);
 		return suite;
 	}
 }

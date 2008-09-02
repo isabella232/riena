@@ -12,8 +12,8 @@ package org.eclipse.riena.example.client.handler;
 
 import java.util.List;
 
-import org.eclipse.riena.navigation.ApplicationModelManager;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -56,7 +56,7 @@ public class CertainViewHandler extends DummyHandler {
 	// }
 
 	private ISubApplicationNode getActiveSubApplication() {
-		IApplicationModel parent = ApplicationModelManager.getApplicationModel();
+		IApplicationNode parent = ApplicationNodeManager.getApplicationNode();
 		List<ISubApplicationNode> children = parent.getChildren();
 		for (ISubApplicationNode subAppNode : children) {
 			if (subAppNode.isActivated()) {

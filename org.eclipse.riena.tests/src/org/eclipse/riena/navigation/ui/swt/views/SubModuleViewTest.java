@@ -14,7 +14,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
@@ -41,9 +41,9 @@ public class SubModuleViewTest extends RienaTestCase {
 		super.setUp();
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
-		ApplicationModel appModel = new ApplicationModel();
+		ApplicationNode appNode = new ApplicationNode();
 		SubApplicationNode subAppNode = new SubApplicationNode();
-		appModel.addChild(subAppNode);
+		appNode.addChild(subAppNode);
 		ModuleGroupNode mgNode = new ModuleGroupNode(null);
 		subAppNode.addChild(mgNode);
 		IModuleNode parent = new ModuleNode(null, "TestModuleLabel");

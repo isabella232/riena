@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -48,7 +48,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * @param applicationModel
 	 *            - the model of the application
 	 */
-	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationModel applicationModel) {
+	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationNode applicationModel) {
 
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		items = new ArrayList<SubApplicationItem>();
@@ -154,7 +154,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * @param applicationModel
 	 *            - model of the application
 	 */
-	private void registerItems(IApplicationModel applicationModel) {
+	private void registerItems(IApplicationNode applicationModel) {
 
 		List<ISubApplicationNode> subApps = applicationModel.getChildren();
 		for (ISubApplicationNode subApp : subApps) {

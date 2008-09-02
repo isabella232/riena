@@ -17,7 +17,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
@@ -466,8 +466,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		formData.right = new FormAttachment(100, -padding);
 		formData.height = getSwitchterHeight();
 		composite.setLayoutData(formData);
-		ApplicationModel model = (ApplicationModel) controller.getNavigationNode();
-		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(model);
+		ApplicationNode node = (ApplicationNode) controller.getNavigationNode();
+		SubApplicationSwitcherViewPart switcherViewPart = new SubApplicationSwitcherViewPart(node);
 		switcherViewPart.createPartControl(composite);
 
 		return composite;

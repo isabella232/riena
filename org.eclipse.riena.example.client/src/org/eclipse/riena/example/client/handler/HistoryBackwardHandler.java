@@ -12,7 +12,7 @@ package org.eclipse.riena.example.client.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.riena.navigation.ApplicationModelManager;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class HistoryBackwardHandler extends DummyHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ApplicationModelManager.getApplicationModel().historyBack();
+		ApplicationNodeManager.getApplicationNode().historyBack();
 		return null;
 	}
 }

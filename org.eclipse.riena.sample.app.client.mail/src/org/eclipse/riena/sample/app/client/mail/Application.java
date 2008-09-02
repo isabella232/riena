@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.mail;
 
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
@@ -31,10 +31,10 @@ public class Application extends SwtApplication {
 	public static final String ID_GROUP_MBOXES = "rcp.mail.groupMailboxes"; //$NON-NLS-1$
 
 	@Override
-	protected IApplicationModel createModel() {
+	protected IApplicationNode createModel() {
 		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
 
-		ApplicationModel app = new ApplicationModel("Riena Mail"); //$NON-NLS-1$
+		ApplicationNode app = new ApplicationNode("Riena Mail"); //$NON-NLS-1$
 
 		ISubApplicationNode subApp = new SubApplicationNode("Your Mail"); //$NON-NLS-1$
 		app.addChild(subApp);

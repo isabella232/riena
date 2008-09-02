@@ -14,15 +14,15 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer.VisualizerFactory;
-import org.eclipse.riena.navigation.ApplicationModelManager;
-import org.eclipse.riena.navigation.IApplicationModel;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.model.ApplicationModel;
+import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 
@@ -33,14 +33,14 @@ public abstract class AbstractApplication implements IApplication {
 	public static final String DEFAULT_APPLICATION_TYPEID = "application"; //$NON-NLS-1$
 
 	public Object start(IApplicationContext context) throws Exception {
-		IApplicationModel model = createModel();
-		ApplicationModelManager.registerApplicationModel(model);
-		initializeModel(model);
-		setProgressProviderBridge(model);
-		return createView(context, model);
+		IApplicationNode node = createModel();
+		ApplicationNodeManager.registerApplicationNode(node);
+		initializeNode(node);
+		setProgressProviderBridge(node);
+		return createView(context, node);
 	}
 
-	private void setProgressProviderBridge(IApplicationModel model) {
+	private void setProgressProviderBridge(IApplicationNode model) {
 		ProgressProviderBridge bridge = ProgressProviderBridge.instance();
 		Job.getJobManager().setProgressProvider(bridge);
 		bridge.setVisualizerFactory(new VisualizerFactory(model));
@@ -52,20 +52,20 @@ public abstract class AbstractApplication implements IApplication {
 	 * @return IApplicationModelProvider - root of the configured application
 	 *         model
 	 */
-	protected IApplicationModel createModel() {
-		IApplicationModel applicationModel = new ApplicationModel(new NavigationNodeId(DEFAULT_APPLICATION_TYPEID));
+	protected IApplicationNode createModel() {
+		IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(DEFAULT_APPLICATION_TYPEID));
 		return applicationModel;
 	}
 
-	protected void initializeModel(IApplicationModel model) {
+	protected void initializeNode(IApplicationNode model) {
 		initializeModelDefaults(model);
 	}
 
-	protected void initializeModelDefaults(IApplicationModel model) {
+	protected void initializeModelDefaults(IApplicationNode model) {
 		initializeNodeDefaults(model);
 	}
 
-	protected void initializeNodeDefaults(IApplicationModel node) {
+	protected void initializeNodeDefaults(IApplicationNode node) {
 
 		for (ISubApplicationNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
@@ -109,5 +109,5 @@ public abstract class AbstractApplication implements IApplication {
 		}
 	}
 
-	abstract protected Object createView(IApplicationContext context, IApplicationModel pModel) throws Exception;
+	abstract protected Object createView(IApplicationContext context, IApplicationNode pNode) throws Exception;
 }

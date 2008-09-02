@@ -10,26 +10,26 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
-import org.eclipse.riena.navigation.IApplicationModel;
-import org.eclipse.riena.navigation.listener.ApplicationModelListener;
+import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
  * The controller for the application
  */
-public class ApplicationController extends NavigationNodeController<IApplicationModel> {
+public class ApplicationController extends NavigationNodeController<IApplicationNode> {
 
 	private IWindowRidget windowRidget;
 	private IWindowRidgetListener windowRidgetListener;
 	private boolean menuBarVisible;
 
 	/**
-	 * @param applicationModel
+	 * @param applicationNode
 	 */
-	public ApplicationController(IApplicationModel applicationModel) {
-		super(applicationModel);
-		applicationModel.addListener(new ApplicationModelListener() {
+	public ApplicationController(IApplicationNode applicationNode) {
+		super(applicationNode);
+		applicationNode.addListener(new ApplicationNodeListener() {
 
 			/*
 			 * (non-Javadoc)
@@ -39,7 +39,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 			 * (org.eclipse.riena.navigation.INavigationNode)
 			 */
 			@Override
-			public void labelChanged(IApplicationModel source) {
+			public void labelChanged(IApplicationNode source) {
 				updateLabel();
 			}
 
@@ -51,7 +51,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 			 * (org.eclipse.riena.navigation.INavigationNode)
 			 */
 			@Override
-			public void iconChanged(IApplicationModel source) {
+			public void iconChanged(IApplicationNode source) {
 				updateIcon();
 			}
 		});
