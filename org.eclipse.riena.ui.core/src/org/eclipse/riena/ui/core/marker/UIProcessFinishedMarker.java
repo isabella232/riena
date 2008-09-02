@@ -42,6 +42,7 @@ public class UIProcessFinishedMarker extends AbstractMarker implements IIconizab
 	 *            - maximum number of flashes
 	 */
 	public UIProcessFinishedMarker(int counterMaximum) {
+		super();
 		setCounterMaximum(counterMaximum);
 		counter = COUNTER_INACTIVE;
 		on = true;

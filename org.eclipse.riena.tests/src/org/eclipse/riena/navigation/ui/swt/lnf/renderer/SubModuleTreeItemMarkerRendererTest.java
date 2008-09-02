@@ -28,6 +28,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
@@ -73,6 +74,7 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 	public void testPaint() {
 
 		MockRenderer renderer = new MockRenderer();
+		renderer.setBounds(0, 0, 100, 100);
 
 		try {
 			renderer.paint(gc, null);
@@ -176,6 +178,42 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 	}
 
 	/**
+	 * Tests the method {@code calcMarkerCoordinates}.
+	 */
+	public void testCalcMarkerCoordinates() {
+
+		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
+		renderer.setBounds(2, 3, 100, 25);
+
+		Image itemImage = createItemImage();
+		Image markerImage = createMarkerImage();
+
+		Point pos = ReflectionUtils.invokeHidden(renderer, "calcMarkerCoordinates", itemImage, markerImage,
+				IIconizableMarker.MarkerPosition.TOP_LEFT);
+		assertEquals(2, pos.x);
+		assertEquals(3, pos.y);
+
+		pos = ReflectionUtils.invokeHidden(renderer, "calcMarkerCoordinates", itemImage, markerImage,
+				IIconizableMarker.MarkerPosition.TOP_RIGHT);
+		assertEquals(2 + 5, pos.x);
+		assertEquals(3, pos.y);
+
+		pos = ReflectionUtils.invokeHidden(renderer, "calcMarkerCoordinates", itemImage, markerImage,
+				IIconizableMarker.MarkerPosition.BOTTOM_LEFT);
+		assertEquals(2, pos.x);
+		assertEquals(3 + 5, pos.y);
+
+		pos = ReflectionUtils.invokeHidden(renderer, "calcMarkerCoordinates", itemImage, markerImage,
+				IIconizableMarker.MarkerPosition.BOTTOM_RIGHT);
+		assertEquals(2 + 5, pos.x);
+		assertEquals(3 + 5, pos.y);
+
+		SwtUtilities.disposeResource(itemImage);
+		SwtUtilities.disposeResource(markerImage);
+
+	}
+
+	/**
 	 * Creates a image with a small green rectangle.
 	 * 
 	 * @return image
@@ -217,9 +255,6 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 			image = createMarkerImage();
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf#getImage(java.lang.String)
-		 */
 		@Override
 		public Image getImage(String key) {
 			return image;

@@ -21,7 +21,9 @@ import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
@@ -67,11 +69,6 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 */
 	protected void paintMarkers(final GC gc, final Collection<IIconizableMarker> markers, final TreeItem item) {
 
-		Image itemImage = item.getImage();
-		if (itemImage == null) {
-			return;
-		}
-
 		for (IIconizableMarker iconizableMarker : markers) {
 
 			if (iconizableMarker instanceof MandatoryMarker) {
@@ -94,12 +91,11 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 				}
 			}
 
+			Image itemImage = item.getImage();
 			String key = iconizableMarker.getIconConfiguationKey();
 			Image markerImage = LnfManager.getLnf().getImage(key);
-			if (markerImage != null) {
-				Point pos = calcMarkerCoordinates(itemImage, markerImage, iconizableMarker.getPositionOfMarker());
-				gc.drawImage(markerImage, pos.x, pos.y);
-			}
+			Point pos = calcMarkerCoordinates(itemImage, markerImage, iconizableMarker.getPositionOfMarker());
+			gc.drawImage(markerImage, pos.x, pos.y);
 
 		}
 
@@ -119,21 +115,32 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	private Point calcMarkerCoordinates(Image itemImage, Image markerImage,
 			final IIconizableMarker.MarkerPosition position) {
 
+		Rectangle itemImageBounds = new Rectangle(0, 0, 0, 0);
+		if (itemImage != null) {
+			ImageData imageData = itemImage.getImageData();
+			itemImageBounds = new Rectangle(imageData.x, imageData.y, imageData.width, imageData.height);
+		}
+		Rectangle itemMarkerBounds = new Rectangle(0, 0, 0, 0);
+		if (markerImage != null) {
+			ImageData imageData = markerImage.getImageData();
+			itemMarkerBounds = new Rectangle(imageData.x, imageData.y, imageData.width, imageData.height);
+		}
+
 		int x = getBounds().x;
-		x += itemImage.getImageData().x;
+		x += itemImageBounds.x;
 		int y = getBounds().y;
-		y += itemImage.getImageData().y;
+		y += itemImageBounds.y;
 
 		switch (position) {
 		case TOP_RIGHT:
-			x += itemImage.getImageData().width - markerImage.getImageData().width;
+			x += itemImageBounds.width - itemMarkerBounds.width;
 			break;
 		case BOTTOM_LEFT:
-			y += itemImage.getImageData().height - markerImage.getImageData().height;
+			y += itemImageBounds.height - itemMarkerBounds.height;
 			break;
 		case BOTTOM_RIGHT:
-			x += itemImage.getImageData().width - markerImage.getImageData().width;
-			y += itemImage.getImageData().height - markerImage.getImageData().height;
+			x += itemImageBounds.width - itemMarkerBounds.width;
+			y += itemImageBounds.height - itemMarkerBounds.height;
 			break;
 		default:
 			break;
