@@ -24,14 +24,16 @@ public interface ILnfRendererDesc {
 	 * 
 	 * @return key
 	 */
-	String getLnfkey();
+	@MapName("lnfkey")
+	String getLnfKey();
 
 	/**
 	 * Returns the ID of the look and feel.
 	 * 
 	 * @return id
 	 */
-	String getLnfid();
+	@MapName("lnfid")
+	String getLnfId();
 
 	/**
 	 * Creates a renderer.
