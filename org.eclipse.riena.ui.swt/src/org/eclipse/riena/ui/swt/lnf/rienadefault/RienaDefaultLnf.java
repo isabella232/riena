@@ -96,17 +96,20 @@ public class RienaDefaultLnf {
 	 *            - descriptors of renderer
 	 */
 	public void update(ILnfRendererDesc[] rendererDescriptors) {
+		if (rendererDescriptors == null) {
+			return;
+		}
 
-		for (int i = 0; i < rendererDescriptors.length; i++) {
-			String id = rendererDescriptors[i].getLnfid();
+		for (ILnfRendererDesc rendererDescriptor : rendererDescriptors) {
+			String id = rendererDescriptor.getLnfId();
 			if (StringUtils.isEmpty(id) || id.equals(getLnfId())) {
 				if (StringUtils.isEmpty(id)) {
-					if (getRendererTable().get(rendererDescriptors[i].getLnfkey()) != null) {
+					if (getRendererTable().get(rendererDescriptor.getLnfKey()) != null) {
 						continue;
 					}
 				}
-				ILnfRenderer renderer = rendererDescriptors[i].createRenderer();
-				getRendererTable().put(rendererDescriptors[i].getLnfkey(), renderer);
+				ILnfRenderer renderer = rendererDescriptor.createRenderer();
+				getRendererTable().put(rendererDescriptor.getLnfKey(), renderer);
 			}
 		}
 
