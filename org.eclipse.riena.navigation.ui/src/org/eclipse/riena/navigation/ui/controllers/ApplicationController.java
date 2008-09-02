@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
  */
 public class ApplicationController extends NavigationNodeController<IApplicationNode> {
 
-	private IWindowRidget windowRidget;
+	private IWindowRidget applicationWindow;
 	private IWindowRidgetListener windowRidgetListener;
 	private boolean menuBarVisible;
 
@@ -57,19 +57,19 @@ public class ApplicationController extends NavigationNodeController<IApplication
 		});
 	}
 
-	public void setWindowRidget(IWindowRidget pWindowRidget) {
+	public void setApplicationWindow(IWindowRidget pWindowRidget) {
 		if (windowRidgetListener == null) {
 			windowRidgetListener = new FrameListener();
 		}
-		windowRidget = pWindowRidget;
-		if (windowRidget != null && windowRidgetListener != null) {
-			windowRidget.addWindowRidgetListener(windowRidgetListener);
+		applicationWindow = pWindowRidget;
+		if (applicationWindow != null && windowRidgetListener != null) {
+			applicationWindow.addWindowRidgetListener(windowRidgetListener);
 		}
 	}
 
 	public void setVisible(boolean pVisible) {
-		if (windowRidget != null) {
-			windowRidget.setVisible(pVisible);
+		if (applicationWindow != null) {
+			applicationWindow.setVisible(pVisible);
 		}
 	}
 
@@ -82,17 +82,17 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	}
 
 	/**
-	 * @return the windowRidget
+	 * @return the applicationWindow
 	 */
-	public IWindowRidget getWindowRidget() {
-		return windowRidget;
+	public IWindowRidget getApplicationWindow() {
+		return applicationWindow;
 	}
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
-		getNavigationNode().activate();
+		// nothing to do
 	}
 
 	/**
@@ -106,11 +106,11 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	}
 
 	private void updateLabel() {
-		windowRidget.setTitle(getNavigationNode().getLabel());
+		applicationWindow.setTitle(getNavigationNode().getLabel());
 	}
 
 	private void updateIcon() {
-		updateIcon(windowRidget);
+		updateIcon(applicationWindow);
 	}
 
 	public void setMenubarVisible(boolean visible) {

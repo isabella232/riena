@@ -148,6 +148,9 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
+		if (getWindowRidget() == null) {
+			setWindowRidget((IWindowRidget) getRidget("windowRidget")); //$NON-NLS-1$
+		}
 	}
 
 }

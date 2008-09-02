@@ -73,7 +73,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
 	private static final int COOLBAR_HEIGHT = 22;
 	private static final int COOLBAR_TOP_MARGIN = 2;
-	private static final String SHELL_RIDGET_PROPERTY = "windowRidget"; //$NON-NLS-1$
+	private static final String SHELL_RIDGET_PROPERTY = "applicationWindow"; //$NON-NLS-1$
 
 	enum BtnState {
 		NONE, HOVER, HOVER_SELECTED;
@@ -147,6 +147,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private void doInitialBinding() {
 		binding.injectAndBind(controller);
 		controller.afterBind();
+		controller.getNavigationNode().activate();
 	}
 
 	/**
