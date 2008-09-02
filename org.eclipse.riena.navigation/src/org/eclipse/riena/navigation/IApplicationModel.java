@@ -18,5 +18,5 @@ import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
  */
 public interface IApplicationModel extends INavigationNode<ISubApplicationNode>,
 		INavigationNodeListenerable<IApplicationModel, ISubApplicationNode, IApplicationModelListener>,
-		INavigationHistoryListernable {
+		INavigationHistoryListenerable {
 }

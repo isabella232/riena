@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation;
 /**
  * Describes the ability of registering a NavigationHistoryListener.
  */
-public interface INavigationHistoryListernable {
+public interface INavigationHistoryListenerable {
 
 	void addNavigationHistoryListener(INavigationHistoryListener pListener);
 

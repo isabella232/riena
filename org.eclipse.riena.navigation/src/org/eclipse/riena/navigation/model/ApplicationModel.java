@@ -77,7 +77,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListenerable#
 	 *      addNavigationHistoryListener
 	 *      (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
@@ -86,7 +86,7 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListenerable#
 	 *      removeNavigationHistoryListener
 	 *      (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
@@ -95,14 +95,14 @@ public class ApplicationModel extends NavigationNode<IApplicationModel, ISubAppl
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#getHistoryBackSize()
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListenerable#getHistoryBackSize()
 	 */
 	public int getHistoryBackSize() {
 		return getNavigationProcessor().getHistoryBackSize();
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#getHistoryForwardSize()
+	 * @see org.eclipse.riena.navigation.INavigationHistoryListenerable#getHistoryForwardSize()
 	 */
 	public int getHistoryForwardSize() {
 		return getNavigationProcessor().getHistoryForwardSize();

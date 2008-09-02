@@ -17,7 +17,7 @@ package org.eclipse.riena.navigation;
  * be active at the same time -> the default navigation processor allows only
  * one node of each type
  */
-public interface INavigationProcessor extends INavigationHistory, INavigationHistoryListernable {
+public interface INavigationProcessor extends INavigationHistory, INavigationHistoryListenerable {
 
 	/**
 	 * Activates a node. Checks which other nodes have to be activated or
