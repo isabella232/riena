@@ -35,6 +35,7 @@ import org.eclipse.core.databinding.observable.set.ISetChangeListener;
 import org.eclipse.core.databinding.observable.set.SetChangeEvent;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -59,6 +60,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.osgi.service.log.LogService;
 
 /**
  * Ridget for SWT {@link Tree} widgets.
@@ -736,7 +738,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			try {
 				descriptor = new PropertyDescriptor(propertyName, beanClass, readMethodName, null);
 			} catch (IntrospectionException exc) {
-				Activator.log(exc);
+				Logger logger = Activator.getDefault().getLogger(TreeRidget.class.getName());
+				logger.log(LogService.LOG_ERROR, "Could not introspect bean.", exc); //$NON-NLS-1$
 				descriptor = null;
 			}
 			this.beanClass = beanClass;
@@ -753,9 +756,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				try {
 					result = readMethod.invoke(element, EMPTY_ARRAY);
 				} catch (InvocationTargetException exc) {
-					Activator.log(exc);
+					Logger logger = Activator.getDefault().getLogger(TreeRidget.class.getName());
+					logger.log(LogService.LOG_ERROR, "Error invoking.", exc); //$NON-NLS-1$
 				} catch (IllegalAccessException exc) {
-					Activator.log(exc);
+					Logger logger = Activator.getDefault().getLogger(TreeRidget.class.getName());
+					logger.log(LogService.LOG_ERROR, "Error invoking.", exc); //$NON-NLS-1$
 				}
 			}
 			return result;
