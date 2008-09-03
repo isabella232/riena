@@ -55,5 +55,5 @@ public interface IPresentationProviderService {
 	 */
 	void cleanUp();
 
-	ISubModuleTypeDefinition[] getSubModuleTypeDefitinions();
+	ISubModuleExtension[] getSubModuleTypeDefitinions();
 }

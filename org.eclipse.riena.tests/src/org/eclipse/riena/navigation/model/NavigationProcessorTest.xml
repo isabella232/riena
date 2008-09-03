@@ -2,16 +2,16 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.riena.navigation.navigationNodeType">
-      <navigationNodeType
+         point="org.eclipse.riena.navigation.navigationNode">
+      <navigationNode
             typeId="org.eclipse.riena.navigation.model.test.secondSubApplication"
             nodeBuilder="org.eclipse.riena.navigation.model.TestSecondSubApplicationNodeBuilder"
             parentTypeId="org.eclipse.riena.navigation.model.test.application">
-      </navigationNodeType>
-      <navigationNodeType
+      </navigationNode>
+      <navigationNode
             typeId="org.eclipse.riena.navigation.model.test.secondModuleGroup"
             nodeBuilder="org.eclipse.riena.navigation.model.TestSecondModuleGroupNodeBuilder"
             parentTypeId="org.eclipse.riena.navigation.model.test.secondSubApplication">
-      </navigationNodeType>
+      </navigationNode>
    </extension> 
 </plugin>

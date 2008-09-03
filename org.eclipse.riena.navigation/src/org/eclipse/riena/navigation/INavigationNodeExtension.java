@@ -10,14 +10,31 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.extension.ExtensionInterface;
+
 /**
- * Base interface for type definitions.
+ * Interface for a NavigationNodeType extension that defines how to create a
+ * node or a subtree in the application model tree.
  */
-public interface ITypeDefinition {
+@ExtensionInterface
+public interface INavigationNodeExtension {
+
+	/**
+	 * @return A node builder that creates a node or a subtree for the
+	 *         application model tree.
+	 */
+	INavigationNodeBuilder createNodeBuilder();
+
+	/**
+	 * @return ID of the parent indicating where to insert a node or subtree
+	 *         created with this definition in the application model tree.
+	 */
+	String getParentTypeId();
 
 	/**
 	 * @return The type part of the ID of a navigation node.
 	 * @see NavigationNodeId#getTypeId()
 	 */
 	String getTypeId();
+
 }
