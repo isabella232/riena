@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.logging;
+package org.eclipse.riena.internal.core.logging;
 
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
