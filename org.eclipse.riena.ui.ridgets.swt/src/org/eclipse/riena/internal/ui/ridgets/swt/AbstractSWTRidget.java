@@ -218,6 +218,15 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		return missingImage;
 	}
 
+	/**
+	 * Compares the two given values.
+	 * 
+	 * @param oldValue
+	 *            - old value
+	 * @param newValue
+	 *            - new value
+	 * @return true, if value has changed; otherwise false
+	 */
 	protected boolean hasChanged(Object oldValue, Object newValue) {
 		if (oldValue == null && newValue == null) {
 			return false;

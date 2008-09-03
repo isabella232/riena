@@ -147,7 +147,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the active to set
 	 */
 	public void setActive(boolean active) {
-		if (this.active != active) {
+		if (hasChanged(this.active, active)) {
 			this.active = active;
 			redraw();
 		}
@@ -165,7 +165,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the pressed to set
 	 */
 	public void setPressed(boolean pressed) {
-		if (this.pressed != pressed) {
+		if (hasChanged(this.pressed, pressed)) {
 			this.pressed = pressed;
 			redraw();
 		}
@@ -183,7 +183,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the hover to set
 	 */
 	public void setHover(boolean hover) {
-		if (this.hover != hover) {
+		if (hasChanged(this.hover, hover)) {
 			this.hover = hover;
 			redraw();
 		}
@@ -201,7 +201,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the closeable to set
 	 */
 	public void setCloseable(boolean closeable) {
-		this.closeable = closeable;
+		if (hasChanged(this.closeable, closeable)) {
+			this.closeable = closeable;
+			redraw();
+		}
 	}
 
 	/**
@@ -216,7 +219,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the title to set
 	 */
 	public void setTitle(String title) {
-		this.title = title;
+		if (hasChanged(this.title, title)) {
+			this.title = title;
+			redraw();
+		}
 	}
 
 	/**
@@ -224,7 +230,10 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            the image to set
 	 */
 	public void setImage(Image image) {
-		this.image = image;
+		if (hasChanged(this.image, image)) {
+			this.image = image;
+			redraw();
+		}
 	}
 
 	/**
@@ -257,6 +266,23 @@ public class EmbeddedTitleBar extends Canvas {
 
 		return !title.equals(clippedText);
 
+	}
+
+	/**
+	 * Compares the two given values.
+	 * 
+	 * @param oldValue
+	 *            - old value
+	 * @param newValue
+	 *            - new value
+	 * @return true, if value has changed; otherwise false
+	 */
+	private boolean hasChanged(Object oldValue, Object newValue) {
+		if (oldValue == null && newValue == null) {
+			return false;
+		}
+		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
+				|| !oldValue.equals(newValue);
 	}
 
 }
