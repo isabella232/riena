@@ -19,8 +19,8 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.osgi.framework.Bundle;
 
 /**
@@ -32,7 +32,7 @@ public class Application extends SwtApplication {
 
 	@Override
 	protected IApplicationNode createModel() {
-		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
+		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		ApplicationNode app = new ApplicationNode("Riena Mail"); //$NON-NLS-1$
 

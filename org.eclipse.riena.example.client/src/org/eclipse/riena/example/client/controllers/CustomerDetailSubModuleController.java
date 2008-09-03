@@ -37,7 +37,7 @@ public class CustomerDetailSubModuleController extends SubModuleController {
 		// TODO do it like swtExampleApplication ..
 		String iconPath = Activator.PLUGIN_ID.concat(":").concat(ExampleIcons.ICON_FILE); //$NON-NLS-1$
 		newNode.setIcon(iconPath);
-		//		SwtPresentationManagerAccessor.getManager().present(newNode, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
+		//		SwtViewProviderAccessor.getManager().present(newNode, CustomerDetailSubModuleView.ID); //$NON-NLS-1$
 		// getNavigationNode().addChild(newNode);
 	}
 

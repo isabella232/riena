@@ -20,8 +20,8 @@ import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.sample.app.client.helloworld.views.CustomerDetailsSubModuleView;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
@@ -117,7 +117,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 			}
 			Customer selected = (Customer) selectedValue;
 			ISubModuleNode node = getNavigationNode();
-			SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
+			SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 			SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
 			cNode.setContext(selected);
 			presentation.present(cNode, CustomerDetailsSubModuleView.ID);

@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
@@ -87,7 +87,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	private ISubApplicationNode locateSubApplication(String id) {
-		return SwtPresentationManagerAccessor.getManager().getNavigationNode(id, ISubApplicationNode.class);
+		return SwtViewProviderAccessor.getViewProvider().getNavigationNode(id, ISubApplicationNode.class);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 * @return view ID
 		 */
 		private SwtViewId getViewId(ISubModuleNode node) {
-			return SwtPresentationManagerAccessor.getManager().getSwtViewId(node);
+			return SwtViewProviderAccessor.getViewProvider().getSwtViewId(node);
 		}
 
 		/**

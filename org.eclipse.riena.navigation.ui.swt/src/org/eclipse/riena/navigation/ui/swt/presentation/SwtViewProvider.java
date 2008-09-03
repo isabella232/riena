@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 /**
  * Manages the reference between the navigation nodes and the view id's
  */
-public class SwtPresentationManager {
+public class SwtViewProvider {
 
 	private Map<INavigationNode<?>, SwtViewId> views;
 	private Map<IAction, String> actions;
@@ -37,7 +37,7 @@ public class SwtPresentationManager {
 	/**
 	 * Create new instance and initialize
 	 */
-	public SwtPresentationManager() {
+	public SwtViewProvider() {
 		super();
 		viewCounter = new LinkedHashMap<String, Integer>();
 		views = new LinkedHashMap<INavigationNode<?>, SwtViewId>();

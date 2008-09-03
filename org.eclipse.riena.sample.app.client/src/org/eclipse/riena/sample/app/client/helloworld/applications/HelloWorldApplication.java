@@ -22,8 +22,8 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.sample.app.client.helloworld.views.CustomerSearchSubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.views.HelloServerSubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.views.HelloWorldSubModuleView;
@@ -48,7 +48,7 @@ public class HelloWorldApplication extends SwtApplication {
 	@Override
 	protected IApplicationNode createModel() {
 
-		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
+		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		application = new ApplicationNode("Hello World Application");
 		ISubApplicationNode subApplication = new SubApplicationNode("Riena Samples");

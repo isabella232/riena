@@ -20,7 +20,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.LnfManagerTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRendererTest;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewIdTest;
+import org.eclipse.riena.navigation.ui.swt.viewprovider.SwtViewIdTest;
 import org.eclipse.riena.navigation.ui.swt.views.AbstractViewBindingDelegateTest;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
@@ -37,7 +37,7 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 
-		suite.addTest(org.eclipse.riena.navigation.ui.swt.presentation.AllTests.suite());
+		suite.addTest(org.eclipse.riena.navigation.ui.swt.viewprovider.AllTests.suite());
 		suite.addTest(org.eclipse.riena.navigation.ui.swt.views.AllTests.suite());
 
 		suite.addTestSuite(DefaultSwtControlRidgetMapperTest.class);

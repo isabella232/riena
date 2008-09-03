@@ -23,7 +23,7 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
@@ -108,7 +108,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(String pId, String pSecondary) {
-		return SwtPresentationManagerAccessor.getManager().getNavigationNode(pId, pSecondary, ISubModuleNode.class);
+		return SwtViewProviderAccessor.getViewProvider().getNavigationNode(pId, pSecondary, ISubModuleNode.class);
 	}
 
 	/**
@@ -219,7 +219,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected void activate(ISubModuleNode source) {
-		SwtViewId id = SwtPresentationManagerAccessor.getManager().getSwtViewId(source);
+		SwtViewId id = SwtViewProviderAccessor.getViewProvider().getSwtViewId(source);
 		if (getViewSite().getId().equals(id.getId())) {
 			doBinding();
 		}

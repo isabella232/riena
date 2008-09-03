@@ -23,8 +23,8 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 
 public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 
@@ -33,7 +33,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
+		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Navigation"); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));

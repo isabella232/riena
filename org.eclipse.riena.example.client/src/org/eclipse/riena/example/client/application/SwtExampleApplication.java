@@ -19,8 +19,8 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManager;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.osgi.framework.Bundle;
@@ -68,7 +68,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		ISubApplicationNode subApplication = null;
 
-		SwtPresentationManager presentation = SwtPresentationManagerAccessor.getManager();
+		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Riena Navigation Example"); //$NON-NLS-1$ //$NON-NLS-2$

@@ -21,7 +21,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtPresentationManagerAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.Statusline;
@@ -475,7 +475,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 		IWorkbenchPage page = getActivePage();
 		if (page != null) {
 			String id = page.getPerspective().getId();
-			ISubApplicationNode subApplication = SwtPresentationManagerAccessor.getManager().getNavigationNode(id,
+			ISubApplicationNode subApplication = SwtViewProviderAccessor.getViewProvider().getNavigationNode(id,
 					ISubApplicationNode.class);
 			result = (SubApplicationController) subApplication.getPresentation();
 		}

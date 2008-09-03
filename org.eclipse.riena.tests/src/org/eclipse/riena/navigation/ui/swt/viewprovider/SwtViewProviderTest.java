@@ -8,27 +8,29 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.presentation;
+package org.eclipse.riena.navigation.ui.swt.viewprovider;
 
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.tests.RienaTestCase;
 
 /**
- * Tests for the SwtPresentationManager.
+ * Tests for the SwtViewProvider.
  */
-public class SwtPresentationManagerTest extends RienaTestCase {
+public class SwtViewProviderTest extends RienaTestCase {
 
-	private SwtPresentationManager swtPresentationManager;
+	private SwtViewProvider swtPresentationManager;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		addPluginXml(SwtPresentationManagerTest.class, "SwtPresentationManagerTest.xml");
+		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
 
-		swtPresentationManager = new SwtPresentationManager();
+		swtPresentationManager = new SwtViewProvider();
 
 	}
 

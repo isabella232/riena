@@ -49,7 +49,7 @@ public class CertainViewHandler extends DummyHandler {
 	// private ISubApplicationNode getActiveSubApplication() {
 	// String perspectiveId = getActivePage().getPerspective().getId();
 	// ISubApplicationNode node =
-	// SwtPresentationManagerAccessor.getManager().getNavigationNode
+	// SwtViewProviderAccessor.getManager().getNavigationNode
 	// (perspectiveId,
 	// ISubApplicationNode.class);
 	// return node;

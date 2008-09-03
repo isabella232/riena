@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.presentation;
+package org.eclipse.riena.navigation.ui.swt.viewprovider;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -19,10 +19,10 @@ import junit.framework.TestSuite;
 public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.swt.presentation");
+		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.swt.viewprovider");
 		// $JUnit-BEGIN$
 		suite.addTestSuite(SwtViewIdTest.class);
-		suite.addTestSuite(SwtPresentationManagerTest.class);
+		suite.addTestSuite(SwtViewProviderTest.class);
 		// $JUnit-END$
 		return suite;
 	}
