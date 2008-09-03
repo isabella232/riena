@@ -12,8 +12,10 @@ package org.eclipse.riena.internal.navigation;
 
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.service.ServiceDescriptor;
-import org.eclipse.riena.navigation.IPresentationProviderService;
-import org.eclipse.riena.navigation.model.PresentationProviderService;
+import org.eclipse.riena.navigation.INavigationNodeProvider;
+import org.eclipse.riena.navigation.ISubModuleViewBuilder;
+import org.eclipse.riena.navigation.model.NavigationNodeProvider;
+import org.eclipse.riena.navigation.model.SubModuleViewBuilder;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -26,7 +28,8 @@ public class Activator extends RienaPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	private IPresentationProviderService service = null;
+	private INavigationNodeProvider service1 = null;
+	private ISubModuleViewBuilder service2 = null;
 
 	/**
 	 * The constructor
@@ -45,9 +48,12 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		Activator.plugin = this;
 
-		service = new PresentationProviderService();
+		service1 = new NavigationNodeProvider();
+		service2 = new SubModuleViewBuilder();
 
-		context.registerService(IPresentationProviderService.class.getName(), service, ServiceDescriptor
+		context.registerService(INavigationNodeProvider.class.getName(), service1, ServiceDescriptor
+				.newDefaultServiceProperties());
+		context.registerService(ISubModuleViewBuilder.class.getName(), service2, ServiceDescriptor
 				.newDefaultServiceProperties());
 	}
 
@@ -60,9 +66,13 @@ public class Activator extends RienaPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
-		if (service != null) {
-			service.cleanUp();
-			service = null;
+		if (service1 != null) {
+			service1.cleanUp();
+			service1 = null;
+		}
+		if (service2 != null) {
+			service2.cleanUp();
+			service2 = null;
 		}
 		super.stop(context);
 	}

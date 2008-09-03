@@ -16,11 +16,10 @@ import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeExtension;
-import org.eclipse.riena.navigation.IPresentationProviderService;
+import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.ISubModuleExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.osgi.service.log.LogService;
 
 /**
@@ -28,38 +27,23 @@ import org.osgi.service.log.LogService;
  * WorkAreaPresentationDefinitions and NavigationNodePresentationDefitinios
  * identified by a given presentationID.
  */
-public class PresentationProviderService implements IPresentationProviderService {
+public class NavigationNodeProvider implements INavigationNodeProvider {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(PresentationProviderService.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class.getName());
 
-	// TODO: split off ... problem: navigation is gui-less ...
-	private static final String EP_SUBMODULETYPE = "org.eclipse.riena.navigation.subModule"; //$NON-NLS-1$
 	private static final String EP_NAVNODETYPE = "org.eclipse.riena.navigation.navigationNode"; //$NON-NLS-1$
-	private SubModuleExtensionInjectionHelper targetSM;
+
 	private NavigationNodeExtensionInjectionHelper targetNN;
 
 	/**
 	 * 
 	 */
-	public PresentationProviderService() {
-
-		targetSM = new SubModuleExtensionInjectionHelper();
-		Inject.extension(EP_SUBMODULETYPE).useType(getSubModuleTypeDefinitionIFSafe()).into(targetSM).andStart(
-				Activator.getDefault().getContext());
+	public NavigationNodeProvider() {
 
 		targetNN = new NavigationNodeExtensionInjectionHelper();
 		Inject.extension(EP_NAVNODETYPE).useType(getNavigationNodeTypeDefinitonIFSafe()).into(targetNN).andStart(
 				Activator.getDefault().getContext());
 
-	}
-
-	private Class<? extends ISubModuleExtension> getSubModuleTypeDefinitionIFSafe() {
-
-		if (getSubModuleTypeDefinitionIF() != null && getSubModuleTypeDefinitionIF().isInterface()) {
-			return getSubModuleTypeDefinitionIF();
-		} else {
-			return ISubModuleExtension.class;
-		}
 	}
 
 	private Class<? extends INavigationNodeExtension> getNavigationNodeTypeDefinitonIFSafe() {
@@ -82,7 +66,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
+	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#createNode(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
@@ -115,7 +99,7 @@ public class PresentationProviderService implements IPresentationProviderService
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createNode(org.eclipse.riena.navigation.INavigationNode,
+	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#createNode(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
@@ -133,24 +117,6 @@ public class PresentationProviderService implements IPresentationProviderService
 	 */
 	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationNodeBuilder builder) {
 		// can be overwritten by subclass
-	}
-
-	/**
-	 * @param targetId
-	 * @return
-	 */
-	protected ISubModuleExtension getSubModuleTypeDefinition(String targetId) {
-		if (targetSM == null || targetSM.getData().length == 0) {
-			return null;
-		} else {
-			ISubModuleExtension[] data = targetSM.getData();
-			for (int i = 0; i < data.length; i++) {
-				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId)) {
-					return data[i];
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -205,78 +171,10 @@ public class PresentationProviderService implements IPresentationProviderService
 	}
 
 	/**
-	 * This is the basic SWT implementation from Riena. It returns the matching
-	 * view id for the given navigationNodeId
-	 * 
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#createView
-	 *      (org.eclipse.riena.navigation.NavigationNodeId)
-	 */
-	public Object provideView(NavigationNodeId nodeId) {
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(nodeId.getTypeId());
-		if (subModuleTypeDefinition != null) {
-			return subModuleTypeDefinition.getView();
-		} else {
-			throw new ExtensionPointFailure("SubModuleType not found. ID=" + nodeId.getTypeId()); //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#provideController(org.eclipse.riena.navigation.INavigationNode)
-	 */
-	public IController provideController(INavigationNode<?> node) {
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(node.getNodeId().getTypeId());
-		IController controller = null;
-
-		if (subModuleTypeDefinition != null) {
-			controller = subModuleTypeDefinition.createController();
-		}
-
-		return controller;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#isViewShared(org.eclipse.riena.navigation.NavigationNodeId)
-	 */
-	public boolean isViewShared(NavigationNodeId targetId) {
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(targetId.getTypeId());
-
-		if (subModuleTypeDefinition != null) {
-			return subModuleTypeDefinition.isShared();
-		}
-		return false;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.IPresentationProviderService#cleanUp()
+	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#cleanUp()
 	 */
 	public void cleanUp() {
 		// TODO: implement, does nothing special yet
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.IPresentationProviderService#
-	 * getSubModuleTypeDefitinions()
-	 */
-	public ISubModuleExtension[] getSubModuleTypeDefitinions() {
-		if (targetSM != null) {
-			return targetSM.getData();
-		}
-		return null;
-	}
-
-	public class SubModuleExtensionInjectionHelper {
-		private ISubModuleExtension[] data;
-
-		public void update(ISubModuleExtension[] data) {
-			this.data = data.clone();
-
-		}
-
-		public ISubModuleExtension[] getData() {
-			return data.clone();
-		}
 	}
 
 	public class NavigationNodeExtensionInjectionHelper {

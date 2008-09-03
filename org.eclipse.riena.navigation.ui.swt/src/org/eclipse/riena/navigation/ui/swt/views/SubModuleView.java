@@ -16,15 +16,15 @@ import java.util.Map;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.model.SubModuleViewBuilderAccessor;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
@@ -277,16 +277,19 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected C createController(ISubModuleNode pSubModuleNode) {
-		C controller = (C) getPresentationDefinitionService().provideController(pSubModuleNode);
+		C controller = (C) getSubModuleViewBuilder().provideController(pSubModuleNode);
 		if (controller != null) {
 			controller.setNavigationNode(pSubModuleNode);
 		}
 		return controller;
 	}
 
-	protected IPresentationProviderService getPresentationDefinitionService() {
+	/**
+	 * @return
+	 */
+	protected ISubModuleViewBuilder getSubModuleViewBuilder() {
 		// TODO: handling if no service found ???
-		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
+		return SubModuleViewBuilderAccessor.current().getSubModuleViewBuilder();
 	}
 
 	private void doBinding() {

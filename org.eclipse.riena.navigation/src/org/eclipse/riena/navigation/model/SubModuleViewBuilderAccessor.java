@@ -12,48 +12,48 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.IPresentationProviderService;
+import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 
 /**
  *
  */
-public final class PresentationProviderServiceAccessor {
-	private static PresentationProviderServiceAccessor psa = null;
-	private IPresentationProviderService service = null;
+public final class SubModuleViewBuilderAccessor {
+	private static SubModuleViewBuilderAccessor psa = null;
+	private ISubModuleViewBuilder service = null;
 
 	/**
 	 * Default Constructor
 	 */
-	private PresentationProviderServiceAccessor() {
-		Inject.service(IPresentationProviderService.class.getName()).useRanking().into(this).andStart(
+	private SubModuleViewBuilderAccessor() {
+		Inject.service(ISubModuleViewBuilder.class.getName()).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
 
 	}
 
-	static public PresentationProviderServiceAccessor current() {
+	static public SubModuleViewBuilderAccessor current() {
 		if (psa == null) {
-			return initPresentationServiceAccessor();
+			return initSubmoduleViewBuilderAccessor();
 		}
 		return psa;
 	}
 
-	static private PresentationProviderServiceAccessor initPresentationServiceAccessor() {
-		psa = new PresentationProviderServiceAccessor();
+	static private SubModuleViewBuilderAccessor initSubmoduleViewBuilderAccessor() {
+		psa = new SubModuleViewBuilderAccessor();
 
 		return psa;
 	}
 
-	public IPresentationProviderService getPresentationProviderService() {
+	public ISubModuleViewBuilder getSubModuleViewBuilder() {
 
 		return service;
 
 	}
 
-	public void bind(IPresentationProviderService s) {
+	public void bind(ISubModuleViewBuilder s) {
 		service = s;
 	}
 
-	public void unbind(IPresentationProviderService dep) {
+	public void unbind(ISubModuleViewBuilder dep) {
 		service.cleanUp();
 		service = null;
 	}

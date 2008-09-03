@@ -16,11 +16,11 @@ import java.util.Map;
 
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ISubModuleViewBuilder;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.PresentationProviderServiceAccessor;
+import org.eclipse.riena.navigation.model.SubModuleViewBuilderAccessor;
 
 /**
  * Manages the reference between the navigation nodes and the view id's
@@ -53,8 +53,8 @@ public class SwtViewProvider {
 		if (swtViewId == null) {
 			NavigationNodeId nodeId = pNode.getNodeId();
 			if (nodeId != null) {
-				String viewId = (String) getPresentationProviderService().provideView(nodeId);
-				boolean isViewShared = getPresentationProviderService().isViewShared(nodeId);
+				String viewId = (String) getSubModuleViewBuilder().provideView(nodeId);
+				boolean isViewShared = getSubModuleViewBuilder().isViewShared(nodeId);
 				viewShared.put(viewId, isViewShared);
 				if (isViewShared && pNode instanceof ISubModuleNode) {
 					ISubModuleNode subModuleNode = (ISubModuleNode) pNode;
@@ -212,9 +212,9 @@ public class SwtViewProvider {
 	/**
 	 * @return
 	 */
-	protected IPresentationProviderService getPresentationProviderService() {
+	protected ISubModuleViewBuilder getSubModuleViewBuilder() {
 		// TODO: handling if no service found ???
-		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
+		return SubModuleViewBuilderAccessor.current().getSubModuleViewBuilder();
 	}
 
 }

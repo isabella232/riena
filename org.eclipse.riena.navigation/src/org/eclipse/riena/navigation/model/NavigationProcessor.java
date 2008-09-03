@@ -30,8 +30,8 @@ import org.eclipse.riena.navigation.INavigationHistory;
 import org.eclipse.riena.navigation.INavigationHistoryEvent;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.INavigationProcessor;
-import org.eclipse.riena.navigation.IPresentationProviderService;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -312,13 +312,13 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
-		INavigationNode<?> targetNode = getPresentationDefinitionService().provideNode(sourceNode, targetId, argument);
+		INavigationNode<?> targetNode = getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
 		return targetNode;
 	}
 
-	protected IPresentationProviderService getPresentationDefinitionService() {
+	protected INavigationNodeProvider getNavigationNodeProvider() {
 		// TODO: handling if no service found ???
-		return PresentationProviderServiceAccessor.current().getPresentationProviderService();
+		return NavigationNodeProviderAccessor.current().getNavigationNodeProvider();
 	}
 
 	/**
