@@ -105,6 +105,11 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			if (bundle == null) {
 				return Result.CACHED_NULL;
 			}
+			// does it contain initialization data?
+			int colon = value.indexOf(':');
+			if (colon != -1) {
+				value = value.substring(0, colon);
+			}
 			return Result.cache(bundle.loadClass(value));
 		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
