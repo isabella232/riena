@@ -11,13 +11,13 @@
 package org.eclipse.riena.sample.app.client.mail;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractRienaUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "rcp.mail"; //$NON-NLS-1$

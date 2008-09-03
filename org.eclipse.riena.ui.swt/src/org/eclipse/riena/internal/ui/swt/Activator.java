@@ -10,22 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.swt;
 
+import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractRienaUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.ui.swt"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
-	private BundleContext context;
 
 	/**
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
@@ -34,7 +32,6 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		this.context = context;
 	}
 
 	/**
@@ -45,7 +42,6 @@ public class Activator extends AbstractUIPlugin {
 		plugin = null;
 		super.stop(context);
 		LnfManager.dispose();
-		this.context = null;
 	}
 
 	/**
@@ -55,15 +51,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	/**
-	 * Get the shared context.
-	 * 
-	 * @return
-	 */
-	public BundleContext getContext() {
-		return context;
 	}
 
 }

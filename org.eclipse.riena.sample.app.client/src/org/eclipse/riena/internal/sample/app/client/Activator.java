@@ -14,13 +14,13 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractRienaUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.sample.app.client.helloworld";
@@ -28,7 +28,6 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	private static BundleContext bundleContext;
 	private IRemoteServiceRegistration helloWorldServiceReg;
 	private IRemoteServiceRegistration customerSearchService;
 
@@ -47,7 +46,6 @@ public class Activator extends AbstractUIPlugin {
 		// hack to force riena.core to load
 
 		plugin = this;
-		bundleContext = context;
 
 		// register hessian proxy for riena remote service
 		helloWorldServiceReg = new RemoteServiceFactory().createAndRegisterProxy(IHelloWorldService.class,
@@ -71,7 +69,6 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
-		bundleContext = null;
 
 		if (helloWorldServiceReg != null) {
 			helloWorldServiceReg.unregister();
@@ -91,10 +88,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	public static BundleContext getContext() {
-		return bundleContext;
 	}
 
 }

@@ -14,22 +14,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.Workbench;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractRienaUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.ui.ridgets.swt"; //$NON-NLS-1$
@@ -102,22 +100,22 @@ public class Activator extends AbstractUIPlugin {
 		return getDefault().internalGetSharedColor(colorKey);
 	}
 
-	/**
-	 * Log an error message with the given throwable.
-	 * 
-	 * @param throwable
-	 *            a non-null Throwable
-	 */
-	public static void log(Throwable throwable) {
-		Assert.isNotNull(throwable);
-		String msg = throwable.getMessage();
-		if (msg == null) {
-			msg = "Unexpected error."; //$NON-NLS-1$
-		}
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, msg, throwable);
-		getDefault().getLog().log(status);
-	}
-
+	// /**
+	// * Log an error message with the given throwable.
+	// *
+	// * @param throwable
+	// * a non-null Throwable
+	// */
+	// public static void log(Throwable throwable) {
+	// Assert.isNotNull(throwable);
+	// String msg = throwable.getMessage();
+	// if (msg == null) {
+	//			msg = "Unexpected error."; //$NON-NLS-1$
+	// }
+	// IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, msg, throwable);
+	// getDefault().getLog().log(status);
+	// }
+	//
 	// helping methods
 	// ////////////////
 
