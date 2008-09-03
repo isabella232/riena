@@ -20,24 +20,30 @@ import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.core.logging.ILogListenerDefinition;
-import org.osgi.framework.Bundle;
+import org.eclipse.riena.internal.core.logging.SynchronousLogListenerAdapter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
 
 /**
- * Wrapper to access the existing Logger.
+ * The <code>LoggerMill</code> is responsible for delivering ready to use
+ * <code>Logger</code> instances and also for the configuration of the riena
+ * logging.<br>
+ * For the curious: There are so many LoggerFactories out there so. Not another
+ * one!
  */
-public class LogUtil {
+public class LoggerMill {
 
 	private BundleContext context;
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
-	private ILogListenerDefinition[] listenerDescs;
+	private ILogListenerDefinition[] listenerDefs;
 
 	private static ExtendedLogService logService;
 	private static ExtendedLogReaderService logReaderService;
 	private static AtomicBoolean initialized = new AtomicBoolean(false);
 
-	public LogUtil(BundleContext context) {
+	private static final LogFilter SYSTEM_PROPERTY_LOG_FILTER = new SystemPropertyLogFilter();
+
+	public LoggerMill(BundleContext context) {
 		this.context = context;
 	}
 
@@ -61,7 +67,7 @@ public class LogUtil {
 	 * @param logService
 	 */
 	public void bind(ExtendedLogService logService) {
-		LogUtil.logService = logService;
+		LoggerMill.logService = logService;
 	}
 
 	/**
@@ -70,7 +76,7 @@ public class LogUtil {
 	 * @param logService
 	 */
 	public void unbind(ExtendedLogService logService) {
-		LogUtil.logService = null;
+		LoggerMill.logService = null;
 	}
 
 	/**
@@ -79,17 +85,31 @@ public class LogUtil {
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
-		LogUtil.logReaderService = logReaderService;
-		if (listenerDescs == null) {
+		LoggerMill.logReaderService = logReaderService;
+		if (listenerDefs == null) {
 			return;
 		}
-		for (ILogListenerDefinition logListenerDesc : listenerDescs) {
-			LogListener listener = logListenerDesc.createLogListener();
-			if (logListenerDesc.asSync()) {
+		if (listenerDefs.length == 0) {
+			LogListener listener = new SynchronousLogListenerAdapter(new SysoLogListener());
+			logReaderService.addLogListener(listener, SYSTEM_PROPERTY_LOG_FILTER);
+			logListeners.add(listener);
+			logReaderService.addLogListener(listener, new CommandProviderLogFilter());
+			return;
+		}
+		for (ILogListenerDefinition logListenerDef : listenerDefs) {
+			LogListener listener = logListenerDef.createLogListener();
+			if (listener == null) {
+				listener = new SysoLogListener();
+			}
+			if (logListenerDef.asSync()) {
 				listener = new SynchronousLogListenerAdapter(listener);
 			}
 			logListeners.add(listener);
-			LogUtil.logReaderService.addLogListener(listener, new LogAlwaysFilter());
+			LogFilter filter = logListenerDef.createLogFilter();
+			if (filter == null) {
+				filter = SYSTEM_PROPERTY_LOG_FILTER;
+			}
+			logReaderService.addLogListener(listener, filter);
 		}
 	}
 
@@ -100,14 +120,14 @@ public class LogUtil {
 	 */
 	public void unbind(ExtendedLogReaderService logReaderService) {
 		for (LogListener logListener : logListeners) {
-			LogUtil.logReaderService.removeLogListener(logListener);
+			LoggerMill.logReaderService.removeLogListener(logListener);
 		}
 
-		LogUtil.logReaderService = null;
+		LoggerMill.logReaderService = null;
 	}
 
-	public void update(final ILogListenerDefinition[] listenerDescs) {
-		this.listenerDescs = listenerDescs;
+	public void update(final ILogListenerDefinition[] listenerDefs) {
+		this.listenerDefs = listenerDefs;
 	}
 
 	/**
@@ -127,12 +147,6 @@ public class LogUtil {
 
 			Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
 			Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
-		}
-	}
-
-	private static final class LogAlwaysFilter implements LogFilter {
-		public boolean isLoggable(Bundle b, String loggerName, int logLevel) {
-			return true;
 		}
 	}
 
