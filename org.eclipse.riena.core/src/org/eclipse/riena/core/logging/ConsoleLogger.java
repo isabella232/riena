@@ -19,27 +19,27 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
 /**
- * The ConsoleLogger simply writes all logs to System.out/.err.<b> Therefore it
- * can be used when standard logging is not available or not usable, e.g. within
- * initializations of the Logger itself.
+ * The ConsoleLogger simply writes all logs to System.out/.err.<br>
+ * Therefore it can be used when standard logging is not available or not
+ * usable, e.g. within initializations of the Logger itself.
+ * <p>
+ * However, the <code>ConsoleLogger</code> pays attention to the
+ * <code>SystemPropertyLogFilter</code> and because of that logging output can
+ * be controlled be a system property.
  */
 public class ConsoleLogger implements Logger {
-
-	/**
-	 * The system property key to set the logging level for the console logger.
-	 * Values should be integers corresponding to
-	 * {@link org.osgi.service.log.LogService}.
-	 */
-	public static final String CONSOLELOGGER_LEVEL_SYSTEM_PROPERTY = "org.eclipse.riena.consoleloggerlevel"; //$NON-NLS-1$
 
 	private String name;
 	private static String nameAndHost;
 	private static DateFormat formatter;
+
+	private static final LogFilter LOG_FILTER = new SystemPropertyLogFilter();
 
 	static {
 		String user = System.getProperty("user.name", "?"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -71,7 +71,7 @@ public class ConsoleLogger implements Logger {
 	 * @see org.eclipse.equinox.log.Logger#isLoggable(int)
 	 */
 	public boolean isLoggable(int level) {
-		return level <= Integer.getInteger(CONSOLELOGGER_LEVEL_SYSTEM_PROPERTY, LogService.LOG_WARNING);
+		return LOG_FILTER.isLoggable(null, name, level);
 	}
 
 	/*
@@ -124,6 +124,9 @@ public class ConsoleLogger implements Logger {
 	}
 
 	private void log(int level, Object context, ServiceReference sr, String message, Throwable throwable) {
+		if (!isLoggable(level)) {
+			return;
+		}
 		StringBuilder bob = new StringBuilder();
 		synchronized (formatter) {
 			bob.append(formatter.format(new Date()));
