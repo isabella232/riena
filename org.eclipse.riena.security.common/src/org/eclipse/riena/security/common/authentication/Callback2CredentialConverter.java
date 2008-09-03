@@ -137,6 +137,12 @@ public final class Callback2CredentialConverter {
 				ChoiceCredential cc = (ChoiceCredential) cred;
 				ChoiceCallback ccb = new ChoiceCallback(cc.getPrompt(), cc.getChoices(), cc.getDefaultChoice(), cc
 						.isMultipleSelectionsAllowed());
+				int[] selections = cc.getSelections();
+				if (selections.length == 1) {
+					ccb.setSelectedIndex(selections[0]);
+				} else {
+					ccb.setSelectedIndexes(cc.getSelections());
+				}
 				callbacks[i++] = ccb;
 			} else if (cred instanceof CustomCredential) {
 				callbacks[i++] = ((CustomCredential) cred).getCallback();
