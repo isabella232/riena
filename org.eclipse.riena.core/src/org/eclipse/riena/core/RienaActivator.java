@@ -11,7 +11,7 @@
 package org.eclipse.riena.core;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.LogUtil;
+import org.eclipse.riena.core.logging.LoggerMill;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -25,7 +25,7 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class RienaActivator implements BundleActivator {
 
-	private LogUtil logUtil;
+	private LoggerMill logUtil;
 	private BundleContext context;
 
 	/*
@@ -63,7 +63,7 @@ public abstract class RienaActivator implements BundleActivator {
 	 */
 	public synchronized Logger getLogger(String name) {
 		if (logUtil == null) {
-			logUtil = new LogUtil(context);
+			logUtil = new LoggerMill(context);
 		}
 		return logUtil.getLogger(name);
 	}

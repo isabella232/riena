@@ -12,7 +12,7 @@ package org.eclipse.riena.core;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.LogUtil;
+import org.eclipse.riena.core.logging.LoggerMill;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -25,7 +25,7 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class RienaPlugin extends Plugin {
 
-	private LogUtil logUtil;
+	private LoggerMill logUtil;
 	private BundleContext context;
 
 	/*
@@ -66,7 +66,7 @@ public abstract class RienaPlugin extends Plugin {
 	 */
 	public synchronized Logger getLogger(String name) {
 		if (logUtil == null) {
-			logUtil = new LogUtil(context);
+			logUtil = new LoggerMill(context);
 		}
 		return logUtil.getLogger(name);
 	}
