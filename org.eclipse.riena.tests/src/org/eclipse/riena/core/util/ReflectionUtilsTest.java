@@ -94,6 +94,22 @@ public class ReflectionUtilsTest extends TestCase {
 	}
 
 	/**
+	 * Tests the method {@code invokeHidden} with primitive and no-primitive
+	 * types as arguments,
+	 */
+	public void testInvokeHidden() {
+
+		ReflectionUtils.invokeHidden(TestClass.class, "setIntegerObject", 1);
+		Integer outInteger = ReflectionUtils.invokeHidden(TestClass.class, "getIntegerObject");
+		assertEquals(1, outInteger.intValue());
+
+		ReflectionUtils.invokeHidden(TestClass.class, "setIntPrimitive", 23);
+		int outInt = ReflectionUtils.invokeHidden(TestClass.class, "getIntPrimitive");
+		assertEquals(23, outInt);
+
+	}
+
+	/**
 	 * Nomen est omen!
 	 * 
 	 * @throws Throwable
@@ -196,6 +212,8 @@ public class ReflectionUtilsTest extends TestCase {
 	private static class TestClass {
 		private static String string;
 		private String _string;
+		private static Integer integerObject;
+		private static int intPrimitive;
 
 		private TestClass(String str) {
 			_string = str;
@@ -207,6 +225,22 @@ public class ReflectionUtilsTest extends TestCase {
 
 		private static String getString() {
 			return string;
+		}
+
+		private static void setIntegerObject(Integer integerObject) {
+			TestClass.integerObject = integerObject;
+		}
+
+		private static Integer getIntegerObject() {
+			return integerObject;
+		}
+
+		private static void setIntPrimitive(int intPrimitive) {
+			TestClass.intPrimitive = intPrimitive;
+		}
+
+		private static int getIntPrimitive() {
+			return intPrimitive;
 		}
 
 	}

@@ -74,8 +74,12 @@ public final class ReflectionUtils {
 		Assert.isNotNull(clazz, "clazz must be given!"); //$NON-NLS-1$
 
 		try {
-			Class<?>[] clazzes = classesFromObjects(args);
+			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
 			Constructor<T> constructor = findMatchingConstructor(clazz, clazzes);
+			if (constructor == null) {
+				clazzes = classesFromObjects(args);
+				constructor = findMatchingConstructor(clazz, clazzes);
+			}
 			return constructor.newInstance(args);
 		} catch (Exception e) {
 			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
@@ -254,9 +258,13 @@ public final class ReflectionUtils {
 		Assert.isNotNull(methodName, "methodName must be given!"); //$NON-NLS-1$
 
 		Class<?> clazz = getClass(instance);
-		Class<?>[] clazzes = classesFromObjects(args);
 		while (clazz != null) {
+			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
 			Method method = findMatchingMethod(clazz, methodName, clazzes);
+			if (method == null) {
+				clazzes = classesFromObjects(args);
+				method = findMatchingMethod(clazz, methodName, clazzes);
+			}
 			if (method != null) {
 				if (open) {
 					method.setAccessible(true);
@@ -461,7 +469,7 @@ public final class ReflectionUtils {
 		}
 	}
 
-	private static Class<? extends Object>[] classesFromObjects(Object[] objects) {
+	private static Class<? extends Object>[] classesPrimitiveFromObjects(Object[] objects) {
 		Class<?>[] clazzes = null;
 		if (objects != null) {
 			clazzes = new Class<?>[objects.length];
@@ -488,6 +496,22 @@ public final class ReflectionUtils {
 					}
 				}
 				clazzes[i] = argClass;
+			}
+		}
+		return clazzes;
+	}
+
+	private static Class<? extends Object>[] classesFromObjects(Object[] objects) {
+		Class<?>[] clazzes = null;
+		if (objects != null) {
+			clazzes = new Class<?>[objects.length];
+			for (int i = 0; i < objects.length; i++) {
+				if (objects[i] != null) {
+					Class<?> argClass = objects[i].getClass();
+					clazzes[i] = argClass;
+				} else {
+					clazzes[i] = Object.class;
+				}
 			}
 		}
 		return clazzes;
