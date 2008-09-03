@@ -37,7 +37,7 @@ public class HelloServerSubModuleController extends SubModuleController {
 	}
 
 	private void startServiceTracker() {
-		Inject.service(IHelloWorldService.class.getName()).into(this).andStart(Activator.getContext());
+		Inject.service(IHelloWorldService.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(IHelloWorldService service) {
