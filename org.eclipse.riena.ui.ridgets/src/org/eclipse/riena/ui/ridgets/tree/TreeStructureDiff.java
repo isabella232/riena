@@ -28,16 +28,32 @@ public class TreeStructureDiff extends TreeDiff {
 	public TreeStructureDiff(ITreeNode parent, int[] childIndices, Serializable[] children) {
 
 		super(parent);
-		this.childIndices = childIndices.clone();
-		this.children = children.clone();
+		this.childIndices = clone(childIndices);
+		this.children = clone(children);
 	}
 
 	public int[] getChildIndices() {
-		return childIndices.clone();
+		return clone(childIndices);
 	}
 
 	public Object[] getChildren() {
-		return children.clone();
+		return clone(children);
+	}
+
+	private int[] clone(int[] intArray) {
+		if (intArray != null) {
+			return intArray.clone();
+		} else {
+			return null;
+		}
+	}
+
+	private Serializable[] clone(Serializable[] array) {
+		if (array != null) {
+			return array.clone();
+		} else {
+			return null;
+		}
 	}
 
 	/*
