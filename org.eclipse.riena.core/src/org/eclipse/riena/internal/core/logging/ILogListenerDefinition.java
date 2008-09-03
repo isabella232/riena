@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.logging;
 
+import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
 import org.eclipse.riena.internal.core.Activator;
@@ -25,8 +26,11 @@ public interface ILogListenerDefinition {
 
 	String getName();
 
-	@MapName("class")
+	@MapName("listener-class")
 	LogListener createLogListener();
+
+	@MapName("filter-class")
+	LogFilter createLogFilter();
 
 	@MapName("sync")
 	boolean asSync();
