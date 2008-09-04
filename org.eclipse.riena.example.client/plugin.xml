@@ -131,13 +131,6 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="subapplication.1">
-         <actionSet id="org.eclipse.riena.example.client.actionSet"></actionSet>
-      </perspectiveExtension>
-   </extension>
-   <extension
          point="org.eclipse.ui.commands">
       <command
             id="org.eclipse.riena.example.client.exitCommand"
