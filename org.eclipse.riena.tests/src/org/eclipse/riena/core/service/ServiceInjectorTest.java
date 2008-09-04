@@ -36,6 +36,7 @@ public class ServiceInjectorTest extends RienaTestCase {
 	public void scribble() {
 		Object target = null;
 
+		Inject.service(String.class).into(target).andStart(getContext());
 		Inject.service("serviceClazz").into(target).andStart(getContext());
 		Inject.service("serviceClazz").into(target).bind("bind").unbind("unbind").andStart(getContext());
 		Inject.service("serviceClazz").useFilter("").into(target).bind("bind").unbind("unbind").andStart(getContext());
@@ -82,6 +83,22 @@ public class ServiceInjectorTest extends RienaTestCase {
 		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 
 		ServiceInjector shot = Inject.service(DepOne.class.getName()).into(target).andStart(getContext());
+		assertEquals(1, target.count("bind", DepOne.class));
+
+		shot.stop();
+		assertEquals(0, target.count("bind", DepOne.class));
+
+		reg.unregister();
+	}
+
+	public void testInjectDepOneDefaultBindUnbindUseClassInsteadOfClassname() {
+		printTestName();
+		Target target = new Target();
+
+		DepOne depOne = new DepOne();
+		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
+
+		ServiceInjector shot = Inject.service(DepOne.class).into(target).andStart(getContext());
 		assertEquals(1, target.count("bind", DepOne.class));
 
 		shot.stop();
