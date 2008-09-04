@@ -14,8 +14,7 @@ import org.eclipse.riena.core.extension.ExtensionDescriptor;
 import org.eclipse.riena.core.service.ServiceDescriptor;
 
 /**
- * This class that begins an sentence for the injector <i>micro framework</i> of
- * riena.
+ * This class begins an injector definition.
  */
 public final class Inject {
 
@@ -27,10 +26,22 @@ public final class Inject {
 	 * @see ServiceDescriptor
 	 * 
 	 * @param clazz
+	 *            class name
 	 * @return
 	 */
 	public static ServiceDescriptor service(final String clazz) {
 		return new ServiceDescriptor(clazz);
+	}
+
+	/**
+	 * @see ServiceDescriptor
+	 * 
+	 * @param clazz
+	 *            class instance
+	 * @return
+	 */
+	public static ServiceDescriptor service(final Class<?> clazz) {
+		return new ServiceDescriptor(clazz.getName());
 	}
 
 	/**
