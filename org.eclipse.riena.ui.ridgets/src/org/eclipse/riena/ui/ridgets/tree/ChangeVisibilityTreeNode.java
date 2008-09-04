@@ -48,13 +48,13 @@ public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibl
 		return (IVisibleTreeNode) getVisibleChildren().elementAt(childIndex);
 	}
 
-	private Vector getVisibleChildren() {
+	private Vector<DefaultTreeNode> getVisibleChildren() {
 
-		Vector<Object> visibleChildren = new Vector<Object>();
-		Enumeration enumeration = children.elements();
+		Vector<DefaultTreeNode> visibleChildren = new Vector<DefaultTreeNode>();
+		Enumeration<DefaultTreeNode> enumeration = children.elements();
 
 		while (enumeration.hasMoreElements()) {
-			Object element = enumeration.nextElement();
+			DefaultTreeNode element = enumeration.nextElement();
 			if (element instanceof IVisibleTreeNode) {
 				if (((IVisibleTreeNode) element).isVisible()) {
 					visibleChildren.add(element);

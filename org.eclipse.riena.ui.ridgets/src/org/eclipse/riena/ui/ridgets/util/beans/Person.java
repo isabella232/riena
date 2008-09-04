@@ -217,6 +217,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || !(obj instanceof Person)) {
 			return false;
@@ -230,6 +231,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return toString().hashCode();
 	}
@@ -253,6 +255,7 @@ public class Person extends AbstractBean {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return lastname + ", " + firstname; //$NON-NLS-1$
 	}

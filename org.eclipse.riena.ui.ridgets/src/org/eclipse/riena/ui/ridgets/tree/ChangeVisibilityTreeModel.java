@@ -12,9 +12,8 @@ package org.eclipse.riena.ui.ridgets.tree;
 
 import java.io.Serializable;
 
-import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 
 /**
  * Class <code>ChangeVisibilityTreeModel</code> provides an interface to change
@@ -104,11 +103,13 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 		}
 	}
 
+	@Override
 	protected int getIndex(DefaultTreeNode parent, DefaultTreeNode node) {
 
 		return getIndexOfVisibleChild(parent, node);
 	}
 
+	@Override
 	protected int getChildCount(DefaultTreeNode newChild, DefaultTreeNode parent) {
 
 		return getVisibleChildCount(parent);
@@ -117,6 +118,7 @@ public class ChangeVisibilityTreeModel extends DefaultTreeModel implements IVisi
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeModel#removeNodeFromParent(de.compeople.spirit.core.client.uibinding.adapter.tree.DefaultTreeNode)
 	 */
+	@Override
 	public void removeNodeFromParent(DefaultTreeNode node) {
 
 		DefaultTreeNode parent = (DefaultTreeNode) node.getParent();

@@ -55,7 +55,7 @@ public final class TreeNodeUtils {
 		ITreeNode result = null;
 		List<ITreeNode> children = parent.getChildren();
 		if (index < children.size()) {
-			result = (ITreeNode) children.get(index);
+			result = children.get(index);
 		}
 		return result;
 	}

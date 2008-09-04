@@ -32,10 +32,12 @@ public class TreeStructureDiff extends TreeDiff {
 		this.children = clone(children);
 	}
 
+	@Override
 	public int[] getChildIndices() {
 		return clone(childIndices);
 	}
 
+	@Override
 	public Object[] getChildren() {
 		return clone(children);
 	}

@@ -80,6 +80,7 @@ public class ValidInteger extends ValidDecimal {
 	 * @param object
 	 *            the object to validate, must be of type String.
 	 */
+	@Override
 	public IStatus validate(final Object value) {
 		if (value != null) {
 			if (!(value instanceof String)) {

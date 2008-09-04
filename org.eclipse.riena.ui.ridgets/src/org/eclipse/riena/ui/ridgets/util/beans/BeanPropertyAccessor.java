@@ -61,7 +61,7 @@ public final class BeanPropertyAccessor {
 	public static void setPropertyValue(Object bean, PropertyDescriptor descriptor, Object value) {
 		Method writeMethod = descriptor.getWriteMethod();
 		if (writeMethod == null) {
-			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no setter method");
+			throw new UnsupportedOperationException("Property '" + descriptor.getName() + "' has no setter method"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		if (!writeMethod.isAccessible()) {

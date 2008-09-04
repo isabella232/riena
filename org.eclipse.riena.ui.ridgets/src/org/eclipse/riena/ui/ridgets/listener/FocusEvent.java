@@ -50,6 +50,7 @@ public class FocusEvent {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof FocusEvent)) {
 			return false;
@@ -69,6 +70,7 @@ public class FocusEvent {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		int code = 3;
 		if (getOldFocusOwner() != null) {
@@ -83,6 +85,7 @@ public class FocusEvent {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder("FocusEvent[oldFocusOwner="); //$NON-NLS-1$
 		buffer.append(getOldFocusOwner());

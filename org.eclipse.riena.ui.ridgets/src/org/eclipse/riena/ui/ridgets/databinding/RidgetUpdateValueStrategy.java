@@ -103,6 +103,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 		/**
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
+		@Override
 		public boolean equals(Object obj) {
 			if (obj == null || obj.getClass() != this.getClass()) {
 				return false;
@@ -114,6 +115,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 		/**
 		 * @see java.lang.Object#hashCode()
 		 */
+		@Override
 		public int hashCode() {
 			return fromType.hashCode() + toType.hashCode();
 		}

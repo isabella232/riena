@@ -30,10 +30,12 @@ public class TreeNodeValueDiff extends TreeDiff {
 		this.newValue = newValue;
 	}
 
+	@Override
 	public int[] getChildIndices() {
 		return new int[0];
 	}
 
+	@Override
 	public Object[] getChildren() {
 		return new Object[0];
 	}

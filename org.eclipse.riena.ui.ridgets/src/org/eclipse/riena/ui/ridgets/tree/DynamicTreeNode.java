@@ -26,10 +26,10 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	 * Constructor. Creates a tree node with the given parent and initializes it
 	 * with the specified user element.
 	 * 
-	 * @param parent -
-	 *            the parent of the tree element.
-	 * @param userElement -
-	 *            an element provided by the user that constitutes the data of
+	 * @param parent
+	 *            - the parent of the tree element.
+	 * @param userElement
+	 *            - an element provided by the user that constitutes the data of
 	 *            the tree element.
 	 */
 	public DynamicTreeNode(DynamicTreeNode parent, IUserTreeElement userElement) {
@@ -129,6 +129,7 @@ public class DynamicTreeNode extends DefaultTreeNode {
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeNode#isLeaf()
 	 */
+	@Override
 	public boolean isLeaf() {
 		return getUserTreeElement().isLeaf();
 	}

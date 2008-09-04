@@ -32,10 +32,12 @@ public class TreeNodesInsertedDiff extends TreeDiff {
 		this.children = children.clone();
 	}
 
+	@Override
 	public int[] getChildIndices() {
 		return childIndices.clone();
 	}
 
+	@Override
 	public Object[] getChildren() {
 		return children.clone();
 	}

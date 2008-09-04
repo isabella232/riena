@@ -40,8 +40,9 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 	}
 
+	@Override
 	protected void showMessages(IMarkableRidget markableRidget) {
-		Collection messageMarker = this.getMessageMarker(markableRidget);
+		Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
 		String message = constructMessage(messageMarker).trim();
 		// show the message only if there is something to show
 		if (message.length() > 0 && isVisible()) {
@@ -66,17 +67,18 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		tooltipMessage.put(markableRidget, message);
 	}
 
+	@Override
 	protected void hideMessages(IMarkableRidget markableRidget) {
 		markableRidget.setToolTipText(originalTooltipMessage.get(markableRidget));
 		tooltipMessage.put(markableRidget, null);
 	}
 
-	private String constructMessage(Collection messageMarker) {
+	private String constructMessage(Collection<IMessageMarker> messageMarker) {
 		StringWriter sw = new StringWriter();
 		IMessageMarker nextMarker = null;
 		if (messageMarker != null) {
-			for (Iterator i = messageMarker.iterator(); i.hasNext();) {
-				nextMarker = (IMessageMarker) i.next();
+			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
+				nextMarker = i.next();
 				if (sw.toString().trim().length() > 0) {
 					sw.write("; "); //$NON-NLS-1$
 				}

@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.marker;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
-
-import org.eclipse.core.databinding.validation.IValidator;
 
 public class ValidationMessageMarker extends AbstractMarker implements IMessageMarker {
 
@@ -59,6 +58,7 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 	/**
 	 * @see Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}

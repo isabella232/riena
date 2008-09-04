@@ -30,8 +30,8 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	/**
 	 * Creates a tree in which any node can have children.
 	 * 
-	 * @param root -
-	 *            the root of the tree.
+	 * @param root
+	 *            - the root of the tree.
 	 */
 	public DefaultTreeModel(ITreeNode root) {
 
@@ -73,6 +73,7 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	} // end method
 
+	@Override
 	public Object doGetValue() {
 		return this;
 	}
@@ -110,6 +111,12 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#
+	 *     
+	 *     
+	 *     
+	 *     
+	 *     
+	 *     
 	 *      addTreeModelListener(de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModelListener)
 	 */
 	public void addTreeModelListener(ITreeModelListener l) {
@@ -120,6 +127,12 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#
+	 *     
+	 *     
+	 *     
+	 *     
+	 *     
+	 *     
 	 *      removeTreeModelListener(de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModelListener)
 	 */
 	public void removeTreeModelListener(ITreeModelListener l) {
@@ -359,10 +372,10 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	 * 
 	 * @param source
 	 * @param node
-	 * @param childIndices -
-	 *            the indices of the new elements
-	 * @param children -
-	 *            the new elements
+	 * @param childIndices
+	 *            - the indices of the new elements
+	 * @param children
+	 *            - the new elements
 	 */
 	protected void fireTreeNodesRemoved(IObservable source, ITreeNode node, int[] childIndices, Serializable[] children) {
 		TreeModelEvent e = null;
@@ -382,10 +395,10 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	 * 
 	 * @param source
 	 * @param node
-	 * @param childIndices -
-	 *            the indices of the removed elements
-	 * @param children -
-	 *            the removed elements
+	 * @param childIndices
+	 *            - the indices of the removed elements
+	 * @param children
+	 *            - the removed elements
 	 */
 	protected void fireTreeNodesChanged(IObservable source, ITreeNode node, int[] childIndices, Serializable[] children) {
 		TreeModelEvent e = null;

@@ -160,7 +160,9 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeNode#getIndex(org.eclipse.riena.ui.ridgets.tree.ITreeNode)
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.tree.ITreeNode#getIndex(org.eclipse.riena
+	 * .ui.ridgets.tree.ITreeNode)
 	 */
 	public int getIndex(ITreeNode node) {
 		return children.indexOf(node);
@@ -190,6 +192,7 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 
 		if (userObject == null) {

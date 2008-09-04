@@ -39,8 +39,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 * constructor. Creates a tree node with no parent, no children and
 	 * initializes it with the specified user object.
 	 * 
-	 * @param userObject -
-	 *            an Object provided by the user that constitutes the node's
+	 * @param userObject
+	 *            - an Object provided by the user that constitutes the node's
 	 *            data.
 	 */
 	public DefaultTreeNode(Object userObject) {
@@ -54,8 +54,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 * the specified user object. But the tree node has no children.
 	 * 
 	 * @param parent
-	 * @param userObject -
-	 *            an Object provided by the user that constitutes the node's
+	 * @param userObject
+	 *            - an Object provided by the user that constitutes the node's
 	 *            data.
 	 */
 	public DefaultTreeNode(DefaultTreeNode parent, Object userObject) {
@@ -108,8 +108,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 * Returns true if <code>aNode</code> is a child of this node. If
 	 * <code>aNode</code> is null, this method returns false.
 	 * 
-	 * @param aNode -
-	 *            node to test.
+	 * @param aNode
+	 *            - node to test.
 	 * @return true if <code>aNode</code> is a child of this node; otherwise
 	 *         false.
 	 */
@@ -143,6 +143,7 @@ public class DefaultTreeNode implements ITreeNode {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 
 		if (userObject == null) {
@@ -158,8 +159,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 * makes it a child of this node by adding it to the end of this node's
 	 * child array.
 	 * 
-	 * @param newChild -
-	 *            node to add as a child of this node.
+	 * @param newChild
+	 *            - node to add as a child of this node.
 	 */
 	public void add(DefaultTreeNode newChild) {
 
@@ -173,11 +174,11 @@ public class DefaultTreeNode implements ITreeNode {
 	 * this node's child array at index childIndex. <code>newChild</code> must
 	 * not be null and must not be an ancestor of this node.
 	 * 
-	 * @param newChild -
-	 *            the tree node to insert under this node.
-	 * @param childIndex -
-	 *            the index in this node's child array where this node is to be
-	 *            inserted.
+	 * @param newChild
+	 *            - the tree node to insert under this node.
+	 * @param childIndex
+	 *            - the index in this node's child array where this node is to
+	 *            be inserted.
 	 */
 	public void insert(DefaultTreeNode newChild, int childIndex) {
 
@@ -197,8 +198,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 * sets that node's parent to null. The child node to remove must be a
 	 * DefaultTreeNode.
 	 * 
-	 * @param childIndex -
-	 *            the index in this node's child array of the child to remove.
+	 * @param childIndex
+	 *            - the index in this node's child array of the child to remove.
 	 */
 	public void remove(int childIndex) {
 
@@ -225,8 +226,8 @@ public class DefaultTreeNode implements ITreeNode {
 	 * Removes <code>aChild</code> from this node's child array, giving it a
 	 * null parent.
 	 * 
-	 * @param aChild -
-	 *            the child of this node to remove.
+	 * @param aChild
+	 *            - the child of this node to remove.
 	 * @pre aChild != null
 	 * @pre isNodeChild( aChild )
 	 */
