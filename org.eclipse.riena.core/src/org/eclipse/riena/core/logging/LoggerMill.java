@@ -19,6 +19,7 @@ import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.core.logging.ILogCatcherDefinition;
 import org.eclipse.riena.internal.core.logging.ILogListenerDefinition;
 import org.eclipse.riena.internal.core.logging.SynchronousLogListenerAdapter;
 import org.osgi.framework.BundleContext;
@@ -35,7 +36,9 @@ public class LoggerMill {
 
 	private BundleContext context;
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
+	private List<ILogCatcher> logCatchers = new ArrayList<ILogCatcher>();;
 	private ILogListenerDefinition[] listenerDefs;
+	private ILogCatcherDefinition[] catcherDefs;
 
 	private static ExtendedLogService logService;
 	private static ExtendedLogReaderService logReaderService;
@@ -130,6 +133,10 @@ public class LoggerMill {
 		this.listenerDefs = listenerDefs;
 	}
 
+	public void update(final ILogCatcherDefinition[] catcherDefs) {
+		this.catcherDefs = catcherDefs;
+	}
+
 	/**
 	 * initialize LogUtil
 	 */
@@ -140,14 +147,34 @@ public class LoggerMill {
 			}
 
 			// Experimental: capture platform logs
-			new PlatformLogListener().attach();
+			new PlatformLogCatcher().attach();
+
+			// get log catchers
+			Inject.extension(ILogCatcherDefinition.EXTENSION_POINT).useType(ILogCatcherDefinition.class).into(this)
+					.andStart(context);
+			attachLogCapturer();
 
 			// get log listeners
-			Inject.extension(ILogListenerDefinition.EXTENSION_POINT).into(this).andStart(context);
+			Inject.extension(ILogListenerDefinition.EXTENSION_POINT).useType(ILogListenerDefinition.class).into(this)
+					.andStart(context);
 
-			Inject.service(ExtendedLogService.class.getName()).useRanking().into(this).andStart(context);
-			Inject.service(ExtendedLogReaderService.class.getName()).useRanking().into(this).andStart(context);
+			Inject.service(ExtendedLogService.class).useRanking().into(this).andStart(context);
+			Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(context);
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private void attachLogCapturer() {
+		if (catcherDefs == null) {
+			return;
+		}
+		for (ILogCatcherDefinition catcherDef : catcherDefs) {
+			ILogCatcher logCatcher = catcherDef.createLogCatcher();
+			logCatcher.attach();
+			logCatchers.add(logCatcher);
+		}
+
+	}
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import java.io.PrintStream;
 import java.util.Date;
 
 import org.eclipse.equinox.log.ExtendedLogEntry;
@@ -24,15 +25,18 @@ public class SysoLogListener implements LogListener {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
 		String level;
+		boolean red = false;
 		switch (eEntry.getLevel()) {
 		case LogService.LOG_DEBUG:
 			level = "DEBUG"; //$NON-NLS-1$
 			break;
 		case LogService.LOG_WARNING:
 			level = "WARNING"; //$NON-NLS-1$
+			red = true;
 			break;
 		case LogService.LOG_ERROR:
 			level = "ERROR"; //$NON-NLS-1$
+			red = true;
 			break;
 		case LogService.LOG_INFO:
 			level = "INFO"; //$NON-NLS-1$
@@ -48,9 +52,10 @@ public class SysoLogListener implements LogListener {
 			buffer.append(eEntry.getContext()).append(' ');
 		}
 		buffer.append(entry.getMessage());
-		System.out.println(buffer.toString());
+		PrintStream stream = red ? System.err : System.out;
+		stream.println(buffer.toString());
 		if (eEntry.getException() != null) {
-			eEntry.getException().printStackTrace(System.out);
+			eEntry.getException().printStackTrace(stream);
 		}
 	}
 }

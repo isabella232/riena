@@ -17,10 +17,10 @@ import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogService;
 
 /**
- * The <code>PlatformLogListener</code> can attach to the <code>Platform</code>
+ * The <code>PlatformLogCatcher</code> can attach to the <code>Platform</code>
  * log and route platform log events into Riena's logging.
  */
-public class PlatformLogListener implements ILogListener {
+public class PlatformLogCatcher implements ILogListener, ILogCatcher {
 
 	/**
 	 * Attach to the <code>Platform</code> log.
@@ -68,7 +68,11 @@ public class PlatformLogListener implements ILogListener {
 		if (Activator.getDefault() == null) {
 			return;
 		}
-		Activator.getDefault().getLogger("Bundle " + plugin).log(logLevel, status.getMessage(), status.getException()); //$NON-NLS-1$
+		StringBuilder bob = new StringBuilder("Message: "); //$NON-NLS-1$
+		bob.append(status.getMessage()).append(", Code: "); //$NON-NLS-1$
+		bob.append(status.getCode()).append(", Plugin: "); //$NON-NLS-1$
+		bob.append(status.getPlugin());
+		Activator.getDefault().getLogger("Bundle " + plugin).log(logLevel, bob.toString(), status.getException()); //$NON-NLS-1$
 	}
 
 }
