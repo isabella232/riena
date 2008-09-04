@@ -15,16 +15,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -35,16 +33,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	// cache for PropertyDescriptors
 	private Map<String, PropertyDescriptor> binding2PropertyDesc;
 
-	private static final Logger LOGGER;
-
-	static {
-		Activator activator = Activator.getDefault();
-		if (activator != null) {
-			LOGGER = activator.getLogger(InjectBindingManager.class.getName());
-		} else {
-			LOGGER = new ConsoleLogger(InjectBindingManager.class.getName());
-		}
-	}
+	private static final Logger LOGGER = Activator.getDefault().getLogger(InjectBindingManager.class.getName());
 
 	/**
 	 * Creates the managers of all bindings of a view.
