@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
@@ -21,7 +24,7 @@ import org.osgi.service.log.LogService;
 /**
  *
  */
-public class CommandProviderLogFilter implements LogFilter, CommandProvider {
+public class CommandProviderLogFilter implements LogFilter, CommandProvider, IExecutableExtension {
 
 	int threshold = LogService.LOG_DEBUG;
 
@@ -64,6 +67,25 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider {
 		bob
 				.append("\tlogLevel [ <level> ] - specify log level, e.g. debug, info, warn, error or none, or retrieve current level"); //$NON-NLS-1$
 		return bob.toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org
+	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
+	 * java.lang.Object)
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+		if (data == null) {
+			return;
+		}
+		if (!(data instanceof String)) {
+			return;
+		}
+		threshold = LogLevelMapper.getValue((String) data);
 	}
 
 }
