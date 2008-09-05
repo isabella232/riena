@@ -110,9 +110,10 @@ public class LoggerMill {
 			logListeners.add(listener);
 			LogFilter filter = logListenerDef.createLogFilter();
 			if (filter == null) {
-				filter = SYSTEM_PROPERTY_LOG_FILTER;
+				logReaderService.addLogListener(listener);
+			} else {
+				logReaderService.addLogListener(listener, filter);
 			}
-			logReaderService.addLogListener(listener, filter);
 		}
 	}
 
