@@ -44,7 +44,7 @@ public class LoggerMill {
 	private static ExtendedLogReaderService logReaderService;
 	private static AtomicBoolean initialized = new AtomicBoolean(false);
 
-	private static final LogFilter SYSTEM_PROPERTY_LOG_FILTER = new SystemPropertyLogFilter();
+	private static final LogFilter COMMAND_PROVIDER_LOG_FILTER = new CommandProviderLogFilter();
 
 	public LoggerMill(BundleContext context) {
 		this.context = context;
@@ -94,9 +94,8 @@ public class LoggerMill {
 		}
 		if (listenerDefs.length == 0) {
 			LogListener listener = new SynchronousLogListenerAdapter(new SysoLogListener());
-			logReaderService.addLogListener(listener, SYSTEM_PROPERTY_LOG_FILTER);
 			logListeners.add(listener);
-			logReaderService.addLogListener(listener, new CommandProviderLogFilter());
+			logReaderService.addLogListener(listener, COMMAND_PROVIDER_LOG_FILTER);
 			return;
 		}
 		for (ILogListenerDefinition logListenerDef : listenerDefs) {
