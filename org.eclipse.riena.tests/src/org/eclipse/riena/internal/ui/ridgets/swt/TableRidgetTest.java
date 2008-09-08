@@ -353,6 +353,18 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals("John", control.getItem(0).getText(0));
 		assertEquals("Frank", control.getItem(lastItemIndex).getText(0));
+
+		ridget.setComparator(1, comparator);
+		ridget.setSortedColumn(1);
+
+		assertEquals("Doe", control.getItem(0).getText(1));
+		assertEquals("Zappa", control.getItem(lastItemIndex).getText(1));
+
+		ridget.setSortedAscending(false);
+
+		assertEquals("Zappa", control.getItem(0).getText(1));
+		assertEquals("Doe", control.getItem(lastItemIndex).getText(1));
+
 	}
 
 	public void testGetSortedColumn() {

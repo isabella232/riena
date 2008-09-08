@@ -24,8 +24,12 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.viewers.ContentViewer;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -371,7 +375,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
 				table.setSortDirection(direction);
 				SortableComparator sortableComparator = new SortableComparator(this, compi);
-				viewer.setComparator(new ViewerComparator(sortableComparator));
+				viewer.setComparator(new TableComparator(sortableComparator));
 			} else {
 				viewer.setComparator(null);
 				table.setSortColumn(null);
@@ -475,6 +479,52 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			column.getParent().showSelection();
 		}
+	}
+
+	/**
+	 * This comparator uses the values of the column the table is sorted by.
+	 */
+	private class TableComparator extends ViewerComparator {
+
+		public TableComparator(SortableComparator comparator) {
+			super(comparator);
+		}
+
+		@Override
+		protected SortableComparator getComparator() {
+			return (SortableComparator) super.getComparator();
+		}
+
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+
+			int cat1 = category(e1);
+			int cat2 = category(e2);
+
+			if (cat1 != cat2) {
+				return cat1 - cat2;
+			}
+
+			if ((viewer instanceof ContentViewer) && (sortedColumn != -1)) {
+				IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
+				if (prov instanceof ITableLabelProvider) {
+					ITableLabelProvider lprov = (ITableLabelProvider) prov;
+					String value1 = lprov.getColumnText(e1, sortedColumn);
+					String value2 = lprov.getColumnText(e2, sortedColumn);
+					if (value1 == null) {
+						value1 = ""; //$NON-NLS-1$
+					}
+					if (value2 == null) {
+						value2 = ""; //$NON-NLS-1$
+					}
+					return getComparator().compare(value1, value2);
+				}
+			}
+
+			return super.compare(viewer, e1, e2);
+
+		}
+
 	}
 
 }
