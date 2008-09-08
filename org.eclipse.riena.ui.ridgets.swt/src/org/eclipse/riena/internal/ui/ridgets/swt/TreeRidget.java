@@ -36,6 +36,7 @@ import org.eclipse.core.databinding.observable.set.SetChangeEvent;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -56,6 +57,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
@@ -396,7 +398,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private void bindToViewer(final Tree control) {
 		viewer = new TreeViewer(control);
 		// content
-		Realm realm = Realm.getDefault();
+		Realm realm = SWTObservables.getRealm(Display.getDefault());
 		// how to create a list of children from a given object (expansion)
 		IObservableFactory listFactory = BeansObservables.listFactory(realm, childrenAccessor, treeElementClass);
 		// how to get the parent from a give object
