@@ -76,6 +76,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private ListenerList<IActionListener> doubleClickListeners;
 	private DataBindingContext dbc;
 	private TreeViewer viewer;
+	/* keeps the last legal selection when in 'output only' mode */
+	private TreeItem[] savedSelection;
 
 	/*
 	 * The original array of elements given as input to the ridget via the
@@ -301,21 +303,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public final void setSelection(List<?> newSelection) {
 		reveal(newSelection.toArray());
 		super.setSelection(newSelection);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * For each selection candidate in the List <tt>newSelection</tt>, this
-	 * implementation will try to expand the path to the corresponding tree
-	 * node, to ensure that the corresponding tree element is selectable.
-	 */
-	@Override
-	public final void setSelection(Object candidate) {
-		if (candidate != null) {
-			reveal(new Object[] { candidate });
-		}
-		super.setSelection(candidate);
+		saveSelection();
 	}
 
 	public boolean getRootsVisible() {
@@ -372,6 +360,12 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return true;
+	}
+
+	@Override
+	public void setOutputOnly(boolean outputOnly) {
+		super.setOutputOnly(outputOnly);
+		saveSelection();
 	}
 
 	// helping methods
@@ -441,6 +435,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 
 		viewer.setSelection(currentSelection);
+		saveSelection();
 	}
 
 	/**
@@ -458,6 +453,31 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				}
 			} finally {
 				control.setRedraw(true);
+			}
+		}
+	}
+
+	/**
+	 * Take a snapshot of the selection in the tree widget.
+	 */
+	private synchronized void saveSelection() {
+		if (viewer != null && isOutputOnly()) {
+			savedSelection = viewer.getTree().getSelection();
+		} else {
+			savedSelection = new TreeItem[0];
+		}
+	}
+
+	/**
+	 * Resets the selection in the tree widget to the last saved selection.
+	 */
+	private synchronized void restoreSelection() {
+		if (viewer != null) {
+			Tree control = viewer.getTree();
+			control.deselectAll();
+			for (TreeItem item : savedSelection) {
+				// use select to avoid scrolling the tree
+				control.select(item);
 			}
 		}
 	}
@@ -545,7 +565,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		public void widgetSelected(SelectionEvent e) {
 			Tree control = (Tree) e.widget;
 			if (isOutputOnly()) {
-				viewer.setSelection(new StructuredSelection(getSelection()));
+				// ignore this event
+				e.doit = false;
+				restoreSelection();
 			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
 				if (control.getSelectionCount() > 1) {
 					// ignore this event

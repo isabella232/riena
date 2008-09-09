@@ -862,6 +862,31 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
+	 * Ensure tree does not jump back to the current selection when in 'output
+	 * only' mode. See {@link https://bugs.eclipse.org/245632}.
+	 */
+	public void testBug245632() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getUIControl();
+
+		ridget.expandTree();
+		ridget.setSelection(root);
+		ridget.setOutputOnly(true);
+
+		final TreeItem topItem = control.getTopItem();
+		assertSame(root, ridget.getSelection().get(0));
+
+		control.setFocus();
+		// press end to select the last element
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_END);
+
+		// read only -> selection unchanged
+		assertSame(root, ridget.getSelection().get(0));
+		// if we didn't scroll up, we should have DIFFERENT top item
+		assertNotSame(topItem, control.getTopItem());
+	}
+
+	/**
 	 * Tests that for multiple selection, the ridget selection state and the ui
 	 * selection state cannot be changed by the user when ridget is set to
 	 * "output only".

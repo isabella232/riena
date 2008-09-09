@@ -139,7 +139,7 @@ public abstract class AbstractSelectableRidget extends AbstractMarkableRidget im
 		}
 	}
 
-	public void setSelection(Object newSelection) {
+	public final void setSelection(Object newSelection) {
 		assertIsBoundToModel();
 		List<Object> list = Arrays.asList(new Object[] { newSelection });
 		setSelection(list);

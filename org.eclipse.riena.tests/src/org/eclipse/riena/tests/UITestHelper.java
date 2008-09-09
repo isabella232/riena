@@ -25,6 +25,10 @@ public final class UITestHelper {
 	public static final int KC_ARROW_DOWN = 16777218;
 	/** Keycode for 'arrow up' (16777217) */
 	public static final int KC_ARROW_UP = 16777217;
+	/** Keycode for 'home' (16777223) */
+	public static final int KC_HOME = 16777223;
+	/** Keycode for 'end' (16777224) */
+	public static final int KC_END = 16777224;
 
 	private UITestHelper() {
 		// prevent instantiation
