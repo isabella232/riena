@@ -50,7 +50,9 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		String key = getImageKey(element);
-		return Activator.getSharedImage(key);
+		Image image = Activator.getSharedImage(key);
+		image = Activator.preventMissingImage(image);
+		return image;
 	}
 
 	@Override
@@ -94,7 +96,9 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 
 		private void updateIcon(TreeItem item, boolean isExpanded) {
 			String key = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
-			item.setImage(Activator.getSharedImage(key));
+			Image image = Activator.getSharedImage(key);
+			image = Activator.preventMissingImage(image);
+			item.setImage(image);
 		}
 	}
 

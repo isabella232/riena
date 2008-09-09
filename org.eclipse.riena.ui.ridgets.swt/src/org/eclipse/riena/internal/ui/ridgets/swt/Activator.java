@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.Workbench;
@@ -75,6 +77,9 @@ public class Activator extends AbstractRienaUIPlugin {
 	 * @return a non-null Image instance
 	 */
 	public static Image getSharedImage(final String imageKey) {
+		if (imageKey == null) {
+			return null;
+		}
 		if (getDefault() == null) { // are we unit testing?
 			if (fakeImages == null) {
 				fakeImages = new FakeImages();
@@ -98,6 +103,23 @@ public class Activator extends AbstractRienaUIPlugin {
 			return null;
 		}
 		return getDefault().internalGetSharedColor(colorKey);
+	}
+
+	/**
+	 * Returns {@code null} if the given image is equals the missing image.
+	 * 
+	 * @param image
+	 *            - image to check
+	 * @return image or {@code null}
+	 */
+	public static Image preventMissingImage(Image image) {
+		ImageData missingData = ImageDescriptor.getMissingImageDescriptor().getImageData();
+		ImageData imageData = image.getImageData();
+		if (Arrays.equals(missingData.data, imageData.data)) {
+			return null;
+		} else {
+			return image;
+		}
 	}
 
 	// /**
