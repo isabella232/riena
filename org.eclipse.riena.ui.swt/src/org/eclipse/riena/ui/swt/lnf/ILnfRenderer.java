@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import java.util.Collection;
+
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -21,8 +24,8 @@ public interface ILnfRenderer {
 	/**
 	 * Paints the widget.
 	 * 
-	 * @param gc -
-	 *            graphics context
+	 * @param gc
+	 *            - graphics context
 	 * @param value
 	 */
 	void paint(GC gc, Object value);
@@ -43,23 +46,47 @@ public interface ILnfRenderer {
 	 * Sets size and location to the rectangular area specified by the
 	 * arguments.
 	 * 
-	 * @param x -
-	 *            the new x coordinate the widget
-	 * @param y -
-	 *            the new y coordinate the widget
-	 * @param width -
-	 *            the new width the widget
-	 * @param height -
-	 *            the new height the widget
+	 * @param x
+	 *            - the new x coordinate the widget
+	 * @param y
+	 *            - the new y coordinate the widget
+	 * @param width
+	 *            - the new width the widget
+	 * @param height
+	 *            - the new height the widget
 	 */
 	void setBounds(int x, int y, int width, int height);
 
 	/**
 	 * Set the bounds of rectangular area of the widget.
 	 * 
-	 * @param bounds -
-	 *            the new bounds of the widget
+	 * @param bounds
+	 *            - the new bounds of the widget
 	 */
 	void setBounds(Rectangle bounds);
+
+	/**
+	 * Returns all markers
+	 * 
+	 * @return markers
+	 */
+	Collection<? extends IMarker> getMarkers();
+
+	/**
+	 * Sets markers.
+	 * 
+	 * @param markers
+	 *            - collection of markers
+	 */
+	void setMarkers(Collection<? extends IMarker> markers);
+
+	/**
+	 * Returns all markers corresponding to a certain type.
+	 * 
+	 * @param type
+	 *            - the type of markers.
+	 * @return markers corresponding to a certain type.
+	 */
+	<T extends IMarker> Collection<T> getMarkersOfType(Class<T> type);
 
 }

@@ -10,13 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
+import java.util.Collection;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -25,6 +28,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Renderer of the title bar of an embedded view.
@@ -35,12 +39,15 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private final static int TITLEBAR_LABEL_PADDING = 4;
 	private final static int TITLEBAR_ICON_TEXT_GAP = 4;
 
+	private Control control;
 	private Image image;
+	private String title;
 	private Color edgeColor;
 	private boolean active;
 	private boolean pressed;
 	private boolean hover;
 	private boolean closeable;
+	private MarkerUpdater updater;
 
 	public EmbeddedTitlebarRenderer() {
 		super();
@@ -55,14 +62,10 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		if (getImage() != null) {
-			getImage().dispose();
-			setImage(null);
-		}
-		if (edgeColor != null) {
-			edgeColor.dispose();
-			edgeColor = null;
-		}
+		SwtUtilities.disposeResource(getImage());
+		SwtUtilities.disposeResource(edgeColor);
+		control = null;
+		updater = null;
 	}
 
 	/**
@@ -109,6 +112,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(GC gc, Object value) {
 
+		Assert.isNotNull(gc);
+		Assert.isNotNull(value);
+		Assert.isTrue(value instanceof Control);
+		control = (Control) value;
+
 		if (getBounds() == null) {
 			return;
 		}
@@ -123,7 +131,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		Color startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR);
 		Color endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR);
-		if (isActive()) {
+		if (isActive() || isProcessMarkerVisible()) {
 			startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR);
 			endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR);
 		}
@@ -141,7 +149,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		// Border
 		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
-		if (isActive()) {
+		if (isActive() || isProcessMarkerVisible()) {
 			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
@@ -201,10 +209,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Text
-		String text = ""; //$NON-NLS-1$
-		if (value instanceof String) {
-			text = (String) value;
-		}
+		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
 			gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
@@ -222,6 +227,31 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			getHoverBorderRenderer().setBounds(x, y, w, h);
 			getHoverBorderRenderer().paint(gc, null);
 		}
+
+		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
+		for (UIProcessFinishedMarker processMarker : markers) {
+			if (!processMarker.isActivated()) {
+				startFlasher(processMarker);
+				break;
+			}
+		}
+
+	}
+
+	/**
+	 * Returns {@code true} if the finished marker of an UI process is visible
+	 * (on).
+	 * 
+	 * @return {@code true} if marker is visible; otherwise {@code false}
+	 */
+	private boolean isProcessMarkerVisible() {
+
+		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
+		for (UIProcessFinishedMarker processMarker : markers) {
+			return processMarker.isOn();
+		}
+
+		return false;
 
 	}
 
@@ -255,6 +285,14 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	private int getHeight() {
@@ -357,6 +395,40 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		gc.setFont(font);
 		return SwtUtilities.clipText(gc, text, maxWidth);
 
+	}
+
+	/**
+	 * Creates and starts the flasher of a finished UI process.
+	 * 
+	 * @param processMarker
+	 *            - marker of finished UI process.
+	 */
+	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
+
+		if (updater == null) {
+			updater = new MarkerUpdater();
+		}
+
+		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
+		processMarker.activate();
+		flasher.start();
+
+	}
+
+	/**
+	 * This class updates (redraws) the title bar, so that the marker are also
+	 * updated (redrawn).
+	 */
+	private class MarkerUpdater implements Runnable {
+
+		/**
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			if (control != null) {
+				control.redraw();
+			}
+		}
 	}
 
 }

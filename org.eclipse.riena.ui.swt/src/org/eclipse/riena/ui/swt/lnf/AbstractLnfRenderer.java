@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -18,6 +24,7 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public abstract class AbstractLnfRenderer implements ILnfRenderer {
 
+	private Collection<? extends IMarker> markers;
 	private Rectangle bounds;
 
 	/**
@@ -49,4 +56,38 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 		this.bounds = bounds;
 	}
 
+	/*
+	 * @see
+	 * org.eclipse.riena.ui.swt.lnf.ILnfRenderer#setMarkers(java.util.Collection
+	 * )
+	 */
+	public void setMarkers(Collection<? extends IMarker> markers) {
+		this.markers = markers;
+	}
+
+	/*
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#getMarkers()
+	 */
+	public Collection<? extends IMarker> getMarkers() {
+		return markers;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#getMarkersOfType(java.lang.Class)
+	 */
+	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+
+		if (type == null || getMarkers() == null) {
+			return Collections.emptyList();
+		}
+		List<T> typedMarkerList = new ArrayList<T>();
+
+		for (IMarker marker : getMarkers()) {
+			if (type.isAssignableFrom(marker.getClass())) {
+				typedMarkerList.add((T) marker);
+			}
+		}
+		return typedMarkerList;
+
+	}
 }

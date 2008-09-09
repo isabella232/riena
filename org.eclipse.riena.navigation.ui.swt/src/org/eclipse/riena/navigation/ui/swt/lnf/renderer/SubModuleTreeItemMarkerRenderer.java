@@ -13,12 +13,12 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.UIProcessFinishedFlasher;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -47,12 +47,8 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		Assert.isTrue(value instanceof TreeItem);
 
 		item = (TreeItem) value;
-		SubModuleNode node = (SubModuleNode) item.getData();
-		if (node == null) {
-			return;
-		}
 
-		Collection<IIconizableMarker> markers = node.getMarkersOfType(IIconizableMarker.class);
+		Collection<IIconizableMarker> markers = getMarkersOfType(IIconizableMarker.class);
 		if (!markers.isEmpty()) {
 			paintMarkers(gc, markers, item);
 		}

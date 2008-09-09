@@ -18,6 +18,7 @@ import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
@@ -258,7 +259,14 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private void paintTreeItem(Event event) {
 		SubModuleTreeItemMarkerRenderer renderer = getTreeItemRenderer();
 		renderer.setBounds(event.x, event.y, event.width, event.height);
-		renderer.paint(event.gc, event.item);
+		if (event.item instanceof TreeItem) {
+			TreeItem item = (TreeItem) event.item;
+			SubModuleNode node = (SubModuleNode) item.getData();
+			if (node != null) {
+				renderer.setMarkers(node.getMarkers());
+			}
+			renderer.paint(event.gc, event.item);
+		}
 	}
 
 	/**
@@ -397,6 +405,15 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			dispose();
 		}
 
+		/**
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#markersChanged(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void markersChanged(IModuleNode source) {
+			super.markersChanged(source);
+			title.setMarkers(source.getMarkers());
+			title.redraw();
+		}
 	}
 
 	/**

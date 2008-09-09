@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.Collection;
+
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -35,6 +38,7 @@ public class EmbeddedTitleBar extends Canvas {
 	private boolean closeable;
 	private Image image;
 	private String title;
+	private Collection<? extends IMarker> markers;
 
 	protected ListenerList<IEmbeddedTitleBarListener> titleBarListeners;
 
@@ -84,10 +88,12 @@ public class EmbeddedTitleBar extends Canvas {
 		getLnfTitlebarRenderer().setPressed(isPressed());
 		getLnfTitlebarRenderer().setHover(isHover());
 		getLnfTitlebarRenderer().setImage(getImage());
+		getLnfTitlebarRenderer().setTitle(getTitle());
+		getLnfTitlebarRenderer().setMarkers(getMarkers());
 		Point titlebarSize = getLnfTitlebarRenderer().computeSize(gc, getBounds().width, 0);
 		Rectangle titlebarBounds = new Rectangle(getBounds().x, 0, titlebarSize.x, titlebarSize.y);
 		getLnfTitlebarRenderer().setBounds(titlebarBounds);
-		getLnfTitlebarRenderer().paint(gc, getTitle());
+		getLnfTitlebarRenderer().paint(gc, this);
 
 	}
 
@@ -241,6 +247,14 @@ public class EmbeddedTitleBar extends Canvas {
 	 */
 	public Image getImage() {
 		return image;
+	}
+
+	public void setMarkers(Collection<? extends IMarker> markers) {
+		this.markers = markers;
+	}
+
+	public Collection<? extends IMarker> getMarkers() {
+		return markers;
 	}
 
 	protected boolean isOverClose(Point point) {
