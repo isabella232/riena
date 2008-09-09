@@ -145,15 +145,15 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		hFillFactory.hint(150, hHint).applyTo(treePersons);
 		addUIControl(treePersons, "treePersons"); //$NON-NLS-1$
 
-		Tree treePersonsWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
-		treePersonsWCols.setLinesVisible(true);
-		treePersonsWCols.setHeaderVisible(true);
-		TreeColumn trc1 = new TreeColumn(treePersonsWCols, SWT.NONE);
+		Tree treeWCols = new Tree(composite, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
+		treeWCols.setLinesVisible(true);
+		treeWCols.setHeaderVisible(true);
+		TreeColumn trc1 = new TreeColumn(treeWCols, SWT.NONE);
 		trc1.setWidth(120);
-		TreeColumn trc2 = new TreeColumn(treePersonsWCols, SWT.NONE);
+		TreeColumn trc2 = new TreeColumn(treeWCols, SWT.NONE);
 		trc2.setWidth(40);
-		hFillFactory.hint(200, hHint).applyTo(treePersonsWCols);
-		addUIControl(treePersonsWCols, "treePersonsWCols"); //$NON-NLS-1$
+		hFillFactory.hint(200, hHint).applyTo(treeWCols);
+		addUIControl(treeWCols, "treeWCols"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Buttons:"); //$NON-NLS-1$
 		composite = createComposite(group);

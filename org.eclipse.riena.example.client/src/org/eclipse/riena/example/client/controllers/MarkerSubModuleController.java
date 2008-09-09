@@ -95,14 +95,14 @@ public class MarkerSubModuleController extends SubModuleController {
 				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 		treePersons.updateFromModel();
 
-		final IGroupedTreeTableRidget treePersonsWCols = (IGroupedTreeTableRidget) getRidget("treePersonsWCols"); //$NON-NLS-1$
-		treePersonsWCols.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		treePersonsWCols.setGroupingEnabled(true);
+		final IGroupedTreeTableRidget treeWCols = (IGroupedTreeTableRidget) getRidget("treeWCols"); //$NON-NLS-1$
+		treeWCols.setSelectionType(ISelectableRidget.SelectionType.MULTI);
+		treeWCols.setGroupingEnabled(true);
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
 		colHeaders = new String[] { "Word", "#A" }; //$NON-NLS-1$ //$NON-NLS-2$
-		treePersonsWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
+		treeWCols.bindToModel(createTreeTableRoots(), WordNode.class, ITreeNode.PROPERTY_CHILDREN,
 				ITreeNode.PROPERTY_PARENT, colValues, colHeaders);
-		treePersonsWCols.updateFromModel();
+		treeWCols.updateFromModel();
 
 		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
 		buttonToggle.setText("Toggle"); //$NON-NLS-1$
@@ -113,7 +113,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
 		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, choiceType,
-				choiceFlavor, listPersons, tablePersons, treePersons, treePersonsWCols, buttonToggle, buttonPush,
+				choiceFlavor, listPersons, tablePersons, treePersons, treeWCols, buttonToggle, buttonPush,
 				buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
@@ -138,7 +138,7 @@ public class MarkerSubModuleController extends SubModuleController {
 					listPersons.setSelection((Object) null);
 					tablePersons.setSelection((Object) null);
 					treePersons.setSelection((Object) null);
-					treePersonsWCols.setSelection((Object) null);
+					treeWCols.setSelection((Object) null);
 					buttonToggle.setSelected(false);
 					buttonRadioA.setSelected(false);
 					buttonRadioB.setSelected(false);
