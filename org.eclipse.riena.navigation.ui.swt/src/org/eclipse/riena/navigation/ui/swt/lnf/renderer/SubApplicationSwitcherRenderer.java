@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -22,12 +23,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Renderer of the switcher between to sub applications.
  */
 public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
+	private Control control;
 	private List<SubApplicationItem> items;
 
 	/**
@@ -36,6 +39,11 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
+
+		Assert.isNotNull(gc);
+		Assert.isNotNull(value);
+		Assert.isTrue(value instanceof Control);
+		control = (Control) value;
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
@@ -71,14 +79,12 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		}
 		x = xPosition;
 		for (SubApplicationItem item : getItems()) {
-			tabRenderer.setLabel(item.getLabel());
-			tabRenderer.setIcon(item.getIcon());
-			tabRenderer.setActivated(item.isActivated());
+			initItemRenderer(tabRenderer, item);
 			Point size = tabRenderer.computeSize(gc, null);
 			y = getBounds().height - size.y;
 			tabRenderer.setBounds(x, y, size.x, size.y);
 			if (!item.isActivated()) {
-				tabRenderer.paint(gc, null);
+				tabRenderer.paint(gc, control);
 				item.setBounds(tabRenderer.getBounds());
 			}
 			x += size.x;
@@ -87,18 +93,33 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		// active tab item
 		x = xPosition;
 		for (SubApplicationItem item : getItems()) {
-			tabRenderer.setLabel(item.getLabel());
-			tabRenderer.setIcon(item.getIcon());
-			tabRenderer.setActivated(item.isActivated());
+			initItemRenderer(tabRenderer, item);
 			Point size = tabRenderer.computeSize(gc, null);
 			if (item.isActivated()) {
 				y = getBounds().height - size.y;
 				tabRenderer.setBounds(x, y, size.x, size.y);
-				tabRenderer.paint(gc, null);
+				tabRenderer.paint(gc, control);
 				item.setBounds(tabRenderer.getBounds());
 			}
 			x += size.x;
 		}
+
+	}
+
+	/**
+	 * Sets some properties of the renderer. The correct value delivers the
+	 * given item.
+	 * 
+	 * @param tabRenderer
+	 *            - renderer of an item
+	 * @param item
+	 */
+	private void initItemRenderer(SubApplicationTabRenderer tabRenderer, SubApplicationItem item) {
+
+		tabRenderer.setLabel(item.getLabel());
+		tabRenderer.setIcon(item.getIcon());
+		tabRenderer.setActivated(item.isActivated());
+		tabRenderer.setMarkers(item.getMarkers());
 
 	}
 

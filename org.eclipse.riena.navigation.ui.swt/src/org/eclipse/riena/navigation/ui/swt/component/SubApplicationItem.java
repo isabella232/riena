@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.component;
 
+import java.util.Collection;
+
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -28,11 +31,11 @@ public class SubApplicationItem {
 	/**
 	 * Constructs a new instance of this class.
 	 * 
-	 * @param parent -
-	 *            switcher for sub-applications which will be the parent of the
-	 *            new instance
-	 * @param subApplicationNode -
-	 *            node of the sub-application (model)
+	 * @param parent
+	 *            - switcher for sub-applications which will be the parent of
+	 *            the new instance
+	 * @param subApplicationNode
+	 *            - node of the sub-application (model)
 	 */
 	public SubApplicationItem(Composite parent, ISubApplicationNode subApplicationNode) {
 		this.parent = parent;
@@ -117,6 +120,15 @@ public class SubApplicationItem {
 	 */
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	/**
+	 * Returns all markers of the node of the sub-application.
+	 * 
+	 * @return collection of markers
+	 */
+	public Collection<? extends IMarker> getMarkers() {
+		return getSubApplicationNode().getMarkers();
 	}
 
 }

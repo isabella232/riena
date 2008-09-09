@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -27,6 +28,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Control to switch between sub-applications.
@@ -36,6 +38,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private List<SubApplicationItem> items;
 	private TabSelector tabSelector;
 	private PaintDelegation paintDelegation;
+	private Control control;
 
 	/**
 	 * Creates a new widget.
@@ -51,6 +54,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationNode applicationModel) {
 
 		super(parent, style | SWT.DOUBLE_BUFFERED);
+		control = this;
 		items = new ArrayList<SubApplicationItem>();
 		registerItems(applicationModel);
 
@@ -91,7 +95,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 			GC gc = e.gc;
 			getRenderer().setBounds(getParent().getBounds());
 			getRenderer().setItems(getItems());
-			getRenderer().paint(gc, null);
+			getRenderer().paint(gc, control);
 		}
 
 	}
@@ -158,11 +162,30 @@ public class SubApplicationSwitcherWidget extends Canvas {
 
 		List<ISubApplicationNode> subApps = applicationModel.getChildren();
 		for (ISubApplicationNode subApp : subApps) {
+			addListeners(subApp);
 			SubApplicationItem item = new SubApplicationItem(this, subApp);
 			item.setIcon(subApp.getIcon());
 			item.setLabel(subApp.getLabel());
 			getItems().add(item);
 		}
+
+	}
+
+	/**
+	 * Adds a listener to the given sub-application.
+	 * 
+	 * @param subApp
+	 *            - node of sub-application
+	 */
+	private void addListeners(ISubApplicationNode subApp) {
+
+		subApp.addListener(new SubApplicationNodeListener() {
+			@Override
+			public void markersChanged(ISubApplicationNode source) {
+				super.markersChanged(source);
+				redraw();
+			}
+		});
 
 	}
 

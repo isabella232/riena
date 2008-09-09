@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
+import java.util.Collection;
+
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.UIProcessFinishedFlasher;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -22,6 +27,7 @@ import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Renderer of a tab of the switcher between sub-applications.
@@ -48,6 +54,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private String icon;
 	private String label;
 	private boolean activated;
+	private Control control;
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -55,6 +62,11 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	@Override
 	public void paint(GC gc, Object value) {
+
+		Assert.isNotNull(gc);
+		Assert.isNotNull(value);
+		Assert.isTrue(value instanceof Control);
+		control = (Control) value;
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		int leftInset = 0;
@@ -71,13 +83,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Background
 		Color backgroundStartColor = lnf
 				.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR);
-		if (isActivated()) {
+		if (isActivated() || isProcessMarkerVisible()) {
 			backgroundStartColor = lnf
 					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR);
 		}
 		gc.setForeground(backgroundStartColor);
 		Color backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR);
-		if (isActivated()) {
+		if (isActivated() || isProcessMarkerVisible()) {
 			backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR);
 		}
 		gc.setBackground(backgroundEndColor);
@@ -147,10 +159,10 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 			gc.drawLine(x, y, x2, y2);
 		}
 		// - bottom
-		if (!isActivated()) {
-			gc.setForeground(borderBottomLeftColor);
-		} else {
+		if (isActivated()) {
 			gc.setForeground(backgroundEndColor);
+		} else {
+			gc.setForeground(borderBottomLeftColor);
 		}
 		x = getBounds().x - leftInset;
 		y = getBounds().y + getHeight();
@@ -176,7 +188,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawText(getLabel(), x, y, true);
 
 		// Selection
-		if (isActivated()) {
+		if (isActivated() || isProcessMarkerVisible()) {
 			Color selColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			gc.setForeground(selColor);
 			gc.setBackground(selColor);
@@ -200,6 +212,31 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 			h = 4;
 			gc.fillGradientRectangle(x, y, w, h, true);
 		}
+
+		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
+		for (UIProcessFinishedMarker processMarker : markers) {
+			if (!processMarker.isActivated()) {
+				startFlasher(processMarker);
+				break;
+			}
+		}
+
+	}
+
+	/**
+	 * Returns {@code true} if the finished marker of an UI process is visible
+	 * (on).
+	 * 
+	 * @return {@code true} if marker is visible; otherwise {@code false}
+	 */
+	private boolean isProcessMarkerVisible() {
+
+		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
+		for (UIProcessFinishedMarker processMarker : markers) {
+			return processMarker.isOn();
+		}
+
+		return false;
 
 	}
 
@@ -226,10 +263,8 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		selStartColor.dispose();
-		selStartColor = null;
-		selEndColor.dispose();
-		selEndColor = null;
+		SwtUtilities.disposeResource(selStartColor);
+		SwtUtilities.disposeResource(selEndColor);
 	}
 
 	/**
@@ -334,6 +369,38 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	public void setActivated(boolean activated) {
 		this.activated = activated;
+	}
+
+	/**
+	 * Creates and starts the flasher of a finished UI process.
+	 * 
+	 * @param processMarker
+	 *            - marker of finished UI process.
+	 */
+	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
+
+		MarkerUpdater updater = new MarkerUpdater();
+
+		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
+		processMarker.activate();
+		flasher.start();
+
+	}
+
+	/**
+	 * This class updates (redraws) the tab, so that the marker are also updated
+	 * (redrawn).
+	 */
+	private class MarkerUpdater implements Runnable {
+
+		/**
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			if (control != null) {
+				control.redraw();
+			}
+		}
 	}
 
 }
