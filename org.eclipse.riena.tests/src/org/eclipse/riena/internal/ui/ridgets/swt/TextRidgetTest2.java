@@ -12,11 +12,11 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
-import java.util.Date;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -542,7 +542,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ITextFieldRidget ridget = getRidget();
 
 		DateBean dateBean = new DateBean();
-		dateBean.setValue(new Date(0));
+		dateBean.setValue(TestUtils.createTZAdjustedDate(0));
 
 		ridget.addValidationRule(new ValidIntermediateDate("dd.MM.yyyy"), ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.setUIControlToModelConverter(new StringToDateConverter("dd.MM.yyyy"));
