@@ -41,7 +41,9 @@ public class DateToStringConverter extends Converter {
 		if (fromObject == null) {
 			return null;
 		}
-		return format.format(fromObject);
+		synchronized (format) {
+			return format.format(fromObject);
+		}
 	}
 
 }
