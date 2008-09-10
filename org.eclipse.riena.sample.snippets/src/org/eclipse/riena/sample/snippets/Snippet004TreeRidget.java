@@ -30,11 +30,9 @@ public class Snippet004TreeRidget {
 		Tree tree = new Tree(shell, SWT.FULL_SELECTION | SWT.MULTI);
 
 		ITreeRidget treeRidget = (ITreeRidget) SwtRidgetFactory.createRidget(tree);
-		// treeRidget.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		ITreeNode[] roots = createTreeInput();
 		treeRidget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
-		// treeRidget.setSelection(roots[0].getChildren().get(0));
 
 	}
 
@@ -76,6 +74,10 @@ public class Snippet004TreeRidget {
 		new TreeNode(greek, "Hermes"); //$NON-NLS-1$
 		new TreeNode(greek, "Hestia"); //$NON-NLS-1$
 		new TreeNode(greek, "Zeus"); //$NON-NLS-1$
+		ITreeNode greekDemigods = new TreeNode(greek, "Demigods"); //$NON-NLS-1$
+		new TreeNode(greekDemigods, "Achilles"); //$NON-NLS-1$
+		new TreeNode(greekDemigods, "Hercules"); //$NON-NLS-1$
+		new TreeNode(greekDemigods, "Perseus "); //$NON-NLS-1$
 
 		ITreeNode roman = new TreeNode(root, "Roman Gods"); //$NON-NLS-1$
 		new TreeNode(roman, "Diana"); //$NON-NLS-1$
