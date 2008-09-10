@@ -8,20 +8,32 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * All tests of the package org.eclipse.riena.ui.ridgets.
+ * All tests of the package org.eclipse.riena.ui.ridgets.validation.
  */
 public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(ValueBindingSupportTest.class);
+		suite.addTestSuite(MaxLengthTest.class);
+		suite.addTestSuite(MaxNumberLengthTest.class);
+		suite.addTestSuite(MinLengthTest.class);
+		suite.addTestSuite(RequiredFieldTest.class);
+		suite.addTestSuite(ValidatorCollectionTest.class);
+		suite.addTestSuite(ValidCharactersTest.class);
+		suite.addTestSuite(ValidDateTest.class);
+		suite.addTestSuite(ValidDecimalTest.class);
+		suite.addTestSuite(ValidEmailAddressTest.class);
+		suite.addTestSuite(ValidExpressionTest.class);
+		suite.addTestSuite(ValidIntegerTest.class);
+		suite.addTestSuite(ValidIntermediateDateTest.class);
+		suite.addTestSuite(ValidRangeTest.class);
 		return suite;
 	}
 

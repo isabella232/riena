@@ -8,20 +8,24 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.databinding;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * All tests of the package org.eclipse.riena.ui.ridgets.
+ * All tests of the package org.eclipse.riena.ui.ridgets.databinding.
  */
-public class AllTests extends TestCase {
+public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(ValueBindingSupportTest.class);
+		TestSuite suite = new TestSuite("Test for org.eclipse.riena.ui.ridgets.databinding");
+		// $JUnit-BEGIN$
+		// TODO [ev] suite.addTestSuite(DateToStringConverterTest.class);
+		suite.addTestSuite(GregorianCalendarToStringConverterTest.class);
+		suite.addTestSuite(RidgetUpdateValueStrategyTest.class);
+		suite.addTestSuite(StringToGregorianCalendarConverterTest.class);
+		// $JUnit-END$
 		return suite;
 	}
 

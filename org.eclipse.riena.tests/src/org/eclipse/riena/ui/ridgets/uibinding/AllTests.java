@@ -8,20 +8,21 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.uibinding;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * All tests of the package org.eclipse.riena.ui.ridgets.
+ * All tests of the package org.eclipse.riena.ui.ridgets.uibinding.
  */
 public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(ValueBindingSupportTest.class);
+		suite.addTestSuite(InjectBindingManagerTest.class);
+		suite.addTestSuite(DefaultBindingManagerTest.class);
 		return suite;
 	}
 
