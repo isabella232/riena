@@ -43,6 +43,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		if (getActionRidget() != null && !registered) {
 			initUIProcessAction();
