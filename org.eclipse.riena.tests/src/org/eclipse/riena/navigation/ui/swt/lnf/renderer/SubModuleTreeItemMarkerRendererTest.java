@@ -102,18 +102,20 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 		assertFalse(renderer.isPaintMarkersCalled());
 
 		SubModuleNode node = new SubModuleNode();
-		item.setData(node);
+		renderer.setMarkers(node.getMarkers());
 		renderer.resetPaintMarkersCalled();
 		renderer.paint(gc, item);
 		assertFalse(renderer.isPaintMarkersCalled());
 
 		node.addMarker(new ErrorMarker());
+		renderer.setMarkers(node.getMarkers());
 		renderer.resetPaintMarkersCalled();
 		renderer.paint(gc, item);
 		assertTrue(renderer.isPaintMarkersCalled());
 
 		node.removeAllMarkers();
 		node.addMarker(new NegativeMarker());
+		renderer.setMarkers(node.getMarkers());
 		renderer.resetPaintMarkersCalled();
 		renderer.paint(gc, item);
 		assertFalse(renderer.isPaintMarkersCalled());
