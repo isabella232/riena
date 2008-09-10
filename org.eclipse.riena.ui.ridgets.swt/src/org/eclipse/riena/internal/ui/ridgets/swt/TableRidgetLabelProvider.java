@@ -56,4 +56,19 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 		return super.getColumnImage(element, columnIndex);
 	}
 
+	/**
+	 * Returns the value of the given element at the specified column index.
+	 * 
+	 * @param element
+	 * @param columnIndex
+	 *            - column index
+	 * @return value or {@code null} if column index is not correct
+	 */
+	public Object getColumnValue(Object element, int columnIndex) {
+		if (columnIndex < attributeMap.length) {
+			return attributeMap[columnIndex].get(element);
+		}
+		return null;
+	}
+
 }

@@ -54,7 +54,7 @@ public class Snippet003TableRidgetSorting {
 				.bindToModel(new WritableList(input, MyNode.class), MyNode.class, columnPropertyNames, columnHeaders);
 		tableRidget.setComparator(0, new StringComparator());
 		tableRidget.setColumnSortable(1, false);
-		tableRidget.setComparator(2, new StringComparator());
+		tableRidget.setComparator(2, new IntegerComparator());
 		tableRidget.updateFromModel();
 
 	}
@@ -125,6 +125,14 @@ public class Snippet003TableRidgetSorting {
 			String s1 = (String) o1;
 			String s2 = (String) o2;
 			return s1.compareTo(s2);
+		}
+	}
+
+	private static final class IntegerComparator implements Comparator<Object> {
+		public int compare(Object o1, Object o2) {
+			Integer i1 = (Integer) o1;
+			Integer i2 = (Integer) o2;
+			return i1.compareTo(i2);
 		}
 	}
 

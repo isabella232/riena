@@ -26,7 +26,6 @@ import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -507,16 +506,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 			if ((viewer instanceof ContentViewer) && (sortedColumn != -1)) {
 				IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
-				if (prov instanceof ITableLabelProvider) {
-					ITableLabelProvider lprov = (ITableLabelProvider) prov;
-					String value1 = lprov.getColumnText(e1, sortedColumn);
-					String value2 = lprov.getColumnText(e2, sortedColumn);
-					if (value1 == null) {
-						value1 = ""; //$NON-NLS-1$
-					}
-					if (value2 == null) {
-						value2 = ""; //$NON-NLS-1$
-					}
+				if (prov instanceof TableRidgetLabelProvider) {
+					TableRidgetLabelProvider lprov = (TableRidgetLabelProvider) prov;
+					Object value1 = lprov.getColumnValue(e1, sortedColumn);
+					Object value2 = lprov.getColumnValue(e2, sortedColumn);
 					return getComparator().compare(value1, value2);
 				}
 			}
