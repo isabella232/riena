@@ -14,17 +14,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.eclipse.core.databinding.conversion.Converter;
 
 /**
  * Converts a String that matches a given pattern to a Date.
- * 
- * @see #org.eclipse.riena.ui.ridgets.databinding.StringToDateValidator
  */
 public class StringToDateConverter extends Converter {
 
-	private DateFormat format;
+	private final DateFormat format;
+	private final TimeZone timezone;
 
 	/**
 	 * Creates a StringToDateConverter.
@@ -35,6 +35,11 @@ public class StringToDateConverter extends Converter {
 	public StringToDateConverter(String pattern) {
 		super(String.class, Date.class);
 		format = new SimpleDateFormat(pattern);
+		if (!hasTimeZone(pattern)) {
+			timezone = TimeZone.getDefault();
+		} else {
+			timezone = null;
+		}
 	}
 
 	/**
@@ -45,10 +50,32 @@ public class StringToDateConverter extends Converter {
 			return null;
 		}
 		try {
-			return format.parse((String) fromObject);
+			synchronized (format) {
+				Date parsedDate = format.parse((String) fromObject);
+				return createGMTDate(parsedDate);
+			}
 		} catch (ParseException e) {
 			throw new ConversionFailure("Cannot convert \"" + fromObject + "\" to a java.util.Date.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	// helping methods
+	// ////////////////
+
+	/**
+	 * If necessary convert from 'local' date into a GMT Date.
+	 */
+	private Object createGMTDate(Date parsedDate) {
+		Date result = parsedDate;
+		if (timezone != null) {
+			long parsedTime = parsedDate.getTime();
+			int offset = timezone.getOffset(parsedTime);
+			result = new Date(parsedTime + offset);
+		}
+		return result;
+	}
+
+	private boolean hasTimeZone(String pattern) {
+		return pattern.contains("zzz") || pattern.contains("ZZZZ"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }
