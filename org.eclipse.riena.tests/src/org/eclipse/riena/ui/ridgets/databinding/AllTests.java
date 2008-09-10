@@ -21,7 +21,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.eclipse.riena.ui.ridgets.databinding");
 		// $JUnit-BEGIN$
-		// TODO [ev] suite.addTestSuite(DateToStringConverterTest.class);
+		suite.addTestSuite(DateToStringConverterTest.class);
 		suite.addTestSuite(GregorianCalendarToStringConverterTest.class);
 		suite.addTestSuite(RidgetUpdateValueStrategyTest.class);
 		suite.addTestSuite(StringToGregorianCalendarConverterTest.class);
