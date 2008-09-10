@@ -43,7 +43,6 @@ public class DateToStringConverterTest extends TestCase {
 		assertEquals(null, result); //$NON-NLS-1$
 
 		result = (Date) converter.convert("01/01/1970");
-		System.out.println(result);
 		assertEquals(0, result.getTime());
 	}
 
@@ -54,7 +53,6 @@ public class DateToStringConverterTest extends TestCase {
 		assertEquals(null, result); //$NON-NLS-1$
 
 		result = (Date) converter.convert("01/01/1970 GMT");
-		System.out.println(result);
 		assertEquals(0, result.getTime());
 	}
 

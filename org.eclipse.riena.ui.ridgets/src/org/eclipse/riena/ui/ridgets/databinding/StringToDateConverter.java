@@ -65,12 +65,12 @@ public class StringToDateConverter extends Converter {
 	/**
 	 * If necessary convert from 'local' date into a GMT Date.
 	 */
-	private Object createGMTDate(Date parsedDate) {
-		Date result = parsedDate;
+	private Date createGMTDate(Date date) {
+		Date result = date;
 		if (timezone != null) {
-			long parsedTime = parsedDate.getTime();
-			int offset = timezone.getOffset(parsedTime);
-			result = new Date(parsedTime + offset);
+			long time = date.getTime();
+			int offset = timezone.getOffset(time);
+			result = new Date(time + offset);
 		}
 		return result;
 	}
