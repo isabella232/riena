@@ -17,8 +17,8 @@ import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.UIProcessFinishedFlasher;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -33,7 +33,16 @@ import org.eclipse.swt.widgets.TreeItem;
 public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 
 	private TreeItem item;
-	private Runnable updater;
+	private FlasherSupportForRenderer flasherSupport;
+
+	/**
+	 * Creates a new instance of the renderer for the markers of sub-modules in
+	 * a tree.
+	 */
+	public SubModuleTreeItemMarkerRenderer() {
+		super();
+		flasherSupport = new FlasherSupportForRenderer(this, new MarkerUpdater());
+	}
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -47,6 +56,8 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		Assert.isTrue(value instanceof TreeItem);
 
 		item = (TreeItem) value;
+
+		flasherSupport.startFlasher();
 
 		Collection<IIconizableMarker> markers = getMarkersOfType(IIconizableMarker.class);
 		if (!markers.isEmpty()) {
@@ -74,16 +85,8 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 				}
 			}
 			if (iconizableMarker instanceof UIProcessFinishedMarker) {
-				UIProcessFinishedMarker processMarker = (UIProcessFinishedMarker) iconizableMarker;
-				if (!processMarker.isActivated()) {
-					// the flasher for the UI process finished marker was not
-					// starter (activated) already
-					startFlasher(processMarker);
-					continue;
-				} else if (!processMarker.isOn()) {
-					// the marker (the image of the marker) is not visible at
-					// the moment
-					continue;
+				if (!flasherSupport.isProcessMarkerVisible()) {
+					return;
 				}
 			}
 
@@ -147,29 +150,11 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	}
 
 	/**
-	 * Creates and starts the flasher of a finished UI process.
-	 * 
-	 * @param processMarker
-	 *            - marker of finished UI process.
-	 */
-	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
-
-		if (updater == null) {
-			updater = new MarkerUpdater();
-		}
-
-		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
-		processMarker.activate();
-		flasher.start();
-
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		updater = null;
 		item = null;
+		flasherSupport = null;
 	}
 
 	/**

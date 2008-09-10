@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
-import java.util.Collection;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -47,8 +45,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private boolean pressed;
 	private boolean hover;
 	private boolean closeable;
-	private MarkerUpdater updater;
+	private FlasherSupportForRenderer flasherSupport;
 
+	/**
+	 * Creates a new instance of the renderer for an embedded title bar.
+	 */
 	public EmbeddedTitlebarRenderer() {
 		super();
 		image = null;
@@ -56,6 +57,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		pressed = false;
 		hover = false;
 		closeable = false;
+		flasherSupport = new FlasherSupportForRenderer(this, new MarkerUpdater());
 	}
 
 	/**
@@ -65,7 +67,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		SwtUtilities.disposeResource(getImage());
 		SwtUtilities.disposeResource(edgeColor);
 		control = null;
-		updater = null;
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		Color startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR);
 		Color endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR);
-		if (isActive() || isProcessMarkerVisible()) {
+		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
 			startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR);
 			endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR);
 		}
@@ -149,7 +150,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		// Border
 		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
-		if (isActive() || isProcessMarkerVisible()) {
+		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
 			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
@@ -228,30 +229,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			getHoverBorderRenderer().paint(gc, null);
 		}
 
-		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
-			if (!processMarker.isActivated()) {
-				startFlasher(processMarker);
-				break;
-			}
-		}
-
-	}
-
-	/**
-	 * Returns {@code true} if the finished marker of an UI process is visible
-	 * (on).
-	 * 
-	 * @return {@code true} if marker is visible; otherwise {@code false}
-	 */
-	private boolean isProcessMarkerVisible() {
-
-		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
-			return processMarker.isOn();
-		}
-
-		return false;
+		flasherSupport.startFlasher();
 
 	}
 
@@ -394,24 +372,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		Font font = getTitlebarFont();
 		gc.setFont(font);
 		return SwtUtilities.clipText(gc, text, maxWidth);
-
-	}
-
-	/**
-	 * Creates and starts the flasher of a finished UI process.
-	 * 
-	 * @param processMarker
-	 *            - marker of finished UI process.
-	 */
-	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
-
-		if (updater == null) {
-			updater = new MarkerUpdater();
-		}
-
-		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
-		processMarker.activate();
-		flasher.start();
 
 	}
 

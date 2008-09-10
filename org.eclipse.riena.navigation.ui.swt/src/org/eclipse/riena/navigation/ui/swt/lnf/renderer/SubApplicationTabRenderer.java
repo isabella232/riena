@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import java.util.Collection;
-
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.UIProcessFinishedFlasher;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -55,6 +52,16 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private String label;
 	private boolean activated;
 	private Control control;
+	private FlasherSupportForRenderer flasherSupport;
+
+	/**
+	 * Create a new instance of the renderer of a tab of the sub-application
+	 * switcher.
+	 */
+	public SubApplicationTabRenderer() {
+		super();
+		flasherSupport = new FlasherSupportForRenderer(this, new MarkerUpdater());
+	}
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -83,13 +90,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		// Background
 		Color backgroundStartColor = lnf
 				.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR);
-		if (isActivated() || isProcessMarkerVisible()) {
+		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
 			backgroundStartColor = lnf
 					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR);
 		}
 		gc.setForeground(backgroundStartColor);
 		Color backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR);
-		if (isActivated() || isProcessMarkerVisible()) {
+		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
 			backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR);
 		}
 		gc.setBackground(backgroundEndColor);
@@ -188,7 +195,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		gc.drawText(getLabel(), x, y, true);
 
 		// Selection
-		if (isActivated() || isProcessMarkerVisible()) {
+		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
 			Color selColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			gc.setForeground(selColor);
 			gc.setBackground(selColor);
@@ -213,30 +220,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 			gc.fillGradientRectangle(x, y, w, h, true);
 		}
 
-		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
-			if (!processMarker.isActivated()) {
-				startFlasher(processMarker);
-				break;
-			}
-		}
-
-	}
-
-	/**
-	 * Returns {@code true} if the finished marker of an UI process is visible
-	 * (on).
-	 * 
-	 * @return {@code true} if marker is visible; otherwise {@code false}
-	 */
-	private boolean isProcessMarkerVisible() {
-
-		Collection<UIProcessFinishedMarker> markers = getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
-			return processMarker.isOn();
-		}
-
-		return false;
+		flasherSupport.startFlasher();
 
 	}
 
@@ -369,22 +353,6 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	public void setActivated(boolean activated) {
 		this.activated = activated;
-	}
-
-	/**
-	 * Creates and starts the flasher of a finished UI process.
-	 * 
-	 * @param processMarker
-	 *            - marker of finished UI process.
-	 */
-	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
-
-		MarkerUpdater updater = new MarkerUpdater();
-
-		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
-		processMarker.activate();
-		flasher.start();
-
 	}
 
 	/**

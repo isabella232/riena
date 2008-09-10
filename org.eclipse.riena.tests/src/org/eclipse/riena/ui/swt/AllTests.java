@@ -14,6 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRendererTest;
 import org.eclipse.riena.ui.swt.utils.SwtUtilitiesTest;
 
 /**
@@ -31,6 +32,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(StatuslineNumberTest.class);
 		suite.addTestSuite(SwtUtilitiesTest.class);
 		suite.addTestSuite(EmbeddedTitleBarTest.class);
+		suite.addTestSuite(FlasherSupportForRendererTest.class);
 		return suite;
 	}
 
