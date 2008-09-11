@@ -14,8 +14,6 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.tests.TestUtils;
-
 /**
  * Tests for the classes {@link DateToStringConverter} and
  * {@link StringToDateConverter}.
@@ -31,7 +29,8 @@ public class DateToStringConverterTest extends TestCase {
 		result = converter.convert(new Date(0L));
 		assertEquals("01/01/1970", result); //$NON-NLS-1$
 
-		result = converter.convert(TestUtils.createTZAdjustedDate(1221011682194L));
+		Date date = new Date(1221011682194L);
+		result = converter.convert(date);
 		assertEquals("09/10/2008", result);
 	}
 
