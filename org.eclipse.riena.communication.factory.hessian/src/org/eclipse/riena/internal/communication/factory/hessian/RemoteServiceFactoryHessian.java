@@ -122,6 +122,11 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 			private HashMap<String, List<String>> customRequestHeader;
 			private IProgressMonitorList progressMonitorList;
+			private int bytesRead;
+			private int totalBytesRead = 0;
+			private int bytesWritten;
+			private int totalBytesWritten = 0;
+			private boolean firstEvent = true;
 
 			public MsgCtx(Object proxy) {
 				super();
@@ -166,6 +171,60 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 			public IProgressMonitorList getProgressMonitorList() {
 				return progressMonitorList;
+			}
+
+			public void startCall() {
+				progressMonitorList.fireStartEvent();
+			}
+
+			public void endCall() {
+				// if no communication happened than this was a local call (like for equals or hashCode)
+				if (totalBytesRead == 0 && totalBytesWritten == 0 && bytesRead == 0 && bytesWritten == 0) {
+					return;
+				}
+				if (bytesRead != 0) {
+					internalFireReadEvent();
+				}
+				progressMonitorList.fireEndEvent(totalBytesRead + totalBytesWritten);
+			}
+
+			public void fireReadEvent(int parmBytesRead) {
+				if (firstEvent) {
+					progressMonitorList.fireStartEvent();
+					firstEvent = false;
+				}
+
+				if (bytesWritten != 0) {
+					internalFireWriteEvent();
+				}
+				bytesRead += parmBytesRead;
+				if (bytesRead >= IProgressMonitorList.BYTE_COUNT_INCR) {
+					internalFireReadEvent();
+				}
+			}
+
+			private void internalFireReadEvent() {
+				totalBytesRead += bytesRead;
+				bytesRead = 0;
+				progressMonitorList.fireReadEvent(-1, totalBytesRead);
+			}
+
+			public void fireWriteEvent(int parmBytesWritten) {
+				if (firstEvent) {
+					progressMonitorList.fireStartEvent();
+					firstEvent = false;
+				}
+
+				bytesWritten += parmBytesWritten;
+				if (bytesWritten >= IProgressMonitorList.BYTE_COUNT_INCR) {
+					internalFireWriteEvent();
+				}
+			}
+
+			private void internalFireWriteEvent() {
+				totalBytesWritten += bytesWritten;
+				bytesWritten = 0;
+				progressMonitorList.fireWriteEvent(-1, totalBytesWritten);
 			}
 		}
 	}

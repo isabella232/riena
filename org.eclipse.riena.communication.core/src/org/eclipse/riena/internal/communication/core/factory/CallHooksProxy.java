@@ -43,11 +43,8 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			mc = mca.createMessageContext(getProxiedInstance());
 		}
 
-		CallContext context = null;
-		// only create context (might be expensive), if you have callHooks
+		CallContext context = new CallContext(rsd, method.getName(), mc);
 		if (callHooks.size() > 0) {
-			context = new CallContext(rsd, method.getName(), mc);
-
 			// call before service hook
 			for (ICallHook sHook : callHooks) {
 				sHook.beforeCall(context);
@@ -70,14 +67,11 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			throw new RemoteFailure("error while invoke remote service", e.getTargetException()); //$NON-NLS-1$
 			// throw e.getTargetException();
 		} finally {
-			// context might be null and callHooks were injected during invoke
+			context.getMessageContext().endCall();
+			// call hooks after the call
 			if (callHooks.size() > 0) {
-				if (context != null) {
-					for (ICallHook sHook : callHooks) {
-						sHook.afterCall(context);
-					}
-				} else {
-					throw new RuntimeException("context is null, unexpected situation"); //$NON-NLS-1$
+				for (ICallHook sHook : callHooks) {
+					sHook.afterCall(context);
 				}
 			}
 		}

@@ -18,6 +18,14 @@ public class ProgressMonitorEvent {
 	private int totalBytes;
 	private int bytesProcessed;
 
+	public ProgressMonitorEvent() {
+		super();
+	}
+
+	public ProgressMonitorEvent(int totalBytes) {
+		this.totalBytes = totalBytes;
+	}
+
 	public ProgressMonitorEvent(int totalBytes, int bytesProcessed) {
 		this.totalBytes = totalBytes;
 		this.bytesProcessed = bytesProcessed;

@@ -63,31 +63,57 @@ public final class ProgressMonitorITest extends RienaTestCase {
 	 * 
 	 * @throws Exception
 	 */
-	public void testSimpleProgress() throws Exception {
-		registry.addProgressMonitor(attachService, new IProgressMonitor() {
-
-			public void end() {
-				System.out.println("end");
-			}
-
-			public void request(ProgressMonitorEvent event) {
-				System.out.println(event.getBytesProcessed());
-			}
-
-			public void response(ProgressMonitorEvent event) {
-				System.out.println(event.getBytesProcessed());
-			}
-
-			public void start() {
-				System.out.println("start");
-			}
-
-		}, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+	public void testSendSimpleAttachmentProgress() throws Exception {
+		TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
-		System.out.println("done");
 		assertTrue(i == 15000);
+		monitor.validate(15000 / 512 + 1, 1);
+		registry.removeAllProgressMonitors(attachService);
+	}
+
+	public void testSendLargeAttachmentProgress() throws Exception {
+		TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+
+		Attachment attachment = generateLargeAttachment(15000000);
+		int i = attachService.sendAttachmentAndReturnSize(attachment);
+		assertTrue(i == 15000000);
+		monitor.validate(15000000 / 512 + 1, 1);
+		registry.removeAllProgressMonitors(attachService);
+	}
+
+	public void testReceiveSimpleAttachmentProgress() throws Exception {
+		TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+
+		Attachment attachment = attachService.returnAttachmentForSize(15000);
+		int i = getSize(attachment);
+		assertTrue(i == 15000);
+		monitor.validate(1, i / 512 + 1);
+		registry.removeAllProgressMonitors(attachService);
+	}
+
+	public void testReceiveLargeAttachmentProgress() throws Exception {
+		TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+
+		Attachment attachment = attachService.returnAttachmentForSize(15000000);
+		int i = getSize(attachment);
+		assertTrue(i == 15000000);
+		monitor.validate(1, i / 512 + 1);
+		registry.removeAllProgressMonitors(attachService);
+	}
+
+	private int getSize(Attachment attachment) throws IOException {
+		InputStream input = attachment.readAsStream();
+		int count = 0;
+		while (input.read() != -1) {
+			count++;
+		}
+		return count;
 	}
 
 	private Attachment generateLargeAttachment(final int countInBytes) throws IOException {
@@ -112,4 +138,73 @@ public final class ProgressMonitorITest extends RienaTestCase {
 		System.out.println(object.toString());
 	}
 
+	/**
+	 *
+	 */
+	private static final class TestProgressMonitor implements IProgressMonitor {
+
+		private boolean start = false;
+		private boolean end = false;
+		int requestCount = 0;
+		int responseCount = 0;
+		int lastResponseLength = -1;
+		private boolean requestDivideable = true;
+		private boolean responseDividable = true;
+
+		public void validate(int requests, int responses) {
+			assertTrue("start method not called", start);
+			assertTrue("end method not called", end);
+			// request count and response count can be larger with with larger size, the protocol overhead gets more (which is included in the count)
+			if (requests != -1) {
+				assertTrue("expected " + requests + " but was " + requestCount + " for number of requestEvents",
+						requests <= requestCount);
+			}
+			if (responses != -1) {
+				assertTrue("expected " + responses + " but was " + responseCount + " for number of responseEvents",
+						responses <= responseCount);
+			}
+		}
+
+		public void request(ProgressMonitorEvent event) {
+			System.out.println(event.getBytesProcessed());
+			if (event.getBytesProcessed() % 512 != 0) {
+				if (requestDivideable == true) {
+					requestDivideable = false;
+				} else {
+					assertTrue(
+							"expected bytesProcess in request to be always dividable by 512 (expect in the last call) :"
+									+ event.getBytesProcessed(), event.getBytesProcessed() % 512 == 0);
+				}
+			}
+
+			requestCount++;
+		}
+
+		public void response(ProgressMonitorEvent event) {
+			System.out.println(event.getBytesProcessed());
+			if (event.getBytesProcessed() % 512 != 0) {
+				if (responseDividable == true) {
+					responseDividable = false;
+				} else {
+					assertTrue(
+							"expected bytesProcess in response to be always dividable by 512 (expect in the last call) :"
+									+ event.getBytesProcessed(), event.getBytesProcessed() % 512 == 0);
+				}
+			}
+			responseCount++;
+			lastResponseLength = event.getBytesProcessed();
+		}
+
+		public void start(ProgressMonitorEvent event) {
+			assertFalse(start);
+			System.out.println("start");
+			start = true;
+		}
+
+		public void end(ProgressMonitorEvent event) {
+			assertFalse(end);
+			System.out.println("end");
+			end = true;
+		}
+	}
 }

@@ -20,7 +20,11 @@ public interface IProgressMonitorList {
 
 	int BYTE_COUNT_INCR = 512;
 
-	void fireSendEvent(int totalBytes, int bytesSent);
+	void fireStartEvent();
+
+	void fireEndEvent(int totalBytes);
+
+	void fireWriteEvent(int totalBytes, int bytesSent);
 
 	void fireReadEvent(int totalBytes, int bytesRead);
 

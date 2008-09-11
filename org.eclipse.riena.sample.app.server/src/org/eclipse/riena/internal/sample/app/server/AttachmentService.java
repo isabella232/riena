@@ -260,6 +260,10 @@ public final class AttachmentService implements IAttachmentService {
 		return i;
 	}
 
+	public Attachment returnAttachmentForSize(int size) throws IOException {
+		return generateLargeAttachment(size);
+	}
+
 	private File setupTestFile(String string) {
 		File file;
 		try {
@@ -272,6 +276,24 @@ public final class AttachmentService implements IAttachmentService {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+
+	private Attachment generateLargeAttachment(final int countInBytes) throws IOException {
+		return new Attachment(new InputStream() {
+
+			private int count = countInBytes;
+			private SecureRandom random = new SecureRandom();
+
+			@Override
+			public int read() throws IOException {
+				count--;
+				if (count >= 0) {
+					return random.nextInt();
+				} else {
+					return -1;
+				}
+			}
+		});
 	}
 
 }

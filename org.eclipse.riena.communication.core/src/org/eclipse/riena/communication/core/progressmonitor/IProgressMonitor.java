@@ -18,23 +18,30 @@ public interface IProgressMonitor {
 
 	/**
 	 * called before the first byte is send on the line
+	 * 
+	 * @param event
+	 *            ProgressMonitorEvent object with information about the
+	 *            progress on this call
 	 */
-	void start();
+	void start(ProgressMonitorEvent event);
 
 	/**
-	 * called after the last byte was read from the line
+	 * called after the webservice call is over
+	 * 
+	 * @param event
+	 *            ProgressMonitorEvent object with information about the
+	 *            progress on this call
 	 */
-	void end();
+	void end(ProgressMonitorEvent event);
 
 	/**
 	 * Called in arbitrary (currently not configurable intervals) when data
 	 * chunks are sent on the line. The last call for one successful request
 	 * will always have bytes == totalBytes.
 	 * 
-	 * @param bytes
-	 *            bytes already sent
-	 * @param totalBytes
-	 *            totalBytes that need to be sent
+	 * @param event
+	 *            ProgressMonitorEvent object with information about the
+	 *            progress on this call
 	 */
 	void request(ProgressMonitorEvent event);
 
@@ -43,8 +50,9 @@ public interface IProgressMonitor {
 	 * chunks are received from the line. the last call for a sucessful response
 	 * will always have bytes == totalBytes
 	 * 
-	 * @param bytes
-	 * @param totalBytes
+	 * @param event
+	 *            ProgressMonitorEvent object with information about the
+	 *            progress on this call
 	 */
 	void response(ProgressMonitorEvent event);
 }

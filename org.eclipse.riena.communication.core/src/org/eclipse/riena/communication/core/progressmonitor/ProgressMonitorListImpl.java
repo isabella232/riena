@@ -50,10 +50,38 @@ public class ProgressMonitorListImpl implements IProgressMonitorList {
 	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList
 	 * #fireSendEvent(int, int)
 	 */
-	public void fireSendEvent(int totalBytes, int bytesSent) {
+	public void fireWriteEvent(int totalBytes, int bytesSent) {
 		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent(totalBytes, bytesSent);
 		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
 			listener.request(progressMonitorEvent);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList
+	 * #fireStartEvent()
+	 */
+	public void fireStartEvent() {
+		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent();
+		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
+			listener.start(progressMonitorEvent);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList
+	 * #fireEndEvent(int)
+	 */
+	public void fireEndEvent(int totalBytes) {
+		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent();
+		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
+			listener.end(progressMonitorEvent);
 		}
 	}
 

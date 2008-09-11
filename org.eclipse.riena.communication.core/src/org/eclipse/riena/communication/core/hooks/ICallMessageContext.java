@@ -27,4 +27,12 @@ public interface ICallMessageContext {
 
 	IProgressMonitorList getProgressMonitorList();
 
+	void startCall();
+
+	void endCall();
+
+	void fireReadEvent(int bytesRead);
+
+	void fireWriteEvent(int bytesSent);
+
 }

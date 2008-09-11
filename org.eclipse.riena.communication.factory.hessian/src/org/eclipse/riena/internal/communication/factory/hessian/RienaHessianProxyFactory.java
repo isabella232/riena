@@ -26,7 +26,6 @@ import java.util.Map;
 
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.util.ReflectionUtils;
 
@@ -97,28 +96,18 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	@Override
 	public AbstractHessianInput getHessianInput(final InputStream is) {
-		final IProgressMonitorList progressMonitorList = mca.getMessageContext().getProgressMonitorList();
-		if (progressMonitorList == null) {
+		final ICallMessageContext messageContext = mca.getMessageContext();
+		if (messageContext.getProgressMonitorList() == null) {
 			return super.getHessianInput(is);
 		} else {
 			return super.getHessianInput(new InputStream() {
 
-				private int progressBytes = 0;
-				private int totalProgressBytes = 0;
-
 				@Override
 				public int read() throws IOException {
 					int b = is.read();
-					if (b == -1 || progressBytes > IProgressMonitorList.BYTE_COUNT_INCR) {
-						totalProgressBytes += progressBytes;
-						progressBytes = 0;
-						progressMonitorList.fireReadEvent(-1, totalProgressBytes);
+					if (b != -1) {
+						messageContext.fireReadEvent(1);
 					}
-					if (b == -1) {
-						return b;
-					}
-
-					progressBytes++;
 					return b;
 				}
 
@@ -128,24 +117,16 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	@Override
 	public AbstractHessianOutput getHessianOutput(final OutputStream os) {
-		final IProgressMonitorList progressMonitorList = mca.getMessageContext().getProgressMonitorList();
-		if (progressMonitorList == null) {
+		final ICallMessageContext messageContext = mca.getMessageContext();
+		if (messageContext.getProgressMonitorList() == null) {
 			return super.getHessianOutput(os);
 		} else {
 			return super.getHessianOutput(new OutputStream() {
 
-				private int progressBytes = 0;
-				private int totalProgressBytes = 0;
-
 				@Override
 				public void write(int b) throws IOException {
 					os.write(b);
-					if (progressBytes > IProgressMonitorList.BYTE_COUNT_INCR) {
-						totalProgressBytes += progressBytes;
-						progressBytes = 0;
-						progressMonitorList.fireReadEvent(-1, totalProgressBytes);
-					}
-					progressBytes++;
+					messageContext.fireWriteEvent(1);
 				}
 
 			});

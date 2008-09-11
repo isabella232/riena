@@ -143,4 +143,11 @@ public interface IAttachmentService {
 	 * @throws IOException
 	 */
 	int sendAttachmentAndReturnSize(Attachment attachment) throws IOException;
+
+	/**
+	 * @param size
+	 * @return
+	 * @throws IOException
+	 */
+	Attachment returnAttachmentForSize(int size) throws IOException;
 }
