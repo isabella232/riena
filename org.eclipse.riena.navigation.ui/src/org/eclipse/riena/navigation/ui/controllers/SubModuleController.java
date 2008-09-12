@@ -22,9 +22,12 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
  */
 public class SubModuleController extends NavigationNodeController<ISubModuleNode> {
 
-	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
+	/**
+	 * The ID of the window ridget in this controller ("windowRidget").
+	 */
+	public static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 
-	private IWindowRidget windowRidget;
+	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
 
 	public SubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
@@ -57,18 +60,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * @param windowRidget
-	 *            the windowRidget to set
-	 */
-	public void setWindowRidget(IWindowRidget windowRidget) {
-		this.windowRidget = windowRidget;
-	}
-
-	/**
 	 * @return the windowRidget
 	 */
 	public IWindowRidget getWindowRidget() {
-		return windowRidget;
+		return (IWindowRidget) getRidget(WINDOW_RIDGET);
 	}
 
 	@Override
@@ -85,6 +80,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @param actionRidget
 	 */
 	public void setDefaultButton(IActionRidget actionRidget) {
+		IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setDefaultButton(actionRidget.getUIControl());
 		}
@@ -94,6 +90,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @return
 	 */
 	public Object getDefaultButton() {
+		IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			return windowRidget.getDefaultButton();
 		}
@@ -101,18 +98,21 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	private void updateLabel() {
+		IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setTitle(getFullTitle());
 		}
 	}
 
 	private void updateCloseable() {
+		IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setCloseable(false);
 		}
 	}
 
 	private void updateActive() {
+		IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setActive(getNavigationNode().isActivated());
 		}
@@ -132,7 +132,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	private void updateIcon() {
-		updateIcon(windowRidget);
+		updateIcon(getWindowRidget());
 	}
 
 	/**
@@ -145,12 +145,12 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * Subclasses should overide to configure their ridget.
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	public void configureRidgets() {
-		if (getWindowRidget() == null) {
-			setWindowRidget((IWindowRidget) getRidget("windowRidget")); //$NON-NLS-1$
-		}
+		// unused
 	}
 
 }

@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -235,9 +234,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	// return new ProgressVisualizer();
 	// }
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#setBlocked(boolean)
-	 */
 	public void setBlocked(boolean blocked) {
 		if (getNavigationNode() != null) {
 			getNavigationNode().setBlocked(blocked);
@@ -245,29 +241,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 	}
 
-	/**
-	 * Sets the blocked state of all contained ridgets. A blocked ridgets must
-	 * not accept any user input an must not be fucusable.
-	 * 
-	 * @param ridgets
-	 *            the Ridgets to be blocked
-	 * @param blocked
-	 *            the blocked state
-	 */
-	public void blockRidgets(Collection<? extends IRidget> ridgets, boolean blocked) {
-		for (Iterator<? extends IRidget> iterator = ridgets.iterator(); iterator.hasNext();) {
-			IRidget object = iterator.next();
-			object.setBlocked(blocked);
-			if (object instanceof IRidgetContainer) {
-				blockRidgets(((IRidgetContainer) object).getRidgets(), blocked);
-			}
-		}
-
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#isBlocked()
-	 */
 	public boolean isBlocked() {
 		return getNavigationNode() != null && getNavigationNode().isBlocked();
 	}
