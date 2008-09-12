@@ -22,10 +22,10 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleViewBuilderAccessor;
+import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -46,8 +46,6 @@ import org.eclipse.ui.part.ViewPart;
  */
 public abstract class SubModuleView<C extends SubModuleController> extends ViewPart implements
 		INavigationNodeView<SWTModuleController, SubModuleNode> {
-
-	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 
 	private Map<ISubModuleNode, C> node2Controler;
 	private AbstractViewBindingDelegate binding;
@@ -128,9 +126,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 	}
 
-	/**
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parentComposite = parent;
@@ -170,7 +165,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		parent.setLayout(new FormLayout());
 
 		title = new EmbeddedTitleBar(parent, SWT.NONE);
-		addUIControl(title, WINDOW_RIDGET);
+		addUIControl(title, SubModuleController.WINDOW_RIDGET);
 		title.setActive(true);
 		FormData formData = new FormData();
 		// don't show the top border of the title => -1
@@ -236,7 +231,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		public void block(ISubModuleNode source, boolean block) {
 			super.block(source, block);
 			if (source.equals(getNavigationNode())) {
-				getController().blockRidgets(getController().getRidgets(), block);
+				ControllerUtils.blockRidgets(getController().getRidgets(), block);
 				blockView(block);
 			}
 		}
@@ -256,9 +251,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 */
 	protected abstract void basicCreatePartControl(Composite parent);
 
-	/**
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
 	@Override
 	public void setFocus() {
 		doBinding();
@@ -270,9 +262,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 		if (getController() != null) {
 			binding.injectRidgets(getController());
-			if (getController().getWindowRidget() == null) {
-				getController().setWindowRidget((IWindowRidget) getController().getRidget(WINDOW_RIDGET));
-			}
 		}
 	}
 
@@ -296,19 +285,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		bind(getNavigationNode());
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#
-	 *      addUpdateListener
-	 *      (org.eclipse.riena.navigation.ui.swt.views.IComponentUpdateListener)
-	 */
 	public void addUpdateListener(IComponentUpdateListener listener) {
 		updateListeners.add(listener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org
-	 *      .eclipse.riena.navigation.INavigationNode)
-	 */
 	public void bind(SubModuleNode node) {
 		if (currentController != getController()) {
 			if (currentController != null) {
@@ -329,17 +309,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#
-	 *      getNavigationNode ()
-	 */
 	public SubModuleNode getNavigationNode() {
 		return (SubModuleNode) getSubModuleNode(this.getViewSite().getId(), this.getViewSite().getSecondaryId());
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#unbind()
-	 */
 	public void unbind() {
 
 		SubModuleNode node = getNavigationNode();
