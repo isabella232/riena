@@ -60,6 +60,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	/**
+	 * @param windowRidget
+	 *            the windowRidget to set
+	 */
+	public void setWindowRidget(IWindowRidget windowRidget) {
+		if (getRidget(WINDOW_RIDGET) != windowRidget) {
+			addRidget(WINDOW_RIDGET, windowRidget);
+		}
+	}
+
+	/**
 	 * @return the windowRidget
 	 */
 	public IWindowRidget getWindowRidget() {
