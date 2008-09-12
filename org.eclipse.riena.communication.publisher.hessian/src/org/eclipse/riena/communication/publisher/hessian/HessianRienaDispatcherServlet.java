@@ -13,7 +13,6 @@ package org.eclipse.riena.communication.publisher.hessian;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.Principal;
 import java.util.HashMap;
 
 import javax.servlet.GenericServlet;
@@ -25,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
@@ -38,14 +38,9 @@ import org.osgi.service.log.LogService;
 import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
-import com.caucho.hessian.io.AbstractSerializerFactory;
-import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.HessianOutput;
-import com.caucho.hessian.io.HessianProtocolException;
-import com.caucho.hessian.io.JavaDeserializer;
-import com.caucho.hessian.io.Serializer;
 import com.caucho.hessian.io.SerializerFactory;
 import com.caucho.hessian.server.HessianSkeleton;
 
@@ -65,22 +60,17 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		super.init(config);
 		serializerFactory = new SerializerFactory();
 		serializerFactory.setAllowNonSerializable(true);
-		serializerFactory.addFactory(new AbstractSerializerFactory() {
-			@Override
-			public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) { //$NON-NLS-1$
-					return new JavaDeserializer(cl);
-				}
-				return null;
-			}
-
-			@Override
-			public Serializer getSerializer(Class cl) throws HessianProtocolException {
-				return null;
-			}
-		});
 		addSpecialDeserializer(serializerFactory);
+		Inject.extension("org.eclipse.riena.communication.hessian.AbstractSerializerFactory").into(this).update( //$NON-NLS-1$
+				"setFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+
 		LOGGER.log(LogService.LOG_DEBUG, "initialized"); //$NON-NLS-1$
+	}
+
+	public void setFactory(IAbstractSerializerFactory[] factories) {
+		for (IAbstractSerializerFactory factory : factories) {
+			serializerFactory.addFactory(factory.createImplementation());
+		}
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Factory Hessian (Incubation)
-Bundle-SymbolicName: org.eclipse.riena.communication.factory.hessian
+Bundle-SymbolicName: org.eclipse.riena.communication.factory.hessian;singleton:=true
 Bundle-Version: 1.0.0.M4
 Bundle-Activator: org.eclipse.riena.internal.communication.factory.hessian.Activator
 Import-Package: com.caucho.hessian.client,
@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.riena.communication.core,
  org.eclipse.equinox.cm
 Riena-ForceStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy

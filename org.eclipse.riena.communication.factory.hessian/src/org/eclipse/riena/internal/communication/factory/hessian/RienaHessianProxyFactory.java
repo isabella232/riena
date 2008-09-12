@@ -18,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.Principal;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +26,7 @@ import java.util.Map;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 
 import org.eclipse.equinox.log.Logger;
@@ -38,11 +38,6 @@ import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
-import com.caucho.hessian.io.AbstractSerializerFactory;
-import com.caucho.hessian.io.Deserializer;
-import com.caucho.hessian.io.HessianProtocolException;
-import com.caucho.hessian.io.JavaDeserializer;
-import com.caucho.hessian.io.Serializer;
 import com.caucho.hessian.io.SerializerFactory;
 
 public class RienaHessianProxyFactory extends HessianProxyFactory implements ManagedService {
@@ -55,20 +50,14 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	public RienaHessianProxyFactory() {
 		super();
-		getSerializerFactory().addFactory(new AbstractSerializerFactory() {
-			@Override
-			public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-				if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) { //$NON-NLS-1$
-					return new JavaDeserializer(cl);
-				}
-				return null;
-			}
+		Inject.extension("org.eclipse.riena.communication.hessian.AbstractSerializerFactory").into(this).update( //$NON-NLS-1$
+				"setFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+	}
 
-			@Override
-			public Serializer getSerializer(Class cl) throws HessianProtocolException {
-				return null;
-			}
-		});
+	public void setFactory(IAbstractSerializerFactory[] factories) {
+		for (IAbstractSerializerFactory factory : factories) {
+			getSerializerFactory().addFactory(factory.createImplementation());
+		}
 	}
 
 	@Override

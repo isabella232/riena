@@ -54,9 +54,9 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (InvocationTargetException e) {
-			// if (e.getTargetException() instanceof RuntimeException) {
-			// throw e.getTargetException();
-			// }
+			if (e.getTargetException() instanceof RuntimeException) {
+				throw e.getTargetException();
+			}
 			// throw exception if it is in the method signature
 			for (Class<?> exceptionType : method.getExceptionTypes()) {
 				if (exceptionType.isAssignableFrom(e.getTargetException().getClass())) {

@@ -18,3 +18,4 @@ Import-Package: com.caucho.hessian.io,
 Eclipse-BuddyPolicy: registered
 Riena-ForceStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
