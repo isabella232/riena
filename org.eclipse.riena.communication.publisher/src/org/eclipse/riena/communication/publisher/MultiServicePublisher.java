@@ -46,7 +46,7 @@ public class MultiServicePublisher {
 				Activator.getDefault().getContext());
 	}
 
-	public MultiServicePublisher filter(String filter) {
+	public MultiServicePublisher useFilter(String filter) {
 		Assert.isNotNull(filter);
 		this.filter = filter;
 		return this;

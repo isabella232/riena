@@ -46,7 +46,7 @@ public class SingleServicePublisher {
 				Activator.getDefault().getContext());
 	}
 
-	public SingleServicePublisher filter(String filter) {
+	public SingleServicePublisher useFilter(String filter) {
 		Assert.isNotNull(filter);
 		this.filter = filter;
 		return this;
