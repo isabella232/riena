@@ -13,7 +13,7 @@ package org.eclipse.riena.communication.core.hooks;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList;
+import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
 
 public interface ICallMessageContext {
 
@@ -25,7 +25,7 @@ public interface ICallMessageContext {
 
 	List<String> getResponseHeaderValues(String name);
 
-	IProgressMonitorList getProgressMonitorList();
+	IRemoteProgressMonitorList getProgressMonitorList();
 
 	void startCall();
 

@@ -14,7 +14,7 @@ package org.eclipse.riena.communication.core.progressmonitor;
  * Interface for a registry that maintains the list of progressmonitors that are
  * interested in monitoring remote service progress
  */
-public interface IProgressMonitorRegistry {
+public interface IRemoteProgressMonitorRegistry {
 
 	int MONITOR_ONE_CALL = 1;
 	int MONITOR_MANY_CALLS = 2;
@@ -28,14 +28,14 @@ public interface IProgressMonitorRegistry {
 	 *            can be MONITOR_ONE_CALL or MONITOR_MANY_CALLS, the former
 	 *            means all progressMonitors are removed after one call
 	 */
-	void addProgressMonitor(Object callProxy, IProgressMonitor monitor, int monitorType);
+	void addProgressMonitor(Object callProxy, IRemoteProgressMonitor monitor, int monitorType);
 
 	/**
 	 * Removes a specific progressmonitor instance
 	 * 
 	 * @param monitor
 	 */
-	void removeProgressMonitor(IProgressMonitor monitor);
+	void removeProgressMonitor(IRemoteProgressMonitor monitor);
 
 	/**
 	 * Removes all progressMonitors for a specific proxy instance
@@ -50,5 +50,5 @@ public interface IProgressMonitorRegistry {
 	 * @param callProxy
 	 * @return
 	 */
-	IProgressMonitorList getProgressMonitors(Object callProxy);
+	IRemoteProgressMonitorList getProgressMonitors(Object callProxy);
 }

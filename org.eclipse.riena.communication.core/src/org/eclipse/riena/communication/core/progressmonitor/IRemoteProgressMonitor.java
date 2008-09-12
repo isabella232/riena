@@ -14,7 +14,7 @@ package org.eclipse.riena.communication.core.progressmonitor;
  * Interface that must be implemented by any class that wants to monitor the
  * progress of transporting data in webservices
  */
-public interface IProgressMonitor {
+public interface IRemoteProgressMonitor {
 
 	/**
 	 * called before the first byte is send on the line
@@ -23,7 +23,7 @@ public interface IProgressMonitor {
 	 *            ProgressMonitorEvent object with information about the
 	 *            progress on this call
 	 */
-	void start(ProgressMonitorEvent event);
+	void start(RemoteProgressMonitorEvent event);
 
 	/**
 	 * called after the webservice call is over
@@ -32,7 +32,7 @@ public interface IProgressMonitor {
 	 *            ProgressMonitorEvent object with information about the
 	 *            progress on this call
 	 */
-	void end(ProgressMonitorEvent event);
+	void end(RemoteProgressMonitorEvent event);
 
 	/**
 	 * Called in arbitrary (currently not configurable intervals) when data
@@ -43,7 +43,7 @@ public interface IProgressMonitor {
 	 *            ProgressMonitorEvent object with information about the
 	 *            progress on this call
 	 */
-	void request(ProgressMonitorEvent event);
+	void request(RemoteProgressMonitorEvent event);
 
 	/**
 	 * Called in arbitrary (currently not configurable intervals) when data
@@ -54,5 +54,5 @@ public interface IProgressMonitor {
 	 *            ProgressMonitorEvent object with information about the
 	 *            progress on this call
 	 */
-	void response(ProgressMonitorEvent event);
+	void response(RemoteProgressMonitorEvent event);
 }

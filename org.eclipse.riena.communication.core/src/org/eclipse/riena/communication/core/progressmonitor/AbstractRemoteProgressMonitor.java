@@ -13,7 +13,7 @@ package org.eclipse.riena.communication.core.progressmonitor;
 /**
  * Abstract base class for implementing a progress monitor for remote services
  */
-public abstract class AbstractProgressMonitor implements IProgressMonitor {
+public abstract class AbstractRemoteProgressMonitor implements IRemoteProgressMonitor {
 
 	/*
 	 * (non-Javadoc)

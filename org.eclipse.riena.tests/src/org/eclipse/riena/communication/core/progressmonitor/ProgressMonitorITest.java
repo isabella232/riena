@@ -32,7 +32,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 
 	private IAttachmentService attachService;
 	private IRemoteServiceRegistration regAttachmentService;
-	private IProgressMonitorRegistry registry;
+	private IRemoteProgressMonitorRegistry registry;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -44,8 +44,8 @@ public final class ProgressMonitorITest extends RienaTestCase {
 		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
 		BundleContext context = Activator.getDefault().getContext();
-		registry = (IProgressMonitorRegistry) context.getService(context
-				.getServiceReference(IProgressMonitorRegistry.class.getName()));
+		registry = (IRemoteProgressMonitorRegistry) context.getService(context
+				.getServiceReference(IRemoteProgressMonitorRegistry.class.getName()));
 
 	}
 
@@ -65,7 +65,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 	 */
 	public void testSendSimpleAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
@@ -76,7 +76,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 
 	public void testSendLargeAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
@@ -87,7 +87,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 
 	public void testReceiveSimpleAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
 
 		Attachment attachment = attachService.returnAttachmentForSize(15000);
 		int i = getSize(attachment);
@@ -98,7 +98,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 
 	public void testReceiveLargeAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
 
 		Attachment attachment = attachService.returnAttachmentForSize(15000000);
 		int i = getSize(attachment);
@@ -141,7 +141,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 	/**
 	 *
 	 */
-	private static final class TestProgressMonitor implements IProgressMonitor {
+	private static final class TestProgressMonitor implements IRemoteProgressMonitor {
 
 		private boolean start = false;
 		private boolean end = false;
@@ -165,7 +165,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 			}
 		}
 
-		public void request(ProgressMonitorEvent event) {
+		public void request(RemoteProgressMonitorEvent event) {
 			System.out.println(event.getBytesProcessed());
 			if (event.getBytesProcessed() % 512 != 0) {
 				if (requestDivideable == true) {
@@ -180,7 +180,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 			requestCount++;
 		}
 
-		public void response(ProgressMonitorEvent event) {
+		public void response(RemoteProgressMonitorEvent event) {
 			System.out.println(event.getBytesProcessed());
 			if (event.getBytesProcessed() % 512 != 0) {
 				if (responseDividable == true) {
@@ -195,13 +195,13 @@ public final class ProgressMonitorITest extends RienaTestCase {
 			lastResponseLength = event.getBytesProcessed();
 		}
 
-		public void start(ProgressMonitorEvent event) {
+		public void start(RemoteProgressMonitorEvent event) {
 			assertFalse(start);
 			System.out.println("start");
 			start = true;
 		}
 
-		public void end(ProgressMonitorEvent event) {
+		public void end(RemoteProgressMonitorEvent event) {
 			assertFalse(end);
 			System.out.println("end");
 			end = true;

@@ -11,32 +11,21 @@
 package org.eclipse.riena.communication.core.progressmonitor;
 
 /**
- *
+ * List object for a list of progress monitors. convient class so that the class
+ * sending events to a list of progressmonitors for remote services can send
+ * this event to this class and it dispatches the event to all registered
+ * progressmonitors
  */
-public class ProgressMonitorEvent {
+public interface IRemoteProgressMonitorList {
 
-	private int totalBytes;
-	private int bytesProcessed;
+	int BYTE_COUNT_INCR = 512;
 
-	public ProgressMonitorEvent() {
-		super();
-	}
+	void fireStartEvent();
 
-	public ProgressMonitorEvent(int totalBytes) {
-		this.totalBytes = totalBytes;
-	}
+	void fireEndEvent(int totalBytes);
 
-	public ProgressMonitorEvent(int totalBytes, int bytesProcessed) {
-		this.totalBytes = totalBytes;
-		this.bytesProcessed = bytesProcessed;
-	}
+	void fireWriteEvent(int totalBytes, int bytesSent);
 
-	public int getTotalBytes() {
-		return totalBytes;
-	}
-
-	public int getBytesProcessed() {
-		return bytesProcessed;
-	}
+	void fireReadEvent(int totalBytes, int bytesRead);
 
 }

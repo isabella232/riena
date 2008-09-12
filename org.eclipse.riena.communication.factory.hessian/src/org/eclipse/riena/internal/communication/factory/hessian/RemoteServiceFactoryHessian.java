@@ -22,8 +22,8 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.factory.RemoteServiceReference;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorList;
-import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorRegistry;
+import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
+import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.core.injector.Inject;
 
 /**
@@ -42,7 +42,7 @@ import org.eclipse.riena.core.injector.Inject;
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private final ICallMessageContextAccessor mca = new CallMsgCtxAcc();
 	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
-	private IProgressMonitorRegistry progressMonitorRegistry;
+	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
 
 	/*
 	 * (non-Javadoc)
@@ -65,7 +65,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			// set the create proxy as service instance
 			serviceReference.setServiceInstance(service);
 			// inject progressmonitor registry into THIS
-			Inject.service(IProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
+			Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
 					Activator.getDefault().getContext());
 			// the hessian proxy factory also implements ManagedService
 			if (endpoint.getConfigPID() != null) {
@@ -78,13 +78,13 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		}
 	}
 
-	public void bind(IProgressMonitorRegistry pmr) {
-		this.progressMonitorRegistry = pmr;
+	public void bind(IRemoteProgressMonitorRegistry pmr) {
+		this.remoteProgressMonitorRegistry = pmr;
 	}
 
-	public void unbind(IProgressMonitorRegistry pmr) {
-		if (this.progressMonitorRegistry == pmr) {
-			this.progressMonitorRegistry = null;
+	public void unbind(IRemoteProgressMonitorRegistry pmr) {
+		if (this.remoteProgressMonitorRegistry == pmr) {
+			this.remoteProgressMonitorRegistry = null;
 		}
 	}
 
@@ -121,7 +121,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		class MsgCtx implements ICallMessageContext {
 
 			private HashMap<String, List<String>> customRequestHeader;
-			private IProgressMonitorList progressMonitorList;
+			private IRemoteProgressMonitorList remoteProgressMonitorList;
 			private int bytesRead;
 			private int totalBytesRead = 0;
 			private int bytesWritten;
@@ -130,10 +130,10 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 			public MsgCtx(Object proxy) {
 				super();
-				if (progressMonitorRegistry != null) {
-					progressMonitorList = progressMonitorRegistry.getProgressMonitors(proxy);
+				if (remoteProgressMonitorRegistry != null) {
+					remoteProgressMonitorList = remoteProgressMonitorRegistry.getProgressMonitors(proxy);
 				} else {
-					progressMonitorList = null;
+					remoteProgressMonitorList = null;
 				}
 			}
 
@@ -169,12 +169,12 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				hValues.add(value);
 			}
 
-			public IProgressMonitorList getProgressMonitorList() {
-				return progressMonitorList;
+			public IRemoteProgressMonitorList getProgressMonitorList() {
+				return remoteProgressMonitorList;
 			}
 
 			public void startCall() {
-				progressMonitorList.fireStartEvent();
+				remoteProgressMonitorList.fireStartEvent();
 			}
 
 			public void endCall() {
@@ -185,12 +185,12 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				if (bytesRead != 0) {
 					internalFireReadEvent();
 				}
-				progressMonitorList.fireEndEvent(totalBytesRead + totalBytesWritten);
+				remoteProgressMonitorList.fireEndEvent(totalBytesRead + totalBytesWritten);
 			}
 
 			public void fireReadEvent(int parmBytesRead) {
 				if (firstEvent) {
-					progressMonitorList.fireStartEvent();
+					remoteProgressMonitorList.fireStartEvent();
 					firstEvent = false;
 				}
 
@@ -198,7 +198,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 					internalFireWriteEvent();
 				}
 				bytesRead += parmBytesRead;
-				if (bytesRead >= IProgressMonitorList.BYTE_COUNT_INCR) {
+				if (bytesRead >= IRemoteProgressMonitorList.BYTE_COUNT_INCR) {
 					internalFireReadEvent();
 				}
 			}
@@ -206,17 +206,17 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			private void internalFireReadEvent() {
 				totalBytesRead += bytesRead;
 				bytesRead = 0;
-				progressMonitorList.fireReadEvent(-1, totalBytesRead);
+				remoteProgressMonitorList.fireReadEvent(-1, totalBytesRead);
 			}
 
 			public void fireWriteEvent(int parmBytesWritten) {
 				if (firstEvent) {
-					progressMonitorList.fireStartEvent();
+					remoteProgressMonitorList.fireStartEvent();
 					firstEvent = false;
 				}
 
 				bytesWritten += parmBytesWritten;
-				if (bytesWritten >= IProgressMonitorList.BYTE_COUNT_INCR) {
+				if (bytesWritten >= IRemoteProgressMonitorList.BYTE_COUNT_INCR) {
 					internalFireWriteEvent();
 				}
 			}
@@ -224,7 +224,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			private void internalFireWriteEvent() {
 				totalBytesWritten += bytesWritten;
 				bytesWritten = 0;
-				progressMonitorList.fireWriteEvent(-1, totalBytesWritten);
+				remoteProgressMonitorList.fireWriteEvent(-1, totalBytesWritten);
 			}
 		}
 	}

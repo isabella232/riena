@@ -16,14 +16,14 @@ import org.eclipse.riena.core.util.ListenerList.Mode;
 /**
  *
  */
-public class ProgressMonitorListImpl implements IProgressMonitorList {
+public class ProgressMonitorListImpl implements IRemoteProgressMonitorList {
 
-	private ListenerList<IProgressMonitor> progressMonitorList;
+	private ListenerList<IRemoteProgressMonitor> progressMonitorList;
 
-	public ProgressMonitorListImpl(IProgressMonitor[] progressMonitors) {
+	public ProgressMonitorListImpl(IRemoteProgressMonitor[] progressMonitors) {
 		super();
-		this.progressMonitorList = new ListenerList<IProgressMonitor>(Mode.IDENTITY, IProgressMonitor.class);
-		for (IProgressMonitor listener : progressMonitors) {
+		this.progressMonitorList = new ListenerList<IRemoteProgressMonitor>(Mode.IDENTITY, IRemoteProgressMonitor.class);
+		for (IRemoteProgressMonitor listener : progressMonitors) {
 			this.progressMonitorList.add(listener);
 		}
 	}
@@ -36,9 +36,9 @@ public class ProgressMonitorListImpl implements IProgressMonitorList {
 	 * #fireReadEvent(int, int)
 	 */
 	public void fireReadEvent(int totalBytes, int bytesRead) {
-		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent(totalBytes, bytesRead);
-		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
-			listener.response(progressMonitorEvent);
+		RemoteProgressMonitorEvent remoteProgressMonitorEvent = new RemoteProgressMonitorEvent(totalBytes, bytesRead);
+		for (IRemoteProgressMonitor listener : progressMonitorList.getListeners()) {
+			listener.response(remoteProgressMonitorEvent);
 		}
 
 	}
@@ -51,9 +51,9 @@ public class ProgressMonitorListImpl implements IProgressMonitorList {
 	 * #fireSendEvent(int, int)
 	 */
 	public void fireWriteEvent(int totalBytes, int bytesSent) {
-		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent(totalBytes, bytesSent);
-		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
-			listener.request(progressMonitorEvent);
+		RemoteProgressMonitorEvent remoteProgressMonitorEvent = new RemoteProgressMonitorEvent(totalBytes, bytesSent);
+		for (IRemoteProgressMonitor listener : progressMonitorList.getListeners()) {
+			listener.request(remoteProgressMonitorEvent);
 		}
 	}
 
@@ -65,9 +65,9 @@ public class ProgressMonitorListImpl implements IProgressMonitorList {
 	 * #fireStartEvent()
 	 */
 	public void fireStartEvent() {
-		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent();
-		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
-			listener.start(progressMonitorEvent);
+		RemoteProgressMonitorEvent remoteProgressMonitorEvent = new RemoteProgressMonitorEvent();
+		for (IRemoteProgressMonitor listener : progressMonitorList.getListeners()) {
+			listener.start(remoteProgressMonitorEvent);
 		}
 	}
 
@@ -79,9 +79,9 @@ public class ProgressMonitorListImpl implements IProgressMonitorList {
 	 * #fireEndEvent(int)
 	 */
 	public void fireEndEvent(int totalBytes) {
-		ProgressMonitorEvent progressMonitorEvent = new ProgressMonitorEvent();
-		for (IProgressMonitor listener : progressMonitorList.getListeners()) {
-			listener.end(progressMonitorEvent);
+		RemoteProgressMonitorEvent remoteProgressMonitorEvent = new RemoteProgressMonitorEvent();
+		for (IRemoteProgressMonitor listener : progressMonitorList.getListeners()) {
+			listener.end(remoteProgressMonitorEvent);
 		}
 	}
 

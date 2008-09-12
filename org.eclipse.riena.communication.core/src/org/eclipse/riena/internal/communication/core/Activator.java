@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.communication.core;
 import java.util.Hashtable;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
-import org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorRegistry;
+import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.communication.core.progressmonitor.ProgressMonitorRegistryImpl;
 import org.eclipse.riena.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.communication.core.ssl.SSLConfiguration;
@@ -74,7 +74,7 @@ public class Activator extends RienaActivator {
 			sslInjector.andStart(context);
 		}
 
-		context.registerService(IProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(), null);
+		context.registerService(IRemoteProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(), null);
 	}
 
 	/*
