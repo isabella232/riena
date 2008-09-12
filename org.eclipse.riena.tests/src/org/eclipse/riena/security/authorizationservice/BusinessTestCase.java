@@ -12,6 +12,8 @@ package org.eclipse.riena.security.authorizationservice;
 
 import java.security.AccessControlException;
 
+import org.eclipse.riena.security.common.authorization.Sentinel;
+
 /**
  * 
  */
@@ -24,7 +26,11 @@ public class BusinessTestCase {
 				sm.checkPermission(new TestcasePermission("testPerm"));
 				return true;
 			}
-			return true;
+			if (Sentinel.checkAccess(new TestcasePermission("testPerm"))) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (AccessControlException ex) {
 			return false;
 		}

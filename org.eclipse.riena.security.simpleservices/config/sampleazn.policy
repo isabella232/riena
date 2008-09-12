@@ -18,8 +18,12 @@ grant {
     permission java.io.FilePermission "C:\\projekte\\riena2\\.metadata", "read,write";
     permission java.io.FilePermission "C:\\develop\\RCPLabs-Runtime\\Eclipse-3.3","read,write,delete";
     permission java.io.FilePermission "C:\\develop\\RCPLabs-Runtime\\Eclipse-3.3\\-","read,write,delete";
-    permission java.io.FilePermission "C:\\develop\\eclipse-3.3\\workspace\\.metadata", "read,write";
-    permission java.io.FilePermission "C:\\develop\\eclipse-3.3\\workspace\\.metadata\\-", "read,write";
+    permission java.io.FilePermission "C:\\develop\\eclipse-3.4\\workspace\\.metadata", "read,write";
+    permission java.io.FilePermission "C:\\develop\\eclipse-3.4\\workspace\\.metadata\\-", "read,write";
+    permission java.io.FilePermission "C:\\projekte\\eclipse-platform\\3.4\\configuration", "read,write";
+    permission java.io.FilePermission "C:\\projekte\\eclipse-platform\\3.4\\configuration\\-", "read,write,delete";
+    permission java.io.FilePermission "C:\\projekte\\eclipse-platform\\3.4", "read,write,delete";
+    permission java.io.FilePermission "C:\\projekte\\eclipse-platform\\3.4\\-", "read,write,delete";
     permission java.io.FilePermission "C:\\develop\\-", "read,write";
     permission org.osgi.framework.AdminPermission;
     permission java.lang.RuntimePermission "*";
