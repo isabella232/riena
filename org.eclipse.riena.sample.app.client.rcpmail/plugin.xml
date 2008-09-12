@@ -29,6 +29,13 @@
             id="org.eclipse.riena.sample.app.client.rcpmail.view">
       </view>
       <view
+            name="Marker"
+            allowMultiple="true"
+            icon="icons/sample2.gif"
+            class="org.eclipse.riena.sample.app.client.rcpmail.MarkerSubModuleView"
+            id="org.eclipse.riena.sample.app.client.rcpmail.MarkerSubModuleView">
+      </view>
+      <view
             name="Mailboxes"
             allowMultiple="true"
             icon="icons/sample3.gif"
@@ -93,5 +100,11 @@
          </property>
       </product>
    </extension>
-
+   <extension point="org.eclipse.riena.navigation.subModule">
+      <subModule
+            typeId="org.eclipse.riena.sample.app.client.rcpmail.MarkerSubModuleView"
+            view="org.eclipse.riena.sample.app.client.rcpmail.MarkerSubModuleView"
+            controller="org.eclipse.riena.sample.app.client.rcpmail.MarkerSubModuleController">
+      </subModule>
+   </extension>
 </plugin>
