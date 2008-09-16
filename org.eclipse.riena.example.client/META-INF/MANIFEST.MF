@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.databinding,
  org.eclipse.ui,
  org.eclipse.equinox.cm,
- org.eclipse.riena.client
+ org.eclipse.riena.client,
+ org.eclipse.riena.ui.filter;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

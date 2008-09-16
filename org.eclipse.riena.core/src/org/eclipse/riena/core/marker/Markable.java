@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Standard implementation for the Markable interface, can be used by other
- * objects to delegate
+ * Standard implementation for the {@link IMarkable} interface, can be used by
+ * other objects to delegate
  */
 public class Markable implements IMarkable {
 

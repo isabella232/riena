@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
+import org.eclipse.riena.ui.filter.IUIFilterable;
 
 /**
  * Summary of all abilities common to all model objects Each object is
@@ -23,7 +24,7 @@ import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
  * The children ability and parent ability is not included because it is
  * different for different model nodes
  */
-public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable,
+public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable,
 		INavigationHistory {
 
 	/**

@@ -34,6 +34,9 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListener;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.filter.IUIFilterable;
+import org.eclipse.riena.ui.filter.UIFilterable;
 
 /**
  * Default implementation of all features common to all navigation node objects
@@ -61,6 +64,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private List<L> listeners;
 	private List<ISimpleNavigationNodeListener> simpleListeners;
 	private IMarkable markable;
+	private IUIFilterable filterable;
 	private Object context;
 	private Set<IAction> actions;
 	private PropertyChangeSupport propertyChangeSupport;
@@ -80,6 +84,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		simpleListeners = new LinkedList<ISimpleNavigationNodeListener>();
 		children = new LinkedList<C>();
 		markable = createMarkable();
+		filterable = createFilterable();
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
 		// TODO: scp How can we use IIconManager.DEFAULT_ICON
@@ -958,4 +963,45 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	public void setNodeId(NavigationNodeId nodeId) {
 		this.nodeId = nodeId;
 	}
+
+	/**
+	 * Creates the UI filterable.
+	 * 
+	 * @return a UI filterable
+	 */
+	protected IUIFilterable createFilterable() {
+		return new UIFilterable();
+	}
+
+	private IUIFilterable getFilterable() {
+		return filterable;
+	}
+
+	public void addFilter(IUIFilter filter) {
+		getFilterable().addFilter(filter);
+		notifyFiltersChanged();
+	}
+
+	public void removeFilter(IUIFilter filter) {
+		getFilterable().removeFilter(filter);
+		notifyFiltersChanged();
+	}
+
+	public void removeAllFilters() {
+		getFilterable().removeAllFilters();
+		notifyFiltersChanged();
+	}
+
+	public Collection<? extends IUIFilter> getFilters() {
+		return getFilterable().getFilters();
+	}
+
+	/**
+	 * Notifies every interested listener that the filters have changed.
+	 */
+	private void notifyFiltersChanged() {
+		// TODO
+		// At the moment no listeners exists!
+	}
+
 }
