@@ -354,6 +354,16 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 		public void setBlocked(boolean blocked) {
 		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.ui.ridgets.IRidget#getID()
+		 */
+		public String getID() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	/**
@@ -422,6 +432,16 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 		}
 
 		public void setBlocked(boolean blocked) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.ui.ridgets.IRidget#getID()
+		 */
+		public String getID() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 }

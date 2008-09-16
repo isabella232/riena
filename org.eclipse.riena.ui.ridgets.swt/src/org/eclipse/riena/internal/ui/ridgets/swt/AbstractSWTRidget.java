@@ -13,7 +13,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -72,6 +74,17 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 
 	public Control getUIControl() {
 		return uiControl;
+	}
+
+	public String getID() {
+
+		if (getUIControl() != null) {
+			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+			return locator.locateBindingProperty(getUIControl());
+		}
+
+		return null;
+
 	}
 
 	public final void requestFocus() {

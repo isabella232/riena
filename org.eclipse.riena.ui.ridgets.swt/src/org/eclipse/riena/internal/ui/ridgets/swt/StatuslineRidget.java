@@ -14,10 +14,12 @@ import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineProcessRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineMessage;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -164,6 +166,16 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	@Override
 	public void configureRidgets() {
 		// nothing to do
+	}
+
+	@Override
+	public String getID() {
+		if (getUIControl() != null) {
+			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+			return locator.locateBindingProperty(getUIControl());
+		}
+
+		return null;
 	}
 
 }

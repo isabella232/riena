@@ -16,6 +16,8 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
@@ -215,6 +217,15 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 	private void updateActive() {
 		shell.setEnabled(active);
+	}
+
+	public String getID() {
+		if (getUIControl() != null) {
+			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+			return locator.locateBindingProperty(getUIControl());
+		}
+
+		return null;
 	}
 
 }

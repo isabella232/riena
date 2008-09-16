@@ -209,4 +209,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	public void configureRidgets() {
 	}
 
+	public String getID() {
+		return null;
+	}
+
 }

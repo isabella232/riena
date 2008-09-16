@@ -202,4 +202,11 @@ public interface IRidget {
 	 * @return true if input is blocked for the ridget, else false.
 	 */
 	boolean isBlocked();
+
+	/**
+	 * Returns the ID of the ridget.
+	 * 
+	 * @return ID
+	 */
+	String getID();
 }

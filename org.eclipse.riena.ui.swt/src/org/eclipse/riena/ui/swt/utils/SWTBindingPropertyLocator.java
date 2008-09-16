@@ -13,9 +13,29 @@ package org.eclipse.riena.ui.swt.utils;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.swt.widgets.Control;
 
+/**
+ * Helper class to get the ID of a SWT UI control used for binding.
+ */
 public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 
 	public final static String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
+	private static IBindingPropertyLocator locator;
+
+	private SWTBindingPropertyLocator() {
+
+	}
+
+	/**
+	 * Returns an instance of this class.
+	 * 
+	 * @return
+	 */
+	public static IBindingPropertyLocator getInstance() {
+		if (locator == null) {
+			locator = new SWTBindingPropertyLocator();
+		}
+		return locator;
+	}
 
 	public String locateBindingProperty(Object uiControl) {
 		if (uiControl instanceof Control) {
@@ -33,4 +53,5 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 
 		return null;
 	}
+
 }

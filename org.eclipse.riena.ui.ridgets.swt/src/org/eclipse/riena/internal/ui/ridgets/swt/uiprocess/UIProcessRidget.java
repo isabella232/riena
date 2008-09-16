@@ -28,9 +28,10 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.uiprocess.ICancelListener;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
-
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -530,6 +531,15 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		} else {
 			close();
 		}
+	}
+
+	public String getID() {
+		if (getUIControl() != null) {
+			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+			return locator.locateBindingProperty(getUIControl());
+		}
+
+		return null;
 	}
 
 }

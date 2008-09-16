@@ -47,7 +47,7 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 
 	@SuppressWarnings("unchecked")
 	public DefaultSwtBindingDelegate(IControlRidgetMapper mapper) {
-		super(new SWTBindingPropertyLocator(), mapper);
+		super(SWTBindingPropertyLocator.getInstance(), mapper);
 	}
 
 	@Override
