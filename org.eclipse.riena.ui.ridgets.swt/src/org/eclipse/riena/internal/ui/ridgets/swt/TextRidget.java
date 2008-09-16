@@ -180,6 +180,14 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		}
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		if (enabled != isEnabled()) {
+			super.setEnabled(enabled);
+			forceTextToControl(getText());
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -201,7 +209,7 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		Text control = getUIControl();
 		if (control != null) {
 			control.removeVerifyListener(verifyListener);
-			control.setText(newValue);
+			control.setText(isEnabled() ? newValue : EMPTY_STRING);
 			control.setSelection(0, 0);
 			control.addVerifyListener(verifyListener);
 		}

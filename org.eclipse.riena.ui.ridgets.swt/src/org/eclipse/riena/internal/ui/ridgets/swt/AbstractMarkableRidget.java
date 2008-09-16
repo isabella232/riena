@@ -96,7 +96,7 @@ public abstract class AbstractMarkableRidget extends AbstractSWTRidget implement
 		return getMarkersOfType(DisabledMarker.class).isEmpty();
 	}
 
-	public final synchronized void setEnabled(boolean enabled) {
+	public synchronized void setEnabled(boolean enabled) {
 		if (enabled) {
 			if (disabledMarker != null) {
 				removeMarker(disabledMarker);

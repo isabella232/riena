@@ -59,6 +59,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
@@ -68,6 +69,8 @@ import org.osgi.service.log.LogService;
  * Ridget for SWT {@link Tree} widgets.
  */
 public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget {
+
+	private static final Listener eraseListener = new EraseListener();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
@@ -111,6 +114,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
 			updateExpansionState();
+			applyEraseListener();
 			applyTableColumnHeaders(control);
 		}
 	}
@@ -135,6 +139,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (control != null) {
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
+			control.removeListener(SWT.EraseItem, eraseListener);
 		}
 		if (viewer != null) {
 			// IMPORTANT: remove the change listeners from the input model.
@@ -363,6 +368,14 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	@Override
+	public synchronized void setEnabled(boolean enabled) {
+		if (enabled != isEnabled()) {
+			super.setEnabled(enabled);
+			applyEraseListener();
+		}
+	}
+
+	@Override
 	public void setOutputOnly(boolean outputOnly) {
 		super.setOutputOnly(outputOnly);
 		saveSelection();
@@ -370,6 +383,16 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	// helping methods
 	// ////////////////
+
+	private void applyEraseListener() {
+		if (viewer != null) {
+			Control control = viewer.getControl();
+			control.removeListener(SWT.EraseItem, eraseListener);
+			if (!isEnabled()) {
+				control.addListener(SWT.EraseItem, eraseListener);
+			}
+		}
+	}
 
 	private void applyTableColumnHeaders(Tree control) {
 		boolean headersVisible = columnHeaders != null;
@@ -600,7 +623,29 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * This cass is used as the tree viewer's input when showRoots is false.
+	 * Erase listener to paint all cells empty when this ridget is disabled.
+	 * <p>
+	 * Implementation note: this works by registering this class an an
+	 * EraseEListener and indicating we will be repsonsible from drawing the
+	 * cells content. We do not register a PaintListener, meaning that we do NOT
+	 * paint anything.
+	 * 
+	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+	 *      >Custom Drawing Table and Tree Items</a>'
+	 */
+	private static final class EraseListener implements Listener {
+
+		/*
+		 * Called EXTREMELY frequently. Must be as efficient as possible.
+		 */
+		public void handleEvent(Event event) {
+			// indicate we are responsible for drawing the cell's content
+			event.detail &= ~SWT.FOREGROUND;
+		}
+	}
+
+	/**
+	 * This class is used as the tree viewer's input when showRoots is false.
 	 * <p>
 	 * It uses reflection to obtain the current list of children from the real
 	 * root of the model, while keeping the input element (i.e. this instance)

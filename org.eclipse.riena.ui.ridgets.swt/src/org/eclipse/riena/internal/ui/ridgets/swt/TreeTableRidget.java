@@ -48,7 +48,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 
 	public TreeTableRidget() {
 		sortListener = new ColumnSortListener();
-		groupedTableListener = new GroupedTablePaintListener();
+		groupedTableListener = new GroupedTableEraseListener();
 		isSortedAscending = true;
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
@@ -77,7 +77,6 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 				column.removeSelectionListener(sortListener);
 			}
 			control.removeListener(SWT.EraseItem, groupedTableListener);
-			control.removeListener(SWT.PaintItem, groupedTableListener);
 		}
 	}
 
@@ -229,10 +228,8 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			control.setRedraw(false);
 			try {
 				control.removeListener(SWT.EraseItem, groupedTableListener);
-				control.removeListener(SWT.PaintItem, groupedTableListener);
 				if (isGroupingEnabled) {
 					control.addListener(SWT.EraseItem, groupedTableListener);
-					control.addListener(SWT.PaintItem, groupedTableListener);
 				}
 			} finally {
 				control.setRedraw(true);
@@ -279,13 +276,18 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 	}
 
 	/**
-	 * Listener for EraseItem / PaintItem events that is repsonsible for greated
-	 * the "grouped" look in tree tables.
+	 * Listener for EraseItem events that is responsible for greated the
+	 * "grouped" look in tree tables.
 	 * <p>
-	 * Refer to '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
-	 * >Custom Drawing Table and Tree Items</a>' for additional info.
+	 * Implementation note: this works by registering this class an an
+	 * EraseEListener and indicating we will be repsonsible from drawing the
+	 * cells content. We do not register a PaintListener, meaning that we do NOT
+	 * paint anything.
+	 * 
+	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+	 *      >Custom Drawing Table and Tree Items</a>'
 	 */
-	private final static class GroupedTablePaintListener implements Listener {
+	private final static class GroupedTableEraseListener implements Listener {
 
 		/*
 		 * Called EXTREMELY frequently. Must be as efficient as possible.
@@ -299,12 +301,8 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			if (item.getItemCount() == 0 || event.index == 0) {
 				return;
 			}
-			if (event.type == SWT.EraseItem) {
-				// indicate we are responsible for drawing the cell's content
-				event.detail &= ~SWT.FOREGROUND;
-			} // else if (event.type == SWT.PaintItem) {
-			// paint nothing to leave the cell blank
-			// }
+			// indicate we are responsible for drawing the cell's content
+			event.detail &= ~SWT.FOREGROUND;
 		}
 	}
 

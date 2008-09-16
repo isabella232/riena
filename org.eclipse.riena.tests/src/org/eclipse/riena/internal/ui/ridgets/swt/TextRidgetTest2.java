@@ -1137,6 +1137,68 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		}
 	}
 
+	public void testDisabledHasNoTextFromRidget() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		ridget.setText("foo");
+
+		assertEquals("foo", control.getText());
+		assertEquals("foo", ridget.getText());
+		assertEquals("foo", bean.getProperty());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+		assertEquals("foo", ridget.getText());
+		assertEquals("foo", bean.getProperty());
+
+		ridget.setText("bar");
+
+		assertEquals("", control.getText());
+		assertEquals("bar", ridget.getText());
+		assertEquals("bar", bean.getProperty());
+
+		ridget.setEnabled(true);
+
+		assertEquals("bar", control.getText());
+		assertEquals("bar", ridget.getText());
+		assertEquals("bar", bean.getProperty());
+	}
+
+	public void testDisabledHasNoTextFromModel() {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		bean.setProperty(TEXT_TWO);
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+
+		ridget.updateFromModel();
+
+		assertEquals(TEXT_TWO, control.getText());
+		assertEquals(TEXT_TWO, ridget.getText());
+		assertEquals(TEXT_TWO, bean.getProperty());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+		assertEquals(TEXT_TWO, ridget.getText());
+		assertEquals(TEXT_TWO, bean.getProperty());
+
+		bean.setProperty(TEXT_ONE);
+		ridget.updateFromModel();
+
+		assertEquals("", control.getText());
+		assertEquals(TEXT_ONE, ridget.getText());
+		assertEquals(TEXT_ONE, bean.getProperty());
+
+		ridget.setEnabled(true);
+
+		assertEquals(TEXT_ONE, control.getText());
+		assertEquals(TEXT_ONE, ridget.getText());
+		assertEquals(TEXT_ONE, bean.getProperty());
+	}
+
 	// helping methods
 	// ////////////////
 

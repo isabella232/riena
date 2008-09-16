@@ -44,7 +44,9 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -52,6 +54,8 @@ import org.eclipse.swt.widgets.TableColumn;
  * Ridget for SWT {@link Table} widgets.
  */
 public class TableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
+
+	private static final Listener eraseListener = new EraseListener();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
@@ -101,6 +105,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			applyColumnsMoveable(control);
 			applyTableColumnHeaders(control);
 			applyComparator();
+			applyEraseListener();
 
 			viewer.setInput(rowObservables);
 
@@ -141,6 +146,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
+			control.removeListener(SWT.EraseItem, eraseListener);
 		}
 		viewer = null;
 	}
@@ -351,6 +357,14 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return true;
 	}
 
+	@Override
+	public synchronized void setEnabled(boolean enabled) {
+		if (enabled != isEnabled()) {
+			super.setEnabled(enabled);
+			applyEraseListener();
+		}
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -379,6 +393,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				viewer.setComparator(null);
 				table.setSortColumn(null);
 				table.setSortDirection(SWT.NONE);
+			}
+		}
+	}
+
+	private void applyEraseListener() {
+		if (viewer != null) {
+			Control control = viewer.getControl();
+			control.removeListener(SWT.EraseItem, eraseListener);
+			if (!isEnabled()) {
+				control.addListener(SWT.EraseItem, eraseListener);
 			}
 		}
 	}
@@ -455,6 +479,28 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	/**
+	 * Erase listener to paint all cells empty when this ridget is disabled.
+	 * <p>
+	 * Implementation note: this works by registering this class an an
+	 * EraseEListener and indicating we will be repsonsible from drawing the
+	 * cells content. We do not register a PaintListener, meaning that we do NOT
+	 * paint anything.
+	 * 
+	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+	 *      >Custom Drawing Table and Tree Items</a>'
+	 */
+	private static final class EraseListener implements Listener {
+
+		/*
+		 * Called EXTREMELY frequently. Must be as efficient as possible.
+		 */
+		public void handleEvent(Event event) {
+			// indicate we are responsible for drawing the cell's content
+			event.detail &= ~SWT.FOREGROUND;
+		}
+	}
+
+	/**
 	 * Selection listener for table headers that changes the sort order of a
 	 * column according to the information stored in the ridget.
 	 */
@@ -483,7 +529,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	/**
 	 * This comparator uses the values of the column the table is sorted by.
 	 */
-	private class TableComparator extends ViewerComparator {
+	private final class TableComparator extends ViewerComparator {
 
 		public TableComparator(SortableComparator comparator) {
 			super(comparator);
