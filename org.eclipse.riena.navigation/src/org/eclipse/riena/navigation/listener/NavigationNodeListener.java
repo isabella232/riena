@@ -149,4 +149,16 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	public void block(S source, boolean block) {
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
+	 * (org.eclipse.riena.navigation.INavigationNode)
+	 */
+	public void filtersChanged(S source) {
+		// TODO Auto-generated method stub
+
+	}
 }

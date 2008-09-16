@@ -212,4 +212,16 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	public void stateChanged(INavigationNode<?> source, State oldState, State newState) {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#filterChanged
+	 * (org.eclipse.riena.navigation.INavigationNode)
+	 */
+	public void filterChanged(INavigationNode<?> source) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

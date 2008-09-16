@@ -57,4 +57,6 @@ public interface ISimpleNavigationNodeListener {
 
 	void block(INavigationNode<?> source, boolean block);
 
+	void filterChanged(INavigationNode<?> source);
+
 }
