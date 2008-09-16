@@ -129,6 +129,13 @@
             name="org.eclipse.riena.example.client.views.NoControllerSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.FilterSubModuleView"
+            id="org.eclipse.riena.example.client.views.FilterSubModuleView"
+            name="org.eclipse.riena.example.client.views.FilterSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -488,6 +495,12 @@
             shared="false"
             typeId="org.eclipse.riena.example.noController"
             view="org.eclipse.riena.example.client.views.NoControllerSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController"
+            shared="false"
+            typeId="org.eclipse.riena.example.filter"
+            view="org.eclipse.riena.example.client.views.FilterSubModuleView">
       </subModule>
    </extension> 
 </plugin>

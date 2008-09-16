@@ -22,14 +22,20 @@ import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.common.TypecastingObject;
+import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.navigation.listener.NavigationNodeListener;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
 import org.eclipse.riena.ui.core.resource.internal.IconSize;
+import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.filter.IUIFilterAttribute;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeMarker;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeVisible;
 
 /**
  * An abstract controller superclass that manages the navigation node of a
@@ -41,6 +47,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
 	private PropertyChangeListener propertyChangeListener;
+	private MyNavigationNodeListener nodeListener;
 
 	/**
 	 * Create a new Navigation Node view Controller. Set the navigation node
@@ -62,10 +69,12 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		ridgets = new HashMap<String, IRidget>();
 		propertyChangeListener = new PropertyChangeHandler();
+		nodeListener = new MyNavigationNodeListener();
 
 		if (navigationNode != null) {
 			setNavigationNode(navigationNode);
 		}
+
 	}
 
 	/**
@@ -80,8 +89,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 *            the navigationNode to set
 	 */
 	public void setNavigationNode(N navigationNode) {
+		if (getNavigationNode() instanceof INavigationNodeListenerable) {
+			((INavigationNodeListenerable) getNavigationNode()).removeListener(nodeListener);
+		}
 		this.navigationNode = navigationNode;
 		navigationNode.setNavigationNodeController(this);
+		if (getNavigationNode() instanceof INavigationNodeListenerable) {
+			((INavigationNodeListenerable) getNavigationNode()).addListener(nodeListener);
+		}
 	}
 
 	/**
@@ -251,6 +266,46 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		} else {
 			return (NavigationNodeController<?>) navigationNode.getParent().getNavigationNodeController();
 		}
+	}
+
+	private class MyNavigationNodeListener extends NavigationNodeListener {
+
+		public void applyFilters(Collection<? extends IUIFilter> filters) {
+
+			for (IUIFilter filter : filters) {
+				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterItems();
+				for (IUIFilterAttribute filterAttribute : filterItems) {
+					for (IRidget ridget : getRidgets()) {
+						if (filterAttribute.matches(ridget.getID())) {
+							if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
+								ridget.setVisible(((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
+							} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
+								if (ridget instanceof IMarkableRidget) {
+									IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+									RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
+									markableRidget.addMarker(attributeMarker.getMarker());
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+		}
+
+		@Override
+		public void activated(INavigationNode source) {
+			super.activated(source);
+			applyFilters(source.getFilters());
+		}
+
+		@Override
+		public void filtersChanged(INavigationNode source) {
+			super.filtersChanged(source);
+			applyFilters(source.getFilters());
+		}
+
 	}
 
 }

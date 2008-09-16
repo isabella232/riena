@@ -59,6 +59,10 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 				new NavigationNodeId("org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(markerSubModule);
 
+		ISubModuleNode filterSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.filter"), "UI-Filter"); //$NON-NLS-1$ //$NON-NLS-2$
+		playgroundModule.addChild(filterSubModule);
+
 		ISubModuleNode focusableSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.focusable"), "Focusable"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(focusableSubModule);
