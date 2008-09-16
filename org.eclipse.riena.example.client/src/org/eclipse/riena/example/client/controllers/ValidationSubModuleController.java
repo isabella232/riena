@@ -157,7 +157,7 @@ public class ValidationSubModuleController extends SubModuleController {
 	 */
 	private SubApplicationController getSubApplicationController() {
 		return (SubApplicationController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
-				.getPresentation();
+				.getNavigationNodeController();
 	}
 
 }

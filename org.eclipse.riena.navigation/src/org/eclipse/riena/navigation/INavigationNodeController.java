@@ -13,18 +13,18 @@ package org.eclipse.riena.navigation;
 import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
 
 /**
- * Describes the presentation of a model object. The presentation manages the
+ * Describes the controller of a model object. The controller manages the
  * showing and hiding of views for the model
  */
-public interface IPresentation extends ITypecastingAdaptable {
+public interface INavigationNodeController extends ITypecastingAdaptable {
 
 	/**
 	 * Check if the node pNode can be activated within the navigation context
 	 * 
-	 * @param pNode -
-	 *            the node to check
-	 * @param context -
-	 *            current navigation context
+	 * @param pNode
+	 *            - the node to check
+	 * @param context
+	 *            - current navigation context
 	 * @return true - if the node pNode can be disposed
 	 */
 	boolean allowsActivate(INavigationNode<?> pNode, INavigationContext context);
@@ -32,10 +32,10 @@ public interface IPresentation extends ITypecastingAdaptable {
 	/**
 	 * Check if the node pNode can be deactivated within the navigation context
 	 * 
-	 * @param pNode -
-	 *            the node to check
-	 * @param context -
-	 *            current navigation context
+	 * @param pNode
+	 *            - the node to check
+	 * @param context
+	 *            - current navigation context
 	 * @return true - if the node pNode can be deactivated
 	 */
 	boolean allowsDeactivate(INavigationNode<?> pNode, INavigationContext context);
@@ -43,10 +43,10 @@ public interface IPresentation extends ITypecastingAdaptable {
 	/**
 	 * Check if the node pNode can be disposed within the navigation context
 	 * 
-	 * @param pNode -
-	 *            the node to check
-	 * @param context -
-	 *            current navigation context
+	 * @param pNode
+	 *            - the node to check
+	 * @param context
+	 *            - current navigation context
 	 * @return true - if the node pNode can be disposed
 	 */
 	boolean allowsDispose(INavigationNode<?> pNode, INavigationContext context);

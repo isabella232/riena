@@ -216,14 +216,14 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * @return the Presentation of this node
 	 */
-	IPresentation getPresentation();
+	INavigationNodeController getNavigationNodeController();
 
 	/**
-	 * Look for the next in the hierarchy available presentation
+	 * Look for the next in the hierarchy available controller
 	 */
-	IPresentation getNextPresentation();
+	INavigationNodeController getNextNavigationNodeController();
 
-	void setPresentation(IPresentation pPresentation);
+	void setNavigationNodeController(INavigationNodeController pNavigationNodeController);
 
 	String getLabel();
 

@@ -40,9 +40,9 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 				aVisualizer.addObserver(getUIProcessRidget(subApp));
 				aVisualizer.addObserver(createObserver(node));
 				for (ISubApplicationNode aSubApplicationNode : getSubApplications()) {
-					if (aSubApplicationNode.getPresentation() != null
-							&& ((SubApplicationController) aSubApplicationNode.getPresentation()).getStatuslineRidget() != null) {
-						aVisualizer.addObserver(((SubApplicationController) aSubApplicationNode.getPresentation())
+					if (aSubApplicationNode.getNavigationNodeController() != null
+							&& ((SubApplicationController) aSubApplicationNode.getNavigationNodeController()).getStatuslineRidget() != null) {
+						aVisualizer.addObserver(((SubApplicationController) aSubApplicationNode.getNavigationNodeController())
 								.getStatuslineRidget().getStatuslineProcessRidget());
 					}
 				}
@@ -60,6 +60,6 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 	}
 
 	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {
-		return ((SubApplicationController) subApp.getPresentation()).getUiProcessRidget();
+		return ((SubApplicationController) subApp.getNavigationNodeController()).getUiProcessRidget();
 	}
 }

@@ -26,11 +26,11 @@ import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.INavigationProcessor;
-import org.eclipse.riena.navigation.IPresentation;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListener;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
@@ -54,7 +54,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private String label;
 	private String icon;
 	private boolean expanded;
-	private IPresentation presentation;
+	private INavigationNodeController navigationNodeController;
 	private INavigationProcessor navigationProcessor;
 	private List<C> children;
 	private boolean selected;
@@ -99,13 +99,13 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		setLabel(pLabel);
 	}
 
-	public void setPresentation(IPresentation pPresentation) {
-		presentation = pPresentation;
-		notifyPresentationChanged();
+	public void setNavigationNodeController(INavigationNodeController pNavigationNodeController) {
+		navigationNodeController = pNavigationNodeController;
+		notifyControllerChanged();
 	}
 
 	@SuppressWarnings("unchecked")
-	private void notifyPresentationChanged() {
+	private void notifyControllerChanged() {
 		for (L next : getListeners()) {
 			next.presentationChanged((S) this);
 		}
@@ -309,7 +309,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.IActivateable#allowsActivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public boolean allowsActivate(INavigationContext context) {
-		IPresentation localPresentation = getPresentation();
+		INavigationNodeController localPresentation = getNavigationNodeController();
 		if (localPresentation != null) {
 			return localPresentation.allowsActivate(this, context);
 		} else {
@@ -321,7 +321,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.IActivateable#allowsDeactivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public boolean allowsDeactivate(INavigationContext context) {
-		IPresentation localPresentation = getPresentation();
+		INavigationNodeController localPresentation = getNavigationNodeController();
 		if (localPresentation != null) {
 			return localPresentation.allowsDeactivate(this, context);
 		} else {
@@ -466,20 +466,20 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @return the Presentation of this node
+	 * @return the controller of this node
 	 */
-	public IPresentation getPresentation() {
-		return presentation;
+	public INavigationNodeController getNavigationNodeController() {
+		return navigationNodeController;
 	}
 
 	/**
-	 * Look for the next in the hierarchy available presentation
+	 * Look for the next in the hierarchy available controller
 	 */
-	public IPresentation getNextPresentation() {
-		if (presentation != null) {
-			return presentation;
+	public INavigationNodeController getNextNavigationNodeController() {
+		if (navigationNodeController != null) {
+			return navigationNodeController;
 		} else if (getParent() != null) {
-			return getParent().getPresentation();
+			return getParent().getNavigationNodeController();
 		} else {
 			return null;
 		}
@@ -764,7 +764,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#allowsDispose(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public boolean allowsDispose(INavigationContext context) {
-		IPresentation pres = getPresentation();
+		INavigationNodeController pres = getNavigationNodeController();
 		if (pres != null) {
 			return pres.allowsDispose(this, context);
 		} else {

@@ -313,8 +313,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListenerTo(moduleNode);
 
-		if (getNavigationNode().getPresentation() instanceof IController) {
-			IController controller = (IController) node.getPresentation();
+		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
+			IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
 			controller.afterBind();
@@ -327,8 +327,8 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 */
 	public void unbind() {
 
-		if (getNavigationNode().getPresentation() instanceof IController) {
-			IController controller = (IController) getNavigationNode().getPresentation();
+		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
+			IController controller = (IController) getNavigationNode().getNavigationNodeController();
 			binding.unbind(controller);
 		}
 

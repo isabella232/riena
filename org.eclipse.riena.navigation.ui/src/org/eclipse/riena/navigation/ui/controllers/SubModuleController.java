@@ -151,7 +151,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @return module controller
 	 */
 	public ModuleController getModuleController() {
-		return (ModuleController) getNavigationNode().getParentOfType(IModuleNode.class).getPresentation();
+		return (ModuleController) getNavigationNode().getParentOfType(IModuleNode.class).getNavigationNodeController();
 	}
 
 	/**

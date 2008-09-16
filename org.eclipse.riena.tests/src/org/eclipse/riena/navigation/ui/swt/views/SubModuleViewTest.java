@@ -51,7 +51,7 @@ public class SubModuleViewTest extends RienaTestCase {
 
 		subModuleNodeView = new TestView();
 		node = new SubModuleNode(new NavigationNodeId("testId"), "TestSubModuleLabel");
-		parent.setPresentation(new ModuleController(parent));
+		parent.setNavigationNodeController(new ModuleController(parent));
 		parent.addChild(node);
 		subModuleNodeView.createPartControl(new Shell());
 		node.activate();

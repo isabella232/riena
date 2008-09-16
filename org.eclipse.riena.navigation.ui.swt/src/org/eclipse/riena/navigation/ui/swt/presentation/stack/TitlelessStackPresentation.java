@@ -477,7 +477,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 			String id = page.getPerspective().getId();
 			ISubApplicationNode subApplication = SwtViewProviderAccessor.getViewProvider().getNavigationNode(id,
 					ISubApplicationNode.class);
-			result = (SubApplicationController) subApplication.getPresentation();
+			result = (SubApplicationController) subApplication.getNavigationNodeController();
 		}
 		return result;
 	}

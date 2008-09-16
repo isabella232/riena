@@ -20,7 +20,7 @@ import java.util.Map;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.IPresentation;
+import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
@@ -36,7 +36,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
  * controller N - Type of the Navigation node
  */
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements
-		IPresentation, IController {
+		INavigationNodeController, IController {
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
@@ -81,7 +81,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 */
 	public void setNavigationNode(N navigationNode) {
 		this.navigationNode = navigationNode;
-		navigationNode.setPresentation(this);
+		navigationNode.setNavigationNodeController(this);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.IPresentation#allowsDispose(org.eclipse.riena.navigation.INavigationNode,
+	 * @see org.eclipse.riena.navigation.INavigationNodeController#allowsDispose(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public boolean allowsDispose(INavigationNode<?> node, INavigationContext context) {
@@ -249,7 +249,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		if ((getNavigationNode() != null) && (getNavigationNode().getParent() == null)) {
 			return null;
 		} else {
-			return (NavigationNodeController<?>) navigationNode.getParent().getPresentation();
+			return (NavigationNodeController<?>) navigationNode.getParent().getNavigationNodeController();
 		}
 	}
 

@@ -56,8 +56,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	public void bind(SubApplicationNode node) {
-		if (getNavigationNode().getPresentation() instanceof IController) {
-			IController controller = (IController) node.getPresentation();
+		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
+			IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
 			controller.afterBind();
