@@ -126,7 +126,7 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	protected void bindUIControl() {
 		Combo control = getUIControl();
 		if (rowObservablesModel != null) {
-			// These binding are only necessary when we have a model
+			// These bindings are only necessary when we have a model
 			DataBindingContext dbc = new DataBindingContext();
 			if (control != null) {
 				// These bindings are only necessary when we have a Combo
@@ -134,13 +134,7 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 						new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE).setConverter(strToObjConverter),
 						new UpdateListStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
 				listBindingInternal.updateModelToTarget();
-				ISWTObservableValue controlSelection = SWTObservables.observeSelection(control);
-				controlSelection.addValueChangeListener(valueChangeValidator);
-				selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable,
-						new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter)
-								.setAfterGetValidator(selectionValidator), new UpdateValueStrategy(
-								UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
-				selectionBindingInternal.updateModelToTarget();
+				applyEnabled();
 			}
 			listBindingExternal = dbc.bindList(rowObservables, rowObservablesModel, new UpdateListStrategy(
 					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
@@ -287,13 +281,16 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 
 	public void setSelection(Object newSelection) {
 		assertIsBoundToModel();
-		Object oldValue = selectionObservable.getValue();
-		Object newValue = rowObservables.contains(newSelection) ? newSelection : null;
-		if (oldValue != newValue) {
-			if (getUIControl() != null) {
-				getUIControl().deselectAll();
+		Object oldSelection = selectionObservable.getValue();
+		if (oldSelection != newSelection) {
+			if (newSelection == null || !rowObservables.contains(newSelection)) {
+				if (getUIControl() != null) {
+					getUIControl().deselectAll();
+				}
+				selectionObservable.setValue(null);
+			} else {
+				selectionObservable.setValue(newSelection);
 			}
-			selectionObservable.setValue(newValue);
 		}
 	}
 
@@ -306,12 +303,50 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 		}
 	}
 
+	@Override
+	public synchronized void setEnabled(boolean enabled) {
+		if (enabled != isEnabled()) {
+			super.setEnabled(enabled);
+			applyEnabled();
+		}
+	}
+
 	// helping methods
 	// ////////////////
+
+	private void applyEnabled() {
+		if (isEnabled()) {
+			bindControlToSelectionAndUpdate();
+		} else {
+			unbindControlFromSelectionAndClear();
+		}
+	}
 
 	private void assertIsBoundToModel() {
 		if (rowObservablesModel == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Restores the list of items / selection in the combo, when the ridget is
+	 * enabled.
+	 */
+	private void bindControlToSelectionAndUpdate() {
+		Combo control = getUIControl();
+		if (control != null && listBindingInternal != null) {
+			/* update list of items in combo */
+			listBindingInternal.updateModelToTarget();
+			/* re-create selectionBinding */
+			ISWTObservableValue controlSelection = SWTObservables.observeSelection(control);
+			controlSelection.addValueChangeListener(valueChangeValidator);
+			DataBindingContext dbc = new DataBindingContext();
+			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable, new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter).setAfterGetValidator(
+					selectionValidator), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+					.setConverter(objToStrConverter));
+			/* update selection in combo */
+			selectionBindingInternal.updateModelToTarget();
 		}
 	}
 
@@ -342,6 +377,20 @@ public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidg
 	private boolean hasInput() {
 		Object selection = selectionObservable.getValue();
 		return selection != null && selection != emptySelection;
+	}
+
+	/**
+	 * Clears the list of items in the combo, when the ridget is disabled.
+	 */
+	private void unbindControlFromSelectionAndClear() {
+		Combo control = getUIControl();
+		if (control != null && !isEnabled()) {
+			/* dispose selectionBinding to avoid sync */
+			disposeBinding(selectionBindingInternal);
+			selectionBindingInternal = null;
+			/* clear combo */
+			control.removeAll();
+		}
 	}
 
 	// helping classes

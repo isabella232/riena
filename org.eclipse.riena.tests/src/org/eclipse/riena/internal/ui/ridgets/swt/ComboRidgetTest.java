@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -507,6 +508,152 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, control.getSelectionIndex());
 	}
 
+	public void testDisabledComboIsEmptyFromRidget() {
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+
+		ridget.setSelection(selection1);
+
+		assertEquals(selection1.toString(), control.getText());
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, manager.getSelectedPerson());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, manager.getSelectedPerson());
+
+		ridget.setSelection(selection2);
+
+		assertEquals("", control.getText());
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+
+		ridget.setEnabled(true);
+
+		assertEquals(selection2.toString(), control.getText());
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+	}
+
+	public void testDisabledComboIsEmptyFromModel() {
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+
+		manager.setSelectedPerson(selection1);
+		ridget.updateFromModel();
+
+		assertEquals(selection1.toString(), control.getText());
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, manager.getSelectedPerson());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+		assertEquals(selection1, ridget.getSelection());
+		assertEquals(selection1, manager.getSelectedPerson());
+
+		manager.setSelectedPerson(selection2);
+		ridget.updateFromModel();
+
+		assertEquals("", control.getText());
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+
+		ridget.setEnabled(true);
+
+		assertEquals(selection2.toString(), control.getText());
+		assertEquals(selection2, ridget.getSelection());
+		assertEquals(selection2, manager.getSelectedPerson());
+	}
+
+	public void testDisabledDoesNotFireSelection() {
+		ComboRidget ridget = getRidget();
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+
+		FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IComboBoxRidget.PROPERTY_SELECTION, pcl);
+
+		ridget.setSelection(selection1);
+
+		assertEquals(1, pcl.getCount());
+
+		ridget.setEnabled(false);
+
+		assertEquals(1, pcl.getCount());
+
+		ridget.setSelection(selection2);
+
+		assertEquals(2, pcl.getCount());
+
+		ridget.setEnabled(true);
+
+		assertEquals(2, pcl.getCount());
+	}
+
+	/**
+	 * Check that disabling / enabling works when we don't have a bound model.
+	 */
+	public void testDisableWithoutBoundModel() {
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
+
+		assertTrue(ridget.getObservableList().isEmpty());
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+		assertFalse(control.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+		assertTrue(control.isEnabled());
+	}
+
+	/**
+	 * Check that disabling / enabling works when we don't have a bound control.
+	 */
+	public void testDisableWithoutUIControl() {
+		ComboRidget ridget = getRidget();
+		ridget.setUIControl(null);
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+	}
+
+	public void testDisableAndClearOnBind() {
+		ComboRidget ridget = getRidget();
+		Combo control = getUIControl();
+
+		ridget.setUIControl(null);
+		ridget.setEnabled(false);
+		manager.setSelectedPerson(selection1);
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		assertFalse(control.isEnabled());
+		assertEquals("", control.getText());
+		assertEquals(selection1, ridget.getSelection());
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+		assertEquals(selection1.toString(), control.getText());
+		assertEquals(selection1, ridget.getSelection());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -579,12 +726,28 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		return newList;
 	}
 
-	private class SelectionPropertyChangeEvent extends PropertyChangeEvent {
+	// helping classes
+	//////////////////
+
+	private final class SelectionPropertyChangeEvent extends PropertyChangeEvent {
 
 		private static final long serialVersionUID = 4711L;
 
 		public SelectionPropertyChangeEvent(Object oldValue, Object newValue) {
 			super(getRidget(), IComboBoxRidget.PROPERTY_SELECTION, oldValue, newValue);
+		}
+	}
+
+	private static final class FTPropertyChangeListener implements PropertyChangeListener {
+
+		private int count;
+
+		public int getCount() {
+			return count;
+		}
+
+		public void propertyChange(PropertyChangeEvent evt) {
+			count++;
 		}
 	}
 }
