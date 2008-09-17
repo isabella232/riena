@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,6 @@ import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -239,17 +237,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 
 		@Override
-		public void filtersChanged(ISubModuleNode source) {
-
-			super.filtersChanged(source);
-			applyFilters(source.getFilters());
-		}
-
-		@Override
 		public void afterActivated(ISubModuleNode source) {
 
 			super.afterActivated(source);
-			applyFilters(source.getFilters());
+
 		}
 
 	}
@@ -257,33 +248,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	protected void blockView(boolean block) {
 		parentComposite.setCursor(block ? cursorWait : cursorArrow);
 		contentComposite.setEnabled(!block);
-	}
-
-	/**
-	 * @param filters
-	 */
-	public void applyFilters(Collection<? extends IUIFilter> filters) {
-		//		// TODO: an helper deligieren .... ???
-		//		for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
-		//			IUIFilter filter = (IUIFilter) iterator.next();
-		//			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterItems();
-		//			for (Iterator iterator2 = filterItems.iterator(); iterator2.hasNext();) {
-		//				IUIFilterAttribute filterAttribute = (IUIFilterAttribute) iterator2.next();
-		//				Collection<? extends IRidget> ridgets = getController().getRidgets();
-		//				for (Iterator iterator3 = ridgets.iterator(); iterator3.hasNext();) {
-		//					IRidget ridget = (IRidget) iterator3.next();
-		//					if (filterAttribute.matches(ridget.getID())) {
-		//						if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
-		//							ridget.setVisible(((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
-		//						}
-		//					}
-		//
-		//				}
-		//
-		//			}
-		//
-		//		}
-
 	}
 
 	/**
