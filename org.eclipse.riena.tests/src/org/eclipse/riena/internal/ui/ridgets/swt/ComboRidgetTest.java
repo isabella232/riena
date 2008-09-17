@@ -508,6 +508,10 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, control.getSelectionIndex());
 	}
 
+	/**
+	 * Tests that changing the selection in ridget works as expected, even when
+	 * the ridget is disabled.
+	 */
 	public void testDisabledComboIsEmptyFromRidget() {
 		ComboRidget ridget = getRidget();
 		Combo control = getUIControl();
@@ -539,6 +543,10 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection2, manager.getSelectedPerson());
 	}
 
+	/**
+	 * Tests that changing the selection in a bound model works as expected,
+	 * even when the ridget is disabled.
+	 */
 	public void testDisabledComboIsEmptyFromModel() {
 		ComboRidget ridget = getRidget();
 		Combo control = getUIControl();
@@ -571,6 +579,10 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection2, manager.getSelectedPerson());
 	}
 
+	/**
+	 * Tests that disabling / enabling the ridget does not fire selection events
+	 * (because the combo is modified internally).
+	 */
 	public void testDisabledDoesNotFireSelection() {
 		ComboRidget ridget = getRidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
@@ -632,6 +644,10 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isEnabled());
 	}
 
+	/**
+	 * Tests that the disabled state is applied to a new control when set into
+	 * the ridget.
+	 */
 	public void testDisableAndClearOnBind() {
 		ComboRidget ridget = getRidget();
 		Combo control = getUIControl();
