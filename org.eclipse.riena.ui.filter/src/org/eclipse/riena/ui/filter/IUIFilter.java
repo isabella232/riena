@@ -13,36 +13,37 @@ package org.eclipse.riena.ui.filter;
 import java.util.Collection;
 
 /**
- * TODO
+ * An UI Filter holds a collection of different attributes with witch the UI can
+ * be used to parts of the UI.
  */
 public interface IUIFilter {
 
 	/**
-	 * Adds an item to the filter.
+	 * Adds an attribute to the filter.
 	 * 
-	 * @param item
-	 *            - the item to add.
+	 * @param attribute
+	 *            - the attribute to add.
 	 */
-	void addFilterItem(IUIFilterAttribute item);
+	void addFilterAttribute(IUIFilterAttribute attribute);
 
 	/**
-	 * Removes an item from the filter.
+	 * Removes an attribute from the filter.
 	 * 
-	 * @param item
-	 *            the item to remove.
+	 * @param attribute
+	 *            - the attribute to remove.
 	 */
-	void removeFilterItem(IUIFilterAttribute item);
+	void removeFilterAttribute(IUIFilterAttribute attribute);
 
 	/**
-	 * Removes all items from the filter.
+	 * Removes all attributes from the filter.
 	 */
-	void removeAllFilterItems();
+	void removeAllFilterAttributes();
 
 	/**
-	 * Returns the items of the filter
+	 * Returns the attributes of the filter
 	 * 
-	 * @return The items of the filter.
+	 * @return The attributes of the filter.
 	 */
-	Collection<? extends IUIFilterAttribute> getFilterItems();
+	Collection<? extends IUIFilterAttribute> getFilterAttributes();
 
 }

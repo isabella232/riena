@@ -106,7 +106,7 @@ public class FilterSubModuleController extends SubModuleController {
 
 	private void doAdd() {
 		IUIFilter filter = new UIFilter();
-		filter.addFilterItem(createFilterAttribute());
+		filter.addFilterAttribute(createFilterAttribute());
 		getNavigationNode().addFilter(filter);
 	}
 

@@ -12,37 +12,36 @@ package org.eclipse.riena.ui.filter;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
- *
+ * Implementation of {@link IUIFilter}.
  */
 public class UIFilter implements IUIFilter {
 
-	private Set<IUIFilterAttribute> items;
+	private Collection<IUIFilterAttribute> attributes;
 
 	public UIFilter() {
-		items = new HashSet<IUIFilterAttribute>();
+		attributes = new HashSet<IUIFilterAttribute>();
 	}
 
-	private Set<IUIFilterAttribute> getItems() {
-		return items;
+	private Collection<IUIFilterAttribute> getAttributes() {
+		return attributes;
 	}
 
-	public void addFilterItem(IUIFilterAttribute item) {
-		getItems().add(item);
+	public void addFilterAttribute(IUIFilterAttribute item) {
+		getAttributes().add(item);
 	}
 
-	public Collection<? extends IUIFilterAttribute> getFilterItems() {
-		return getItems();
+	public Collection<? extends IUIFilterAttribute> getFilterAttributes() {
+		return getAttributes();
 	}
 
-	public void removeAllFilterItems() {
-		getItems().clear();
+	public void removeAllFilterAttributes() {
+		getAttributes().clear();
 	}
 
-	public void removeFilterItem(IUIFilterAttribute item) {
-		getItems().remove(item);
+	public void removeFilterAttribute(IUIFilterAttribute item) {
+		getAttributes().remove(item);
 	}
 
 }

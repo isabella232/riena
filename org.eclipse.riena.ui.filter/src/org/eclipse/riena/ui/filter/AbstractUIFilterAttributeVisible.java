@@ -11,16 +11,27 @@
 package org.eclipse.riena.ui.filter;
 
 /**
- *
+ * Filter attribute for visibility.
  */
 public abstract class AbstractUIFilterAttributeVisible implements IUIFilterAttribute {
 
 	private boolean visible;
 
+	/**
+	 * Creates a new filter attribute for visibility.
+	 * 
+	 * @param visible
+	 *            - {@code true} for visible; {@code false} for hidden
+	 */
 	public AbstractUIFilterAttributeVisible(boolean visible) {
 		this.visible = visible;
 	}
 
+	/**
+	 * Returns whether the UI element should be visible or hidden
+	 * 
+	 * @return {@code true} for visible; {@code false} for hidden
+	 */
 	public boolean isVisible() {
 		return visible;
 	}

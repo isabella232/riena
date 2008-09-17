@@ -15,18 +15,29 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeMarker;
 
 /**
- *
+ * Filter attribute to provide a marker for a ridget.
  */
 public class RidgetUIFilterAttributeMarker extends AbstractUIFilterAttributeMarker {
 
 	private String filterId;
 
+	/**
+	 * Creates a new instance of {@code RidgetUIFilterAttributeMarker}.
+	 * 
+	 * @param id
+	 *            - ID
+	 * @param marker
+	 *            - marker
+	 */
 	public RidgetUIFilterAttributeMarker(String id, IMarker marker) {
 		super(marker);
 		this.filterId = id;
 	}
 
 	/**
+	 * This method compares the ID of this attribute and the given ID of a
+	 * ridget.
+	 * 
 	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 	public boolean matches(Object object) {

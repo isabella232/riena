@@ -11,10 +11,20 @@
 package org.eclipse.riena.ui.filter;
 
 /**
- *
+ * An filter attributes can manipulate one attribute of an UI element (i.g.
+ * marker of a ridget or visibility of a navigation node).
  */
 public interface IUIFilterAttribute {
 
+	/**
+	 * Returns whether the given object matches the conditions of this
+	 * attribute.
+	 * 
+	 * @param object
+	 *            - object to check
+	 * @return {@code true} if the given object matches; otherwise {@code false}
+	 *         .
+	 */
 	boolean matches(Object object);
 
 }

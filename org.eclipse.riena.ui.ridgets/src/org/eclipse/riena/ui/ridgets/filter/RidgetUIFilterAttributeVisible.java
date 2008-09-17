@@ -14,18 +14,29 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeVisible;
 
 /**
- *
+ * Filter attribute to provide the visibility for a ridget.
  */
 public class RidgetUIFilterAttributeVisible extends AbstractUIFilterAttributeVisible {
 
 	private String filterId;
 
+	/**
+	 * Creates a new instance of {@code RidgetUIFilterAttributeVisible}.
+	 * 
+	 * @param id
+	 *            - ID
+	 * @param visible
+	 *            - {@code true} for visible; {@code false} for hidden
+	 */
 	public RidgetUIFilterAttributeVisible(String id, boolean visible) {
 		super(visible);
 		this.filterId = id;
 	}
 
 	/**
+	 * This method compares the ID of this attribute and the given ID of a
+	 * ridget.
+	 * 
 	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 	public boolean matches(Object object) {
