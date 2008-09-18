@@ -274,25 +274,29 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			// TODO: eine Kombinatorik muss hier implementiert werden
 
 			for (IUIFilter filter : filters) {
-				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
-				for (IUIFilterAttribute filterAttribute : filterItems) {
-					for (IRidget ridget : getRidgets()) {
-						if (filterAttribute.matches(ridget.getID())) {
-							if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
-								ridget.setVisible(((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
-							} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
-								if (ridget instanceof IMarkableRidget) {
-									IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-									RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
-									markableRidget.addMarker(attributeMarker.getMarker());
-								}
+				applyFilter(filter);
+
+			}
+
+		}
+
+		public void applyFilter(IUIFilter filter) {
+			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
+			for (IUIFilterAttribute filterAttribute : filterItems) {
+				for (IRidget ridget : getRidgets()) {
+					if (filterAttribute.matches(ridget.getID())) {
+						if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
+							ridget.setVisible(((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
+						} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
+							if (ridget instanceof IMarkableRidget) {
+								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+								RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
+								markableRidget.addMarker(attributeMarker.getMarker());
 							}
 						}
 					}
 				}
-
 			}
-
 		}
 
 		public void removeAllFilters(Collection<? extends IUIFilter> filters) {
@@ -327,21 +331,22 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		@Override
 		public void activated(INavigationNode source) {
 			super.activated(source);
+			// TODO: darf nur beim ersten activate passieren , oder ?
 			applyFilters(source.getFilters());
 		}
 
 		@Override
 		public void filterAdded(INavigationNode source, IUIFilter filter) {
 			super.filterAdded(source, filter);
-			// hier kommt nun die Kombinatorik für die Gesamtheit aller Filter zum Zuge
-			applyFilters(source.getFilters());
+
+			applyFilter(filter);
 		}
 
 		@Override
 		public void filterRemoved(INavigationNode source, IUIFilter filter) {
 			super.filterRemoved(source, filter);
 			removeFilter(filter);
-			// hier kommt nun die Kombinatorik für die Gesamtheit aller VERBLIEBENEN Filter zum Zuge
+
 			applyFilters(source.getFilters());
 		}
 

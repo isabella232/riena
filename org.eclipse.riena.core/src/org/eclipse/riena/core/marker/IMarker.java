@@ -83,4 +83,10 @@ public interface IMarker {
 	 */
 	void removeAttributeChangeListener(IMarkerAttributeChangeListener listener);
 
+	/**
+	 * Returns false if marker is created by a filter, false otherwise. If
+	 * marker is unique, only one unique marker of this marker type is allowed.
+	 */
+
+	boolean isUnique();
 }

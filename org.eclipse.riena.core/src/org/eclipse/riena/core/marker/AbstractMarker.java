@@ -29,6 +29,20 @@ public abstract class AbstractMarker implements IMarker {
 	private Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(
 			1, 1.0f);
 
+	private boolean unique;
+
+	public AbstractMarker() {
+		this(true);
+	}
+
+	public AbstractMarker(boolean unique) {
+		this.unique = unique;
+	}
+
+	public boolean isUnique() {
+		return unique;
+	}
+
 	/**
 	 * @see IMarker#getAttribute(String)
 	 */
