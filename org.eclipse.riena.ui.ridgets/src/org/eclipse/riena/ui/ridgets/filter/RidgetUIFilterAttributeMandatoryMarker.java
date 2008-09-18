@@ -10,26 +10,26 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.filter;
 
-import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeMandatoryMarker;
 
 /**
  * Filter attribute to provide a marker for a ridget.
  */
-public class RidgetUIFilterAttributeMarker extends AbstractUIFilterAttributeMarker {
+public class RidgetUIFilterAttributeMandatoryMarker extends AbstractUIFilterAttributeMandatoryMarker {
 
 	private String filterId;
 
 	/**
-	 * Creates a new instance of {@code RidgetUIFilterAttributeMarker}.
+	 * Creates a new instance of {@code RidgetUIFilterAttributeMandatoryMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 * @param marker
 	 *            - marker
 	 */
-	public RidgetUIFilterAttributeMarker(String id, IMarker marker) {
+	public RidgetUIFilterAttributeMandatoryMarker(String id, MandatoryMarker marker) {
 		super(marker);
 		this.filterId = id;
 	}

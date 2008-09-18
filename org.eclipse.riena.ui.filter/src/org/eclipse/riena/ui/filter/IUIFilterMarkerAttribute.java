@@ -13,29 +13,14 @@ package org.eclipse.riena.ui.filter;
 import org.eclipse.riena.core.marker.IMarker;
 
 /**
- * Filter attribute for a marker.
+ * An filter attributes can manipulate one attribute of an UI element (i.g.
+ * marker of a ridget or visibility of a navigation node).
  */
-public abstract class AbstractUIFilterAttributeMarker implements IUIFilterAttribute {
-
-	private IMarker marker;
+public interface IUIFilterMarkerAttribute extends IUIFilterAttribute {
 
 	/**
-	 * Create a new filter attribute with the given marker.
-	 * 
-	 * @param marker
-	 *            - marker to set
+	 * Returns the marker of this IUIFilterMarkerAttribute .
 	 */
-	public AbstractUIFilterAttributeMarker(IMarker marker) {
-		this.marker = marker;
-	}
-
-	/**
-	 * Returns the marker of this attribute.
-	 * 
-	 * @return marker
-	 */
-	public IMarker getMarker() {
-		return marker;
-	}
+	IMarker getMarker();
 
 }

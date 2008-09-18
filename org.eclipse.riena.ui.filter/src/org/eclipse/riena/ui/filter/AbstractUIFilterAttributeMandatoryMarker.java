@@ -10,30 +10,33 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter;
 
-/**
- * Filter attribute for visibility.
- */
-public abstract class AbstractUIFilterAttributeVisible implements IUIFilterAttribute {
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 
-	private boolean visible;
+/**
+ * Filter attribute for a output marker.
+ */
+public abstract class AbstractUIFilterAttributeMandatoryMarker implements IUIFilterMarkerAttribute {
+
+	private MandatoryMarker marker;
 
 	/**
-	 * Creates a new filter attribute for visibility.
+	 * Create a new filter attribute with the given marker.
 	 * 
-	 * @param visible
-	 *            - {@code true} for visible; {@code false} for hidden
+	 * @param marker
+	 *            - marker to set
 	 */
-	public AbstractUIFilterAttributeVisible(boolean visible) {
-		this.visible = visible;
+	public AbstractUIFilterAttributeMandatoryMarker(MandatoryMarker marker) {
+		this.marker = marker;
 	}
 
 	/**
-	 * Returns whether the UI element should be visible or hidden
+	 * Returns the marker of this attribute.
 	 * 
-	 * @return {@code true} for visible; {@code false} for hidden
+	 * @return marker
 	 */
-	public boolean isVisible() {
-		return visible;
+	public IMarker getMarker() {
+		return marker;
 	}
 
 }

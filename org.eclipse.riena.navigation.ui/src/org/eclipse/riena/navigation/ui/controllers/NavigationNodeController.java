@@ -29,13 +29,12 @@ import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
 import org.eclipse.riena.ui.core.resource.internal.IconSize;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterMarkerAttribute;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeMarker;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeVisible;
 
 /**
  * An abstract controller superclass that manages the navigation node of a
@@ -285,15 +284,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			for (IUIFilterAttribute filterAttribute : filterItems) {
 				for (IRidget ridget : getRidgets()) {
 					if (filterAttribute.matches(ridget.getID())) {
-						if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
-							ridget.setVisible(((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
-						} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
-							if (ridget instanceof IMarkableRidget) {
-								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-								RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
+						if (ridget instanceof IMarkableRidget) {
+							IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+							if (filterAttribute instanceof IUIFilterMarkerAttribute) {
+								IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
 								markableRidget.addMarker(attributeMarker.getMarker());
 							}
 						}
+
 					}
 				}
 			}
@@ -313,16 +311,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			for (IUIFilterAttribute filterAttribute : filterItems) {
 				for (IRidget ridget : getRidgets()) {
 					if (filterAttribute.matches(ridget.getID())) {
-						if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
-							// TODO: hier muss der Ursprungszustand berücksichtigt werden - was immer das ist ...
-							ridget.setVisible(!((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
-						} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
-							if (ridget instanceof IMarkableRidget) {
-								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-								RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
+						if (ridget instanceof IMarkableRidget) {
+							IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+							if (filterAttribute instanceof IUIFilterMarkerAttribute) {
+								IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
 								markableRidget.removeMarker(attributeMarker.getMarker());
 							}
 						}
+
 					}
 				}
 			}

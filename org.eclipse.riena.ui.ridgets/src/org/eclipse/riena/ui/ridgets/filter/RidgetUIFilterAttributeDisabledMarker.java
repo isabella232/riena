@@ -11,25 +11,26 @@
 package org.eclipse.riena.ui.ridgets.filter;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeVisible;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeDisabledMarker;
 
 /**
- * Filter attribute to provide the visibility for a ridget.
+ * Filter attribute to provide a marker for a ridget.
  */
-public class RidgetUIFilterAttributeVisible extends AbstractUIFilterAttributeVisible {
+public class RidgetUIFilterAttributeDisabledMarker extends AbstractUIFilterAttributeDisabledMarker {
 
 	private String filterId;
 
 	/**
-	 * Creates a new instance of {@code RidgetUIFilterAttributeVisible}.
+	 * Creates a new instance of {@code RidgetUIFilterAttributeDisabledMarker}.
 	 * 
 	 * @param id
 	 *            - ID
-	 * @param visible
-	 *            - {@code true} for visible; {@code false} for hidden
+	 * @param marker
+	 *            - marker
 	 */
-	public RidgetUIFilterAttributeVisible(String id, boolean visible) {
-		super(visible);
+	public RidgetUIFilterAttributeDisabledMarker(String id, DisabledMarker marker) {
+		super(marker);
 		this.filterId = id;
 	}
 

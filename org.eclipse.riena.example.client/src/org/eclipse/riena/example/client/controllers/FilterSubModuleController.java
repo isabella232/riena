@@ -19,10 +19,9 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
-import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -33,8 +32,10 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeMarker;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeVisible;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeDisabledMarker;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeMandatoryMarker;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeOutputMarker;
 
 /**
  *
@@ -47,8 +48,8 @@ public class FilterSubModuleController extends SubModuleController {
 
 	private enum FilterType {
 
-		VISIBLE("Visible", true, false), MARKER("Marker", new MandatoryMarker(), new ErrorMarker(), new OutputMarker(),
-				new DisabledMarker());
+		MARKER("Marker", new MandatoryMarker(false), new HiddenMarker(false), new OutputMarker(false),
+				new DisabledMarker(false));
 
 		private String text;
 		private Object[] args;
@@ -117,13 +118,15 @@ public class FilterSubModuleController extends SubModuleController {
 
 		String id = filterModel.getSelectedId();
 		Object filterValue = filterModel.getSelectedFilterTypeValue();
-		switch (filterModel.getSelectedType()) {
-		case VISIBLE:
-			attribute = new RidgetUIFilterAttributeVisible(id, (Boolean) filterValue);
-			break;
-		case MARKER:
-			attribute = new RidgetUIFilterAttributeMarker(id, (IMarker) filterValue);
-			break;
+
+		if (filterValue instanceof OutputMarker) {
+			attribute = new RidgetUIFilterAttributeOutputMarker(id, (OutputMarker) filterValue);
+		} else if (filterValue instanceof DisabledMarker) {
+			attribute = new RidgetUIFilterAttributeDisabledMarker(id, (DisabledMarker) filterValue);
+		} else if (filterValue instanceof MandatoryMarker) {
+			attribute = new RidgetUIFilterAttributeMandatoryMarker(id, (MandatoryMarker) filterValue);
+		} else if (filterValue instanceof HiddenMarker) {
+			attribute = new RidgetUIFilterAttributeHiddenMarker(id, (HiddenMarker) filterValue);
 		}
 
 		return attribute;
@@ -202,7 +205,6 @@ public class FilterSubModuleController extends SubModuleController {
 		public List<FilterType> getTypes() {
 			if (types == null) {
 				types = new ArrayList<FilterType>();
-				types.add(FilterType.VISIBLE);
 				types.add(FilterType.MARKER);
 			}
 			return types;
