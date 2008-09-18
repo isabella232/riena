@@ -271,6 +271,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	private class MyNavigationNodeListener extends NavigationNodeListener {
 
 		public void applyFilters(Collection<? extends IUIFilter> filters) {
+			// TODO: eine Kombinatorik muss hier implementiert werden
 
 			for (IUIFilter filter : filters) {
 				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
@@ -294,29 +295,33 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		}
 
-		public void removeFilters(Collection<? extends IUIFilter> filters) {
+		public void removeAllFilters(Collection<? extends IUIFilter> filters) {
 
 			for (IUIFilter filter : filters) {
-				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
-				for (IUIFilterAttribute filterAttribute : filterItems) {
-					for (IRidget ridget : getRidgets()) {
-						if (filterAttribute.matches(ridget.getID())) {
-							if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
-								// TODO: hier muss der Ursprungszustand berücksichtigt werden - was immer das ist ...
-								ridget.setVisible(!((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
-							} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
-								if (ridget instanceof IMarkableRidget) {
-									IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-									RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
-									markableRidget.removeMarker(attributeMarker.getMarker());
-								}
+				removeFilter(filter);
+
+			}
+
+		}
+
+		public void removeFilter(IUIFilter filter) {
+			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
+			for (IUIFilterAttribute filterAttribute : filterItems) {
+				for (IRidget ridget : getRidgets()) {
+					if (filterAttribute.matches(ridget.getID())) {
+						if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
+							// TODO: hier muss der Ursprungszustand berücksichtigt werden - was immer das ist ...
+							ridget.setVisible(!((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
+						} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
+							if (ridget instanceof IMarkableRidget) {
+								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+								RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
+								markableRidget.removeMarker(attributeMarker.getMarker());
 							}
 						}
 					}
 				}
-
 			}
-
 		}
 
 		@Override
@@ -326,15 +331,24 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 
 		@Override
-		public void filtersAdded(INavigationNode source) {
-			super.filtersAdded(source);
+		public void filterAdded(INavigationNode source, IUIFilter filter) {
+			super.filterAdded(source, filter);
+			// hier kommt nun die Kombinatorik für die Gesamtheit aller Filter zum Zuge
 			applyFilters(source.getFilters());
 		}
 
 		@Override
-		public void filtersRemoved(INavigationNode source) {
-			super.filtersRemoved(source);
-			removeFilters(source.getFilters());
+		public void filterRemoved(INavigationNode source, IUIFilter filter) {
+			super.filterRemoved(source, filter);
+			removeFilter(filter);
+			// hier kommt nun die Kombinatorik für die Gesamtheit aller VERBLIEBENEN Filter zum Zuge
+			applyFilters(source.getFilters());
+		}
+
+		@Override
+		public void allFiltersRemoved(INavigationNode source) {
+			super.allFiltersRemoved(source);
+			removeAllFilters(source.getFilters());
 		}
 
 	}

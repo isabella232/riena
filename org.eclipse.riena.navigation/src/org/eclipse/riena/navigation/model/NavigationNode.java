@@ -992,16 +992,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	public void addFilter(IUIFilter filter) {
 		getFilterable().addFilter(filter);
-		notifyFiltersAdded();
+		notifyFilterAdded(filter);
 	}
 
 	public void removeFilter(IUIFilter filter) {
 		getFilterable().removeFilter(filter);
-		notifyFiltersRemoved();
+		notifyFilterRemoved(filter);
 	}
 
 	public void removeAllFilters() {
-		notifyFiltersRemoved();
+		notifyAllFiltersRemoved();
 		getFilterable().removeAllFilters();
 
 	}
@@ -1013,24 +1013,36 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * Notifies every interested listener that the filters have changed.
 	 */
-	private void notifyFiltersAdded() {
+	private void notifyFilterAdded(IUIFilter filter) {
 		for (L next : getListeners()) {
-			next.filtersAdded((S) this);
+			next.filterAdded((S) this, filter);
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.filterAdded(this);
+			next.filterAdded(this, filter);
 		}
 	}
 
 	/**
 	 * Notifies every interested listener that the filters have changed.
 	 */
-	private void notifyFiltersRemoved() {
+	private void notifyAllFiltersRemoved() {
 		for (L next : getListeners()) {
-			next.filtersRemoved((S) this);
+			next.allFiltersRemoved((S) this);
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.filterRemoved(this);
+			next.allFiltersRemoved(this);
+		}
+	}
+
+	/**
+	 * Notifies every interested listener that the filters have changed.
+	 */
+	private void notifyFilterRemoved(IUIFilter filter) {
+		for (L next : getListeners()) {
+			next.filterRemoved((S) this, filter);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.filterRemoved(this, filter);
 		}
 	}
 

@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.listener;
 
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
  * Default implementation for the INavigationNodeListener
@@ -157,7 +158,7 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filtersAdded(S source) {
+	public void filterAdded(S source, IUIFilter filter) {
 		// TODO Auto-generated method stub
 
 	}
@@ -169,7 +170,18 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filtersRemoved(S source) {
+	public void filterRemoved(S source, IUIFilter filter) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.listener.INavigationNodeListener#
+	 * allFiltersRemoved(org.eclipse.riena.navigation.INavigationNode)
+	 */
+	public void allFiltersRemoved(S source) {
 		// TODO Auto-generated method stub
 
 	}

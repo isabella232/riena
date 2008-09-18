@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.model;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
  *
@@ -219,7 +220,7 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#filterChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filterAdded(INavigationNode<?> source) {
+	public void filterAdded(INavigationNode<?> source, IUIFilter filter) {
 		// TODO Auto-generated method stub
 
 	}
@@ -231,7 +232,19 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#filterChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filterRemoved(INavigationNode<?> source) {
+	public void filterRemoved(INavigationNode<?> source, IUIFilter filter) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#allFiltersRemoved
+	 * (org.eclipse.riena.navigation.INavigationNode)
+	 */
+	public void allFiltersRemoved(INavigationNode<?> source) {
 		// TODO Auto-generated method stub
 
 	}

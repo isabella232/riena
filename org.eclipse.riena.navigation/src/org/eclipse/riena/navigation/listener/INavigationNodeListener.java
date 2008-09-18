@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.listener;
 
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
  * Each call back includes as the first parameter always the source of the
@@ -59,7 +60,10 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 
 	void block(S source, boolean block);
 
-	void filtersAdded(S source);
+	void filterAdded(S source, IUIFilter filter);
 
-	void filtersRemoved(S source);
+	void filterRemoved(S source, IUIFilter filter);
+
+	void allFiltersRemoved(S source);
+
 }

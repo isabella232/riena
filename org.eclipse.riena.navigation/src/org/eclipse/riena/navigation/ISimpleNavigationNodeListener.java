@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
  *
@@ -57,8 +58,10 @@ public interface ISimpleNavigationNodeListener {
 
 	void block(INavigationNode<?> source, boolean block);
 
-	void filterRemoved(INavigationNode<?> source);
+	void filterRemoved(INavigationNode<?> source, IUIFilter filter);
 
-	void filterAdded(INavigationNode<?> source);
+	void filterAdded(INavigationNode<?> source, IUIFilter filter);
+
+	void allFiltersRemoved(INavigationNode<?> source);
 
 }
