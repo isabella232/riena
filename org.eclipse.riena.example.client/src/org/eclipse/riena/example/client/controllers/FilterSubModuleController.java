@@ -19,8 +19,11 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
@@ -44,11 +47,16 @@ public class FilterSubModuleController extends SubModuleController {
 
 	private IComboBoxRidget filterTypeValues;
 	private FilterModel filterModel;
+	private MarkerModel markerModel;
 	private IActionRidget addFilter;
+	private IActionRidget addMarker;
+	private IActionRidget removeMarker;
+	private IMarker[] markers = new IMarker[] { new ErrorMarker(), new MandatoryMarker(), new HiddenMarker(),
+			new OutputMarker(), new DisabledMarker() };
 
 	private enum FilterType {
 
-		MARKER("Marker", new MandatoryMarker(false), new HiddenMarker(false), new OutputMarker(false),
+		MARKER("Marker", new MandatoryMarker(false), new HiddenMarker(false), new OutputMarker(false), //$NON-NLS-1$
 				new DisabledMarker(false));
 
 		private String text;
@@ -75,30 +83,53 @@ public class FilterSubModuleController extends SubModuleController {
 
 		super.afterBind();
 
-		IComboBoxRidget ridgetID = (IComboBoxRidget) getRidget("ridgetID");
+		IComboBoxRidget ridgetToMarkID = (IComboBoxRidget) getRidget("ridgetToMarkID"); //$NON-NLS-1$
+		markerModel = new MarkerModel();
+		ridgetToMarkID.bindToModel(markerModel, "ids", MarkerModel.class, null, markerModel, "selectedId"); //$NON-NLS-1$ //$NON-NLS-2$
+		ridgetToMarkID.updateFromModel();
+
+		IComboBoxRidget markersCombo = (IComboBoxRidget) getRidget("markers"); //$NON-NLS-1$
+		markersCombo.bindToModel(markerModel, "markers", MarkerModel.class, null, markerModel, "selectedMarker"); //$NON-NLS-1$ //$NON-NLS-2$
+		markersCombo.updateFromModel();
+
+		addMarker = (IActionRidget) getRidget("addMarker"); //$NON-NLS-1$
+		addMarker.addListener(new IActionListener() {
+			public void callback() {
+				doAddMarker();
+			}
+		});
+
+		removeMarker = (IActionRidget) getRidget("removeMarker"); //$NON-NLS-1$
+		removeMarker.addListener(new IActionListener() {
+			public void callback() {
+				doRemoveMarker();
+			}
+		});
+
+		IComboBoxRidget ridgetID = (IComboBoxRidget) getRidget("ridgetID"); //$NON-NLS-1$
 		filterModel = new FilterModel();
-		ridgetID.bindToModel(filterModel, "ids", FilterModel.class, null, filterModel, "selectedId");
+		ridgetID.bindToModel(filterModel, "ids", FilterModel.class, null, filterModel, "selectedId"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridgetID.updateFromModel();
 
 		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
-		filterType.bindToModel(filterModel, "types", filterModel, "selectedType");
+		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
-		filterTypeValues = (IComboBoxRidget) getRidget("filterTypeValues");
+		filterTypeValues = (IComboBoxRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new FilterValueListener());
 
-		addFilter = (IActionRidget) getRidget("addFilter");
+		addFilter = (IActionRidget) getRidget("addFilter"); //$NON-NLS-1$
 		addFilter.addListener(new IActionListener() {
 			public void callback() {
-				doAdd();
+				doAddFilter();
 			}
 		});
 
-		IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters");
+		IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
-				doRemove();
+				doRemoveFilters();
 			}
 		});
 
@@ -106,7 +137,7 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
-	private void doAdd() {
+	private void doAddFilter() {
 		IUIFilter filter = new UIFilter();
 		filter.addFilterAttribute(createFilterAttribute());
 		getNavigationNode().addFilter(filter);
@@ -133,7 +164,7 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
-	private void doRemove() {
+	private void doRemoveFilters() {
 		getNavigationNode().removeAllFilters();
 	}
 
@@ -143,13 +174,27 @@ public class FilterSubModuleController extends SubModuleController {
 		if (filterTypeValues != null) {
 			filterTypeValues.bindToModel(new WritableList(Arrays.asList(filterModel.getSelectedType().getArgs()),
 					Object.class), FilterModel.class, null, BeansObservables.observeValue(filterModel,
-					"selectedFilterTypeValue"));
+					"selectedFilterTypeValue")); //$NON-NLS-1$
 			filterTypeValues.updateFromModel();
 		}
 		if (addFilter != null) {
 			addFilter.setEnabled(filterModel.getSelectedFilterTypeValue() != null);
 		}
 
+	}
+
+	private void doAddMarker() {
+		if (markerModel.getSelectedId() != null) {
+			AbstractSWTRidget ridget = (AbstractSWTRidget) getRidget(markerModel.getSelectedId());
+			ridget.addMarker(markerModel.getSelectedMarker());
+		}
+	}
+
+	private void doRemoveMarker() {
+		if (markerModel.getSelectedId() != null) {
+			AbstractSWTRidget ridget = (AbstractSWTRidget) getRidget(markerModel.getSelectedId());
+			ridget.removeMarker(markerModel.getSelectedMarker());
+		}
 	}
 
 	private class FilterTypeChangeListener implements PropertyChangeListener {
@@ -170,20 +215,17 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
-	private class FilterModel {
+	private abstract class AbstractModel {
 
 		private List<String> ids;
 		private String selectedId;
-		private List<FilterType> types;
-		private FilterType selectedType;
-		private Object selectedFilterTypeValue;
 
 		public List<String> getIds() {
 			if (ids == null) {
 				ids = new ArrayList<String>();
 				Collection<? extends IRidget> ridgets = getRidgets();
 				for (IRidget ridget : ridgets) {
-					if ((ridget.getID() != null) && (ridget.getID().startsWith("ui_"))) {
+					if ((ridget.getID() != null) && (ridget.getID().startsWith("ui_"))) { //$NON-NLS-1$
 						ids.add(ridget.getID());
 					}
 				}
@@ -201,6 +243,32 @@ public class FilterSubModuleController extends SubModuleController {
 			}
 			return selectedId;
 		}
+
+	}
+
+	private class MarkerModel extends AbstractModel {
+
+		private IMarker selectedMarker;
+
+		public void setSelectedMarker(IMarker selectedMarker) {
+			this.selectedMarker = selectedMarker;
+		}
+
+		public IMarker getSelectedMarker() {
+			return selectedMarker;
+		}
+
+		public List<IMarker> getMarkers() {
+			return Arrays.asList(markers);
+		}
+
+	}
+
+	private class FilterModel extends AbstractModel {
+
+		private List<FilterType> types;
+		private FilterType selectedType;
+		private Object selectedFilterTypeValue;
 
 		public List<FilterType> getTypes() {
 			if (types == null) {
