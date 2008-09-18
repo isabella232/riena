@@ -273,7 +273,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		public void applyFilters(Collection<? extends IUIFilter> filters) {
 
 			for (IUIFilter filter : filters) {
-				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterItems();
+				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
 				for (IUIFilterAttribute filterAttribute : filterItems) {
 					for (IRidget ridget : getRidgets()) {
 						if (filterAttribute.matches(ridget.getID())) {
