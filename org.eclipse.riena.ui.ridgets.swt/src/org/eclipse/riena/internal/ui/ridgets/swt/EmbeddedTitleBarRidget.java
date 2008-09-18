@@ -263,4 +263,13 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 
 	}
 
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
 }

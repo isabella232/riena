@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
  */
-public class MultipleChoiceRidget extends AbstractMarkableRidget implements IMultipleChoiceRidget {
+public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultipleChoiceRidget {
 
 	private final WritableList optionsObservable;
 	private final WritableList selectionObservable;

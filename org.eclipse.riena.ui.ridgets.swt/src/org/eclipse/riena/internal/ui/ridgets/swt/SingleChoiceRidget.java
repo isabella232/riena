@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
  */
-public class SingleChoiceRidget extends AbstractMarkableRidget implements ISingleChoiceRidget {
+public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoiceRidget {
 
 	/** A single selected bean Object. */
 	private final WritableList optionsObservable;

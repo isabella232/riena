@@ -104,4 +104,13 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 		// unused
 	}
 
+	/**
+	 * Always returns true because mandatory markers do not make sense for this
+	 * ridget.
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		return true;
+	}
+
 }

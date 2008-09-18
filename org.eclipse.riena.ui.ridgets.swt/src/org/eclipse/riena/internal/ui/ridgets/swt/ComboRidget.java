@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Combo;
 /**
  * Ridget for {@link Combo} widgets.
  */
-public class ComboRidget extends AbstractMarkableRidget implements IComboBoxRidget {
+public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 
 	/** List of choices (Objects). */
 	private final IObservableList rowObservables;

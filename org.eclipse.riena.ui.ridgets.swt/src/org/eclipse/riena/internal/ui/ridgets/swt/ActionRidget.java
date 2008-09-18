@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 
-public class ActionRidget extends AbstractMarkableRidget implements IActionRidget {
+public class ActionRidget extends AbstractSWTRidget implements IActionRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 

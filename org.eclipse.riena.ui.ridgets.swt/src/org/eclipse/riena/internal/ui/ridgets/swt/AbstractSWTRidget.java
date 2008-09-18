@@ -10,9 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -27,15 +37,20 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Ridget for an SWT control.
  */
-public abstract class AbstractSWTRidget extends AbstractRidget {
+public abstract class AbstractSWTRidget extends AbstractRidget implements IMarkableRidget {
 
 	private static Image missingImage;
 	private FocusListener focusManager = new FocusManager();
 	private Control uiControl;
-	private boolean visible;
 	private boolean focusable;
 	private String toolTip = null;
 	private boolean blocked;
+	private ErrorMarker errorMarker;
+	private DisabledMarker disabledMarker;
+	private MandatoryMarker mandatoryMarker;
+	private OutputMarker outputMarker;
+	private HiddenMarker hiddenMarker;
+	private MarkerSupport markerSupport;
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -57,7 +72,6 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	}
 
 	public AbstractSWTRidget() {
-		visible = true;
 		focusable = true;
 	}
 
@@ -66,7 +80,6 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 		uninstallListeners();
 		unbindUIControl();
 		this.uiControl = (Control) uiControl;
-		updateVisible();
 		updateToolTip();
 		bindUIControl();
 		installListeners();
@@ -115,14 +128,21 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 	}
 
 	public final boolean isVisible() {
-		return visible;
+		return (uiControl != null) && (getMarkersOfType(HiddenMarker.class).isEmpty());
 	}
 
 	public void setVisible(boolean visible) {
-		if (this.visible != visible) {
-			this.visible = visible;
-			updateVisible();
+
+		if (hiddenMarker == null) {
+			hiddenMarker = new HiddenMarker();
 		}
+
+		if (visible) {
+			removeMarker(hiddenMarker);
+		} else {
+			addMarker(hiddenMarker);
+		}
+
 	}
 
 	public final void setToolTipText(String toolTipText) {
@@ -203,12 +223,6 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 
 	// helping methods
 	// ////////////////
-
-	private void updateVisible() {
-		if (uiControl != null) {
-			uiControl.setVisible(visible);
-		}
-	}
 
 	private void updateToolTip() {
 		if (uiControl != null) {
@@ -318,5 +332,137 @@ public abstract class AbstractSWTRidget extends AbstractRidget {
 			return result;
 		}
 	};
+
+	abstract public boolean isDisableMandatoryMarker();
+
+	public final boolean isErrorMarked() {
+		return !getMarkersOfType(ErrorMarker.class).isEmpty();
+	}
+
+	public final void setErrorMarked(boolean errorMarked) {
+		if (!errorMarked) {
+			if (errorMarker != null) {
+				removeMarker(errorMarker);
+			}
+		} else {
+			if (errorMarker == null) {
+				errorMarker = new ErrorMarker();
+			}
+			addMarker(errorMarker);
+		}
+	}
+
+	public synchronized final void addMarker(IMarker marker) {
+		if (markerSupport == null) {
+			markerSupport = new MarkerSupport(this, propertyChangeSupport);
+		}
+		if (marker instanceof MandatoryMarker) {
+			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
+		}
+		markerSupport.addMarker(marker);
+	}
+
+	public final Collection<IMarker> getMarkers() {
+		if (markerSupport != null) {
+			return markerSupport.getMarkers();
+		}
+		return Collections.emptySet();
+	}
+
+	public final <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+		if (markerSupport != null) {
+			return markerSupport.getMarkersOfType(type);
+		}
+		return Collections.emptySet();
+	}
+
+	public final void removeAllMarkers() {
+		if (markerSupport != null) {
+			markerSupport.removeAllMarkers();
+		}
+	}
+
+	public final void removeMarker(IMarker marker) {
+		if (markerSupport != null) {
+			markerSupport.removeMarker(marker);
+		}
+	}
+
+	public final boolean isEnabled() {
+		return getMarkersOfType(DisabledMarker.class).isEmpty();
+	}
+
+	public synchronized void setEnabled(boolean enabled) {
+		if (enabled) {
+			if (disabledMarker != null) {
+				removeMarker(disabledMarker);
+			}
+		} else {
+			if (disabledMarker == null) {
+				disabledMarker = new DisabledMarker();
+			}
+			addMarker(disabledMarker);
+		}
+	}
+
+	public final boolean isOutputOnly() {
+		return !getMarkersOfType(OutputMarker.class).isEmpty();
+	}
+
+	public void setOutputOnly(boolean outputOnly) {
+		if (!outputOnly) {
+			if (outputMarker != null) {
+				removeMarker(outputMarker);
+			}
+		} else {
+			if (outputMarker == null) {
+				outputMarker = new OutputMarker();
+			}
+			addMarker(outputMarker);
+		}
+	}
+
+	public final boolean isMandatory() {
+		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
+	}
+
+	public final void setMandatory(boolean mandatory) {
+		if (!mandatory) {
+			if (mandatoryMarker != null) {
+				removeMarker(mandatoryMarker);
+			}
+		} else {
+			if (mandatoryMarker == null) {
+				mandatoryMarker = new MandatoryMarker();
+			}
+			addMarker(mandatoryMarker);
+		}
+	}
+
+	// protected methods
+	// //////////////////
+
+	/**
+	 * Iterates over the MandatoryMarker instances held by this ridget changing
+	 * their disabled state to given value.
+	 * 
+	 * @param disable
+	 *            the new disabled state
+	 */
+	protected final void disableMandatoryMarkers(boolean disable) {
+		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			MandatoryMarker mMarker = (MandatoryMarker) marker;
+			mMarker.setDisabled(disable);
+		}
+	}
+
+	// helping methods
+	// ////////////////
+
+	private void updateMarkers() {
+		if (markerSupport != null) {
+			markerSupport.updateMarkers();
+		}
+	}
 
 }

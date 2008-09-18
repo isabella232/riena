@@ -68,6 +68,9 @@ public class InjectBindingManager extends DefaultBindingManager {
 
 	private void injectIntoController(IRidget ridget, IRidgetContainer controller, String bindingProperty) {
 		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
+		if (desc == null) {
+			throw new UnsupportedOperationException("Property '" + bindingProperty + "' unkown"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		BeanPropertyAccessor.setPropertyValue(controller, desc, ridget);
 	}
 

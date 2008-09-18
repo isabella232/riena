@@ -41,7 +41,7 @@ import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
  * observe single and multiple selection of a widget and bind the selection
  * state to model elements.
  */
-public abstract class AbstractSelectableRidget extends AbstractMarkableRidget implements ISelectableRidget {
+public abstract class AbstractSelectableRidget extends AbstractSWTRidget implements ISelectableRidget {
 
 	/** A single selected bean Object. */
 	private final WritableValue singleSelectionObservable;

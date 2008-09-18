@@ -18,7 +18,7 @@ import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 /**
  * Abstract implementation of an {@link IValueRidget} for SWT.
  */
-public abstract class AbstractValueRidget extends AbstractMarkableRidget implements IValueRidget {
+public abstract class AbstractValueRidget extends AbstractSWTRidget implements IValueRidget {
 
 	private ValueBindingSupport valueBindingSupport;
 

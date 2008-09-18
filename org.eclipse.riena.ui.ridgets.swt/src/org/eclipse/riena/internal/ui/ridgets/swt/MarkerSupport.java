@@ -132,6 +132,10 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		return result;
 	}
 
+	private void updateVisible(Control control) {
+		control.setVisible(ridget.isVisible());
+	}
+
 	private void updateDisabled(Control control) {
 		control.setEnabled(ridget.isEnabled());
 	}
@@ -194,6 +198,10 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (control != null) {
 			control.setRedraw(false); // prevent flicker
 			try {
+				//				if (control instanceof Combo) {
+				//					System.out.println("MarkerSupport.updateUIControl() " + ridget.isVisible());
+				//				}
+				updateVisible(control);
 				updateDisabled(control);
 				updateOutput(control);
 				updateMandatory(control);
@@ -202,6 +210,9 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 			} finally {
 				control.setRedraw(true);
 			}
+			//			if (control instanceof Combo) {
+			//				System.out.println("End " + control.isVisible());
+			//			}
 		}
 	}
 
