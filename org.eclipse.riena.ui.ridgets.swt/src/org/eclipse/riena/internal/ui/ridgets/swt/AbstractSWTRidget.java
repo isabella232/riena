@@ -80,6 +80,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		uninstallListeners();
 		unbindUIControl();
 		this.uiControl = (Control) uiControl;
+		updateMarkers();
 		updateToolTip();
 		bindUIControl();
 		installListeners();
