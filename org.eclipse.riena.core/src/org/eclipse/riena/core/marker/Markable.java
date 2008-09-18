@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +38,24 @@ public class Markable implements IMarkable {
 	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void addMarker(IMarker marker) {
-		markers.add(marker);
+
+		if (marker.isUnique()) {
+			Collection<? extends IMarker> markersOfType = getMarkersOfType(marker.getClass());
+			boolean unique = false;
+			for (Iterator iterator = markersOfType.iterator(); iterator.hasNext();) {
+				IMarker m = (IMarker) iterator.next();
+				if (m.isUnique()) {
+					unique = true;
+
+				}
+
+			}
+			if (!unique) {
+				markers.add(marker);
+			}
+		} else {
+			markers.add(marker);
+		}
 	}
 
 	/**
