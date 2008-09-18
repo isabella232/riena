@@ -13,11 +13,15 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -50,12 +54,25 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	private Map<ISubModuleNode, C> node2Controler;
 	private AbstractViewBindingDelegate binding;
 	private C currentController;
+
+	/**
+	 * This node is used when creating this ViewPart inside an RCP application.
+	 * It is created with information from the extension registry, instead being
+	 * obtained from the navigation tree.
+	 * 
+	 * @see #getRCPSubModuleNode()
+	 */
+	private SubModuleNode rcpSubModuleNode;
+
+	/** The title bar at the top of the view. May be null if running in RCP */
 	private EmbeddedTitleBar title;
 	private ListenerList<IComponentUpdateListener> updateListeners;
 
 	private Composite parentComposite;
 	private Composite contentComposite;
+	/** Shared (system) cursor. No need to dispose it. */
 	private Cursor cursorWait;
+	/** Shared (system) cursor. No need to dispose it. */
 	private Cursor cursorArrow;
 
 	/**
@@ -164,25 +181,31 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 		parent.setLayout(new FormLayout());
 
-		title = new EmbeddedTitleBar(parent, SWT.NONE);
-		addUIControl(title, SubModuleController.WINDOW_RIDGET);
-		title.setActive(true);
-		FormData formData = new FormData();
-		// don't show the top border of the title => -1
-		formData.top = new FormAttachment(0, -1);
-		// don't show the left border of the title => -1
-		formData.left = new FormAttachment(0, -1);
-		// don't show the top border of the title, but show the bottom
-		// border => -1
-		formData.bottom = new FormAttachment(0, title.getSize().y - 1);
-		// don't show the right (and left) border of the title => 2
-		formData.right = new FormAttachment(100, 2);
-		title.setLayoutData(formData);
+		if (!isRCP()) {
+			title = new EmbeddedTitleBar(parent, SWT.NONE);
+			addUIControl(title, SubModuleController.WINDOW_RIDGET);
+			title.setActive(true);
+			FormData formData = new FormData();
+			// don't show the top border of the title => -1
+			formData.top = new FormAttachment(0, -1);
+			// don't show the left border of the title => -1
+			formData.left = new FormAttachment(0, -1);
+			// don't show the top border of the title, but show the bottom
+			// border => -1
+			formData.bottom = new FormAttachment(0, title.getSize().y - 1);
+			// don't show the right (and left) border of the title => 2
+			formData.right = new FormAttachment(100, 2);
+			title.setLayoutData(formData);
+		}
 
 		contentComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		contentComposite.setBackground(bgColor);
-		formData = new FormData();
-		formData.top = new FormAttachment(title, 0, 0);
+		FormData formData = new FormData();
+		if (title != null) {
+			formData.top = new FormAttachment(title, 0, 0);
+		} else {
+			formData.top = new FormAttachment(0, -1);
+		}
 		formData.left = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100);
 		formData.right = new FormAttachment(100);
@@ -210,7 +233,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new MySubModuleNodeListener());
-		navigationTreeObserver.addListenerTo(node.getTypecastedAdapter(IApplicationNode.class));
+		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
+		if (appNode != null) {
+			navigationTreeObserver.addListenerTo(appNode);
+		}
 	}
 
 	protected void activate(ISubModuleNode source) {
@@ -312,12 +338,20 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			}
 			binding.bind(currentController);
 			currentController.afterBind();
-			title.setActive(currentController.isActivated());
+			if (title != null) {
+				title.setActive(currentController.isActivated());
+			}
 		}
 	}
 
 	public SubModuleNode getNavigationNode() {
-		return (SubModuleNode) getSubModuleNode(this.getViewSite().getId(), this.getViewSite().getSecondaryId());
+		String viewId = this.getViewSite().getId();
+		String secondaryId = this.getViewSite().getSecondaryId();
+		SubModuleNode result = (SubModuleNode) getSubModuleNode(viewId, secondaryId);
+		if (result == null) {
+			result = getRCPSubModuleNode();
+		}
+		return result;
 	}
 
 	public void unbind() {
@@ -333,6 +367,34 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			node2Controler.remove(node);
 		}
 
+	}
+
+	/**
+	 * Returns true if we are running without the navigation tree
+	 */
+	private boolean isRCP() {
+		getNavigationNode();
+		return rcpSubModuleNode != null;
+	}
+
+	private SubModuleNode getRCPSubModuleNode() {
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IConfigurationElement[] elements = registry
+				.getConfigurationElementsFor("org.eclipse.riena.navigation.subModule");
+		String viewId = getViewSite().getId();
+		for (int i = 0; rcpSubModuleNode == null && i < elements.length; i++) {
+			IConfigurationElement element = elements[i];
+			if ("subModule".equals(element.getName())) {
+				String view = element.getAttribute("view");
+				if (viewId.equals(view)) {
+					String typeId = element.getAttribute("typeId");
+					if (typeId != null) {
+						rcpSubModuleNode = new SubModuleNode(new NavigationNodeId(typeId), getPartName());
+					}
+				}
+			}
+		}
+		return rcpSubModuleNode;
 	}
 
 }
