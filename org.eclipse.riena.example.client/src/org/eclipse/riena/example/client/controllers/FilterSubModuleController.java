@@ -97,6 +97,7 @@ public class FilterSubModuleController extends SubModuleController {
 		IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters");
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
+				doRemove();
 			}
 		});
 

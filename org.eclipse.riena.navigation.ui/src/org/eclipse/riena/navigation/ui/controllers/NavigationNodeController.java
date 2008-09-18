@@ -294,6 +294,31 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		}
 
+		public void removeFilters(Collection<? extends IUIFilter> filters) {
+
+			for (IUIFilter filter : filters) {
+				Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
+				for (IUIFilterAttribute filterAttribute : filterItems) {
+					for (IRidget ridget : getRidgets()) {
+						if (filterAttribute.matches(ridget.getID())) {
+							if (filterAttribute instanceof RidgetUIFilterAttributeVisible) {
+								// TODO: hier muss der Ursprungszustand berücksichtigt werden - was immer das ist ...
+								ridget.setVisible(!((RidgetUIFilterAttributeVisible) filterAttribute).isVisible());
+							} else if (filterAttribute instanceof RidgetUIFilterAttributeMarker) {
+								if (ridget instanceof IMarkableRidget) {
+									IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+									RidgetUIFilterAttributeMarker attributeMarker = (RidgetUIFilterAttributeMarker) filterAttribute;
+									markableRidget.removeMarker(attributeMarker.getMarker());
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+		}
+
 		@Override
 		public void activated(INavigationNode source) {
 			super.activated(source);
@@ -301,9 +326,15 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 
 		@Override
-		public void filtersChanged(INavigationNode source) {
-			super.filtersChanged(source);
+		public void filtersAdded(INavigationNode source) {
+			super.filtersAdded(source);
 			applyFilters(source.getFilters());
+		}
+
+		@Override
+		public void filtersRemoved(INavigationNode source) {
+			super.filtersRemoved(source);
+			removeFilters(source.getFilters());
 		}
 
 	}

@@ -157,7 +157,19 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filtersChanged(S source) {
+	public void filtersAdded(S source) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
+	 * (org.eclipse.riena.navigation.INavigationNode)
+	 */
+	public void filtersRemoved(S source) {
 		// TODO Auto-generated method stub
 
 	}

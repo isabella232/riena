@@ -59,5 +59,7 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 
 	void block(S source, boolean block);
 
-	void filtersChanged(S source);
+	void filtersAdded(S source);
+
+	void filtersRemoved(S source);
 }

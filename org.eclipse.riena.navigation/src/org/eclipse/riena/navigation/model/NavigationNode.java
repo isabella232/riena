@@ -992,17 +992,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	public void addFilter(IUIFilter filter) {
 		getFilterable().addFilter(filter);
-		notifyFiltersChanged();
+		notifyFiltersAdded();
 	}
 
 	public void removeFilter(IUIFilter filter) {
 		getFilterable().removeFilter(filter);
-		notifyFiltersChanged();
+		notifyFiltersRemoved();
 	}
 
 	public void removeAllFilters() {
+		notifyFiltersRemoved();
 		getFilterable().removeAllFilters();
-		notifyFiltersChanged();
+
 	}
 
 	public Collection<? extends IUIFilter> getFilters() {
@@ -1012,12 +1013,24 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * Notifies every interested listener that the filters have changed.
 	 */
-	private void notifyFiltersChanged() {
+	private void notifyFiltersAdded() {
 		for (L next : getListeners()) {
-			next.filtersChanged((S) this);
+			next.filtersAdded((S) this);
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.filterChanged(this);
+			next.filterAdded(this);
+		}
+	}
+
+	/**
+	 * Notifies every interested listener that the filters have changed.
+	 */
+	private void notifyFiltersRemoved() {
+		for (L next : getListeners()) {
+			next.filtersRemoved((S) this);
+		}
+		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.filterRemoved(this);
 		}
 	}
 
