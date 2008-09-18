@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.marker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -109,7 +110,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 			}
 		}
 		if (pRemove) {
-			for (Iterator j = result.iterator(); j.hasNext();) {
+			for (Iterator<IMessageMarker> j = result.iterator(); j.hasNext();) {
 				markableRidget.removeMarker((IMessageMarker) j.next());
 			}
 		}
@@ -117,7 +118,9 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		return result;
 	}
 
-	protected static class MessageMarkerComparator implements Comparator<IMessageMarker> {
+	protected static final class MessageMarkerComparator implements Comparator<IMessageMarker>, Serializable {
+
+		private static final long serialVersionUID = 1L;
 
 		/**
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
