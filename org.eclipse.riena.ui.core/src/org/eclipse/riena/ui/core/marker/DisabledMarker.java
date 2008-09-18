@@ -17,15 +17,12 @@ import org.eclipse.riena.core.marker.AbstractMarker;
  */
 public class DisabledMarker extends AbstractMarker {
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		StringBuilder buffer = new StringBuilder("DisabledMarker["); //$NON-NLS-1$
-		buffer.append("attributes="); //$NON-NLS-1$
-		buffer.append(getAttributes());
-		buffer.append("]"); //$NON-NLS-1$
-		return buffer.toString();
+	public DisabledMarker() {
+		super();
+	}
+
+	public DisabledMarker(boolean unique) {
+		super(unique);
 	}
 
 }

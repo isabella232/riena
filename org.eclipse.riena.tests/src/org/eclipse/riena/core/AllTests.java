@@ -17,6 +17,7 @@ import junit.framework.TestSuite;
 import org.eclipse.riena.core.exception.ExceptionHandlerManagerTest;
 import org.eclipse.riena.core.extension.ExtensionInjectorTest;
 import org.eclipse.riena.core.extension.HeterogeneousInjectingTest;
+import org.eclipse.riena.core.marker.AbstractMarkerTest;
 import org.eclipse.riena.core.service.ServiceInjectorTest;
 
 /**
@@ -32,6 +33,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ServiceInjectorTest.class);
 		suite.addTestSuite(ExtensionInjectorTest.class);
 		suite.addTestSuite(HeterogeneousInjectingTest.class);
+		suite.addTestSuite(AbstractMarkerTest.class);
 		return suite;
 	}
 

@@ -17,14 +17,12 @@ import org.eclipse.riena.core.marker.AbstractMarker;
  */
 public class OutputMarker extends AbstractMarker {
 
-	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		StringBuilder buffer = new StringBuilder("OutputMarker["); //$NON-NLS-1$
-		buffer.append("attributes="); //$NON-NLS-1$
-		buffer.append(getAttributes());
-		buffer.append("]"); //$NON-NLS-1$
-		return buffer.toString();
+	public OutputMarker() {
+		super();
 	}
+
+	public OutputMarker(boolean unique) {
+		super(unique);
+	}
+
 }

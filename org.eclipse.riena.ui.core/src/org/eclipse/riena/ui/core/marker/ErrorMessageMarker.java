@@ -16,17 +16,6 @@ package org.eclipse.riena.ui.core.marker;
 public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 
 	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		StringBuilder buffer = new StringBuilder("ErrorMessageMarker["); //$NON-NLS-1$
-		buffer.append("attributes="); //$NON-NLS-1$
-		buffer.append(getAttributes());
-		buffer.append("]"); //$NON-NLS-1$
-		return buffer.toString();
-	}
-
-	/**
 	 * @return the Message in this Marker
 	 */
 	public String getMessage() {
@@ -36,8 +25,8 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	/**
 	 * Basic constructor for the Message marker
 	 * 
-	 * @param pMessage -
-	 *            the Message of the Marker
+	 * @param pMessage
+	 *            - the Message of the Marker
 	 */
 	public ErrorMessageMarker(String pMessage) {
 		super();

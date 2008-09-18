@@ -23,16 +23,12 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	public static final String ATTRIBUTE_DISABLED = "disabled"; //$NON-NLS-1$
 	public static final String MARKER_KEY = "MandatoryMarker"; //$NON-NLS-1$
 
-	/**
-	 * @see Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder buffer = new StringBuilder("MandatoryMarker["); //$NON-NLS-1$
-		buffer.append("attributes="); //$NON-NLS-1$
-		buffer.append(getAttributes());
-		buffer.append("]"); //$NON-NLS-1$
-		return buffer.toString();
+	public MandatoryMarker() {
+		super();
+	}
+
+	public MandatoryMarker(boolean unique) {
+		super(unique);
 	}
 
 	/**

@@ -13,27 +13,16 @@ package org.eclipse.riena.ui.core.marker;
 import org.eclipse.riena.core.marker.AbstractMarker;
 
 /**
- * Marks an adapter, resp. its associated UI control, as error.
+ * Marks an adapter, resp. its associated UI control, as hidden.
  */
-public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
+public class HiddenMarker extends AbstractMarker {
 
-	public static final String MARKER_KEY = "ErrorMarker"; //$NON-NLS-1$
-
-	/**
-	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
-	 */
-	public String getIconConfiguationKey() {
-		return MARKER_KEY;
+	public HiddenMarker() {
+		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.core.marker.IIconizableMarker#getPositionOfMarker()
-	 */
-	public MarkerPosition getPositionOfMarker() {
-		return MarkerPosition.BOTTOM_RIGHT;
+	public HiddenMarker(boolean unique) {
+		super(unique);
 	}
 
 }

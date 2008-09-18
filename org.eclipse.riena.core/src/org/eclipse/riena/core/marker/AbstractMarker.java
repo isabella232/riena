@@ -111,9 +111,7 @@ public abstract class AbstractMarker implements IMarker {
 		attributeChangeListeners.remove(listener);
 	}
 
-	/**
-	 * @see Object#equals(Object)
-	 */
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof AbstractMarker)) {
 			return false;
@@ -125,11 +123,18 @@ public abstract class AbstractMarker implements IMarker {
 		return getAttributes().equals(otherMarker.getAttributes());
 	}
 
-	/**
-	 * @see Object#hashCode()
-	 */
+	@Override
 	public int hashCode() {
 		return getClass().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		buffer.append("[attributes="); //$NON-NLS-1$
+		buffer.append(getAttributes());
+		buffer.append("]"); //$NON-NLS-1$
+		return buffer.toString();
 	}
 
 }

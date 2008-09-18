@@ -19,17 +19,6 @@ import org.eclipse.riena.core.marker.AbstractMarker;
 public class MessageMarker extends AbstractMarker implements IMessageMarker {
 
 	/**
-	 * @see Object#toString()
-	 */
-	public String toString() {
-		StringBuilder buffer = new StringBuilder("MessageMarker["); //$NON-NLS-1$
-		buffer.append("attributes="); //$NON-NLS-1$
-		buffer.append(getAttributes());
-		buffer.append("]"); //$NON-NLS-1$
-		return buffer.toString();
-	}
-
-	/**
 	 * @return the Message in this Marker
 	 */
 	public String getMessage() {
