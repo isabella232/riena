@@ -213,6 +213,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 		return emptySelection;
 	}
 
+	// TODO [ev] should method return null when not bound? See ListRidget#getObservableList()
 	public IObservableList getObservableList() {
 		return rowObservables;
 	}
