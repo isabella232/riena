@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Facades Plug-in
+Bundle-Name: Ridgets Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.riena.ui.ridgets
-Bundle-Version: 1.0.0.M4
+Bundle-Version: 1.0.0.M4a
 Bundle-Activator: org.eclipse.riena.internal.ui.ridgets.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.core,

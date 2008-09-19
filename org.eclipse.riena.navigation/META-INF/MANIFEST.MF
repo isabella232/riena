@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Model Plug-in
+Bundle-Name: Application Model Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.riena.navigation;singleton:=true
-Bundle-Version: 1.0.0.M4
+Bundle-Version: 1.0.0.M4a
 Bundle-Activator: org.eclipse.riena.internal.navigation.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.core,
