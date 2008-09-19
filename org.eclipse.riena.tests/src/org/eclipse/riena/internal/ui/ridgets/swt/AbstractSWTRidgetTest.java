@@ -13,6 +13,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -20,8 +22,12 @@ import junit.framework.TestCase;
 import org.easymock.EasyMock;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
@@ -195,7 +201,6 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	}
 
 	public void testRequestFocus() throws Exception {
-
 		control.setFocus();
 		if (control.isFocusControl()) { // skip if control cannot receive focus
 			assertTrue(otherControl.setFocus());
@@ -240,6 +245,89 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 			assertEquals(1, focusGainedEvents.size());
 			assertEquals(1, focusLostEvents.size());
 		}
+	}
+
+	public void testFiresMarkerProperty() {
+		if (!(getRidget() instanceof IMarkableRidget)) {
+			return;
+		}
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarker marker = new MandatoryMarker();
+		HashSet<IMarker> oneMarker = new HashSet<IMarker>();
+		oneMarker.add(marker);
+
+		assertTrue(ridget.isEnabled());
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, Collections.EMPTY_SET, oneMarker);
+		ridget.addMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.addMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, oneMarker, Collections.EMPTY_SET);
+		ridget.removeMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.removeMarker(marker);
+		verifyPropertyChangeEvents();
+	}
+
+	public void testFiresDisabledPropertyUsingSetter() {
+		if (!(getRidget() instanceof IMarkableRidget)) {
+			return;
+		}
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		ridget.removePropertyChangeListener(propertyChangeListenerMock);
+		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
+
+		assertTrue(ridget.isEnabled());
+
+		expectNoPropertyChangeEvent();
+		ridget.setEnabled(true);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.TRUE, Boolean.FALSE);
+		ridget.setEnabled(false);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.setEnabled(false);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.FALSE, Boolean.TRUE);
+		ridget.setEnabled(true);
+		verifyPropertyChangeEvents();
+	}
+
+	public void testFiresDisabledPropertyUsingAddRemove() {
+		if (!(getRidget() instanceof IMarkableRidget)) {
+			return;
+		}
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarker marker = new DisabledMarker();
+		ridget.removePropertyChangeListener(propertyChangeListenerMock);
+		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
+
+		assertTrue(ridget.isEnabled());
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.TRUE, Boolean.FALSE);
+		ridget.addMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.addMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.FALSE, Boolean.TRUE);
+		ridget.removeMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.removeMarker(marker);
+		verifyPropertyChangeEvents();
 	}
 
 	// helping methods
