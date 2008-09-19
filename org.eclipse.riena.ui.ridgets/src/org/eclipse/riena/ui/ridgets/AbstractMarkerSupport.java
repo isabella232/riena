@@ -16,11 +16,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.IMarkerAttributeChangeListener;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.IMarkerPropertyChangeEvent;
 
 /**
@@ -61,6 +63,7 @@ public abstract class AbstractMarkerSupport {
 		if (markers.add(marker)) {
 			updateMarkers();
 			fireMarkerPropertyChangeEvent(oldValue);
+			fireEnabledPropertyChangeEvent(oldValue);
 			marker.addAttributeChangeListener(markerAttributeChangeListener);
 		}
 	}
@@ -106,6 +109,7 @@ public abstract class AbstractMarkerSupport {
 			if (oldValue.size() > 0) {
 				updateMarkers();
 				fireMarkerPropertyChangeEvent(oldValue);
+				fireEnabledPropertyChangeEvent(oldValue);
 			}
 		}
 	}
@@ -119,6 +123,7 @@ public abstract class AbstractMarkerSupport {
 			if (markers.remove(marker)) {
 				updateMarkers();
 				fireMarkerPropertyChangeEvent(oldValue);
+				fireEnabledPropertyChangeEvent(oldValue);
 				marker.removeAttributeChangeListener(markerAttributeChangeListener);
 			}
 		}
@@ -128,13 +133,40 @@ public abstract class AbstractMarkerSupport {
 		return ridget.getUIControl();
 	}
 
+	protected void handleMarkerAttributesChanged() {
+		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(true, ridget, getMarkers()));
+	}
+
+	// helping methods
+	//////////////////
+
+	private Boolean isEnabled(Collection<IMarker> markers) {
+		boolean result = true;
+		if (markers != null) {
+			Iterator<IMarker> iter = markers.iterator();
+			while (result && iter.hasNext()) {
+				result = !(iter.next() instanceof DisabledMarker);
+			}
+		}
+		return Boolean.valueOf(result);
+	}
+
+	private void fireEnabledPropertyChangeEvent(Collection<IMarker> oldMarkers) {
+		Boolean oldValue = isEnabled(oldMarkers);
+		Boolean newValue = isEnabled(getMarkers());
+		if (!oldValue.equals(newValue)) {
+			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IMarkableRidget.PROPERTY_ENABLED, oldValue,
+					newValue);
+			propertyChangeSupport.firePropertyChange(evt);
+		}
+	}
+
 	private void fireMarkerPropertyChangeEvent(Collection<IMarker> oldValue) {
 		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(oldValue, ridget, getMarkers()));
 	}
 
-	protected void handleMarkerAttributesChanged() {
-		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(true, ridget, getMarkers()));
-	}
+	// helping classes
+	//////////////////
 
 	private static final class MarkerPropertyChangeEvent extends PropertyChangeEvent implements
 			IMarkerPropertyChangeEvent {
@@ -157,11 +189,8 @@ public abstract class AbstractMarkerSupport {
 		}
 	}
 
-	private class MarkerAttributeChangeListener implements IMarkerAttributeChangeListener {
+	private final class MarkerAttributeChangeListener implements IMarkerAttributeChangeListener {
 
-		/**
-		 * @see de.compeople.spirit.core.client.uibinding.IMarkerAttributeChangeListener#attributesChanged()
-		 */
 		public void attributesChanged() {
 			handleMarkerAttributesChanged();
 		}
