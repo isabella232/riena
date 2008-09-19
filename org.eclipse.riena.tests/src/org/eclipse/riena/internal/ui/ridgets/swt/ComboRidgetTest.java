@@ -513,6 +513,11 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	 * the ridget is disabled.
 	 */
 	public void testDisabledComboIsEmptyFromRidget() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping ComboRidgetTest.testDisabledComboIsEmptyFromRidget()");
+			return;
+		}
+
 		ComboRidget ridget = getRidget();
 		Combo control = getUIControl();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
@@ -548,6 +553,11 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	 * even when the ridget is disabled.
 	 */
 	public void testDisabledComboIsEmptyFromModel() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping ComboRidgetTest.testDisabledComboIsEmptyFromModel()");
+			return;
+		}
+
 		ComboRidget ridget = getRidget();
 		Combo control = getUIControl();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");

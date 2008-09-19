@@ -1138,6 +1138,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testDisabledHasNoTextFromRidget() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromRidget()");
+			return;
+		}
+
 		ITextFieldRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -1168,6 +1173,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testDisabledHasNoTextFromModel() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromModel()");
+			return;
+		}
+
 		ITextFieldRidget ridget = getRidget();
 		Text control = getUIControl();
 		bean.setProperty(TEXT_TWO);

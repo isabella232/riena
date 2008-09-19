@@ -32,11 +32,14 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 
 	static {
 		// avoid inlining
-		HIDE_DISABLED_RIDGET_CONTENT = true;
+		String value = System.getProperty("HIDE_DISABLED_RIDGET_CONTENT"); //$NON-NLS-1$
+		HIDE_DISABLED_RIDGET_CONTENT = value == null ? true : Boolean.parseBoolean(value);
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * This flag controls wether disabled ridget do hide their content. The
+	 * default value is {@code true}. It can be overriden by setting the system
+	 * property {@code 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code false}.
 	 */
 	static final boolean HIDE_DISABLED_RIDGET_CONTENT;
 

@@ -492,6 +492,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			System.out.println("Skipping ListRidgetTest.testDisabledListIsEmptyFromRidget()");
 			return;
 		}
+
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
 		// the single selection is bound to another object in the parent class
@@ -531,6 +532,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			System.out.println("Skipping ListRidgetTest.testDisabledListIsEmptyFromModel()");
 			return;
 		}
+
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
 		// the single selection is bound to another object in the parent class
@@ -631,6 +633,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			System.out.println("Skipping ListRidgetTest.testDisableAndClearOnBind()");
 			return;
 		}
+
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
 		// the single selection is bound to another object in the parent class

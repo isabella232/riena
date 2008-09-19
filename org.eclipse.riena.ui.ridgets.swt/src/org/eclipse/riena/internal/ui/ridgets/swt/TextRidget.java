@@ -209,7 +209,8 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		Text control = getUIControl();
 		if (control != null) {
 			control.removeVerifyListener(verifyListener);
-			control.setText(isEnabled() ? newValue : EMPTY_STRING);
+			boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
+			control.setText(hideValue ? EMPTY_STRING : newValue);
 			control.setSelection(0, 0);
 			control.addVerifyListener(verifyListener);
 		}

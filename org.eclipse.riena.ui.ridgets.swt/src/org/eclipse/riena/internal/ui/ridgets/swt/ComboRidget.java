@@ -390,7 +390,9 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 			disposeBinding(selectionBindingInternal);
 			selectionBindingInternal = null;
 			/* clear combo */
-			control.removeAll();
+			if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+				control.removeAll();
+			}
 		}
 	}
 

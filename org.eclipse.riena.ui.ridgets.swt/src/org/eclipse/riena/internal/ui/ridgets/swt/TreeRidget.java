@@ -388,7 +388,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (viewer != null) {
 			Control control = viewer.getControl();
 			control.removeListener(SWT.EraseItem, eraseListener);
-			if (!isEnabled()) {
+			if (!isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
 				control.addListener(SWT.EraseItem, eraseListener);
 			}
 		}
