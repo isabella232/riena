@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -19,6 +20,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
@@ -481,6 +483,167 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(-1, ridget.getSelectionIndex());
 	}
 
+	/**
+	 * Tests that changing the selection in ridget works as expected, even when
+	 * the ridget is disabled.
+	 */
+	public void testDisabledListIsEmptyFromRidget() {
+		ListRidget ridget = getRidget();
+		List control = getUIControl();
+		// the single selection is bound to another object in the parent class
+		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
+
+		ridget.setSelection(person1);
+
+		assertEquals(person1.getFirstname(), control.getItem(control.getSelectionIndex()));
+		assertEquals(person1, ridget.getSelection().get(0));
+		assertEquals(person1, manager.getSelectedPerson());
+
+		ridget.setEnabled(false);
+
+		assertEquals(-1, control.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+		assertEquals(person1, manager.getSelectedPerson());
+
+		ridget.setSelection(person2);
+
+		assertEquals(-1, control.getSelectionIndex());
+		assertEquals(person2, ridget.getSelection().get(0));
+		assertEquals(person2, manager.getSelectedPerson());
+
+		ridget.setEnabled(true);
+
+		assertEquals(person2.getFirstname(), control.getItem(control.getSelectionIndex()));
+		assertEquals(person2, ridget.getSelection().get(0));
+		assertEquals(person2, manager.getSelectedPerson());
+	}
+
+	/**
+	 * Tests that changing the selection in a bound model works as expected,
+	 * even when the ridget is disabled.
+	 */
+	public void testDisabledListIsEmptyFromModel() {
+		ListRidget ridget = getRidget();
+		List control = getUIControl();
+		// the single selection is bound to another object in the parent class
+		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
+
+		manager.setSelectedPerson(person1);
+		ridget.updateSingleSelectionFromModel();
+
+		assertEquals(person1.getFirstname(), control.getItem(control.getSelectionIndex()));
+		assertEquals(person1, ridget.getSelection().get(0));
+		assertEquals(person1, manager.getSelectedPerson());
+
+		ridget.setEnabled(false);
+
+		assertEquals(-1, control.getSelectionIndex());
+		assertEquals(person1, ridget.getSelection().get(0));
+		assertEquals(person1, manager.getSelectedPerson());
+
+		manager.setSelectedPerson(person2);
+		ridget.updateSingleSelectionFromModel();
+
+		assertEquals(-1, control.getSelectionIndex());
+		assertEquals(person2, ridget.getSelection().get(0));
+		assertEquals(person2, manager.getSelectedPerson());
+
+		ridget.setEnabled(true);
+
+		assertEquals(person2.getFirstname(), control.getItem(control.getSelectionIndex()));
+		assertEquals(person2, ridget.getSelection().get(0));
+		assertEquals(person2, manager.getSelectedPerson());
+	}
+
+	/**
+	 * Tests that disabling / enabling the ridget does not fire selection events
+	 * (because the list is modified internally).
+	 */
+	public void testDisabledDoesNotFireSelection() {
+		ListRidget ridget = getRidget();
+		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
+		FTPropertyChangeListener listener = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, listener);
+
+		ridget.setSelection(person1);
+		int count = listener.getCount();
+
+		ridget.setEnabled(false);
+
+		assertEquals(count, listener.getCount());
+
+		ridget.setSelection(person2);
+		count = listener.getCount();
+
+		ridget.setEnabled(true);
+
+		assertEquals(count, listener.getCount());
+	}
+
+	public void testDisableWithoutBoundModel() {
+		ListRidget ridget = (ListRidget) createRidget();
+		List control = getUIControl();
+		ridget.setUIControl(control);
+
+		assertNull(ridget.getObservableList());
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+		assertFalse(control.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+		assertTrue(control.isEnabled());
+	}
+
+	/**
+	 * Check that disabling / enabling works when we don't have a bound control.
+	 */
+	public void testDisableWithoutUIControl() {
+		ListRidget ridget = getRidget();
+		ridget.setUIControl(null);
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+	}
+
+	/**
+	 * Tests that the disabled state is applied to a new control when set into
+	 * the ridget.
+	 */
+	public void testDisableAndClearOnBind() {
+		ListRidget ridget = getRidget();
+		List control = getUIControl();
+		// the single selection is bound to another object in the parent class
+		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
+
+		ridget.setUIControl(null);
+		ridget.setEnabled(false);
+		manager.setSelectedPerson(person1);
+		ridget.updateSingleSelectionFromModel();
+		ridget.setUIControl(control);
+
+		assertFalse(control.isEnabled());
+		assertEquals("", control.getItem(0)); // items 'hidden' == ""
+		assertEquals(-1, control.getSelectionIndex()); // no selection
+		assertEquals(person1, ridget.getSelection().get(0));
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+		assertTrue(control.getItem(0).length() > 0); // ! ""
+		assertTrue(control.getSelectionIndex() > -1); // selection was restored
+		assertEquals(manager.getPersons().size(), control.getItemCount());
+		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -548,6 +711,23 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			String s1 = (String) o1;
 			String s2 = (String) o2;
 			return s1.compareTo(s2);
+		}
+	}
+
+	/**
+	 * PropertyChangeListener that counts how often it is invoked.
+	 */
+	private static final class FTPropertyChangeListener implements PropertyChangeListener {
+
+		private int count;
+
+		public int getCount() {
+			return count;
+		}
+
+		public void propertyChange(PropertyChangeEvent evt) {
+			count++;
+			// System.out.println(count + "\t" + evt.getOldValue() + " -> " + evt.getNewValue());
 		}
 	}
 

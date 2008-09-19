@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Comparator;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -32,6 +35,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -44,6 +48,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
 
@@ -54,9 +59,12 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
-
 	private ListenerList<IActionListener> doubleClickListeners;
+
 	private DataBindingContext dbc;
+	private Binding viewerSSB;
+	private Binding viewerMSB;
+
 	private ListViewer viewer;
 	private Class<?> rowBeanClass;
 	private IObservableList rowObservables;
@@ -81,6 +89,12 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 				disableMandatoryMarkers(hasInput());
 			}
 		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
+				updateEnabled(isEnabled);
+			}
+		});
 	}
 
 	@Override
@@ -96,27 +110,17 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					new String[] { renderingMethod });
-			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap));
+			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap) {
+				@Override
+				public String getColumnText(Object element, int columnIndex) {
+					return isEnabled() ? super.getColumnText(element, columnIndex) : ""; //$NON-NLS-1$
+				}
+			});
 			viewer.setContentProvider(viewerCP);
 			viewer.setInput(rowObservables);
 
 			updateComparator();
-
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-
-			dbc = new DataBindingContext();
-			// viewer to single selection binding
-			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
-			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
-					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			// viewer to to multi selection binding
-			IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
-					viewer, Object.class, this);
-			dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
-
-			viewer.setSelection(currentSelection);
+			updateEnabled(isEnabled());
 
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(doubleClickForwarder);
@@ -126,6 +130,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	@Override
 	protected void unbindUIControl() {
 		if (dbc != null) {
+			disposeSelectionBindings();
 			dbc.dispose();
 			dbc = null;
 		}
@@ -306,6 +311,33 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	// helping methods
 	// ////////////////
 
+	private void createSelectionBindings() {
+		StructuredSelection currentSelection = new StructuredSelection(getSelection());
+
+		dbc = new DataBindingContext();
+		// viewer to single selection binding
+		IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
+		viewerSSB = dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		// viewer to to multi selection binding
+		IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
+				viewer, Object.class, this);
+		viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+
+		viewer.setSelection(currentSelection);
+	}
+
+	private void disposeSelectionBindings() {
+		if (viewerSSB != null && !viewerSSB.isDisposed()) {
+			viewerSSB.dispose();
+		}
+		if (viewerMSB != null && !viewerMSB.isDisposed()) {
+			viewerMSB.dispose();
+		}
+	}
+
 	private boolean hasInput() {
 		return !getSelection().isEmpty();
 	}
@@ -316,6 +348,28 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 				viewer.setComparator(this.comparator);
 			} else {
 				viewer.setComparator(null);
+			}
+		}
+	}
+
+	private void updateEnabled(boolean isEnabled) {
+		final String savedBackgroundKey = "oldbg"; //$NON-NLS-1$
+		if (isEnabled) {
+			if (viewer != null && rowObservables != null) {
+				viewer.refresh();
+				createSelectionBindings();
+				List list = viewer.getList();
+				list.setBackground((Color) list.getData(savedBackgroundKey));
+				list.setData(savedBackgroundKey, null);
+			}
+		} else {
+			disposeSelectionBindings();
+			if (viewer != null) {
+				viewer.refresh();
+				List list = viewer.getList();
+				list.deselectAll();
+				list.setData(savedBackgroundKey, list.getBackground());
+				list.setBackground(list.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 			}
 		}
 	}
