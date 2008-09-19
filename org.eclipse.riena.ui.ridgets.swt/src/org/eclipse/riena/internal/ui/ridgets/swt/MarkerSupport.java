@@ -30,6 +30,16 @@ import org.eclipse.swt.widgets.Control;
  */
 public final class MarkerSupport extends AbstractMarkerSupport {
 
+	static {
+		String value = System.getProperty("HIDE_DISABLED_RIDGET_CONTENT"); //$NON-NLS-1$
+		HIDE_DISABLED_RIDGET_CONTENT = value == null ? true : Boolean.parseBoolean(value);
+	}
+
+	/**
+	 * TODO [ev] docs
+	 */
+	static final boolean HIDE_DISABLED_RIDGET_CONTENT;
+
 	private Color preOutputBg;
 	private Color preMandatoryBg;
 	private Color preNegativeFg;
