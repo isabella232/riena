@@ -25,6 +25,8 @@ import org.eclipse.core.runtime.Assert;
  */
 public abstract class AbstractMarker implements IMarker {
 
+	public static final String ATTRIBUTE_UNIQUE = "unique";
+
 	private Map<String, Object> attributeMap = new HashMap<String, Object>(0, 1.0f);
 	private Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(
 			1, 1.0f);
@@ -33,10 +35,18 @@ public abstract class AbstractMarker implements IMarker {
 
 	public AbstractMarker() {
 		this(true);
+		setAttribute(ATTRIBUTE_UNIQUE, Boolean.TRUE);
 	}
 
 	public AbstractMarker(boolean unique) {
 		this.unique = unique;
+
+		if (unique) {
+			setAttribute(ATTRIBUTE_UNIQUE, Boolean.TRUE);
+		} else {
+			setAttribute(ATTRIBUTE_UNIQUE, null);
+		}
+
 	}
 
 	public boolean isUnique() {
@@ -119,6 +129,7 @@ public abstract class AbstractMarker implements IMarker {
 		if (!getClass().equals(other.getClass())) {
 			return false;
 		}
+
 		AbstractMarker otherMarker = (AbstractMarker) other;
 		return getAttributes().equals(otherMarker.getAttributes());
 	}
