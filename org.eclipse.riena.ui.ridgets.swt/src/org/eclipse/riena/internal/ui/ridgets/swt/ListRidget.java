@@ -113,7 +113,11 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 			viewer.setLabelProvider(new ObservableMapLabelProvider(attrMap) {
 				@Override
 				public String getColumnText(Object element, int columnIndex) {
-					return isEnabled() ? super.getColumnText(element, columnIndex) : ""; //$NON-NLS-1$
+					if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled()) {
+						return ""; //$NON-NLS-1$
+					} else {
+						return super.getColumnText(element, columnIndex);
+					}
 				}
 			});
 			viewer.setContentProvider(viewerCP);
@@ -367,7 +371,9 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 			if (viewer != null) {
 				viewer.refresh();
 				List list = viewer.getList();
-				list.deselectAll();
+				if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+					list.deselectAll();
+				}
 				list.setData(savedBackgroundKey, list.getBackground());
 				list.setBackground(list.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 			}

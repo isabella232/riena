@@ -488,6 +488,10 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * the ridget is disabled.
 	 */
 	public void testDisabledListIsEmptyFromRidget() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping ListRidgetTest.testDisabledListIsEmptyFromRidget()");
+			return;
+		}
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
 		// the single selection is bound to another object in the parent class
@@ -523,6 +527,10 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * even when the ridget is disabled.
 	 */
 	public void testDisabledListIsEmptyFromModel() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping ListRidgetTest.testDisabledListIsEmptyFromModel()");
+			return;
+		}
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
 		// the single selection is bound to another object in the parent class
@@ -619,6 +627,10 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
+		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			System.out.println("Skipping ListRidgetTest.testDisableAndClearOnBind()");
+			return;
+		}
 		ListRidget ridget = getRidget();
 		List control = getUIControl();
 		// the single selection is bound to another object in the parent class
