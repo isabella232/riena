@@ -40,8 +40,11 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	 * This flag controls wether disabled ridget do hide their content. The
 	 * default value is {@code true}. It can be overriden by setting the system
 	 * property {@code 'HIDE_DISABLED_RIDGET_CONTENT'} to {@code false}.
+	 * <p>
+	 * Note: this field was made public for testing purposes. It should not be
+	 * referenced outside this package.
 	 */
-	static final boolean HIDE_DISABLED_RIDGET_CONTENT;
+	public static final boolean HIDE_DISABLED_RIDGET_CONTENT;
 
 	private Color preOutputBg;
 	private Color preMandatoryBg;
@@ -198,12 +201,11 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	/**
 	 * Precedence of visibility and marker states for a ridget:
 	 * <ol>
-	 * <li>ridget is hidden - no decorations are not shown</li>
-	 * <li>disabled on - all other states not shown on the ridget</li>
-	 * <li>output on - output decoration is shown</li>
-	 * <li>mandatory on - mandatory decoration is shown</li>
-	 * <li>error on - error decoration is shown</li>
-	 * <li>negative on - negative decoration is shown</li>
+	 * <li>ridget is hidden - no decorations are not shown</li> <li>disabled on
+	 * - all other states not shown on the ridget</li> <li>output on - output
+	 * decoration is shown</li> <li>mandatory on - mandatory decoration is shown
+	 * </li> <li>error on - error decoration is shown</li> <li>negative on -
+	 * negative decoration is shown</li>
 	 * <ol>
 	 */
 	private void updateUIControl() {
