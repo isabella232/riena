@@ -343,7 +343,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			super.filterRemoved(source, filter);
 			removeFilter(filter);
 
-			applyFilters(source.getFilters());
 		}
 
 		@Override
