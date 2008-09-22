@@ -54,6 +54,7 @@ public class ListSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$

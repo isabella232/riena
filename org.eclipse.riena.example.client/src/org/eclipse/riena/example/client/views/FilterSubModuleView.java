@@ -38,11 +38,13 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 		parent.setLayout(new GridLayout(2, false));
 
 		Group group1 = createControlsGroup(parent);
-		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(group1);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(group1);
 		Group group2 = createMarkersGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(group2);
-		Group group3 = createFiltersGroup(parent);
+		Group group3 = createLocalFiltersGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(group3);
+		Group group4 = createGlobalFiltersGroup(parent);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(group4);
 
 	}
 
@@ -78,13 +80,46 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 
 	}
 
-	private Group createFiltersGroup(Composite parent) {
+	private Group createMarkersGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "UI-Filters:"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "Markers:"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
+
+		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
+		Combo ridgetID = UIControlsFactory.createCombo(group);
+		addUIControl(ridgetID, "ridgetToMarkID"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(group, "Marker:"); //$NON-NLS-1$
+		Combo markers = UIControlsFactory.createCombo(group);
+		addUIControl(markers, "markers"); //$NON-NLS-1$
+
+		Button addMarker = UIControlsFactory.createButton(group);
+		addMarker.setText("Add Marker"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(addMarker);
+		addUIControl(addMarker, "addMarker"); //$NON-NLS-1$
+
+		Button removeMarker = UIControlsFactory.createButton(group);
+		removeMarker.setText("Remove Marker"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(removeMarker);
+		addUIControl(removeMarker, "removeMarker"); //$NON-NLS-1$
+
+		return group;
+
+	}
+
+	private Group createLocalFiltersGroup(Composite parent) {
+
+		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (local):"); //$NON-NLS-1$
+
+		int defaultVSpacing = new GridLayout().verticalSpacing;
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
+				.applyTo(group);
+
+		Label explanation = UIControlsFactory.createLabel(group, "Filters for ridgets and only this sub module.\n\n"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(explanation);
 
 		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
 		Combo ridgetID = UIControlsFactory.createCombo(group);
@@ -113,31 +148,39 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 
 	}
 
-	private Group createMarkersGroup(Composite parent) {
+	private Group createGlobalFiltersGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "Markers:"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (global):"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
+		Label explanation = UIControlsFactory.createLabel(group, "Filters for ridgets and the whole application.\n\n"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(explanation);
+
 		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
-		Combo ridgetID = UIControlsFactory.createCombo(group);
-		addUIControl(ridgetID, "ridgetToMarkID"); //$NON-NLS-1$
+		Text ridgetID = UIControlsFactory.createText(group);
+		addUIControl(ridgetID, "globalRidgetID"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Marker:"); //$NON-NLS-1$
-		Combo markers = UIControlsFactory.createCombo(group);
-		addUIControl(markers, "markers"); //$NON-NLS-1$
+		ChoiceComposite filterType = new ChoiceComposite(group, SWT.NONE, false);
+		filterType.setOrientation(SWT.HORIZONTAL);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterType);
+		addUIControl(filterType, "globalFilterType"); //$NON-NLS-1$
 
-		Button addMarker = UIControlsFactory.createButton(group);
-		addMarker.setText("Add Marker"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(addMarker);
-		addUIControl(addMarker, "addMarker"); //$NON-NLS-1$
+		Combo filterTypeValues = UIControlsFactory.createCombo(group);
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterTypeValues);
+		addUIControl(filterTypeValues, "globalFilterTypeValues"); //$NON-NLS-1$
 
-		Button removeMarker = UIControlsFactory.createButton(group);
-		removeMarker.setText("Remove Marker"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(removeMarker);
-		addUIControl(removeMarker, "removeMarker"); //$NON-NLS-1$
+		Button addFilter = UIControlsFactory.createButton(group);
+		addFilter.setText("Add Filter"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(addFilter);
+		addUIControl(addFilter, "globalAddFilter"); //$NON-NLS-1$
+
+		Button removeFilters = UIControlsFactory.createButton(group);
+		removeFilters.setText("Remove All Filters"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(removeFilters);
+		addUIControl(removeFilters, "globalRemoveFilters"); //$NON-NLS-1$
 
 		return group;
 

@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -274,54 +275,85 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 			for (IUIFilter filter : filters) {
 				applyFilter(filter);
-
 			}
 
 		}
 
 		public void applyFilter(IUIFilter filter) {
+			applyFilter(getNavigationNode(), filter);
+		}
+
+		private void applyFilter(INavigationNode<?> node, IUIFilter filter) {
+
+			INavigationNodeController controller = node.getNavigationNodeController();
 			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
 			for (IUIFilterAttribute filterAttribute : filterItems) {
-				for (IRidget ridget : getRidgets()) {
-					if (filterAttribute.matches(ridget.getID())) {
-						if (ridget instanceof IMarkableRidget) {
-							IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-							if (filterAttribute instanceof IUIFilterMarkerAttribute) {
-								IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
-								markableRidget.addMarker(attributeMarker.getMarker());
+				if (controller instanceof IRidgetContainer) {
+					IRidgetContainer container = (IRidgetContainer) controller;
+					for (IRidget ridget : container.getRidgets()) {
+						if (filterAttribute.matches(ridget.getID())) {
+							if (ridget instanceof IMarkableRidget) {
+								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+								if (filterAttribute instanceof IUIFilterMarkerAttribute) {
+									IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
+									markableRidget.addMarker(attributeMarker.getMarker());
+								}
 							}
 						}
-
 					}
 				}
 			}
+
+			List<?> children = node.getChildren();
+			for (Object child : children) {
+				if (child instanceof INavigationNode<?>) {
+					applyFilter((INavigationNode<?>) child, filter);
+				}
+			}
+
 		}
 
 		public void removeAllFilters(Collection<? extends IUIFilter> filters) {
 
 			for (IUIFilter filter : filters) {
 				removeFilter(filter);
-
 			}
 
 		}
 
 		public void removeFilter(IUIFilter filter) {
+			removeFilter(getNavigationNode(), filter);
+		}
+
+		public void removeFilter(INavigationNode<?> node, IUIFilter filter) {
+
+			INavigationNodeController controller = node.getNavigationNodeController();
 			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
 			for (IUIFilterAttribute filterAttribute : filterItems) {
-				for (IRidget ridget : getRidgets()) {
-					if (filterAttribute.matches(ridget.getID())) {
-						if (ridget instanceof IMarkableRidget) {
-							IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-							if (filterAttribute instanceof IUIFilterMarkerAttribute) {
-								IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
-								markableRidget.removeMarker(attributeMarker.getMarker());
+				if (controller instanceof IRidgetContainer) {
+					IRidgetContainer container = (IRidgetContainer) controller;
+					for (IRidget ridget : container.getRidgets()) {
+						if (filterAttribute.matches(ridget.getID())) {
+							if (ridget instanceof IMarkableRidget) {
+								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
+								if (filterAttribute instanceof IUIFilterMarkerAttribute) {
+									IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
+									markableRidget.removeMarker(attributeMarker.getMarker());
+								}
 							}
-						}
 
+						}
 					}
 				}
 			}
+
+			List<?> children = node.getChildren();
+			for (Object child : children) {
+				if (child instanceof INavigationNode<?>) {
+					removeFilter((INavigationNode<?>) child, filter);
+				}
+			}
+
 		}
 
 		@Override
@@ -334,7 +366,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		@Override
 		public void filterAdded(INavigationNode source, IUIFilter filter) {
 			super.filterAdded(source, filter);
-
 			applyFilter(filter);
 		}
 
@@ -342,7 +373,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		public void filterRemoved(INavigationNode source, IUIFilter filter) {
 			super.filterRemoved(source, filter);
 			removeFilter(filter);
-
 		}
 
 		@Override
@@ -350,6 +380,21 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			super.allFiltersRemoved(source);
 			removeAllFilters(source.getFilters());
 		}
+
+		//		/*
+		//		 * (non-Javadoc)
+		//		 * 
+		//		 * @see
+		//		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#stateChanged
+		//		 * (org.eclipse.riena.navigation.INavigationNode,
+		//		 * org.eclipse.riena.navigation.INavigationNode.State,
+		//		 * org.eclipse.riena.navigation.INavigationNode.State)
+		//		 */
+		//		@Override
+		//		public void stateChanged(INavigationNode source, State oldState, State newState) {
+		//			System.out.println("MyNavigationNodeListener.stateChanged() " + source + "/" + oldState + "/" + newState);
+		//			super.stateChanged(source, oldState, newState);
+		//		}
 
 	}
 

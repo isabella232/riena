@@ -71,6 +71,7 @@ public class ComboSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		comboOne = (IComboBoxRidget) getRidget("comboOne"); //$NON-NLS-1$
