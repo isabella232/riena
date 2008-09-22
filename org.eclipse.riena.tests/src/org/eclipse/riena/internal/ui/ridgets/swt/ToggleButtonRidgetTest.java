@@ -414,6 +414,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testDisableRidgetRemovesSelection() {
 		IToggleButtonRidget ridget = getRidget();
 		Button control = getUIControl();
+
 		ridget.setEnabled(true);
 		ridget.setSelected(true);
 
@@ -449,6 +450,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		IToggleButtonRidget ridget = getRidget();
 		ridget.setEnabled(true);
 		ridget.setSelected(true);
+
 		ridget.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				fail("Unexpected property change event: " + evt);
