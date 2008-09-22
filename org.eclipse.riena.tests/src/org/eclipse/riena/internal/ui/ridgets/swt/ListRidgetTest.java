@@ -590,6 +590,10 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(count, listener.getCount());
 	}
 
+	/**
+	 * Tests that disabling / enabling works as intended, even when no model is
+	 * bound to the ridget.
+	 */
 	public void testDisableWithoutBoundModel() {
 		ListRidget ridget = (ListRidget) createRidget();
 		List control = getUIControl();
