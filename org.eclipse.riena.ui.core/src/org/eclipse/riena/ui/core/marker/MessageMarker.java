@@ -18,6 +18,10 @@ import org.eclipse.riena.core.marker.AbstractMarker;
  */
 public class MessageMarker extends AbstractMarker implements IMessageMarker {
 
+	public MessageMarker() {
+		super(false);
+	}
+
 	/**
 	 * @return the Message in this Marker
 	 */

@@ -21,6 +21,7 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 	private IValidator validationRule;
 
 	public ValidationMessageMarker(IMessageMarker messageMarker) {
+		super(false);
 		setAttribute(MESSAGE_MARKER_ATTRIBUTE, messageMarker);
 	}
 

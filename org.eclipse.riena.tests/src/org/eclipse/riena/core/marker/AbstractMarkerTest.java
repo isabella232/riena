@@ -33,10 +33,13 @@ public class AbstractMarkerTest extends TestCase {
 	public void testToString() {
 
 		AbstractMarker marker = new DummyMarker();
-		assertEquals("DummyMarker[attributes={}]", marker.toString());
+		assertEquals("DummyMarker[attributes={unique=true}]", marker.toString());
 
 		marker.setAttribute("att", "val");
-		assertEquals("DummyMarker[attributes={att=val}]", marker.toString());
+		assertEquals("DummyMarker[attributes={unique=true, att=val}]", marker.toString());
+
+		marker = new DummyMarker(false);
+		assertEquals("DummyMarker[attributes={}]", marker.toString());
 
 	}
 
@@ -101,6 +104,16 @@ public class AbstractMarkerTest extends TestCase {
 		private boolean changeFired;
 
 		public DummyMarker() {
+			super();
+			init();
+		}
+
+		public DummyMarker(boolean unique) {
+			super(unique);
+			init();
+		}
+
+		private void init() {
 			addAttributeChangeListener(this);
 			reset();
 		}

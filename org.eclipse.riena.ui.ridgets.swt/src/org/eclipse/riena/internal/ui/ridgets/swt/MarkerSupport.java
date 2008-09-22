@@ -213,9 +213,6 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		if (control != null) {
 			control.setRedraw(false); // prevent flicker
 			try {
-				//				if (control instanceof Combo) {
-				//					System.out.println("MarkerSupport.updateUIControl() " + ridget.isVisible());
-				//				}
 				updateVisible(control);
 				updateDisabled(control);
 				updateOutput(control);
@@ -224,10 +221,8 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 				updateNegative(control);
 			} finally {
 				control.setRedraw(true);
+				control.redraw();
 			}
-			//			if (control instanceof Combo) {
-			//				System.out.println("End " + control.isVisible());
-			//			}
 		}
 	}
 
