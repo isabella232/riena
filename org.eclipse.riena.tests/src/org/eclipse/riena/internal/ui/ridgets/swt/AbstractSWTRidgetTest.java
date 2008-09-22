@@ -330,6 +330,27 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		verifyPropertyChangeEvents();
 	}
 
+	/**
+	 * Check that disabling / enabling works when we don't have a bound control.
+	 */
+	public void testDisableWithoutUIControl() {
+		if (!(getRidget() instanceof IMarkableRidget)) {
+			return;
+		}
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		ridget.setUIControl(null);
+		
+		assertTrue(ridget.isEnabled());
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+	}
+
 	// helping methods
 	// ////////////////
 

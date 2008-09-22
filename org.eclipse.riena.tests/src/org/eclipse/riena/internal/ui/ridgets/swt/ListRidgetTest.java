@@ -613,22 +613,6 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	/**
-	 * Check that disabling / enabling works when we don't have a bound control.
-	 */
-	public void testDisableWithoutUIControl() {
-		ListRidget ridget = getRidget();
-		ridget.setUIControl(null);
-
-		ridget.setEnabled(false);
-
-		assertFalse(ridget.isEnabled());
-
-		ridget.setEnabled(true);
-
-		assertTrue(ridget.isEnabled());
-	}
-
-	/**
 	 * Tests that the disabled state is applied to a new control when set into
 	 * the ridget.
 	 */
