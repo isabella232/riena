@@ -10,61 +10,57 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.TestCase;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class <code>ToggleButtonRidget</code>.
  * 
  */
-public class ToggleButtonRidgetTest extends TestCase {
+public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 	private final static String PLUGIN_ID = "org.eclipse.riena.ui.tests:";
 	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
 	private final static String LABEL = "testlabel";
 	private final static String LABEL2 = "testlabel2";
 
-	private DefaultRealm realm;
-	private Shell shell;
-	private Button button;
-	private ToggleButtonRidget ridget;
-
 	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		realm = new DefaultRealm();
-		shell = new Shell();
-		button = new Button(shell, SWT.CHECK);
-		ridget = new ToggleButtonRidget();
-		ridget.setUIControl(button);
-		shell.setLayout(new FillLayout());
-		shell.setSize(100, 100);
-		shell.setLocation(100, 100);
-		shell.open();
+	protected IRidget createRidget() {
+		return new ToggleButtonRidget();
 	}
 
 	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		shell.dispose();
-		shell = null;
-		realm.dispose();
-		realm = null;
+	protected Control createUIControl(Composite parent) {
+		return new Button(parent, SWT.CHECK);
+	}
+
+	@Override
+	protected IToggleButtonRidget getRidget() {
+		return (IToggleButtonRidget) super.getRidget();
+	}
+
+	@Override
+	protected Button getUIControl() {
+		return (Button) super.getUIControl();
 	}
 
 	public void testRidgetMapping() {
+		Shell shell = getShell();
+
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
 
 		Button buttonToggle = new Button(shell, SWT.TOGGLE);
@@ -81,41 +77,48 @@ public class ToggleButtonRidgetTest extends TestCase {
 	}
 
 	public void testSetUIControl() throws Exception {
+		IToggleButtonRidget ridget = getRidget();
+		Button button = getUIControl();
 
 		assertSame(button, ridget.getUIControl());
-
 	}
 
 	public void testSetSelected() throws Exception {
-
+		IToggleButtonRidget ridget = getRidget();
+		Button button = getUIControl();
 		BooleanTestBean model = new BooleanTestBean();
 		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
+
 		ridget.setSelected(true);
+
 		assertTrue(ridget.isSelected());
 		assertTrue(button.getSelection());
+
 		ridget.setSelected(false);
+
 		assertFalse(ridget.isSelected());
 		assertFalse(button.getSelection());
-
 	}
 
 	public void testIsSelected() throws Exception {
+		IToggleButtonRidget ridget = getRidget();
 
 		BooleanTestBean model = new BooleanTestBean();
 		model.setSelected(true);
 		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 		ridget.updateFromModel();
+
 		assertTrue(ridget.isSelected());
 	}
 
 	public void testBindToModelIObservableValue() throws Exception {
+		IToggleButtonRidget ridget = getRidget();
 
 		BooleanTestBean model = new BooleanTestBean();
 		model.setSelected(true);
 		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
-
 		ridget.bindToModel(modelOV);
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
@@ -126,14 +129,13 @@ public class ToggleButtonRidgetTest extends TestCase {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isSelected());
-
 	}
 
 	public void testBindToModelPropertyName() throws Exception {
+		IToggleButtonRidget ridget = getRidget();
 
 		BooleanTestBean model = new BooleanTestBean();
 		model.setSelected(true);
-
 		ridget.bindToModel(model, "selected");
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
@@ -144,24 +146,27 @@ public class ToggleButtonRidgetTest extends TestCase {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isSelected());
-
 	}
 
 	public void testUpdateFromModel() throws Exception {
+		IToggleButtonRidget ridget = getRidget();
+		Button button = getUIControl();
 
 		BooleanTestBean model = new BooleanTestBean();
 		model.setSelected(true);
 		ridget.bindToModel(model, "selected");
 		ridget.updateFromModel();
+
 		assertTrue(button.getSelection());
 
 		model.setSelected(false);
 		ridget.updateFromModel();
 		assertFalse(button.getSelection());
-
 	}
 
 	public void testActionListener() {
+		IToggleButtonRidget ridget = getRidget();
+
 		ridget.setSelected(false);
 
 		FTActionListener listener = new FTActionListener();
@@ -192,6 +197,9 @@ public class ToggleButtonRidgetTest extends TestCase {
 	}
 
 	public final void testSetText() throws Exception {
+		IToggleButtonRidget ridget = getRidget();
+		Button button = getUIControl();
+
 		ridget.setText("");
 
 		assertEquals("", ridget.getText());
@@ -225,7 +233,8 @@ public class ToggleButtonRidgetTest extends TestCase {
 	 * Test method get/setIcon().
 	 */
 	public final void testSetIcon() {
-		Button control = ridget.getUIControl();
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -249,7 +258,8 @@ public class ToggleButtonRidgetTest extends TestCase {
 	 * Tests the method {@code initText}
 	 */
 	public final void testInitText() {
-		Button control = ridget.getUIControl();
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
 		ReflectionUtils.setHidden(ridget, "text", null);
@@ -272,7 +282,8 @@ public class ToggleButtonRidgetTest extends TestCase {
 	 * "output only".
 	 */
 	public void testOutputRidgetNotVisible() {
-		Button control = ridget.getUIControl();
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
 
 		assertFalse(ridget.isOutputOnly());
 		assertTrue(control.isVisible());
@@ -323,6 +334,172 @@ public class ToggleButtonRidgetTest extends TestCase {
 		assertTrue(ridget.isOutputOnly());
 		assertTrue(ridget.isVisible());
 		assertFalse(control.isVisible());
+	}
+
+	/**
+	 * Tests that changing the selected state via
+	 * {@link IToggleButtonRidget#setSelected(boolean) does not select the
+	 * control, when the ridget is disabled.
+	 */
+	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
+		BooleanTestBean model = new BooleanTestBean();
+		ridget.bindToModel(model, "selected");
+
+		ridget.setSelected(false);
+		ridget.setEnabled(false);
+
+		assertFalse(model.isSelected());
+		assertFalse(ridget.isSelected());
+		assertFalse(control.getSelection());
+
+		ridget.setSelected(true);
+
+		assertTrue(model.isSelected());
+		assertTrue(ridget.isSelected());
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertFalse(control.getSelection());
+		} else {
+			assertTrue(control.getSelection());
+		}
+
+		ridget.setEnabled(true);
+
+		assertTrue(model.isSelected());
+		assertTrue(ridget.isSelected());
+		assertTrue(control.getSelection());
+	}
+
+	/**
+	 * Tests that changing the selected state via a bound model, does not select
+	 * the control, when the ridget is disabled.
+	 */
+	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
+		BooleanTestBean model = new BooleanTestBean();
+		ridget.bindToModel(model, "selected");
+		ridget.setEnabled(false);
+
+		model.setSelected(false);
+		ridget.updateFromModel();
+
+		assertFalse(model.isSelected());
+		assertFalse(ridget.isSelected());
+		assertFalse(control.getSelection());
+
+		model.setSelected(true);
+		ridget.updateFromModel();
+
+		assertTrue(model.isSelected());
+		assertTrue(ridget.isSelected());
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertFalse(control.getSelection());
+		} else {
+			assertTrue(control.getSelection());
+		}
+
+		ridget.setEnabled(true);
+
+		assertTrue(model.isSelected());
+		assertTrue(ridget.isSelected());
+		assertTrue(control.getSelection());
+	}
+
+	/**
+	 * Tests that disabling the ridget unselects the checkbox button, even when
+	 * no model is bound to the ridget.
+	 */
+	public void testDisableRidgetRemovesSelection() {
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
+		ridget.setEnabled(true);
+		ridget.setSelected(true);
+
+		assertTrue(ridget.isEnabled());
+		assertTrue(ridget.isSelected());
+		assertTrue(control.isEnabled());
+		assertTrue(control.getSelection());
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+		assertTrue(ridget.isSelected());
+		assertFalse(control.isEnabled());
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertFalse(control.getSelection());
+		} else {
+			assertTrue(control.getSelection());
+		}
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+		assertTrue(ridget.isSelected());
+		assertTrue(control.isEnabled());
+		assertTrue(control.getSelection());
+	}
+
+	/**
+	 * Tests that disabling the ridget does not fire 'selected' events, even
+	 * though the control is modified.
+	 */
+	public void testDisabledDoesNotFireSelected() {
+		IToggleButtonRidget ridget = getRidget();
+		ridget.setEnabled(true);
+		ridget.setSelected(true);
+		ridget.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				fail("Unexpected property change event: " + evt);
+			}
+		});
+
+		ridget.setEnabled(false);
+
+		ridget.setEnabled(true);
+	}
+
+	/**
+	 * Check that disabling / enabling works when we don't have a bound control.
+	 */
+	public void testDisableWithoutUIControl() {
+		IToggleButtonRidget ridget = getRidget();
+		ridget.setUIControl(null);
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+	}
+
+	/**
+	 * Tests that the disabled state is applied to a new control when set into
+	 * the ridget.
+	 */
+	public void testDisableAndClearOnBind() {
+		IToggleButtonRidget ridget = getRidget();
+		Button control = getUIControl();
+
+		ridget.setUIControl(null);
+		ridget.setEnabled(false);
+		ridget.setSelected(true);
+		ridget.setUIControl(control);
+
+		assertFalse(control.isEnabled());
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertFalse(control.getSelection());
+		} else {
+			assertTrue(control.getSelection());
+		}
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+		assertTrue(control.getSelection());
 	}
 
 	// helping classes

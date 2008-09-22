@@ -11,14 +11,21 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.EventHandler;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -40,22 +47,15 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	private boolean textAlreadyInitialized;
 
 	public ToggleButtonRidget() {
-		this(null);
-	}
-
-	public ToggleButtonRidget(Button button) {
 		super();
 		actionObserver = new ActionObserver();
 		textAlreadyInitialized = false;
-		setUIControl(button);
-	}
-
-	/**
-	 * @deprecated use BeansObservables.observeValue(ridget instance,
-	 *             IToggleButtonRidget.PROPERTY_SELECTED);
-	 */
-	public IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
+				updateSelection(isEnabled);
+			}
+		});
 	}
 
 	@Override
@@ -77,25 +77,12 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		Button control = getUIControl();
 		if (control != null) {
 			controlBinding = context.bindValue(SWTObservables.observeSelection(control), BeansObservables.observeValue(
-					this, IToggleButtonRidget.PROPERTY_SELECTED), null, null);
+					this, IToggleButtonRidget.PROPERTY_SELECTED), new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
+					.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
 			initText();
 			updateText();
-		}
-	}
-
-	/**
-	 * If the text of the ridget has no value, initialize it with the text of
-	 * the UI control.
-	 */
-	private void initText() {
-		if ((text == null) && (!textAlreadyInitialized)) {
-			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
-				text = getUIControl().getText();
-				if (text == null) {
-					text = EMPTY_STRING;
-				}
-				textAlreadyInitialized = true;
-			}
+			updateSelection(isEnabled());
 		}
 	}
 
@@ -105,6 +92,14 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 			controlBinding.dispose();
 			controlBinding = null;
 		}
+	}
+
+	/**
+	 * @deprecated use BeansObservables.observeValue(ridget instance,
+	 *             IToggleButtonRidget.PROPERTY_SELECTED);
+	 */
+	public IObservableValue getRidgetObservable() {
+		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
 	}
 
 	/**
@@ -124,7 +119,6 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		if (this.selected != selected) {
 			boolean oldValue = this.selected;
 			this.selected = selected;
-			// updateFromModel();
 			actionObserver.fireAction();
 			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue), Boolean
 					.valueOf(selected));
@@ -158,16 +152,10 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		updateText();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#getIcon()
-	 */
 	public String getIcon() {
 		return icon;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.IActionRidget#setIcon(java.lang.String)
-	 */
 	public void setIcon(String icon) {
 		String oldIcon = this.icon;
 		this.icon = icon;
@@ -179,10 +167,43 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	// helping methods
 	// ////////////////
 
+	/**
+	 * If the text of the ridget has no value, initialize it with the text of
+	 * the UI control.
+	 */
+	private void initText() {
+		if ((text == null) && (!textAlreadyInitialized)) {
+			if ((getUIControl()) != null && !(getUIControl().isDisposed())) {
+				text = getUIControl().getText();
+				if (text == null) {
+					text = EMPTY_STRING;
+				}
+				textAlreadyInitialized = true;
+			}
+		}
+	}
+
+	/**
+	 * Update the selection state of this ridget's control (button)
+	 * 
+	 * @param isRidgetEnabled
+	 *            true if this ridget is enabled, false otherwise
+	 */
+	private void updateSelection(boolean isRidgetEnabled) {
+		Button control = getUIControl();
+		if (control != null && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			if (!isRidgetEnabled) {
+				control.setSelection(false);
+			} else {
+				control.setSelection(isSelected());
+			}
+		}
+	}
+
 	private void updateText() {
-		Button button = getUIControl();
-		if (button != null) {
-			button.setText(text);
+		Button control = getUIControl();
+		if (control != null) {
+			control.setText(text);
 		}
 	}
 
@@ -199,5 +220,20 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 			control.setImage(image);
 		}
 	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * When the ridget is disabled, this validator will prevent the selected
+	 * attribute of a control (Button) from changing -- unless
+	 * HIDE_DISABLED_RIDGET_CONTENT is {@code false}.
+	 */
+	private final class CancelControlUpdateWhenDisabled implements IValidator {
+		public IStatus validate(Object value) {
+			boolean cancel = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT && !isEnabled();
+			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
+		}
+	};
 
 }
