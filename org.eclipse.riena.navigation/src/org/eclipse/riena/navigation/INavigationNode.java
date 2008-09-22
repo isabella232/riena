@@ -392,6 +392,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	boolean isBlocked();
 
 	/**
+	 * Shows or hides this node depending on the value of parameter
+	 * 
+	 * @param visible
+	 *            - if {@code true}, shows this node; otherwise, hides this
+	 *            component
+	 */
+	void setVisible(boolean visible);
+
+	/**
+	 * Returns whether the node is visible or hidden.
+	 * 
+	 * @return {@code true} if the node is visible; otherwise {@code false}
+	 */
+	boolean isVisible();
+
+	/**
 	 * Returns the ID that identifies the node. The ID is used to find navigate
 	 * targets in the application model tree and to associated sub module nodes
 	 * with their views.

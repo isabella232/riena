@@ -151,6 +151,24 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
+	public void hide(INavigationNode<?> toHide) {
+
+		INavigationNode<?> nodeToHide = toHide;
+		if (nodeToHide != null) {
+			if (nodeToHide.isVisible()) {
+				List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
+				List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
+				INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
+				if (allowsDeactivate(navigationContext)) {
+					deactivate(navigationContext);
+					nodeToHide.setVisible(false);
+					activate(navigationContext);
+				}
+			}
+		}
+
+	}
+
 	/**
 	 * Cleanup the History stacks and removes all occurences of the node.
 	 * 
@@ -372,7 +390,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @return return a list of nodes
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnDispose(INavigationNode<?> toDispose) {
-		// on dispose must only then someting be activated, if one of the
+		// on dispose must only then something be activated, if one of the
 		// modules to dispose was active
 		// we assume, that if any submodule of this module was active,
 		// than this module is active itself
@@ -382,13 +400,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			INavigationNode<?> brotherToActivate = null;
 			if (parentOfToDispose != null) {
 				List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
+				List<INavigationNode<?>> activateableNode = getActivateableNodes(childrenOfParentOfToDispose);
 				if (childrenOfParentOfToDispose.size() > 1) {
-					// there must be a least 2 childs: the disposed will be
+					// there must be a least 2 children: the disposed will be
 					// removed
 					// get the first child which is not the one to remove
-					for (Object nextChild : childrenOfParentOfToDispose) {
+					for (INavigationNode<?> nextChild : activateableNode) {
 						if (!nextChild.equals(toDispose)) {
-							brotherToActivate = (INavigationNode<?>) nextChild;
+							brotherToActivate = nextChild;
 							break;
 						}
 					}
@@ -399,6 +418,27 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 		}
 		return new LinkedList<INavigationNode<?>>();
+	}
+
+	/**
+	 * Removes all not activateable nodes (e.g. hidden nodes) from the given
+	 * list.
+	 * 
+	 * @param nodes
+	 *            - list of node
+	 * @return filtered list
+	 */
+	private List<INavigationNode<?>> getActivateableNodes(List<?> nodes) {
+		List<INavigationNode<?>> activateableNodes = new LinkedList<INavigationNode<?>>();
+		for (Object node : nodes) {
+			if (node instanceof INavigationNode<?>) {
+				INavigationNode<?> naviNode = (INavigationNode<?>) node;
+				if (naviNode.isVisible()) {
+					activateableNodes.add(naviNode);
+				}
+			}
+		}
+		return activateableNodes;
 	}
 
 	/**

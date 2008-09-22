@@ -550,6 +550,18 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	}
 
 	/**
+	 * Returns whether this view is visible or not.
+	 * 
+	 * @return {@code true} if nod if visible; otherwise {@code false}
+	 */
+	public boolean isVisible() {
+		if (getNavigationNode() == null) {
+			return false;
+		}
+		return getNavigationNode().isVisible();
+	}
+
+	/**
 	 * @return the closeable
 	 */
 	public boolean isCloseable() {

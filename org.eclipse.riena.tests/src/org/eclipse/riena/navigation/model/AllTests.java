@@ -22,6 +22,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.model");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(NavigationProcessorTest.class);
+		suite.addTestSuite(NavigationNodeTest.class);
 		//$JUnit-END$
 		return suite;
 	}

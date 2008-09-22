@@ -83,4 +83,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @see #navigate(INavigationNode, NavigationNodeId, NavigationArgument)
 	 */
 	void navigateBack(INavigationNode<?> targetNode);
+
+	void hide(INavigationNode<?> toHide);
+
 }

@@ -58,6 +58,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private String label;
 	private String icon;
 	private boolean expanded;
+	private boolean visible;
 	private INavigationNodeController navigationNodeController;
 	private INavigationProcessor navigationProcessor;
 	private List<C> children;
@@ -88,6 +89,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		filterable = createFilterable();
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
+		visible = true;
 		// TODO: scp How can we use IIconManager.DEFAULT_ICON
 		// icon = "0044";
 	}
@@ -877,6 +879,19 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		this.blocked = blocked;
 		notifyBlockedChanged();
 
+	}
+
+	public void setVisible(boolean visible) {
+		if (this.visible != visible) {
+			//			if (isVisible()) {
+			//				getNavigationProcessor().hide(this);
+			//			}
+			//			this.visible = visible;
+		}
+	}
+
+	public boolean isVisible() {
+		return visible;
 	}
 
 	@SuppressWarnings("unchecked")

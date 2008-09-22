@@ -58,8 +58,18 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		setData(getClass().getName());
 	}
 
-	protected List<ModuleView> getAllModuleViews() {
+	private List<ModuleView> getAllModuleViews() {
 		return new ArrayList<ModuleView>(registeredModuleViews.values());
+	}
+
+	private List<ModuleView> getAllVisibleModuleViews() {
+		List<ModuleView> views = new ArrayList<ModuleView>();
+		for (ModuleView view : registeredModuleViews.values()) {
+			if (view.isVisible()) {
+				views.add(view);
+			}
+		}
+		return views;
 	}
 
 	protected ModuleNode getNodeForView(ModuleView view) {
@@ -179,7 +189,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	@Override
 	public Point computeSize(int wHint, int hHint) {
 		GC gc = new GC(Display.getCurrent());
-		getRenderer().setItems(getAllModuleViews());
+		getRenderer().setItems(getAllVisibleModuleViews());
 		Point size = getRenderer().computeSize(gc, wHint, hHint);
 		gc.dispose();
 		return size;
@@ -217,7 +227,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		 */
 		public void paintControl(PaintEvent e) {
 			setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
-			getRenderer().setItems(getAllModuleViews());
+			getRenderer().setItems(getAllVisibleModuleViews());
 			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
 			getRenderer().setBounds(0, 0, size.x, size.y);
 			getRenderer().paint(e.gc, null);
