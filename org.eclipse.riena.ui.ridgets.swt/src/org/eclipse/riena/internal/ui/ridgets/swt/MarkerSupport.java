@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Control;
 public final class MarkerSupport extends AbstractMarkerSupport {
 
 	static {
-		// avoid inlining
+		// avoid inlining HIDE_DISABLED_RIDGET_CONTENT
 		String value = System.getProperty("HIDE_DISABLED_RIDGET_CONTENT"); //$NON-NLS-1$
 		HIDE_DISABLED_RIDGET_CONTENT = value == null ? true : Boolean.parseBoolean(value);
 	}
