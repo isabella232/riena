@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -104,6 +107,11 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 		strToObjConverter = new StringToObjectConverter();
 		selectionValidator = new SelectionBindingValidator();
 		valueChangeValidator = new ValueChangeValidator();
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				applyEnabled();
+			}
+		});
 	}
 
 	@Override
@@ -301,14 +309,6 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 		} else {
 			Object newSelection = rowObservables.get(index);
 			setSelection(newSelection);
-		}
-	}
-
-	@Override
-	public synchronized void setEnabled(boolean enabled) {
-		if (enabled != isEnabled()) {
-			super.setEnabled(enabled);
-			applyEnabled();
 		}
 	}
 

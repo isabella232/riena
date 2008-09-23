@@ -90,7 +90,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		return uiControl;
 	}
 
-	public String getID() {
+	public final String getID() {
 
 		if (getUIControl() != null) {
 			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
@@ -132,7 +132,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		return (uiControl != null) && (getMarkersOfType(HiddenMarker.class).isEmpty());
 	}
 
-	public void setVisible(boolean visible) {
+	public final void setVisible(boolean visible) {
 
 		if (hiddenMarker == null) {
 			hiddenMarker = new HiddenMarker();
@@ -162,6 +162,9 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 	public final void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 	}
+
+	// abstract methods - subclasses must implement
+	/////////////////////////////////////////////////////////
 
 	/**
 	 * <p>
@@ -202,11 +205,16 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 	 */
 	abstract protected void unbindUIControl();
 
+	abstract public boolean isDisableMandatoryMarker();
+
+	// helping methods
+	// ////////////////
+
 	/**
 	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
 	 * ridget.
 	 */
-	protected void installListeners() {
+	private void installListeners() {
 		if (uiControl != null) {
 			uiControl.addFocusListener(focusManager);
 		}
@@ -216,14 +224,11 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
 	 * unbound from the ridget.
 	 */
-	protected void uninstallListeners() {
+	private void uninstallListeners() {
 		if (uiControl != null) {
 			uiControl.removeFocusListener(focusManager);
 		}
 	}
-
-	// helping methods
-	// ////////////////
 
 	private void updateToolTip() {
 		if (uiControl != null) {
@@ -239,7 +244,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		return image;
 	}
 
-	public synchronized Image getMissingImage() {
+	public final synchronized Image getMissingImage() {
 		if (missingImage == null) {
 			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
 		}
@@ -297,9 +302,6 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 			}
 		}
 
-		/**
-		 * @see org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.events.FocusEvent)
-		 */
 		@Override
 		public void focusLost(FocusEvent e) {
 			if (focusable) {
@@ -333,8 +335,6 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 			return result;
 		}
 	};
-
-	abstract public boolean isDisableMandatoryMarker();
 
 	public final boolean isErrorMarked() {
 		return !getMarkersOfType(ErrorMarker.class).isEmpty();
@@ -393,7 +393,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		return getMarkersOfType(DisabledMarker.class).isEmpty();
 	}
 
-	public synchronized void setEnabled(boolean enabled) {
+	public final synchronized void setEnabled(boolean enabled) {
 		if (enabled) {
 			if (disabledMarker != null) {
 				removeMarker(disabledMarker);
@@ -410,7 +410,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		return !getMarkersOfType(OutputMarker.class).isEmpty();
 	}
 
-	public void setOutputOnly(boolean outputOnly) {
+	public final void setOutputOnly(boolean outputOnly) {
 		if (!outputOnly) {
 			if (outputMarker != null) {
 				removeMarker(outputMarker);

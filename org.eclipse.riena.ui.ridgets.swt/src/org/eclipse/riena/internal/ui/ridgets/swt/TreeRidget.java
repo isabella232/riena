@@ -47,6 +47,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
@@ -103,6 +104,16 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		doubleClickForwarder = new DoubleClickForwarder();
 		expansionStack = new LinkedList<ExpansionCommand>();
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				applyEraseListener();
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				saveSelection();
+			}
+		});
 	}
 
 	@Override
@@ -365,20 +376,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return true;
-	}
-
-	@Override
-	public synchronized void setEnabled(boolean enabled) {
-		if (enabled != isEnabled()) {
-			super.setEnabled(enabled);
-			applyEraseListener();
-		}
-	}
-
-	@Override
-	public void setOutputOnly(boolean outputOnly) {
-		super.setOutputOnly(outputOnly);
-		saveSelection();
 	}
 
 	// helping methods

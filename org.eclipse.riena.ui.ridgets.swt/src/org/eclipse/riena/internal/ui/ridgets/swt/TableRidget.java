@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -84,6 +87,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				applyEraseListener();
+			}
+		});
 	}
 
 	@Override
@@ -355,14 +363,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return true;
-	}
-
-	@Override
-	public synchronized void setEnabled(boolean enabled) {
-		if (enabled != isEnabled()) {
-			super.setEnabled(enabled);
-			applyEraseListener();
-		}
 	}
 
 	// helping methods

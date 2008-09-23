@@ -24,6 +24,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.IMarkerAttributeChangeListener;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.IMarkerPropertyChangeEvent;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 
 /**
  * Helper class for Ridgets to delegate their marker issues to.
@@ -63,6 +64,7 @@ public abstract class AbstractMarkerSupport {
 		if (markers.add(marker)) {
 			updateMarkers();
 			fireMarkerPropertyChangeEvent(oldValue);
+			fireOutputPropertyChangeEvent(oldValue);
 			fireEnabledPropertyChangeEvent(oldValue);
 			marker.addAttributeChangeListener(markerAttributeChangeListener);
 		}
@@ -109,6 +111,7 @@ public abstract class AbstractMarkerSupport {
 			if (oldValue.size() > 0) {
 				updateMarkers();
 				fireMarkerPropertyChangeEvent(oldValue);
+				fireOutputPropertyChangeEvent(oldValue);
 				fireEnabledPropertyChangeEvent(oldValue);
 			}
 		}
@@ -123,6 +126,7 @@ public abstract class AbstractMarkerSupport {
 			if (markers.remove(marker)) {
 				updateMarkers();
 				fireMarkerPropertyChangeEvent(oldValue);
+				fireOutputPropertyChangeEvent(oldValue);
 				fireEnabledPropertyChangeEvent(oldValue);
 				marker.removeAttributeChangeListener(markerAttributeChangeListener);
 			}
@@ -151,6 +155,17 @@ public abstract class AbstractMarkerSupport {
 		return Boolean.valueOf(result);
 	}
 
+	private Boolean isOutput(Collection<IMarker> markers) {
+		boolean result = false;
+		if (markers != null) {
+			Iterator<IMarker> iter = markers.iterator();
+			while (!result && iter.hasNext()) {
+				result = (iter.next() instanceof OutputMarker);
+			}
+		}
+		return Boolean.valueOf(result);
+	}
+
 	private void fireEnabledPropertyChangeEvent(Collection<IMarker> oldMarkers) {
 		Boolean oldValue = isEnabled(oldMarkers);
 		Boolean newValue = isEnabled(getMarkers());
@@ -163,6 +178,16 @@ public abstract class AbstractMarkerSupport {
 
 	private void fireMarkerPropertyChangeEvent(Collection<IMarker> oldValue) {
 		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(oldValue, ridget, getMarkers()));
+	}
+
+	private void fireOutputPropertyChangeEvent(Collection<IMarker> oldMarkers) {
+		Boolean oldValue = isOutput(oldMarkers);
+		Boolean newValue = isOutput(getMarkers());
+		if (!oldValue.equals(newValue)) {
+			PropertyChangeEvent evt = new PropertyChangeEvent(ridget, IMarkableRidget.PROPERTY_OUTPUT_ONLY, oldValue,
+					newValue);
+			propertyChangeSupport.firePropertyChange(evt);
+		}
 	}
 
 	// helping classes

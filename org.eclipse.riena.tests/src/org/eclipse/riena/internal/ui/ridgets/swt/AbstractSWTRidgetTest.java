@@ -27,6 +27,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
@@ -339,7 +340,7 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		}
 		IMarkableRidget ridget = (IMarkableRidget) getRidget();
 		ridget.setUIControl(null);
-		
+
 		assertTrue(ridget.isEnabled());
 
 		ridget.setEnabled(false);
@@ -349,6 +350,61 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		ridget.setEnabled(true);
 
 		assertTrue(ridget.isEnabled());
+	}
+
+	public void testFiresOutputPropertyUsingSetter() {
+		if (!(getRidget() instanceof IMarkableRidget)) {
+			return;
+		}
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		ridget.removePropertyChangeListener(propertyChangeListenerMock);
+		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
+
+		assertFalse(ridget.isOutputOnly());
+
+		expectNoPropertyChangeEvent();
+		ridget.setOutputOnly(false);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.FALSE, Boolean.TRUE);
+		ridget.setOutputOnly(true);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.setOutputOnly(true);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.TRUE, Boolean.FALSE);
+		ridget.setOutputOnly(false);
+		verifyPropertyChangeEvents();
+	}
+
+	public void testFiresOutputPropertyUsingAddRemove() {
+		if (!(getRidget() instanceof IMarkableRidget)) {
+			return;
+		}
+		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarker marker = new OutputMarker();
+		ridget.removePropertyChangeListener(propertyChangeListenerMock);
+		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
+
+		assertFalse(ridget.isOutputOnly());
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.FALSE, Boolean.TRUE);
+		ridget.addMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.addMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.TRUE, Boolean.FALSE);
+		ridget.removeMarker(marker);
+		verifyPropertyChangeEvents();
+
+		expectNoPropertyChangeEvent();
+		ridget.removeMarker(marker);
+		verifyPropertyChangeEvents();
 	}
 
 	// helping methods

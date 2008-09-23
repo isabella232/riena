@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
@@ -51,6 +55,19 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 		modifyListener = new SyncModifyListener();
 		verifyListener = new ValidationListener();
 		isDirectWriting = false;
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				forceTextToControl(getText());
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				Text control = getUIControl();
+				if (control != null && !control.isDisposed()) {
+					control.setEditable(isOutputOnly() ? false : true);
+				}
+			}
+		});
 	}
 
 	/**
@@ -169,23 +186,6 @@ public final class TextRidget extends AbstractEditableRidget implements ITextFie
 	public void setAlignment(int alignment) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
-	}
-
-	@Override
-	public void setOutputOnly(boolean outputOnly) {
-		super.setOutputOnly(outputOnly);
-		Text control = getUIControl();
-		if (control != null && !control.isDisposed()) {
-			control.setEditable(isOutputOnly() ? false : true);
-		}
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		if (enabled != isEnabled()) {
-			super.setEnabled(enabled);
-			forceTextToControl(getText());
-		}
 	}
 
 	// helping methods
