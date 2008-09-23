@@ -55,6 +55,10 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 		ISubModuleNode textSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(textSubModule);
 
+		ISubModuleNode textNumbersSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.text.numeric"), "Text (Numeric)"); //$NON-NLS-1$ //$NON-NLS-2$
+		playgroundModule.addChild(textNumbersSubModule);
+
 		ISubModuleNode markerSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(markerSubModule);
