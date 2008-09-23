@@ -451,6 +451,11 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ChoiceComposite control = getUIControl();
 
 		ridget.setSelection("Option A");
+
+		assertEquals("Option A", optionProvider.getSelectedOption());
+		assertEquals("Option A", ridget.getSelection());
+		assertEquals("Option A", getSelectedControlValue(control));
+
 		ridget.setEnabled(false);
 
 		assertEquals("Option A", optionProvider.getSelectedOption());
@@ -502,35 +507,6 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals("Option B", optionProvider.getSelectedOption());
 		assertEquals("Option B", ridget.getSelection());
 		assertEquals("Option B", getSelectedControlValue(control));
-	}
-
-	/**
-	 * Tests that disabling the ridget unselects the radio button, even when no
-	 * model is bound to the ridget.
-	 */
-	public void testDisabledRidgetRemovesSelection() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
-
-		ridget.setEnabled(true);
-		ridget.setSelection("Option A");
-
-		assertEquals("Option A", ridget.getSelection());
-		assertEquals("Option A", getSelectedControlValue(control));
-		assertTrue(control.isEnabled());
-
-		ridget.setEnabled(false);
-
-		assertEquals("Option A", ridget.getSelection());
-		String expectedA = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option A";
-		assertEquals(expectedA, getSelectedControlValue(control));
-		assertFalse(control.isEnabled());
-
-		ridget.setEnabled(true);
-
-		assertEquals("Option A", ridget.getSelection());
-		assertEquals("Option A", getSelectedControlValue(control));
-		assertTrue(control.isEnabled());
 	}
 
 	/**
