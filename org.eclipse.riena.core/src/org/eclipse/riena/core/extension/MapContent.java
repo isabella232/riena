@@ -17,16 +17,16 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation marks a <i>getter</i> method to return the extension elements
- * value,e.g.
+ * content,e.g.
  * 
  * <pre>
  * 
- * @MapValue()
+ * @MapContent()
  * String getValue();
  * 
- *                        </pre>
+ *                          </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface MapValue {
+public @interface MapContent {
 }

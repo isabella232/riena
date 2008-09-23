@@ -54,8 +54,8 @@ import org.eclipse.core.runtime.RegistryFactory;
  * <li>To enforce another name mapping a method can be annotated with
  * <code>@MapName("name")</code>. The <i>name</i> specifies the name of the
  * element or attribute. The extension element´s value can be retrieved by
- * annotating the method with <code>@MapValue()</code>. The return type must be
- * <code>String</code>. The method names of such annotated methods can be
+ * annotating the method with <code>@MapContent()</code>. The return type must
+ * be <code>String</code>. The method names of such annotated methods can be
  * arbitrary</li>
  * </ul>
  * The return type of a method indicates how the value of an attribute will be

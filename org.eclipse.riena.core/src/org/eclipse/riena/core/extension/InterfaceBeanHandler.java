@@ -87,7 +87,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		final Class<?> returnType = method.getReturnType();
 		final String name = getAttributeName(method, methodKind);
 		if (returnType == String.class) {
-			return Result.cache(modify(method.isAnnotationPresent(MapValue.class) ? configurationElement.getValue()
+			return Result.cache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
 					: configurationElement.getAttribute(name)));
 		}
 		if (returnType.isPrimitive()) {

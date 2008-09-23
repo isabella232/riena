@@ -15,7 +15,7 @@ import org.osgi.framework.Bundle;
 @ExtensionInterface
 public interface IData {
 
-	@MapValue()
+	@MapContent
 	String getValue();
 
 	String getText();
