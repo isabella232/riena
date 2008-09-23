@@ -259,29 +259,19 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		return selectionObservable.getValue() != null;
 	}
 
-	private void updateSelection(Composite composite) {
-		boolean selectNothing = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
-		if (selectNothing) {
-			select(composite, null);
-		} else {
-			select(composite, selectionObservable.getValue());
-		}
-	}
-
 	/**
 	 * Iterates over the composite's children, disabling all buttons, except the
-	 * one that has value as it's data element.
-	 * 
-	 * @param control
-	 *            a composite instance (may be null)
-	 * @param value
-	 *            the value to select; use {@code null} to deselect everything
+	 * one that has value as it's data element. If the ridget is not enabled, it
+	 * may deselect all buttons, as mandated by
+	 * {@link MarkerSupport#HIDE_DISABLED_RIDGET_CONTENT}.
 	 */
-	private void select(Composite composite, Object value) {
-		if (composite != null && !composite.isDisposed()) {
-			for (Control child : composite.getChildren()) {
+	private void updateSelection(Composite control) {
+		boolean canSelect = isEnabled() || !MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
+		if (control != null && !control.isDisposed()) {
+			Object value = selectionObservable.getValue();
+			for (Control child : control.getChildren()) {
 				Button button = (Button) child;
-				boolean isSelected = (value != null) && (child.getData() == value);
+				boolean isSelected = canSelect && (value != null) && (child.getData() == value);
 				button.setSelection(isSelected);
 			}
 		}
