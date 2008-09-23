@@ -22,6 +22,7 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.swt.SWT;
@@ -227,10 +228,11 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		getRidget().setEnabled(false);
 		getRidget().setUIControl(control);
 
-		Button selected = getSelectedControl(control);
-
 		assertFalse(control.isEnabled());
-		assertFalse(selected.isEnabled());
+		assertTrue(control.getChildren().length > 0);
+		for (Control child : control.getChildren()) {
+			assertFalse(((Button) child).isEnabled());
+		}
 	}
 
 	/**
@@ -439,6 +441,141 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals("Option B", ridget.getSelection());
 	}
 
+	/**
+	 * Tests that changing the selected state via
+	 * {@link IToggleButtonRidget#setSelected(boolean) does not select the
+	 * control, when the ridget is disabled.
+	 */
+	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setSelection("Option A");
+		ridget.setEnabled(false);
+
+		assertEquals("Option A", optionProvider.getSelectedOption());
+		assertEquals("Option A", ridget.getSelection());
+		String expectedA = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option A";
+		assertEquals(expectedA, getSelectedControlValue(control));
+
+		ridget.setSelection("Option B");
+
+		assertEquals("Option B", optionProvider.getSelectedOption());
+		assertEquals("Option B", ridget.getSelection());
+		String expectedB = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option B";
+		assertEquals(expectedB, getSelectedControlValue(control));
+
+		ridget.setEnabled(true);
+
+		assertEquals("Option B", optionProvider.getSelectedOption());
+		assertEquals("Option B", ridget.getSelection());
+		assertEquals("Option B", getSelectedControlValue(control));
+	}
+
+	/**
+	 * Tests that changing the selected state via a bound model, does not select
+	 * the control, when the ridget is disabled.
+	 */
+	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setEnabled(false);
+		optionProvider.setSelectedOption("Option A");
+		ridget.updateFromModel();
+
+		assertEquals("Option A", optionProvider.getSelectedOption());
+		assertEquals("Option A", ridget.getSelection());
+		String expectedA = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option A";
+		assertEquals(expectedA, getSelectedControlValue(control));
+
+		optionProvider.setSelectedOption("Option B");
+		ridget.updateFromModel();
+
+		assertEquals("Option B", optionProvider.getSelectedOption());
+		assertEquals("Option B", ridget.getSelection());
+		String expectedB = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option B";
+		assertEquals(expectedB, getSelectedControlValue(control));
+
+		ridget.setEnabled(true);
+
+		assertEquals("Option B", optionProvider.getSelectedOption());
+		assertEquals("Option B", ridget.getSelection());
+		assertEquals("Option B", getSelectedControlValue(control));
+	}
+
+	/**
+	 * Tests that disabling the ridget unselects the radio button, even when no
+	 * model is bound to the ridget.
+	 */
+	public void testDisabledRidgetRemovesSelection() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setEnabled(true);
+		ridget.setSelection("Option A");
+
+		assertEquals("Option A", ridget.getSelection());
+		assertEquals("Option A", getSelectedControlValue(control));
+		assertTrue(control.isEnabled());
+
+		ridget.setEnabled(false);
+
+		assertEquals("Option A", ridget.getSelection());
+		String expectedA = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option A";
+		assertEquals(expectedA, getSelectedControlValue(control));
+		assertFalse(control.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertEquals("Option A", ridget.getSelection());
+		assertEquals("Option A", getSelectedControlValue(control));
+		assertTrue(control.isEnabled());
+	}
+
+	/**
+	 * Tests that disabling the ridget does not fire 'selected' events, even
+	 * though the control is modified.
+	 */
+	public void testDisabledDoesNotFireSelected() {
+		ISingleChoiceRidget ridget = getRidget();
+		ridget.setEnabled(true);
+		ridget.setSelection("Option A");
+
+		ridget.addPropertyChangeListener(ISingleChoiceRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				fail("Unexpected property change event: " + evt);
+			}
+		});
+
+		ridget.setEnabled(false);
+
+		ridget.setEnabled(true);
+	}
+
+	/**
+	 * Tests that the disabled state is applied to a new control when set into
+	 * the ridget.
+	 */
+	public void testDisableAndClearOnBind() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setUIControl(null);
+		ridget.setEnabled(false);
+		ridget.setSelection("Option B");
+		ridget.setUIControl(control);
+
+		assertFalse(control.isEnabled());
+		String expectedB = MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT ? null : "Option B";
+		assertEquals(expectedB, getSelectedControlValue(control));
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+		assertEquals("Option B", getSelectedControlValue(control));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -461,7 +598,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	// helping classes
 	// ////////////////
 
-	private static class OptionProvider {
+	private static final class OptionProvider {
 
 		private List<String> options = Arrays.asList("Option A", "Option B", "Option C", "Option D", "Option E",
 				"Option F");
@@ -486,7 +623,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
-	private static class TestPropertyChangeListener implements PropertyChangeListener {
+	private static final class TestPropertyChangeListener implements PropertyChangeListener {
 		private int eventCounter = 0;
 
 		public void propertyChange(PropertyChangeEvent evt) {

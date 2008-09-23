@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -25,6 +27,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -56,6 +59,11 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(ChangeEvent event) {
 				disableMandatoryMarkers(hasInput());
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				updateSelection(getUIControl());
 			}
 		});
 	}
@@ -148,7 +156,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		}
 		Object oldSelection = selectionObservable.getValue();
 		selectionObservable.setValue(candidate);
-		updateChildren(getUIControl());
+		updateSelection(getUIControl());
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, candidate);
 	}
 
@@ -218,9 +226,6 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 				button.setForeground(control.getForeground());
 				button.setBackground(control.getBackground());
 				button.setData(value);
-				if (selectionObservable.getValue() == value) {
-					button.setSelection(true);
-				}
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
@@ -229,7 +234,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 						if (button.getSelection()) {
 							if (isOutputOnly()) {
 								// silently revert UI change
-								updateChildren(getUIControl());
+								updateSelection(getUIControl());
 							} else {
 								SingleChoiceRidget.this.setSelection(data);
 							}
@@ -237,6 +242,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 					}
 				});
 			}
+			updateSelection(control);
 			control.layout(true);
 		}
 	}
@@ -253,12 +259,29 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		return selectionObservable.getValue() != null;
 	}
 
-	private void updateChildren(Composite control) {
-		if (control != null && !control.isDisposed()) {
-			Object selection = selectionObservable.getValue();
-			for (Control child : control.getChildren()) {
+	private void updateSelection(Composite composite) {
+		boolean selectNothing = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
+		if (selectNothing) {
+			select(composite, null);
+		} else {
+			select(composite, selectionObservable.getValue());
+		}
+	}
+
+	/**
+	 * Iterates over the composite's children, disabling all buttons, except the
+	 * one that has value as it's data element.
+	 * 
+	 * @param control
+	 *            a composite instance (may be null)
+	 * @param value
+	 *            the value to select; use {@code null} to deselect everything
+	 */
+	private void select(Composite composite, Object value) {
+		if (composite != null && !composite.isDisposed()) {
+			for (Control child : composite.getChildren()) {
 				Button button = (Button) child;
-				boolean isSelected = (selection != null) && (child.getData() == selection);
+				boolean isSelected = (value != null) && (child.getData() == value);
 				button.setSelection(isSelected);
 			}
 		}
