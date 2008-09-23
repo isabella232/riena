@@ -65,20 +65,6 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#setUIControl(java.lang.Object)
-	 */
-	@Override
-	public void setUIControl(Object uiControl) {
-		if (getUIControl() != null) {
-			getUIControl().removeEmbeddedTitleBarListener(titleBarListener);
-		}
-		super.setUIControl(uiControl);
-		if (getUIControl() != null) {
-			getUIControl().addEmbeddedTitleBarListener(titleBarListener);
-		}
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setTitle(java.lang.String)
 	 */
 	public void setTitle(String title) {
@@ -124,6 +110,9 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	@Override
 	protected void bindUIControl() {
 		updateTextInControl();
+		if (getUIControl() != null) {
+			getUIControl().addEmbeddedTitleBarListener(titleBarListener);
+		}
 	}
 
 	/**
@@ -141,7 +130,9 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 */
 	@Override
 	protected void unbindUIControl() {
-		// unused
+		if (getUIControl() != null) {
+			getUIControl().removeEmbeddedTitleBarListener(titleBarListener);
+		}
 	}
 
 	/**

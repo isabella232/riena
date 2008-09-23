@@ -75,7 +75,13 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		focusable = true;
 	}
 
-	public void setUIControl(Object uiControl) {
+	/*
+	 * Do not override. Template Method Pattern: Subclasses may implement {@code
+	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
+	 * the the control when it is bound/unbound, for example to add/remove
+	 * listeners.
+	 */
+	public final void setUIControl(Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
 		unbindUIControl();
