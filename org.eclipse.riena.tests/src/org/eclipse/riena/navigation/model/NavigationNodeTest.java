@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.NavigationNodeId;
 
 /**
@@ -29,8 +32,9 @@ public class NavigationNodeTest extends TestCase {
 
 		assertSame(id, node.getNodeId());
 
-		assertNotNull(node.getListeners());
-		assertTrue(node.getListeners().isEmpty());
+		List<?> listeners = ReflectionUtils.invokeHidden(node, "getListeners", null);
+		assertNotNull(listeners);
+		assertTrue(listeners.isEmpty());
 
 		assertNotNull(node.getActions());
 		assertTrue(node.getActions().isEmpty());
