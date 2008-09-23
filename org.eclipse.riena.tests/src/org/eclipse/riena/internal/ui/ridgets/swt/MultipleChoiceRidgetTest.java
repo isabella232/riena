@@ -24,6 +24,8 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.swt.SWT;
@@ -34,7 +36,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tests for the class {@link SingleChoiceRidget}.
+ * Tests for the class {@link MultipleChoiceRidget}.
  */
 public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
@@ -229,12 +231,12 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 		ridget.setSelection(selection2);
 
-		assertEquals(2, getSelectionCountFromControl(control));
+		assertEquals(2, getSelectionCount(control));
 		assertTrue(getSelectedControlValues(control).containsAll(selection2));
 
 		ridget.setSelection(null);
 
-		assertEquals(0, getSelectionCountFromControl(control));
+		assertEquals(0, getSelectionCount(control));
 	}
 
 	public void testUpdateFromModelUpdatesControl() {
@@ -247,13 +249,13 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		optionProvider.setSelectedOptions(selection2);
 		ridget.updateFromModel();
 
-		assertEquals(2, getSelectionCountFromControl(control));
+		assertEquals(2, getSelectionCount(control));
 		assertTrue(getSelectedControlValues(control).containsAll(selection2));
 
 		optionProvider.setSelectedOptions(null);
 		ridget.updateFromModel();
 
-		assertEquals(0, getSelectionCountFromControl(control));
+		assertEquals(0, getSelectionCount(control));
 	}
 
 	public void testUserSetSelection() throws Exception {
@@ -551,6 +553,134 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertTrue(ridget.getSelection().contains("Option C"));
 	}
 
+	/**
+	 * Tests that changing the selected state via
+	 * {@link IToggleButtonRidget#setSelected(boolean) does not select the
+	 * control, when the ridget is disabled.
+	 */
+	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
+		IMultipleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setSelection(Arrays.asList("Option A"));
+
+		assertEquals("Option A", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option A", ridget.getSelection().get(0));
+		assertEquals("Option A", getSelectedControlValues(control).get(0));
+
+		ridget.setEnabled(false);
+
+		assertEquals("Option A", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option A", ridget.getSelection().get(0));
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertEquals(0, getSelectionCount(control));
+		} else {
+			assertEquals("Option A", getSelectedControlValues(control).get(0));
+		}
+
+		ridget.setSelection(Arrays.asList("Option B"));
+
+		assertEquals("Option B", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option B", ridget.getSelection().get(0));
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertEquals(0, getSelectionCount(control));
+		} else {
+			assertEquals("Option B", getSelectedControlValues(control).get(0));
+		}
+
+		ridget.setEnabled(true);
+
+		assertEquals("Option B", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option B", ridget.getSelection().get(0));
+		assertEquals("Option B", getSelectedControlValues(control).get(0));
+	}
+
+	/**
+	 * Tests that changing the selected state via a bound model, does not select
+	 * the control, when the ridget is disabled.
+	 */
+	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
+		IMultipleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setEnabled(false);
+		optionProvider.setSelectedOptions(Arrays.asList("Option A"));
+		ridget.updateFromModel();
+
+		assertEquals("Option A", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option A", ridget.getSelection().get(0));
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertEquals(0, getSelectionCount(control));
+		} else {
+			assertEquals("Option A", getSelectedControlValues(control).get(0));
+		}
+
+		optionProvider.setSelectedOptions(Arrays.asList("Option B"));
+		ridget.updateFromModel();
+
+		assertEquals("Option B", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option B", ridget.getSelection().get(0));
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertEquals(0, getSelectionCount(control));
+		} else {
+			assertEquals("Option B", getSelectedControlValues(control).get(0));
+		}
+
+		ridget.setEnabled(true);
+
+		assertEquals("Option B", optionProvider.getSelectedOptions().get(0));
+		assertEquals("Option B", ridget.getSelection().get(0));
+		assertEquals("Option B", getSelectedControlValues(control).get(0));
+	}
+
+	/**
+	 * Tests that disabling the ridget does not fire 'selected' events, even
+	 * though the control is modified.
+	 */
+	public void testDisabledDoesNotFireSelected() {
+		IMultipleChoiceRidget ridget = getRidget();
+		ridget.setEnabled(true);
+		ridget.setSelection(Arrays.asList("Option A", "Option B"));
+
+		ridget.addPropertyChangeListener(ISingleChoiceRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				fail("Unexpected property change event: " + evt);
+			}
+		});
+
+		ridget.setEnabled(false);
+
+		ridget.setEnabled(true);
+	}
+
+	/**
+	 * Tests that the disabled state is applied to a new control when set into
+	 * the ridget.
+	 */
+	public void testDisableAndClearOnBind() {
+		IMultipleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getUIControl();
+
+		ridget.setUIControl(null);
+		ridget.setEnabled(false);
+		ridget.setSelection(Arrays.asList("Option B"));
+		ridget.setUIControl(control);
+
+		assertFalse(control.isEnabled());
+		if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
+			assertEquals(0, getSelectionCount(control));
+		} else {
+			assertEquals(1, getSelectionCount(control));
+			assertEquals("Option B", getSelectedControlValues(control).get(0));
+		}
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+		assertEquals(1, getSelectionCount(control));
+		assertEquals("Option B", getSelectedControlValues(control).get(0));
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -585,7 +715,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		return result;
 	}
 
-	private int getSelectionCountFromControl(ChoiceComposite control) {
+	private int getSelectionCount(ChoiceComposite control) {
 		return getSelectedControlValues(control).size();
 	}
 

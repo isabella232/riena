@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -53,6 +56,11 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(ChangeEvent event) {
 				disableMandatoryMarkers(hasInput());
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				updateSelection(getUIControl());
 			}
 		});
 	}
@@ -151,7 +159,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		}
 		selectionObservable.clear();
 		selectionObservable.addAll(newSelection);
-		updateChildren(getUIControl());
+		updateSelection(getUIControl());
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, newSelection);
 	}
 
@@ -221,9 +229,6 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				button.setForeground(control.getForeground());
 				button.setBackground(control.getBackground());
 				button.setData(value);
-				if (selectionObservable.contains(value)) {
-					button.setSelection(true);
-				}
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
@@ -231,7 +236,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 						Object data = button.getData();
 						if (isOutputOnly()) {
 							// silently revert button state
-							updateChildren(getUIControl());
+							updateSelection(getUIControl());
 						} else {
 							if (button.getSelection()) {
 								if (!selectionObservable.contains(data)) {
@@ -248,6 +253,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 					}
 				});
 			}
+			updateSelection(control);
 			control.layout(true);
 		}
 	}
@@ -264,11 +270,18 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		return selectionObservable != null && selectionObservable.size() > 0;
 	}
 
-	private void updateChildren(Composite control) {
+	/**
+	 * Iterates over the composite's children, disabling all buttons, except the
+	 * one that has value as it's data element. If the ridget is not enabled, it
+	 * may deselect all buttons, as mandated by
+	 * {@link MarkerSupport#HIDE_DISABLED_RIDGET_CONTENT}.
+	 */
+	private void updateSelection(Composite control) {
+		boolean canSelect = isEnabled() || !MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
 		if (control != null && !control.isDisposed()) {
 			for (Control child : control.getChildren()) {
 				Button button = (Button) child;
-				boolean isSelected = selectionObservable.contains(button.getData());
+				boolean isSelected = canSelect && selectionObservable.contains(button.getData());
 				button.setSelection(isSelected);
 			}
 		}
