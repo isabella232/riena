@@ -30,6 +30,13 @@ public final class VariableManagerUtil {
 		// utility
 	}
 
+	/**
+	 * Perform a string substitution on the given expression.
+	 * 
+	 * @param expression
+	 * @return the substituted expression
+	 * @throws CoreException
+	 */
 	public static String substitute(final String expression) throws CoreException {
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		return variableManager.performStringSubstitution(expression);
