@@ -28,9 +28,9 @@ import org.eclipse.swt.widgets.TableColumn;
 /**
  * Demonstrates binding a table ridget to a model.
  */
-public class Snippet002TableRidget {
+public class SnippetTableRidget001 {
 
-	public Snippet002TableRidget(Shell shell) {
+	public SnippetTableRidget001(Shell shell) {
 
 		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
@@ -62,7 +62,7 @@ public class Snippet002TableRidget {
 		Display display = Display.getDefault();
 		try {
 			final Shell shell = new Shell();
-			new Snippet002TableRidget(shell);
+			new SnippetTableRidget001(shell);
 			shell.pack();
 			shell.open();
 			while (!shell.isDisposed()) {

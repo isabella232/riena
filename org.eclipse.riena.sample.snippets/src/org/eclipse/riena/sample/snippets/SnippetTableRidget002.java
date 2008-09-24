@@ -27,11 +27,11 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 /**
- * Table ridget that allows sorting.
+ * A table ridget with sorting.
  */
-public class Snippet003TableRidgetSorting {
+public class SnippetTableRidget002 {
 
-	public Snippet003TableRidgetSorting(Shell shell) {
+	public SnippetTableRidget002(Shell shell) {
 
 		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
@@ -66,7 +66,7 @@ public class Snippet003TableRidgetSorting {
 		Display display = Display.getDefault();
 		try {
 			final Shell shell = new Shell();
-			new Snippet003TableRidgetSorting(shell);
+			new SnippetTableRidget002(shell);
 			shell.pack();
 			shell.open();
 			while (!shell.isDisposed()) {

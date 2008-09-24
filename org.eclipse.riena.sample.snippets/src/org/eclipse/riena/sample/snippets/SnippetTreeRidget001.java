@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Tree;
 /**
  * Demonstrates binding a tree ridget to a model.
  */
-public class Snippet004TreeRidget {
+public class SnippetTreeRidget001 {
 
-	public Snippet004TreeRidget(Shell shell) {
+	public SnippetTreeRidget001(Shell shell) {
 
 		Tree tree = new Tree(shell, SWT.FULL_SELECTION | SWT.MULTI);
 
@@ -44,7 +44,7 @@ public class Snippet004TreeRidget {
 		try {
 			final Shell shell = new Shell();
 			shell.setLayout(new FillLayout());
-			new Snippet004TreeRidget(shell);
+			new SnippetTreeRidget001(shell);
 			shell.pack();
 			shell.open();
 			while (!shell.isDisposed()) {
