@@ -12,6 +12,7 @@ package org.eclipse.riena.core.logging;
 
 import java.net.URL;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
@@ -46,23 +47,25 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 		String loggerName = extendedEntry.getLoggerName();
 		Logger logger = Logger.getLogger(loggerName != null ? loggerName : "<unknown-logger-name>"); //$NON-NLS-1$
 
+		Level level;
 		switch (extendedEntry.getLevel()) {
 		case LogService.LOG_DEBUG:
-			logger.debug(extendedEntry.getMessage(), extendedEntry.getException());
+			level = Level.DEBUG;
 			break;
 		case LogService.LOG_WARNING:
-			logger.warn(extendedEntry.getMessage(), extendedEntry.getException());
+			level = Level.WARN;
 			break;
 		case LogService.LOG_ERROR:
-			logger.error(extendedEntry.getMessage(), extendedEntry.getException());
+			level = Level.ERROR;
 			break;
 		case LogService.LOG_INFO:
-			logger.info(extendedEntry.getMessage(), extendedEntry.getException());
+			level = Level.INFO;
 			break;
 		default:
+			level = Level.OFF;
 			break;
 		}
-
+		logger.log(level, extendedEntry.getMessage(), extendedEntry.getException());
 	}
 
 	/*
