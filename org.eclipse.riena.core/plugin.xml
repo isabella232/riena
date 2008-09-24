@@ -7,11 +7,13 @@
          point="org.eclipse.riena.core.logging.listeners">
          <!-- This is examplary!
          <logListener name="Syso" listener-class="org.eclipse.riena.core.logging.SysoLogListener" sync="true"/>
-         <logListener name="Log4j" listener-class="org.eclipse.riena.core.logging.Log4jLogListener" sync="true"/>
+         <logListener name="Log4j" listener-class="org.eclipse.riena.core.logging.Log4jLogListener" sync="true" filter-class="org.eclipse.riena.core.logging.SystemPropertyLogFilter"/>
          -->
    </extension>
    <extension
          point="org.eclipse.riena.core.logging.catchers">
+         <!-- This is examplary!
          <logCatcher name="Platform" class="org.eclipse.riena.core.logging.PlatformLogCatcher"/>
+         -->
    </extension>
 </plugin>
