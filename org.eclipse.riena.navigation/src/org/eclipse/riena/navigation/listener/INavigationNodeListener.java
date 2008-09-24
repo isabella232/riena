@@ -60,10 +60,32 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 
 	void block(S source, boolean block);
 
+	/**
+	 * This method is called when a filter was added to the given node.
+	 * 
+	 * @param source
+	 *            - node
+	 * @param filter
+	 *            - new added filter
+	 */
 	void filterAdded(S source, IUIFilter filter);
 
+	/**
+	 * This method is called when a filter was removed from the given node.
+	 * 
+	 * @param source
+	 *            - node
+	 * @param filter
+	 *            - removed filter
+	 */
 	void filterRemoved(S source, IUIFilter filter);
 
+	/**
+	 * This method is called when all filters were removed from the given node.
+	 * 
+	 * @param source
+	 *            - node
+	 */
 	void allFiltersRemoved(S source);
 
 }

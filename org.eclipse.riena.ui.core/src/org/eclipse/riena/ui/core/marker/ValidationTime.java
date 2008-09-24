@@ -8,10 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
-
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+package org.eclipse.riena.ui.core.marker;
 
 /**
  * This enum is used when adding a {link IValidator} to a ridget, to specify

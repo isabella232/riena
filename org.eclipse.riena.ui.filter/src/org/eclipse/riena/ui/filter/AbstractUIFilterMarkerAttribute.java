@@ -11,14 +11,13 @@
 package org.eclipse.riena.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.core.marker.OutputMarker;
 
 /**
- * Filter attribute for a output marker.
+ *
  */
-public abstract class AbstractUIFilterAttributeOutputMarker implements IUIFilterMarkerAttribute {
+public abstract class AbstractUIFilterMarkerAttribute implements IUIFilterMarkerAttribute {
 
-	private OutputMarker marker;
+	private IMarker marker;
 
 	/**
 	 * Create a new filter attribute with the given marker.
@@ -26,7 +25,7 @@ public abstract class AbstractUIFilterAttributeOutputMarker implements IUIFilter
 	 * @param marker
 	 *            - marker to set
 	 */
-	public AbstractUIFilterAttributeOutputMarker(OutputMarker marker) {
+	public AbstractUIFilterMarkerAttribute(IMarker marker) {
 		this.marker = marker;
 	}
 

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -28,6 +29,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
 import org.eclipse.riena.ui.filter.UIFilter;
@@ -41,9 +43,13 @@ import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeDisabledMarker
 import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker;
 import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeMandatoryMarker;
 import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeOutputMarker;
+import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeValidator;
+import org.eclipse.riena.ui.ridgets.validation.MaxLength;
+import org.eclipse.riena.ui.ridgets.validation.MinLength;
+import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 
 /**
- *
+ * Controller of the sub module that demonstrates UI filters for ridgets.
  */
 public class FilterSubModuleController extends SubModuleController {
 
@@ -59,10 +65,13 @@ public class FilterSubModuleController extends SubModuleController {
 	private IMarker[] markers = new IMarker[] { new ErrorMarker(), new MandatoryMarker(), new HiddenMarker(),
 			new OutputMarker(), new DisabledMarker() };
 
+	/**
+	 * Enummeration of different kind of UI filters.
+	 */
 	private enum FilterType {
 
-		MARKER("Marker", new MandatoryMarker(false), new HiddenMarker(false), new OutputMarker(false), //$NON-NLS-1$
-				new DisabledMarker(false));
+		MARKER("Marker", new MandatoryMarker(), new HiddenMarker(), new OutputMarker(), new DisabledMarker()), //$NON-NLS-1$
+		VALIDATOR("Validator", new MinLength(3), new MaxLength(10), new ValidEmailAddress()); //$NON-NLS-1$
 
 		private String text;
 		private Object[] args;
@@ -97,6 +106,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Initializes the ridgets of the marker group.
+	 */
 	private void initMarkerGroup() {
 
 		IComboBoxRidget ridgetToMarkID = (IComboBoxRidget) getRidget("ridgetToMarkID"); //$NON-NLS-1$
@@ -124,6 +136,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Initializes the ridgets for adding <i>local</i> UI filters.
+	 */
 	private void initLocalFilterGroup() {
 
 		IComboBoxRidget ridgetID = (IComboBoxRidget) getRidget("ridgetID"); //$NON-NLS-1$
@@ -161,6 +176,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Initializes the ridgets for adding <i>local</i> UI filters.
+	 */
 	private void initGlobalFilterGroup() {
 
 		ITextFieldRidget ridgetID = (ITextFieldRidget) getRidget("globalRidgetID"); //$NON-NLS-1$
@@ -198,12 +216,18 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Adds a filter to the node of this sub module.
+	 */
 	private void doAddFilter() {
 		IUIFilter filter = new UIFilter();
 		filter.addFilterAttribute(createFilterAttribute(filterModel));
 		getNavigationNode().addFilter(filter);
 	}
 
+	/**
+	 * Adds a filter to the node of the application.
+	 */
 	private void doGlobalAddFilter() {
 		IUIFilter filter = new UIFilter();
 		filter.addFilterAttribute(createFilterAttribute(globalFilterModel));
@@ -211,36 +235,70 @@ public class FilterSubModuleController extends SubModuleController {
 		applNode.addFilter(filter);
 	}
 
+	/**
+	 * Creates a filter attribute for a ridget, dependent on the selected type
+	 * of filter.
+	 * 
+	 * @param model
+	 *            - model with selections.
+	 * @return filter attribute
+	 */
 	private IUIFilterAttribute createFilterAttribute(FilterModel model) {
 
 		IUIFilterAttribute attribute = null;
 
 		String id = model.getSelectedId();
 		Object filterValue = model.getSelectedFilterTypeValue();
+		FilterType type = model.getSelectedType();
 
-		if (filterValue instanceof OutputMarker) {
-			attribute = new RidgetUIFilterAttributeOutputMarker(id, (OutputMarker) filterValue);
-		} else if (filterValue instanceof DisabledMarker) {
-			attribute = new RidgetUIFilterAttributeDisabledMarker(id, (DisabledMarker) filterValue);
-		} else if (filterValue instanceof MandatoryMarker) {
-			attribute = new RidgetUIFilterAttributeMandatoryMarker(id, (MandatoryMarker) filterValue);
-		} else if (filterValue instanceof HiddenMarker) {
-			attribute = new RidgetUIFilterAttributeHiddenMarker(id, (HiddenMarker) filterValue);
+		switch (type) {
+		case MARKER:
+			if (filterValue instanceof OutputMarker) {
+				attribute = new RidgetUIFilterAttributeOutputMarker(id);
+			} else if (filterValue instanceof DisabledMarker) {
+				attribute = new RidgetUIFilterAttributeDisabledMarker(id);
+			} else if (filterValue instanceof MandatoryMarker) {
+				attribute = new RidgetUIFilterAttributeMandatoryMarker(id);
+			} else if (filterValue instanceof HiddenMarker) {
+				attribute = new RidgetUIFilterAttributeHiddenMarker(id);
+			}
+			break;
+		case VALIDATOR:
+			if (filterValue instanceof IValidator) {
+				attribute = new RidgetUIFilterAttributeValidator(id, (IValidator) filterValue,
+						ValidationTime.ON_UI_CONTROL_EDIT);
+			}
 		}
 
 		return attribute;
 
 	}
 
+	/**
+	 * Removes all filters form the node of this sub module.
+	 */
 	private void doRemoveFilters() {
 		getNavigationNode().removeAllFilters();
 	}
 
+	/**
+	 * Removes all filters form the node of application.
+	 */
 	private void doGlobalRemoveFilters() {
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.removeAllFilters();
 	}
 
+	/**
+	 * The combo box for filter values is update with the given model. Also the
+	 * add button is enabled or disabled.
+	 * 
+	 * @param model
+	 * @param typeValues
+	 *            - combo box
+	 * @param add
+	 *            - add button
+	 */
 	private void rebindFilterTypeValues(FilterModel model, IComboBoxRidget typeValues, IActionRidget add) {
 
 		if (model == null) {
@@ -258,6 +316,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Adds a marker to a ridget.
+	 */
 	private void doAddMarker() {
 		if (markerModel.getSelectedId() != null) {
 			AbstractSWTRidget ridget = (AbstractSWTRidget) getRidget(markerModel.getSelectedId());
@@ -265,6 +326,9 @@ public class FilterSubModuleController extends SubModuleController {
 		}
 	}
 
+	/**
+	 * Removes a marker to a ridget.
+	 */
 	private void doRemoveMarker() {
 		if (markerModel.getSelectedId() != null) {
 			AbstractSWTRidget ridget = (AbstractSWTRidget) getRidget(markerModel.getSelectedId());
@@ -272,6 +336,9 @@ public class FilterSubModuleController extends SubModuleController {
 		}
 	}
 
+	/**
+	 * After changing the type the combo boxes with the values must be updated.
+	 */
 	private class FilterTypeChangeListener implements PropertyChangeListener {
 
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -281,6 +348,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Model this the ID of the ridgets of the UI control group.
+	 */
 	private abstract class AbstractModel {
 
 		private List<String> ids;
@@ -312,6 +382,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Model with markers of the marker group.
+	 */
 	private class MarkerModel extends AbstractModel {
 
 		private MarkerWrapper selectedMarker;
@@ -337,6 +410,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Model with the filter types and value of the filter groups.
+	 */
 	private class FilterModel extends AbstractModel {
 
 		private List<FilterType> types;
@@ -347,6 +423,7 @@ public class FilterSubModuleController extends SubModuleController {
 			if (types == null) {
 				types = new ArrayList<FilterType>();
 				types.add(FilterType.MARKER);
+				types.add(FilterType.VALIDATOR);
 			}
 			return types;
 		}
@@ -372,6 +449,9 @@ public class FilterSubModuleController extends SubModuleController {
 
 	}
 
+	/**
+	 * Wrapper for IMarker with an own {@code toString()} method.
+	 */
 	private class MarkerWrapper {
 
 		private IMarker marker;
@@ -387,7 +467,7 @@ public class FilterSubModuleController extends SubModuleController {
 		@Override
 		public String toString() {
 			if (getMarker() == null) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 			return getMarker().getClass().getSimpleName();
 		}

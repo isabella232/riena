@@ -20,7 +20,7 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	/**
 	 * Attribute holding the disabled state.
 	 */
-	public static final String ATTRIBUTE_DISABLED = "disabled"; //$NON-NLS-1$
+	private static final String ATTRIBUTE_DISABLED = "disabled"; //$NON-NLS-1$
 	public static final String MARKER_KEY = "MandatoryMarker"; //$NON-NLS-1$
 
 	public MandatoryMarker() {

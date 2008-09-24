@@ -10,33 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter;
 
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 
 /**
- * Filter attribute for a output marker.
+ * This filter attribute adds an validator to an UI element (i.g. ridget or
+ * navigation node).
  */
-public abstract class AbstractUIFilterAttributeMandatoryMarker implements IUIFilterMarkerAttribute {
-
-	private MandatoryMarker marker;
+public interface IUIFilterValidatorAttribute extends IUIFilterAttribute {
 
 	/**
-	 * Create a new filter attribute with the given marker.
-	 * 
-	 * @param marker
-	 *            - marker to set
+	 * Returns the validator of this IUIFilterMarkerAttribute .
 	 */
-	public AbstractUIFilterAttributeMandatoryMarker(MandatoryMarker marker) {
-		this.marker = marker;
-	}
+	IValidator getValidator();
 
 	/**
-	 * Returns the marker of this attribute.
+	 * Returns the time of validation.
 	 * 
-	 * @return marker
+	 * @return validation time
 	 */
-	public IMarker getMarker() {
-		return marker;
-	}
+	ValidationTime getValidationTime();
 
 }

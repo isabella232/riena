@@ -11,8 +11,8 @@
 package org.eclipse.riena.ui.filter;
 
 /**
- * An filter attributes can manipulate one attribute of an UI element (i.g.
- * marker of a ridget or visibility of a navigation node).
+ * A filter attribute can manipulate one attribute of an UI element (i.g. marker
+ * of a ridget or visibility of a navigation node).
  */
 public interface IUIFilterAttribute {
 
@@ -26,5 +26,19 @@ public interface IUIFilterAttribute {
 	 *         .
 	 */
 	boolean matches(Object object);
+
+	/**
+	 * Applys this attribute to the given object.
+	 * 
+	 * @param object
+	 */
+	void apply(Object object);
+
+	/**
+	 * Removes this attribute from the given object.
+	 * 
+	 * @param object
+	 */
+	void remove(Object object);
 
 }

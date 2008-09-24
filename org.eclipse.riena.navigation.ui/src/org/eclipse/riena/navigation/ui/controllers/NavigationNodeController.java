@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,7 +31,6 @@ import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
 import org.eclipse.riena.ui.core.resource.internal.IconSize;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
-import org.eclipse.riena.ui.filter.IUIFilterMarkerAttribute;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -268,40 +268,70 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
+	/**
+	 * This class applies the UI filters after a filter was added or removed;
+	 * also this controller was activated.
+	 */
 	private class MyNavigationNodeListener extends NavigationNodeListener {
 
-		public void applyFilters(Collection<? extends IUIFilter> filters) {
-			// TODO: eine Kombinatorik muss hier implementiert werden
+		/**
+		 * Applies all the filters of the given node (and all filters of the
+		 * parent nodes) to the given node.
+		 * 
+		 * @param node
+		 *            - navigation node
+		 */
+		private void applyFilters(INavigationNode<?> node) {
 
+			if (node == null) {
+				return;
+			}
+
+			Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
+			collectFilters(node, filters);
 			for (IUIFilter filter : filters) {
-				applyFilter(filter);
+				applyFilter(node, filter);
 			}
 
 		}
 
-		public void applyFilter(IUIFilter filter) {
-			applyFilter(getNavigationNode(), filter);
+		/**
+		 * Adds the filters all the given node and the parents nodes to the
+		 * given collection of filters.
+		 * 
+		 * @param node
+		 *            - navigation node
+		 * @param filters
+		 *            - collection of UI filters.
+		 */
+		private void collectFilters(INavigationNode<?> node, Collection<IUIFilter> filters) {
+
+			if (node == null) {
+				return;
+			}
+
+			if (node.getFilters() != null) {
+				filters.addAll(node.getFilters());
+			}
+			collectFilters(node.getParent(), filters);
+
 		}
 
+		/**
+		 * Applies the given filter to the given node and all of its child
+		 * nodes.
+		 * 
+		 * @param node
+		 *            - navigation node
+		 * @param filter
+		 *            - UI filter
+		 */
 		private void applyFilter(INavigationNode<?> node, IUIFilter filter) {
 
 			INavigationNodeController controller = node.getNavigationNodeController();
 			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
 			for (IUIFilterAttribute filterAttribute : filterItems) {
-				if (controller instanceof IRidgetContainer) {
-					IRidgetContainer container = (IRidgetContainer) controller;
-					for (IRidget ridget : container.getRidgets()) {
-						if (filterAttribute.matches(ridget.getID())) {
-							if (ridget instanceof IMarkableRidget) {
-								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-								if (filterAttribute instanceof IUIFilterMarkerAttribute) {
-									IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
-									markableRidget.addMarker(attributeMarker.getMarker());
-								}
-							}
-						}
-					}
-				}
+				applyFilterAttribute(controller, filterAttribute);
 			}
 
 			List<?> children = node.getChildren();
@@ -313,38 +343,53 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		}
 
-		public void removeAllFilters(Collection<? extends IUIFilter> filters) {
+		private void applyFilterAttribute(INavigationNodeController controller, IUIFilterAttribute filterAttribute) {
 
-			for (IUIFilter filter : filters) {
-				removeFilter(filter);
+			if ( filterAttribute.matches(getNavigationNode())) {
+				filterAttribute.apply(getNavigationNode());
+			}
+
+			if (controller instanceof IRidgetContainer) {
+				IRidgetContainer container = (IRidgetContainer) controller;
+				for (IRidget ridget : container.getRidgets()) {
+					if (filterAttribute.matches(ridget)) {
+						filterAttribute.apply(ridget);
+					}
+				}
 			}
 
 		}
 
-		public void removeFilter(IUIFilter filter) {
-			removeFilter(getNavigationNode(), filter);
+		/**
+		 * Removes all filters of the given node.
+		 * 
+		 * @param node
+		 *            - navigation node
+		 */
+		private void removeAllFilters(INavigationNode<?> node) {
+
+			Collection<? extends IUIFilter> filters = node.getFilters();
+			for (IUIFilter filter : filters) {
+				removeFilter(node, filter);
+			}
+
 		}
 
-		public void removeFilter(INavigationNode<?> node, IUIFilter filter) {
+		/**
+		 * Removes the given filter from the given node and all of its child
+		 * nodes.
+		 * 
+		 * @param node
+		 *            - navigation node
+		 * @param filter
+		 *            - UI filter
+		 */
+		private void removeFilter(INavigationNode<?> node, IUIFilter filter) {
 
 			INavigationNodeController controller = node.getNavigationNodeController();
 			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
 			for (IUIFilterAttribute filterAttribute : filterItems) {
-				if (controller instanceof IRidgetContainer) {
-					IRidgetContainer container = (IRidgetContainer) controller;
-					for (IRidget ridget : container.getRidgets()) {
-						if (filterAttribute.matches(ridget.getID())) {
-							if (ridget instanceof IMarkableRidget) {
-								IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-								if (filterAttribute instanceof IUIFilterMarkerAttribute) {
-									IUIFilterMarkerAttribute attributeMarker = (IUIFilterMarkerAttribute) filterAttribute;
-									markableRidget.removeMarker(attributeMarker.getMarker());
-								}
-							}
-
-						}
-					}
-				}
+				removeFilterAttribute(controller, filterAttribute);
 			}
 
 			List<?> children = node.getChildren();
@@ -356,45 +401,46 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		}
 
+		private void removeFilterAttribute(INavigationNodeController controller, IUIFilterAttribute filterAttribute) {
+
+			if ( filterAttribute.matches(getNavigationNode())) {
+				filterAttribute.remove(getNavigationNode());
+			}
+			
+			if (controller instanceof IRidgetContainer) {
+				IRidgetContainer container = (IRidgetContainer) controller;
+				for (IRidget ridget : container.getRidgets()) {
+					if (filterAttribute.matches(ridget)) {
+						filterAttribute.remove(ridget);
+					}
+				}
+			}
+
+		}
+
 		@Override
-		public void activated(INavigationNode source) {
-			super.activated(source);
-			// TODO: darf nur beim ersten activate passieren , oder ?
-			applyFilters(source.getFilters());
+		public void afterActivated(INavigationNode source) {
+			super.afterActivated(source);
+			applyFilters(source);
 		}
 
 		@Override
 		public void filterAdded(INavigationNode source, IUIFilter filter) {
 			super.filterAdded(source, filter);
-			applyFilter(filter);
+			applyFilter(source, filter);
 		}
 
 		@Override
 		public void filterRemoved(INavigationNode source, IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			removeFilter(filter);
+			removeFilter(source, filter);
 		}
 
 		@Override
 		public void allFiltersRemoved(INavigationNode source) {
 			super.allFiltersRemoved(source);
-			removeAllFilters(source.getFilters());
+			removeAllFilters(source);
 		}
-
-		//		/*
-		//		 * (non-Javadoc)
-		//		 * 
-		//		 * @see
-		//		 * org.eclipse.riena.navigation.listener.NavigationNodeListener#stateChanged
-		//		 * (org.eclipse.riena.navigation.INavigationNode,
-		//		 * org.eclipse.riena.navigation.INavigationNode.State,
-		//		 * org.eclipse.riena.navigation.INavigationNode.State)
-		//		 */
-		//		@Override
-		//		public void stateChanged(INavigationNode source, State oldState, State newState) {
-		//			System.out.println("MyNavigationNodeListener.stateChanged() " + source + "/" + oldState + "/" + newState);
-		//			super.stateChanged(source, oldState, newState);
-		//		}
 
 	}
 

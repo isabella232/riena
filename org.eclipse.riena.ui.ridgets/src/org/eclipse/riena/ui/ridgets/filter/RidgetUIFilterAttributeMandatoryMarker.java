@@ -10,44 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.filter;
 
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeMandatoryMarker;
 
 /**
- * Filter attribute to provide a marker for a ridget.
+ * Filter attribute to provide a mandatory marker for a ridget.
  */
-public class RidgetUIFilterAttributeMandatoryMarker extends AbstractUIFilterAttributeMandatoryMarker {
-
-	private String filterId;
+public class RidgetUIFilterAttributeMandatoryMarker extends AbstractRidgetUIFilterMarkerAttribute {
 
 	/**
 	 * Creates a new instance of {@code RidgetUIFilterAttributeMandatoryMarker}.
 	 * 
 	 * @param id
 	 *            - ID
-	 * @param marker
-	 *            - marker
 	 */
-	public RidgetUIFilterAttributeMandatoryMarker(String id, MandatoryMarker marker) {
-		super(marker);
-		this.filterId = id;
+	public RidgetUIFilterAttributeMandatoryMarker(String id) {
+		super(id, new MandatoryMarker(false));
 	}
 
-	/**
-	 * This method compares the ID of this attribute and the given ID of a
-	 * ridget.
-	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#matches(java.lang.Object)
-	 */
-	public boolean matches(Object object) {
-
-		if (object instanceof String) {
-			String ridgetId = (String) object;
-			return StringUtils.equals(ridgetId, filterId);
-		}
-
-		return false;
-
-	}
 }

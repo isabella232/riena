@@ -8,35 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 
 /**
- * Filter attribute for a disabled marker.
+ *
  */
-public abstract class AbstractUIFilterAttributeDisabledMarker implements IUIFilterMarkerAttribute {
+public class NavigationUIFilterAttributeDisabledMarker extends AbstractNavigationUIFilterMarkerAttribute {
 
-	private DisabledMarker marker;
-
-	/**
-	 * Create a new filter attribute with the given marker.
-	 * 
-	 * @param marker
-	 *            - marker to set
-	 */
-	public AbstractUIFilterAttributeDisabledMarker(DisabledMarker marker) {
-		this.marker = marker;
-	}
-
-	/**
-	 * Returns the marker of this attribute.
-	 * 
-	 * @return marker
-	 */
-	public IMarker getMarker() {
-		return marker;
+	public NavigationUIFilterAttributeDisabledMarker(INavigationNode<?> node) {
+		super(node, new DisabledMarker());
 	}
 
 }

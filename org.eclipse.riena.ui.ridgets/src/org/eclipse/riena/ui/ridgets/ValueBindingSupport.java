@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-import static org.eclipse.riena.ui.ridgets.ValidationTime.ON_UI_CONTROL_EDIT;
-import static org.eclipse.riena.ui.ridgets.ValidationTime.ON_UPDATE_TO_MODEL;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,6 +31,7 @@ import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.databinding.RidgetUpdateValueStrategy;
 import org.eclipse.riena.ui.ridgets.marker.ValidationMessageMarker;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
@@ -114,10 +112,10 @@ public class ValueBindingSupport implements IValidationCallback {
 	 */
 	public boolean addValidationRule(IValidator validationRule, ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
-		if (validationTime == ON_UI_CONTROL_EDIT) {
+		if (validationTime == ValidationTime.ON_UI_CONTROL_EDIT) {
 			onEditValidators.add(validationRule);
 			return true;
-		} else if (validationTime == ON_UPDATE_TO_MODEL) {
+		} else if (validationTime == ValidationTime.ON_UPDATE_TO_MODEL) {
 			afterGetValidators.add(validationRule);
 			return false;
 		} else {

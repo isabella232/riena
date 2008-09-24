@@ -151,38 +151,13 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
-	 * (org.eclipse.riena.navigation.INavigationNode)
-	 */
 	public void filterAdded(S source, IUIFilter filter) {
-		// TODO Auto-generated method stub
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.listener.INavigationNodeListener#filtersChanged
-	 * (org.eclipse.riena.navigation.INavigationNode)
-	 */
 	public void filterRemoved(S source, IUIFilter filter) {
-		// TODO Auto-generated method stub
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.listener.INavigationNodeListener#
-	 * allFiltersRemoved(org.eclipse.riena.navigation.INavigationNode)
-	 */
 	public void allFiltersRemoved(S source) {
-		// TODO Auto-generated method stub
-
 	}
+
 }

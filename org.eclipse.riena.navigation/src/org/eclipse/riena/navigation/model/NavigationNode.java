@@ -15,7 +15,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -673,18 +672,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#onAfterActivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onAfterActivate(INavigationContext context) {
-		List<INavigationNode<?>> nodes = context.getToActivate();
-		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
-			INavigationNode<?> navigationNode = (INavigationNode<?>) iterator.next();
-
-			Collection<? extends IUIFilter> filters = navigationNode.getFilters();
-			for (Iterator iterator2 = filters.iterator(); iterator2.hasNext();) {
-				IUIFilter filter = (IUIFilter) iterator2.next();
-
-			}
-
-		}
-
 		notifyAfterActivated();
 	}
 

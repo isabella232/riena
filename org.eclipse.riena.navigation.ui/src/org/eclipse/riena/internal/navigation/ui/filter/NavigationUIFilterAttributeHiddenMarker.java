@@ -8,34 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
- * Filter attribute for visibility.
+ *
  */
-public abstract class AbstractUIFilterAttributeHiddenMarker implements IUIFilterMarkerAttribute {
+public class NavigationUIFilterAttributeHiddenMarker extends AbstractNavigationUIFilterMarkerAttribute {
 
-	private HiddenMarker marker;
-
-	/**
-	 * Create a new filter attribute with the given marker.
-	 * 
-	 * @param marker
-	 *            - marker to set
-	 */
-	public AbstractUIFilterAttributeHiddenMarker(HiddenMarker marker) {
-		this.marker = marker;
+	public NavigationUIFilterAttributeHiddenMarker(INavigationNode<?> node) {
+		super(node, new HiddenMarker());
 	}
 
-	/**
-	 * Returns the marker of this attribute.
-	 * 
-	 * @return marker
-	 */
-	public IMarker getMarker() {
-		return marker;
-	}
 }

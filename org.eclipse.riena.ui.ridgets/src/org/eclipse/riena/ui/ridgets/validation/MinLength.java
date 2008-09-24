@@ -47,4 +47,13 @@ public class MinLength implements IValidator {
 				+ String.class.getName());
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		buffer.append("[minLength="); //$NON-NLS-1$
+		buffer.append(minLength);
+		buffer.append("]"); //$NON-NLS-1$
+		return buffer.toString();
+	}
+
 }

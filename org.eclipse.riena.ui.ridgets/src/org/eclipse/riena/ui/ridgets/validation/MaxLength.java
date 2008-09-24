@@ -47,4 +47,13 @@ public class MaxLength implements IValidator {
 		}
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		buffer.append("[maxLength="); //$NON-NLS-1$
+		buffer.append(maxLength);
+		buffer.append("]"); //$NON-NLS-1$
+		return buffer.toString();
+	}
+
 }

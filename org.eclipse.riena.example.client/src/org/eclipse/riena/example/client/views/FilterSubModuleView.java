@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- *
+ * View of the sub module that demonstrates UI filters for ridgets.
  */
 public class FilterSubModuleView extends SubModuleView<FilterSubModuleController> {
 
@@ -48,6 +48,13 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 
 	}
 
+	/**
+	 * Creates a group with come different UI controls.
+	 * 
+	 * @param parent
+	 *            - parent composite
+	 * @return group
+	 */
 	private Group createControlsGroup(Composite parent) {
 
 		Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
@@ -80,12 +87,19 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 
 	}
 
+	/**
+	 * Creates a group for adding markers.
+	 * 
+	 * @param parent
+	 *            - parent composite
+	 * @return group
+	 */
 	private Group createMarkersGroup(Composite parent) {
 
 		Group group = UIControlsFactory.createGroup(parent, "Markers:"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
 		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
@@ -110,15 +124,22 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 
 	}
 
+	/**
+	 * Creates a group for adding <i>local</i> UI filters.
+	 * 
+	 * @param parent
+	 *            - parent composite
+	 * @return group
+	 */
 	private Group createLocalFiltersGroup(Composite parent) {
 
 		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (local):"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Label explanation = UIControlsFactory.createLabel(group, "Filters for ridgets and only this sub module.\n\n"); //$NON-NLS-1$
+		Label explanation = UIControlsFactory.createLabel(group, "For ridgets of this sub module.\n\n"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(explanation);
 
 		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
@@ -148,20 +169,28 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 
 	}
 
+	/**
+	 * Creates a group for adding <i>global</i> UI filters.
+	 * 
+	 * @param parent
+	 *            - parent composite
+	 * @return group
+	 */
 	private Group createGlobalFiltersGroup(Composite parent) {
 
 		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (global):"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
-		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
+		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Label explanation = UIControlsFactory.createLabel(group, "Filters for ridgets and the whole application.\n\n"); //$NON-NLS-1$
+		Label explanation = UIControlsFactory.createLabel(group, "For ridgets of the whole application.\n\n"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(explanation);
 
 		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
 		Text ridgetID = UIControlsFactory.createText(group);
 		addUIControl(ridgetID, "globalRidgetID"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(ridgetID);
 
 		ChoiceComposite filterType = new ChoiceComposite(group, SWT.NONE, false);
 		filterType.setOrientation(SWT.HORIZONTAL);

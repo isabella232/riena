@@ -40,4 +40,10 @@ public class ValidEmailAddress implements IValidator {
 		return ValidationRuleStatus.error(false, "String '" + toBeChecked + "' is no valid email address", this); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		return buffer.toString();
+	}
+
 }

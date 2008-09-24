@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.Assert;
  */
 public abstract class AbstractMarker implements IMarker {
 
-	public static final String ATTRIBUTE_UNIQUE = "unique";
+	private static final String ATTRIBUTE_UNIQUE = "unique"; //$NON-NLS-1$
 
 	private Map<String, Object> attributeMap = new HashMap<String, Object>(0, 1.0f);
 	private Set<IMarkerAttributeChangeListener> attributeChangeListeners = new HashSet<IMarkerAttributeChangeListener>(

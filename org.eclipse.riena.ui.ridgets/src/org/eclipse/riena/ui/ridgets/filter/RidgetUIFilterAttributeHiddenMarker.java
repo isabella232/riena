@@ -10,16 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.filter;
 
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeHiddenMarker;
 
 /**
- * Filter attribute to provide the visibility for a ridget.
+ * Filter attribute to provide a hidden marker for a ridget.
  */
-public class RidgetUIFilterAttributeHiddenMarker extends AbstractUIFilterAttributeHiddenMarker {
-
-	private String filterId;
+public class RidgetUIFilterAttributeHiddenMarker extends AbstractRidgetUIFilterMarkerAttribute {
 
 	/**
 	 * Creates a new instance of {@code
@@ -27,28 +23,9 @@ public class RidgetUIFilterAttributeHiddenMarker extends AbstractUIFilterAttribu
 	 * 
 	 * @param id
 	 *            - ID
-	 * @param marker
-	 *            - marker
 	 */
-	public RidgetUIFilterAttributeHiddenMarker(String id, HiddenMarker marker) {
-		super(marker);
-		this.filterId = id;
+	public RidgetUIFilterAttributeHiddenMarker(String id) {
+		super(id, new HiddenMarker(false));
 	}
 
-	/**
-	 * This method compares the ID of this attribute and the given ID of a
-	 * ridget.
-	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#matches(java.lang.Object)
-	 */
-	public boolean matches(Object object) {
-
-		if (object instanceof String) {
-			String ridgetId = (String) object;
-			return StringUtils.equals(ridgetId, filterId);
-		}
-
-		return false;
-
-	}
 }
