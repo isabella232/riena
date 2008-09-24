@@ -48,8 +48,6 @@ public class LoggerMill {
 	private static ExtendedLogReaderService logReaderService;
 	private static AtomicBoolean initialized = new AtomicBoolean(false);
 
-	private static final LogFilter COMMAND_PROVIDER_LOG_FILTER = new CommandProviderLogFilter();
-
 	public LoggerMill(BundleContext context) {
 		this.context = context;
 	}
@@ -176,7 +174,7 @@ public class LoggerMill {
 		}
 
 		public LogFilter createLogFilter() {
-			return COMMAND_PROVIDER_LOG_FILTER;
+			return new CommandProviderLogFilter();
 		}
 
 		public LogListener createLogListener() {
