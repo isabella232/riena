@@ -21,6 +21,7 @@ import java.util.Date;
 
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
@@ -38,8 +39,13 @@ public class ConsoleLogger implements Logger {
 	private String name;
 	private static String nameAndHost;
 	private static DateFormat formatter;
+	/**
+	 * Supported log level strings are: "debug", "info", "warn", "error" and
+	 * "none".
+	 */
+	public static final String RIENA_CONSOLE_LOG_LEVEL_PROPERTY = "riena.console.loglevel"; //$NON-NLS-1$
 
-	private static final LogFilter LOG_FILTER = new SystemPropertyLogFilter();
+	private static final LogFilter LOG_FILTER = new SystemPropertyLogFilter(RIENA_CONSOLE_LOG_LEVEL_PROPERTY, "debug"); //$NON-NLS-1$
 
 	static {
 		String user = System.getProperty("user.name", "?"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -192,4 +198,24 @@ public class ConsoleLogger implements Logger {
 			return System.out;
 		}
 	}
+
+	/**
+	 *
+	 */
+	private final static class ConsoleLogFilter implements LogFilter {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.equinox.log.LogFilter#isLoggable(org.osgi.framework.Bundle
+		 * , java.lang.String, int)
+		 */
+		public boolean isLoggable(Bundle b, String loggerName, int logLevel) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	}
+
 }
