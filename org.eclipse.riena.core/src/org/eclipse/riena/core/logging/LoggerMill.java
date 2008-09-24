@@ -26,13 +26,17 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
 
 /**
- * The <code>LoggerMill</code> is responsible for delivering ready to use
- * <code>Logger</code> instances and also for the configuration of the riena
- * logging.<br>
- * For the curious: There are so many LoggerFactories out there so. Not another
+ * The {@code LoggerMill} is responsible for delivering ready to use {@code
+ * Logger} instances and also for the configuration of the riena logging.<br>
+ * For the curious: There are so many LoggerFactories out there. So, not another
  * one!
  */
 public class LoggerMill {
+
+	/**
+	 * 
+	 */
+	public static final String RIENA_DEFAULT_LOGGING = "riena.defaultlogging"; //$NON-NLS-1$
 
 	private BundleContext context;
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
@@ -89,21 +93,15 @@ public class LoggerMill {
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
 		LoggerMill.logReaderService = logReaderService;
-		if (listenerDefs == null) {
-			return;
-		}
-		if (listenerDefs.length == 0) {
-			LogListener listener = new SynchronousLogListenerAdapter(new SysoLogListener());
-			logListeners.add(listener);
-			logReaderService.addLogListener(listener, COMMAND_PROVIDER_LOG_FILTER);
-			return;
+		if (listenerDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
+			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
 		}
 		for (ILogListenerDefinition logListenerDef : listenerDefs) {
 			LogListener listener = logListenerDef.createLogListener();
 			if (listener == null) {
 				listener = new SysoLogListener();
 			}
-			if (logListenerDef.asSync()) {
+			if (logListenerDef.isSynchronous()) {
 				listener = new SynchronousLogListenerAdapter(listener);
 			}
 			logListeners.add(listener);
@@ -113,6 +111,15 @@ public class LoggerMill {
 			} else {
 				logReaderService.addLogListener(listener, filter);
 			}
+		}
+		if (catcherDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
+			catcherDefs = new ILogCatcherDefinition[] { new PlatformLogCatcherDefinition(),
+					new LogServiceLogCatcherDefinition() };
+		}
+		for (ILogCatcherDefinition catcherDef : catcherDefs) {
+			ILogCatcher logCatcher = catcherDef.createLogCatcher();
+			logCatcher.attach();
+			logCatchers.add(logCatcher);
 		}
 	}
 
@@ -124,6 +131,10 @@ public class LoggerMill {
 	public void unbind(ExtendedLogReaderService logReaderService) {
 		for (LogListener logListener : logListeners) {
 			LoggerMill.logReaderService.removeLogListener(logListener);
+		}
+
+		for (ILogCatcher logCatcher : logCatchers) {
+			logCatcher.detach();
 		}
 
 		LoggerMill.logReaderService = null;
@@ -146,13 +157,9 @@ public class LoggerMill {
 				return;
 			}
 
-			// Experimental: capture platform logs
-			new PlatformLogCatcher().attach();
-
 			// get log catchers
 			Inject.extension(ILogCatcherDefinition.EXTENSION_POINT).useType(ILogCatcherDefinition.class).into(this)
 					.andStart(context);
-			attachLogCapturer();
 
 			// get log listeners
 			Inject.extension(ILogListenerDefinition.EXTENSION_POINT).useType(ILogListenerDefinition.class).into(this)
@@ -163,18 +170,49 @@ public class LoggerMill {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	private void attachLogCapturer() {
-		if (catcherDefs == null) {
-			return;
+	private static final class SysoLogListenerDefinition implements ILogListenerDefinition {
+		public boolean isSynchronous() {
+			return true;
 		}
-		for (ILogCatcherDefinition catcherDef : catcherDefs) {
-			ILogCatcher logCatcher = catcherDef.createLogCatcher();
-			logCatcher.attach();
-			logCatchers.add(logCatcher);
+
+		public LogFilter createLogFilter() {
+			return COMMAND_PROVIDER_LOG_FILTER;
+		}
+
+		public LogListener createLogListener() {
+			return new SysoLogListener();
+		}
+
+		public String getName() {
+			return "DefaultLogListner"; //$NON-NLS-1$
+		}
+	}
+
+	private final static class PlatformLogCatcherDefinition implements ILogCatcherDefinition {
+
+		public ILogCatcher createLogCatcher() {
+			return new PlatformLogCatcher();
+		}
+
+		public String getName() {
+			return "DefaultPlatformLogCatcher"; //$NON-NLS-1$
+		}
+	}
+
+	private class LogServiceLogCatcherDefinition implements ILogCatcherDefinition {
+
+		/*
+		 * @seeorg.eclipse.riena.internal.core.logging.ILogCatcherDefinition#
+		 * createLogCatcher()
+		 */
+		public ILogCatcher createLogCatcher() {
+			return new LogServiceLogCatcher();
+		}
+
+		public String getName() {
+			return "DefaultLogServiceLogCatcher"; //$NON-NLS-1$
 		}
 
 	}
+
 }
