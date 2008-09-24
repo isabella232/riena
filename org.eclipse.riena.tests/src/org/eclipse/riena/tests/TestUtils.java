@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.tests;
 
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 /**
@@ -31,4 +32,27 @@ public class TestUtils {
 		return false;
 	}
 
+	/**
+	 * Return a localized version of a String representation of a number. The
+	 * returned string will use the grouping separator and decimal separator for
+	 * the current locale.
+	 * <p>
+	 * Examples:
+	 * <ul>
+	 * <li>DE - "1.234,56" -&gt; "1.234,56"</li>
+	 * <li>US - "1.234,56" -&gt; "1,234.56"</li>
+	 * </ul>
+	 * 
+	 * @param number
+	 *            a String representation of a number, where '.' is used as the
+	 *            grouping separator and ',' is used as the decimal separator.
+	 * @return a localized String representation of a number
+	 */
+	public static String getLocalizedNumber(String number) {
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+		char decimalSep = dfs.getDecimalSeparator();
+		char groupingSep = dfs.getGroupingSeparator();
+		String result = number.replace('.', '_').replace(',', decimalSep).replace('_', groupingSep);
+		return result;
+	}
 }
