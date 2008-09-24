@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Ridget for an SWT <code>Text</code> widget.
  */
-public final class TextRidget extends AbstractEditableRidget implements ITextFieldRidget {
+public class TextRidget extends AbstractEditableRidget implements ITextFieldRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 

@@ -64,7 +64,10 @@ public final class UIControlsFactory {
 	}
 
 	public static Text createTextNumeric(Composite parent) {
-		return new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		// TODO [ev] refactor - can't have magic keys here
+		result.setData("type", "numeric"); //$NON-NLS-1$ //$NON-NLS-2$
+		return result;
 	}
 
 	public static Text createTextOutput(Composite parent) {
