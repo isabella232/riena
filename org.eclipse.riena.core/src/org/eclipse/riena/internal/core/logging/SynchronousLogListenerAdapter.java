@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.logging;
 
+import org.eclipse.equinox.log.SynchronousLogListener;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 
 /**
- *
+ * Wraps another {@code LogListener} so that it used as synchronous {@code
+ * LogListener}.
  */
-public class SynchronousLogListenerAdapter implements LogListener {
+public class SynchronousLogListenerAdapter implements SynchronousLogListener {
 
 	private final LogListener logListener;
 
