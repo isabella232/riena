@@ -15,7 +15,7 @@ import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 import org.osgi.framework.Bundle;
 
 /**
- *
+ * This {@code LogFilter} gets its threshold log level from a system property.
  */
 public class SystemPropertyLogFilter implements LogFilter {
 
@@ -28,7 +28,11 @@ public class SystemPropertyLogFilter implements LogFilter {
 	public static final String RIENA_LOG_LEVEL_PROPERTY = "riena.loglevel"; //$NON-NLS-1$
 
 	public SystemPropertyLogFilter() {
-		String logLevelString = System.getProperty(RIENA_LOG_LEVEL_PROPERTY, "warn"); //$NON-NLS-1$
+		this(RIENA_LOG_LEVEL_PROPERTY, "warn"); //$NON-NLS-1$
+	}
+
+	SystemPropertyLogFilter(String systemPropertyName, String defaultLevel) {
+		String logLevelString = System.getProperty(systemPropertyName, defaultLevel);
 		threshold = LogLevelMapper.getValue(logLevelString);
 	}
 
