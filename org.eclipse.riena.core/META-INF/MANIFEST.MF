@@ -6,8 +6,8 @@ Bundle-Version: 1.0.0.M4a
 Bundle-Activator: org.eclipse.riena.internal.core.Activator
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: registered
-Import-Package: org.apache.log4j,
- org.apache.log4j.xml,
+Import-Package: org.apache.log4j;resolution:=optional,
+ org.apache.log4j.xml;resolution:=optional,
  org.osgi.framework;version="1.3.0",
  org.osgi.service.cm;version="1.2.0",
  org.osgi.service.log;version="1.3.0"
