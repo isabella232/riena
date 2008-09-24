@@ -33,5 +33,5 @@ public interface ILogListenerDefinition {
 	LogFilter createLogFilter();
 
 	@MapName("sync")
-	boolean asSync();
+	boolean isSynchronous();
 }
