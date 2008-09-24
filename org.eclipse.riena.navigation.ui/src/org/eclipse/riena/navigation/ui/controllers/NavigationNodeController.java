@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +43,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
-	private PropertyChangeListener propertyChangeListener;
 	private MyNavigationNodeListener nodeListener;
 
 	/**
@@ -68,7 +64,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	public NavigationNodeController(N navigationNode) {
 
 		ridgets = new HashMap<String, IRidget>();
-		propertyChangeListener = new PropertyChangeHandler();
 		nodeListener = new MyNavigationNodeListener();
 
 		if (navigationNode != null) {
@@ -158,7 +153,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 *      org.eclipse.riena.ui.ridgets.IRidget)
 	 */
 	public void addRidget(String id, IRidget ridget) {
-		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
 
@@ -174,15 +168,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
-	}
-
-	private Collection<IMarker> getRidgetMarkers() {
-
-		Collection<IMarker> combinedMarkers = new HashSet<IMarker>();
-
-		addRidgetMarkers(this, combinedMarkers);
-
-		return combinedMarkers;
 	}
 
 	private void addRidgetMarkers(IRidget ridget, Collection<IMarker> combinedMarkers) {
@@ -208,11 +193,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	protected void updateNavigationNodeMarkers() {
-
-		getNavigationNode().removeAllMarkers();
-		for (IMarker marker : getRidgetMarkers()) {
-			getNavigationNode().addMarker(marker);
-		}
+		// getNavigationNode().removeAllMarkers();
 	}
 
 	protected void updateIcon(IWindowRidget windowRidget) {
@@ -229,20 +210,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			}
 		}
 		windowRidget.setIcon(nodeIcon);
-	}
-
-	private class PropertyChangeHandler implements PropertyChangeListener {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
-		 * PropertyChangeEvent)
-		 */
-		public void propertyChange(PropertyChangeEvent evt) {
-
-			updateNavigationNodeMarkers();
-		}
 	}
 
 	// public IProgressVisualizer getProgressVisualizer(Object context) {
@@ -345,7 +312,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		private void applyFilterAttribute(INavigationNodeController controller, IUIFilterAttribute filterAttribute) {
 
-			if ( filterAttribute.matches(getNavigationNode())) {
+			if (filterAttribute.matches(getNavigationNode())) {
 				filterAttribute.apply(getNavigationNode());
 			}
 
@@ -356,21 +323,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 						filterAttribute.apply(ridget);
 					}
 				}
-			}
-
-		}
-
-		/**
-		 * Removes all filters of the given node.
-		 * 
-		 * @param node
-		 *            - navigation node
-		 */
-		private void removeAllFilters(INavigationNode<?> node) {
-
-			Collection<? extends IUIFilter> filters = node.getFilters();
-			for (IUIFilter filter : filters) {
-				removeFilter(node, filter);
 			}
 
 		}
@@ -403,10 +355,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 		private void removeFilterAttribute(INavigationNodeController controller, IUIFilterAttribute filterAttribute) {
 
-			if ( filterAttribute.matches(getNavigationNode())) {
+			if (filterAttribute.matches(getNavigationNode())) {
 				filterAttribute.remove(getNavigationNode());
 			}
-			
+
 			if (controller instanceof IRidgetContainer) {
 				IRidgetContainer container = (IRidgetContainer) controller;
 				for (IRidget ridget : container.getRidgets()) {
@@ -434,12 +386,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		public void filterRemoved(INavigationNode source, IUIFilter filter) {
 			super.filterRemoved(source, filter);
 			removeFilter(source, filter);
-		}
-
-		@Override
-		public void allFiltersRemoved(INavigationNode source) {
-			super.allFiltersRemoved(source);
-			removeAllFilters(source);
 		}
 
 	}

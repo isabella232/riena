@@ -93,6 +93,8 @@ public class SwtExampleApplication extends SwtApplication {
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.playground")); //$NON-NLS-1$
 
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.filters")); //$NON-NLS-1$
+
 		return applicationNode;
 	}
 

@@ -34,6 +34,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListener;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterable;
 import org.eclipse.riena.ui.filter.UIFilterable;
@@ -57,7 +58,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private String label;
 	private String icon;
 	private boolean expanded;
-	private boolean visible;
 	private INavigationNodeController navigationNodeController;
 	private INavigationProcessor navigationProcessor;
 	private List<C> children;
@@ -69,6 +69,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private Object context;
 	private Set<IAction> actions;
 	private PropertyChangeSupport propertyChangeSupport;
+	private HiddenMarker hiddenMarker;
 
 	/**
 	 * Creates a NavigationNode.
@@ -88,7 +89,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		filterable = createFilterable();
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
-		visible = true;
 		// TODO: scp How can we use IIconManager.DEFAULT_ICON
 		// icon = "0044";
 	}
@@ -545,21 +545,17 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return new Markable();
 	}
 
-	/**
-	 * @param marker
-	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
-	 */
-	public void addMarker(IMarker marker) {
-		getMarkable().addMarker(marker);
-		notifyMarkersChanged();
-	}
-
-	/**
-	 * @return
-	 * @see org.eclipse.riena.core.marker.IMarkable#getMarkers()
-	 */
 	public Collection<? extends IMarker> getMarkers() {
 		return getMarkable().getMarkers();
+	}
+
+	public void addMarker(IMarker marker) {
+		getNavigationProcessor().addMarker(this, marker);
+	}
+
+	public void addMarker(INavigationContext context, IMarker marker) {
+		getMarkable().addMarker(marker);
+		notifyMarkersChanged();
 	}
 
 	/**
@@ -868,17 +864,22 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
-	public void setVisible(boolean visible) {
-		if (this.visible != visible) {
-			//			if (isVisible()) {
-			//				getNavigationProcessor().hide(this);
-			//			}
-			//			this.visible = visible;
-		}
+	public final boolean isVisible() {
+		return getMarkersOfType(HiddenMarker.class).isEmpty();
 	}
 
-	public boolean isVisible() {
-		return visible;
+	public final void setVisible(boolean visible) {
+
+		if (hiddenMarker == null) {
+			hiddenMarker = new HiddenMarker();
+		}
+
+		if (visible) {
+			removeMarker(hiddenMarker);
+		} else {
+			addMarker(hiddenMarker);
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1003,9 +1004,11 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	public void removeAllFilters() {
-		notifyAllFiltersRemoved();
+		Collection<? extends IUIFilter> filters = new ArrayList<IUIFilter>(getFilters());
 		getFilterable().removeAllFilters();
-
+		for (IUIFilter filter : filters) {
+			notifyFilterRemoved(filter);
+		}
 	}
 
 	public Collection<? extends IUIFilter> getFilters() {
@@ -1021,18 +1024,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.filterAdded(this, filter);
-		}
-	}
-
-	/**
-	 * Notifies every interested listener that the filters have changed.
-	 */
-	private void notifyAllFiltersRemoved() {
-		for (L next : getListeners()) {
-			next.allFiltersRemoved((S) this);
-		}
-		for (ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.allFiltersRemoved(this);
 		}
 	}
 

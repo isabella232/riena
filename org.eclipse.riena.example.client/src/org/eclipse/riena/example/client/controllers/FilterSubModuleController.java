@@ -404,6 +404,7 @@ public class FilterSubModuleController extends SubModuleController {
 				for (IMarker marker : markers) {
 					markerWrappers.add(new MarkerWrapper(marker));
 				}
+				setSelectedMarker(markerWrappers.get(0));
 			}
 			return markerWrappers;
 		}

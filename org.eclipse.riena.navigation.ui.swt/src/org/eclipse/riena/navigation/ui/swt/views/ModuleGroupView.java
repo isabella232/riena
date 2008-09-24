@@ -24,6 +24,7 @@ import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -136,6 +137,19 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 			super.childRemoved(source, child);
 			fireUpdated(child);
 		}
+
+		@Override
+		public void filterAdded(IModuleNode source, IUIFilter filter) {
+			super.filterAdded(source, filter);
+			fireUpdated(null);
+		}
+
+		@Override
+		public void filterRemoved(IModuleNode source, IUIFilter filter) {
+			super.filterRemoved(source, filter);
+			fireUpdated(null);
+		}
+
 	}
 
 	/**

@@ -157,7 +157,4 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	public void filterRemoved(S source, IUIFilter filter) {
 	}
 
-	public void allFiltersRemoved(S source) {
-	}
-
 }

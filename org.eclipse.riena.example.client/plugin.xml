@@ -395,6 +395,11 @@
             parentTypeId="playground">
       </navigationNode>
       <navigationNode
+            typeId="org.eclipse.riena.example.filters"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.FilterNodeBuilder"
+            parentTypeId="playground">
+      </navigationNode>
+      <navigationNode
             typeId="org.eclipse.riena.example.navigate.comboAndList"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
             parentTypeId="org.eclipse.riena.example.navigation">
@@ -516,7 +521,7 @@
       <subModule
             controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController"
             shared="false"
-            typeId="org.eclipse.riena.example.filter"
+            typeId="org.eclipse.riena.example.filterridget"
             view="org.eclipse.riena.example.client.views.FilterSubModuleView">
       </subModule>
       <subModule

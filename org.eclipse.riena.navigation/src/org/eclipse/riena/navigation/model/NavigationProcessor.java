@@ -23,6 +23,7 @@ import java.util.Vector;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
@@ -35,6 +36,8 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.osgi.service.log.LogService;
 
@@ -42,6 +45,7 @@ import org.osgi.service.log.LogService;
  * Default implementation for the navigation processor
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
+
 	private static Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class.getName());
 	private static int maxStacksize = 20;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
@@ -151,22 +155,37 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	public void hide(INavigationNode<?> toHide) {
+	public void addMarker(INavigationNode<?> node, IMarker marker) {
 
-		INavigationNode<?> nodeToHide = toHide;
-		if (nodeToHide != null) {
-			if (nodeToHide.isVisible()) {
-				List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
-				List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
-				INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
-				if (allowsDeactivate(navigationContext)) {
-					deactivate(navigationContext);
-					nodeToHide.setVisible(false);
-					activate(navigationContext);
+		if (node != null) {
+			if (node.isActivated() && (marker instanceof DisabledMarker || marker instanceof HiddenMarker)) {
+				INavigationNode<?> nodeToHide = getNodeToDispose(node);
+				if ((nodeToHide != null) && (nodeToHide.isVisible() && (nodeToHide.isVisible()))) { // .isEnabled
+					List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
+					List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
+					INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
+					if (allowsDeactivate(navigationContext) && allowsActivate(navigationContext)) {
+						deactivate(navigationContext);
+						activate(navigationContext);
+					} else {
+						return;
+					}
 				}
 			}
 		}
 
+		List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
+		toMarkList.add(node);
+		List<INavigationNode<?>> emptyList = new LinkedList<INavigationNode<?>>();
+		INavigationContext navigationContext = new NavigationContext(toMarkList, emptyList);
+		addMarker(navigationContext, marker);
+
+	}
+
+	private void addMarker(INavigationContext context, IMarker marker) {
+		for (INavigationNode<?> node : context.getToActivate()) {
+			node.addMarker(context, marker);
+		}
 	}
 
 	/**

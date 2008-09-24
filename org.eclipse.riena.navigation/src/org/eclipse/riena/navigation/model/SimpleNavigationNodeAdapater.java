@@ -237,16 +237,4 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#allFiltersRemoved
-	 * (org.eclipse.riena.navigation.INavigationNode)
-	 */
-	public void allFiltersRemoved(INavigationNode<?> source) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

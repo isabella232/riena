@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarkable;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.common.ITypecastingAdaptable;
 import org.eclipse.riena.ui.filter.IUIFilterable;
 
@@ -471,5 +472,13 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @see #navigate(NavigationNodeId)
 	 */
 	void navigateBack();
+
+	/**
+	 * Called by a NavigationProcessor to add the given marker to the node
+	 * within an INavigationContext.
+	 * 
+	 * @param pContext
+	 */
+	void addMarker(INavigationContext pContext, IMarker marker);
 
 }

@@ -80,12 +80,4 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 */
 	void filterRemoved(S source, IUIFilter filter);
 
-	/**
-	 * This method is called when all filters were removed from the given node.
-	 * 
-	 * @param source
-	 *            - node
-	 */
-	void allFiltersRemoved(S source);
-
 }

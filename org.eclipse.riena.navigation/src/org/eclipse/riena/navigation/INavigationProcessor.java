@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.core.marker.IMarker;
+
+
 /**
  * Manages the Navigation. Is called by a navigation node to navigate to it The
  * navigation processor works with the INavigationNode What does the navigation
@@ -84,6 +87,6 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 */
 	void navigateBack(INavigationNode<?> targetNode);
 
-	void hide(INavigationNode<?> toHide);
+	void addMarker(INavigationNode<?> toMark, IMarker marker);
 
 }

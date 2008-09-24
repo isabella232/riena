@@ -62,6 +62,4 @@ public interface ISimpleNavigationNodeListener {
 
 	void filterAdded(INavigationNode<?> source, IUIFilter filter);
 
-	void allFiltersRemoved(INavigationNode<?> source);
-
 }
