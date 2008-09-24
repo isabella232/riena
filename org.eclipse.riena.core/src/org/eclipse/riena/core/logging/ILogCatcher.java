@@ -16,6 +16,7 @@ package org.eclipse.riena.core.logging;
  * A catcher can than route the events into the Riena's logging.
  */
 public interface ILogCatcher {
+
 	/**
 	 * Attach to the log source.
 	 */
