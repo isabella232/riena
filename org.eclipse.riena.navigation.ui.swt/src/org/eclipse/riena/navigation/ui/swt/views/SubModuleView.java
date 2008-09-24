@@ -286,7 +286,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	@Override
 	public void setFocus() {
-		doBinding();
+		// doBinding();
 	}
 
 	protected void createViewFacade() {

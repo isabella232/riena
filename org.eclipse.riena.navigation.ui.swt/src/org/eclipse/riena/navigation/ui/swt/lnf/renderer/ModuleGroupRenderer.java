@@ -85,18 +85,21 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		}
 
 		List<ModuleView> modules = getItems();
-		int h = getModuleGroupPadding();
-		for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
-			ModuleView moduleView = iterator.next();
-			moduleView.updateModuleView();
-			h += moduleView.getBounds().height;
-			if (iterator.hasNext()) {
-				h += getModuleModuleGap();
-			} else {
-				h += getModuleGroupPadding();
+		int h = 0;
+		if (modules.size() > 0) {
+			h = getModuleGroupPadding();
+			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
+				ModuleView moduleView = iterator.next();
+				moduleView.updateModuleView();
+				h += moduleView.getBounds().height;
+				if (iterator.hasNext()) {
+					h += getModuleModuleGap();
+				} else {
+					h += getModuleGroupPadding();
+				}
 			}
+			h = borderRenderer.computeOuterHeight(h);
 		}
-		h = borderRenderer.computeOuterHeight(h);
 
 		return new Point(w, h);
 

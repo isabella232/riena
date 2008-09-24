@@ -88,6 +88,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.COOLBAR_BACKGROUND, getPrimaryBackground());
 
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND, getPrimaryForeground());
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
 		table
 				.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196, 225,
 						244));

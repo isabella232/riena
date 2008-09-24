@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ListenerList;
@@ -255,6 +258,25 @@ public class EmbeddedTitleBar extends Canvas {
 
 	public Collection<? extends IMarker> getMarkers() {
 		return markers;
+	}
+
+	/**
+	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#getMarkersOfType(java.lang.Class)
+	 */
+	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+
+		if (type == null || getMarkers() == null) {
+			return Collections.emptyList();
+		}
+		List<T> typedMarkerList = new ArrayList<T>();
+
+		for (IMarker marker : getMarkers()) {
+			if (type.isAssignableFrom(marker.getClass())) {
+				typedMarkerList.add((T) marker);
+			}
+		}
+		return typedMarkerList;
+
 	}
 
 	protected boolean isOverClose(Point point) {

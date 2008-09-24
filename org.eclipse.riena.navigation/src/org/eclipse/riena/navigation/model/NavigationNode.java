@@ -34,6 +34,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListener;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterable;
@@ -70,6 +71,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private Set<IAction> actions;
 	private PropertyChangeSupport propertyChangeSupport;
 	private HiddenMarker hiddenMarker;
+	private DisabledMarker disabledMarker;
 
 	/**
 	 * Creates a NavigationNode.
@@ -864,10 +866,68 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
-	public final boolean isVisible() {
-		return getMarkersOfType(HiddenMarker.class).isEmpty();
+	/**
+	 * If the node (and no parent node) hasn't a {@link DisabledMarker} the node
+	 * is enabled; otherwise the node is disabled.
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#isEnabled()
+	 */
+	public boolean isEnabled() {
+		return isEnabled(this);
 	}
 
+	private boolean isEnabled(INavigationNode<?> node) {
+		boolean enabled = node.getMarkersOfType(DisabledMarker.class).isEmpty();
+		if (enabled && (node.getParent() != null)) {
+			enabled = isEnabled(node.getParent());
+		}
+		return enabled;
+	}
+
+	/**
+	 * Adds {@link DisabledMarker} if {@code enabled} is {@code false}. Removes
+	 * {@link DisabledMarker} if {@code enabled} is {@code true}.
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#setEnabled(boolean)
+	 */
+	public void setEnabled(boolean enabled) {
+
+		if (disabledMarker == null) {
+			disabledMarker = new DisabledMarker();
+		}
+
+		if (enabled) {
+			removeMarker(disabledMarker);
+		} else {
+			addMarker(disabledMarker);
+		}
+
+	}
+
+	/**
+	 * If the node (and no parent) hasn't a {@link HiddenMarker} the node is
+	 * visible; otherwise the node is hidden.
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#isEnabled()
+	 */
+	public final boolean isVisible() {
+		return isVisible(this);
+	}
+
+	private boolean isVisible(INavigationNode<?> node) {
+		boolean visible = node.getMarkersOfType(HiddenMarker.class).isEmpty();
+		if (visible && (node.getParent() != null)) {
+			visible = isVisible(node.getParent());
+		}
+		return visible;
+	}
+
+	/**
+	 * Adds {@link HiddenMarker} if {@code visible} is {@code false}. Removes
+	 * {@link HiddenMarker} if {@code visible} is {@code true}.
+	 * 
+	 * @see org.eclipse.riena.navigation.INavigationNode#setEnabled(boolean)
+	 */
 	public final void setVisible(boolean visible) {
 
 		if (hiddenMarker == null) {

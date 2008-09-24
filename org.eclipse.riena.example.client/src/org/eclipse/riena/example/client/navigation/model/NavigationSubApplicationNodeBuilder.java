@@ -14,7 +14,6 @@ import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -41,6 +40,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		subApplication.setSelected(true);
 
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
+		moduleGroup.setLabel("ModuleGroup 1.1"); //$NON-NLS-1$
 		subApplication.addChild(moduleGroup);
 		IModuleNode module = new ModuleNode(null, "Module 1.1.1"); //$NON-NLS-1$
 		module.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
@@ -68,6 +68,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		module.addChild(subModule);
 
 		moduleGroup = new ModuleGroupNode(null);
+		moduleGroup.setLabel("ModuleGroup 1.2"); //$NON-NLS-1$
 		moduleGroup.setPresentWithSingleModule(false);
 		subApplication.addChild(moduleGroup);
 		module = new ModuleNode(null, "Module 1.2.1 (not closeable)"); //$NON-NLS-1$

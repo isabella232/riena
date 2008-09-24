@@ -396,8 +396,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Shows or hides this node depending on the value of parameter
 	 * 
 	 * @param visible
-	 *            - if {@code true}, shows this node; otherwise, hides this
-	 *            component
+	 *            - if {@code true}, shows this node; otherwise, hides this node
 	 */
 	void setVisible(boolean visible);
 
@@ -407,6 +406,22 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @return {@code true} if the node is visible; otherwise {@code false}
 	 */
 	boolean isVisible();
+
+	/**
+	 * Enables or disables this node depending on the value of parameter
+	 * 
+	 * @param enabled
+	 *            - if {@code true}, enables this node; otherwise, disables this
+	 *            node
+	 */
+	void setEnabled(boolean enabled);
+
+	/**
+	 * Returns whether the node is enabled or disabled.
+	 * 
+	 * @return {@code true} if the node is enabled; otherwise {@code false}
+	 */
+	boolean isEnabled();
 
 	/**
 	 * Returns the ID that identifies the node. The ID is used to find navigate

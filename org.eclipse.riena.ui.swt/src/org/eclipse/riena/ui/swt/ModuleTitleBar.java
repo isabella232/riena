@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -81,6 +82,9 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseUp(MouseEvent e) {
+			if (!isEnabled()) {
+				return;
+			}
 			if (!shouldIgnore(e)) {
 				Point point = new Point(e.x, e.y);
 				if (isOverClose(point)) {
@@ -96,6 +100,9 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseDown(MouseEvent e) {
+			if (!isEnabled()) {
+				return;
+			}
 			if (!shouldIgnore(e)) {
 				setPressed(true);
 			}
@@ -112,6 +119,9 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseEnter(MouseEvent e) {
+			if (!isEnabled()) {
+				return;
+			}
 			setHover(true);
 		}
 
@@ -119,6 +129,9 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseExit(MouseEvent e) {
+			if (!isEnabled()) {
+				return;
+			}
 			setHover(false);
 		}
 
@@ -140,6 +153,10 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 */
 		protected boolean shouldIgnore(MouseEvent e) {
 			return e.button != 1;
+		}
+
+		protected boolean isEnabled() {
+			return getMarkersOfType(DisabledMarker.class).isEmpty();
 		}
 
 	}

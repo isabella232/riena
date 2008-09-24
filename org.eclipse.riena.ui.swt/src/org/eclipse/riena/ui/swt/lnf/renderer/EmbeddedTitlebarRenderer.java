@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -213,6 +214,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
 			gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+			if (!getMarkersOfType(DisabledMarker.class).isEmpty()) {
+				gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND));
+			}
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			y = getBounds().y + y2;
 			text = getClippedText(gc, text);

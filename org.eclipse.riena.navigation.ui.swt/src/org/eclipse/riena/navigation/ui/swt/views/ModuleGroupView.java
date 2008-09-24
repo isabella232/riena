@@ -186,7 +186,10 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#calculateBounds(int)
 	 */
 	public int calculateBounds(int positionHint) {
-		Point p = computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		Point p = new Point(0, 0);
+		if (this.getNavigationNode().isVisible()) {
+			p = computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		}
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, positionHint);
 		fd.left = new FormAttachment(0, 0);
@@ -196,7 +199,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		setLayoutData(fd);
 		layout();
 		update();
-		positionHint += MODULE_GROUP_GAP;
+		if (p.y > 0) {
+			positionHint += MODULE_GROUP_GAP;
+		}
 		return positionHint;
 	}
 

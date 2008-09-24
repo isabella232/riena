@@ -65,6 +65,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				// the toActivate, in any case there is nothing to do
 				buildHistory(toActivate);
 			} else {
+				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
+					return;
+				}
 				// 1.find the chain to activate
 				// 2.find the chain to deactivate
 				// 3.check the deactivation chain
@@ -160,7 +163,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (node != null) {
 			if (node.isActivated() && (marker instanceof DisabledMarker || marker instanceof HiddenMarker)) {
 				INavigationNode<?> nodeToHide = getNodeToDispose(node);
-				if ((nodeToHide != null) && (nodeToHide.isVisible() && (nodeToHide.isVisible()))) { // .isEnabled
+				if ((nodeToHide != null) && (nodeToHide.isVisible() && (nodeToHide.isEnabled()))) {
 					List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
 					List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
 					INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
@@ -452,7 +455,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		for (Object node : nodes) {
 			if (node instanceof INavigationNode<?>) {
 				INavigationNode<?> naviNode = (INavigationNode<?>) node;
-				if (naviNode.isVisible()) {
+				if (naviNode.isVisible() && naviNode.isEnabled()) {
 					activateableNodes.add(naviNode);
 				}
 			}
