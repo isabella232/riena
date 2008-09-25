@@ -17,14 +17,12 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -39,12 +37,12 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	private final static String LABEL2 = "testlabel2";
 
 	@Override
-	protected IRidget createRidget() {
+	protected IToggleButtonRidget createRidget() {
 		return new ToggleButtonRidget();
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Button createUIControl(Composite parent) {
 		return new Button(parent, SWT.CHECK);
 	}
 
@@ -251,6 +249,32 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		Image missingImage = ReflectionUtils.invokeHidden(ridget, "getMissingImage", new Object[] {});
 		assertEquals("nonsense", ridget.getIcon());
 		assertEquals(missingImage, control.getImage());
+
+		Button button = createUIControl(getShell());
+		Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
+		button.setImage(buttonImage);
+		IToggleButtonRidget buttonRidget = createRidget();
+		// binding doesn't remove image of button, because the icon of the ridget is null and the method #setIcon wasn't called yet.
+		buttonRidget.setUIControl(button);
+		assertSame(buttonImage, button.getImage());
+
+		buttonRidget.setIcon(null);
+		assertNull(buttonRidget.getIcon());
+		assertNull(button.getImage());
+
+		buttonRidget.setIcon(ICON_ECLIPSE);
+		assertEquals(ICON_ECLIPSE, buttonRidget.getIcon());
+		assertNotNull(button.getImage());
+		assertNotSame(buttonImage, button.getImage());
+
+		button = createUIControl(getShell());
+		button.setImage(buttonImage);
+		buttonRidget = createRidget();
+		buttonRidget.setIcon(ICON_ECLIPSE);
+		// binding replaces image of button, because the icon of the ridget is not null.
+		buttonRidget.setUIControl(button);
+		assertNotNull(button.getImage());
+		assertNotSame(buttonImage, button.getImage());
 
 	}
 

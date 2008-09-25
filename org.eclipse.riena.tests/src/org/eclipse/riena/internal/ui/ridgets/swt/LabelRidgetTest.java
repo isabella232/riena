@@ -16,12 +16,11 @@ import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 /**
@@ -42,12 +41,12 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected IRidget createRidget() {
+	protected ILabelRidget createRidget() {
 		return new LabelRidget();
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Label createUIControl(Composite parent) {
 		return new Label(parent, SWT.NONE);
 	}
 
@@ -70,6 +69,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method get/setIcon().
 	 */
 	public final void testSetIcon() {
+
 		ILabelRidget ridget = getRidget();
 		Label control = (Label) ridget.getUIControl();
 
@@ -82,6 +82,33 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 
 		assertNull(ridget.getIcon());
 		assertNull(control.getImage());
+
+		Label label = createUIControl(getShell());
+		Image labelImage = label.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
+		label.setImage(labelImage);
+		ILabelRidget labelRidget = createRidget();
+		// binding doesn't remove image of label, because the icon of the ridget is null and the method #setIcon wasn't called yet.
+		labelRidget.setUIControl(label);
+		assertSame(labelImage, label.getImage());
+
+		labelRidget.setIcon(null);
+		assertNull(labelRidget.getIcon());
+		assertNull(label.getImage());
+
+		labelRidget.setIcon(ICON_ECLIPSE);
+		assertEquals(ICON_ECLIPSE, labelRidget.getIcon());
+		assertNotNull(label.getImage());
+		assertNotSame(labelImage, label.getImage());
+
+		label = createUIControl(getShell());
+		label.setImage(labelImage);
+		labelRidget = createRidget();
+		labelRidget.setIcon(ICON_ECLIPSE);
+		// binding replaces image of label, because the icon of the ridget is not null.
+		labelRidget.setUIControl(label);
+		assertNotNull(label.getImage());
+		assertNotSame(labelImage, label.getImage());
+
 	}
 
 	/**

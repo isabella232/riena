@@ -26,10 +26,12 @@ public class ActionRidget extends AbstractSWTRidget implements IActionRidget {
 	private String icon;
 	private ActionObserver actionObserver;
 	private boolean textAlreadyInitialized;
+	private boolean useRidgetIcon;
 
 	public ActionRidget() {
 		actionObserver = new ActionObserver();
 		textAlreadyInitialized = false;
+		useRidgetIcon = false;
 	}
 
 	@Override
@@ -44,7 +46,8 @@ public class ActionRidget extends AbstractSWTRidget implements IActionRidget {
 			button = control;
 			initText();
 			button.addSelectionListener(actionObserver);
-			updateText();
+			updateUIText();
+			updateUIIcon();
 		}
 	}
 
@@ -107,35 +110,39 @@ public class ActionRidget extends AbstractSWTRidget implements IActionRidget {
 	}
 
 	public void setIcon(String icon) {
+		boolean oldUseRidgetIcon = useRidgetIcon;
+		useRidgetIcon = true;
 		String oldIcon = this.icon;
 		this.icon = icon;
-		if (hasChanged(oldIcon, icon)) {
-			updateIconInControl();
+		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
+			updateUIIcon();
 		}
 	}
 
 	public final void setText(String newText) {
 		this.text = newText;
-		updateText();
+		updateUIText();
 	}
 
 	// helping methods
 	// ////////////////
 
-	private void updateText() {
+	private void updateUIText() {
 		if (button != null) {
 			button.setText(text);
 		}
 	}
 
-	private void updateIconInControl() {
+	private void updateUIIcon() {
 		Button control = getUIControl();
 		if (control != null) {
 			Image image = null;
 			if (icon != null) {
 				image = getManagedImage(icon);
 			}
-			control.setImage(image);
+			if ((image != null) || useRidgetIcon) {
+				control.setImage(image);
+			}
 		}
 	}
 

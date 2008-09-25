@@ -16,12 +16,14 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 
 /**
@@ -52,6 +54,8 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 	 */
 	private void createButtonGroup(Composite parent) {
 
+		Display display = parent.getDisplay();
+
 		Group buttonGroup = UIControlsFactory.createGroup(parent, "Buttons"); //$NON-NLS-1$
 		buttonGroup.setLayout(new RowLayout(SWT.VERTICAL));
 		FormData fd = new FormData();
@@ -62,12 +66,23 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 		Button toggleButton = UIControlsFactory.createButtonToggle(buttonGroup);
 		addUIControl(toggleButton, "toggleOne"); //$NON-NLS-1$
 
+		Button toggleButtonWithViewImage = UIControlsFactory.createButtonToggle(buttonGroup);
+		Image image = display.getSystemImage(SWT.ICON_QUESTION);
+		image = new Image(display, image.getImageData().scaledTo(16, 16));
+		toggleButtonWithViewImage.setImage(image);
+		addUIControl(toggleButtonWithViewImage, "toggleWithViewImage"); //$NON-NLS-1$
+
 		Button checkBox = UIControlsFactory.createButtonCheck(buttonGroup);
 		addUIControl(checkBox, "checkOne"); //$NON-NLS-1$
 
 		Button buttonWithImage = UIControlsFactory.createButton(buttonGroup);
 		addUIControl(buttonWithImage, "buttonWithImage"); //$NON-NLS-1$
 
-	}
+		Button buttonWithViewImage = UIControlsFactory.createButton(buttonGroup);
+		image = display.getSystemImage(SWT.ICON_WARNING);
+		image = new Image(display, image.getImageData().scaledTo(16, 16));
+		buttonWithViewImage.setImage(image);
+		addUIControl(buttonWithViewImage, "buttonWithViewImage"); //$NON-NLS-1$
 
+	}
 }

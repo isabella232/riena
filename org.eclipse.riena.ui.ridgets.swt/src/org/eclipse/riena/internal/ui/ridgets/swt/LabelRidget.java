@@ -30,6 +30,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	private String icon;
 	private URL iconLocation;
 	private boolean textAlreadyInitialized;
+	private boolean useRidgetIcon;
 
 	public LabelRidget() {
 		this(null);
@@ -37,6 +38,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 
 	public LabelRidget(Label label) {
 		textAlreadyInitialized = false;
+		useRidgetIcon = false;
 		setUIControl(label);
 	}
 
@@ -56,7 +58,8 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	@Override
 	protected void bindUIControl() {
 		initText();
-		updateTextInControl();
+		updateUIText();
+		updateUIIcon();
 	}
 
 	/**
@@ -107,40 +110,42 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 	}
 
 	public void setIcon(String icon) {
+		boolean oldUseRidgetIcon = useRidgetIcon;
+		useRidgetIcon = true;
 		String oldIcon = this.icon;
 		this.icon = icon;
-		if (hasChanged(oldIcon, icon)) {
-			updateIconInControl();
+		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
+			updateUIIcon();
 		}
-
 	}
 
 	public void setIconLocation(URL location) {
+		useRidgetIcon = true;
 		URL oldUrl = this.iconLocation;
 		this.iconLocation = location;
 		if (hasChanged(oldUrl, location)) {
-			updateIconInControl();
+			updateUIIcon();
 		}
 	}
 
 	public void setText(String text) {
 		String oldValue = this.text;
 		this.text = text;
-		updateTextInControl();
+		updateUIText();
 		firePropertyChange(ILabelRidget.PROPERTY_TEXT, oldValue, this.text);
 	}
 
 	// helping methods
 	// ////////////////
 
-	private void updateTextInControl() {
+	private void updateUIText() {
 		Label control = getUIControl();
 		if (control != null) {
 			control.setText(text);
 		}
 	}
 
-	private void updateIconInControl() {
+	private void updateUIIcon() {
 		Label control = getUIControl();
 		if (control != null) {
 			Image image = null;
@@ -150,7 +155,9 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 				String key = iconLocation.toExternalForm();
 				image = getManagedImage(key);
 			}
-			control.setImage(image);
+			if ((image != null) || useRidgetIcon) {
+				control.setImage(image);
+			}
 		}
 	}
 

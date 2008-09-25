@@ -45,11 +45,13 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	private String icon;
 	private boolean selected;
 	private boolean textAlreadyInitialized;
+	private boolean useRidgetIcon;
 
 	public ToggleButtonRidget() {
 		super();
 		actionObserver = new ActionObserver();
 		textAlreadyInitialized = false;
+		useRidgetIcon = false;
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
@@ -81,8 +83,9 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 					UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE)
 					.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
 			initText();
-			updateText();
+			updateUIText();
 			updateSelection(isEnabled());
+			updateUIIcon();
 		}
 	}
 
@@ -149,7 +152,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 
 	public final void setText(String newText) {
 		this.text = newText;
-		updateText();
+		updateUIText();
 	}
 
 	public String getIcon() {
@@ -157,10 +160,12 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	}
 
 	public void setIcon(String icon) {
+		boolean oldUseRidgetIcon = useRidgetIcon;
+		useRidgetIcon = true;
 		String oldIcon = this.icon;
 		this.icon = icon;
-		if (hasChanged(oldIcon, icon)) {
-			updateIconInControl();
+		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
+			updateUIIcon();
 		}
 	}
 
@@ -200,7 +205,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		}
 	}
 
-	private void updateText() {
+	private void updateUIText() {
 		Button control = getUIControl();
 		if (control != null) {
 			control.setText(text);
@@ -210,14 +215,16 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 	/**
 	 * Updates the images of the control.
 	 */
-	private void updateIconInControl() {
+	private void updateUIIcon() {
 		Button control = getUIControl();
 		if (control != null) {
 			Image image = null;
 			if (icon != null) {
 				image = getManagedImage(icon);
 			}
-			control.setImage(image);
+			if ((image != null) || useRidgetIcon) {
+				control.setImage(image);
+			}
 		}
 	}
 

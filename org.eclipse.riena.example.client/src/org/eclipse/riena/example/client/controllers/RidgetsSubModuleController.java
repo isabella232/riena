@@ -24,6 +24,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 	private final static String PLUGIN_ID = "org.eclipse.riena.example.client:"; //$NON-NLS-1$
 	private final static String ICON_SAMPLE = PLUGIN_ID + "/icons/sample.gif"; //$NON-NLS-1$
 	private final static String ICON_RED = PLUGIN_ID + "/icons/ledred.png"; //$NON-NLS-1$
+	private final static String ICON_GREEN = PLUGIN_ID + "/icons/ledlightgreen.png"; //$NON-NLS-1$
 
 	private RidgetsModel model;
 
@@ -35,6 +36,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 		super(navigationNode);
 		model = new RidgetsModel();
 		model.setToggleOneSelected(true);
+		model.setToggleTwoSelected(false);
 		model.setCheckOneSelected(true);
 	}
 
@@ -42,8 +44,16 @@ public class RidgetsSubModuleController extends SubModuleController {
 		return (IActionRidget) getRidget("buttonWithImage"); //$NON-NLS-1$
 	}
 
+	public IActionRidget getButtonWithViewImage() {
+		return (IActionRidget) getRidget("buttonWithViewImage"); //$NON-NLS-1$
+	}
+
 	public IToggleButtonRidget getToggleOne() {
 		return (IToggleButtonRidget) getRidget("toggleOne"); //$NON-NLS-1$
+	}
+
+	public IToggleButtonRidget getToggleWithViewImage() {
+		return (IToggleButtonRidget) getRidget("toggleWithViewImage"); //$NON-NLS-1$
 	}
 
 	public IToggleButtonRidget getCheckOne() {
@@ -53,25 +63,41 @@ public class RidgetsSubModuleController extends SubModuleController {
 	/**
 	 * Binds and updates the ridgets.
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
 	 */
-	public void configureRidgets() {
+	@Override
+	public void afterBind() {
+
+		super.afterBind();
+
 		getToggleOne().setText("&Toggle 1"); //$NON-NLS-1$
 		getToggleOne().setIcon(ICON_SAMPLE);
 		getToggleOne().bindToModel(model, "toggleOneSelected"); //$NON-NLS-1$
 		getToggleOne().updateFromModel();
 
+		getToggleWithViewImage().setText("&Toggle 2"); //$NON-NLS-1$
+		getToggleWithViewImage().bindToModel(model, "toggleTwoSelected"); //$NON-NLS-1$
+		getToggleWithViewImage().updateFromModel();
+
 		getCheckOne().setText("C&heck 1"); //$NON-NLS-1$
 		getCheckOne().bindToModel(model, "checkOneSelected"); //$NON-NLS-1$
 		getCheckOne().updateFromModel();
 
-		getButtonWithImage().setText("Text"); //$NON-NLS-1$
+		getButtonWithImage().setText("Button 1"); //$NON-NLS-1$
 		getButtonWithImage().setIcon(ICON_SAMPLE);
 		getButtonWithImage().addListener(new IActionListener() {
 			public void callback() {
 				getButtonWithImage().setIcon(ICON_RED);
 			}
 		});
+
+		getButtonWithViewImage().setText("Button 2"); //$NON-NLS-1$
+		getButtonWithViewImage().addListener(new IActionListener() {
+			public void callback() {
+				getButtonWithViewImage().setIcon(ICON_GREEN);
+			}
+		});
+
 	}
 
 	/**
@@ -80,6 +106,7 @@ public class RidgetsSubModuleController extends SubModuleController {
 	private static class RidgetsModel {
 
 		private boolean toggleOneSelected;
+		private boolean toggleTwoSelected;
 		private boolean checkOneSelected;
 
 		public boolean isToggleOneSelected() {
@@ -88,6 +115,14 @@ public class RidgetsSubModuleController extends SubModuleController {
 
 		public void setToggleOneSelected(boolean toggleOneSelected) {
 			this.toggleOneSelected = toggleOneSelected;
+		}
+
+		public void setToggleTwoSelected(boolean toggleTwoSelected) {
+			this.toggleTwoSelected = toggleTwoSelected;
+		}
+
+		public boolean isToggleTwoSelected() {
+			return toggleTwoSelected;
 		}
 
 		public boolean isCheckOneSelected() {
