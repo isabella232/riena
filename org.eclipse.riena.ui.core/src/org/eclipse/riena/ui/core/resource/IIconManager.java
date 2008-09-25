@@ -166,6 +166,9 @@ public interface IIconManager {
 	/** Cursor icon indicating some background activity */
 	String CURSOR_BACKGROUND_ACTIVITY = "2053"; //$NON-NLS-1$
 
+	/** Icon WINDOW_RESIZE */
+	String WINDOW_RESIZE = "2075"; //$NON-NLS-1$
+
 	/** Cursor icon indicating move/drop while dragging */
 	String CURSOR_MOVE_DROP = "2256"; //$NON-NLS-1$
 
