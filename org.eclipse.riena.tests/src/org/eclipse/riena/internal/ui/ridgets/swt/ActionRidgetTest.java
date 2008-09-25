@@ -166,6 +166,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method get/setIcon().
 	 */
 	public final void testSetIcon() {
+
 		IActionRidget ridget = getRidget();
 		Button control = (Button) ridget.getUIControl();
 

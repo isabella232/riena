@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
@@ -102,6 +103,7 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 		assertFalse(renderer.isPaintMarkersCalled());
 
 		SubModuleNode node = new SubModuleNode();
+		node.setNavigationProcessor(new NavigationProcessor());
 		renderer.setMarkers(node.getMarkers());
 		renderer.resetPaintMarkersCalled();
 		renderer.paint(gc, item);
