@@ -314,6 +314,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 			if (filterAttribute.matches(getNavigationNode())) {
 				filterAttribute.apply(getNavigationNode());
+				// TODO: apply filter also for children !?! 
 			}
 
 			if (controller instanceof IRidgetContainer) {
@@ -357,6 +358,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 			if (filterAttribute.matches(getNavigationNode())) {
 				filterAttribute.remove(getNavigationNode());
+				// TODO: remove filter also from children !?! 
 			}
 
 			if (controller instanceof IRidgetContainer) {

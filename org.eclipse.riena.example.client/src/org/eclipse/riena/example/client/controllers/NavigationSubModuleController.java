@@ -53,6 +53,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		getAddSubModuleToModuleBtn().setText("Add Sub-Module to &Root"); //$NON-NLS-1$
@@ -176,6 +177,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	private IModuleGroupNode createModuleGroupNode() {
 
 		IModuleGroupNode newModuleGroupNode = new ModuleGroupNode(null);
+		newModuleGroupNode.setLabel("ModuleGroup"); //$NON-NLS-1$
 		IModuleNode newModuleNode = createModuleNode();
 		newModuleGroupNode.addChild(newModuleNode);
 
@@ -189,8 +191,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	 */
 	private IModuleNode createModuleNode() {
 
-		IModuleNode newModuleNode = new ModuleNode(null, "Added child Module to Module Group"); //$NON-NLS-1$
-		ISubModuleNode newSubModuleNode = createSubModuleNode("Added child SubModule to Module"); //$NON-NLS-1$
+		IModuleNode newModuleNode = new ModuleNode(null, "Module"); //$NON-NLS-1$
+		ISubModuleNode newSubModuleNode = createSubModuleNode("SubModule"); //$NON-NLS-1$
 		newModuleNode.addChild(newSubModuleNode);
 
 		return newModuleNode;
