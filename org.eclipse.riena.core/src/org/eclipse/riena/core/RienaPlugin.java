@@ -26,27 +26,6 @@ import org.osgi.framework.BundleContext;
 public abstract class RienaPlugin extends Plugin {
 
 	private LoggerMill logUtil;
-	private BundleContext context;
-
-	/*
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		this.context = context;
-	}
-
-	/*
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		this.context = null;
-		super.stop(context);
-	}
 
 	/**
 	 * Get the shared context.
@@ -54,7 +33,7 @@ public abstract class RienaPlugin extends Plugin {
 	 * @return
 	 */
 	public BundleContext getContext() {
-		return context;
+		return getBundle().getBundleContext();
 	}
 
 	/**
@@ -66,7 +45,7 @@ public abstract class RienaPlugin extends Plugin {
 	 */
 	public synchronized Logger getLogger(String name) {
 		if (logUtil == null) {
-			logUtil = new LoggerMill(context);
+			logUtil = new LoggerMill(getContext());
 		}
 		return logUtil.getLogger(name);
 	}
