@@ -22,6 +22,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineNumberRidget;
@@ -67,6 +68,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 * Sets the default mapping of UI control-classes to a ridget-classes
 	 */
 	private void initDefaultMappings() {
+		addMapping(Text.class, NumericTextRidget.class, new NumericTextCondition());
 		addMapping(Text.class, TextRidget.class);
 		addMapping(Label.class, LabelRidget.class);
 		addMapping(Table.class, TableRidget.class);

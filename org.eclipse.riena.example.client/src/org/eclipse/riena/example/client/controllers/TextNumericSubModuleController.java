@@ -14,15 +14,13 @@ import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 
 /**
  * Controller for the {@link TextSubModuleView} example. TODO [ev] docs
  */
 public class TextNumericSubModuleController extends SubModuleController {
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
@@ -36,6 +34,12 @@ public class TextNumericSubModuleController extends SubModuleController {
 		ITextFieldRidget txtString = (ITextFieldRidget) getRidget("txtString"); //$NON-NLS-1$
 		txtString.bindToModel(getRidget("lblString"), ILabelRidget.PROPERTY_TEXT); //$NON-NLS-1$
 		txtString.setText("Dr Livingstone, I presume?"); //$NON-NLS-1$
-	}
 
+		ITextFieldRidget txtInteger = (ITextFieldRidget) getRidget("txtInteger"); //$NON-NLS-1$
+		txtInteger.bindToModel(new IntegerBean(1234), "value"); //$NON-NLS-1$
+		txtString.updateFromModel();
+
+		ILabelRidget lblInteger = (ILabelRidget) getRidget("lblInteger"); //$NON-NLS-1$
+		lblInteger.bindToModel(txtInteger, ITextFieldRidget.PROPERTY_TEXT);
+	}
 }

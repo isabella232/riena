@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
@@ -18,6 +19,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * SWT {@link ITextFieldRidget} sample. TODO [ev] docs
@@ -28,6 +31,10 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
+		// TODO [ev] example for grouping on/off
+		// TODO [ev] example for signed on/off
+		// TODO [ev] example for primitive types
+		// TODO [ev] example for BigInteger
 		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(3, true));
 
@@ -51,9 +58,9 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Int:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Integer:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "txtInteger"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createLabel(parent, ""), "lblInteger"); //$NON-NLS-1$//$NON-NLS-2$
 
 		UIControlsFactory.createLabel(parent, "Range[100,1000]:"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
@@ -74,6 +81,13 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 		UIControlsFactory.createLabel(parent, "Bank Code:"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+
+		GridDataFactory gdf = GridDataFactory.fillDefaults();
+		for (Control child : parent.getChildren()) {
+			if (child instanceof Text) {
+				gdf.applyTo(child);
+			}
+		}
 	}
 
 }
