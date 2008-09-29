@@ -14,8 +14,6 @@ import java.net.URL;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
@@ -159,27 +157,6 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 				control.setImage(image);
 			}
 		}
-	}
-
-	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#getManagedImage(java.lang.String)
-	 */
-	@Override
-	protected Image getManagedImage(String key) {
-		Image image = super.getManagedImage(key);
-		if ((image == null) || (image == getMissingImage())) {
-			Activator activator = Activator.getDefault();
-			if (activator != null) {
-				ImageRegistry registry = activator.getImageRegistry();
-				ImageDescriptor descr = ImageDescriptor.createFromURL(iconLocation);
-				registry.put(key, descr);
-				image = registry.get(key);
-			}
-		}
-		if (image == null) {
-			image = getMissingImage();
-		}
-		return image;
 	}
 
 	private boolean hasChanged(URL oldValue, URL newValue) {
