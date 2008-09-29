@@ -17,6 +17,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
@@ -101,7 +102,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		addUIControl(textName, "textName"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Price:"); //$NON-NLS-1$
-		Text textPrice = UIControlsFactory.createTextNumeric(group);
+		Text textPrice = UIControlsFactory.createTextDecimal(group);
 		hFillFactory.applyTo(textPrice);
 		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
 

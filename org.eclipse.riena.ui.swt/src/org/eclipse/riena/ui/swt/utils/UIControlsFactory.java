@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.example.client.utils;
+package org.eclipse.riena.ui.swt.utils;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
@@ -61,6 +61,10 @@ public final class UIControlsFactory {
 
 	public static Text createText(Composite parent, int style) {
 		return new Text(parent, style | SWT.BORDER);
+	}
+
+	public static Text createTextDecimal(Composite parent) {
+		return new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
 	}
 
 	public static Text createTextNumeric(Composite parent) {
