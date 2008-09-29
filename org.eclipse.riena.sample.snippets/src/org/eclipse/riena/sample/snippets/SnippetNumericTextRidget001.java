@@ -59,7 +59,7 @@ public final class SnippetNumericTextRidget001 {
 			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
 					.observeValue(rInput, ITextFieldRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			rInput.bindToModel(new IntegerBean(12345), "value"); //$NON-NLS-1$
+			rInput.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 			rInput.updateFromModel();
 
 			shell.setSize(200, 200);

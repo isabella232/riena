@@ -15,6 +15,11 @@ package org.eclipse.riena.ui.ridgets.util.beans;
  */
 public class IntegerBean extends AbstractBean {
 
+	/**
+	 * Property key of the value propert ("value").
+	 */
+	public static final String PROP_VALUE = "value"; //$NON-NLS-1$
+
 	private Integer value;
 
 	/**
@@ -53,7 +58,7 @@ public class IntegerBean extends AbstractBean {
 	public void setValue(Integer value) {
 		Object old = this.value;
 		this.value = value;
-		firePropertyChanged("value", old, this.value); //$NON-NLS-1$
+		firePropertyChanged(PROP_VALUE, old, this.value);
 
 	}
 
