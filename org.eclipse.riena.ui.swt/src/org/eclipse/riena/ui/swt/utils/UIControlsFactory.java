@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * SWT control factory used in the example views
+ * TODO [ev] docs + method docs
  */
 public final class UIControlsFactory {
 
