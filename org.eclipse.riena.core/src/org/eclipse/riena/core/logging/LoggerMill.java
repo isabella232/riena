@@ -13,12 +13,14 @@ package org.eclipse.riena.core.logging;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.core.logging.DeferringLoggerFactory;
 import org.eclipse.riena.internal.core.logging.ILogCatcherDefinition;
 import org.eclipse.riena.internal.core.logging.ILogListenerDefinition;
 import org.eclipse.riena.internal.core.logging.SynchronousLogListenerAdapter;
@@ -44,9 +46,9 @@ public class LoggerMill {
 	private ILogListenerDefinition[] listenerDefs;
 	private ILogCatcherDefinition[] catcherDefs;
 
-	private static ExtendedLogService logService;
 	private static ExtendedLogReaderService logReaderService;
-	private static AtomicBoolean initialized = new AtomicBoolean(false);
+	private final static AtomicReference<ExtendedLogService> logService = new AtomicReference<ExtendedLogService>(null);
+	private final static AtomicBoolean initialized = new AtomicBoolean(false);
 
 	public LoggerMill(BundleContext context) {
 		this.context = context;
@@ -63,7 +65,7 @@ public class LoggerMill {
 	 */
 	public Logger getLogger(String name) {
 		init();
-		return logService == null ? new ConsoleLogger(name) : logService.getLogger(name);
+		return isReady() ? logService.get().getLogger(name) : DeferringLoggerFactory.createLogger(name, this);
 	}
 
 	/**
@@ -72,7 +74,7 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void bind(ExtendedLogService logService) {
-		LoggerMill.logService = logService;
+		LoggerMill.logService.set(logService);
 	}
 
 	/**
@@ -81,7 +83,7 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void unbind(ExtendedLogService logService) {
-		LoggerMill.logService = null;
+		LoggerMill.logService.set(null);
 	}
 
 	/**
@@ -146,6 +148,10 @@ public class LoggerMill {
 		this.catcherDefs = catcherDefs;
 	}
 
+	public boolean isReady() {
+		return initialized.get() && logService.get() != null;
+	}
+
 	/**
 	 * initialize LogUtil
 	 */
@@ -163,8 +169,8 @@ public class LoggerMill {
 			Inject.extension(ILogListenerDefinition.EXTENSION_POINT).useType(ILogListenerDefinition.class).into(this)
 					.andStart(context);
 
-			Inject.service(ExtendedLogService.class).useRanking().into(this).andStart(context);
 			Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(context);
+			Inject.service(ExtendedLogService.class).useRanking().into(this).andStart(context);
 		}
 	}
 
