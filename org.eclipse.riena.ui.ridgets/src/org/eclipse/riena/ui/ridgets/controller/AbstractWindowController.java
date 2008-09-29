@@ -23,6 +23,11 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
  */
 public abstract class AbstractWindowController implements IController {
 
+	/**
+	 * The ridget id to use for the window ridget.
+	 */
+	public static final String RIDGET_ID_WINDOW = "windowRidget"; //$NON-NLS-1$
+
 	private IWindowRidget windowRidget;
 	private Map<String, IRidget> ridgets;
 	private boolean blocked;
@@ -93,5 +98,14 @@ public abstract class AbstractWindowController implements IController {
 	 */
 	public boolean isBlocked() {
 		return this.blocked;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 */
+	public void configureRidgets() {
+		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));
 	}
 }
