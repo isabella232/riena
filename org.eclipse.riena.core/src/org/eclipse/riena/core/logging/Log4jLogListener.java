@@ -51,7 +51,7 @@ import org.xml.sax.InputSource;
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.core.logging.listeners&quot;&gt;
- *       &lt;logListener name=&quot;Log4j&quot; listener-class=&quot;org.eclipse.riena.core.logging.Log4jLogListener:/log4j.xml&quot; sync=&quot;true&quot;/&gt;
+ *     &lt;logListener name=&quot;Log4j&quot; listener-class=&quot;org.eclipse.riena.core.logging.Log4jLogListener:/log4j.xml&quot; sync=&quot;true&quot;/&gt;
  * &lt;/extension&gt;
  * </pre>
  * 
@@ -63,17 +63,16 @@ import org.xml.sax.InputSource;
  * &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
  * &lt;!DOCTYPE log4j:configuration SYSTEM &quot;log4j.dtd&quot;&gt;
  * &lt;log4j:configuration xmlns:log4j=&quot;http://jakarta.apache.org/log4j/&quot;&gt;
- * 	&lt;appender name=&quot;LOGFILE&quot; class=&quot;org.apache.log4j.DailyRollingFileAppender&quot;&gt;
- * 		&lt;param name=&quot;File&quot; value=&quot;${log4j.log.home}/scp_example.log&quot; /&gt;
- * 		&lt;param name=&quot;DatePattern&quot; value=&quot;'.'yyyy-MM-dd&quot; /&gt;
- * 		&lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;
- * 			&lt;param name=&quot;ConversionPattern&quot; value=&quot;%-5p %-17d{yyyy-MM-dd HH:mm:ss} [%t] %c %m\n&quot;/&gt;
- * 		&lt;/layout&gt;
- * 	&lt;/appender&gt;
- * 	&lt;root&gt;
- * 		&lt;level value=&quot;debug&quot; /&gt;
- * 		&lt;appender-ref ref=&quot;LOGFILE&quot; /&gt;
- * 	&lt;/root&gt;
+ * &lt;appender name=&quot;LOGFILE&quot; class=&quot;org.apache.log4j.FileAppender&quot;&gt;
+ *     &lt;param name=&quot;File&quot;   value=&quot;${log4j.log.home}/scp_example.log&quot; /&gt;
+ *     &lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;
+ *         &lt;param name=&quot;ConversionPattern&quot; value=&quot;%-5p %-17d{yyyy-MM-dd HH:mm:ss} [%t] %c %m%n&quot;/&gt;
+ *     &lt;/layout&gt;
+ * &lt;/appender&gt;
+ *     &lt;root&gt;
+ *         &lt;level value=&quot;debug&quot; /&gt;
+ *         &lt;appender-ref ref=&quot;LOGFILE&quot; /&gt;
+ *     &lt;/root&gt;
  * &lt;/log4j:configuration&gt;
  * </pre>
  * 
@@ -82,11 +81,11 @@ import org.xml.sax.InputSource;
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.core.variables.valueVariables&quot;&gt;
- * 	&lt;variable
- * 		description=&quot;Location for the log4j log&quot;
- * 		name=&quot;log4j.log.home&quot;
- * 		readOnly=&quot;true&quot;
- * 		initialValue=&quot;c:/projects/&quot;/&gt;
+ *     &lt;variable
+ *         description=&quot;Location for the log4j log&quot;
+ *         name=&quot;log4j.log.home&quot;
+ *         readOnly=&quot;true&quot;
+ *         initialValue=&quot;c:/projects/&quot;/&gt;
  * &lt;/extension&gt;
  * </pre>
  */
