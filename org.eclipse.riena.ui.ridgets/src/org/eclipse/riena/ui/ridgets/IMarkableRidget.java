@@ -40,7 +40,8 @@ public interface IMarkableRidget extends IRidget, IMarkable {
 	String PROPERTY_OUTPUT_ONLY = "output"; //$NON-NLS-1$
 
 	/**
-	 * @return Indicates whether any DisabledMarker was added.
+	 * Returns {@code false} if any DisabledMarker was added, {@code true}
+	 * otherwise.
 	 */
 	boolean isEnabled();
 
