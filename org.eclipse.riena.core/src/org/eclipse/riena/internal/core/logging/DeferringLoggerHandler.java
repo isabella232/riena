@@ -21,13 +21,13 @@ import org.eclipse.riena.core.logging.LoggerMill;
 /**
  * A dynamic proxy that mimics a {@code Logger} that either logs to a
  * <i>real</i> logger if available or collects the log events for delayed
- * delivering by the {@code DeferedLoggingForwarder}.
+ * delivering by the {@code DeferredLoggingForwarder}.
  */
-public class DeferingLoggerHandler implements InvocationHandler {
+public class DeferringLoggerHandler implements InvocationHandler {
 
 	private final String name;
 	private final LoggerMill loggerMill;
-	private final BlockingQueue<DeferedLogEvent> queue;
+	private final BlockingQueue<DeferredLogEvent> queue;
 	private final Logger consoleLogger;
 	private Logger logger = null;
 
@@ -36,7 +36,7 @@ public class DeferingLoggerHandler implements InvocationHandler {
 	 * @param loggerMill
 	 * @param queue
 	 */
-	DeferingLoggerHandler(String name, LoggerMill loggerMill, BlockingQueue<DeferedLogEvent> queue) {
+	DeferringLoggerHandler(String name, LoggerMill loggerMill, BlockingQueue<DeferredLogEvent> queue) {
 		this.name = name;
 		this.loggerMill = loggerMill;
 		this.queue = queue;
@@ -63,7 +63,7 @@ public class DeferingLoggerHandler implements InvocationHandler {
 			return method.invoke(logger, args);
 		}
 
-		DeferedLogEvent logEvent = new DeferedLogEvent(name, System.currentTimeMillis(), Thread.currentThread()
+		DeferredLogEvent logEvent = new DeferredLogEvent(name, System.currentTimeMillis(), Thread.currentThread()
 				.getName(), method, args);
 
 		// log to console
@@ -82,7 +82,7 @@ public class DeferingLoggerHandler implements InvocationHandler {
 	/**
 	 * @param logEvent
 	 */
-	private void queue(DeferedLogEvent logEvent) {
+	private void queue(DeferredLogEvent logEvent) {
 		try {
 			queue.put(logEvent);
 		} catch (InterruptedException e) {

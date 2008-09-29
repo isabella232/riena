@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 /**
  * All properties a defered log event.
  */
-public class DeferedLogEvent {
+public class DeferredLogEvent {
 
 	private final String loggerName;
 	private final long time;
@@ -23,7 +23,7 @@ public class DeferedLogEvent {
 	private final Method log;
 	private final Object[] args;
 
-	public DeferedLogEvent(final String loggerName, final long time, final String threadName, final Method log,
+	public DeferredLogEvent(final String loggerName, final long time, final String threadName, final Method log,
 			final Object[] args) {
 		this.loggerName = loggerName;
 		this.time = time;

@@ -22,21 +22,21 @@ import org.eclipse.riena.core.logging.LoggerMill;
  * <i>real</i> logger is available. The collected log events will than be
  * delivered by the <i>real</i> logger within a worker thread.
  */
-public class DeferingLoggerFactory {
+public class DeferringLoggerFactory {
 
 	private static Thread forwarder;
-	private static BlockingQueue<DeferedLogEvent> queue;
+	private static BlockingQueue<DeferredLogEvent> queue;
 
 	public static Logger createLogger(final String name, final LoggerMill loggerMill) {
-		synchronized (DeferingLoggerFactory.class) {
+		synchronized (DeferringLoggerFactory.class) {
 			if (queue == null) {
-				queue = new LinkedBlockingQueue<DeferedLogEvent>();
-				forwarder = new DeferedLoggingForwarder(loggerMill, queue);
+				queue = new LinkedBlockingQueue<DeferredLogEvent>();
+				forwarder = new DeferredLoggingForwarder(loggerMill, queue);
 				forwarder.start();
 			}
 		}
 		return (Logger) Proxy.newProxyInstance(Logger.class.getClassLoader(), new Class<?>[] { Logger.class },
-				new DeferingLoggerHandler(name, loggerMill, queue));
+				new DeferringLoggerHandler(name, loggerMill, queue));
 	}
 
 }

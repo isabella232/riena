@@ -25,24 +25,24 @@ import org.osgi.service.log.LogService;
 /**
  * The worker thread that delivers collected log events.
  */
-public class DeferedLoggingForwarder extends Thread {
+public class DeferredLoggingForwarder extends Thread {
 
 	private final LoggerMill loggerMill;
-	private final BlockingQueue<DeferedLogEvent> queue;
+	private final BlockingQueue<DeferredLogEvent> queue;
 
 	/**
 	 * @param loggerMill
 	 * @param queue
 	 */
-	public DeferedLoggingForwarder(final LoggerMill loggerMill, BlockingQueue<DeferedLogEvent> queue) {
-		super("DeferedLoggingForwarder"); //$NON-NLS-1$
+	public DeferredLoggingForwarder(final LoggerMill loggerMill, BlockingQueue<DeferredLogEvent> queue) {
+		super("DeferredLoggingForwarder"); //$NON-NLS-1$
 		this.loggerMill = loggerMill;
 		this.queue = queue;
 	}
 
 	public void run() {
 		while (true) {
-			DeferedLogEvent logEvent = null;
+			DeferredLogEvent logEvent = null;
 			try {
 				logEvent = queue.take();
 			} catch (InterruptedException e1) {
@@ -70,7 +70,7 @@ public class DeferedLoggingForwarder extends Thread {
 				logger.log(getLevel(logEvent.getArgs()), bob.toString());
 				// logEvent.getLogMethod().invoke(logger, logEvent.getArgs());
 			} catch (Exception e) {
-				new ConsoleLogger(DeferedLoggingForwarder.class.getName()).log(LogService.LOG_ERROR,
+				new ConsoleLogger(DeferredLoggingForwarder.class.getName()).log(LogService.LOG_ERROR,
 						"Could not deliver defered log message.", e); //$NON-NLS-1$
 			}
 		}
