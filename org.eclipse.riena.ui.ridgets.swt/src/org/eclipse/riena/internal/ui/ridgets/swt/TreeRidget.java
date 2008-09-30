@@ -57,6 +57,9 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -71,7 +74,7 @@ import org.osgi.service.log.LogService;
  */
 public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget {
 
-	private static final Listener eraseListener = new EraseListener();
+	private static final Listener eraseListener = new EraseAndPaintListener();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
@@ -151,6 +154,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
 			control.removeListener(SWT.EraseItem, eraseListener);
+			control.removeListener(SWT.PaintItem, eraseListener);
 		}
 		if (viewer != null) {
 			// IMPORTANT: remove the change listeners from the input model.
@@ -387,6 +391,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			control.removeListener(SWT.EraseItem, eraseListener);
 			if (!isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
 				control.addListener(SWT.EraseItem, eraseListener);
+				control.addListener(SWT.PaintItem, eraseListener);
 			}
 		}
 	}
@@ -630,14 +635,31 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
 	 *      >Custom Drawing Table and Tree Items</a>'
 	 */
-	private static final class EraseListener implements Listener {
+	private static final class EraseAndPaintListener implements Listener {
+
+		private Rectangle bounds = new Rectangle(0, 0, 0, 0);
 
 		/*
 		 * Called EXTREMELY frequently. Must be as efficient as possible.
 		 */
 		public void handleEvent(Event event) {
-			// indicate we are responsible for drawing the cell's content
-			event.detail &= ~SWT.FOREGROUND;
+			if (SWT.EraseItem == event.type) {
+				// indicate we are responsible for drawing the cell's content
+				event.detail &= ~SWT.FOREGROUND;
+			} else if (SWT.PaintItem == event.type) {
+				TreeItem item = (TreeItem) event.item;
+				Tree tree = item.getParent();
+				if (!tree.isEnabled()) {
+					GC gc = event.gc;
+					Color bg = gc.getBackground();
+					// TODO [ev] temporary - remove
+					gc.setBackground(item.getDisplay().getSystemColor(SWT.COLOR_RED));
+					bounds.width = tree.getBounds().width;
+					bounds.height = tree.getBounds().height;
+					gc.fillRectangle(bounds);
+					gc.setBackground(bg);
+				}
+			}
 		}
 	}
 
