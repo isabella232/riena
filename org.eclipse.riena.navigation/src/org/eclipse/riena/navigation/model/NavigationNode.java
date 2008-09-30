@@ -70,8 +70,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private Object context;
 	private Set<IAction> actions;
 	private PropertyChangeSupport propertyChangeSupport;
-	private HiddenMarker hiddenMarker;
-	private DisabledMarker disabledMarker;
+	private IMarker hiddenMarker;
+	private IMarker disabledMarker;
 
 	/**
 	 * Creates a NavigationNode.
@@ -558,6 +558,15 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	public void addMarker(INavigationContext context, IMarker marker) {
 		getMarkable().addMarker(marker);
 		notifyMarkersChanged();
+		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
+			List<?> children = getChildren();
+			for (Object child : children) {
+				if (child instanceof INavigationNode<?>) {
+					INavigationNode<?> childNode = (INavigationNode<?>) child;
+					childNode.addMarker(marker);
+				}
+			}
+		}
 	}
 
 	/**
@@ -586,6 +595,15 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	public void removeMarker(IMarker marker) {
 		getMarkable().removeMarker(marker);
 		notifyMarkersChanged();
+		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
+			List<?> children = getChildren();
+			for (Object child : children) {
+				if (child instanceof INavigationNode<?>) {
+					INavigationNode<?> childNode = (INavigationNode<?>) child;
+					childNode.removeMarker(marker);
+				}
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")

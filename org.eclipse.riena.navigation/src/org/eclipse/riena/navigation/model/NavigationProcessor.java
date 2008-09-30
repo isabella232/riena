@@ -175,6 +175,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					}
 				}
 			}
+			if (marker instanceof DisabledMarker || marker instanceof HiddenMarker) {
+				node.setSelected(false);
+			}
 		}
 
 		List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
@@ -192,7 +195,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * Cleanup the History stacks and removes all occurences of the node.
+	 * Cleanup the History stacks and removes all occurrences of the node.
 	 * 
 	 * @param toDispose
 	 */
@@ -742,11 +745,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (nextSelectedChild != null) {
 			return nextSelectedChild;
 		} else {
-			if (pNode.getChildren().size() > 0) {
-				return pNode.getChild(0);
-			} else {
-				return null;
+			for (INavigationNode<?> next : pNode.getChildren()) {
+				if (next.isVisible() && next.isEnabled()) {
+					return next;
+				}
 			}
+			return null;
 		}
 	}
 

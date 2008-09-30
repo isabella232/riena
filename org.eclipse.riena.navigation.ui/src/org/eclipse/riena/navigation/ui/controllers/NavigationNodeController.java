@@ -41,6 +41,8 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements
 		INavigationNodeController, IController {
 
+	private static IUIFilterAttributeClosure applyClosure = new ApplyClosure();
+	private static IUIFilterAttributeClosure removeClosure = new RemoveClosure();
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
 	private MyNavigationNodeListener nodeListener;
@@ -257,13 +259,13 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
 			collectFilters(node, filters);
 			for (IUIFilter filter : filters) {
-				applyFilter(node, filter);
+				applyFilter(node, filter, applyClosure);
 			}
 
 		}
 
 		/**
-		 * Adds the filters all the given node and the parents nodes to the
+		 * Adds the filters of the given node and of the parents nodes to the
 		 * given collection of filters.
 		 * 
 		 * @param node
@@ -285,87 +287,56 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 
 		/**
-		 * Applies the given filter to the given node and all of its child
-		 * nodes.
+		 * Executes the closure for the given filter to the given node and all
+		 * of its child nodes.
 		 * 
 		 * @param node
 		 *            - navigation node
 		 * @param filter
 		 *            - UI filter
+		 * @param closure
+		 *            - closure to execute
 		 */
-		private void applyFilter(INavigationNode<?> node, IUIFilter filter) {
+		private void applyFilter(INavigationNode<?> node, IUIFilter filter, IUIFilterAttributeClosure closure) {
 
-			INavigationNodeController controller = node.getNavigationNodeController();
 			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
 			for (IUIFilterAttribute filterAttribute : filterItems) {
-				applyFilterAttribute(controller, filterAttribute);
+				applyFilterAttribute(node, filterAttribute, closure);
 			}
 
 			List<?> children = node.getChildren();
 			for (Object child : children) {
 				if (child instanceof INavigationNode<?>) {
-					applyFilter((INavigationNode<?>) child, filter);
-				}
-			}
-
-		}
-
-		private void applyFilterAttribute(INavigationNodeController controller, IUIFilterAttribute filterAttribute) {
-
-			if (filterAttribute.matches(getNavigationNode())) {
-				filterAttribute.apply(getNavigationNode());
-				// TODO: apply filter also for children !?! 
-			}
-
-			if (controller instanceof IRidgetContainer) {
-				IRidgetContainer container = (IRidgetContainer) controller;
-				for (IRidget ridget : container.getRidgets()) {
-					if (filterAttribute.matches(ridget)) {
-						filterAttribute.apply(ridget);
-					}
+					applyFilter((INavigationNode<?>) child, filter, closure);
 				}
 			}
 
 		}
 
 		/**
-		 * Removes the given filter from the given node and all of its child
-		 * nodes.
+		 * Executes the closure for the given filter attribute to the given node
+		 * and all the ridgets.
 		 * 
 		 * @param node
 		 *            - navigation node
-		 * @param filter
-		 *            - UI filter
+		 * @param filterAttribute
+		 *            - filter attribute
+		 * @param closure
+		 *            - closure to execute
 		 */
-		private void removeFilter(INavigationNode<?> node, IUIFilter filter) {
+		private void applyFilterAttribute(INavigationNode<?> node, IUIFilterAttribute filterAttribute,
+				IUIFilterAttributeClosure closure) {
+
+			if (filterAttribute.matches(node)) {
+				closure.exeute(filterAttribute, node);
+			}
 
 			INavigationNodeController controller = node.getNavigationNodeController();
-			Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
-			for (IUIFilterAttribute filterAttribute : filterItems) {
-				removeFilterAttribute(controller, filterAttribute);
-			}
-
-			List<?> children = node.getChildren();
-			for (Object child : children) {
-				if (child instanceof INavigationNode<?>) {
-					removeFilter((INavigationNode<?>) child, filter);
-				}
-			}
-
-		}
-
-		private void removeFilterAttribute(INavigationNodeController controller, IUIFilterAttribute filterAttribute) {
-
-			if (filterAttribute.matches(getNavigationNode())) {
-				filterAttribute.remove(getNavigationNode());
-				// TODO: remove filter also from children !?! 
-			}
-
 			if (controller instanceof IRidgetContainer) {
 				IRidgetContainer container = (IRidgetContainer) controller;
 				for (IRidget ridget : container.getRidgets()) {
 					if (filterAttribute.matches(ridget)) {
-						filterAttribute.remove(ridget);
+						closure.exeute(filterAttribute, ridget);
 					}
 				}
 			}
@@ -381,13 +352,37 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		@Override
 		public void filterAdded(INavigationNode source, IUIFilter filter) {
 			super.filterAdded(source, filter);
-			applyFilter(source, filter);
+			applyFilter(source, filter, applyClosure);
 		}
 
 		@Override
 		public void filterRemoved(INavigationNode source, IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			removeFilter(source, filter);
+			applyFilter(source, filter, removeClosure);
+		}
+
+	}
+
+	/**
+	 * Closure to execute the {@code apply} method of {@link IUIFilterAttribute}
+	 * .
+	 * */
+	private static class ApplyClosure implements IUIFilterAttributeClosure {
+
+		public void exeute(IUIFilterAttribute attr, Object obj) {
+			attr.apply(obj);
+		}
+
+	}
+
+	/**
+	 * Closure to execute the {@code remove} method of
+	 * {@link IUIFilterAttribute}.
+	 */
+	private static class RemoveClosure implements IUIFilterAttributeClosure {
+
+		public void exeute(IUIFilterAttribute attr, Object obj) {
+			attr.remove(obj);
 		}
 
 	}

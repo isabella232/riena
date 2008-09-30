@@ -28,6 +28,7 @@ public class AllUITests extends TestCase {
 		suite.addTest(org.eclipse.riena.ui.ridgets.uibinding.AllTests.suite());
 		suite.addTest(org.eclipse.riena.ui.ridgets.validation.tests.AllTests.suite());
 		suite.addTest(org.eclipse.riena.ui.ridgets.databinding.AllTests.suite());
+		suite.addTest(org.eclipse.riena.ui.ridgets.filter.AllTests.suite());
 		suite.addTest(org.eclipse.riena.ui.ridgets.marker.AllTests.suite());
 		suite.addTest(org.eclipse.riena.ui.swt.AllTests.suite());
 		return suite;

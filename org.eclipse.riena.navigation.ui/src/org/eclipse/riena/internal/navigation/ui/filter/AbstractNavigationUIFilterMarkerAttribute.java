@@ -27,29 +27,7 @@ public abstract class AbstractNavigationUIFilterMarkerAttribute extends Abstract
 	}
 
 	public boolean matches(Object object) {
-
-		if (object == node) {
-			return true;
-		}
-		if (object instanceof INavigationNode<?>) {
-			INavigationNode<?> pNode = (INavigationNode<?>) object;
-			return matches(pNode);
-		}
-
-		return false;
-
-	}
-
-	private boolean matches(INavigationNode<?> pNode) {
-
-		if (pNode == node) {
-			return true;
-		} else if (pNode.getParent() != null) {
-			return matches(pNode.getParent());
-		}
-
-		return false;
-
+		return (object == node);
 	}
 
 	public void apply(Object object) {
