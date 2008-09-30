@@ -33,6 +33,9 @@ public final class IconSize {
 	/** <code>Size f (128x128 at standard scaling 00) */
 	public static final IconSize F = new IconSize('f');
 
+	/** <code>Size s (15x15 at standard scaling 00) */
+	public static final IconSize S = new IconSize('s');
+
 	/** <code>Size u (14x14 at standard scaling 00) */
 	public static final IconSize U = new IconSize('u');
 

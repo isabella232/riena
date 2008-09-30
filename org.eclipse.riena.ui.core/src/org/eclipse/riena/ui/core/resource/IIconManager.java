@@ -169,9 +169,6 @@ public interface IIconManager {
 	/** Icon WINDOW_RESIZE */
 	String WINDOW_RESIZE = "2075"; //$NON-NLS-1$
 
-	/** Cursor icon indicating move/drop while dragging */
-	String CURSOR_MOVE_DROP = "2256"; //$NON-NLS-1$
-
 	/** Icon incicating the drop down capability of a drop down button */
 	String DROP_DOWN_BUTTON_ARROW_DOWN = "2065"; //$NON-NLS-1$
 
@@ -180,6 +177,18 @@ public interface IIconManager {
 	 * popup opening above the button)
 	 */
 	String DROP_DOWN_BUTTON_ARROW_UP = "2066"; //$NON-NLS-1$
+
+	/** Icon of the checkmark of a selected checkbox */
+	String CHECK_BOX_SELECTED_CHECK_MARK = "2082"; //$NON-NLS-1$
+
+	/**
+	 * Icon of the checkmark of a partially selected checkbox
+	 * (ToggleButtonTreeGroup)
+	 */
+	String CHECK_BOX_PARTIALLY_SELECTED_CHECK_MARK = "2083"; //$NON-NLS-1$
+
+	/** Cursor icon indicating move/drop while dragging */
+	String CURSOR_MOVE_DROP = "2256"; //$NON-NLS-1$
 
 	/** Icon QUESTION. */
 	String QUESTION = "9001"; //$NON-NLS-1$
