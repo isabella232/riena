@@ -33,6 +33,11 @@ import org.eclipse.swt.widgets.Text;
  */
 public final class UIControlsFactory {
 
+	public static final String KEY_TYPE = "type"; //$NON-NLS-1$
+	public static final String TYPE_NUMERIC = "numeric"; //$NON-NLS-1$
+	public static final String TYPE_DECIMAL = "decimal"; //$NON-NLS-1$
+	public static final String TYPE_DATE = "date"; //$NON-NLS-1$
+
 	private static final Color SHARED_BG_COLOR;
 
 	static {
@@ -69,8 +74,7 @@ public final class UIControlsFactory {
 
 	public static Text createTextNumeric(Composite parent) {
 		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		// TODO [ev] refactor - can't have magic keys here
-		result.setData("type", "numeric"); //$NON-NLS-1$ //$NON-NLS-2$
+		result.setData(KEY_TYPE, TYPE_NUMERIC);
 		return result;
 	}
 
