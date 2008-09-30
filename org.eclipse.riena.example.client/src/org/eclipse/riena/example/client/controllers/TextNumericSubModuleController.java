@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 
 /**
- * Controller for the {@link TextSubModuleView} example. TODO [ev] docs
+ * Controller for the {@link INumericValueTextFieldRidget} and
+ * {@link IDecimalValueTextFieldRidget} example.
  */
 public class TextNumericSubModuleController extends SubModuleController {
 
