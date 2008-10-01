@@ -15,6 +15,11 @@ package org.eclipse.riena.ui.ridgets.util.beans;
  */
 public class DoubleBean extends AbstractBean {
 
+	/**
+	 * Property key of the value propert ("value").
+	 */
+	public static final String PROP_VALUE = "value"; //$NON-NLS-1$
+
 	private Double value;
 
 	/**
@@ -47,14 +52,14 @@ public class DoubleBean extends AbstractBean {
 	/**
 	 * Sets the value of this bean
 	 * 
-	 * @param value -
-	 *            value to set
+	 * @param value
+	 *            - value to set
 	 */
 	public void setValue(Double value) {
 		// System.out.println( "Double bean setValue: " + value.toString() );
 		Object old = this.value;
 		this.value = value;
-		firePropertyChanged("value", old, this.value); //$NON-NLS-1$
+		firePropertyChanged(PROP_VALUE, old, this.value);
 	}
 
 	/**
