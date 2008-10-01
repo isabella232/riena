@@ -214,6 +214,11 @@ public class NumericTextRidget extends AbstractEditableRidget implements INumeri
 		return isGrouping;
 	}
 
+	public boolean isMarkNegative() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
 	public boolean isSigned() {
 		return isSigned;
 	}
@@ -229,9 +234,16 @@ public class NumericTextRidget extends AbstractEditableRidget implements INumeri
 		}
 	}
 
+	public void setMarkNegative(boolean mustBeMarked) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
 	public void setSigned(boolean signed) {
 		if (isSigned != signed) {
+			boolean oldValue = isSigned;
 			isSigned = signed;
+			firePropertyChange(PROPERTY_SIGNED, oldValue, isSigned);
 		}
 	}
 

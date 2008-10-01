@@ -32,6 +32,7 @@ import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
@@ -62,7 +63,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	@Override
 	protected Control createUIControl(Composite parent) {
 		Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
-		result.setData("type", "numeric");
+		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
 		return result;
 	}
@@ -190,8 +191,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertTrue(ridget.isSigned());
 
+		expectNoPropertyChangeEvent();
+		ridget.setSigned(true);
+
+		verifyPropertyChangeEvents();
+		assertTrue(ridget.isSigned());
+
 		int caretPos = control.getText().length() - 1;
-		control.setFocus();
+		focusIn(control);
 		control.setSelection(caretPos, caretPos);
 
 		assertEquals(TestUtils.getLocalizedNumber("1.337"), control.getText());
@@ -218,12 +225,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertTrue(ridget.isSigned());
 
+		expectPropertyChangeEvent(INumericValueTextFieldRidget.PROPERTY_SIGNED, Boolean.TRUE, Boolean.FALSE);
 		ridget.setSigned(false);
 
+		verifyPropertyChangeEvents();
 		assertFalse(ridget.isSigned());
 
 		int caretPos = control.getText().length() - 1;
-		control.setFocus();
+		focusIn(control);
 		control.setSelection(caretPos, caretPos);
 
 		assertEquals(TestUtils.getLocalizedNumber("1.337"), control.getText());
@@ -448,7 +457,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertFalse(ridget.getMarkersOfType(ErrorMarker.class).isEmpty());
 		assertEquals("99", ridget.getText());
 
-		control.setFocus();
+		focusIn(control);
 		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
 		UITestHelper.sendString(control.getDisplay(), "9");
 
@@ -549,7 +558,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(TestUtils.getLocalizedNumber("98.765"), ridget.getText());
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
-		control.setFocus();
+		focusIn(control);
 		control.selectAll();
 		// \t triggers update
 		UITestHelper.sendString(control.getDisplay(), "12\t");
@@ -559,7 +568,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("12", ridget.getText());
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
-		control.setFocus();
+		focusIn(control);
 		control.selectAll();
 		UITestHelper.sendString(control.getDisplay(), "43210\t");
 
@@ -585,7 +594,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(TestUtils.getLocalizedNumber("98.765"), ridget.getText());
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
-		control.setFocus();
+		focusIn(control);
 		control.selectAll();
 		// \t triggers update
 		UITestHelper.sendString(control.getDisplay(), "98\t");
@@ -594,7 +603,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("98", ridget.getText());
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
-		control.setFocus();
+		focusIn(control);
 		control.setSelection(2, 2);
 		UITestHelper.sendString(control.getDisplay(), "555\t");
 
@@ -715,7 +724,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertFalse(ridget.isErrorMarked());
 
-		control.setFocus();
+		focusIn(control);
 		control.selectAll();
 		UITestHelper.sendString(control.getDisplay(), "345\t");
 		assertEquals("345", control.getText());
@@ -785,7 +794,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.setOutputOnly(true);
 		control.selectAll();
-		control.setFocus();
+		focusIn(control);
 		UITestHelper.sendString(control.getDisplay(), "123\t");
 
 		assertEquals("0", control.getText());
@@ -793,7 +802,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.setOutputOnly(false);
 		control.selectAll();
-		control.setFocus();
+		focusIn(control);
 		UITestHelper.sendString(control.getDisplay(), "123\t");
 
 		assertEquals("123", control.getText());
@@ -850,8 +859,56 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(INTEGER_ONE, bean.getValue());
 	}
 
+	// TODO [ev] fixme
+	//	public void testMaxLength() throws Exception {
+	//		ITextFieldRidget ridget = getRidget();
+	//		Text control = getUIControl();
+	//
+	//		ridget.addValidationRule(new MaxNumberLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
+	//
+	//		focusIn(control);
+	//		UITestHelper.sendString(control.getDisplay(), "1234");
+	//
+	//		assertEquals(TestUtils.getLocalizedNumber("1.234"), control.getText());
+	//
+	//		focusOut(control);
+	//
+	//		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
+	//
+	//		focusIn(control);
+	//		control.setSelection(control.getText().length()); // move cursor to end
+	//		UITestHelper.sendString(control.getDisplay(), "5");
+	//
+	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+	//
+	//		focusOut(control);
+	//
+	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+	//
+	//		focusIn(control);
+	//		control.setSelection(control.getText().length()); // move cursor to end
+	//		UITestHelper.sendString(control.getDisplay(), "6");
+	//
+	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+	//
+	//		focusOut(control);
+	//
+	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+	//	}
+
 	// helping methods
 	//////////////////
+
+	private void focusIn(Text control) {
+		control.setFocus();
+		assertTrue(control.isFocusControl());
+	}
+
+	private void focusOut(Text control) {
+		// clear focus
+		UITestHelper.sendString(control.getDisplay(), "\t");
+		assertFalse(control.isFocusControl());
+	}
 
 	private IMessageMarker getMessageMarker(Collection<? extends IMarker> markers) {
 		for (IMarker marker : markers) {

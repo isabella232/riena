@@ -68,8 +68,16 @@ public final class UIControlsFactory {
 		return new Text(parent, style | SWT.BORDER);
 	}
 
+	public static Text createTextDate(Composite parent) {
+		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		result.setData(KEY_TYPE, TYPE_DATE);
+		return result;
+	}
+
 	public static Text createTextDecimal(Composite parent) {
-		return new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		result.setData(KEY_TYPE, TYPE_NUMERIC);
+		return result;
 	}
 
 	public static Text createTextNumeric(Composite parent) {

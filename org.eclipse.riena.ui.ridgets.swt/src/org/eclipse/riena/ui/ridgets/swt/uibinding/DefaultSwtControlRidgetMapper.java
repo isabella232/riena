@@ -17,6 +17,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.DecimalTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
@@ -70,6 +71,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 */
 	private void initDefaultMappings() {
 		addMapping(Text.class, NumericTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_NUMERIC));
+		addMapping(Text.class, DecimalTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_DECIMAL));
 		addMapping(Text.class, TextRidget.class);
 		addMapping(Label.class, LabelRidget.class);
 		addMapping(Table.class, TableRidget.class);
