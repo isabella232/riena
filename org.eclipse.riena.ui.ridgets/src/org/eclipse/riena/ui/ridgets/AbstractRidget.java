@@ -94,6 +94,21 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param newValue
 	 *            The new value of the property.
 	 */
+	protected void firePropertyChange(String propertyName, int oldValue, int newValue) {
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	}
+
+	/**
+	 * Notifies all listeners about a changed property. No event is fired if old
+	 * and new are equal and non-null.
+	 * 
+	 * @param propertyName
+	 *            The name of the property that was changed.
+	 * @param oldValue
+	 *            The old value of the property.
+	 * @param newValue
+	 *            The new value of the property.
+	 */
 	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}

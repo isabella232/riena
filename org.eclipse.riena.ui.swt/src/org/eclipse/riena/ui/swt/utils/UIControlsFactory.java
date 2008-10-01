@@ -76,7 +76,7 @@ public final class UIControlsFactory {
 
 	public static Text createTextDecimal(Composite parent) {
 		Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		result.setData(KEY_TYPE, TYPE_NUMERIC);
+		result.setData(KEY_TYPE, TYPE_DECIMAL);
 		return result;
 	}
 
