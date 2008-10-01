@@ -22,6 +22,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.controllers");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ModuleControllerTest.class);
+		suite.addTestSuite(NavigationUIFilterApplierTest.class);
 		//$JUnit-END$
 		return suite;
 	}

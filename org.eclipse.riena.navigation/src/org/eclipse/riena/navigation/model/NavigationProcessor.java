@@ -163,7 +163,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (node != null) {
 			if (node.isActivated() && (marker instanceof DisabledMarker || marker instanceof HiddenMarker)) {
 				INavigationNode<?> nodeToHide = getNodeToDispose(node);
-				if ((nodeToHide != null) && (nodeToHide.isVisible() && (nodeToHide.isEnabled()))) {
+				// if ((nodeToHide != null) && (nodeToHide.isVisible() && (nodeToHide.isEnabled()))) {
+				if (nodeToHide != null) {
 					List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToHide);
 					List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToHide);
 					INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
@@ -178,13 +179,13 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			if (marker instanceof DisabledMarker || marker instanceof HiddenMarker) {
 				node.setSelected(false);
 			}
-		}
 
-		List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
-		toMarkList.add(node);
-		List<INavigationNode<?>> emptyList = new LinkedList<INavigationNode<?>>();
-		INavigationContext navigationContext = new NavigationContext(toMarkList, emptyList);
-		addMarker(navigationContext, marker);
+			List<INavigationNode<?>> toMarkList = new LinkedList<INavigationNode<?>>();
+			toMarkList.add(node);
+			List<INavigationNode<?>> emptyList = new LinkedList<INavigationNode<?>>();
+			INavigationContext navigationContext = new NavigationContext(toMarkList, emptyList);
+			addMarker(navigationContext, marker);
+		}
 
 	}
 
@@ -563,19 +564,18 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * find the next active parent
 	 */
-
-	private INavigationNode<?> getNextActiveParent(INavigationNode<?> inactive) {
+	private INavigationNode<?> getNextActiveParent(INavigationNode<?> node) {
 		// the next active parent must be at least a Module Node
-		ISubModuleNode subModuleNode = inactive.getTypecastedAdapter(ISubModuleNode.class);
+		ISubModuleNode subModuleNode = node.getTypecastedAdapter(ISubModuleNode.class);
 		if (subModuleNode != null) {
 			// if sub module node go up
 			return getNextActiveParent(subModuleNode.getParent());
-		} else if (inactive.isActivated()) {
+		} else if (node.isActivated()) {
 			// it is not a sub module node and is activated
-			return inactive;
-		} else if (inactive.getParent() != null) {
+			return node;
+		} else if (node.getParent() != null) {
 			// it is not a sub module and is not active
-			return getNextActiveParent(inactive.getParent());
+			return getNextActiveParent(node.getParent());
 		} else {
 			return null;
 		}
@@ -586,11 +586,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * find the top parent
 	 */
 
-	private INavigationNode<?> getTopParent(INavigationNode<?> inactive) {
-		if (inactive.getParent() != null) {
-			return getTopParent(inactive.getParent());
+	private INavigationNode<?> getTopParent(INavigationNode<?> node) {
+		if (node.getParent() != null) {
+			return getTopParent(node.getParent());
 		} else {
-			return inactive;
+			return node;
 		}
 
 	}

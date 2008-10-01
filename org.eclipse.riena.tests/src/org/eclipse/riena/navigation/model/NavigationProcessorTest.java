@@ -10,13 +10,24 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationContext;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 
 /**
  * Tests for the NavigationProcessor.
@@ -64,6 +75,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertTrue(moduleGroup.isActivated());
 		assertTrue(module.isActivated());
 		assertTrue(subModule.isActivated());
+
+		subApplication.deactivate(null);
+		moduleGroup.deactivate(null);
+		module.deactivate(null);
+		subModule.deactivate(null);
+
+		subApplication.setEnabled(false);
+		navigationProcessor.activate(subApplication);
+		assertFalse(subApplication.isActivated());
+
+		subApplication.setEnabled(true);
+		subApplication.setVisible(false);
+		navigationProcessor.activate(subApplication);
+		assertFalse(subApplication.isActivated());
+
 	}
 
 	public void testNavigate() throws Exception {
@@ -108,6 +134,477 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertSame(secondModuleGroup, secondSubApplication.getChild(0));
 		assertTrue(secondModuleGroup.isActivated());
 		assertTrue(secondSubModule.isActivated());
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getActivateableNodes}.
+	 */
+	public void testGetActivateableNodes() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		SubModuleNode node = new SubModuleNode(id);
+		node.setNavigationProcessor(navigationProcessor);
+		id = new NavigationNodeId("0815");
+		SubModuleNode node2 = new SubModuleNode(id);
+		node2.setNavigationProcessor(navigationProcessor);
+		id = new NavigationNodeId("node3");
+		SubModuleNode node3 = new SubModuleNode(id);
+		node3.setNavigationProcessor(navigationProcessor);
+		id = new NavigationNodeId("node4");
+		SubModuleNode node4 = new SubModuleNode(id);
+		node4.setNavigationProcessor(navigationProcessor);
+		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
+		nodes.add(node);
+		nodes.add(node2);
+		nodes.add(node3);
+		nodes.add(node4);
+
+		List<INavigationNode<?>> activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor,
+				"getActivateableNodes", nodes);
+		assertTrue(activateableNodes.size() == 4);
+		assertTrue(activateableNodes.contains(node));
+		assertTrue(activateableNodes.contains(node2));
+		assertTrue(activateableNodes.contains(node3));
+		assertTrue(activateableNodes.contains(node4));
+
+		node2.addMarker(new DisabledMarker());
+		node3.addMarker(new HiddenMarker());
+		node3.addMarker(new OutputMarker());
+		activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor, "getActivateableNodes", nodes);
+		assertTrue(activateableNodes.size() == 2);
+		assertTrue(activateableNodes.contains(node));
+		assertFalse(activateableNodes.contains(node2));
+		assertFalse(activateableNodes.contains(node3));
+		assertTrue(activateableNodes.contains(node4));
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getChildToActivate}.
+	 */
+	public void testGetChildToActivate() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		SubModuleNode node = new SubModuleNode(id);
+
+		INavigationNode<?> toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", node);
+		assertNull(toActivate);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		assertNull(toActivate);
+
+		moduleNode.addChild(node);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		assertSame(node, toActivate);
+
+		id = new NavigationNodeId("sm2");
+		SubModuleNode node2 = new SubModuleNode(id);
+		moduleNode.addChild(node2);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		assertSame(node, toActivate);
+
+		node2.setSelected(true);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		assertSame(node2, toActivate);
+
+		id = new NavigationNodeId("mg1");
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		moduleGroupNode.setNavigationProcessor(navigationProcessor);
+		moduleGroupNode.addChild(moduleNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		assertSame(moduleNode, toActivate);
+
+		DisabledMarker disabledMarker = new DisabledMarker();
+		moduleNode.addMarker(disabledMarker);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		assertNull(toActivate);
+
+		moduleNode.removeAllMarkers();
+		moduleNode.addMarker(new OutputMarker());
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		assertSame(moduleNode, toActivate);
+
+		moduleNode.addMarker(new HiddenMarker());
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		assertNull(toActivate);
+
+	}
+
+	/**
+	 * Tests the method {@code dispose}.
+	 */
+	public void testDispose() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		TestSubModuleNode node = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("0815");
+		TestSubModuleNode node2 = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+		moduleNode.addChild(node);
+		moduleNode.addChild(node2);
+
+		id = new NavigationNodeId("m2");
+		ModuleNode moduleNode2 = new ModuleNode(id);
+
+		id = new NavigationNodeId("mg1");
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		moduleGroupNode.addChild(moduleNode);
+		moduleGroupNode.addChild(moduleNode2);
+
+		navigationProcessor.activate(node2);
+		node2.setAllowsDeactivate(false);
+		navigationProcessor.dispose(node2);
+		assertFalse(node2.isDisposed());
+		assertTrue(node2.isActivated());
+
+		node2.setAllowsDeactivate(true);
+		node2.setAllowsDispose(false);
+		navigationProcessor.dispose(node2);
+		assertFalse(node2.isDisposed());
+		assertTrue(node2.isActivated());
+
+		node2.setAllowsDispose(true);
+		node.setAllowsActivate(false);
+		navigationProcessor.dispose(node2);
+		assertFalse(node2.isDisposed());
+		assertTrue(node2.isActivated());
+
+		node.setAllowsActivate(true);
+		navigationProcessor.dispose(node2);
+		assertTrue(node2.isDisposed());
+		assertTrue(node.isActivated());
+
+		navigationProcessor.dispose(node2);
+		assertTrue(node2.isDisposed());
+
+		navigationProcessor.dispose(moduleNode2);
+		assertTrue(moduleNode2.isDisposed());
+		assertFalse(moduleGroupNode.isDisposed());
+
+		navigationProcessor.dispose(moduleNode);
+		assertTrue(moduleNode.isDisposed());
+		assertTrue(moduleGroupNode.isDisposed());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getNodeToDispose}.
+	 */
+	public void testGetNodeToDispose() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		SubModuleNode node = new SubModuleNode(id);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+		moduleNode.addChild(node);
+
+		id = new NavigationNodeId("m2");
+		ModuleNode moduleNode2 = new ModuleNode(id);
+
+		id = new NavigationNodeId("mg1");
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		moduleGroupNode.addChild(moduleNode);
+		moduleGroupNode.addChild(moduleNode2);
+
+		INavigationNode<?> toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", node);
+		assertSame(node, toDispose);
+
+		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleNode);
+		assertSame(moduleGroupNode, toDispose);
+
+		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleNode2);
+		assertSame(moduleNode2, toDispose);
+
+		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleGroupNode);
+		assertSame(moduleGroupNode, toDispose);
+
+	}
+
+	/**
+	 * Tests the method {@code addMarker}.
+	 */
+	public void testAddMarker() {
+
+		IMarker disabledMarker = new DisabledMarker();
+		IMarker hiddenMarker = new HiddenMarker();
+		IMarker errorMarker = new ErrorMarker();
+
+		navigationProcessor.addMarker(null, disabledMarker);
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		TestSubModuleNode node = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("0815");
+		TestSubModuleNode node2 = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+		moduleNode.addChild(node);
+		moduleNode.addChild(node2);
+		moduleNode.setNavigationProcessor(navigationProcessor);
+
+		navigationProcessor.addMarker(node, disabledMarker);
+		assertFalse(node.isEnabled());
+		assertTrue(node.isVisible());
+
+		navigationProcessor.addMarker(node2, hiddenMarker);
+		assertTrue(node2.isEnabled());
+		assertFalse(node2.isVisible());
+
+		node.removeAllMarkers();
+		node2.removeAllMarkers();
+
+		node.setSelected(true);
+		navigationProcessor.addMarker(node, disabledMarker);
+		assertFalse(node.isEnabled());
+		assertFalse(node.isSelected());
+
+		node.setSelected(true);
+		navigationProcessor.addMarker(node, hiddenMarker);
+		assertFalse(node.isVisible());
+		assertFalse(node.isSelected());
+
+		node.setSelected(true);
+		navigationProcessor.addMarker(node, errorMarker);
+		assertTrue(node.isSelected());
+
+		node.removeAllMarkers();
+		node2.removeAllMarkers();
+		node2.activate();
+		navigationProcessor.addMarker(node2, errorMarker);
+		assertTrue(node2.isActivated());
+
+		node2.removeAllMarkers();
+		node2.activate();
+		navigationProcessor.addMarker(node2, disabledMarker);
+		assertFalse(node2.isActivated());
+		assertFalse(node2.isEnabled());
+		assertTrue(node.isActivated());
+
+		node2.removeAllMarkers();
+		node2.activate();
+		navigationProcessor.addMarker(node2, hiddenMarker);
+		assertFalse(node2.isActivated());
+		assertFalse(node2.isVisible());
+		assertTrue(node.isActivated());
+
+		node2.removeAllMarkers();
+		node2.activate();
+		node2.setAllowsDeactivate(false);
+		navigationProcessor.addMarker(node2, hiddenMarker);
+		assertTrue(node2.isVisible());
+		assertFalse(node.isActivated());
+		assertTrue(node2.isActivated());
+
+		node2.removeAllMarkers();
+		node2.activate();
+		node2.setAllowsDeactivate(true);
+		node.setAllowsActivate(false);
+		navigationProcessor.addMarker(node2, hiddenMarker);
+		assertTrue(node2.isVisible());
+		assertFalse(node.isActivated());
+		assertTrue(node2.isActivated());
+
+		node2.removeAllMarkers();
+		node2.activate();
+		node.setAllowsActivate(true);
+		navigationProcessor.addMarker(node2, hiddenMarker);
+		assertFalse(node2.isVisible());
+		assertTrue(node.isActivated());
+		assertFalse(node2.isActivated());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getTopParent}.
+	 */
+	public void testGetTopParent() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		TestSubModuleNode node = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("0815");
+		TestSubModuleNode node2 = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+		moduleNode.addChild(node);
+		moduleNode.addChild(node2);
+
+		id = new NavigationNodeId("m2");
+		ModuleNode moduleNode2 = new ModuleNode(id);
+
+		id = new NavigationNodeId("mg1");
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		moduleGroupNode.addChild(moduleNode);
+
+		INavigationNode<?> top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node);
+		assertSame(moduleGroupNode, top);
+
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node2);
+		assertSame(moduleGroupNode, top);
+
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleNode);
+		assertSame(moduleGroupNode, top);
+
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleGroupNode);
+		assertSame(moduleGroupNode, top);
+
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleNode2);
+		assertSame(moduleNode2, top);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getNextActiveParent}.
+	 */
+	public void testGetNextActiveParent() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		TestSubModuleNode node = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("0815");
+		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		node.addChild(node2);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+		moduleNode.addChild(node);
+
+		id = new NavigationNodeId("m2");
+		ModuleNode moduleNode2 = new ModuleNode(id);
+
+		id = new NavigationNodeId("mg1");
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		moduleGroupNode.addChild(moduleNode);
+		moduleGroupNode.addChild(moduleNode2);
+		moduleGroupNode.setNavigationProcessor(navigationProcessor);
+
+		INavigationNode<?> parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		assertNull(parent);
+
+		node.activate();
+		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		assertSame(moduleNode, parent);
+
+		node.deactivate(null);
+		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		assertSame(moduleNode, parent);
+
+		moduleNode.deactivate(null);
+		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		assertSame(moduleGroupNode, parent);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getActiveChild}.
+	 */
+	public void testGetActiveChild() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		TestSubModuleNode node = new TestSubModuleNode(id);
+
+		id = new NavigationNodeId("0815");
+		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		node.addChild(node2);
+
+		id = new NavigationNodeId("m1");
+		ModuleNode moduleNode = new ModuleNode(id);
+		moduleNode.addChild(node);
+
+		id = new NavigationNodeId("m2");
+		ModuleNode moduleNode2 = new ModuleNode(id);
+
+		id = new NavigationNodeId("mg1");
+		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		moduleGroupNode.addChild(moduleNode);
+		moduleGroupNode.addChild(moduleNode2);
+		moduleGroupNode.setNavigationProcessor(navigationProcessor);
+
+		INavigationNode<?> child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		assertNull(child);
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		assertNull(child);
+
+		node.setSelected(true);
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		assertNull(child);
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		assertNull(child);
+
+		node.activate();
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		assertNull(child);
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		assertSame(node, child);
+
+		node2.setSelected(true);
+		node2.activate();
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		assertNull(child);
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		assertSame(node2, child);
+
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleGroupNode);
+		assertSame(moduleNode, child);
+
+	}
+
+	private class TestSubModuleNode extends SubModuleNode {
+
+		private boolean allowsActivate;
+		private boolean allowsDeactivate;
+		private boolean allowsDispose;
+
+		public TestSubModuleNode(NavigationNodeId nodeId) {
+			super(nodeId);
+			allowsActivate = true;
+			allowsDeactivate = true;
+			allowsDispose = true;
+		}
+
+		@Override
+		public boolean allowsActivate(INavigationContext context) {
+			return allowsActivate;
+		}
+
+		@Override
+		public boolean allowsDeactivate(INavigationContext context) {
+			return allowsDeactivate;
+		}
+
+		@Override
+		public boolean allowsDispose(INavigationContext context) {
+			return allowsDispose;
+		}
+
+		public void setAllowsActivate(boolean allowsActivate) {
+			this.allowsActivate = allowsActivate;
+		}
+
+		public void setAllowsDeactivate(boolean allowsDeactivate) {
+			this.allowsDeactivate = allowsDeactivate;
+		}
+
+		public void setAllowsDispose(boolean allowsDispose) {
+			this.allowsDispose = allowsDispose;
+		}
+
 	}
 
 }
