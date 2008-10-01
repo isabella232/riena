@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Ridget decimal text fields.
+ * Ridget for decimal text fields.
  * 
  * On the view-side we have to use the appropriate control-creation method of
  * the UIControlsFactory (see UIControlsFactory.createTextDecimal() /
