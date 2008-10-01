@@ -49,6 +49,8 @@ public interface IDecimalValueTextFieldRidget extends INumericValueTextFieldRidg
 	 * grouping-separators ( the dots between "1.034.235.123" ) has to be taken
 	 * into account.
 	 * 
+	 * TODO [ev] update javadoc - the grouping/comma separator do not count
+	 * 
 	 * @param maxLength
 	 */
 	void setMaxLength(int maxLength);
