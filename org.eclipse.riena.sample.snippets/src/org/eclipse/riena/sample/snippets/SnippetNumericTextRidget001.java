@@ -15,10 +15,12 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
+import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -27,9 +29,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Demonstrates how to use a {@link INumericValueTextFieldRidget} using the
- * group separator for the current locale (enabled by default) and sign prefix
- * (enabled by default).
+ * Demonstrates how to use a {@link INumericValueTextFieldRidget} with a
+ * {@link MaxNumberLength} validation rule.
  */
 public final class SnippetNumericTextRidget001 {
 
@@ -51,6 +52,7 @@ public final class SnippetNumericTextRidget001 {
 			INumericValueTextFieldRidget rInput = (INumericValueTextFieldRidget) SwtRidgetFactory
 					.createRidget(txtInput);
 			rInput.setDirectWriting(true);
+			rInput.addValidationRule(new MaxNumberLength(9), ValidationTime.ON_UI_CONTROL_EDIT);
 
 			ITextFieldRidget rOutput = (ITextFieldRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
