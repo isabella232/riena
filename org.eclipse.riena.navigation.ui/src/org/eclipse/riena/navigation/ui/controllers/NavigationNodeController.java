@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -20,6 +23,8 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
 import org.eclipse.riena.ui.core.resource.internal.IconSize;
@@ -39,6 +44,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	private N navigationNode;
 	private Map<String, IRidget> ridgets;
 	private NavigationUIFilterApplier<N> nodeListener;
+	private PropertyChangeListener propertyChangeListener;
 
 	/**
 	 * Create a new Navigation Node view Controller. Set the navigation node
@@ -59,6 +65,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	public NavigationNodeController(N navigationNode) {
 
 		ridgets = new HashMap<String, IRidget>();
+		propertyChangeListener = new PropertyChangeHandler();
 		nodeListener = new NavigationUIFilterApplier<N>();
 
 		if (navigationNode != null) {
@@ -148,6 +155,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 *      org.eclipse.riena.ui.ridgets.IRidget)
 	 */
 	public void addRidget(String id, IRidget ridget) {
+		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
 
@@ -188,7 +196,18 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	protected void updateNavigationNodeMarkers() {
-		// getNavigationNode().removeAllMarkers();
+		getNavigationNode().removeAllMarkers();
+		for (IMarker marker : getRidgetMarkers()) {
+			if ((marker instanceof ErrorMarker) || (marker instanceof MandatoryMarker)) {
+				getNavigationNode().addMarker(marker);
+			}
+		}
+	}
+
+	private Collection<IMarker> getRidgetMarkers() {
+		Collection<IMarker> combinedMarkers = new HashSet<IMarker>();
+		addRidgetMarkers(this, combinedMarkers);
+		return combinedMarkers;
 	}
 
 	protected void updateIcon(IWindowRidget windowRidget) {
@@ -227,6 +246,12 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			return null;
 		} else {
 			return (NavigationNodeController<?>) navigationNode.getParent().getNavigationNodeController();
+		}
+	}
+
+	private class PropertyChangeHandler implements PropertyChangeListener {
+		public void propertyChange(PropertyChangeEvent evt) {
+			updateNavigationNodeMarkers();
 		}
 	}
 
