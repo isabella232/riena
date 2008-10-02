@@ -23,16 +23,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
 import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.io.AbstractDeserializer;
@@ -53,7 +51,8 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 
 	private SerializerFactory serializerFactory = null;
 
-	private final static Logger LOGGER = new ConsoleLogger(HessianRienaDispatcherServlet.class.getName());
+	private final static Logger LOGGER = Activator.getDefault()
+			.getLogger(HessianRienaDispatcherServlet.class.getName());
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
