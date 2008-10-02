@@ -15,7 +15,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.filter.AbstractUIFilterMarkerAttribute;
 
 /**
- *
+ * Filter attribute to provide a marker for a node of the navigation.
  */
 public abstract class AbstractNavigationUIFilterMarkerAttribute extends AbstractUIFilterMarkerAttribute {
 

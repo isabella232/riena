@@ -8,24 +8,21 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- *
+ * Tests all test cases within package:
+ * <code>org.eclipse.riena.internal.navigation.ui.filter</code>
  */
-public class AllTests {
+public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.swt.views");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
-		suite.addTestSuite(ApplicationViewAdvisorTest.class);
-		suite.addTestSuite(SubModuleViewTest.class);
-		suite.addTestSuite(ModuleGroupViewTest.class);
-		//$JUnit-END$
+		TestSuite suite = new TestSuite(AllTests.class.getName());
+		suite.addTestSuite(AbstractNavigationUIFilterMarkerAttributeTest.class);
 		return suite;
 	}
 
