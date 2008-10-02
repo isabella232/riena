@@ -530,5 +530,17 @@
             typeId="org.eclipse.riena.example.filternavigation"
             view="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView">
       </subModule>
+   </extension>
+   <extension
+         id="example_product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.riena.example.client.application"
+            name="Riena Example">
+         <property
+               name="appName"
+               value="Riena Example">
+         </property>
+      </product>
    </extension> 
 </plugin>
