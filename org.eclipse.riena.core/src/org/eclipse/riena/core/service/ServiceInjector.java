@@ -17,13 +17,16 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.ConsoleLogger;
+import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.service.log.LogService;
 
 /**
@@ -45,16 +48,21 @@ public abstract class ServiceInjector {
 
 	private final ServiceDescriptor serviceDesc;
 	private final Object target;
-	private BundleContext context = null;
+	private BundleContext context;
 	private String filter;
-	private String bindMethodName = null;
-	private List<Method> bindMethodProspects = null;
-	private String unbindMethodName = null;
-	private List<Method> unbindMethodProspects = null;
-	private boolean started = false;
+	private String bindMethodName;
+	private List<Method> bindMethodProspects;
+	private String unbindMethodName;
+	private List<Method> unbindMethodProspects;
+	private State state;
 	private ServiceListener serviceListener;
+	private BundleListener bundleListener;
 
-	private final static Logger LOGGER = new ConsoleLogger(ServiceInjector.class.getName());
+	private enum State {
+		INITIAL, STARTING, STARTED, STOPPING, STOPPED
+	};
+
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ServiceInjector.class.getName());
 
 	/**
 	 * Constructor for the <code>injectInto()</code> of
@@ -64,6 +72,7 @@ public abstract class ServiceInjector {
 	 * @param target
 	 */
 	ServiceInjector(final ServiceDescriptor serviceDesc, final Object target) {
+		this.state = State.INITIAL;
 		this.serviceDesc = serviceDesc;
 		this.target = target;
 		StringBuilder bob = new StringBuilder().append("(").append(Constants.OBJECTCLASS).append("=").append( //$NON-NLS-1$ //$NON-NLS-2$
@@ -83,7 +92,7 @@ public abstract class ServiceInjector {
 	 * before returning from this method.
 	 * 
 	 * @throws some_kind_of_unchecked_exception
-	 *             if injector has already been started.
+	 *             if injector has already been started or stopped.
 	 * @throws some_kind_of_unchecked_exception
 	 *             if the bind/un-bind methods are wrong
 	 * @param context
@@ -91,8 +100,8 @@ public abstract class ServiceInjector {
 	 */
 	public ServiceInjector andStart(final BundleContext context) {
 		Assert.isNotNull(context, "Bundle context must be not null."); //$NON-NLS-1$
-		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
-		started = true;
+		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
+		this.state = State.STARTING;
 		this.context = context;
 		if (bindMethodName == null) {
 			bindMethodName = DEFAULT_BIND_METHOD_NAME;
@@ -106,8 +115,9 @@ public abstract class ServiceInjector {
 		doStart();
 		// for sure
 		registerServiceListener();
+		registerBundleListener();
 
-		started = true;
+		state = State.STARTED;
 		return this;
 	}
 
@@ -123,15 +133,17 @@ public abstract class ServiceInjector {
 	 * All prior bound services will be unbound before returning from this
 	 * method.
 	 */
-	public void stop() {
-		if (!started) {
+	public synchronized void stop() {
+		if (state != State.STARTED) {
 			return;
 		}
+		state = State.STOPPING;
+		unregisterBundleListener();
 		unregisterServiceListener();
 		doStop();
 		bindMethodProspects = null;
 		unbindMethodProspects = null;
-		started = false;
+		state = State.STOPPED;
 	}
 
 	/**
@@ -145,12 +157,12 @@ public abstract class ServiceInjector {
 	 * {@link #DEFAULT_BIND_METHOD_NAME} will be used.
 	 * 
 	 * @throws some_kind_of_unchecked_exception
-	 *             if the the injector had already been started
+	 *             if injector has already been started or stopped.
 	 * @param bindMethodName
 	 * @return this injector
 	 */
 	public ServiceInjector bind(String bindMethodName) {
-		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
+		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
 		this.bindMethodName = bindMethodName;
 		return this;
 	}
@@ -160,12 +172,12 @@ public abstract class ServiceInjector {
 	 * {@link #DEFAULT_UNBIND_METHOD_NAME} will be used.
 	 * 
 	 * @throws some_kind_of_unchecked_exception
-	 *             if the the injector had already been started
+	 *             if injector has already been started or stopped.
 	 * @param unbindMethodName
 	 * @return this injector
 	 */
 	public synchronized ServiceInjector unbind(final String unbindMethodName) {
-		Assert.isTrue(!started, "ServiceInjector already started!"); //$NON-NLS-1$
+		Assert.isTrue(state == State.INITIAL, "ServiceInjector already started or stopped!"); //$NON-NLS-1$
 		this.unbindMethodName = unbindMethodName;
 		return this;
 	}
@@ -195,7 +207,26 @@ public abstract class ServiceInjector {
 			return;
 		}
 		context.removeServiceListener(serviceListener);
-		serviceListener = null;
+	}
+
+	/**
+	 * 
+	 */
+	private void registerBundleListener() {
+		if (bundleListener == null) {
+			bundleListener = new InjectorBundleListener();
+		}
+		context.addBundleListener(bundleListener);
+	}
+
+	/**
+	 * 
+	 */
+	private void unregisterBundleListener() {
+		if (bundleListener != null) {
+			context.removeBundleListener(bundleListener);
+			bundleListener = null;
+		}
 	}
 
 	private List<Method> collectMethods(final String message, final String methodName) {
@@ -366,6 +397,20 @@ public abstract class ServiceInjector {
 			int eventType = event.getType();
 			if (eventType == ServiceEvent.REGISTERED || eventType == ServiceEvent.UNREGISTERING) {
 				handleEvent(event);
+			}
+		}
+	}
+
+	/**
+	 * The bundle listener for this injector.
+	 */
+	class InjectorBundleListener implements SynchronousBundleListener {
+		public void bundleChanged(BundleEvent event) {
+			if (event.getBundle() != context.getBundle()) {
+				return;
+			}
+			if (event.getType() == BundleEvent.STOPPING) {
+				stop();
 			}
 		}
 	}
