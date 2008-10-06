@@ -24,8 +24,10 @@ import org.osgi.framework.Constants;
  * was registered or modified. ServiceInjector calls the unbind method when the
  * specified service becomes unregistered.
  * <p>
- * The service injector tracks the specified OSGi Service with {@link #start()}
- * and stops tracking with {@link #stop()}.
+ * The service injector tracks the specified OSGi Service with
+ * {@link #andStart()} and stops tracking with {@link #stop()}. If a bundle
+ * associated with a service injector {@link #andStart()} gets stopped all bound
+ * services will be unbound.
  * <p>
  * The ServiceDescriptor and ServiceInjector are implemented as a ´fluent
  * interface´ allowing constructs like:
@@ -48,7 +50,7 @@ import org.osgi.framework.Constants;
  * <code>useRanking</code> and/or by specifying a filter expression with
  * <code>userFilter("filter")</code>.
  * <p>
- * The bind and un-bind method that get called by the injector can be
+ * The bind and unbind method that get called by the injector can be
  * polymorphic, i.e. the target can have multiple bind/un-bind methods with the
  * same name but with different signatures. The injector takes responsibility
  * for choosing the appropriate bind/unbind methods.
