@@ -13,10 +13,6 @@ package org.eclipse.riena.example.client.controllers;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -41,6 +37,11 @@ import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+
 /**
  * Controller for the {@link TextSubModuleView} example.
  */
@@ -56,7 +57,7 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		final ITextFieldRidget textPrice = (ITextFieldRidget) getRidget("textPrice"); //$NON-NLS-1$
 		textPrice.addMarker(new NegativeMarker());
-		textPrice.setText("-29,99"); //$NON-NLS-1$
+		// commented out since NumericTextFieldRidget currently does not do setText TODO remove comment		textPrice.setText("-29,99"); //$NON-NLS-1$
 
 		final IComboBoxRidget comboAge = (IComboBoxRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
