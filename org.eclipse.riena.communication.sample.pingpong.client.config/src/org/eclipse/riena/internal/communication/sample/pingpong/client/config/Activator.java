@@ -49,7 +49,7 @@ public class Activator implements BundleActivator {
 		String url = "http://${riena.hostname}/hessian/PingPongWS"; //$NON-NLS-1$
 		String protocol = "hessian"; //$NON-NLS-1$
 
-		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, "de.compeople.pingpong.config"); //$NON-NLS-1$
+		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol); //$NON-NLS-1$
 
 		// register xfire proxy for nyote remote service
 		// url = "http://${localhost}/xfire/PingPongXFireWS";

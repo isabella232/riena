@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ManagedService;
 
 /**
  * A IRemoteServiceReference holds a representation of a remote OSGi Service. A
@@ -92,32 +91,6 @@ public interface IRemoteServiceReference {
 	 * @param serviceRegistration
 	 */
 	void setServiceRegistration(ServiceRegistration serviceRegistration);
-
-	/**
-	 * @return the service instance of the ManagedService that can configure
-	 *         this remote service reference (null if there is no such
-	 *         ManagedService)
-	 */
-	ManagedService getConfigServiceInstance();
-
-	/**
-	 * @param configServiceInstance
-	 *            Service Instance of the ManagedService that can handle this
-	 *            remote service reference
-	 */
-	void setConfigServiceInstance(ManagedService configServiceInstance);
-
-	/**
-	 * @param configServiceRegistration
-	 *            the ServiceRegistration instance of the registered
-	 *            ManagedService
-	 */
-	void setConfigServiceRegistration(ServiceRegistration configServiceRegistration);
-
-	/**
-	 * @return the ServiceRegistration instance of the ManagedService
-	 */
-	ServiceRegistration getConfigServiceRegistration();
 
 	/**
 	 * Sets the hostId who is responsible for this remote service object

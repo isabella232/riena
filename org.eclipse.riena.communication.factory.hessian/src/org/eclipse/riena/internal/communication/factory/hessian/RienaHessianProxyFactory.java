@@ -15,24 +15,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 
 import org.eclipse.equinox.log.Logger;
-import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ManagedService;
-import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractDeserializer;
@@ -40,10 +34,9 @@ import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.SerializerFactory;
 
-public class RienaHessianProxyFactory extends HessianProxyFactory implements ManagedService {
+public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	private ICallMessageContextAccessor mca;
-	private URL url;
 
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
 	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianProxyFactory.class.getName());
@@ -63,11 +56,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 	@Override
 	protected URLConnection openConnection(URL url) throws IOException {
 		URLConnection connection;
-		if (this.url != null) {
-			connection = super.openConnection(this.url);
-		} else {
-			connection = super.openConnection(url);
-		}
+		connection = super.openConnection(url);
 		ICallMessageContext mc = mca.getMessageContext();
 		Map<String, List<String>> headers = mc.listRequestHeaders();
 		if (headers != null) {
@@ -142,22 +131,6 @@ public class RienaHessianProxyFactory extends HessianProxyFactory implements Man
 
 	protected static HttpURLConnection getHttpURLConnection() {
 		return CONNECTIONS.get();
-	}
-
-	@SuppressWarnings("unchecked")
-	public void updated(Dictionary properties) throws ConfigurationException {
-		if (properties == null)
-			return;
-		String urlStr = (String) properties.get(RSDPublisherProperties.PROP_REMOTE_PATH);
-		if (urlStr == null)
-			return;
-
-		try {
-			this.url = new URL(urlStr);
-		} catch (MalformedURLException e) {
-			LOGGER.log(LogService.LOG_ERROR, "invalid url " + urlStr, e); //$NON-NLS-1$
-		}
-
 	}
 
 	static class SpecificInputStreamDeserializer extends AbstractDeserializer {

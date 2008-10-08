@@ -30,7 +30,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
 /**
@@ -112,12 +111,10 @@ public class RemoteServiceFactory {
 	 * @param interfaceClass
 	 * @param url
 	 * @param protocol
-	 * @param configid
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
-			String configid) {
-		return createAndRegisterProxy(interfaceClass, url, protocol, configid, HOST_ID);
+	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol) {
+		return createAndRegisterProxy(interfaceClass, url, protocol, HOST_ID);
 	}
 
 	/**
@@ -134,13 +131,12 @@ public class RemoteServiceFactory {
 	 * @param interfaceClass
 	 * @param url
 	 * @param protocol
-	 * @param configid
 	 * @param hostId
 	 * @return the registration object or <code>null</code>
 	 */
 	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
-			String configid, String hostId) {
-		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol, configid);
+			String hostId) {
+		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
 		return createAndRegisterProxy(rsd);
 	}
 
@@ -205,22 +201,19 @@ public class RemoteServiceFactory {
 	 * @param interfaceClass
 	 * @param url
 	 * @param protocol
-	 * @param configid
 	 * @return the serviceInstance references or <code>null</code>
 	 */
-	public IRemoteServiceReference createProxy(Class<?> interfaceClass, String url, String protocol, String configid) {
-		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol, configid);
+	public IRemoteServiceReference createProxy(Class<?> interfaceClass, String url, String protocol) {
+		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
 		return createProxy(rsd);
 	}
 
-	private RemoteServiceDescription createDescription(Class<?> interfaceClass, String url, String protocol,
-			String configid) {
+	private RemoteServiceDescription createDescription(Class<?> interfaceClass, String url, String protocol) {
 		RemoteServiceDescription rsd = new RemoteServiceDescription();
 		rsd.setServiceInterfaceClass(interfaceClass);
 		rsd.setServiceInterfaceClassName(interfaceClass.getName());
 		rsd.setURL(url);
 		rsd.setProtocol(protocol);
-		rsd.setConfigPID(configid);
 		return rsd;
 	}
 
@@ -426,20 +419,6 @@ public class RemoteServiceFactory {
 			}
 		}
 
-		public ManagedService getConfigServiceInstance() {
-			if (delegateReference == null) {
-				return null;
-			}
-			return delegateReference.getConfigServiceInstance();
-		}
-
-		public ServiceRegistration getConfigServiceRegistration() {
-			if (delegateReference == null) {
-				return null;
-			}
-			return delegateReference.getConfigServiceRegistration();
-		}
-
 		public RemoteServiceDescription getDescription() {
 			if (delegateReference == null) {
 				return rsd;
@@ -485,24 +464,6 @@ public class RemoteServiceFactory {
 				return delegateReference.hashCode();
 			} else {
 				return this.getClass().hashCode();
-			}
-		}
-
-		public void setConfigServiceInstance(ManagedService configServiceInstance) {
-			if (delegateReference != null) {
-				delegateReference.setConfigServiceInstance(configServiceInstance);
-			} else {
-				throw new RuntimeException(
-						"trying to set configServiceInstance a lazy service that wasnt instantiated yet, delegate not set");
-			}
-		}
-
-		public void setConfigServiceRegistration(ServiceRegistration configServiceRegistration) {
-			if (delegateReference != null) {
-				delegateReference.setConfigServiceRegistration(configServiceRegistration);
-			} else {
-				throw new RuntimeException(
-						"trying to set configServiceRegistration a lazy service that wasnt instantiated yet, delegate not set");
 			}
 		}
 

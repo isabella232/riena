@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_CONFIG_ID;
 import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PATH;
 import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.PROP_REMOTE_PROTOCOL;
 
@@ -21,6 +20,7 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
+
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 
@@ -73,7 +73,6 @@ public class RemoteServiceDescription {
 	private String url;
 	private String protocol;
 	private Map<String, Object> properties = new HashMap<String, Object>();
-	private String configid;
 
 	/**
 	 * Create a instance of a RemoteServiceDescription
@@ -105,8 +104,6 @@ public class RemoteServiceDescription {
 				protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
 			} else if (key.equals(PROP_REMOTE_PATH)) {
 				path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
-			} else if (key.equals(PROP_CONFIG_ID)) {
-				configid = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_CONFIG_ID), null);
 			} else {
 				setProperty(key, CommunicationUtil.accessProperty(serviceRef.getProperty(key), null));
 			}
@@ -290,14 +287,6 @@ public class RemoteServiceDescription {
 	 */
 	public void setURL(String url) {
 		this.url = url;
-	}
-
-	public String getConfigPID() {
-		return configid;
-	}
-
-	public void setConfigPID(String configid) {
-		this.configid = configid;
 	}
 
 	/**

@@ -12,8 +12,8 @@ package org.eclipse.riena.communication.core.factory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ManagedService;
 
 /**
  * This is a default implementation of {@link IRemoteServiceReference}.
@@ -24,8 +24,6 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	private Object serviceInstance;
 	private ServiceRegistration serviceRegistration;
 	private RemoteServiceDescription description;
-	private ManagedService configServiceInstance;
-	private ServiceRegistration configServiceRegistration;
 	private String hostId;
 
 	/**
@@ -40,7 +38,8 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getHostId()
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceReference#getHostId()
 	 */
 	public String getHostId() {
 		return hostId;
@@ -49,7 +48,8 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getURL()
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceReference#getURL()
 	 */
 	public String getURL() {
 		return description.getURL();
@@ -58,7 +58,8 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getServiceRegistration()
+	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceReference#
+	 * getServiceRegistration()
 	 */
 	public ServiceRegistration getServiceRegistration() {
 		return serviceRegistration;
@@ -67,7 +68,8 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#setServiceRegistration(org.osgi.framework.ServiceRegistration)
+	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceReference#
+	 * setServiceRegistration(org.osgi.framework.ServiceRegistration)
 	 */
 	public void setServiceRegistration(ServiceRegistration serviceRegistration) {
 		this.serviceRegistration = serviceRegistration;
@@ -93,7 +95,9 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getDescription()
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceReference#getDescription
+	 * ()
 	 */
 	public RemoteServiceDescription getDescription() {
 		return description;
@@ -114,7 +118,8 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getServiceInterfaceClassName()
+	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceReference#
+	 * getServiceInterfaceClassName()
 	 */
 	public String getServiceInterfaceClassName() {
 		return description.getServiceInterfaceClassName();
@@ -123,46 +128,12 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#setHostId(java.lang.String)
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceReference#setHostId
+	 * (java.lang.String)
 	 */
 	public void setHostId(String hostId) {
 		this.hostId = hostId;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getConfigServiceInstance()
-	 */
-	public ManagedService getConfigServiceInstance() {
-		return configServiceInstance;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#setConfigServiceInstance(org.osgi.service.cm.ManagedService)
-	 */
-	public void setConfigServiceInstance(ManagedService configServiceInstance) {
-		this.configServiceInstance = configServiceInstance;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#getConfigServiceRegistration()
-	 */
-	public ServiceRegistration getConfigServiceRegistration() {
-		return configServiceRegistration;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.communication.core.IRemoteServiceReference#setConfigServiceRegistration(org.osgi.framework.ServiceRegistration)
-	 */
-	public void setConfigServiceRegistration(ServiceRegistration configServiceRegistration) {
-		this.configServiceRegistration = configServiceRegistration;
 	}
 
 	@Override

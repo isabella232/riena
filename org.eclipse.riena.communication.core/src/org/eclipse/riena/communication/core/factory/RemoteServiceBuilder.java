@@ -87,7 +87,7 @@ public class RemoteServiceBuilder {
 			String protocol = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PROTOCOL);
 
 			RemoteServiceFactory factory = new RemoteServiceFactory();
-			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, null, HOST_ID);
+			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, HOST_ID);
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

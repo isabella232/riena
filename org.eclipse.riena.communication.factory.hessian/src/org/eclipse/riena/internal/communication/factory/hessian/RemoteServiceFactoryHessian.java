@@ -67,11 +67,6 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			// inject progressmonitor registry into THIS
 			Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
 					Activator.getDefault().getContext());
-			// the hessian proxy factory also implements ManagedService
-			if (endpoint.getConfigPID() != null) {
-				serviceReference.setConfigServiceInstance(mhpf);
-				serviceReference.getDescription().setConfigPID(endpoint.getConfigPID());
-			}
 			return serviceReference;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("MalformedURLException", e); //$NON-NLS-1$

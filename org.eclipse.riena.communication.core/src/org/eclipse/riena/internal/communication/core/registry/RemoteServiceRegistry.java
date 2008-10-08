@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.communication.core.registry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -24,11 +23,7 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.internal.communication.core.Activator;
 
 import org.eclipse.equinox.log.Logger;
-import org.osgi.framework.Constants;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 
 /**
@@ -66,23 +61,6 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 */
 	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference) {
 
-		String pid = reference.getDescription().getConfigPID();
-		if (pid != null && pid.length() > 0) {
-			ServiceReference[] refs;
-			try {
-				refs = Activator.getDefault().getContext().getServiceReferences(ManagedService.class.getName(),
-						"(" + Constants.SERVICE_PID + "=" + pid + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				if (refs != null && refs.length > 0) {
-					LOGGER.log(LogService.LOG_ERROR, "duplicate configuration " + Constants.SERVICE_PID + " = " //$NON-NLS-1$ //$NON-NLS-2$
-							+ reference.getDescription().getConfigPID() + " for service " //$NON-NLS-1$
-							+ reference.getServiceInterfaceClassName() + " service is set to NOT configurable"); //$NON-NLS-1$
-					pid = null;
-				}
-			} catch (InvalidSyntaxException e) {
-				e.printStackTrace();
-			}
-		}
-
 		String url = reference.getDescription().getURL();
 		synchronized (registeredServices) {
 			IRemoteServiceRegistration foundRemoteServiceReg = registeredServices.get(url);
@@ -94,13 +72,6 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 				ServiceRegistration serviceRegistration = Activator.getDefault().getContext().registerService(
 						reference.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
 				reference.setServiceRegistration(serviceRegistration);
-
-				if (reference.getConfigServiceInstance() != null && pid != null) {
-					Hashtable<String, String> ht = new Hashtable<String, String>();
-					ht.put(Constants.SERVICE_PID, pid);
-					reference.setConfigServiceRegistration(Activator.getDefault().getContext().registerService(
-							ManagedService.class.getName(), reference.getConfigServiceInstance(), ht));
-				}
 
 				RemoteServiceRegistration remoteServiceReg = new RemoteServiceRegistration(reference, this);
 				registeredServices.put(url, remoteServiceReg);
@@ -130,9 +101,6 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 		synchronized (registeredServices) {
 			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
 			serviceRegistration.unregister();
-			if (reference.getConfigServiceRegistration() != null) {
-				reference.getConfigServiceRegistration().unregister();
-			}
 			String id = reference.getServiceInterfaceClassName();
 			registeredServices.remove(reference.getURL());
 			reference.dispose();
