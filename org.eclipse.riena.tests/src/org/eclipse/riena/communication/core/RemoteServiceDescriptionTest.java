@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core;
 
-import org.easymock.EasyMock;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
+
+import org.easymock.EasyMock;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 
@@ -25,7 +26,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 	public void testDefaultCreation() {
 		RemoteServiceDescription rsd = new RemoteServiceDescription();
 		assertNull(rsd.getBundleName());
-		assertNull(rsd.getConfigPID());
 		assertNull(rsd.getPath());
 		assertNull(rsd.getProperty(""));
 		assertNull(rsd.getProtocol());
@@ -51,7 +51,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getProperty(""));
 		assertNotNull(rsd.getBundleName());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-		assertNull(rsd.getConfigPID());
 		assertNull(rsd.getPath());
 		assertNull(rsd.getProtocol());
 		assertTrue(service == rsd.getService());
@@ -77,7 +76,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getProperty(""));
 		assertNotNull(rsd.getBundleName());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-		assertNull(rsd.getConfigPID());
 		assertNull(rsd.getPath());
 		assertEquals("https", rsd.getProtocol());
 		assertTrue(service == rsd.getService());
@@ -103,7 +101,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getProperty(""));
 		assertNotNull(rsd.getBundleName());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-		assertNull(rsd.getConfigPID());
 		assertEquals("/server/here", rsd.getPath());
 		assertNull(rsd.getProtocol());
 		assertTrue(service == rsd.getService());
@@ -129,7 +126,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertNull(rsd.getProperty(""));
 		assertNotNull(rsd.getBundleName());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-		assertEquals("org.eclipse.riena.configid", rsd.getConfigPID());
 		assertNull(rsd.getPath());
 		assertNull(rsd.getProtocol());
 		assertTrue(service == rsd.getService());
@@ -156,7 +152,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertEquals("42", rsd.getProperty("the Answer to Life, the Universe, and Everything"));
 		assertNotNull(rsd.getBundleName());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-		assertNull(rsd.getConfigPID());
 		assertNull(rsd.getPath());
 		assertNull(rsd.getProtocol());
 		assertTrue(service == rsd.getService());
@@ -189,7 +184,6 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 		assertEquals("42", rsd.getProperty("the Answer to Life, the Universe, and Everything"));
 		assertNotNull(rsd.getBundleName());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-		assertEquals("org.eclipse.riena.configid", rsd.getConfigPID());
 		assertEquals("/server/here", rsd.getPath());
 		assertEquals("https", rsd.getProtocol());
 		assertTrue(service == rsd.getService());
