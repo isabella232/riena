@@ -276,7 +276,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		Table table = getUIControl();
 		if (table != null) {
 			int sortDirection = table.getSortDirection();
-			result = (sortDirection == SWT.DOWN);
+			result = (sortDirection == SWT.UP);
 		}
 		return result;
 	}
@@ -385,7 +385,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			if (compi != null) {
 				TableColumn column = table.getColumn(sortedColumn);
 				table.setSortColumn(column);
-				int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
+				int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
 				table.setSortDirection(direction);
 				SortableComparator sortableComparator = new SortableComparator(this, compi);
 				viewer.setComparator(new TableComparator(sortableComparator));
@@ -511,9 +511,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			int columnIndex = column.getParent().indexOf(column);
 			int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
-				if (direction == SWT.DOWN) {
+				if (direction == SWT.UP) {
 					setSortedAscending(false);
-				} else if (direction == SWT.UP) {
+				} else if (direction == SWT.DOWN) {
 					setSortedColumn(-1);
 				}
 			} else if (isColumnSortable(columnIndex)) {

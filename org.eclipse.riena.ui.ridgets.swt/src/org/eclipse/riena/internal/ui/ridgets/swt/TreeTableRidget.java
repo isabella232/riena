@@ -136,7 +136,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 		Tree tree = getUIControl();
 		if (tree != null) {
 			int sortDirection = tree.getSortDirection();
-			result = (sortDirection == SWT.DOWN);
+			result = (sortDirection == SWT.UP);
 		}
 		return result;
 	}
@@ -205,7 +205,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 				if (compi != null) {
 					TreeColumn column = tree.getColumn(sortedColumn);
 					tree.setSortColumn(column);
-					int direction = isSortedAscending ? SWT.DOWN : SWT.UP;
+					int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
 					tree.setSortDirection(direction);
 					SortableComparator sortableComparator = new SortableComparator(this, compi);
 					viewer.setComparator(new ViewerComparator(sortableComparator));
@@ -260,9 +260,9 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			int columnIndex = column.getParent().indexOf(column);
 			int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
-				if (direction == SWT.DOWN) {
+				if (direction == SWT.UP) {
 					setSortedAscending(false);
-				} else if (direction == SWT.UP) {
+				} else if (direction == SWT.DOWN) {
 					setSortedColumn(-1);
 				}
 			} else if (isColumnSortable(columnIndex)) {
