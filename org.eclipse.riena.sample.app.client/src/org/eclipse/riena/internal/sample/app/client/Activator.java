@@ -49,12 +49,10 @@ public class Activator extends AbstractRienaUIPlugin {
 
 		// register hessian proxy for riena remote service
 		helloWorldServiceReg = new RemoteServiceFactory().createAndRegisterProxy(IHelloWorldService.class,
-				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian",
-				"de.compeople.scp.sample.app.client.config");
+				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian");
 
 		customerSearchService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian",
-				"de.compeople.scp.sample.app.client.config");
+				"http://localhost:8080/hessian/CustomerSearchWS", "hessian");
 
 	}
 
