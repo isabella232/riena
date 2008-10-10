@@ -76,8 +76,8 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	 * xeval.rcplabs.hessianx.server.IWebServicePublisher#unpublishService(java
 	 * .lang.String)
 	 */
-	public synchronized void unpublishService(String path) {
-		RemoteServiceDescription rsd = webServiceDescriptions.remove(SERVLET_PATH + path);
+	public synchronized void unpublishService(RemoteServiceDescription rsd) {
+		webServiceDescriptions.remove(SERVLET_PATH + rsd.getPath());
 		LOGGER.log(LogService.LOG_DEBUG, "unpublished web service. " + rsd); //$NON-NLS-1$
 		LOGGER.log(LogService.LOG_DEBUG, "web service count: " + webServiceDescriptions.size()); //$NON-NLS-1$
 	}

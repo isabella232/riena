@@ -18,12 +18,13 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
@@ -218,7 +219,7 @@ public class ServicePublishEventDispatcher implements IServicePublishEventDispat
 			return;
 		}
 
-		publisher.unpublishService(rsDesc.getPath());
+		publisher.unpublishService(rsDesc);
 
 		rsDesc.setState(RemoteServiceDescription.State.UNREGISTERED);
 	}
