@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapperTest;
+import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidgetTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResourceTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManagerTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRendererTest;
@@ -54,6 +55,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
 		suite.addTestSuite(AbstractViewBindingDelegateTest.class);
 		suite.addTestSuite(SubApplicationSwitcherRendererTest.class);
+		suite.addTestSuite(SubApplicationSwitcherWidgetTest.class);
 		return suite;
 	}
 

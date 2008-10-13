@@ -17,6 +17,8 @@ import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -48,15 +50,15 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 *            instance
 	 * @param style
 	 *            - the style of control to construct
-	 * @param applicationModel
-	 *            - the model of the application
+	 * @param application
+	 *            - the node of the application
 	 */
-	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationNode applicationModel) {
+	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationNode application) {
 
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		control = this;
 		items = new ArrayList<SubApplicationItem>();
-		registerItems(applicationModel);
+		registerItems(application);
 
 		addListeners();
 
@@ -114,7 +116,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		public void mouseDown(MouseEvent e) {
 
 			SubApplicationItem item = getItem(new Point(e.x, e.y));
-			if (item != null) {
+			if (isTabEnabled(item)) {
 				item.getSubApplicationNode().activate();
 				redraw();
 			}
@@ -139,6 +141,29 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		}
 
 		return null;
+
+	}
+
+	/**
+	 * Returns whether the given item is enabled and also visible.
+	 * 
+	 * @param item
+	 *            - sub-application item
+	 * @return {@code true} if item is enabled and visible; otherwise false.
+	 */
+	private boolean isTabEnabled(SubApplicationItem item) {
+
+		if (item == null) {
+			return false;
+		}
+		if (!item.getMarkersOfType(HiddenMarker.class).isEmpty()) {
+			return false;
+		}
+		if (!item.getMarkersOfType(DisabledMarker.class).isEmpty()) {
+			return false;
+		}
+
+		return true;
 
 	}
 
