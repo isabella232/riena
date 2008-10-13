@@ -131,4 +131,15 @@ public class SubApplicationItem {
 		return getSubApplicationNode().getMarkers();
 	}
 
+	/**
+	 * Returns all markers corresponding to a certain type.
+	 * 
+	 * @param type
+	 *            the type of markers.
+	 * @return markers corresponding to a certain type.
+	 */
+	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+		return getSubApplicationNode().getMarkersOfType(type);
+	}
+
 }

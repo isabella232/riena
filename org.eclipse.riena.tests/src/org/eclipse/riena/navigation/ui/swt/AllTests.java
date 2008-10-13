@@ -19,6 +19,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResourceTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManagerTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRendererTest;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRendererTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRendererTest;
 import org.eclipse.riena.navigation.ui.swt.viewprovider.SwtViewIdTest;
 import org.eclipse.riena.navigation.ui.swt.views.AbstractViewBindingDelegateTest;
@@ -52,6 +53,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ApplicationViewAdvisorTest.class);
 		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
 		suite.addTestSuite(AbstractViewBindingDelegateTest.class);
+		suite.addTestSuite(SubApplicationSwitcherRendererTest.class);
 		return suite;
 	}
 

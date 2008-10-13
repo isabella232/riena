@@ -110,6 +110,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_BACKGROUND, getPrimaryBackground());
 
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND, getPrimaryForeground());
+		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(64, 132, 191));
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(255,

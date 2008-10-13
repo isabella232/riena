@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -51,7 +52,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		// calculate width of all tab items
 		int allTabWidth = 0;
-		for (SubApplicationItem item : getItems()) {
+		for (SubApplicationItem item : getVisibleItems()) {
 			tabRenderer.setLabel(item.getLabel());
 			tabRenderer.setActivated(item.isActivated());
 			Point size = tabRenderer.computeSize(gc, null);
@@ -78,7 +79,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 			xPosition = getBounds().width / 2 - allTabWidth / 2;
 		}
 		x = xPosition;
-		for (SubApplicationItem item : getItems()) {
+		for (SubApplicationItem item : getVisibleItems()) {
 			initItemRenderer(tabRenderer, item);
 			Point size = tabRenderer.computeSize(gc, null);
 			y = getBounds().height - size.y;
@@ -92,7 +93,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		// active tab item
 		x = xPosition;
-		for (SubApplicationItem item : getItems()) {
+		for (SubApplicationItem item : getVisibleItems()) {
 			initItemRenderer(tabRenderer, item);
 			Point size = tabRenderer.computeSize(gc, null);
 			if (item.isActivated()) {
@@ -103,6 +104,25 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 			}
 			x += size.x;
 		}
+
+	}
+
+	/**
+	 * Returns a list of all visible sub-application items.
+	 * 
+	 * @return visible items
+	 */
+	private List<SubApplicationItem> getVisibleItems() {
+
+		List<SubApplicationItem> visibleItems = new ArrayList<SubApplicationItem>();
+
+		for (SubApplicationItem item : getItems()) {
+			if (item.getMarkersOfType(HiddenMarker.class).isEmpty()) {
+				visibleItems.add(item);
+			}
+		}
+
+		return visibleItems;
 
 	}
 

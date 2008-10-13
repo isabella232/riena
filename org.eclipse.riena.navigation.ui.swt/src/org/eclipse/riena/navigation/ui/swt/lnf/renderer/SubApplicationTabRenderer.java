@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -190,6 +191,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Text
 		Color foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND);
+		if (!getMarkersOfType(DisabledMarker.class).isEmpty()) {
+			foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
+		}
 		gc.setForeground(foreground);
 		y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
 		gc.drawText(getLabel(), x, y, true);

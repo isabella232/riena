@@ -35,6 +35,7 @@ public final class ILnfKeyConstants {
 	public static final String COOLBAR_BACKGROUND = "Coolbar.background"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = "SubApplicationSwitcher.foreground"; //$NON-NLS-1$
+	public static final String SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND = "SubApplicationSwitcher.disabledForeground"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BACKGROUND = "SubApplicationSwitcher.background"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR = "SubApplicationSwitcher.borderBottomLeftColor"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR = "SubApplicationSwitcher.borderTopRightColor"; //$NON-NLS-1$
