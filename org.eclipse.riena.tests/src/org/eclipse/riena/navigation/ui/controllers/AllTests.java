@@ -23,6 +23,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ModuleControllerTest.class);
 		suite.addTestSuite(NavigationUIFilterApplierTest.class);
+		suite.addTestSuite(NavigationNodeControllerTest.class);
 		//$JUnit-END$
 		return suite;
 	}
