@@ -12,7 +12,6 @@ package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -153,6 +152,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
 		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
 			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
+		} else if (!isEnabled()) {
+			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
 		// - top
@@ -214,7 +215,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
 			gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
-			if (!getMarkersOfType(DisabledMarker.class).isEmpty()) {
+			if (!isEnabled()) {
 				gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND));
 			}
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;

@@ -49,6 +49,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		// border of module group
 		Point size = computeSize(gc, getBounds().width, 0);
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
+		borderRenderer.setMarkers(getMarkers());
 		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, size.y);
 		borderRenderer.setActive(true);
 		borderRenderer.paint(gc, null);

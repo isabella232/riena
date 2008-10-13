@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 
@@ -89,5 +90,9 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 		}
 		return typedMarkerList;
 
+	}
+
+	protected boolean isEnabled() {
+		return getMarkersOfType(DisabledMarker.class).isEmpty();
 	}
 }

@@ -47,6 +47,9 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		if (isActive()) {
 			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		}
+		if (!isEnabled()) {
+			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
+		}
 		gc.setForeground(borderColor);
 		// -outer
 		// --top

@@ -11,7 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -109,6 +108,12 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		Color borderTopRightColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR);
 		Color borderBottomLeftColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
+		if (!isEnabled()) {
+			borderTopRightColor = lnf
+					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR);
+			borderBottomLeftColor = lnf
+					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR);
+		}
 		// Border
 		// - left
 		gc.setForeground(borderBottomLeftColor);
@@ -118,6 +123,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		int y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
 		Color innerBorderColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
+		if (!isEnabled()) {
+			innerBorderColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
+		}
 		if (!isActivated()) {
 			gc.setForeground(innerBorderColor);
 			x += 1;
@@ -191,7 +199,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Text
 		Color foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND);
-		if (!getMarkersOfType(DisabledMarker.class).isEmpty()) {
+		if (!isEnabled()) {
 			foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
 		}
 		gc.setForeground(foreground);
