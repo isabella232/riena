@@ -55,7 +55,7 @@ public interface IServicePublisher extends IRemoteServiceProtocol {
 
 	String publishService(RemoteServiceDescription rsd);
 
-	void unpublishService(String path);
+	void unpublishService(RemoteServiceDescription rsd);
 
 	IServiceMessageContextAccessor getMessageContextAccessor();
 
