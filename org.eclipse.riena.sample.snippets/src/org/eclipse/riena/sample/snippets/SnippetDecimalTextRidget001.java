@@ -16,7 +16,6 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.util.beans.DoubleBean;
@@ -39,7 +38,7 @@ public final class SnippetDecimalTextRidget001 {
 			shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			UIControlsFactory.createLabel(shell, "Number:"); //$NON-NLS-1$
+			UIControlsFactory.createLabel(shell, "###,###.00:"); //$NON-NLS-1$
 			Text txtInput = UIControlsFactory.createTextDecimal(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
@@ -47,8 +46,10 @@ public final class SnippetDecimalTextRidget001 {
 			Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			INumericValueTextFieldRidget rInput = (INumericValueTextFieldRidget) SwtRidgetFactory
+			IDecimalValueTextFieldRidget rInput = (IDecimalValueTextFieldRidget) SwtRidgetFactory
 					.createRidget(txtInput);
+			rInput.setMaxLength(6);
+			rInput.setPrecision(2);
 			rInput.setDirectWriting(true);
 
 			ITextFieldRidget rOutput = (ITextFieldRidget) SwtRidgetFactory.createRidget(txtOutput);
@@ -58,7 +59,7 @@ public final class SnippetDecimalTextRidget001 {
 			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
 					.observeValue(rInput, ITextFieldRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			rInput.bindToModel(new DoubleBean(3.14), DoubleBean.PROP_VALUE);
+			rInput.bindToModel(new DoubleBean(1234.56), DoubleBean.PROP_VALUE);
 			rInput.updateFromModel();
 
 			shell.setSize(200, 200);
