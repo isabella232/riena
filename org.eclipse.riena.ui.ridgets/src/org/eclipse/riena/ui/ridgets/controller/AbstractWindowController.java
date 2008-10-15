@@ -57,36 +57,36 @@ public abstract class AbstractWindowController implements IController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#addRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.ridgets.IRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
+	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	public void addRidget(String id, IRidget ridget) {
 		ridgets.put(id, ridget);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidget(java.lang.String)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
 	 */
 	public IRidget getRidget(String id) {
 		return ridgets.get(id);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
 	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator)
+	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.internal.core.uiprocess.IProgressVisualizerLocator)
 	 */
 	public void setUICallbackDispatcherFactory(IProgressVisualizerLocator uiprocessCallBackDispatcherFactory) {
 		// do nothing by default
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#setBlocked(boolean)
+	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
@@ -94,7 +94,7 @@ public abstract class AbstractWindowController implements IController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#isBlocked()
+	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return this.blocked;
@@ -103,7 +103,7 @@ public abstract class AbstractWindowController implements IController {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));

@@ -24,6 +24,17 @@ public class RidgetUIFilterAttributeHiddenMarker extends AbstractRidgetUIFilterM
 	 * @param id
 	 *            - ID
 	 */
+	public RidgetUIFilterAttributeHiddenMarker() {
+		super(null, new HiddenMarker(false));
+	}
+
+	/**
+	 * Creates a new instance of {@code
+	 * RidgetUIFilterAttributeHiddenMandatoryMarker}.
+	 * 
+	 * @param id
+	 *            - ID
+	 */
 	public RidgetUIFilterAttributeHiddenMarker(String id) {
 		super(id, new HiddenMarker(false));
 	}

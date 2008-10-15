@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.core.util.IPositionable;
  */
 
 /**
- * @deprecated Use org.eclipse.riena.ui.ridgets.IActionListener
+ * @deprecated Use org.eclipse.riena.ui.internal.ridgets.IActionListener
  */
 @Deprecated
 public interface IActionAdapter extends IMarkableAdapter, IPositionable {

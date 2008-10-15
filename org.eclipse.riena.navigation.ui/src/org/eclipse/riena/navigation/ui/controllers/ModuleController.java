@@ -86,7 +86,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 		setCloseable(getNavigationNode().isCloseable());
@@ -174,14 +174,14 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	private class WindowListener implements IWindowRidgetListener {
 
 		/**
-		 * @see org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener#activated()
+		 * @see org.eclipse.riena.ui.internal.ridgets.listener.IWindowRidgetListener#activated()
 		 */
 		public void activated() {
 			getNavigationNode().activate();
 		}
 
 		/**
-		 * @see org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener#closed()
+		 * @see org.eclipse.riena.ui.internal.ridgets.listener.IWindowRidgetListener#closed()
 		 */
 		public void closed() {
 			getNavigationNode().dispose();

@@ -15,6 +15,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +39,7 @@ import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterable;
-import org.eclipse.riena.ui.filter.UIFilterable;
+import org.eclipse.riena.ui.filter.impl.UIFilterable;
 
 /**
  * Default implementation of all features common to all navigation node objects
@@ -1079,6 +1080,20 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	public void removeFilter(IUIFilter filter) {
 		getFilterable().removeFilter(filter);
 		notifyFilterRemoved(filter);
+	}
+
+	public void removeFilter(String filterID) {
+		Collection<? extends IUIFilter> filters = getFilters();
+		for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
+			IUIFilter type = (IUIFilter) iterator.next();
+			if (type.getFilterID() != null && type.getFilterID().equals(filterID)) {
+				filters.remove(type);
+				notifyFilterRemoved(type);
+				break;
+			}
+
+		}
+
 	}
 
 	public void removeAllFilters() {

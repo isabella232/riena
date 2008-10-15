@@ -89,7 +89,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 		// nothing to do

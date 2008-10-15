@@ -8,11 +8,15 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.filter.IUIFilterable;
 
 /**
  * Standard implementation for the {@link IUIFilterable} interface, can be used
@@ -44,6 +48,18 @@ public class UIFilterable implements IUIFilterable {
 
 	public void removeFilter(IUIFilter filter) {
 		filters.remove(filter);
+	}
+
+	public void removeFilter(String filterID) {
+		for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
+			IUIFilter type = (IUIFilter) iterator.next();
+			if (type.getFilterID() != null && type.getFilterID().equals(filterID)) {
+				filters.remove(type);
+				break;
+			}
+
+		}
+
 	}
 
 }

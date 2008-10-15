@@ -51,7 +51,7 @@ public abstract class AbstractMarkerSupport {
 	public abstract void updateMarkers();
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IMarkableRidget#addMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#addMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void addMarker(IMarker marker) {
 		if (marker == null) {
@@ -71,7 +71,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IMarkableRidget#getMarkers()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#getMarkers()
 	 */
 	public Collection<IMarker> getMarkers() {
 		if (markers != null) {
@@ -82,7 +82,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IMarkableRidget#getMarkersOfType(java.lang.Class)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#getMarkersOfType(java.lang.Class)
 	 */
 	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
 		if (type == null) {
@@ -99,7 +99,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IMarkableRidget#removeAllMarkers()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#removeAllMarkers()
 	 */
 	public void removeAllMarkers() {
 		if (markers != null) {
@@ -118,7 +118,7 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void removeMarker(IMarker marker) {
 		if (markers != null) {

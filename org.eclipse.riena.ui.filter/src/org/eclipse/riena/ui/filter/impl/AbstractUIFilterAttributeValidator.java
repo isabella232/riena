@@ -8,10 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.impl;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.filter.IUIFilterValidatorAttribute;
 
 /**
  * Filter attribute for with validator.

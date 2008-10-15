@@ -8,9 +8,12 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets;
+package org.eclipse.riena.ui.internal;
 
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.service.ServiceDescriptor;
+import org.eclipse.riena.ui.filter.IUIFilterProvider;
+import org.eclipse.riena.ui.filter.impl.UIFilterProvider;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -19,10 +22,11 @@ import org.osgi.framework.BundleContext;
 public class Activator extends RienaPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.ui.internal.ridgets"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.riena.ui.internal.filter"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
+	private IUIFilterProvider service1 = null;
 
 	/**
 	 * The constructor
@@ -40,6 +44,12 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
+
+		service1 = new UIFilterProvider();
+
+		context.registerService(IUIFilterProvider.class.getName(), service1, ServiceDescriptor
+				.newDefaultServiceProperties());
+
 	}
 
 	/*
@@ -51,6 +61,11 @@ public class Activator extends RienaPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
+		if (service1 != null) {
+
+			service1 = null;
+		}
+
 		super.stop(context);
 	}
 

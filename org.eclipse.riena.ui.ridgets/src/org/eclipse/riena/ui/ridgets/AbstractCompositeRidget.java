@@ -43,14 +43,14 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isVisible()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#isVisible()
 	 */
 	public boolean isVisible() {
 		return uiControl != null && visible;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setVisible(boolean)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
 		if (this.visible != visible) {
@@ -66,14 +66,14 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#getUIControl()
 	 */
 	public IComplexComponent getUIControl() {
 		return uiControl;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setUIControl(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setUIControl(java.lang.Object)
 	 */
 	public void setUIControl(Object uiControl) {
 
@@ -87,8 +87,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#addRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.ridgets.IRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
+	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	public void addRidget(String id, IRidget ridget) {
 
@@ -97,7 +97,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidget(java.lang.String)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
 	 */
 	public IRidget getRidget(String id) {
 
@@ -106,14 +106,14 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
 	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#requestFocus()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#requestFocus()
 	 */
 	public void requestFocus() {
 		if (!getRidgets().isEmpty()) {
@@ -122,7 +122,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#hasFocus()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#hasFocus()
 	 */
 	public boolean hasFocus() {
 		Collection<? extends IRidget> myRidgets = getRidgets();
@@ -135,7 +135,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setFocusable(boolean)
 	 */
 	public void setFocusable(boolean focusable) {
 		Collection<? extends IRidget> r = getRidgets();
@@ -147,7 +147,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isFocusable()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#isFocusable()
 	 */
 	public boolean isFocusable() {
 		return false;
@@ -168,14 +168,14 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getToolTipText()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#getToolTipText()
 	 */
 	public String getToolTipText() {
 		return toolTip;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setToolTipText(java.lang.String)
 	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;
@@ -183,14 +183,14 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return blocked;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 
@@ -204,7 +204,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 	}

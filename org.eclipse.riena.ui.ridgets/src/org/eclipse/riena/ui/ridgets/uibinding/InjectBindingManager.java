@@ -50,8 +50,8 @@ public class InjectBindingManager extends DefaultBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager#injectRidget(org.eclipse.riena.ui.ridgets.IRidgetContainer,
-	 *      java.lang.String, org.eclipse.riena.ui.ridgets.IRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.DefaultBindingManager#injectRidget(org.eclipse.riena.ui.internal.ridgets.IRidgetContainer,
+	 *      java.lang.String, org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	@Override
 	protected void injectRidget(IRidgetContainer ridgetContainer, String bindingProperty, IRidget ridget) {
@@ -104,8 +104,8 @@ public class InjectBindingManager extends DefaultBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager#getRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.ridgets.IRidgetContainer)
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.DefaultBindingManager#getRidget(java.lang.String,
+	 *      org.eclipse.riena.ui.internal.ridgets.IRidgetContainer)
 	 */
 	@Override
 	protected IRidget getRidget(String bindingProperty, IRidgetContainer controller) {

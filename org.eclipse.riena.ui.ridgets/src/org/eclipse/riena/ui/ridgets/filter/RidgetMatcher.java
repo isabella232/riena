@@ -51,4 +51,12 @@ public class RidgetMatcher {
 
 	}
 
+	/**
+	 * @param id2
+	 */
+	public void setId(String id) {
+		this.id = id;
+
+	}
+
 }

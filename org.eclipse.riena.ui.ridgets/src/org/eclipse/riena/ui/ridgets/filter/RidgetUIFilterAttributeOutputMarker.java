@@ -18,6 +18,17 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 public class RidgetUIFilterAttributeOutputMarker extends AbstractRidgetUIFilterMarkerAttribute {
 
 	/**
+	 * Creates a new instance of {@code
+	 * RidgetUIFilterAttributeHiddenMandatoryMarker}.
+	 * 
+	 * @param id
+	 *            - ID
+	 */
+	public RidgetUIFilterAttributeOutputMarker() {
+		super(null, new OutputMarker(false));
+	}
+
+	/**
 	 * Creates a new instance of {@code RidgetUIFilterAttributeOutputMarker}.
 	 * 
 	 * @param id

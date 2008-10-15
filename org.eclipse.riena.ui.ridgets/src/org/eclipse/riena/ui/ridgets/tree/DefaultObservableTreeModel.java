@@ -29,7 +29,7 @@ public class DefaultObservableTreeModel extends AbstractObservableTreeModel {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#getChild(java.lang.Object,
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#getChild(java.lang.Object,
 	 *      int)
 	 */
 	public Object getChild(Object parent, int index) {
@@ -38,7 +38,7 @@ public class DefaultObservableTreeModel extends AbstractObservableTreeModel {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#getChildCount(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#getChildCount(java.lang.Object)
 	 */
 	public int getChildCount(Object parent) {
 
@@ -46,7 +46,7 @@ public class DefaultObservableTreeModel extends AbstractObservableTreeModel {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#getIndexOfChild(java.lang.Object,
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#getIndexOfChild(java.lang.Object,
 	 *      java.lang.Object)
 	 */
 	public int getIndexOfChild(Object parent, Object child) {
@@ -55,7 +55,7 @@ public class DefaultObservableTreeModel extends AbstractObservableTreeModel {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#getRoot()
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#getRoot()
 	 */
 	public Object getRoot() {
 
@@ -63,7 +63,7 @@ public class DefaultObservableTreeModel extends AbstractObservableTreeModel {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#isLeaf(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#isLeaf(java.lang.Object)
 	 */
 	public boolean isLeaf(Object node) {
 		return ((ITreeNode) node).isLeaf();
@@ -84,7 +84,7 @@ public class DefaultObservableTreeModel extends AbstractObservableTreeModel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#refresh()
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#refresh()
 	 */
 	public void refresh() {
 		fireEvent(TreeModelEvent.createStructureChangedInstance(this, (ITreeNode) getRoot(), null, null));

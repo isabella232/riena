@@ -46,4 +46,12 @@ public interface IUIFilter {
 	 */
 	Collection<? extends IUIFilterAttribute> getFilterAttributes();
 
+	/**
+	 * Returns the ID of the filter
+	 * 
+	 * @return filterID
+	 */
+
+	String getFilterID();
+
 }

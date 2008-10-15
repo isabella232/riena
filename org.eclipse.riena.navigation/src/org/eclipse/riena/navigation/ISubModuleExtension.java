@@ -23,7 +23,7 @@ public interface ISubModuleExtension {
 
 	/**
 	 * @return A controller that controlles the UI widgets in the view through
-	 *         ridgets (see org.eclipse.riena.ui.ridgets.IRidget)
+	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	IController createController();
 

@@ -8,27 +8,21 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.controllers;
-
-import org.eclipse.riena.navigation.IModuleGroupNode;
+package org.eclipse.riena.ui.filter;
 
 /**
- * Default implementation for a ModuleGroupNodeController
+ * Implementation of this service interface provides service methods to get
+ * information provided by UI Filter definitions identified by a given
+ * filter-ID.
  */
-public class ModuleGroupController extends NavigationNodeController<IModuleGroupNode> {
-
+public interface IUIFilterProvider {
 	/**
-	 * @param navigationNode
+	 * Returns a UIFilter identified by the given filterId. The filter is
+	 * created if it not yet exists.
+	 * 
+	 * @param filterID
+	 * 
+	 * @return a UIFilter
 	 */
-	public ModuleGroupController(IModuleGroupNode navigationNode) {
-		super(navigationNode);
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
-	 */
-	public void configureRidgets() {
-		// nothing to do
-	}
-
+	IUIFilter provideFilter(String filterID);
 }

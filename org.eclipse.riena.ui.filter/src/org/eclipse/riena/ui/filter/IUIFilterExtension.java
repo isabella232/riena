@@ -8,27 +8,29 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.controllers;
-
-import org.eclipse.riena.navigation.IModuleGroupNode;
+package org.eclipse.riena.ui.filter;
 
 /**
- * Default implementation for a ModuleGroupNodeController
+ * Interface for a UIFiltere extension that defines how to create a filter with
+ * a list of attributes.
  */
-public class ModuleGroupController extends NavigationNodeController<IModuleGroupNode> {
+public interface IUIFilterExtension {
 
 	/**
-	 * @param navigationNode
+	 * Returns the filterID
 	 */
-	public ModuleGroupController(IModuleGroupNode navigationNode) {
-		super(navigationNode);
-	}
+
+	String getFilterId();
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
+	 * Returns the nodeId();
 	 */
-	public void configureRidgets() {
-		// nothing to do
-	}
 
+	String getNodeId();
+
+	/**
+	 * Returns the list of attributes
+	 */
+
+	IMarkerAttribute[] getMarkerAttributes();
 }

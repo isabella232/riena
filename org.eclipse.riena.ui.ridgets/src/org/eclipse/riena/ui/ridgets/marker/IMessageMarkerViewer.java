@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 /**
  * Visualizes certain types of message markers of certain Ridgets.
  * 
- * @see org.eclipse.riena.ui.core.marker.IMessageMarker
+ * @see org.eclipse.riena.ui.internal.core.marker.IMessageMarker
  */
 public interface IMessageMarkerViewer {
 

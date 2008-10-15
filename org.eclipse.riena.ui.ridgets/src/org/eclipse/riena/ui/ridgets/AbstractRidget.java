@@ -37,7 +37,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.beans
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#addPropertyChangeListener(java.beans
 	 *      .PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
@@ -45,7 +45,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.lang
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#addPropertyChangeListener(java.lang
 	 *      .String, java.beans.PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
@@ -53,7 +53,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#removePropertyChangeListener(java
 	 *      .beans.PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
@@ -61,7 +61,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#removePropertyChangeListener(java
 	 *      .lang.String, java.beans.PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
@@ -114,7 +114,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#addFocusListener(org.eclipse.riena
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#addFocusListener(org.eclipse.riena
 	 *      .ui.ridgets.listener.IFocusListener)
 	 */
 	public void addFocusListener(IFocusListener listener) {
@@ -122,7 +122,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#removeFocusListener(org.eclipse.
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#removeFocusListener(org.eclipse.
 	 *      riena.ui.ridgets.listener.IFocusListener)
 	 */
 	public void removeFocusListener(IFocusListener listener) {
@@ -154,7 +154,7 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#updateFromModel()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#updateFromModel()
 	 */
 	public void updateFromModel() {
 		// Do nothing by default

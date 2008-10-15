@@ -26,14 +26,14 @@ public abstract class AbstractObservableTreeModel extends AbstractObservable imp
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#addTreeModelListener(org.eclipse.riena.ui.ridgets.tree.ITreeModelListener)
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#addTreeModelListener(org.eclipse.riena.ui.internal.ridgets.tree.ITreeModelListener)
 	 */
 	public void addTreeModelListener(ITreeModelListener listener) {
 		addListener(TreeModelEvent.TYPE, listener);
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeModel#removeTreeModelListener(org.eclipse.riena.ui.ridgets.tree.ITreeModelListener)
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeModel#removeTreeModelListener(org.eclipse.riena.ui.internal.ridgets.tree.ITreeModelListener)
 	 */
 	public void removeTreeModelListener(ITreeModelListener listener) {
 		removeListener(TreeModelEvent.TYPE, listener);

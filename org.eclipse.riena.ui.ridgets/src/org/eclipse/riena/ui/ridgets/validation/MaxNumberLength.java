@@ -47,7 +47,7 @@ public class MaxNumberLength extends MaxLength {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.validation.MaxLength#validate(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.ridgets.validation.MaxLength#validate(java.lang.Object)
 	 */
 	@Override
 	public IStatus validate(final Object value) {

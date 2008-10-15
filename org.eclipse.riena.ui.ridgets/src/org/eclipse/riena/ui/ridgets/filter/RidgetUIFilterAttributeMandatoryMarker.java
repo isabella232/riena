@@ -18,6 +18,17 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 public class RidgetUIFilterAttributeMandatoryMarker extends AbstractRidgetUIFilterMarkerAttribute {
 
 	/**
+	 * Creates a new instance of {@code
+	 * RidgetUIFilterAttributeHiddenMandatoryMarker}.
+	 * 
+	 * @param id
+	 *            - ID
+	 */
+	public RidgetUIFilterAttributeMandatoryMarker() {
+		super(null, new MandatoryMarker(false));
+	}
+
+	/**
 	 * Creates a new instance of {@code RidgetUIFilterAttributeMandatoryMarker}.
 	 * 
 	 * @param id

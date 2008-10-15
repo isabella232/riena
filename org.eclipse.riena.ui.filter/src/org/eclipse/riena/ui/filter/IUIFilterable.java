@@ -35,6 +35,14 @@ public interface IUIFilterable {
 	void removeFilter(IUIFilter filter);
 
 	/**
+	 * Removes a filter with given ID from the filterable object.
+	 * 
+	 * @param filterID
+	 *            the ID of the filter to remove.
+	 */
+	void removeFilter(String filterID);
+
+	/**
 	 * Removes all filters from the filterable object.
 	 */
 	void removeAllFilters();

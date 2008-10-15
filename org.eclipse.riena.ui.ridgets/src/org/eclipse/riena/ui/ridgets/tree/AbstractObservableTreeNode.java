@@ -37,7 +37,7 @@ public abstract class AbstractObservableTreeNode extends AbstractObservable impl
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeNode#getLevel()
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getLevel()
 	 */
 	public int getLevel() {
 
@@ -49,7 +49,7 @@ public abstract class AbstractObservableTreeNode extends AbstractObservable impl
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeNode#isLeaf()
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#isLeaf()
 	 */
 	public boolean isLeaf() {
 		return getChildCount() == 0;

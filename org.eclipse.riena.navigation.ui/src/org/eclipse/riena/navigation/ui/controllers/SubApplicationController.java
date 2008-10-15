@@ -106,7 +106,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 		if (getNavigationTree() != null) {

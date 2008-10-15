@@ -71,7 +71,7 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeNode#getChildAt(int)
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getChildAt(int)
 	 */
 	public ITreeNode getChildAt(int childIndex) {
 		return children.get(childIndex);
@@ -153,7 +153,7 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeNode#getChildCount()
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getChildCount()
 	 */
 	public int getChildCount() {
 		return children.size();
@@ -161,7 +161,7 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 
 	/*
 	 * @see
-	 * org.eclipse.riena.ui.ridgets.tree.ITreeNode#getIndex(org.eclipse.riena
+	 * org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getIndex(org.eclipse.riena
 	 * .ui.ridgets.tree.ITreeNode)
 	 */
 	public int getIndex(ITreeNode node) {
@@ -169,7 +169,7 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 	}
 
 	/*
-	 * @see org.eclipse.riena.ui.ridgets.tree.ITreeNode#getParent()
+	 * @see org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getParent()
 	 */
 	public ITreeNode getParent() {
 		return parent;

@@ -8,9 +8,10 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.impl;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.ui.filter.IUIFilterMarkerAttribute;
 
 /**
  *

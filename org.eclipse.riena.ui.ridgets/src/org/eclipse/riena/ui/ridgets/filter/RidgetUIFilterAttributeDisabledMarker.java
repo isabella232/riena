@@ -18,6 +18,17 @@ import org.eclipse.riena.ui.core.marker.DisabledMarker;
 public class RidgetUIFilterAttributeDisabledMarker extends AbstractRidgetUIFilterMarkerAttribute {
 
 	/**
+	 * Creates a new instance of {@code
+	 * RidgetUIFilterAttributeHiddenMandatoryMarker}.
+	 * 
+	 * @param id
+	 *            - ID
+	 */
+	public RidgetUIFilterAttributeDisabledMarker() {
+		super(null, new DisabledMarker(false));
+	}
+
+	/**
 	 * Creates a new instance of {@code RidgetUIFilterAttributeDisabledMarker}.
 	 * 
 	 * @param id

@@ -8,20 +8,29 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.filter.IUIFilterAttribute;
 
 /**
  * Implementation of {@link IUIFilter}.
  */
 public class UIFilter implements IUIFilter {
 
+	private String filterID;
 	private Collection<IUIFilterAttribute> attributes;
 
 	public UIFilter() {
 		attributes = new HashSet<IUIFilterAttribute>();
+	}
+
+	public UIFilter(String id) {
+		super();
+		filterID = id;
 	}
 
 	private Collection<IUIFilterAttribute> getAttributes() {
@@ -42,6 +51,15 @@ public class UIFilter implements IUIFilter {
 
 	public void removeFilterAttribute(IUIFilterAttribute item) {
 		getAttributes().remove(item);
+	}
+
+	public String getFilterID() {
+
+		return filterID;
+	}
+
+	public void setFilterID(String id) {
+		filterID = id;
 	}
 
 }

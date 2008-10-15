@@ -115,7 +115,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.controller.IController#afterBind()
+	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#afterBind()
 	 */
 	public void afterBind() {
 		updateNavigationNodeMarkers();
@@ -151,8 +151,8 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#addRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.ridgets.IRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
+	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	public void addRidget(String id, IRidget ridget) {
 		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
@@ -160,14 +160,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidget(java.lang.String)
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
 	 */
 	public IRidget getRidget(String id) {
 		return ridgets.get(id);
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#getRidgets()
+	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
 	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();

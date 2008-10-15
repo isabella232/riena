@@ -11,13 +11,15 @@
 package org.eclipse.riena.ui.ridgets.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.filter.AbstractUIFilterMarkerAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRidgetMarkerAttribute;
+import org.eclipse.riena.ui.filter.impl.AbstractUIFilterMarkerAttribute;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
 /**
  * Filter attribute to provide a marker for a ridget.
  */
-public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFilterMarkerAttribute {
+public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFilterMarkerAttribute implements
+		IUIFilterRidgetMarkerAttribute {
 
 	private RidgetMatcher matcher;
 
@@ -30,7 +32,7 @@ public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFi
 	 * This method compares the ID of this attribute and the given ID of a
 	 * ridget.
 	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#matches(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 	public boolean matches(Object object) {
 		return matcher.matches(object);
@@ -40,7 +42,7 @@ public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFi
 	 * Adds the marker of this attribute to the given object (if the object is
 	 * an markable ridget).
 	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#apply(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#apply(java.lang.Object)
 	 */
 	public void apply(Object object) {
 		if (object instanceof IMarkableRidget) {
@@ -53,13 +55,17 @@ public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFi
 	 * Removes the marker of this attribute from the given object (if the object
 	 * is an markable ridget).
 	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#remove(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#remove(java.lang.Object)
 	 */
 	public void remove(Object object) {
 		if (object instanceof IMarkableRidget) {
 			IMarkableRidget markableRidget = (IMarkableRidget) object;
 			markableRidget.removeMarker(getMarker());
 		}
+	}
+
+	public void setId(String id) {
+		matcher.setId(id);
 	}
 
 }

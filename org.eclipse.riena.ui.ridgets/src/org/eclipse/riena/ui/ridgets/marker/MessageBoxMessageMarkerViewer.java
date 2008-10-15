@@ -37,7 +37,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.AbstractMessageMarkerViewer#hideMessages(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#hideMessages(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
 	 */
 	@Override
 	protected void hideMessages(IMarkableRidget ridget) {
@@ -45,7 +45,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.AbstractMessageMarkerViewer#showMessages(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#showMessages(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
 	 */
 	@Override
 	protected void showMessages(IMarkableRidget ridget) {

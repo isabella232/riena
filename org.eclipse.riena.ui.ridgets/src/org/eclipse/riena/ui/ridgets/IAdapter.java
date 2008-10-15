@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.ridgets.obsolete.IUIRepresentation;
  * @author Frank Schepp
  */
 /**
- * @deprecated Use org.eclipse.riena.ui.ridgets.IRidget
+ * @deprecated Use org.eclipse.riena.ui.internal.ridgets.IRidget
  */
 @Deprecated
 public interface IAdapter extends IUIRepresentation {

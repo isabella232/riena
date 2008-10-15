@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.ui.filter.AbstractUIFilterMarkerAttribute;
+import org.eclipse.riena.ui.filter.impl.AbstractUIFilterMarkerAttribute;
 
 /**
  * Filter attribute to provide a marker for a node of the navigation.

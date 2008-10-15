@@ -542,5 +542,25 @@
                value="Riena Example">
          </property>
       </product>
-   </extension> 
+   </extension>
+   <extension
+         point="org.eclipse.riena.filter.uifilter">
+      <filter
+            filterId="rienaExample.offline"
+            nodeId="org.eclipse.riena.example.playground">
+         <markerAttributes
+               attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker"
+               targetId="textPassword"></markerAttributes>
+         <markerAttributes
+               attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeOutputMarker"
+               targetId="textField"></markerAttributes>
+         <markerAttributes
+               attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker"
+               targetId="ui_label2">
+         </markerAttributes>
+                
+      </filter>
+      
+      
+   </extension>
 </plugin>

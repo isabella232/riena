@@ -32,7 +32,8 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
-import org.eclipse.riena.ui.filter.UIFilter;
+import org.eclipse.riena.ui.filter.impl.UIFilter;
+import org.eclipse.riena.ui.filter.impl.UIFilterProviderAccessor;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
@@ -233,6 +234,9 @@ public class FilterSubModuleController extends SubModuleController {
 		filter.addFilterAttribute(createFilterAttribute(globalFilterModel));
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.addFilter(filter);
+
+		applNode.addFilter(UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
+				"rienaExample.offline"));
 	}
 
 	/**

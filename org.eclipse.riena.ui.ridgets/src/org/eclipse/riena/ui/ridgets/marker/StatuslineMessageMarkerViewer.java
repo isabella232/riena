@@ -58,7 +58,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.AbstractMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#addRidget(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
 	 */
 	@Override
 	public void addRidget(IMarkableRidget markableRidget) {
@@ -186,7 +186,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private class RidgetFocusListener implements IFocusListener {
 
 		/**
-		 * @see org.eclipse.riena.ui.ridgets.listener.IFocusListener#focusGained(org.eclipse.riena.ui.ridgets.listener.FocusEvent)
+		 * @see org.eclipse.riena.ui.internal.ridgets.listener.IFocusListener#focusGained(org.eclipse.riena.ui.internal.ridgets.listener.FocusEvent)
 		 */
 		public void focusGained(FocusEvent event) {
 			if (event.getNewFocusOwner() instanceof IMarkableRidget) {
@@ -195,7 +195,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		}
 
 		/**
-		 * @see org.eclipse.riena.ui.ridgets.listener.IFocusListener#focusLost(org.eclipse.riena.ui.ridgets.listener.FocusEvent)
+		 * @see org.eclipse.riena.ui.internal.ridgets.listener.IFocusListener#focusLost(org.eclipse.riena.ui.internal.ridgets.listener.FocusEvent)
 		 */
 		public void focusLost(FocusEvent event) {
 			if (event.getOldFocusOwner() instanceof IMarkableRidget) {

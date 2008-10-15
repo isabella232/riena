@@ -40,7 +40,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#addRidget(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
 	 */
 	public void addRidget(IMarkableRidget markableRidget) {
 		ridgets.add(markableRidget);
@@ -48,7 +48,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#removeRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#removeRidget(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
 	 */
 	public void removeRidget(IMarkableRidget markableRidget) {
 		ridgets.remove(markableRidget);
@@ -56,7 +56,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#addMarkerType(java.lang.Class)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#addMarkerType(java.lang.Class)
 	 */
 	public void addMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.add(markerClass);
@@ -64,7 +64,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#removeMarkerType(java.lang.Class)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#removeMarkerType(java.lang.Class)
 	 */
 	public void removeMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.remove(markerClass);
@@ -72,14 +72,14 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#isVisible()
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#isVisible()
 	 */
 	public boolean isVisible() {
 		return visible;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.IMessageMarkerViewer#setVisible(boolean)
+	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;

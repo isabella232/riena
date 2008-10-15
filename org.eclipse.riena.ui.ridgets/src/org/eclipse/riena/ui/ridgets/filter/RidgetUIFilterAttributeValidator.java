@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.ridgets.filter;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.filter.AbstractUIFilterAttributeValidator;
+import org.eclipse.riena.ui.filter.impl.AbstractUIFilterAttributeValidator;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 
 /**
@@ -39,7 +39,7 @@ public class RidgetUIFilterAttributeValidator extends AbstractUIFilterAttributeV
 	 * This method compares the ID of this attribute and the given ID of a
 	 * ridget.
 	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#matches(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 	public boolean matches(Object object) {
 		return matcher.matches(object);
@@ -49,7 +49,7 @@ public class RidgetUIFilterAttributeValidator extends AbstractUIFilterAttributeV
 	 * Adds the validator of this attribute to the given object (if the object
 	 * is an editable ridget).
 	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#apply(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#apply(java.lang.Object)
 	 */
 	public void apply(Object object) {
 
@@ -65,7 +65,7 @@ public class RidgetUIFilterAttributeValidator extends AbstractUIFilterAttributeV
 	 * Removes the validator of this attribute from the given object (if the
 	 * object is an editable ridget).
 	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterAttribute#remove(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#remove(java.lang.Object)
 	 */
 	public void remove(Object object) {
 

@@ -51,7 +51,7 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#injectRidgets(org.eclipse.riena.ui.ridgets.IRidgetContainer,
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#injectRidgets(org.eclipse.riena.ui.internal.ridgets.IRidgetContainer,
 	 *      java.util.List)
 	 */
 	public void injectRidgets(IRidgetContainer ridgetContainer, List<Object> uiControls) {
@@ -114,7 +114,7 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#bind(IRidgetContainer,
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#bind(IRidgetContainer,
 	 *      java.util.List)
 	 */
 	public void bind(IRidgetContainer controller, List<Object> uiControls) {
@@ -122,7 +122,7 @@ public class DefaultBindingManager implements IBindingManager {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.uibinding.IBindingManager#unbind(IRidgetContainer,
+	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#unbind(IRidgetContainer,
 	 *      java.util.List)
 	 */
 	public void unbind(IRidgetContainer controller, List<Object> uiControls) {
