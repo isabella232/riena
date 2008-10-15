@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
+import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
@@ -86,11 +87,91 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	@Override
 	public void testSetText() throws Exception {
 		INumericValueTextFieldRidget ridget = getRidget();
+		ridget.setGrouping(true);
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+
+		ridget.setText("-1234");
+
+		assertEquals(TestUtils.getLocalizedNumber("-1.234"), ridget.getText());
+
+		ridget.setText("1234");
+
+		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
+
+		ridget.setText(TestUtils.getLocalizedNumber("98.765"));
+
+		assertEquals(TestUtils.getLocalizedNumber("98.765"), ridget.getText());
+
 		try {
-			ridget.setText("0");
+			ridget.setText(TestUtils.getLocalizedNumber("98.765,12"));
 			fail();
-		} catch (UnsupportedOperationException exc) {
+		} catch (NumberFormatException nfe) {
 			// expected
+		}
+
+		try {
+			ridget.setText("abcd");
+			fail();
+		} catch (NumberFormatException nfe) {
+			// expected
+		}
+
+		try {
+			ridget.setText("a,bcd");
+			fail();
+		} catch (NumberFormatException nfe) {
+			// expected
+		}
+	}
+
+	public void testSetTextNoGroup() throws Exception {
+		INumericValueTextFieldRidget ridget = getRidget();
+		ridget.setGrouping(false);
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+
+		ridget.setText("-1234");
+
+		assertEquals("-1234", ridget.getText());
+
+		ridget.setText("1234");
+
+		assertEquals("1234", ridget.getText());
+
+		ridget.setText(TestUtils.getLocalizedNumber("98.765"));
+
+		assertEquals("98765", ridget.getText());
+
+		try {
+			ridget.setText(TestUtils.getLocalizedNumber("98.765,12"));
+			fail();
+		} catch (NumberFormatException nfe) {
+			// expected
+		}
+
+		try {
+			ridget.setText("abcd");
+			fail();
+		} catch (NumberFormatException nfe) {
+			// expected
+		}
+	}
+
+	/**
+	 * Test that null is not allowed in {@code setText(string)}.
+	 */
+	public void testSetTextNull() {
+		ITextFieldRidget ridget = getRidget();
+		try {
+			ridget.setText(null);
+			fail();
+		} catch (RuntimeException rex) {
+			// ok
 		}
 	}
 
@@ -310,7 +391,13 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testUpdateFromControlUserInputDirectWriting() {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		INumericValueTextFieldRidget ridget = getRidget();
+
+		//		ridget.addPropertyChangeListener(ITextFieldRidget.PROPERTY_TEXT, new PropertyChangeListener() {
+		//			public void propertyChange(PropertyChangeEvent evt) {
+		//				System.out.println(evt.getNewValue());
+		//			}
+		//		});
 
 		IntegerBean bean = new IntegerBean();
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -637,6 +724,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		Text control = getUIControl();
 		ITextFieldRidget ridget = getRidget();
 
+		ridget.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.setDirectWriting(true);
 
@@ -809,19 +897,6 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("123", ridget.getText());
 	}
 
-	/**
-	 * Test that null is not allowed in {@code setText(string)}.
-	 */
-	public void testSetTextNull() {
-		ITextFieldRidget ridget = getRidget();
-		try {
-			ridget.setText(null);
-			fail();
-		} catch (RuntimeException rex) {
-			// ok
-		}
-	}
-
 	public void testDisabledHasNoTextFromModel() {
 		if (!MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
 			System.out.println("Skipping TextRidgetTest2.testDisabledHasNoTextFromModel()");
@@ -859,42 +934,41 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(INTEGER_ONE, bean.getValue());
 	}
 
-	// TODO [ev] fixme
-	//	public void testMaxLength() throws Exception {
-	//		ITextFieldRidget ridget = getRidget();
-	//		Text control = getUIControl();
-	//
-	//		ridget.addValidationRule(new MaxNumberLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
-	//
-	//		focusIn(control);
-	//		UITestHelper.sendString(control.getDisplay(), "1234");
-	//
-	//		assertEquals(TestUtils.getLocalizedNumber("1.234"), control.getText());
-	//
-	//		focusOut(control);
-	//
-	//		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
-	//
-	//		focusIn(control);
-	//		control.setSelection(control.getText().length()); // move cursor to end
-	//		UITestHelper.sendString(control.getDisplay(), "5");
-	//
-	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
-	//
-	//		focusOut(control);
-	//
-	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
-	//
-	//		focusIn(control);
-	//		control.setSelection(control.getText().length()); // move cursor to end
-	//		UITestHelper.sendString(control.getDisplay(), "6");
-	//
-	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
-	//
-	//		focusOut(control);
-	//
-	//		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
-	//	}
+	public void testMaxLength() throws Exception {
+		ITextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+
+		ridget.addValidationRule(new MaxNumberLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
+
+		focusIn(control);
+		UITestHelper.sendString(control.getDisplay(), "1234");
+
+		assertEquals(TestUtils.getLocalizedNumber("1.234"), control.getText());
+
+		focusOut(control);
+
+		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
+
+		focusIn(control);
+		control.setSelection(control.getText().length()); // move cursor to end
+		UITestHelper.sendString(control.getDisplay(), "5");
+
+		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+
+		focusOut(control);
+
+		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+
+		focusIn(control);
+		control.setSelection(control.getText().length()); // move cursor to end
+		UITestHelper.sendString(control.getDisplay(), "6");
+
+		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+
+		focusOut(control);
+
+		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+	}
 
 	// helping methods
 	//////////////////

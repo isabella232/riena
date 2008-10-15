@@ -10,33 +10,23 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Locale;
+import java.math.BigInteger;
+import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.nebula.widgets.formattedtext.FormattedText;
-import org.eclipse.nebula.widgets.formattedtext.NumberFormatter;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
-import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -44,57 +34,32 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @see UIControlsFactory#createTextNumeric(org.eclipse.swt.widgets.Composite)
  */
-public class NumericTextRidget extends AbstractEditableRidget implements INumericValueTextFieldRidget {
+public class NumericTextRidget extends TextRidget implements INumericValueTextFieldRidget {
 
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+	private static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
+	private static final char MINUS_SIGN = new DecimalFormatSymbols().getMinusSign();
+	private static final char ZERO = '0';
+	private static final String MINUS_ZERO = String.valueOf(MINUS_SIGN) + ZERO;
 
-	private final FocusListener focusListener;
-	private final KeyListener crKeyListener;
+	private final VerifyListener verifyListener;
 	private final ModifyListener modifyListener;
-	private final Formatter formatter;
+	private final KeyListener keyListener;
 
-	private WritableValue valueExternal = new WritableValue(Long.valueOf(0), Long.class);
-	private WritableValue valueInternal = new WritableValue(Long.valueOf(0), Long.class);
-
-	private boolean isDirectWriting;
 	private boolean isSigned;
 	private boolean isGrouping;
-	private DisposableFormattedText formattedText;
 
 	public NumericTextRidget() {
-		crKeyListener = new CRKeyListener();
-		focusListener = new FocusManager();
-		modifyListener = new SyncModifyListener();
-		isDirectWriting = false;
+		super("0"); //$NON-NLS-1$
+		verifyListener = new NumericVerifyListener();
+		modifyListener = new NumericModifyListener();
+		keyListener = new NumericKeyListener();
 		isSigned = true;
 		isGrouping = true;
-		formatter = new Formatter(isGrouping);
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				forceTextToControl(getText());
-			}
-		});
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				Text control = getUIControl();
-				if (control != null && !control.isDisposed()) {
-					control.setEditable(isOutputOnly() ? false : true);
-				}
-			}
-		});
-		getValueBindingSupport().bindToTarget(valueExternal);
-	}
-
-	/**
-	 * @deprecated use BeansObservables.observeValue(ridget instance,
-	 *             ITextFieldRidget.PROPERTY_TEXT);
-	 */
-	public IObservableValue getRidgetObservable() {
-		return valueExternal;
 	}
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
+		super.checkUIControl(uiControl);
 		AbstractSWTRidget.assertType(uiControl, Text.class);
 		if (uiControl != null) {
 			int style = ((Text) uiControl).getStyle();
@@ -105,109 +70,19 @@ public class NumericTextRidget extends AbstractEditableRidget implements INumeri
 	}
 
 	@Override
-	protected synchronized void bindUIControl() {
-		Text control = getUIControl();
-		if (control != null) {
-			formattedText = new DisposableFormattedText(control);
-			formattedText.setFormatter(formatter);
-			valueInternal.setValue(valueExternal.getValue());
-			formattedText.setValue(valueInternal.getValue());
-			control.setSelection(0, 0); // move cursor to 0
-			control.setEditable(isOutputOnly() ? false : true);
-			control.addKeyListener(crKeyListener);
-			control.addFocusListener(focusListener);
-			control.addModifyListener(modifyListener);
-		}
+	protected synchronized void addListeners(Text control) {
+		control.addVerifyListener(verifyListener);
+		control.addModifyListener(modifyListener);
+		control.addKeyListener(keyListener);
+		super.addListeners(control);
 	}
 
 	@Override
-	protected synchronized void unbindUIControl() {
-		Text control = getUIControl();
-		if (control != null) {
-			control.removeKeyListener(crKeyListener);
-			control.removeFocusListener(focusListener);
-			control.removeModifyListener(modifyListener);
-		}
-		if (formattedText != null) {
-			formattedText.dispose();
-			formattedText = null;
-		}
-	}
-
-	@Override
-	public Text getUIControl() {
-		return (Text) super.getUIControl();
-	}
-
-	public synchronized String getText() {
-		return formatter.getDisplayString(((Long) valueInternal.getValue()).longValue());
-	}
-
-	/**
-	 * TODO [ev] docs
-	 */
-	public synchronized void setText(String text) {
-		throw new UnsupportedOperationException("setText(String) is not supported"); //$NON-NLS-1$
-	}
-
-	public synchronized boolean revalidate() {
-		String oldValue = formatter.getDisplayString(((Long) valueExternal.getValue()).longValue());
-		String newValue = formatter.getDisplayString();
-		boolean blockEdit = checkOnEditRules(newValue).getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
-		if (!blockEdit) {
-			valueInternal.setValue(formattedText.getValue());
-			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
-			boolean blockUpdate = checkOnUpdateRules(newValue).getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
-			if (!blockUpdate) {
-				valueExternal.setValue(formattedText.getValue());
-			}
-		}
-		checkRules();
-		return !isErrorMarked();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Invoking this method will copy the model value into the ridget and the
-	 * widget regardless of the validation outcome. If the model value does not
-	 * pass validation, the error marker will be set.
-	 */
-	@Override
-	public synchronized void updateFromModel() {
-		super.updateFromModel();
-		valueInternal.setValue(valueExternal.getValue());
-		if (isEnabled()) {
-			if (formattedText != null) {
-				formattedText.setValue(valueInternal.getValue());
-			}
-			checkRules();
-		}
-	}
-
-	public synchronized boolean isDirectWriting() {
-		return isDirectWriting;
-	}
-
-	public synchronized void setDirectWriting(boolean directWriting) {
-		if (this.isDirectWriting != directWriting) {
-			this.isDirectWriting = directWriting;
-		}
-	}
-
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return formatter.getDisplayString().length() > 0;
-	}
-
-	public int getAlignment() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
-	}
-
-	public void setAlignment(int alignment) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	protected synchronized void removeListeners(Text control) {
+		control.removeKeyListener(keyListener);
+		control.removeModifyListener(modifyListener);
+		control.removeVerifyListener(verifyListener);
+		super.removeListeners(control);
 	}
 
 	public boolean isGrouping() {
@@ -223,14 +98,10 @@ public class NumericTextRidget extends AbstractEditableRidget implements INumeri
 		return isSigned;
 	}
 
-	public synchronized void setGrouping(boolean useGrouping) {
+	public void setGrouping(boolean useGrouping) {
 		if (isGrouping != useGrouping) {
 			isGrouping = useGrouping;
-			Object ftValue = formattedText == null ? null : formattedText.getValue();
-			formatter.setGrouping(isGrouping);
-			if (formattedText != null) {
-				formattedText.setValue(ftValue);
-			}
+			updateGrouping();
 		}
 	}
 
@@ -248,320 +119,223 @@ public class NumericTextRidget extends AbstractEditableRidget implements INumeri
 	}
 
 	// helping methods
-	// ////////////////
+	//////////////////
 
-	private void checkRules() {
-		String textValue = formatter.getDisplayString();
-		IStatus onEdit = checkOnEditRules(textValue);
-		IStatus onUpdate = checkOnUpdateRules(textValue);
-		IStatus joinedStatus = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
-		validationRulesChecked(joinedStatus);
+	private void updateGrouping() {
+		setText(getText());
 	}
 
-	private IStatus checkOnEditRules(String newValue) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
-		IStatus result = onEditValidators.validate(newValue);
+	@Override
+	public synchronized void setText(String text) {
+		if (!"".equals(text)) { //$NON-NLS-1$
+			try {
+				new BigInteger(ungroup(text));
+			} catch (NumberFormatException nfe) {
+				throw new NumberFormatException("Not a valid number: " + text); //$NON-NLS-1$
+			}
+		}
+		super.setText(group(ungroup(text)));
+	}
+
+	// TODO [ev] test this?
+	private String createPattern(String input) {
+		String result;
+		int length = input.length();
+		if (isSigned) {
+			int min = Math.max(0, length - 1);
+			result = String.format("%c?\\d{%d,%d}", MINUS_SIGN, min, length); //$NON-NLS-1$
+		} else {
+			result = String.format("\\d{%d}", length); //$NON-NLS-1$
+		}
 		return result;
 	}
 
-	private IStatus checkOnUpdateRules(String newValue) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
-		IStatus result = afterGetValidators.validate(newValue);
-		return result;
+	// TODO [ev] test this?
+	private String removeLeadingZeroes(String input) {
+		if (String.valueOf(MINUS_SIGN).equals(input) || MINUS_ZERO.equals(input) || String.valueOf(ZERO).equals(input)) {
+			return String.valueOf(ZERO);
+		}
+		StringBuilder result = new StringBuilder(input.length());
+		int start = 0;
+		if (input.indexOf(MINUS_SIGN) == 0) {
+			result.append(MINUS_SIGN);
+			start++;
+		}
+		if (start < input.length() && ZERO == input.charAt(start)) {
+			int newStart = start + 1;
+			while (newStart < input.length() && ZERO == input.charAt(newStart)) {
+				newStart++;
+			}
+			if (newStart == input.length()) {
+				result.append(ZERO);
+				if (MINUS_ZERO.equals(result.toString())) {
+					result.delete(0, 1);
+				}
+			} else {
+				result.append(input.substring(newStart));
+			}
+		} else {
+			result.append(input.substring(start));
+		}
+		return result.toString();
 	}
 
-	private synchronized void forceTextToControl(String newValue) {
+	private String group(String input) {
+		if (!isGrouping) {
+			return input;
+		}
+		final int numLength = input.length();
+		boolean isNegative = input.indexOf(MINUS_SIGN) == 0;
+		int groupSize = 3;
+		int delta = isNegative ? -2 : -1;
+		int groupCount = (numLength + delta) / groupSize;
+
+		char[] result = new char[numLength + groupCount];
+		Arrays.fill(result, '#');
+		int availableChars = groupSize + 1;
+		for (int i = result.length - 1; i > 0; i--) {
+			availableChars--;
+			if (availableChars == 0) {
+				result[i] = GROUPING_SEPARATOR;
+				availableChars = groupSize + 1;
+			}
+		}
+		for (int i = 0, j = 0; i < result.length; i++) {
+			if ('#' == result[i]) {
+				result[i] = input.charAt(j);
+				j++;
+			}
+		}
+		// System.out.println("group: " + input + " >> " + String.valueOf(result));
+		return String.valueOf(result);
+	}
+
+	// TODO [ev] test this?
+	private String ungroup(String input) {
+		StringBuilder result = new StringBuilder(input.length());
+		for (int i = 0; i < input.length(); i++) {
+			char ch = input.charAt(i);
+			if (ch != GROUPING_SEPARATOR) {
+				result.append(ch);
+			}
+		}
+		// System.out.println("ungroup: " + input + " >> " + result.toString());
+		return result.toString();
+	}
+
+	private void addVerifyListener() {
 		Text control = getUIControl();
 		if (control != null) {
-			boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
-			formatter.setText(hideValue ? EMPTY_STRING : newValue);
+			// make sure the listener is only added once
+			control.removeVerifyListener(verifyListener);
+			control.addVerifyListener(verifyListener);
 		}
 	}
 
-	private synchronized void updateTextValue() {
-		String oldValue = formatter.getDisplayString(((Long) valueExternal.getValue()).longValue());
-		String newValue = formatter.getDisplayString();
-		if (!oldValue.equals(newValue)) {
-			IStatus editStatus = checkOnEditRules(newValue);
-			boolean blockEdit = editStatus.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
-			if (!blockEdit) {
-				valueInternal.setValue(formattedText.getValue());
-				firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
-				if (editStatus.isOK()) {
-					boolean blockUpdate = checkOnUpdateRules(newValue).getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
-					if (!blockUpdate) {
-						valueExternal.setValue(formattedText.getValue());
-					}
-				}
-			}
-			checkRules();
-		}
-	}
-
-	private synchronized void updateTextValueWhenDirectWriting() {
-		if (isDirectWriting) {
-			updateTextValue();
+	private void removeVerifyListener() {
+		Text control = getUIControl();
+		if (control != null) {
+			control.removeVerifyListener(verifyListener);
 		}
 	}
 
 	// helping classes
-	// ////////////////
+	//////////////////
 
 	/**
-	 * Update text value in ridget when ENTER is pressed
+	 * TODO [ev] docs
 	 */
-	private final class CRKeyListener extends KeyAdapter implements KeyListener {
-		@Override
-		public void keyReleased(KeyEvent e) {
-			if (e.character == '\r') {
-				updateTextValue();
+	private final class NumericVerifyListener implements VerifyListener {
+		public void verifyText(VerifyEvent e) {
+			if (!e.doit) {
+				return;
 			}
-		}
-	}
-
-	/**
-	 * Manages activities trigger by focus changed:
-	 * <ol>
-	 * <li>select single line text fields, when focus is gained by keyboard</li>
-	 * <li>update text value in ridget, when focus is lost</li>
-	 * <ol>
-	 */
-	private final class FocusManager implements FocusListener {
-		public void focusGained(FocusEvent e) {
-			if (isFocusable()) {
-				Text text = (Text) e.getSource();
-				// if not multi line text field
-				if ((text.getStyle() & SWT.MULTI) == 0) {
-					text.selectAll();
-				}
-			}
-		}
-
-		public void focusLost(FocusEvent e) {
-			updateTextValue();
-		}
-	}
-
-	/**
-	 * Updates the text value in the ridget, if direct writing is enabled.
-	 */
-	private final class SyncModifyListener implements ModifyListener {
-		public void modifyText(ModifyEvent e) {
-			updateTextValueWhenDirectWriting();
-			boolean hasText = ((Text) e.widget).getText().length() > 0;
-			disableMandatoryMarkers(hasText);
-		}
-	}
-
-	/**
-	 * Specialized NumberFormatter class, that can turn 'grouping' on (i.e.
-	 * ###,###) and off (i.e. #######).
-	 * 
-	 * @see #setGrouping(boolean)
-	 */
-	private static final class Formatter extends NumberFormatter {
-		private static final String PATTERN_GROUPED = "-#,##0"; //$NON-NLS-1$
-		private static final String PATTERN_UNGROUPED = "-###0"; //$NON-NLS-1$
-
-		public Formatter(boolean isGrouping) {
-			super(isGrouping ? PATTERN_GROUPED : PATTERN_UNGROUPED);
-			setDecimalSeparatorAlwaysShown(false);
-			setFixedLengths(false, true);
-		}
-
-		public synchronized void setGrouping(boolean isGrouping) {
-			String pattern = isGrouping ? PATTERN_GROUPED : PATTERN_UNGROUPED;
-			setPatterns(pattern, null, Locale.getDefault());
-		}
-
-		public String getDisplayString(long value) {
-			return nfDisplay.format(value);
-		}
-
-		public void setText(String text) {
-			super.updateText(text, text.length());
-		}
-
-		/**
-		 * Copy and override original for bugfix reg. the '-' symbol
-		 */
-		@Override
-		protected int format(int curseur) {
-			int i = prefixLen + (negative ? 1 : 0);
-			char c;
-
-			// Inserts zeros in the int part
-			while (intCount < zeroIntLen) {
-				editValue.insert(i, '0');
-				intCount++;
-				curseur++;
-			}
-			while (intCount > zeroIntLen) {
-				if (editValue.charAt(i) == '0') {
-					intCount--;
-				} else if (editValue.charAt(i) != symbols.getGroupingSeparator()) {
-					break;
-				}
-				editValue.deleteCharAt(i);
-				if (curseur > i)
-					curseur--;
-			}
-
-			// Recreates the groups in the int part
-			if (groupLen > 0) {
-				int n = intCount > groupLen ? groupLen - intCount % groupLen : 0;
-				if (n == groupLen) {
-					n = 0;
-				}
-				for (; i < editValue.length() - suffixLen; i++) {
-					c = editValue.charAt(i);
-					// -- bugfix begin: do not abort on '-' ---
-					if (c == '-') {
-						continue;
-					}
-					// -- bugfix end ---
-					else if (c >= '0' && c <= '9') {
-						if (n == groupLen) {
-							editValue.insert(i, symbols.getGroupingSeparator());
-							if (curseur >= i) {
-								curseur++;
-							}
-							n = 0;
-						} else {
-							n++;
-						}
-					} else if (c == symbols.getGroupingSeparator()) {
-						if (n != groupLen) {
-							editValue.deleteCharAt(i);
-							if (curseur >= i) {
-								curseur--;
-							}
-							i--;
-						} else {
-							n = 0;
-						}
-					} else if (c == symbols.getDecimalSeparator()) {
-						if (i > 0 && editValue.charAt(i - 1) == symbols.getGroupingSeparator()) {
-							editValue.deleteCharAt(i - 1);
-							if (curseur >= i) {
-								curseur--;
-							}
-							i--;
-						}
-						break;
-					} else {
-						break;
-					}
-				}
-			}
-
-			// Truncates / completes by zeros the decimal part
-			i = editValue.indexOf(EMPTY + symbols.getDecimalSeparator());
-			if (i < 0 && (zeroDecimalLen > 0 || alwaysShowDec)) {
-				i = editValue.length() - suffixLen;
-				editValue.insert(i, symbols.getDecimalSeparator());
-			}
-			if (i >= 0) {
-				int j;
-				for (j = i + 1; j < editValue.length() - suffixLen;) {
-					c = editValue.charAt(j);
-					if (c == symbols.getGroupingSeparator()) {
-						editValue.deleteCharAt(j);
-					} else if (c < '0' || c > '9') {
-						break;
-					} else {
-						j++;
-					}
-				}
-				if (fixedDec && (j - i - 1) > decimalLen) {
-					editValue.delete(i + decimalLen + 1, j);
-					if (curseur > i + decimalLen) {
-						curseur = i + decimalLen;
-					}
+			Text control = (Text) e.widget;
+			final String oldText = control.getText();
+			String newText = null;
+			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) {
+				newText = oldText.substring(0, e.end) + e.character + oldText.substring(e.end);
+			} else if ('\b' == e.character || 127 == e.keyCode) {
+				if (oldText.charAt(e.start) != GROUPING_SEPARATOR) {
+					newText = oldText.substring(0, e.start) + oldText.substring(e.end);
 				} else {
-					while ((j - i - 1) < zeroDecimalLen) {
-						editValue.insert(j++, '0');
-					}
+					newText = null; // implies e.doit = false
+					int delta = (127 == e.keyCode) ? 1 : 0;
+					control.setSelection(e.start + delta);
 				}
 			}
-
-			return curseur;
-		}
-	}
-
-	/**
-	 * Specialized FormattedText class, that can detach itself cleanly from the
-	 * given Text control. This is necessary because the same text control might
-	 * be introduced to the ridget several times.
-	 * <p>
-	 * This class also:
-	 * <ul>
-	 * <li>ensures that non-supported key strokes are blocked</li> <li>negates a
-	 * positive ridget value, when '-' is pressed</li>
-	 * </ul>
-	 * 
-	 * @see #dispose();
-	 */
-	private final class DisposableFormattedText extends FormattedText implements KeyListener {
-
-		private final int[] VALID_KEYCODES = { 16777224 /* end */, 16777223 /* home */, 16777220 /* right */,
-				16777219 /* left */, 127 /* del */, 8 /* backspace */, 97 /* 'a' */, 262144 /* ctrl */, 44 /* ',' */, 46 /* '.' */};
-
-		DisposableFormattedText(Text control) {
-			super(control);
-			control.addKeyListener(this);
-		}
-
-		/**
-		 * Remove all listeners added by this class from the text control
-		 */
-		public void dispose() {
-			if (text != null && !text.isDisposed()) {
-				Listener[] listeners = text.getListeners(SWT.FocusIn);
-				for (Listener listener : listeners) {
-					text.removeListener(SWT.FocusIn, listener);
-					text.removeListener(SWT.FocusOut, listener);
-				}
-				if (getFormatter() != null) {
-					text.removeVerifyListener(getFormatter());
-				}
-				text.removeKeyListener(this);
-			}
-		}
-
-		public void keyPressed(KeyEvent e) {
-			char ch = e.character;
-			if (!(Character.isDigit(ch) || isValid(e.keyCode))) {
+			if (newText != null) {
+				String newTextNoGroup = ungroup(newText);
+				String regex = createPattern(newTextNoGroup);
+				e.doit = Pattern.matches(regex, newTextNoGroup);
+				// System.out.println("t:" + control + " p: " + regex);
+			} else {
 				e.doit = false;
 			}
-			if (e.character == '-' && isSigned) {
-				Number value = (Number) getValue();
-				if (value.longValue() > 0) {
-					Number newValue = Long.valueOf(value.longValue() * -1);
-					int caretPos = text.getCaretPosition() + 1;
-					setValue(newValue);
-					text.setSelection(caretPos, caretPos);
+		}
+	}
+
+	/**
+	 * TODO [ev] docs
+	 */
+	private final class NumericModifyListener implements ModifyListener {
+
+		public void modifyText(ModifyEvent e) {
+			Text control = (Text) e.widget;
+			String oldText = control.getText();
+			String newText = group(removeLeadingZeroes(ungroup(oldText)));
+			if (!oldText.equals(newText)) {
+				removeVerifyListener();
+				int posFromRight = oldText.length() - control.getCaretPosition();
+				control.setText(newText);
+				int caretPos = newText.length() - posFromRight;
+				control.setSelection(caretPos);
+				// System.out.println("newText= " + newText + " @ " + caretPos);
+				addVerifyListener();
+			}
+		}
+	}
+
+	/**
+	 * TODO [ev] docs
+	 */
+	private final class NumericKeyListener extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			Text control = (Text) e.widget;
+			if (16777219 == e.keyCode && control.getSelectionCount() == 0) {// left arrow
+				int index = control.getCaretPosition() - 1;
+				if (index > 1 && GROUPING_SEPARATOR == control.getText().charAt(index)) {
+					e.doit = false;
+					control.setSelection(index - 1);
+				}
+			} else if (16777220 == e.keyCode && control.getSelectionCount() == 0) { //right arrow
+				int index = control.getCaretPosition() + 1;
+				if (index < control.getText().length() - 1 && GROUPING_SEPARATOR == control.getText().charAt(index)) {
+					e.doit = false;
+					control.setSelection(index + 1);
+				}
+			} else if ('-' == e.character) {
+				e.doit = false;
+				if (isSigned) {
+					Event event = new Event();
+					event.type = SWT.Verify;
+					event.character = MINUS_SIGN;
+					event.start = 0;
+					event.end = 0;
+					event.widget = control;
+					event.text = String.valueOf(MINUS_SIGN);
+					control.notifyListeners(SWT.Verify, event);
+					if (event.doit) {
+						int caret = control.getCaretPosition() + 1;
+						removeVerifyListener();
+						control.setText(MINUS_SIGN + control.getText());
+						control.setSelection(caret);
+						addVerifyListener();
+					}
 				}
 			}
 		}
-
-		public void keyReleased(KeyEvent e) {
-			// unused
-		}
-
-		// helping methods
-		//////////////////
-
-		private boolean isValid(int keyCode) {
-			boolean result = false;
-			for (int i = 0; !result && i < VALID_KEYCODES.length; i++) {
-				result = VALID_KEYCODES[i] == keyCode;
-			}
-			return result;
-		}
-
 	}
 
 }

@@ -33,6 +33,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -70,6 +71,12 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		});
 	}
 
+	protected TextRidget(String initialValue) {
+		this();
+		Assert.isNotNull(initialValue);
+		textValue = initialValue;
+	}
+
 	/**
 	 * @deprecated use BeansObservables.observeValue(ridget instance,
 	 *             ITextFieldRidget.PROPERTY_TEXT);
@@ -84,28 +91,50 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	}
 
 	@Override
-	protected synchronized void bindUIControl() {
+	protected final synchronized void bindUIControl() {
 		Text control = getUIControl();
 		if (control != null) {
 			control.setText(textValue);
 			control.setSelection(0, 0); // move cursor to 0
 			control.setEditable(isOutputOnly() ? false : true);
-			control.addKeyListener(crKeyListener);
-			control.addFocusListener(focusListener);
-			control.addModifyListener(modifyListener);
-			control.addVerifyListener(verifyListener);
+			addListeners(control);
 		}
 	}
 
 	@Override
-	protected synchronized void unbindUIControl() {
+	protected final synchronized void unbindUIControl() {
 		Text control = getUIControl();
 		if (control != null) {
-			control.removeKeyListener(crKeyListener);
-			control.removeFocusListener(focusListener);
-			control.removeModifyListener(modifyListener);
-			control.removeVerifyListener(verifyListener);
+			removeListeners(control);
 		}
+	}
+
+	/**
+	 * Template method for adding listeners to the control. Will be called
+	 * automatically. Children can overide but must call super.
+	 * 
+	 * @param control
+	 *            a Text instance (never null)
+	 */
+	protected synchronized void addListeners(Text control) {
+		control.addKeyListener(crKeyListener);
+		control.addFocusListener(focusListener);
+		control.addModifyListener(modifyListener);
+		control.addVerifyListener(verifyListener);
+	}
+
+	/**
+	 * Template method for removing listeners from the control. Will be called
+	 * automatically. Children can overide but must call super.
+	 * 
+	 * @param control
+	 *            a Text instance (never null)
+	 */
+	protected synchronized void removeListeners(Text control) {
+		control.removeKeyListener(crKeyListener);
+		control.removeFocusListener(focusListener);
+		control.removeModifyListener(modifyListener);
+		control.removeVerifyListener(verifyListener);
 	}
 
 	@Override
@@ -213,11 +242,16 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private synchronized void forceTextToControl(String newValue) {
 		Text control = getUIControl();
 		if (control != null) {
-			control.removeVerifyListener(verifyListener);
+			Listener[] listeners = control.getListeners(SWT.Verify);
+			for (Listener listener : listeners) {
+				control.removeListener(SWT.Verify, listener);
+			}
 			boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
 			control.setText(hideValue ? EMPTY_STRING : newValue);
 			control.setSelection(0, 0);
-			control.addVerifyListener(verifyListener);
+			for (Listener listener : listeners) {
+				control.addListener(SWT.Verify, listener);
+			}
 		}
 	}
 
@@ -300,6 +334,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 	private final class ValidationListener implements VerifyListener {
 
 		public synchronized void verifyText(VerifyEvent e) {
+			if (!e.doit) {
+				return;
+			}
 			String newText = getText(e);
 			IStatus status = checkOnEditRules(newText);
 			boolean doit = !(status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
