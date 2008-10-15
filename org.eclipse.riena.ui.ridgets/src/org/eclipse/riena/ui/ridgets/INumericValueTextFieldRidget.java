@@ -16,7 +16,9 @@ package org.eclipse.riena.ui.ridgets;
  * On the view-side we have to use the appropriate control-creation method of
  * the UIControlsFactory (see UIControlsFactory.createTextNumeric()).
  * 
- * TODO [ev] add javadoc on supported models
+ * The ridget uses strings internally. It can be bound to any model that is
+ * supported by the JFace databinding, provided the bounds value can be
+ * converted to a string representing a number.
  */
 public interface INumericValueTextFieldRidget extends ITextFieldRidget {
 
@@ -50,13 +52,13 @@ public interface INumericValueTextFieldRidget extends ITextFieldRidget {
 	void setSigned(boolean signed);
 
 	/**
-	 * @return true if negative decimal value should be marked
+	 * @return true if negative value should be marked
 	 */
 	boolean isMarkNegative();
 
 	/**
 	 * @param mustBeMarked
-	 *            whether to mark or not the negative decimal value
+	 *            whether to mark or not a negative value
 	 */
 	void setMarkNegative(boolean mustBeMarked);
 }

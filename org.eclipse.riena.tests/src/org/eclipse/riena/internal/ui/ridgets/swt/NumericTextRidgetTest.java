@@ -22,6 +22,7 @@ import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -968,6 +969,76 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		focusOut(control);
 
 		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+	}
+
+	public void testSetMarkNegative() {
+		INumericValueTextFieldRidget ridget = getRidget();
+
+		assertTrue(ridget.isMarkNegative());
+
+		ridget.setMarkNegative(false);
+
+		assertFalse(ridget.isMarkNegative());
+
+		ridget.setMarkNegative(true);
+
+		assertTrue(ridget.isMarkNegative());
+	}
+
+	public void testNegativeMarkerFromSetText() {
+		INumericValueTextFieldRidget ridget = getRidget();
+		ridget.setMarkNegative(true);
+
+		ridget.setText("100");
+
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		ridget.setText("-100");
+
+		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		ridget.setText("0");
+
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		ridget.setText("-0");
+
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		ridget.setText("-1");
+		ridget.setMarkNegative(false);
+
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		ridget.setMarkNegative(true);
+
+		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
+	}
+
+	public void testNegativeMarkerFromControl() {
+		INumericValueTextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		Display display = control.getDisplay();
+		ridget.setMarkNegative(true);
+
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		// direct writing is false, so we update the model pressing '\r' 
+
+		control.setFocus();
+		UITestHelper.sendString(display, "123-\r");
+
+		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		control.setSelection(0, 0);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+		UITestHelper.sendString(display, "\r");
+
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		UITestHelper.sendString(display, "-\r");
+
+		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
 	}
 
 	// helping methods

@@ -29,6 +29,8 @@ public final class UITestHelper {
 	public static final int KC_HOME = 16777223;
 	/** Keycode for 'end' (16777224) */
 	public static final int KC_END = 16777224;
+	/** Keycode for 'del' (127) */
+	public static final int KC_DEL = 127;
 
 	private UITestHelper() {
 		// prevent instantiation
