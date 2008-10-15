@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.List;
+
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -57,6 +59,22 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 
 	public boolean isPresentGroupNode() {
 		return isPresentWithSingleModule() || getChildren().size() > 1;
+	}
+
+	@Override
+	public final boolean isVisible() {
+		boolean visible = super.isVisible();
+		if (visible) {
+			visible = false;
+			List<IModuleNode> children = getChildren();
+			for (IModuleNode moduleNode : children) {
+				if (moduleNode.isVisible()) {
+					visible = true;
+					break;
+				}
+			}
+		}
+		return visible;
 	}
 
 }

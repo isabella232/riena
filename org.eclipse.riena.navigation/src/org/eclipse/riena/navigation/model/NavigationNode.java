@@ -929,7 +929,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#isEnabled()
 	 */
-	public final boolean isVisible() {
+	public boolean isVisible() {
 		return isVisible(this);
 	}
 

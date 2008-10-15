@@ -23,6 +23,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(NavigationProcessorTest.class);
 		suite.addTestSuite(NavigationNodeTest.class);
+		suite.addTestSuite(ModuleGroupNodeTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -57,25 +57,25 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 */
 	private Group createControlsGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "UI-Controls"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(3).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		UIControlsFactory.createLabel(group, "Labels:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Labels"); //$NON-NLS-1$
 		Label label1 = UIControlsFactory.createLabel(group, "ui_label1"); //$NON-NLS-1$
 		addUIControl(label1, "ui_label1"); //$NON-NLS-1$
 		Label label2 = UIControlsFactory.createLabel(group, "ui_label2"); //$NON-NLS-1$
 		addUIControl(label2, "ui_label2"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Texts:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Texts"); //$NON-NLS-1$
 		Text text1 = UIControlsFactory.createText(group);
 		addUIControl(text1, "ui_text1"); //$NON-NLS-1$
 		Text text2 = UIControlsFactory.createText(group);
 		addUIControl(text2, "ui_text2"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Buttons:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Buttons"); //$NON-NLS-1$
 		Button button1 = UIControlsFactory.createButton(group);
 		button1.setText("ui_button1"); //$NON-NLS-1$
 		addUIControl(button1, "ui_button1"); //$NON-NLS-1$
@@ -96,17 +96,17 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 */
 	private Group createMarkersGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "Markers:"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "Markers"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Ridget ID"); //$NON-NLS-1$
 		Combo ridgetID = UIControlsFactory.createCombo(group);
 		addUIControl(ridgetID, "ridgetToMarkID"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(group, "Marker:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Marker"); //$NON-NLS-1$
 		Combo markers = UIControlsFactory.createCombo(group);
 		addUIControl(markers, "markers"); //$NON-NLS-1$
 
@@ -133,7 +133,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 */
 	private Group createLocalFiltersGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (local):"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (local)"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
@@ -142,7 +142,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 		Label explanation = UIControlsFactory.createLabel(group, "For ridgets of this sub module.\n\n"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(explanation);
 
-		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Ridget ID"); //$NON-NLS-1$
 		Combo ridgetID = UIControlsFactory.createCombo(group);
 		addUIControl(ridgetID, "ridgetID"); //$NON-NLS-1$
 
@@ -178,7 +178,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 	 */
 	private Group createGlobalFiltersGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (global):"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (global)"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
@@ -187,7 +187,7 @@ public class FilterSubModuleView extends SubModuleView<FilterSubModuleController
 		Label explanation = UIControlsFactory.createLabel(group, "For ridgets of the whole application.\n\n"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(explanation);
 
-		UIControlsFactory.createLabel(group, "Ridget ID:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(group, "Ridget ID"); //$NON-NLS-1$
 		Text ridgetID = UIControlsFactory.createText(group);
 		addUIControl(ridgetID, "globalRidgetID"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(ridgetID);

@@ -128,6 +128,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return getNavigationNode() != null && getNavigationNode().isActivated();
 	}
 
+	public boolean isEnabled() {
+		return getNavigationNode() != null && getNavigationNode().isEnabled();
+	}
+
+	public boolean isVisible() {
+		return getNavigationNode() != null && getNavigationNode().isVisible();
+	}
+
 	/**
 	 * @return true if the controller is activated
 	 */

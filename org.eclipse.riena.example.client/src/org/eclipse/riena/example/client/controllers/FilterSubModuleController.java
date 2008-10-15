@@ -66,7 +66,7 @@ public class FilterSubModuleController extends SubModuleController {
 			new OutputMarker(), new DisabledMarker() };
 
 	/**
-	 * Enummeration of different kind of UI filters.
+	 * Enumeration of different kind of UI filters.
 	 */
 	private enum FilterType {
 
@@ -233,10 +233,6 @@ public class FilterSubModuleController extends SubModuleController {
 		filter.addFilterAttribute(createFilterAttribute(globalFilterModel));
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.addFilter(filter);
-
-		// for test reason only
-		//applNode.addFilter(UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
-		//		"rienaExample.offline"));
 	}
 
 	/**

@@ -36,7 +36,8 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 
 /**
- *
+ * Controller of the sub module that demonstrates UI filters for navigation
+ * nodes.
  */
 public class FilterNavigationSubModuleController extends SubModuleController {
 
@@ -45,7 +46,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	private FilterModel filterModel;
 
 	/**
-	 * Enummeration of different kind of UI filters.
+	 * Enumeration of different kind of UI filters.
 	 */
 	private enum FilterType {
 
@@ -256,7 +257,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		private Object selectedFilterTypeValue;
 
 		public FilterModel() {
-			nodeLabel = "";
+			nodeLabel = ""; //$NON-NLS-1$
 		}
 
 		public List<FilterType> getTypes() {

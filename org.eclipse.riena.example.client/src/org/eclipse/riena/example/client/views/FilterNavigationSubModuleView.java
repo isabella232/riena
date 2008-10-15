@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- *
+ * View of the sub module that demonstrates UI filters for navigation nodes.
  */
 public class FilterNavigationSubModuleView extends SubModuleView<FilterNavigationSubModuleController> {
 
@@ -42,13 +42,13 @@ public class FilterNavigationSubModuleView extends SubModuleView<FilterNavigatio
 
 	private Group createFiltersGroup(Composite parent) {
 
-		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (Navigation):"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "UI-Filters (Navigation)"); //$NON-NLS-1$
 
 		int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Label label1 = UIControlsFactory.createLabel(group, "Node Label:"); //$NON-NLS-1$
+		Label label1 = UIControlsFactory.createLabel(group, "Node Label"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(false, false).span(1, 1).applyTo(label1);
 		Text nodeLabel = UIControlsFactory.createText(group);
 		addUIControl(nodeLabel, "nodeLabel"); //$NON-NLS-1$
