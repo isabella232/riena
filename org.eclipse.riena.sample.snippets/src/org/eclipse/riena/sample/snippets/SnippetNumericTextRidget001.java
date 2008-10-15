@@ -41,7 +41,7 @@ public final class SnippetNumericTextRidget001 {
 			shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			UIControlsFactory.createLabel(shell, "Number:"); //$NON-NLS-1$
+			UIControlsFactory.createLabel(shell, "###,###:"); //$NON-NLS-1$
 			Text txtInput = UIControlsFactory.createTextNumeric(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
@@ -52,7 +52,7 @@ public final class SnippetNumericTextRidget001 {
 			INumericValueTextFieldRidget rInput = (INumericValueTextFieldRidget) SwtRidgetFactory
 					.createRidget(txtInput);
 			rInput.setDirectWriting(true);
-			rInput.addValidationRule(new MaxNumberLength(9), ValidationTime.ON_UI_CONTROL_EDIT);
+			rInput.addValidationRule(new MaxNumberLength(6), ValidationTime.ON_UI_CONTROL_EDIT);
 
 			ITextFieldRidget rOutput = (ITextFieldRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
