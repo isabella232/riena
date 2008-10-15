@@ -13,6 +13,7 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -43,39 +44,39 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 		UIControlsFactory.createLabel(parent, "Text Field"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, "Model Value"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "String:"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createText(parent), "txtString"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createLabel(parent, ""), "lblString"); //$NON-NLS-1$//$NON-NLS-2$
+		UIControlsFactory.createLabel(parent, "Numeric String:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inString"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outString"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Double:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-
-		UIControlsFactory.createLabel(parent, "Float:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Integer:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inInteger"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outInteger"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Long:"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Integer:"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextNumeric(parent), "txtInteger"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createLabel(parent, ""), "lblInteger"); //$NON-NLS-1$//$NON-NLS-2$
+		UIControlsFactory.createLabel(parent, "Double:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inDouble"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outDouble"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "Float:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Range[100,1000]:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inRange"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outRange"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "Max. 8 digits:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inMaxEight"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outMaxEight"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "Unformatted; Min. 3 digits:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inMinThree"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outMinThree"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "With leading Zero:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-
-		UIControlsFactory.createLabel(parent, "Unformatted, max. 8 digits:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-
-		UIControlsFactory.createLabel(parent, "Min. 3 digits:"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
@@ -90,5 +91,4 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 			}
 		}
 	}
-
 }
