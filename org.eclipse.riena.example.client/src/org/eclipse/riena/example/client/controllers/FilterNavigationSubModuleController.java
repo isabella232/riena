@@ -23,6 +23,7 @@ import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttribu
 import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
@@ -191,12 +192,20 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
 
+		String nodeId;
+		if (node.getNodeId() != null) {
+			nodeId = node.getNodeId().getTypeId();
+		} else {
+			nodeId = "";
+			node.setNodeId(new NavigationNodeId(""));
+		}
+
 		switch (type) {
 		case MARKER:
 			if (filterValue instanceof DisabledMarker) {
-				attribute = new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getInstanceId());
+				attribute = new NavigationUIFilterAttributeDisabledMarker(nodeId);
 			} else if (filterValue instanceof HiddenMarker) {
-				attribute = new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getInstanceId());
+				attribute = new NavigationUIFilterAttributeHiddenMarker(nodeId);
 			}
 
 			break;
