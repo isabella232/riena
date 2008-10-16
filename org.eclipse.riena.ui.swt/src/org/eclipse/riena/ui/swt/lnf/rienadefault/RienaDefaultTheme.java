@@ -35,7 +35,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
 	private static final String IMAGE_THIN_CLOSE = PATH_ICONS + PATH_SEPARATOR + "thin_close_view.gif"; //$NON-NLS-1$
 	private static final String IMAGE_BACKGROUND = PATH_ICONS + PATH_SEPARATOR + "background.png"; //$NON-NLS-1$
-	private static final String IMAGE_LOGO = PATH_ICONS + PATH_SEPARATOR + "logo.png"; //$NON-NLS-1$
+	private static final String IMAGE_LOGO = PATH_ICONS + PATH_SEPARATOR + "Riena-Logo_RGB.png"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE = PATH_ICONS + PATH_SEPARATOR + "mb_close.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_close_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR
