@@ -28,7 +28,6 @@ import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
-import org.eclipse.riena.ui.filter.IUIFilterNavigationMarkerAttribute;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -200,7 +199,6 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 				attribute = new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getInstanceId());
 			}
 
-			((IUIFilterNavigationMarkerAttribute) attribute).setNode("org.eclipse.riena.example.uiProcess.demo1");
 			break;
 		}
 
