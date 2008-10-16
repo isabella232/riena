@@ -21,27 +21,41 @@ import org.eclipse.riena.ui.filter.impl.AbstractUIFilterMarkerAttribute;
 public abstract class AbstractNavigationUIFilterMarkerAttribute extends AbstractUIFilterMarkerAttribute implements
 		IUIFilterNavigationMarkerAttribute {
 
-	private INavigationNode<?> node;
+	private String nodeId;
 
-	public AbstractNavigationUIFilterMarkerAttribute(INavigationNode<?> node, IMarker marker) {
+	public AbstractNavigationUIFilterMarkerAttribute(String nodeId, IMarker marker) {
 		super(marker);
-		this.node = node;
+		this.nodeId = nodeId;
 	}
 
 	public boolean matches(Object object) {
-		return (object == node);
+
+		if (object instanceof INavigationNode) {
+			INavigationNode node = (INavigationNode) object;
+			return (nodeId.startsWith(((INavigationNode) object).getNodeId().getTypeId()));
+		} else {
+			return false;
+		}
+
 	}
 
 	public void apply(Object object) {
-		node.addMarker(getMarker());
+		if (object instanceof INavigationNode) {
+			INavigationNode node = (INavigationNode) object;
+			node.addMarker(getMarker());
+		}
+
 	}
 
 	public void remove(Object object) {
-		node.removeMarker(getMarker());
+		if (object instanceof INavigationNode) {
+			INavigationNode node = (INavigationNode) object;
+			node.removeMarker(getMarker());
+		}
 	}
 
 	public void setNode(String id) {
-		// TODO: create node from given id an set to node
+		this.nodeId = id;
 
 	}
 

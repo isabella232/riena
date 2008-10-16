@@ -24,5 +24,5 @@ public interface IUIFilterProvider {
 	 * 
 	 * @return a UIFilter
 	 */
-	IUIFilter provideFilter(String filterID);
+	IUIFilterContainer provideFilter(String filterID);
 }

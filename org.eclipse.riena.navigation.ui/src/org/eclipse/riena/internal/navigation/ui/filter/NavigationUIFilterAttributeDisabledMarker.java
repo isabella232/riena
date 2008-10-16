@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 
 /**
@@ -22,8 +21,8 @@ public class NavigationUIFilterAttributeDisabledMarker extends AbstractNavigatio
 		super(null, new DisabledMarker());
 	}
 
-	public NavigationUIFilterAttributeDisabledMarker(INavigationNode<?> node) {
-		super(node, new DisabledMarker());
+	public NavigationUIFilterAttributeDisabledMarker(String nodeId) {
+		super(nodeId, new DisabledMarker());
 	}
 
 }

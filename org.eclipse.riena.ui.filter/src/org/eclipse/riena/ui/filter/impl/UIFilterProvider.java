@@ -13,8 +13,8 @@ package org.eclipse.riena.ui.filter.impl;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.ui.filter.IMarkerAttribute;
-import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterContainer;
 import org.eclipse.riena.ui.filter.IUIFilterExtension;
 import org.eclipse.riena.ui.filter.IUIFilterNavigationMarkerAttribute;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
@@ -68,13 +68,13 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 * org.eclipse.riena.ui.filter.IUIFilterProvider#provideFilter(java.lang
 	 * .String)
 	 */
-	public IUIFilter provideFilter(String filterID) {
+	public IUIFilterContainer provideFilter(String filterID) {
 
 		IUIFilterExtension filterExtension = getUIFilterDefinition(filterID);
 
-		UIFilter result = new UIFilter();
+		UIFilter filterResult = new UIFilter();
 
-		result.setFilterID(filterID);
+		filterResult.setFilterID(filterID);
 
 		for (int i = 0; i < filterExtension.getMarkerAttributes().length; i++) {
 			IMarkerAttribute type = filterExtension.getMarkerAttributes()[i];
@@ -86,10 +86,10 @@ public class UIFilterProvider implements IUIFilterProvider {
 			} else if (attr instanceof IUIFilterNavigationMarkerAttribute) {
 				((IUIFilterNavigationMarkerAttribute) attr).setNode(type.getTargetId());
 			}
-			result.addFilterAttribute(attr);
+			filterResult.addFilterAttribute(attr);
 		}
 
-		return result;
+		return new UIFilterContainer(filterResult, filterExtension.getNodeId());
 	}
 
 	public class UIFilterExtensionInjectionHelper {

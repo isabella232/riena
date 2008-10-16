@@ -105,10 +105,10 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		IUIFilter filter = new UIFilter();
-		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node));
+		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId()));
 		node.addFilter(filter);
 		IUIFilter filter2 = new UIFilter();
-		filter2.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node));
+		filter2.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getInstanceId()));
 		node.addFilter(filter2);
 		ReflectionUtils.invokeHidden(applier, "applyFilters", node);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
@@ -132,8 +132,8 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		node.addChild(node2);
 
 		IUIFilter filter = new UIFilter();
-		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node));
-		filter.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node));
+		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getInstanceId()));
+		filter.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getInstanceId()));
 		IUIFilterAttributeClosure closure = ReflectionUtils.getHidden(applier, "applyClosure");
 		ReflectionUtils.invokeHidden(applier, "applyFilter", node, filter, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
@@ -161,7 +161,7 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		IUIFilterAttribute attribute = new NavigationUIFilterAttributeDisabledMarker(node);
+		IUIFilterAttribute attribute = new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getInstanceId());
 		IUIFilterAttributeClosure closure = ReflectionUtils.getHidden(applier, "applyClosure");
 		ReflectionUtils.invokeHidden(applier, "applyFilterAttribute", node, attribute, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());

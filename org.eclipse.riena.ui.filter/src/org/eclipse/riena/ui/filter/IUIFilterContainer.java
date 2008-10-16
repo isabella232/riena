@@ -8,21 +8,23 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.navigation.ui.filter;
-
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
+package org.eclipse.riena.ui.filter;
 
 /**
  *
  */
-public class NavigationUIFilterAttributeHiddenMarker extends AbstractNavigationUIFilterMarkerAttribute {
+public interface IUIFilterContainer {
 
-	public NavigationUIFilterAttributeHiddenMarker() {
-		super(null, new HiddenMarker());
-	}
+	/**
+	 * Returns the created filter
+	 */
 
-	public NavigationUIFilterAttributeHiddenMarker(String nodeId) {
-		super(nodeId, new HiddenMarker());
-	}
+	IUIFilter getFilter();
+
+	/**
+	 * Returns the navigation-node ID on which the filter maybe applied
+	 */
+
+	String getFilterTargetNodeId();
 
 }

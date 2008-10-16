@@ -29,7 +29,7 @@ public class UIFilter implements IUIFilter {
 	}
 
 	public UIFilter(String id) {
-		super();
+		this();
 		filterID = id;
 	}
 
