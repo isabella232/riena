@@ -8,22 +8,17 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.navigation.ui.filter;
-
-import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
+package org.eclipse.riena.ui.filter;
 
 /**
  *
  */
-public class NavigationUIFilterAttributeDisabledMarker extends AbstractNavigationUIFilterMarkerAttribute {
+public interface IUIFilterNavigationMarkerAttribute extends IUIFilterMarkerAttribute {
 
-	public NavigationUIFilterAttributeDisabledMarker() {
-		super(null, new DisabledMarker());
-	}
+	/**
+	 * Sets the navigation node
+	 */
 
-	public NavigationUIFilterAttributeDisabledMarker(INavigationNode<?> node) {
-		super(node, new DisabledMarker());
-	}
+	void setNode(String nodeId);
 
 }

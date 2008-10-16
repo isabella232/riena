@@ -16,6 +16,7 @@ import org.eclipse.riena.ui.filter.IMarkerAttribute;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterAttribute;
 import org.eclipse.riena.ui.filter.IUIFilterExtension;
+import org.eclipse.riena.ui.filter.IUIFilterNavigationMarkerAttribute;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.filter.IUIFilterRidgetMarkerAttribute;
 import org.eclipse.riena.ui.internal.Activator;
@@ -82,6 +83,8 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 			if (attr instanceof IUIFilterRidgetMarkerAttribute) {
 				((IUIFilterRidgetMarkerAttribute) attr).setId(type.getTargetId());
+			} else if (attr instanceof IUIFilterNavigationMarkerAttribute) {
+				((IUIFilterNavigationMarkerAttribute) attr).setNode(type.getTargetId());
 			}
 			result.addFilterAttribute(attr);
 		}

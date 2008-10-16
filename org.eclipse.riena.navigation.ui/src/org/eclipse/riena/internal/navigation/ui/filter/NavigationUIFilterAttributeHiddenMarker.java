@@ -18,6 +18,10 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
  */
 public class NavigationUIFilterAttributeHiddenMarker extends AbstractNavigationUIFilterMarkerAttribute {
 
+	public NavigationUIFilterAttributeHiddenMarker() {
+		super(null, new HiddenMarker());
+	}
+
 	public NavigationUIFilterAttributeHiddenMarker(INavigationNode<?> node) {
 		super(node, new HiddenMarker());
 	}
