@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
@@ -31,10 +32,13 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 	public void testMatches() {
 
 		INavigationNode<?> node = new SubModuleNode();
+		node.setNodeId(new NavigationNodeId("id"));
 		IUIFilterAttribute attribute = new MyNavigationUIFilterMarkerAttribute(node.getNodeId().getInstanceId(), null);
 		assertFalse(attribute.matches(null));
 		assertFalse(attribute.matches(new Object()));
-		assertFalse(attribute.matches(new SubModuleNode()));
+		SubModuleNode sm = new SubModuleNode();
+		sm.setNodeId(new NavigationNodeId("id2"));
+		assertFalse(attribute.matches(sm));
 		assertTrue(attribute.matches(node));
 
 	}
@@ -45,10 +49,12 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 	public void testApply() {
 
 		INavigationNode<?> node = new SubModuleNode();
+		node.setNodeId(new NavigationNodeId("id"));
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertTrue(node.isVisible());
 		IUIFilterAttribute attribute = new MyNavigationUIFilterMarkerAttribute(node.getNodeId().getInstanceId(),
 				new HiddenMarker());
+
 		attribute.apply(node);
 		assertFalse(node.isVisible());
 
@@ -60,6 +66,7 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 	public void testRemove() {
 
 		INavigationNode<?> node = new SubModuleNode();
+		node.setNodeId(new NavigationNodeId("id"));
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertTrue(node.isEnabled());
 		IUIFilterAttribute attribute = new MyNavigationUIFilterMarkerAttribute(node.getNodeId().getInstanceId(),
@@ -76,6 +83,7 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 
 		public MyNavigationUIFilterMarkerAttribute(String nodeId, IMarker marker) {
 			super(nodeId, marker);
+			setNode("id");
 		}
 
 	}
