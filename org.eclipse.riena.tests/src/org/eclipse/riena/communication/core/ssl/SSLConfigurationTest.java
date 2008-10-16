@@ -13,8 +13,10 @@ package org.eclipse.riena.communication.core.ssl;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.nanohttp.TestServer;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
 /**
@@ -107,6 +109,10 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 		public String getProtocol() {
 			return protocol;
+		}
+
+		public Bundle getContributingBundle() {
+			return Activator.getDefault().getBundle();
 		}
 
 	}
