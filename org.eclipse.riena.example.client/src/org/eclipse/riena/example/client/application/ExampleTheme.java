@@ -18,6 +18,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
+
 import org.eclipse.swt.SWT;
 
 /**
@@ -63,7 +64,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/background.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
-		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/logo.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/Riena-Logo_RGB.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
 
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
