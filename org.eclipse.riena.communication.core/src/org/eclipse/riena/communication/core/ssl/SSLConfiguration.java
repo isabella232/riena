@@ -28,10 +28,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.internal.communication.core.Activator;
-
-import org.eclipse.equinox.log.Logger;
+import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
 
 /**
@@ -43,6 +43,7 @@ public class SSLConfiguration {
 	private String protocol;
 	private String keystore;
 	private String password;
+	private Bundle contributingBundle;
 
 	private boolean configured;
 
@@ -75,6 +76,7 @@ public class SSLConfiguration {
 		protocol = properties.getProtocol();
 		keystore = properties.getKeystore();
 		password = properties.getPassword();
+		contributingBundle = properties.getContributingBundle();
 
 		// Check protocol & keystore
 		if (keystore == null || keystore.length() == 0 || protocol == null || protocol.length() == 0) {
@@ -196,7 +198,7 @@ public class SSLConfiguration {
 
 		LOGGER.log(LogService.LOG_DEBUG, "Keystore " + keystore + " is not a file."); //$NON-NLS-1$ //$NON-NLS-2$
 		// maybe it is a resource?
-		URL keystoreUrl = SSLConfiguration.class.getClassLoader().getResource(keystore);
+		URL keystoreUrl = contributingBundle.getResource(keystore);
 		if (keystoreUrl != null) {
 			return keystoreUrl;
 		}
