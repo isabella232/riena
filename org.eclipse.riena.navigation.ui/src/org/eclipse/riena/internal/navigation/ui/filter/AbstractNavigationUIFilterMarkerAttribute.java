@@ -32,7 +32,11 @@ public abstract class AbstractNavigationUIFilterMarkerAttribute extends Abstract
 
 		if (object instanceof INavigationNode) {
 			INavigationNode node = (INavigationNode) object;
-			return (nodeId.startsWith(((INavigationNode) object).getNodeId().getTypeId()));
+			if (node.getNodeId() != null) {
+				return (nodeId.startsWith(((INavigationNode) node).getNodeId().getTypeId()));
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
