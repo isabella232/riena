@@ -148,6 +148,13 @@
             name="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
+            id="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
+            name="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -529,6 +536,12 @@
             shared="false"
             typeId="org.eclipse.riena.example.filternavigation"
             view="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.FilterExternalDefinitionSubModuleController"
+            shared="false"
+            typeId="org.eclipse.riena.example.filterdefinition"
+            view="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView">
       </subModule>
    </extension>
    <extension
