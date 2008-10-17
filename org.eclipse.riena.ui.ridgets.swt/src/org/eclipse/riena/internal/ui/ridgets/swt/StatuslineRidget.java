@@ -12,8 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
-import org.eclipse.riena.ui.ridgets.IStatuslineProcessRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineMessage;
@@ -96,16 +96,15 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		addRidget("statuslineNumberRidget", statuslineNumberRidget); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IStatuslineRidget#getStatuslineProcessRidget
-	 * ()
-	 */
-	public IStatuslineProcessRidget getStatuslineProcessRidget() {
-		// TODO Auto-generated method stub
-		return null;
+	private IStatuslineUIProcessRidget statuslineUIProcessRidget;
+
+	public void setStatuslineUIProcessRidget(IStatuslineUIProcessRidget statuslineUIProcessRidget) {
+		addRidget("statuslineUIProcessRidget", statuslineUIProcessRidget); //$NON-NLS-1$
+		this.statuslineUIProcessRidget = statuslineUIProcessRidget;
+	}
+
+	public IStatuslineUIProcessRidget getStatuslineUIProcessRidget() {
+		return statuslineUIProcessRidget;
 	}
 
 	/*

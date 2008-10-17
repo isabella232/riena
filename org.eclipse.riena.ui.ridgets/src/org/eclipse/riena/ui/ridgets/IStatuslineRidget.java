@@ -67,7 +67,7 @@ public interface IStatuslineRidget extends IComplexRidget {
 	/**
 	 * @return the statuslineProcess
 	 */
-	IStatuslineProcessRidget getStatuslineProcessRidget();
+	IStatuslineUIProcessRidget getStatuslineUIProcessRidget();
 
 	/**
 	 * @return the statuslineNumer

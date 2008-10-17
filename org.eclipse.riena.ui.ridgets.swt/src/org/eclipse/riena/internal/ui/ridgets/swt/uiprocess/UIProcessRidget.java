@@ -258,6 +258,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	public void finalUpdateUI(IProgressVisualizer visualizer) {
 		// if it´s the only visualizer for the current context: close window
 		if (isActive(visualizer) && isLonelyVisualizer(visualizer)) {
+			visualizer.getProcessInfo().setIgnoreCancel(true);
 			close();
 		}
 

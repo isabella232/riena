@@ -31,7 +31,11 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class Statusline extends Composite implements IComplexComponent {
 
+	/**
+	 * 
+	 */
 	private final static String NUMBER_NAME = "statuslineNumberRidget"; //$NON-NLS-1$
+	private static final String UIPROCES_NAME = "statuslineUIProcessRidget"; //$NON-NLS-1$
 	private List<Object> uiControls;
 	private StatuslineMessage message;
 	private Class<? extends Control> spacer;
@@ -127,6 +131,27 @@ public class Statusline extends Composite implements IComplexComponent {
 		number.setLayoutData(formData);
 		lastControl = number;
 
+		// add StatuslineUIProcess
+		spacerControl = createSpacer(this);
+		if (spacerControl != null) {
+			formData = new FormData();
+			formData.top = new FormAttachment(0, 0);
+			formData.bottom = new FormAttachment(100, 0);
+			formData.right = new FormAttachment(lastControl, 0);
+			spacerControl.setLayoutData(formData);
+			lastControl = spacerControl;
+		}
+
+		StatuslineUIProcess uiProcess = new StatuslineUIProcess(this, SWT.NONE);
+		addUIControl(uiProcess, UIPROCES_NAME);
+		formData = new FormData();
+		formData.top = new FormAttachment(0, 0);
+		formData.bottom = new FormAttachment(100, 0);
+		formData.right = new FormAttachment(lastControl, 0);
+		uiProcess.setLayoutData(formData);
+		lastControl = uiProcess;
+
+		// add StatuslineMessage
 		spacerControl = createSpacer(this);
 		if (spacerControl != null) {
 			formData = new FormData();

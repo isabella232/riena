@@ -38,6 +38,8 @@ public class ProcessInfo {
 	private Style style = STYLE_PLAIN;
 	private PropertyChangeSupport ppSupport;
 	private Object context;
+	private boolean canceled;
+	private boolean ignoreCancel;
 
 	public ProcessInfo() {
 		ppSupport = new PropertyChangeSupport(this);
@@ -45,6 +47,10 @@ public class ProcessInfo {
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		ppSupport.addPropertyChangeListener(listener);
+	}
+
+	public void setIgnoreCancel(boolean ignoreCancel) {
+		this.ignoreCancel = ignoreCancel;
 	}
 
 	/**
@@ -140,7 +146,14 @@ public class ProcessInfo {
 		return style;
 	}
 
+	public boolean isCanceled() {
+		return canceled;
+	}
+
 	public void cancel() {
+		if (!ignoreCancel) {
+			canceled = true;
+		}
 		ppSupport.firePropertyChange(PROPERTY_CANCELED, false, true);
 	}
 

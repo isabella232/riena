@@ -28,6 +28,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineNumberRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineUIProcessRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
@@ -41,6 +42,7 @@ import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
+import org.eclipse.riena.ui.swt.StatuslineUIProcess;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -88,6 +90,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Shell.class, ShellRidget.class);
 		addMapping(Statusline.class, StatuslineRidget.class);
 		addMapping(StatuslineNumber.class, StatuslineNumberRidget.class);
+		addMapping(StatuslineUIProcess.class, StatuslineUIProcessRidget.class);
 		addMapping(EmbeddedTitleBar.class, EmbeddedTitleBarRidget.class);
 		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
 	}
