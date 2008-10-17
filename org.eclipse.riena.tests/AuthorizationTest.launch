@@ -29,9 +29,9 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.eclipse.riena.tests"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.security.manager  -Djava.security.properties=&quot;${workspace_loc}\org.eclipse.riena.tests\config\projekte.security&quot; -Djava.security.policy==${workspace_loc}\org.eclipse.riena.tests\config\sampleazn.policy -Djava.security.auth.login.config==${workspace_loc}\org.eclipse.riena.tests\config\sample_jaas.config -Xbootclasspath/p:${workspace_loc}\org.eclipse.riena.security.common.bootpolicy\lib\bootpolicy.jar"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.equinox.security.sample.authProduct"/>
+<booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>
 <booleanAttribute key="useDefaultConfigArea" value="false"/>

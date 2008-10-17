@@ -8,23 +8,17 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.sample.app.common.model;
+package org.eclipse.riena.security.common.authorization;
+
+import java.security.Permission;
 
 /**
- * 
- * 
+ * Interface for an SentinelService (an OSGi Service) that is call by the
+ * Sentinel and checks whether the current user has enough permission for a
+ * certain operation.
  */
-public interface ICustomerSearch {
+public interface ISentinelService {
 
-	/**
-	 * Retrieves customers from the database. For the query the given customer
-	 * is use as an example (Query by Example (QBE))
-	 * 
-	 * @param customer
-	 *            customer candidate
-	 * @return list of customers
-	 */
-	Customer[] findCustomer(Customer customer);
+	boolean checkAccess(Permission permission);
 
-	Customer[] findCustomerWithPermission(Customer customer);
 }

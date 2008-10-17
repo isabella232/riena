@@ -10,19 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.security.services.itest.authorization;
 
+import java.net.URL;
 import java.security.AccessControlException;
-
-import javax.security.auth.login.LoginContext;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
+import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallbackHandler;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
-import org.eclipse.riena.security.services.itest.MyCallbackHandler;
 import org.eclipse.riena.tests.RienaTestCase;
+
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -34,6 +37,8 @@ public class AuthorizationServiceITest extends RienaTestCase {
 	private IRemoteServiceRegistration authorizationService;
 	private IRemoteServiceRegistration customerService;
 
+	private static final String JAAS_CONFIG_FILE = "config/sample_jaas.config"; //$NON-NLS-1$
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -41,13 +46,11 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", "hessian",
-				"org.eclipse.riena.authenticationservice");
+				"http://localhost:8080/hessian/AuthenticationService", "hessian");
 		authorizationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class,
-				"http://localhost:8080/hessian/AuthorizationService", "hessian",
-				"org.eclipse.riena.authorizationservice");
+				"http://localhost:8080/hessian/AuthorizationService", "hessian");
 		customerService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", "org.eclipse.riena.customersearchservice");
+				"http://localhost:8080/hessian/CustomerSearchWS", "hessian");
 	}
 
 	@Override
@@ -60,11 +63,16 @@ public class AuthorizationServiceITest extends RienaTestCase {
 	}
 
 	public void testLoginWithUserWithRights() throws Exception {
-		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser", "testpass"));
-		lc.login();
+		TestLocalCallbackHandler.setSuppliedCredentials("testuser", "testpass");
+
+		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl);
+
+		secureContext.login();
+
 		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
-		System.out.println("subject:" + lc.getSubject());
+		System.out.println("subject:" + secureContext.getSubject());
 		System.out.println("login in sucessful");
 		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
 				getContext().getServiceReference(ISessionHolderService.class.getName()));
@@ -76,21 +84,26 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		cust.setLastName("Solo");
 		cust.setFirstName("Han");
 		cust.setCustomerNumber(1);
-		Customer[] foundCustomers = cs.findCustomer(cust);
+		Customer[] foundCustomers = cs.findCustomerWithPermission(cust);
 		assertTrue(foundCustomers != null);
 		assertTrue(foundCustomers.length > 0);
 		assertTrue(foundCustomers[0].getLastName().equals("Solo"));
 
-		as.logout(shs.fetchSessionHolder().getSession());
+		as.logout();
 		System.out.println("logoff sucessful");
 	}
 
 	public void testLoginWithUserWithoutRights() throws Exception {
-		LoginContext lc = new LoginContext("Remote", new MyCallbackHandler("testuser2", "testpass2"));
-		lc.login();
+		TestLocalCallbackHandler.setSuppliedCredentials("testuser1", "testpass2");
+
+		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl);
+
+		secureContext.login();
+
 		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
 		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
-		System.out.println("subject:" + lc.getSubject());
+		System.out.println("subject:" + secureContext.getSubject());
 		System.out.println("login in sucessful");
 		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
 				getContext().getServiceReference(ISessionHolderService.class.getName()));
@@ -103,8 +116,8 @@ public class AuthorizationServiceITest extends RienaTestCase {
 			cust.setLastName("Solo");
 			cust.setFirstName("Han");
 			cust.setCustomerNumber(1);
-			cs.findCustomer(cust);
-			fail("findCustomer must not work for testuser2 since it has to authorization");
+			cs.findCustomerWithPermission(cust);
+			fail("findCustomerWithPermission must not work for testuser1 since it has to authorization");
 			// assertTrue(foundCustomers != null);
 			// assertTrue(foundCustomers.length > 0);
 			// assertTrue(foundCustomers[0].getLastName().equals("Solo"));
@@ -112,7 +125,7 @@ public class AuthorizationServiceITest extends RienaTestCase {
 			// expected exception
 		}
 
-		as.logout(shs.fetchSessionHolder().getSession());
+		as.logout();
 		System.out.println("logoff sucessful");
 	}
 }

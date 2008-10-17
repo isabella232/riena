@@ -41,7 +41,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null); //$NON-NLS-1$
 
 		customerSearchRegistration = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class, TESTURL,
-				"hessian", null); //$NON-NLS-1$
+				"hessian"); //$NON-NLS-1$
 	}
 
 	@Override

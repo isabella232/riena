@@ -47,7 +47,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		regAttachmentService = new RemoteServiceFactory().createAndRegisterProxy(IAttachmentService.class,
-				"http://localhost:8080/hessian/AttachmentService", "hessian", null);
+				"http://localhost:8080/hessian/AttachmentService", "hessian");
 		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
 	}

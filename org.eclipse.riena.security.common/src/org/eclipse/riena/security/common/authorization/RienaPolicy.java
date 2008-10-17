@@ -19,10 +19,12 @@ import java.security.Permissions;
 import java.security.Policy;
 import java.security.Principal;
 import java.security.ProtectionDomain;
+import java.util.Enumeration;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.common.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 import sun.security.provider.PolicyFile;
@@ -148,7 +150,17 @@ public class RienaPolicy extends Policy {
 		if (permCache == null) {
 			result = defaultPolicy.implies(domain, permission);
 		} else {
-			Permissions perms = permCache.getPermissions(domain.getPrincipals());
+			Permissions perms = new Permissions();
+			for (Principal principal : domain.getPrincipals()) {
+				Permissions permsForOnePrincipal = permCache.getPermissions(principal);
+				Enumeration<Permission> enumPerms = permsForOnePrincipal.elements();
+				while (enumPerms.hasMoreElements()) {
+					Permission perm = enumPerms.nextElement();
+					perms.add(perm);
+				}
+
+			}
+
 			if (perms != null) {
 				result = perms.implies(permission);
 			} else {

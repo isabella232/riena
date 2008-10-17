@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.security.services.itest.module;
+package org.eclipse.riena.security.authentication.module;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,20 +22,38 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.eclipse.riena.security.common.authentication.ClientLogin;
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.security.common.authentication.SimplePrincipal;
+
+import org.eclipse.equinox.log.Logger;
+import org.osgi.service.log.LogService;
 
 /**
  * Test module that implements the JAAS LoginModule interface
  * 
  */
-public class ClientRemoteLoginModule implements LoginModule {
+public class TestLocalLoginModule implements LoginModule {
 
+	private Subject subject;
 	private CallbackHandler callbackHandler;
+
+	private Logger LOGGER = Activator.getDefault().getLogger(TestLocalLoginModule.class.getName());
 
 	String username;
 	String password;
-	// AuthenticationTicket ticket;
-	ClientLogin clientLogin;
+
+	static String checkedUsername;
+	static String checkedPassword;
+
+	/**
+	 * @param string
+	 * @param string2
+	 */
+	public static void setCredentials(String usernameParm, String passwordParm) {
+		checkedUsername = usernameParm;
+		checkedPassword = passwordParm;
+
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -43,7 +61,7 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 * @see javax.security.auth.spi.LoginModule#abort()
 	 */
 	public boolean abort() throws LoginException {
-		// TODO Auto-generated method stub
+		LOGGER.log(LogService.LOG_DEBUG, "abort");
 		return false;
 	}
 
@@ -53,7 +71,9 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 * @see javax.security.auth.spi.LoginModule#commit()
 	 */
 	public boolean commit() throws LoginException {
-		return clientLogin.commit();
+		LOGGER.log(LogService.LOG_DEBUG, "commit");
+		subject.getPrincipals().add(new SimplePrincipal(username));
+		return true;
 	}
 
 	/*
@@ -66,8 +86,13 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 */
 	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
 			Map<String, ?> options) {
+		if (callbackHandler == null) {
+			LOGGER.log(LogService.LOG_ERROR, "callbackhandler cant be null");
+			throw new RuntimeException("callbackhandler cant be null");
+		}
+		LOGGER.log(LogService.LOG_DEBUG, "initialize");
+		this.subject = subject;
 		this.callbackHandler = callbackHandler;
-		this.clientLogin = new ClientLogin("Test", subject);
 	}
 
 	/*
@@ -76,6 +101,7 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 * @see javax.security.auth.spi.LoginModule#login()
 	 */
 	public boolean login() throws LoginException {
+		LOGGER.log(LogService.LOG_DEBUG, "login");
 		Callback[] callbacks = new Callback[2];
 		callbacks[0] = new NameCallback("username: ");
 		callbacks[1] = new PasswordCallback("password: ", false);
@@ -87,7 +113,13 @@ public class ClientRemoteLoginModule implements LoginModule {
 			callbackHandler.handle(callbacks);
 			username = ((NameCallback) callbacks[0]).getName();
 			password = new String(((PasswordCallback) callbacks[1]).getPassword());
-			return clientLogin.login(callbacks);
+			if (username != null && password != null) {
+				if (username.equals(checkedUsername) && password.equals(checkedPassword)) {
+					return true;
+				}
+			}
+
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -103,7 +135,7 @@ public class ClientRemoteLoginModule implements LoginModule {
 	 * @see javax.security.auth.spi.LoginModule#logout()
 	 */
 	public boolean logout() throws LoginException {
-		// TODO Auto-generated method stub
+		LOGGER.log(LogService.LOG_DEBUG, "logout");
 		return false;
 	}
 

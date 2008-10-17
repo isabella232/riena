@@ -11,7 +11,6 @@
 package org.eclipse.riena.security.common.authentication;
 
 import org.eclipse.riena.security.common.authentication.credentials.AbstractCredential;
-import org.eclipse.riena.security.common.session.Session;
 
 /**
  * The authentication interface.
@@ -94,6 +93,6 @@ public interface IAuthenticationService {
 	// void logoff(ISecurityTicket ticket) throws AuthenticationFailure;
 	AuthenticationTicket login(String loginContext, AbstractCredential[] credentials);
 
-	void logout(Session session);
+	void logout() throws AuthenticationFailure;
 
 }

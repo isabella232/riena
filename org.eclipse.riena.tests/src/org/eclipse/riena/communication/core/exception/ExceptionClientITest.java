@@ -38,7 +38,7 @@ public class ExceptionClientITest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		regExceptionService = new RemoteServiceFactory().createAndRegisterProxy(IExceptionService.class,
-				"http://localhost:8080/hessian/ExceptionService", "hessian", null);
+				"http://localhost:8080/hessian/ExceptionService", "hessian");
 		exceptionService = (IExceptionService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IExceptionService.class.getName()));
 	}

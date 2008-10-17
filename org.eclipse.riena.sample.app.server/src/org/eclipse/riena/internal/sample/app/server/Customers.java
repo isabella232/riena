@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.sample.app.server;
 
+import java.security.AccessControlException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import org.eclipse.riena.sample.app.common.model.CustomersPermission;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
 import org.eclipse.riena.sample.app.common.model.Offer;
+import org.eclipse.riena.security.common.authorization.Sentinel;
 
 /**
  * Customers Service Class that is exposed as Webservice. It implements
@@ -84,11 +86,6 @@ public class Customers implements ICustomers, ICustomerSearch {
 	 * @see org.eclipse.riena.sample.app.common.model.ICustomerSearch#findCustomer(org.eclipse.riena.sample.app.common.model.Customer)
 	 */
 	public Customer[] findCustomer(Customer searchedCustomer) {
-		SecurityManager sm = System.getSecurityManager();
-		if (sm != null) {
-			sm.checkPermission(new CustomersPermission("riena.sample", "find"));
-		}
-
 		List<Customer> l = new ArrayList<Customer>();
 
 		for (Customer c : customers.values()) {
@@ -98,6 +95,13 @@ public class Customers implements ICustomers, ICustomerSearch {
 		}
 
 		return l.toArray(new Customer[l.size()]);
+	}
+
+	public Customer[] findCustomerWithPermission(Customer searchedCustomer) {
+		if (!Sentinel.checkAccess(new CustomersPermission("riena.sample", "find"))) {
+			throw new AccessControlException("no rights for current user for this operation");
+		}
+		return findCustomer(searchedCustomer);
 	}
 
 	/**

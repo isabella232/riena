@@ -12,14 +12,17 @@ package org.eclipse.riena.internal.security.common;
 
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
-import org.eclipse.riena.security.common.authorization.RienaPolicy;
+import org.eclipse.riena.security.common.authorization.ISentinelService;
 import org.eclipse.riena.security.common.authorization.internal.PermissionCache;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.internal.SimpleSessionHolderService;
+
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -28,11 +31,6 @@ public class Activator extends RienaPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.security.common"; //$NON-NLS-1$
-
-	private ServiceRegistration sessionHolderService;
-	private ServiceRegistration securityCallHook;
-	private ServiceRegistration principalHolderService;
-	private ServiceRegistration permissionCache;
 
 	// The shared instance
 	private static Activator plugin;
@@ -52,13 +50,29 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		sessionHolderService = context.registerService(ISessionHolderService.class.getName(),
-				new SimpleSessionHolderService(), null);
-		securityCallHook = context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
-		principalHolderService = context.registerService(ISubjectHolderService.class.getName(),
-				new SubjectHolderService(), null);
-		permissionCache = context.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
-		RienaPolicy.init();
+
+		context.registerService(ISessionHolderService.class.getName(), new SimpleSessionHolderService(), null);
+
+		context.registerService(ICallHook.class.getName(), new SecurityCallHook(), null);
+
+		context.registerService(ISubjectHolderService.class.getName(), new SubjectHolderService(), null);
+
+		context.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
+
+		createSentinelServiceAndInjectors();
+	}
+
+	private void createSentinelServiceAndInjectors() {
+		ISentinelService sentinelService = new SentinelServiceImpl();
+		getContext().registerService(ISentinelService.class.getName(), sentinelService,
+				ServiceDescriptor.newDefaultServiceProperties());
+
+		Inject.service(IPermissionCache.class.getName()).useRanking().into(sentinelService).andStart(
+				Activator.getDefault().getContext());
+		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(sentinelService).andStart(
+				Activator.getDefault().getContext());
+		Inject.service(IAuthorizationService.class.getName()).useRanking().into(sentinelService).andStart(
+				Activator.getDefault().getContext());
 	}
 
 	/*
@@ -68,10 +82,6 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		sessionHolderService.unregister();
-		securityCallHook.unregister();
-		principalHolderService.unregister();
-		permissionCache.unregister();
 		Activator.plugin = null;
 		super.stop(context);
 	}

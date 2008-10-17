@@ -13,33 +13,26 @@ package org.eclipse.riena.security.common.authorization.internal;
 import java.security.Permission;
 import java.security.Permissions;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Set;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.GenericObjectCache;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.Activator;
-import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
-import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 
 public class PermissionCache implements IPermissionCache {
 
-	private final GenericObjectCache permCache = new GenericObjectCache();
-	private IAuthorizationService authService;
+	private final GenericObjectCache<String, Permissions> permCache = new GenericObjectCache<String, Permissions>();
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(PermissionCache.class.getName());
 
 	public PermissionCache() {
 		super();
 		permCache.setName("PermissionCache"); //$NON-NLS-1$
-		permCache.setHashMap(new HashMap<Object, Object>());
 		if (ContainerModel.isClient()) {
 			permCache.setMinimumSize(1);
 			permCache.setTimeout(999999000); // client permissions nearly
@@ -48,59 +41,15 @@ public class PermissionCache implements IPermissionCache {
 			permCache.setMinimumSize(100);
 			permCache.setTimeout(360000);
 		}
-		Inject.service(IAuthorizationService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
 	}
 
-	public void bind(IAuthorizationService authService) {
-		this.authService = authService;
+	public Permissions getPermissions(Principal principal) {
+		return permCache.get(principal.getName());
 	}
 
-	public void unbind(IAuthorizationService authService) {
-		if (authService == this.authService) {
-			this.authService = null;
-		}
-	}
+	public void putPermissions(Principal principal, Permissions permissions) {
+		permCache.put(principal.getName(), permissions);
 
-	public Permissions getPermissions(Subject subject) {
-		Set<Principal> principals = subject.getPrincipals();
-		Principal[] principalArray = principals.toArray(new Principal[principals.size()]);
-		return getPermissions(principalArray);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.security.common.authorization.IPermissionCache#
-	 * getPermissions(javax.security.auth.Subject)
-	 */
-	public Permissions getPermissions(Principal[] principals) {
-		Permissions allPerms = new Permissions();
-		ArrayList<Principal> missingPrincipals = new ArrayList<Principal>();
-
-		for (Principal principal : principals) {
-			Permissions perms = (Permissions) permCache.get(principal.getName());
-			if (perms == null) {
-				missingPrincipals.add(principal);
-			} else {
-				addPerms(allPerms, perms);
-			}
-		}
-		if (missingPrincipals.size() > 0) {
-			if (authService == null) {
-				LOGGER.log(LogService.LOG_ERROR, "no authorization service to retrieve permissions"); //$NON-NLS-1$
-				return null;
-			}
-			Principal[] mpArray = missingPrincipals.toArray(new Principal[missingPrincipals.size()]);
-			Permissions[] permsArray = authService.getPermissions(mpArray);
-			for (int i = 0; i < missingPrincipals.size(); i++) {
-				permCache.put(missingPrincipals.get(i).getName(), permsArray[i]);
-				addPerms(allPerms, permsArray[i]);
-			}
-		}
-		// = authService.getPermissions(subject.getPrincipals().toArray(new
-		// Principal[subject.getPrincipals().size()]));
-		return allPerms;
 	}
 
 	private Permissions addPerms(Permissions allPerms, Permissions perms) {

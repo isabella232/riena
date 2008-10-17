@@ -25,7 +25,7 @@ import org.eclipse.riena.security.common.authentication.credentials.AbstractCred
 /**
  * 
  */
-public class ClientLogin {
+public class RemoteLoginProxy {
 
 	private IAuthenticationService authenticationService;
 	private ISubjectHolderService subjectHolderService;
@@ -33,7 +33,7 @@ public class ClientLogin {
 	private AuthenticationTicket ticket;
 	private Subject subject;
 
-	public ClientLogin(String loginContext, Subject subject) {
+	public RemoteLoginProxy(String loginContext, Subject subject) {
 		super();
 		this.loginContext = loginContext;
 		this.subject = subject;
@@ -70,7 +70,6 @@ public class ClientLogin {
 				throw new AuthenticationFailure("no authentication service"); //$NON-NLS-1$
 			}
 			ticket = authenticationService.login(loginContext, creds);
-			subject = new Subject();
 			for (Principal principal : ticket.getPrincipals()) {
 				subject.getPrincipals().add(principal);
 			}
@@ -87,6 +86,16 @@ public class ClientLogin {
 			pSet.add(p);
 		}
 		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+		return true;
+	}
+
+	public boolean logout() throws LoginException {
+		try {
+			authenticationService.logout();
+			subject.getPrincipals().clear(); // TODO only remove the principals for a particular session if possible
+		} catch (AuthenticationFailure e) {
+			throw new LoginException(e.getMessage());
+		}
 		return true;
 	}
 }

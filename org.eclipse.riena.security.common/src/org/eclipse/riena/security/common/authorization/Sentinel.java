@@ -11,14 +11,9 @@
 package org.eclipse.riena.security.common.authorization;
 
 import java.security.Permission;
-import java.security.Permissions;
-
-import javax.security.auth.Subject;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.common.Activator;
-import org.eclipse.riena.security.common.ISubjectHolder;
-import org.eclipse.riena.security.common.ISubjectHolderService;
 
 /**
  * This class can be used as an alternative to the Java SecurityManager if you
@@ -28,48 +23,24 @@ import org.eclipse.riena.security.common.ISubjectHolderService;
  */
 public final class Sentinel {
 
-	private static Sentinel singletonSentinel = new Sentinel();
-	private IPermissionCache permCache;
-	private ISubjectHolderService subjectHolderService;
+	private static ISentinelService sentinelService;
+	private static Sentinel myself = new Sentinel();
 
 	private Sentinel() {
 		super();
-		Inject.service(IPermissionCache.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISentinelService.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(IPermissionCache permCache) {
-		this.permCache = permCache;
+	protected Sentinel getInstance() {
+		return myself;
 	}
 
-	public void unbind(IPermissionCache permCache) {
-		if (permCache == this.permCache) {
-			this.permCache = null;
-		}
+	public void bind(ISentinelService sentinelServiceParm) {
+		sentinelService = sentinelServiceParm;
 	}
 
-	public void bind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = subjectHolderService;
-	}
-
-	public void unbind(ISubjectHolderService subjectHolderService) {
-		if (subjectHolderService == this.subjectHolderService) {
-			this.subjectHolderService = null;
-		}
-	}
-
-	protected static Sentinel getInstance() {
-		return singletonSentinel;
-	}
-
-	protected IPermissionCache getPermissionCache() {
-		return permCache;
-	}
-
-	protected ISubjectHolderService getSubjectHolderService() {
-		return subjectHolderService;
+	public void unbind(ISentinelService sentinelServiceParm) {
+		sentinelService = null;
 	}
 
 	/**
@@ -82,15 +53,10 @@ public final class Sentinel {
 	 * @return
 	 */
 	public static boolean checkAccess(Permission permission) {
-		Sentinel sentinel = Sentinel.getInstance();
-		ISubjectHolder subjectHolder = sentinel.getSubjectHolderService().fetchSubjectHolder();
-		Subject subject = subjectHolder.getSubject();
-		if (subject != null) {
-			Permissions permissions = Sentinel.getInstance().getPermissionCache().getPermissions(subject);
-			boolean result = permissions.implies(permission);
-			return result;
-		} else {
+		if (sentinelService == null) {
 			return false;
 		}
+		return sentinelService.checkAccess(permission);
 	}
+
 }

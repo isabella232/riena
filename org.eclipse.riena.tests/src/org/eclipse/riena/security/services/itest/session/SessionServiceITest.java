@@ -46,7 +46,7 @@ public class SessionServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
-				"http://localhost:8080/hessian/SessionService", "hessian", "org.eclipse.riena.sessionservice");
+				"http://localhost:8080/hessian/SessionService", "hessian");
 	}
 
 	/*

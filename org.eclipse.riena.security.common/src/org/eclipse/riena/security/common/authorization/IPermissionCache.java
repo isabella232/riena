@@ -17,9 +17,9 @@ import javax.security.auth.Subject;
 
 public interface IPermissionCache {
 
-	Permissions getPermissions(Subject subject);
+	Permissions getPermissions(Principal principal);
 
-	Permissions getPermissions(Principal[] principals);
+	void putPermissions(Principal principal, Permissions permissions);
 
 	void purgePermissions(Principal principal);
 

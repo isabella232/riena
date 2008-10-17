@@ -16,16 +16,16 @@ import java.util.Arrays;
 import javax.security.auth.Subject;
 import javax.servlet.http.Cookie;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -52,7 +52,7 @@ public class SecurityServiceHook implements IServiceHook {
 	// private static final String UNSECURE_WEBSERVICES_ID =
 	// "spirit.security.server.UnsecureWebservices";
 
-	private IGenericObjectCache principalCache;
+	private IGenericObjectCache<String, Principal[]> principalCache;
 	private ISessionService sessionService;
 	private ISubjectHolderService subjectHolderService;
 	private ISessionHolderService sessionHolderService;
@@ -68,14 +68,6 @@ public class SecurityServiceHook implements IServiceHook {
 	 */
 	public SecurityServiceHook() {
 		super();
-		Inject.service(IGenericObjectCache.class.getName()).useFilter("(cache.type=PrincipalCache)").into(this) //$NON-NLS-1$
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
 
 		// List<UnsecureWebservice> tempList =
 		// RegistryAccessor.fetchRegistry().getConfiguration(
@@ -123,11 +115,11 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
-	public void bind(IGenericObjectCache principalCache) {
+	public void bind(IGenericObjectCache<String, Principal[]> principalCache) {
 		this.principalCache = principalCache;
 	}
 
-	public void unbind(IGenericObjectCache principalCache) {
+	public void unbind(IGenericObjectCache<String, Principal[]> principalCache) {
 		if (this.principalCache == principalCache) {
 			this.principalCache = null;
 		}
@@ -211,7 +203,7 @@ public class SecurityServiceHook implements IServiceHook {
 		// call
 		// note: ssoid and plid are not set
 		if (ssoid != null) {
-			Principal[] principals = (Principal[]) principalCache.get(ssoid, SecurityServiceHook.class);
+			Principal[] principals = principalCache.get(ssoid);
 			if (principals == null) {
 				principals = sessionService.findPrincipals(new Session(ssoid));
 				LOGGER.log(LogService.LOG_DEBUG, "sessionService found principal = " + Arrays.toString(principals)); //$NON-NLS-1$

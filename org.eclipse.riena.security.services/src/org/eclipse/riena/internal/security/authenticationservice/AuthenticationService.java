@@ -10,24 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.security.authenticationservice;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Set;
 
 import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.ChoiceCallback;
-import javax.security.auth.callback.ConfirmationCallback;
-import javax.security.auth.callback.LanguageCallback;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.TextInputCallback;
-import javax.security.auth.callback.TextOutputCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
@@ -40,6 +28,8 @@ import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 /**
  * The <code>AuthenticationService</code> will perform the authentication
@@ -73,15 +63,6 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public AuthenticationService() {
 		super();
-		Inject.service(ISessionService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
-		// new
-		// ServiceDescriptor(IAuthenticationModule.class.getName()).injectInto(
-		// this).start(Activator.getDefault().getContext());
-		Inject.service(ISessionHolderService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
 	}
 
 	public void bind(ISessionService sessionService) {
@@ -138,11 +119,15 @@ public class AuthenticationService implements IAuthenticationService {
 		try {
 			Callback[] callbacks = Callback2CredentialConverter.credentials2Callbacks(credentials);
 			// create login context and login
-			LoginContext lc = new LoginContext(loginContext, new MyCallbackHandler(callbacks));
-			lc.login();
+			//			LoginContext lc = new LoginContext(loginContext, new MyCallbackHandler(callbacks));
+			//			lc.login();
+			ILoginContext secureContext = LoginContextFactory.createContext(loginContext);
+			AuthenticationServiceCallbackHandler.setCallbacks(callbacks);
+
+			secureContext.login();
 			// if login was successful, create session and add principals to
 			// session
-			Set<Principal> principals = lc.getSubject().getPrincipals();
+			Set<Principal> principals = secureContext.getSubject().getPrincipals();
 			// add only new principals to ticket (not the ones that might exist
 			// in the session)
 			AuthenticationTicket ticket = new AuthenticationTicket();
@@ -161,138 +146,17 @@ public class AuthenticationService implements IAuthenticationService {
 			return ticket;
 		} catch (LoginException e) {
 			throw new AuthenticationFailure("AuthenticationService login failed", e); //$NON-NLS-1$
+		} finally {
+			AuthenticationServiceCallbackHandler.setCallbacks(null);
 		}
 	}
 
-	public void logout(Session session) {
+	public void logout() throws AuthenticationFailure {
+		Session session = sessionHolderService.fetchSessionHolder().getSession();
+		if (session == null) {
+			throw new AuthenticationFailure("no valid session");
+		}
 		sessionService.invalidateSession(session);
 		sessionHolderService.fetchSessionHolder().setSession(null);
 	}
-}
-
-class MyCallbackHandler implements CallbackHandler {
-
-	private Callback[] remoteCallbacks;
-
-	MyCallbackHandler(Callback[] remoteCallbacks) {
-		super();
-		this.remoteCallbacks = remoteCallbacks;
-	}
-
-	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		for (Callback cb : callbacks) {
-			for (Callback rcb : remoteCallbacks) {
-				if (cb.getClass() == rcb.getClass()) {
-					if (cb instanceof NameCallback) {
-						if (((NameCallback) cb).getPrompt().equals(((NameCallback) rcb).getPrompt())) {
-							((NameCallback) cb).setName(((NameCallback) rcb).getName());
-							break;
-						}
-					} else {
-						if (cb instanceof PasswordCallback) {
-							if (((PasswordCallback) cb).getPrompt().equals(((PasswordCallback) rcb).getPrompt())) {
-								((PasswordCallback) cb).setPassword(((PasswordCallback) rcb).getPassword());
-								break;
-							}
-						} else {
-							if (cb instanceof ConfirmationCallback) {
-								if (((ConfirmationCallback) cb).getPrompt().equals(
-										((ConfirmationCallback) rcb).getPrompt())) {
-									((ConfirmationCallback) cb).setSelectedIndex(((ConfirmationCallback) rcb)
-											.getSelectedIndex());
-									break;
-								}
-							} else {
-								if (cb instanceof TextInputCallback) {
-									if (((TextInputCallback) cb).getPrompt().equals(
-											((TextInputCallback) rcb).getPrompt())) {
-										((TextInputCallback) cb).setText(((TextInputCallback) rcb).getText());
-									}
-								} else {
-									if (cb instanceof TextOutputCallback) {
-										// do nothing for now
-										break;
-									} else {
-										if (cb instanceof LanguageCallback) {
-											// do nothing for now
-											break;
-										} else {
-											if (cb instanceof ChoiceCallback) {
-												if (((ChoiceCallback) cb).getPrompt().equals(
-														((ChoiceCallback) rcb).getPrompt())) {
-													((ChoiceCallback) cb).setSelectedIndexes(((ChoiceCallback) rcb)
-															.getSelectedIndexes());
-
-												} else {
-													throw new UnsupportedOperationException(
-															"unsupported authentication callback type"); //$NON-NLS-1$
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// TODO Check whether this is the same as the above method
-
-	// public void handle(Callback[] callbacks) throws IOException,
-	// UnsupportedCallbackException {
-	// for (Callback cb : callbacks) {
-	// for (Callback rcb : remoteCallbacks) {
-	// if (cb.getClass() != rcb.getClass()) {
-	// continue;
-	// } else if (cb instanceof NameCallback) {
-	// if (((NameCallback) cb).getPrompt().equals(((NameCallback)
-	// rcb).getPrompt()))
-	// {
-	// ((NameCallback) cb).setName(((NameCallback) rcb).getName());
-	// break;
-	// }
-	// } else if (cb instanceof PasswordCallback) {
-	// if (((PasswordCallback) cb).getPrompt().equals(((PasswordCallback)
-	// rcb).getPrompt())) {
-	// ((PasswordCallback) cb).setPassword(((PasswordCallback)
-	// rcb).getPassword());
-	// break;
-	// }
-	// } else if (cb instanceof ConfirmationCallback) {
-	// if (((ConfirmationCallback)
-	// cb).getPrompt().equals(((ConfirmationCallback)
-	// rcb).getPrompt())) {
-	// ((ConfirmationCallback) cb).setSelectedIndex(((ConfirmationCallback)
-	// rcb).getSelectedIndex());
-	// break;
-	// }
-	// } else if (cb instanceof TextInputCallback) {
-	// if (((TextInputCallback) cb).getPrompt().equals(((TextInputCallback)
-	// rcb).getPrompt())) {
-	// ((TextInputCallback) cb).setText(((TextInputCallback) rcb).getText());
-	// break;
-	// }
-	// } else if (cb instanceof TextOutputCallback) {
-	// // do nothing for now
-	// break;
-	// } else if (cb instanceof LanguageCallback) {
-	// // do nothing for now
-	// break;
-	// } else if (cb instanceof ChoiceCallback) {
-	// if (((ChoiceCallback) cb).getPrompt().equals(((ChoiceCallback)
-	// rcb).getPrompt())) {
-	// ((ChoiceCallback) cb).setSelectedIndexes(((ChoiceCallback)
-	// rcb).getSelectedIndexes());
-	// break;
-	// }
-	// }
-	// throw new UnsupportedOperationException("unsupported authentication
-	// callback
-	// type");
-	// }
-	// }
-	// }
 }

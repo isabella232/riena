@@ -11,45 +11,47 @@
 package org.eclipse.riena.security.authorizationservice;
 
 import java.io.InputStream;
-import java.security.PrivilegedAction;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.security.common.SubjectAccessor;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
-import org.eclipse.riena.security.common.authorization.RienaPolicy;
+import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 public class AuthorizationTest extends RienaTestCase {
 
-	private ServiceRegistration fileStoreReg;
+	//	private ServiceRegistration fileStoreReg;
+	private ServiceRegistration authorizationServiceReg;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		// activate RienaPolicy
-		// I need to add a FilePermissionStore so that it can read the
-		// permissions for this test TODO
+		// create FilePermissionStore which we inject into a local AuthorizationService
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		fileStoreReg = getContext().registerService(IPermissionStore.class.getName(), store, null);
-		// ServiceReference ref =
-		// getContext().getServiceReference(IAuthorizationService
-		// .class.getName());
-		// if (ref != null) {
-		// ref.getBundle().stop();
-		// }
-		// authorizationServiceReg =
-		// getContext().registerService(IAuthorizationService.ID,
-		// new AuthorizationService(), null);
-
-		RienaPolicy.init();
+		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
+		if (ref != null && ref.getBundle().getState() == Bundle.ACTIVE
+				&& ref.getBundle() != Activator.getDefault().getBundle()) {
+			ref.getBundle().stop();
+		}
+		// create and register a local AuthorizationService with a dummy permission store
+		AuthorizationService authorizationService = new AuthorizationService();
+		authorizationServiceReg = getContext().registerService(IAuthorizationService.class.getName(),
+				authorizationService, null);
+		// inject my test filestore
+		authorizationService.bind(store);
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		fileStoreReg.unregister();
-		// authorizationServiceReg.unregister();
+		authorizationServiceReg.unregister();
 	}
 
 	public void testWithoutUser() {
@@ -60,25 +62,20 @@ public class AuthorizationTest extends RienaTestCase {
 	public void testWithValidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
+		SubjectAccessor.setSubject(subject);
 
-		Boolean result = (Boolean) Subject.doAsPrivileged(subject, new PrivilegedAction() {
+		boolean result = new BusinessTestCase().hasPermission();
 
-			public Object run() {
-				return Boolean.valueOf(new BusinessTestCase().hasPermission());
-			}
-		}, null);
-		assertTrue("BusinessTestCase must work with valid user", result.equals(Boolean.TRUE));
+		assertTrue("BusinessTestCase must work with valid user", result);
 	}
 
 	public void testWithInvalidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
-		Boolean result = (Boolean) Subject.doAsPrivileged(subject, new PrivilegedAction() {
+		SubjectAccessor.setSubject(subject);
 
-			public Object run() {
-				return Boolean.valueOf(new BusinessTestCase().hasPermission());
-			}
-		}, null);
-		assertTrue("BusinessTestCase must fail with invalid user", result.equals(Boolean.FALSE));
+		boolean result = new BusinessTestCase().hasPermission();
+
+		assertFalse("BusinessTestCase must fail with invalid user", result);
 	}
 }

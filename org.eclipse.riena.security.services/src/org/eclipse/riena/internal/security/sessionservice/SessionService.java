@@ -12,8 +12,6 @@ package org.eclipse.riena.internal.security.sessionservice;
 
 import java.security.Principal;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.security.server.session.SessionFailure;
@@ -36,8 +34,6 @@ public class SessionService implements ISessionService {
 	 */
 	public SessionService() {
 		super();
-		Inject.service(ISessionStore.class.getName()).into(this).andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionProvider.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(ISessionStore store) {

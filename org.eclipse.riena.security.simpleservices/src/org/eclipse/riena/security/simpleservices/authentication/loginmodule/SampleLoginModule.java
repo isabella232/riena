@@ -11,7 +11,9 @@
 package org.eclipse.riena.security.simpleservices.authentication.loginmodule;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -44,6 +46,8 @@ public class SampleLoginModule implements LoginModule {
 
 	private String username;
 	private String password;
+
+	private Properties accounts;
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SampleLoginModule.class.getName());
 
@@ -82,8 +86,21 @@ public class SampleLoginModule implements LoginModule {
 		this.sharedState = sharedState;
 		this.options = options;
 
+		try {
+			accounts = loadProperties((String) options.get("accounts.file")); //$NON-NLS-1$
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		// initialize any configured options
 		debug = Boolean.valueOf((String) options.get("debug")); //$NON-NLS-1$
+	}
+
+	private Properties loadProperties(String path) throws IOException {
+		URL url = Activator.getDefault().getContext().getBundle().getEntry(path);
+		Properties properties = new Properties();
+		properties.load(url.openStream());
+		return properties;
 	}
 
 	/*
@@ -103,21 +120,27 @@ public class SampleLoginModule implements LoginModule {
 			callbackHandler.handle(callbacks);
 			username = ((NameCallback) callbacks[0]).getName();
 			password = new String(((PasswordCallback) callbacks[1]).getPassword());
-			if (username != null && password != null) {
-				if (username.equals("testuser") && password.equals("testpass")) { //$NON-NLS-1$ //$NON-NLS-2$
-					return true;
-				} else {
-					if (username.equals("testuser2") && password.equals("testpass2")) { //$NON-NLS-1$ //$NON-NLS-2$
-						return true;
-					} else {
-						if (username.equals("cca") && password.equals("christian")) { //$NON-NLS-1$ //$NON-NLS-2$
-							return true;
-						}
-					}
-				}
+			String psw = (String) accounts.get(username);
+			if (psw != null && psw.equals(password)) {
+				return true;
+			} else {
+				return false;
 			}
-
-			return false;
+			//			if (username != null && password != null) {
+			//				if (username.equals("testuser") && password.equals("testpass")) { //$NON-NLS-1$ //$NON-NLS-2$
+			//					return true;
+			//				} else {
+			//					if (username.equals("testuser2") && password.equals("testpass2")) { //$NON-NLS-1$ //$NON-NLS-2$
+			//						return true;
+			//					} else {
+			//						if (username.equals("cca") && password.equals("christian")) { //$NON-NLS-1$ //$NON-NLS-2$
+			//							return true;
+			//						}
+			//					}
+			//				}
+			//			}
+			//
+			//			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

@@ -15,12 +15,15 @@ import java.io.InputStream;
 import javax.security.auth.Subject;
 
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
-import org.eclipse.riena.security.common.ISubjectHolderService;
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.security.common.SubjectAccessor;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.Sentinel;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
+
+import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
@@ -30,7 +33,6 @@ import org.osgi.framework.ServiceRegistration;
  * instead
  */
 public class SentinelTest extends RienaTestCase {
-	private ServiceRegistration fileStoreReg;
 	private ServiceRegistration authorizationServiceReg;
 
 	/*
@@ -40,18 +42,20 @@ public class SentinelTest extends RienaTestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		// activate RienaPolicy
-		// I need to add a FilePermissionStore so that it can read the
-		// permissions for this test TODO
+		// create FilePermissionStore which we inject into a local AuthorizationService
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
 		FilePermissionStore store = new FilePermissionStore(inputStream);
-		fileStoreReg = getContext().registerService(IPermissionStore.class.getName(), store, null);
 		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
-		if (ref != null) {
+		if (ref != null && ref.getBundle().getState() == Bundle.ACTIVE
+				&& ref.getBundle() != Activator.getDefault().getBundle()) {
 			ref.getBundle().stop();
 		}
+		// create and register a local AuthorizationService with a dummy permission store
+		AuthorizationService authorizationService = new AuthorizationService();
 		authorizationServiceReg = getContext().registerService(IAuthorizationService.class.getName(),
-				new AuthorizationService(), null);
+				authorizationService, null);
+		// inject my test filestore
+		authorizationService.bind(store);
 	}
 
 	/*
@@ -61,7 +65,6 @@ public class SentinelTest extends RienaTestCase {
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		fileStoreReg.unregister();
 		authorizationServiceReg.unregister();
 	}
 
@@ -73,9 +76,7 @@ public class SentinelTest extends RienaTestCase {
 	public void testValidUser() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
-		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-				getContext().getServiceReference(ISubjectHolderService.class.getName()));
-		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+		SubjectAccessor.setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertTrue("has permission since valid subject", result);
@@ -84,9 +85,7 @@ public class SentinelTest extends RienaTestCase {
 	public void testValidUserMissingPermissions() {
 		Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
-		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
-				getContext().getServiceReference(ISubjectHolderService.class.getName()));
-		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+		SubjectAccessor.setSubject(subject);
 
 		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertFalse("has no permission since subject has no permission", result);
