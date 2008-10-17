@@ -10,26 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.core.cache;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.internal.ICacheEntry;
 import org.eclipse.riena.core.cache.internal.SimpleCacheEntry;
 import org.eclipse.riena.internal.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
  * LRU=(Last Recently Used) Implementation for IGenericObjectCache (alternative
  * to GenericObjectCache)
  * 
- * @author Christian Campo
  */
-public class LRUCache implements IGenericObjectCache {
+public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class.getName());
-	private LinkedHashMap lruMap = null;
+	private LinkedHashMap<K, ICacheEntry<K, V>> lruMap = null;
 	private long timeout;
 	/** minimum count of entries to keep * */
 	private int minimumSize;
@@ -45,22 +44,9 @@ public class LRUCache implements IGenericObjectCache {
 	public LRUCache() {
 		super();
 		LOGGER.log(LogService.LOG_INFO, "creating new LRUCache instance"); //$NON-NLS-1$
-	}
-
-	public void setHashMap(HashMap<Object, Object> map) {
-		if (!(map instanceof LRUHashMap)) {
-			throw new RuntimeException("global Hashmap must be a LRUHashMap"); //$NON-NLS-1$
-		}
-		lruMap = (LRUHashMap) map;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#isGlobalCache()
-	 */
-	public boolean isGlobalCache() {
-		return false;
+		lruMap = new LinkedHashMap<K, ICacheEntry<K, V>>();
+		// default timeout 1 minute
+		setTimeout(60000);
 	}
 
 	/*
@@ -86,9 +72,9 @@ public class LRUCache implements IGenericObjectCache {
 		return (int) timeout;
 	}
 
-	public synchronized Object get(Object key) {
+	public synchronized V get(K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "get = " + key); //$NON-NLS-1$
-		ICacheEntry entry = (SimpleCacheEntry) lruMap.get(key);
+		ICacheEntry<K, V> entry = lruMap.get(key);
 		/** do we find the entry * */
 		if (entry == null) {
 			statNotFound++;
@@ -110,10 +96,6 @@ public class LRUCache implements IGenericObjectCache {
 		}
 	}
 
-	public synchronized Object get(Object key, Class callingClass) {
-		return get(key);
-	}
-
 	private void printStat() {
 		statDisplayCount++;
 		if (statDisplayCount > 100) {
@@ -133,9 +115,9 @@ public class LRUCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#put(Object,
 	 *      java.lang.Object)
 	 */
-	public synchronized void put(Object key, Object value) {
+	public synchronized void put(K key, V value) {
 		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + ", " + value); //$NON-NLS-1$ //$NON-NLS-2$
-		lruMap.put(key, new SimpleCacheEntry(value, key));
+		lruMap.put(key, new SimpleCacheEntry<K, V>(value, key));
 	}
 
 	/**
@@ -149,7 +131,7 @@ public class LRUCache implements IGenericObjectCache {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#remove(Object)
 	 */
-	public synchronized void remove(Object key) {
+	public synchronized void remove(K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key); //$NON-NLS-1$
 		lruMap.remove(key);
 	}
@@ -172,7 +154,7 @@ public class LRUCache implements IGenericObjectCache {
 	public void setMinimumSize(int minSize) {
 		LOGGER.log(LogService.LOG_INFO, "setMinSize = " + minSize); //$NON-NLS-1$
 		minimumSize = minSize;
-		lruMap = new LRUHashMap(minSize);
+		lruMap = new LRUHashMap<K, V>(minSize);
 	}
 
 	public int getMinimumSize() {
@@ -182,7 +164,7 @@ public class LRUCache implements IGenericObjectCache {
 	/**
 	 * HashMap that implements a Last Recently Used schema on a LinkedHashMap
 	 */
-	public static class LRUHashMap extends LinkedHashMap {
+	public static class LRUHashMap<K, V> extends LinkedHashMap<K, ICacheEntry<K, V>> {
 		private int minSize;
 
 		/**

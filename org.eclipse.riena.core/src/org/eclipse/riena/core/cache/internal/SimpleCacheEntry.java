@@ -15,9 +15,9 @@ package org.eclipse.riena.core.cache.internal;
  * 
  * @author Christian Campo
  */
-public class SimpleCacheEntry implements ICacheEntry {
-	private Object value;
-	private Object key;
+public class SimpleCacheEntry<K, V> implements ICacheEntry<K, V> {
+	private V value;
+	private K key;
 	private long timestamp;
 
 	/**
@@ -25,18 +25,18 @@ public class SimpleCacheEntry implements ICacheEntry {
 	 * @param key
 	 * @param queue
 	 */
-	public SimpleCacheEntry(Object value, Object key) {
+	public SimpleCacheEntry(V value, K key) {
 		super();
 		this.value = value;
 		this.key = key;
 		timestamp = System.currentTimeMillis();
 	}
 
-	public Object getValue() {
+	public V getValue() {
 		return value;
 	}
 
-	public Object getKey() {
+	public K getKey() {
 		return key;
 	}
 

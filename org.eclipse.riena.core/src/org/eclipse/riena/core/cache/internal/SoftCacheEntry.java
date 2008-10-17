@@ -16,12 +16,11 @@ import java.lang.ref.SoftReference;
 /**
  * CacheEntry with SoftReference (=values can be garbage collected)
  * 
- * @author Christian Campo
  */
-public class SoftCacheEntry implements ICacheEntry {
-	private Object key;
+public class SoftCacheEntry<K, V> implements ICacheEntry<K, V> {
+	private K key;
 	private long timestamp;
-	private SoftReference<? extends Object> value;
+	private SoftReference<V> value;
 
 	/**
 	 * Create a new Cache Entry without value (for subclasses which have their
@@ -29,7 +28,7 @@ public class SoftCacheEntry implements ICacheEntry {
 	 * 
 	 * @param key
 	 */
-	public SoftCacheEntry(Object key) {
+	public SoftCacheEntry(K key) {
 		super();
 		this.key = key;
 		timestamp = System.currentTimeMillis();
@@ -42,24 +41,24 @@ public class SoftCacheEntry implements ICacheEntry {
 	 * @param key
 	 * @param queue
 	 */
-	public <T> SoftCacheEntry(T value, Object key, ReferenceQueue<T> queue) {
+	public SoftCacheEntry(V value, K key, ReferenceQueue<V> queue) {
 		this(key);
 		if (value != null) {
-			this.value = new SoftReference<T>(value, queue);
+			this.value = new SoftReference<V>(value, queue);
 		}
 	}
 
 	/**
 	 * @see org.eclipse.riena.core.cache.internal.ICacheEntry#getValue()
 	 */
-	public Object getValue() {
-		return value.get();
+	public V getValue() {
+		return (V) value.get();
 	}
 
 	/**
 	 * @see org.eclipse.riena.core.cache.internal.ICacheEntry#getKey()
 	 */
-	public Object getKey() {
+	public K getKey() {
 		return key;
 	}
 

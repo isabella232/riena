@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.cache;
 
-import java.util.HashMap;
-
 /**
  * The GenericObjectCache is a multipurpose object for storing data without
  * locking all your memory. It works like a regular HashMap with some
@@ -29,14 +27,7 @@ import java.util.HashMap;
  * 
  * @author Christian Campo
  */
-public interface IGenericObjectCache {
-
-	/**
-	 * returns true if this is a global cache
-	 * 
-	 * @return true if cache is global
-	 */
-	boolean isGlobalCache();
+public interface IGenericObjectCache<K, V> {
 
 	/**
 	 * Get an object by key. Cannot be called for global caches. There you have
@@ -47,7 +38,7 @@ public interface IGenericObjectCache {
 	 * @return the object looked up.
 	 * @pre (isGlobalCache()==false)
 	 */
-	Object get(Object key);
+	V get(K key);
 
 	/**
 	 * Get an object by key in the context of the calling class
@@ -56,8 +47,7 @@ public interface IGenericObjectCache {
 	 * @param callingClass
 	 * @return
 	 */
-	Object get(Object key, Class callingClass);
-
+	//	Object get(K key, Class callingClass);
 	/**
 	 * Put some object <code>value</code> with <code>key</code> into the cache.
 	 * 
@@ -68,7 +58,7 @@ public interface IGenericObjectCache {
 	 *            Serializable
 	 * @pre !isGlobalCache() || value instanceof Serializable
 	 */
-	void put(Object key, Object value);
+	void put(K key, V value);
 
 	/**
 	 * Remove object with <code>key</code> from the cache.
@@ -76,7 +66,7 @@ public interface IGenericObjectCache {
 	 * @param key
 	 *            the key.
 	 */
-	void remove(Object key);
+	void remove(K key);
 
 	/**
 	 * Clear the cache.
@@ -126,8 +116,7 @@ public interface IGenericObjectCache {
 	 * 
 	 * @param map
 	 */
-	void setHashMap(HashMap<Object, Object> map);
-
+	//	void setHashMap(HashMap<K, V> map);
 	/**
 	 * Descriptive name for this cache (shown in logs)
 	 * 

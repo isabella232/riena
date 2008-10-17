@@ -15,39 +15,36 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.cache.internal.GlobalSoftCacheEntry;
 import org.eclipse.riena.core.cache.internal.ICacheEntry;
 import org.eclipse.riena.core.cache.internal.SoftCacheEntry;
 import org.eclipse.riena.internal.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
  * Class implements a generic object cache.
  * 
- * TODO Check empty try-catch blocks
  * 
- * @author Christian Campo
  */
-public class GenericObjectCache implements IGenericObjectCache {
+public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 
 	private static final String SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE = "spirit.core.base.internal.ReferenceQueue"; //$NON-NLS-1$
 	private static final String SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS = "spirit.core.base.internal.HardLinks"; //$NON-NLS-1$
 	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class.getName());
-	private HashMap<Object, Object> cacheEntries;
+	private HashMap<K, ICacheEntry<K, V>> cacheEntries;
 	/** timeout in milliseconds * */
 	private long timeout;
 	/** minimum count of entries to keep * */
 	private int minimumSize;
-	private LinkedList<Object> hardLinks;
+	private LinkedList<V> hardLinks;
 	/** Reference queue for cleared SoftReference objects. */
-	private ReferenceQueue<Object> queue;
+	private ReferenceQueue<V> queue;
 	private int statHit;
 	private int statNotFound;
 	private int statMiss;
 	private int statTimeout;
 	private static int statDisplayCount;
-	private boolean globalCache; // default = false
 	private String name = "Cache : "; //$NON-NLS-1$
 
 	/**
@@ -56,30 +53,11 @@ public class GenericObjectCache implements IGenericObjectCache {
 	public GenericObjectCache() {
 		super();
 		LOGGER.log(LogService.LOG_DEBUG, "creating new GenericObjectCache instance"); //$NON-NLS-1$
-		cacheEntries = new HashMap<Object, Object>();
-		queue = new ReferenceQueue<Object>();
-		hardLinks = new LinkedList<Object>();
-	}
-
-	/**
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setHashMap(HashMap)
-	 */
-	public void setHashMap(HashMap<Object, Object> map) {
-		cacheEntries = map;
-		globalCache = true;
-		synchronized (map) {
-			// if we get a global non empty map, get other global instances that
-			// are stored their
-			if (map.size() > 0) {
-				hardLinks = (LinkedList) map.get(SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS);
-				queue = (ReferenceQueue) map.get(SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE);
-			} else {
-				// else store your local vars in there so the next instance can
-				// find them
-				map.put(SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS, hardLinks);
-				map.put(SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE, queue);
-			}
-		}
+		cacheEntries = new HashMap<K, ICacheEntry<K, V>>();
+		queue = new ReferenceQueue<V>();
+		hardLinks = new LinkedList<V>();
+		// default timeout 1 minute
+		setTimeout(60000);
 	}
 
 	/**
@@ -89,59 +67,25 @@ public class GenericObjectCache implements IGenericObjectCache {
 		this.name = name + " : "; //$NON-NLS-1$
 	}
 
-	/**
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#isGlobalCache()
-	 */
-	public boolean isGlobalCache() {
-		return globalCache;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
 	 * org.eclipse.riena.core.cache.IGenericObjectCache#get(java.lang.Object)
 	 */
-	public Object get(Object key) {
-		// Assert.isTrue(!isGlobalCache(),"get with single parameter cannot be
-		// used for
-		// global caches. use two parameter
-		// version ");
-		return get(key, GenericObjectCache.class);
-	}
-
-	/**
-	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#get(Object,Class)
-	 */
-	public Object get(Object key, Class callingClass) {
+	public V get(K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "get = " + key); //$NON-NLS-1$
 		long timestamp = 0;
-		Object value = null;
+		V value = null;
 		synchronized (cacheEntries) {
-			Object tempEntry = cacheEntries.get(key);
+			ICacheEntry<K, V> entry = cacheEntries.get(key);
 			/** do we find the entry * */
-			if (tempEntry == null) {
+			if (entry == null) {
 				statNotFound++;
 				printStat();
 				return null;
 			}
-			// now proxy the entry if we have a global cache because the
-			// instance could be from a different classloader
-			// if tempEntry is from my webclasspath cast it directly otherwise
-			// create a proxy
-			if (!(tempEntry instanceof ICacheEntry)) {
-				try {
-					// timestamp = ((Long)
-					// ReflectionUtils.invokeHidden(tempEntry, "getTimestamp",
-					// new
-					// Object[0])).longValue();
-				} catch (Throwable e) {
-					// this should not happen
-				}
-			} else {
-				ICacheEntry entry = (ICacheEntry) tempEntry;
-				timestamp = entry.getTimestamp();
-			}
+			timestamp = entry.getTimestamp();
 
 			long timePassed = System.currentTimeMillis() - timestamp;
 			/** is the entry expired * */
@@ -151,24 +95,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 				printStat();
 				return null;
 			}
-			// only get the value if its not timed out (see previous IF)
-			if (!(tempEntry instanceof ICacheEntry)) {
-				try {
-					// value = ReflectionUtils.invokeHidden(tempEntry,
-					// "getValue", new Object[] {
-					// callingClass.getClassLoader() });
-				} catch (Throwable e) {
-					// this should not happen
-				}
-			} else {
-				if (globalCache) {
-					GlobalSoftCacheEntry entry = (GlobalSoftCacheEntry) tempEntry;
-					value = entry.getValue(callingClass.getClassLoader());
-				} else {
-					ICacheEntry entry = (ICacheEntry) tempEntry;
-					value = entry.getValue();
-				}
-			}
+			value = entry.getValue();
 		}
 
 		/** does the soft reference still point anywhere * */
@@ -201,7 +128,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 				+ statTimeout;
 	}
 
-	private void touchValue(Object value) {
+	private void touchValue(V value) {
 		if (minimumSize > 0) {
 			synchronized (hardLinks) {
 				hardLinks.addFirst(value);
@@ -217,18 +144,11 @@ public class GenericObjectCache implements IGenericObjectCache {
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#put(Object,
 	 *      java.lang.Object)
 	 */
-	public void put(Object key, Object value) {
-		// Assert.isTrue((!globalCache) || value instanceof
-		// Serializable,"objects in global caches must be
-		// serializable" );
+	public void put(K key, V value) {
 		LOGGER.log(LogService.LOG_DEBUG, "put = " + key + " , " + value + ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		processQueue();
-		ICacheEntry entry;
-		if (globalCache) {
-			entry = new GlobalSoftCacheEntry(value, key, queue);
-		} else {
-			entry = new SoftCacheEntry(value, key, queue);
-		}
+		ICacheEntry<K, V> entry;
+		entry = new SoftCacheEntry<K, V>(value, key, queue);
 		synchronized (cacheEntries) {
 			cacheEntries.put(key, entry);
 		}
@@ -252,7 +172,7 @@ public class GenericObjectCache implements IGenericObjectCache {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#remove(Object)
 	 */
-	public void remove(Object key) {
+	public void remove(K key) {
 		LOGGER.log(LogService.LOG_DEBUG, "remove = " + key); //$NON-NLS-1$
 		processQueue();
 		synchronized (cacheEntries) {
@@ -310,22 +230,15 @@ public class GenericObjectCache implements IGenericObjectCache {
 
 	private void processQueue() {
 		LOGGER.log(LogService.LOG_DEBUG, "processQueue"); //$NON-NLS-1$
-		SoftReference ref;
-		Object tempEntry;
-		Object key = null;
+		SoftReference<V> ref;
+		ICacheEntry<K, V> tempEntry;
+		K key = null;
 		int count = 0;
 		synchronized (cacheEntries) {
-			while ((ref = (SoftReference) queue.poll()) != null) {
-				tempEntry = ref.get();
+			while ((ref = (SoftReference<V>) queue.poll()) != null) {
+				tempEntry = (ICacheEntry<K, V>) ref.get();
 				if (tempEntry instanceof ICacheEntry) {
-					key = ((ICacheEntry) tempEntry).getKey();
-				} else {
-					try {
-						// key = ReflectionUtils.invokeHidden(tempEntry,
-						// "getKey", new Object[0]);
-					} catch (Throwable e) {
-						// should not happen
-					}
+					key = tempEntry.getKey();
 				}
 				cacheEntries.remove(key);
 				count++;
@@ -335,5 +248,4 @@ public class GenericObjectCache implements IGenericObjectCache {
 			LOGGER.log(LogService.LOG_INFO, "processQueue removed " + count + " entries"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
-
 }

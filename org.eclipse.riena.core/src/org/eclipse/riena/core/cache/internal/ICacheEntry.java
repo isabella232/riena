@@ -13,23 +13,22 @@ package org.eclipse.riena.core.cache.internal;
 /**
  * Interface for cache entries in the various cache implementations
  * 
- * @author christian campo
  */
-public interface ICacheEntry {
+public interface ICacheEntry<K, V> {
 
 	/**
 	 * Returns the value that is hold in the cache, null if no value was found
 	 * 
 	 * @return value
 	 */
-	Object getValue();
+	V getValue();
 
 	/**
 	 * Returns the key of the cache entry
 	 * 
 	 * @return key
 	 */
-	Object getKey();
+	K getKey();
 
 	/**
 	 * Returns the timestamp of the cache entry, when it was last put or
