@@ -300,31 +300,35 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		//			statuslineRidget = (IStatuslineRidget) getRidget("statuslineRidget"); //$NON-NLS-1$
 		// }
 		if (!done) {
-			statuslineRidget.getStatuslineUIProcessRidget().setContextLocator(new IVisualContextManager() {
 
-				@SuppressWarnings("unchecked")
-				public List<Object> getActiveContexts(List<Object> contexts) {
-					List nodes = new ArrayList();
-					for (Object object : contexts) {
-						if (object instanceof INavigationNode) {
-							INavigationNode<?> node = (INavigationNode) object;
-							if (node.isActivated()) {
-								nodes.add(node);
+			if (statuslineRidget.getStatuslineUIProcessRidget() != null) {
+
+				statuslineRidget.getStatuslineUIProcessRidget().setContextLocator(new IVisualContextManager() {
+
+					@SuppressWarnings("unchecked")
+					public List<Object> getActiveContexts(List<Object> contexts) {
+						List nodes = new ArrayList();
+						for (Object object : contexts) {
+							if (object instanceof INavigationNode) {
+								INavigationNode<?> node = (INavigationNode) object;
+								if (node.isActivated()) {
+									nodes.add(node);
+								}
 							}
 						}
+						return nodes;
 					}
-					return nodes;
-				}
 
-				public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
-					if (context instanceof INavigationNode<?>) {
-						INavigationNode<?> node = (INavigationNode<?>) context;
-						node.addSimpleListener(contextUpdater);
-						listeners.add(listener);
+					public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
+						if (context instanceof INavigationNode<?>) {
+							INavigationNode<?> node = (INavigationNode<?>) context;
+							node.addSimpleListener(contextUpdater);
+							listeners.add(listener);
+						}
 					}
-				}
 
-			});
+				});
+			}
 			done = true;
 		}
 		return statuslineRidget;
