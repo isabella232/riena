@@ -38,7 +38,7 @@ public final class SnippetDecimalTextRidget001 {
 			shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			UIControlsFactory.createLabel(shell, "###,###.00:"); //$NON-NLS-1$
+			UIControlsFactory.createLabel(shell, "###,###,###.0000:"); //$NON-NLS-1$
 			Text txtInput = UIControlsFactory.createTextDecimal(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
@@ -48,8 +48,9 @@ public final class SnippetDecimalTextRidget001 {
 
 			IDecimalValueTextFieldRidget rInput = (IDecimalValueTextFieldRidget) SwtRidgetFactory
 					.createRidget(txtInput);
-			rInput.setMaxLength(6);
-			rInput.setPrecision(2);
+			rInput.setMaxLength(9);
+			rInput.setPrecision(4);
+			rInput.setSigned(true);
 			rInput.setDirectWriting(true);
 
 			ITextFieldRidget rOutput = (ITextFieldRidget) SwtRidgetFactory.createRidget(txtOutput);
@@ -62,7 +63,7 @@ public final class SnippetDecimalTextRidget001 {
 			rInput.bindToModel(new DoubleBean(1234.56), DoubleBean.PROP_VALUE);
 			rInput.updateFromModel();
 
-			shell.setSize(200, 200);
+			shell.setSize(270, 270);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {

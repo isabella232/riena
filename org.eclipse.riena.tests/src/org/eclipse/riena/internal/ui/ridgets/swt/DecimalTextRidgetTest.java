@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -22,12 +23,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the class {@link DecimalTextRidget}.
  */
-public class DecimalTextRidgetTest extends NumericTextRidgetTest {
+public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextRidgetTest */{
 
 	// TODO [ev] decide if we really need to extend NumericTextRidgetTest
 	// TODO [ev] add to test suite
@@ -50,13 +52,186 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		return result;
 	}
 
+	@Override
+	protected Text getUIControl() {
+		return (Text) super.getUIControl();
+	}
+
 	// test methods
 	///////////////
 
-	@Override
+	// @Override
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
 		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getUIControl()));
+	}
+
+	public void testGroup() {
+		assertEquals(localize("123.456,"), DecimalTextRidget.group(localize("123456"), true, true));
+		assertEquals(localize("123.456,78"), DecimalTextRidget.group(localize("123456,78"), true, true));
+		assertEquals(localize("0,78"), DecimalTextRidget.group(localize("0,78"), true, true));
+		assertEquals(localize("0,00001"), DecimalTextRidget.group(localize("0,00001"), true, true));
+		assertEquals(localize("1.000,00001"), DecimalTextRidget.group(localize("1000,00001"), true, true));
+		assertEquals(localize(","), DecimalTextRidget.group(localize(","), true, true));
+	}
+
+	public void testUngroup() {
+		assertEquals(localize("123456"), DecimalTextRidget.ungroup(localize("123456")));
+		assertEquals(localize("123456,"), DecimalTextRidget.ungroup(localize("123456,")));
+		assertEquals(localize("123,45"), DecimalTextRidget.ungroup(localize("123,45")));
+		assertEquals(localize("123456,78"), DecimalTextRidget.ungroup(localize("123.456,78")));
+		assertEquals(localize("0,0"), DecimalTextRidget.ungroup(localize("0,0")));
+		assertEquals(localize("0,0123"), DecimalTextRidget.ungroup(localize("0,0123")));
+		assertEquals(localize(","), DecimalTextRidget.ungroup(localize(",")));
+	}
+
+	public void testSetText() {
+		IDecimalValueTextFieldRidget ridget = getRidget();
+		ridget.setGrouping(true);
+		ridget.setPrecision(2);
+
+		ridget.setText(localize("12345"));
+
+		assertEquals(localize("12.345,"), ridget.getText());
+
+		ridget.setText(localize("3,145"));
+
+		assertEquals(localize("3,145"), ridget.getText());
+
+		final String lastText = ridget.getText();
+		try {
+			ridget.setText("abc");
+			fail();
+		} catch (RuntimeException rex) {
+			assertEquals(lastText, ridget.getText());
+		}
+	}
+
+	public void testDeleteDecimalSeparator() {
+		IDecimalValueTextFieldRidget ridget = getRidget();
+		ridget.setMaxLength(6);
+		ridget.setPrecision(4);
+		ridget.setGrouping(true);
+		ridget.setDirectWriting(true);
+		Text control = getUIControl();
+		Display display = control.getDisplay();
+
+		ridget.setText(localize("1234,9876"));
+
+		assertEquals(localize("1.234,9876"), ridget.getText());
+
+		control.setSelection(5, 5);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize("1.234,9876"), ridget.getText());
+		assertEquals(6, control.getCaretPosition());
+
+		UITestHelper.sendString(display, "\b");
+
+		assertEquals(localize("1.234,9876"), ridget.getText());
+		assertEquals(5, control.getCaretPosition());
+
+		ridget.setText(localize("1234,9876"));
+		control.setFocus();
+		control.setSelection(4, 7);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize("123,876"), ridget.getText());
+
+		ridget.setText(localize("1234,9876"));
+		control.setSelection(4, 6);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize("123,9876"), ridget.getText());
+
+		ridget.setText(localize("1234,9876"));
+		control.setSelection(5, 7);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize("1.234,876"), ridget.getText());
+
+		ridget.setText(localize("1234,9876"));
+		control.setSelection(5, 10);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize("1.234,"), ridget.getText());
+
+		ridget.setText(localize("1234,9876"));
+		control.setSelection(0, 6);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize(",9876"), ridget.getText());
+	}
+
+	public void testDeleteNegativeSign() throws Exception {
+		IDecimalValueTextFieldRidget ridget = getRidget();
+		ridget.setSigned(true);
+		ridget.setText(localize("1234,56"));
+		ridget.setDirectWriting(true);
+		Text control = getUIControl();
+		Display display = control.getDisplay();
+
+		assertEquals(localize("1.234,56"), ridget.getText());
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		control.setFocus();
+		UITestHelper.sendString(display, "-");
+
+		assertEquals(localize("-1.234,56"), ridget.getText());
+		assertEquals(1, ridget.getMarkersOfType(NegativeMarker.class).size());
+
+		control.setFocus();
+		control.setSelection(0, 0);
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize("1.234,56"), ridget.getText());
+		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
+	}
+
+	public void testReplaceSelection() {
+		IDecimalValueTextFieldRidget ridget = getRidget();
+		ridget.setMaxLength(6);
+		ridget.setPrecision(2);
+		ridget.setGrouping(true);
+		ridget.setDirectWriting(true);
+		Text control = getUIControl();
+		Display display = control.getDisplay();
+
+		ridget.setText(localize("123.456,78"));
+		control.setSelection(0, 7);
+		UITestHelper.sendString(display, "9");
+
+		assertEquals(localize("9,78"), ridget.getText());
+
+		ridget.setText(localize("123.456,78"));
+		control.setSelection(8, 10);
+		UITestHelper.sendString(display, "9");
+
+		assertEquals(localize("123.456,9"), ridget.getText());
+
+		ridget.setText(localize("123.456,78"));
+		control.selectAll();
+		UITestHelper.sendString(display, "1");
+
+		assertEquals(localize("1."), ridget.getText());
+
+		ridget.setText(localize("123.456,78"));
+		control.setSelection(6, 9);
+		UITestHelper.sendString(display, "9");
+
+		assertEquals(localize("123.459,8"), ridget.getText());
+
+		ridget.setText(localize("123.456,78"));
+		control.setSelection(6, 8);
+		UITestHelper.sendString(display, "9");
+
+		assertEquals(localize("123.459,78"), ridget.getText());
+
+		ridget.setText(localize("123.456,78"));
+		control.setSelection(7, 9);
+		UITestHelper.sendString(display, "9");
+
+		assertEquals(localize("123.459,98"), ridget.getText());
 	}
 
 	public void testDoubleValueProviderAndHighNumbers() {
@@ -72,7 +247,7 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
 		ridget.updateFromModel();
 
-		assertEquals(TestUtils.getLocalizedNumber("1.000.000.000.000.000"), ridget.getText());
+		assertEquals(localize("1.000.000.000.000.000"), ridget.getText());
 	}
 
 	public void testDoubleValueProviderAndHighNumbersB() {
@@ -88,11 +263,11 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
 		ridget.updateFromModel();
 
-		assertEquals(TestUtils.getLocalizedNumber("1.000.000.000.000.000"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1.000.000.000.000.000,000"), getUIControl().getText());
+		assertEquals(localize("1.000.000.000.000.000"), ridget.getText());
+		assertEquals(localize("1.000.000.000.000.000,000"), getUIControl().getText());
 	}
 
-	@Override
+	// @Override
 	public void testUpdateFromModel() {
 		IDecimalValueTextFieldRidget ridget = getRidget();
 		Text control = getUIControl();
@@ -100,24 +275,24 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
 
-		StringBean bean = new StringBean(TestUtils.getLocalizedNumber("1,2"));
+		StringBean bean = new StringBean(localize("1,2"));
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 		ridget.updateFromModel();
 
 		// Test initial values
 		assertEquals(6, ridget.getMaxLength());
 		assertEquals(3, ridget.getPrecision());
-		assertEquals(TestUtils.getLocalizedNumber("1,200"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1,2"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1,2"), bean.getValue());
+		assertEquals(localize("1,200"), control.getText());
+		assertEquals(localize("1,2"), ridget.getText());
+		assertEquals(localize("1,2"), bean.getValue());
 
 		// Test with bean value 0.0
-		bean.setValue(TestUtils.getLocalizedNumber("0,0"));
+		bean.setValue(localize("0,0"));
 		ridget.updateFromModel();
 
-		assertEquals(TestUtils.getLocalizedNumber("0,000"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("0,0"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("0,0"), bean.getValue());
+		assertEquals(localize("0,000"), control.getText());
+		assertEquals(localize("0,0"), ridget.getText());
+		assertEquals(localize("0,0"), bean.getValue());
 	}
 
 	public void testMaxLength() {
@@ -131,9 +306,9 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "12345612345\r");
 
-		assertEquals(TestUtils.getLocalizedNumber("123.456,123"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,123"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,123"), bean.getValue());
+		assertEquals(localize("123.456,123"), control.getText());
+		assertEquals(localize("123.456,123"), ridget.getText());
+		assertEquals(localize("123.456,123"), bean.getValue());
 
 		ridget.setMaxLength(3);
 		// TODO [ev] what happens here?
@@ -180,29 +355,29 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "123456\r");
 
-		assertEquals(TestUtils.getLocalizedNumber("123.456,000"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,000"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,000"), bean.getValue());
+		assertEquals(localize("123.456,000"), control.getText());
+		assertEquals(localize("123.456,000"), ridget.getText());
+		assertEquals(localize("123.456,000"), bean.getValue());
 
 		control.setFocus();
 		control.setSelection(control.getText().length());
 		UITestHelper.sendString(control.getDisplay(), "54321\r");
 
-		assertEquals(TestUtils.getLocalizedNumber("123.456,543"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,543"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,543"), bean.getValue());
+		assertEquals(localize("123.456,543"), control.getText());
+		assertEquals(localize("123.456,543"), ridget.getText());
+		assertEquals(localize("123.456,543"), bean.getValue());
 
 		ridget.setPrecision(2);
 
-		assertEquals(TestUtils.getLocalizedNumber("123.456,54"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,54"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,54"), bean.getValue());
+		assertEquals(localize("123.456,54"), control.getText());
+		assertEquals(localize("123.456,54"), ridget.getText());
+		assertEquals(localize("123.456,54"), bean.getValue());
 
 		ridget.setPrecision(0);
 
-		assertEquals(TestUtils.getLocalizedNumber("123.456,"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456,"), bean.getValue());
+		assertEquals(localize("123.456,"), control.getText());
+		assertEquals(localize("123.456,"), ridget.getText());
+		assertEquals(localize("123.456,"), bean.getValue());
 
 		ridget.setPrecision(2);
 		// TODO [ev] what happens here?
@@ -254,9 +429,9 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "1-\n");
 
-		assertEquals(TestUtils.getLocalizedNumber("-1,000"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("-1,000"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("-1,000"), bean.getValue());
+		assertEquals(localize("-1,000"), control.getText());
+		assertEquals(localize("-1,000"), ridget.getText());
+		assertEquals(localize("-1,000"), bean.getValue());
 
 		ridget.setSigned(false);
 
@@ -265,9 +440,15 @@ public class DecimalTextRidgetTest extends NumericTextRidgetTest {
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "1-\n");
 
-		assertEquals(TestUtils.getLocalizedNumber("1,000"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1,000"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1,000"), bean.getValue());
+		assertEquals(localize("1,000"), control.getText());
+		assertEquals(localize("1,000"), ridget.getText());
+		assertEquals(localize("1,000"), bean.getValue());
+	}
+
+	// helping methods
+
+	private String localize(String number) {
+		return TestUtils.getLocalizedNumber(number);
 	}
 
 }

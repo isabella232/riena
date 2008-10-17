@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class NumericTextRidget extends TextRidget implements INumericValueTextFieldRidget {
 
+	private static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols().getDecimalSeparator();
 	private static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
 	private static final char MINUS_SIGN = new DecimalFormatSymbols().getMinusSign();
 	private static final char ZERO = '0';
@@ -53,6 +54,8 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 	private boolean isGrouping;
 	private boolean isMarkNegative;
 	private NegativeMarker negativeMarker;
+	private int maxLength;
+	private int precision;
 
 	public NumericTextRidget() {
 		super("0"); //$NON-NLS-1$
@@ -62,11 +65,24 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		isSigned = true;
 		isGrouping = true;
 		isMarkNegative = true;
+		maxLength = -1;
+		precision = -1;
 		addPropertyChangeListener(ITextFieldRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
+				// System.out.println("updateMarkNeg: " + evt.getNewValue());
 				updateMarkNegative();
 			}
 		});
+	}
+
+	protected void checkNumber(String number) {
+		if (!"".equals(number)) { //$NON-NLS-1$
+			try {
+				new BigInteger(ungroup(number));
+			} catch (NumberFormatException nfe) {
+				throw new NumberFormatException("Not a valid number: " + number); //$NON-NLS-1$
+			}
+		}
 	}
 
 	@Override
@@ -133,14 +149,8 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 
 	@Override
 	public synchronized void setText(String text) {
-		if (!"".equals(text)) { //$NON-NLS-1$
-			try {
-				new BigInteger(ungroup(text));
-			} catch (NumberFormatException nfe) {
-				throw new NumberFormatException("Not a valid number: " + text); //$NON-NLS-1$
-			}
-		}
-		super.setText(group(ungroup(text)));
+		checkNumber(text);
+		super.setText(group(ungroup(text), isGrouping, isDecimal()));
 	}
 
 	// helping methods
@@ -156,22 +166,45 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 	}
 
 	// TODO [ev] test this?
-	private String createPattern(String input) {
+	private synchronized String createPattern(String input) {
 		String result;
-		int length = input.length();
-		if (isSigned) {
-			int min = Math.max(0, length - 1);
-			result = String.format("%c?\\d{%d,%d}", MINUS_SIGN, min, length); //$NON-NLS-1$
+		if (isDecimal()) {
+			result = String.format("\\d{0,%d}\\.\\d{0,%d}", getMaxLength(), getPrecision()); //$NON-NLS-1$
+			if (isSigned) {
+				result = String.format("%c?", MINUS_SIGN) + result; //$NON-NLS-1$
+			}
 		} else {
-			result = String.format("\\d{%d}", length); //$NON-NLS-1$
+			int length = input.length();
+			if (isSigned) {
+				int min = Math.max(0, length - 1);
+				result = String.format("%c?\\d{%d,%d}", MINUS_SIGN, min, length); //$NON-NLS-1$
+			} else {
+				result = String.format("\\d{%d}", length); //$NON-NLS-1$
+			}
+		}
+		// System.out.println("pattern: " + result);
+		return result;
+	}
+
+	private boolean isDecimal() {
+		return getPrecision() != -1;
+	}
+
+	protected static String group(String input, boolean isGrouping, boolean isDecimal) {
+		String result = input;
+		int decIndex = input.indexOf(DECIMAL_SEPARATOR);
+		if (isGrouping) {
+			String left = decIndex == -1 ? input : input.substring(0, decIndex);
+			String right = decIndex == -1 ? "" : input.substring(decIndex); //$NON-NLS-1$
+			result = NumericTextRidget.group(left) + right;
+		}
+		if (decIndex == -1 && isDecimal) {
+			result += DECIMAL_SEPARATOR;
 		}
 		return result;
 	}
 
-	private String group(String input) {
-		if (!isGrouping) {
-			return input;
-		}
+	private static String group(String input) {
 		final int numLength = input.length();
 		boolean isNegative = input.indexOf(MINUS_SIGN) == 0;
 		int groupSize = 3;
@@ -198,8 +231,8 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		return String.valueOf(result);
 	}
 
-	// TODO [ev] test this?
-	private String ungroup(String input) {
+	// TODO [ev] move static methods
+	protected static String ungroup(String input) {
 		StringBuilder result = new StringBuilder(input.length());
 		for (int i = 0; i < input.length(); i++) {
 			char ch = input.charAt(i);
@@ -220,8 +253,7 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		boolean needMarker = false;
 		if (isMarkNegative()) {
 			try {
-				BigInteger value = new BigInteger(text);
-				needMarker = (value.compareTo(BigInteger.valueOf(0)) < 0);
+				needMarker = isNegative(text);
 			} catch (NumberFormatException nfe) {
 				needMarker = false;
 			}
@@ -236,6 +268,11 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 				removeMarker(negativeMarker);
 			}
 		}
+	}
+
+	protected boolean isNegative(String text) {
+		BigInteger value = new BigInteger(text);
+		return (value.compareTo(BigInteger.ZERO) < 0);
 	}
 
 	// TODO [ev] test this?
@@ -275,6 +312,22 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		}
 	}
 
+	protected synchronized int getPrecision() {
+		return precision;
+	}
+
+	protected synchronized int getMaxLength() {
+		return maxLength;
+	}
+
+	protected synchronized void setPrecision(int precision) {
+		this.precision = precision;
+	}
+
+	protected synchronized void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
+	}
+
 	// helping classes
 	//////////////////
 
@@ -289,22 +342,39 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 			Text control = (Text) e.widget;
 			final String oldText = control.getText();
 			String newText = null;
+			boolean preserveDecSep = false;
 			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) {
-				newText = oldText.substring(0, e.end) + e.character + oldText.substring(e.end);
+				newText = oldText.substring(0, e.start) + e.character + oldText.substring(e.end);
 			} else if ('\b' == e.character || 127 == e.keyCode) {
-				if (oldText.charAt(e.start) != GROUPING_SEPARATOR) {
-					newText = oldText.substring(0, e.start) + oldText.substring(e.end);
-				} else {
+				char ch = oldText.charAt(e.start);
+				if (e.end - e.start == 1 && (ch == GROUPING_SEPARATOR || ch == DECIMAL_SEPARATOR)) {
+					// move cursor to left or right
 					newText = null; // implies e.doit = false
 					int delta = (127 == e.keyCode) ? 1 : 0;
 					control.setSelection(e.start + delta);
+				} else {
+					// compute text after delete
+					newText = oldText.substring(0, e.start);
+					preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
+					if (preserveDecSep) {
+						newText += DECIMAL_SEPARATOR;
+					}
+					newText += oldText.substring(e.end);
 				}
 			}
 			if (newText != null) {
 				String newTextNoGroup = ungroup(newText);
 				String regex = createPattern(newTextNoGroup);
 				e.doit = Pattern.matches(regex, newTextNoGroup);
-				// System.out.println("t:" + control + " p: " + regex);
+				// System.out.println("nt:" + newTextNoGroup + " p: " + regex);
+				if (e.doit && preserveDecSep) {
+					e.doit = false;
+					int fromRight = oldText.length() - control.getCaretPosition();
+					removeVerifyListener();
+					control.setText(newTextNoGroup);
+					control.setSelection(newTextNoGroup.length() - fromRight);
+					addVerifyListener();
+				}
 			} else {
 				e.doit = false;
 			}
@@ -319,7 +389,7 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		public void modifyText(ModifyEvent e) {
 			Text control = (Text) e.widget;
 			String oldText = control.getText();
-			String newText = group(removeLeadingZeroes(ungroup(oldText)));
+			String newText = group(removeLeadingZeroes(ungroup(oldText)), isGrouping, isDecimal());
 			if (!oldText.equals(newText)) {
 				removeVerifyListener();
 				int posFromRight = oldText.length() - control.getCaretPosition();

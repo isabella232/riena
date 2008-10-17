@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.math.BigDecimal;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -20,22 +23,57 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class DecimalTextRidget extends NumericTextRidget implements IDecimalValueTextFieldRidget {
 
-	public int getMaxLength() {
-		// TODO Auto-generated method stub
-		return 0;
+	public DecimalTextRidget() {
+		// TODO [ev] methods called in cons should be final
+		setMaxLength(10);
+		setPrecision(2);
+		setSigned(false);
 	}
 
-	public int getPrecision() {
-		// TODO Auto-generated method stub
-		return 0;
+	@Override
+	protected void checkNumber(String number) {
+		if (!"".equals(number)) { //$NON-NLS-1$
+			try {
+				new BigDecimal(ungroup(number));
+			} catch (NumberFormatException nfe) {
+				throw new NumberFormatException("Not a valid decimal: " + number); //$NON-NLS-1$
+			}
+		}
 	}
 
-	public void setMaxLength(int maxLength) {
-		// TODO Auto-generated method stub
+	protected boolean isNegative(String text) {
+		BigDecimal value = new BigDecimal(text);
+		return (value.compareTo(BigDecimal.ZERO) < 0);
 	}
 
-	public void setPrecision(int numberOfFractionDigits) {
-		// TODO Auto-generated method stub
+	@Override
+	public synchronized int getMaxLength() {
+		return super.getMaxLength();
+	}
+
+	@Override
+	public synchronized int getPrecision() {
+		return super.getPrecision();
+	}
+
+	@Override
+	public synchronized void setMaxLength(int maxLength) {
+		Assert.isLegal(maxLength > 0, "maxLength must be greater than zero: " + maxLength); //$NON-NLS-1$
+		int oldValue = getMaxLength();
+		if (oldValue != maxLength) {
+			super.setMaxLength(maxLength);
+			firePropertyChange(IDecimalValueTextFieldRidget.PROPERTY_MAXLENGTH, oldValue, maxLength);
+		}
+	}
+
+	@Override
+	public synchronized void setPrecision(int numberOfFractionDigits) {
+		Assert.isLegal(numberOfFractionDigits > -1, "numberOfFractionDigits must > -1: " + numberOfFractionDigits); //$NON-NLS-1$
+		int oldValue = getPrecision();
+		if (oldValue != numberOfFractionDigits) {
+			super.setPrecision(numberOfFractionDigits);
+			firePropertyChange(IDecimalValueTextFieldRidget.PROPERTY_PRECISION, oldValue, numberOfFractionDigits);
+		}
 	}
 
 }
