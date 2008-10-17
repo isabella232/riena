@@ -342,10 +342,20 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 			Text control = (Text) e.widget;
 			final String oldText = control.getText();
 			String newText = null;
-			boolean preserveDecSep = false;
-			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) {
-				newText = oldText.substring(0, e.start) + e.character + oldText.substring(e.end);
-			} else if ('\b' == e.character || 127 == e.keyCode) {
+			boolean preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
+			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) { // insert / replace
+				newText = oldText.substring(0, e.start);
+				if (preserveDecSep) {
+					if (oldText.charAt(e.start) == DECIMAL_SEPARATOR) {
+						newText = newText + DECIMAL_SEPARATOR + e.character;
+					} else {
+						newText = newText + e.character + DECIMAL_SEPARATOR;
+					}
+				} else {
+					newText += e.character;
+				}
+				newText += oldText.substring(e.end);
+			} else if ('\b' == e.character || 127 == e.keyCode) { // delete
 				char ch = oldText.charAt(e.start);
 				if (e.end - e.start == 1 && (ch == GROUPING_SEPARATOR || ch == DECIMAL_SEPARATOR)) {
 					// move cursor to left or right
@@ -355,7 +365,6 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 				} else {
 					// compute text after delete
 					newText = oldText.substring(0, e.start);
-					preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
 					if (preserveDecSep) {
 						newText += DECIMAL_SEPARATOR;
 					}
@@ -369,10 +378,14 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 				// System.out.println("nt:" + newTextNoGroup + " p: " + regex);
 				if (e.doit && preserveDecSep) {
 					e.doit = false;
-					int fromRight = oldText.length() - control.getCaretPosition();
+					int posFromRight = oldText.length() - e.end;
 					removeVerifyListener();
 					control.setText(newTextNoGroup);
-					control.setSelection(newTextNoGroup.length() - fromRight);
+					if (newTextNoGroup.equals(String.valueOf(DECIMAL_SEPARATOR))) {
+						control.setSelection(0);
+					} else {
+						control.setSelection(control.getText().length() - posFromRight);
+					}
 					addVerifyListener();
 				}
 			} else {
@@ -406,19 +419,39 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 	 * TODO [ev] docs
 	 */
 	private final class NumericKeyListener extends KeyAdapter {
+
+		private boolean shiftDown = false;
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (131072 == e.keyCode) {
+				shiftDown = false;
+			}
+		}
+
 		@Override
 		public void keyPressed(KeyEvent e) {
 			Text control = (Text) e.widget;
+			String text = control.getText();
+			if (131072 == e.keyCode) {
+				shiftDown = true;
+			}
 			if (16777219 == e.keyCode && control.getSelectionCount() == 0) {// left arrow
 				int index = control.getCaretPosition() - 1;
-				if (index > 1 && GROUPING_SEPARATOR == control.getText().charAt(index)) {
+				if (index > 1 && GROUPING_SEPARATOR == text.charAt(index) && !shiftDown) {
 					e.doit = false;
 					control.setSelection(index - 1);
 				}
 			} else if (16777220 == e.keyCode && control.getSelectionCount() == 0) { //right arrow
 				int index = control.getCaretPosition() + 1;
-				if (index < control.getText().length() - 1 && GROUPING_SEPARATOR == control.getText().charAt(index)) {
+				if (index < text.length() - 1 && GROUPING_SEPARATOR == text.charAt(index) && !shiftDown) {
 					e.doit = false;
+					control.setSelection(index + 1);
+				}
+			} else if (DECIMAL_SEPARATOR == e.character) {
+				e.doit = false;
+				int index = control.getCaretPosition();
+				if (index < text.length() && text.charAt(index) == DECIMAL_SEPARATOR) {
 					control.setSelection(index + 1);
 				}
 			} else if ('-' == e.character) {
@@ -435,7 +468,7 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 					if (event.doit) {
 						int caret = control.getCaretPosition() + 1;
 						removeVerifyListener();
-						control.setText(MINUS_SIGN + control.getText());
+						control.setText(MINUS_SIGN + text);
 						control.setSelection(caret);
 						addVerifyListener();
 					}

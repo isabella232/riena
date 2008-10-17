@@ -131,39 +131,51 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		assertEquals(localize("1.234,9876"), ridget.getText());
 		assertEquals(5, control.getCaretPosition());
 
-		ridget.setText(localize("1234,9876"));
+		ridget.setText(localize("1.234,9876"));
 		control.setFocus();
 		control.setSelection(4, 7);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize("123,876"), ridget.getText());
+		assertEquals(4, control.getCaretPosition());
 
-		ridget.setText(localize("1234,9876"));
+		ridget.setText(localize("1.234,9876"));
 		control.setSelection(4, 6);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize("123,9876"), ridget.getText());
+		assertEquals(4, control.getCaretPosition());
 
-		ridget.setText(localize("1234,9876"));
+		ridget.setText(localize("1.234,9876"));
 		control.setSelection(5, 7);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize("1.234,876"), ridget.getText());
+		assertEquals(6, control.getCaretPosition());
 
-		ridget.setText(localize("1234,9876"));
+		ridget.setText(localize("1.234,9876"));
 		control.setSelection(5, 10);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize("1.234,"), ridget.getText());
+		assertEquals(6, control.getCaretPosition());
 
-		ridget.setText(localize("1234,9876"));
+		ridget.setText(localize("1.234,9876"));
 		control.setSelection(0, 6);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize(",9876"), ridget.getText());
+		assertEquals(1, control.getCaretPosition());
+
+		ridget.setText(localize("1.234,9876"));
+		control.selectAll();
+		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
+
+		assertEquals(localize(","), ridget.getText());
+		assertEquals(0, control.getCaretPosition());
 	}
 
-	public void testDeleteNegativeSign() throws Exception {
+	public void testDeleteNegativeSign() {
 		IDecimalValueTextFieldRidget ridget = getRidget();
 		ridget.setSigned(true);
 		ridget.setText(localize("1234,56"));
@@ -213,7 +225,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		control.selectAll();
 		UITestHelper.sendString(display, "1");
 
-		assertEquals(localize("1."), ridget.getText());
+		assertEquals(localize("1,"), ridget.getText());
 
 		ridget.setText(localize("123.456,78"));
 		control.setSelection(6, 9);
@@ -231,7 +243,33 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		control.setSelection(7, 9);
 		UITestHelper.sendString(display, "9");
 
-		assertEquals(localize("123.459,98"), ridget.getText());
+		assertEquals(localize("123.456,98"), ridget.getText());
+	}
+
+	public void testJumpOverDecimalSeparator() {
+		IDecimalValueTextFieldRidget ridget = getRidget();
+		ridget.setGrouping(true);
+		Text control = getUIControl();
+		Display display = control.getDisplay();
+
+		// jump when directly at the left of the decimal separator 
+		ridget.setText(localize("123.456,78"));
+		control.setSelection(7);
+		UITestHelper.sendString(display, ".");
+
+		assertEquals(8, control.getCaretPosition());
+
+		// don't jump if right of decimal separator
+		control.setSelection(9);
+		UITestHelper.sendString(display, ".");
+
+		assertEquals(9, control.getCaretPosition());
+
+		// don't jump if not directly on the left of the decimal separator
+		control.setSelection(6);
+		UITestHelper.sendString(display, ".");
+
+		assertEquals(6, control.getCaretPosition());
 	}
 
 	public void testDoubleValueProviderAndHighNumbers() {
