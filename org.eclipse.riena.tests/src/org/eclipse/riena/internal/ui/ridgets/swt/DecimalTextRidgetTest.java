@@ -31,8 +31,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
-	// TODO [ev] add to test suite
-
 	@Override
 	protected IRidget createRidget() {
 		return new DecimalTextRidget();
@@ -332,9 +330,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		// Test with bean value 0.0
 		bean.setValue(localize("0,0"));
 		ridget.updateFromModel();
+		ridget.updateFromModel();
 
-		assertEquals(localize("0,000"), control.getText());
-		assertEquals(localize("0,0"), ridget.getText());
+		assertEquals(localize(",000"), control.getText());
+		assertEquals(localize("0"), ridget.getText());
 		assertEquals(localize("0,0"), bean.getValue());
 	}
 
@@ -387,7 +386,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 	}
 
-	public void testPrecision() {
+	public void testPrecision() throws Exception {
 		IDecimalValueTextFieldRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setMaxLength(6);
@@ -399,12 +398,11 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "123456\r");
 
 		assertEquals(localize("123.456,000"), control.getText());
-		assertEquals(localize("123.456,000"), ridget.getText());
-		assertEquals(localize("123.456,000"), bean.getValue());
+		assertEquals(localize("123.456"), ridget.getText());
+		assertEquals(localize("123.456"), bean.getValue());
 
 		control.setFocus();
-		control.setSelection(control.getText().length());
-		UITestHelper.sendString(control.getDisplay(), "54321\r");
+		UITestHelper.sendString(control.getDisplay(), "\b\b\b54321\r");
 
 		assertEquals(localize("123.456,543"), control.getText());
 		assertEquals(localize("123.456,543"), ridget.getText());
@@ -419,8 +417,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setPrecision(0);
 
 		assertEquals(localize("123.456,"), control.getText());
-		assertEquals(localize("123.456,"), ridget.getText());
-		assertEquals(localize("123.456,"), bean.getValue());
+		assertEquals(localize("123.456"), ridget.getText());
+		assertEquals(localize("123.456"), bean.getValue());
 
 		ridget.setPrecision(2);
 		// TODO [ev] what happens here?
@@ -470,22 +468,37 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isSigned());
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "1-\n");
+		UITestHelper.sendString(control.getDisplay(), "1-\r");
 
 		assertEquals(localize("-1,000"), control.getText());
-		assertEquals(localize("-1,000"), ridget.getText());
-		assertEquals(localize("-1,000"), bean.getValue());
+		assertEquals(localize("-1"), ridget.getText());
+		assertEquals(localize("-1"), bean.getValue());
 
 		ridget.setSigned(false);
 
 		assertFalse(ridget.isSigned());
 
-		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "1-\n");
+		control.selectAll();
+		UITestHelper.sendString(control.getDisplay(), "1-\r");
 
 		assertEquals(localize("1,000"), control.getText());
-		assertEquals(localize("1,000"), ridget.getText());
-		assertEquals(localize("1,000"), bean.getValue());
+		assertEquals(localize("1"), ridget.getText());
+		assertEquals(localize("1"), bean.getValue());
+	}
+
+	public void testPadOnFocusOut() {
+		IDecimalValueTextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		ridget.setPrecision(3);
+		StringBean bean = new StringBean();
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "1234\t");
+
+		assertEquals(localize("1.234,000"), control.getText());
+		assertEquals(localize("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), bean.getValue());
 	}
 
 	// helping methods

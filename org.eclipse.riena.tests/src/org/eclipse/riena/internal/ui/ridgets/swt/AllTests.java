@@ -24,6 +24,7 @@ public class AllTests extends TestCase {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTestSuite(ActionRidgetTest.class);
 		suite.addTestSuite(ComboRidgetTest.class);
+		suite.addTestSuite(DecimalTextRidgetTest.class);
 		suite.addTestSuite(EmbeddedTitleBarRidgetTest.class);
 		suite.addTestSuite(LabelRidgetTest.class);
 		suite.addTestSuite(ListRidgetTest.class);

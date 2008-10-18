@@ -18,13 +18,15 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Ridget for a 'decimal' SWT <code>Text</code> widget.
+ * <p>
+ * Implementation note: all the logic is in NumericTextRidget. This class justs
+ * adds the API mandated by IDecimalValueTextFieldRidget.
  * 
  * @see UIControlsFactory#createTextDecimal(org.eclipse.swt.widgets.Composite)
  */
 public class DecimalTextRidget extends NumericTextRidget implements IDecimalValueTextFieldRidget {
 
 	public DecimalTextRidget() {
-		// TODO [ev] methods called in cons should be final
 		setMaxLength(10);
 		setPrecision(2);
 		setText("0"); //$NON-NLS-1$
@@ -58,7 +60,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 	}
 
 	@Override
-	public synchronized void setMaxLength(int maxLength) {
+	public final synchronized void setMaxLength(int maxLength) {
 		Assert.isLegal(maxLength > 0, "maxLength must be greater than zero: " + maxLength); //$NON-NLS-1$
 		int oldValue = getMaxLength();
 		if (oldValue != maxLength) {
@@ -68,7 +70,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 	}
 
 	@Override
-	public synchronized void setPrecision(int numberOfFractionDigits) {
+	public final synchronized void setPrecision(int numberOfFractionDigits) {
 		Assert.isLegal(numberOfFractionDigits > -1, "numberOfFractionDigits must > -1: " + numberOfFractionDigits); //$NON-NLS-1$
 		int oldValue = getPrecision();
 		if (oldValue != numberOfFractionDigits) {
