@@ -57,7 +57,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
@@ -651,13 +650,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				Tree tree = item.getParent();
 				if (!tree.isEnabled()) {
 					GC gc = event.gc;
-					Color bg = gc.getBackground();
-					// TODO [ev] temporary - remove
-					gc.setBackground(item.getDisplay().getSystemColor(SWT.COLOR_RED));
 					bounds.width = tree.getBounds().width;
 					bounds.height = tree.getBounds().height;
 					gc.fillRectangle(bounds);
-					gc.setBackground(bg);
 				}
 			}
 		}
