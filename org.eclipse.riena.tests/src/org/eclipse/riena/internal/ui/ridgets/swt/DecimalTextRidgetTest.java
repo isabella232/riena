@@ -351,9 +351,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("123.456,123"), control.getText());
 		assertEquals(localize("123.456,123"), ridget.getText());
 		assertEquals(localize("123.456,123"), bean.getValue());
-
-		ridget.setMaxLength(3);
-		// TODO [ev] what happens here?
 	}
 
 	public void testGetSetMaxLength() {
@@ -419,9 +416,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("123.456,"), control.getText());
 		assertEquals(localize("123.456"), ridget.getText());
 		assertEquals(localize("123.456"), bean.getValue());
-
-		ridget.setPrecision(2);
-		// TODO [ev] what happens here?
 	}
 
 	public void testGetSetPrecision() {
