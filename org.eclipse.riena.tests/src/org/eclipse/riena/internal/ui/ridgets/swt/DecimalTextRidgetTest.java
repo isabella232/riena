@@ -29,9 +29,8 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Tests for the class {@link DecimalTextRidget}.
  */
-public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextRidgetTest */{
+public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
-	// TODO [ev] decide if we really need to extend NumericTextRidgetTest
 	// TODO [ev] add to test suite
 
 	@Override
@@ -60,7 +59,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 	// test methods
 	///////////////
 
-	// @Override
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
 		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getUIControl()));
@@ -89,13 +87,16 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		IDecimalValueTextFieldRidget ridget = getRidget();
 		ridget.setGrouping(true);
 		ridget.setPrecision(2);
+		Text control = getUIControl();
 
 		ridget.setText(localize("12345"));
 
-		assertEquals(localize("12.345,"), ridget.getText());
+		assertEquals(localize("12.345,"), control.getText());
+		assertEquals(localize("12.345"), ridget.getText());
 
 		ridget.setText(localize("3,145"));
 
+		assertEquals(localize("3,145"), control.getText());
 		assertEquals(localize("3,145"), ridget.getText());
 
 		final String lastText = ridget.getText();
@@ -103,6 +104,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 			ridget.setText("abc");
 			fail();
 		} catch (RuntimeException rex) {
+			assertEquals(lastText, control.getText());
 			assertEquals(lastText, ridget.getText());
 		}
 	}
@@ -157,7 +159,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		control.setSelection(5, 10);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
-		assertEquals(localize("1.234,"), ridget.getText());
+		assertEquals(localize("1.234,"), control.getText());
+		assertEquals(localize("1.234"), ridget.getText());
 		assertEquals(6, control.getCaretPosition());
 
 		ridget.setText(localize("1.234,9876"));
@@ -171,7 +174,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		control.selectAll();
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
-		assertEquals(localize(","), ridget.getText());
+		assertEquals(localize(","), control.getText());
+		assertEquals(localize(""), ridget.getText());
 		assertEquals(0, control.getCaretPosition());
 	}
 
@@ -200,7 +204,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
 	}
 
-	public void testReplaceSelection() {
+	public void testReplaceSelection() throws Exception {
 		IDecimalValueTextFieldRidget ridget = getRidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(2);
@@ -225,7 +229,9 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		control.selectAll();
 		UITestHelper.sendString(display, "1");
 
-		assertEquals(localize("1,"), ridget.getText());
+		assertEquals(localize("1,"), control.getText());
+		assertEquals(localize("1"), ridget.getText());
+		assertEquals(1, control.getCaretPosition());
 
 		ridget.setText(localize("123.456,78"));
 		control.setSelection(6, 9);
@@ -305,7 +311,6 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		assertEquals(localize("1.000.000.000.000.000,000"), getUIControl().getText());
 	}
 
-	// @Override
 	public void testUpdateFromModel() {
 		IDecimalValueTextFieldRidget ridget = getRidget();
 		Text control = getUIControl();
@@ -342,7 +347,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "12345612345\r");
+		UITestHelper.sendString(control.getDisplay(), localize("123456,12345\r"));
 
 		assertEquals(localize("123.456,123"), control.getText());
 		assertEquals(localize("123.456,123"), ridget.getText());
@@ -484,6 +489,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest /* NumericTextR
 	}
 
 	// helping methods
+	//////////////////
 
 	private String localize(String number) {
 		return TestUtils.getLocalizedNumber(number);

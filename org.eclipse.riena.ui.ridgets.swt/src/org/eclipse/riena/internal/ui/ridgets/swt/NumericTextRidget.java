@@ -153,6 +153,15 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		super.setText(group(ungroup(text), isGrouping, isDecimal()));
 	}
 
+	@Override
+	public synchronized String getText() {
+		String result = super.getText();
+		if (isDecimal() && result.endsWith(String.valueOf(DECIMAL_SEPARATOR))) {
+			result = result.substring(0, result.length() - 1);
+		}
+		return result;
+	}
+
 	// helping methods
 	//////////////////
 
@@ -346,9 +355,11 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) { // insert / replace
 				newText = oldText.substring(0, e.start);
 				if (preserveDecSep) {
-					if (oldText.charAt(e.start) == DECIMAL_SEPARATOR) {
+					if (oldText.charAt(e.start) == DECIMAL_SEPARATOR && oldText.length() > e.end - e.start) {
+						// #(.#)# -> #.C# or (.#)# -> .C#
 						newText = newText + DECIMAL_SEPARATOR + e.character;
 					} else {
+						// (#.#) -> C. or #(#.#)# -> #C.# or #(#.)# -> #C.#
 						newText = newText + e.character + DECIMAL_SEPARATOR;
 					}
 				} else {
@@ -381,8 +392,10 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 					int posFromRight = oldText.length() - e.end;
 					removeVerifyListener();
 					control.setText(newTextNoGroup);
-					if (newTextNoGroup.equals(String.valueOf(DECIMAL_SEPARATOR))) {
+					if (newTextNoGroup.length() == 1 && newTextNoGroup.charAt(0) == DECIMAL_SEPARATOR) {
 						control.setSelection(0);
+					} else if (newTextNoGroup.length() == 2 && newTextNoGroup.charAt(1) == DECIMAL_SEPARATOR) {
+						control.setSelection(1);
 					} else {
 						control.setSelection(control.getText().length() - posFromRight);
 					}

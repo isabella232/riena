@@ -27,6 +27,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 		// TODO [ev] methods called in cons should be final
 		setMaxLength(10);
 		setPrecision(2);
+		setText("0"); //$NON-NLS-1$
 		setSigned(false);
 	}
 
