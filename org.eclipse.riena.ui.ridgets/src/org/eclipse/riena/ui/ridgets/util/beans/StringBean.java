@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.ridgets.util.beans;
 
 /**
- * String bean provides a boolean value for simple adapter UI-Binding
+ * String bean provides a string value for simple adapter UI-Binding
  */
 public class StringBean extends AbstractBean {
 
