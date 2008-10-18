@@ -33,10 +33,6 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		// TODO [ev] example for grouping on/off
-		// TODO [ev] example for signed on/off
-		// TODO [ev] example for primitive types
-		// TODO [ev] example for BigInteger
 		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(3, true));
 
@@ -44,23 +40,45 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 		UIControlsFactory.createLabel(parent, "Text Field"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, "Model Value"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Numeric String:"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextNumeric(parent), "inString"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextOutput(parent), "outString"); //$NON-NLS-1$
+		// numeric ridgets
+
+		UIControlsFactory.createLabel(parent, "String (Numeric):"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inStringNum"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outStringNum"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Integer:"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inInteger"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextOutput(parent), "outInteger"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Long:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inLong"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outLong"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "Big Integer:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextNumeric(parent), "inBigInteger"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outBigInteger"); //$NON-NLS-1$
+
+		// decimal ridgets
+
+		UIControlsFactory.createLabel(parent, "String (Decimal):"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextDecimal(parent), "inStringDec"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outStringDec"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Double:"); //$NON-NLS-1$
-		addUIControl(UIControlsFactory.createTextNumeric(parent), "inDouble"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextDecimal(parent), "inDouble"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextOutput(parent), "outDouble"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Float:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextDecimal(parent), "inFloat"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outFloat"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "Big Decimal (30,10):"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextDecimal(parent), "inBigDecimal"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextOutput(parent), "outBigDecimal"); //$NON-NLS-1$
+
+		// customized ridgets (see controller)
+
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
@@ -72,17 +90,17 @@ public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModule
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inMaxEight"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextOutput(parent), "outMaxEight"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "Unformatted; Min. 3 digits:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "Unformatted; Min. 4 digits:  "); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextNumeric(parent), "inMinThree"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextOutput(parent), "outMinThree"); //$NON-NLS-1$
 
-		UIControlsFactory.createLabel(parent, "With leading Zero:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-
-		UIControlsFactory.createLabel(parent, "Bank Code:"); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
-		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		//		UIControlsFactory.createLabel(parent, "With leading Zero:"); //$NON-NLS-1$
+		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		//
+		//		UIControlsFactory.createLabel(parent, "Bank Code:"); //$NON-NLS-1$
+		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		//		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
 
 		GridDataFactory gdf = GridDataFactory.fillDefaults();
 		for (Control child : parent.getChildren()) {

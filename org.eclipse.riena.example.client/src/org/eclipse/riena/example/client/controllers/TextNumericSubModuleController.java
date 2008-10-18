@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -19,9 +22,8 @@ import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
-import org.eclipse.riena.ui.ridgets.util.beans.DoubleBean;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
-import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
+import org.eclipse.riena.ui.ridgets.util.beans.TypedBean;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
@@ -42,25 +44,25 @@ public class TextNumericSubModuleController extends SubModuleController {
 	 * Binds and updates the ridgets.
 	 */
 	public void configureRidgets() {
+		String[] ids = { "StringNum", "Integer", "Long", "BigInteger", "StringDec", "Double", "Float", "BigDecimal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"Range", "MaxEight", "MinThree" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		DataBindingContext dbc = new DataBindingContext();
-		bind(dbc, "String"); //$NON-NLS-1$
-		bind(dbc, "Integer"); //$NON-NLS-1$
-		bind(dbc, "Double"); //$NON-NLS-1$
-		bind(dbc, "Range"); //$NON-NLS-1$
-		bind(dbc, "MaxEight"); //$NON-NLS-1$
-		bind(dbc, "MinThree"); //$NON-NLS-1$
+		for (String id : ids) {
+			bind(dbc, id);
+		}
 
-		INumericValueTextFieldRidget txtString = (INumericValueTextFieldRidget) getRidget("inString"); //$NON-NLS-1$
-		txtString.bindToModel(new StringBean("1234"), StringBean.PROP_VALUE); //$NON-NLS-1$
-		txtString.updateFromModel();
+		bindToModel("StringNum", new TypedBean<String>("1234")); //$NON-NLS-1$ //$NON-NLS-2$
+		bindToModel("Integer", new TypedBean<Integer>(Integer.valueOf(-1234)));
+		bindToModel("Long", new TypedBean<Long>(Long.valueOf(1234)));
+		bindToModel("BigInteger", new TypedBean<BigInteger>(BigInteger.valueOf(12345789)));
 
-		INumericValueTextFieldRidget txtInteger = (INumericValueTextFieldRidget) getRidget("inInteger"); //$NON-NLS-1$
-		txtInteger.bindToModel(new IntegerBean(-1234), "value"); //$NON-NLS-1$
-		txtInteger.updateFromModel();
-
-		INumericValueTextFieldRidget txtDouble = (INumericValueTextFieldRidget) getRidget("inDouble"); //$NON-NLS-1$
-		txtDouble.bindToModel(new DoubleBean(1234.00), "value"); //$NON-NLS-1$
-		txtDouble.updateFromModel();
+		bindToModel("StringDec", new TypedBean<String>("12345678.1234")); //$NON-NLS-1$ //$NON-NLS-2$
+		bindToModel("Double", new TypedBean<Double>(Double.valueOf(-1234.00)));
+		bindToModel("Float", new TypedBean<Float>(Float.valueOf("1234"))); //$NON-NLS-2$
+		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234)));
+		IDecimalValueTextFieldRidget inBigDecimal = (IDecimalValueTextFieldRidget) getRidget("inBigDecimal"); //$NON-NLS-1$
+		inBigDecimal.setMaxLength(30);
+		inBigDecimal.setPrecision(10);
 
 		INumericValueTextFieldRidget txtRange = (INumericValueTextFieldRidget) getRidget("inRange"); //$NON-NLS-1$
 		txtRange.addValidationRule(new ValidRange(Integer.valueOf(100), Integer.valueOf(1000)),
@@ -75,7 +77,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 
 		INumericValueTextFieldRidget txtMinThree = (INumericValueTextFieldRidget) getRidget("inMinThree"); //$NON-NLS-1$
 		txtMinThree.setGrouping(false);
-		txtMinThree.addValidationRule(new MinLength(3), ValidationTime.ON_UI_CONTROL_EDIT);
+		txtMinThree.addValidationRule(new MinLength(4), ValidationTime.ON_UI_CONTROL_EDIT);
 		txtMinThree.bindToModel(new IntegerBean(1234), "value"); //$NON-NLS-1$
 		txtMinThree.updateFromModel();
 	}
@@ -89,5 +91,11 @@ public class TextNumericSubModuleController extends SubModuleController {
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextFieldRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
+	}
+
+	private void bindToModel(String id, TypedBean<?> value) {
+		INumericValueTextFieldRidget txtString = (INumericValueTextFieldRidget) getRidget("in" + id); //$NON-NLS-1$
+		txtString.bindToModel(value, TypedBean.PROP_VALUE);
+		txtString.updateFromModel();
 	}
 }
