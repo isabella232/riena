@@ -33,6 +33,9 @@ public interface IDecimalValueTextFieldRidget extends INumericValueTextFieldRidg
 	 * of digits behind the comma-separator.
 	 * 
 	 * @param numberOfFractionDigits
+	 *            a value equal or greater than 0
+	 * @throws RuntimeException
+	 *             if an invalid value is used
 	 */
 	void setPrecision(int numberOfFractionDigits);
 
@@ -45,13 +48,13 @@ public interface IDecimalValueTextFieldRidget extends INumericValueTextFieldRidg
 
 	/**
 	 * Sets the number of allowed decimal-digits, that it , the number of digits
-	 * before the comma-separator. Note that the maximum number of possible
-	 * grouping-separators ( the dots between "1.034.235.123" ) has to be taken
-	 * into account.
-	 * 
-	 * TODO [ev] update javadoc - the grouping/comma separator do not count
+	 * before the comma-separator. Note that the grouping separators ( i.e. the
+	 * dots between "1.034.235.123" ) do not count towards reaching this limit.
 	 * 
 	 * @param maxLength
+	 *            a value greater than 0
+	 * @throws RuntimeException
+	 *             if an invalid value is used
 	 */
 	void setMaxLength(int maxLength);
 
