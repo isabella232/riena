@@ -7,6 +7,9 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.filter.IUIFilterContainer;
+import org.eclipse.riena.ui.filter.impl.UIFilterProviderAccessor;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
@@ -45,12 +48,38 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doAddFilters() {
 
+		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
+				"rienaExample.offline");
+
+		IUIFilter filter = container.getFilter();
+
+		String targetNodeId = container.getFilterTargetNodeId();
+
+		List<INavigationNode<?>> nodes = findNodes(targetNodeId);
+
+		if (nodes != null && !nodes.isEmpty()) {
+			nodes.get(0).addFilter(filter);
+		}
+
 	}
 
 	/**
 	 * Removes all filters form a node.
 	 */
 	private void doRemoveFilters() {
+
+		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
+				"rienaExample.offline");
+
+		IUIFilter filter = container.getFilter();
+
+		String targetNodeId = container.getFilterTargetNodeId();
+
+		List<INavigationNode<?>> nodes = findNodes(targetNodeId);
+
+		if (nodes != null && !nodes.isEmpty()) {
+			nodes.get(0).removeFilter(filter.getFilterID());
+		}
 
 	}
 
@@ -60,26 +89,26 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 * @param label
 	 * @return list of found nodes.
 	 */
-	private List<INavigationNode<?>> findNodes(String label) {
+	private List<INavigationNode<?>> findNodes(String id) {
 
 		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
 
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		findNodes(label, applNode, nodes);
+		findNodes(id, applNode, nodes);
 
 		return nodes;
 
 	}
 
-	private void findNodes(String label, INavigationNode<?> node, List<INavigationNode<?>> nodes) {
+	private void findNodes(String id, INavigationNode<?> node, List<INavigationNode<?>> nodes) {
 
-		if (StringUtils.equals(node.getLabel(), label)) {
+		if (node.getNodeId() != null && StringUtils.equals(node.getNodeId().getTypeId(), id)) {
 			nodes.add(node);
 		}
 		List<?> children = node.getChildren();
 		for (Object child : children) {
 			if (child instanceof INavigationNode<?>) {
-				findNodes(label, (INavigationNode<?>) child, nodes);
+				findNodes(id, (INavigationNode<?>) child, nodes);
 			}
 		}
 
