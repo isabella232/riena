@@ -30,30 +30,15 @@ public class FilterExternalDefinitionSubModuleView extends SubModuleView<FilterE
 		GridLayoutFactory.swtDefaults().numColumns(1).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		//		Label label1 = UIControlsFactory.createLabel(group, "Node Label"); //$NON-NLS-1$
-		//		GridDataFactory.fillDefaults().grab(false, false).span(1, 1).applyTo(label1);
-		//		Text nodeLabel = UIControlsFactory.createText(group);
-		//		addUIControl(nodeLabel, "nodeLabel"); //$NON-NLS-1$
-		//		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(nodeLabel);
-		//
-		//		ChoiceComposite filterType = new ChoiceComposite(group, SWT.NONE, false);
-		//		filterType.setOrientation(SWT.HORIZONTAL);
-		//		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterType);
-		//		addUIControl(filterType, "filterType"); //$NON-NLS-1$
-		//
-		//		Combo filterTypeValues = UIControlsFactory.createCombo(group);
-		//		GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterTypeValues);
-		//		addUIControl(filterTypeValues, "filterTypeValues"); //$NON-NLS-1$
-
 		Button addFilter = UIControlsFactory.createButton(group);
 		addFilter.setText("Enable offline filter"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(addFilter);
-		addUIControl(addFilter, "addFilter"); //$NON-NLS-1$
+		addUIControl(addFilter, "addOffline"); //$NON-NLS-1$
 
 		Button removeFilters = UIControlsFactory.createButton(group);
 		removeFilters.setText("Disable offline filter"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(removeFilters);
-		addUIControl(removeFilters, "removeFilters"); //$NON-NLS-1$
+		addUIControl(removeFilters, "removeOffline"); //$NON-NLS-1$
 
 		return group;
 

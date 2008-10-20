@@ -1,151 +1,49 @@
 package org.eclipse.riena.example.client.controllers;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeDisabledMarker;
-import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
-import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 
 public class FilterExternalDefinitionSubModuleController extends SubModuleController {
-
-	private IActionRidget addFilter;
-	private IComboBoxRidget filterTypeValues;
-	private FilterModel filterModel;
-
-	/**
-	 * Enumeration of different kind of UI filters.
-	 */
-	private enum FilterType {
-
-		MARKER("Marker", new DisabledMarker(), new HiddenMarker()); //$NON-NLS-1$
-
-		private String text;
-		private Object[] args;
-
-		private FilterType(String text, Object... args) {
-			this.text = text;
-			this.args = args;
-		}
-
-		@Override
-		public String toString() {
-			return text;
-		}
-
-		public Object[] getArgs() {
-			return args;
-		}
-
-	}
 
 	@Override
 	public void afterBind() {
 
 		super.afterBind();
-
-		initNavigationFilterGroup();
-
-		rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
-
+		initRidgets();
 	}
 
 	/**
-	 * Initializes the ridgets for adding UI filters.
+	 * Initializes the ridgets .
 	 */
-	private void initNavigationFilterGroup() {
+	private void initRidgets() {
 
-		//		ITextFieldRidget ridgetID = (ITextFieldRidget) getRidget("nodeLabel"); //$NON-NLS-1$
-		//		filterModel = new FilterModel();
-		//		ridgetID.bindToModel(filterModel, "nodeLabel"); //$NON-NLS-1$
-		//		ridgetID.updateFromModel();
-		//
-		//		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
-		//		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
-		//		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
-		//		filterType.updateFromModel();
-
-		//		filterTypeValues = (IComboBoxRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
-		//		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
-		//			public void propertyChange(PropertyChangeEvent evt) {
-		//				if (addFilter != null) {
-		//					addFilter.setEnabled(evt.getNewValue() != null);
-		//				}
-		//			}
-		//		});
-		//
-		//		addFilter = (IActionRidget) getRidget("addFilter"); //$NON-NLS-1$
-		//		addFilter.addListener(new IActionListener() {
-		//			public void callback() {
-		//				doAddFilter();
-		//			}
-		//		});
-
-		IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
+		IActionRidget removeFilters = (IActionRidget) getRidget("removeOffline"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
 			}
 		});
 
-	}
-
-	/**
-	 * The combo box for filter values is update with the given model. Also the
-	 * add button is enabled or disabled.
-	 * 
-	 * @param model
-	 * @param typeValues
-	 *            - combo box
-	 * @param add
-	 *            - add button
-	 */
-	private void rebindFilterTypeValues(FilterModel model, IComboBoxRidget typeValues, IActionRidget add) {
-
-		if (model == null) {
-			return;
-		}
-		model.setSelectedFilterTypeValue(null);
-		if (typeValues != null) {
-			typeValues.bindToModel(new WritableList(Arrays.asList(model.getSelectedType().getArgs()), Object.class),
-					FilterModel.class, null, BeansObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
-			typeValues.updateFromModel();
-		}
-		if (add != null) {
-			add.setEnabled(model.getSelectedFilterTypeValue() != null);
-		}
+		IActionRidget addFilters = (IActionRidget) getRidget("addOffline"); //$NON-NLS-1$
+		addFilters.addListener(new IActionListener() {
+			public void callback() {
+				doAddFilters();
+			}
+		});
 
 	}
 
 	/**
 	 * Adds a filter to a node.
 	 */
-	private void doAddFilter() {
-
-		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
-		for (INavigationNode<?> node : nodes) {
-			IUIFilter filter = new UIFilter();
-			filter.addFilterAttribute(createFilterAttribute(filterModel, node));
-
-			node.addFilter(filter);
-		}
+	private void doAddFilters() {
 
 	}
 
@@ -153,49 +51,6 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 * Removes all filters form a node.
 	 */
 	private void doRemoveFilters() {
-
-		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
-		for (INavigationNode<?> node : nodes) {
-			node.removeAllFilters();
-		}
-
-	}
-
-	/**
-	 * Creates a filter attribute for a ridget, dependent on the selected type
-	 * of filter.
-	 * 
-	 * @param model
-	 *            - model with selections.
-	 * @return filter attribute
-	 */
-	private IUIFilterAttribute createFilterAttribute(FilterModel model, INavigationNode<?> node) {
-
-		IUIFilterAttribute attribute = null;
-
-		Object filterValue = model.getSelectedFilterTypeValue();
-		FilterType type = model.getSelectedType();
-
-		String nodeId;
-		if (node.getNodeId() != null) {
-			nodeId = node.getNodeId().getTypeId();
-		} else {
-			nodeId = "";
-			node.setNodeId(new NavigationNodeId(""));
-		}
-
-		switch (type) {
-		case MARKER:
-			if (filterValue instanceof DisabledMarker) {
-				attribute = new NavigationUIFilterAttributeDisabledMarker(nodeId);
-			} else if (filterValue instanceof HiddenMarker) {
-				attribute = new NavigationUIFilterAttributeHiddenMarker(nodeId);
-			}
-
-			break;
-		}
-
-		return attribute;
 
 	}
 
@@ -226,68 +81,6 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 			if (child instanceof INavigationNode<?>) {
 				findNodes(label, (INavigationNode<?>) child, nodes);
 			}
-		}
-
-	}
-
-	/**
-	 * After changing the type the combo box with the values must be updated.
-	 */
-	private class FilterTypeChangeListener implements PropertyChangeListener {
-
-		public void propertyChange(PropertyChangeEvent evt) {
-			rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
-		}
-
-	}
-
-	/**
-	 * Model with the filter types and value of the filter group.
-	 */
-	private class FilterModel {
-
-		private String nodeLabel;
-		private List<FilterType> types;
-		private FilterType selectedType;
-		private Object selectedFilterTypeValue;
-
-		public FilterModel() {
-			nodeLabel = ""; //$NON-NLS-1$
-		}
-
-		public List<FilterType> getTypes() {
-			if (types == null) {
-				types = new ArrayList<FilterType>();
-				types.add(FilterType.MARKER);
-			}
-			return types;
-		}
-
-		public void setSelectedType(FilterType selectedType) {
-			this.selectedType = selectedType;
-		}
-
-		public FilterType getSelectedType() {
-			if (selectedType == null) {
-				selectedType = getTypes().get(0);
-			}
-			return selectedType;
-		}
-
-		public void setSelectedFilterTypeValue(Object selectedFilterTypeValue) {
-			this.selectedFilterTypeValue = selectedFilterTypeValue;
-		}
-
-		public Object getSelectedFilterTypeValue() {
-			return selectedFilterTypeValue;
-		}
-
-		public void setNodeLabel(String nodeLabel) {
-			this.nodeLabel = nodeLabel;
-		}
-
-		public String getNodeLabel() {
-			return nodeLabel;
 		}
 
 	}
