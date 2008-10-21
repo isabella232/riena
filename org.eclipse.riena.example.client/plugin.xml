@@ -71,6 +71,11 @@
             name="org.eclipse.riena.example.client.views.TextNumericSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.TextDateSubModuleView"
+            id="org.eclipse.riena.example.client.views.TextDateSubModuleView"
+            name="org.eclipse.riena.example.client.views.TextDateSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.MarkerSubModuleView"
             id="org.eclipse.riena.example.client.views.MarkerSubModuleView"
             name="org.eclipse.riena.example.client.views.MarkerSubModuleView">
@@ -488,6 +493,11 @@
             typeId="org.eclipse.riena.example.text.numeric"
             view="org.eclipse.riena.example.client.views.TextNumericSubModuleView"
             controller="org.eclipse.riena.example.client.controllers.TextNumericSubModuleController">
+      </subModule>
+      <subModule
+            typeId="org.eclipse.riena.example.text.date"
+            view="org.eclipse.riena.example.client.views.TextDateSubModuleView"
+            controller="org.eclipse.riena.example.client.controllers.TextDateSubModuleController">
       </subModule>
       <subModule
             typeId="org.eclipse.riena.example.tree"
