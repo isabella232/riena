@@ -127,7 +127,6 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			ridget.setUIControl(new Table(getShell(), SWT.NONE));
 			fail();
 		} catch (RuntimeException rex) {
-			rex.printStackTrace();
 			// expected
 		}
 	}

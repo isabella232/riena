@@ -137,7 +137,6 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			getRidget().setUIControl(new Tree(getShell(), SWT.NONE));
 			fail();
 		} catch (RuntimeException rex) {
-			rex.printStackTrace();
 			// expected
 		}
 	}
