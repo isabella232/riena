@@ -108,7 +108,7 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId()));
 		node.addFilter(filter);
 		IUIFilter filter2 = new UIFilter();
-		filter2.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getInstanceId()));
+		filter2.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getTypeId()));
 		node.addFilter(filter2);
 		ReflectionUtils.invokeHidden(applier, "applyFilters", node);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
@@ -132,8 +132,8 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		node.addChild(node2);
 
 		IUIFilter filter = new UIFilter();
-		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getInstanceId()));
-		filter.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getInstanceId()));
+		filter.addFilterAttribute(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId()));
+		filter.addFilterAttribute(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getTypeId()));
 		IUIFilterAttributeClosure closure = ReflectionUtils.getHidden(applier, "applyClosure");
 		ReflectionUtils.invokeHidden(applier, "applyFilter", node, filter, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
@@ -161,13 +161,14 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		IUIFilterAttribute attribute = new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getInstanceId());
+		IUIFilterAttribute attribute = new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId());
 		IUIFilterAttributeClosure closure = ReflectionUtils.getHidden(applier, "applyClosure");
 		ReflectionUtils.invokeHidden(applier, "applyFilterAttribute", node, attribute, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
 
 		SubModuleController controller = new SubModuleController();
 		node.setNavigationNodeController(controller);
+		controller.setNavigationNode(node);
 		Shell shell = new Shell();
 		Label label = new Label(shell, SWT.NONE);
 		label.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "0815");
