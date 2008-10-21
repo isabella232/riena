@@ -560,7 +560,12 @@
          point="org.eclipse.riena.filter.uifilter">
       <filter
             filterId="rienaExample.offline"
-            nodeId="org.eclipse.riena.example.playground">
+            nodeId="playground">
+         
+         <markerAttributes
+               attributeClass="org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker"
+               targetId="org.eclipse.riena.example.uiProcesses">
+         </markerAttributes>
          <markerAttributes
                attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker"
                targetId="textPassword"></markerAttributes>
@@ -570,6 +575,10 @@
          <markerAttributes
                attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker"
                targetId="ui_label2">
+         </markerAttributes>
+         <markerAttributes
+               attributeClass="org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker"
+               targetId="org.eclipse.riena.example.navigation">
          </markerAttributes>
                 
       </filter>
