@@ -585,6 +585,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeAllMarkers()
 	 */
 	public void removeAllMarkers() {
+		if (getMarkable().getMarkers().isEmpty()) {
+			return;
+		}
 		getMarkable().removeAllMarkers();
 		notifyMarkersChanged();
 	}
@@ -594,6 +597,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void removeMarker(IMarker marker) {
+		if (!getMarkable().getMarkers().contains(marker)) {
+			return;
+		}
 		getMarkable().removeMarker(marker);
 		notifyMarkersChanged();
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {

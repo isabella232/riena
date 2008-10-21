@@ -102,7 +102,7 @@ public abstract class AbstractMarkerSupport {
 	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#removeAllMarkers()
 	 */
 	public void removeAllMarkers() {
-		if (markers != null) {
+		if ((markers != null) && !getMarkers().isEmpty()) {
 			Collection<IMarker> oldValue = getMarkers();
 			for (IMarker marker : markers) {
 				marker.removeAttributeChangeListener(markerAttributeChangeListener);
@@ -121,7 +121,7 @@ public abstract class AbstractMarkerSupport {
 	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void removeMarker(IMarker marker) {
-		if (markers != null) {
+		if ((markers != null) && !getMarkers().isEmpty()) {
 			Collection<IMarker> oldValue = getMarkers();
 			if (markers.remove(marker)) {
 				updateMarkers();

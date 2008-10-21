@@ -682,6 +682,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		composite.setLayoutData(formData);
 
 		Control control = getWindowConfigurer().createCoolBarControl(composite);
+		if (control instanceof CoolBar) {
+			CoolBar coolbar = (CoolBar) control;
+			coolbar.setLocked(true);
+		}
 		control.setBackground(getCoolbarBackground());
 
 		return composite;

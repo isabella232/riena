@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -133,7 +137,32 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 
 	public boolean hasSingleLeafChild() {
 
-		return getNavigationNode().getChildren().size() == 1 && getNavigationNode().getChild(0).isLeaf();
+		List<INavigationNode<?>> children = getVisibleChildren(getNavigationNode());
+		return children.size() == 1 && children.get(0).isLeaf();
+	}
+
+	/**
+	 * Returns a list of all visible children of the given node.
+	 * 
+	 * @param parent
+	 *            - parent node
+	 * @return list of visible child nodes
+	 */
+	public List<INavigationNode<?>> getVisibleChildren(INavigationNode<?> parent) {
+
+		List<INavigationNode<?>> visibleChildren = new ArrayList<INavigationNode<?>>();
+
+		for (Object child : parent.getChildren()) {
+			if (child instanceof INavigationNode<?>) {
+				INavigationNode<?> childNode = (INavigationNode<?>) child;
+				if (childNode.isVisible()) {
+					visibleChildren.add(childNode);
+				}
+			}
+		}
+
+		return visibleChildren;
+
 	}
 
 	public boolean isFirstChild() {
