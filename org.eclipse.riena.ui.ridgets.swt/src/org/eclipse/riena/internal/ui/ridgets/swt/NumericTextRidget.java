@@ -324,7 +324,8 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 	private synchronized String createPattern(String input) {
 		String result;
 		if (isDecimal()) {
-			result = String.format("\\d{0,%d}\\.\\d{0,%d}", getMaxLength(), getPrecision()); //$NON-NLS-1$
+			String decSep = DECIMAL_SEPARATOR == '.' ? "\\." : String.valueOf(DECIMAL_SEPARATOR); //$NON-NLS-1$
+			result = String.format("\\d{0,%d}%s\\d{0,%d}", getMaxLength(), decSep, getPrecision()); //$NON-NLS-1$
 			if (isSigned) {
 				result = String.format("%c?", MINUS_SIGN) + result; //$NON-NLS-1$
 			}
