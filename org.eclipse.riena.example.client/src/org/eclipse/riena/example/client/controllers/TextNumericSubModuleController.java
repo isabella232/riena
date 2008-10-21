@@ -52,14 +52,14 @@ public class TextNumericSubModuleController extends SubModuleController {
 		}
 
 		bindToModel("StringNum", new TypedBean<String>("1234")); //$NON-NLS-1$ //$NON-NLS-2$
-		bindToModel("Integer", new TypedBean<Integer>(Integer.valueOf(-1234)));
-		bindToModel("Long", new TypedBean<Long>(Long.valueOf(1234)));
-		bindToModel("BigInteger", new TypedBean<BigInteger>(BigInteger.valueOf(12345789)));
+		bindToModel("Integer", new TypedBean<Integer>(Integer.valueOf(-1234))); //$NON-NLS-1$
+		bindToModel("Long", new TypedBean<Long>(Long.valueOf(1234))); //$NON-NLS-1$
+		bindToModel("BigInteger", new TypedBean<BigInteger>(BigInteger.valueOf(12345789))); //$NON-NLS-1$
 
 		bindToModel("StringDec", new TypedBean<String>("12345678.1234")); //$NON-NLS-1$ //$NON-NLS-2$
-		bindToModel("Double", new TypedBean<Double>(Double.valueOf(-1234.00)));
-		bindToModel("Float", new TypedBean<Float>(Float.valueOf("1234"))); //$NON-NLS-2$
-		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234)));
+		bindToModel("Double", new TypedBean<Double>(Double.valueOf(-1234.00))); //$NON-NLS-1$
+		bindToModel("Float", new TypedBean<Float>(Float.valueOf("1234"))); //$NON-NLS-1$//$NON-NLS-2$
+		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234))); //$NON-NLS-1$
 		IDecimalValueTextFieldRidget inBigDecimal = (IDecimalValueTextFieldRidget) getRidget("inBigDecimal"); //$NON-NLS-1$
 		inBigDecimal.setMaxLength(30);
 		inBigDecimal.setPrecision(10);
