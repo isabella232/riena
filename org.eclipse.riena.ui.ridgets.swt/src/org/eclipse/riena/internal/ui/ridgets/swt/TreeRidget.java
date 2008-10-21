@@ -122,6 +122,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	protected void bindUIControl() {
 		Tree control = getUIControl();
 		if (control != null && treeRoots != null) {
+			checkColumns(control);
 			bindToViewer(control);
 			bindToSelection();
 			control.addSelectionListener(selectionTypeEnforcer);
@@ -460,6 +461,12 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 		viewer.setSelection(currentSelection);
 		saveSelection();
+	}
+
+	private void checkColumns(Tree control) {
+		int columnCount = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
+		String message = String.format("Tree has %d columns, expected: %d", columnCount, valueAccessors.length); //$NON-NLS-1$
+		Assert.isLegal(columnCount == valueAccessors.length, message);
 	}
 
 	/**

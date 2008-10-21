@@ -103,36 +103,43 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelTooFewColumns() {
+		Tree control = getUIControl();
+
+		assertEquals(2, control.getColumnCount());
+
 		// the tree widget has two columns, we bind only one
-		getRidget().bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname" },
-				new String[] { "First Name" });
-
-		assertEquals(node1.getFirstname(), getUIControlItem(0).getText(0));
-		assertEquals(node2.getFirstname(), getUIControlItem(1).getText(0));
-		assertEquals(node3.getFirstname(), getUIControlItem(2).getText(0));
-		assertEquals(node4.getFirstname(), getUIControlItem(3).getText(0));
-
-		assertEquals("", getUIControlItem(0).getText(1));
-		assertEquals("", getUIControlItem(1).getText(1));
-		assertEquals("", getUIControlItem(2).getText(1));
-		assertEquals("", getUIControlItem(3).getText(1));
+		try {
+			getRidget().bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname" },
+					new String[] { "First Name" });
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 	}
 
 	public void testBindToModelWithTooManyColumns() {
+		Tree control = getUIControl();
+
+		assertEquals(2, control.getColumnCount());
+
 		// the tree widget has two columns but we bind three
-		getRidget().bindToModel(roots, PersonNode.class, "children", "parent",
-				new String[] { "firstname", "lastname", "entry" },
-				new String[] { "First Name", "Last Name", "First - Last" });
+		try {
+			getRidget().bindToModel(roots, PersonNode.class, "children", "parent",
+					new String[] { "firstname", "lastname", "entry" },
+					new String[] { "First Name", "Last Name", "First - Last" });
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 
-		assertEquals(node1.getFirstname(), getUIControlItem(0).getText(0));
-		assertEquals(node2.getFirstname(), getUIControlItem(1).getText(0));
-		assertEquals(node3.getFirstname(), getUIControlItem(2).getText(0));
-		assertEquals(node4.getFirstname(), getUIControlItem(3).getText(0));
-
-		assertEquals(node1.getLastname(), getUIControlItem(0).getText(1));
-		assertEquals(node2.getLastname(), getUIControlItem(1).getText(1));
-		assertEquals(node3.getLastname(), getUIControlItem(2).getText(1));
-		assertEquals(node4.getLastname(), getUIControlItem(3).getText(1));
+		// tree has 1 default column, expected 3
+		try {
+			getRidget().setUIControl(new Tree(getShell(), SWT.NONE));
+			fail();
+		} catch (RuntimeException rex) {
+			rex.printStackTrace();
+			// expected
+		}
 	}
 
 	public void testTableColumnsNumAndHeader() {
@@ -348,8 +355,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		Tree control = getUIControl();
 		TreeTableRidget ridget = getRidget();
 
-		ridget.bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname" },
-				new String[] { "" });
+		ridget.bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname", "lastname" },
+				null);
 
 		assertEquals(-1, ridget.getSortedColumn());
 		assertFalse(ridget.isSortedAscending());

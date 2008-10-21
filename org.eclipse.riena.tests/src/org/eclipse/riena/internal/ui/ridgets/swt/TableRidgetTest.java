@@ -95,37 +95,41 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	public void testBindToModelTooFewColumns() {
 		Table control = getUIControl();
 
+		assertEquals(2, control.getColumnCount());
+
 		// the table widget has two columns, we bind only one
-		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" },
-				new String[] { "First Name" });
-
-		assertEquals(manager.getPersons().size(), control.getItemCount());
-
-		assertEquals(person1.getFirstname(), control.getItem(0).getText(0));
-		assertEquals(person2.getFirstname(), control.getItem(1).getText(0));
-		assertEquals(person3.getFirstname(), control.getItem(2).getText(0));
-
-		assertEquals("", control.getItem(0).getText(1));
-		assertEquals("", control.getItem(1).getText(1));
-		assertEquals("", control.getItem(2).getText(1));
+		try {
+			getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" },
+					new String[] { "First Name" });
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 	}
 
 	public void testBindToModelWithTooManyColumns() {
+		ITableRidget ridget = getRidget();
 		Table control = getUIControl();
 
+		assertEquals(2, control.getColumnCount());
+
 		// the table widget has two columns but we bind three
-		getRidget().bindToModel(manager, "persons", Person.class,
-				new String[] { "firstname", "lastname", "listEntry" },
-				new String[] { "First Name", "Last Name", "First - Last" });
+		try {
+			ridget.bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname", "listEntry" },
+					new String[] { "First Name", "Last Name", "First - Last" });
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 
-		assertEquals(manager.getPersons().size(), control.getItemCount());
-		assertEquals(person1.getFirstname(), control.getItem(0).getText(0));
-		assertEquals(person2.getFirstname(), control.getItem(1).getText(0));
-		assertEquals(person3.getFirstname(), control.getItem(2).getText(0));
-
-		assertEquals(person1.getLastname(), control.getItem(0).getText(1));
-		assertEquals(person2.getLastname(), control.getItem(1).getText(1));
-		assertEquals(person3.getLastname(), control.getItem(2).getText(1));
+		// table has 1 default column, expected 3
+		try {
+			ridget.setUIControl(new Table(getShell(), SWT.NONE));
+			fail();
+		} catch (RuntimeException rex) {
+			rex.printStackTrace();
+			// expected
+		}
 	}
 
 	public void testTableColumnsNumAndHeader() {
@@ -251,7 +255,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
 		PersonManager manager = new PersonManager(persons);
-		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" }, new String[] { "" });
+		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname" }, null);
 
 		assertFalse(ridget.containsOption(person1));
 		assertTrue(ridget.containsOption(person3));
@@ -450,7 +454,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		Table control = getUIControl();
 		TableRidget ridget = getRidget();
 
-		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname" }, new String[] { "" });
+		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname", "firstname" }, null);
 		int lastItemIndex = control.getItemCount() - 1;
 
 		assertEquals(-1, ridget.getSortedColumn());

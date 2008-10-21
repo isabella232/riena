@@ -99,6 +99,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	protected void bindUIControl() {
 		final Table control = getUIControl();
 		if (control != null && rowObservables != null) {
+			checkColumns(control);
 			viewer = new TableViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
@@ -416,6 +417,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				columns[i].setText(columnHeader);
 			}
 		}
+	}
+
+	private void checkColumns(Table control) {
+		int columnCount = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
+		String message = String.format("Table has %d columns, expected: %d", columnCount, renderingMethods.length); //$NON-NLS-1$
+		Assert.isLegal(columnCount == renderingMethods.length, message);
 	}
 
 	private void checkColumnRange(int columnIndex) {
