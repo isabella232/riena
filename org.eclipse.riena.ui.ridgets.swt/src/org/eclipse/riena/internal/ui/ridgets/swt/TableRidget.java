@@ -26,12 +26,8 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.viewers.ContentViewer;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -524,46 +520,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			column.getParent().showSelection();
 		}
-	}
-
-	/**
-	 * This comparator uses the values of the column the table is sorted by.
-	 */
-	private final class TableComparator extends ViewerComparator {
-
-		public TableComparator(SortableComparator comparator) {
-			super(comparator);
-		}
-
-		@Override
-		protected SortableComparator getComparator() {
-			return (SortableComparator) super.getComparator();
-		}
-
-		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-
-			int cat1 = category(e1);
-			int cat2 = category(e2);
-
-			if (cat1 != cat2) {
-				return cat1 - cat2;
-			}
-
-			if ((viewer instanceof ContentViewer) && (sortedColumn != -1)) {
-				IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
-				if (prov instanceof TableRidgetLabelProvider) {
-					TableRidgetLabelProvider lprov = (TableRidgetLabelProvider) prov;
-					Object value1 = lprov.getColumnValue(e1, sortedColumn);
-					Object value2 = lprov.getColumnValue(e2, sortedColumn);
-					return getComparator().compare(value1, value2);
-				}
-			}
-
-			return super.compare(viewer, e1, e2);
-
-		}
-
 	}
 
 }

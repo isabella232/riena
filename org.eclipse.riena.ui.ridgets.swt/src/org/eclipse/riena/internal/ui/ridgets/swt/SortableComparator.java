@@ -36,4 +36,8 @@ final class SortableComparator implements Comparator<Object> {
 		int result = orgComparator.compare(o1, o2);
 		return ridget.isSortedAscending() ? result : result * -1;
 	}
+
+	int getSortedColumn() {
+		return ridget.getSortedColumn();
+	}
 }

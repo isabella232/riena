@@ -23,6 +23,7 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.util.beans.Person;
+import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -504,6 +505,39 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isSortedAscending());
 	}
 
+	public void testSortColumnTwo() {
+		ITreeTableRidget ridget = getRidget();
+		Tree control = getUIControl();
+
+		WordNode root = new WordNode("root");
+		new WordNode(root, "ZA");
+		new WordNode(root, "AAA");
+		new WordNode(root, "BCAA");
+		ridget.bindToModel(new Object[] { root }, WordNode.class, "children", "parent",
+				new String[] { "word", "ACount" }, null);
+		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(1, new IntegerComparator());
+		ridget.expandTree();
+
+		assertEquals("ZA", control.getItem(0).getItem(0).getText());
+		assertEquals("AAA", control.getItem(0).getItem(1).getText());
+		assertEquals("BCAA", control.getItem(0).getItem(2).getText());
+
+		ridget.setSortedColumn(0);
+		ridget.setSortedAscending(true);
+
+		assertEquals("AAA", control.getItem(0).getItem(0).getText());
+		assertEquals("BCAA", control.getItem(0).getItem(1).getText());
+		assertEquals("ZA", control.getItem(0).getItem(2).getText());
+		//TreeUtils.print((Tree) ridget.getUIControl());
+
+		ridget.setSortedColumn(1);
+
+		assertEquals("ZA", control.getItem(0).getItem(0).getText());
+		assertEquals("BCAA", control.getItem(0).getItem(1).getText());
+		assertEquals("AAA", control.getItem(0).getItem(2).getText());
+	}
+
 	/**
 	 * Tests that for single selection, the ridget selection state and the ui
 	 * selection state cannot be changed by the user when ridget is set to
@@ -602,7 +636,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		node1 = root1;
 		PersonNode root2 = new PersonNode(new Person("Root", "Zebra"));
 		PersonNode root3 = new PersonNode(new Person("Root", "Adam"));
-		// children bean node1
+		// children beaneath node1
 		node2 = new PersonNode(node1, new Person("Benjason", "Elen"));
 		node4 = new PersonNode(node1, new Person("Benjason", "Zora"));
 		new PersonNode(node1, new Person("Benjason", "Anna"));
@@ -649,6 +683,17 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			String s1 = (String) o1;
 			String s2 = (String) o2;
 			return s1.compareTo(s2);
+		}
+	}
+
+	/**
+	 * Comparets two Integers.
+	 */
+	private static final class IntegerComparator implements Comparator<Object> {
+		public int compare(Object o1, Object o2) {
+			Integer i1 = (Integer) o1;
+			Integer i2 = (Integer) o2;
+			return i1.compareTo(i2);
 		}
 	}
 

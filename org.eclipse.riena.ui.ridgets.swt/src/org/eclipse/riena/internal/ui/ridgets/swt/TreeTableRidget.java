@@ -16,7 +16,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
@@ -208,7 +207,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 					int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
 					tree.setSortDirection(direction);
 					SortableComparator sortableComparator = new SortableComparator(this, compi);
-					viewer.setComparator(new ViewerComparator(sortableComparator));
+					viewer.setComparator(new TableComparator(sortableComparator));
 				} else {
 					viewer.setComparator(null);
 					tree.setSortColumn(null);
