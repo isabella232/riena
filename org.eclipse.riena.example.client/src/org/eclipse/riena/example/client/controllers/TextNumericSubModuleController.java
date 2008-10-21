@@ -94,8 +94,8 @@ public class TextNumericSubModuleController extends SubModuleController {
 	}
 
 	private void bindToModel(String id, TypedBean<?> value) {
-		INumericValueTextFieldRidget txtString = (INumericValueTextFieldRidget) getRidget("in" + id); //$NON-NLS-1$
-		txtString.bindToModel(value, TypedBean.PROP_VALUE);
-		txtString.updateFromModel();
+		INumericValueTextFieldRidget inputRidget = (INumericValueTextFieldRidget) getRidget("in" + id); //$NON-NLS-1$
+		inputRidget.bindToModel(value, TypedBean.PROP_VALUE);
+		inputRidget.updateFromModel();
 	}
 }
