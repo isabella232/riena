@@ -43,6 +43,11 @@ public interface ISubModuleExtension {
 	 */
 	String getView();
 
+	/**
+	 * Return the contributing bundle of the extension.
+	 * 
+	 * @return The contributing bundle
+	 */
 	Bundle getContributingBundle();
 
 	/**
