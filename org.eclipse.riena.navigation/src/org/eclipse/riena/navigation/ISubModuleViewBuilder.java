@@ -37,7 +37,7 @@ public interface ISubModuleViewBuilder {
 	 */
 	boolean isViewShared(NavigationNodeId targetId);
 
-	ISubModuleExtension[] getSubModuleTypeDefitinions();
+	ISubModuleExtension[] getSubModuleTypeDefinitions();
 
 	/**
 	 * Perform some housekeeping

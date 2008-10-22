@@ -113,7 +113,7 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	 * @seeorg.eclipse.riena.navigation.IPresentationProviderService#
 	 * getSubModuleTypeDefitinions()
 	 */
-	public ISubModuleExtension[] getSubModuleTypeDefitinions() {
+	public ISubModuleExtension[] getSubModuleTypeDefinitions() {
 		if (targetSM != null) {
 			return targetSM.getData();
 		}
