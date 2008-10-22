@@ -42,13 +42,11 @@ public class Markable implements IMarkable {
 		if (marker.isUnique()) {
 			Collection<? extends IMarker> markersOfType = getMarkersOfType(marker.getClass());
 			boolean unique = false;
-			for (Iterator iterator = markersOfType.iterator(); iterator.hasNext();) {
-				IMarker m = (IMarker) iterator.next();
+			for (Iterator<? extends IMarker> iterator = markersOfType.iterator(); iterator.hasNext();) {
+				IMarker m = iterator.next();
 				if (m.isUnique()) {
 					unique = true;
-
 				}
-
 			}
 			if (!unique) {
 				markers.add(marker);
