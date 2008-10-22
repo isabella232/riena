@@ -63,6 +63,7 @@ public class ModuleGroupViewTest extends TestCase {
 
 		ModuleView moduleView = new ModuleView(shell);
 		ModuleNode moduleNode = new ModuleNode();
+		node.addChild(moduleNode);
 		moduleView.bind(moduleNode);
 
 		view.registerModuleView(moduleView);
