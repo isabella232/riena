@@ -68,19 +68,8 @@ public class Markable implements IMarkable {
 	/**
 	 * @see org.eclipse.riena.core.marker.IMarkable#getMarkersOfType(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
 	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
-		if (type == null) {
-			return Collections.emptyList();
-		}
-		List<T> typedMarkerList = new ArrayList<T>();
-
-		for (IMarker marker : getMarkers()) {
-			if (type.isAssignableFrom(marker.getClass())) {
-				typedMarkerList.add((T) marker);
-			}
-		}
-		return typedMarkerList;
+		return getMarkersOfType(getMarkers(), type);
 	}
 
 	/**
@@ -95,6 +84,25 @@ public class Markable implements IMarkable {
 	 */
 	public void removeMarker(IMarker marker) {
 		markers.remove(marker);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends IMarker> Collection<T> getMarkersOfType(Collection<? extends IMarker> markerSet,
+			Class<T> type) {
+
+		if ((type == null) || (markerSet == null)) {
+			return Collections.emptyList();
+		}
+
+		List<T> typedMarkerList = new ArrayList<T>();
+		for (IMarker marker : markerSet) {
+			if (type.isAssignableFrom(marker.getClass())) {
+				typedMarkerList.add((T) marker);
+			}
+		}
+
+		return typedMarkerList;
+
 	}
 
 }

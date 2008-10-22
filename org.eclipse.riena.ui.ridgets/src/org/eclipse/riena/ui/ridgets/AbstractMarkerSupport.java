@@ -12,16 +12,15 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.IMarkerAttributeChangeListener;
+import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.IMarkerPropertyChangeEvent;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
@@ -85,17 +84,7 @@ public abstract class AbstractMarkerSupport {
 	 * @see org.eclipse.riena.ui.internal.ridgets.IMarkableRidget#getMarkersOfType(java.lang.Class)
 	 */
 	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
-		if (type == null) {
-			return Collections.emptyList();
-		}
-		List<T> typedMarkerList = new ArrayList<T>();
-
-		for (IMarker marker : getMarkers()) {
-			if (type.isAssignableFrom(marker.getClass())) {
-				typedMarkerList.add((T) marker);
-			}
-		}
-		return typedMarkerList;
+		return Markable.getMarkersOfType(getMarkers(), type);
 	}
 
 	/**
