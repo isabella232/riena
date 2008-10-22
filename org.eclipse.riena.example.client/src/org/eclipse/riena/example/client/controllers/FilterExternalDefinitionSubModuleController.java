@@ -1,6 +1,8 @@
 package org.eclipse.riena.example.client.controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.riena.core.util.StringUtils;
@@ -53,12 +55,18 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 
 		IUIFilter filter = container.getFilter();
 
-		String targetNodeId = container.getFilterTargetNodeId();
+		Collection targetNodeIds = container.getFilterTargetNodeIds();
 
-		List<INavigationNode<?>> nodes = findNodes(targetNodeId);
+		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
 
 		if (nodes != null && !nodes.isEmpty()) {
-			nodes.get(0).addFilter(filter);
+
+			for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
+				INavigationNode<?> navigationNode = (INavigationNode<?>) iterator.next();
+				navigationNode.addFilter(filter);
+
+			}
+
 		}
 
 	}
@@ -73,12 +81,14 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 
 		IUIFilter filter = container.getFilter();
 
-		String targetNodeId = container.getFilterTargetNodeId();
+		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 
-		List<INavigationNode<?>> nodes = findNodes(targetNodeId);
+		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
 
-		if (nodes != null && !nodes.isEmpty()) {
-			nodes.get(0).removeFilter(filter.getFilterID());
+		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
+			INavigationNode<?> navigationNode = (INavigationNode<?>) iterator.next();
+			navigationNode.removeFilter(filter);
+
 		}
 
 	}
@@ -111,6 +121,27 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 				findNodes(id, (INavigationNode<?>) child, nodes);
 			}
 		}
+
+	}
+
+	/**
+	 * Returns all node with the given label.
+	 * 
+	 * @param label
+	 * @return list of found nodes.
+	 */
+	private List<INavigationNode<?>> findNodes(Collection<String> ids) {
+
+		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
+
+		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+
+		for (Iterator<String> iterator = ids.iterator(); iterator.hasNext();) {
+			String id = iterator.next();
+			nodes.addAll(findNodes(id));
+		}
+
+		return nodes;
 
 	}
 

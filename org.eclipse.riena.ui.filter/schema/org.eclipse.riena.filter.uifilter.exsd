@@ -73,15 +73,21 @@
       <complexType>
          <sequence>
             <element ref="markerAttributes" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="nodeIds" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
-         <attribute name="filterId" type="string">
+         <attribute name="filterId" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="nodeId" type="string">
+      </complexType>
+   </element>
+
+   <element name="nodeIds">
+      <complexType>
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   

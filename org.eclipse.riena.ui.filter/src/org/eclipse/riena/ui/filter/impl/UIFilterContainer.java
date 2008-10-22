@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.eclipse.riena.ui.filter.IFilterNodeIds;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
 
@@ -18,11 +22,16 @@ import org.eclipse.riena.ui.filter.IUIFilterContainer;
  */
 public class UIFilterContainer implements IUIFilterContainer {
 
-	String nodeId;
+	Collection<String> nodeIds;
 	IUIFilter filter;
 
-	public UIFilterContainer(IUIFilter filter, String nodeId) {
-		this.nodeId = nodeId;
+	public UIFilterContainer(IUIFilter filter, IFilterNodeIds[] ids) {
+
+		nodeIds = new ArrayList();
+		for (int i = 0; i < ids.length; i++) {
+			nodeIds.add((ids[i].getId()));
+		}
+
 		this.filter = filter;
 	}
 
@@ -41,8 +50,8 @@ public class UIFilterContainer implements IUIFilterContainer {
 	 * @see
 	 * org.eclipse.riena.ui.filter.IUIFilterContainer#getFilterTargetNodeId()
 	 */
-	public String getFilterTargetNodeId() {
-		return nodeId;
+	public Collection<String> getFilterTargetNodeIds() {
+		return nodeIds;
 	}
 
 }

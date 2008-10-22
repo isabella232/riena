@@ -10,23 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter;
 
-import java.util.Collection;
-
 /**
  *
  */
-public interface IUIFilterContainer {
+public interface IFilterNodeIds {
 
 	/**
-	 * Returns the created filter
+	 * Returns the id
 	 */
 
-	IUIFilter getFilter();
-
-	/**
-	 * Returns the navigation-node ID on which the filter maybe applied
-	 */
-
-	Collection<String> getFilterTargetNodeIds();
+	public String getId();
 
 }

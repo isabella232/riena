@@ -89,7 +89,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 			filterResult.addFilterAttribute(attr);
 		}
 
-		return new UIFilterContainer(filterResult, filterExtension.getNodeId());
+		return new UIFilterContainer(filterResult, filterExtension.getNodeIds());
 	}
 
 	public class UIFilterExtensionInjectionHelper {

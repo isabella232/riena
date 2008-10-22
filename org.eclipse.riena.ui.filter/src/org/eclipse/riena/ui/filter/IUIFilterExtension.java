@@ -23,14 +23,14 @@ public interface IUIFilterExtension {
 	String getFilterId();
 
 	/**
-	 * Returns the nodeId();
-	 */
-
-	String getNodeId();
-
-	/**
 	 * Returns the list of attributes
 	 */
 
 	IMarkerAttribute[] getMarkerAttributes();
+
+	/**
+	 * Returns the nodeIds
+	 */
+
+	IFilterNodeIds[] getNodeIds();
 }
