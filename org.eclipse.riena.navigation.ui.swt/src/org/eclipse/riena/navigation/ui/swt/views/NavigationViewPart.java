@@ -40,7 +40,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class NavigationViewPart extends ViewPart {
 
-	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.experimental.NavigationViewPart"; //$NON-NLS-1$
+	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.navigationViewPart"; //$NON-NLS-1$
 
 	private IViewFactory viewFactory;
 	private Composite parent;

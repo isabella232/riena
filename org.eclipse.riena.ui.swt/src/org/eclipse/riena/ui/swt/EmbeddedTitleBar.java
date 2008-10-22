@@ -36,6 +36,8 @@ public class EmbeddedTitleBar extends Canvas {
 	private boolean active;
 	private boolean pressed;
 	private boolean hover;
+	private boolean closeButtonPressed;
+	private boolean closeButtonHover;
 	private boolean closeable;
 	private Image image;
 	private String title;
@@ -88,6 +90,8 @@ public class EmbeddedTitleBar extends Canvas {
 		getLnfTitlebarRenderer().setCloseable(isCloseable());
 		getLnfTitlebarRenderer().setPressed(isPressed());
 		getLnfTitlebarRenderer().setHover(isHover());
+		getLnfTitlebarRenderer().setCloseButtonPressed(isCloseButtonPressed());
+		getLnfTitlebarRenderer().setCloseButtonHover(isCloseButtonHover());
 		getLnfTitlebarRenderer().setImage(getImage());
 		getLnfTitlebarRenderer().setTitle(getTitle());
 		getLnfTitlebarRenderer().setMarkers(getMarkers());
@@ -271,10 +275,8 @@ public class EmbeddedTitleBar extends Canvas {
 			return false;
 		}
 
-		GC gc = new GC(this);
-		Rectangle closeBounds = getLnfTitlebarRenderer().computeCloseButtonBounds();
-		gc.dispose();
-		return closeBounds.contains(point);
+		boolean inside = getLnfTitlebarRenderer().isInsideCloseButton(point);
+		return inside;
 
 	}
 
@@ -305,6 +307,28 @@ public class EmbeddedTitleBar extends Canvas {
 		}
 		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
 				|| !oldValue.equals(newValue);
+	}
+
+	public void setCloseButtonPressed(boolean closeButtonPressed) {
+		if (hasChanged(this.closeButtonPressed, closeButtonPressed)) {
+			this.closeButtonPressed = closeButtonPressed;
+			redraw();
+		}
+	}
+
+	public boolean isCloseButtonPressed() {
+		return closeButtonPressed;
+	}
+
+	public void setCloseButtonHover(boolean closeButtonHover) {
+		if (hasChanged(this.closeButtonHover, closeButtonHover)) {
+			this.closeButtonHover = closeButtonHover;
+			redraw();
+		}
+	}
+
+	public boolean isCloseButtonHover() {
+		return closeButtonHover;
 	}
 
 }

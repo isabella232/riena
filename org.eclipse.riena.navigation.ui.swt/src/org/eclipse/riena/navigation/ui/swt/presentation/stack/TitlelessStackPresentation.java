@@ -87,7 +87,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Left padding of the navigation.<br>
 	 * Gap between left shell border and navigation.
 	 */
-	private static final int PADDING_LEFT = 10;
+	private static final int PADDING_LEFT = 2;
 	/**
 	 * Right padding of the sub-module view.<br>
 	 * Gap between right shell border and sub-module view.
@@ -106,7 +106,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Gap between navigation and sub-module view
 	 */
-	private static final int NAVIGATION_SUB_MODULE_GAP = 10;
+	private static final int NAVIGATION_SUB_MODULE_GAP = 4;
 	/**
 	 * The height of the status line
 	 */

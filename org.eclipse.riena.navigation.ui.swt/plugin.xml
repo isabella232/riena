@@ -6,7 +6,7 @@
       <view
             allowMultiple="true"
             class="org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart"
-            id="org.eclipse.riena.navigation.ui.swt.views.experimental.NavigationViewPart"
+            id="org.eclipse.riena.navigation.ui.swt.views.navigationViewPart"
             name="NavigationTreeView">
       </view>
       <view

@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
@@ -71,7 +72,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * The default and the minimum size of the application.
 	 */
 	private static final Point APPLICATION_SIZE = new Point(800, 600);
-	private static final int COOLBAR_HEIGHT = 22;
 	private static final int COOLBAR_TOP_MARGIN = 2;
 	private static final String SHELL_RIDGET_PROPERTY = "applicationWindow"; //$NON-NLS-1$
 
@@ -463,8 +463,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
-		formData.left = new FormAttachment(0, padding);
-		formData.right = new FormAttachment(100, -padding);
+		formData.left = new FormAttachment(0, 0);
+		formData.right = new FormAttachment(100, -0);
 		formData.height = getSwitchterHeight();
 		composite.setLayoutData(formData);
 		ApplicationNode node = (ApplicationNode) controller.getNavigationNode();
@@ -497,7 +497,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
-		formData.height = COOLBAR_HEIGHT;
 		composite.setLayoutData(formData);
 
 		createMenuBar(composite);
@@ -514,7 +513,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void createMenuBar(Composite parent) {
 
-		CoolBar coolBar = new CoolBar(parent, SWT.HORIZONTAL | SWT.FLAT);
+		CoolBar coolBar = new CoolBar(parent, SWT.FLAT);
 		coolBar.setBackground(getCoolbarBackground());
 
 		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
@@ -586,6 +585,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			public void widgetSelected(SelectionEvent e) {
 				if (e.getSource() == toolItem) {
 					Rectangle itemBounds = toolItem.getBounds();
+					System.out.println(".widgetSelected() " + itemBounds);
 					Point loc = toolItem.getParent().toDisplay(itemBounds.x, itemBounds.height + itemBounds.y);
 					menu.setLocation(loc);
 					menu.setVisible(true);
@@ -670,15 +670,21 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		int padding = getShellPadding();
+		int padding = getShellBorderWith();
+		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(previous);
+		formData.left = new FormAttachment(0, padding);
+		formData.right = new FormAttachment(100, -padding);
+		separator.setLayoutData(formData);
 
+		padding = getShellPadding();
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
-		FormData formData = new FormData();
+		formData = new FormData();
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
-		formData.height = COOLBAR_HEIGHT;
 		composite.setLayoutData(formData);
 
 		Control control = getWindowConfigurer().createCoolBarControl(composite);
@@ -730,6 +736,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
+
+	}
+
+	private int getShellBorderWith() {
+
+		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+		return borderRenderer.getBorderWidth();
 
 	}
 

@@ -33,7 +33,11 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_FOLDER = PATH_ICONS + PATH_SEPARATOR + "node_expanded.gif"; //$NON-NLS-1$
 	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "node_collapsed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
-	private static final String IMAGE_THIN_CLOSE = PATH_ICONS + PATH_SEPARATOR + "thin_close_view.gif"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE = PATH_ICONS + PATH_SEPARATOR + "closeModule.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER = PATH_ICONS + PATH_SEPARATOR + "closeModule_hover.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR
+			+ "closeModule_hover_selected.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_INACTIVE = PATH_ICONS + PATH_SEPARATOR + "closeModule_inactive.png"; //$NON-NLS-1$
 	private static final String IMAGE_BACKGROUND = PATH_ICONS + PATH_SEPARATOR + "background.png"; //$NON-NLS-1$
 	private static final String IMAGE_LOGO = PATH_ICONS + PATH_SEPARATOR + "Riena-Logo_RGB.png"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE = PATH_ICONS + PATH_SEPARATOR + "mb_close.gif"; //$NON-NLS-1$
@@ -218,7 +222,12 @@ public class RienaDefaultTheme implements ILnfTheme {
 		// table.put(ILnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_THIN_CLOSE));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE_HOVER));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON, new ImageLnfResource(
+				IMAGE_CLOSE_MODULE_INACTIVE));
+		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(
+				IMAGE_CLOSE_MODULE_HOVER_SELECTED));
 
 		table.put(ILnfKeyConstants.STATUSLINE_SPACER_ICON, new ImageLnfResource(IMAGE_SPACER));
 		table.put(ILnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));

@@ -94,6 +94,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 					setPressed(false);
 				}
 			}
+			updateCloseButtonState(e);
 		}
 
 		/**
@@ -106,6 +107,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 			if (!shouldIgnore(e)) {
 				setPressed(true);
 			}
+			updateCloseButtonState(e);
 		}
 
 		/**
@@ -123,6 +125,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 				return;
 			}
 			setHover(true);
+			updateCloseButtonState(e);
 		}
 
 		/**
@@ -133,6 +136,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 				return;
 			}
 			setHover(false);
+			updateCloseButtonState(e);
 		}
 
 		/**
@@ -145,6 +149,25 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void mouseMove(MouseEvent e) {
+			updateCloseButtonState(e);
+		}
+
+		/**
+		 * Updates the (hover and pressed) state of the close button.
+		 * 
+		 * @param e
+		 */
+		private void updateCloseButtonState(MouseEvent e) {
+
+			Point point = new Point(e.x, e.y);
+			if (isOverClose(point)) {
+				setCloseButtonHover(isHover());
+				setCloseButtonPressed(isPressed());
+			} else {
+				setCloseButtonHover(false);
+				setCloseButtonPressed(false);
+			}
+
 		}
 
 		/**

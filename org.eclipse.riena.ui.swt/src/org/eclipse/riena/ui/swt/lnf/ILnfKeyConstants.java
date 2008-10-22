@@ -129,6 +129,9 @@ public final class ILnfKeyConstants {
 	public static final String PROCESSED_FINISHED_MARKER_ICON = UIProcessFinishedMarker.MARKER_KEY;
 
 	public static final String EMBEDDED_TITLEBAR_CLOSE_ICON = "EmbeddedTitlebar.closeIcon"; //$NON-NLS-1$
+	public static final String EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON = "EmbeddedTitlebar.closeHoverIcon"; //$NON-NLS-1$
+	public static final String EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON = "EmbeddedTitlebar.closeHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON = "EmbeddedTitlebar.closeInactiveIcon"; //$NON-NLS-1$
 
 	public static final String STATUSLINE_SPACER_ICON = "statusline.spacerIcon"; //$NON-NLS-1$
 	public static final String STATUSLINE_ERROR_ICON = "statusline.errorIcon"; //$NON-NLS-1$

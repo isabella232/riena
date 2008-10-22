@@ -45,6 +45,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private boolean pressed;
 	private boolean hover;
 	private boolean closeable;
+	private boolean closeButtonPressed;
+	private boolean closeButtonHover;
 	private FlasherSupportForRenderer flasherSupport;
 
 	/**
@@ -194,7 +196,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Close icon
 		Rectangle closeBounds = computeCloseButtonBounds();
 		if (isCloseable()) {
-			Image closeImage = lnf.getImage(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON);
+			Image closeImage = getCloseButtonImage();
 			gc.drawImage(closeImage, closeBounds.x, closeBounds.y);
 		} else {
 			closeBounds.x = 0;
@@ -311,12 +313,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return bounds
 	 */
-	public Rectangle computeCloseButtonBounds() {
+	private Rectangle computeCloseButtonBounds() {
 
 		Rectangle closeBounds = new Rectangle(0, 0, 0, 0);
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Image closeImage = lnf.getImage(ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON);
+		Image closeImage = getCloseButtonImage();
 		// if no close icon was found, return 0 sized bounds
 		if (closeImage == null) {
 			return closeBounds;
@@ -328,6 +329,79 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		return closeBounds;
 
+	}
+
+	/**
+	 * Returns <code>true</code> if the given point is inside the bounds of the
+	 * close button, and <code>false</code> otherwise.
+	 * 
+	 * @param pt
+	 *            - the point to test
+	 * @return <code>true</code> if the button bounds contains the point and
+	 *         <code>false</code> otherwise
+	 */
+	public boolean isInsideCloseButton(Point pt) {
+
+		Rectangle closeBounds = computeCloseButtonBounds();
+		return closeBounds.contains(pt);
+
+	}
+
+	/**
+	 * Returns the image of the close button according of the current button
+	 * state.
+	 * 
+	 * @return button image
+	 */
+	private Image getCloseButtonImage() {
+
+		RienaDefaultLnf lnf = LnfManager.getLnf();
+
+		String key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON;
+		if (isEnabled()) {
+			if (isCloseButtonPressed()) {
+				key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON;
+			} else if (isCloseButtonHover()) {
+				key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON;
+			}
+		} else {
+			key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON;
+		}
+
+		Image closeImage = lnf.getImage(key);
+
+		return closeImage;
+
+	}
+
+	/**
+	 * @return the pressed
+	 */
+	public boolean isCloseButtonPressed() {
+		return closeButtonPressed;
+	}
+
+	/**
+	 * @param pressed
+	 *            the pressed to set
+	 */
+	public void setCloseButtonPressed(boolean pressed) {
+		closeButtonPressed = pressed;
+	}
+
+	/**
+	 * @return the hover
+	 */
+	public boolean isCloseButtonHover() {
+		return closeButtonHover;
+	}
+
+	/**
+	 * @param hover
+	 *            the hover to set
+	 */
+	public void setCloseButtonHover(boolean hover) {
+		closeButtonHover = hover;
 	}
 
 	/**
