@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -18,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -28,7 +30,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
 	protected IRidget createRidget() {
-		return new DateTextRidget();
+		DateTextRidget result = new DateTextRidget();
+		result.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		return result;
 	}
 
 	@Override
@@ -55,6 +59,52 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
 		assertSame(DateTextRidget.class, mapper.getRidgetClass(getUIControl()));
+	}
+
+	public void testDelete() {
+		IDateTextFieldRidget ridget = getRidget();
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+
+		assertText("01.10^.2008", UITestHelper.KC_DEL, "01.10.^2008");
+		assertText("01.10.^2008", "\b", "01.10^.2008");
+		assertText("01.10^.^2008", UITestHelper.KC_DEL, "01.10.^2008");
+		assertText("01.10^.^2008", "\b", "01.10^.2008");
+		assertText("01.10^.2^008", UITestHelper.KC_DEL, "01.10.^008");
+		assertText("01.10^.2^008", "\b", "01.10.^008");
+		assertText("01.1^0.2^008", UITestHelper.KC_DEL, "01.1^.008");
+		assertText("01.1^0.2^008", "\b", "01.1^.008");
+		assertText("^01.10.2008^", UITestHelper.KC_DEL, "^..");
+		assertText("^01.10.2008^", "\b", "^..");
+	}
+
+	public void testReplace() {
+		IDateTextFieldRidget ridget = getRidget();
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+
+		assertText("01.10^.^2008", "1", "01.10.^2008");
+		assertText("01.10^.2^008", "1", "01.10.1^008");
+		assertText("01.1^0.^2008", "1", "01.11^.2008");
+		assertText("01.1^0.2^008", "1", "01.11^.008");
+		assertText("^01^.10.2008", "3", "3^.10.2008");
+		assertText("^01.^10.2008", "3", "3^.10.2008");
+		assertText("^01.1^0.2008", "3", "3^.0.2008");
+		assertText("^01.10.2^008", "3", "3^..008");
+		assertText("^01.10.2008^", "3", "3^..");
+	}
+
+	public void testInsert() {
+		IDateTextFieldRidget ridget = getRidget();
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+
+		assertText("^..", "01102008", "01.10.2008^");
+		assertText("^..", "01.10.2008", "01.10.2008^");
+		assertText("^..", "01.10.20081234", "01.10.2008^");
+		assertText("^.10.2008", "0123", "01^.10.2008");
+		assertText("^..2008", "1208", "12.08^.2008");
+		assertText(".^.2008", "1208", ".12^.2008");
+		assertText("01..^2008", "10", "01..^2008"); //?
+		assertText("..^", "2008", "..2008^");
+		assertText(".^.", "102008", ".10.2008^");
 	}
 
 	public void testSetText() {
@@ -130,4 +180,95 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		//		assertEquals(localize("123.456,123"), bean.getValue());
 	}
 
+	// helping methods
+	//////////////////
+
+	private void assertText(String before, String keySeq, String after) {
+		forcetText(before);
+
+		checkText(before);
+		checkSelection(before);
+		checkCaret(before);
+
+		Text control = getUIControl();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), keySeq);
+
+		checkText(after);
+		checkCaret(after);
+	}
+
+	private void assertText(String before, int keyCode, String after) {
+		forcetText(before);
+
+		checkText(before);
+		checkSelection(before);
+		checkCaret(before);
+
+		Text control = getUIControl();
+		control.setFocus();
+		UITestHelper.sendKeyAction(control.getDisplay(), keyCode);
+
+		checkText(after);
+		checkCaret(after);
+	}
+
+	private void checkText(String input) {
+		String expected = removeMarkers(input);
+		Text control = getUIControl();
+		assertEquals(expected, control.getText());
+	}
+
+	private void checkSelection(String input) {
+		int start = input.indexOf('^');
+		int end = input.lastIndexOf('^');
+		String expected = "";
+		if (start < end) {
+			expected = input.substring(start + 1, end);
+		}
+		System.out.println("exp sel: " + expected);
+		Text control = getUIControl();
+		assertEquals(expected, control.getSelectionText());
+	}
+
+	private void checkCaret(String input) {
+		int start = input.indexOf('^');
+		int end = input.lastIndexOf('^');
+		int expected = start < end ? end - 1 : end;
+		System.out.println("exp car: " + expected);
+		Text control = getUIControl();
+		assertEquals(expected, control.getCaretPosition());
+	}
+
+	private String removeMarkers(String input) {
+		StringBuilder result = new StringBuilder(input.length());
+		for (int i = 0; i < input.length(); i++) {
+			char ch = input.charAt(i);
+			if (ch != '^') {
+				result.append(ch);
+			}
+		}
+		return result.toString();
+	}
+
+	private void forcetText(String text) {
+		int start = text.indexOf('^');
+		int end = text.lastIndexOf('^');
+
+		Text control = getUIControl();
+		Listener[] listeners = control.getListeners(SWT.Verify);
+		// TODO [ev] ex?
+		for (Listener listener : listeners) {
+			control.removeListener(SWT.Verify, listener);
+		}
+		control.setText(removeMarkers(text));
+		for (Listener listener : listeners) {
+			control.addListener(SWT.Verify, listener);
+		}
+		if (start == end) {
+			control.setSelection(start, start);
+		} else {
+			control.setSelection(start, end - 1);
+		}
+	}
 }
