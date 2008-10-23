@@ -74,7 +74,7 @@
                   A controller that controlles the UI widgets in the view through ridgets (see org.eclipse.riena.ui.ridgets.IRidget)
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.ridgets.viewcontroller.IViewController"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.ridgets.controller.IController"/>
                </appinfo>
             </annotation>
          </attribute>
