@@ -10,27 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter;
 
+import org.eclipse.riena.core.extension.ExtensionInterface;
+
 /**
  * Interface for a UIFiltere extension that defines how to create a filter with
  * a list of attributes.
  */
+@ExtensionInterface
 public interface IUIFilterExtension {
 
 	/**
 	 * Returns the filterID
 	 */
-
 	String getFilterId();
 
 	/**
 	 * Returns the list of attributes
 	 */
-
 	IMarkerAttribute[] getMarkerAttributes();
 
 	/**
 	 * Returns the nodeIds
 	 */
-
 	IFilterNodeIds[] getNodeIds();
 }
