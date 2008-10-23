@@ -589,11 +589,9 @@
                attributeClass="org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker"
                targetId="org.eclipse.riena.example.navigation">
          </markerAttributes>
+         
          <nodeIds
-               id="org.eclipse.riena.example.navigation">
-         </nodeIds>
-         <nodeIds
-               id="org.eclipse.riena.example.playground">
+               id="playground">
          </nodeIds>
                 
       </filter>

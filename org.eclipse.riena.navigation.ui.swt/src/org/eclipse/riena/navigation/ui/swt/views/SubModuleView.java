@@ -30,6 +30,7 @@ import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -253,6 +254,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			activate(source);
 		}
 
+	
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
 			super.block(source, block);

@@ -19,6 +19,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
  * listens on a sub tree of a passed node and fires the changes on all elements.
@@ -261,6 +262,24 @@ public class NavigationTreeObserver {
 
 	private class MyApplicationNodeListener extends ApplicationNodeListener {
 
+		@Override
+		public void filterAdded(IApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+				next.filterAdded(source, filter);
+			}
+		}
+
+		@Override
+		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+				next.filterRemoved(source, filter);
+			}
+		}
+
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
@@ -490,6 +509,24 @@ public class NavigationTreeObserver {
 		}
 
 		@Override
+		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+				next.filterAdded(source, filter);
+			}
+		}
+
+		@Override
+		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+				next.filterRemoved(source, filter);
+			}
+		}
+
+		@Override
 		public void block(ISubApplicationNode source, boolean block) {
 			super.block(source, block);
 			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
@@ -693,6 +730,24 @@ public class NavigationTreeObserver {
 	}
 
 	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
+
+		@Override
+		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+				next.filterAdded(source, filter);
+			}
+		}
+
+		@Override
+		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+				next.filterRemoved(source, filter);
+			}
+		}
 
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
@@ -909,6 +964,24 @@ public class NavigationTreeObserver {
 
 	private class MyModuleNodeListener extends ModuleNodeListener {
 
+		@Override
+		public void filterAdded(IModuleNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			for (IModuleNodeListener next : getModuleNodeListeners()) {
+				next.filterAdded(source, filter);
+			}
+		}
+
+		@Override
+		public void filterRemoved(IModuleNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			for (IModuleNodeListener next : getModuleNodeListeners()) {
+				next.filterRemoved(source, filter);
+			}
+		}
+
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
@@ -1123,6 +1196,24 @@ public class NavigationTreeObserver {
 	}
 
 	private class MySubModuleNodeListener extends SubModuleNodeListener {
+
+		@Override
+		public void filterAdded(ISubModuleNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+				next.filterAdded(source, filter);
+			}
+		}
+
+		@Override
+		public void filterRemoved(ISubModuleNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+				next.filterRemoved(source, filter);
+			}
+		}
 
 		@Override
 		public void block(ISubModuleNode source, boolean block) {

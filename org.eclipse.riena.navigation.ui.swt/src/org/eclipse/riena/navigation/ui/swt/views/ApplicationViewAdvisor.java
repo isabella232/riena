@@ -13,7 +13,9 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
@@ -24,6 +26,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
@@ -60,6 +63,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -103,6 +108,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		ISubApplicationNodeListener subApplicationListener = new MySubApplicationNodeListener();
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(subApplicationListener);
+		navigationTreeObserver.addListener(new MyApplicationNodeListener());
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
@@ -297,6 +303,45 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		WorkbenchWindow workbenchWindow = (WorkbenchWindow) getWindowConfigurer().getWindow();
 		return workbenchWindow.getMenuManager();
+
+	}
+
+	private class MyApplicationNodeListener extends ApplicationNodeListener {
+
+		@Override
+		public void filterAdded(IApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+
+			super.filterAdded(source, filter);
+
+			try {
+				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
+				navi.updateNavigationSize();
+			} catch (PartInitException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		private IWorkbenchPage getActivePage() {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		}
+
+		@Override
+		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+
+			try {
+				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
+				navi.updateNavigationSize();
+			} catch (PartInitException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 

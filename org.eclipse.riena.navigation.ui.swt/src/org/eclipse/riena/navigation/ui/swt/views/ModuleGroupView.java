@@ -158,6 +158,20 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	private final class ModuleGroupListener extends ModuleGroupNodeListener {
 
 		@Override
+		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			fireUpdated(null);
+		}
+
+		@Override
+		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			fireUpdated(null);
+		}
+
+		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
 			fireUpdated(child);
 		}

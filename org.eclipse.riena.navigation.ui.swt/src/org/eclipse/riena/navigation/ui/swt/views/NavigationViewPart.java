@@ -29,6 +29,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
+import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -120,6 +121,20 @@ public class NavigationViewPart extends ViewPart {
 			updateNavigationSize();
 		}
 
+		@Override
+		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			updateNavigationSize();
+		}
+
+		@Override
+		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			updateNavigationSize();
+		}
+
 		/**
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 		 *      org.eclipse.riena.navigation.INavigationNode)
@@ -133,6 +148,20 @@ public class NavigationViewPart extends ViewPart {
 	}
 
 	private class ModuleGroupListener extends ModuleGroupNodeListener {
+
+		@Override
+		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterAdded(source, filter);
+			updateNavigationSize();
+		}
+
+		@Override
+		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
+			super.filterRemoved(source, filter);
+			updateNavigationSize();
+		}
 
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
