@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.service;
 
-import java.util.Hashtable;
-
 import org.eclipse.core.runtime.Assert;
-import org.osgi.framework.Constants;
 
 /**
  * ServiceDescriptor and ServiceInjector simplify finding of OSGi Services and
@@ -56,11 +53,6 @@ import org.osgi.framework.Constants;
  * for choosing the appropriate bind/unbind methods.
  */
 public class ServiceDescriptor {
-
-	/**
-	 * Default service ranking for all riena services.
-	 */
-	public final static Integer DEFAULT_RANKING = -100;
 
 	private String clazz;
 	private boolean ranking;
@@ -118,20 +110,6 @@ public class ServiceDescriptor {
 	public ServiceInjector into(final Object target) {
 		Assert.isNotNull(target, "Target must not be null."); //$NON-NLS-1$
 		return ranking ? new RankingInjector(this, target) : new FilterInjector(this, target);
-	}
-
-	/**
-	 * Get almost empty service properties but set with the default ranking for
-	 * riena services, i.e. the riena default ranking is lower than the (OSGi)
-	 * default ranking so that service created with (OSGi) default ranking will
-	 * override services with riena default ranking.
-	 * 
-	 * @return default service properties
-	 */
-	public static Hashtable<String, Object> newDefaultServiceProperties() {
-		Hashtable<String, Object> props = new Hashtable<String, Object>();
-		props.put(Constants.SERVICE_RANKING, DEFAULT_RANKING);
-		return props;
 	}
 
 	/**
