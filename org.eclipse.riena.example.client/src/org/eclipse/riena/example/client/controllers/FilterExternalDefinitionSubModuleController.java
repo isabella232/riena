@@ -87,7 +87,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 
 		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
 			INavigationNode<?> navigationNode = (INavigationNode<?>) iterator.next();
-			navigationNode.removeFilter(filter);
+			navigationNode.removeFilter(filter.getFilterID());
 
 		}
 

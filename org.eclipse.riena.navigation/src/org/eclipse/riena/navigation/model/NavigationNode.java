@@ -1093,9 +1093,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
 			IUIFilter type = (IUIFilter) iterator.next();
 			if (type.getFilterID() != null && type.getFilterID().equals(filterID)) {
-				filters.remove(type);
+				getFilterable().removeFilter(type);
 				notifyFilterRemoved(type);
-				break;
+
 			}
 
 		}
@@ -1107,6 +1107,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getFilterable().removeAllFilters();
 		for (IUIFilter filter : filters) {
 			notifyFilterRemoved(filter);
+
 		}
 	}
 
