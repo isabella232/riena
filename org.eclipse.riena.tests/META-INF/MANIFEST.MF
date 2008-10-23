@@ -30,7 +30,7 @@ Require-Bundle: com.ibm.icu,
  org.eclipse.ui;bundle-version="3.4.0",
  org.junit,
  org.eclipse.riena.ui.filter,
- org.eclipse.equinox.security;bundle-version="1.0.100"
+ org.eclipse.equinox.security;bundle-version="1.0.1"
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.security.authorizationservice,
