@@ -15,11 +15,14 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 /**
  * This class applies the UI filters after a filter was added or removed; also
  * this controller was activated.
+ * 
+ * @param <N>
+ *            type of the navigation node
  */
 public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
-	private static IUIFilterAttributeClosure applyClosure = new ApplyClosure();
-	private static IUIFilterAttributeClosure removeClosure = new RemoveClosure();
+	private final static IUIFilterAttributeClosure APPLY_CLOSURE = new ApplyClosure();
+	private final static IUIFilterAttributeClosure REMOVE_CLOSURE = new RemoveClosure();
 
 	/**
 	 * Applies all the filters of the given node (and all filters of the parent
@@ -37,7 +40,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 		Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
 		collectFilters(node, filters);
 		for (IUIFilter filter : filters) {
-			applyFilter(node, filter, applyClosure);
+			applyFilter(node, filter, APPLY_CLOSURE);
 		}
 
 	}
@@ -130,13 +133,13 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	@Override
 	public void filterAdded(INavigationNode source, IUIFilter filter) {
 		super.filterAdded(source, filter);
-		applyFilter(source, filter, applyClosure);
+		applyFilter(source, filter, APPLY_CLOSURE);
 	}
 
 	@Override
 	public void filterRemoved(INavigationNode source, IUIFilter filter) {
 		super.filterRemoved(source, filter);
-		applyFilter(source, filter, removeClosure);
+		applyFilter(source, filter, REMOVE_CLOSURE);
 	}
 
 	/**
