@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.filter.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -42,7 +43,7 @@ public class UIFilter implements IUIFilter {
 	}
 
 	public Collection<? extends IUIFilterAttribute> getFilterAttributes() {
-		return getAttributes();
+		return Collections.unmodifiableCollection(getAttributes());
 	}
 
 	public void removeAllFilterAttributes() {
