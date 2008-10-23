@@ -12,14 +12,18 @@ package org.eclipse.riena.communication.publisher;
 
 /**
  * 
- * scribble
- * Publish.service("IDataService").usingUrl("/DataService").withProcol("hessian").AndStart();
+ * scribble Publish.service("IDataService").usingUrl("/DataService").withProcol(
+ * "hessian").AndStart();
  * Publish.allServices().filter("riena.remote").AndStart();
  */
 public class Publish {
 
 	public static SingleServicePublisher service(String name) {
 		return new SingleServicePublisher(name);
+	}
+
+	public static SingleServicePublisher service(Class clazz) {
+		return new SingleServicePublisher(clazz.getName());
 	}
 
 	public static MultiServicePublisher allServices() {
