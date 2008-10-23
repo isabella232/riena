@@ -36,7 +36,10 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * An abstract controller superclass that manages the navigation node of a
- * controller N - Type of the Navigation node
+ * controller.
+ * 
+ * @param <N>
+ *            Type of the navigation node
  */
 public abstract class NavigationNodeController<N extends INavigationNode<?>> extends TypecastingObject implements
 		INavigationNodeController, IController {

@@ -24,6 +24,9 @@ import org.eclipse.riena.ui.filter.IUIFilterable;
  * 
  * The children ability and parent ability is not included because it is
  * different for different model nodes
+ * 
+ * @param <C>
+ *            the type of child nodes
  */
 public interface INavigationNode<C extends INavigationNode<?>> extends ITypecastingAdaptable, IMarkable, IUIFilterable,
 		INavigationHistory {
