@@ -118,6 +118,12 @@ public interface IIconManager {
 	/** Icon WINDOW_MINIMIZE. */
 	String WINDOW_MINIMIZE = "0071"; //$NON-NLS-1$
 
+	/** Icon WINDOW MAXIMIZE. */
+	String WINDOW_MAXIMIZE = "2501"; //$NON-NLS-1$
+
+	/** Icon WINDOW MAXIMIZE_MAXIMIZED. */
+	String WINDOW_RESTORE = "2503"; //$NON-NLS-1$
+
 	/** Icon CURSOR_DRAG. */
 	String CURSOR_DRAG = "0072"; //$NON-NLS-1$
 
