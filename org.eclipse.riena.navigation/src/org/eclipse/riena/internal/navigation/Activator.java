@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation;
 
+import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
@@ -51,9 +51,9 @@ public class Activator extends RienaPlugin {
 		service1 = new NavigationNodeProvider();
 		service2 = new SubModuleViewBuilder();
 
-		context.registerService(INavigationNodeProvider.class.getName(), service1, ServiceDescriptor
+		context.registerService(INavigationNodeProvider.class.getName(), service1, RienaConstants
 				.newDefaultServiceProperties());
-		context.registerService(ISubModuleViewBuilder.class.getName(), service2, ServiceDescriptor
+		context.registerService(ISubModuleViewBuilder.class.getName(), service2, RienaConstants
 				.newDefaultServiceProperties());
 	}
 

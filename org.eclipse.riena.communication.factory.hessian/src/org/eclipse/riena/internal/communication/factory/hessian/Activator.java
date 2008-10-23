@@ -15,7 +15,7 @@ import java.util.Hashtable;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.core.RienaActivator;
-import org.eclipse.riena.core.service.ServiceDescriptor;
+import org.eclipse.riena.core.RienaConstants;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
@@ -40,7 +40,7 @@ public class Activator extends RienaActivator {
 		logger = getLogger(this.getClass().getName());
 		logger.log(LogService.LOG_INFO, "start hessian support on client"); //$NON-NLS-1$
 		factory = new RemoteServiceFactoryHessian();
-		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put(IRemoteServiceFactory.PROP_PROTOCOL, factory.getProtocol());
 
 		regFactory = context.registerService(IRemoteServiceFactory.class.getName(), factory, properties);

@@ -18,11 +18,10 @@ import org.eclipse.riena.communication.core.progressmonitor.ProgressMonitorRegis
 import org.eclipse.riena.communication.core.ssl.ISSLProperties;
 import org.eclipse.riena.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.core.RienaActivator;
+import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -59,12 +58,12 @@ public class Activator extends RienaActivator {
 		serviceRegistry = new RemoteServiceRegistry();
 		serviceRegistry.start();
 
-		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		regServiceRegistry = context.registerService(IRemoteServiceRegistry.class.getName(), serviceRegistry,
 				properties);
 
 		// SSL configuration
-		context.registerService(SSLConfiguration.class.getName(), new SSLConfiguration(), ServiceDescriptor
+		context.registerService(SSLConfiguration.class.getName(), new SSLConfiguration(), RienaConstants
 				.newDefaultServiceProperties());
 		sslConfigServiceReference = context.getServiceReference(SSLConfiguration.class.getName());
 		SSLConfiguration config = (SSLConfiguration) context.getService(sslConfigServiceReference);
@@ -74,7 +73,9 @@ public class Activator extends RienaActivator {
 			sslInjector.andStart(context);
 		}
 
-		context.registerService(IRemoteProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(), null);
+		context
+				.registerService(IRemoteProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(),
+						null);
 	}
 
 	/*

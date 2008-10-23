@@ -13,8 +13,8 @@ package org.eclipse.riena.internal.security.services;
 import java.util.Hashtable;
 
 import org.eclipse.riena.core.RienaActivator;
+import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.service.ServiceDescriptor;
 import org.eclipse.riena.internal.security.authenticationservice.AuthenticationService;
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.security.sessionservice.SessionService;
@@ -27,7 +27,6 @@ import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.security.sessionservice.ISessionProvider;
 import org.eclipse.riena.security.sessionservice.ISessionStore;
 import org.eclipse.riena.security.sessionservice.SessionProvider;
-
 import org.osgi.framework.BundleContext;
 
 /**
@@ -67,7 +66,7 @@ public class Activator extends RienaActivator {
 	private void createAuthenticationServiceAndInjectors() {
 		// register AuthenticationService
 		IAuthenticationService authenticationService = new AuthenticationService();
-		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthenticationService.WS_ID); //$NON-NLS-1$
@@ -86,8 +85,8 @@ public class Activator extends RienaActivator {
 	private void createAuthorizationServiceAndInjectors() {
 		// register AuthorizationService
 		IAuthorizationService authorizationService = new AuthorizationService();
-		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
-		properties = ServiceDescriptor.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
+		properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID); //$NON-NLS-1$
@@ -100,9 +99,9 @@ public class Activator extends RienaActivator {
 
 	private void createSessionServiceAndInjectors() {
 		// register SessionService
-		Hashtable<String, Object> properties = ServiceDescriptor.newDefaultServiceProperties();
+		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		ISessionService sessionService = new SessionService();
-		properties = ServiceDescriptor.newDefaultServiceProperties();
+		properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", ISessionService.WS_ID); //$NON-NLS-1$
@@ -117,7 +116,7 @@ public class Activator extends RienaActivator {
 	private void createSessionProviderAndInjectors() {
 		// register SessionProvider
 		getContext().registerService(ISessionProvider.class.getName(), new SessionProvider(),
-				ServiceDescriptor.newDefaultServiceProperties());
+				RienaConstants.newDefaultServiceProperties());
 
 	}
 
