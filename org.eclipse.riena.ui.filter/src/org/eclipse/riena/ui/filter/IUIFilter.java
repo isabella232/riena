@@ -19,27 +19,6 @@ import java.util.Collection;
 public interface IUIFilter {
 
 	/**
-	 * Adds an attribute to the filter.
-	 * 
-	 * @param attribute
-	 *            - the attribute to add.
-	 */
-	void addFilterAttribute(IUIFilterAttribute attribute);
-
-	/**
-	 * Removes an attribute from the filter.
-	 * 
-	 * @param attribute
-	 *            - the attribute to remove.
-	 */
-	void removeFilterAttribute(IUIFilterAttribute attribute);
-
-	/**
-	 * Removes all attributes from the filter.
-	 */
-	void removeAllFilterAttributes();
-
-	/**
 	 * Returns the attributes of the filter
 	 * 
 	 * @return The attributes of the filter.
@@ -51,7 +30,6 @@ public interface IUIFilter {
 	 * 
 	 * @return filterID
 	 */
-
 	String getFilterID();
 
 }

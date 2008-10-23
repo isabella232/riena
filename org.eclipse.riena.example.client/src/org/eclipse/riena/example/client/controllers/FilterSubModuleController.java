@@ -220,8 +220,9 @@ public class FilterSubModuleController extends SubModuleController {
 	 * Adds a filter to the node of this sub module.
 	 */
 	private void doAddFilter() {
-		IUIFilter filter = new UIFilter();
-		filter.addFilterAttribute(createFilterAttribute(filterModel));
+		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
+		attributes.add(createFilterAttribute(filterModel));
+		IUIFilter filter = new UIFilter(attributes);
 		getNavigationNode().addFilter(filter);
 	}
 
@@ -229,8 +230,9 @@ public class FilterSubModuleController extends SubModuleController {
 	 * Adds a filter to the node of the application.
 	 */
 	private void doGlobalAddFilter() {
-		IUIFilter filter = new UIFilter();
-		filter.addFilterAttribute(createFilterAttribute(globalFilterModel));
+		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
+		attributes.add(createFilterAttribute(globalFilterModel));
+		IUIFilter filter = new UIFilter(attributes);
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.addFilter(filter);
 	}

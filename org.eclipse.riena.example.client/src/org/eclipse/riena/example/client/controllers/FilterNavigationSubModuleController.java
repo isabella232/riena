@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -157,9 +158,9 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
 		for (INavigationNode<?> node : nodes) {
-			IUIFilter filter = new UIFilter();
-			filter.addFilterAttribute(createFilterAttribute(filterModel, node));
-
+			Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
+			attributes.add(createFilterAttribute(filterModel, node));
+			IUIFilter filter = new UIFilter(attributes);
 			node.addFilter(filter);
 		}
 

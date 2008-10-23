@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.ui.filter.IMarkerAttribute;
@@ -72,9 +75,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 		IUIFilterExtension filterExtension = getUIFilterDefinition(filterID);
 
-		UIFilter filterResult = new UIFilter();
-
-		filterResult.setFilterID(filterID);
+		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
 
 		for (int i = 0; i < filterExtension.getMarkerAttributes().length; i++) {
 			IMarkerAttribute type = filterExtension.getMarkerAttributes()[i];
@@ -86,8 +87,10 @@ public class UIFilterProvider implements IUIFilterProvider {
 			} else if (attr instanceof IUIFilterNavigationMarkerAttribute) {
 				((IUIFilterNavigationMarkerAttribute) attr).setNode(type.getTargetId());
 			}
-			filterResult.addFilterAttribute(attr);
+			attributes.add(attr);
 		}
+
+		UIFilter filterResult = new UIFilter(filterID, attributes);
 
 		return new UIFilterContainer(filterResult, filterExtension.getNodeIds());
 	}

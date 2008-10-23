@@ -34,24 +34,23 @@ public class UIFilter implements IUIFilter {
 		filterID = id;
 	}
 
+	public UIFilter(Collection<? extends IUIFilterAttribute> attributes) {
+		this();
+		this.attributes.addAll(attributes);
+	}
+
+	public UIFilter(String id, Collection<? extends IUIFilterAttribute> attributes) {
+		this();
+		filterID = id;
+		this.attributes.addAll(attributes);
+	}
+
 	private Collection<IUIFilterAttribute> getAttributes() {
 		return attributes;
 	}
 
-	public void addFilterAttribute(IUIFilterAttribute item) {
-		getAttributes().add(item);
-	}
-
 	public Collection<? extends IUIFilterAttribute> getFilterAttributes() {
 		return Collections.unmodifiableCollection(getAttributes());
-	}
-
-	public void removeAllFilterAttributes() {
-		getAttributes().clear();
-	}
-
-	public void removeFilterAttribute(IUIFilterAttribute item) {
-		getAttributes().remove(item);
 	}
 
 	public String getFilterID() {
