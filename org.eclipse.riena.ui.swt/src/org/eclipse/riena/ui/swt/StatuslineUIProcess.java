@@ -130,11 +130,11 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	protected void createContents() {
 		initLayout();
 
-		Label label = new Label(this, SWT.NONE);
-		label.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
-		label.setText("uiprocess name"); //$NON-NLS-1$ TODO
+		statusLabel = new Label(this, SWT.NONE);
+		statusLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		statusLabel.setText("uiprocess name"); //$NON-NLS-1$ TODO
 
-		Label openLabel = new Label(this, SWT.NONE);
+		openLabel = new Label(this, SWT.NONE);
 		openLabel.addMouseListener(new PopupController());
 		openLabel.setText("open"); //$NON-NLS-1$ TODO
 		openLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
@@ -147,7 +147,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
 		progressBar.setLayoutData(formData);
 		progressBar.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
-		formData.left = new FormAttachment(label, 5);
+		formData.left = new FormAttachment(statusLabel, 5);
 
 		// minimum value is allways 0
 		progressBar.setMinimum(PROGRESS_MIN_VALUE);
@@ -160,7 +160,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		formData.top = new FormAttachment(18, 0);
 		formData.height = 14;
 		formData.width = 100;
-		label.setLayoutData(formData);
+		statusLabel.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
@@ -238,6 +238,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 */
 	public void triggerBaseUpdate(ProgressInfoDataObject pido) {
 		updateProgressBar(pido, getProgressBar());
+		updateLabel(pido, statusLabel);
 	}
 
 	/**
@@ -364,6 +365,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private Map<Integer, ControlHolder> pido2controlHolder = new HashMap<Integer, ControlHolder>();
 	// cache for data objects
 	private Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();
+
+	private Label statusLabel;
+
+	private Label openLabel;
 
 	/**
 	 * creates a list of {@link UIProcess} infos
