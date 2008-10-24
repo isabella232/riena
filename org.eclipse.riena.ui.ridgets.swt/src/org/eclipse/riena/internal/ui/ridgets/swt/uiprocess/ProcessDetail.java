@@ -96,7 +96,6 @@ public class ProcessDetail implements Comparable<ProcessDetail> {
 	 * @param state
 	 */
 	public void setState(PROCESS_STATE state) {
-		System.out.println(this + "  " + state); //$NON-NLS-1$
 		this.state = state;
 	}
 
