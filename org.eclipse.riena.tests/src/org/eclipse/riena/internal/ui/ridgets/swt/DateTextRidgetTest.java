@@ -69,9 +69,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertText("01.10.^2008", "\b", "01.10^.2008");
 		assertText("01.10^.^2008", UITestHelper.KC_DEL, "01.10.^2008");
 		assertText("01.10^.^2008", "\b", "01.10^.2008");
-		assertText("01.10^.2^008", UITestHelper.KC_DEL, "01.10.^008");
-		assertText("01.10^.2^008", "\b", "01.10.^008");
-		assertText("01.1^0.2^008", UITestHelper.KC_DEL, "01.1^.008");
+		assertText("01.10^.2^008", UITestHelper.KC_DEL, "01.10. ^008");
+		assertText("01.10^.2^008", "\b", "01.10^. 008");
+		assertText("01.1^0.2^008", UITestHelper.KC_DEL, "01. 1^. 008");
 		assertText("01.1^0.2^008", "\b", "01.1^.008");
 		assertText("^01.10.2008^", UITestHelper.KC_DEL, "^..");
 		assertText("^01.10.2008^", "\b", "^..");

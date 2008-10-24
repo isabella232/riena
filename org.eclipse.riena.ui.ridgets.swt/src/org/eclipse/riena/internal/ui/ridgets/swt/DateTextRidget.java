@@ -16,34 +16,106 @@ import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * TODO [ev] docs
  */
 public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 
+	private final VerifyListener verifyListener;
+	// private final ModifyListener modifyListener;
+	// private final KeyListener keyListener;
+
+	private String pattern;
 	private ValidDate validDateRule;
 	private ValidIntermediateDate validIntermediateDateRule;
 	private StringToDateConverter uiControlToModelconverter;
 	private DateToStringConverter modelToUIControlConverter;
 
 	public DateTextRidget() {
+		verifyListener = new DateVerifyListener();
+		// modifyListener = new DateModifyListener();
+		// keyListener = new DateKeyListener();
 		setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+	}
+
+	protected final synchronized void addListeners(Text control) {
+		control.addVerifyListener(verifyListener);
+		// control.addModifyListener(modifyListener);
+		// control.addKeyListener(keyListener);
+		super.addListeners(control);
+	}
+
+	@Override
+	protected final synchronized void removeListeners(Text control) {
+		// control.removeKeyListener(keyListener);
+		// control.removeModifyListener(modifyListener);
+		control.removeVerifyListener(verifyListener);
+		super.removeListeners(control);
 	}
 
 	public final void setFormat(String datePattern) {
 		removeValidationRule(validDateRule);
 		removeValidationRule(validIntermediateDateRule);
 
-		validDateRule = new ValidDate(datePattern);
-		validIntermediateDateRule = new ValidIntermediateDate(datePattern);
-		uiControlToModelconverter = new StringToDateConverter(datePattern);
-		modelToUIControlConverter = new DateToStringConverter(datePattern);
+		pattern = datePattern;
+		validDateRule = new ValidDate(pattern);
+		validIntermediateDateRule = new ValidIntermediateDate(pattern);
+		uiControlToModelconverter = new StringToDateConverter(pattern);
+		modelToUIControlConverter = new DateToStringConverter(pattern);
 
 		addValidationRule(validDateRule, ValidationTime.ON_UPDATE_TO_MODEL);
 		addValidationRule(validIntermediateDateRule, ValidationTime.ON_UI_CONTROL_EDIT);
 		setUIControlToModelConverter(uiControlToModelconverter);
 		setModelToUIControlConverter(modelToUIControlConverter);
+	}
+
+	// helping classes
+	//////////////////
+
+	private final class DateVerifyListener implements VerifyListener {
+
+		private volatile boolean isEnabled = true;
+
+		public void verifyText(VerifyEvent e) {
+			if (e.doit == false || !isEnabled) {
+				return;
+			}
+			// System.out.println(e);
+			Text control = (Text) e.widget;
+			String oldText = control.getText();
+			int newPos = -1;
+			SegmentedString ss = new SegmentedString(pattern, oldText);
+			if (e.character == '\b' || e.keyCode == 127) {// backspace, del
+				newPos = ss.delete(e.start, e.end - 1);
+				if (newPos == -1) {
+					newPos = e.character == '\b' ? e.start : e.end;
+				}
+			} else if (SegmentedString.isDigit(e.character)) {
+				if (e.end - e.start > 0) {
+					newPos = ss.replace(e.start, e.end - 1, e.text);
+				} else {
+					newPos = ss.insert(e.start, String.valueOf(e.character));
+				}
+			} else if (SegmentedString.isSeparator(e.character)) {
+				if (e.end - e.start > 0) {
+					newPos = ss.replace(e.start, e.end - 1, String.valueOf(e.character));
+				} else {
+					newPos = ss.insert(e.start, String.valueOf(e.character));
+				}
+			}
+			e.doit = false;
+			if (newPos != -1) {
+				isEnabled = false;
+				control.setText(ss.toString());
+				// System.out.println("newPos: " + newPos);
+				control.setSelection(newPos);
+				isEnabled = true;
+			}
+		}
 	}
 
 }
