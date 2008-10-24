@@ -75,6 +75,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	public StatuslineUIProcess(Composite parent, int style) {
 		super(parent, style);
 		initStateMappers();
+
+		//observe shell movement
 		parent.getShell().addControlListener(new ControlAdapter() {
 
 			@Override
@@ -86,6 +88,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		});
 	}
 
+	/**
+	 * init mappers for label formatting
+	 */
 	private void initStateMappers() {
 		stateValueMappers.put(PROCESS_STATE.PENDING, new ILabelFormatter() {
 
@@ -183,6 +188,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		popup = new PopupList(getShell());
 	}
 
+	/**
+	 * observes the open/close {@link Label}
+	 */
 	class PopupController extends MouseAdapter {
 
 		public void mouseDown(MouseEvent e) {
@@ -210,6 +218,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	private Composite popupContent;
 
+	/**
+	 * the {@link ApplicationWindow} for the list of processes
+	 */
 	class PopupList extends ApplicationWindow {
 
 		public PopupList(Shell parentShell) {
