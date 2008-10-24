@@ -14,6 +14,7 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
@@ -109,76 +110,112 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() {
-		// TODO [ev] implement
-		//		IDecimalValueTextFieldRidget ridget = getRidget();
-		//		ridget.setGrouping(true);
-		//		ridget.setPrecision(2);
-		//		Text control = getUIControl();
-		//
-		//		ridget.setText(localize("12345"));
-		//
-		//		assertEquals(localize("12.345,"), control.getText());
-		//		assertEquals(localize("12.345"), ridget.getText());
-		//
-		//		ridget.setText(localize("3,145"));
-		//
-		//		assertEquals(localize("3,145"), control.getText());
-		//		assertEquals(localize("3,145"), ridget.getText());
-		//
-		//		final String lastText = ridget.getText();
-		//		try {
-		//			ridget.setText("abc");
-		//			fail();
-		//		} catch (RuntimeException rex) {
-		//			assertEquals(lastText, control.getText());
-		//			assertEquals(lastText, ridget.getText());
-		//		}
+		IDateTextFieldRidget ridget = getRidget();
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+
+		ridget.setText("01.10.2008");
+		assertEquals("01.10.2008", ridget.getText());
+
+		ridget.setText("01.10");
+		assertEquals("01.10.    ", ridget.getText());
+
+		ridget.setText("22.22.2222");
+		assertEquals("22.22.2222", ridget.getText());
+
+		ridget.setText("");
+		assertEquals("  .  .    ", ridget.getText());
+
+		ridget.setText("  .10.");
+		assertEquals("  .10.    ", ridget.getText());
+
+		ridget.setText("  .  .");
+		assertEquals("  .  .    ", ridget.getText());
+
+		try {
+			ridget.setText(null);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.setText("abc");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.setText("12102008");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.setText("12/10/2008");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+
+		try {
+			ridget.setText("12.ab");
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
+	}
+
+	public void testSetFormatAfterSetText() {
+		IDateTextFieldRidget ridget = getRidget();
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		Text control = getUIControl();
+		StringBean bean = new StringBean();
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+
+		ridget.setText("01.10.2008");
+
+		assertEquals("01.10.2008", control.getText());
+		assertEquals("01.10.2008", ridget.getText());
+		assertEquals("01.10.2008", bean.getValue());
+
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_HHMM);
+
+		assertEquals("  :  ", control.getText());
+		assertEquals("  :  ", ridget.getText());
+		assertEquals("01.10.2008", bean.getValue());
 	}
 
 	public void testUpdateFromModel() {
-		// TODO [ev] implement
-		//		IDecimalValueTextFieldRidget ridget = getRidget();
-		//		Text control = getUIControl();
-		//
-		//		ridget.setMaxLength(6);
-		//		ridget.setPrecision(3);
-		//
-		//		StringBean bean = new StringBean(localize("1,2"));
-		//		ridget.bindToModel(bean, StringBean.PROP_VALUE);
-		//		ridget.updateFromModel();
-		//
-		//		// Test initial values
-		//		assertEquals(6, ridget.getMaxLength());
-		//		assertEquals(3, ridget.getPrecision());
-		//		assertEquals(localize("1,200"), control.getText());
-		//		assertEquals(localize("1,2"), ridget.getText());
-		//		assertEquals(localize("1,2"), bean.getValue());
-		//
-		//		// Test with bean value 0.0
-		//		bean.setValue(localize("0,0"));
-		//		ridget.updateFromModel();
-		//		ridget.updateFromModel();
-		//
-		//		assertEquals(localize(",000"), control.getText());
-		//		assertEquals(localize("0"), ridget.getText());
-		//		assertEquals(localize("0,0"), bean.getValue());
-	}
+		IDateTextFieldRidget ridget = getRidget();
+		Text control = getUIControl();
+		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		StringBean bean = new StringBean("12.10.2008");
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
-	public void testMaxLength() {
-		// TODO [ev] implement
-		//		IDecimalValueTextFieldRidget ridget = getRidget();
-		//		Text control = getUIControl();
-		//		ridget.setMaxLength(6);
-		//		ridget.setPrecision(3);
-		//		StringBean bean = new StringBean();
-		//		ridget.bindToModel(bean, StringBean.PROP_VALUE);
-		//
-		//		control.setFocus();
-		//		UITestHelper.sendString(control.getDisplay(), localize("123456,12345\r"));
-		//
-		//		assertEquals(localize("123.456,123"), control.getText());
-		//		assertEquals(localize("123.456,123"), ridget.getText());
-		//		assertEquals(localize("123.456,123"), bean.getValue());
+		// value fully matches pattern
+		ridget.updateFromModel();
+
+		assertEquals("12.10.2008", control.getText());
+		assertEquals("12.10.2008", ridget.getText());
+		assertEquals("12.10.2008", bean.getValue());
+
+		// value matches sub-pattern
+		bean.setValue("  .12");
+		ridget.updateFromModel();
+
+		assertEquals("  .12.    ", control.getText());
+		assertEquals("  .12.    ", ridget.getText());
+		assertEquals("  .12", bean.getValue());
+
+		// value does not match patter; control and ridget unchanged
+		bean.setValue("abc");
+		ridget.updateFromModel();
+
+		assertEquals("  .12.    ", control.getText());
+		assertEquals("  .12.    ", control.getText());
+		assertEquals("abc", bean.getValue());
 	}
 
 	// helping methods

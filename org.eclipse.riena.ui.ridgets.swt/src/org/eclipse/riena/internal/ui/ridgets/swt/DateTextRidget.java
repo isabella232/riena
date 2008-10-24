@@ -76,6 +76,42 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 		addValidationRule(validIntermediateDateRule, ValidationTime.ON_UI_CONTROL_EDIT);
 		setUIControlToModelConverter(uiControlToModelconverter);
 		setModelToUIControlConverter(modelToUIControlConverter);
+
+		setText(new SegmentedString(pattern).toString());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 
+	 * @throws RuntimeException
+	 *             - if {code text} does not (partially) match the specified
+	 *             format pattern. A partial match is any string that has digits
+	 *             and separators in the expected places - as defined by the
+	 *             format pattern - regardless of limits for a certain group
+	 *             (i.e. month <= 12 etc.). For example, assuming the format
+	 *             pattern is 'dd.MM.yyyy', all of the following values are
+	 *             valid: "", "12", "12.10", "47.11", "12.10.20", "12.10.2008",
+	 *             "  .  .    ", "  .10". Invalid values would be: null, "abc",
+	 *             "12.ab", "12122008", "12/12/2008"
+	 */
+	@Override
+	public synchronized void setText(String text) {
+		String newText = checkAndFormatValue(text);
+		super.setText(newText);
+	}
+
+	// helping methods
+	//////////////////
+
+	private String checkAndFormatValue(String text) {
+		SegmentedString ss = new SegmentedString(pattern);
+		if (!ss.isValidPartialMatch(text)) {
+			String msg = String.format("'%s' is no partial match for '%s'", text, pattern); //$NON-NLS-1$
+			throw new IllegalArgumentException(msg);
+		}
+		ss.insert(0, text);
+		return ss.toString();
 	}
 
 	// helping classes
@@ -134,10 +170,10 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 	 * those key strokes are:
 	 * <ol>
 	 * <ol>
-	 * <li>Left & Right arrow - will jump over separators and spaces</li>
-	 * <li>Delete / Backspace at a single separator - will jump to the next
-	 * valid location in the same direction</li>
-	 * <li>Shift - disables jumping over grouping separators when pressed down</li>
+	 * <li>Left & Right arrow - will jump over separators and spaces</li> <li>
+	 * Delete / Backspace at a single separator - will jump to the next valid
+	 * location in the same direction</li> <li>Shift - disables jumping over
+	 * grouping separators when pressed down</li>
 	 * </ol>
 	 */
 	private final class DateKeyListener extends KeyAdapter {

@@ -183,6 +183,35 @@ public class SegmentedString {
 	}
 
 	/**
+	 * Returns true if the given candidate partially matches this strings
+	 * pattern.
+	 * <p>
+	 * A partial match is defined as: the candidate must not be longer than the
+	 * pattern. Each character in the candidate must match the expected type of
+	 * character in the pattern. If a digit is expected valid values are 0-9 or
+	 * ' ' (placeholder). If a separator is expected the only valid value is the
+	 * exact same separator.
+	 * 
+	 * @param candidate
+	 *            a non-null String
+	 */
+	public boolean isValidPartialMatch(String candidate) {
+		boolean result = candidate.length() <= pattern.length();
+		for (int i = 0; result && i < candidate.length(); i++) {
+			char cChar = candidate.charAt(i);
+			char pChar = pattern.charAt(i);
+			if (pChar == 'd') {
+				result = isDigit(cChar) || cChar == ' ';
+			} else if (pChar == '|') {
+				result = isSeparator(cChar) && cChar == fields[i];
+			} else {
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Replace the characters between {@code from} and {@code to} by the given
 	 * {@code value}.
 	 * <p>
