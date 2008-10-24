@@ -11,23 +11,68 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
 
 /**
- * TODO [ev] docs
+ * Deals with insertion, deletion and replacing in segmented strings. A
+ * segmented string has one or more segments of numbers separated by a single
+ * separator.
+ * <p>
+ * Implementation note regarding valid format patterns: this class has been
+ * tested with the format patterns in {@link IDateTextFieldRidget}. In general,
+ * supported patterns consist of a segment of 1-n digits followed by zero or
+ * more groups of consistring of a single separator followed by another segment;
+ * i.e.: {@code segment(separator,segment)*}. The following characters are
+ * treated as digits: {@code d, M, y, H, m, s}. The following characters are
+ * treated as separators: {@code ., :, /, -, ' ' (space)}. Separators are copied
+ * verbatim into the output string and cannot be modified. Digits within a
+ * segment will be right aligned.
+ * <p>
+ * Examples are: 'dd.MM.yyyy' for strings like '27.02.1980' or 'HH:mm' for
+ * strings like '13:55'
+ * 
  */
 public class SegmentedString {
 
+	/**
+	 * An array holding the value of this segmented string
+	 */
 	private final char[] fields;
+	/**
+	 * An encoding of the pattern of this segmented string. 'd's stand for
+	 * digits. '|'s stand for separators.
+	 */
 	private String pattern;
 
+	/**
+	 * Returns true if fChar is a digit (0-9).
+	 */
 	public static boolean isDigit(char fChar) {
 		return Character.isDigit(fChar);
 	}
 
+	/**
+	 * Returns true if fChar is a valid separator character.
+	 * 
+	 * Implementation note: be careful how you use this method. Because ' ' can
+	 * be used both as a separator and as a placeholder, the results of this
+	 * method must be carefully considered against the context in which this
+	 * method is invoked. Example: if you know the user typed ' ' it is a
+	 * separator. If you look at a ' ' value in {@code fields}, it is only a
+	 * separator if the corresponding character in {@pattern} is '|'.
+	 */
 	public static boolean isSeparator(char fChar) {
 		return ".:/- ".indexOf(fChar) != -1; //$NON-NLS-1$
 	}
 
+	/**
+	 * Create a new segmented string with the given format.
+	 * 
+	 * @param format
+	 *            a valid format String. See class javadoc for details.
+	 * @throws RuntimeException
+	 *             if format is not valid
+	 */
 	public SegmentedString(String format) {
 		pattern = createPattern(format);
 		fields = new char[pattern.length()];
@@ -37,6 +82,17 @@ public class SegmentedString {
 		}
 	}
 
+	/**
+	 * Create a new segmented string with the given format and initial value.
+	 * The initial value is not checked against the format.
+	 * 
+	 * @param format
+	 *            a valid format String. See class javadoc for details.
+	 * @param value
+	 *            an initial value
+	 * @throws RuntimeException
+	 *             if format is not valid
+	 */
 	public SegmentedString(String format, String value) {
 		pattern = createPattern(format);
 		fields = new char[pattern.length()];
@@ -45,10 +101,37 @@ public class SegmentedString {
 		}
 	}
 
+	/**
+	 * Delete between {@code from} and {@code to} (inclusive) preserving
+	 * separators.
+	 * 
+	 * @param from
+	 *            0-based starting position
+	 * @param to
+	 *            0-based ending position (inclusive; {@code from <= to <
+	 *            pattern.length})
+	 * @return the new cursor position
+	 * @throws RuntimeException
+	 *             if {@code from} or {@code to} are not valid
+	 */
 	public int delete(int from, int to) {
 		return delete(from, to, true);
 	}
 
+	/**
+	 * Find a new cursor position, starting at caretPosition and moving in the
+	 * direction of delta. While moving in either direction, it will ignore
+	 * placeholder spaces (i.e. ' ' on digit positions).
+	 * 
+	 * @param caretPosition
+	 *            the current cursor position (0 <= caretPosition <=
+	 *            pattern.length)
+	 * @param delta
+	 *            moving direction (1 or -1)
+	 * @return a new cursor position
+	 * @throws RuntimeException
+	 *             if delta has an illegal value.
+	 */
 	public int findNewCursorPosition(int caretPosition, int delta) {
 		Assert.isLegal(delta == 1 || delta == -1);
 		int pos = caretPosition;
@@ -67,10 +150,24 @@ public class SegmentedString {
 		return pos;
 	}
 
+	/**
+	 * Returns the internal representation of pattern.
+	 */
 	public String getPattern() {
 		return pattern;
 	}
 
+	/**
+	 * Insert the given value at the specified index position.
+	 * 
+	 * @param index
+	 *            a valid index (zero-based; 0 <= index < pattern.length)
+	 * @param value
+	 *            the String to insert. The string is expected to consist of
+	 *            valid digits and separators. Insertion will silently abort
+	 *            when the first invalid character is encountered.
+	 * @return the cursor position after insertion
+	 */
 	public int insert(int index, String value) {
 		int idx = index;
 		boolean proceed = true;
@@ -85,12 +182,45 @@ public class SegmentedString {
 		return idx;
 	}
 
+	/**
+	 * Replace the characters between {@code from} and {@code to} by the given
+	 * {@code value}.
+	 * <p>
+	 * Implementation note: replace will first delete between {@code from} and
+	 * {@code to}. Afterwards in will insert {@code value} starting at {@code
+	 * from}.
+	 * 
+	 * @param from
+	 *            a valid starting position (zero-based; 0 <= from <
+	 *            pattern.length)
+	 * @param to
+	 *            a valid ending position (zero-based; 0 < to < pattern.lengthl
+	 *            from <= to)
+	 * @param value
+	 *            the String to insert. The string is expected to consist of
+	 *            valid digits and separators. Insertion will silently abort
+	 *            when the first invalid character is encountered.
+	 * @return the cursor position after replacing
+	 */
 	public int replace(int from, int to, String value) {
 		delete(from, to, false);
 		int idx = insert(from, value);
 		return idx;
 	}
 
+	/**
+	 * Beautify the complete segmented string, by shifting placeholder ' ' to
+	 * the leftmost position within their segment.
+	 * 
+	 * @param index
+	 *            an index for the delta calculation (this is usually the cursor
+	 *            position; 0-based; 0 < index <= pattern.length). Each shift
+	 *            occuring at the right of the index will be counted. The count
+	 *            will be returned as a delta.
+	 * 
+	 * @return a delta, indicating how many positions the index position has
+	 *         shifted to the right
+	 */
 	public int shiftSpacesLeft(final int index) {
 		int delta = 0;
 		for (int i = 0; i < fields.length - 1; i++) {
@@ -117,26 +247,13 @@ public class SegmentedString {
 	//////////////////
 
 	private int computeCursorPositionAfterDelete(int from, int to) {
-		int result = -1;
-		int left = from + 1;
-		int right = findGroupEnd(to);
-		if (right < pattern.length() - 1) {
-			right++;
-		}
-		for (int i = left; result == -1 && i <= right; i++) {
-			if (isDigit(fields[i])) {
-				// right of first number in group
-				result = i;
-			} else if (pattern.charAt(i) == '|') {
-				// right of first separator in group
-				result = i;
+		int sepIndex = -1;
+		for (int i = to; i >= from; i--) {
+			if (pattern.charAt(i) == '|') {
+				sepIndex = i;
 			}
 		}
-		if (result == -1) {
-			result = left;
-		}
-		// beginning of group
-		return result;
+		return sepIndex != -1 ? sepIndex : to + 1;
 	}
 
 	private String createPattern(String format) {
@@ -164,11 +281,8 @@ public class SegmentedString {
 			}
 		}
 		int pos = computeCursorPositionAfterDelete(from, to);
-		int delta = 0;
-		if (shift) {
-			delta = shiftSpacesLeft(to);
-		}
-		return pos + delta;
+		shiftSpacesLeft(to);
+		return pos;
 	}
 
 	private int findFreePosition(int index) {
@@ -222,14 +336,6 @@ public class SegmentedString {
 	private boolean groupHasSpaceOnRight(int index) {
 		return index < pattern.length() - 1 && pattern.charAt(index) == '|' && pattern.charAt(index + 1) == 'd'
 				&& fields[index + 1] == ' ';
-	}
-
-	private int findGroupEnd(int index) {
-		int right = index;
-		while (right < pattern.length() - 1 && pattern.charAt(right + 1) != '|') {
-			right++;
-		}
-		return right;
 	}
 
 	private int insert(int index, char ch) {

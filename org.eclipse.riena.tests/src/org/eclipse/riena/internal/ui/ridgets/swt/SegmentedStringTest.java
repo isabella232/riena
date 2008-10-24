@@ -17,7 +17,6 @@ import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
 /**
  * Tests for the {@link SegmentedString} class.
  */
-// TODO [ev] add to test suite
 public class SegmentedStringTest extends TestCase {
 
 	public void testCreateSegmentedString() {
@@ -138,12 +137,12 @@ public class SegmentedStringTest extends TestCase {
 		ss = new SegmentedString(pat, "01.10.2008");
 		cursor = ss.delete(5, 5);
 		assertEquals("01.10.2008", ss.toString());
-		assertEquals(6, cursor);
+		assertEquals(5, cursor);
 
 		ss = new SegmentedString(pat, "01.10.2008");
 		cursor = ss.delete(5, 6);
 		assertEquals("01.10. 008", ss.toString());
-		assertEquals(7, cursor);
+		assertEquals(5, cursor);
 
 		ss = new SegmentedString(pat, "01.10.2008");
 		cursor = ss.delete(4, 5);

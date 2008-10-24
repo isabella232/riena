@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Text;
 public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 
 	private final VerifyListener verifyListener;
-	// private final ModifyListener modifyListener;
 	private final KeyListener keyListener;
 
 	private String pattern;
@@ -46,14 +45,12 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 
 	public DateTextRidget() {
 		verifyListener = new DateVerifyListener();
-		// modifyListener = new DateModifyListener();
 		keyListener = new DateKeyListener();
 		setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
 	}
 
 	protected final synchronized void addListeners(Text control) {
 		control.addVerifyListener(verifyListener);
-		// control.addModifyListener(modifyListener);
 		control.addKeyListener(keyListener);
 		super.addListeners(control);
 	}
@@ -61,7 +58,6 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 	@Override
 	protected final synchronized void removeListeners(Text control) {
 		control.removeKeyListener(keyListener);
-		// control.removeModifyListener(modifyListener);
 		control.removeVerifyListener(verifyListener);
 		super.removeListeners(control);
 	}
@@ -85,6 +81,11 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 	// helping classes
 	//////////////////
 
+	/**
+	 * This listener handles addition, deletion and replacement of text in the
+	 * Text control. When the text in the control is modified, it will compute
+	 * the new value. Unsupported modifications will be cancelled.
+	 */
 	private final class DateVerifyListener implements VerifyListener {
 
 		private volatile boolean isEnabled = true;
@@ -134,7 +135,9 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 	 * <ol>
 	 * <ol>
 	 * <li>Left & Right arrow - will jump over separators and spaces</li>
-	 * <li>Shift - ddisables jumping over grouping separators when pressed down</li>
+	 * <li>Delete / Backspace at a single separator - will jump to the next
+	 * valid location in the same direction</li>
+	 * <li>Shift - disables jumping over grouping separators when pressed down</li>
 	 * </ol>
 	 */
 	private final class DateKeyListener extends KeyAdapter {
@@ -151,19 +154,37 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			Text control = (Text) e.widget;
-			String text = control.getText();
 			if (131072 == e.keyCode) {
 				shiftDown = true;
-			} else if (16777219 == e.keyCode && control.getSelectionCount() == 0 && !shiftDown) {// left arrow
-				e.doit = false;
-				SegmentedString ss = new SegmentedString(pattern, text);
-				int index = ss.findNewCursorPosition(control.getCaretPosition(), -1);
-				control.setSelection(index);
-			} else if (16777220 == e.keyCode && control.getSelectionCount() == 0 && !shiftDown) { //right arrow
-				e.doit = false;
-				SegmentedString ss = new SegmentedString(pattern, text);
-				int index = ss.findNewCursorPosition(control.getCaretPosition(), 1);
-				control.setSelection(index);
+			} else {
+				final String text = control.getText();
+				final int caret = control.getCaretPosition();
+				final int selectionCount = control.getSelectionCount();
+				if (16777219 == e.keyCode && selectionCount == 0 && !shiftDown) {// left arrow
+					e.doit = false;
+					SegmentedString ss = new SegmentedString(pattern, text);
+					int index = ss.findNewCursorPosition(caret, -1);
+					control.setSelection(index);
+				} else if (16777220 == e.keyCode && selectionCount == 0 && !shiftDown) { //right arrow
+					e.doit = false;
+					SegmentedString ss = new SegmentedString(pattern, text);
+					int index = ss.findNewCursorPosition(caret, 1);
+					control.setSelection(index);
+				} else if (127 == e.keyCode && selectionCount == 0 && !shiftDown) { // del
+					if (caret < text.length() && SegmentedString.isSeparator(text.charAt(caret))) {
+						e.doit = false;
+						SegmentedString ss = new SegmentedString(pattern, text);
+						int index = ss.findNewCursorPosition(caret, 1);
+						control.setSelection(index);
+					}
+				} else if ('\b' == e.character && selectionCount == 0 && !shiftDown) {
+					if (caret > 0 && SegmentedString.isSeparator(text.charAt(caret - 1))) {
+						e.doit = false;
+						SegmentedString ss = new SegmentedString(pattern, text);
+						int index = ss.findNewCursorPosition(caret, -1);
+						control.setSelection(index);
+					}
+				}
 			}
 		}
 	}
