@@ -330,11 +330,20 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		// Test with bean value 0.0
 		bean.setValue(localize("0,0"));
 		ridget.updateFromModel();
-		ridget.updateFromModel();
 
 		assertEquals(localize(",000"), control.getText());
 		assertEquals(localize("0"), ridget.getText());
 		assertEquals(localize("0,0"), bean.getValue());
+
+		String oldControlValue = control.getText();
+		String oldRidgetValue = ridget.getText();
+		bean.setValue("abc");
+		ridget.updateFromModel();
+
+		// excepted: ignore 'abc' because it is not a number
+		assertEquals(oldControlValue, control.getText());
+		assertEquals(oldRidgetValue, ridget.getText());
+		assertEquals("abc", bean.getValue());
 	}
 
 	public void testMaxLength() {
