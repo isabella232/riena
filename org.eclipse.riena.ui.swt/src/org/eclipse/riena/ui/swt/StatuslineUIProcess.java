@@ -25,6 +25,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.uiprocess.PROCESS_STATE;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -73,6 +75,15 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	public StatuslineUIProcess(Composite parent, int style) {
 		super(parent, style);
 		initStateMappers();
+		parent.getShell().addControlListener(new ControlAdapter() {
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				if (popup.getShell() != null && popup.getShell().isVisible()) {
+					placeShell();
+				}
+			}
+		});
 	}
 
 	private void initStateMappers() {
