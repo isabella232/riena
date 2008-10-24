@@ -23,9 +23,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Tests for the class {@link DecimalTextRidget}.
+ * Tests for the class {@link DateTextRidget}.
  */
-// TODO [ev] add to test suite
 public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
@@ -66,15 +65,15 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
 
 		assertText("01.10^.2008", UITestHelper.KC_DEL, "01.10.^2008");
-		assertText("01.10^.^2008", UITestHelper.KC_DEL, "01.10.^2008");
-		assertText("01.10^.2^008", UITestHelper.KC_DEL, "01.10. ^008");
+		assertText("01.10^.^2008", UITestHelper.KC_DEL, "01.10^.2008");
+		assertText("01.10^.2^008", UITestHelper.KC_DEL, "01.10^. 008");
 		assertText("01.1^0.2^008", UITestHelper.KC_DEL, "01. 1^. 008");
 		assertText("^01.10.2008^", UITestHelper.KC_DEL, "  ^.  .    ");
 
 		assertText("01.10.^2008", "\b", "01.10^.2008");
 		assertText("01.10^.^2008", "\b", "01.10^.2008");
 		assertText("01.10^.2^008", "\b", "01.10^. 008");
-		assertText("01.1^0.2^008", "\b", "01.1^.008");
+		assertText("01.1^0.2^008", "\b", "01. 1^. 008");
 		assertText("^01.10.2008^", "\b", "  ^.  .    ");
 	}
 
@@ -82,30 +81,31 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		IDateTextFieldRidget ridget = getRidget();
 		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
 
-		assertText("01.10^.^2008", "1", "01.10.^2008");
+		assertText("01.10^.^2008", "1", "01.10^.2008");
+		assertText("01.10^.^2008", ".", "01.10.^2008");
 		assertText("01.10^.2^008", "1", "01.10.1^008");
-		assertText("01.1^0.^2008", "1", "01.11^.2008");
-		assertText("01.1^0.2^008", "1", "01.11^.008");
-		assertText("^01^.10.2008", "3", "3^.10.2008");
-		assertText("^01.^10.2008", "3", "3^.10.2008");
-		assertText("^01.1^0.2008", "3", "3^.0.2008");
-		assertText("^01.10.2^008", "3", "3^..008");
-		assertText("^01.10.2008^", "3", "3^..");
+		assertText("01.1^0.^2008", "3", "01.13^.2008");
+		assertText("01.1^0.2^008", "3", "01.13^. 008");
+		assertText("^01^.10.2008", "3", " 3^.10.2008");
+		assertText("^01.^10.2008", "3", " 3^.10.2008");
+		assertText("^01.1^0.2008", "3", " 3^. 0.2008");
+		assertText("^01.10.2^008", "3", " 3^.  . 008");
+		assertText("^01.10.2008^", "3", " 3^.  .    ");
 	}
 
 	public void testInsert() {
 		IDateTextFieldRidget ridget = getRidget();
 		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
 
-		assertText("^..", "01102008", "01.10.2008^");
-		assertText("^..", "01.10.2008", "01.10.2008^");
-		assertText("^..", "01.10.20081234", "01.10.2008^");
-		assertText("^.10.2008", "0123", "01^.10.2008");
-		assertText("^..2008", "1208", "12.08^.2008");
-		assertText(".^.2008", "1208", ".12^.2008");
-		assertText("01..^2008", "10", "01..^2008"); //?
-		assertText("..^", "2008", "..2008^");
-		assertText(".^.", "102008", ".10.2008^");
+		assertText("  ^.  .    ", "01102008", "01.10.2008^");
+		assertText(" ^ .  .    ", "01.10.2008", "01.10.2008^");
+		assertText("^  .  .    ", "01.10.20081234", "01.10.2008^");
+		assertText("  ^.10.2008", "0123", "01^.10.2008");
+		assertText("  ^.  .2008", "1208", "12.08^.2008");
+		assertText("  .  ^.2008", "1208", "  .12^.2008");
+		assertText("01.  .^2008", "10", "01.  .^2008");
+		assertText("  .  .    ^", "2008", "  .  .2008^");
+		assertText("  .  ^.    ", "102008", "  .10.2008^");
 	}
 
 	public void testSetText() {
@@ -215,7 +215,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	private void checkText(String input) {
-		String expected = removeMarkers(input);
+		String expected = removePositionMarkers(input);
 		Text control = getUIControl();
 		assertEquals(expected, control.getText());
 	}
@@ -227,7 +227,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		if (start < end) {
 			expected = input.substring(start + 1, end);
 		}
-		System.out.println("exp sel: " + expected);
+		// System.out.println("exp sel: " + expected);
 		Text control = getUIControl();
 		assertEquals(expected, control.getSelectionText());
 	}
@@ -236,12 +236,12 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		int start = input.indexOf('^');
 		int end = input.lastIndexOf('^');
 		int expected = start < end ? end - 1 : end;
-		System.out.println("exp car: " + expected);
+		// System.out.println("exp car: " + expected);
 		Text control = getUIControl();
 		assertEquals(expected, control.getCaretPosition());
 	}
 
-	private String removeMarkers(String input) {
+	private String removePositionMarkers(String input) {
 		StringBuilder result = new StringBuilder(input.length());
 		for (int i = 0; i < input.length(); i++) {
 			char ch = input.charAt(i);
@@ -258,11 +258,10 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 		Text control = getUIControl();
 		Listener[] listeners = control.getListeners(SWT.Verify);
-		// TODO [ev] ex?
 		for (Listener listener : listeners) {
 			control.removeListener(SWT.Verify, listener);
 		}
-		control.setText(removeMarkers(text));
+		control.setText(removePositionMarkers(text));
 		for (Listener listener : listeners) {
 			control.addListener(SWT.Verify, listener);
 		}

@@ -281,7 +281,12 @@ public class SegmentedString {
 			}
 		}
 		int pos = computeCursorPositionAfterDelete(from, to);
-		shiftSpacesLeft(to);
+		if (shift) {
+			// for the delete operation we can ignore the value returned by
+			// shiftSpacesLeft(...). The method computeCursorPositionAfterDelete
+			// already returns the correct location
+			shiftSpacesLeft(to);
+		}
 		return pos;
 	}
 

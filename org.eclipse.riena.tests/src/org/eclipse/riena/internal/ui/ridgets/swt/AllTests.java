@@ -24,6 +24,8 @@ public class AllTests extends TestCase {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTestSuite(ActionRidgetTest.class);
 		suite.addTestSuite(ComboRidgetTest.class);
+		suite.addTestSuite(ChoiceCompositeTest.class);
+		suite.addTestSuite(DateTextRidgetTest.class);
 		suite.addTestSuite(DecimalTextRidgetTest.class);
 		suite.addTestSuite(EmbeddedTitleBarRidgetTest.class);
 		suite.addTestSuite(LabelRidgetTest.class);
@@ -32,7 +34,6 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(MultipleChoiceRidgetTest.class);
 		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
 		suite.addTestSuite(NumericTextRidgetTest.class);
-		suite.addTestSuite(ChoiceCompositeTest.class);
 		suite.addTestSuite(SegmentedStringTest.class);
 		suite.addTestSuite(SingleChoiceRidgetTest.class);
 		suite.addTestSuite(StatuslineNumberRidgetTest.class);
