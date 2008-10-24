@@ -49,6 +49,24 @@ public class SegmentedString {
 		return delete(from, to, true);
 	}
 
+	public int findNewCursorPosition(int caretPosition, int delta) {
+		Assert.isLegal(delta == 1 || delta == -1);
+		int pos = caretPosition;
+		if (caretPosition + delta <= pattern.length() && caretPosition + delta >= 0) {
+			pos = caretPosition + delta;
+		}
+		while (pos < pattern.length() && pos > -1) {
+			if (pattern.charAt(pos) == '|') {
+				break;
+			} else if (pattern.charAt(pos) == 'd' && fields[pos] == ' ') {
+				pos = pos + delta;
+			} else {
+				break;
+			}
+		}
+		return pos;
+	}
+
 	public String getPattern() {
 		return pattern;
 	}

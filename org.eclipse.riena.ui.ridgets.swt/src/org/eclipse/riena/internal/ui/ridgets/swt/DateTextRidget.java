@@ -12,22 +12,31 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * TODO [ev] docs
+ * Ridget for a 'date/time/date time' SWT <code>Text</code> widget. The desired
+ * date/time/dat time pattern can be set via {@link #setFormat(String)}. See
+ * {@link IDecimalValueTextFieldRidget} for supported patterns.
+ * 
+ * @see UIControlsFactory#createTextDate(org.eclipse.swt.widgets.Composite)
  */
 public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 
 	private final VerifyListener verifyListener;
 	// private final ModifyListener modifyListener;
-	// private final KeyListener keyListener;
+	private final KeyListener keyListener;
 
 	private String pattern;
 	private ValidDate validDateRule;
@@ -38,20 +47,20 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 	public DateTextRidget() {
 		verifyListener = new DateVerifyListener();
 		// modifyListener = new DateModifyListener();
-		// keyListener = new DateKeyListener();
+		keyListener = new DateKeyListener();
 		setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
 	}
 
 	protected final synchronized void addListeners(Text control) {
 		control.addVerifyListener(verifyListener);
 		// control.addModifyListener(modifyListener);
-		// control.addKeyListener(keyListener);
+		control.addKeyListener(keyListener);
 		super.addListeners(control);
 	}
 
 	@Override
 	protected final synchronized void removeListeners(Text control) {
-		// control.removeKeyListener(keyListener);
+		control.removeKeyListener(keyListener);
 		// control.removeModifyListener(modifyListener);
 		control.removeVerifyListener(verifyListener);
 		super.removeListeners(control);
@@ -114,6 +123,47 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 				// System.out.println("newPos: " + newPos);
 				control.setSelection(newPos);
 				isEnabled = true;
+			}
+		}
+	}
+
+	/**
+	 * This listener controls which key strokes are allowed by the text control.
+	 * Additionally some keystrokes replaced with special behavior. Currently
+	 * those key strokes are:
+	 * <ol>
+	 * <ol>
+	 * <li>Left & Right arrow - will jump over separators and spaces</li>
+	 * <li>Shift - ddisables jumping over grouping separators when pressed down</li>
+	 * </ol>
+	 */
+	private final class DateKeyListener extends KeyAdapter {
+
+		private boolean shiftDown = false;
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (131072 == e.keyCode) {
+				shiftDown = false;
+			}
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			Text control = (Text) e.widget;
+			String text = control.getText();
+			if (131072 == e.keyCode) {
+				shiftDown = true;
+			} else if (16777219 == e.keyCode && control.getSelectionCount() == 0 && !shiftDown) {// left arrow
+				e.doit = false;
+				SegmentedString ss = new SegmentedString(pattern, text);
+				int index = ss.findNewCursorPosition(control.getCaretPosition(), -1);
+				control.setSelection(index);
+			} else if (16777220 == e.keyCode && control.getSelectionCount() == 0 && !shiftDown) { //right arrow
+				e.doit = false;
+				SegmentedString ss = new SegmentedString(pattern, text);
+				int index = ss.findNewCursorPosition(control.getCaretPosition(), 1);
+				control.setSelection(index);
 			}
 		}
 	}
