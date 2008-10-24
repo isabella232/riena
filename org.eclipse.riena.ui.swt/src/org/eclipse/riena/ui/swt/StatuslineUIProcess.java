@@ -67,6 +67,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	private final Map<PROCESS_STATE, ILabelFormatter> stateValueMappers = new HashMap<PROCESS_STATE, ILabelFormatter>();
 
+	private Color listBackground;
+
 	/**
 	 * @param parent
 	 *            - the parent composite
@@ -75,6 +77,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	public StatuslineUIProcess(Composite parent, int style) {
 		super(parent, style);
 		initStateMappers();
+		listBackground = new Color(parent.getDisplay(), 183, 216, 236);
 
 		//observe shell movement
 		parent.getShell().addControlListener(new ControlAdapter() {
@@ -229,7 +232,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		@Override
 		protected Control createContents(Composite parent) {
-			parent.setBackground(new Color(parent.getDisplay(), 183, 216, 236));
+			parent.setBackground(listBackground);
 			popupContent = parent;
 			FormLayout layout = new FormLayout();
 			layout.marginLeft = 5;
@@ -511,7 +514,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		formData.height = 14;
 		formData.width = 160;
 		noProcessActiveLable = new Label(popupContent, SWT.NONE);
-		noProcessActiveLable.setBackground(new Color(noProcessActiveLable.getDisplay(), 183, 216, 236));
+		noProcessActiveLable.setBackground(listBackground);
 		noProcessActiveLable.setText("No active process"); //$NON-NLS-1$
 		noProcessActiveLable.setLayoutData(formData);
 	}
@@ -530,7 +533,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		holder.progressBar.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 		holder.progressBar.setMaximum(100);
 		holder.label = new Label(popupContent, SWT.NONE);
-		holder.label.setBackground(new Color(holder.label.getDisplay(), 183, 216, 236)); //TODO get Color from lnf
+		holder.label.setBackground(listBackground); //TODO get Color from lnf
 		pido2controlHolder.put(pido.getKey(), holder);
 		return holder;
 	}
