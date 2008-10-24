@@ -430,10 +430,14 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 */
 	private Label openLabel;
 
+	private Label noProcessActiveLable;
+
 	/**
 	 * creates a list of {@link UIProcess} infos in the popup
 	 */
 	private void createProcessList(List<ProgressInfoDataObject> pidos) {
+
+		checkNoActiveProcesses(pidos);
 		Control lastControl = null;
 		ProgressBar bar;
 		Label label;
@@ -467,6 +471,27 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		// dispose and clear all controls of zombie pidos
 		clearZombies(keys);
 
+	}
+
+	private void checkNoActiveProcesses(List<ProgressInfoDataObject> pidos) {
+		if (pidos.size() == 0) {
+			noProcessRunning();
+		} else {
+			if (noProcessActiveLable != null) {
+				noProcessActiveLable.dispose();
+			}
+		}
+	}
+
+	private void noProcessRunning() {
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(5, 0);
+		formData.height = 14;
+		formData.width = 160;
+		noProcessActiveLable = new Label(popupContent, SWT.NONE);
+		noProcessActiveLable.setBackground(new Color(noProcessActiveLable.getDisplay(), 183, 216, 236));
+		noProcessActiveLable.setText("No active process"); //$NON-NLS-1$
+		noProcessActiveLable.setLayoutData(formData);
 	}
 
 	/**
