@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Demonstrates how to use a {@link IDateTextFieldRidget}.
+ * Shows how to use a {@link IDateTextFieldRidget} with a 'dd.MM.yyyy' pattern.
  */
 public final class SnippetDateTextRidget001 {
 
