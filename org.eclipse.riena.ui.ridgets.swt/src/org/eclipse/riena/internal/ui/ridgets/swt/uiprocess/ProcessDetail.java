@@ -100,6 +100,13 @@ public class ProcessDetail implements Comparable<ProcessDetail> {
 	}
 
 	/**
+	 * @return the state
+	 */
+	public PROCESS_STATE getState() {
+		return state;
+	}
+
+	/**
 	 * {@link ProcessDetail} instances have a special order in the
 	 * {@link ProcessDetailManager}. The follwing is the rule:
 	 */

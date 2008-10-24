@@ -12,7 +12,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.ProcessDetail;
@@ -390,12 +392,28 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		updateUserInterface();
 	}
 
-	private void checkStillNeeded(IProgressVisualizer visualizer) {
+	private boolean checkStillNeeded(IProgressVisualizer visualizer) {
 		List<Object> contexts = new ArrayList<Object>(1);
 		contexts.add(visualizer.getProcessInfo().getContext());
-		if (contextLocator.getActiveContexts(contexts).size() == 1) {
+		ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
+		if (detail != null
+				&& (detail.getState().equals(PROCESS_STATE.FINISHED) || detail.getState()
+						.equals(PROCESS_STATE.CANCELED)) && contextLocator.getActiveContexts(contexts).size() == 1) {
 			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
+			unregisterContextUpdateListener(visualizer, false);
+			return false;
 		}
+
+		return true;
+	}
+
+	private void unregisterContextUpdateListener(IProgressVisualizer visualizer, boolean removeFromContextLocator) {
+		IContextUpdateListener contextListener = visualizer2ContextListener.get(visualizer);
+		if (removeFromContextLocator) {
+			contextLocator.removeContextUpdateListener(contextListener, visualizer.getProcessInfo().getContext());
+		}
+		// clean memory
+		visualizer2ContextListener.remove(visualizer);
 	}
 
 	public void setActiveProgressVisualizer(IProgressVisualizer visualizer) {
@@ -437,20 +455,28 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	private void observeContext(final IProgressVisualizer visualizer) {
-		contextLocator.addContextUpdateListener(new IContextUpdateListener() {
+		IContextUpdateListener listener = new IContextUpdateListener() {
 
 			public void beforeContextUpdate(Object context) {
-
 			}
 
-			public void contextUpdated(Object context) {
-				checkStillNeeded(visualizer);
+			public boolean contextUpdated(Object context) {
+				boolean needed = checkStillNeeded(visualizer);
 				updateUserInterface();
-				//TODO remove this
+				return !needed;
 			}
 
-		}, visualizer.getProcessInfo().getContext());
+		};
+		Object context = visualizer.getProcessInfo().getContext();
+		contextLocator.addContextUpdateListener(listener, context);
+		saveMapping(visualizer, listener);
 
+	}
+
+	private Map<IProgressVisualizer, IContextUpdateListener> visualizer2ContextListener = new HashMap<IProgressVisualizer, IContextUpdateListener>();
+
+	private void saveMapping(IProgressVisualizer visualizer, IContextUpdateListener listener) {
+		visualizer2ContextListener.put(visualizer, listener);
 	}
 
 	/**

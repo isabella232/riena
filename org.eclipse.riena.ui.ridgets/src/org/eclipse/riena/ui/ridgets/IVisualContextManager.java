@@ -12,7 +12,6 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.List;
 
-
 /**
  * The {@link IVisualContextManager} helps determining the current active
  * context out of a list of registered contexts.
@@ -38,5 +37,7 @@ public interface IVisualContextManager {
 	 *            - the context
 	 */
 	void addContextUpdateListener(IContextUpdateListener listener, Object context);
+
+	void removeContextUpdateListener(IContextUpdateListener listener, Object context);
 
 }

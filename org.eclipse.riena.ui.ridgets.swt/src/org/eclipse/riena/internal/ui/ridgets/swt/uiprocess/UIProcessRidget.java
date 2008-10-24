@@ -206,8 +206,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	private class ContextChangeHandler implements IContextUpdateListener {
 
-		public void contextUpdated(Object context) {
+		public boolean contextUpdated(Object context) {
 			checkContexts();
+			return false;
 
 		}
 

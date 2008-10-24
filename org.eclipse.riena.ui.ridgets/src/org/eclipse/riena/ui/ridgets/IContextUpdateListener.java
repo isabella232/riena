@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
  * Implementations can be used to observe changes of visual contexts registered
  * at the {@link IVisualContextManager}.
@@ -31,7 +30,9 @@ public interface IContextUpdateListener {
 	 * 
 	 * @param context
 	 *            - the observed context
+	 * @return - true if this listener should be unregistered automatically at
+	 *         the observerd component
 	 */
-	void contextUpdated(Object context);
+	boolean contextUpdated(Object context);
 
 }

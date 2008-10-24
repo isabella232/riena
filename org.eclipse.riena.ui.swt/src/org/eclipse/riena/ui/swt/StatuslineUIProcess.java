@@ -248,13 +248,23 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * updates uiprocess visualization directly in the StatusLine
 	 */
 	public void triggerBaseUpdate(ProgressInfoDataObject pido) {
-		if (pido.getValue() >= 100) {
-			getProgressBar().setSelection(0);
-			statusLabel.setText(""); //$NON-NLS-1$
+		if (pidoComplete(pido)) {
+			resetStatusLineProgressBar();
 			return;
 		}
 		updateProgressBar(pido, getProgressBar());
 		updateLabel(pido, statusLabel);
+	}
+
+	private boolean pidoComplete(ProgressInfoDataObject pido) {
+		return pido.getValue() >= 100;
+	}
+
+	private void resetStatusLineProgressBar() {
+		if (!getProgressBar().isDisposed()) {
+			getProgressBar().setSelection(0);
+			statusLabel.setText(""); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -291,6 +301,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 *            is no new data
 	 */
 	public void triggerListUpdate(List<ProgressInfoDataObject> pidos, boolean forceListUpdate) {
+		if (pidos.size() == 0) {
+			resetStatusLineProgressBar();
+		}
 		if (isVisible()) {
 			if (popVisible() && (forceListUpdate || !pidos.equals(this.pidos))) {
 				//  rebuild table
