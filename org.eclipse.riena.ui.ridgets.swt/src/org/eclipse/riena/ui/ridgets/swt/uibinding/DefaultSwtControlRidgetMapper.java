@@ -103,7 +103,12 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	}
 
 	/**
-	 * Adds a mapping of a UI control-class to a ridget-class
+	 * Adds a mapping of a UI control-class to a ridget-class. The mapping will
+	 * only apply when the control has the specified swt style.
+	 * <p>
+	 * Example:
+	 * <p>
+	 * {@code addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);}
 	 * 
 	 * @param controlClazz
 	 *            - the class of the UI control (<code>Widget</code>)
@@ -117,6 +122,23 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		mappings.add(mapping);
 	}
 
+	/**
+	 * Adds a mapping of a UI control-class to a ridget-class. The mapping will
+	 * only apply when the given condition evaluates to true.
+	 * <p>
+	 * Example:
+	 * <p>
+	 * {@code addMapping(Tree.class, TreeRidget.class, new
+	 * TreeWithoutColumnsCondition());}
+	 * 
+	 * @param controlClazz
+	 *            - the class of the UI control (<code>Widget</code>)
+	 * @param ridgetClazz
+	 *            - the class of the ridget
+	 * @param condition
+	 *            (non-null) - the condition to evaluate (non-null)
+     * @see IMappingCondition
+	 */
 	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz,
 			IMappingCondition condition) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, condition);
