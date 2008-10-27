@@ -16,15 +16,16 @@ import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-
-import com.swtdesigner.SWTResourceManager;
 
 /**
  *
@@ -54,7 +55,7 @@ public class KundenSucheView extends SubModuleView<KundenSucheController> {
 		addUIControl(suchName, "suchName");
 
 		final Label personLabel = new Label(container, SWT.NONE);
-		personLabel.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+		personLabel.setFont(new Font(Display.getCurrent(), new FontData("", 8, SWT.BOLD)));
 		personLabel.setText("Person");
 		personLabel.setBounds(10, 17, 61, 13);
 
@@ -78,7 +79,7 @@ public class KundenSucheView extends SubModuleView<KundenSucheController> {
 		label.setBounds(10, 45, 669, 13);
 
 		final Label adresseLabel = new Label(container, SWT.NONE);
-		adresseLabel.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+		adresseLabel.setFont(new Font(Display.getCurrent(), new FontData("", 8, SWT.BOLD)));
 		adresseLabel.setText("Adresse");
 		adresseLabel.setBounds(10, 64, 50, 13);
 
@@ -106,7 +107,7 @@ public class KundenSucheView extends SubModuleView<KundenSucheController> {
 		label_2.setBounds(10, 126, 669, 13);
 
 		final Label kundenstatusLabel = new Label(container, SWT.NONE);
-		kundenstatusLabel.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+		kundenstatusLabel.setFont(new Font(Display.getCurrent(), new FontData("", 8, SWT.BOLD)));
 		kundenstatusLabel.setText("Kundenstatus");
 		kundenstatusLabel.setBounds(10, 145, 85, 13);
 

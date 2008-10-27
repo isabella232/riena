@@ -1,11 +1,13 @@
-/****************************************************************
- *                                                              *
- * Copyright (c) 2004 compeople AG                              *
- * All rights reserved. The use of this program and the         *
- * accompanying materials are subject to license terms.         *
- *                                                              *
- ****************************************************************/
-
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.riena.example.client.model;
 
 import java.io.ObjectStreamException;
@@ -21,7 +23,6 @@ import java.util.Map;
 /**
  * Basisklasse fuer alle Enumerationen.
  * 
- * @author Nicola Costantini
  */
 public class Enumeration implements Serializable, Cloneable, Comparable {
 	/** Serialization ID */
