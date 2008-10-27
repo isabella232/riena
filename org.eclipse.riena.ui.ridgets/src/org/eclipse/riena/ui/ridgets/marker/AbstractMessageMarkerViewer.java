@@ -39,48 +39,30 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		markerTypes.add(ValidationMessageMarker.class);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#addRidget(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
-	 */
 	public void addRidget(IMarkableRidget markableRidget) {
 		ridgets.add(markableRidget);
 		showMessages(markableRidget);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#removeRidget(org.eclipse.riena.ui.internal.ridgets.IMarkableRidget)
-	 */
 	public void removeRidget(IMarkableRidget markableRidget) {
 		ridgets.remove(markableRidget);
 		hideMessages(markableRidget);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#addMarkerType(java.lang.Class)
-	 */
 	public void addMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.add(markerClass);
 		showMessages();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#removeMarkerType(java.lang.Class)
-	 */
 	public void removeMarkerType(Class<? extends IMessageMarker> markerClass) {
 		markerTypes.remove(markerClass);
 		showMessages();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#isVisible()
-	 */
 	public boolean isVisible() {
 		return visible;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.marker.IMessageMarkerViewer#setVisible(boolean)
-	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 		showMessages();
@@ -122,9 +104,6 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 
 		private static final long serialVersionUID = 1L;
 
-		/**
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
 		public int compare(IMessageMarker o1, IMessageMarker o2) {
 			return o1.getMessage().compareTo(o2.getMessage());
 		}
