@@ -160,6 +160,13 @@
             name="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.KundenSucheView"
+            id="org.eclipse.riena.example.kundensuche"
+            name="name"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -421,6 +428,11 @@
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentTypeId="playground">
       </navigationNode>
+      <navigationNode
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.KundenNodeBuilder"
+            parentTypeId="playground"
+            typeId="org.eclipse.riena.example.client.kundensuche">
+      </navigationNode>
    </extension>
    <extension point="org.eclipse.riena.navigation.subModule">
       <subModule
@@ -552,6 +564,12 @@
             shared="false"
             typeId="org.eclipse.riena.example.filterdefinition"
             view="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.KundenSucheController"
+            shared="false"
+            typeId="org.eclipse.riena.example.client.kundensuche"
+            view="org.eclipse.riena.example.kundensuche">
       </subModule>
    </extension>
    <extension
