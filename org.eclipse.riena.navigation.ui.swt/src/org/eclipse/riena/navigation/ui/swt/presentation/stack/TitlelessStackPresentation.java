@@ -87,12 +87,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Left padding of the navigation.<br>
 	 * Gap between left shell border and navigation.
 	 */
-	private static final int PADDING_LEFT = 2;
+	public static final int PADDING_LEFT = 2;
 	/**
 	 * Right padding of the sub-module view.<br>
 	 * Gap between right shell border and sub-module view.
 	 */
-	private static final int PADDING_RIGHT = 2;
+	public static final int PADDING_RIGHT = PADDING_LEFT;
 	/**
 	 * Top padding of the sub-module view.<br>
 	 * Gap between application switcher and sub-module view.
