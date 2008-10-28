@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
 /**
  * Tests for the {@link SegmentedString} class.
@@ -22,7 +22,7 @@ public class SegmentedStringTest extends TestCase {
 	public void testCreateSegmentedString() {
 		SegmentedString ss;
 
-		ss = new SegmentedString(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		ss = new SegmentedString(IDateTextRidget.FORMAT_DDMMYYYY);
 		assertEquals("dd|dd|dddd", ss.getPattern());
 		assertEquals("  .  .    ", ss.toString());
 
@@ -30,11 +30,11 @@ public class SegmentedStringTest extends TestCase {
 		assertEquals("dd|dd|dddd", ss.getPattern());
 		assertEquals("  /  /    ", ss.toString());
 
-		ss = new SegmentedString(IDateTextFieldRidget.FORMAT_HHMM);
+		ss = new SegmentedString(IDateTextRidget.FORMAT_HHMM);
 		assertEquals("dd|dd", ss.getPattern());
 		assertEquals("  :  ", ss.toString());
 
-		ss = new SegmentedString(IDateTextFieldRidget.FORMAT_DDMMYYYYHHMM);
+		ss = new SegmentedString(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
 		assertEquals("dd|dd|dddd|dd|dd", ss.getPattern());
 		assertEquals("  .  .       :  ", ss.toString());
 
@@ -48,7 +48,7 @@ public class SegmentedStringTest extends TestCase {
 
 	public void testInsert() {
 		SegmentedString ss;
-		final String pat = IDateTextFieldRidget.FORMAT_DDMMYYYY;
+		final String pat = IDateTextRidget.FORMAT_DDMMYYYY;
 
 		ss = new SegmentedString(pat, "10.10. 200");
 		ss.insert(10, "8");
@@ -130,7 +130,7 @@ public class SegmentedStringTest extends TestCase {
 	}
 
 	public void testDelete() {
-		final String pat = IDateTextFieldRidget.FORMAT_DDMMYYYY;
+		final String pat = IDateTextRidget.FORMAT_DDMMYYYY;
 		SegmentedString ss;
 		int cursor;
 
@@ -192,7 +192,7 @@ public class SegmentedStringTest extends TestCase {
 
 	public void testReplace() {
 		SegmentedString ss;
-		final String pat = IDateTextFieldRidget.FORMAT_DDMMYYYY;
+		final String pat = IDateTextRidget.FORMAT_DDMMYYYY;
 
 		ss = new SegmentedString(pat, "01.10.2008");
 		ss.replace(5, 5, "1");
@@ -221,7 +221,7 @@ public class SegmentedStringTest extends TestCase {
 
 	public void testShiftSpacesLeft() {
 		SegmentedString ss;
-		final String pat = IDateTextFieldRidget.FORMAT_DDMMYYYY;
+		final String pat = IDateTextRidget.FORMAT_DDMMYYYY;
 
 		ss = new SegmentedString(pat, "01.10.200 ");
 		ss.shiftSpacesLeft(-1);

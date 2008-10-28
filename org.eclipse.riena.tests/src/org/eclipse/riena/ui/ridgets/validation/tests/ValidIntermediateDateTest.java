@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 
 /**
@@ -51,7 +51,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testDatesDDMMYYYY() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertTrue(rule.validate("").isOK());
 		assertTrue(rule.validate("..").isOK());
@@ -69,7 +69,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testDatesDDMMYYYYHHMM() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextFieldRidget.FORMAT_DDMMYYYYHHMM);
+		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
 
 		assertTrue(rule.validate("11.1.1 11:11").isOK());
 		assertTrue(rule.validate("11.01.01 :").isOK());
@@ -85,7 +85,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testDatesHHMM() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextFieldRidget.FORMAT_HHMM);
+		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_HHMM);
 
 		assertTrue(rule.validate("11:11").isOK());
 		assertTrue(rule.validate("11:00").isOK());

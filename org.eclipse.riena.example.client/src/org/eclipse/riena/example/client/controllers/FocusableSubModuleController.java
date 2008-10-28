@@ -15,7 +15,7 @@ import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
@@ -46,16 +46,16 @@ public class FocusableSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonA4 = (IToggleButtonRidget) getRidget("buttonA4"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonB0 = (IToggleButtonRidget) getRidget("buttonB0"); //$NON-NLS-1$
 
-		final ITextFieldRidget textA0 = (ITextFieldRidget) getRidget("textA0"); //$NON-NLS-1$
-		final ITextFieldRidget textA1 = (ITextFieldRidget) getRidget("textA1"); //$NON-NLS-1$
-		final ITextFieldRidget textA2 = (ITextFieldRidget) getRidget("textA2"); //$NON-NLS-1$
-		final ITextFieldRidget textA3 = (ITextFieldRidget) getRidget("textA3"); //$NON-NLS-1$
-		final ITextFieldRidget textA4 = (ITextFieldRidget) getRidget("textA4"); //$NON-NLS-1$
-		final ITextFieldRidget textB0 = (ITextFieldRidget) getRidget("textB0"); //$NON-NLS-1$
+		final ITextRidget textA0 = (ITextRidget) getRidget("textA0"); //$NON-NLS-1$
+		final ITextRidget textA1 = (ITextRidget) getRidget("textA1"); //$NON-NLS-1$
+		final ITextRidget textA2 = (ITextRidget) getRidget("textA2"); //$NON-NLS-1$
+		final ITextRidget textA3 = (ITextRidget) getRidget("textA3"); //$NON-NLS-1$
+		final ITextRidget textA4 = (ITextRidget) getRidget("textA4"); //$NON-NLS-1$
+		final ITextRidget textB0 = (ITextRidget) getRidget("textB0"); //$NON-NLS-1$
 
 		final IToggleButtonRidget[] checkButtons = new IToggleButtonRidget[] { buttonA0, buttonA1, buttonA2, buttonA3,
 				buttonA4, buttonB0 };
-		final ITextFieldRidget[] textRidgets = new ITextFieldRidget[] { textA0, textA1, textA2, textA3, textA4, textB0 };
+		final ITextRidget[] textRidgets = new ITextRidget[] { textA0, textA1, textA2, textA3, textA4, textB0 };
 
 		checkVisible.setText("show checkboxes"); //$NON-NLS-1$
 		checkVisible.setSelected(true);
@@ -87,9 +87,9 @@ public class FocusableSubModuleController extends SubModuleController {
 
 	private static final class ChangeFocusableCallback implements IActionListener {
 		private final IToggleButtonRidget buttonCheck;
-		private final ITextFieldRidget textRidget;
+		private final ITextRidget textRidget;
 
-		private ChangeFocusableCallback(IToggleButtonRidget buttonCheck, ITextFieldRidget textRidget) {
+		private ChangeFocusableCallback(IToggleButtonRidget buttonCheck, ITextRidget textRidget) {
 			this.buttonCheck = buttonCheck;
 			this.textRidget = textRidget;
 		}

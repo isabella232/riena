@@ -11,7 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
 /**
  * Deals with insertion, deletion and replacing in segmented strings. A
@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
  * separator.
  * <p>
  * Implementation note regarding valid format patterns: this class has been
- * tested with the format patterns in {@link IDateTextFieldRidget}. In general,
+ * tested with the format patterns in {@link IDateTextRidget}. In general,
  * supported patterns consist of a segment of 1-n digits followed by zero or
  * more groups of consistring of a single separator followed by another segment;
  * i.e.: {@code segment(separator,segment)*}. The following characters are

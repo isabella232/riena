@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * Ridget for a date text field.
  */
-public interface IDateTextFieldRidget extends ITextFieldRidget {
+public interface IDateTextRidget extends ITextRidget {
 
 	/** <code>FORMAT_DDMMYYYY</code> */
 	String FORMAT_DDMMYYYY = "dd.MM.yyyy"; //$NON-NLS-1$

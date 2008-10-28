@@ -264,7 +264,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		updateExpansionState();
 	}
 
-	public void collapseTree() {
+	public void collapseAll() {
 		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.FULLY_COLLAPSE, null);
 		expansionStack.add(cmd);
 		updateExpansionState();
@@ -281,7 +281,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		updateExpansionState();
 	}
 
-	public void expandTree() {
+	public void expandAll() {
 		ExpansionCommand cmd = new ExpansionCommand(ExpansionState.FULLY_EXPAND, null);
 		expansionStack.add(cmd);
 		updateExpansionState();

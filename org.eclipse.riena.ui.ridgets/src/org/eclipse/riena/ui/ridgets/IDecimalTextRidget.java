@@ -20,7 +20,7 @@ package org.eclipse.riena.ui.ridgets;
  * Models supported by this ridget are the String-based TextBean and the
  * Double-based DoubleBean (see {@link #bindToModel(Object, String)}.
  */
-public interface IDecimalValueTextFieldRidget extends INumericValueTextFieldRidget {
+public interface IDecimalTextRidget extends INumericTextRidget {
 
 	/** Property name of the singed property ("signed"). */
 	String PROPERTY_PRECISION = "precision"; //$NON-NLS-1$

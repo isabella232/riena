@@ -21,8 +21,8 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
  * Controller for the {@link ComboSubModuleView} example.
@@ -33,9 +33,9 @@ public class ComboSubModuleController extends SubModuleController {
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
 	private final PersonModificationBean value;
-	private IComboBoxRidget comboOne;
-	private ITextFieldRidget textFirst;
-	private ITextFieldRidget textLast;
+	private IComboRidget comboOne;
+	private ITextRidget textFirst;
+	private ITextRidget textLast;
 
 	public ComboSubModuleController() {
 		this(null);
@@ -74,14 +74,14 @@ public class ComboSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		comboOne = (IComboBoxRidget) getRidget("comboOne"); //$NON-NLS-1$
+		comboOne = (IComboRidget) getRidget("comboOne"); //$NON-NLS-1$
 
 		value.setPerson(manager.getSelectedPerson());
 
-		textFirst = (ITextFieldRidget) getRidget("textFirst"); //$NON-NLS-1$
-		textLast = (ITextFieldRidget) getRidget("textLast"); //$NON-NLS-1$
+		textFirst = (ITextRidget) getRidget("textFirst"); //$NON-NLS-1$
+		textLast = (ITextRidget) getRidget("textLast"); //$NON-NLS-1$
 
-		comboOne.addPropertyChangeListener(IComboBoxRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				value.setPerson(manager.getSelectedPerson());
 				textFirst.updateFromModel();

@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
-import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @see UIControlsFactory#createTextNumeric(org.eclipse.swt.widgets.Composite)
  */
-public class NumericTextRidget extends TextRidget implements INumericValueTextFieldRidget {
+public class NumericTextRidget extends TextRidget implements INumericTextRidget {
 
 	/**
 	 * This is not API and should not be called by clients. Public for testing
@@ -166,7 +166,7 @@ public class NumericTextRidget extends TextRidget implements INumericValueTextFi
 		isMarkNegative = true;
 		maxLength = -1;
 		precision = -1;
-		addPropertyChangeListener(ITextFieldRidget.PROPERTY_TEXT, new PropertyChangeListener() {
+		addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				// System.out.println("updateMarkNeg: " + evt.getNewValue());
 				updateMarkNegative();

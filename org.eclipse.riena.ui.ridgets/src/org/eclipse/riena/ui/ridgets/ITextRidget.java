@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * Ridget for a text field.
  */
-public interface ITextFieldRidget extends IEditableRidget, IMarkableRidget {
+public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 
 	/**
 	 * Property name of the text property.

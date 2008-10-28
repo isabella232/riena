@@ -11,8 +11,8 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
@@ -28,11 +28,11 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Ridget for a 'date/time/date time' SWT <code>Text</code> widget. The desired
  * date/time/dat time pattern can be set via {@link #setFormat(String)}. See
- * {@link IDecimalValueTextFieldRidget} for supported patterns.
+ * {@link IDecimalTextRidget} for supported patterns.
  * 
  * @see UIControlsFactory#createTextDate(org.eclipse.swt.widgets.Composite)
  */
-public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
+public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 	private final VerifyListener verifyListener;
 	private final KeyListener keyListener;
@@ -46,7 +46,7 @@ public class DateTextRidget extends TextRidget implements IDateTextFieldRidget {
 	public DateTextRidget() {
 		verifyListener = new DateVerifyListener();
 		keyListener = new DateKeyListener();
-		setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 	}
 
 	protected final synchronized void addListeners(Text control) {

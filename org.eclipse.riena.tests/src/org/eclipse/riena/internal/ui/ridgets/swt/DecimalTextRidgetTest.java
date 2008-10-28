@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
-import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.DoubleBean;
@@ -37,8 +37,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected IDecimalValueTextFieldRidget getRidget() {
-		return (IDecimalValueTextFieldRidget) super.getRidget();
+	protected IDecimalTextRidget getRidget() {
+		return (IDecimalTextRidget) super.getRidget();
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
 		ridget.setPrecision(2);
 		Text control = getUIControl();
@@ -108,7 +108,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDeleteDecimalSeparator() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(4);
 		ridget.setGrouping(true);
@@ -178,7 +178,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDeleteNegativeSign() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setSigned(true);
 		ridget.setText(localize("1234,56"));
 		ridget.setDirectWriting(true);
@@ -205,7 +205,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testReplaceSelection() throws Exception {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(2);
 		ridget.setGrouping(true);
@@ -253,7 +253,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testJumpOverDecimalSeparator() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
 		Text control = getUIControl();
 		Display display = control.getDisplay();
@@ -285,7 +285,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			}
 		};
 
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
 		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
@@ -301,7 +301,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			}
 		};
 
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(16);
 		ridget.setPrecision(3);
 		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
@@ -312,7 +312,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 
 		ridget.setMaxLength(6);
@@ -349,7 +349,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testMaxLength() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
@@ -365,7 +365,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetSetMaxLength() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 
 		try {
 			ridget.setMaxLength(0);
@@ -381,7 +381,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			// expected
 		}
 
-		expectPropertyChangeEvent(IDecimalValueTextFieldRidget.PROPERTY_MAXLENGTH, Integer.valueOf(10), Integer
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_MAXLENGTH, Integer.valueOf(10), Integer
 				.valueOf(5));
 		ridget.setMaxLength(5);
 
@@ -395,7 +395,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testPrecision() throws Exception {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
@@ -430,7 +430,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetSetPrecision() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 
 		try {
 			ridget.setPrecision(-1);
@@ -439,7 +439,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			// expected
 		}
 
-		expectPropertyChangeEvent(IDecimalValueTextFieldRidget.PROPERTY_PRECISION, Integer.valueOf(2), Integer
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(2), Integer
 				.valueOf(5));
 		ridget.setPrecision(5);
 
@@ -451,7 +451,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IDecimalValueTextFieldRidget.PROPERTY_PRECISION, Integer.valueOf(5), Integer
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(5), Integer
 				.valueOf(0));
 		ridget.setPrecision(0);
 
@@ -460,7 +460,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsSetWithSign() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setPrecision(3);
 		StringBean bean = new StringBean();
@@ -492,7 +492,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testPadOnFocusOut() {
-		IDecimalValueTextFieldRidget ridget = getRidget();
+		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setPrecision(3);
 		StringBean bean = new StringBean();

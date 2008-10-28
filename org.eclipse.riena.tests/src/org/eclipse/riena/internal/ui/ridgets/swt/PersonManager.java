@@ -15,12 +15,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
-import org.eclipse.riena.ui.ridgets.util.IComboBoxEntryFactory;
+import org.eclipse.riena.ui.ridgets.util.IComboEntryFactory;
 
 /**
  * 
  */
-public class PersonManager implements IComboBoxEntryFactory {
+public class PersonManager implements IComboEntryFactory {
 
 	/**
 	 * Property name of the selected person property.
@@ -80,7 +80,7 @@ public class PersonManager implements IComboBoxEntryFactory {
 	}
 
 	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.util.IComboBoxEntryFactory#createNewEntry(java.lang.Object)
+	 * @see IComboEntryFactory#createNewEntry(java.lang.Object)
 	 */
 	public Person createNewEntry(Object listEntryString) {
 		if (listEntryString instanceof String) {

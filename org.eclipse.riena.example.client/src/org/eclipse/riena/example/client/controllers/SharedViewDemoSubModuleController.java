@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 public class SharedViewDemoSubModuleController extends SubModuleController {
 
@@ -36,7 +36,7 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 
 		ILabelRidget labelFacade = (ILabelRidget) getRidget("labelFacade"); //$NON-NLS-1$
-		ITextFieldRidget textFacade = (ITextFieldRidget) getRidget("textFacade"); //$NON-NLS-1$
+		ITextRidget textFacade = (ITextRidget) getRidget("textFacade"); //$NON-NLS-1$
 
 		if (labelFacade != null) {
 			labelFacade.bindToModel(bean, "txt"); //$NON-NLS-1$

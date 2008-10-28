@@ -25,7 +25,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
@@ -66,10 +66,10 @@ public class ListSubModuleController extends SubModuleController {
 
 		listPersons.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);
 
-		final ITextFieldRidget textFirst = (ITextFieldRidget) getRidget("textFirst"); //$NON-NLS-1$
+		final ITextRidget textFirst = (ITextRidget) getRidget("textFirst"); //$NON-NLS-1$
 		textFirst.bindToModel(value, "firstName"); //$NON-NLS-1$
 		textFirst.updateFromModel();
-		final ITextFieldRidget textLast = (ITextFieldRidget) getRidget("textLast"); //$NON-NLS-1$
+		final ITextRidget textLast = (ITextRidget) getRidget("textLast"); //$NON-NLS-1$
 		textLast.bindToModel(value, "lastName"); //$NON-NLS-1$
 		textLast.updateFromModel();
 

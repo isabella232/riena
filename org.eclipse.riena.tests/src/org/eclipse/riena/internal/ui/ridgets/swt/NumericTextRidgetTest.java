@@ -24,9 +24,9 @@ import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
@@ -58,8 +58,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	@Override
-	protected INumericValueTextFieldRidget getRidget() {
-		return (INumericValueTextFieldRidget) super.getRidget();
+	protected INumericTextRidget getRidget() {
+		return (INumericTextRidget) super.getRidget();
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	@Override
 	public void testSetText() throws Exception {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
 
 		ridget.setText("");
@@ -129,7 +129,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testSetTextNoGroup() throws Exception {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		ridget.setGrouping(false);
 
 		ridget.setText("");
@@ -167,7 +167,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	 * Test that null is not allowed in {@code setText(string)}.
 	 */
 	public void testSetTextNull() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		try {
 			ridget.setText(null);
 			fail();
@@ -178,14 +178,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	@Override
 	public void testGetText() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		assertEquals("0", ridget.getText());
 	}
 
 	@Override
 	public void testBindToModelPropertyName() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 
@@ -198,7 +198,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	@Override
 	public void testUpdateFromModel() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 
@@ -210,7 +210,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	@Override
 	public void testBindToModelIObservableValue() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean model = new IntegerBean(4711);
 		IObservableValue modelOV = BeansObservables.observeValue(model, IntegerBean.PROP_VALUE);
@@ -246,7 +246,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testCheckWidget() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = new Text(getShell(), SWT.MULTI);
 
 		try {
@@ -265,7 +265,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testSetSignedTrue() {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
@@ -299,7 +299,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testSetSignedFalse() {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
@@ -307,7 +307,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertTrue(ridget.isSigned());
 
-		expectPropertyChangeEvent(INumericValueTextFieldRidget.PROPERTY_SIGNED, Boolean.TRUE, Boolean.FALSE);
+		expectPropertyChangeEvent(INumericTextRidget.PROPERTY_SIGNED, Boolean.TRUE, Boolean.FALSE);
 		ridget.setSigned(false);
 
 		verifyPropertyChangeEvents();
@@ -327,7 +327,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testSetGrouping() {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -348,7 +348,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testUpdateFromControlUserInput() throws Exception {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Display display = control.getDisplay();
 		IntegerBean bean = new IntegerBean();
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -361,7 +361,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("0", ridget.getText());
 		assertEquals(Integer.valueOf(0), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "0", "47");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "0", "47");
 
 		UITestHelper.sendString(display, "\r");
 		UITestHelper.readAndDispatch(control);
@@ -380,7 +380,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "47", "471");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "47", "471");
 
 		UITestHelper.sendString(display, "\t");
 
@@ -392,9 +392,9 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testUpdateFromControlUserInputDirectWriting() {
 		Text control = getUIControl();
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 
-		//		ridget.addPropertyChangeListener(ITextFieldRidget.PROPERTY_TEXT, new PropertyChangeListener() {
+		//		ridget.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 		//			public void propertyChange(PropertyChangeEvent evt) {
 		//				System.out.println(evt.getNewValue());
 		//			}
@@ -411,7 +411,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("4", ridget.getText());
 		assertEquals(Integer.valueOf(4), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "4", "47");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "4", "47");
 
 		UITestHelper.sendString(display, "7");
 
@@ -420,7 +420,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "47", "471");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "47", "471");
 
 		UITestHelper.sendString(display, "1");
 
@@ -429,7 +429,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf(471), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "471", TestUtils.getLocalizedNumber("4.711"));
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "471", TestUtils.getLocalizedNumber("4.711"));
 
 		UITestHelper.sendString(display, "1");
 
@@ -438,7 +438,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(TestUtils.getLocalizedNumber("4.711"), ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, TestUtils.getLocalizedNumber("4.711"), "471");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, TestUtils.getLocalizedNumber("4.711"), "471");
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
 		UITestHelper.sendString(display, "\b");
@@ -448,7 +448,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf("471"), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "471", "47");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "471", "47");
 
 		UITestHelper.sendString(display, String.valueOf(SWT.DEL));
 
@@ -466,7 +466,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvent(ITextFieldRidget.PROPERTY_TEXT, "47", "4");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "47", "4");
 
 		UITestHelper.sendString(display, "\b");
 
@@ -478,7 +478,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testUpdateFromRidgetOnRebind() throws Exception {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -526,7 +526,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testValidationOnUpdateToModel() throws Exception {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -559,7 +559,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testCharactersAreBlockedInControl() throws Exception {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -579,7 +579,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testValidationOnUpdateFromModelWithOnEditRule() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		IntegerBean bean = new IntegerBean();
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
 
@@ -604,7 +604,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testValidationOnUpdateFromModelWithOnUpdateRule() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		IntegerBean bean = new IntegerBean(Integer.valueOf(123456));
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -631,7 +631,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testUpdateFromRidgetWithValidationOnEditRule() {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean(Integer.valueOf(1234));
 		ridget.addValidationRule(new MinLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
@@ -667,7 +667,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testUpdateFromRidgetWithValidationOnUpdateRule() {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
 		ridget.addValidationRule(new EndsWithFive(), ValidationTime.ON_UPDATE_TO_MODEL);
@@ -702,7 +702,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testValidationMessageWithOnEditRule() throws Exception {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.setDirectWriting(true);
@@ -723,7 +723,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testValidationMessageWithOnUpdateRule() throws Exception {
 		Text control = getUIControl();
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
@@ -746,7 +746,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testRevalidateOnEditRule() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(new IntegerBean(123), IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -774,7 +774,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testRevalidateOnUpdateRule() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(new IntegerBean(123), IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -802,7 +802,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testRevalidateDoesUpdate() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = getUIControl();
 		EvenNumberOfCharacters evenChars = new EvenNumberOfCharacters();
 		ridget.addValidationRule(evenChars, ValidationTime.ON_UI_CONTROL_EDIT);
@@ -833,7 +833,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testReValidationOnUpdateFromModel() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean(12);
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -860,7 +860,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testControlNotEditableWithOutputMarker() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = getUIControl();
 
 		assertTrue(control.getEditable());
@@ -875,7 +875,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = getUIControl();
 
 		assertEquals("0", control.getText());
@@ -904,7 +904,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			return;
 		}
 
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = getUIControl();
 		IntegerBean bean = new IntegerBean(INTEGER_TWO);
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
@@ -936,7 +936,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testMaxLength() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = getUIControl();
 
 		ridget.addValidationRule(new MaxNumberLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
@@ -972,7 +972,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testSetMarkNegative() {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 
 		assertTrue(ridget.isMarkNegative());
 
@@ -986,7 +986,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testNegativeMarkerFromSetText() {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		ridget.setMarkNegative(true);
 
 		ridget.setText("100");
@@ -1016,7 +1016,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testNegativeMarkerFromControl() {
-		INumericValueTextFieldRidget ridget = getRidget();
+		INumericTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		Display display = control.getDisplay();
 		ridget.setMarkNegative(true);

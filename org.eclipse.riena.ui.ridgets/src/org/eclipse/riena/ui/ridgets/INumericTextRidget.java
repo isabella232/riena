@@ -20,7 +20,7 @@ package org.eclipse.riena.ui.ridgets;
  * supported by the JFace databinding, provided the bounds value can be
  * converted to a string representing a number.
  */
-public interface INumericValueTextFieldRidget extends ITextFieldRidget {
+public interface INumericTextRidget extends ITextRidget {
 
 	/** Property name of the singed property ("signed"). */
 	String PROPERTY_SIGNED = "signed"; //$NON-NLS-1$

@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 
 /**
@@ -28,14 +28,14 @@ public class KundenSucheController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		ITextFieldRidget suchName = (ITextFieldRidget) getRidget("suchName");
+		ITextRidget suchName = (ITextRidget) getRidget("suchName");
 		suchName.bindToModel(suchBean, "suchName");
 		suchName.setMandatory(true);
 
-		((ITextFieldRidget) getRidget("suchVorname")).bindToModel(suchBean, "suchVorname");
-		((ITextFieldRidget) getRidget("suchPlz")).bindToModel(suchBean, "suchPlz");
-		((ITextFieldRidget) getRidget("suchOrt")).bindToModel(suchBean, "suchOrt");
-		((ITextFieldRidget) getRidget("suchStrasse")).bindToModel(suchBean, "suchStrasse");
+		((ITextRidget) getRidget("suchVorname")).bindToModel(suchBean, "suchVorname");
+		((ITextRidget) getRidget("suchPlz")).bindToModel(suchBean, "suchPlz");
+		((ITextRidget) getRidget("suchOrt")).bindToModel(suchBean, "suchOrt");
+		((ITextRidget) getRidget("suchStrasse")).bindToModel(suchBean, "suchStrasse");
 		((ILabelRidget) getRidget("treffer")).bindToModel(suchBean, "suchTreffer");
 
 		ITableRidget kunden = ((ITableRidget) getRidget("ergebnis"));

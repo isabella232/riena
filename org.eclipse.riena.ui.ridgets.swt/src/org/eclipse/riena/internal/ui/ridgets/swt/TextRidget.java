@@ -18,7 +18,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Ridget for an SWT <code>Text</code> widget.
  */
-public class TextRidget extends AbstractEditableRidget implements ITextFieldRidget {
+public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
@@ -79,10 +79,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 
 	/**
 	 * @deprecated use BeansObservables.observeValue(ridget instance,
-	 *             ITextFieldRidget.PROPERTY_TEXT);
+	 *             ITextRidget.PROPERTY_TEXT);
 	 */
 	public IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, ITextFieldRidget.PROPERTY_TEXT);
+		return BeansObservables.observeValue(this, ITextRidget.PROPERTY_TEXT);
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		IStatus onEdit = checkOnEditRules(text);
 		validationRulesChecked(onEdit);
 		if (onEdit.isOK()) {
-			firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, textValue);
+			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
 		}
 	}
 
@@ -261,7 +261,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextFieldRidg
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
 			if (checkOnEditRules(newValue).isOK()) {
-				firePropertyChange(ITextFieldRidget.PROPERTY_TEXT, oldValue, newValue);
+				firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
 			}
 		}
 	}

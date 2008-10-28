@@ -20,12 +20,12 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 public class HelloServerSubModuleController extends SubModuleController {
 
 	private IActionRidget actionFacade;
-	private ITextFieldRidget textFacade;
+	private ITextRidget textFacade;
 	private IActionListener callback;
 	private IHelloWorldService service;
 	private MessageBean messageBean;
@@ -69,7 +69,7 @@ public class HelloServerSubModuleController extends SubModuleController {
 	 */
 	public void configureRidgets() {
 		actionFacade = (IActionRidget) getRidget("actionFacade"); //$NON-NLS-1$
-		textFacade = (ITextFieldRidget) getRidget("textFacade"); //$NON-NLS-1$
+		textFacade = (ITextRidget) getRidget("textFacade"); //$NON-NLS-1$
 		callback = (IActionListener) getRidget("callback"); //$NON-NLS-1$
 	}
 

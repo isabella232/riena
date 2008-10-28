@@ -15,8 +15,8 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Shows how to use a {@link IDateTextFieldRidget} with a 'dd.MM.yyyy' pattern.
+ * Shows how to use a {@link IDateTextRidget} with a 'dd.MM.yyyy' pattern.
  */
 public final class SnippetDateTextRidget001 {
 
@@ -46,16 +46,16 @@ public final class SnippetDateTextRidget001 {
 			Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			IDateTextFieldRidget rInput = (IDateTextFieldRidget) SwtRidgetFactory.createRidget(txtInput);
-			rInput.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+			IDateTextRidget rInput = (IDateTextRidget) SwtRidgetFactory.createRidget(txtInput);
+			rInput.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 			rInput.setDirectWriting(true);
 
-			ITextFieldRidget rOutput = (ITextFieldRidget) SwtRidgetFactory.createRidget(txtOutput);
+			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
 			DataBindingContext dbc = new DataBindingContext();
-			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
-					.observeValue(rInput, ITextFieldRidget.PROPERTY_TEXT), new UpdateValueStrategy(
+			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT), BeansObservables
+					.observeValue(rInput, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 			rInput.bindToModel(new StringBean("01.10.2008"), StringBean.PROP_VALUE); //$NON-NLS-1$
 			rInput.updateFromModel();

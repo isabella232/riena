@@ -35,10 +35,10 @@ import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetDisabledMarker;
 import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker;
 import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetMandatoryMarker;
@@ -53,8 +53,8 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
  */
 public class FilterSubModuleController extends SubModuleController {
 
-	private IComboBoxRidget filterTypeValues;
-	private IComboBoxRidget globalFilterTypeValues;
+	private IComboRidget filterTypeValues;
+	private IComboRidget globalFilterTypeValues;
 	private FilterModel filterModel;
 	private FilterModel globalFilterModel;
 	private MarkerModel markerModel;
@@ -111,12 +111,12 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void initMarkerGroup() {
 
-		IComboBoxRidget ridgetToMarkID = (IComboBoxRidget) getRidget("ridgetToMarkID"); //$NON-NLS-1$
+		IComboRidget ridgetToMarkID = (IComboRidget) getRidget("ridgetToMarkID"); //$NON-NLS-1$
 		markerModel = new MarkerModel();
 		ridgetToMarkID.bindToModel(markerModel, "ids", MarkerModel.class, null, markerModel, "selectedId"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridgetToMarkID.updateFromModel();
 
-		IComboBoxRidget markersCombo = (IComboBoxRidget) getRidget("markers"); //$NON-NLS-1$
+		IComboRidget markersCombo = (IComboRidget) getRidget("markers"); //$NON-NLS-1$
 		markersCombo.bindToModel(markerModel, "markers", MarkerModel.class, null, markerModel, "selectedMarker"); //$NON-NLS-1$ //$NON-NLS-2$
 		markersCombo.updateFromModel();
 
@@ -141,7 +141,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void initLocalFilterGroup() {
 
-		IComboBoxRidget ridgetID = (IComboBoxRidget) getRidget("ridgetID"); //$NON-NLS-1$
+		IComboRidget ridgetID = (IComboRidget) getRidget("ridgetID"); //$NON-NLS-1$
 		filterModel = new FilterModel();
 		ridgetID.bindToModel(filterModel, "ids", FilterModel.class, null, filterModel, "selectedId"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridgetID.updateFromModel();
@@ -151,7 +151,7 @@ public class FilterSubModuleController extends SubModuleController {
 		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
-		filterTypeValues = (IComboBoxRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
+		filterTypeValues = (IComboRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (addFilter != null) {
@@ -181,7 +181,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void initGlobalFilterGroup() {
 
-		ITextFieldRidget ridgetID = (ITextFieldRidget) getRidget("globalRidgetID"); //$NON-NLS-1$
+		ITextRidget ridgetID = (ITextRidget) getRidget("globalRidgetID"); //$NON-NLS-1$
 		globalFilterModel = new FilterModel();
 		ridgetID.bindToModel(globalFilterModel, "selectedId"); //$NON-NLS-1$
 		ridgetID.updateFromModel();
@@ -191,7 +191,7 @@ public class FilterSubModuleController extends SubModuleController {
 		filterType.bindToModel(globalFilterModel, "types", globalFilterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
-		globalFilterTypeValues = (IComboBoxRidget) getRidget("globalFilterTypeValues"); //$NON-NLS-1$
+		globalFilterTypeValues = (IComboRidget) getRidget("globalFilterTypeValues"); //$NON-NLS-1$
 		globalFilterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (globalAddFilter != null) {
@@ -301,7 +301,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 * @param add
 	 *            - add button
 	 */
-	private void rebindFilterTypeValues(FilterModel model, IComboBoxRidget typeValues, IActionRidget add) {
+	private void rebindFilterTypeValues(FilterModel model, IComboRidget typeValues, IActionRidget add) {
 
 		if (model == null) {
 			return;

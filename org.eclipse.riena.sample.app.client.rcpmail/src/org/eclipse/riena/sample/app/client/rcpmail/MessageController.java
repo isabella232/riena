@@ -12,7 +12,7 @@ package org.eclipse.riena.sample.app.client.rcpmail;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 
 /**
@@ -87,7 +87,7 @@ public class MessageController extends AbstractRidgetController {
 		lblDate.bindToModel(PojoObservables.observeValue(message, "date")); //$NON-NLS-1$
 		lblDate.updateFromModel();
 
-		ITextFieldRidget txtMessage = (ITextFieldRidget) getRidget("message"); //$NON-NLS-1$
+		ITextRidget txtMessage = (ITextRidget) getRidget("message"); //$NON-NLS-1$
 		txtMessage.bindToModel(PojoObservables.observeValue(message, "message")); //$NON-NLS-1$
 		txtMessage.setOutputOnly(true);
 		txtMessage.updateFromModel();

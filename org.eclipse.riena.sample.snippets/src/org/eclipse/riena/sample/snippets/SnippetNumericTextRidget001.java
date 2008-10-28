@@ -16,8 +16,8 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Demonstrates how to use a {@link INumericValueTextFieldRidget} with a
+ * Demonstrates how to use a {@link INumericTextRidget} with a
  * {@link MaxNumberLength} validation rule.
  */
 public final class SnippetNumericTextRidget001 {
@@ -49,17 +49,17 @@ public final class SnippetNumericTextRidget001 {
 			Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			INumericValueTextFieldRidget rInput = (INumericValueTextFieldRidget) SwtRidgetFactory
+			INumericTextRidget rInput = (INumericTextRidget) SwtRidgetFactory
 					.createRidget(txtInput);
 			rInput.setDirectWriting(true);
 			rInput.addValidationRule(new MaxNumberLength(6), ValidationTime.ON_UI_CONTROL_EDIT);
 
-			ITextFieldRidget rOutput = (ITextFieldRidget) SwtRidgetFactory.createRidget(txtOutput);
+			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
 			DataBindingContext dbc = new DataBindingContext();
-			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
-					.observeValue(rInput, ITextFieldRidget.PROPERTY_TEXT), new UpdateValueStrategy(
+			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT), BeansObservables
+					.observeValue(rInput, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 			rInput.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 			rInput.updateFromModel();

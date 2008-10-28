@@ -87,7 +87,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		TreeTableRidget ridget = getRidget();
 		Tree control = getUIControl();
 
-		ridget.expandTree();
+		ridget.expandAll();
 
 		assertEquals(9, TreeUtils.getItemCount(control));
 		assertEquals(node1.getFirstname(), getUIControlItem(0).getText(0));
@@ -522,7 +522,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 				new String[] { "word", "ACount" }, null);
 		ridget.setComparator(0, new StringComparator());
 		ridget.setComparator(1, new IntegerComparator());
-		ridget.expandTree();
+		ridget.expandAll();
 
 		assertEquals("ZA", control.getItem(0).getItem(0).getText());
 		assertEquals("AAA", control.getItem(0).getItem(1).getText());
@@ -662,7 +662,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * created.
 	 */
 	private final TreeItem getUIControlItem(int index) {
-		getRidget().expandTree();
+		getRidget().expandAll();
 		Tree control = getUIControl();
 		switch (index) {
 		case 0:

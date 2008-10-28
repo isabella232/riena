@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 import org.eclipse.swt.widgets.Shell;
@@ -46,8 +46,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	/** IActionListener for double click on the table */
 	private final IActionListener doubleClickListener;
 	private ITableRidget tableProperties;
-	private ITextFieldRidget textKey;
-	private ITextFieldRidget textValue;
+	private ITextRidget textKey;
+	private ITextRidget textValue;
 
 	public SystemPropertiesSubModuleController() {
 		this(null);
@@ -95,8 +95,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 
 		tableProperties = (ITableRidget) getRidget("tableProperties"); //$NON-NLS-1$
-		textKey = (ITextFieldRidget) getRidget("textKey"); //$NON-NLS-1$
-		textValue = (ITextFieldRidget) getRidget("textValue"); //$NON-NLS-1$
+		textKey = (ITextRidget) getRidget("textKey"); //$NON-NLS-1$
+		textValue = (ITextRidget) getRidget("textValue"); //$NON-NLS-1$
 		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
 		final IToggleButtonRidget toggleDoubleClick = (IToggleButtonRidget) getRidget("toggleDoubleClick"); //$NON-NLS-1$
 		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$

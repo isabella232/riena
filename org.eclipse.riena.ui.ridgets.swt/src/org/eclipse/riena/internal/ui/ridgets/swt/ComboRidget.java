@@ -32,17 +32,17 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.util.IComboBoxEntryFactory;
+import org.eclipse.riena.ui.ridgets.util.IComboEntryFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 
 /**
  * Ridget for {@link Combo} widgets.
  */
-public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
+public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 
 	/** List of choices (Objects). */
 	private final IObservableList rowObservables;
@@ -99,7 +99,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 			public void handleValueChange(ValueChangeEvent event) {
 				Object oldValue = event.diff.getOldValue();
 				Object newValue = event.diff.getNewValue();
-				firePropertyChange(IComboBoxRidget.PROPERTY_SELECTION, oldValue, newValue);
+				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
 				disableMandatoryMarkers(hasInput());
 			}
 		});
@@ -212,7 +212,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 
 	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
 			String renderingMethod, Object selectionBean, String selectionPropertyName,
-			IComboBoxEntryFactory entryFactory) {
+			IComboEntryFactory entryFactory) {
 		throw new UnsupportedOperationException(); // TODO implement
 
 	}
@@ -242,10 +242,10 @@ public class ComboRidget extends AbstractSWTRidget implements IComboBoxRidget {
 
 	/**
 	 * @deprecated use BeansObservables.observeValue(this,
-	 *             IComboBoxRidget.PROPERTY_SELECTION);
+	 *             IComboRidget.PROPERTY_SELECTION);
 	 */
 	public IObservableValue getSelectionObservable() {
-		return BeansObservables.observeValue(this, IComboBoxRidget.PROPERTY_SELECTION);
+		return BeansObservables.observeValue(this, IComboRidget.PROPERTY_SELECTION);
 	}
 
 	public boolean isAddable() {

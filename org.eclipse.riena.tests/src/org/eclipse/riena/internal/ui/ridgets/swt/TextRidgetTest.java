@@ -11,7 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -39,8 +39,8 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected ITextFieldRidget getRidget() {
-		return (ITextFieldRidget) super.getRidget();
+	protected ITextRidget getRidget() {
+		return (ITextRidget) super.getRidget();
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetText() throws Exception {
 		TextBean model = new TextBean();
 		IObservableValue modelOV = BeansObservables.observeValue(model, "text1");
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		ridget.bindToModel(modelOV);
 
 		ridget.setText("first");
@@ -75,7 +75,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetText() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		assertEquals("", ridget.getText());
 
@@ -91,7 +91,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelIObservableValue() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		TextBean model = new TextBean();
 		IObservableValue modelOV = BeansObservables.observeValue(model, "text1");
@@ -105,7 +105,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelPropertyName() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		TextBean model = new TextBean();
 		ridget.bindToModel(model, "text2");
@@ -118,7 +118,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() throws Exception {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 
 		TextBean model = new TextBean();
 		ridget.bindToModel(model, "text2");
@@ -129,7 +129,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testFocusGainedDoesSelectOnSingleText() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = getUIControl();
 
 		ridget.setText("foo");
@@ -147,7 +147,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testFocusGainedDoesNotSelectOnMultiLineText() {
-		ITextFieldRidget ridget = getRidget();
+		ITextRidget ridget = getRidget();
 		Text control = new Text(getShell(), SWT.MULTI);
 		ridget.setUIControl(control);
 

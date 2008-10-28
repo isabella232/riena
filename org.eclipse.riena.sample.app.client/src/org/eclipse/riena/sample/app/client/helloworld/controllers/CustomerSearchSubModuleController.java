@@ -28,7 +28,7 @@ import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 public class CustomerSearchSubModuleController extends SubModuleController {
 
@@ -39,8 +39,8 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	private IActionRidget clearAction;
 	private IActionRidget openAction;
 
-	private ITextFieldRidget firstNameRidget;
-	private ITextFieldRidget lastNameRidget;
+	private ITextRidget firstNameRidget;
+	private ITextRidget lastNameRidget;
 
 	private ResultContainer searchResult;
 	private WritableValue tableSelection;
@@ -85,8 +85,8 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 		searchAction = (IActionRidget) getRidget("searchAction"); //$NON-NLS-1$
 		clearAction = (IActionRidget) getRidget("clearAction"); //$NON-NLS-1$
 		openAction = (IActionRidget) getRidget("openAction"); //$NON-NLS-1$
-		firstNameRidget = (ITextFieldRidget) getRidget("firstNameRidget"); //$NON-NLS-1$
-		lastNameRidget = (ITextFieldRidget) getRidget("lastNameRidget"); //$NON-NLS-1$
+		firstNameRidget = (ITextRidget) getRidget("firstNameRidget"); //$NON-NLS-1$
+		lastNameRidget = (ITextRidget) getRidget("lastNameRidget"); //$NON-NLS-1$
 	}
 
 	@Override

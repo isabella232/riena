@@ -14,14 +14,14 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.ridgets.util.beans.TypedBean;
 
 /**
- * Controller for the {@link IDateTextFieldRidget} example.
+ * Controller for the {@link IDateTextRidget} example.
  */
 public class TextDateSubModuleController extends SubModuleController {
 
@@ -62,13 +62,13 @@ public class TextDateSubModuleController extends SubModuleController {
 	private void bind(DataBindingContext dbc, String id) {
 		IRidget inputRidget = (IRidget) getRidget("in" + id); //$NON-NLS-1$
 		IRidget outputRidget = (IRidget) getRidget("out" + id); //$NON-NLS-1$
-		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
-				.observeValue(outputRidget, ITextFieldRidget.PROPERTY_TEXT), new UpdateValueStrategy(
+		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
+				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 	}
 
 	private void bindToModel(String id, StringBean value) {
-		IDateTextFieldRidget ridget = (IDateTextFieldRidget) getRidget("in" + id); //$NON-NLS-1$
+		IDateTextRidget ridget = (IDateTextRidget) getRidget("in" + id); //$NON-NLS-1$
 		ridget.setFormat(id.replace('_', ' '));
 		ridget.bindToModel(value, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();

@@ -11,7 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.tests.UITestHelper;
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
@@ -31,13 +31,13 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected IRidget createRidget() {
 		DateTextRidget result = new DateTextRidget();
-		result.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		result.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		return result;
 	}
 
 	@Override
-	protected IDateTextFieldRidget getRidget() {
-		return (IDateTextFieldRidget) super.getRidget();
+	protected IDateTextRidget getRidget() {
+		return (IDateTextRidget) super.getRidget();
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDelete() {
-		IDateTextFieldRidget ridget = getRidget();
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("01.10^.2008", UITestHelper.KC_DEL, "01.10.^2008");
 		assertText("01.10^.^2008", UITestHelper.KC_DEL, "01.10^.2008");
@@ -79,8 +79,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testReplace() {
-		IDateTextFieldRidget ridget = getRidget();
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("01.10^.^2008", "1", "01.10^.2008");
 		assertText("01.10^.^2008", ".", "01.10.^2008");
@@ -95,8 +95,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testInsert() {
-		IDateTextFieldRidget ridget = getRidget();
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("  ^.  .    ", "01102008", "01.10.2008^");
 		assertText(" ^ .  .    ", "01.10.2008", "01.10.2008^");
@@ -110,8 +110,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() {
-		IDateTextFieldRidget ridget = getRidget();
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		ridget.setText("01.10.2008");
 		assertEquals("01.10.2008", ridget.getText());
@@ -168,8 +168,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetFormatAfterSetText() {
-		IDateTextFieldRidget ridget = getRidget();
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		Text control = getUIControl();
 		StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
@@ -180,7 +180,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("01.10.2008", ridget.getText());
 		assertEquals("01.10.2008", bean.getValue());
 
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_HHMM);
+		ridget.setFormat(IDateTextRidget.FORMAT_HHMM);
 
 		assertEquals("  :  ", control.getText());
 		assertEquals("  :  ", ridget.getText());
@@ -188,9 +188,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		IDateTextFieldRidget ridget = getRidget();
+		IDateTextRidget ridget = getRidget();
 		Text control = getUIControl();
-		ridget.setFormat(IDateTextFieldRidget.FORMAT_DDMMYYYY);
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		StringBean bean = new StringBean("12.10.2008");
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 

@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
@@ -73,10 +73,10 @@ public class ChoiceSubModuleController extends SubModuleController {
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
-		ITextFieldRidget txtPrice = (ITextFieldRidget) getRidget("txtPrice"); //$NON-NLS-1$
+		ITextRidget txtPrice = (ITextRidget) getRidget("txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		DataBindingContext dbc = new DataBindingContext();
-		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextFieldRidget.PROPERTY_TEXT), BeansObservables
+		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
 		IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$

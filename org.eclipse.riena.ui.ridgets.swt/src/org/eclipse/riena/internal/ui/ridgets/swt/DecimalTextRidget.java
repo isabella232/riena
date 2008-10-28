@@ -13,18 +13,18 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.math.BigDecimal;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Ridget for a 'decimal' SWT <code>Text</code> widget.
  * <p>
  * Implementation note: all the logic is in NumericTextRidget. This class justs
- * adds the API mandated by IDecimalValueTextFieldRidget.
+ * adds the API mandated by IDecimalTextRidget.
  * 
  * @see UIControlsFactory#createTextDecimal(org.eclipse.swt.widgets.Composite)
  */
-public class DecimalTextRidget extends NumericTextRidget implements IDecimalValueTextFieldRidget {
+public class DecimalTextRidget extends NumericTextRidget implements IDecimalTextRidget {
 
 	public DecimalTextRidget() {
 		setMaxLength(10);
@@ -65,7 +65,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 		int oldValue = getMaxLength();
 		if (oldValue != maxLength) {
 			super.setMaxLength(maxLength);
-			firePropertyChange(IDecimalValueTextFieldRidget.PROPERTY_MAXLENGTH, oldValue, maxLength);
+			firePropertyChange(IDecimalTextRidget.PROPERTY_MAXLENGTH, oldValue, maxLength);
 		}
 	}
 
@@ -75,7 +75,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 		int oldValue = getPrecision();
 		if (oldValue != numberOfFractionDigits) {
 			super.setPrecision(numberOfFractionDigits);
-			firePropertyChange(IDecimalValueTextFieldRidget.PROPERTY_PRECISION, oldValue, numberOfFractionDigits);
+			firePropertyChange(IDecimalTextRidget.PROPERTY_PRECISION, oldValue, numberOfFractionDigits);
 		}
 	}
 

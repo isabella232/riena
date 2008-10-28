@@ -13,7 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
  * Controller for the {@link TextSubModuleView} example.
@@ -42,21 +42,21 @@ public class TextSubModuleController extends SubModuleController {
 	 */
 	public void configureRidgets() {
 
-		// private ITextFieldRidget textArea;
-		// private ITextFieldRidget textPassword;
-		// private ITextFieldRidget textField10;
+		// private ITextRidget textArea;
+		// private ITextRidget textPassword;
+		// private ITextRidget textField10;
 
-		ITextFieldRidget textModel1 = (ITextFieldRidget) getRidget("textModel1"); //$NON-NLS-1$
+		ITextRidget textModel1 = (ITextRidget) getRidget("textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
-		ITextFieldRidget textField = (ITextFieldRidget) getRidget("textField"); //$NON-NLS-1$
-		textField.bindToModel(textModel1, ITextFieldRidget.PROPERTY_TEXT);
+		ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
+		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
 
-		ITextFieldRidget textModel2 = (ITextFieldRidget) getRidget("textModel2"); //$NON-NLS-1$
+		ITextRidget textModel2 = (ITextRidget) getRidget("textModel2"); //$NON-NLS-1$
 		textModel2.setText("type something"); //$NON-NLS-1$
-		ITextFieldRidget textDirectWrite = (ITextFieldRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
+		ITextRidget textDirectWrite = (ITextRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
-		textDirectWrite.bindToModel(textModel2, ITextFieldRidget.PROPERTY_TEXT);
+		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);
 		textDirectWrite.updateFromModel();
 	}
 

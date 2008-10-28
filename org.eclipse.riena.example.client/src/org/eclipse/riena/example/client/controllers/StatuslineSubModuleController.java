@@ -19,9 +19,9 @@ import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
  * Controller of the sub-module that is an example how to display something in
@@ -76,15 +76,15 @@ public class StatuslineSubModuleController extends SubModuleController {
 	/**
 	 * @return the messageText
 	 */
-	private ITextFieldRidget getMessageText() {
-		return (ITextFieldRidget) getRidget("messageText"); //$NON-NLS-1$
+	private ITextRidget getMessageText() {
+		return (ITextRidget) getRidget("messageText"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the severity
 	 */
-	private IComboBoxRidget getSeverity() {
-		return (IComboBoxRidget) getRidget("severity"); //$NON-NLS-1$
+	private IComboRidget getSeverity() {
+		return (IComboRidget) getRidget("severity"); //$NON-NLS-1$
 	}
 
 	/**
@@ -97,8 +97,8 @@ public class StatuslineSubModuleController extends SubModuleController {
 	/**
 	 * @return the numberText
 	 */
-	private ITextFieldRidget getNumberText() {
-		return (ITextFieldRidget) getRidget("numberText"); //$NON-NLS-1$
+	private ITextRidget getNumberText() {
+		return (ITextRidget) getRidget("numberText"); //$NON-NLS-1$
 	}
 
 	/**

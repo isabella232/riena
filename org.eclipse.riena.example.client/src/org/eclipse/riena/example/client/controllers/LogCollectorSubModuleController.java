@@ -17,8 +17,8 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.ridgets.util.beans.StringManager;
 
@@ -30,9 +30,9 @@ public class LogCollectorSubModuleController extends SubModuleController {
 	private final StringManager logLevels;
 	private final StringBean messageBean = new StringBean("Hallo!"); //$NON-NLS-1$
 	private final StringBean exceptionBean = new StringBean(NullPointerException.class.getName());
-	private IComboBoxRidget logLevelCombo;
-	private ITextFieldRidget message;
-	private ITextFieldRidget exception;
+	private IComboRidget logLevelCombo;
+	private ITextRidget message;
+	private ITextRidget exception;
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(
 			LogCollectorSubModuleController.class.getName());
@@ -73,9 +73,9 @@ public class LogCollectorSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		logLevelCombo = (IComboBoxRidget) getRidget("logLevelCombo"); //$NON-NLS-1$
-		message = (ITextFieldRidget) getRidget("message"); //$NON-NLS-1$
-		exception = (ITextFieldRidget) getRidget("exception"); //$NON-NLS-1$
+		logLevelCombo = (IComboRidget) getRidget("logLevelCombo"); //$NON-NLS-1$
+		message = (ITextRidget) getRidget("message"); //$NON-NLS-1$
+		exception = (ITextRidget) getRidget("exception"); //$NON-NLS-1$
 
 		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonLog"); //$NON-NLS-1$
 		buttonSave.setText("&Log"); //$NON-NLS-1$

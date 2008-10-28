@@ -14,7 +14,7 @@ package org.eclipse.riena.ui.ridgets.util;
  * Interface to be implemented by classes, which may be used by a
  * <code>ListAdapter</code> to create list entries from a string.
  */
-public interface IComboBoxEntryFactory {
+public interface IComboEntryFactory {
 
 	/**
 	 * Implementing class should return the appropriate list entry object,

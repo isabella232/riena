@@ -19,7 +19,7 @@ import java.util.Iterator;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.tests.UITestHelper;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.StringManager;
@@ -597,7 +597,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		FTPropertyChangeListener pcl = new FTPropertyChangeListener();
-		ridget.addPropertyChangeListener(IComboBoxRidget.PROPERTY_SELECTION, pcl);
+		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
 
 		ridget.setSelection(selection1);
 
@@ -742,7 +742,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		private static final long serialVersionUID = 4711L;
 
 		public SelectionPropertyChangeEvent(Object oldValue, Object newValue) {
-			super(getRidget(), IComboBoxRidget.PROPERTY_SELECTION, oldValue, newValue);
+			super(getRidget(), IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
 		}
 	}
 

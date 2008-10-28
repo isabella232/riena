@@ -15,17 +15,17 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
  * Controller of the sub module that displays the details of a customer.
  */
 public class CustomerDetailsSubModuleController extends SubModuleController {
 
-	private ITextFieldRidget numberFacade;
-	private ITextFieldRidget nameFacade;
-	private ITextFieldRidget firstnameFacade;
-	private ITextFieldRidget birthplaceFacade;
+	private ITextRidget numberFacade;
+	private ITextRidget nameFacade;
+	private ITextRidget firstnameFacade;
+	private ITextRidget birthplaceFacade;
 	private IActionRidget offersFacade;
 	private IActionRidget saveFacade;
 
@@ -67,35 +67,35 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 		return (Customer) getNavigationNode().getContext();
 	}
 
-	public ITextFieldRidget getNumberFacade() {
+	public ITextRidget getNumberFacade() {
 		return numberFacade;
 	}
 
-	public void setNumberFacade(ITextFieldRidget numberFacade) {
+	public void setNumberFacade(ITextRidget numberFacade) {
 		this.numberFacade = numberFacade;
 	}
 
-	public ITextFieldRidget getNameFacade() {
+	public ITextRidget getNameFacade() {
 		return nameFacade;
 	}
 
-	public void setNameFacade(ITextFieldRidget nameFacade) {
+	public void setNameFacade(ITextRidget nameFacade) {
 		this.nameFacade = nameFacade;
 	}
 
-	public ITextFieldRidget getFirstnameFacade() {
+	public ITextRidget getFirstnameFacade() {
 		return firstnameFacade;
 	}
 
-	public void setFirstnameFacade(ITextFieldRidget firstnameFacade) {
+	public void setFirstnameFacade(ITextRidget firstnameFacade) {
 		this.firstnameFacade = firstnameFacade;
 	}
 
-	public ITextFieldRidget getBirthplaceFacade() {
+	public ITextRidget getBirthplaceFacade() {
 		return birthplaceFacade;
 	}
 
-	public void setBirthplaceFacade(ITextFieldRidget birthplaceFacade) {
+	public void setBirthplaceFacade(ITextRidget birthplaceFacade) {
 		this.birthplaceFacade = birthplaceFacade;
 	}
 

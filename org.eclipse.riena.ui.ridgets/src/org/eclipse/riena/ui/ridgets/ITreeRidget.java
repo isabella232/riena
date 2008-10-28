@@ -102,7 +102,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
-	void expandTree();
+	void expandAll();
 
 	/**
 	 * Collapses all nodes of the tree if the Ridget is currently bound to a
@@ -116,7 +116,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @see #bindToModel(Object, Class, String, String)
 	 * @see IRidget#getUIControl()
 	 */
-	void collapseTree();
+	void collapseAll();
 
 	/**
 	 * @deprecated see {@link #expand(Object)}

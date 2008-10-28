@@ -23,14 +23,14 @@ import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
@@ -48,14 +48,14 @@ public class MarkerSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final ITextFieldRidget textName = (ITextFieldRidget) getRidget("textName"); //$NON-NLS-1$
+		final ITextRidget textName = (ITextRidget) getRidget("textName"); //$NON-NLS-1$
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
-		final ITextFieldRidget textPrice = (ITextFieldRidget) getRidget("textPrice"); //$NON-NLS-1$
+		final ITextRidget textPrice = (ITextRidget) getRidget("textPrice"); //$NON-NLS-1$
 		textPrice.addMarker(new NegativeMarker());
 		textPrice.setText("-29,99"); //$NON-NLS-1$
 
-		final IComboBoxRidget comboAge = (IComboBoxRidget) getRidget("comboAge"); //$NON-NLS-1$
+		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 		comboAge.updateFromModel();

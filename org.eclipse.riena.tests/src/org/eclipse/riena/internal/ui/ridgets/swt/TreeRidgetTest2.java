@@ -785,7 +785,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		Object[] roots = { root };
 		getRidget().bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
-		ridget.expandTree();
+		ridget.expandAll();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -796,7 +796,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setRootsVisible(true);
 
 		ridget.updateFromModel();
-		ridget.expandTree();
+		ridget.expandAll();
 
 		assertEquals(4, TreeUtils.getItemCount(control));
 	}
@@ -808,7 +808,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		ridget.setRootsVisible(false);
 		ridget.updateFromModel();
 
-		ridget.expandTree();
+		ridget.expandAll();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -868,7 +868,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		ITreeRidget ridget = getRidget();
 		Tree control = getUIControl();
 
-		ridget.expandTree();
+		ridget.expandAll();
 		ridget.setSelection(root);
 		ridget.setOutputOnly(true);
 
@@ -1084,7 +1084,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 * created.
 	 */
 	private final TreeItem getUIControlItem(int index) {
-		getRidget().expandTree();
+		getRidget().expandAll();
 		Tree control = getUIControl();
 		switch (index) {
 		case 0:

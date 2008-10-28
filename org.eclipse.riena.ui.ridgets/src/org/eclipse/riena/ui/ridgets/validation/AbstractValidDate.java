@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.riena.ui.ridgets.IDateTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
 /**
  * Validator checking that a String matches a given pattern for a Date.
@@ -166,7 +166,7 @@ public abstract class AbstractValidDate implements IValidator {
 
 	private boolean isNoPossibleCompletionToAllowedYear(final String value, final String datePattern) {
 
-		return datePattern.startsWith(IDateTextFieldRidget.FORMAT_YYYY) && value.startsWith("0") && value.length() > 2; //$NON-NLS-1$
+		return datePattern.startsWith(IDateTextRidget.FORMAT_YYYY) && value.startsWith("0") && value.length() > 2; //$NON-NLS-1$
 	}
 
 	private int nextSeparatorIndex(final String value) {

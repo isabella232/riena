@@ -13,8 +13,8 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.IDecimalValueTextFieldRidget;
-import org.eclipse.riena.ui.ridgets.INumericValueTextFieldRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * SWT example for {@link INumericValueTextFieldRidget} and
- * {@link IDecimalValueTextFieldRidget}.
+ * SWT example for {@link INumericTextRidget} and
+ * {@link IDecimalTextRidget}.
  */
 public class TextNumericSubModuleView extends SubModuleView<TextNumericSubModuleController> {
 

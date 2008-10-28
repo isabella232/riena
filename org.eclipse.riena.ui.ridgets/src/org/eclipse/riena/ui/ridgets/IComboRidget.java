@@ -12,12 +12,12 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.ui.ridgets.util.IComboBoxEntryFactory;
+import org.eclipse.riena.ui.ridgets.util.IComboEntryFactory;
 
 /**
  * @author Frank Schepp
  */
-public interface IComboBoxRidget extends IMarkableRidget {
+public interface IComboRidget extends IMarkableRidget {
 
 	/**
 	 * The name of the bound read-write <em>selection</em> property.
@@ -75,7 +75,7 @@ public interface IComboBoxRidget extends IMarkableRidget {
 	 */
 	void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
 			String renderingMethod, Object selectionBean, String selectionPropertyName,
-			IComboBoxEntryFactory entryFactory);
+			IComboEntryFactory entryFactory);
 
 	/**
 	 * Return the observable list holding the list.
@@ -90,7 +90,7 @@ public interface IComboBoxRidget extends IMarkableRidget {
 	 * @return the observable value.
 	 * 
 	 * @deprecated use BeansObservables.observeValue(this,
-	 *             IComboBoxRidget.PROPERTY_SELECTION);
+	 *             IComboRidget.PROPERTY_SELECTION);
 	 */
 	IObservableValue getSelectionObservable();
 
@@ -148,7 +148,7 @@ public interface IComboBoxRidget extends IMarkableRidget {
 
 	/**
 	 * Return true if the receiver is editable. By default, a
-	 * <code>IComboBoxRidget</code> is not editable.
+	 * <code>IComboRidget</code> is not editable.
 	 * 
 	 * @return true if the receiver is editable, otherwise false
 	 * @deprecated use isReadonly() instead
@@ -156,13 +156,13 @@ public interface IComboBoxRidget extends IMarkableRidget {
 	boolean isEditable();
 
 	/**
-	 * Set the editability of the <code>IComboBoxRidget</code> edit field. If
-	 * the edit field is editable arbitrary text can be entered into the entry
-	 * field - the text does need not to be an element of the
-	 * <code>IComboBoxRidget</code> drop down list. Entering text not
-	 * contained in the <code>IComboBoxRidget</code> drop down list will be
-	 * added to the list if and only if the <code>IComboBoxRidget</code> is
-	 * mutable {@link IComboBoxRidget#isListMutable()}.
+	 * Set the editability of the <code>IComboRidget</code> edit field. If the
+	 * edit field is editable arbitrary text can be entered into the entry field
+	 * - the text does need not to be an element of the
+	 * <code>IComboRidget</code> drop down list. Entering text not contained in
+	 * the <code>IComboRidget</code> drop down list will be added to the list if
+	 * and only if the <code>IComboRidget</code> is mutable
+	 * {@link IComboRidget#isListMutable()}.
 	 * 
 	 * @param editable
 	 *            true if the receiver is editable, otherwise false
@@ -180,14 +180,14 @@ public interface IComboBoxRidget extends IMarkableRidget {
 	boolean isListMutable();
 
 	/**
-	 * Set the mutability of the <code>IComboBoxRidget</code> drop down list.
-	 * If the list is mutable text entered into the entry field (see
-	 * {@link IComboBoxRidget#isEditable()}) that is not yet contained in the
+	 * Set the mutability of the <code>IComboRidget</code> drop down list. If
+	 * the list is mutable text entered into the entry field (see
+	 * {@link IComboRidget#isEditable()}) that is not yet contained in the
 	 * receivers drop down list will automatically be added to the list. Note
-	 * that setting this value to <code>true</code> only makes sense if the
-	 * list model this ridget is bound to (see
-	 * {@link IComboBoxRidget#bindToModel(IObservableList, Class, String, IObservableValue)})
-	 * is mutable, too.
+	 * that setting this value to <code>true</code> only makes sense if the list
+	 * model this ridget is bound to (see
+	 * {@link IComboRidget#bindToModel(IObservableList, Class, String, IObservableValue)}
+	 * ) is mutable, too.
 	 * 
 	 * @param mutable
 	 *            true if the receiver is mutable, otherwise false

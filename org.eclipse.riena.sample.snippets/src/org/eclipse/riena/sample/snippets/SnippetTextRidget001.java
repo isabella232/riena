@@ -15,7 +15,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.swt.SWT;
@@ -45,7 +45,7 @@ public final class SnippetTextRidget001 {
 
 			ILabelRidget labelRidget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
 
-			ITextFieldRidget textRidget = (ITextFieldRidget) SwtRidgetFactory.createRidget(text);
+			ITextRidget textRidget = (ITextRidget) SwtRidgetFactory.createRidget(text);
 			textRidget.addValidationRule(new MinLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 			textRidget.setDirectWriting(true);
 			textRidget.bindToModel(BeansObservables.observeValue(labelRidget, ILabelRidget.PROPERTY_TEXT));
