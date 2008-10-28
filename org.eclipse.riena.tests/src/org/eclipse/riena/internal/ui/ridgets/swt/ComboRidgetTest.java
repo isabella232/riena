@@ -22,8 +22,6 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 import org.eclipse.riena.ui.ridgets.util.beans.StringManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;

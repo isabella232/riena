@@ -34,7 +34,6 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
 import org.eclipse.riena.ui.tests.base.TestMultiSelectionBean;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
 import org.eclipse.swt.SWT;

@@ -29,8 +29,6 @@ import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 import org.eclipse.riena.ui.tests.base.TestMultiSelectionBean;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
 import org.eclipse.swt.SWT;

@@ -14,6 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Comparator;
 
+import org.eclipse.riena.example.client.model.Person;
+import org.eclipse.riena.example.client.model.PersonManager;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
@@ -25,8 +27,6 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 
 /**
  * Controller for the {@link TextSubModuleView} example.

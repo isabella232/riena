@@ -29,7 +29,6 @@ import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.DateBean;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
-import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;

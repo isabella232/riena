@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.util.beans;
+package org.eclipse.riena.example.client.model;
 
 /**
  * A simple bean.

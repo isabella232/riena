@@ -17,7 +17,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;

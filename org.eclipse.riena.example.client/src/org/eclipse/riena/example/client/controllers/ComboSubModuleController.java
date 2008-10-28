@@ -13,6 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.riena.example.client.model.PersonManager;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
@@ -22,7 +23,6 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 
 /**
  * Controller for the {@link ComboSubModuleView} example.

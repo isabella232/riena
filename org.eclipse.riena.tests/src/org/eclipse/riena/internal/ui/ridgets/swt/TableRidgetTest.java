@@ -27,8 +27,6 @@ import org.eclipse.riena.ui.ridgets.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.PersonManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

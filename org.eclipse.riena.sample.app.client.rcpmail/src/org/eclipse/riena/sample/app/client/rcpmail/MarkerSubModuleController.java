@@ -35,8 +35,6 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
-import org.eclipse.riena.ui.ridgets.util.beans.TestBean;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 

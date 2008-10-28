@@ -8,7 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.util.beans;
+package org.eclipse.riena.internal.ui.ridgets.swt;
+
+import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
 /**
  * List element of the list held by the <code>PersonManager</code>

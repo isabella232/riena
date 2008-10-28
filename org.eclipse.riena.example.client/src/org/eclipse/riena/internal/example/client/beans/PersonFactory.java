@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.example.client.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
+import org.eclipse.riena.example.client.model.Person;
 
 /**
  * Creates a collection of persons.

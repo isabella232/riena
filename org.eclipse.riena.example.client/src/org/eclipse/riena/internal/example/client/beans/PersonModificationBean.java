@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.example.client.beans;
 
-import org.eclipse.riena.ui.ridgets.util.beans.Person;
+import org.eclipse.riena.example.client.model.Person;
 
 /**
  * This beans allows editing of a {@link Person} without immediately changing
