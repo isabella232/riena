@@ -241,17 +241,6 @@ public class ValueBindingSupport implements IValidationCallback {
 		return context;
 	}
 
-	private void updateValidationMessageMarkers(IStatus status) {
-		lastValidationStatus = status;
-		for (ValidationMessageMarker validationMessageMarker : validationMessageMarkers) {
-			removeValidationMessageMarker(validationMessageMarker);
-
-			if (!status.isOK()) {
-				addValidationMessageMarker(validationMessageMarker);
-			}
-		}
-	}
-
 	public void validationRulesChecked(IStatus status) {
 		updateValidationMessageMarkers(status);
 	}
@@ -262,10 +251,7 @@ public class ValueBindingSupport implements IValidationCallback {
 
 	public void addValidationMessage(IMessageMarker messageMarker) {
 		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker);
-		validationMessageMarkers.add(validationMessageMarker);
-		if (isErrorMarked()) {
-			addValidationMessageMarker(validationMessageMarker);
-		}
+		doAddMessageMarker(validationMessageMarker);
 	}
 
 	public void addValidationMessage(String message, IValidator validationRule) {
@@ -274,10 +260,7 @@ public class ValueBindingSupport implements IValidationCallback {
 
 	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
 		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
-		validationMessageMarkers.add(validationMessageMarker);
-		if (isErrorMarked()) {
-			addValidationMessageMarker(validationMessageMarker);
-		}
+		doAddMessageMarker(validationMessageMarker);
 	}
 
 	public void removeValidationMessage(String message) {
@@ -304,15 +287,25 @@ public class ValueBindingSupport implements IValidationCallback {
 		}
 	}
 
-	private boolean isErrorMarked() {
-		return markable.getMarkers().contains(errorMarker);
-	}
+	// helping methods
+	//////////////////
 
 	private void addValidationMessageMarker(ValidationMessageMarker validationMessageMarker) {
 		if (validationMessageMarker.getValidationRule() == null
 				|| isSourceOf(validationMessageMarker.getValidationRule(), lastValidationStatus)) {
 			markable.addMarker(validationMessageMarker);
 		}
+	}
+
+	private void doAddMessageMarker(ValidationMessageMarker messageMarker) {
+		validationMessageMarkers.add(messageMarker);
+		if (isErrorMarked()) {
+			addValidationMessageMarker(messageMarker);
+		}
+	}
+
+	private boolean isErrorMarked() {
+		return markable.getMarkers().contains(errorMarker);
 	}
 
 	private boolean isSourceOf(IValidator validationRule, IStatus status) {
@@ -330,6 +323,17 @@ public class ValueBindingSupport implements IValidationCallback {
 
 	private void removeValidationMessageMarker(ValidationMessageMarker validationMessageMarker) {
 		markable.removeMarker(validationMessageMarker);
+	}
+
+	private void updateValidationMessageMarkers(IStatus status) {
+		lastValidationStatus = status;
+		for (ValidationMessageMarker validationMessageMarker : validationMessageMarkers) {
+			removeValidationMessageMarker(validationMessageMarker);
+
+			if (!status.isOK()) {
+				addValidationMessageMarker(validationMessageMarker);
+			}
+		}
 	}
 
 }
