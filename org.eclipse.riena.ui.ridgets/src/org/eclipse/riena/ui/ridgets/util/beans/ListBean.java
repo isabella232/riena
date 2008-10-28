@@ -54,7 +54,7 @@ public class ListBean extends AbstractBean {
 	 *            The values.
 	 * @pre values != null
 	 */
-	public ListBean(Object[] values) {
+	public ListBean(Object... values) {
 		Assert.isNotNull(values, "Expected a list"); //$NON-NLS-1$
 		this.values = Arrays.asList(values);
 	}
