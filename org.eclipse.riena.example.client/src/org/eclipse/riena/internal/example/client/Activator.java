@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.example.client;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.riena.core.RienaPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class Activator extends RienaPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.example.client"; //$NON-NLS-1$
