@@ -82,6 +82,11 @@ public class ListenerList<L> {
 	 */
 	private final Object emptyArray;
 
+	/**
+     * The listener class (used internally for creating arrays of this type).
+     */
+	private final Class<?> listenerClass;
+
 	@SuppressWarnings("unused")
 	private ListenerList() {
 		this(null);
@@ -109,6 +114,7 @@ public class ListenerList<L> {
 	@SuppressWarnings("unchecked")
 	public ListenerList(Mode mode, Class<?> listenerClass) {
 		this.identity = mode == Mode.IDENTITY;
+		this.listenerClass = listenerClass;
 		this.emptyArray = Array.newInstance(listenerClass, 0);
 		this.listeners = (L[]) emptyArray;
 	}
@@ -137,7 +143,7 @@ public class ListenerList<L> {
 
 		// Thread safety: create new array to avoid affecting concurrent readers
 		final int oldSize = listeners.length;
-		L[] newListeners = (L[]) Array.newInstance(listener.getClass(), oldSize + 1);
+		L[] newListeners = (L[]) Array.newInstance(listenerClass, oldSize + 1);
 		System.arraycopy(listeners, 0, newListeners, 0, oldSize);
 		newListeners[oldSize] = listener;
 		// atomic assignment
@@ -193,7 +199,7 @@ public class ListenerList<L> {
 				} else {
 					// Thread safety: create new array to avoid affecting
 					// concurrent readers
-					L[] newListeners = (L[]) Array.newInstance(listener.getClass(), oldSize - 1);
+					L[] newListeners = (L[]) Array.newInstance(listenerClass, oldSize - 1);
 					System.arraycopy(listeners, 0, newListeners, 0, i);
 					System.arraycopy(listeners, i + 1, newListeners, i, oldSize - i - 1);
 					// atomic assignment to field

@@ -13,6 +13,7 @@ package org.eclipse.riena.core.util;
 import java.util.EventListener;
 
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
  * Tests the <code>ListenerList</code>
@@ -73,6 +74,36 @@ public class ListenerListTest extends RienaTestCase {
 			assertEquals(listenerList.getListeners().length, TestListener.pieps);
 		}
 		assertEquals(0, listenerList.getListeners().length);
+	}
+
+	/**
+	 * Test a bug fix for an ArrayStoreException that was thrown when
+	 * adding/removing several anonymous classes from the same listener list.
+	 */
+	public void testFixArrayStoreExceptionWithAnonymousClasses() {
+		final ListenerList<IWindowRidgetListener> listenerList = new ListenerList<IWindowRidgetListener>(
+				IWindowRidgetListener.class);
+
+		IWindowRidgetListener listener1 = new IWindowRidgetListener() {
+			public void activated() {
+			}
+
+			public void closed() {
+			}
+		};
+		listenerList.add(listener1);
+
+		IWindowRidgetListener listener2 = new IWindowRidgetListener() {
+			public void activated() {
+			}
+
+			public void closed() {
+			}
+		};
+		listenerList.add(listener2);
+
+		listenerList.remove(listener1);
+		listenerList.remove(listener2);
 	}
 
 	private static class TestListener implements EventListener {
