@@ -37,7 +37,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 	protected void checkNumber(String number) {
 		if (!"".equals(number)) { //$NON-NLS-1$
 			try {
-				new BigDecimal(ungroup(number));
+				new BigDecimal(localStringToBigDecimal(number));
 			} catch (NumberFormatException nfe) {
 				throw new NumberFormatException("Not a valid decimal: " + number); //$NON-NLS-1$
 			}
@@ -45,8 +45,8 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 	}
 
 	protected boolean isNegative(String text) {
-		BigDecimal value = new BigDecimal(text);
-		return (value.compareTo(BigDecimal.ZERO) < 0);
+		BigDecimal value = new BigDecimal(localStringToBigDecimal(text));
+		return value.compareTo(BigDecimal.ZERO) < 0;
 	}
 
 	@Override
@@ -77,6 +77,13 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalValu
 			super.setPrecision(numberOfFractionDigits);
 			firePropertyChange(IDecimalValueTextFieldRidget.PROPERTY_PRECISION, oldValue, numberOfFractionDigits);
 		}
+	}
+
+	// helping methods
+	//////////////////
+
+	private String localStringToBigDecimal(String number) {
+		return ungroup(number).replace(DECIMAL_SEPARATOR, '.');
 	}
 
 }

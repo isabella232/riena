@@ -185,6 +185,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		Text control = getUIControl();
 		Display display = control.getDisplay();
 
+		assertTrue(ridget.isMarkNegative());
+
 		assertEquals(localize("1.234,56"), ridget.getText());
 		assertEquals(0, ridget.getMarkersOfType(NegativeMarker.class).size());
 
@@ -259,19 +261,19 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		// jump when directly at the left of the decimal separator 
 		ridget.setText(localize("123.456,78"));
 		control.setSelection(7);
-		UITestHelper.sendString(display, ".");
+		UITestHelper.sendString(display, localize(","));
 
 		assertEquals(8, control.getCaretPosition());
 
 		// don't jump if right of decimal separator
 		control.setSelection(9);
-		UITestHelper.sendString(display, ".");
+		UITestHelper.sendString(display, localize(","));
 
 		assertEquals(9, control.getCaretPosition());
 
 		// don't jump if not directly on the left of the decimal separator
 		control.setSelection(6);
-		UITestHelper.sendString(display, ".");
+		UITestHelper.sendString(display, localize(","));
 
 		assertEquals(6, control.getCaretPosition());
 	}
