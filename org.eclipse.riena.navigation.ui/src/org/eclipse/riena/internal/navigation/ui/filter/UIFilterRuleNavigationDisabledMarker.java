@@ -15,13 +15,13 @@ import org.eclipse.riena.ui.core.marker.DisabledMarker;
 /**
  *
  */
-public class NavigationUIFilterAttributeDisabledMarker extends AbstractNavigationUIFilterMarkerAttribute {
+public class UIFilterRuleNavigationDisabledMarker extends AbstractUIFilterRuleNavigationMarker {
 
-	public NavigationUIFilterAttributeDisabledMarker() {
+	public UIFilterRuleNavigationDisabledMarker() {
 		super(null, new DisabledMarker());
 	}
 
-	public NavigationUIFilterAttributeDisabledMarker(String nodeId) {
+	public UIFilterRuleNavigationDisabledMarker(String nodeId) {
 		super(nodeId, new DisabledMarker());
 	}
 

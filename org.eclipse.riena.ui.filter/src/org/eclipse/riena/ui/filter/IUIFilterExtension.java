@@ -14,7 +14,7 @@ import org.eclipse.riena.core.extension.ExtensionInterface;
 
 /**
  * Interface for a UIFiltere extension that defines how to create a filter with
- * a list of attributes.
+ * a list of ruels.
  */
 @ExtensionInterface
 public interface IUIFilterExtension {
@@ -25,12 +25,13 @@ public interface IUIFilterExtension {
 	String getFilterId();
 
 	/**
-	 * Returns the list of attributes
+	 * Returns the list of rules
 	 */
-	IMarkerAttribute[] getMarkerAttributes();
+	IMarkerRule[] getMarkerRules();
 
 	/**
 	 * Returns the nodeIds
 	 */
 	IFilterNodeIds[] getNodeIds();
+
 }

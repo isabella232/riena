@@ -8,22 +8,15 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.navigation.ui.filter;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+package org.eclipse.riena.ui.filter;
 
 /**
- * Tests all test cases within package:
- * <code>org.eclipse.riena.internal.navigation.ui.filter</code>
+ *
  */
-public class AllTests extends TestCase {
+public interface IUIFilterRuleMarkerRidget extends IUIFilterRuleMarker {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(AbstractUIFilterRuleNavigationMarkerTest.class);
-		return suite;
-	}
-
+	/**
+	 * Sets the id
+	 */
+	void setId(String id);
 }

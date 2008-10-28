@@ -10,17 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter;
 
-import org.eclipse.riena.core.marker.IMarker;
-
 /**
- * This filter attribute adds a marker to an UI element (ridget or navigation
- * node).
+ *
  */
-public interface IUIFilterMarkerAttribute extends IUIFilterAttribute {
+public interface IMarkerRule {
 
 	/**
-	 * Returns the marker of this IUIFilterMarkerAttribute .
+	 * Returns the targetId of the marker
 	 */
-	IMarker getMarker();
+	String getTargetId();
+
+	/**
+	 * Returns the rule class
+	 */
+	IUIFilterRule getRuleClass();
 
 }

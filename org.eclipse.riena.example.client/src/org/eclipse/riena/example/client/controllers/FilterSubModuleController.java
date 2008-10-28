@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -39,11 +39,11 @@ import org.eclipse.riena.ui.ridgets.IComboBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextFieldRidget;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeDisabledMarker;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeMandatoryMarker;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeOutputMarker;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeValidator;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetDisabledMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetMandatoryMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetOutputMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetValidator;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
@@ -220,7 +220,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 * Adds a filter to the node of this sub module.
 	 */
 	private void doAddFilter() {
-		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
+		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
 		attributes.add(createFilterAttribute(filterModel));
 		IUIFilter filter = new UIFilter(attributes);
 		getNavigationNode().addFilter(filter);
@@ -230,7 +230,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 * Adds a filter to the node of the application.
 	 */
 	private void doGlobalAddFilter() {
-		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
+		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
 		attributes.add(createFilterAttribute(globalFilterModel));
 		IUIFilter filter = new UIFilter(attributes);
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
@@ -245,9 +245,9 @@ public class FilterSubModuleController extends SubModuleController {
 	 *            - model with selections.
 	 * @return filter attribute
 	 */
-	private IUIFilterAttribute createFilterAttribute(FilterModel model) {
+	private IUIFilterRule createFilterAttribute(FilterModel model) {
 
-		IUIFilterAttribute attribute = null;
+		IUIFilterRule attribute = null;
 
 		String id = model.getSelectedId();
 		Object filterValue = model.getSelectedFilterTypeValue();
@@ -256,18 +256,18 @@ public class FilterSubModuleController extends SubModuleController {
 		switch (type) {
 		case MARKER:
 			if (filterValue instanceof OutputMarker) {
-				attribute = new RidgetUIFilterAttributeOutputMarker(id);
+				attribute = new UIFilterRuleRidgetOutputMarker(id);
 			} else if (filterValue instanceof DisabledMarker) {
-				attribute = new RidgetUIFilterAttributeDisabledMarker(id);
+				attribute = new UIFilterRuleRidgetDisabledMarker(id);
 			} else if (filterValue instanceof MandatoryMarker) {
-				attribute = new RidgetUIFilterAttributeMandatoryMarker(id);
+				attribute = new UIFilterRuleRidgetMandatoryMarker(id);
 			} else if (filterValue instanceof HiddenMarker) {
-				attribute = new RidgetUIFilterAttributeHiddenMarker(id);
+				attribute = new UIFilterRuleRidgetHiddenMarker(id);
 			}
 			break;
 		case VALIDATOR:
 			if (filterValue instanceof IValidator) {
-				attribute = new RidgetUIFilterAttributeValidator(id, (IValidator) filterValue,
+				attribute = new UIFilterRuleRidgetValidator(id, (IValidator) filterValue,
 						ValidationTime.ON_UI_CONTROL_EDIT);
 			}
 		}

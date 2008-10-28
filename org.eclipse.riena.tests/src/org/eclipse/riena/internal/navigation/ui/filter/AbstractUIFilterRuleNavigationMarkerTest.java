@@ -19,12 +19,12 @@ import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 
 /**
- * Tests of the class {@link AbstractNavigationUIFilterMarkerAttribute}.
+ * Tests of the class {@link AbstractUIFilterRuleNavigationMarker}.
  */
-public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
+public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 
 	/**
 	 * Tests the method {@code matches}.
@@ -33,7 +33,7 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 
 		INavigationNode<?> node = new SubModuleNode();
 		node.setNodeId(new NavigationNodeId("id"));
-		IUIFilterAttribute attribute = new MyNavigationUIFilterMarkerAttribute(node.getNodeId().getInstanceId(), null);
+		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getInstanceId(), null);
 		assertFalse(attribute.matches(null));
 		assertFalse(attribute.matches(new Object()));
 		SubModuleNode sm = new SubModuleNode();
@@ -52,7 +52,7 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 		node.setNodeId(new NavigationNodeId("id"));
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertTrue(node.isVisible());
-		IUIFilterAttribute attribute = new MyNavigationUIFilterMarkerAttribute(node.getNodeId().getInstanceId(),
+		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getInstanceId(),
 				new HiddenMarker());
 
 		attribute.apply(node);
@@ -69,7 +69,7 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 		node.setNodeId(new NavigationNodeId("id"));
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertTrue(node.isEnabled());
-		IUIFilterAttribute attribute = new MyNavigationUIFilterMarkerAttribute(node.getNodeId().getInstanceId(),
+		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getInstanceId(),
 				new DisabledMarker());
 		attribute.apply(node);
 		assertFalse(node.isEnabled());
@@ -79,9 +79,9 @@ public class AbstractNavigationUIFilterMarkerAttributeTest extends TestCase {
 
 	}
 
-	private class MyNavigationUIFilterMarkerAttribute extends AbstractNavigationUIFilterMarkerAttribute {
+	private class MyUIFilterRuleNavigationMarker extends AbstractUIFilterRuleNavigationMarker {
 
-		public MyNavigationUIFilterMarkerAttribute(String nodeId, IMarker marker) {
+		public MyUIFilterRuleNavigationMarker(String nodeId, IMarker marker) {
 			super(nodeId, marker);
 			setNode("id");
 		}

@@ -13,12 +13,11 @@ package org.eclipse.riena.ui.filter;
 /**
  *
  */
-public interface IUIFilterNavigationMarkerAttribute extends IUIFilterMarkerAttribute {
+public interface IUIFilterRuleMarkerNavigation extends IUIFilterRuleMarker {
 
 	/**
 	 * Sets the navigation node
 	 */
-
 	void setNode(String nodeId);
 
 }

@@ -11,20 +11,32 @@
 package org.eclipse.riena.ui.filter;
 
 /**
- *
+ * A filter rule can modify an UI element (e.g. the marker of a ridget or the
+ * visibility of a navigation node).
  */
-public interface IMarkerAttribute {
+public interface IUIFilterRule {
 
 	/**
-	 * Returns the targetId of the marker
+	 * Returns whether the given object matches the conditions of this rule.
+	 * 
+	 * @param object
+	 *            - object to check
+	 * @return {@code true} if the given object matches; otherwise {@code false}
 	 */
-
-	String getTargetId();
+	boolean matches(Object object);
 
 	/**
-	 * Returns the attribute class
+	 * Modifies the given object.
+	 * 
+	 * @param object
 	 */
+	void apply(Object object);
 
-	IUIFilterAttribute getAttributeClass();
+	/**
+	 * Removes this modification from the given object.
+	 * 
+	 * @param object
+	 */
+	void remove(Object object);
 
 }

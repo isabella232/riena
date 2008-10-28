@@ -12,26 +12,26 @@ package org.eclipse.riena.ui.filter.impl;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.filter.IUIFilterValidatorAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRuleValidator;
 
 /**
- * Filter attribute for with validator.
+ * Filter rule for with validator.
  */
-public abstract class AbstractUIFilterAttributeValidator implements IUIFilterValidatorAttribute {
+public abstract class AbstractUIFilterRuleValidator implements IUIFilterRuleValidator {
 
 	private IValidator validator;
 
 	private ValidationTime validationTime;
 
 	/**
-	 * Create a new filter attribute with the given validator.
+	 * Create a new filter rule with the given validator.
 	 * 
 	 * @param validator
 	 *            - validator to set
 	 * @param validationTime
 	 *            - time of validation
 	 */
-	public AbstractUIFilterAttributeValidator(IValidator validator, ValidationTime validationTime) {
+	public AbstractUIFilterRuleValidator(IValidator validator, ValidationTime validationTime) {
 		this.validator = validator;
 		this.validationTime = validationTime;
 	}

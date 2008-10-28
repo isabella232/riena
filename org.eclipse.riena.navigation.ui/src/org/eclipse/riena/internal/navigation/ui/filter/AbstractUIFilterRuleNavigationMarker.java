@@ -12,18 +12,18 @@ package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.ui.filter.IUIFilterNavigationMarkerAttribute;
-import org.eclipse.riena.ui.filter.impl.AbstractUIFilterMarkerAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
+import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker;
 
 /**
- * Filter attribute to provide a marker for a node of the navigation.
+ * Filter rule to provide a marker for a node of the navigation.
  */
-public abstract class AbstractNavigationUIFilterMarkerAttribute extends AbstractUIFilterMarkerAttribute implements
-		IUIFilterNavigationMarkerAttribute {
+public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFilterRuleMarker implements
+		IUIFilterRuleMarkerNavigation {
 
 	private String nodeId;
 
-	public AbstractNavigationUIFilterMarkerAttribute(String nodeId, IMarker marker) {
+	public AbstractUIFilterRuleNavigationMarker(String nodeId, IMarker marker) {
 		super(marker);
 		this.nodeId = nodeId;
 	}

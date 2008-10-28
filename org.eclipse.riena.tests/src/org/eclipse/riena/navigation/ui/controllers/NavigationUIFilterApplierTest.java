@@ -18,8 +18,8 @@ import junit.framework.TestCase;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeDisabledMarker;
-import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -27,9 +27,9 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
-import org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -104,12 +104,12 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
-		attributes.add(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId()));
+		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
+		attributes.add(new UIFilterRuleNavigationDisabledMarker(node.getNodeId().getTypeId()));
 		IUIFilter filter = new UIFilter(attributes);
 		node.addFilter(filter);
-		Collection<IUIFilterAttribute> attributes2 = new ArrayList<IUIFilterAttribute>(1);
-		attributes2.add(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getTypeId()));
+		Collection<IUIFilterRule> attributes2 = new ArrayList<IUIFilterRule>(1);
+		attributes2.add(new UIFilterRuleNavigationHiddenMarker(node.getNodeId().getTypeId()));
 		IUIFilter filter2 = new UIFilter(attributes2);
 		node.addFilter(filter2);
 		ReflectionUtils.invokeHidden(applier, "applyFilters", node);
@@ -133,11 +133,11 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		SubModuleNode node2 = new SubModuleNode(id2);
 		node.addChild(node2);
 
-		Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(2);
-		attributes.add(new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId()));
-		attributes.add(new NavigationUIFilterAttributeHiddenMarker(node.getNodeId().getTypeId()));
+		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(2);
+		attributes.add(new UIFilterRuleNavigationDisabledMarker(node.getNodeId().getTypeId()));
+		attributes.add(new UIFilterRuleNavigationHiddenMarker(node.getNodeId().getTypeId()));
 		IUIFilter filter = new UIFilter(attributes);
-		IUIFilterAttributeClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
+		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
 		ReflectionUtils.invokeHidden(applier, "applyFilter", node, filter, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
 		assertFalse(node.getMarkersOfType(HiddenMarker.class).isEmpty());
@@ -154,9 +154,9 @@ public class NavigationUIFilterApplierTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method {@code applyFilterAttribute}.
+	 * Tests the method {@code applyFilterRule}.
 	 */
-	public void testApplyFilterAttribute() {
+	public void testApplyFilterRule() {
 
 		NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
 
@@ -164,9 +164,9 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		IUIFilterAttribute attribute = new NavigationUIFilterAttributeDisabledMarker(node.getNodeId().getTypeId());
-		IUIFilterAttributeClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
-		ReflectionUtils.invokeHidden(applier, "applyFilterAttribute", node, attribute, closure);
+		IUIFilterRule attribute = new UIFilterRuleNavigationDisabledMarker(node.getNodeId().getTypeId());
+		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
+		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
 
 		SubModuleController controller = new SubModuleController();
@@ -178,8 +178,8 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		LabelRidget ridget = new LabelRidget(label);
 		controller.addRidget("0815", ridget);
 
-		attribute = new RidgetUIFilterAttributeHiddenMarker("0815");
-		ReflectionUtils.invokeHidden(applier, "applyFilterAttribute", node, attribute, closure);
+		attribute = new UIFilterRuleRidgetHiddenMarker("0815");
+		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(ridget.getMarkersOfType(HiddenMarker.class).isEmpty());
 
 	}

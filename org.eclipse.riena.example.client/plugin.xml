@@ -589,24 +589,24 @@
       <filter
             filterId="rienaExample.offline">
          
-         <markerAttributes
-               attributeClass="org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker"
+         <markerRules
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker"
                targetId="org.eclipse.riena.example.uiProcesses">
-         </markerAttributes>
-         <markerAttributes
-               attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker"
-               targetId="textPassword"></markerAttributes>
-         <markerAttributes
-               attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeOutputMarker"
-               targetId="textField"></markerAttributes>
-         <markerAttributes
-               attributeClass="org.eclipse.riena.ui.ridgets.filter.RidgetUIFilterAttributeHiddenMarker"
+         </markerRules>
+         <markerRules
+               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker"
+               targetId="textPassword"></markerRules>
+         <markerRules
+               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetOutputMarker"
+               targetId="textField"></markerRules>
+         <markerRules
+               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker"
                targetId="ui_label2">
-         </markerAttributes>
-         <markerAttributes
-               attributeClass="org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker"
+         </markerRules>
+         <markerRules
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker"
                targetId="org.eclipse.riena.example.navigation">
-         </markerAttributes>
+         </markerRules>
          
          <nodeIds
                id="application">

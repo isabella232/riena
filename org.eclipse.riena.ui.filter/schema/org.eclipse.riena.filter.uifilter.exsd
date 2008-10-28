@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="markerAttributes">
+   <element name="markerRules">
       <complexType>
          <attribute name="targetId" type="string">
             <annotation>
@@ -56,13 +56,13 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="attributeClass" type="string">
+         <attribute name="ruleClass" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterAttribute"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRule"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -72,7 +72,7 @@
    <element name="filter">
       <complexType>
          <sequence>
-            <element ref="markerAttributes" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="markerRules" minOccurs="1" maxOccurs="unbounded"/>
             <element ref="nodeIds" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="filterId" type="string" use="required">

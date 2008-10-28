@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.filter;
 
-import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 
 /**
- * Filter attribute to provide a output marker for a ridget.
+ * Filter rule to provide a mandatory marker for a ridget.
  */
-public class RidgetUIFilterAttributeOutputMarker extends AbstractRidgetUIFilterMarkerAttribute {
+public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
 	 * Creates a new instance of {@code
@@ -24,18 +24,18 @@ public class RidgetUIFilterAttributeOutputMarker extends AbstractRidgetUIFilterM
 	 * @param id
 	 *            - ID
 	 */
-	public RidgetUIFilterAttributeOutputMarker() {
-		super(null, new OutputMarker(false));
+	public UIFilterRuleRidgetMandatoryMarker() {
+		super(null, new MandatoryMarker(false));
 	}
 
 	/**
-	 * Creates a new instance of {@code RidgetUIFilterAttributeOutputMarker}.
+	 * Creates a new instance of {@code RidgetUIFilterAttributeMandatoryMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public RidgetUIFilterAttributeOutputMarker(String id) {
-		super(id, new OutputMarker(false));
+	public UIFilterRuleRidgetMandatoryMarker(String id) {
+		super(id, new MandatoryMarker(false));
 	}
 
 }

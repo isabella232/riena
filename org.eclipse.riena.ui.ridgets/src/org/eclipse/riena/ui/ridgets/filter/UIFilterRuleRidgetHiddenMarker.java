@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.filter;
 
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
- * Filter attribute to provide a disabled marker for a ridget.
+ * Filter rule to provide a hidden marker for a ridget.
  */
-public class RidgetUIFilterAttributeDisabledMarker extends AbstractRidgetUIFilterMarkerAttribute {
+public class UIFilterRuleRidgetHiddenMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
 	 * Creates a new instance of {@code
@@ -24,20 +24,19 @@ public class RidgetUIFilterAttributeDisabledMarker extends AbstractRidgetUIFilte
 	 * @param id
 	 *            - ID
 	 */
-	public RidgetUIFilterAttributeDisabledMarker() {
-		super(null, new DisabledMarker(false));
+	public UIFilterRuleRidgetHiddenMarker() {
+		super(null, new HiddenMarker(false));
 	}
 
 	/**
-	 * Creates a new instance of {@code RidgetUIFilterAttributeDisabledMarker}.
+	 * Creates a new instance of {@code
+	 * RidgetUIFilterAttributeHiddenMandatoryMarker}.
 	 * 
 	 * @param id
 	 *            - ID
-	 * @param marker
-	 *            - marker
 	 */
-	public RidgetUIFilterAttributeDisabledMarker(String id) {
-		super(id, new DisabledMarker(false));
+	public UIFilterRuleRidgetHiddenMarker(String id) {
+		super(id, new HiddenMarker(false));
 	}
 
 }

@@ -8,27 +8,35 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.impl;
 
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.ui.filter.IUIFilterRuleMarker;
 
 /**
- * This filter attribute adds an validator to an UI element (i.g. ridget or
- * navigation node).
+ *
  */
-public interface IUIFilterValidatorAttribute extends IUIFilterAttribute {
+public abstract class AbstractUIFilterRuleMarker implements IUIFilterRuleMarker {
+
+	private IMarker marker;
 
 	/**
-	 * Returns the validator of this IUIFilterMarkerAttribute .
-	 */
-	IValidator getValidator();
-
-	/**
-	 * Returns the time of validation.
+	 * Create a new filter rule with the given marker.
 	 * 
-	 * @return validation time
+	 * @param marker
+	 *            - marker to set
 	 */
-	ValidationTime getValidationTime();
+	public AbstractUIFilterRuleMarker(IMarker marker) {
+		this.marker = marker;
+	}
+
+	/**
+	 * Returns the marker of this rule.
+	 * 
+	 * @return marker
+	 */
+	public IMarker getMarker() {
+		return marker;
+	}
 
 }

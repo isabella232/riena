@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 
 /**
  * Implementation of {@link IUIFilter}.
@@ -23,10 +23,10 @@ import org.eclipse.riena.ui.filter.IUIFilterAttribute;
 public class UIFilter implements IUIFilter {
 
 	private String filterID;
-	private Collection<IUIFilterAttribute> attributes;
+	private Collection<IUIFilterRule> rules;
 
 	public UIFilter() {
-		attributes = new HashSet<IUIFilterAttribute>();
+		rules = new HashSet<IUIFilterRule>();
 	}
 
 	public UIFilter(String id) {
@@ -34,23 +34,23 @@ public class UIFilter implements IUIFilter {
 		filterID = id;
 	}
 
-	public UIFilter(Collection<? extends IUIFilterAttribute> attributes) {
+	public UIFilter(Collection<? extends IUIFilterRule> rules) {
 		this();
-		this.attributes.addAll(attributes);
+		this.rules.addAll(rules);
 	}
 
-	public UIFilter(String id, Collection<? extends IUIFilterAttribute> attributes) {
+	public UIFilter(String id, Collection<? extends IUIFilterRule> rule) {
 		this();
 		filterID = id;
-		this.attributes.addAll(attributes);
+		this.rules.addAll(rule);
 	}
 
-	private Collection<IUIFilterAttribute> getAttributes() {
-		return attributes;
+	private Collection<IUIFilterRule> getRules() {
+		return rules;
 	}
 
-	public Collection<? extends IUIFilterAttribute> getFilterAttributes() {
-		return Collections.unmodifiableCollection(getAttributes());
+	public Collection<? extends IUIFilterRule> getFilterRules() {
+		return Collections.unmodifiableCollection(getRules());
 	}
 
 	public String getFilterID() {

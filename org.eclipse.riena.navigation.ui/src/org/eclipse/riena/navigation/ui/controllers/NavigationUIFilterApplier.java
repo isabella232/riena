@@ -8,7 +8,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.listener.NavigationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
@@ -21,8 +21,8 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
  */
 public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
-	private final static IUIFilterAttributeClosure APPLY_CLOSURE = new ApplyClosure();
-	private final static IUIFilterAttributeClosure REMOVE_CLOSURE = new RemoveClosure();
+	private final static IUIFilterRuleClosure APPLY_CLOSURE = new ApplyClosure();
+	private final static IUIFilterRuleClosure REMOVE_CLOSURE = new RemoveClosure();
 
 	/**
 	 * Applies all the filters of the given node (and all filters of the parent
@@ -78,11 +78,11 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @param closure
 	 *            - closure to execute
 	 */
-	private void applyFilter(INavigationNode<?> node, IUIFilter filter, IUIFilterAttributeClosure closure) {
+	private void applyFilter(INavigationNode<?> node, IUIFilter filter, IUIFilterRuleClosure closure) {
 
-		Collection<? extends IUIFilterAttribute> filterItems = filter.getFilterAttributes();
-		for (IUIFilterAttribute filterAttribute : filterItems) {
-			applyFilterAttribute(node, filterAttribute, closure);
+		Collection<? extends IUIFilterRule> rules = filter.getFilterRules();
+		for (IUIFilterRule rule : rules) {
+			applyFilterRule(node, rule, closure);
 		}
 
 		List<?> children = node.getChildren();
@@ -95,29 +95,28 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	}
 
 	/**
-	 * Executes the closure for the given filter attribute to the given node and
-	 * all the ridgets.
+	 * Executes the closure for the given filter rule to the given node and all
+	 * the ridgets.
 	 * 
 	 * @param node
 	 *            - navigation node
-	 * @param filterAttribute
-	 *            - filter attribute
+	 * @param filterRule
+	 *            - filter rule
 	 * @param closure
 	 *            - closure to execute
 	 */
-	private void applyFilterAttribute(INavigationNode<?> node, IUIFilterAttribute filterAttribute,
-			IUIFilterAttributeClosure closure) {
+	private void applyFilterRule(INavigationNode<?> node, IUIFilterRule filterRule, IUIFilterRuleClosure closure) {
 
-		if (filterAttribute.matches(node)) {
-			closure.exeute(filterAttribute, node);
+		if (filterRule.matches(node)) {
+			closure.exeute(filterRule, node);
 		}
 
 		INavigationNodeController controller = node.getNavigationNodeController();
 		if (controller instanceof IRidgetContainer) {
 			IRidgetContainer container = (IRidgetContainer) controller;
 			for (IRidget ridget : container.getRidgets()) {
-				if (filterAttribute.matches(ridget)) {
-					closure.exeute(filterAttribute, ridget);
+				if (filterRule.matches(ridget)) {
+					closure.exeute(filterRule, ridget);
 				}
 			}
 		}
@@ -143,24 +142,22 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	}
 
 	/**
-	 * Closure to execute the {@code apply} method of {@link IUIFilterAttribute}
-	 * .
+	 * Closure to execute the {@code apply} method of {@link IUIFilterRule} .
 	 * */
-	private static class ApplyClosure implements IUIFilterAttributeClosure {
+	private static class ApplyClosure implements IUIFilterRuleClosure {
 
-		public void exeute(IUIFilterAttribute attr, Object obj) {
+		public void exeute(IUIFilterRule attr, Object obj) {
 			attr.apply(obj);
 		}
 
 	}
 
 	/**
-	 * Closure to execute the {@code remove} method of
-	 * {@link IUIFilterAttribute}.
+	 * Closure to execute the {@code remove} method of {@link IUIFilterRule}.
 	 */
-	private static class RemoveClosure implements IUIFilterAttributeClosure {
+	private static class RemoveClosure implements IUIFilterRuleClosure {
 
-		public void exeute(IUIFilterAttribute attr, Object obj) {
+		public void exeute(IUIFilterRule attr, Object obj) {
 			attr.remove(obj);
 		}
 

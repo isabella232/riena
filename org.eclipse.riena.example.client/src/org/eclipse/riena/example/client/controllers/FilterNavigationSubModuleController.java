@@ -20,8 +20,8 @@ import java.util.List;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeDisabledMarker;
-import org.eclipse.riena.internal.navigation.ui.filter.NavigationUIFilterAttributeHiddenMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -29,7 +29,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -158,7 +158,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
 		for (INavigationNode<?> node : nodes) {
-			Collection<IUIFilterAttribute> attributes = new ArrayList<IUIFilterAttribute>(1);
+			Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
 			attributes.add(createFilterAttribute(filterModel, node));
 			IUIFilter filter = new UIFilter(attributes);
 			node.addFilter(filter);
@@ -186,9 +186,9 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 *            - model with selections.
 	 * @return filter attribute
 	 */
-	private IUIFilterAttribute createFilterAttribute(FilterModel model, INavigationNode<?> node) {
+	private IUIFilterRule createFilterAttribute(FilterModel model, INavigationNode<?> node) {
 
-		IUIFilterAttribute attribute = null;
+		IUIFilterRule attribute = null;
 
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
@@ -204,9 +204,9 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		switch (type) {
 		case MARKER:
 			if (filterValue instanceof DisabledMarker) {
-				attribute = new NavigationUIFilterAttributeDisabledMarker(nodeId);
+				attribute = new UIFilterRuleNavigationDisabledMarker(nodeId);
 			} else if (filterValue instanceof HiddenMarker) {
-				attribute = new NavigationUIFilterAttributeHiddenMarker(nodeId);
+				attribute = new UIFilterRuleNavigationHiddenMarker(nodeId);
 			}
 
 			break;

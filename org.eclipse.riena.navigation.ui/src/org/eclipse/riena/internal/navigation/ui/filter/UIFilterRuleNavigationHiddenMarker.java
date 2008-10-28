@@ -8,23 +8,21 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.controllers;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.ui.filter.IUIFilterAttribute;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
- * This closures executes a method of {@link IUIFilterAttribute}.
+ *
  */
-public interface IUIFilterAttributeClosure {
+public class UIFilterRuleNavigationHiddenMarker extends AbstractUIFilterRuleNavigationMarker {
 
-	/**
-	 * Executes a method of {@link IUIFilterAttribute}.
-	 * 
-	 * @param attr
-	 *            - filter attribute
-	 * @param obj
-	 *            - object that is given as a parameter to the method
-	 */
-	void exeute(IUIFilterAttribute attr, Object obj);
+	public UIFilterRuleNavigationHiddenMarker() {
+		super(null, new HiddenMarker());
+	}
+
+	public UIFilterRuleNavigationHiddenMarker(String nodeId) {
+		super(nodeId, new HiddenMarker());
+	}
 
 }

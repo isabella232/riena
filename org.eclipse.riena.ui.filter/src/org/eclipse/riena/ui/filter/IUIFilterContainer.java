@@ -20,13 +20,11 @@ public interface IUIFilterContainer {
 	/**
 	 * Returns the created filter
 	 */
-
 	IUIFilter getFilter();
 
 	/**
 	 * Returns the navigation-node ID on which the filter maybe applied
 	 */
-
 	Collection<String> getFilterTargetNodeIds();
 
 }

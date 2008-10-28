@@ -11,38 +11,37 @@
 package org.eclipse.riena.ui.ridgets.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.filter.IUIFilterRidgetMarkerAttribute;
-import org.eclipse.riena.ui.filter.impl.AbstractUIFilterMarkerAttribute;
+import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
+import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
 /**
- * Filter attribute to provide a marker for a ridget.
+ * Filter rule to provide a marker for a ridget.
  */
-public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFilterMarkerAttribute implements
-		IUIFilterRidgetMarkerAttribute {
+public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterRuleMarker implements
+		IUIFilterRuleMarkerRidget {
 
 	private RidgetMatcher matcher;
 
-	public AbstractRidgetUIFilterMarkerAttribute(String id, IMarker marker) {
+	public AbstractUIFilterRuleRidgetMarker(String id, IMarker marker) {
 		super(marker);
 		matcher = new RidgetMatcher(id);
 	}
 
 	/**
-	 * This method compares the ID of this attribute and the given ID of a
-	 * ridget.
+	 * This method compares the ID of this rule and the given ID of a ridget.
 	 * 
-	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#matches(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 	public boolean matches(Object object) {
 		return matcher.matches(object);
 	}
 
 	/**
-	 * Adds the marker of this attribute to the given object (if the object is
-	 * an markable ridget).
+	 * Adds the marker of this rule to the given object (if the object is an
+	 * markable ridget).
 	 * 
-	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#apply(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#apply(java.lang.Object)
 	 */
 	public void apply(Object object) {
 		if (object instanceof IMarkableRidget) {
@@ -52,10 +51,10 @@ public abstract class AbstractRidgetUIFilterMarkerAttribute extends AbstractUIFi
 	}
 
 	/**
-	 * Removes the marker of this attribute from the given object (if the object
-	 * is an markable ridget).
+	 * Removes the marker of this rule from the given object (if the object is
+	 * an markable ridget).
 	 * 
-	 * @see org.eclipse.riena.ui.internal.filter.IUIFilterAttribute#remove(java.lang.Object)
+	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#remove(java.lang.Object)
 	 */
 	public void remove(Object object) {
 		if (object instanceof IMarkableRidget) {

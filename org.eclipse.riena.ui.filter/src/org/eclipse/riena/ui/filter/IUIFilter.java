@@ -13,17 +13,17 @@ package org.eclipse.riena.ui.filter;
 import java.util.Collection;
 
 /**
- * An UI Filter holds a collection of different attributes with witch the UI can
- * be used to parts of the UI.
+ * An UI Filter holds a collection of different rules that are used to modify
+ * the UI.
  */
 public interface IUIFilter {
 
 	/**
-	 * Returns the attributes of the filter
+	 * Returns the rules of the filter
 	 * 
-	 * @return The attributes of the filter.
+	 * @return The rules of the filter.
 	 */
-	Collection<? extends IUIFilterAttribute> getFilterAttributes();
+	Collection<? extends IUIFilterRule> getFilterRules();
 
 	/**
 	 * Returns the ID of the filter

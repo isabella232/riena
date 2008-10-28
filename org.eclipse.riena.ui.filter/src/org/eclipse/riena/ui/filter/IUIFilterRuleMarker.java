@@ -8,35 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter.impl;
+package org.eclipse.riena.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.filter.IUIFilterMarkerAttribute;
 
 /**
- *
+ * This filter rule adds a marker to an UI element (e.g. ridget or navigation
+ * node).
  */
-public abstract class AbstractUIFilterMarkerAttribute implements IUIFilterMarkerAttribute {
-
-	private IMarker marker;
+public interface IUIFilterRuleMarker extends IUIFilterRule {
 
 	/**
-	 * Create a new filter attribute with the given marker.
-	 * 
-	 * @param marker
-	 *            - marker to set
+	 * Returns the marker of this IUIFilterRuleMarker.
 	 */
-	public AbstractUIFilterMarkerAttribute(IMarker marker) {
-		this.marker = marker;
-	}
-
-	/**
-	 * Returns the marker of this attribute.
-	 * 
-	 * @return marker
-	 */
-	public IMarker getMarker() {
-		return marker;
-	}
+	IMarker getMarker();
 
 }
