@@ -14,8 +14,27 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 public interface IWindowRidget extends IRidget {
 
+	/**
+	 * Adds a {@link IWindowRidgetListener} for receiving window events from
+	 * this ridget.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param listener
+	 *            the listener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
 	void addWindowRidgetListener(IWindowRidgetListener pListener);
 
+	/**
+	 * Removes a listener for receiving window events from this ridget.
+	 * 
+	 * @param listener
+	 *            the listener to be removed (non-null)
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
 	void removeWindowRidgetListener(IWindowRidgetListener pListener);
 
 	void setTitle(String title);

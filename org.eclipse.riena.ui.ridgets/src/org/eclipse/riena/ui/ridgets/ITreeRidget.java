@@ -180,7 +180,9 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * notified when the bound control is double-clicked.
 	 * 
 	 * @param listener
-	 *            an {@link IActionListener} instance
+	 *            a non-null {@link IActionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
 	 */
 	void removeDoubleClickListener(IActionListener listener);
 

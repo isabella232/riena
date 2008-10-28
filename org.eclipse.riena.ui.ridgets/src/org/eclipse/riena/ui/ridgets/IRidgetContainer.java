@@ -18,6 +18,9 @@ import java.util.Collection;
 public interface IRidgetContainer {
 	/**
 	 * Adds the ridget with id to the ridgets of this ridget container.
+     * <p>
+	 * If the given (id, ridget) pair is already in the container, the previous value
+	 * will be replaced.
 	 * 
 	 * @param id
 	 *            the ridget id.

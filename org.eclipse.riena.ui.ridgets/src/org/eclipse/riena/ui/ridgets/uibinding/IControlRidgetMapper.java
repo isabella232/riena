@@ -37,16 +37,20 @@ public interface IControlRidgetMapper<C> {
 
 	/**
 	 * Adds a mapping of a UI control-class to a ridget-class
+	 * <p>
+	 * Adding the same mapping twice has no effect.
 	 * 
-	 * @param controlClazz -
-	 *            the class of the UI control
-	 * @param ridgetClazz -
-	 *            the class of the ridget
+	 * @param controlClazz
+	 *            - the class of the UI control
+	 * @param ridgetClazz
+	 *            - the class of the ridget
 	 */
 	void addMapping(Class<? extends C> controlClazz, Class<? extends IRidget> ridgetClazz);
 
 	/**
 	 * Adds a special mapping of a specific UI-control to a Ridget class.
+	 * <p>
+	 * Adding the same mapping twice has no effect.
 	 * 
 	 * @param controlName
 	 *            The name of the UI-control.

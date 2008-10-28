@@ -359,6 +359,11 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Adding the same marker twice has no effect.
+	 */
 	public synchronized final void addMarker(IMarker marker) {
 		if (markerSupport == null) {
 			markerSupport = new MarkerSupport(this, propertyChangeSupport);

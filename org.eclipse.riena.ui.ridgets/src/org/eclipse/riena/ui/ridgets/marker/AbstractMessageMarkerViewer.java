@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.marker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
@@ -29,12 +31,12 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewer {
 
 	private HashSet<Class<? extends IMessageMarker>> markerTypes;
-	protected Collection<IMarkableRidget> ridgets;
+	private ListenerList<IMarkableRidget> ridgets;
 	private boolean visible;
 
 	public AbstractMessageMarkerViewer() {
 		markerTypes = new LinkedHashSet<Class<? extends IMessageMarker>>();
-		ridgets = new ArrayList<IMarkableRidget>();
+		ridgets = new ListenerList<IMarkableRidget>(IMarkableRidget.class);
 		visible = true;
 		markerTypes.add(ValidationMessageMarker.class);
 	}
@@ -69,7 +71,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	}
 
 	private void showMessages() {
-		for (IMarkableRidget ridget : ridgets) {
+		for (IMarkableRidget ridget : getRidgets()) {
 			showMessages(ridget);
 		}
 	}
@@ -98,6 +100,10 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		}
 		Collections.sort(result, new MessageMarkerComparator());
 		return result;
+	}
+
+	protected Collection<IMarkableRidget> getRidgets() {
+		return Arrays.asList(ridgets.getListeners());
 	}
 
 	protected static final class MessageMarkerComparator implements Comparator<IMessageMarker>, Serializable {

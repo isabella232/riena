@@ -11,9 +11,9 @@
 package org.eclipse.riena.ui.ridgets.tree;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.obsolete.ITreeAdapter;
 
 /**
@@ -22,27 +22,31 @@ import org.eclipse.riena.ui.ridgets.obsolete.ITreeAdapter;
 public class DynamicLoadTreeModel extends DefaultTreeModel {
 
 	private List<DynamicTreeModificationProcess> treeModificationProcesses;
-	private Collection<IDynamicTreeReloadListener> reloadListeners;
+	private ListenerList<IDynamicTreeReloadListener> reloadListeners;
 
 	/**
 	 * Constructor. Create a new instance of <code>DynamicLoadTreeModel</code>.
 	 * 
-	 * @param root -
-	 *            the root tree element of the dynamic tree.
+	 * @param root
+	 *            - the root tree element of the dynamic tree.
 	 */
 	public DynamicLoadTreeModel(DynamicTreeNode root) {
 		super(root);
 
 		treeModificationProcesses = new ArrayList<DynamicTreeModificationProcess>(2);
-		reloadListeners = new ArrayList<IDynamicTreeReloadListener>(1);
+		reloadListeners = new ListenerList<IDynamicTreeReloadListener>(IDynamicTreeReloadListener.class);
 		resetRootChildren();
 	}
 
 	/**
 	 * Adds listener.
+	 * <p>
+	 * Adding the same listener several times has no effect.
 	 * 
-	 * @param l -
-	 *            the listener to add.
+	 * @param l
+	 *            - the listener to add (non-null).
+	 * @throws RuntimeException
+	 *             if listener {@code l} is null
 	 */
 	public void addDynamicTreeReloadListener(IDynamicTreeReloadListener l) {
 
@@ -53,8 +57,10 @@ public class DynamicLoadTreeModel extends DefaultTreeModel {
 	/**
 	 * Removes listener.
 	 * 
-	 * @param l -
-	 *            the listener to remove.
+	 * @param l
+	 *            - the listener to remove (non-null).
+	 * @throws RuntimeException
+	 *             if listener {@code l} is null
 	 */
 	public void removeDynamicTreeReloadListener(IDynamicTreeReloadListener l) {
 
@@ -74,7 +80,7 @@ public class DynamicLoadTreeModel extends DefaultTreeModel {
 	void fireEvent(DynamicTreeNode node, int eventType) {
 
 		DynamicTreeReloadEvent event = new DynamicTreeReloadEvent(node, eventType);
-		for (IDynamicTreeReloadListener listener : reloadListeners) {
+		for (IDynamicTreeReloadListener listener : reloadListeners.getListeners()) {
 			listener.reload(event);
 		}
 	}

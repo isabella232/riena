@@ -12,9 +12,9 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashSet;
-import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
@@ -26,108 +26,58 @@ public abstract class AbstractRidget implements IRidget {
 	public final static String PROPERTY_RIDGET = "ridget"; //$NON-NLS-1$
 
 	protected PropertyChangeSupport propertyChangeSupport;
-	private Set<IFocusListener> focusListeners;
+	private ListenerList<IFocusListener> focusListeners;
 
 	/**
 	 * Constructor.
 	 */
 	public AbstractRidget() {
 		propertyChangeSupport = new PropertyChangeSupport(this);
-		focusListeners = new HashSet<IFocusListener>(1, 1.0f);
+		focusListeners = new ListenerList<IFocusListener>(IFocusListener.class);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#addPropertyChangeListener(java.beans
-	 *      .PropertyChangeListener)
-	 */
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+		addPropertyChangeListener(null, propertyChangeListener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#addPropertyChangeListener(java.lang
-	 *      .String, java.beans.PropertyChangeListener)
-	 */
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
-		propertyChangeSupport.addPropertyChangeListener(propertyName, propertyChangeListener);
+		Assert.isNotNull(propertyChangeListener);
+		if (!hasListener(propertyName, propertyChangeListener)) {
+			if (propertyName == null) {
+				propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+			} else {
+				propertyChangeSupport.addPropertyChangeListener(propertyName, propertyChangeListener);
+			}
+		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#removePropertyChangeListener(java
-	 *      .beans.PropertyChangeListener)
-	 */
 	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-		propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+		removePropertyChangeListener(null, propertyChangeListener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#removePropertyChangeListener(java
-	 *      .lang.String, java.beans.PropertyChangeListener)
-	 */
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
-		propertyChangeSupport.removePropertyChangeListener(propertyName, propertyChangeListener);
+		Assert.isNotNull(propertyChangeListener);
+		if (propertyName == null) {
+			propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+		} else {
+			propertyChangeSupport.removePropertyChangeListener(propertyName, propertyChangeListener);
+		}
 	}
 
-	/**
-	 * Notifies all listeners about a changed property. No event is fired if old
-	 * and new are equal and non-null.
-	 * 
-	 * @param propertyName
-	 *            The name of the property that was changed.
-	 * @param oldValue
-	 *            The old value of the property.
-	 * @param newValue
-	 *            The new value of the property.
-	 */
-	protected void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-	}
-
-	/**
-	 * Notifies all listeners about a changed property. No event is fired if old
-	 * and new are equal and non-null.
-	 * 
-	 * @param propertyName
-	 *            The name of the property that was changed.
-	 * @param oldValue
-	 *            The old value of the property.
-	 * @param newValue
-	 *            The new value of the property.
-	 */
-	protected void firePropertyChange(String propertyName, int oldValue, int newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-	}
-
-	/**
-	 * Notifies all listeners about a changed property. No event is fired if old
-	 * and new are equal and non-null.
-	 * 
-	 * @param propertyName
-	 *            The name of the property that was changed.
-	 * @param oldValue
-	 *            The old value of the property.
-	 * @param newValue
-	 *            The new value of the property.
-	 */
-	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#addFocusListener(org.eclipse.riena
-	 *      .ui.ridgets.listener.IFocusListener)
-	 */
 	public void addFocusListener(IFocusListener listener) {
 		focusListeners.add(listener);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#removeFocusListener(org.eclipse.
-	 *      riena.ui.ridgets.listener.IFocusListener)
-	 */
 	public void removeFocusListener(IFocusListener listener) {
 		focusListeners.remove(listener);
 	}
+
+	public void updateFromModel() {
+		// Do nothing by default
+	}
+
+	// protected methods
+	////////////////////
 
 	/**
 	 * Notifies all listeners that the ridget has lost the focus.
@@ -135,8 +85,8 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param event
 	 *            - the FocusEvent
 	 */
-	protected void fireFocusLost(FocusEvent event) {
-		for (IFocusListener focusListener : focusListeners) {
+	protected final void fireFocusLost(FocusEvent event) {
+		for (IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusLost(event);
 		}
 	}
@@ -147,16 +97,67 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param event
 	 *            - the FocusEvent
 	 */
-	protected void fireFocusGained(FocusEvent event) {
-		for (IFocusListener focusListener : focusListeners) {
+	protected final void fireFocusGained(FocusEvent event) {
+		for (IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusGained(event);
 		}
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#updateFromModel()
+	 * Notifies all listeners about a changed property. No event is fired if old
+	 * and new are equal and non-null.
+	 * 
+	 * @param propertyName
+	 *            The name of the property that was changed.
+	 * @param oldValue
+	 *            The old value of the property.
+	 * @param newValue
+	 *            The new value of the property.
 	 */
-	public void updateFromModel() {
-		// Do nothing by default
+	protected final void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
+
+	/**
+	 * Notifies all listeners about a changed property. No event is fired if old
+	 * and new are equal and non-null.
+	 * 
+	 * @param propertyName
+	 *            The name of the property that was changed.
+	 * @param oldValue
+	 *            The old value of the property.
+	 * @param newValue
+	 *            The new value of the property.
+	 */
+	protected final void firePropertyChange(String propertyName, int oldValue, int newValue) {
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	}
+
+	/**
+	 * Notifies all listeners about a changed property. No event is fired if old
+	 * and new are equal and non-null.
+	 * 
+	 * @param propertyName
+	 *            The name of the property that was changed.
+	 * @param oldValue
+	 *            The old value of the property.
+	 * @param newValue
+	 *            The new value of the property.
+	 */
+	protected final void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	}
+
+	// helping methods
+	//////////////////
+
+	private boolean hasListener(String propertyName, Object listener) {
+		boolean result = false;
+		PropertyChangeListener[] listeners = propertyChangeSupport.getPropertyChangeListeners(propertyName);
+		for (int i = 0; !result && i < listeners.length; i++) {
+			result = (listeners[i] == listener);
+		}
+		return result;
+	}
+
 }

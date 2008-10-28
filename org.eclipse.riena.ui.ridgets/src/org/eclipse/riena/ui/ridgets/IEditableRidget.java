@@ -54,6 +54,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * "On edit" validators may choose to block user input. The reaction to a
 	 * failed validation can be changed by using a validator that returns an
 	 * IValidationRuleStatus.
+	 * <p>
+	 * Adding the same validator several times has no effect.
 	 * 
 	 * @see IValidator
 	 * @see IValidationRuleStatus
@@ -82,6 +84,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	/**
 	 * Adds a message to be displayed when any validation rule of the ridget
 	 * fails.
+	 * <p>
+	 * Adding the same message several times has no effect.
 	 * 
 	 * @param message
 	 *            A message related to the failed validation.
@@ -92,6 +96,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * Adds a message to be displayed when the specified validation rule fails.
 	 * This will not add the rule to the ridget. If the specified rule was not
 	 * added to the ridget the message will never be displayed.
+	 * <p>
+	 * Adding the same message several times has no effect.
 	 * 
 	 * @see #addValidationRule(IValidator)
 	 * @param message
@@ -104,6 +110,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	/**
 	 * Adds an IMessageMarker to be added to the ridget automatically when and
 	 * only when a validation rule fails.
+	 * <p>
+	 * Adding the same message several times has no effect.
 	 * 
 	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
@@ -117,6 +125,8 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * only when the specified validation rule fails. This will not add the rule
 	 * to the ridget. If the specified rule was not added to the ridget the
 	 * message will never be displayed.
+	 * <p>
+	 * Adding the same message several times has no effect.
 	 * 
 	 * @see #addValidationRule(IValidator)
 	 * @see org.eclipse.riena.core.marker.IMarkable#addMarker(org.eclipse.riena.core.marker.IMarker)

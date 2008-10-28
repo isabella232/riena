@@ -11,12 +11,11 @@
 package org.eclipse.riena.ui.ridgets.tree;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 
 /**
@@ -25,7 +24,8 @@ import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 public class DefaultTreeModel extends AbstractObservableValue implements ITreeModel {
 
 	protected ITreeNode root;
-	protected List<ITreeModelListener> listenerList = new ArrayList<ITreeModelListener>(1);
+	protected ListenerList<ITreeModelListener> listenerList = new ListenerList<ITreeModelListener>(
+			ITreeModelListener.class);
 
 	/**
 	 * Creates a tree in which any node can have children.
@@ -39,10 +39,6 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	} // end method
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#getChild(java.lang.Object,
-	 *      int)
-	 */
 	public Object getChild(Object parent, int index) {
 
 		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
@@ -52,9 +48,6 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	} // end method
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#getChildCount(java.lang.Object)
-	 */
 	public int getChildCount(Object parent) {
 
 		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
@@ -64,9 +57,6 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	} // end method
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#getRoot()
-	 */
 	public Object getRoot() {
 
 		return root;
@@ -82,10 +72,6 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 		return null;
 	}
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#getIndexOfChild(java.lang.Object,
-	 *      java.lang.Object)
-	 */
 	public int getIndexOfChild(Object parent, Object child) {
 
 		Assert.isNotNull(parent, "parent is null"); //$NON-NLS-1$
@@ -97,9 +83,6 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	} // end method
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#isLeaf(java.lang.Object)
-	 */
 	public boolean isLeaf(Object node) {
 
 		Assert.isNotNull(node, "node is null"); //$NON-NLS-1$
@@ -109,32 +92,12 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 
 	} // end method
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#
-	 *     
-	 *     
-	 *     
-	 *     
-	 *     
-	 *     
-	 *      addTreeModelListener(de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModelListener)
-	 */
 	public void addTreeModelListener(ITreeModelListener l) {
 
 		listenerList.add(l);
 
 	} // end method
 
-	/**
-	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModel#
-	 *     
-	 *     
-	 *     
-	 *     
-	 *     
-	 *     
-	 *      removeTreeModelListener(de.compeople.spirit.core.client.uibinding.adapter.tree.ITreeModelListener)
-	 */
 	public void removeTreeModelListener(ITreeModelListener l) {
 
 		listenerList.remove(l);
@@ -336,7 +299,7 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 			Serializable[] children) {
 		TreeModelEvent e = null;
 
-		for (ITreeModelListener listener : listenerList) {
+		for (ITreeModelListener listener : listenerList.getListeners()) {
 			if (e == null) {
 				e = TreeModelEvent.createStructureChangedInstance(source, node, childIndices, children);
 			} // end if
@@ -357,7 +320,7 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	protected void fireTreeNodesInserted(IObservable source, ITreeNode node, int[] childIndices, Serializable[] children) {
 		TreeModelEvent e = null;
 
-		for (ITreeModelListener listener : listenerList) {
+		for (ITreeModelListener listener : listenerList.getListeners()) {
 			if (e == null) {
 				e = TreeModelEvent.createNodesInsertedInstance(source, node, childIndices, children);
 			} // end if
@@ -380,7 +343,7 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	protected void fireTreeNodesRemoved(IObservable source, ITreeNode node, int[] childIndices, Serializable[] children) {
 		TreeModelEvent e = null;
 
-		for (ITreeModelListener listener : listenerList) {
+		for (ITreeModelListener listener : listenerList.getListeners()) {
 			if (e == null) {
 				e = TreeModelEvent.createNodesRemovedInstance(source, node, childIndices, children);
 			} // end if
@@ -403,7 +366,7 @@ public class DefaultTreeModel extends AbstractObservableValue implements ITreeMo
 	protected void fireTreeNodesChanged(IObservable source, ITreeNode node, int[] childIndices, Serializable[] children) {
 		TreeModelEvent e = null;
 
-		for (ITreeModelListener listener : listenerList) {
+		for (ITreeModelListener listener : listenerList.getListeners()) {
 			if (e == null) {
 				e = TreeModelEvent.createValueDiffInstance(source, node, childIndices, children);
 			} // end if

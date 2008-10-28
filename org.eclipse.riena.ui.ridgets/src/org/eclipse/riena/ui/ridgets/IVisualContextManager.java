@@ -29,7 +29,10 @@ public interface IVisualContextManager {
 	List<Object> getActiveContexts(List<Object> contexts);
 
 	/**
-	 * adds a listener to be notified when one contexts state changes.
+	 * Adds a listener to be notified when one contexts state changes.
+	 * <p>
+	 * If the same listener is added more that once, it will be invoked several
+	 * times!
 	 * 
 	 * @param listener
 	 *            - the listener to be notified

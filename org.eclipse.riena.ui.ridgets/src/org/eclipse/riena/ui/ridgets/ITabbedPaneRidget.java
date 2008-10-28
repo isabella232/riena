@@ -19,8 +19,28 @@ public interface ITabbedPaneRidget extends IRidget {
 	 */
 	String PROPERTY_BLINKINGTABS = "PROPERTY_BLINKINGTABS"; //$NON-NLS-1$
 
+	/**
+	 * Adds a {@link ITabbedPaneRidgetListener} for receiving tab selection
+	 * events from this ridget.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param listener
+	 *            the listener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
 	void addTabbedPaneRidgetListener(ITabbedPaneRidgetListener listener);
 
+	/**
+	 * Removes a {@link ITabbedPaneRidgetListener} for receiving tab selection
+	 * events from this ridget.
+	 * 
+	 * @param listener
+	 *            the listener to be removed (non-null)
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
 	void removeTabbedPaneRidgetListener(ITabbedPaneRidgetListener listener);
 
 	void setSelectedTab(int index);

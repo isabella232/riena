@@ -109,6 +109,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 * Example:
 	 * <p>
 	 * {@code addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);}
+	 * <p>
+	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
 	 *            - the class of the UI control (<code>Widget</code>)
@@ -130,6 +132,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 * <p>
 	 * {@code addMapping(Tree.class, TreeRidget.class, new
 	 * TreeWithoutColumnsCondition());}
+	 * <p>
+	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
 	 *            - the class of the UI control (<code>Widget</code>)
@@ -137,7 +141,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 *            - the class of the ridget
 	 * @param condition
 	 *            (non-null) - the condition to evaluate (non-null)
-     * @see IMappingCondition
+	 * @see IMappingCondition
 	 */
 	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz,
 			IMappingCondition condition) {

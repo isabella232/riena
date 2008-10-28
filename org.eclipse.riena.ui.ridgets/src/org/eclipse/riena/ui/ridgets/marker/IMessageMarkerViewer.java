@@ -22,9 +22,13 @@ public interface IMessageMarkerViewer {
 
 	/**
 	 * Adds a Ridget to the list of Ridgets being observed for message markers.
+	 * <p>
+	 * Adding the same ridget several times has no effect.
 	 * 
 	 * @param markableRidget
-	 *            A Ridget whose message markers should be visualized.
+	 *            A Ridget whose message markers should be visualized (non-null)
+	 * @throws RuntimeException
+	 *             if markableRidget is null
 	 */
 	void addRidget(IMarkableRidget markableRidget);
 
@@ -33,12 +37,17 @@ public interface IMessageMarkerViewer {
 	 * markers.
 	 * 
 	 * @param markableRidget
-	 *            A Ridget whose message markers should be visualized no more.
+	 *            A Ridget whose message markers should be visualized no more
+	 *            (non-null)
+	 * @throws RuntimeException
+	 *             if markableRidget is null
 	 */
 	void removeRidget(IMarkableRidget markableRidget);
 
 	/**
 	 * Adds a type of marker to the list of markers to be visualized.
+	 * <p>
+	 * Adding the same markerClass several times has no effect.
 	 * 
 	 * @param markerClass
 	 *            A type of marker to visualize.

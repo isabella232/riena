@@ -13,9 +13,11 @@ package org.eclipse.riena.ui.ridgets.validation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 
 /**
@@ -24,7 +26,7 @@ import org.eclipse.core.runtime.IStatus;
  */
 public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 
-	private final Collection<IValidator> validators = new ArrayList<IValidator>(2);
+	private final Collection<IValidator> validators = new HashSet<IValidator>(2);
 
 	/**
 	 * Gets an unmodifiable copy of the validators used by this
@@ -51,13 +53,17 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	}
 
 	/**
-	 * Adds a validator to the collection. A validator added twice will be used
-	 * twice.
+	 * Adds a validator to the collection.
+	 * <p>
+	 * Adding the same validator several times has no effect.
 	 * 
 	 * @param validator
-	 *            The validator to add.
+	 *            The validator to add (non-null).
+	 * @throws RuntimeException
+	 *             if validator is null
 	 */
 	public void add(final IValidator validator) {
+		Assert.isNotNull(validator);
 		validators.add(validator);
 	}
 
@@ -66,8 +72,11 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	 * 
 	 * @param validator
 	 *            The validator to remove.
+	 * @throws RuntimeException
+	 *             if validator is null
 	 */
 	public void remove(final IValidator validator) {
+		Assert.isNotNull(validator);
 		validators.remove(validator);
 	}
 

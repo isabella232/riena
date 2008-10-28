@@ -135,6 +135,35 @@ public class ValueBindingSupportTest extends TestCase {
 		assertEquals(0, markable.getMarkers().size());
 	}
 
+	/**
+	 * Tests that adding the same validation several times has no effect
+	 */
+	public void testAddSameValidationMessage() {
+		EvenNumberOfCharacters rule = new EvenNumberOfCharacters();
+		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
+		valueBindingSupport.addValidationMessage("TestMessage1");
+		valueBindingSupport.addValidationMessage("TestMessage1");
+		valueBindingSupport.addValidationMessage("TestMessage2", rule);
+		valueBindingSupport.addValidationMessage("TestMessage2", rule);
+		MessageMarker messageMarker = new MessageMarker("TestMessage3");
+		valueBindingSupport.addValidationMessage(messageMarker);
+		valueBindingSupport.addValidationMessage(messageMarker);
+		MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
+		valueBindingSupport.addValidationMessage(messageMarker2, rule);
+		valueBindingSupport.addValidationMessage(messageMarker2, rule);
+
+		assertEquals(0, markable.getMarkers().size());
+
+		target.setValue("odd");
+
+		assertEquals(4, markable.getMarkersOfType(IMessageMarker.class).size());
+
+		target.setValue("even");
+
+		assertEquals(0, markable.getMarkers().size());
+
+	}
+
 	public void testValidationMessagesAddAndRemoveWhileActive() throws Exception {
 
 		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);

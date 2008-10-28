@@ -33,9 +33,11 @@ public interface IActionRidget extends IMarkableRidget {
 	 * <p>
 	 * Adding the same listener several times has no effect.
 	 * 
-	 * @see java.beans.EventHandler#create(Class, Object, String)
 	 * @param target
+	 *            the object to notify
 	 * @param action
+	 *            the method on {@code target} to invoke
+	 * @see java.beans.EventHandler#create(Class, Object, String)
 	 */
 	void addListener(Object target, String action);
 

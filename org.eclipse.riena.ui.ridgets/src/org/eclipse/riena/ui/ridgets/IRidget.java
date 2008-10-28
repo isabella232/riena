@@ -56,72 +56,80 @@ public interface IRidget {
 
 	/**
 	 * Adds a PropertyChangeListener for all properties of the Ridget. Through
-	 * PropertyChangeEvents the Ridget allows listening for selected properties
-	 * of the UI-control in a UI-toolkit independent way e.g. the property
-	 * "text" of a text field. The same listener object may be added more than
-	 * once, and will be called as many times as it is added. If the argument is
-	 * null, no exception is thrown and no action is taken.
+	 * PropertyChangeEvents the Ridget allows listening for property changes of
+	 * the UI-control in a UI-toolkit independent way.
+	 * <p>
+	 * Adding the same listener several times has no effect.
 	 * 
 	 * @param propertyChangeListener
-	 *            The PropertyChangeListener to be added.
+	 *            The PropertyChangeListener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
 	 */
 	void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 	/**
 	 * Adds a PropertyChangeListener for a specific property of the Ridget.
-	 * Through PropertyChangeEvents the Ridget allows listening for selected
-	 * properties of the UI-control in a UI-toolkit independent way e.g. the
-	 * property "text" of a text field. The same listener object may be added
-	 * more than once, and will be called as many times as it is added. If any
-	 * argument is null, no exception is thrown and no action is taken.
+	 * Through PropertyChangeEvents the Ridget allows listening for property
+	 * changes of specific properties of the UI-control in a UI-toolkit
+	 * independent way, e.g. the property "text" of a text field.
+	 * <p>
+	 * Adding the same listener several times has no effect.
 	 * 
 	 * @param propertyName
-	 *            The name of the property to listen on.
+	 *            The name of the property to listen on (may be null to listen
+	 *            to all properties)
 	 * @param propertyChangeListener
-	 *            The PropertyChangeListener to be added.
+	 *            The PropertyChangeListener to be added (non null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
 	 */
 	void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener);
 
 	/**
-	 * Removes a PropertyChangeListener for all properties of the Ridget. If the
-	 * listener was added more than once to the same event source, it will be
-	 * notified one less time after being removed. If the listener is null, or
-	 * was never added, no exception is thrown and no action is taken.
+	 * Removes a PropertyChangeListener for all properties of the Ridget.
 	 * 
 	 * @param propertyChangeListener
-	 *            The PropertyChangeListener to be removed.
+	 *            The PropertyChangeListener to be removed (non null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
 	 */
 	void removePropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 	/**
 	 * Removes a PropertyChangeListener for a specific property of the Ridget.
-	 * If the listener was added more than once to the same event source, it
-	 * will be notified one less time after being removed. If any argument is
-	 * null, or the listener was never added, no exception is thrown and no
-	 * action is taken.
 	 * 
 	 * @param propertyName
-	 *            The name of the property to listen on.
+	 *            The name of the property to listen on (may be null to remove
+	 *            the listener from all properties)
 	 * @param propertyChangeListener
-	 *            The PropertyChangeListener to be removed.
+	 *            The PropertyChangeListener to be removed (non null)
+	 * @throws RuntimeException
+	 *             if propertyChangeListener is null
 	 */
 	void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener);
 
 	/**
-	 * Adds the specified focus listener to receive focus events from this
-	 * ridget when it gains the focus.
+	 * Adds a {@link IFocusListener} for receiving focus events from this
+	 * ridget.
+	 * <p>
+	 * Adding the same listener several times has to effect.
 	 * 
 	 * @param listener
-	 *            - focus listener to be added
+	 *            the listener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if listener is null
 	 */
 	void addFocusListener(IFocusListener listener);
 
 	/**
 	 * Removes the specified focus listener so that it no longer receives focus
-	 * events from this component.
+	 * events from this ridget.
 	 * 
 	 * @param listener
-	 *            - focus listener to be removed
+	 *            the focus listener to be removed
+	 * @throws RuntimeException
+	 *             if listener is null
 	 */
 	void removeFocusListener(IFocusListener listener);
 
@@ -153,7 +161,7 @@ public interface IRidget {
 	 * </ul>
 	 * 
 	 * <p>
-	 * For an example binding ITableRidget see
+	 * For an example binding ITableRidget see:
 	 * </p>
 	 * <ul>
 	 * <li>{@link #bindToModel(IObservableList, Class, String[], String[])}</li>

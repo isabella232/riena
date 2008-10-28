@@ -96,7 +96,7 @@ public class ValidatorCollectionTest extends TestCase {
 				rule.remove(validator);
 			}
 		}
-		assertEquals(6, rule.getValidators().size());
+		assertEquals(4, rule.getValidators().size());
 
 		for (final IValidator validator : rule.getValidators()) {
 			if (validator == ALWAYS_SUCCEED_2) {

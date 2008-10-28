@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -30,7 +28,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 
 	private String text = EMPTY_STRING;
 	private String icon;
-	private List<IWindowRidgetListener> windowRidgetListeners;
+	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
 	private boolean closeable;
 	private boolean active;
 	private IEmbeddedTitleBarListener titleBarListener;
@@ -41,7 +39,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	public EmbeddedTitleBarRidget() {
 		closeable = true;
 		active = true;
-		windowRidgetListeners = new LinkedList<IWindowRidgetListener>();
+		windowRidgetListeners = new ListenerList<IWindowRidgetListener>(IWindowRidgetListener.class);
 		titleBarListener = new TitleBarListener();
 	}
 
@@ -238,7 +236,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		 * @see org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener#windowActivated(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void windowActivated(MouseEvent e) {
-			for (IWindowRidgetListener listener : windowRidgetListeners) {
+			for (IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
 				listener.activated();
 			}
 		}
@@ -247,7 +245,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		 * @see org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener#windowClosed(org.eclipse.swt.events.MouseEvent)
 		 */
 		public void windowClosed(MouseEvent e) {
-			for (IWindowRidgetListener listener : windowRidgetListeners) {
+			for (IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
 				listener.closed();
 			}
 		}
