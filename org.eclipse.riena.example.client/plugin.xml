@@ -141,6 +141,12 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
+            id="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
+            name="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
+            restorable="true"/>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.FilterSubModuleView"
             id="org.eclipse.riena.example.client.views.FilterSubModuleView"
             name="org.eclipse.riena.example.client.views.FilterSubModuleView"
@@ -419,6 +425,11 @@
             parentTypeId="playground">
       </navigationNode>
       <navigationNode
+            typeId="org.eclipse.riena.example.logcollector"
+            nodeBuilder="org.eclipse.riena.example.client.navigation.model.LogCollectorNodeBuilder"
+            parentTypeId="playground">
+      </navigationNode>
+      <navigationNode
             typeId="org.eclipse.riena.example.navigate.comboAndList"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
             parentTypeId="org.eclipse.riena.example.navigation">
@@ -552,6 +563,12 @@
             shared="false"
             typeId="org.eclipse.riena.example.filterridget"
             view="org.eclipse.riena.example.client.views.FilterSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"
+            shared="false"
+            typeId="org.eclipse.riena.example.logcollectorlog"
+            view="org.eclipse.riena.example.client.views.LogCollectorSubModuleView">
       </subModule>
       <subModule
             controller="org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController"
