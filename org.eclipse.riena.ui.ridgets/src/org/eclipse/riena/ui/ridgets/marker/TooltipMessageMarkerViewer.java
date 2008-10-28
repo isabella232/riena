@@ -31,9 +31,6 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private HashMap<IMarkableRidget, String> tooltipMessage = new LinkedHashMap<IMarkableRidget, String>();
 	private HashMap<IMarkableRidget, String> originalTooltipMessage = new LinkedHashMap<IMarkableRidget, String>();
 
-	/**
-	 * @see org.eclipse.riena.ui.ridgets.marker.AbstractMessageMarkerViewer#addRidget(org.eclipse.riena.ui.ridgets.IMarkableRidget)
-	 */
 	@Override
 	public void addRidget(IMarkableRidget markableRidget) {
 		super.addRidget(markableRidget);
@@ -92,9 +89,6 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private class MarkerPropertyChangeListener implements PropertyChangeListener {
 
-		/**
-		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-		 */
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(IMarkableRidget.PROPERTY_MARKER)
 					&& evt.getSource() instanceof IMarkableRidget) {
