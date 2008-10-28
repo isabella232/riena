@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -254,12 +253,14 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		}
 		IMarkableRidget ridget = (IMarkableRidget) getRidget();
 		IMarker marker = new MandatoryMarker();
-		HashSet<IMarker> oneMarker = new HashSet<IMarker>();
-		oneMarker.add(marker);
+		HashSet<IMarker> before = new HashSet<IMarker>(ridget.getMarkers());
+		HashSet<IMarker> after = new HashSet<IMarker>(before);
+		after.add(marker);
 
 		assertTrue(ridget.isEnabled());
+		assertEquals(before.size() + 1, after.size());
 
-		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, Collections.EMPTY_SET, oneMarker);
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, before, after);
 		ridget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
@@ -267,7 +268,7 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		ridget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, oneMarker, Collections.EMPTY_SET);
+		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, after, before);
 		ridget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 
