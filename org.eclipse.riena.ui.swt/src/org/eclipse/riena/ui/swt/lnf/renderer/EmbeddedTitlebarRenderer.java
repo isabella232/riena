@@ -144,7 +144,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		int y = getBounds().y;
 		int w = getBounds().width;
 		int h = getBounds().height;
-		if (isPressed()) {
+		if (isPressed() && !isActive() && !isCloseButtonPressed()) {
 			gc.fillRectangle(x, y, w, h);
 		} else {
 			gc.fillGradientRectangle(x, y, w, h, true);
@@ -227,7 +227,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Hover border
-		if (isHover() && !isPressed()) {
+		if (isHover() && (!isPressed() || isActive())) {
 			x = getBounds().x;
 			y = getBounds().y;
 			w = getBounds().width;
