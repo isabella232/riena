@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
-	private final VerifyListener verifyListener;
+	private final DateVerifyListener verifyListener;
 	private final KeyListener keyListener;
 
 	private String pattern;
@@ -114,6 +114,12 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		return ss.toString();
 	}
 
+	private synchronized void forceTextToControl(Text control, String text) {
+		verifyListener.setEnabled(false);
+		control.setText(text);
+		verifyListener.setEnabled(true);
+	}
+
 	// helping classes
 	//////////////////
 
@@ -125,6 +131,10 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	private final class DateVerifyListener implements VerifyListener {
 
 		private volatile boolean isEnabled = true;
+
+		public void setEnabled(boolean isEnabled) {
+			this.isEnabled = isEnabled;
+		}
 
 		public void verifyText(VerifyEvent e) {
 			if (e.doit == false || !isEnabled) {
@@ -155,11 +165,9 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			}
 			e.doit = false;
 			if (newPos != -1) {
-				isEnabled = false;
-				control.setText(ss.toString());
-				// System.out.println("newPos: " + newPos);
+				forceTextToControl(control, ss.toString());
 				control.setSelection(newPos);
-				isEnabled = true;
+				// System.out.println("newPos: " + newPos);
 			}
 		}
 	}
@@ -206,18 +214,31 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 					SegmentedString ss = new SegmentedString(pattern, text);
 					int index = ss.findNewCursorPosition(caret, 1);
 					control.setSelection(index);
-				} else if (127 == e.keyCode && selectionCount == 0 && !shiftDown) { // del
+				} else if (127 == e.keyCode && selectionCount == 0 && !shiftDown) {
+					// delete on the left of a separator; no selection
 					if (caret < text.length() && SegmentedString.isSeparator(text.charAt(caret))) {
 						e.doit = false;
 						SegmentedString ss = new SegmentedString(pattern, text);
 						int index = ss.findNewCursorPosition(caret, 1);
+						// if index (right) is a digit, delete
+						if (index < text.length() && SegmentedString.isDigit(text.charAt(index))) {
+							ss.delete(caret, index);
+							forceTextToControl(control, ss.toString());
+							index++;
+						}
 						control.setSelection(index);
 					}
 				} else if ('\b' == e.character && selectionCount == 0 && !shiftDown) {
+					// backspace on the right of a separator; no selection
 					if (caret > 0 && SegmentedString.isSeparator(text.charAt(caret - 1))) {
 						e.doit = false;
 						SegmentedString ss = new SegmentedString(pattern, text);
 						int index = ss.findNewCursorPosition(caret, -1);
+						// if index (left) is a digit, delete
+						if (index > 0 && SegmentedString.isDigit(text.charAt(index - 1))) {
+							ss.delete(index - 1, caret - 1);
+							forceTextToControl(control, ss.toString());
+						}
 						control.setSelection(index);
 					}
 				}

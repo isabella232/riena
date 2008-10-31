@@ -65,17 +65,36 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
-		assertText("01.10^.2008", UITestHelper.KC_DEL, "01.10.^2008");
+		assertText("^01.10.2008", UITestHelper.KC_DEL, " ^1.10.2008");
+		assertText("0^1.10.2008", UITestHelper.KC_DEL, " 0^.10.2008");
+		assertText("01.10.200^8", UITestHelper.KC_DEL, "01.10. 200^");
+		assertText("01.10.2008^", UITestHelper.KC_DEL, "01.10.2008^");
+		assertText("01.10^.2008", UITestHelper.KC_DEL, "01.10. ^008");
+		assertText("01.10^. 008", UITestHelper.KC_DEL, "01.10.  ^08");
 		assertText("01.10^.^2008", UITestHelper.KC_DEL, "01.10^.2008");
 		assertText("01.10^.2^008", UITestHelper.KC_DEL, "01.10^. 008");
 		assertText("01.1^0.2^008", UITestHelper.KC_DEL, "01. 1^. 008");
 		assertText("^01.10.2008^", UITestHelper.KC_DEL, "  ^.  .    ");
 
-		assertText("01.10.^2008", "\b", "01.10^.2008");
+		assertText("^01.10.2008", "\b", "^01.10.2008");
+		assertText("0^1.10.2008", "\b", " ^1.10.2008");
+		assertText("01.10.200^8", "\b", "01.10. 20^8");
+		assertText("01.10.2008^", "\b", "01.10. 200^");
+		assertText("01.10.^2008", "\b", "01. 1^.2008");
+		assertText("01. 1.^2008", "\b", "01.  ^.2008");
 		assertText("01.10^.^2008", "\b", "01.10^.2008");
 		assertText("01.10^.2^008", "\b", "01.10^. 008");
 		assertText("01.1^0.2^008", "\b", "01. 1^. 008");
 		assertText("^01.10.2008^", "\b", "  ^.  .    ");
+
+		assertText("^  .  .    ", UITestHelper.KC_DEL, "  ^.  .    ");
+		assertText("  ^.  .    ", UITestHelper.KC_DEL, "  .  ^.    ");
+		assertText("  . ^ .    ", UITestHelper.KC_DEL, "  .  ^.    ");
+		assertText("  .  ^.    ", UITestHelper.KC_DEL, "  .  .    ^");
+		assertText("  .  .    ^", "\b", "  .  ^.    ");
+		assertText("  . ^ .    ", "\b", "  ^.  .    ");
+		assertText("  ^.  .    ", "\b", "  ^.  .    ");
+		assertText(" ^ .  .    ", "\b", " ^ .  .    ");
 	}
 
 	public void testReplace() {
