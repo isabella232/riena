@@ -35,6 +35,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
 		suite.addTestSuite(NumericTextRidgetTest.class);
 		suite.addTestSuite(SegmentedStringTest.class);
+		suite.addTestSuite(SharedResourcesTest.class);
 		suite.addTestSuite(SingleChoiceRidgetTest.class);
 		suite.addTestSuite(StatuslineNumberRidgetTest.class);
 		suite.addTestSuite(TableRidgetTest.class);

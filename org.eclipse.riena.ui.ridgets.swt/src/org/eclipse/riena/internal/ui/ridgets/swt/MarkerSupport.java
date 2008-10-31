@@ -87,7 +87,7 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	private void addMandatory(Control control) {
 		if (preMandatoryBg == null) {
 			preMandatoryBg = control.getBackground();
-			Color color = Activator.getSharedColor(SharedColors.COLOR_MANDATORY);
+			Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
 			control.setBackground(color);
 		}
 	}
@@ -189,9 +189,11 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 			clearMandatory(control);
 			clearOutput(control);
 			if (isMandatory(ridget)) {
-				addOutput(control, Activator.getSharedColor(SharedColors.COLOR_MANDATORY_OUTPUT));
+				Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
+				addOutput(control, color);
 			} else {
-				addOutput(control, Activator.getSharedColor(SharedColors.COLOR_OUTPUT));
+				Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_OUTPUT);
+				addOutput(control, color);
 			}
 		} else {
 			clearOutput(control);

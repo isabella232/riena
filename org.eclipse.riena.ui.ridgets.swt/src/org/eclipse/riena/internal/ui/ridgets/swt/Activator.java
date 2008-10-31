@@ -22,8 +22,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.Workbench;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -41,7 +39,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	private static FakeImages fakeImages;
 
 	// Helper class for shared colors
-	private SharedColors sharedColors;
+	private static SharedColors sharedColors;
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -51,6 +49,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		if (sharedColors != null) {
 			sharedColors.dispose();
+			sharedColors = null;
 		}
 		plugin = null;
 		super.stop(context);
@@ -92,17 +91,26 @@ public class Activator extends AbstractRienaUIPlugin {
 	/**
 	 * Return a "shared" color instance using the given colorKey. Shared colors
 	 * are managed automatically and must not be disposed by client code.
+	 * <p>
+	 * Example:
 	 * 
+	 * <pre>
+	 * Color color = Activator.getSharedColor(display, SharedColors.COLOR_MANDATORY);
+	 * control.setBackground(color);
+	 * </pre>
+	 * 
+	 * @param display
+	 *            TODO [ev] docs
 	 * @param colorKey
 	 *            a non-null String; see {@link SharedColors} for valid keys
 	 * @return a non-null Color instance
 	 */
-	public static Color getSharedColor(String colorKey) {
-		if (getDefault() == null || Workbench.getInstance() == null) {
-			// this is just for plain junit testing / headless testing
-			return null;
+	public static synchronized Color getSharedColor(Display display, String colorKey) {
+		Assert.isNotNull(display);
+		if (sharedColors == null) {
+			sharedColors = new SharedColors(display);
 		}
-		return getDefault().internalGetSharedColor(colorKey);
+		return sharedColors.getSharedColor(colorKey);
 	}
 
 	/**
@@ -122,32 +130,8 @@ public class Activator extends AbstractRienaUIPlugin {
 		}
 	}
 
-	// /**
-	// * Log an error message with the given throwable.
-	// *
-	// * @param throwable
-	// * a non-null Throwable
-	// */
-	// public static void log(Throwable throwable) {
-	// Assert.isNotNull(throwable);
-	// String msg = throwable.getMessage();
-	// if (msg == null) {
-	//			msg = "Unexpected error."; //$NON-NLS-1$
-	// }
-	// IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, msg, throwable);
-	// getDefault().getLog().log(status);
-	// }
-	//
 	// helping methods
 	// ////////////////
-
-	private Color internalGetSharedColor(String colorKey) {
-		if (sharedColors == null) {
-			Display display = PlatformUI.getWorkbench().getDisplay();
-			sharedColors = new SharedColors(display);
-		}
-		return sharedColors.getSharedColor(colorKey);
-	}
 
 	/**
 	 * Return mock images (for unit tests).

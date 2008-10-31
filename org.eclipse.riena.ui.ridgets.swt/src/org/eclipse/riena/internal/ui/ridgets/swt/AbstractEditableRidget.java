@@ -29,6 +29,11 @@ import org.eclipse.swt.widgets.Display;
  */
 public abstract class AbstractEditableRidget extends AbstractValueRidget implements IEditableRidget {
 
+	/**
+	 * TODO [ev] docs
+	 */
+	protected static final int FLASH_DURATION_MS = 300;
+
 	private boolean isFlashInProgress = false;
 
 	public void addValidationRule(IValidator validationRule, ValidationTime validationTime) {
@@ -78,7 +83,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 					Runnable op = new Runnable() {
 						public void run() {
 							try {
-								Thread.sleep(300);
+								Thread.sleep(FLASH_DURATION_MS);
 							} catch (InterruptedException e) {
 								// ignore
 							} finally {

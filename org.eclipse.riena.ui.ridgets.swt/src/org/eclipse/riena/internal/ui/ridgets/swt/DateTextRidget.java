@@ -168,6 +168,9 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 				forceTextToControl(control, ss.toString());
 				control.setSelection(newPos);
 				// System.out.println("newPos: " + newPos);
+			} else {
+				// validationRulesChecked(ValidationRuleStatus.error(true, "", null)); // TODO [ev] ex
+				flash();
 			}
 		}
 	}

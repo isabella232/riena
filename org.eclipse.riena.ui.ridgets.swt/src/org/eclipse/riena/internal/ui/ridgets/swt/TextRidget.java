@@ -33,6 +33,9 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
@@ -49,6 +52,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private final ValidationListener verifyListener;
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
+	private boolean isFlashInProgress;
 
 	public TextRidget() {
 		crKeyListener = new CRKeyListener();
@@ -88,6 +92,40 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	@Override
 	protected void checkUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Text.class);
+	}
+
+	/**
+	 * TODO [ev] docs
+	 */
+	protected synchronized final void flash() {
+		final Control control = getUIControl();
+		if (!isFlashInProgress && control != null) {
+			isFlashInProgress = true;
+
+			final Display display = control.getDisplay();
+			final Color oldBgColor = control.getBackground();
+			Color bgColor = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
+			control.setBackground(bgColor);
+			Runnable op = new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(AbstractEditableRidget.FLASH_DURATION_MS);
+					} catch (InterruptedException e) {
+						// ignore
+					} finally {
+						if (!control.isDisposed()) {
+							display.syncExec(new Runnable() {
+								public void run() {
+									control.setBackground(oldBgColor);
+								}
+							});
+						}
+						isFlashInProgress = false;
+					}
+				}
+			};
+			new Thread(op).start();
+		}
 	}
 
 	@Override

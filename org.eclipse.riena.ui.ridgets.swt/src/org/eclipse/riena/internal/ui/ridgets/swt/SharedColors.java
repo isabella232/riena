@@ -21,27 +21,22 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Provides access to a set of shared colors. The colors can be accessed using
  * one of the predifined string constants.
- * <p>
- * Example:
  * 
- * <pre>
- * Color color = Activator.getSharedColor(SharedColors.COLOR_MANDATORY);
- * control.setBackground(color);
- * </pre>
- * 
- * @see Activator
+ * @see Activator#getSharedColor(Display, String)
  */
 public final class SharedColors {
 
 	public static final String COLOR_MANDATORY = "COLOR_MANDATORY"; //$NON-NLS-1$
 	public static final String COLOR_OUTPUT = "COLOR_OUTPUT"; //$NON-NLS-1$
 	public static final String COLOR_MANDATORY_OUTPUT = "COLOR_MANDATORY_OUTPUT"; //$NON-NLS-1$
+	public static final String COLOR_FLASH_ERROR = "COLOR_FLASH_ERROR"; //$NON-NLS-1$
 
-	private Map<String, Color> sharedColors = new HashMap<String, Color>();
+	private Map<String, Color> sharedColors;
 
 	SharedColors(Display display) {
 		Object[] values = { COLOR_MANDATORY, new RGB(255, 255, 175), COLOR_OUTPUT, new RGB(231, 233, 245),
-				COLOR_MANDATORY_OUTPUT, new RGB(242, 243, 210), };
+				COLOR_MANDATORY_OUTPUT, new RGB(242, 243, 210), COLOR_FLASH_ERROR, new RGB(250, 190, 190) };
+		sharedColors = new HashMap<String, Color>();
 		for (int i = 0; i < values.length; i = i + 2) {
 			String key = (String) values[i];
 			RGB rgb = (RGB) values[i + 1];
