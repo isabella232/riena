@@ -237,6 +237,50 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("abc", bean.getValue());
 	}
 
+	public void testAutoFillYYYY() {
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+
+		assertText("  .  .    ^", "00\t", "  .  .2000");
+		assertText("  .  .^    ", "01\t", "  .  .2001");
+		assertText("  .  . ^   ", "29\t", "  .  .2029");
+		assertText("  .  .    ^", "30\t", "  .  .1930");
+		assertText("  .  .    ^", "99\t", "  .  .1999");
+	}
+
+	public void testAutoFillYYYYWithError() {
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+
+		ridget.setText("31.10.2008");
+		assertFalse(ridget.isErrorMarked());
+		assertText("31.10.    ^", "8\t", "31.10.   8");
+		assertTrue(ridget.isErrorMarked());
+
+		ridget.setText("31.10.2008");
+		assertFalse(ridget.isErrorMarked());
+		assertText("31.10.    ^", "008\t", "31.10. 008");
+		assertTrue(ridget.isErrorMarked());
+	}
+
+	public void testDoNotFillYY() {
+		IDateTextRidget ridget = getRidget();
+
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYY);
+		assertText("  .  .  ^", "00\t", "  .  .00");
+
+		ridget.setFormat("ddMMyy");
+		assertText("      ^", "00\t", "    00");
+	}
+
+	// TODO [ev] do we need a 'jump on dot' behavior?
+	//	public void testJumpOnDot() {
+	//		assertText(" ^ .  .    ", ".08", "  .08^.    ");
+	//		assertText("  ^.  .    ", "..2008", "  .  .2008^");
+	//		assertText("  .  .   ^ ", ".", "  .  .   ^ ");
+	//		assertText("  ^.  .    ", " ", "  ^.  .    ");
+	//	}
+
 	// helping methods
 	//////////////////
 
@@ -290,11 +334,13 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	private void checkCaret(String input) {
 		int start = input.indexOf('^');
-		int end = input.lastIndexOf('^');
-		int expected = start < end ? end - 1 : end;
-		// System.out.println("exp car: " + expected);
-		Text control = getUIControl();
-		assertEquals(expected, control.getCaretPosition());
+		if (start != -1) {
+			int end = input.lastIndexOf('^');
+			int expected = start < end ? end - 1 : end;
+			// System.out.println("exp car: " + expected);
+			Text control = getUIControl();
+			assertEquals(expected, control.getCaretPosition());
+		}
 	}
 
 	private String removePositionMarkers(String input) {
@@ -321,6 +367,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		for (Listener listener : listeners) {
 			control.addListener(SWT.Verify, listener);
 		}
+		control.setFocus();
 		if (start == end) {
 			control.setSelection(start, start);
 		} else {

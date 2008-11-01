@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.regex.Pattern;
+
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
@@ -18,6 +20,9 @@ import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -34,8 +39,17 @@ import org.eclipse.swt.widgets.Text;
  */
 public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
+	/**
+	 * Controls the expansion that happens when a two-digit year is entered
+	 * where a four-digit year is expected. If the entered value is below * * *
+	 * * {@value} , it will be prefixed with '20'. Otherwise it will be prefixed
+	 * with '19'.
+	 */
+	private static final int Y2K_CUTOFF = 30;
+
 	private final DateVerifyListener verifyListener;
 	private final KeyListener keyListener;
+	private final FocusListener focusListener;
 
 	private String pattern;
 	private ValidDate validDateRule;
@@ -46,17 +60,20 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	public DateTextRidget() {
 		verifyListener = new DateVerifyListener();
 		keyListener = new DateKeyListener();
+		focusListener = new DateFocusListener();
 		setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 	}
 
 	protected final synchronized void addListeners(Text control) {
 		control.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
+		control.addFocusListener(focusListener);
 		super.addListeners(control);
 	}
 
 	@Override
 	protected final synchronized void removeListeners(Text control) {
+		control.removeFocusListener(focusListener);
 		control.removeKeyListener(keyListener);
 		control.removeVerifyListener(verifyListener);
 		super.removeListeners(control);
@@ -112,6 +129,24 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		}
 		ss.insert(0, text);
 		return ss.toString();
+	}
+
+	private String computeAutoFill(String input) {
+		String result = null;
+		int index = pattern.lastIndexOf("yyyy"); //$NON-NLS-1$
+		if (index != -1 && pattern.length() == input.length()) {
+			String yyyy = input.substring(index, index + 4);
+			if (Pattern.matches("  \\d\\d", yyyy)) { //$NON-NLS-1$
+				String yy = yyyy.substring(2);
+				if (Integer.parseInt(yy) < Y2K_CUTOFF) {
+					yyyy = "20" + yy; //$NON-NLS-1$
+				} else {
+					yyyy = "19" + yy; //$NON-NLS-1$
+				}
+				result = input.substring(0, index) + yyyy + input.substring(index + 4);
+			}
+		}
+		return result;
 	}
 
 	private synchronized void forceTextToControl(Text control, String text) {
@@ -249,4 +284,17 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		}
 	}
 
+	/**
+	 * TODO [ev] docs
+	 */
+	private final class DateFocusListener extends FocusAdapter {
+		@Override
+		public void focusLost(FocusEvent e) {
+			Text control = (Text) e.widget;
+			String autoFill = computeAutoFill(control.getText());
+			if (autoFill != null) {
+				forceTextToControl(control, autoFill);
+			}
+		}
+	}
 }
