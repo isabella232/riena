@@ -37,9 +37,11 @@ public class ValidIntermediateDateTest extends TestCase {
 		assertFalse(rule.validate("01.01.0101").isOK());
 
 		assertTrue(rule.validate("02.02.").isOK());
-		assertTrue(rule.validate("02.02.2").isOK());
+		assertFalse(rule.validate("02.02.2").isOK());
 		assertTrue(rule.validate("02.02.22").isOK());
+		assertFalse(rule.validate("02.02.022").isOK());
 		assertTrue(rule.validate("02.02.222").isOK());
+		assertFalse(rule.validate("02.02.0002").isOK());
 		assertTrue(rule.validate("02.02.2222").isOK());
 	}
 
@@ -57,8 +59,9 @@ public class ValidIntermediateDateTest extends TestCase {
 		assertTrue(rule.validate("..").isOK());
 		assertTrue(rule.validate("11..").isOK());
 		assertTrue(rule.validate("11.1.").isOK());
-		assertTrue(rule.validate("11.1.1").isOK());
-		assertFalse(rule.validate("55.1.1").isOK());
+		assertFalse(rule.validate("11.1.1").isOK());
+		assertTrue(rule.validate("11.1.11").isOK());
+		assertFalse(rule.validate("55.1.11").isOK());
 	}
 
 	/**
@@ -71,10 +74,11 @@ public class ValidIntermediateDateTest extends TestCase {
 
 		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
 
-		assertTrue(rule.validate("11.1.1 11:11").isOK());
+		assertFalse(rule.validate("11.1.1 11:11").isOK());
+		assertTrue(rule.validate("11.1.11 11:11").isOK());
 		assertTrue(rule.validate("11.01.01 :").isOK());
-		assertTrue(rule.validate("11.1.1 :").isOK());
-		assertFalse(rule.validate("11.1.1 55:11").isOK());
+		assertTrue(rule.validate("11.1.11 :").isOK());
+		assertFalse(rule.validate("11.1.11 55:11").isOK());
 	}
 
 	/**

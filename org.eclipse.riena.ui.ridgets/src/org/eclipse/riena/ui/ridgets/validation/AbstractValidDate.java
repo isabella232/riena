@@ -157,6 +157,7 @@ public abstract class AbstractValidDate implements IValidator {
 			completedValue.append(valueToCheck);
 		}
 
+		// System.out.println("completed= " + completedValue.toString());
 		return completedValue.toString();
 	}
 
@@ -165,8 +166,13 @@ public abstract class AbstractValidDate implements IValidator {
 	}
 
 	private boolean isNoPossibleCompletionToAllowedYear(final String value, final String datePattern) {
-
-		return datePattern.startsWith(IDateTextRidget.FORMAT_YYYY) && value.startsWith("0") && value.length() > 2; //$NON-NLS-1$
+		boolean result = false;
+		if (datePattern.startsWith(IDateTextRidget.FORMAT_YYYY)) {
+			String trimedValue = value.trim();
+			result = trimedValue.length() < 2 || (trimedValue.length() > 2 && trimedValue.startsWith("0")); //$NON-NLS-1$
+			// System.out.println(String.format("%s '%s' %b", datePattern, trimedValue, result));
+		}
+		return result;
 	}
 
 	private int nextSeparatorIndex(final String value) {
