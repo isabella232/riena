@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -33,6 +30,10 @@ import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
@@ -459,7 +460,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		int padding = borderRenderer.getCompleteBorderWidth();
 		int height = getSwitchterTopMargin() + getSwitchterHeight() + padding - 1;
 		logoData.bottom = new FormAttachment(0, height);
-		logoData.width = getLogoImage().getImageData().width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
+		Image logoImage = getLogoImage();
+		if (logoImage == null) {
+			return;
+		}
+		ImageData imageData = logoImage.getImageData();
+		if (imageData == null) {
+			return;
+		}
+		logoData.width = imageData.width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
 		Integer hPos = getHorizontalLogoPosition();
 		switch (hPos) {
 		case SWT.CENTER:

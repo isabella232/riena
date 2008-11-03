@@ -18,6 +18,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
@@ -39,7 +40,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 			+ "closeModule_hover_selected.png"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_MODULE_INACTIVE = PATH_ICONS + PATH_SEPARATOR + "closeModule_inactive.png"; //$NON-NLS-1$
 	private static final String IMAGE_BACKGROUND = PATH_ICONS + PATH_SEPARATOR + "background.png"; //$NON-NLS-1$
-	private static final String IMAGE_LOGO = PATH_ICONS + PATH_SEPARATOR + "Riena-Logo_RGB.png"; //$NON-NLS-1$
+	private static final String IMAGE_LOGO = PATH_ICONS + PATH_SEPARATOR + "Riena_Logo_RGB.png"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE = PATH_ICONS + PATH_SEPARATOR + "mb_close.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_close_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR

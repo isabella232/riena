@@ -64,7 +64,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/background.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
-		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/Riena-Logo_RGB.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/Riena_Logo_RGB.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
 
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
