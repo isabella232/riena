@@ -18,8 +18,10 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -70,9 +72,20 @@ public class TextDateSubModuleView extends SubModuleView<TextDateSubModuleContro
 		addUIControl(UIControlsFactory.createTextDate(parent), "indd.MM.yyyy_HH:mm"); //$NON-NLS-1$
 		addUIControl(UIControlsFactory.createTextOutput(parent), "outdd.MM.yyyy_HH:mm"); //$NON-NLS-1$
 
+		Label spacer = UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(spacer);
+
+		UIControlsFactory.createLabel(parent, "dd.MM.yyyy:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextDate(parent), "inJustEights"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createCombo(parent), "comboFonts"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "dd.MM.yyyy:"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createTextDate(parent), "inJustSpaces"); //$NON-NLS-1$
+		addUIControl(UIControlsFactory.createCombo(parent), "comboSizes"); //$NON-NLS-1$
+
 		GridDataFactory gdf = GridDataFactory.fillDefaults();
 		for (Control child : parent.getChildren()) {
-			if (child instanceof Text) {
+			if (child instanceof Text || child instanceof Combo) {
 				gdf.applyTo(child);
 			}
 		}
