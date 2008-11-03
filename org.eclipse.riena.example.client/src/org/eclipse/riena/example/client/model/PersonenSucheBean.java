@@ -15,8 +15,6 @@ import java.util.List;
 
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
-
 /**
  * PersonenSucheBean
  */
