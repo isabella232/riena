@@ -46,12 +46,12 @@ public class TextNumericSubModuleController extends SubModuleController {
 		}
 
 		bindToModel("StringNum", new TypedBean<String>("1234")); //$NON-NLS-1$ //$NON-NLS-2$
-		bindToModel("Integer", new TypedBean<Integer>(Integer.valueOf(-1234))); //$NON-NLS-1$
+		bindToModel("Integer", new TypedBean<Integer>(Integer.valueOf(-1234)), true); //$NON-NLS-1$
 		bindToModel("Long", new TypedBean<Long>(Long.valueOf(1234))); //$NON-NLS-1$
 		bindToModel("BigInteger", new TypedBean<BigInteger>(BigInteger.valueOf(12345789))); //$NON-NLS-1$
 
 		bindToModel("StringDec", new TypedBean<String>("12345678.1234")); //$NON-NLS-1$ //$NON-NLS-2$
-		bindToModel("Double", new TypedBean<Double>(Double.valueOf(-1234.00))); //$NON-NLS-1$
+		bindToModel("Double", new TypedBean<Double>(Double.valueOf(-1234.00)), true); //$NON-NLS-1$
 		bindToModel("Float", new TypedBean<Float>(Float.valueOf("1234"))); //$NON-NLS-1$//$NON-NLS-2$
 		bindToModel("BigDecimal", new TypedBean<BigDecimal>(BigDecimal.valueOf(12345789.1234))); //$NON-NLS-1$
 		IDecimalTextRidget inBigDecimal = (IDecimalTextRidget) getRidget("inBigDecimal"); //$NON-NLS-1$
@@ -87,9 +87,16 @@ public class TextNumericSubModuleController extends SubModuleController {
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 	}
 
-	private void bindToModel(String id, TypedBean<?> value) {
+	private void bindToModel(String id, TypedBean<?> value, boolean signed) {
 		INumericTextRidget inputRidget = (INumericTextRidget) getRidget("in" + id); //$NON-NLS-1$
 		inputRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		inputRidget.updateFromModel();
+		if (signed) {
+			inputRidget.setSigned(true);
+		}
+	}
+
+	private void bindToModel(String id, TypedBean<?> value) {
+		bindToModel(id, value, false);
 	}
 }
