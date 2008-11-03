@@ -15,6 +15,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 /**
  * 
  */
-public interface IMenuSeparator extends IMenuItem, IRidget {
+public interface IMenuSeparator extends IRidget {
 
 }

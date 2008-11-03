@@ -11,7 +11,6 @@
 package org.eclipse.riena.ui.ridgets.obsolete;
 
 import org.eclipse.riena.ui.ridgets.IActionAdapter;
-import org.eclipse.riena.ui.ridgets.menu.IMenuItem;
 import org.eclipse.riena.ui.ridgets.util.IAcceleratorConstants;
 
 /**
@@ -20,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.util.IAcceleratorConstants;
  * @author Juergen Becker
  * @author Carsten Drossel
  */
-public interface IMenuActionAdapter extends IActionAdapter, IMenuItem, IAcceleratorConstants {
+public interface IMenuActionAdapter extends IActionAdapter, IAcceleratorConstants {
 
 	/**
 	 * Sets the key combination which serves as an accelerator for the menu

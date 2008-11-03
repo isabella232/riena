@@ -14,49 +14,52 @@ import java.util.List;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IRadioButtonRidget;
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
 /**
  * 
  */
 public interface IMenuFactory {
 
-	List<IMenuItem> createPopupMenu();
+	List<IActionRidget> createPopupMenu();
 
 	//
 	// --- basic menu button
 	//
-	IMenuButton createButton(String label, IActionListener listener);
+	IActionRidget createButton(String label, IActionListener listener);
 
-	IMenuButton createButton(String label, String target, String action);
+	IActionRidget createButton(String label, String target, String action);
 
-	IMenuButton createButton(String label, String iconName, IActionListener listener);
+	IActionRidget createButton(String label, String iconName, IActionListener listener);
 
-	IMenuButton createButton(String label, String iconName, String target, String action);
+	IActionRidget createButton(String label, String iconName, String target, String action);
 
 	//
 	// --- menu radio button
 	//	
-	IMenuRadioButton createRadioButton(String label, IObservableValue observableValue, IActionListener listener);
+	IRadioButtonRidget createRadioButton(String label, IObservableValue observableValue, IActionListener listener);
 
-	IMenuRadioButton createRadioButton(String label, IObservableValue observableValue, String target, String action);
+	IRadioButtonRidget createRadioButton(String label, IObservableValue observableValue, String target, String action);
 
-	IMenuRadioButton createRadioButton(String label, String iconName, IObservableValue observableValue,
+	IRadioButtonRidget createRadioButton(String label, String iconName, IObservableValue observableValue,
 			IActionListener listener);
 
-	IMenuRadioButton createRadioButton(String label, String iconName, IObservableValue observableValue, String target,
-			String action);
+	IRadioButtonRidget createRadioButton(String label, String iconName, IObservableValue observableValue,
+			String target, String action);
 
 	//
 	// --- menu toggle button (aka checkbox)
 	//	
-	IMenuToggleButton createToggleButton(String label, IObservableValue observableValue, IActionListener listener);
+	IToggleButtonRidget createToggleButton(String label, IObservableValue observableValue, IActionListener listener);
 
-	IMenuToggleButton createToggleButton(String label, IObservableValue observableValue, String target, String action);
+	IToggleButtonRidget createToggleButton(String label, IObservableValue observableValue, String target, String action);
 
-	IMenuToggleButton createToggleButton(String label, String iconName, IObservableValue observableValue,
+	IToggleButtonRidget createToggleButton(String label, String iconName, IObservableValue observableValue,
 			IActionListener listener);
 
-	IMenuToggleButton createToggleButton(String label, String iconName, IObservableValue observableValue,
+	IToggleButtonRidget createToggleButton(String label, String iconName, IObservableValue observableValue,
 			String target, String action);
 
 	//

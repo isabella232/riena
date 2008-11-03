@@ -15,7 +15,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 /**
  * 
  */
-public interface IMenuSpacer extends IMenuItem, IRidget {
+public interface IMenuSpacer extends IRidget {
 
 	/**
 	 * @return the size of the spacer or null if all available space is used
