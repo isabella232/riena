@@ -73,6 +73,6 @@ public class ListBean extends AbstractBean {
 	public void setValues(List<?> values) {
 		Object old = this.values;
 		this.values = values;
-		firePropertyChanged("values", old, this.values); //$NON-NLS-1$
+		firePropertyChanged(PROPERTY_VALUES, old, this.values);
 	}
 }
