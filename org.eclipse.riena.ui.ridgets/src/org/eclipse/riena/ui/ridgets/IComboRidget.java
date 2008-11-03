@@ -31,9 +31,9 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            The class of the beans in the list.
 	 * @param renderingMethod
 	 *            The method used to render the beans in the list of the combo
-	 *            box.
+	 *            box (null for {@code toString()}).
 	 * @param selectionObservableValue
-	 *            An observable value holding the selection.
+	 *            A non-null observable value holding the selection.
 	 */
 	void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass, String renderingMethod,
 			IObservableValue selectionObservableValue);
@@ -47,11 +47,11 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            The class of the beans in the list.
 	 * @param renderingMethod
 	 *            The method used to render the beans in the list of the combo
-	 *            box.
+	 *            box (null for {@code toString()}).
 	 * @param selectionBean
-	 *            An object holding the selection.
+	 *            A non-null object holding the selection.
 	 * @param selectionPropertyName
-	 *            The property name to access the selection.
+	 *            The property name to access the selection (non-null).
 	 */
 	void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
 			String renderingMethod, Object selectionBean, String selectionPropertyName);
@@ -74,8 +74,7 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            Factory for creating new entries for this ComboBox
 	 */
 	void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
-			String renderingMethod, Object selectionBean, String selectionPropertyName,
-			IComboEntryFactory entryFactory);
+			String renderingMethod, Object selectionBean, String selectionPropertyName, IComboEntryFactory entryFactory);
 
 	/**
 	 * Return the observable list holding the list.
