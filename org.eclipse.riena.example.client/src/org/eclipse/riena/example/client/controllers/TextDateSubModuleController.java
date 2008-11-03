@@ -42,7 +42,6 @@ public class TextDateSubModuleController extends SubModuleController {
 	 * Binds and updates the ridgets.
 	 */
 	public void configureRidgets() {
-		System.out.println("TextDateSubModuleController.configureRidgets()"); //$NON-NLS-1$
 		String[] ids = { "dd.MM.yyyy", "dd.MM.yy", "dd.MM", "MM.yyyy", "yyyy", "HH:mm:ss", "HH:mm", "dd.MM.yyyy_HH:mm" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		DataBindingContext dbc = new DataBindingContext();
 		for (String id : ids) {
@@ -129,7 +128,7 @@ public class TextDateSubModuleController extends SubModuleController {
 	//////////////////
 
 	/**
-	 * TODO [ev] docs
+	 * Helper class for applying fonts to ridgets.
 	 */
 	private static final class FontManager {
 
