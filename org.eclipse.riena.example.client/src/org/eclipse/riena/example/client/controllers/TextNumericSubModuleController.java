@@ -29,16 +29,10 @@ import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 
 /**
- * Controller for the {@link INumericTextRidget} and
- * {@link IDecimalTextRidget} example.
+ * Controller for the {@link INumericTextRidget} and {@link IDecimalTextRidget}
+ * example.
  */
 public class TextNumericSubModuleController extends SubModuleController {
-
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		configureRidgets();
-	}
 
 	/**
 	 * Binds and updates the ridgets.

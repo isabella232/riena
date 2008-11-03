@@ -29,15 +29,6 @@ public class NavigateSubModuleController extends SubModuleController /*
 		super(navigationNode);
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		configureRidgets();
-	}
-
 	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */

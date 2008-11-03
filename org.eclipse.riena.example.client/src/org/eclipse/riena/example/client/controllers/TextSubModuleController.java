@@ -29,15 +29,6 @@ public class TextSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
-	@Override
-	public void afterBind() {
-		super.afterBind();
-		configureRidgets();
-	}
-
-	/**
 	 * Binds and updates the ridgets.
 	 */
 	public void configureRidgets() {
