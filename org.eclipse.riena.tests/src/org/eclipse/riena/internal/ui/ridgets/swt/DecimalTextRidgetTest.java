@@ -123,13 +123,13 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		control.setSelection(5, 5);
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
-		assertEquals(localize("1.234,9876"), ridget.getText());
+		assertEquals(localize("1.234,876"), ridget.getText());
 		assertEquals(6, control.getCaretPosition());
 
 		UITestHelper.sendString(display, "\b");
 
-		assertEquals(localize("1.234,9876"), ridget.getText());
-		assertEquals(5, control.getCaretPosition());
+		assertEquals(localize("123,876"), ridget.getText());
+		assertEquals(3, control.getCaretPosition());
 
 		ridget.setText(localize("1.234,9876"));
 		control.setFocus();
@@ -333,7 +333,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		bean.setValue(localize("0,0"));
 		ridget.updateFromModel();
 
-		assertEquals(localize(",000"), control.getText());
+		assertEquals(localize("0,000"), control.getText());
 		assertEquals(localize("0"), ridget.getText());
 		assertEquals(localize("0,0"), bean.getValue());
 
@@ -381,8 +381,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			// expected
 		}
 
-		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_MAXLENGTH, Integer.valueOf(10), Integer
-				.valueOf(5));
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_MAXLENGTH, Integer.valueOf(10), Integer.valueOf(5));
 		ridget.setMaxLength(5);
 
 		verifyPropertyChangeEvents();
@@ -439,8 +438,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			// expected
 		}
 
-		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(2), Integer
-				.valueOf(5));
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(2), Integer.valueOf(5));
 		ridget.setPrecision(5);
 
 		verifyPropertyChangeEvents();
@@ -451,8 +449,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(5), Integer
-				.valueOf(0));
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(5), Integer.valueOf(0));
 		ridget.setPrecision(0);
 
 		verifyPropertyChangeEvents();
@@ -491,7 +488,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("1"), bean.getValue());
 	}
 
-	public void testPadOnFocusOut() {
+	public void testPadFractionDigitsOnFocusOut() {
 		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setPrecision(3);
@@ -504,6 +501,27 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("1.234,000"), control.getText());
 		assertEquals(localize("1.234"), ridget.getText());
 		assertEquals(localize("1.234"), bean.getValue());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), localize("\b,1\t"));
+
+		assertEquals(localize("0,100"), control.getText());
+		assertEquals(localize("0,1"), ridget.getText());
+		assertEquals(localize("0,1"), bean.getValue());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b,\t");
+
+		assertEquals(localize("0,000"), control.getText());
+		assertEquals(localize("0,0"), ridget.getText());
+		assertEquals(localize("0,0"), bean.getValue());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b,-\t");
+
+		assertEquals(localize("-0,000"), control.getText());
+		assertEquals(localize("-0,0"), ridget.getText());
+		assertEquals(localize("-0,0"), bean.getValue());
 	}
 
 	// helping methods

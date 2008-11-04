@@ -96,18 +96,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.setText("-1234");
 
-		assertEquals(TestUtils.getLocalizedNumber("-1.234"), ridget.getText());
+		assertEquals(localize("-1.234"), ridget.getText());
 
 		ridget.setText("1234");
 
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), ridget.getText());
 
-		ridget.setText(TestUtils.getLocalizedNumber("98.765"));
+		ridget.setText(localize("98.765"));
 
-		assertEquals(TestUtils.getLocalizedNumber("98.765"), ridget.getText());
+		assertEquals(localize("98.765"), ridget.getText());
 
 		try {
-			ridget.setText(TestUtils.getLocalizedNumber("98.765,12"));
+			ridget.setText(localize("98.765,12"));
 			fail();
 		} catch (NumberFormatException nfe) {
 			// expected
@@ -144,12 +144,12 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertEquals("1234", ridget.getText());
 
-		ridget.setText(TestUtils.getLocalizedNumber("98.765"));
+		ridget.setText(localize("98.765"));
 
 		assertEquals("98765", ridget.getText());
 
 		try {
-			ridget.setText(TestUtils.getLocalizedNumber("98.765,12"));
+			ridget.setText(localize("98.765,12"));
 			fail();
 		} catch (NumberFormatException nfe) {
 			// expected
@@ -193,7 +193,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.updateFromModel();
 
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), ridget.getText());
+		assertEquals(localize("1.337"), ridget.getText());
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		model.setValue(-7);
 		ridget.updateFromModel();
 
-		assertEquals(TestUtils.getLocalizedNumber("-7"), ridget.getText());
+		assertEquals(localize("-7"), ridget.getText());
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.updateFromModel();
 
-		assertEquals(TestUtils.getLocalizedNumber("4.711"), ridget.getText());
+		assertEquals(localize("4.711"), ridget.getText());
 	}
 
 	@Override
@@ -283,18 +283,18 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		focusIn(control);
 		control.setSelection(caretPos, caretPos);
 
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText());
 		assertEquals(caretPos, control.getCaretPosition());
 
 		UITestHelper.sendString(control.getDisplay(), "-");
 
-		assertEquals(TestUtils.getLocalizedNumber("-1.337"), control.getText());
+		assertEquals(localize("-1.337"), control.getText());
 		assertEquals(caretPos + 1, control.getCaretPosition());
 
 		control.setSelection(1, 1);
 		UITestHelper.sendString(control.getDisplay(), "\b");
 
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText());
 		assertEquals(0, control.getCaretPosition());
 	}
 
@@ -317,12 +317,12 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		focusIn(control);
 		control.setSelection(caretPos, caretPos);
 
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText());
 		assertEquals(caretPos, control.getCaretPosition());
 
 		UITestHelper.sendString(control.getDisplay(), "-");
 
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), control.getText());
+		assertEquals(localize("1.337"), control.getText());
 		assertEquals(caretPos, control.getCaretPosition());
 	}
 
@@ -333,7 +333,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isGrouping());
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), ridget.getText());
+		assertEquals(localize("1.337"), ridget.getText());
 
 		ridget.setGrouping(false);
 
@@ -343,7 +343,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.setGrouping(true);
 
 		assertTrue(ridget.isGrouping());
-		assertEquals(TestUtils.getLocalizedNumber("1.337"), ridget.getText());
+		assertEquals(localize("1.337"), ridget.getText());
 	}
 
 	public void testUpdateFromControlUserInput() throws Exception {
@@ -429,16 +429,16 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf(471), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "471", TestUtils.getLocalizedNumber("4.711"));
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "471", localize("4.711"));
 
 		UITestHelper.sendString(display, "1");
 
 		verifyPropertyChangeEvents();
-		assertEquals(TestUtils.getLocalizedNumber("4.711"), control.getText());
-		assertEquals(TestUtils.getLocalizedNumber("4.711"), ridget.getText());
+		assertEquals(localize("4.711"), control.getText());
+		assertEquals(localize("4.711"), ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, TestUtils.getLocalizedNumber("4.711"), "471");
+		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, localize("4.711"), "471");
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
 		UITestHelper.sendString(display, "\b");
@@ -590,16 +590,16 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("123.456"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("123.456"), getUIControl().getText());
+		assertEquals(localize("123.456"), ridget.getText());
+		assertEquals(localize("123.456"), getUIControl().getText());
 		assertEquals(Integer.valueOf(123456), bean.getValue());
 
 		bean.setValue(Integer.valueOf(1234));
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), getUIControl().getText());
+		assertEquals(localize("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), getUIControl().getText());
 		assertEquals(Integer.valueOf(1234), bean.getValue());
 	}
 
@@ -624,8 +624,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), getUIControl().getText());
+		assertEquals(localize("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), getUIControl().getText());
 		assertEquals(Integer.valueOf(1234), bean.getValue());
 	}
 
@@ -643,7 +643,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "98765\t");
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("98.765"), ridget.getText());
+		assertEquals(localize("98.765"), ridget.getText());
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
 		focusIn(control);
@@ -661,7 +661,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "43210\t");
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("43.210"), ridget.getText());
+		assertEquals(localize("43.210"), ridget.getText());
 		assertEquals(Integer.valueOf(43210), bean.getValue());
 	}
 
@@ -679,7 +679,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "98765\t");
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("98.765"), ridget.getText());
+		assertEquals(localize("98.765"), ridget.getText());
 		assertEquals(Integer.valueOf(98765), bean.getValue());
 
 		focusIn(control);
@@ -696,7 +696,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "555\t");
 
 		assertFalse(ridget.isErrorMarked());
-		assertEquals(TestUtils.getLocalizedNumber("98.555"), ridget.getText());
+		assertEquals(localize("98.555"), ridget.getText());
 		assertEquals(Integer.valueOf(98555), bean.getValue());
 	}
 
@@ -944,31 +944,31 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		focusIn(control);
 		UITestHelper.sendString(control.getDisplay(), "1234");
 
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), control.getText());
+		assertEquals(localize("1.234"), control.getText());
 
 		focusOut(control);
 
-		assertEquals(TestUtils.getLocalizedNumber("1.234"), ridget.getText());
+		assertEquals(localize("1.234"), ridget.getText());
 
 		focusIn(control);
 		control.setSelection(control.getText().length()); // move cursor to end
 		UITestHelper.sendString(control.getDisplay(), "5");
 
-		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText());
 
 		focusOut(control);
 
-		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText());
 
 		focusIn(control);
 		control.setSelection(control.getText().length()); // move cursor to end
 		UITestHelper.sendString(control.getDisplay(), "6");
 
-		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText());
 
 		focusOut(control);
 
-		assertEquals(TestUtils.getLocalizedNumber("12.345"), control.getText());
+		assertEquals(localize("12.345"), control.getText());
 	}
 
 	public void testSetMarkNegative() {
@@ -1055,8 +1055,28 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("23", NumericTextRidget.removeLeadingZeroes("0023"));
 	}
 
+	public void testDeleteOnSeparator() {
+		assertText("1^.234", UITestHelper.KC_DEL, "1^34");
+		assertText("12^.345", UITestHelper.KC_DEL, "1.2^45");
+		assertText("1.234^.567", UITestHelper.KC_DEL, "123.4^67");
+	}
+
+	public void testBackspaceOnSeparator() {
+		assertText("123.^456", "\b", "12^.456");
+		assertText("1.^456", "\b", "^456");
+		assertText("1.234.^567", "\b", "123^.567");
+	}
+
 	// helping methods
 	//////////////////
+
+	private void assertText(String before, String keySeq, String after) {
+		TestUtils.assertText(getUIControl(), localize(before), keySeq, localize(after));
+	}
+
+	private void assertText(String before, int keyCode, String after) {
+		TestUtils.assertText(getUIControl(), localize(before), keyCode, localize(after));
+	}
 
 	private void focusIn(Text control) {
 		control.setFocus();
@@ -1076,6 +1096,10 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			}
 		}
 		return null;
+	}
+
+	private String localize(String number) {
+		return TestUtils.getLocalizedNumber(number);
 	}
 
 	// helping classes
