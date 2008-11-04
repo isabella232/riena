@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -20,7 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -285,93 +285,11 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	//////////////////
 
 	private void assertText(String before, String keySeq, String after) {
-		forcetText(before);
-
-		checkText(before);
-		checkSelection(before);
-		checkCaret(before);
-
-		Text control = getUIControl();
-		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), keySeq);
-
-		checkText(after);
-		checkCaret(after);
+		TestUtils.assertText(getUIControl(), before, keySeq, after);
 	}
 
 	private void assertText(String before, int keyCode, String after) {
-		forcetText(before);
-
-		checkText(before);
-		checkSelection(before);
-		checkCaret(before);
-
-		Text control = getUIControl();
-		control.setFocus();
-		UITestHelper.sendKeyAction(control.getDisplay(), keyCode);
-
-		checkText(after);
-		checkCaret(after);
+		TestUtils.assertText(getUIControl(), before, keyCode, after);
 	}
 
-	private void checkText(String input) {
-		String expected = removePositionMarkers(input);
-		Text control = getUIControl();
-		assertEquals(expected, control.getText());
-	}
-
-	private void checkSelection(String input) {
-		int start = input.indexOf('^');
-		int end = input.lastIndexOf('^');
-		String expected = "";
-		if (start < end) {
-			expected = input.substring(start + 1, end);
-		}
-		// System.out.println("exp sel: " + expected);
-		Text control = getUIControl();
-		assertEquals(expected, control.getSelectionText());
-	}
-
-	private void checkCaret(String input) {
-		int start = input.indexOf('^');
-		if (start != -1) {
-			int end = input.lastIndexOf('^');
-			int expected = start < end ? end - 1 : end;
-			// System.out.println("exp car: " + expected);
-			Text control = getUIControl();
-			assertEquals(expected, control.getCaretPosition());
-		}
-	}
-
-	private String removePositionMarkers(String input) {
-		StringBuilder result = new StringBuilder(input.length());
-		for (int i = 0; i < input.length(); i++) {
-			char ch = input.charAt(i);
-			if (ch != '^') {
-				result.append(ch);
-			}
-		}
-		return result.toString();
-	}
-
-	private void forcetText(String text) {
-		int start = text.indexOf('^');
-		int end = text.lastIndexOf('^');
-
-		Text control = getUIControl();
-		Listener[] listeners = control.getListeners(SWT.Verify);
-		for (Listener listener : listeners) {
-			control.removeListener(SWT.Verify, listener);
-		}
-		control.setText(removePositionMarkers(text));
-		for (Listener listener : listeners) {
-			control.addListener(SWT.Verify, listener);
-		}
-		control.setFocus();
-		if (start == end) {
-			control.setSelection(start, start);
-		} else {
-			control.setSelection(start, end - 1);
-		}
-	}
 }
