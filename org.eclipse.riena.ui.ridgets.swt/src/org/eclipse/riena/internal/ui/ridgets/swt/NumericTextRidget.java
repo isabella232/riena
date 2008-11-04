@@ -476,6 +476,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				String regex = createPattern(newTextNoGroup);
 				e.doit = Pattern.matches(regex, newTextNoGroup);
 				// System.out.println("nt:" + newTextNoGroup + " p: " + regex);
+				if (!e.doit) {
+					flash();
+				}
 				if (e.doit && preserveDecSep) {
 					e.doit = false;
 					int posFromRight = oldText.length() - e.end;
@@ -492,6 +495,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				}
 			} else {
 				e.doit = false;
+				flash();
 			}
 		}
 	}
@@ -571,6 +575,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				int index = control.getCaretPosition();
 				if (index < text.length() && text.charAt(index) == DECIMAL_SEPARATOR) {
 					control.setSelection(index + 1);
+				} else {
+					flash();
 				}
 			} else if ('-' == e.character) {
 				e.doit = false;
@@ -589,7 +595,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 						control.setText(MINUS_SIGN + text);
 						control.setSelection(caret);
 						startVerifyListener();
+					} else {
+						flash();
 					}
+				} else {
+					flash();
 				}
 			} else if ('\r' == e.character) {
 				if (isDecimal()) {
