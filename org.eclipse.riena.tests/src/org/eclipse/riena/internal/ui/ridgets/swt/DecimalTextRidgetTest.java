@@ -492,11 +492,12 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		IDecimalTextRidget ridget = getRidget();
 		Text control = getUIControl();
 		ridget.setPrecision(3);
+		ridget.setSigned(true);
 		StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "1234\t");
+		UITestHelper.sendString(control.getDisplay(), localize("1234\t"));
 
 		assertEquals(localize("1.234,000"), control.getText());
 		assertEquals(localize("1.234"), ridget.getText());
@@ -510,18 +511,18 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0,1"), bean.getValue());
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "\b,\t");
+		UITestHelper.sendString(control.getDisplay(), localize("\b,\t"));
 
 		assertEquals(localize("0,000"), control.getText());
-		assertEquals(localize("0,0"), ridget.getText());
-		assertEquals(localize("0,0"), bean.getValue());
+		assertEquals(localize("0"), ridget.getText());
+		assertEquals(localize("0"), bean.getValue());
 
 		control.setFocus();
-		UITestHelper.sendString(control.getDisplay(), "\b,-\t");
+		UITestHelper.sendString(control.getDisplay(), localize("\b,-\t"));
 
-		assertEquals(localize("-0,000"), control.getText());
-		assertEquals(localize("-0,0"), ridget.getText());
-		assertEquals(localize("-0,0"), bean.getValue());
+		assertEquals(localize("0,000"), control.getText());
+		assertEquals(localize("0"), ridget.getText());
+		assertEquals(localize("0"), bean.getValue());
 	}
 
 	// helping methods
