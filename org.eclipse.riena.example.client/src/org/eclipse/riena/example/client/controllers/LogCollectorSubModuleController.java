@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -81,12 +82,11 @@ public class LogCollectorSubModuleController extends SubModuleController {
 		buttonSave.setText("&Log"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
-				Class<?> exceptionClass;
-				Throwable throwable;
+				Throwable throwable = null;
 				try {
-					exceptionClass = Class.forName(exception.getText());
-					throwable = (Throwable) exceptionClass.newInstance();
-					throwable.fillInStackTrace();
+					if (!StringUtils.isDeepEmpty(exception.getText())) {
+						throwable = (Throwable) Class.forName(exception.getText()).newInstance();
+					}
 				} catch (Exception e) {
 					throwable = new IllegalArgumentException("Can not instantiate exception: " + exception.getText(), e); //$NON-NLS-1$
 				}
