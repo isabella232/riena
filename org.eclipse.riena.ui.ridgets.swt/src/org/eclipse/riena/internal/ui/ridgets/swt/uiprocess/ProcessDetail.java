@@ -8,7 +8,7 @@ import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 /**
  * class holding detail information about a running {@link UIProcess}
  */
-public class ProcessDetail implements Comparable<ProcessDetail> {
+public class ProcessDetail {
 
 	static volatile int keyDec = 0;
 
@@ -104,14 +104,6 @@ public class ProcessDetail implements Comparable<ProcessDetail> {
 	 */
 	public PROCESS_STATE getState() {
 		return state;
-	}
-
-	/**
-	 * {@link ProcessDetail} instances have a special order in the
-	 * {@link ProcessDetailManager}. The follwing is the rule:
-	 */
-	public int compareTo(ProcessDetail other) {
-		return ((Long) other.startupTS).compareTo((Long) startupTS);
 	}
 
 	private int calculatePercentage() {

@@ -12,11 +12,15 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.DefaultProcessDetailComparator;
+import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IProcessDetailComparatorContrib;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.ProcessDetail;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.TimerUtil;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
@@ -30,11 +34,16 @@ import org.eclipse.riena.ui.swt.StatuslineUIProcess;
 import org.eclipse.riena.ui.swt.uiprocess.PROCESS_STATE;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 import org.eclipse.swt.widgets.Display;
+import org.osgi.framework.BundleContext;
 
 /**
  * Controls the {@link StatuslineUIProcess} (part of {@link Statusline}).
  */
 public class StatuslineUIProcessRidget extends AbstractRidget implements IStatuslineUIProcessRidget {
+
+	private final static String EXTENSION_ID_PROCESSDETAIL_COMPARATOR = "org.eclipse.riena.ui.ridgets.swt.processdetail"; //$NON-NLS-1$
+
+	private static final DefaultProcessDetailComparator defaultProcessDetailComparator = new DefaultProcessDetailComparator();
 
 	private StatuslineUIProcess uiControl;
 
@@ -46,8 +55,26 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	private IVisualContextManager contextLocator;
 
+	private Comparator<ProcessDetail> processDetailComparator;
+
 	public StatuslineUIProcessRidget() {
+		inject();
 		buildTrigger();
+	}
+
+	private void inject() {
+		BundleContext context = Activator.getDefault().getContext();
+		Inject.extension(EXTENSION_ID_PROCESSDETAIL_COMPARATOR).expectingMinMax(0, 1).into(this).andStart(context);
+	}
+
+	public void update(IProcessDetailComparatorContrib contribution) {
+		if (contribution != null) {
+			processDetailComparator = contribution.createComporatorInstance();
+		}
+	}
+
+	protected Comparator<ProcessDetail> getProcessDetailComparator() {
+		return processDetailComparator != null ? processDetailComparator : defaultProcessDetailComparator;
 	}
 
 	/**
@@ -96,7 +123,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		}
 
 		private void sort() {
-			Collections.sort(processDetails);
+			Collections.sort(processDetails, getProcessDetailComparator());
 		}
 
 		/**
