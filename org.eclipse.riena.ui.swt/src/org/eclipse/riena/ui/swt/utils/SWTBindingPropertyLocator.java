@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.swt.utils;
 
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * Helper class to get the ID of a SWT UI control used for binding.
@@ -38,8 +38,8 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 	}
 
 	public String locateBindingProperty(Object uiControl) {
-		if (uiControl instanceof Control) {
-			Control control = (Control) uiControl;
+		if (uiControl instanceof Widget) {
+			Widget control = (Widget) uiControl;
 			if (control.isDisposed()) {
 				return null;
 			}

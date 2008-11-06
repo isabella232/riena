@@ -34,7 +34,9 @@ import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
@@ -339,6 +341,52 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 			done = true;
 		}
 		return statuslineRidget;
+	}
+
+	/**
+	 * Returns the ridget of a menu action.
+	 * 
+	 * @param id
+	 *            - id of the menu item
+	 * @return action ridget; {@code null} if no action ridget was found
+	 */
+	public IActionRidget getMenuActionRidget(String id) {
+
+		String menuItemId = IActionRidget.BASE_ID_MENUACTION + id;
+		return getActionRidget(menuItemId);
+
+	}
+
+	/**
+	 * Returns the ridget of a tool bar action.
+	 * 
+	 * @param id
+	 *            - id of the tool bar button
+	 * @return action ridget; {@code null} if no action ridget was found
+	 */
+	public IActionRidget getToolbarActionRidget(String id) {
+
+		String menuItemId = IActionRidget.BASE_ID_TOOLBARACTION + id;
+		return getActionRidget(menuItemId);
+
+	}
+
+	/**
+	 * Returns the action ridget with given id.
+	 * 
+	 * @param id
+	 *            - id of the ridget
+	 * @return action ridget; {@code null} if no action ridget was found
+	 */
+	private IActionRidget getActionRidget(String id) {
+
+		IRidget ridget = getRidget(id);
+		if (ridget instanceof IActionRidget) {
+			return (IActionRidget) ridget;
+		} else {
+			return null;
+		}
+
 	}
 
 	/**

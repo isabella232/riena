@@ -94,7 +94,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @return ridget
 	 * @throws ReflectionFailure
 	 */
-	private IRidget createRidget(Object control) throws ReflectionFailure {
+	public IRidget createRidget(Object control) throws ReflectionFailure {
 		Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
 		return ReflectionUtils.newInstance(ridgetClass);
 	}

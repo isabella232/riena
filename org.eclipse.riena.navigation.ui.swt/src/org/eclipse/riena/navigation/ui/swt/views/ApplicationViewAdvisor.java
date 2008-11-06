@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -19,6 +22,7 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
@@ -30,10 +34,6 @@ import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
@@ -545,7 +545,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		int padding = getShellPadding();
 
 		// menu bar
-		Composite composite = new Composite(parent, SWT.NONE);
+		MenuCoolBarComposite composite = new MenuCoolBarComposite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
@@ -565,7 +565,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @param parent
 	 * @return cool bar with menus
 	 */
-	private void createMenuBar(Composite parent) {
+	private void createMenuBar(MenuCoolBarComposite parent) {
 
 		CoolBar coolBar = new CoolBar(parent, SWT.FLAT);
 		coolBar.setBackground(getCoolbarBackground());
@@ -583,7 +583,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				MenuManager topMenuManager = (MenuManager) contribItems[i];
 				ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
 				toolItem.setText(topMenuManager.getMenuText());
-				createMenu(toolBar, toolItem, topMenuManager);
+				Menu menu = createMenu(toolBar, toolItem, topMenuManager);
+				parent.addMenu(menu);
 			}
 		}
 
@@ -606,6 +607,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private Menu createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {
 
 		final Menu menu = topMenuManager.createContextMenu(parent);
+		topMenuManager.updateAll(true);
 		menu.addMenuListener(new MenuListener() {
 
 			/**

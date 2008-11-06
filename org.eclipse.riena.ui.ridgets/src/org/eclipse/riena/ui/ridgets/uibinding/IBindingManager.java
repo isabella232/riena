@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets.uibinding;
 
 import java.util.List;
 
+import org.eclipse.riena.core.util.ReflectionFailure;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
 /**
@@ -48,4 +50,15 @@ public interface IBindingManager {
 	 *            - The uiControls which will be unbound from the ridgets.
 	 */
 	void unbind(IRidgetContainer controller, List<Object> uiControls);
+
+	/**
+	 * Creates for the given UI-control the appropriate ridget.
+	 * 
+	 * @param control
+	 *            - UI-control
+	 * @return ridget
+	 * @throws ReflectionFailure
+	 */
+	IRidget createRidget(Object control) throws ReflectionFailure;
+
 }

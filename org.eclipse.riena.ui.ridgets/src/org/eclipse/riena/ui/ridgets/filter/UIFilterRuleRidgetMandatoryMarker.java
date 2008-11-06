@@ -18,8 +18,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
-	 * Creates a new instance of {@code
-	 * RidgetUIFilterAttributeHiddenMandatoryMarker}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetMandatoryMarker}.
 	 * 
 	 * @param id
 	 *            - ID
@@ -29,7 +28,7 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	}
 
 	/**
-	 * Creates a new instance of {@code RidgetUIFilterAttributeMandatoryMarker}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetMandatoryMarker}.
 	 * 
 	 * @param id
 	 *            - ID

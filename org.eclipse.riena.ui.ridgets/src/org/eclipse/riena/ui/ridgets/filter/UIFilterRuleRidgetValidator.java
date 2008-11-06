@@ -23,7 +23,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator {
 	private RidgetMatcher matcher;
 
 	/**
-	 * Creates a new instance of {@code RidgetUIFilterAttributeValidator}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetValidator}.
 	 * 
 	 * @param id
 	 *            - ID

@@ -21,11 +21,11 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterRuleMarker implements
 		IUIFilterRuleMarkerRidget {
 
-	private RidgetMatcher matcher;
+	protected RidgetMatcher matcher;
 
 	public AbstractUIFilterRuleRidgetMarker(String id, IMarker marker) {
 		super(marker);
-		matcher = new RidgetMatcher(id);
+		matcher = createMatcher(id);
 	}
 
 	/**
@@ -65,6 +65,10 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 
 	public void setId(String id) {
 		matcher.setId(id);
+	}
+
+	protected RidgetMatcher createMatcher(String id) {
+		return new RidgetMatcher(id);
 	}
 
 }

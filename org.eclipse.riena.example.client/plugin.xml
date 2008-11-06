@@ -168,6 +168,13 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
+            id="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
+            name="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.KundenSucheView"
             id="org.eclipse.riena.example.kundensuche"
             name="name"
@@ -581,6 +588,12 @@
             shared="false"
             typeId="org.eclipse.riena.example.filterdefinition"
             view="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"
+            shared="false"
+            typeId="org.eclipse.riena.example.filteraction"
+            view="org.eclipse.riena.example.client.views.FilterActionSubModuleView">
       </subModule>
       <subModule
             controller="org.eclipse.riena.example.client.controllers.KundenSucheController"

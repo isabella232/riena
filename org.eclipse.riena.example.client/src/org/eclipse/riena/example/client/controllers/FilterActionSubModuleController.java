@@ -19,14 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
-import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
-import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.model.SubApplicationNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
@@ -38,12 +31,14 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemDisabledMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuActionHiddenMarker;
 
 /**
  * Controller of the sub module that demonstrates UI filters for navigation
  * nodes.
  */
-public class FilterNavigationSubModuleController extends SubModuleController {
+public class FilterActionSubModuleController extends SubModuleController {
 
 	private IActionRidget addFilter;
 	private IComboRidget filterTypeValues;
@@ -54,7 +49,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private enum FilterType {
 
-		MARKER("Marker", new DisabledMarker(), new HiddenMarker()); //$NON-NLS-1$
+		MARKER("Marker", new DisabledMarker()/* new HiddenMarker() */); //$NON-NLS-1$
 
 		private String text;
 		private Object[] args;
@@ -84,11 +79,16 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		rebindFilterTypeValues(filterModel, filterTypeValues, addFilter);
 
-		SubApplicationNode subAppNode = getNavigationNode().getParentOfType(SubApplicationNode.class);
-		SubApplicationController subApp = (SubApplicationController) subAppNode.getNavigationNodeController();
-		IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem");
-		ridget.setEnabled(false);
+	}
 
+	@Override
+	public void configureRidgets() {
+		super.configureRidgets();
+		filterModel = new FilterModel();
+		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
+		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
+		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
+		filterType.updateFromModel();
 	}
 
 	/**
@@ -96,15 +96,9 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void initNavigationFilterGroup() {
 
-		ITextRidget ridgetID = (ITextRidget) getRidget("nodeLabel"); //$NON-NLS-1$
-		filterModel = new FilterModel();
-		ridgetID.bindToModel(filterModel, "nodeLabel"); //$NON-NLS-1$
-		ridgetID.updateFromModel();
-
-		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
-		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
-		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
-		filterType.updateFromModel();
+		ITextRidget itemId = (ITextRidget) getRidget("itemId"); //$NON-NLS-1$
+		itemId.bindToModel(filterModel, "itemId"); //$NON-NLS-1$
+		itemId.updateFromModel();
 
 		filterTypeValues = (IComboRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
@@ -163,13 +157,11 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void doAddFilter() {
 
-		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
-		for (INavigationNode<?> node : nodes) {
-			Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-			attributes.add(createFilterAttribute(filterModel, node));
-			IUIFilter filter = new UIFilter(attributes);
-			node.addFilter(filter);
-		}
+		ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
+		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
+		attributes.add(createFilterAttribute(filterModel));
+		IUIFilter filter = new UIFilter(attributes);
+		subApp.addFilter(filter);
 
 	}
 
@@ -178,10 +170,8 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveFilters() {
 
-		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
-		for (INavigationNode<?> node : nodes) {
-			node.removeAllFilters();
-		}
+		ISubApplicationNode subApp = getNavigationNode().getParentOfType(ISubApplicationNode.class);
+		subApp.removeAllFilters();
 
 	}
 
@@ -193,64 +183,24 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 *            - model with selections.
 	 * @return filter attribute
 	 */
-	private IUIFilterRule createFilterAttribute(FilterModel model, INavigationNode<?> node) {
+	private IUIFilterRule createFilterAttribute(FilterModel model) {
 
 		IUIFilterRule attribute = null;
 
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
 
-		String nodeId;
-		if (node.getNodeId() != null) {
-			nodeId = node.getNodeId().getTypeId();
-		} else {
-			nodeId = "";
-			node.setNodeId(new NavigationNodeId(""));
-		}
-
 		switch (type) {
 		case MARKER:
 			if (filterValue instanceof DisabledMarker) {
-				attribute = new UIFilterRuleNavigationDisabledMarker(nodeId);
+				attribute = new UIFilterRuleMenuItemDisabledMarker(model.getItemId());
 			} else if (filterValue instanceof HiddenMarker) {
-				attribute = new UIFilterRuleNavigationHiddenMarker(nodeId);
+				attribute = new UIFilterRuleMenuActionHiddenMarker(model.getItemId());
 			}
-
 			break;
 		}
 
 		return attribute;
-
-	}
-
-	/**
-	 * Returns all node with the given label.
-	 * 
-	 * @param label
-	 * @return list of found nodes.
-	 */
-	private List<INavigationNode<?>> findNodes(String label) {
-
-		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
-
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		findNodes(label, applNode, nodes);
-
-		return nodes;
-
-	}
-
-	private void findNodes(String label, INavigationNode<?> node, List<INavigationNode<?>> nodes) {
-
-		if (StringUtils.equals(node.getLabel(), label)) {
-			nodes.add(node);
-		}
-		List<?> children = node.getChildren();
-		for (Object child : children) {
-			if (child instanceof INavigationNode<?>) {
-				findNodes(label, (INavigationNode<?>) child, nodes);
-			}
-		}
 
 	}
 
@@ -270,13 +220,13 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private class FilterModel {
 
-		private String nodeLabel;
+		private String itemId;
 		private List<FilterType> types;
 		private FilterType selectedType;
 		private Object selectedFilterTypeValue;
 
 		public FilterModel() {
-			nodeLabel = ""; //$NON-NLS-1$
+			setItemId(""); //$NON-NLS-1$
 		}
 
 		public List<FilterType> getTypes() {
@@ -306,12 +256,12 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			return selectedFilterTypeValue;
 		}
 
-		public void setNodeLabel(String nodeLabel) {
-			this.nodeLabel = nodeLabel;
+		public void setItemId(String itemId) {
+			this.itemId = itemId;
 		}
 
-		public String getNodeLabel() {
-			return nodeLabel;
+		public String getItemId() {
+			return itemId;
 		}
 
 	}

@@ -16,6 +16,9 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IActionRidget extends IMarkableRidget {
 
+	public static final String BASE_ID_TOOLBARACTION = "toolbarAction."; //$NON-NLS-1$
+	public static final String BASE_ID_MENUACTION = "menuAction."; //$NON-NLS-1$
+
 	/**
 	 * Add an action listener to call back.
 	 * <p>

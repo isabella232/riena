@@ -10,47 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
-import org.eclipse.riena.ui.core.marker.ErrorMarker;
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.core.marker.OutputMarker;
-import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * Ridget for an SWT control.
  */
-public abstract class AbstractSWTRidget extends AbstractRidget implements IMarkableRidget {
+public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget implements IMarkableRidget {
 
-	private static Image missingImage;
 	private FocusListener focusManager = new FocusManager();
-	private Control uiControl;
 	private boolean focusable;
-	private String toolTip = null;
-	private boolean blocked;
-	private ErrorMarker errorMarker;
-	private DisabledMarker disabledMarker;
-	private MandatoryMarker mandatoryMarker;
-	private OutputMarker outputMarker;
-	private HiddenMarker hiddenMarker;
-	private MarkerSupport markerSupport;
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -75,38 +49,12 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		focusable = true;
 	}
 
-	/*
-	 * Do not override. Template Method Pattern: Subclasses may implement {@code
-	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
-	 * the the control when it is bound/unbound, for example to add/remove
-	 * listeners.
-	 */
-	public final void setUIControl(Object uiControl) {
-		checkUIControl(uiControl);
-		uninstallListeners();
-		unbindUIControl();
-		this.uiControl = (Control) uiControl;
-		updateMarkers();
-		updateToolTip();
-		bindUIControl();
-		installListeners();
-	}
-
+	@Override
 	public Control getUIControl() {
-		return uiControl;
+		return (Control) super.getUIControl();
 	}
 
-	public final String getID() {
-
-		if (getUIControl() != null) {
-			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-			return locator.locateBindingProperty(getUIControl());
-		}
-
-		return null;
-
-	}
-
+	@Override
 	public final void requestFocus() {
 		if (isFocusable()) {
 			if (getUIControl() != null) {
@@ -116,6 +64,7 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		}
 	}
 
+	@Override
 	public final boolean hasFocus() {
 		if (getUIControl() != null) {
 			Control control = getUIControl();
@@ -124,94 +73,17 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 		return false;
 	}
 
+	@Override
 	public final boolean isFocusable() {
 		return focusable;
 	}
 
+	@Override
 	public final void setFocusable(boolean focusable) {
 		if (this.focusable != focusable) {
 			this.focusable = focusable;
 		}
 	}
-
-	public final boolean isVisible() {
-		return (uiControl != null) && (getMarkersOfType(HiddenMarker.class).isEmpty());
-	}
-
-	public final void setVisible(boolean visible) {
-
-		if (hiddenMarker == null) {
-			hiddenMarker = new HiddenMarker();
-		}
-
-		if (visible) {
-			removeMarker(hiddenMarker);
-		} else {
-			addMarker(hiddenMarker);
-		}
-
-	}
-
-	public final void setToolTipText(String toolTipText) {
-		this.toolTip = toolTipText;
-		updateToolTip();
-	}
-
-	public final String getToolTipText() {
-		return toolTip;
-	}
-
-	public final boolean isBlocked() {
-		return blocked;
-	}
-
-	public final void setBlocked(boolean blocked) {
-		this.blocked = blocked;
-	}
-
-	// abstract methods - subclasses must implement
-	/////////////////////////////////////////////////////////
-
-	/**
-	 * <p>
-	 * Performs checks on the control about to be bound by this ridget.
-	 * </p>
-	 * <p>
-	 * Implementors must make sure the given <tt>uiControl</tt> has the expected
-	 * type.
-	 * </p>
-	 * 
-	 * @param uiControl
-	 *            a {@link Widget} instance or null
-	 * @throws BindingException
-	 *             if the <tt>uiControl</tt> fails the check
-	 */
-	abstract protected void checkUIControl(Object uiControl);
-
-	/**
-	 * <p>
-	 * Bind the current <tt>uiControl</tt> to the ridget.
-	 * </p>
-	 * <p>
-	 * Implementors must call {@link #getUIControl()} to obtain the current
-	 * control. If the control is non-null they must do whatever necessary to
-	 * bind it to the ridget.
-	 * </p>
-	 */
-	abstract protected void bindUIControl();
-
-	/**
-	 * <p>
-	 * Unbind the current <tt>uiControl</tt> from the ridget.
-	 * </p>
-	 * <p>
-	 * Implementors ensure they dispose the control-to-ridget binding and
-	 * dispose any data structures that are not necessary in an unbound state.
-	 * </p>
-	 */
-	abstract protected void unbindUIControl();
-
-	abstract public boolean isDisableMandatoryMarker();
 
 	// helping methods
 	// ////////////////
@@ -220,9 +92,10 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
 	 * ridget.
 	 */
-	private void installListeners() {
-		if (uiControl != null) {
-			uiControl.addFocusListener(focusManager);
+	@Override
+	protected final void installListeners() {
+		if (getUIControl() != null) {
+			getUIControl().addFocusListener(focusManager);
 		}
 	}
 
@@ -230,48 +103,18 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
 	 * unbound from the ridget.
 	 */
-	private void uninstallListeners() {
-		if (uiControl != null) {
-			uiControl.removeFocusListener(focusManager);
+	@Override
+	protected final void uninstallListeners() {
+		if (getUIControl() != null) {
+			getUIControl().removeFocusListener(focusManager);
 		}
 	}
 
-	private void updateToolTip() {
-		if (uiControl != null) {
-			uiControl.setToolTipText(toolTip);
+	@Override
+	protected final void updateToolTip() {
+		if (getUIControl() != null) {
+			getUIControl().setToolTipText(getToolTipText());
 		}
-	}
-
-	protected Image getManagedImage(String key) {
-		Image image = ImageUtil.getImage(key);
-		if (image == null) {
-			image = getMissingImage();
-		}
-		return image;
-	}
-
-	public final synchronized Image getMissingImage() {
-		if (missingImage == null) {
-			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
-		}
-		return missingImage;
-	}
-
-	/**
-	 * Compares the two given values.
-	 * 
-	 * @param oldValue
-	 *            - old value
-	 * @param newValue
-	 *            - new value
-	 * @return true, if value has changed; otherwise false
-	 */
-	protected boolean hasChanged(Object oldValue, Object newValue) {
-		if (oldValue == null && newValue == null) {
-			return false;
-		}
-		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
-				|| !oldValue.equals(newValue);
 	}
 
 	/**
@@ -341,140 +184,5 @@ public abstract class AbstractSWTRidget extends AbstractRidget implements IMarka
 			return result;
 		}
 	};
-
-	public final boolean isErrorMarked() {
-		return !getMarkersOfType(ErrorMarker.class).isEmpty();
-	}
-
-	public final void setErrorMarked(boolean errorMarked) {
-		if (!errorMarked) {
-			if (errorMarker != null) {
-				removeMarker(errorMarker);
-			}
-		} else {
-			if (errorMarker == null) {
-				errorMarker = new ErrorMarker();
-			}
-			addMarker(errorMarker);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Adding the same marker twice has no effect.
-	 */
-	public synchronized final void addMarker(IMarker marker) {
-		if (markerSupport == null) {
-			markerSupport = new MarkerSupport(this, propertyChangeSupport);
-		}
-		if (marker instanceof MandatoryMarker) {
-			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
-		}
-		markerSupport.addMarker(marker);
-	}
-
-	public final Collection<IMarker> getMarkers() {
-		if (markerSupport != null) {
-			return markerSupport.getMarkers();
-		}
-		return Collections.emptySet();
-	}
-
-	public final <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
-		if (markerSupport != null) {
-			return markerSupport.getMarkersOfType(type);
-		}
-		return Collections.emptySet();
-	}
-
-	public final void removeAllMarkers() {
-		if (markerSupport != null) {
-			markerSupport.removeAllMarkers();
-		}
-	}
-
-	public final void removeMarker(IMarker marker) {
-		if (markerSupport != null) {
-			markerSupport.removeMarker(marker);
-		}
-	}
-
-	public final boolean isEnabled() {
-		return getMarkersOfType(DisabledMarker.class).isEmpty();
-	}
-
-	public final synchronized void setEnabled(boolean enabled) {
-		if (enabled) {
-			if (disabledMarker != null) {
-				removeMarker(disabledMarker);
-			}
-		} else {
-			if (disabledMarker == null) {
-				disabledMarker = new DisabledMarker();
-			}
-			addMarker(disabledMarker);
-		}
-	}
-
-	public final boolean isOutputOnly() {
-		return !getMarkersOfType(OutputMarker.class).isEmpty();
-	}
-
-	public final void setOutputOnly(boolean outputOnly) {
-		if (!outputOnly) {
-			if (outputMarker != null) {
-				removeMarker(outputMarker);
-			}
-		} else {
-			if (outputMarker == null) {
-				outputMarker = new OutputMarker();
-			}
-			addMarker(outputMarker);
-		}
-	}
-
-	public final boolean isMandatory() {
-		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
-	}
-
-	public final void setMandatory(boolean mandatory) {
-		if (!mandatory) {
-			if (mandatoryMarker != null) {
-				removeMarker(mandatoryMarker);
-			}
-		} else {
-			if (mandatoryMarker == null) {
-				mandatoryMarker = new MandatoryMarker();
-			}
-			addMarker(mandatoryMarker);
-		}
-	}
-
-	// protected methods
-	// //////////////////
-
-	/**
-	 * Iterates over the MandatoryMarker instances held by this ridget changing
-	 * their disabled state to given value.
-	 * 
-	 * @param disable
-	 *            the new disabled state
-	 */
-	protected final void disableMandatoryMarkers(boolean disable) {
-		for (IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-			MandatoryMarker mMarker = (MandatoryMarker) marker;
-			mMarker.setDisabled(disable);
-		}
-	}
-
-	// helping methods
-	// ////////////////
-
-	private void updateMarkers() {
-		if (markerSupport != null) {
-			markerSupport.updateMarkers();
-		}
-	}
 
 }

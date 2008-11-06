@@ -11,55 +11,48 @@
 package org.eclipse.riena.ui.ridgets.filter;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
- * The matcher compares the ID of this class with the ID of a ridget.
+ * The matcher compares the ID of this class with the ID of a menu and tool bar
+ * items.
  */
-public class RidgetMatcher {
-
-	private String id;
+public class MenuItemRidgetMatcher extends RidgetMatcher {
 
 	/**
-	 * Creates a new instance of {@code RidgetMatcher}.
+	 * Creates a new instance of {@code MenuItemRidgetMatcher}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public RidgetMatcher(String id) {
-		setId(id);
+	public MenuItemRidgetMatcher(String id) {
+		super(id);
 	}
 
-	/**
-	 * This method compares the ID of this matcher and the given ID of a ridget.
-	 * 
-	 * @param object
-	 *            - object to check
-	 * 
-	 * @return {@code true} if the object is an ridget and the IDs match;
-	 *         otherwise {@code false}
-	 */
+	@Override
 	public boolean matches(Object object) {
 
-		if (object instanceof IRidget) {
-			IRidget ridget = (IRidget) object;
+		if (object instanceof IActionRidget) {
+			IActionRidget ridget = (IActionRidget) object;
 			String ridgetId = ridget.getID();
-			return StringUtils.equals(ridgetId, getId());
+			if (StringUtils.equals(ridgetId, getMenuItemId())) {
+				return true;
+			}
+			if (StringUtils.equals(ridgetId, getToolbarItemId())) {
+				return true;
+			}
 		}
 
 		return false;
 
 	}
 
-	/**
-	 * @param id
-	 */
-	public void setId(String id) {
-		this.id = id;
+	private String getMenuItemId() {
+		return IActionRidget.BASE_ID_MENUACTION + getId();
 	}
 
-	protected String getId() {
-		return id;
+	private String getToolbarItemId() {
+		return IActionRidget.BASE_ID_TOOLBARACTION + getId();
 	}
 
 }

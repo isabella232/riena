@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -19,13 +25,27 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
+import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IViewPart;
@@ -40,9 +60,21 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	private AbstractViewBindingDelegate binding;
 	private SubApplicationController subApplicationController;
 	private SubApplicationNode subApplicationNode;
+	private List<Object> uiControls;
+	private static IBindingManager menuItemBindingManager;
 
 	public SubApplicationView() {
 		binding = createBinding();
+		uiControls = new ArrayList<Object>();
+		if (menuItemBindingManager == null) {
+			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(),
+					new DefaultSwtControlRidgetMapper());
+		}
+	}
+
+	private IBindingManager createMenuItemBindingManager(IBindingPropertyLocator propertyStrategy,
+			IControlRidgetMapper<Widget> mapper) {
+		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 
 	protected AbstractViewBindingDelegate createBinding() {
@@ -60,8 +92,62 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
+			bindMenuItems(controller);
 			controller.afterBind();
+
+			//			List<ToolItem> toolItems = getAllToolItems();
+			//			for (ToolItem item : toolItems) {
+			//				System.out.println("SubApplicationView.bind() T " + item.getData());
+			//			}
+
 		}
+	}
+
+	private void bindMenuItems(IController controller) {
+		createMenuRidgets(controller);
+		menuItemBindingManager.bind(controller, getUIControls());
+	}
+
+	private void createMenuRidgets(IController controller) {
+
+		List<MenuItem> menuItems = getAllMenuItems();
+		for (MenuItem item : menuItems) {
+			String menuItemId = getMenuItemId(item);
+			if (!StringUtils.isEmpty(menuItemId)) {
+				MenuItemRidget ridget = createMenuItemRidget(item);
+				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, menuItemId);
+				getUIControls().add(item);
+				controller.addRidget(menuItemId, ridget);
+			}
+		}
+
+	}
+
+	private MenuItemRidget createMenuItemRidget(MenuItem item) {
+
+		MenuItemRidget ridget = (MenuItemRidget) menuItemBindingManager.createRidget(item);
+		ridget.setUIControl(item);
+		return ridget;
+
+	}
+
+	private String getMenuItemId(MenuItem item) {
+		String id = null;
+		String itemId = getItemId(item);
+		if (!StringUtils.isEmpty(itemId)) {
+			id = IActionRidget.BASE_ID_MENUACTION + itemId;
+		}
+		return id;
+
+	}
+
+	private String getItemId(Item item) {
+		String id = null;
+		if (item.getData() instanceof IContributionItem) {
+			IContributionItem contributionItem = (IContributionItem) item.getData();
+			id = contributionItem.getId();
+		}
+		return id;
 	}
 
 	public void unbind() {
@@ -122,9 +208,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	private void initUIProcessRidget() {
-		UIProcessControl uiControl = new UIProcessControl(Display.getDefault().getShells()[0]);
+		UIProcessControl uiControl = new UIProcessControl(getShell());
 		uiControl.setPropertyName("uiProcessRidget"); //$NON-NLS-1$
 		binding.addUIControl(uiControl);
+	}
+
+	private Shell getShell() {
+		return Display.getDefault().getShells()[0];
 	}
 
 	/**
@@ -254,6 +344,168 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	public SubApplicationNode getNavigationNode() {
 		return subApplicationNode;
+	}
+
+	//
+	//	/**
+	//	 * Returns all cool bars below the given composite (except cool bar of
+	//	 * menu).
+	//	 * 
+	//	 * @param composite
+	//	 * @return list of cool bars
+	//	 */
+	//	private List<CoolBar> getCoolBars(Composite composite) {
+	//
+	//		List<CoolBar> coolBars = new ArrayList<CoolBar>();
+	//
+	//		Control[] children = composite.getChildren();
+	//		for (Control child : children) {
+	//			if (child instanceof CoolBar) {
+	//				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
+	//					coolBars.add((CoolBar) child);
+	//				}
+	//				continue;
+	//			}
+	//			if (child instanceof Composite) {
+	//				coolBars.addAll(getCoolBars((Composite) child));
+	//			}
+	//		}
+	//
+	//		return coolBars;
+	//
+	//	}
+	//
+	//
+	//	/**
+	//	 * Returns all tool bars of the given cool bar.
+	//	 * 
+	//	 * @param coolBars
+	//	 *            - cool bar
+	//	 * @return list of tool bars
+	//	 */
+	//	private List<ToolBar> getToolBars(CoolBar coolBars) {
+	//
+	//		List<ToolBar> toolBars = new ArrayList<ToolBar>();
+	//
+	//		Control[] children = coolBars.getChildren();
+	//		for (Control child : children) {
+	//			if (child instanceof ToolBar) {
+	//				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
+	//					toolBars.add((ToolBar) child);
+	//				}
+	//			}
+	//		}
+	//
+	//		return toolBars;
+	//
+	//	}
+	//
+	//	/**
+	//	 * Returns all items of all cool bars.
+	//	 * 
+	//	 * @return list of tool items
+	//	 */
+	//	private List<ToolItem> getAllToolItems() {
+	//
+	//		List<ToolItem> items = new ArrayList<ToolItem>();
+	//
+	//		List<CoolBar> coolBars = getCoolBars(getShell());
+	//		for (CoolBar coolBar : coolBars) {
+	//			List<ToolBar> toolBars = getToolBars(coolBar);
+	//			for (ToolBar toolBar : toolBars) {
+	//				items.addAll(Arrays.asList(toolBar.getItems()));
+	//			}
+	//		}
+	//
+	//		return items;
+	//
+	//	}
+	//
+	//	private Composite getParentOfType(Control control, Class<? extends Control> clazz) {
+	//
+	//		Composite parent = control.getParent();
+	//		if (parent == null) {
+	//			return null;
+	//		}
+	//		if (clazz.isAssignableFrom(parent.getClass())) {
+	//			return parent;
+	//		}
+	//		return getParentOfType(parent, clazz);
+	//
+	//	}
+
+	/**
+	 * Returns the composite that contains the menu bar of the sub-application.
+	 * 
+	 * @param composite
+	 * @return composite with menu bar
+	 */
+	private List<MenuCoolBarComposite> getMenuCoolBarComposites(Composite composite) {
+
+		List<MenuCoolBarComposite> composites = new ArrayList<MenuCoolBarComposite>();
+
+		Control[] children = composite.getChildren();
+		for (Control child : children) {
+			if (child instanceof MenuCoolBarComposite) {
+				composites.add((MenuCoolBarComposite) child);
+				continue;
+			}
+			if (child instanceof Composite) {
+				composites.addAll(getMenuCoolBarComposites((Composite) child));
+			}
+		}
+
+		return composites;
+
+	}
+
+	/**
+	 * Returns a list of all menu items of the given menu (and also of its
+	 * sub-menus).
+	 * 
+	 * @param menu
+	 * @return list of menu items
+	 */
+	private List<MenuItem> getMenuItems(Menu menu) {
+
+		List<MenuItem> items = new ArrayList<MenuItem>();
+
+		MenuItem[] menuItems = menu.getItems();
+		for (MenuItem menuItem : menuItems) {
+			if (menuItem.getMenu() != null) {
+				items.addAll(getMenuItems(menuItem.getMenu()));
+			} else {
+				items.add(menuItem);
+			}
+		}
+
+		return items;
+
+	}
+
+	/**
+	 * Returns a list of all menu items of the sub application
+	 * 
+	 * @return list of all menu items
+	 */
+	private List<MenuItem> getAllMenuItems() {
+
+		List<MenuItem> items = new ArrayList<MenuItem>();
+
+		List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
+		for (MenuCoolBarComposite menuComp : menuCoolBarComposites) {
+			List<Menu> menus = menuComp.getMenus();
+			for (Menu menu : menus) {
+				items.addAll(getMenuItems(menu));
+			}
+		}
+
+		return items;
+
+	}
+
+	private List<Object> getUIControls() {
+		return uiControls;
 	}
 
 }

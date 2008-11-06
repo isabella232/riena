@@ -45,6 +45,10 @@ public class FilterNodeBuilder implements INavigationNodeBuilder {
 				"org.eclipse.riena.example.filterdefinition"), "UI-Filter (External definition)"); //$NON-NLS-1$ //$NON-NLS-2$
 		filtersModule.addChild(filterExternalDefinitionSubModule);
 
+		ISubModuleNode filterActionSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.filteraction"), "UI-Filter (MenuItem)"); //$NON-NLS-1$ //$NON-NLS-2$
+		filtersModule.addChild(filterActionSubModule);
+
 		return moduleGroup;
 	}
 

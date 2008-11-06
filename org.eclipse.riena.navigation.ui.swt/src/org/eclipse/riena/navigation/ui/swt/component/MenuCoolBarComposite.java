@@ -8,25 +8,36 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.controllers;
+package org.eclipse.riena.navigation.ui.swt.component;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 
 /**
  *
  */
-public class AllTests {
+public class MenuCoolBarComposite extends Composite {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.controllers");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(ModuleControllerTest.class);
-		suite.addTestSuite(NavigationUIFilterApplierTest.class);
-		suite.addTestSuite(NavigationNodeControllerTest.class);
-		suite.addTestSuite(SubApplicationControllerTest.class);
-		//$JUnit-END$
-		return suite;
+	private List<Menu> menus;
+
+	/**
+	 * @param parent
+	 * @param style
+	 */
+	public MenuCoolBarComposite(Composite parent, int style) {
+		super(parent, style);
+		menus = new ArrayList<Menu>();
+	}
+
+	public void addMenu(Menu menu) {
+		menus.add(menu);
+	}
+
+	public List<Menu> getMenus() {
+		return menus;
 	}
 
 }
