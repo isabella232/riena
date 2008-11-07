@@ -188,6 +188,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			// System.out.println(e);
 			Text control = (Text) e.widget;
 			String oldText = control.getText();
+			int oldPos = control.getCaretPosition();
 			int newPos = -1;
 			SegmentedString ss = new SegmentedString(pattern, oldText);
 			if (e.character == '\b' || e.keyCode == 127) {// backspace, del
@@ -213,8 +214,10 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 				forceTextToControl(control, ss.toString());
 				control.setSelection(newPos);
 				// System.out.println("newPos: " + newPos);
+				if (newPos == oldPos && oldText.equals(ss.toString())) {
+					flash();
+				}
 			} else {
-				// validationRulesChecked(ValidationRuleStatus.error(true, "", null)); // TODO [ev] ex
 				flash();
 			}
 		}
