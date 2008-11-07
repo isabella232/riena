@@ -160,7 +160,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		String oldValue = textValue;
 		textValue = text;
 		forceTextToControl(textValue);
-		disableMandatoryMarkers(textValue.length() > 0);
+		disableMandatoryMarkers(isDisableMandatoryMarker());
 		IStatus onEdit = checkOnEditRules(text);
 		validationRulesChecked(onEdit);
 		if (onEdit.isOK()) {
