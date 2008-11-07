@@ -78,6 +78,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  contains the description of this navigation node for the PDE
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
