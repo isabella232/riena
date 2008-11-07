@@ -88,6 +88,13 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  field that describes this submodule for the PDE
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
