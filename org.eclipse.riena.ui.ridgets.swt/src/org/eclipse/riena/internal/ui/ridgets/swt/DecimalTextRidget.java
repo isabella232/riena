@@ -50,6 +50,11 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	}
 
 	@Override
+	protected boolean isNotEmpty(String text) {
+		return super.isNotEmpty(text) && !text.equals(String.valueOf(DECIMAL_SEPARATOR));
+	}
+
+	@Override
 	public synchronized int getMaxLength() {
 		return super.getMaxLength();
 	}

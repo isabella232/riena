@@ -525,6 +525,61 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0"), bean.getValue());
 	}
 
+	public void testMandatoryMarker() {
+		IDecimalTextRidget ridget = getRidget();
+		ridget.setDirectWriting(true);
+		Text control = getUIControl();
+
+		ridget.setMandatory(true);
+		ridget.setText("");
+
+		assertTrue(ridget.isMandatory());
+		assertFalse(ridget.isDisableMandatoryMarker());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "1");
+
+		assertTrue(ridget.isMandatory());
+		assertTrue(ridget.isDisableMandatoryMarker());
+
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b");
+
+		assertTrue(ridget.isMandatory());
+		assertFalse(ridget.isDisableMandatoryMarker());
+	}
+
+	public void testDisabledMarker() {
+		IDecimalTextRidget ridget = getRidget();
+		Text control = getUIControl();
+
+		ridget.setText(localize("12,00"));
+
+		assertTrue(ridget.isEnabled());
+		assertEquals(localize("12,00"), control.getText());
+		assertEquals("12", ridget.getText());
+
+		ridget.setEnabled(false);
+
+		assertFalse(ridget.isEnabled());
+		assertEquals("", control.getText());
+		assertEquals("12", ridget.getText());
+
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+		assertEquals(localize("12,00"), control.getText());
+		assertEquals("12", ridget.getText());
+
+		ridget.setEnabled(false);
+		ridget.setText(localize("1234,00"));
+		ridget.setEnabled(true);
+
+		assertTrue(ridget.isEnabled());
+		assertEquals(localize("1.234,00"), control.getText());
+		assertEquals(localize("1.234"), ridget.getText());
+	}
+
 	// helping methods
 	//////////////////
 

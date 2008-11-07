@@ -278,6 +278,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 	}
 
+	/**
+	 * TODO [ev] docs - document that text should be in 'local' format
+	 */
 	@Override
 	public final synchronized void setText(String text) {
 		checkNumber(text);
@@ -572,7 +575,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 
 		public synchronized void modifyText(ModifyEvent e) {
-			if (!isEnabled) {
+			if (!isEnabled || !isEnabled()) {
 				return;
 			}
 			Text control = (Text) e.widget;

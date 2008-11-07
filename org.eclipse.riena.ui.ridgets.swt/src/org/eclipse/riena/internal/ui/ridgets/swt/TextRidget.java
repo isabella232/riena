@@ -58,7 +58,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		isDirectWriting = false;
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				forceTextToControl(getText());
+				forceTextToControl(getTextInternal());
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
@@ -88,6 +88,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	@Override
 	protected void checkUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Text.class);
+	}
+
+	protected boolean isNotEmpty(String input) {
+		return input.length() > 0;
 	}
 
 	@Override
@@ -160,9 +164,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		String oldValue = textValue;
 		textValue = text;
 		forceTextToControl(textValue);
-		disableMandatoryMarkers(isDisableMandatoryMarker());
+		disableMandatoryMarkers(isNotEmpty(textValue));
 		IStatus onEdit = checkOnEditRules(text);
-		validationRulesChecked(onEdit);
+		validationRulesCheckedMarkFlash(onEdit);
 		if (onEdit.isOK()) {
 			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
 		}
@@ -189,7 +193,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		IStatus onEdit = checkOnEditRules(textValue);
 		IStatus onUpdate = checkOnUpdateRules(textValue);
 		IStatus joinedStatus = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
-		validationRulesChecked(joinedStatus);
+		validationRulesCheckedMarkFlash(joinedStatus);
 	}
 
 	public synchronized boolean isDirectWriting() {
@@ -203,8 +207,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	@Override
-	public boolean isDisableMandatoryMarker() {
-		return textValue.length() > 0;
+	public final boolean isDisableMandatoryMarker() {
+		return isNotEmpty(textValue);
 	}
 
 	public int getAlignment() {
@@ -255,6 +259,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 	}
 
+	private synchronized String getTextInternal() {
+		return textValue;
+	}
+
 	private synchronized void updateTextValue() {
 		String oldValue = textValue;
 		String newValue = getUIControl().getText();
@@ -269,6 +277,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private synchronized void updateTextValueWhenDirectWriting() {
 		if (isDirectWriting) {
 			updateTextValue();
+		}
+	}
+
+	private void validationRulesCheckedMarkFlash(IStatus status) {
+		validationRulesChecked(status);
+		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+			setErrorMarked(true);
 		}
 	}
 
@@ -316,8 +331,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private final class SyncModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
 			updateTextValueWhenDirectWriting();
-			boolean hasText = ((Text) e.widget).getText().length() > 0;
-			disableMandatoryMarkers(hasText);
+			String text = ((Text) e.widget).getText();
+			disableMandatoryMarkers(isNotEmpty(text));
 		}
 	}
 
