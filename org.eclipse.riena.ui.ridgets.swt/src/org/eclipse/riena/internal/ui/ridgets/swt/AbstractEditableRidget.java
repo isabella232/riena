@@ -21,6 +21,7 @@ import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 import org.eclipse.riena.ui.ridgets.IValidationCallback;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
@@ -75,33 +76,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 			if (status.getCode() != IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
 				setErrorMarked(true);
 			} else {
-				if (!isFlashInProgress) {
-					isFlashInProgress = true;
-					final boolean oldErrorMarked = isErrorMarked();
-					setErrorMarked(!oldErrorMarked);
-
-					Runnable op = new Runnable() {
-						public void run() {
-							try {
-								Thread.sleep(FLASH_DURATION_MS);
-							} catch (InterruptedException e) {
-								// ignore
-							} finally {
-								Control control = getUIControl();
-								if (control != null && !control.isDisposed()) {
-									Display display = control.getDisplay();
-									display.asyncExec(new Runnable() {
-										public void run() {
-											setErrorMarked(oldErrorMarked);
-											isFlashInProgress = false;
-										}
-									});
-								}
-							}
-						}
-					};
-					new Thread(op).start();
-				}
+				flash();
 			}
 		}
 	}
@@ -136,6 +111,43 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 
 	public void removeValidationMessage(String message) {
 		getValueBindingSupport().removeValidationMessage(message);
+	}
+
+	// protected methods
+	////////////////////
+
+	/**
+	 * TODO [ev] docs
+	 */
+	protected synchronized final void flash() {
+		final Control control = getUIControl();
+		if (!isFlashInProgress && control != null) {
+			isFlashInProgress = true;
+
+			final Display display = control.getDisplay();
+			final Color oldBgColor = control.getBackground();
+			Color bgColor = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
+			control.setBackground(bgColor);
+			Runnable op = new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(AbstractEditableRidget.FLASH_DURATION_MS);
+					} catch (InterruptedException e) {
+						// ignore
+					} finally {
+						if (!control.isDisposed()) {
+							display.syncExec(new Runnable() {
+								public void run() {
+									control.setBackground(oldBgColor);
+								}
+							});
+						}
+						isFlashInProgress = false;
+					}
+				}
+			};
+			new Thread(op).start();
+		}
 	}
 
 }
