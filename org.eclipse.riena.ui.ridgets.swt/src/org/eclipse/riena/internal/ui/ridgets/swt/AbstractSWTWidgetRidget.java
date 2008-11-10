@@ -31,7 +31,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * Ridget for an SWT control.
+ * Ridget for an SWT widget.
  */
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IMarkableRidget {
 

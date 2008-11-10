@@ -54,6 +54,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * View of a sub-application.
+ */
 public class SubApplicationView implements INavigationNodeView<SubApplicationController, SubApplicationNode>,
 		IPerspectiveFactory {
 
@@ -63,6 +66,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	private List<Object> uiControls;
 	private static IBindingManager menuItemBindingManager;
 
+	/**
+	 * Creates a new instance of {@code SubApplicationView}.
+	 */
 	public SubApplicationView() {
 		binding = createBinding();
 		uiControls = new ArrayList<Object>();
@@ -87,6 +93,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		ridgetMapper.addMapping(UIProcessControl.class, UIProcessRidget.class);
 	}
 
+	/**
+	 * Binds the navigation node to the view. Creates the widgets and the
+	 * controller if necessary.<br>
+	 * Also the menus and the tool bar items are binded.
+	 * 
+	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
+	 */
 	public void bind(SubApplicationNode node) {
 		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
 			IController controller = (IController) node.getNavigationNodeController();
@@ -108,6 +121,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		menuItemBindingManager.bind(controller, getUIControls());
 	}
 
+	/**
+	 * Creates for every menu item (with an ID) a ridgets and adds it to the
+	 * controller.
+	 * 
+	 * @param controller
+	 *            - controller of the sub-application
+	 */
 	private void createMenuRidgets(IController controller) {
 
 		List<MenuItem> menuItems = getAllMenuItems();
@@ -123,6 +143,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	}
 
+	/**
+	 * Creates for the given menu item a ridget.
+	 * 
+	 * @param item
+	 *            - menu item
+	 * @return ridget
+	 */
 	private MenuItemRidget createMenuItemRidget(MenuItem item) {
 
 		MenuItemRidget ridget = (MenuItemRidget) menuItemBindingManager.createRidget(item);
@@ -131,6 +158,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	}
 
+	/**
+	 * Returns the identifier of the given menu item.
+	 * 
+	 * @param item
+	 *            - menu item
+	 * @return identifier, or {@code null} if none
+	 */
 	private String getMenuItemId(MenuItem item) {
 		String id = null;
 		String itemId = getItemId(item);
@@ -141,6 +175,12 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	}
 
+	/**
+	 * Returns the identifier of this contribution item.
+	 * 
+	 * @param item
+	 * @return identifier, or {@code null} if none
+	 */
 	private String getItemId(Item item) {
 		String id = null;
 		if (item.getData() instanceof IContributionItem) {
@@ -435,7 +475,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	//	}
 
 	/**
-	 * Returns the composite that contains the menu bar of the sub-application.
+	 * Returns the composites that contains the menu bar of the sub-application.
 	 * 
 	 * @param composite
 	 * @return composite with menu bar
@@ -469,6 +509,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	private List<MenuItem> getMenuItems(Menu menu) {
 
 		List<MenuItem> items = new ArrayList<MenuItem>();
+		if (menu == null) {
+			return items;
+		}
 
 		MenuItem[] menuItems = menu.getItems();
 		for (MenuItem menuItem : menuItems) {
