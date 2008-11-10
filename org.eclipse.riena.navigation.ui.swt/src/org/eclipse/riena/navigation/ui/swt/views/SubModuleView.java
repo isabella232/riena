@@ -19,18 +19,20 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.model.NavigationNodeProvider;
+import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleViewBuilderAccessor;
 import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -254,7 +256,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			activate(source);
 		}
 
-	
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
 			super.block(source, block);
@@ -301,11 +302,31 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected C createController(ISubModuleNode pSubModuleNode) {
-		C controller = (C) getSubModuleViewBuilder().provideController(pSubModuleNode);
+
+		// check navigation node for controller definition first
+		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(pSubModuleNode.getNodeId());
+		C controller = null;
+		if (nodeDefinition != null) {
+			controller = (C) nodeDefinition.createController();
+			if (controller != null) {
+				controller.setNavigationNode(pSubModuleNode);
+			}
+			return controller;
+		}
+
+		// no success - try 'old' submodule definition
+		controller = (C) getSubModuleViewBuilder().provideController(pSubModuleNode);
 		if (controller != null) {
 			controller.setNavigationNode(pSubModuleNode);
 		}
 		return controller;
+	}
+
+	protected INavigationNodeExtension getNavigationNodeDefinition(NavigationNodeId targetId) {
+
+		NavigationNodeProvider p = (NavigationNodeProvider) NavigationNodeProviderAccessor.current()
+				.getNavigationNodeProvider();
+		return p.getNavigationNodeTypeDefinition(targetId);
 	}
 
 	/**

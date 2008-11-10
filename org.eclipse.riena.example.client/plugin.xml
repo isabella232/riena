@@ -404,6 +404,8 @@
       <navigationNode
             typeId="org.eclipse.riena.example.navigation"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
+            view="org.eclipse.riena.example.client.views.NavigationSubModuleView"
+            controller="org.eclipse.riena.example.client.controllers.NavigationSubModuleController"
             parentTypeId="application">
       </navigationNode>
       <navigationNode
@@ -447,9 +449,12 @@
             parentTypeId="playground">
       </navigationNode>
       <navigationNode
+            typeId="org.eclipse.riena.example.client.kundensuche"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.KundenNodeBuilder"
-            parentTypeId="playground"
-            typeId="org.eclipse.riena.example.client.kundensuche">
+            view="org.eclipse.riena.example.kundensuche"
+            shared="false"
+            controller="org.eclipse.riena.example.client.controllers.KundenSucheController"
+            parentTypeId="playground">
       </navigationNode>
    </extension>
    <extension point="org.eclipse.riena.navigation.subModule">
@@ -468,11 +473,6 @@
             view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
             shared="true"
             controller="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.navigation"
-            view="org.eclipse.riena.example.client.views.NavigationSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.NavigationSubModuleController">
       </subModule>
       <subModule
             typeId="org.eclipse.riena.example.buttons"
@@ -594,12 +594,6 @@
             shared="false"
             typeId="org.eclipse.riena.example.filteraction"
             view="org.eclipse.riena.example.client.views.FilterActionSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.KundenSucheController"
-            shared="false"
-            typeId="org.eclipse.riena.example.client.kundensuche"
-            view="org.eclipse.riena.example.kundensuche">
       </subModule>
    </extension>
    <extension

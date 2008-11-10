@@ -123,7 +123,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * @param targetId
 	 * @return
 	 */
-	protected INavigationNodeExtension getNavigationNodeTypeDefinition(NavigationNodeId targetId) {
+	public INavigationNodeExtension getNavigationNodeTypeDefinition(NavigationNodeId targetId) {
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {

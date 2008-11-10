@@ -14,6 +14,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleExtension;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -65,6 +66,18 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 		return null;
 	}
 
+	protected INavigationNodeExtension getNavigationNodeDefinition(NavigationNodeId targetId) {
+
+		NavigationNodeProvider p = (NavigationNodeProvider) NavigationNodeProviderAccessor.current()
+				.getNavigationNodeProvider();
+		return p.getNavigationNodeTypeDefinition(targetId);
+	}
+
+	protected INavigationNodeExtension getNavigationNodeDefinition(String targetId) {
+
+		return getNavigationNodeDefinition(new NavigationNodeId(targetId));
+	}
+
 	/**
 	 * This is the basic SWT implementation from Riena. It returns the matching
 	 * view id for the given navigationNodeId
@@ -73,6 +86,12 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	 *      (org.eclipse.riena.navigation.NavigationNodeId)
 	 */
 	public Object provideView(NavigationNodeId nodeId) {
+
+		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(nodeId.getTypeId());
+		if (nodeDefinition != null && nodeDefinition.getView() != null) {
+			return nodeDefinition.getView();
+		}
+		// view not defined within node definition. fall back to searching submodule definition
 		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(nodeId.getTypeId());
 		if (subModuleTypeDefinition != null) {
 			return subModuleTypeDefinition.getView();
@@ -85,9 +104,20 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#provideController(org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public IController provideController(INavigationNode<?> node) {
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(node.getNodeId().getTypeId());
+
 		IController controller = null;
 
+		// check navigation node for controller definition first
+		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(node.getNodeId());
+		if (nodeDefinition != null) {
+			controller = nodeDefinition.createController();
+			if (controller != null) {
+				return controller;
+			}
+		}
+
+		// no success - try 'old' submodule definition
+		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(node.getNodeId().getTypeId());
 		if (subModuleTypeDefinition != null) {
 			controller = subModuleTypeDefinition.createController();
 		}
@@ -99,8 +129,13 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#isViewShared(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
 	public boolean isViewShared(NavigationNodeId targetId) {
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(targetId.getTypeId());
 
+		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(targetId);
+		if (nodeDefinition != null) {
+			return nodeDefinition.isShared();
+		}
+
+		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(targetId.getTypeId());
 		if (subModuleTypeDefinition != null) {
 			return subModuleTypeDefinition.isShared();
 		}

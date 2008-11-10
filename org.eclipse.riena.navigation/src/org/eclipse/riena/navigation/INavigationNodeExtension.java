@@ -11,6 +11,8 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.osgi.framework.Bundle;
 
 /**
  * Interface for a NavigationNodeType extension that defines how to create a
@@ -18,6 +20,13 @@ import org.eclipse.riena.core.extension.ExtensionInterface;
  */
 @ExtensionInterface
 public interface INavigationNodeExtension {
+
+	/**
+	 * Return the contributing bundle of the extension.
+	 * 
+	 * @return The contributing bundle
+	 */
+	Bundle getContributingBundle();
 
 	/**
 	 * @return A node builder that creates a node or a subtree for the
@@ -37,4 +46,25 @@ public interface INavigationNodeExtension {
 	 */
 	String getTypeId();
 
+	/**
+	 * @return A controller that controlles the UI widgets in the view through
+	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
+	 */
+	IController createController();
+
+	/**
+	 * @return For the SWT-based Riena UI this is the ID of the view associated
+	 *         with the submodule. Must match the ID field of an
+	 *         "org.eclipse.ui.view" extension.
+	 */
+	String getView();
+
+	/**
+	 * Indicates whether the view is shared i.e. whether one instance of the
+	 * view should be used for all submodule instances.
+	 * 
+	 * @return true if the specified view should be a shared view, false
+	 *         otherwise
+	 */
+	boolean isShared();
 }
