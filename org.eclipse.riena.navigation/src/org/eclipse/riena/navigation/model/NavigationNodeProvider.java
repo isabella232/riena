@@ -10,14 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.navigation.IGenericNavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
 import org.eclipse.riena.navigation.INavigationNodeExtension;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.ISubModuleExtension;
+import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.osgi.service.log.LogService;
@@ -34,6 +39,8 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	private static final String EP_NAVNODETYPE = "org.eclipse.riena.navigation.navigationNode"; //$NON-NLS-1$
 
 	private NavigationNodeExtensionInjectionHelper targetNN;
+
+	private Map<String, ISubModuleNodeExtension> id2SubModuleCache = new WeakHashMap<String, ISubModuleNodeExtension>();
 
 	/**
 	 * 
@@ -81,7 +88,10 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 			INavigationNodeExtension navigationNodeTypeDefiniton = getNavigationNodeTypeDefinition(targetId);
 			if (navigationNodeTypeDefiniton != null) {
 				INavigationNodeBuilder builder = navigationNodeTypeDefiniton.createNodeBuilder();
-				prepareNavigationNodeBuilder(targetId, builder);
+				if (builder == null) {
+					builder = createDefaultBuilder();
+				}
+				prepareNavigationNodeBuilder(navigationNodeTypeDefiniton, targetId, builder);
 				targetNode = builder.buildNode(targetId, argument);
 				INavigationNode parentNode = null;
 				if (argument != null && argument.getParentNodeId() != null) {
@@ -96,6 +106,10 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 			}
 		}
 		return targetNode;
+	}
+
+	protected GenericNodeBuilder createDefaultBuilder() {
+		return new GenericNodeBuilder();
 	}
 
 	/**
@@ -115,8 +129,13 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * @param targetId
 	 * @param builder
 	 */
-	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationNodeBuilder builder) {
-		// can be overwritten by subclass
+	protected void prepareNavigationNodeBuilder(INavigationNodeExtension navigationNodeTypeDefiniton,
+			NavigationNodeId targetId, INavigationNodeBuilder builder) {
+
+		if (builder instanceof IGenericNavigationNodeBuilder) {
+			// the extension interface of the navigation node definition is injected into the builder   
+			((IGenericNavigationNodeBuilder) builder).setNodeDefinition(navigationNodeTypeDefiniton);
+		}
 	}
 
 	/**
@@ -136,6 +155,10 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 			}
 		}
 		return null;
+	}
+
+	protected ISubModuleNodeExtension getSubModuleNodeDefinition(NavigationNodeId targetId) {
+		return id2SubModuleCache.get(targetId.getTypeId());
 	}
 
 	/**
@@ -168,6 +191,10 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 			}
 		}
 		return null;
+	}
+
+	public void register(String subModuleNodeid, ISubModuleNodeExtension definition) {
+		id2SubModuleCache.put(subModuleNodeid, definition);
 	}
 
 	/**

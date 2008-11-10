@@ -16,11 +16,11 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.osgi.framework.Bundle;
 
 /**
- * Interface for a NavigationNodeType extension that defines how to create a
- * node or a subtree in the application model tree.
+ * Interface for a SubModuleNode extension that defines how to create a node or
+ * a subtree in the application model tree.
  */
 @ExtensionInterface
-public interface INavigationNodeExtension {
+public interface ISubModuleNodeExtension {
 
 	/**
 	 * Return the contributing bundle of the extension.
@@ -31,7 +31,7 @@ public interface INavigationNodeExtension {
 
 	/**
 	 * @return A node builder that creates a node or a subtree for the
-	 *         application model tree.
+	 *         application model tree or <code>null</code>.
 	 */
 	INavigationNodeBuilder createNodeBuilder();
 
@@ -46,6 +46,11 @@ public interface INavigationNodeExtension {
 	 * @see NavigationNodeId#getTypeId()
 	 */
 	String getTypeId();
+
+	/**
+	 * @return This submodules label
+	 */
+	String getLabel();
 
 	/**
 	 * @return A controller that controlles the UI widgets in the view through
@@ -73,20 +78,6 @@ public interface INavigationNodeExtension {
 	 * @return A list of submodule node definitions that are children of the
 	 *         receiver
 	 */
-	@MapName("modulegroup")
-	IModuleGroupNodeExtension getModuleGroupNode();
-
-	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
-	 */
-	@MapName("module")
-	IModuleNodeExtension getModuleNode();
-
-	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
-	 */
 	@MapName("submodule")
-	ISubModuleNodeExtension getSubModuleNode();
+	ISubModuleNodeExtension[] getSubModuleNodes();
 }

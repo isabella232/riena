@@ -420,8 +420,29 @@
       </navigationNode>
       <navigationNode
             typeId="org.eclipse.riena.example.uiProcesses"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.UIProcessNodeBuilder"
+            name="uiProcesses_definition"
+            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
+         <modulegroup
+               name="uiProcesses_group"
+               typeId="org.eclipse.riena.example.uiProcesses">
+            <module
+                  name="uiProcesses"
+                  label="UIProcess">
+               <submodule
+                     typeId="org.eclipse.riena.example.uiProcess_1"
+                     name="uiProcess_1"
+                     label="Demo1"
+                     view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
+               <submodule
+                     typeId="org.eclipse.riena.example.uiProcess_2"
+                     name="uiProcess_2"
+                     label="Demo2"
+                     view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
+            </module>
+         </modulegroup>
       </navigationNode>
       <navigationNode
             typeId="org.eclipse.riena.example.playground"

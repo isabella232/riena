@@ -16,6 +16,7 @@ import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleExtension;
+import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.ridgets.controller.IController;
@@ -78,6 +79,18 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 		return getNavigationNodeDefinition(new NavigationNodeId(targetId));
 	}
 
+	protected ISubModuleNodeExtension getSubModuleNodeDefinition(NavigationNodeId targetId) {
+
+		NavigationNodeProvider p = (NavigationNodeProvider) NavigationNodeProviderAccessor.current()
+				.getNavigationNodeProvider();
+		return p.getSubModuleNodeDefinition(targetId);
+	}
+
+	protected ISubModuleNodeExtension getSubModuleNodeDefinition(String targetId) {
+
+		return getSubModuleNodeDefinition(new NavigationNodeId(targetId));
+	}
+
 	/**
 	 * This is the basic SWT implementation from Riena. It returns the matching
 	 * view id for the given navigationNodeId
@@ -90,6 +103,10 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(nodeId.getTypeId());
 		if (nodeDefinition != null && nodeDefinition.getView() != null) {
 			return nodeDefinition.getView();
+		}
+		ISubModuleNodeExtension subModuleNodeDefinition = getSubModuleNodeDefinition(nodeId.getTypeId());
+		if (subModuleNodeDefinition != null && subModuleNodeDefinition.getView() != null) {
+			return subModuleNodeDefinition.getView();
 		}
 		// view not defined within node definition. fall back to searching submodule definition
 		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(nodeId.getTypeId());
@@ -114,6 +131,11 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 			if (controller != null) {
 				return controller;
 			}
+		}
+
+		ISubModuleNodeExtension subModuleNodeDefinition = getSubModuleNodeDefinition(node.getNodeId());
+		if (subModuleNodeDefinition != null && subModuleNodeDefinition.getView() != null) {
+			return subModuleNodeDefinition.createController();
 		}
 
 		// no success - try 'old' submodule definition

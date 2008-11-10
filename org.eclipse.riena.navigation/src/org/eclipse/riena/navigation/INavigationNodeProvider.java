@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-
 /**
  * Implementation of this service interface provides service methods to get
  * information provided by WorkAreaPresentationDefinitions and
@@ -28,6 +27,15 @@ public interface INavigationNodeProvider {
 	 * @return
 	 */
 	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
+
+	/**
+	 * Register a submodule that is defined within an enclosing navigation node
+	 * definition.
+	 * 
+	 * @param subModuleNodeid
+	 * @param definition
+	 */
+	void register(String subModuleNodeid, ISubModuleNodeExtension definition);
 
 	/**
 	 * Perform some housekeeping
