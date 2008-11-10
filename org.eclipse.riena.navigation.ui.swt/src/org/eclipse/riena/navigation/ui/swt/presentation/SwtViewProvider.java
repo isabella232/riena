@@ -54,6 +54,9 @@ public class SwtViewProvider {
 			NavigationNodeId nodeId = pNode.getNodeId();
 			if (nodeId != null) {
 				String viewId = (String) getSubModuleViewBuilder().provideView(nodeId);
+				if (viewId == null) {
+					throw new RuntimeException("viewId is null for nodeId " + nodeId);
+				}
 				boolean isViewShared = getSubModuleViewBuilder().isViewShared(nodeId);
 				viewShared.put(viewId, isViewShared);
 				if (isViewShared && pNode instanceof ISubModuleNode) {
