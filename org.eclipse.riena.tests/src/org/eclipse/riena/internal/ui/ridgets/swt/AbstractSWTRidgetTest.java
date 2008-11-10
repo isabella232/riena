@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * Tests for the class {@link AbstractSwtRidget}.
@@ -46,7 +47,7 @@ import org.eclipse.swt.widgets.Text;
 public abstract class AbstractSWTRidgetTest extends TestCase {
 
 	private Shell shell;
-	private Control control;
+	private Widget widget;
 	private IRidget ridget;
 	private Text otherControl;
 	private PropertyChangeListener propertyChangeListenerMock;
@@ -62,10 +63,10 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		shell = new Shell();
 		shell.setLayout(new RowLayout(SWT.VERTICAL));
 
-		control = createUIControl(shell);
+		widget = createWidget(shell);
 
 		ridget = createRidget();
-		ridget.setUIControl(control);
+		ridget.setUIControl(widget);
 		propertyChangeListenerMock = EasyMock.createMock(PropertyChangeListener.class);
 		ridget.addPropertyChangeListener(propertyChangeListenerMock);
 
@@ -80,8 +81,8 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ridget = null;
-		control.dispose();
-		control = null;
+		widget.dispose();
+		widget = null;
 		otherControl.dispose();
 		otherControl = null;
 		shell.dispose();
@@ -91,12 +92,12 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	// protected methods
 	// //////////////////
 
-	protected abstract Control createUIControl(final Composite parent);
+	protected abstract Widget createWidget(final Composite parent);
 
 	protected abstract IRidget createRidget();
 
-	protected Control getUIControl() {
-		return control;
+	protected Widget getWidget() {
+		return widget;
 	}
 
 	protected IRidget getRidget() {
@@ -144,6 +145,12 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	}
 
 	public void testGetToolTip() {
+
+		if (!(getWidget() instanceof Control)) {
+			// only Control supports tool tips
+			return;
+		}
+
 		ridget.setUIControl(null);
 
 		assertEquals(null, ridget.getToolTipText());
@@ -152,7 +159,7 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 
 		assertEquals("foo", ridget.getToolTipText());
 
-		Control aControl = getUIControl();
+		Control aControl = (Control) getWidget();
 		aControl.setToolTipText(null);
 		ridget.setUIControl(aControl);
 
@@ -161,6 +168,12 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	}
 
 	public void testGetFocusable() {
+
+		if (!(getWidget() instanceof Control)) {
+			// only Control supports tool tips
+			return;
+		}
+
 		IRidget aRidget = getRidget();
 
 		assertTrue(aRidget.isFocusable());
@@ -175,8 +188,14 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	}
 
 	public void testSetFocusable() {
+
+		if (!(getWidget() instanceof Control)) {
+			// only Control supports focus
+			return;
+		}
+
 		IRidget aRidget = getRidget();
-		Control aControl = getUIControl();
+		Control aControl = (Control) getWidget();
 		otherControl.moveAbove(aControl);
 
 		aControl.setFocus();
@@ -201,11 +220,18 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	}
 
 	public void testRequestFocus() throws Exception {
-		control.setFocus();
-		if (control.isFocusControl()) { // skip if control cannot receive focus
+
+		if (!(getWidget() instanceof Control)) {
+			// only Control supports focus
+			return;
+		}
+
+		Control aControl = (Control) getWidget();
+		aControl.setFocus();
+		if (aControl.isFocusControl()) { // skip if control cannot receive focus
 			assertTrue(otherControl.setFocus());
 
-			assertFalse(control.isFocusControl());
+			assertFalse(aControl.isFocusControl());
 			assertFalse(ridget.hasFocus());
 
 			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
@@ -223,7 +249,7 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 
 			ridget.requestFocus();
 
-			assertTrue(control.isFocusControl());
+			assertTrue(aControl.isFocusControl());
 			assertTrue(ridget.hasFocus());
 			assertEquals(1, focusGainedEvents.size());
 			assertEquals(ridget, focusGainedEvents.get(0).getNewFocusOwner());
@@ -231,7 +257,7 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 
 			assertTrue(otherControl.setFocus());
 
-			assertFalse(control.isFocusControl());
+			assertFalse(aControl.isFocusControl());
 			assertFalse(ridget.hasFocus());
 			assertEquals(1, focusGainedEvents.size());
 			assertEquals(1, focusLostEvents.size());

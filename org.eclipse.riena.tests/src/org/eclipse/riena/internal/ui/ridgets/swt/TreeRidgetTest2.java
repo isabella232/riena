@@ -62,7 +62,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	private TestMultiSelectionBean multiSelectionBean;
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new Tree(parent, SWT.MULTI);
 	}
 
@@ -84,7 +84,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		multiSelectionBean = new TestMultiSelectionBean();
 		getRidget().bindMultiSelectionToModel(multiSelectionBean, TestMultiSelectionBean.PROPERTY_SELECTION);
 		getRidget().updateFromModel();
-		UITestHelper.readAndDispatch(getUIControl());
+		UITestHelper.readAndDispatch(getWidget());
 	}
 
 	@Override
@@ -93,8 +93,8 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected final Tree getUIControl() {
-		return (Tree) super.getUIControl();
+	protected final Tree getWidget() {
+		return (Tree) super.getWidget();
 	}
 
 	/**
@@ -102,9 +102,9 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	protected final void fireSelectionEvent() {
 		Event event = new Event();
-		event.widget = getUIControl();
+		event.widget = getWidget();
 		event.type = SWT.Selection;
-		getUIControl().notifyListeners(SWT.Selection, event);
+		getWidget().notifyListeners(SWT.Selection, event);
 	}
 
 	// test methods
@@ -294,7 +294,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
 
 		TreeItem[] items = { getUIControlItem(0), getUIControlItem(2) };
-		getUIControl().setSelection(items);
+		getWidget().setSelection(items);
 		fireSelectionEvent();
 
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
@@ -354,7 +354,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setUIControl(null);
 		ridget.updateMultiSelectionFromModel();
-		ridget.setUIControl(getUIControl());
+		ridget.setUIControl(getWidget());
 
 		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
 		assertEquals(2, multiSelectionBean.getSelectionList().size());
@@ -376,7 +376,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
 
-		ridget.setUIControl(getUIControl()); // rebind
+		ridget.setUIControl(getWidget()); // rebind
 
 		assertEquals(2, getUIControlSelectedRowCount());
 		assertEquals(1, getUIControlSelectedRows()[0]);
@@ -454,7 +454,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setUIControl(null); // unbind
 		ridget.updateSingleSelectionFromModel();
-		ridget.setUIControl(getUIControl()); // rebind
+		ridget.setUIControl(getWidget()); // rebind
 
 		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
@@ -472,7 +472,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(0));
 
-		ridget.setUIControl(getUIControl()); // rebind
+		ridget.setUIControl(getWidget()); // rebind
 
 		assertEquals(1, getUIControlSelectedRowCount());
 		assertUIControlSelectionContains(2);
@@ -620,7 +620,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetUIControl() throws Exception {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		assertEquals(control, getRidget().getUIControl());
 	}
 
@@ -715,7 +715,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 	public void testSelectionType() throws Exception {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(ITreeRidget.SelectionType.SINGLE, ridget.getSelectionType());
 
@@ -744,7 +744,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 	public void testSetSelectionTypeIsEnforced() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(ISelectableRidget.SelectionType.SINGLE, ridget.getSelectionType());
 		assertTrue((control.getStyle() & SWT.MULTI) != 0);
@@ -779,7 +779,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 	public void testSetRootsVisibleWithModel() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.setRootsVisible(false);
 		Object[] roots = { root };
@@ -803,7 +803,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 	public void testSetRootsFalseDoesRefresh() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.setRootsVisible(false);
 		ridget.updateFromModel();
@@ -834,7 +834,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 
@@ -866,7 +866,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	public void testBug245632() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.expandAll();
 		ridget.setSelection(root);
@@ -892,7 +892,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -952,7 +952,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	private void assertUIControlSelectionContains(int itemIndex) {
 		boolean result = false;
 		TreeItem item = getUIControlItem(itemIndex);
-		TreeItem[] selections = getUIControl().getSelection();
+		TreeItem[] selections = getWidget().getSelection();
 		for (int i = 0; !result && i < selections.length; i++) {
 			result = (item == selections[i]);
 		}
@@ -986,7 +986,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 * Clears the selection in the control
 	 */
 	private void clearUIControlRowSelection() {
-		getUIControl().deselectAll();
+		getWidget().deselectAll();
 		fireSelectionEvent();
 	}
 
@@ -1032,7 +1032,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 * Returns the number of selected rows
 	 */
 	private int getUIControlSelectedRowCount() {
-		return getUIControl().getSelectionCount();
+		return getWidget().getSelectionCount();
 	}
 
 	/**
@@ -1040,7 +1040,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 * scheme (0: item for node1, 1: item for node2, 2: item for node3).
 	 */
 	private int[] getUIControlSelectedRows() {
-		TreeItem[] selection = getUIControl().getSelection();
+		TreeItem[] selection = getWidget().getSelection();
 		int[] result = new int[selection.length];
 		for (int i = 0; i < result.length; i++) {
 			if (selection[i] == getUIControlItem(0)) {
@@ -1066,7 +1066,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	private void setUIControlRowSelectionInterval(int start, int end) {
 		Assert.isLegal(0 <= start);
 		Assert.isLegal(start <= end);
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		int length = (end - start) + 1;
 		TreeItem[] items = new TreeItem[length];
 		for (int i = 0; i < items.length; i++) {
@@ -1085,7 +1085,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	private final TreeItem getUIControlItem(int index) {
 		getRidget().expandAll();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		switch (index) {
 		case 0:
 			return control.getItem(0);

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.List;
 public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new List(parent, SWT.MULTI);
 	}
 
@@ -47,8 +47,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected List getUIControl() {
-		return (List) super.getUIControl();
+	protected List getWidget() {
+		return (List) super.getWidget();
 	}
 
 	@Override
@@ -66,11 +66,11 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(ListRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(ListRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testUpdateFromModel() {
-		List control = getUIControl();
+		List control = getWidget();
 		ITableRidget ridget = getRidget();
 
 		int oldCount = manager.getPersons().size();
@@ -126,7 +126,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	public void testSetSelectionType() {
 		ITableRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 
 		assertEquals(SelectionType.SINGLE, ridget.getSelectionType());
 		assertTrue((control.getStyle() & SWT.MULTI) != 0);
@@ -147,7 +147,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	public void testAddDoubleClickListener() {
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 
 		try {
 			ridget.addDoubleClickListener(null);
@@ -180,7 +180,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	public void testSetComparator() {
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 
 		// sorts from a to z
 		Comparator<Object> comparator = new StringComparator();
@@ -297,7 +297,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscending() {
-		List control = getUIControl();
+		List control = getWidget();
 		ListRidget ridget = getRidget();
 
 		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname" }, new String[] { "" });
@@ -403,7 +403,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 
@@ -434,7 +434,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -492,7 +492,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		}
 
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
 
@@ -532,7 +532,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		}
 
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
 
@@ -594,7 +594,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 */
 	public void testDisableWithoutBoundModel() {
 		ListRidget ridget = (ListRidget) createRidget();
-		List control = getUIControl();
+		List control = getWidget();
 		ridget.setUIControl(control);
 
 		assertNull(ridget.getObservableList());
@@ -621,7 +621,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		}
 
 		ListRidget ridget = getRidget();
-		List control = getUIControl();
+		List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
 
@@ -650,18 +650,18 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected void clearUIControlRowSelection() {
-		getUIControl().deselectAll();
+		getWidget().deselectAll();
 		fireSelectionEvent();
 	}
 
 	@Override
 	protected int getUIControlSelectedRowCount() {
-		return getUIControl().getSelectionCount();
+		return getWidget().getSelectionCount();
 	}
 
 	@Override
 	protected int getUIControlSelectedRow() {
-		return getUIControl().getSelectionIndex();
+		return getWidget().getSelectionIndex();
 	}
 
 	@Override
@@ -686,18 +686,18 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected int[] getUIControlSelectedRows() {
-		return getUIControl().getSelectionIndices();
+		return getWidget().getSelectionIndices();
 	}
 
 	@Override
 	protected void setUIControlRowSelection(int[] indices) {
-		getUIControl().setSelection(indices);
+		getWidget().setSelection(indices);
 		fireSelectionEvent();
 	}
 
 	@Override
 	protected void setUIControlRowSelectionInterval(int start, int end) {
-		getUIControl().setSelection(start, end);
+		getWidget().setSelection(start, end);
 		fireSelectionEvent();
 	}
 

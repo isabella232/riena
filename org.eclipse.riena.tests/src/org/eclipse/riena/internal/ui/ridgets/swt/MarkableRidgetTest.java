@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
 public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new Text(parent, SWT.SINGLE);
 	}
 

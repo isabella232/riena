@@ -51,7 +51,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new ChoiceComposite(parent, SWT.NONE, false);
 	}
 
@@ -61,8 +61,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	@Override
-	protected ChoiceComposite getUIControl() {
-		return (ChoiceComposite) super.getUIControl();
+	protected ChoiceComposite getWidget() {
+		return (ChoiceComposite) super.getWidget();
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(SingleChoiceRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(SingleChoiceRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	/**
@@ -108,7 +108,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testUpdateFromModel() {
 		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
+		ChoiceComposite control = getWidget();
 
 		ridget.updateFromModel();
 
@@ -123,7 +123,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testGetUIControl() {
 		ISingleChoiceRidget ridget = getRidget();
-		Control control = getUIControl();
+		Control control = getWidget();
 
 		assertEquals(control, ridget.getUIControl());
 	}
@@ -156,7 +156,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testUpdateSelectionFromRidget() {
 		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
+		ChoiceComposite control = getWidget();
 
 		assertNotNull(ridget.getSelection());
 
@@ -180,7 +180,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testUpdateSelectionFromControl() {
 		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
+		ChoiceComposite control = getWidget();
 		Button button0 = (Button) control.getChildren()[0];
 		Button button1 = (Button) control.getChildren()[1];
 
@@ -266,7 +266,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testBindToModelUsingLabels() {
 		ISingleChoiceRidget ridget = getRidget();
-		Composite control = getUIControl();
+		Composite control = getWidget();
 		optionProvider = new OptionProvider();
 
 		ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider,
@@ -417,8 +417,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	public void testOutputCannotBeChangedFromUI() {
 		ISingleChoiceRidget ridget = getRidget();
-		Button button1 = (Button) getUIControl().getChildren()[0];
-		Button button2 = (Button) getUIControl().getChildren()[1];
+		Button button1 = (Button) getWidget().getChildren()[0];
+		Button button2 = (Button) getWidget().getChildren()[1];
 
 		assertTrue(button1.getSelection());
 		assertFalse(button2.getSelection());
@@ -448,7 +448,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
 		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
+		ChoiceComposite control = getWidget();
 
 		ridget.setSelection("Option A");
 
@@ -483,7 +483,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
 		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
+		ChoiceComposite control = getWidget();
 
 		ridget.setEnabled(false);
 		optionProvider.setSelectedOption("Option A");
@@ -535,7 +535,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	public void testDisableAndClearOnBind() {
 		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getUIControl();
+		ChoiceComposite control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setEnabled(false);

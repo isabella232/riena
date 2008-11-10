@@ -56,7 +56,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new Tree(parent, SWT.MULTI);
 	}
 
@@ -66,8 +66,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Tree getUIControl() {
-		return (Tree) super.getUIControl();
+	protected Tree getWidget() {
+		return (Tree) super.getWidget();
 	}
 
 	@Override
@@ -80,11 +80,11 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(TreeRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(TreeRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testGetUIControl() throws Exception {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		assertEquals(control, getRidget().getUIControl());
 	}
 
@@ -139,7 +139,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testUpdateTreeFromModel() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -168,7 +168,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateOnModelChanges() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -184,7 +184,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testExpandAndCollapseTree() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -229,7 +229,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testExpandAndCollapseTreeWhenUnbound() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -248,7 +248,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testExpandAndCollapseSingleNodes() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -277,7 +277,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testExpandAndCollapseSingleNodesWhenUnbound() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -296,7 +296,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testFullExpansionStatusIsPreserved() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -319,7 +319,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testPartialExpansionStatusIsPreserved() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -344,7 +344,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testAddDoubleClickListener() {
 		ITreeRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		try {
 			ridget.addDoubleClickListener(null);
@@ -408,7 +408,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private final TreeItem getUIControlItem(int index) {
 		getRidget().expandAll();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		switch (index) {
 		case 0:
 			return control.getItem(0);

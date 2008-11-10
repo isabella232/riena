@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.TableColumn;
 public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		Table table = new Table(parent, SWT.MULTI);
 		table.setHeaderVisible(true);
 		new TableColumn(table, SWT.NONE);
@@ -54,8 +54,8 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected Table getUIControl() {
-		return (Table) super.getUIControl();
+	protected Table getWidget() {
+		return (Table) super.getWidget();
 	}
 
 	@Override
@@ -74,11 +74,11 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(TableRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(TableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testBindToModel() {
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		assertEquals(manager.getPersons().size(), control.getItemCount());
 		assertEquals(person1.getFirstname(), control.getItem(0).getText(0));
@@ -91,7 +91,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testBindToModelTooFewColumns() {
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		assertEquals(2, control.getColumnCount());
 
@@ -107,7 +107,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testBindToModelWithTooManyColumns() {
 		ITableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		assertEquals(2, control.getColumnCount());
 
@@ -130,7 +130,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testTableColumnsNumAndHeader() {
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		TableColumn[] columns = control.getColumns();
 		assertEquals(2, columns.length);
@@ -153,7 +153,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testTableColumnsWithNullHeader() {
 		ITableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		control.setHeaderVisible(true);
 		control.getColumn(0).setText("foo");
@@ -168,7 +168,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testTableColumnsWithNullHeaderEntry() {
 		ITableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		control.getColumn(0).setText("foo");
 		control.getColumn(1).setText("bar");
@@ -183,7 +183,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testUpdateFromModel() {
 		ITableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 		final List<ChangeEvent> changeEvents = new ArrayList<ChangeEvent>();
 		IChangeListener listener = new IChangeListener() {
 			public void handleChange(ChangeEvent event) {
@@ -260,7 +260,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testSetSelectionType() {
 		ITableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		assertEquals(SelectionType.SINGLE, ridget.getSelectionType());
 		assertTrue((control.getStyle() & SWT.MULTI) != 0);
@@ -281,7 +281,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testAddDoubleClickListener() {
 		TableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		try {
 			ridget.addDoubleClickListener(null);
@@ -314,7 +314,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testSetComparator() {
 		TableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		// sorts from a to z
 		Comparator<Object> comparator = new StringComparator();
@@ -448,7 +448,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscending() {
-		Table control = getUIControl();
+		Table control = getWidget();
 		TableRidget ridget = getRidget();
 
 		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname", "firstname" }, null);
@@ -569,7 +569,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testColumnHeaderChangesSortability() {
 		TableRidget ridget = getRidget();
-		Table table = getUIControl();
+		Table table = getWidget();
 
 		ridget.setColumnSortable(0, true);
 		ridget.setComparator(0, new StringComparator());
@@ -607,7 +607,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	public void testSetMoveableColumns() {
 		TableRidget ridget = getRidget();
-		Table table = getUIControl();
+		Table table = getWidget();
 
 		assertFalse(ridget.hasMoveableColumns());
 		assertFalse(table.getColumn(0).getMoveable());
@@ -633,7 +633,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		TableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 
@@ -666,7 +666,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		TableRidget ridget = getRidget();
-		Table control = getUIControl();
+		Table control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -720,18 +720,18 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected void clearUIControlRowSelection() {
-		getUIControl().deselectAll();
+		getWidget().deselectAll();
 		fireSelectionEvent();
 	}
 
 	@Override
 	protected int getUIControlSelectedRowCount() {
-		return getUIControl().getSelectionCount();
+		return getWidget().getSelectionCount();
 	}
 
 	@Override
 	protected int getUIControlSelectedRow() {
-		return getUIControl().getSelectionIndex();
+		return getWidget().getSelectionIndex();
 	}
 
 	@Override
@@ -756,18 +756,18 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected int[] getUIControlSelectedRows() {
-		return getUIControl().getSelectionIndices();
+		return getWidget().getSelectionIndices();
 	}
 
 	@Override
 	protected void setUIControlRowSelection(int[] indices) {
-		getUIControl().setSelection(indices);
+		getWidget().setSelection(indices);
 		fireSelectionEvent();
 	}
 
 	@Override
 	protected void setUIControlRowSelectionInterval(int start, int end) {
-		getUIControl().setSelection(start, end);
+		getWidget().setSelection(start, end);
 		fireSelectionEvent();
 	}
 

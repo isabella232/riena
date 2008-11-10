@@ -41,7 +41,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
 		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DATE);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
@@ -49,8 +49,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Text getUIControl() {
-		return (Text) super.getUIControl();
+	protected Text getWidget() {
+		return (Text) super.getWidget();
 	}
 
 	// test methods
@@ -58,7 +58,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(DateTextRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(DateTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testDelete() {
@@ -189,7 +189,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetFormatAfterSetText() {
 		IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		Text control = getUIControl();
+		Text control = getWidget();
 		StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
@@ -208,7 +208,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testUpdateFromModel() {
 		IDateTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		StringBean bean = new StringBean("12.10.2008");
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
@@ -285,11 +285,11 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	//////////////////
 
 	private void assertText(String before, String keySeq, String after) {
-		TestUtils.assertText(getUIControl(), before, keySeq, after);
+		TestUtils.assertText(getWidget(), before, keySeq, after);
 	}
 
 	private void assertText(String before, int keyCode, String after) {
-		TestUtils.assertText(getUIControl(), before, keyCode, after);
+		TestUtils.assertText(getWidget(), before, keyCode, after);
 	}
 
 }

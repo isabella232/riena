@@ -11,10 +11,10 @@
 package org.eclipse.riena.tests;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * Utility class for UI tests.
@@ -36,7 +36,7 @@ public final class UITestHelper {
 		// prevent instantiation
 	}
 
-	public static void readAndDispatch(Control control) {
+	public static void readAndDispatch(Widget control) {
 		Display display = control.getDisplay();
 		while (!display.readAndDispatch()) {
 		}

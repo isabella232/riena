@@ -33,12 +33,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	private final static String LABEL2 = "testlabel2";
 
 	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-	}
-
-	@Override
-	protected Button createUIControl(Composite parent) {
+	protected Button createWidget(Composite parent) {
 		return new Button(parent, SWT.PUSH);
 	}
 
@@ -48,8 +43,8 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Button getUIControl() {
-		return (Button) super.getUIControl();
+	protected Button getWidget() {
+		return (Button) super.getWidget();
 	}
 
 	@Override
@@ -59,7 +54,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(ActionRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(ActionRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testSetUIControl() {
@@ -68,8 +63,8 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(null);
 		assertNull(ridget.getUIControl());
 
-		ridget.setUIControl(getUIControl());
-		assertSame(getUIControl(), ridget.getUIControl());
+		ridget.setUIControl(getWidget());
+		assertSame(getWidget(), ridget.getUIControl());
 	}
 
 	public void testSetUIControlInvalid() {
@@ -93,7 +88,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddListener() {
-		Button control = getUIControl();
+		Button control = getWidget();
 		IActionRidget ridget = getRidget();
 
 		FTActionListener listener1 = new FTActionListener();
@@ -131,7 +126,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
 	public final void testSetText() throws Exception {
 		IActionRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		ridget.setText("");
 
@@ -180,7 +175,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(ridget.getIcon());
 		assertNull(control.getImage());
 
-		Button button = createUIControl(getShell());
+		Button button = createWidget(getShell());
 		Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		button.setImage(buttonImage);
 		IActionRidget buttonRidget = createRidget();
@@ -197,7 +192,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(button.getImage());
 		assertNotSame(buttonImage, button.getImage());
 
-		button = createUIControl(getShell());
+		button = createWidget(getShell());
 		button.setImage(buttonImage);
 		buttonRidget = createRidget();
 		buttonRidget.setIcon(ICON_ECLIPSE);
@@ -235,7 +230,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testOutputRidgetNotVisible() {
 		IActionRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		assertFalse(ridget.isOutputOnly());
 		assertTrue(control.isVisible());

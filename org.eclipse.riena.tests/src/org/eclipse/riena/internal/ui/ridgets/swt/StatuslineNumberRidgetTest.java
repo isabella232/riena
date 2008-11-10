@@ -50,10 +50,10 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createUIControl(org.eclipse.swt.widgets.Composite)
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createWidget(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new StatuslineNumber(parent, SWT.NONE);
 	}
 
@@ -66,11 +66,11 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#getUIControl()
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#getWidget()
 	 */
 	@Override
-	protected StatuslineNumber getUIControl() {
-		return (StatuslineNumber) super.getUIControl();
+	protected StatuslineNumber getWidget() {
+		return (StatuslineNumber) super.getWidget();
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 	 * @return label
 	 */
 	private Label getLabel() {
-		StatuslineNumber statuslineNumber = getUIControl();
+		StatuslineNumber statuslineNumber = getWidget();
 		Control[] controls = statuslineNumber.getChildren();
 		return (Label) controls[0];
 	}

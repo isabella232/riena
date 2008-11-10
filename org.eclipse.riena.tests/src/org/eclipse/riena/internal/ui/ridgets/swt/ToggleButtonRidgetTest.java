@@ -42,7 +42,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Button createUIControl(Composite parent) {
+	protected Button createWidget(Composite parent) {
 		return new Button(parent, SWT.CHECK);
 	}
 
@@ -52,8 +52,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Button getUIControl() {
-		return (Button) super.getUIControl();
+	protected Button getWidget() {
+		return (Button) super.getWidget();
 	}
 
 	public void testRidgetMapping() {
@@ -76,14 +76,14 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testSetUIControl() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
-		Button button = getUIControl();
+		Button button = getWidget();
 
 		assertSame(button, ridget.getUIControl());
 	}
 
 	public void testSetSelected() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
-		Button button = getUIControl();
+		Button button = getWidget();
 		BooleanTestBean model = new BooleanTestBean();
 		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
@@ -148,7 +148,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testUpdateFromModel() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
-		Button button = getUIControl();
+		Button button = getWidget();
 
 		BooleanTestBean model = new BooleanTestBean();
 		model.setSelected(true);
@@ -196,7 +196,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 	public final void testSetText() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
-		Button button = getUIControl();
+		Button button = getWidget();
 
 		ridget.setText("");
 
@@ -232,7 +232,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public final void testSetIcon() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -250,7 +250,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("nonsense", ridget.getIcon());
 		assertEquals(missingImage, control.getImage());
 
-		Button button = createUIControl(getShell());
+		Button button = createWidget(getShell());
 		Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		button.setImage(buttonImage);
 		IToggleButtonRidget buttonRidget = createRidget();
@@ -267,7 +267,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(button.getImage());
 		assertNotSame(buttonImage, button.getImage());
 
-		button = createUIControl(getShell());
+		button = createWidget(getShell());
 		button.setImage(buttonImage);
 		buttonRidget = createRidget();
 		buttonRidget.setIcon(ICON_ECLIPSE);
@@ -283,7 +283,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public final void testInitText() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
 		ReflectionUtils.setHidden(ridget, "text", null);
@@ -307,7 +307,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testOutputRidgetNotVisible() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		assertFalse(ridget.isOutputOnly());
 		assertTrue(control.isVisible());
@@ -367,7 +367,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 		BooleanTestBean model = new BooleanTestBean();
 		ridget.bindToModel(model, "selected");
 
@@ -401,7 +401,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 		BooleanTestBean model = new BooleanTestBean();
 		ridget.bindToModel(model, "selected");
 		ridget.setEnabled(false);
@@ -437,7 +437,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testDisableRidgetRemovesSelection() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		ridget.setEnabled(true);
 		ridget.setSelected(true);
@@ -492,7 +492,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testDisableAndClearOnBind() {
 		IToggleButtonRidget ridget = getRidget();
-		Button control = getUIControl();
+		Button control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setEnabled(false);

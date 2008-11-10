@@ -49,7 +49,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new Combo(parent, SWT.READ_ONLY);
 	}
 
@@ -59,8 +59,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Combo getUIControl() {
-		return (Combo) super.getUIControl();
+	protected Combo getWidget() {
+		return (Combo) super.getWidget();
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(ComboRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(ComboRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testSetUIControl() {
@@ -79,8 +79,8 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(null);
 		assertNull(ridget.getUIControl());
 
-		ridget.setUIControl(getUIControl());
-		assertSame(getUIControl(), ridget.getUIControl());
+		ridget.setUIControl(getWidget());
+		assertSame(getWidget(), ridget.getUIControl());
 	}
 
 	public void testSetUIControlInvalid() {
@@ -103,7 +103,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testGetEmptySelectionItem() {
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
@@ -130,7 +130,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		manager.setSelectedPerson(selection1);
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, control.getItemCount());
@@ -167,7 +167,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		manager.setSelectedPerson(selection1);
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, control.getItemCount());
@@ -210,7 +210,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		aManager.setSelectedItem(aSelection1);
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertEquals(-1, control.getSelectionIndex());
 		assertEquals(0, control.getItemCount());
@@ -262,7 +262,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		manager.setSelectedPerson(selection1);
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, control.getItemCount());
@@ -291,7 +291,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		manager.setSelectedPerson(selection1);
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, control.getItemCount());
@@ -342,7 +342,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(-1, getRidget().getSelectionIndex());
 
-		getUIControl().select(1);
+		getWidget().select(1);
 		assertEquals(1, getRidget().getSelectionIndex());
 
 		ridget.setUIControl(null);
@@ -357,7 +357,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(null, getRidget().getSelection());
 
-		getUIControl().select(1);
+		getWidget().select(1);
 
 		assertEquals("B", getRidget().getSelection());
 
@@ -376,7 +376,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(null, selectionObservable.getValue());
 
-		getUIControl().select(1);
+		getWidget().select(1);
 
 		assertEquals("B", selectionObservable.getValue());
 
@@ -483,7 +483,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testOutputCannotBeChangedFromUI() {
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
@@ -517,7 +517,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
@@ -557,7 +557,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 
 		manager.setSelectedPerson(selection1);
@@ -621,7 +621,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testDisableWithoutBoundModel() {
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertTrue(ridget.getObservableList().isEmpty());
 
@@ -642,7 +642,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testDisableAndClearOnBind() {
 		ComboRidget ridget = getRidget();
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setEnabled(false);
@@ -680,7 +680,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	private void checkPersonList(PersonManager manager) {
-		Combo control = getUIControl();
+		Combo control = getWidget();
 
 		assertEquals(manager.getPersons().size(), control.getItemCount());
 

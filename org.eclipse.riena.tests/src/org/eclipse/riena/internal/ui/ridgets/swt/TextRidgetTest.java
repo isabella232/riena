@@ -34,7 +34,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new Text(getShell(), SWT.NONE);
 	}
 
@@ -44,13 +44,13 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Text getUIControl() {
-		return (Text) super.getUIControl();
+	protected Text getWidget() {
+		return (Text) super.getWidget();
 	}
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(TextRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(TextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testCreate() throws Exception {
@@ -59,7 +59,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUIControl() throws Exception {
-		assertSame(getUIControl(), getRidget().getUIControl());
+		assertSame(getWidget(), getRidget().getUIControl());
 	}
 
 	public void testSetText() throws Exception {
@@ -71,7 +71,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setText("first");
 		assertEquals("first", ridget.getText());
 		assertEquals("first", model.getText1());
-		assertEquals("first", getUIControl().getText());
+		assertEquals("first", getWidget().getText());
 	}
 
 	public void testGetText() throws Exception {
@@ -125,12 +125,12 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		String newText = "second";
 		model.setText2(newText);
 		ridget.updateFromModel();
-		assertEquals(newText, getUIControl().getText());
+		assertEquals(newText, getWidget().getText());
 	}
 
 	public void testFocusGainedDoesSelectOnSingleText() {
 		ITextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		ridget.setText("foo");
 		control.setSelection(0, 0);

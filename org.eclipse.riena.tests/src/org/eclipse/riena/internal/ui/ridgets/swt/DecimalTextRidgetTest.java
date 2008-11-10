@@ -42,7 +42,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
 		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
@@ -50,8 +50,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Text getUIControl() {
-		return (Text) super.getUIControl();
+	protected Text getWidget() {
+		return (Text) super.getWidget();
 	}
 
 	// test methods
@@ -59,7 +59,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testGroup() {
@@ -85,7 +85,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		IDecimalTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
 		ridget.setPrecision(2);
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		ridget.setText(localize("12345"));
 
@@ -113,7 +113,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setPrecision(4);
 		ridget.setGrouping(true);
 		ridget.setDirectWriting(true);
-		Text control = getUIControl();
+		Text control = getWidget();
 		Display display = control.getDisplay();
 
 		ridget.setText(localize("1234,9876"));
@@ -182,7 +182,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSigned(true);
 		ridget.setText(localize("1234,56"));
 		ridget.setDirectWriting(true);
-		Text control = getUIControl();
+		Text control = getWidget();
 		Display display = control.getDisplay();
 
 		assertTrue(ridget.isMarkNegative());
@@ -210,7 +210,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setPrecision(2);
 		ridget.setGrouping(true);
 		ridget.setDirectWriting(true);
-		Text control = getUIControl();
+		Text control = getWidget();
 		Display display = control.getDisplay();
 
 		ridget.setText(localize("123.456,78"));
@@ -255,7 +255,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testJumpOverDecimalSeparator() {
 		IDecimalTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
-		Text control = getUIControl();
+		Text control = getWidget();
 		Display display = control.getDisplay();
 
 		// jump when directly at the left of the decimal separator 
@@ -308,12 +308,12 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertEquals(localize("1.000.000.000.000.000"), ridget.getText());
-		assertEquals(localize("1.000.000.000.000.000,000"), getUIControl().getText());
+		assertEquals(localize("1.000.000.000.000.000,000"), getWidget().getText());
 	}
 
 	public void testUpdateFromModel() {
 		IDecimalTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
@@ -350,7 +350,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testMaxLength() {
 		IDecimalTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
 		StringBean bean = new StringBean();
@@ -395,7 +395,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testPrecision() throws Exception {
 		IDecimalTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
 		StringBean bean = new StringBean();
@@ -458,7 +458,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testIsSetWithSign() {
 		IDecimalTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		ridget.setPrecision(3);
 		StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
@@ -490,7 +490,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testPadFractionDigitsOnFocusOut() {
 		IDecimalTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		ridget.setPrecision(3);
 		ridget.setSigned(true);
 		StringBean bean = new StringBean();
@@ -528,7 +528,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testMandatoryMarker() {
 		IDecimalTextRidget ridget = getRidget();
 		ridget.setDirectWriting(true);
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		ridget.setMandatory(true);
 		ridget.setText("");
@@ -551,7 +551,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testDisabledMarker() {
 		IDecimalTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		ridget.setText(localize("12,00"));
 

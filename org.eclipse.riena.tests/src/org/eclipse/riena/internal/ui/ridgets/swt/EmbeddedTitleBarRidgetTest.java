@@ -57,10 +57,10 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createUIControl(org.eclipse.swt.widgets.Composite)
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createWidget(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		return new EmbeddedTitleBar(parent, SWT.NONE);
 	}
 

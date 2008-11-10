@@ -62,7 +62,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		multiSelectionBean = new TestMultiSelectionBean();
 		getRidget().bindMultiSelectionToModel(multiSelectionBean, TestMultiSelectionBean.PROPERTY_SELECTION);
 		getRidget().updateFromModel();
-		UITestHelper.readAndDispatch(getUIControl());
+		UITestHelper.readAndDispatch(getWidget());
 	}
 
 	protected abstract void bindRidgetToModel();
@@ -462,7 +462,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setUIControl(null);
 		ridget.updateMultiSelectionFromModel();
-		ridget.setUIControl(getUIControl());
+		ridget.setUIControl(getWidget());
 
 		assertEquals(2, getUIControlSelectedRowCount());
 		assertEquals(1, getUIControlSelectedRows()[0]);
@@ -487,7 +487,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
 
-		ridget.setUIControl(getUIControl()); // rebind
+		ridget.setUIControl(getWidget()); // rebind
 
 		assertEquals(2, getUIControlSelectedRowCount());
 		assertEquals(1, getUIControlSelectedRows()[0]);
@@ -565,7 +565,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setUIControl(null); // unbind
 		ridget.updateSingleSelectionFromModel();
-		ridget.setUIControl(getUIControl()); // rebind
+		ridget.setUIControl(getWidget()); // rebind
 
 		assertEquals(1, getUIControlSelectedRowCount());
 		assertEquals(0, getUIControlSelectedRow());
@@ -586,7 +586,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(0));
 
-		ridget.setUIControl(getUIControl()); // rebind
+		ridget.setUIControl(getWidget()); // rebind
 
 		assertEquals(1, getUIControlSelectedRowCount());
 		assertEquals(2, getUIControlSelectedRow());
@@ -808,9 +808,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	protected final void fireSelectionEvent() {
 		Event event = new Event();
-		event.widget = getUIControl();
+		event.widget = getWidget();
 		event.type = SWT.Selection;
-		getUIControl().notifyListeners(SWT.Selection, event);
+		getWidget().notifyListeners(SWT.Selection, event);
 	}
 
 	private Collection<Person> createPersonList() {

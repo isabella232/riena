@@ -45,7 +45,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Label createUIControl(Composite parent) {
+	protected Label createWidget(Composite parent) {
 		return new Label(parent, SWT.NONE);
 	}
 
@@ -55,13 +55,13 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Label getUIControl() {
-		return (Label) super.getUIControl();
+	protected Label getWidget() {
+		return (Label) super.getWidget();
 	}
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(LabelRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(LabelRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(ridget.getIcon());
 		assertNull(control.getImage());
 
-		Label label = createUIControl(getShell());
+		Label label = createWidget(getShell());
 		Image labelImage = label.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		label.setImage(labelImage);
 		ILabelRidget labelRidget = createRidget();
@@ -99,7 +99,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(label.getImage());
 		assertNotSame(labelImage, label.getImage());
 
-		label = createUIControl(getShell());
+		label = createWidget(getShell());
 		label.setImage(labelImage);
 		labelRidget = createRidget();
 		labelRidget.setIcon(ICON_ECLIPSE);
@@ -322,7 +322,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testSetUIControl() throws Exception {
 		ILabelRidget ridget = getRidget();
-		Label control = getUIControl();
+		Label control = getWidget();
 
 		assertEquals(LABEL, ridget.getText());
 		assertEquals(LABEL, control.getText());

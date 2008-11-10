@@ -52,7 +52,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		Tree result = new Tree(parent, SWT.MULTI);
 		result.setHeaderVisible(true);
 		new TreeColumn(result, SWT.NONE);
@@ -66,8 +66,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Tree getUIControl() {
-		return (Tree) super.getUIControl();
+	protected Tree getWidget() {
+		return (Tree) super.getWidget();
 	}
 
 	@Override
@@ -80,12 +80,12 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(TreeTableRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(TreeTableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testBindToModel() {
 		TreeTableRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -102,7 +102,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelTooFewColumns() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(2, control.getColumnCount());
 
@@ -117,7 +117,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelWithTooManyColumns() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		assertEquals(2, control.getColumnCount());
 
@@ -141,7 +141,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testTableColumnsNumAndHeader() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		TreeColumn[] columns = control.getColumns();
 		assertEquals(2, columns.length);
@@ -163,7 +163,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testTableColumnsWithNullHeader() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		control.setHeaderVisible(true);
 		control.getColumn(0).setText("foo");
@@ -177,7 +177,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testTableColumnsWithNullHeaderEntry() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		control.getColumn(0).setText("foo");
 		control.getColumn(1).setText("bar");
@@ -226,7 +226,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testSetComparator() {
 		TreeTableRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		// sorts from a to z
 		Comparator<Object> comparator = new StringComparator();
@@ -350,7 +350,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSortedAscending() {
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		TreeTableRidget ridget = getRidget();
 
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname", "lastname" },
@@ -474,7 +474,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testColumnHeaderChangesSortability() {
 		TreeTableRidget ridget = getRidget();
-		Tree tree = getUIControl();
+		Tree tree = getWidget();
 
 		ridget.setColumnSortable(0, true);
 		ridget.setComparator(0, new StringComparator());
@@ -512,7 +512,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testSortColumnTwo() {
 		ITreeTableRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		WordNode root = new WordNode("root");
 		new WordNode(root, "ZA");
@@ -550,7 +550,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
 		ITreeTableRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 
@@ -583,7 +583,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		ITreeTableRidget ridget = getRidget();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -663,7 +663,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private final TreeItem getUIControlItem(int index) {
 		getRidget().expandAll();
-		Tree control = getUIControl();
+		Tree control = getWidget();
 		switch (index) {
 		case 0:
 			return control.getItem(0);

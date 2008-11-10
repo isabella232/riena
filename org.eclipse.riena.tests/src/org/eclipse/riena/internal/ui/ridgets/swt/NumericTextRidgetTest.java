@@ -63,7 +63,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	@Override
-	protected Control createUIControl(Composite parent) {
+	protected Control createWidget(Composite parent) {
 		Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
 		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
@@ -76,7 +76,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	@Override
 	public void testRidgetMapping() {
 		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
-		assertSame(NumericTextRidget.class, mapper.getRidgetClass(getUIControl()));
+		assertSame(NumericTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	@Override
@@ -225,7 +225,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	@Override
 	public void testFocusGainedDoesSelectOnSingleText() {
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		assertEquals("0", control.getSelectionText());
 		control.setSelection(0, 0);
@@ -266,7 +266,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testSetSignedTrue() {
 		INumericTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -300,7 +300,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testSetSignedFalse() {
 		INumericTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		IntegerBean model = new IntegerBean(1337);
 		ridget.bindToModel(model, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -347,7 +347,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testUpdateFromControlUserInput() throws Exception {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 		Display display = control.getDisplay();
 		IntegerBean bean = new IntegerBean();
@@ -391,7 +391,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testUpdateFromControlUserInputDirectWriting() {
-		Text control = getUIControl();
+		Text control = getWidget();
 		INumericTextRidget ridget = getRidget();
 
 		//		ridget.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
@@ -477,7 +477,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testUpdateFromRidgetOnRebind() throws Exception {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
@@ -525,7 +525,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testValidationOnUpdateToModel() throws Exception {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
@@ -558,7 +558,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testCharactersAreBlockedInControl() throws Exception {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
@@ -591,7 +591,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertTrue(ridget.isErrorMarked());
 		assertEquals(localize("123.456"), ridget.getText());
-		assertEquals(localize("123.456"), getUIControl().getText());
+		assertEquals(localize("123.456"), getWidget().getText());
 		assertEquals(Integer.valueOf(123456), bean.getValue());
 
 		bean.setValue(Integer.valueOf(1234));
@@ -599,7 +599,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertFalse(ridget.isErrorMarked());
 		assertEquals(localize("1.234"), ridget.getText());
-		assertEquals(localize("1.234"), getUIControl().getText());
+		assertEquals(localize("1.234"), getWidget().getText());
 		assertEquals(Integer.valueOf(1234), bean.getValue());
 	}
 
@@ -617,7 +617,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertTrue(ridget.isErrorMarked());
 		assertEquals("123", ridget.getText());
-		assertEquals("123", getUIControl().getText());
+		assertEquals("123", getWidget().getText());
 		assertEquals(Integer.valueOf(123), bean.getValue());
 
 		bean.setValue(Integer.valueOf(1234));
@@ -625,12 +625,12 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		assertFalse(ridget.isErrorMarked());
 		assertEquals(localize("1.234"), ridget.getText());
-		assertEquals(localize("1.234"), getUIControl().getText());
+		assertEquals(localize("1.234"), getWidget().getText());
 		assertEquals(Integer.valueOf(1234), bean.getValue());
 	}
 
 	public void testUpdateFromRidgetWithValidationOnEditRule() {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean(Integer.valueOf(1234));
@@ -666,7 +666,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testUpdateFromRidgetWithValidationOnUpdateRule() {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		IntegerBean bean = new IntegerBean();
@@ -701,7 +701,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testValidationMessageWithOnEditRule() throws Exception {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UI_CONTROL_EDIT);
@@ -722,7 +722,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	}
 
 	public void testValidationMessageWithOnUpdateRule() throws Exception {
-		Text control = getUIControl();
+		Text control = getWidget();
 		ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
@@ -803,7 +803,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testRevalidateDoesUpdate() {
 		ITextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		EvenNumberOfCharacters evenChars = new EvenNumberOfCharacters();
 		ridget.addValidationRule(evenChars, ValidationTime.ON_UI_CONTROL_EDIT);
 
@@ -861,7 +861,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testControlNotEditableWithOutputMarker() {
 		ITextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		assertTrue(control.getEditable());
 
@@ -876,7 +876,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
 		ITextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		assertEquals("0", control.getText());
 		assertEquals("0", ridget.getText());
@@ -905,7 +905,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		}
 
 		ITextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		IntegerBean bean = new IntegerBean(INTEGER_TWO);
 		ridget.bindToModel(bean, IntegerBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -937,7 +937,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testMaxLength() throws Exception {
 		ITextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 
 		ridget.addValidationRule(new MaxNumberLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 
@@ -1017,7 +1017,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	public void testNegativeMarkerFromControl() {
 		INumericTextRidget ridget = getRidget();
-		Text control = getUIControl();
+		Text control = getWidget();
 		Display display = control.getDisplay();
 		ridget.setMarkNegative(true);
 
@@ -1071,11 +1071,11 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 	//////////////////
 
 	private void assertText(String before, String keySeq, String after) {
-		TestUtils.assertText(getUIControl(), localize(before), keySeq, localize(after));
+		TestUtils.assertText(getWidget(), localize(before), keySeq, localize(after));
 	}
 
 	private void assertText(String before, int keyCode, String after) {
-		TestUtils.assertText(getUIControl(), localize(before), keyCode, localize(after));
+		TestUtils.assertText(getWidget(), localize(before), keyCode, localize(after));
 	}
 
 	private void focusIn(Text control) {
