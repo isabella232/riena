@@ -11,11 +11,13 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -40,11 +42,14 @@ import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -105,20 +110,37 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
-			bindMenuItems(controller);
+			bindMenuAndToolItems(controller);
 			controller.afterBind();
-
-			//			List<ToolItem> toolItems = getAllToolItems();
-			//			for (ToolItem item : toolItems) {
-			//				System.out.println("SubApplicationView.bind() T " + item.getData());
-			//			}
-
 		}
 	}
 
-	private void bindMenuItems(IController controller) {
+	private void bindMenuAndToolItems(IController controller) {
 		createMenuRidgets(controller);
+		createToolRidgets(controller);
 		menuItemBindingManager.bind(controller, getUIControls());
+	}
+
+	/**
+	 * Creates for every tool item (with an ID) a ridgets and adds it to the
+	 * controller.
+	 * 
+	 * @param controller
+	 *            - controller of the sub-application
+	 */
+	private void createToolRidgets(IController controller) {
+
+		List<ToolItem> toolItems = getAllToolItems();
+		for (ToolItem item : toolItems) {
+			String toolItemId = getToolItemId(item);
+			if (!StringUtils.isEmpty(toolItemId)) {
+				ToolItemRidget ridget = createToolItemRidget(item);
+				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, toolItemId);
+				getUIControls().add(item);
+				controller.addRidget(toolItemId, ridget);
+			}
+		}
+
 	}
 
 	/**
@@ -159,6 +181,21 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	/**
+	 * Creates for the given tool item a ridget.
+	 * 
+	 * @param item
+	 *            - tool item
+	 * @return ridget
+	 */
+	private ToolItemRidget createToolItemRidget(ToolItem item) {
+
+		ToolItemRidget ridget = (ToolItemRidget) menuItemBindingManager.createRidget(item);
+		ridget.setUIControl(item);
+		return ridget;
+
+	}
+
+	/**
 	 * Returns the identifier of the given menu item.
 	 * 
 	 * @param item
@@ -170,6 +207,23 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		String itemId = getItemId(item);
 		if (!StringUtils.isEmpty(itemId)) {
 			id = IActionRidget.BASE_ID_MENUACTION + itemId;
+		}
+		return id;
+
+	}
+
+	/**
+	 * Returns the identifier of the given tool item.
+	 * 
+	 * @param item
+	 *            - menu item
+	 * @return identifier, or {@code null} if none
+	 */
+	private String getToolItemId(ToolItem item) {
+		String id = null;
+		String itemId = getItemId(item);
+		if (!StringUtils.isEmpty(itemId)) {
+			id = IActionRidget.BASE_ID_TOOLBARACTION + itemId;
 		}
 		return id;
 
@@ -386,93 +440,97 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		return subApplicationNode;
 	}
 
-	//
-	//	/**
-	//	 * Returns all cool bars below the given composite (except cool bar of
-	//	 * menu).
-	//	 * 
-	//	 * @param composite
-	//	 * @return list of cool bars
-	//	 */
-	//	private List<CoolBar> getCoolBars(Composite composite) {
-	//
-	//		List<CoolBar> coolBars = new ArrayList<CoolBar>();
-	//
-	//		Control[] children = composite.getChildren();
-	//		for (Control child : children) {
-	//			if (child instanceof CoolBar) {
-	//				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
-	//					coolBars.add((CoolBar) child);
-	//				}
-	//				continue;
-	//			}
-	//			if (child instanceof Composite) {
-	//				coolBars.addAll(getCoolBars((Composite) child));
-	//			}
-	//		}
-	//
-	//		return coolBars;
-	//
-	//	}
-	//
-	//
-	//	/**
-	//	 * Returns all tool bars of the given cool bar.
-	//	 * 
-	//	 * @param coolBars
-	//	 *            - cool bar
-	//	 * @return list of tool bars
-	//	 */
-	//	private List<ToolBar> getToolBars(CoolBar coolBars) {
-	//
-	//		List<ToolBar> toolBars = new ArrayList<ToolBar>();
-	//
-	//		Control[] children = coolBars.getChildren();
-	//		for (Control child : children) {
-	//			if (child instanceof ToolBar) {
-	//				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
-	//					toolBars.add((ToolBar) child);
-	//				}
-	//			}
-	//		}
-	//
-	//		return toolBars;
-	//
-	//	}
-	//
-	//	/**
-	//	 * Returns all items of all cool bars.
-	//	 * 
-	//	 * @return list of tool items
-	//	 */
-	//	private List<ToolItem> getAllToolItems() {
-	//
-	//		List<ToolItem> items = new ArrayList<ToolItem>();
-	//
-	//		List<CoolBar> coolBars = getCoolBars(getShell());
-	//		for (CoolBar coolBar : coolBars) {
-	//			List<ToolBar> toolBars = getToolBars(coolBar);
-	//			for (ToolBar toolBar : toolBars) {
-	//				items.addAll(Arrays.asList(toolBar.getItems()));
-	//			}
-	//		}
-	//
-	//		return items;
-	//
-	//	}
-	//
-	//	private Composite getParentOfType(Control control, Class<? extends Control> clazz) {
-	//
-	//		Composite parent = control.getParent();
-	//		if (parent == null) {
-	//			return null;
-	//		}
-	//		if (clazz.isAssignableFrom(parent.getClass())) {
-	//			return parent;
-	//		}
-	//		return getParentOfType(parent, clazz);
-	//
-	//	}
+	/**
+	 * Returns all cool bars below the given composite (except cool bar of
+	 * menu).
+	 * 
+	 * @param composite
+	 * @return list of cool bars
+	 */
+	private List<CoolBar> getCoolBars(Composite composite) {
+
+		List<CoolBar> coolBars = new ArrayList<CoolBar>();
+		if (composite == null) {
+			return coolBars;
+		}
+
+		Control[] children = composite.getChildren();
+		for (Control child : children) {
+			if (child instanceof CoolBar) {
+				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
+					coolBars.add((CoolBar) child);
+				}
+				continue;
+			}
+			if (child instanceof Composite) {
+				coolBars.addAll(getCoolBars((Composite) child));
+			}
+		}
+
+		return coolBars;
+
+	}
+
+	/**
+	 * Returns all tool bars of the given cool bar.
+	 * 
+	 * @param coolBar
+	 *            - cool bar
+	 * @return list of tool bars
+	 */
+	private List<ToolBar> getToolBars(CoolBar coolBar) {
+
+		List<ToolBar> toolBars = new ArrayList<ToolBar>();
+		if (coolBar == null) {
+			return toolBars;
+		}
+
+		Control[] children = coolBar.getChildren();
+		for (Control child : children) {
+			if (child instanceof ToolBar) {
+				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
+					toolBars.add((ToolBar) child);
+				}
+			}
+		}
+
+		return toolBars;
+
+	}
+
+	/**
+	 * Returns all items of all cool bars.
+	 * 
+	 * @return list of tool items
+	 */
+	private List<ToolItem> getAllToolItems() {
+
+		List<ToolItem> items = new ArrayList<ToolItem>();
+
+		List<CoolBar> coolBars = getCoolBars(getShell());
+		for (CoolBar coolBar : coolBars) {
+			List<ToolBar> toolBars = getToolBars(coolBar);
+			for (ToolBar toolBar : toolBars) {
+				items.addAll(Arrays.asList(toolBar.getItems()));
+			}
+		}
+
+		return items;
+
+	}
+
+	private Composite getParentOfType(Control control, Class<? extends Control> clazz) {
+
+		Composite parent = control.getParent();
+		if (parent == null) {
+			return null;
+		}
+		if (clazz.isAssignableFrom(parent.getClass())) {
+			return parent;
+		}
+		return getParentOfType(parent, clazz);
+
+	}
 
 	/**
 	 * Returns the composites that contains the menu bar of the sub-application.

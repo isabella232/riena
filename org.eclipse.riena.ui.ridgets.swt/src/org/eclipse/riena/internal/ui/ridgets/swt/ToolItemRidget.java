@@ -11,44 +11,44 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
-import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ToolItem;
 
 /**
- * Ridget of a menu item.
+ * Ridget of a tool item.
  */
-public class MenuItemRidget extends AbstractItemRidget {
+public class ToolItemRidget extends AbstractItemRidget {
 
 	@Override
 	protected void bindUIControl() {
 		super.bindUIControl();
-		MenuItem menuItem = getUIControl();
-		if (menuItem != null) {
-			menuItem.addSelectionListener(getActionObserver());
+		ToolItem toolItem = getUIControl();
+		if (toolItem != null) {
+			toolItem.addSelectionListener(getActionObserver());
 		}
 	}
 
 	@Override
 	protected void unbindUIControl() {
-		MenuItem menuItem = getUIControl();
-		if (menuItem != null) {
-			menuItem.removeSelectionListener(getActionObserver());
+		ToolItem toolItem = getUIControl();
+		if (toolItem != null) {
+			toolItem.removeSelectionListener(getActionObserver());
 		}
 		super.unbindUIControl();
 	}
 
 	@Override
 	protected void checkUIControl(Object uiControl) {
-		assertType(uiControl, MenuItem.class);
+		assertType(uiControl, ToolItem.class);
 	}
 
 	@Override
-	public MenuItem getUIControl() {
-		return (MenuItem) super.getUIControl();
+	public ToolItem getUIControl() {
+		return (ToolItem) super.getUIControl();
 	}
 
 	@Override
 	protected AbstractMarkerSupport createMarkerSupport() {
-		return new MenuItemMarkerSupport(this, propertyChangeSupport);
+		return new ToolItemMarkerSupport(this, propertyChangeSupport);
 	}
 
 }

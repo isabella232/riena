@@ -32,6 +32,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ListRidgetTest.class);
 		suite.addTestSuite(MarkableRidgetTest.class);
 		suite.addTestSuite(MenuItemRidgetTest.class);
+		suite.addTestSuite(MenuItemMarkerSupportTest.class);
 		suite.addTestSuite(MultipleChoiceRidgetTest.class);
 		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
 		suite.addTestSuite(NumericTextRidgetTest.class);
@@ -48,6 +49,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(TreeRidgetTest2.class);
 		suite.addTestSuite(TreeTableRidgetTest.class);
 		suite.addTestSuite(ToggleButtonRidgetTest.class);
+		suite.addTestSuite(ToolItemMarkerSupportTest.class);
 		return suite;
 	}
 

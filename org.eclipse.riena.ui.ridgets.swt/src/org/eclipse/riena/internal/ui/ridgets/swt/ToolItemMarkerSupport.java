@@ -13,32 +13,32 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
-import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ToolItem;
 
 /**
- * Helper class for SWT Menu Item Ridgets to delegate their marker issues to.
+ * Helper class for SWT Tool Item Ridgets to delegate their marker issues to.
  */
-public class MenuItemMarkerSupport extends AbstractMarkerSupport {
+public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 
 	/**
-	 * Creates a new instance of {@code MenuItemMarkerSupport}.
+	 * Creates a new instance of {@code ToolItemMarkerSupport}.
 	 * 
 	 * @param ridget
-	 *            - ridget of menu item
+	 *            - ridget of tool item
 	 * @param propertyChangeSupport
 	 */
-	public MenuItemMarkerSupport(MenuItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public ToolItemMarkerSupport(ToolItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
 	@Override
 	public void updateMarkers() {
-		updateMenuItem();
+		updateToolItem();
 	}
 
 	@Override
 	protected void handleMarkerAttributesChanged() {
-		updateMenuItem();
+		updateToolItem();
 		super.handleMarkerAttributesChanged();
 	}
 
@@ -46,17 +46,17 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Enables or disables the given item.
 	 * 
 	 * @param item
-	 *            - menu item to update
+	 *            - tool item to update
 	 */
-	private void updateEnabled(MenuItem item) {
+	private void updateEnabled(ToolItem item) {
 		item.setEnabled(ridget.isEnabled());
 	}
 
 	/**
-	 * Updates the menu item to display the current markers.
+	 * Updates the tool item to display the current markers.
 	 */
-	private void updateMenuItem() {
-		MenuItem item = (MenuItem) ridget.getUIControl();
+	private void updateToolItem() {
+		ToolItem item = (ToolItem) ridget.getUIControl();
 		if (item != null) {
 			updateEnabled(item);
 		}

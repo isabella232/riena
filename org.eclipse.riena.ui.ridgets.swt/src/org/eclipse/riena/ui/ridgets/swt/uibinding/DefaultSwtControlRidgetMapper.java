@@ -34,6 +34,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineUIProcessRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -54,6 +55,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 
@@ -76,6 +78,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 */
 	private void initDefaultMappings() {
 		addMapping(MenuItem.class, MenuItemRidget.class);
+		addMapping(ToolItem.class, ToolItemRidget.class);
 		addMapping(Text.class, NumericTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_NUMERIC));
 		addMapping(Text.class, DecimalTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_DECIMAL));
 		addMapping(Text.class, DateTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_DATE));

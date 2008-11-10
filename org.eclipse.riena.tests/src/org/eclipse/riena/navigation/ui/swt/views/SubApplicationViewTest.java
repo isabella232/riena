@@ -17,14 +17,18 @@ import junit.framework.TestCase;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Tests of the class {@link SubApplicationView}.
@@ -55,6 +59,20 @@ public class SubApplicationViewTest extends TestCase {
 		MenuItem item = new MenuItem(menu, SWT.NONE);
 
 		MenuItemRidget ridget = ReflectionUtils.invokeHidden(view, "createMenuItemRidget", item);
+		assertNotNull(ridget);
+		assertSame(item, ridget.getUIControl());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code createToolItemRidget}.
+	 */
+	public void testCreateToolItemRidget() {
+
+		ToolBar toolbar = new ToolBar(shell, SWT.NONE);
+		ToolItem item = new ToolItem(toolbar, SWT.NONE);
+
+		ToolItemRidget ridget = ReflectionUtils.invokeHidden(view, "createToolItemRidget", item);
 		assertNotNull(ridget);
 		assertSame(item, ridget.getUIControl());
 
@@ -97,6 +115,26 @@ public class SubApplicationViewTest extends TestCase {
 		id = ReflectionUtils.invokeHidden(view, "getMenuItemId", item);
 		assertNotNull(id);
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", id);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getToolItemId}.
+	 */
+	public void testGetToolItemId() {
+
+		ToolBar toolbar = new ToolBar(shell, SWT.NONE);
+		ToolItem item = new ToolItem(toolbar, SWT.NONE);
+
+		String id = ReflectionUtils.invokeHidden(view, "getToolItemId", item);
+		assertNull(id);
+
+		MyContributionItem contributionItem = new MyContributionItem();
+		contributionItem.setId("4711");
+		item.setData(contributionItem);
+		id = ReflectionUtils.invokeHidden(view, "getToolItemId", item);
+		assertNotNull(id);
+		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "4711", id);
 
 	}
 
@@ -152,6 +190,75 @@ public class SubApplicationViewTest extends TestCase {
 		assertFalse(items.contains(item2));
 		assertFalse(items.contains(item3));
 		assertTrue(items.contains(item4));
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getCoolBars}.
+	 */
+	public void testGetCoolBars() {
+
+		Composite comp1 = new Composite(shell, SWT.NONE);
+
+		List<CoolBar> coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
+		assertNotNull(coolBars);
+		assertTrue(coolBars.isEmpty());
+
+		new MenuCoolBarComposite(comp1, SWT.NONE);
+		coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
+		assertNotNull(coolBars);
+		assertTrue(coolBars.isEmpty());
+
+		CoolBar coolBar = new CoolBar(comp1, SWT.NONE);
+		coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
+		assertNotNull(coolBars);
+		assertFalse(coolBars.isEmpty());
+		assertEquals(1, coolBars.size());
+		assertSame(coolBar, coolBars.get(0));
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getToolBars}.
+	 */
+	public void testGetToolBars() {
+
+		CoolBar coolBar = new CoolBar(shell, SWT.NONE);
+		List<ToolBar> toolBars = ReflectionUtils.invokeHidden(view, "getToolBars", coolBar);
+		assertNotNull(toolBars);
+		assertTrue(toolBars.isEmpty());
+
+		ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
+		ToolBar toolBar2 = new ToolBar(coolBar, SWT.NONE);
+		toolBars = ReflectionUtils.invokeHidden(view, "getToolBars", coolBar);
+		assertNotNull(toolBars);
+		assertFalse(toolBars.isEmpty());
+		assertEquals(2, toolBars.size());
+		assertSame(toolBar, toolBars.get(0));
+		assertSame(toolBar2, toolBars.get(1));
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getAllToolItems}.
+	 */
+	public void testGetAllToolItems() {
+
+		CoolBar coolBar = new CoolBar(shell, SWT.NONE);
+		ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
+		ToolBar toolBar2 = new ToolBar(coolBar, SWT.NONE);
+		List<ToolItem> items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
+		assertNotNull(items);
+		assertTrue(items.isEmpty());
+
+		ToolItem item = new ToolItem(toolBar, SWT.NONE);
+		ToolItem item2 = new ToolItem(toolBar2, SWT.NONE);
+		items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
+		assertNotNull(items);
+		assertFalse(items.isEmpty());
+		assertEquals(2, items.size());
+		assertSame(item, items.get(0));
+		assertSame(item2, items.get(1));
 
 	}
 
