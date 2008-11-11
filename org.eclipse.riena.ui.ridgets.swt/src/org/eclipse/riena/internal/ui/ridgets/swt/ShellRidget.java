@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import javax.swing.JButton;
-
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
@@ -22,7 +20,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * 
+ * The ridget for a Shell control.
  */
 public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
@@ -31,6 +29,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	private boolean blocked;
 	private boolean closeable;
 	private boolean active;
+	private String title;
 
 	public ShellRidget() {
 		closeable = true;
@@ -42,14 +41,14 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		setUIControl(shell);
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
 	 */
 	public Shell getUIControl() {
 		return shell;
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setUIControl(java.lang.Object)
 	 */
 	public void setUIControl(Object uiControl) {
@@ -61,54 +60,96 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		updateToolTip();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IWindowRidget#addWindowRidgetListener(org
+	 * .eclipse.riena.ui.ridgets.listener.IWindowRidgetListener)
+	 */
 	public void addWindowRidgetListener(IWindowRidgetListener listener) {
 		// TODO Auto-generated method stub
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IWindowRidget#removeWindowRidgetListener
+	 * (org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener)
+	 */
 	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
 		// TODO Auto-generated method stub
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#isVisible()
+	 */
 	public boolean isVisible() {
-		return shell.isVisible();
+		return getUIControl().isVisible();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#setVisible(boolean)
+	 */
 	public void setVisible(boolean visible) {
-		shell.setVisible(visible);
+		getUIControl().setVisible(visible);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IWindowRidget#setTitle(java.lang.String)
+	 */
 	public void setTitle(String title) {
-		if (title != null) {
-			shell.setText(title);
+		if (title != null && this.title != title) {
+			this.title = title;
+			updateTitle();
+		}
+	}
+
+	private void updateTitle() {
+		if (getUIControl() != null) {
+			getUIControl().setText(title);
 		}
 	}
 
 	public String getTitle() {
-		return shell.getText();
+		return title;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setIcon(java.lang.String)
+	 */
 	public void setIcon(String iconName) {
 		// TODO
 		// shell.setImage();
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setDefaultButton(JButton)
 	 */
 	public void setDefaultButton(Object defaultButton) {
 		if (defaultButton instanceof Button) {
-			shell.setDefaultButton((Button) defaultButton);
+			getUIControl().setDefaultButton((Button) defaultButton);
 		}
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#getDefaultButton()
 	 */
 	public Object getDefaultButton() {
-		return shell.getDefaultButton();
+		return getUIControl().getDefaultButton();
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#requestFocus()
 	 */
 	public void requestFocus() {
@@ -117,7 +158,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#hasFocus()
 	 */
 	public boolean hasFocus() {
@@ -144,7 +185,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 */
 	public void setFocusable(boolean focusable) {
 		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -164,34 +204,31 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;
-
 	}
 
 	private void updateToolTip() {
-		if (shell != null) {
-			shell.setToolTipText(toolTip);
+		if (getUIControl() != null) {
+			getUIControl().setToolTipText(toolTip);
 		}
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
 	 */
 	public boolean isBlocked() {
 		return blocked;
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
 		if (this.blocked != blocked) {
 			this.blocked = blocked;
-
 		}
-
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
@@ -201,7 +238,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
-	/**
+	/*
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setCloseable(boolean)
 	 */
 	public void setCloseable(boolean closeable) {
@@ -216,9 +253,14 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	}
 
 	private void updateActive() {
-		shell.setEnabled(active);
+		getUIControl().setEnabled(active);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IRidget#getID()
+	 */
 	public String getID() {
 		if (getUIControl() != null) {
 			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
@@ -227,5 +269,4 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 		return null;
 	}
-
 }
