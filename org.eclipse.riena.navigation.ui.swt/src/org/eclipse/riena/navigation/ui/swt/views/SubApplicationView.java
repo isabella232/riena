@@ -166,9 +166,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			}
 			String menuItemId = getMenuItemId(item);
 			if (!StringUtils.isEmpty(menuItemId)) {
-				if (isMenu(item)) {
-					continue;
-				}
+				//				if (isMenu(item)) {
+				//					continue;
+				//				}
 				IRidget ridget = createRidget(item);
 				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, menuItemId);
 				getUIControls().add(item);

@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
@@ -26,8 +27,15 @@ public final class MenuCondition implements IMappingCondition {
 		return result;
 	}
 
+	/**
+	 * Returns whether the given menu item is a cascade menu.
+	 * 
+	 * @param menuItem
+	 *            - menu item
+	 * @return {@code true} if item is cascade menu; otherwise {@code false}
+	 */
 	private boolean isMenu(MenuItem menuItem) {
-		return (menuItem.getMenu() != null);
+		return ((menuItem.getStyle() & SWT.CASCADE) == SWT.CASCADE);
 	}
 
 }
