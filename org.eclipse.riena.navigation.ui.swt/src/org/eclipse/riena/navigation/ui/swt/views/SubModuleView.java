@@ -45,7 +45,6 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -102,20 +101,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @param uiControl
 	 *            - control to bind
 	 */
-	protected void addUIControl(Widget uiControl) {
+	protected void addUIControl(Object uiControl) {
 		binding.addUIControl(uiControl);
-	}
-
-	/**
-	 * Adds the given control to the list of the controls that will be binded.
-	 * 
-	 * @param uiControl
-	 *            - control to bind
-	 * @param propertyName
-	 *            - name of the property...
-	 */
-	protected void addUIControl(Widget uiControl, String propertyName) {
-		binding.addUIControl(uiControl, propertyName);
 	}
 
 	/**
