@@ -221,6 +221,7 @@
                label="File"
                mnemonic="F">
             <menu
+                  id="org.eclipse.riena.example.client.zoomMenu"
                   label="Zoom"
                   mnemonic="Z">
                <command

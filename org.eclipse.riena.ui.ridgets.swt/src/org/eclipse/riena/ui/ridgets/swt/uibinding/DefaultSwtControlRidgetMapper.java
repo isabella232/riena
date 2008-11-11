@@ -23,6 +23,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.MenuRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
@@ -77,7 +78,8 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 * Sets the default mapping of UI control-classes to a ridget-classes
 	 */
 	private void initDefaultMappings() {
-		addMapping(MenuItem.class, MenuItemRidget.class);
+		addMapping(MenuItem.class, MenuItemRidget.class, new MenuItemCondition());
+		addMapping(MenuItem.class, MenuRidget.class, new MenuCondition());
 		addMapping(ToolItem.class, ToolItemRidget.class);
 		addMapping(Text.class, NumericTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_NUMERIC));
 		addMapping(Text.class, DecimalTextRidget.class, new TypedTextWidgetCondition(UIControlsFactory.TYPE_DECIMAL));

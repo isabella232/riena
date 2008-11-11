@@ -13,12 +13,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.beans.PropertyChangeSupport;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * Helper class for SWT Menu Item Ridgets to delegate their marker issues to.
+ * Helper class for SWT Menu Ridgets to delegate their marker issues to.
  */
-public class MenuItemMarkerSupport extends AbstractMarkerSupport {
+public class MenuMarkerSupport extends AbstractMarkerSupport {
 
 	/**
 	 * Creates a new instance of {@code MenuItemMarkerSupport}.
@@ -27,37 +28,55 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 *            - ridget of menu item
 	 * @param propertyChangeSupport
 	 */
-	public MenuItemMarkerSupport(MenuItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public MenuMarkerSupport(MenuRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
 	@Override
 	public void updateMarkers() {
-		updateMenuItem();
+		updateMenu();
 	}
 
 	@Override
 	protected void handleMarkerAttributesChanged() {
-		updateMenuItem();
+		updateMenu();
 		super.handleMarkerAttributesChanged();
 	}
 
 	/**
-	 * Enables or disables the given item.
+	 * Enables or disables the given menu.
 	 * 
 	 * @param item
-	 *            - menu item to update
+	 *            - menu to update
 	 */
 	private void updateDisabled(MenuItem item) {
 		item.setEnabled(ridget.isEnabled());
+		Menu menu = item.getMenu();
+		if (menu != null) {
+			menu.setEnabled(ridget.isEnabled());
+		}
 	}
 
 	/**
-	 * Updates the menu item to display the current markers.
+	 * Shows or hides the given menu.
+	 * 
+	 * @param item
+	 *            - menu to update
 	 */
-	private void updateMenuItem() {
+	private void updateVisible(Menu menu) {
+		menu.setVisible(ridget.isVisible());
+	}
+
+	/**
+	 * Updates the menu to display the current markers.
+	 */
+	private void updateMenu() {
 		MenuItem item = (MenuItem) ridget.getUIControl();
 		if (item != null) {
+			Menu menu = item.getMenu();
+			if (menu != null) {
+				updateVisible(menu);
+			}
 			updateDisabled(item);
 		}
 	}

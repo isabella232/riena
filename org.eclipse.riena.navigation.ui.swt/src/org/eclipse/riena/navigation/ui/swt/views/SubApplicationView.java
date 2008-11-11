@@ -16,8 +16,6 @@ import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -31,6 +29,7 @@ import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -134,7 +133,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		for (ToolItem item : toolItems) {
 			String toolItemId = getToolItemId(item);
 			if (!StringUtils.isEmpty(toolItemId)) {
-				ToolItemRidget ridget = createToolItemRidget(item);
+				IRidget ridget = createRidget(item);
 				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, toolItemId);
 				getUIControls().add(item);
 				controller.addRidget(toolItemId, ridget);
@@ -156,7 +155,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		for (MenuItem item : menuItems) {
 			String menuItemId = getMenuItemId(item);
 			if (!StringUtils.isEmpty(menuItemId)) {
-				MenuItemRidget ridget = createMenuItemRidget(item);
+				if (isMenu(item)) {
+					continue;
+				}
+				IRidget ridget = createRidget(item);
 				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, menuItemId);
 				getUIControls().add(item);
 				controller.addRidget(menuItemId, ridget);
@@ -165,32 +167,20 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	}
 
-	/**
-	 * Creates for the given menu item a ridget.
-	 * 
-	 * @param item
-	 *            - menu item
-	 * @return ridget
-	 */
-	private MenuItemRidget createMenuItemRidget(MenuItem item) {
-
-		MenuItemRidget ridget = (MenuItemRidget) menuItemBindingManager.createRidget(item);
-		ridget.setUIControl(item);
-		return ridget;
-
+	private boolean isMenu(MenuItem menuItem) {
+		return (menuItem.getMenu() != null);
 	}
 
 	/**
-	 * Creates for the given tool item a ridget.
+	 * Creates for the given widget a ridget.
 	 * 
-	 * @param item
-	 *            - tool item
+	 * @param widget
 	 * @return ridget
 	 */
-	private ToolItemRidget createToolItemRidget(ToolItem item) {
+	private IRidget createRidget(Widget widget) {
 
-		ToolItemRidget ridget = (ToolItemRidget) menuItemBindingManager.createRidget(item);
-		ridget.setUIControl(item);
+		IRidget ridget = menuItemBindingManager.createRidget(widget);
+		ridget.setUIControl(widget);
 		return ridget;
 
 	}
@@ -573,11 +563,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 		MenuItem[] menuItems = menu.getItems();
 		for (MenuItem menuItem : menuItems) {
-			if (menuItem.getMenu() != null) {
+			if (isMenu(menuItem)) {
 				items.addAll(getMenuItems(menuItem.getMenu()));
-			} else {
-				items.add(menuItem);
 			}
+			items.add(menuItem);
 		}
 
 		return items;

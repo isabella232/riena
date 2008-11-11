@@ -31,8 +31,8 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemDisabledMarker;
 import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuActionHiddenMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemDisabledMarker;
 
 /**
  * Controller of the sub module that demonstrates UI filters for navigation
@@ -49,7 +49,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	 */
 	private enum FilterType {
 
-		MARKER("Marker", new DisabledMarker()/* new HiddenMarker() */); //$NON-NLS-1$
+		MARKER("Marker", new DisabledMarker(), new HiddenMarker()); //$NON-NLS-1$
 
 		private String text;
 		private Object[] args;

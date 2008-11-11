@@ -11,18 +11,27 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
  * Ridget of a menu item.
  */
-public class MenuItemRidget extends AbstractItemRidget {
+public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidget {
+
+	protected boolean isMenu(MenuItem menuItem) {
+		if (menuItem != null) {
+			return (menuItem.getMenu() != null);
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	protected void bindUIControl() {
 		super.bindUIControl();
 		MenuItem menuItem = getUIControl();
-		if (menuItem != null) {
+		if (menuItem != null && !isMenu(menuItem)) {
 			menuItem.addSelectionListener(getActionObserver());
 		}
 	}
@@ -30,7 +39,7 @@ public class MenuItemRidget extends AbstractItemRidget {
 	@Override
 	protected void unbindUIControl() {
 		MenuItem menuItem = getUIControl();
-		if (menuItem != null) {
+		if (menuItem != null && !isMenu(menuItem)) {
 			menuItem.removeSelectionListener(getActionObserver());
 		}
 		super.unbindUIControl();

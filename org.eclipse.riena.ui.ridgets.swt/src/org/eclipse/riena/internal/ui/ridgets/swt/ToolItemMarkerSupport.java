@@ -48,7 +48,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * @param item
 	 *            - tool item to update
 	 */
-	private void updateEnabled(ToolItem item) {
+	private void updateDisabled(ToolItem item) {
 		item.setEnabled(ridget.isEnabled());
 	}
 
@@ -58,7 +58,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	private void updateToolItem() {
 		ToolItem item = (ToolItem) ridget.getUIControl();
 		if (item != null) {
-			updateEnabled(item);
+			updateDisabled(item);
 		}
 	}
 

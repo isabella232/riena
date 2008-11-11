@@ -11,12 +11,13 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IToolItemRidget;
 import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Ridget of a tool item.
  */
-public class ToolItemRidget extends AbstractItemRidget {
+public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidget {
 
 	@Override
 	protected void bindUIControl() {
