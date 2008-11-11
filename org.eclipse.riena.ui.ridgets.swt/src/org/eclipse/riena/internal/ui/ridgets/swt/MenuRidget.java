@@ -11,12 +11,11 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IMenuRidget;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- *
+ * Ridget of a menu item that is a cascade menu item.
  */
 public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 
@@ -24,13 +23,8 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	protected void checkUIControl(Object uiControl) {
 		super.checkUIControl(uiControl);
 		if (!isMenu((MenuItem) uiControl)) {
-			throw new BindingException("Menu item is not a menu!"); //$NON-NLS-1$
+			throw new BindingException("Menu item is not a cascade menu item!"); //$NON-NLS-1$
 		}
-	}
-
-	@Override
-	protected AbstractMarkerSupport createMarkerSupport() {
-		return new MenuMarkerSupport(this, propertyChangeSupport);
 	}
 
 }

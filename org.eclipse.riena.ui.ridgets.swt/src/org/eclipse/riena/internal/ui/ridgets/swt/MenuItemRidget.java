@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
@@ -19,12 +21,15 @@ import org.eclipse.swt.widgets.MenuItem;
  */
 public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidget {
 
+	/**
+	 * Returns whether the given menu item is a cascade menu.
+	 * 
+	 * @param menuItem
+	 *            - menu item
+	 * @return {@code true} if item is cascade menu; otherwise {@code false}
+	 */
 	protected boolean isMenu(MenuItem menuItem) {
-		if (menuItem != null) {
-			return (menuItem.getMenu() != null);
-		} else {
-			return false;
-		}
+		return ((menuItem.getStyle() & SWT.CASCADE) == SWT.CASCADE);
 	}
 
 	@Override
@@ -48,6 +53,9 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	@Override
 	protected void checkUIControl(Object uiControl) {
 		assertType(uiControl, MenuItem.class);
+		if (isMenu((MenuItem) uiControl)) {
+			throw new BindingException("Menu item is a cascade menu item!"); //$NON-NLS-1$
+		}
 	}
 
 	@Override

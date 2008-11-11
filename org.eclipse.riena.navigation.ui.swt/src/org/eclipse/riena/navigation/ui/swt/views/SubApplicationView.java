@@ -39,6 +39,7 @@ import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
@@ -131,6 +132,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 		List<ToolItem> toolItems = getAllToolItems();
 		for (ToolItem item : toolItems) {
+			if (isSeparator(item)) {
+				// no ridget for separator
+				// and
+				// no ridget for tool items with control 
+				// (both tool items has the style SWT.SEPARATOR)
+				continue;
+			}
 			String toolItemId = getToolItemId(item);
 			if (!StringUtils.isEmpty(toolItemId)) {
 				IRidget ridget = createRidget(item);
@@ -153,6 +161,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 		List<MenuItem> menuItems = getAllMenuItems();
 		for (MenuItem item : menuItems) {
+			if (isSeparator(item)) {
+				continue;
+			}
 			String menuItemId = getMenuItemId(item);
 			if (!StringUtils.isEmpty(menuItemId)) {
 				if (isMenu(item)) {
@@ -169,6 +180,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	private boolean isMenu(MenuItem menuItem) {
 		return (menuItem.getMenu() != null);
+	}
+
+	private boolean isSeparator(Item item) {
+		return (item.getStyle() & SWT.SEPARATOR) == SWT.SEPARATOR;
 	}
 
 	/**
