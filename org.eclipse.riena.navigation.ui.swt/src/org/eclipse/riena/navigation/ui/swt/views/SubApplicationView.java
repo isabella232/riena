@@ -83,7 +83,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	private IBindingManager createMenuItemBindingManager(IBindingPropertyLocator propertyStrategy,
-			IControlRidgetMapper<Widget> mapper) {
+			IControlRidgetMapper<Object> mapper) {
 		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 

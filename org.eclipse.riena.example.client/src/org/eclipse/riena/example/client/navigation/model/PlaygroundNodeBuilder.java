@@ -110,7 +110,14 @@ public class PlaygroundNodeBuilder implements INavigationNodeBuilder {
 				"org.eclipse.riena.example.noController"), "View without Controller"); //$NON-NLS-1$ //$NON-NLS-2$
 		playgroundModule.addChild(noControllerSubModule);
 
+		ISubModuleNode dialogSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.dialog"), "Dialog"); //$NON-NLS-1$ //$NON-NLS-2$
+		playgroundModule.addChild(dialogSubModule);
+
+		ISubModuleNode messageBoxSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.messageBox"), "Message Box"); //$NON-NLS-1$ //$NON-NLS-2$
+		playgroundModule.addChild(messageBoxSubModule);
+
 		return moduleGroup;
 	}
-
 }

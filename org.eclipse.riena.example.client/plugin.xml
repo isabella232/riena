@@ -177,7 +177,21 @@
             allowMultiple="true"
             class="org.eclipse.riena.example.client.views.KundenSucheView"
             id="org.eclipse.riena.example.kundensuche"
-            name="name"
+            name="org.eclipse.riena.example.client.views.KundenSucheView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.DialogSubModuleView"
+            id="org.eclipse.riena.example.client.views.DialogSubModuleView"
+            name="org.eclipse.riena.example.client.views.DialogSubModuleView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
+            id="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
+            name="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
             restorable="true">
       </view>
    </extension>
@@ -486,11 +500,6 @@
             controller="org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController">
       </subModule>
       <subModule
-            typeId="org.eclipse.riena.example.uiProcess"
-            view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController">
-      </subModule>
-      <subModule
             typeId="org.eclipse.riena.example.sharedView"
             view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
             shared="true"
@@ -616,6 +625,16 @@
             shared="false"
             typeId="org.eclipse.riena.example.filteraction"
             view="org.eclipse.riena.example.client.views.FilterActionSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.DialogSubModuleController"
+            typeId="org.eclipse.riena.example.dialog"
+            view="org.eclipse.riena.example.client.views.DialogSubModuleView">
+      </subModule>
+      <subModule
+            controller="org.eclipse.riena.example.client.controllers.MessageBoxSubModuleController"
+            typeId="org.eclipse.riena.example.messageBox"
+            view="org.eclipse.riena.example.client.views.MessageBoxSubModuleView">
       </subModule>
    </extension>
    <extension

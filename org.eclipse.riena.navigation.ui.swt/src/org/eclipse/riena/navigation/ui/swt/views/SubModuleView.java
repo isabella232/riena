@@ -119,6 +119,18 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	/**
+	 * Adds the given control to the list of the controls that will be binded.
+	 * 
+	 * @param uiControl
+	 *            - control to bind
+	 * @param propertyName
+	 *            - name of the property...
+	 */
+	protected void addUIControl(Object uiControl, String propertyName) {
+		binding.addUIControl(uiControl, propertyName);
+	}
+
+	/**
 	 * Find the navigation node corresponding to the passed id
 	 * 
 	 * @param pId

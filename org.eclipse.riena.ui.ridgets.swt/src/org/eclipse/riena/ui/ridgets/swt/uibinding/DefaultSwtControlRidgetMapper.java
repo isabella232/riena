@@ -24,6 +24,8 @@ import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ListRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.MessageBox;
+import org.eclipse.riena.internal.ui.ridgets.swt.MessageBoxRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
@@ -63,7 +65,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Default implementation of {@link IControlRidgetMapper} for SWT.
  */
-public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widget> {
+public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
 	private final static int IGNORE_SWT_STYLE = -99;
 
@@ -98,6 +100,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(Tree.class, TreeRidget.class, new TreeWithoutColumnsCondition());
 		addMapping(Tree.class, TreeTableRidget.class, new TreeWithColumnsCondition());
 		addMapping(Shell.class, ShellRidget.class);
+		addMapping(MessageBox.class, MessageBoxRidget.class);
 		addMapping(Statusline.class, StatuslineRidget.class);
 		addMapping(StatuslineNumber.class, StatuslineNumberRidget.class);
 		addMapping(StatuslineUIProcess.class, StatuslineUIProcessRidget.class);
@@ -105,7 +108,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
 	}
 
-	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz) {
+	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz);
 		mappings.add(mapping);
 	}
@@ -121,13 +124,13 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
-	 *            - the class of the UI control (<code>Widget</code>)
+	 *            - the class of the UI control (<code>Object</code>)
 	 * @param ridgetClazz
 	 *            - the class of the ridget
 	 * @param swtStyle
-	 *            - SWT style of the UI control (<code>Widget</code>)
+	 *            - SWT style of the UI control (<code>Object</code>)
 	 */
-	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int swtStyle) {
+	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz, int swtStyle) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, swtStyle);
 		mappings.add(mapping);
 	}
@@ -144,20 +147,20 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 * Adding the same mapping twice has no effect (but is possible).
 	 * 
 	 * @param controlClazz
-	 *            - the class of the UI control (<code>Widget</code>)
+	 *            - the class of the UI control (<code>Object</code>)
 	 * @param ridgetClazz
 	 *            - the class of the ridget
 	 * @param condition
 	 *            (non-null) - the condition to evaluate (non-null)
 	 * @see IMappingCondition
 	 */
-	public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz,
+	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
 			IMappingCondition condition) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz, condition);
 		mappings.add(mapping);
 	}
 
-	public Class<? extends IRidget> getRidgetClass(Class<? extends Widget> controlClazz) {
+	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 		for (Mapping mapping : mappings) {
 			if (mapping.isMatching(controlClazz)) {
 				return mapping.getRidgetClazz();
@@ -166,7 +169,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		throw new BindingException("No ridget found for " + controlClazz.getSimpleName()); //$NON-NLS-1$
 	}
 
-	public Class<? extends IRidget> getRidgetClass(Widget control) {
+	public Class<? extends IRidget> getRidgetClass(Object control) {
 		for (Mapping mapping : mappings) {
 			if (mapping.isMatching(control)) {
 				return mapping.getRidgetClazz();
@@ -187,7 +190,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 	 */
 	public static final class Mapping {
 
-		private Class<? extends Widget> controlClazz;
+		private Class<? extends Object> controlClazz;
 		private Class<? extends IRidget> ridgetClazz;
 		private int controlStyle;
 		private IMappingCondition condition;
@@ -200,7 +203,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		 * @param ridgetClazz
 		 *            - the class of the ridget
 		 */
-		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz) {
+		public Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			this(controlClazz, ridgetClazz, IGNORE_SWT_STYLE, null);
 		}
 
@@ -214,7 +217,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		 * @param controlStyle
 		 *            - the SWT style of the UI control
 		 */
-		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle) {
+		public Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle) {
 			this(controlClazz, ridgetClazz, controlStyle, null);
 		}
 
@@ -228,13 +231,13 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		 * @param condition
 		 *            - a non-null {@link IMappingCondition} instance
 		 */
-		public Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz,
+		public Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
 				IMappingCondition condition) {
 			this(controlClazz, ridgetClazz, IGNORE_SWT_STYLE, condition);
 			Assert.isNotNull(condition);
 		}
 
-		private Mapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle,
+		private Mapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz, int controlStyle,
 				IMappingCondition condition) {
 			this.controlClazz = controlClazz;
 			this.ridgetClazz = ridgetClazz;
@@ -249,7 +252,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		 *            - the UI control-class
 		 * @return true, if the control matches; otherwise false
 		 */
-		public boolean isMatching(Class<? extends Widget> controlClazz) {
+		public boolean isMatching(Class<? extends Object> controlClazz) {
 			if (getControlStyle() == IGNORE_SWT_STYLE && condition == null) {
 				return (controlClazz == getControlClazz());
 			} else {
@@ -264,15 +267,15 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Widge
 		 *            - the UI control
 		 * @return true, if the control matches; otherwise false
 		 */
-		public boolean isMatching(Widget control) {
+		public boolean isMatching(Object control) {
 			if (control.getClass() != getControlClazz()) {
 				return false;
 			}
 			if (condition != null && !condition.isMatch(control)) {
 				return false;
 			}
-			if (getControlStyle() != IGNORE_SWT_STYLE) {
-				if ((control.getStyle() & getControlStyle()) != getControlStyle()) {
+			if (control instanceof Widget && getControlStyle() != IGNORE_SWT_STYLE) {
+				if ((((Widget) control).getStyle() & getControlStyle()) != getControlStyle()) {
 					return false;
 				}
 			}
