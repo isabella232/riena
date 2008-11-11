@@ -10,15 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * Default implementation for the sub module node
  */
 public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> implements
 		ISubModuleNode {
+
+	private Object viewId;
+	private Class<IController> controllerClassForView;
 
 	/**
 	 * Creates a SubModuleNode.
@@ -61,4 +65,44 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 		this(null, label);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ISubModuleNode#getControllerClassForView()
+	 */
+	public Class<IController> getControllerClassForView() {
+		return controllerClassForView;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ISubModuleNode#setControllerClassForView
+	 * (java.lang.Class)
+	 */
+	@SuppressWarnings("unchecked")
+	public void setControllerClassForView(Class<?> controllerClass) {
+		controllerClassForView = (Class<IController>) controllerClass;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.ISubModuleNode#getViewId()
+	 */
+	public Object getViewId() {
+		return viewId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ISubModuleNode#setViewId(java.lang.Object)
+	 */
+	public void setViewId(Object id) {
+		viewId = id;
+	}
 }

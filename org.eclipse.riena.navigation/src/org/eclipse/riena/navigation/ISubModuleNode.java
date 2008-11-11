@@ -12,10 +12,45 @@ package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * A Node containing other sub sub module nodes
  */
-public interface ISubModuleNode extends INavigationNode<ISubModuleNode>, INavigationNodeListenerable<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> {
+public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
+		INavigationNodeListenerable<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> {
 
+	/**
+	 * @return The id of the view to be shown when this node gets selected.
+	 *         Riena default behaviour requires this to be the viewId as
+	 *         contributed to the <code>org.eclipse.ui.views</code> extension
+	 *         point.
+	 */
+	Object getViewId();
+
+	/**
+	 * Explicitly set the view id. This would override a viewId set within an
+	 * extension point.
+	 * 
+	 * @param id
+	 *            The id of the view to be shown when this node gets selected.
+	 *            Riena default behaviour requires this to be the viewId as
+	 *            contributed to the <code>org.eclipse.ui.views</code> extension
+	 *            point.
+	 */
+	void setViewId(Object id);
+
+	/**
+	 * @return The controller class to be used with the view representing the
+	 *         working area, NOT the tree.
+	 */
+	Class<IController> getControllerClassForView();
+
+	/**
+	 * @param controllerClass
+	 *            The controller class to be used with the view representing the
+	 *            working area, NOT the tree. The provided controller MUST
+	 *            implement {@link IController}
+	 */
+	void setControllerClassForView(Class<?> controllerClass);
 }

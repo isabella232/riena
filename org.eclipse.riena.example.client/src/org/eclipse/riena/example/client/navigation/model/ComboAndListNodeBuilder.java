@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
+import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
+import org.eclipse.riena.example.client.controllers.ListSubModuleController;
+import org.eclipse.riena.example.client.views.ComboSubModuleView;
+import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNodeBuilder;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -31,14 +34,20 @@ public class ComboAndListNodeBuilder implements INavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public IModuleGroupNode buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
+
 		IModuleGroupNode node = new ModuleGroupNode(presentationId);
 		IModuleNode module = new ModuleNode(null, "Combo&List"); //$NON-NLS-1$
 		node.addChild(module);
+
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(ComboSubModuleView.ID);
+		subModule.setControllerClassForView(ComboSubModuleController.class);
 		module.addChild(subModule);
+
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list"), "List"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(ListSubModuleView.ID);
+		subModule.setControllerClassForView(ListSubModuleController.class);
 		module.addChild(subModule);
 		return node;
 	}
-
 }

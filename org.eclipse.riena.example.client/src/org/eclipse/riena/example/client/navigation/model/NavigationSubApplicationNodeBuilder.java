@@ -11,6 +11,10 @@
 package org.eclipse.riena.example.client.navigation.model;
 
 import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
+import org.eclipse.riena.example.client.controllers.NavigationSubModuleController;
+import org.eclipse.riena.example.client.views.CustomerDetailSubModuleView;
+import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -48,23 +52,33 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
 		subModule.setIcon(createIconPath(ExampleIcons.ICON_FILE));
+		subModule.setViewId(CustomerDetailSubModuleView.ID);
+		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
 		module.addChild(subModule);
 
 		ISubModuleNode subModule2 = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule2.setViewId(CustomerDetailSubModuleView.ID);
+		subModule2.setControllerClassForView(CustomerDetailSubModuleController.class);
 		subModule.addChild(subModule2);
 
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.2"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(CustomerDetailSubModuleView.ID);
+		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
 		module.addChild(subModule);
 		module = new ModuleNode(null, "Module 1.1.2 (closeable)"); //$NON-NLS-1$
 		module.setIcon(createIconPath(ExampleIcons.ICON_HOMEFOLDER));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.2.1"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(CustomerDetailSubModuleView.ID);
+		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
 		module.addChild(subModule);
 		/* NEW */
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.navigation"), "Navigation"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(NavigationSubModuleView.ID);
+		subModule.setControllerClassForView(NavigationSubModuleController.class);
 		module.addChild(subModule);
 
 		moduleGroup = new ModuleGroupNode(null);
@@ -77,9 +91,13 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.2.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(CustomerDetailSubModuleView.ID);
+		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
 		module.addChild(subModule);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.2.1.2"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(CustomerDetailSubModuleView.ID);
+		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
 		module.addChild(subModule);
 
 		return subApplication;

@@ -11,10 +11,11 @@
 package org.eclipse.riena.example.client.navigation.model;
 
 import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
+import org.eclipse.riena.example.client.views.NavigateSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -32,15 +33,20 @@ public class NavigateNodeBuilder extends NavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
+
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
 		moduleGroup.setPresentWithSingleModule(false);
+
 		IModuleNode module = new ModuleNode(null, "Navigate"); //$NON-NLS-1$
 		module.setIcon(createIconPath(ExampleIcons.ICON_GREEN_LED));
 		moduleGroup.addChild(module);
+
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
+		subModule.setViewId(NavigateSubModuleView.ID);
+		subModule.setControllerClassForView(NavigateSubModuleController.class);
+
 		module.addChild(subModule);
 		return moduleGroup;
 	}
-
 }

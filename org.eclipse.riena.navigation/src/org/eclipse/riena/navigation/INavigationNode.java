@@ -498,5 +498,4 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @param pContext
 	 */
 	void addMarker(INavigationContext pContext, IMarker marker);
-
 }

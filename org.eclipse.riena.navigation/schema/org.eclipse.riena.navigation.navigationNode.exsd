@@ -122,7 +122,7 @@
 
    <element name="modulegroup">
       <complexType>
-         <sequence minOccurs="0" maxOccurs="1">
+         <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="module"/>
          </sequence>
          <attribute name="name" type="string">

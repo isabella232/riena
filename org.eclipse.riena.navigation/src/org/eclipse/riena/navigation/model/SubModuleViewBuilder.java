@@ -10,61 +10,29 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeExtension;
-import org.eclipse.riena.navigation.ISubModuleExtension;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.osgi.service.log.LogService;
 
 /**
  *
  */
 public class SubModuleViewBuilder implements ISubModuleViewBuilder {
+
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class.getName());
-	private static final String EP_SUBMODULETYPE = "org.eclipse.riena.navigation.subModule"; //$NON-NLS-1$
-	private SubModuleExtensionInjectionHelper targetSM;
 
 	/**
 	 * 
 	 */
 	public SubModuleViewBuilder() {
-
-		targetSM = new SubModuleExtensionInjectionHelper();
-		Inject.extension(EP_SUBMODULETYPE).useType(getSubModuleTypeDefinitionIFSafe()).into(targetSM).andStart(
-				Activator.getDefault().getContext());
-
-	}
-
-	private Class<? extends ISubModuleExtension> getSubModuleTypeDefinitionIFSafe() {
-
-		if (getSubModuleTypeDefinitionIF() != null && getSubModuleTypeDefinitionIF().isInterface()) {
-			return getSubModuleTypeDefinitionIF();
-		} else {
-			return ISubModuleExtension.class;
-		}
-	}
-
-	/**
-	 * @param targetId
-	 * @return
-	 */
-	protected ISubModuleExtension getSubModuleTypeDefinition(String targetId) {
-		if (targetSM == null || targetSM.getData().length == 0) {
-			return null;
-		} else {
-			ISubModuleExtension[] data = targetSM.getData();
-			for (int i = 0; i < data.length; i++) {
-				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId)) {
-					return data[i];
-				}
-			}
-		}
-		return null;
 	}
 
 	protected INavigationNodeExtension getNavigationNodeDefinition(NavigationNodeId targetId) {
@@ -98,50 +66,57 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#createView
 	 *      (org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public Object provideView(NavigationNodeId nodeId) {
+	public Object provideView(ISubModuleNode node) {
 
-		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(nodeId.getTypeId());
-		if (nodeDefinition != null && nodeDefinition.getView() != null) {
-			return nodeDefinition.getView();
+		Assert.isNotNull(node, "navigation node must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(node.getNodeId(), "navigation node id must not be null"); //$NON-NLS-1$
+
+		// first consult node itself - maybe view id was explicitly set
+		if (node.getViewId() != null) {
+			return node.getViewId();
 		}
-		ISubModuleNodeExtension subModuleNodeDefinition = getSubModuleNodeDefinition(nodeId.getTypeId());
+
+		// not explicitly set - search extensions
+		ISubModuleNodeExtension subModuleNodeDefinition = getSubModuleNodeDefinition(node.getNodeId().getTypeId());
 		if (subModuleNodeDefinition != null && subModuleNodeDefinition.getView() != null) {
 			return subModuleNodeDefinition.getView();
 		}
-		// view not defined within node definition. fall back to searching submodule definition
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(nodeId.getTypeId());
-		if (subModuleTypeDefinition != null) {
-			return subModuleTypeDefinition.getView();
-		} else {
-			throw new ExtensionPointFailure("SubModuleType not found. ID=" + nodeId.getTypeId()); //$NON-NLS-1$
-		}
+
+		throw new ExtensionPointFailure(String.format(
+				"view definition not found [nodeId=%s].", node.getNodeId().getTypeId())); //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#provideController(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public IController provideController(INavigationNode<?> node) {
+	public IController provideController(ISubModuleNode node) {
 
 		IController controller = null;
 
-		// check navigation node for controller definition first
-		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(node.getNodeId());
-		if (nodeDefinition != null) {
-			controller = nodeDefinition.createController();
-			if (controller != null) {
-				return controller;
+		Assert.isNotNull(node, "navigation node must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(node.getNodeId(), "navigation node id must not be null"); //$NON-NLS-1$
+
+		// first consult node itself - maybe controller class was explicitly set
+		if (node.getControllerClassForView() != null) {
+			try {
+				return (IController) node.getControllerClassForView().newInstance();
+			} catch (IllegalAccessException ex) {
+				String message = String.format(
+						"cannnot create controller for class %s", node.getControllerClassForView()); //$NON-NLS-1$ 
+				LOGGER.log(LogService.LOG_ERROR, message, ex);
+				throw new InvocationTargetFailure(message, ex);
+			} catch (InstantiationException ex) {
+				String message = String.format(
+						"cannnot create controller for class %s", node.getControllerClassForView()); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, message, ex);
+				throw new InvocationTargetFailure(message, ex);
 			}
 		}
 
+		// not explicitly set - search extensions
 		ISubModuleNodeExtension subModuleNodeDefinition = getSubModuleNodeDefinition(node.getNodeId());
 		if (subModuleNodeDefinition != null && subModuleNodeDefinition.getView() != null) {
 			return subModuleNodeDefinition.createController();
-		}
-
-		// no success - try 'old' submodule definition
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(node.getNodeId().getTypeId());
-		if (subModuleTypeDefinition != null) {
-			controller = subModuleTypeDefinition.createController();
 		}
 
 		return controller;
@@ -150,31 +125,20 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#isViewShared(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
-	public boolean isViewShared(NavigationNodeId targetId) {
+	public boolean isViewShared(ISubModuleNode node) {
 
-		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(targetId);
+		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(node.getNodeId().getTypeId());
 		if (nodeDefinition != null) {
 			return nodeDefinition.isShared();
 		}
 
-		ISubModuleExtension subModuleTypeDefinition = getSubModuleTypeDefinition(targetId.getTypeId());
-		if (subModuleTypeDefinition != null) {
-			return subModuleTypeDefinition.isShared();
+		// not explicitly set - search extensions
+		ISubModuleNodeExtension subModuleNodeDefinition = getSubModuleNodeDefinition(node.getNodeId());
+		if (subModuleNodeDefinition != null && subModuleNodeDefinition.getView() != null) {
+			return subModuleNodeDefinition.isShared();
 		}
-		return false;
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.IPresentationProviderService#
-	 * getSubModuleTypeDefitinions()
-	 */
-	public ISubModuleExtension[] getSubModuleTypeDefinitions() {
-		if (targetSM != null) {
-			return targetSM.getData();
-		}
-		return null;
+		return false;
 	}
 
 	/**
@@ -183,23 +147,4 @@ public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 	public void cleanUp() {
 		// TODO: implement, does nothing special yet
 	}
-
-	public Class<? extends ISubModuleExtension> getSubModuleTypeDefinitionIF() {
-
-		return ISubModuleExtension.class;
-	}
-
-	public class SubModuleExtensionInjectionHelper {
-		private ISubModuleExtension[] data;
-
-		public void update(ISubModuleExtension[] data) {
-			this.data = data.clone();
-
-		}
-
-		public ISubModuleExtension[] getData() {
-			return data.clone();
-		}
-	}
-
 }

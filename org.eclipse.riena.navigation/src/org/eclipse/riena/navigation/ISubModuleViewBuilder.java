@@ -23,25 +23,22 @@ public interface ISubModuleViewBuilder {
 	 * 
 	 * @return the view id of the matching view
 	 */
-	Object provideView(NavigationNodeId targetId);
+	Object provideView(ISubModuleNode node);
 
 	/**
 	 * Returns the view controller for the work area presentation for the given
 	 * navigationNodeId
 	 */
-	IController provideController(INavigationNode<?> node);
+	IController provideController(ISubModuleNode node);
 
 	/**
 	 * Return true if the specified view should be a shared view, false
 	 * otherwise
 	 */
-	boolean isViewShared(NavigationNodeId targetId);
-
-	ISubModuleExtension[] getSubModuleTypeDefinitions();
+	boolean isViewShared(ISubModuleNode node);
 
 	/**
 	 * Perform some housekeeping
 	 */
 	void cleanUp();
-
 }

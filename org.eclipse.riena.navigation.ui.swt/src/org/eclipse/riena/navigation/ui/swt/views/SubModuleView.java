@@ -302,19 +302,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	protected C createController(ISubModuleNode pSubModuleNode) {
 
-		// check navigation node for controller definition first
-		INavigationNodeExtension nodeDefinition = getNavigationNodeDefinition(pSubModuleNode.getNodeId());
-		C controller = null;
-		if (nodeDefinition != null) {
-			controller = (C) nodeDefinition.createController();
-			if (controller != null) {
-				controller.setNavigationNode(pSubModuleNode);
-			}
-			return controller;
-		}
-
-		// no success - try view builder for nested submodule view or old submodule definition
-		controller = (C) getSubModuleViewBuilder().provideController(pSubModuleNode);
+		// check node itself for controller definition first
+		C controller = (C) getSubModuleViewBuilder().provideController(pSubModuleNode);
 		if (controller != null) {
 			controller.setNavigationNode(pSubModuleNode);
 		}

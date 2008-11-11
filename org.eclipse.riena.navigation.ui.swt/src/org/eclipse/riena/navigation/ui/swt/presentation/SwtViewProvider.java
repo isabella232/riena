@@ -18,7 +18,6 @@ import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleViewBuilder;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleViewBuilderAccessor;
 
@@ -48,40 +47,41 @@ public class SwtViewProvider {
 
 	}
 
-	public SwtViewId getSwtViewId(INavigationNode<?> pNode) {
-		SwtViewId swtViewId = views.get(pNode);
+	public SwtViewId getSwtViewId(INavigationNode<?> node) {
+		SwtViewId swtViewId = views.get(node);
 		if (swtViewId == null) {
-			NavigationNodeId nodeId = pNode.getNodeId();
-			if (nodeId != null) {
-				String viewId = (String) getSubModuleViewBuilder().provideView(nodeId);
-				if (viewId == null) {
-					throw new RuntimeException("viewId is null for nodeId " + nodeId);
-				}
-				boolean isViewShared = getSubModuleViewBuilder().isViewShared(nodeId);
-				viewShared.put(viewId, isViewShared);
-				if (isViewShared && pNode instanceof ISubModuleNode) {
-					ISubModuleNode subModuleNode = (ISubModuleNode) pNode;
-					activated.put(subModuleNode, subModuleNode.isActivated());
-					subModuleNode.addListener(subModuleNodeObserver);
-					if (views.get(pNode) == null) {
-						viewCounter.put(viewId, 0);
+			if (node != null && node.getNodeId() != null) {
+				if (node instanceof ISubModuleNode) {
+					String viewId = (String) getSubModuleViewBuilder().provideView((ISubModuleNode) node);
+					if (viewId == null) {
+						throw new RuntimeException("viewId is null for nodeId " + node.getNodeId()); //$NON-NLS-1$
 					}
-					SwtViewId id = null;
-					if (viewCounter.get(viewId) == 0) {
-						// first node with this view
-						id = new SwtViewId(viewId, "shared"); //$NON-NLS-1$
-						views.put(pNode, id);
-						viewCounter.put(viewId, 1);
-					} else {
-						// view has been referenced already
-						id = views.get(getNavigationNode(viewId, null, ISubModuleNode.class, true));
-						views.put(pNode, id);
-					}
-					return id;
+					boolean isViewShared = getSubModuleViewBuilder().isViewShared((ISubModuleNode) node);
+					viewShared.put(viewId, isViewShared);
+					if (isViewShared && node instanceof ISubModuleNode) {
+						ISubModuleNode subModuleNode = (ISubModuleNode) node;
+						activated.put(subModuleNode, subModuleNode.isActivated());
+						subModuleNode.addListener(subModuleNodeObserver);
+						if (views.get(node) == null) {
+							viewCounter.put(viewId, 0);
+						}
+						SwtViewId id = null;
+						if (viewCounter.get(viewId) == 0) {
+							// first node with this view
+							id = new SwtViewId(viewId, "shared"); //$NON-NLS-1$
+							views.put(node, id);
+							viewCounter.put(viewId, 1);
+						} else {
+							// view has been referenced already
+							id = views.get(getNavigationNode(viewId, null, ISubModuleNode.class, true));
+							views.put(node, id);
+						}
+						return id;
 
-				} else {
-					swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
-					views.put(pNode, swtViewId);
+					} else {
+						swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
+						views.put(node, swtViewId);
+					}
 				}
 			}
 		}

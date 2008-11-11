@@ -419,8 +419,6 @@
       <navigationNode
             typeId="org.eclipse.riena.example.navigation"
             nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
-            view="org.eclipse.riena.example.client.views.NavigationSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.NavigationSubModuleController"
             parentTypeId="application">
       </navigationNode>
       <navigationNode
@@ -466,13 +464,59 @@
       </navigationNode>
       <navigationNode
             typeId="org.eclipse.riena.example.filters"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.FilterNodeBuilder"
+            name="filters_definition"
+            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
+         <modulegroup
+               name="uiProcesses_group">
+            <module
+                  name="filters"
+                  label="UI-Filters">
+               <submodule
+                     typeId="org.eclipse.riena.example.filterridget"
+                     name="filterridget"
+                     label="UI-Filter (Ridgets)"
+                     view="org.eclipse.riena.example.client.views.FilterSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController"/>
+               <submodule
+                     typeId="org.eclipse.riena.example.filternavigation"
+                     name="filternavigation"
+                     label="UI-Filter (Navigation)"
+                     view="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController"/>
+               <submodule
+                     typeId="org.eclipse.riena.example.filterdefinition"
+                     name="filterdefinition"
+                     label="UI-Filter (External definition)"
+                     view="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.FilterExternalDefinitionSubModuleController"/>
+               <submodule
+                     typeId="org.eclipse.riena.example.filteraction"
+                     name="filteraction"
+                     label="UI-Filter (MenuItem)"
+                     view="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"/>
+            </module>
+         </modulegroup>
       </navigationNode>
       <navigationNode
             typeId="org.eclipse.riena.example.logcollector"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.LogCollectorNodeBuilder"
+            name="logcollector"
+            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
+         <modulegroup
+               name="logcollector_group">
+            <module
+                  name="logcollector"
+                  label="LogCollector">
+               <submodule
+                     typeId="org.eclipse.riena.example.logcollectorlog"
+                     name="logcollectorlog"
+                     label="Log Collector"
+                     view="org.eclipse.riena.example.client.views.LogCollectorSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"/>
+            </module>
+         </modulegroup>
       </navigationNode>
       <navigationNode
             typeId="org.eclipse.riena.example.navigate.comboAndList"
@@ -486,156 +530,24 @@
       </navigationNode>
       <navigationNode
             typeId="org.eclipse.riena.example.client.kundensuche"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.KundenNodeBuilder"
-            view="org.eclipse.riena.example.kundensuche"
-            shared="false"
-            controller="org.eclipse.riena.example.client.controllers.KundenSucheController"
+            name="kundensuche"
+            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
+         <modulegroup
+               name="kundesuche_group">
+            <module
+                  name="kundesuche"
+                  label="Kundensuche">
+               <submodule
+                     typeId="org.eclipse.riena.example.client.kundensuche"
+                     name="kundensuche"
+                     label="Suche"
+                     icon="/icons/ledlightgreen.png"
+                     view="org.eclipse.riena.example.kundensuche"
+                     controller="org.eclipse.riena.example.client.controllers.KundenSucheController"/>
+            </module>
+         </modulegroup>
       </navigationNode>
-   </extension>
-   <extension point="org.eclipse.riena.navigation.subModule">
-      <subModule
-            typeId="org.eclipse.riena.example.customerDetail"
-            view="org.eclipse.riena.example.client.views.CustomerDetailSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.sharedView"
-            view="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
-            shared="true"
-            controller="org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.buttons"
-            view="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.RidgetsSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.marker"
-            view="org.eclipse.riena.example.client.views.MarkerSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.MarkerSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.focusable"
-            view="org.eclipse.riena.example.client.views.FocusableSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.FocusableSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.validation"
-            view="org.eclipse.riena.example.client.views.ValidationSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.ValidationSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.choice"
-            view="org.eclipse.riena.example.client.views.ChoiceSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.ChoiceSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.combo"
-            view="org.eclipse.riena.example.client.views.ComboSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.ComboSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.list"
-            view="org.eclipse.riena.example.client.views.ListSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.ListSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.table"
-            view="org.eclipse.riena.example.client.views.TableSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.TableSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.text"
-            view="org.eclipse.riena.example.client.views.TextSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.TextSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.text.numeric"
-            view="org.eclipse.riena.example.client.views.TextNumericSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.TextNumericSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.text.date"
-            view="org.eclipse.riena.example.client.views.TextDateSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.TextDateSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.tree"
-            view="org.eclipse.riena.example.client.views.TreeSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.TreeSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.treeTable"
-            view="org.eclipse.riena.example.client.views.TreeTableSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.TreeTableSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.systemProperties"
-            view="org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.statusLine"
-            view="org.eclipse.riena.example.client.views.StatuslineSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.StatuslineSubModuleController">
-      </subModule>
-      <subModule
-            typeId="org.eclipse.riena.example.navigate.form"
-            view="org.eclipse.riena.example.client.views.NavigateSubModuleView"
-            controller="org.eclipse.riena.example.client.controllers.NavigateSubModuleController">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.BlockingSubModuleController"
-            shared="false"
-            typeId="org.eclipse.riena.example.blocking"
-            view="org.eclipse.riena.example.client.views.BlockingSubModuleView">
-      </subModule>
-      <subModule
-            shared="false"
-            typeId="org.eclipse.riena.example.noController"
-            view="org.eclipse.riena.example.client.views.NoControllerSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController"
-            shared="false"
-            typeId="org.eclipse.riena.example.filterridget"
-            view="org.eclipse.riena.example.client.views.FilterSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"
-            shared="false"
-            typeId="org.eclipse.riena.example.logcollectorlog"
-            view="org.eclipse.riena.example.client.views.LogCollectorSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController"
-            shared="false"
-            typeId="org.eclipse.riena.example.filternavigation"
-            view="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.FilterExternalDefinitionSubModuleController"
-            shared="false"
-            typeId="org.eclipse.riena.example.filterdefinition"
-            view="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"
-            shared="false"
-            typeId="org.eclipse.riena.example.filteraction"
-            view="org.eclipse.riena.example.client.views.FilterActionSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.DialogSubModuleController"
-            typeId="org.eclipse.riena.example.dialog"
-            view="org.eclipse.riena.example.client.views.DialogSubModuleView">
-      </subModule>
-      <subModule
-            controller="org.eclipse.riena.example.client.controllers.MessageBoxSubModuleController"
-            typeId="org.eclipse.riena.example.messageBox"
-            view="org.eclipse.riena.example.client.views.MessageBoxSubModuleView">
-      </subModule>
    </extension>
    <extension
          id="example_product"
