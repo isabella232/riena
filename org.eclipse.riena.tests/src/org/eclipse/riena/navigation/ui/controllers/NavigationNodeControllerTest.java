@@ -20,6 +20,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -83,7 +84,7 @@ public class NavigationNodeControllerTest extends TestCase {
 		assertTrue(node.getMarkers().isEmpty());
 
 		node.addMarker(new HiddenMarker());
-		LabelRidget ridget = new LabelRidget();
+		TextRidget ridget = new TextRidget();
 		ridget.addMarker(new ErrorMarker());
 		controller.addRidget("4711", ridget);
 		controller.updateNavigationNodeMarkers();
@@ -96,6 +97,13 @@ public class NavigationNodeControllerTest extends TestCase {
 		assertFalse(node.getMarkers().isEmpty());
 		assertFalse(node.getMarkersOfType(ErrorMarker.class).isEmpty());
 		assertFalse(node.getMarkersOfType(MandatoryMarker.class).isEmpty());
+
+		ridget.setText("testtext");
+		controller.updateNavigationNodeMarkers();
+		assertFalse(node.getMarkers().isEmpty());
+		assertFalse(node.getMarkersOfType(ErrorMarker.class).isEmpty());
+		// the mandatory marker of the ridget is disabled because the text is not empty
+		assertTrue(node.getMarkersOfType(MandatoryMarker.class).isEmpty());
 
 	}
 

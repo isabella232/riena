@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -21,7 +20,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Ridget for an SWT control.
  */
-public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget implements IMarkableRidget {
+public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	private FocusListener focusManager = new FocusManager();
 	private boolean focusable;

@@ -12,9 +12,10 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -184,7 +185,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return ridgets.values();
 	}
 
-	private void addRidgetMarkers(IRidget ridget, Collection<IMarker> combinedMarkers) {
+	private void addRidgetMarkers(IRidget ridget, List<IMarker> combinedMarkers) {
 
 		if (ridget instanceof IMarkableRidget) {
 			// TODO: scp ridget.isShowing()
@@ -196,11 +197,11 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
-	private void addRidgetMarkers(IMarkableRidget ridget, Collection<IMarker> combinedMarkers) {
+	private void addRidgetMarkers(IMarkableRidget ridget, List<IMarker> combinedMarkers) {
 		combinedMarkers.addAll(ridget.getMarkers());
 	}
 
-	private void addRidgetMarkers(IRidgetContainer ridgetContainer, Collection<IMarker> combinedMarkers) {
+	private void addRidgetMarkers(IRidgetContainer ridgetContainer, List<IMarker> combinedMarkers) {
 		for (IRidget ridget : ridgetContainer.getRidgets()) {
 			addRidgetMarkers(ridget, combinedMarkers);
 		}
@@ -209,14 +210,19 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	protected void updateNavigationNodeMarkers() {
 		getNavigationNode().removeAllMarkers();
 		for (IMarker marker : getRidgetMarkers()) {
-			if ((marker instanceof ErrorMarker) || (marker instanceof MandatoryMarker)) {
+			if (marker instanceof ErrorMarker) {
 				getNavigationNode().addMarker(marker);
+			} else if (marker instanceof MandatoryMarker) {
+				MandatoryMarker mandatoryMarker = (MandatoryMarker) marker;
+				if (!mandatoryMarker.isDisabled()) {
+					getNavigationNode().addMarker(marker);
+				}
 			}
 		}
 	}
 
-	private Collection<IMarker> getRidgetMarkers() {
-		Collection<IMarker> combinedMarkers = new HashSet<IMarker>();
+	private List<IMarker> getRidgetMarkers() {
+		List<IMarker> combinedMarkers = new ArrayList<IMarker>();
 		addRidgetMarkers(this, combinedMarkers);
 		return combinedMarkers;
 	}
