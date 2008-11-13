@@ -21,7 +21,6 @@ import java.util.Date;
 
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
@@ -182,7 +181,7 @@ public class ConsoleLogger implements Logger {
 		case LogService.LOG_ERROR:
 			return "ERROR"; //$NON-NLS-1$
 		default:
-			return "UNKNOWN"; //$NON-NLS-1$
+			return "CUSTOM(" + level + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -197,25 +196,6 @@ public class ConsoleLogger implements Logger {
 		default:
 			return System.out;
 		}
-	}
-
-	/**
-	 *
-	 */
-	private final static class ConsoleLogFilter implements LogFilter {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.equinox.log.LogFilter#isLoggable(org.osgi.framework.Bundle
-		 * , java.lang.String, int)
-		 */
-		public boolean isLoggable(Bundle b, String loggerName, int logLevel) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
 	}
 
 }
