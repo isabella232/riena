@@ -43,7 +43,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	private final static String EXTENSION_ID_PROCESSDETAIL_COMPARATOR = "org.eclipse.riena.ui.ridgets.swt.processdetail"; //$NON-NLS-1$
 
-	private static final DefaultProcessDetailComparator defaultProcessDetailComparator = new DefaultProcessDetailComparator();
+	private final static DefaultProcessDetailComparator defaultProcessDetailComparator = new DefaultProcessDetailComparator();
 
 	private StatuslineUIProcess uiControl;
 
