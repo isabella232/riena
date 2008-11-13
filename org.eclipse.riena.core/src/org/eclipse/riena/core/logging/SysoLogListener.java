@@ -42,7 +42,7 @@ public class SysoLogListener implements LogListener {
 			level = "INFO"; //$NON-NLS-1$
 			break;
 		default:
-			level = "UNKNOWN"; //$NON-NLS-1$
+			level = "CUSTOM(" + eEntry.getLevel() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		}
 		buffer.append(level).append(' ');
