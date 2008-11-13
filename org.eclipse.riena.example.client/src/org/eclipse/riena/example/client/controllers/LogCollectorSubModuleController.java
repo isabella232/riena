@@ -29,14 +29,17 @@ import org.eclipse.riena.ui.ridgets.util.beans.StringManager;
 public class LogCollectorSubModuleController extends SubModuleController {
 
 	private final StringManager logLevels;
-	private final StringBean messageBean = new StringBean("Hallo!"); //$NON-NLS-1$
+	private final StringManager customLevels;
+	private final StringBean logMessageBean = new StringBean("Log text"); //$NON-NLS-1$
+	private final StringBean customMessageBean = new StringBean("Custom text"); //$NON-NLS-1$
 	private final StringBean exceptionBean = new StringBean(NullPointerException.class.getName());
 	private IComboRidget logLevelCombo;
-	private ITextRidget message;
-	private ITextRidget exception;
+	private IComboRidget customLevelCombo;
+	private ITextRidget logMessage;
+	private ITextRidget customMessage;
+	private ITextRidget logException;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(
-			LogCollectorSubModuleController.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(LogCollectorSubModuleController.class);
 
 	public LogCollectorSubModuleController() {
 		this(null);
@@ -46,6 +49,9 @@ public class LogCollectorSubModuleController extends SubModuleController {
 		super(navigationNode);
 		logLevels = new StringManager("DEBUG", "INFO", "WARN", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		logLevels.setSelectedItem("DEBUG"); //$NON-NLS-1$
+
+		customLevels = new StringManager("USAGE", "STATS", "SEND"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		customLevels.setSelectedItem("USAGE"); //$NON-NLS-1$
 	}
 
 	/**
@@ -61,11 +67,17 @@ public class LogCollectorSubModuleController extends SubModuleController {
 		logLevelCombo.bindToModel(logLevels, "items", String.class, null, logLevels, "selectedItem"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		logLevelCombo.updateFromModel();
 
-		message.bindToModel(messageBean, "value"); //$NON-NLS-1$
-		message.updateFromModel();
+		logMessage.bindToModel(logMessageBean, "value"); //$NON-NLS-1$
+		logMessage.updateFromModel();
 
-		exception.bindToModel(exceptionBean, "value"); //$NON-NLS-1$
-		exception.updateFromModel();
+		logException.bindToModel(exceptionBean, "value"); //$NON-NLS-1$
+		logException.updateFromModel();
+
+		customLevelCombo.bindToModel(customLevels, "items", String.class, null, customLevels, "selectedItem"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		customLevelCombo.updateFromModel();
+
+		customMessage.bindToModel(customMessageBean, "value"); //$NON-NLS-1$
+		customMessage.updateFromModel();
 	}
 
 	/**
@@ -75,22 +87,34 @@ public class LogCollectorSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 
 		logLevelCombo = (IComboRidget) getRidget("logLevelCombo"); //$NON-NLS-1$
-		message = (ITextRidget) getRidget("message"); //$NON-NLS-1$
-		exception = (ITextRidget) getRidget("exception"); //$NON-NLS-1$
+		logMessage = (ITextRidget) getRidget("logMessage"); //$NON-NLS-1$
+		logException = (ITextRidget) getRidget("logException"); //$NON-NLS-1$
 
-		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonLog"); //$NON-NLS-1$
-		buttonSave.setText("&Log"); //$NON-NLS-1$
-		buttonSave.addListener(new IActionListener() {
+		final IActionRidget logButtonSave = (IActionRidget) getRidget("logButton"); //$NON-NLS-1$
+		logButtonSave.setText("&Log"); //$NON-NLS-1$
+		logButtonSave.addListener(new IActionListener() {
 			public void callback() {
 				Throwable throwable = null;
 				try {
-					if (!StringUtils.isDeepEmpty(exception.getText())) {
-						throwable = (Throwable) Class.forName(exception.getText()).newInstance();
+					if (!StringUtils.isDeepEmpty(logException.getText())) {
+						throwable = (Throwable) Class.forName(logException.getText()).newInstance();
 					}
 				} catch (Exception e) {
-					throwable = new IllegalArgumentException("Can not instantiate exception: " + exception.getText(), e); //$NON-NLS-1$
+					throwable = new IllegalArgumentException(
+							"Can not instantiate logException: " + logException.getText(), e); //$NON-NLS-1$
 				}
-				LOGGER.log(4 - logLevelCombo.getSelectionIndex(), message.getText(), throwable);
+				LOGGER.log(4 - logLevelCombo.getSelectionIndex(), logMessage.getText(), throwable);
+			}
+		});
+
+		customLevelCombo = (IComboRidget) getRidget("customLevelCombo"); //$NON-NLS-1$
+		customMessage = (ITextRidget) getRidget("customMessage"); //$NON-NLS-1$
+
+		final IActionRidget customButtonSave = (IActionRidget) getRidget("customButton"); //$NON-NLS-1$
+		customButtonSave.setText("&CustomLog"); //$NON-NLS-1$
+		customButtonSave.addListener(new IActionListener() {
+			public void callback() {
+				LOGGER.log(-customLevelCombo.getSelectionIndex(), customMessage.getText());
 			}
 		});
 	}
