@@ -126,6 +126,10 @@ public abstract class AbstractMarkerSupport {
 		return ridget.getUIControl();
 	}
 
+	protected IMarkableRidget getRidget() {
+		return ridget;
+	}
+
 	protected void handleMarkerAttributesChanged() {
 		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(true, ridget, getMarkers()));
 	}
