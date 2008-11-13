@@ -33,7 +33,7 @@ public class LogCollectorSubModuleView extends SubModuleView<LogCollectorSubModu
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new GridLayout(4, false));
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(parent, "&Log level:"); //$NON-NLS-1$
@@ -41,20 +41,41 @@ public class LogCollectorSubModuleView extends SubModuleView<LogCollectorSubModu
 		fillFactory.applyTo(logLevel);
 		addUIControl(logLevel, "logLevelCombo"); //$NON-NLS-1$
 
+		UIControlsFactory.createLabel(parent, "&Custom level:"); //$NON-NLS-1$
+		Combo customLevel = UIControlsFactory.createCombo(parent);
+		fillFactory.applyTo(customLevel);
+		addUIControl(customLevel, "customLevelCombo"); //$NON-NLS-1$
+
 		UIControlsFactory.createLabel(parent, "&Message:"); //$NON-NLS-1$
 		Text message = UIControlsFactory.createText(parent);
 		//		message.setSize(new Point());
 		fillFactory.applyTo(message);
-		addUIControl(message, "message"); //$NON-NLS-1$
+		addUIControl(message, "logMessage"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, "&Custom message:"); //$NON-NLS-1$
+		Text customMessage = UIControlsFactory.createText(parent);
+		//		message.setSize(new Point());
+		fillFactory.applyTo(customMessage);
+		addUIControl(customMessage, "customMessage"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "&Exception:"); //$NON-NLS-1$
 		Text exception = UIControlsFactory.createText(parent);
 		fillFactory.applyTo(exception);
-		addUIControl(exception, "exception"); //$NON-NLS-1$
+		addUIControl(exception, "logException"); //$NON-NLS-1$
 
-		Button buttonLog = UIControlsFactory.createButton(parent);
-		fillFactory.applyTo(buttonLog);
-		addUIControl(buttonLog, "buttonLog"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+
+		Button logBbutton = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(logBbutton);
+		addUIControl(logBbutton, "logButton"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(parent, ""); //$NON-NLS-1$
+
+		Button customButton = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(customButton);
+		addUIControl(customButton, "customButton"); //$NON-NLS-1$
 	}
 
 }
