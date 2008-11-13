@@ -24,7 +24,7 @@ import org.osgi.service.log.LogService;
  */
 public final class VariableManagerUtil {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(VariableManagerUtil.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(VariableManagerUtil.class);
 
 	private VariableManagerUtil() {
 		// utility

@@ -40,7 +40,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 	private final boolean symbolReplace;
 	private final Map<Method, Result> resolved;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(InterfaceBeanHandler.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(InterfaceBeanHandler.class);
 
 	InterfaceBeanHandler(final Class<?> interfaceType, final boolean symbolReplace,
 			final IConfigurationElement configurationElement) {

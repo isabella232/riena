@@ -46,7 +46,7 @@ public class ExtensionInjector {
 	private boolean isArray;
 	private Class<?> componentType;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ExtensionInjector.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ExtensionInjector.class);
 
 	/**
 	 * @param extensionDesc

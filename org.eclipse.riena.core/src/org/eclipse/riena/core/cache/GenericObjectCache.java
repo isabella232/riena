@@ -15,11 +15,10 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.internal.ICacheEntry;
 import org.eclipse.riena.core.cache.internal.SoftCacheEntry;
 import org.eclipse.riena.internal.core.Activator;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -31,7 +30,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 
 	private static final String SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE = "spirit.core.base.internal.ReferenceQueue"; //$NON-NLS-1$
 	private static final String SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS = "spirit.core.base.internal.HardLinks"; //$NON-NLS-1$
-	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class);
 	private HashMap<K, ICacheEntry<K, V>> cacheEntries;
 	/** timeout in milliseconds * */
 	private long timeout;

@@ -87,7 +87,7 @@ public final class ContainerModel {
 				}
 			}
 		}
-		Activator.getDefault().getLogger(ContainerModel.class.getName()).log(LogService.LOG_INFO,
+		Activator.getDefault().getLogger(ContainerModel.class).log(LogService.LOG_INFO,
 				"!!! Riena is running in " + containerType + " mode !!!"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

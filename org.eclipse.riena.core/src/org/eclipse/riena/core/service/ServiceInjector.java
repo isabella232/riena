@@ -62,7 +62,7 @@ public abstract class ServiceInjector {
 		INITIAL, STARTING, STARTED, STOPPING, STOPPED
 	};
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ServiceInjector.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ServiceInjector.class);
 
 	/**
 	 * Constructor for the <code>injectInto()</code> of
