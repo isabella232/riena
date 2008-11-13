@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
@@ -23,6 +23,7 @@ public class MessageBox implements IPropertyNameProvider {
 	private String propertyName;
 	private Control parent;
 	private int result;
+	private MessageDialog messageDialog;
 
 	/*
 	 * @see
@@ -48,8 +49,23 @@ public class MessageBox implements IPropertyNameProvider {
 
 	public void show(String title, String text, int type, String[] buttonLabels) {
 
-		result = new MessageDialog(parent.getShell(), title, null, // accept the default window icon
-				text, type, buttonLabels, 0).open(); // OK is the default
+		messageDialog = new MessageDialog(parent.getShell(), title, null, // accept the default window icon
+				text, type, buttonLabels, 0) {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.jface.dialogs.Dialog#close()
+			 */
+			@Override
+			public boolean close() {
+				boolean closed = super.close();
+				messageDialog = null;
+
+				return closed;
+			}
+		};
+
+		result = messageDialog.open();
 	}
 
 	/**
@@ -57,5 +73,33 @@ public class MessageBox implements IPropertyNameProvider {
 	 */
 	public int getResult() {
 		return result;
+	}
+
+	public void requestFocus() {
+		if (messageDialog != null) {
+			messageDialog.getShell().setFocus();
+		}
+	}
+
+	public boolean hasFocus() {
+		if (messageDialog != null) {
+			return messageDialog.getShell().isFocusControl();
+		}
+		return false;
+	}
+
+	public boolean isFocusable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setFocusable(boolean focusable) {
+		// TODO Auto-generated method stub
+	}
+
+	public void setVisible(boolean visible) {
+		if (messageDialog != null) {
+			messageDialog.getShell().setVisible(visible);
+		}
 	}
 }

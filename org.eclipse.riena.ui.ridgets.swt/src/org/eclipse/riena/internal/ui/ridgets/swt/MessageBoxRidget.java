@@ -10,14 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+import org.eclipse.riena.ui.ridgets.swt.MessageBox;
 import org.eclipse.swt.SWT;
 
 /**
@@ -28,6 +26,8 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private MessageBox messageBox;
 	private String title;
 	private String text;
+	private boolean blocked;
+	private boolean visible;
 	private Type type = Type.PLAIN;
 	private MessageBoxOption[] options = OPTIONS_OK;
 
@@ -120,11 +120,14 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 */
 	public MessageBoxOption show() {
 
-		if (type == null) {
-			type = Type.PLAIN;
+		if (messageBox != null) {
+			if (type == null) {
+				type = Type.PLAIN;
+			}
+			return show(type);
+		} else {
+			return null;
 		}
-
-		return show(type);
 	}
 
 	private MessageBoxOption show(Type type) {
@@ -165,23 +168,8 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 
 		if (result == SWT.DEFAULT) {
 			return CLOSED;
-		}
-
-		if (getOptions().length > 0) {
-			return getOptions()[result];
 		} else {
-			switch (result) {
-			case IDialogConstants.OK_ID:
-				return OK;
-			case IDialogConstants.CANCEL_ID:
-				return CANCEL;
-			case IDialogConstants.YES_ID:
-				return YES;
-			case IDialogConstants.NO_ID:
-				return NO;
-			default:
-				return null;
-			}
+			return getOptions()[result];
 		}
 	}
 
@@ -197,49 +185,12 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		case ERROR:
 			return MessageDialog.ERROR;
 		case HELP:
-			// TODO: MessageBox.HELP_MESSAGE
-			return MessageDialog.NONE;
+			return MessageDialog.INFORMATION;
 		case QUESTION:
 			return MessageDialog.QUESTION;
 		default:
 			return MessageDialog.NONE;
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#addFocusListener(org.eclipse.riena
-	 * .ui.ridgets.listener.IFocusListener)
-	 */
-	public void addFocusListener(IFocusListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.beans
-	 * .PropertyChangeListener)
-	 */
-	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#addPropertyChangeListener(java.lang
-	 * .String, java.beans.PropertyChangeListener)
-	 */
-	public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -261,7 +212,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#getToolTipText()
 	 */
 	public String getToolTipText() {
-		// TODO Auto-generated method stub
+		// not supported
 		return null;
 	}
 
@@ -271,7 +222,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
 	 */
 	public Object getUIControl() {
-		// TODO Auto-generated method stub
 		return messageBox;
 	}
 
@@ -281,8 +231,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#hasFocus()
 	 */
 	public boolean hasFocus() {
-		// TODO Auto-generated method stub
-		return false;
+		return messageBox.hasFocus();
 	}
 
 	/*
@@ -291,8 +240,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
 	 */
 	public boolean isBlocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return blocked;
 	}
 
 	/*
@@ -301,8 +249,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#isFocusable()
 	 */
 	public boolean isFocusable() {
-		// TODO Auto-generated method stub
-		return false;
+		return messageBox.isFocusable();
 	}
 
 	/*
@@ -311,44 +258,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#isVisible()
 	 */
 	public boolean isVisible() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#removeFocusListener(org.eclipse.
-	 * riena.ui.ridgets.listener.IFocusListener)
-	 */
-	public void removeFocusListener(IFocusListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java
-	 * .beans.PropertyChangeListener)
-	 */
-	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#removePropertyChangeListener(java
-	 * .lang.String, java.beans.PropertyChangeListener)
-	 */
-	public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
-		// TODO Auto-generated method stub
-
+		return messageBox != null && visible;
 	}
 
 	/*
@@ -357,8 +267,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#requestFocus()
 	 */
 	public void requestFocus() {
-		// TODO Auto-generated method stub
-
+		messageBox.requestFocus();
 	}
 
 	/*
@@ -367,8 +276,9 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
-		// TODO Auto-generated method stub
 
+		this.blocked = blocked;
+		setFocusable(!blocked);
 	}
 
 	/*
@@ -377,8 +287,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
 	 */
 	public void setFocusable(boolean focusable) {
-		// TODO Auto-generated method stub
-
+		messageBox.setFocusable(focusable);
 	}
 
 	/*
@@ -388,8 +297,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
 	 */
 	public void setToolTipText(String toolTipText) {
-		// TODO Auto-generated method stub
-
+		// not supported
 	}
 
 	/*
@@ -411,7 +319,8 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
+		// TODO: use hidden marker?
+		this.visible = visible;
 
 	}
 
@@ -426,13 +335,13 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 
 	private void updateUIControl() {
 		if (messageBox != null) {
-			// TODO:
-			//			messageBox.setMessageText(text);
-			//			messageBox.setMessageTitle(title);
-			//
-			//			updateUIControlType();
-			//			updateUIControlOptions();
+			// TODO: update???
+			updateVisible();
 		}
+	}
+
+	private void updateVisible() {
+		messageBox.setVisible(visible);
 	}
 
 	/*
