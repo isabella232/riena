@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Widget;
 public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 
 	public final static String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
-	private static IBindingPropertyLocator locator;
+	private static SWTBindingPropertyLocator locator;
 
 	private SWTBindingPropertyLocator() {
 
@@ -30,7 +30,7 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 	 * 
 	 * @return
 	 */
-	public static IBindingPropertyLocator getInstance() {
+	public static SWTBindingPropertyLocator getInstance() {
 		if (locator == null) {
 			locator = new SWTBindingPropertyLocator();
 		}
@@ -52,6 +52,18 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 		}
 
 		return null;
+	}
+
+	public void setBindingProperty(Object uiControl, String id) {
+
+		if (uiControl instanceof Widget) {
+			Widget control = (Widget) uiControl;
+			if (control.isDisposed()) {
+				return;
+			}
+			control.setData(BINDING_PROPERTY, id);
+		}
+
 	}
 
 }

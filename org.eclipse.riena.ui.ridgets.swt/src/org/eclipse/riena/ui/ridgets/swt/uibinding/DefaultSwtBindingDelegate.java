@@ -55,7 +55,7 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 		super.addUIControl(uiControl, bindingId);
 		if (uiControl instanceof Widget) {
 			Widget widget = (Widget) uiControl;
-			widget.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, bindingId);
+			SWTBindingPropertyLocator.getInstance().setBindingProperty(widget, bindingId);
 		}
 	}
 

@@ -217,7 +217,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            - name of the property...
 	 */
 	protected void addUIControl(Widget uiControl, String propertyName) {
-		uiControl.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, propertyName);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, propertyName);
 		getUIControls().add(uiControl);
 	}
 
