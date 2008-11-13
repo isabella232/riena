@@ -11,7 +11,7 @@
 package org.eclipse.riena.core;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.LoggerMill;
+import org.eclipse.riena.core.logging.LoggerProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -25,8 +25,8 @@ import org.osgi.framework.BundleContext;
  */
 public abstract class RienaActivator implements BundleActivator {
 
-	private LoggerMill logUtil;
 	private BundleContext context;
+	private final LoggerProvider loggerProvider = new LoggerProvider();
 
 	/*
 	 * @see
@@ -35,6 +35,7 @@ public abstract class RienaActivator implements BundleActivator {
 	 */
 	public void start(final BundleContext context) throws Exception {
 		this.context = context;
+		loggerProvider.start();
 	}
 
 	/*
@@ -43,6 +44,7 @@ public abstract class RienaActivator implements BundleActivator {
 	 */
 	public void stop(final BundleContext context) throws Exception {
 		this.context = null;
+		loggerProvider.stop();
 	}
 
 	/**
@@ -55,16 +57,24 @@ public abstract class RienaActivator implements BundleActivator {
 	}
 
 	/**
-	 * Get a logger for the specified name.<br> <b>Hint:</b>The log levels are
-	 * defined in <code>LogService</code>.
+	 * Get a logger for the specified name.<br>
+	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
 	 * 
 	 * @param name
 	 * @return the logger
 	 */
-	public synchronized Logger getLogger(String name) {
-		if (logUtil == null) {
-			logUtil = new LoggerMill(context);
-		}
-		return logUtil.getLogger(name);
+	public Logger getLogger(String name) {
+		return loggerProvider.getLogger(name);
+	}
+
+	/**
+	 * Get a logger for the specified class.<br>
+	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
+	 * 
+	 * @param clazz
+	 * @return the logger
+	 */
+	public Logger getLogger(Class<?> clazz) {
+		return loggerProvider.getLogger(clazz);
 	}
 }

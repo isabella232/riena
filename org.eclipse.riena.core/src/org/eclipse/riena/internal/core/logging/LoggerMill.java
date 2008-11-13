@@ -8,11 +8,10 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.logging;
+package org.eclipse.riena.internal.core.logging;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
@@ -20,10 +19,11 @@ import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.core.logging.DeferringLoggerFactory;
-import org.eclipse.riena.internal.core.logging.ILogCatcherDefinition;
-import org.eclipse.riena.internal.core.logging.ILogListenerDefinition;
-import org.eclipse.riena.internal.core.logging.SynchronousLogListenerAdapter;
+import org.eclipse.riena.core.logging.CommandProviderLogFilter;
+import org.eclipse.riena.core.logging.ILogCatcher;
+import org.eclipse.riena.core.logging.LogServiceLogCatcher;
+import org.eclipse.riena.core.logging.PlatformLogCatcher;
+import org.eclipse.riena.core.logging.SysoLogListener;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
 
@@ -36,11 +36,11 @@ import org.osgi.service.log.LogListener;
 public class LoggerMill {
 
 	/**
-	 * 
+	 * When set to true and no loggers have been defined than a default logging
+	 * setup will be used.
 	 */
 	public static final String RIENA_DEFAULT_LOGGING = "riena.defaultlogging"; //$NON-NLS-1$
 
-	private BundleContext context;
 	private List<LogListener> logListeners = new ArrayList<LogListener>();
 	private List<ILogCatcher> logCatchers = new ArrayList<ILogCatcher>();;
 	private ILogListenerDefinition[] listenerDefs;
@@ -48,10 +48,33 @@ public class LoggerMill {
 
 	private static ExtendedLogReaderService logReaderService;
 	private final static AtomicReference<ExtendedLogService> logService = new AtomicReference<ExtendedLogService>(null);
-	private final static AtomicBoolean initialized = new AtomicBoolean(false);
 
-	public LoggerMill(BundleContext context) {
-		this.context = context;
+	/**
+	 * Create the logger mill.
+	 * 
+	 * @param context
+	 */
+	public LoggerMill(final BundleContext context) {
+		this(context, true);
+	}
+
+	/**
+	 * Configuration constructor.
+	 * 
+	 * @param context
+	 * @param autoConfig
+	 */
+	protected LoggerMill(final BundleContext context, final boolean autoConfig) {
+		// get log catchers
+		Inject.extension(ILogCatcherDefinition.EXTENSION_POINT).useType(ILogCatcherDefinition.class).into(this)
+				.andStart(context);
+
+		// get log listeners
+		Inject.extension(ILogListenerDefinition.EXTENSION_POINT).useType(ILogListenerDefinition.class).into(this)
+				.andStart(context);
+
+		Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(context);
+		Inject.service(ExtendedLogService.class).useRanking().into(this).andStart(context);
 	}
 
 	/**
@@ -59,13 +82,12 @@ public class LoggerMill {
 	 * <b>Note:</b> Use the log levels defined in
 	 * {@link org.osgi.service.log.LogService}
 	 * 
-	 * @param name
+	 * @param category
 	 *            logger name
 	 * @return
 	 */
-	public Logger getLogger(String name) {
-		init();
-		return isReady() ? logService.get().getLogger(name) : DeferringLoggerFactory.createLogger(name, this);
+	public Logger getLogger(String category) {
+		return isReady() ? logService.get().getLogger(category) : null;
 	}
 
 	/**
@@ -149,29 +171,7 @@ public class LoggerMill {
 	}
 
 	public boolean isReady() {
-		return initialized.get() && logService.get() != null;
-	}
-
-	/**
-	 * initialize LogUtil
-	 */
-	private void init() {
-		synchronized (initialized) {
-			if (initialized.getAndSet(true)) {
-				return;
-			}
-
-			// get log catchers
-			Inject.extension(ILogCatcherDefinition.EXTENSION_POINT).useType(ILogCatcherDefinition.class).into(this)
-					.andStart(context);
-
-			// get log listeners
-			Inject.extension(ILogListenerDefinition.EXTENSION_POINT).useType(ILogListenerDefinition.class).into(this)
-					.andStart(context);
-
-			Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(context);
-			Inject.service(ExtendedLogService.class).useRanking().into(this).andStart(context);
-		}
+		return logService.get() != null;
 	}
 
 	private static final class SysoLogListenerDefinition implements ILogListenerDefinition {
@@ -216,7 +216,6 @@ public class LoggerMill {
 		public String getName() {
 			return "DefaultLogServiceLogCatcher"; //$NON-NLS-1$
 		}
-
 	}
 
 }

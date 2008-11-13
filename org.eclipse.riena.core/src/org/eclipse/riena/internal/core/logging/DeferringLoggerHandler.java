@@ -15,8 +15,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.core.logging.LoggerMill;
+import org.eclipse.riena.core.logging.LoggerProvider;
 
 /**
  * A dynamic proxy that mimics a {@code Logger} that either logs to a
@@ -26,21 +25,19 @@ import org.eclipse.riena.core.logging.LoggerMill;
 public class DeferringLoggerHandler implements InvocationHandler {
 
 	private final String name;
-	private final LoggerMill loggerMill;
+	private final LoggerProvider loggerProvider;
 	private final BlockingQueue<DeferredLogEvent> queue;
-	private final Logger consoleLogger;
 	private Logger logger = null;
 
 	/**
 	 * @param name
-	 * @param loggerMill
+	 * @param loggerProvider
 	 * @param queue
 	 */
-	DeferringLoggerHandler(String name, LoggerMill loggerMill, BlockingQueue<DeferredLogEvent> queue) {
+	DeferringLoggerHandler(String name, LoggerProvider loggerProvider, BlockingQueue<DeferredLogEvent> queue) {
 		this.name = name;
-		this.loggerMill = loggerMill;
+		this.loggerProvider = loggerProvider;
 		this.queue = queue;
-		this.consoleLogger = new ConsoleLogger(name);
 	}
 
 	/*
@@ -52,10 +49,7 @@ public class DeferringLoggerHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (logger == null) {
 			// try to get real logger
-			if (loggerMill.isReady()) {
-				// TODO hmmm, it might be no longer ready when getLogger() is called!?!
-				logger = loggerMill.getLogger(name);
-			}
+			logger = loggerProvider.getRealLogger(name);
 		}
 
 		// real logger available?
@@ -65,9 +59,6 @@ public class DeferringLoggerHandler implements InvocationHandler {
 
 		DeferredLogEvent logEvent = new DeferredLogEvent(name, System.currentTimeMillis(), Thread.currentThread()
 				.getName(), method, args);
-
-		// log to console
-		method.invoke(consoleLogger, args);
 
 		queue(logEvent);
 

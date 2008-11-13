@@ -17,7 +17,7 @@ import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.core.logging.LoggerMill;
+import org.eclipse.riena.core.logging.LoggerProvider;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
@@ -27,16 +27,16 @@ import org.osgi.service.log.LogService;
  */
 public class DeferredLoggingForwarder extends Thread {
 
-	private final LoggerMill loggerMill;
+	private final LoggerProvider loggerProvider;
 	private final BlockingQueue<DeferredLogEvent> queue;
 
 	/**
-	 * @param loggerMill
+	 * @param loggerProvider
 	 * @param queue
 	 */
-	public DeferredLoggingForwarder(final LoggerMill loggerMill, BlockingQueue<DeferredLogEvent> queue) {
+	public DeferredLoggingForwarder(final LoggerProvider loggerProvider, BlockingQueue<DeferredLogEvent> queue) {
 		super("DeferredLoggingForwarder"); //$NON-NLS-1$
-		this.loggerMill = loggerMill;
+		this.loggerProvider = loggerProvider;
 		this.queue = queue;
 	}
 
@@ -50,7 +50,7 @@ public class DeferredLoggingForwarder extends Thread {
 				break;
 			}
 
-			while (!loggerMill.isReady()) {
+			while (!loggerProvider.hasReadyLoggerMill()) {
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {
@@ -58,17 +58,14 @@ public class DeferredLoggingForwarder extends Thread {
 					break;
 				}
 			}
-
 			try {
 				Logger logger = Activator.getDefault().getLogger(logEvent.getLoggerName());
-
 				// TODO There is no guarantee that the next two logs get logged one after the other!!
 				StringBuilder bob = new StringBuilder("Defered log event occured on "); //$NON-NLS-1$
 				bob.append(new Date(logEvent.getTime())).append(" (").append(logEvent.getTime()); //$NON-NLS-1$
 				bob.append(" ms) in thread [").append(logEvent.getThreadName()).append("]:\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				appendArgs(bob, logEvent.getArgs());
 				logger.log(getLevel(logEvent.getArgs()), bob.toString());
-				// logEvent.getLogMethod().invoke(logger, logEvent.getArgs());
 			} catch (Exception e) {
 				new ConsoleLogger(DeferredLoggingForwarder.class.getName()).log(LogService.LOG_ERROR,
 						"Could not deliver defered log message.", e); //$NON-NLS-1$
@@ -95,29 +92,28 @@ public class DeferredLoggingForwarder extends Thread {
 			if (arg instanceof ServiceReference) {
 				ServiceReference ref = (ServiceReference) arg;
 				String bundleName = ref.getBundle() != null ? ref.getBundle().getSymbolicName() : null;
-				bob.append("ServiceReference: bundle=").append(bundleName).append(", properties=("); //$NON-NLS-1$ //$NON-NLS-2$
+				bob.append("ServiceReference( bundle=").append(bundleName).append(", properties=("); //$NON-NLS-1$ //$NON-NLS-2$
 				for (String key : ref.getPropertyKeys()) {
 					bob.append(key).append("=").append(ref.getProperty(key)).append(","); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				bob.append(")"); //$NON-NLS-1$
 			} else if (arg instanceof String) {
-				bob.append("Message: ").append((String) arg); //$NON-NLS-1$
+				bob.append("Message(").append((String) arg).append(')'); //$NON-NLS-1$
 			} else if (arg instanceof Integer) {
-				bob.append("LogLevel: ").append((Integer) arg); //$NON-NLS-1$
+				bob.append("LogLevel(").append((Integer) arg).append(')'); //$NON-NLS-1$
 			} else if (arg instanceof Throwable) {
 				Throwable throwable = (Throwable) arg;
-				bob.append("Throwable: "); //$NON-NLS-1$
+				bob.append("Throwable("); //$NON-NLS-1$
 				StringWriter stringWriter = new StringWriter();
 				PrintWriter writer = new PrintWriter(stringWriter);
 				throwable.printStackTrace(writer);
 				writer.close();
-				bob.append(stringWriter.toString());
+				bob.append(stringWriter.toString()).append(')');
 			} else {
-				bob.append("Object: ").append(arg); //$NON-NLS-1$
+				bob.append("Object(").append(arg).append(')'); //$NON-NLS-1$
 			}
-			bob.append(",\n"); //$NON-NLS-1$
+			bob.append(", "); //$NON-NLS-1$
 		}
 		bob.setLength(bob.length() - 2);
 	}
-
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.LoggerMill;
+import org.eclipse.riena.core.logging.LoggerProvider;
 
 /**
  * This logger factory creates a {@code Logger} that collects log events until a
@@ -27,16 +27,16 @@ public class DeferringLoggerFactory {
 	private static Thread forwarder;
 	private static BlockingQueue<DeferredLogEvent> queue;
 
-	public static Logger createLogger(final String name, final LoggerMill loggerMill) {
+	public static Logger createLogger(final String name, final LoggerProvider loggerProvider) {
 		synchronized (DeferringLoggerFactory.class) {
 			if (queue == null) {
 				queue = new LinkedBlockingQueue<DeferredLogEvent>();
-				forwarder = new DeferredLoggingForwarder(loggerMill, queue);
+				forwarder = new DeferredLoggingForwarder(loggerProvider, queue);
 				forwarder.start();
 			}
 		}
 		return (Logger) Proxy.newProxyInstance(Logger.class.getClassLoader(), new Class<?>[] { Logger.class },
-				new DeferringLoggerHandler(name, loggerMill, queue));
+				new DeferringLoggerHandler(name, loggerProvider, queue));
 	}
 
 }

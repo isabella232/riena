@@ -14,11 +14,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.internal.core.logging.LoggerMill;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
@@ -35,8 +38,14 @@ public class Activator extends RienaPlugin {
 	// ´startup´ status of Riena
 	private boolean active = false;
 
+	private ServiceRegistration loggerMillServiceReg;
+	private LoggerMill loggerMill;
+
 	// The shared instance
 	private static Activator plugin;
+	{
+		plugin = this;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -48,12 +57,22 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		final Logger logger = getLogger(Activator.class.getName());
+		startLogging(context);
+		final Logger logger = getLogger(Activator.class);
 
 		logStage(logger);
 		startForcedRienaBundles(logger);
 
 		active = true;
+	}
+
+	/**
+	 * 
+	 */
+	private void startLogging(BundleContext context) {
+		loggerMill = new LoggerMill(context);
+		loggerMillServiceReg = context.registerService(LoggerMill.class.getName(), loggerMill, RienaConstants
+				.newDefaultServiceProperties());
 	}
 
 	/**
@@ -131,6 +150,7 @@ public class Activator extends RienaPlugin {
 	public void stop(BundleContext context) throws Exception {
 		active = false;
 		Activator.plugin = null;
+		context.ungetService(loggerMillServiceReg.getReference());
 		super.stop(context);
 	}
 
@@ -151,4 +171,5 @@ public class Activator extends RienaPlugin {
 	public boolean isActive() {
 		return active;
 	}
+
 }
