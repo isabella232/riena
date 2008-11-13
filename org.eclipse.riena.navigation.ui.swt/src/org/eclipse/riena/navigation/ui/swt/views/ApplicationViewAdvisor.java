@@ -453,12 +453,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		Composite logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		int borderWidth = borderRenderer.getBorderWidth();
-		logoData.top = new FormAttachment(0, borderWidth);
-		int padding = borderRenderer.getCompleteBorderWidth();
-		int height = getSwitchterTopMargin() + getSwitchterHeight() + padding - 1;
+		int topInset = 4;
+		int leftRightInset = 12;
+		logoData.top = new FormAttachment(0, topInset);
+		int height = getSwitchterTopMargin() + getSwitchterHeight() - 1;
 		logoData.bottom = new FormAttachment(0, height);
 		Image logoImage = getLogoImage();
 		if (logoImage == null) {
@@ -475,10 +473,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			logoData.left = new FormAttachment(50, -logoData.width / 2);
 			break;
 		case SWT.RIGHT:
-			logoData.right = new FormAttachment(100, -borderWidth);
+			logoData.right = new FormAttachment(100, -leftRightInset);
 			break;
 		default:
-			logoData.left = new FormAttachment(0, borderWidth);
+			logoData.left = new FormAttachment(0, leftRightInset);
 			break;
 		}
 		logoComposite.setLayoutData(logoData);
