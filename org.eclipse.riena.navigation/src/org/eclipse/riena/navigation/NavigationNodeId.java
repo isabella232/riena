@@ -70,11 +70,18 @@ public class NavigationNodeId {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(typeId);
+		StringBuilder sb = new StringBuilder("NavNodeId:");
+		if (typeId != null) {
+			sb.append(typeId);
+		} else {
+			sb.append("null");
+		}
 		if (instanceId != null) {
 			sb.append("["); //$NON-NLS-1$
 			sb.append(instanceId);
 			sb.append("]"); //$NON-NLS-1$
+		} else {
+			sb.append("[null]");
 		}
 		return sb.toString();
 	}
