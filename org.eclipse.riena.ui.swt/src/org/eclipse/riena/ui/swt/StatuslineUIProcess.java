@@ -79,16 +79,28 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		initStateMappers();
 		listBackground = new Color(parent.getDisplay(), 183, 216, 236);
 
-		//observe shell movement
-		parent.getShell().addControlListener(new ControlAdapter() {
+		//observe shell movement and resize
+		ControlAdapter listener = new ControlAdapter() {
 
 			@Override
 			public void controlMoved(ControlEvent e) {
-				if (popup.getShell() != null && popup.getShell().isVisible()) {
-					placeShell();
-				}
+				configureShell();
 			}
-		});
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				configureShell();
+			}
+
+		};
+		addControlListener(listener);
+		parent.getShell().addControlListener(listener);
+	}
+
+	private void configureShell() {
+		if (popup.getShell() != null && popup.getShell().isVisible()) {
+			placeShell();
+		}
 	}
 
 	/**
