@@ -37,7 +37,7 @@ public class Activator extends RienaActivator {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		logger = getLogger(this.getClass().getName());
+		logger = getLogger(Activator.class);
 		logger.log(LogService.LOG_INFO, "start hessian support on client"); //$NON-NLS-1$
 		factory = new RemoteServiceFactoryHessian();
 		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();

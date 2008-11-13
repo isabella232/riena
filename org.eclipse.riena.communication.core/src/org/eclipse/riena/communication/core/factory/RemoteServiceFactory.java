@@ -14,6 +14,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -23,9 +25,6 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -65,7 +64,7 @@ public class RemoteServiceFactory {
 	private BundleContext context;
 	private IRemoteServiceRegistry registry;
 	private static final String HOST_ID = RemoteServiceFactory.class.getName();
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceFactory.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceFactory.class);
 
 	/**
 	 * Creates a RemoteServiceFactory instance with the default bundle context.

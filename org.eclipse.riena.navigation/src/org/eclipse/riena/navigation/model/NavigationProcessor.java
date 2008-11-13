@@ -46,7 +46,7 @@ import org.osgi.service.log.LogService;
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
-	private static Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class.getName());
+	private static Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class);
 	private static int maxStacksize = 20;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();

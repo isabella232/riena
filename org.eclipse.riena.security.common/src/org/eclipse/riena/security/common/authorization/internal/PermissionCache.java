@@ -17,18 +17,17 @@ import java.util.Enumeration;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 
-import org.eclipse.equinox.log.Logger;
-
 public class PermissionCache implements IPermissionCache {
 
 	private final GenericObjectCache<String, Permissions> permCache = new GenericObjectCache<String, Permissions>();
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(PermissionCache.class.getName());
+	private static final Logger LOGGER = Activator.getDefault().getLogger(PermissionCache.class);
 
 	public PermissionCache() {
 		super();

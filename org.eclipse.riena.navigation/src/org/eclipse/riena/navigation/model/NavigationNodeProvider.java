@@ -34,7 +34,7 @@ import org.osgi.service.log.LogService;
  */
 public class NavigationNodeProvider implements INavigationNodeProvider {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
 	private static final String EP_NAVNODETYPE = "org.eclipse.riena.navigation.navigationNode"; //$NON-NLS-1$
 

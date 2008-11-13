@@ -27,7 +27,7 @@ import org.osgi.service.log.LogService;
  */
 public class SubModuleViewBuilder implements ISubModuleViewBuilder {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
 	/**
 	 * 

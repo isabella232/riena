@@ -24,10 +24,9 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.security.simpleservices.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -49,7 +48,7 @@ public class SampleLoginModule implements LoginModule {
 
 	private Properties accounts;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(SampleLoginModule.class.getName());
+	private static final Logger LOGGER = Activator.getDefault().getLogger(SampleLoginModule.class);
 
 	/*
 	 * (non-Javadoc)

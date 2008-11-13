@@ -16,6 +16,9 @@ import java.util.Set;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.login.LoginException;
 
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.eclipse.riena.internal.security.services.Activator;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
@@ -26,10 +29,6 @@ import org.eclipse.riena.security.common.authentication.credentials.AbstractCred
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
-
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
 
 /**
  * The <code>AuthenticationService</code> will perform the authentication
@@ -50,7 +49,7 @@ public class AuthenticationService implements IAuthenticationService {
 	public static final String VERSION_ID = "$Id$"; //$NON-NLS-1$
 
 	// private Properties properties;
-	private final static Logger LOGGER = Activator.getDefault().getLogger(AuthenticationService.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(AuthenticationService.class);
 
 	// private IAuthenticationModule authenticationModule;
 	private ISessionService sessionService;

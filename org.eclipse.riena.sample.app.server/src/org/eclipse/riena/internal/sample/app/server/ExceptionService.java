@@ -13,9 +13,8 @@ package org.eclipse.riena.internal.sample.app.server;
 import java.lang.reflect.Constructor;
 import java.util.Calendar;
 
-import org.eclipse.riena.sample.app.common.exception.IExceptionService;
-
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.osgi.service.log.LogService;
 
 /**
@@ -31,7 +30,7 @@ import org.osgi.service.log.LogService;
  * 
  */
 public class ExceptionService implements IExceptionService {
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ExceptionService.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ExceptionService.class);
 
 	/*
 	 * (non-Javadoc)

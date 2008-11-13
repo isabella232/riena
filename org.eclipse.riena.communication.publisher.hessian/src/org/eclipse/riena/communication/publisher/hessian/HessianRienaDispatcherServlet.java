@@ -51,8 +51,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 
 	private SerializerFactory serializerFactory = null;
 
-	private final static Logger LOGGER = Activator.getDefault()
-			.getLogger(HessianRienaDispatcherServlet.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(HessianRienaDispatcherServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {

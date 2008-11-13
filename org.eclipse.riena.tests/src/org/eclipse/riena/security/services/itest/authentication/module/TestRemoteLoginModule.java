@@ -22,10 +22,9 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -34,7 +33,7 @@ import org.osgi.service.log.LogService;
  */
 public class TestRemoteLoginModule implements LoginModule {
 
-	private Logger LOGGER = Activator.getDefault().getLogger(TestRemoteLoginModule.class.getName());
+	private Logger LOGGER = Activator.getDefault().getLogger(TestRemoteLoginModule.class);
 
 	private CallbackHandler callbackHandler;
 

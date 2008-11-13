@@ -17,12 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.internal.communication.core.Activator;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
@@ -33,7 +32,7 @@ import org.osgi.service.log.LogService;
  */
 public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	private Map<String, IRemoteServiceRegistration> registeredServices;
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceRegistry.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceRegistry.class);
 
 	public synchronized void start() {
 		registeredServices = new HashMap<String, IRemoteServiceRegistration>();

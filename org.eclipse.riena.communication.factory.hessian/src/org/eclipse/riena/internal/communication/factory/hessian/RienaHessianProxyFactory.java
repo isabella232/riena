@@ -21,12 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
-
-import org.eclipse.equinox.log.Logger;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractDeserializer;
@@ -39,7 +38,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	private ICallMessageContextAccessor mca;
 
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianProxyFactory.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianProxyFactory.class);
 
 	public RienaHessianProxyFactory() {
 		super();

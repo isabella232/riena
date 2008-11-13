@@ -21,10 +21,9 @@ import java.security.Principal;
 import java.security.ProtectionDomain;
 import java.util.Enumeration;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.security.common.Activator;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 import sun.security.provider.PolicyFile;
@@ -36,7 +35,7 @@ public class RienaPolicy extends Policy {
 
 	private static Policy defaultPolicy;
 	private IPermissionCache permCache;
-	private static final Logger LOGGER = Activator.getDefault().getLogger(RienaPolicy.class.getName());
+	private static final Logger LOGGER = Activator.getDefault().getLogger(RienaPolicy.class);
 
 	public RienaPolicy() {
 		super();

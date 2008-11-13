@@ -14,12 +14,11 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -42,8 +41,7 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 
 	private HashMap<String, RemoteServiceDescription> webServiceDescriptions;
 
-	private final static Logger LOGGER = Activator.getDefault()
-			.getLogger(HessianRemoteServicePublisher.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(HessianRemoteServicePublisher.class);
 
 	public HessianRemoteServicePublisher() {
 		webServiceDescriptions = new HashMap<String, RemoteServiceDescription>();

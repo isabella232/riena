@@ -23,10 +23,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.attachment.Attachment;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -38,7 +37,7 @@ import org.osgi.service.log.LogService;
 public final class AttachmentService implements IAttachmentService {
 
 	private final static int ATTACHMENT_START = 60;
-	private final static Logger LOGGER = Activator.getDefault().getLogger(AttachmentService.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(AttachmentService.class);
 	private static final String TESTDATA1 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen.";
 
 	/**

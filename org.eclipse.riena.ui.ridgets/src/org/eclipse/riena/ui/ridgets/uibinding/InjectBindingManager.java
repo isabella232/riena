@@ -33,7 +33,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	// cache for PropertyDescriptors
 	private Map<String, PropertyDescriptor> binding2PropertyDesc;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(InjectBindingManager.class.getName());
+	private static final Logger LOGGER = Activator.getDefault().getLogger(InjectBindingManager.class);
 
 	/**
 	 * Creates the managers of all bindings of a view.

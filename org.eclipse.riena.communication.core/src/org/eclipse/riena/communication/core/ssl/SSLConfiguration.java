@@ -54,7 +54,7 @@ public class SSLConfiguration {
 	private static final String JRE_CACERTS_MARKER = "#jre-cacerts#"; //$NON-NLS-1$
 	private static final String HTTPS_PROTOCOLS_PROPERTY_KEY = "https.protocols"; //$NON-NLS-1$
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(SSLConfiguration.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(SSLConfiguration.class);
 
 	/**
 	 * Default constructor.

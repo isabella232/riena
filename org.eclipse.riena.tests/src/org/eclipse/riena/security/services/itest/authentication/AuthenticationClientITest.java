@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.internal.tests.Activator;
@@ -27,8 +28,6 @@ import org.eclipse.riena.security.common.authentication.credentials.NameCredenti
 import org.eclipse.riena.security.common.authentication.credentials.PasswordCredential;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
@@ -38,7 +37,7 @@ import org.osgi.service.log.LogService;
  */
 public class AuthenticationClientITest extends RienaTestCase {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(AuthenticationClientITest.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(AuthenticationClientITest.class);
 	private IRemoteServiceRegistration sessionServiceRegistration;
 	private IRemoteServiceRegistration authenticationServiceRegistration;
 

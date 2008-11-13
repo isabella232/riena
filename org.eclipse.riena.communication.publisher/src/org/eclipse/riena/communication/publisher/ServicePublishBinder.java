@@ -16,13 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.eclipse.riena.internal.communication.publisher.ServiceHooksProxy;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
@@ -47,7 +46,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	 */
 	private Map<String, RemoteServiceDescription> rsDescs = new HashMap<String, RemoteServiceDescription>();
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ServicePublishBinder.class.getName());
+	private final static Logger LOGGER = Activator.getDefault().getLogger(ServicePublishBinder.class);
 
 	public ServicePublishBinder() {
 		super();
