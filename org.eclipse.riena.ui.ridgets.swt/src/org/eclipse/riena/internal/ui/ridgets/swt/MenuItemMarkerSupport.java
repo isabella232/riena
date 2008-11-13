@@ -42,6 +42,11 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 		super.handleMarkerAttributesChanged();
 	}
 
+	@Override
+	protected MenuItemRidget getRidget() {
+		return (MenuItemRidget) ridget;
+	}
+
 	/**
 	 * Enables or disables the given item.
 	 * 
@@ -49,7 +54,28 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 *            - menu item to update
 	 */
 	private void updateDisabled(MenuItem item) {
+		//		boolean enable = getRidget().isCommandEnabled();
+		//		if (enable) {
+		//			enable = ridget.isEnabled();
+		//		}
+		//		item.setEnabled(enable);
 		item.setEnabled(ridget.isEnabled());
+	}
+
+	/**
+	 * Shows or hides the given item.
+	 * 
+	 * @param item
+	 *            - menu item to update
+	 */
+	private void updateVisible(MenuItem item) {
+
+		if (getRidget().isVisible()) {
+			getRidget().createItem();
+		} else {
+			item.dispose();
+		}
+
 	}
 
 	/**
@@ -58,7 +84,10 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	private void updateMenuItem() {
 		MenuItem item = (MenuItem) ridget.getUIControl();
 		if (item != null) {
-			updateDisabled(item);
+			updateVisible(item);
+			if (!item.isDisposed()) {
+				updateDisabled(item);
+			}
 		}
 	}
 

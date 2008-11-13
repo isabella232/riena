@@ -12,10 +12,13 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.MenuRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -70,6 +73,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	private SubApplicationNode subApplicationNode;
 	private List<Object> uiControls;
 	private static IBindingManager menuItemBindingManager;
+	private static int itemId;
 
 	/**
 	 * Creates a new instance of {@code SubApplicationView}.
@@ -81,6 +85,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(),
 					new DefaultSwtControlRidgetMapper());
 		}
+		itemId = 0;
 	}
 
 	private IBindingManager createMenuItemBindingManager(IBindingPropertyLocator propertyStrategy,
@@ -142,7 +147,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			String toolItemId = getToolItemId(item);
 			if (!StringUtils.isEmpty(toolItemId)) {
 				IRidget ridget = createRidget(item);
-				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, toolItemId);
+				SWTBindingPropertyLocator.getInstance().setBindingProperty(item, toolItemId);
 				getUIControls().add(item);
 				controller.addRidget(toolItemId, ridget);
 			}
@@ -164,15 +169,31 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			if (isSeparator(item)) {
 				continue;
 			}
+			System.out.println("SubApplicationView.createMenuRidgets() " + item.getText());
 			String menuItemId = getMenuItemId(item);
 			if (!StringUtils.isEmpty(menuItemId)) {
-				//				if (isMenu(item)) {
-				//					continue;
-				//				}
 				IRidget ridget = createRidget(item);
-				item.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, menuItemId);
+				SWTBindingPropertyLocator.getInstance().setBindingProperty(item, menuItemId);
 				getUIControls().add(item);
 				controller.addRidget(menuItemId, ridget);
+			}
+		}
+
+		Collection<? extends IRidget> ridgets = controller.getRidgets();
+		for (IRidget ridget : ridgets) {
+			if (ridget instanceof MenuRidget) {
+				MenuRidget menuRidget = (MenuRidget) ridget;
+				Menu menu = menuRidget.getUIControl().getMenu();
+				if (menu != null) {
+					MenuItem[] items = menu.getItems();
+					for (MenuItem item : items) {
+						String id = getMenuItemId(item);
+						IRidget itemRidget = controller.getRidget(id);
+						if (itemRidget instanceof MenuItemRidget) {
+							menuRidget.addChild((MenuItemRidget) itemRidget);
+						}
+					}
+				}
 			}
 		}
 
@@ -245,6 +266,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		if (item.getData() instanceof IContributionItem) {
 			IContributionItem contributionItem = (IContributionItem) item.getData();
 			id = contributionItem.getId();
+		}
+		if (StringUtils.isEmpty(id)) {
+			id = Integer.toString(++itemId);
 		}
 		return id;
 	}

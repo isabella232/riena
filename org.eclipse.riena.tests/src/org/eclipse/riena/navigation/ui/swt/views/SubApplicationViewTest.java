@@ -16,8 +16,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -51,34 +49,6 @@ public class SubApplicationViewTest extends TestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code createMenuItemRidget}.
-	 */
-	public void testCreateMenuItemRidget() {
-
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.NONE);
-
-		MenuItemRidget ridget = ReflectionUtils.invokeHidden(view, "createMenuItemRidget", item);
-		assertNotNull(ridget);
-		assertSame(item, ridget.getUIControl());
-
-	}
-
-	/**
-	 * Tests the <i>private</i> method {@code createToolItemRidget}.
-	 */
-	public void testCreateToolItemRidget() {
-
-		ToolBar toolbar = new ToolBar(shell, SWT.NONE);
-		ToolItem item = new ToolItem(toolbar, SWT.NONE);
-
-		ToolItemRidget ridget = ReflectionUtils.invokeHidden(view, "createToolItemRidget", item);
-		assertNotNull(ridget);
-		assertSame(item, ridget.getUIControl());
-
-	}
-
-	/**
 	 * Tests the <i>private</i> method {@code getItemId}.
 	 */
 	public void testGetItemId() {
@@ -87,7 +57,12 @@ public class SubApplicationViewTest extends TestCase {
 		MenuItem item = new MenuItem(menu, SWT.NONE);
 
 		String id = ReflectionUtils.invokeHidden(view, "getItemId", item);
-		assertNull(id);
+		assertNotNull(id);
+		assertEquals("1", id);
+
+		id = ReflectionUtils.invokeHidden(view, "getItemId", item);
+		assertNotNull(id);
+		assertEquals("2", id);
 
 		MyContributionItem contributionItem = new MyContributionItem();
 		contributionItem.setId("4711");
@@ -107,7 +82,8 @@ public class SubApplicationViewTest extends TestCase {
 		MenuItem item = new MenuItem(menu, SWT.NONE);
 
 		String id = ReflectionUtils.invokeHidden(view, "getMenuItemId", item);
-		assertNull(id);
+		assertNotNull(id);
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "1", id);
 
 		MyContributionItem contributionItem = new MyContributionItem();
 		contributionItem.setId("4711");
@@ -127,7 +103,8 @@ public class SubApplicationViewTest extends TestCase {
 		ToolItem item = new ToolItem(toolbar, SWT.NONE);
 
 		String id = ReflectionUtils.invokeHidden(view, "getToolItemId", item);
-		assertNull(id);
+		assertNotNull(id);
+		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "1", id);
 
 		MyContributionItem contributionItem = new MyContributionItem();
 		contributionItem.setId("4711");

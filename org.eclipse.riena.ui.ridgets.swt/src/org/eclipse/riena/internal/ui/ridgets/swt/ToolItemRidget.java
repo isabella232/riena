@@ -31,7 +31,7 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	@Override
 	protected void unbindUIControl() {
 		ToolItem toolItem = getUIControl();
-		if (toolItem != null) {
+		if ((toolItem != null) && !toolItem.isDisposed()) {
 			toolItem.removeSelectionListener(getActionObserver());
 		}
 		super.unbindUIControl();
@@ -50,6 +50,11 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	@Override
 	protected AbstractMarkerSupport createMarkerSupport() {
 		return new ToolItemMarkerSupport(this, propertyChangeSupport);
+	}
+
+	@Override
+	AbstractItemProperties createProperties() {
+		return new ToolItemProperties(this);
 	}
 
 }

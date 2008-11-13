@@ -42,6 +42,11 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		super.handleMarkerAttributesChanged();
 	}
 
+	@Override
+	protected ToolItemRidget getRidget() {
+		return (ToolItemRidget) ridget;
+	}
+
 	/**
 	 * Enables or disables the given item.
 	 * 
@@ -53,12 +58,31 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	/**
+	 * Shows or hides the given item.
+	 * 
+	 * @param item
+	 *            - tool item to update
+	 */
+	private void updateVisible(ToolItem item) {
+
+		if (getRidget().isVisible()) {
+			getRidget().createItem();
+		} else {
+			item.dispose();
+		}
+
+	}
+
+	/**
 	 * Updates the tool item to display the current markers.
 	 */
 	private void updateToolItem() {
 		ToolItem item = (ToolItem) ridget.getUIControl();
 		if (item != null) {
-			updateDisabled(item);
+			updateVisible(item);
+			if (!item.isDisposed()) {
+				updateDisabled(item);
+			}
 		}
 	}
 

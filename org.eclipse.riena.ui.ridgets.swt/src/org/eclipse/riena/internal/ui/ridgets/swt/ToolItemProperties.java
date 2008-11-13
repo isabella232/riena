@@ -1,0 +1,47 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.riena.internal.ui.ridgets.swt;
+
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+
+/**
+ * This class stores the properties of a tool item.
+ */
+public class ToolItemProperties extends AbstractItemProperties {
+
+	private ToolBar parent;
+	private int index;
+
+	/**
+	 * @param item
+	 */
+	public ToolItemProperties(ToolItemRidget ridget) {
+		super(ridget);
+		ToolItem item = ridget.getUIControl();
+		parent = item.getParent();
+		index = parent.indexOf(item);
+	}
+
+	@Override
+	protected ToolItemRidget getRidget() {
+		return (ToolItemRidget) super.getRidget();
+	}
+
+	@Override
+	protected ToolItem createItem() {
+		ToolItem toolItem = new ToolItem(parent, getStyle(), index);
+		setAllProperties(toolItem);
+		getRidget().setUIControl(toolItem);
+		return toolItem;
+	}
+
+}

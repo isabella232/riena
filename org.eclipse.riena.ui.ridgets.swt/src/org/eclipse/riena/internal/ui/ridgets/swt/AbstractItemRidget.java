@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.EventHandler;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.swt.graphics.Image;
@@ -30,6 +31,8 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	private ActionObserver actionObserver;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
+	private AbstractItemProperties itemProperties;
+	private String itemId;
 
 	/**
 	 * Creates a new instance of {@link AbstractItemRidget}.
@@ -40,15 +43,34 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		useRidgetIcon = false;
 	}
 
+	/**
+	 * Creates a class that stores all properties of the given item.
+	 * 
+	 * @return item properties
+	 */
+	abstract AbstractItemProperties createProperties();
+
 	@Override
 	protected void bindUIControl() {
 		Item control = getUIControl();
 		if (control != null) {
 			item = control;
+			itemId = super.getID();
 			initText();
 			updateUIText();
 			updateUIIcon();
+			setItemProperties(createProperties());
+
 		}
+	}
+
+	@Override
+	public final String getID() {
+		String idString = super.getID();
+		if (StringUtils.isEmpty(idString)) {
+			idString = itemId;
+		}
+		return idString;
 	}
 
 	/**
@@ -151,6 +173,24 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 
 	protected ActionObserver getActionObserver() {
 		return actionObserver;
+	}
+
+	private void setItemProperties(AbstractItemProperties itemProperties) {
+		this.itemProperties = itemProperties;
+	}
+
+	AbstractItemProperties getItemProperties() {
+		return itemProperties;
+	}
+
+	/**
+	 * Creates a new item on base of the stored item properties.
+	 */
+	void createItem() {
+		Item item = getUIControl();
+		if ((item == null) || (item.isDisposed())) {
+			getItemProperties().createItem();
+		}
 	}
 
 }

@@ -11,9 +11,11 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
@@ -36,7 +38,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	protected void bindUIControl() {
 		super.bindUIControl();
 		MenuItem menuItem = getUIControl();
-		if (menuItem != null) {
+		if ((menuItem != null) && (!menuItem.isDisposed())) {
 			menuItem.addSelectionListener(getActionObserver());
 		}
 	}
@@ -44,7 +46,8 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	@Override
 	protected void unbindUIControl() {
 		MenuItem menuItem = getUIControl();
-		if (menuItem != null && !isMenu(menuItem)) {
+
+		if ((menuItem != null) && !menuItem.isDisposed() && !isMenu(menuItem)) {
 			menuItem.removeSelectionListener(getActionObserver());
 		}
 		super.unbindUIControl();
@@ -66,6 +69,20 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	@Override
 	protected AbstractMarkerSupport createMarkerSupport() {
 		return new MenuItemMarkerSupport(this, propertyChangeSupport);
+	}
+
+	boolean isCommandEnabled() {
+		Item item = getUIControl();
+		if (item.getData() instanceof IContributionItem) {
+			IContributionItem contributionItem = (IContributionItem) item.getData();
+			return contributionItem.isEnabled();
+		}
+		return true;
+	}
+
+	@Override
+	AbstractItemProperties createProperties() {
+		return new MenuItemProperties(this);
 	}
 
 }
