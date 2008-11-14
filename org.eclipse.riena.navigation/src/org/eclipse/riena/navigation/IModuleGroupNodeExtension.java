@@ -29,10 +29,11 @@ public interface IModuleGroupNodeExtension {
 	Bundle getContributingBundle();
 
 	/**
-	 * @return A node builder that creates a node or a subtree for the
-	 *         application model tree.
+	 * @return A navigation assembler that creates a node or a subtree for this
+	 *         modul group or <code>null</code>.
 	 */
-	INavigationNodeBuilder createNodeBuilder();
+	@MapName("assembler")
+	INavigationAssembler createNavigationAssembler();
 
 	/**
 	 * @return The type part of the ID of a navigation node.

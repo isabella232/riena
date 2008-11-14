@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation;
 /**
  * Creates a node or a subtree for the application model tree.
  */
-public interface INavigationNodeBuilder {
+public interface INavigationAssembler {
 
 	/**
 	 * Creates a node or an application model subtree. The created node (or in

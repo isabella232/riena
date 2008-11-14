@@ -16,12 +16,11 @@ import java.util.WeakHashMap;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.IGenericNavigationNodeBuilder;
+import org.eclipse.riena.navigation.IGenericNavigationAssembler;
+import org.eclipse.riena.navigation.INavigationAssembler;
+import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeBuilder;
-import org.eclipse.riena.navigation.INavigationNodeExtension;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
-import org.eclipse.riena.navigation.ISubModuleExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -36,9 +35,9 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
-	private static final String EP_NAVNODETYPE = "org.eclipse.riena.navigation.navigationNode"; //$NON-NLS-1$
+	private static final String EP_NAVIGATION_ASSEMBLIES = "org.eclipse.riena.navigation.assemblies"; //$NON-NLS-1$
 
-	private NavigationNodeExtensionInjectionHelper targetNN;
+	private NavigationAssembliesExtensionInjectionHelper targetNN;
 
 	private Map<String, ISubModuleNodeExtension> id2SubModuleCache = new WeakHashMap<String, ISubModuleNodeExtension>();
 
@@ -47,29 +46,24 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 */
 	public NavigationNodeProvider() {
 
-		targetNN = new NavigationNodeExtensionInjectionHelper();
-		Inject.extension(EP_NAVNODETYPE).useType(getNavigationNodeTypeDefinitonIFSafe()).into(targetNN).andStart(
-				Activator.getDefault().getContext());
+		targetNN = new NavigationAssembliesExtensionInjectionHelper();
+		Inject.extension(EP_NAVIGATION_ASSEMBLIES).useType(getNavigationNodeTypeDefinitonIFSafe()).into(targetNN)
+				.andStart(Activator.getDefault().getContext());
 
 	}
 
-	private Class<? extends INavigationNodeExtension> getNavigationNodeTypeDefinitonIFSafe() {
+	private Class<? extends INavigationAssemblyExtension> getNavigationNodeTypeDefinitonIFSafe() {
 
 		if (getNavigationNodeTypeDefinitonIF() != null && getNavigationNodeTypeDefinitonIF().isInterface()) {
 			return getNavigationNodeTypeDefinitonIF();
 		} else {
-			return INavigationNodeExtension.class;
+			return INavigationAssemblyExtension.class;
 		}
 	}
 
-	public Class<? extends INavigationNodeExtension> getNavigationNodeTypeDefinitonIF() {
+	public Class<? extends INavigationAssemblyExtension> getNavigationNodeTypeDefinitonIF() {
 
-		return INavigationNodeExtension.class;
-	}
-
-	public Class<? extends ISubModuleExtension> getSubModuleTypeDefinitionIF() {
-
-		return ISubModuleExtension.class;
+		return INavigationAssemblyExtension.class;
 	}
 
 	/**
@@ -85,9 +79,9 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
 				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
 			}
-			INavigationNodeExtension navigationNodeTypeDefiniton = getNavigationNodeTypeDefinition(targetId);
+			INavigationAssemblyExtension navigationNodeTypeDefiniton = getNavigationNodeTypeDefinition(targetId);
 			if (navigationNodeTypeDefiniton != null) {
-				INavigationNodeBuilder builder = navigationNodeTypeDefiniton.createNodeBuilder();
+				INavigationAssembler builder = navigationNodeTypeDefiniton.createNavigationAssembler();
 				if (builder == null) {
 					builder = createDefaultBuilder();
 				}
@@ -108,8 +102,8 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 		return targetNode;
 	}
 
-	protected GenericNodeBuilder createDefaultBuilder() {
-		return new GenericNodeBuilder();
+	protected GenericNavigationAssembler createDefaultBuilder() {
+		return new GenericNavigationAssembler();
 	}
 
 	/**
@@ -129,12 +123,12 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * @param targetId
 	 * @param builder
 	 */
-	protected void prepareNavigationNodeBuilder(INavigationNodeExtension navigationNodeTypeDefiniton,
-			NavigationNodeId targetId, INavigationNodeBuilder builder) {
+	protected void prepareNavigationNodeBuilder(INavigationAssemblyExtension navigationNodeTypeDefiniton,
+			NavigationNodeId targetId, INavigationAssembler builder) {
 
-		if (builder instanceof IGenericNavigationNodeBuilder) {
+		if (builder instanceof IGenericNavigationAssembler) {
 			// the extension interface of the navigation node definition is injected into the builder   
-			((IGenericNavigationNodeBuilder) builder).setNodeDefinition(navigationNodeTypeDefiniton);
+			((IGenericNavigationAssembler) builder).setNodeDefinition(navigationNodeTypeDefiniton);
 		}
 	}
 
@@ -142,11 +136,11 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * @param targetId
 	 * @return
 	 */
-	public INavigationNodeExtension getNavigationNodeTypeDefinition(NavigationNodeId targetId) {
+	public INavigationAssemblyExtension getNavigationNodeTypeDefinition(NavigationNodeId targetId) {
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
-			INavigationNodeExtension[] data = targetNN.getData();
+			INavigationAssemblyExtension[] data = targetNN.getData();
 			for (int i = 0; i < data.length; i++) {
 				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId.getTypeId())) {
 					return data[i];
@@ -204,15 +198,15 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 		// TODO: implement, does nothing special yet
 	}
 
-	public class NavigationNodeExtensionInjectionHelper {
-		private INavigationNodeExtension[] data;
+	public class NavigationAssembliesExtensionInjectionHelper {
+		private INavigationAssemblyExtension[] data;
 
-		public void update(INavigationNodeExtension[] data) {
+		public void update(INavigationAssemblyExtension[] data) {
 			this.data = data.clone();
 
 		}
 
-		public INavigationNodeExtension[] getData() {
+		public INavigationAssemblyExtension[] getData() {
 			return data.clone();
 		}
 	}

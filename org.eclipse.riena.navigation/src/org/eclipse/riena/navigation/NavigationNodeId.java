@@ -35,7 +35,7 @@ public class NavigationNodeId {
 	 * view. Both is configured using extensions (NavigationNodeType and
 	 * SubModuleType). This typeId is used to find the right extension.
 	 * 
-	 * @see INavigationNodeBuilder
+	 * @see INavigationAssembler
 	 * @return The type ID of a navigation node.
 	 */
 	public String getTypeId() {

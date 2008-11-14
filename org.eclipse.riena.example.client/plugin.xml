@@ -415,26 +415,25 @@
       </renderer>
    </extension>
    <extension
-         point="org.eclipse.riena.navigation.navigationNode">
-      <navigationNode
+         point="org.eclipse.riena.navigation.assemblies">
+      <assembly
             typeId="org.eclipse.riena.example.navigation"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
             parentTypeId="application">
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.navigate"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
             parentTypeId="org.eclipse.riena.example.navigation">
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.sharedViews"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeBuilder"
             parentTypeId="playground">
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.uiProcesses"
             name="uiProcesses_definition"
-            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
          <modulegroup
                name="uiProcesses_group"
@@ -456,16 +455,15 @@
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
             </module>
          </modulegroup>
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.playground"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
             parentTypeId="playground">
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.filters"
             name="filters_definition"
-            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
          <modulegroup
                name="uiProcesses_group">
@@ -498,11 +496,10 @@
                      controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"/>
             </module>
          </modulegroup>
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.logcollector"
             name="logcollector"
-            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
          <modulegroup
                name="logcollector_group">
@@ -517,21 +514,20 @@
                      controller="org.eclipse.riena.example.client.controllers.LogCollectorSubModuleController"/>
             </module>
          </modulegroup>
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.navigate.comboAndList"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
             parentTypeId="org.eclipse.riena.example.navigation">
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.navigate.tableTextAndTree"
-            nodeBuilder="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentTypeId="playground">
-      </navigationNode>
-      <navigationNode
+      </assembly>
+      <assembly
             typeId="org.eclipse.riena.example.client.kundensuche"
             name="kundensuche"
-            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="playground">
          <modulegroup
                name="kundesuche_group">
@@ -547,7 +543,7 @@
                      controller="org.eclipse.riena.example.client.controllers.KundenSucheController"/>
             </module>
          </modulegroup>
-      </navigationNode>
+      </assembly>
    </extension>
    <extension
          id="example_product"

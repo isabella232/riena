@@ -16,21 +16,22 @@ import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationNodeBuilder;
+import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.workarea.WorkareaManager;
 
 /**
  *
  */
-public class ComboAndListNodeBuilder implements INavigationNodeBuilder {
+public class ComboAndListNodeBuilder implements INavigationAssembler {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public IModuleGroupNode buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
@@ -40,13 +41,13 @@ public class ComboAndListNodeBuilder implements INavigationNodeBuilder {
 		node.addChild(module);
 
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(ComboSubModuleView.ID);
-		subModule.setControllerClassForView(ComboSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, ComboSubModuleController.class,
+				ComboSubModuleView.ID, false);
 		module.addChild(subModule);
 
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list"), "List"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(ListSubModuleView.ID);
-		subModule.setControllerClassForView(ListSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, ListSubModuleController.class,
+				ListSubModuleView.ID, false);
 		module.addChild(subModule);
 		return node;
 	}

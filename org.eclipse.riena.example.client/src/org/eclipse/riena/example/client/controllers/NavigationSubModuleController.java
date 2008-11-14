@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.riena.example.client.views.NavigationSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -23,6 +24,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.workarea.WorkareaManager;
 
 /**
  * This controller adds dynamically nodes to the navigation.
@@ -193,6 +195,8 @@ public class NavigationSubModuleController extends SubModuleController {
 
 		IModuleNode newModuleNode = new ModuleNode(null, "Module"); //$NON-NLS-1$
 		ISubModuleNode newSubModuleNode = createSubModuleNode("SubModule"); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(newSubModuleNode, NavigationSubModuleController.class,
+				NavigationSubModuleView.ID, false);
 		newModuleNode.addChild(newSubModuleNode);
 
 		return newModuleNode;
@@ -209,6 +213,8 @@ public class NavigationSubModuleController extends SubModuleController {
 
 		ISubModuleNode newSubModuleNode = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigation"), label); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(newSubModuleNode, NavigationSubModuleController.class,
+				NavigationSubModuleView.ID, false);
 
 		return newSubModuleNode;
 

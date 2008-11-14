@@ -13,9 +13,7 @@ package org.eclipse.riena.internal.navigation;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
-import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
-import org.eclipse.riena.navigation.model.SubModuleViewBuilder;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -29,7 +27,6 @@ public class Activator extends RienaPlugin {
 	// The shared instance
 	private static Activator plugin;
 	private INavigationNodeProvider service1 = null;
-	private ISubModuleViewBuilder service2 = null;
 
 	/**
 	 * The constructor
@@ -49,11 +46,8 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 
 		service1 = new NavigationNodeProvider();
-		service2 = new SubModuleViewBuilder();
 
 		context.registerService(INavigationNodeProvider.class.getName(), service1, RienaConstants
-				.newDefaultServiceProperties());
-		context.registerService(ISubModuleViewBuilder.class.getName(), service2, RienaConstants
 				.newDefaultServiceProperties());
 	}
 
@@ -69,10 +63,6 @@ public class Activator extends RienaPlugin {
 		if (service1 != null) {
 			service1.cleanUp();
 			service1 = null;
-		}
-		if (service2 != null) {
-			service2.cleanUp();
-			service2 = null;
 		}
 		super.stop(context);
 	}

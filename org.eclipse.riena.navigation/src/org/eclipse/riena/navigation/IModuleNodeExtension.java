@@ -29,10 +29,11 @@ public interface IModuleNodeExtension {
 	Bundle getContributingBundle();
 
 	/**
-	 * @return A node builder that creates a node or a subtree for the
-	 *         application model tree.
+	 * @return A navigation assembler that creates a node or a subtree for this
+	 *         modul or <code>null</code>.
 	 */
-	INavigationNodeBuilder createNodeBuilder();
+	@MapName("assembler")
+	INavigationAssembler createNavigationAssembler();
 
 	/**
 	 * @return The type part of the ID of a navigation node.
@@ -44,6 +45,11 @@ public interface IModuleNodeExtension {
 	 * @return This modules label
 	 */
 	String getLabel();
+
+	/**
+	 * @return This modules icon id
+	 */
+	String getIcon();
 
 	/**
 	 * @return A list of submodule node definitions that are children of the

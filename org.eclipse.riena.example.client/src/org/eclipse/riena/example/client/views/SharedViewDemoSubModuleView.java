@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
@@ -28,11 +31,20 @@ import org.eclipse.swt.widgets.Text;
 public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSubModuleController> {
 
 	public static final String ID = SharedViewDemoSubModuleView.class.getName();
+	private static List<SharedViewDemoSubModuleView> instances = new ArrayList<SharedViewDemoSubModuleView>();
 
 	private static final int FIELD_WIDTH = 100;
 	private static final int TOP = 10;
 	private static final int LEFT = 10;
 	private static final int LABEL_WIDTH = 90;
+
+	private int instanceIndex = 0;
+
+	public SharedViewDemoSubModuleView() {
+
+		instances.add(this);
+		instanceIndex = instances.size();
+	}
 
 	/**
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -50,7 +62,7 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 		addUIControl(helloLabel, "labelFacade"); //$NON-NLS-1$
 		// getController().setLabelFacade(labelFacade);
 
-		Label someText = UIControlsFactory.createLabel(parent, "Data", SWT.LEFT); //$NON-NLS-1$
+		Label someText = UIControlsFactory.createLabel(parent, "(Instance " + instanceIndex + ") Data", SWT.LEFT); //$NON-NLS-1$ $NON-NLS-2$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);

@@ -452,7 +452,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            ID of the node to create. Also refers to an extension point
 	 *            describing the target node that is used to create it if it
 	 *            does not exist.
-	 * @see INavigationNodeBuilder
+	 * @see INavigationAssembler
 	 */
 	void create(NavigationNodeId targetId);
 
@@ -464,7 +464,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            ID of the node to navigate to. Also refers to an extension
 	 *            point describing the target node that is used to create it if
 	 *            it does not exist.
-	 * @see INavigationNodeBuilder
+	 * @see INavigationAssembler
 	 */
 	void navigate(NavigationNodeId targetId);
 
@@ -472,7 +472,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Creates the specified navigation node (if it does not already exist) and
 	 * navigates to it.
 	 * 
-	 * @see INavigationNodeBuilder
+	 * @see INavigationAssembler
 	 * @param targetId
 	 *            ID of the node to navigate to. Also refers to an extension
 	 *            point describing the target node that is used to create it if

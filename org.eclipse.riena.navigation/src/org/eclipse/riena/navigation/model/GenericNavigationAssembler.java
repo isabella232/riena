@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.IGenericNavigationNodeBuilder;
+import org.eclipse.riena.navigation.IGenericNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeExtension;
+import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -25,21 +25,21 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 /**
  *
  */
-public class GenericNodeBuilder implements IGenericNavigationNodeBuilder {
+public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 	// the node definition as read from extension point
-	private INavigationNodeExtension nodeDefinition;
+	private INavigationAssemblyExtension nodeDefinition;
 
-	public INavigationNodeExtension getNodeDefinition() {
+	public INavigationAssemblyExtension getNodeDefinition() {
 		return nodeDefinition;
 	}
 
-	public void setNodeDefinition(INavigationNodeExtension nodeDefinition) {
+	public void setNodeDefinition(INavigationAssemblyExtension nodeDefinition) {
 		this.nodeDefinition = nodeDefinition;
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
@@ -92,13 +92,16 @@ public class GenericNodeBuilder implements IGenericNavigationNodeBuilder {
 
 	protected ISubModuleNode build(ISubModuleNodeExtension submoduleDefinition) {
 
-		// create submodule node with label
+		// create submodule node with label (and icon)
 		ISubModuleNode submodule = new SubModuleNode(new NavigationNodeId(submoduleDefinition.getTypeId()),
 				submoduleDefinition.getLabel());
+		submodule.setIcon(submoduleDefinition.getIcon());
+
 		// register view definition
 		NavigationNodeProviderAccessor.current().getNavigationNodeProvider().register(submoduleDefinition.getTypeId(),
 				submoduleDefinition);
-		// ...and may contain nested submodules
+
+		// process nested submodules
 		for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {
 			submodule.addChild(build(nestedSubmoduleDefinition));
 		}

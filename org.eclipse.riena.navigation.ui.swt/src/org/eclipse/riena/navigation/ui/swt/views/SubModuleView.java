@@ -13,22 +13,24 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.INavigationNodeExtension;
+import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ISubModuleViewBuilder;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.model.SubModuleViewBuilderAccessor;
 import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
@@ -38,6 +40,8 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.workarea.IWorkareaDefinition;
+import org.eclipse.riena.workarea.WorkareaManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
@@ -46,12 +50,15 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+import org.osgi.service.log.LogService;
 
 /**
  * Abstract implementation for a sub module view
  */
 public abstract class SubModuleView<C extends SubModuleController> extends ViewPart implements
 		INavigationNodeView<SWTModuleController, SubModuleNode> {
+
+	private final static Logger LOGGER = Activator.getDefault().getLogger(SubModuleView.class.getName());
 
 	private Map<ISubModuleNode, C> node2Controler;
 	private AbstractViewBindingDelegate binding;
@@ -300,29 +307,39 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 	}
 
-	protected C createController(ISubModuleNode pSubModuleNode) {
+	@SuppressWarnings("unchecked")
+	protected C createController(ISubModuleNode node) {
 
 		// check node itself for controller definition first
-		C controller = (C) getSubModuleViewBuilder().provideController(pSubModuleNode);
-		if (controller != null) {
-			controller.setNavigationNode(pSubModuleNode);
+		Assert.isNotNull(node, "navigation node must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(node.getNodeId(), "navigation node id must not be null"); //$NON-NLS-1$
+		Assert.isNotNull(node.getNodeId().getTypeId(), "navigation node type id must not be null"); //$NON-NLS-1$
+
+		// consult workarea manager
+		C controller = null;
+		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node.getNodeId().getTypeId());
+		if (def != null) {
+			try {
+				controller = (C) def.createController();
+			} catch (Exception ex) {
+				String message = String.format(
+						"cannnot create controller for class %s", node.getControllerClassForView()); //$NON-NLS-1$ 
+				LOGGER.log(LogService.LOG_ERROR, message, ex);
+				throw new InvocationTargetFailure(message, ex);
+			}
 		}
+		if (controller != null) {
+			controller.setNavigationNode(node);
+		}
+
 		return controller;
 	}
 
-	protected INavigationNodeExtension getNavigationNodeDefinition(NavigationNodeId targetId) {
+	protected INavigationAssemblyExtension getNavigationNodeDefinition(NavigationNodeId targetId) {
 
 		NavigationNodeProvider p = (NavigationNodeProvider) NavigationNodeProviderAccessor.current()
 				.getNavigationNodeProvider();
 		return p.getNavigationNodeTypeDefinition(targetId);
-	}
-
-	/**
-	 * @return
-	 */
-	protected ISubModuleViewBuilder getSubModuleViewBuilder() {
-		// TODO: handling if no service found ???
-		return SubModuleViewBuilderAccessor.current().getSubModuleViewBuilder();
 	}
 
 	private void doBinding() {
@@ -389,13 +406,20 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	private SubModuleNode getRCPSubModuleNode() {
+
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] elements = registry
-				.getConfigurationElementsFor("org.eclipse.riena.navigation.subModule");
+				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies");
 		String viewId = getViewSite().getId();
+
+		return getRCPSubModuleNode(viewId, elements);
+	}
+
+	private SubModuleNode getRCPSubModuleNode(String viewId, IConfigurationElement[] elements) {
+
 		for (int i = 0; rcpSubModuleNode == null && i < elements.length; i++) {
 			IConfigurationElement element = elements[i];
-			if ("subModule".equals(element.getName())) {
+			if ("submodule".equals(element.getName())) {
 				String view = element.getAttribute("view");
 				if (viewId.equals(view)) {
 					String typeId = element.getAttribute("typeId");
@@ -403,9 +427,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 						rcpSubModuleNode = new SubModuleNode(new NavigationNodeId(typeId), getPartName());
 					}
 				}
+			} else if (element.getChildren().length > 0) {
+				rcpSubModuleNode = getRCPSubModuleNode(viewId, element.getChildren());
 			}
 		}
 		return rcpSubModuleNode;
 	}
-
 }

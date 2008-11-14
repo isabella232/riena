@@ -20,7 +20,7 @@ import org.osgi.framework.Bundle;
  * node or a subtree in the application model tree.
  */
 @ExtensionInterface
-public interface INavigationNodeExtension {
+public interface INavigationAssemblyExtension {
 
 	/**
 	 * Return the contributing bundle of the extension.
@@ -30,10 +30,11 @@ public interface INavigationNodeExtension {
 	Bundle getContributingBundle();
 
 	/**
-	 * @return A node builder that creates a node or a subtree for the
+	 * @return A navigation assembler that creates a node or a subtree for the
 	 *         application model tree.
 	 */
-	INavigationNodeBuilder createNodeBuilder();
+	@MapName("assembler")
+	INavigationAssembler createNavigationAssembler();
 
 	/**
 	 * @return ID of the parent indicating where to insert a node or subtree

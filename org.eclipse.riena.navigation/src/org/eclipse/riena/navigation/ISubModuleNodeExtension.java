@@ -12,7 +12,6 @@ package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
-import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.osgi.framework.Bundle;
 
 /**
@@ -30,10 +29,11 @@ public interface ISubModuleNodeExtension {
 	Bundle getContributingBundle();
 
 	/**
-	 * @return A node builder that creates a node or a subtree for the
-	 *         application model tree or <code>null</code>.
+	 * @return A navigation assembler that creates a node or a subtree for this
+	 *         submodul or <code>null</code>.
 	 */
-	INavigationNodeBuilder createNodeBuilder();
+	@MapName("assembler")
+	INavigationAssembler createNavigationAssembler();
 
 	/**
 	 * @return ID of the parent indicating where to insert a node or subtree
@@ -53,10 +53,16 @@ public interface ISubModuleNodeExtension {
 	String getLabel();
 
 	/**
+	 * @return This submodules icon id
+	 */
+	String getIcon();
+
+	/**
 	 * @return A controller that controlles the UI widgets in the view through
 	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
-	IController createController();
+	@SuppressWarnings("unchecked")
+	Class getController();
 
 	/**
 	 * @return For the SWT-based Riena UI this is the ID of the view associated

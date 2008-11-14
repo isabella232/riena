@@ -22,6 +22,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.workarea.WorkareaManager;
 
 /**
  *
@@ -29,7 +30,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 public class NavigateNodeBuilder extends NavigationNodeBuilder {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
@@ -43,8 +44,8 @@ public class NavigateNodeBuilder extends NavigationNodeBuilder {
 
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(NavigateSubModuleView.ID);
-		subModule.setControllerClassForView(NavigateSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, NavigateSubModuleController.class,
+				NavigateSubModuleView.ID, false);
 
 		module.addChild(subModule);
 		return moduleGroup;

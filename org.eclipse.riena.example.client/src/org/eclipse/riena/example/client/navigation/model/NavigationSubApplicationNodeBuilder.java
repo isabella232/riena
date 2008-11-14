@@ -28,11 +28,12 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.workarea.WorkareaManager;
 
 public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeBuilder#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
@@ -52,33 +53,33 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		ISubModuleNode subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
 		subModule.setIcon(createIconPath(ExampleIcons.ICON_FILE));
-		subModule.setViewId(CustomerDetailSubModuleView.ID);
-		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
+				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 
 		ISubModuleNode subModule2 = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule2.setViewId(CustomerDetailSubModuleView.ID);
-		subModule2.setControllerClassForView(CustomerDetailSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule2, CustomerDetailSubModuleController.class,
+				CustomerDetailSubModuleView.ID, false);
 		subModule.addChild(subModule2);
 
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.1.2"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(CustomerDetailSubModuleView.ID);
-		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
+				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 		module = new ModuleNode(null, "Module 1.1.2 (closeable)"); //$NON-NLS-1$
 		module.setIcon(createIconPath(ExampleIcons.ICON_HOMEFOLDER));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.1.2.1"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(CustomerDetailSubModuleView.ID);
-		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
+				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 		/* NEW */
 		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.navigation"), "Navigation"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(NavigationSubModuleView.ID);
-		subModule.setControllerClassForView(NavigationSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, NavigationSubModuleController.class,
+				NavigationSubModuleView.ID, false);
 		module.addChild(subModule);
 
 		moduleGroup = new ModuleGroupNode(null);
@@ -91,13 +92,13 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.2.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(CustomerDetailSubModuleView.ID);
-		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
+				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail"), "SubModule 1.2.1.2"); //$NON-NLS-1$ //$NON-NLS-2$
-		subModule.setViewId(CustomerDetailSubModuleView.ID);
-		subModule.setControllerClassForView(CustomerDetailSubModuleController.class);
+		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
+				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 
 		return subApplication;
