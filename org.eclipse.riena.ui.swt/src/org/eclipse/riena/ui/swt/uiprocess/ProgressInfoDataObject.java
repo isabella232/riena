@@ -19,14 +19,14 @@ public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject
 	private int value;
 	private int maxValue;
 	private int key;
-	private PROCESS_STATE processState;
+	private ProcessState processState;
 
 	/**
 	 * @param maxValue
 	 * @param processName
 	 * @param value
 	 */
-	public ProgressInfoDataObject(int key, int maxValue, int value, String processName, PROCESS_STATE pState) {
+	public ProgressInfoDataObject(int key, int maxValue, int value, String processName, ProcessState pState) {
 		this.maxValue = maxValue;
 		this.processName = processName;
 		this.value = value;
@@ -58,7 +58,7 @@ public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject
 	/**
 	 * @return the processState
 	 */
-	public PROCESS_STATE getProcessState() {
+	public ProcessState getProcessState() {
 		return processState;
 	}
 

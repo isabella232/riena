@@ -13,9 +13,9 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.example.client.views.ValidationSubModuleView;
-import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
@@ -131,7 +131,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
 
-		IStatuslineRidget statuslineRidget = getSubApplicationController().getStatuslineRidget();
+		IStatuslineRidget statuslineRidget = getApplicationController().getStatuslineRidget();
 		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
 				statuslineRidget);
 		statuslineMessageMarkerViewer.addRidget(txtNumbersOnly);
@@ -155,8 +155,8 @@ public class ValidationSubModuleController extends SubModuleController {
 	 * 
 	 * @return sub-application controller
 	 */
-	private SubApplicationController getSubApplicationController() {
-		return (SubApplicationController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
+	private ApplicationController getApplicationController() {
+		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
 				.getNavigationNodeController();
 	}
 

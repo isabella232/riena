@@ -18,6 +18,6 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
  * 
  * {@value #PENDING}, {@value #RUNNING},{@value #FINISHED}
  */
-public enum PROCESS_STATE {
+public enum ProcessState {
 	PENDING, RUNNING, FINISHED, CANCELED
 }

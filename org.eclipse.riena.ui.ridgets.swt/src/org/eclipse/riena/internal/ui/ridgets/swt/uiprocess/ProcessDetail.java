@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.eclipse.riena.ui.swt.uiprocess.PROCESS_STATE;
+import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 
 /**
@@ -33,7 +33,7 @@ public class ProcessDetail {
 	IProgressVisualizer visualizer;
 
 	// state
-	private PROCESS_STATE state = PROCESS_STATE.PENDING;
+	private ProcessState state = ProcessState.PENDING;
 
 	// steady changing progress when in state pending (triggered by update thread)
 	private int pendingProgress = 0;
@@ -63,7 +63,7 @@ public class ProcessDetail {
 	}
 
 	public boolean isPending() {
-		return PROCESS_STATE.PENDING.equals(state);
+		return ProcessState.PENDING.equals(state);
 	}
 
 	/**
@@ -105,14 +105,14 @@ public class ProcessDetail {
 	 * 
 	 * @param state
 	 */
-	public void setState(PROCESS_STATE state) {
+	public void setState(ProcessState state) {
 		this.state = state;
 	}
 
 	/**
 	 * @return the state
 	 */
-	public PROCESS_STATE getState() {
+	public ProcessState getState() {
 		return state;
 	}
 

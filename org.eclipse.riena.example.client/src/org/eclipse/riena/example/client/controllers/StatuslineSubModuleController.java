@@ -13,9 +13,9 @@ package org.eclipse.riena.example.client.controllers;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -109,7 +109,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 	}
 
 	private IStatuslineRidget getStatusLine() {
-		return getSubApplicationController().getStatuslineRidget();
+		return getApplicationController().getStatuslineRidget();
 	}
 
 	/**
@@ -117,8 +117,8 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * 
 	 * @return sub-application controller
 	 */
-	private SubApplicationController getSubApplicationController() {
-		return (SubApplicationController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
+	private ApplicationController getApplicationController() {
+		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
 				.getNavigationNodeController();
 	}
 

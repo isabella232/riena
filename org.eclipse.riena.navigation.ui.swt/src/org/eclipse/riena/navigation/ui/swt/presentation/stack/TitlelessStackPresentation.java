@@ -428,13 +428,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * Returns true if the given part is the status line.
-	 */
-	private boolean isStatusLine(IPresentablePart part) {
-		return part.getPartProperty(PROPERTY_STATUSLINE) != null;
-	}
-
-	/**
 	 * Redraws the custom sub module title contained in the parent
 	 */
 	private void redrawSubModuleTitle() {

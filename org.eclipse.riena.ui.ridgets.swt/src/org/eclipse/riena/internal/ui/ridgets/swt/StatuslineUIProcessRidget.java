@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineUIProcess;
-import org.eclipse.riena.ui.swt.uiprocess.PROCESS_STATE;
+import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.BundleContext;
@@ -239,7 +239,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			// pending?
 			if (pDetail.isPending()) {
 				// no more!
-				pDetail.setState(PROCESS_STATE.RUNNING);
+				pDetail.setState(ProcessState.RUNNING);
 			}
 			pDetail.setProgress(progress);
 		}
@@ -414,7 +414,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	public synchronized void finalUpdateUI(IProgressVisualizer visualizer) {
 		getProcessManager().detailForVisualizer(visualizer).setState(
-				visualizer.getProcessInfo().isCanceled() ? PROCESS_STATE.CANCELED : PROCESS_STATE.FINISHED);
+				visualizer.getProcessInfo().isCanceled() ? ProcessState.CANCELED : ProcessState.FINISHED);
 		checkStillNeeded(visualizer);
 		updateUserInterface();
 	}
@@ -424,8 +424,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		contexts.add(visualizer.getProcessInfo().getContext());
 		ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
 		if (detail != null
-				&& (detail.getState().equals(PROCESS_STATE.FINISHED) || detail.getState()
-						.equals(PROCESS_STATE.CANCELED)) && contextLocator.getActiveContexts(contexts).size() == 1) {
+				&& (detail.getState().equals(ProcessState.FINISHED) || detail.getState()
+						.equals(ProcessState.CANCELED)) && contextLocator.getActiveContexts(contexts).size() == 1) {
 			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
 			unregisterContextUpdateListener(visualizer, false);
 			return false;

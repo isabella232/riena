@@ -22,7 +22,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.uiprocess.PROCESS_STATE;
+import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -65,7 +65,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	private List<ProgressInfoDataObject> pidos = new ArrayList<ProgressInfoDataObject>();
 
-	private final Map<PROCESS_STATE, ILabelFormatter> stateValueMappers = new HashMap<PROCESS_STATE, ILabelFormatter>();
+	private final Map<ProcessState, ILabelFormatter> stateValueMappers = new HashMap<ProcessState, ILabelFormatter>();
 
 	private Color listBackground;
 
@@ -107,7 +107,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * init mappers for label formatting
 	 */
 	private void initStateMappers() {
-		stateValueMappers.put(PROCESS_STATE.PENDING, new ILabelFormatter() {
+		stateValueMappers.put(ProcessState.PENDING, new ILabelFormatter() {
 
 			public String formatValue(int value) {
 				return "..."; //$NON-NLS-1$
@@ -115,14 +115,14 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		});
 
-		stateValueMappers.put(PROCESS_STATE.RUNNING, new ILabelFormatter() {
+		stateValueMappers.put(ProcessState.RUNNING, new ILabelFormatter() {
 
 			public String formatValue(int value) {
 				return value + " %"; //$NON-NLS-1$
 			}
 
 		});
-		stateValueMappers.put(PROCESS_STATE.FINISHED, new ILabelFormatter() {
+		stateValueMappers.put(ProcessState.FINISHED, new ILabelFormatter() {
 
 			public String formatValue(int value) {
 				return "finished"; //$NON-NLS-1$
@@ -130,7 +130,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		});
 
-		stateValueMappers.put(PROCESS_STATE.CANCELED, new ILabelFormatter() {
+		stateValueMappers.put(ProcessState.CANCELED, new ILabelFormatter() {
 
 			public String formatValue(int value) {
 				return "canceled"; //$NON-NLS-1$
