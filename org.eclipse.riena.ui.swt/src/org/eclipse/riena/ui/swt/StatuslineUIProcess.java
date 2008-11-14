@@ -29,6 +29,7 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -78,7 +79,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		super(parent, style);
 		initStateMappers();
 		listBackground = new Color(parent.getDisplay(), 183, 216, 236);
+		observeMoveAndResize(parent);
+	}
 
+	private void observeMoveAndResize(Composite parent) {
 		//observe shell movement and resize
 		ControlAdapter listener = new ControlAdapter() {
 
@@ -95,12 +99,35 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		};
 		addControlListener(listener);
 		parent.getShell().addControlListener(listener);
+
+		Control grabCorner = locateGrabCorner();
+		if (grabCorner != null) {
+			grabCorner.addMouseTrackListener(new MouseTrackAdapter() {
+
+				@Override
+				public void mouseExit(MouseEvent e) {
+					super.mouseExit(e);
+					configureShell();
+				}
+			});
+		}
 	}
 
 	private void configureShell() {
 		if (popup.getShell() != null && popup.getShell().isVisible()) {
 			placeShell();
 		}
+	}
+
+	private Control locateGrabCorner() {
+		Shell shell = getShell();
+		for (Control child : shell.getChildren()) {
+			if (child.getData("sizeexecutor").equals("grabcorner")) { //$NON-NLS-1$ //$NON-NLS-2$
+				return child;
+			}
+		}
+		// no recursion
+		return null;
 	}
 
 	/**

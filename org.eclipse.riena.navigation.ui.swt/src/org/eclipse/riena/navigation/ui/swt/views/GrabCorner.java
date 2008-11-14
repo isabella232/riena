@@ -37,6 +37,7 @@ public class GrabCorner extends Composite {
 
 		super(shell, style);
 		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.GRAB_CORNER_BACKGROUND));
+		setData("sizeexecutor", "grabcorner"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		setLayoutData();
 
