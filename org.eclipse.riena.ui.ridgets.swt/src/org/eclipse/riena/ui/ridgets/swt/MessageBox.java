@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Control;
 
 /**
@@ -24,6 +28,7 @@ public class MessageBox implements IPropertyNameProvider {
 	private Control parent;
 	private int result;
 	private MessageDialog messageDialog;
+	private Set<FocusListener> focusListeners;
 
 	/*
 	 * @see
@@ -40,13 +45,33 @@ public class MessageBox implements IPropertyNameProvider {
 		this.propertyName = propertyName;
 	}
 
+	/**
+	 * @param parent
+	 *            the parent control.
+	 */
 	public MessageBox(Control parent) {
 
 		super();
 
 		this.parent = parent;
+		focusListeners = new HashSet<FocusListener>();
 	}
 
+	/**
+	 * Show the standard dialog box.
+	 * 
+	 * @param title
+	 *            the title of the dialog.
+	 * @param text
+	 *            the text of the dialog.
+	 * @param type
+	 *            the type of the dialog (i.e. MessageDialog.NONE,
+	 *            MessageDialog.INFORMATION, MessageDialog.WARNING,
+	 *            MessageDialog.ERROR, MessageDialog.INFORMATION,
+	 *            MessageDialog.QUESTION).
+	 * @param buttonLabels
+	 *            the labels of the buttons shown in the dialog.
+	 */
 	public void show(String title, String text, int type, String[] buttonLabels) {
 
 		messageDialog = new MessageDialog(parent.getShell(), title, null, // accept the default window icon
@@ -58,10 +83,29 @@ public class MessageBox implements IPropertyNameProvider {
 			 */
 			@Override
 			public boolean close() {
+
+				for (FocusListener l : focusListeners) {
+					messageDialog.getShell().removeFocusListener(l);
+				}
 				boolean closed = super.close();
 				messageDialog = null;
 
 				return closed;
+			}
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.jface.dialogs.Dialog#create()
+			 */
+			@Override
+			public void create() {
+
+				super.create();
+
+				for (FocusListener l : focusListeners) {
+					getShell().addFocusListener(l);
+				}
 			}
 		};
 
@@ -69,18 +113,28 @@ public class MessageBox implements IPropertyNameProvider {
 	}
 
 	/**
+	 * The returned result after the dialog was closed.
+	 * 
 	 * @return the result
 	 */
 	public int getResult() {
 		return result;
 	}
 
+	/**
+	 * Request the focus for the control.
+	 */
 	public void requestFocus() {
 		if (messageDialog != null) {
 			messageDialog.getShell().setFocus();
 		}
 	}
 
+	/**
+	 * Returns, if the dialog is show and has focus.
+	 * 
+	 * @return true, if the dialog is show and has focus, else false.
+	 */
 	public boolean hasFocus() {
 		if (messageDialog != null) {
 			return messageDialog.getShell().isFocusControl();
@@ -88,18 +142,35 @@ public class MessageBox implements IPropertyNameProvider {
 		return false;
 	}
 
-	public boolean isFocusable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setFocusable(boolean focusable) {
-		// TODO Auto-generated method stub
-	}
-
+	/**
+	 * Set the visibility of a dialog that is shown.
+	 * 
+	 * @param visible
+	 *            the visibility.
+	 */
 	public void setVisible(boolean visible) {
 		if (messageDialog != null) {
 			messageDialog.getShell().setVisible(visible);
 		}
+	}
+
+	/**
+	 * Adds a focus listener.
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
+	public void addFocusListener(FocusListener listener) {
+		focusListeners.add(listener);
+	}
+
+	/**
+	 * Removes a focus listener.
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
+	public void removeFocusListener(FocusListener listener) {
+		focusListeners.remove(listener);
 	}
 }

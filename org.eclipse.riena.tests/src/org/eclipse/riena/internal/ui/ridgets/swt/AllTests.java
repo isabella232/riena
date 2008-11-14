@@ -53,7 +53,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ToggleButtonRidgetTest.class);
 		suite.addTestSuite(ToolItemMarkerSupportTest.class);
 		suite.addTestSuite(ToolItemPropertiesTest.class);
+		suite.addTestSuite(MessageBoxRidgetTest.class);
 		return suite;
 	}
-
 }

@@ -31,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+import org.eclipse.riena.ui.ridgets.swt.MessageBox;
 import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
@@ -41,9 +42,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Tests for the class {@link AbstractSwtRidget}.
+ * Abstract test class for <code>control</code>s of type <code>Control</code> or
+ * controls supporting simular features.
  */
-public abstract class AbstractSWTRidgetNonWidgetTest extends TestCase {
+public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 
 	private Shell shell;
 	private Object control;
@@ -80,7 +82,6 @@ public abstract class AbstractSWTRidgetNonWidgetTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ridget = null;
-		// TODO: control.dispose();
 		control = null;
 		otherControl.dispose();
 		otherControl = null;
@@ -105,6 +106,10 @@ public abstract class AbstractSWTRidgetNonWidgetTest extends TestCase {
 
 	protected final Shell getShell() {
 		return shell;
+	}
+
+	protected Text getOtherControl() {
+		return otherControl;
 	}
 
 	// easy mock helper methods
@@ -145,7 +150,7 @@ public abstract class AbstractSWTRidgetNonWidgetTest extends TestCase {
 
 	public void testGetToolTip() {
 
-		if (!(getWidget() instanceof Control)) {
+		if (!(getWidget() instanceof Control) && !(getWidget() instanceof MessageBox)) {
 			// only Control supports tool tips
 			return;
 		}
@@ -169,7 +174,7 @@ public abstract class AbstractSWTRidgetNonWidgetTest extends TestCase {
 	public void testGetFocusable() {
 
 		if (!(getWidget() instanceof Control)) {
-			// only Control supports tool tips
+			// only Control supports focus
 			return;
 		}
 

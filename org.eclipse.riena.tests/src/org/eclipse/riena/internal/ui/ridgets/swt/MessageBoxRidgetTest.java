@@ -7,13 +7,18 @@
  ****************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption;
+import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.ridgets.swt.MessageBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -22,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Tests for the MessageBoxRidget.
  */
-public class MessageBoxRidgetTest extends AbstractSWTRidgetNonWidgetTest {
+public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 
 	/*
 	 * (non-Javadoc)
@@ -296,6 +301,118 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetNonWidgetTest {
 		assertNull(getRidget().show());
 	}
 
+	public void testGetID() throws Exception {
+
+		getWidget().setPropertyName("testId");
+		assertEquals("testId", getRidget().getID());
+	}
+
+	public void testGetSetUIControl() throws Exception {
+
+		assertEquals(getWidget(), getRidget().getUIControl());
+		getRidget().setUIControl(null);
+		assertEquals(null, getRidget().getUIControl());
+		getRidget().setUIControl(getWidget());
+		assertEquals(getWidget(), getRidget().getUIControl());
+	}
+
+	public void testGetToolTip() {
+		// no test, because tooltips not yet supported
+	}
+
+	public void testGetFocusable() {
+
+		IRidget aRidget = getRidget();
+
+		assertTrue(aRidget.isFocusable());
+
+		aRidget.setFocusable(false);
+
+		assertFalse(aRidget.isFocusable());
+
+		aRidget.setFocusable(true);
+
+		assertTrue(aRidget.isFocusable());
+	}
+
+	public void testSetFocusable() {
+
+		IRidget aRidget = getRidget();
+		MockMessageBox aControl = (MockMessageBox) getWidget();
+		// getOtherControl().moveAbove(aControl); ???
+
+		aControl.requestFocus();
+		// TODO: focus not gained here, because control has to be shown to requested focus
+		if (aControl.hasFocus()) { // skip if control cannot receive focus
+
+			aRidget.setFocusable(false);
+			getOtherControl().setFocus();
+
+			assertTrue(getOtherControl().isFocusControl());
+
+			UITestHelper.sendString(getOtherControl().getDisplay(), "\t");
+
+			assertFalse(aControl.hasFocus());
+
+			aRidget.setFocusable(true);
+
+			getOtherControl().setFocus();
+			UITestHelper.sendString(getOtherControl().getDisplay(), "\t");
+
+			assertTrue(aControl.hasFocus());
+		}
+	}
+
+	public void testRequestFocus() throws Exception {
+
+		MessageBox aControl = (MessageBox) getWidget();
+		aControl.requestFocus();
+		// TODO: focus not gained here, because control has to be shown to requested focus
+		if (aControl.hasFocus()) { // skip if control cannot receive focus
+			assertTrue(getOtherControl().setFocus());
+
+			assertFalse(aControl.hasFocus());
+			assertFalse(getRidget().hasFocus());
+
+			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
+			final List<FocusEvent> focusLostEvents = new ArrayList<FocusEvent>();
+			IFocusListener focusListener = new IFocusListener() {
+				public void focusGained(FocusEvent event) {
+					focusGainedEvents.add(event);
+				}
+
+				public void focusLost(FocusEvent event) {
+					focusLostEvents.add(event);
+				}
+			};
+			getRidget().addFocusListener(focusListener);
+
+			getRidget().requestFocus();
+
+			assertTrue(aControl.hasFocus());
+			assertTrue(getRidget().hasFocus());
+			assertEquals(1, focusGainedEvents.size());
+			assertEquals(getRidget(), focusGainedEvents.get(0).getNewFocusOwner());
+			assertEquals(0, focusLostEvents.size());
+
+			assertTrue(getOtherControl().setFocus());
+
+			assertFalse(aControl.hasFocus());
+			assertFalse(getRidget().hasFocus());
+			assertEquals(1, focusGainedEvents.size());
+			assertEquals(1, focusLostEvents.size());
+			assertEquals(getRidget(), focusLostEvents.get(0).getOldFocusOwner());
+
+			getRidget().removeFocusListener(focusListener);
+
+			getRidget().requestFocus();
+			assertTrue(getOtherControl().setFocus());
+
+			assertEquals(1, focusGainedEvents.size());
+			assertEquals(1, focusLostEvents.size());
+		}
+	}
+
 	private void setMessageBoxReturnValue(final int returnValue) {
 		getRidget().setUIControl(new MessageBox(getShell()) {
 
@@ -307,7 +424,6 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetNonWidgetTest {
 			public int getResult() {
 				return returnValue;
 			}
-
 		});
 	}
 

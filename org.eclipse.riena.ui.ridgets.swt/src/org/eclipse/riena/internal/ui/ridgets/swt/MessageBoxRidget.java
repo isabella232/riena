@@ -17,6 +17,11 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.swt.MessageBox;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * The ridget for a message box.
@@ -28,8 +33,21 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private String text;
 	private boolean blocked;
 	private boolean visible;
+	private boolean focusable;
+	private FocusListener focusManager;
 	private Type type = Type.PLAIN;
 	private MessageBoxOption[] options = OPTIONS_OK;
+
+	/**
+	 * Default constructor.
+	 */
+	public MessageBoxRidget() {
+
+		super();
+
+		focusable = true;
+		focusManager = new FocusManager();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -76,7 +94,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 */
 	public void setOptions(MessageBoxOption[] options) {
 		this.options = options;
-		updateUIControl();
 	}
 
 	/*
@@ -87,7 +104,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 */
 	public void setText(String text) {
 		this.text = text;
-		updateUIControl();
 	}
 
 	/*
@@ -98,7 +114,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 */
 	public void setTitle(String title) {
 		this.title = title;
-		updateUIControl();
 	}
 
 	/*
@@ -110,7 +125,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 */
 	public void setType(Type type) {
 		this.type = type;
-		updateUIControl();
 	}
 
 	/*
@@ -221,7 +235,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
 	 */
-	public Object getUIControl() {
+	public MessageBox getUIControl() {
 		return messageBox;
 	}
 
@@ -249,7 +263,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#isFocusable()
 	 */
 	public boolean isFocusable() {
-		return messageBox.isFocusable();
+		return focusable;
 	}
 
 	/*
@@ -267,7 +281,9 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#requestFocus()
 	 */
 	public void requestFocus() {
-		messageBox.requestFocus();
+		if (isFocusable()) {
+			messageBox.requestFocus();
+		}
 	}
 
 	/*
@@ -287,7 +303,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
 	 */
 	public void setFocusable(boolean focusable) {
-		messageBox.setFocusable(focusable);
+		this.focusable = focusable;
 	}
 
 	/*
@@ -308,8 +324,9 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	public void setUIControl(Object uiControl) {
 		assertUIControlType(uiControl, MessageBox.class);
 
+		uninstallListeners();
 		messageBox = (MessageBox) uiControl;
-
+		installListeners();
 		updateUIControl();
 	}
 
@@ -319,9 +336,8 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
-		// TODO: use hidden marker?
 		this.visible = visible;
-
+		updateUIControl();
 	}
 
 	/*
@@ -335,7 +351,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 
 	private void updateUIControl() {
 		if (messageBox != null) {
-			// TODO: update???
 			updateVisible();
 		}
 	}
@@ -356,4 +371,92 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		Assert.isTrue(uiControl == null || requiredUIControlType.isAssignableFrom(uiControl.getClass()),
 				"Wrong UI-control type. Expected " + requiredUIControlType); //$NON-NLS-1$
 	}
+
+	/**
+	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
+	 * ridget.
+	 */
+	protected final void installListeners() {
+		if (getUIControl() != null) {
+			getUIControl().addFocusListener(focusManager);
+		}
+	}
+
+	/**
+	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
+	 * unbound from the ridget.
+	 */
+	protected final void uninstallListeners() {
+		if (getUIControl() != null) {
+			getUIControl().removeFocusListener(focusManager);
+		}
+	}
+
+	/**
+	 * Focus listener that also prevents the widget corresponding to this ridget
+	 * from getting the UI focus when the ridget is not focusable.
+	 * 
+	 * @see MessageBoxRidget#setFocusable(boolean).
+	 */
+	private final class FocusManager extends FocusAdapter {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			if (focusable) {
+				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, MessageBoxRidget.this));
+			} else {
+				Control control = (Control) e.widget;
+				Composite parent = control.getParent();
+				Control[] tabList = parent.getTabList();
+				int i = findNextElement(control, tabList);
+				if (i != -1) {
+					Control nextFocusControl = tabList[i];
+					nextFocusControl.setFocus();
+				} else { // no suitable control found, try one level up
+					Composite pParent = parent.getParent();
+					if (pParent != null) {
+						tabList = pParent.getTabList();
+						i = findNextElement(parent, tabList);
+						if (i != -1) {
+							Control nextFocusControl = tabList[i];
+							nextFocusControl.setFocus();
+						}
+					}
+				}
+			}
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (focusable) {
+				fireFocusLost(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(MessageBoxRidget.this, null));
+			}
+		}
+
+		private int findNextElement(Control control, Control[] controls) {
+			int myIndex = -1;
+			// find index for control
+			for (int i = 0; myIndex == -1 && i < controls.length; i++) {
+				if (controls[i] == control) {
+					myIndex = i;
+				}
+			}
+			// find next possible control
+			int result = -1;
+			for (int i = myIndex + 1; result == -1 && i < controls.length; i++) {
+				Control candidate = controls[i];
+				if (candidate.isEnabled() && candidate.isVisible()) {
+					result = i;
+				}
+			}
+			// find previous possible control
+			for (int i = 0; result == -1 && i < myIndex; i++) {
+				Control candidate = controls[i];
+				if (candidate.isEnabled() && candidate.isVisible()) {
+					result = i;
+				}
+			}
+			return result;
+		}
+	};
 }
