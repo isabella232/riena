@@ -169,7 +169,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			if (isSeparator(item)) {
 				continue;
 			}
-			System.out.println("SubApplicationView.createMenuRidgets() " + item.getText());
 			String menuItemId = getMenuItemId(item);
 			if (!StringUtils.isEmpty(menuItemId)) {
 				IRidget ridget = createRidget(item);
@@ -398,7 +397,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		}
 
 		private void createStatusLine() {
-			showView(StatusLineViewPart.ID, createNextId());
+			//			showView(StatusLineViewPart.ID, createNextId());
 		}
 
 		private void showMultiView(SwtViewId id) {

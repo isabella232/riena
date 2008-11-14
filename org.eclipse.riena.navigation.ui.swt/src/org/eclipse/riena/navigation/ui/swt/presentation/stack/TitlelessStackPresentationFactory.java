@@ -58,6 +58,10 @@ public class TitlelessStackPresentationFactory extends AbstractPresentationFacto
 		if (presentations.get(site) == null) {
 			presentations.put(site, new TitlelessStackPresentation(parent, site));
 		}
+		return getPresentation(site);
+	}
+
+	public StackPresentation getPresentation(IStackPresentationSite site) {
 		return presentations.get(site);
 	}
 

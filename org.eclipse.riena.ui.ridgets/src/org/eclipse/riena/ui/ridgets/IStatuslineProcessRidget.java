@@ -15,7 +15,7 @@ import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerObserver;
 /**
  * Interface for the Adapter of the process component of the status line
  */
-public interface IStatuslineProcessRidget extends IProgressVisualizerObserver, IRidget { // extends
+public interface IStatuslineProcessRidget extends IStatuslineUIProcessRidget, IProgressVisualizerObserver, IRidget { // extends
 	// IProcessInfoViewer,
 	// ICompositePopupAdapter {
 	//

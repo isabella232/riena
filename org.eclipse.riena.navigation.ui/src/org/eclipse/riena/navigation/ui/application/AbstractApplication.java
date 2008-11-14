@@ -36,14 +36,14 @@ public abstract class AbstractApplication implements IApplication {
 		IApplicationNode node = createModel();
 		ApplicationNodeManager.registerApplicationNode(node);
 		initializeNode(node);
-		setProgressProviderBridge(node);
+		setProgressProviderBridge();
 		return createView(context, node);
 	}
 
-	private void setProgressProviderBridge(IApplicationNode model) {
+	private void setProgressProviderBridge() {
 		ProgressProviderBridge bridge = ProgressProviderBridge.instance();
 		Job.getJobManager().setProgressProvider(bridge);
-		bridge.setVisualizerFactory(new VisualizerFactory(model));
+		bridge.setVisualizerFactory(new VisualizerFactory());
 	}
 
 	/**

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+
 /**
  * Adapter for a status line.
  */

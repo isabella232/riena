@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.riena.example.client.views.NavigationSubModuleView;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -20,7 +21,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -64,10 +65,9 @@ public class NavigationSubModuleController extends SubModuleController {
 				ISubModuleNode newNode = createSubModuleNode("Node " + String.valueOf(nodeCount++)); //$NON-NLS-1$
 				IModuleNode parent = getParentNodeOfType(getNavigationNode(), IModuleNode.class);
 				parent.addChild(newNode);
-				String text = "Sub-Module was added!"; //$NON-NLS-1$
-				SubApplicationController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().setMessage(text);
+				showStatusLineMessage("Sub-Module was added!"); //$NON-NLS-1$
 			}
+
 		});
 
 		getAddSubModuleToSelfBtn().setText("Add S&ub-Module this Node"); //$NON-NLS-1$
@@ -75,9 +75,7 @@ public class NavigationSubModuleController extends SubModuleController {
 			public void callback() {
 				ISubModuleNode navigationNode = getNavigationNode();
 				navigationNode.addChild(createSubModuleNode("Node " + String.valueOf(nodeCount++))); //$NON-NLS-1$
-				String text = "Sub-Module was added!"; //$NON-NLS-1$
-				SubApplicationController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().setMessage(text);
+				showStatusLineMessage("Sub-Module was added!"); //$NON-NLS-1$
 			}
 		});
 
@@ -86,9 +84,7 @@ public class NavigationSubModuleController extends SubModuleController {
 			public void callback() {
 				IModuleGroupNode parent = getParentNodeOfType(getNavigationNode(), IModuleGroupNode.class);
 				parent.addChild(createModuleNode());
-				String text = "Module was added!"; //$NON-NLS-1$
-				SubApplicationController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().setMessage(text);
+				showStatusLineMessage("Module was added!"); //$NON-NLS-1$
 			}
 		});
 
@@ -97,14 +93,16 @@ public class NavigationSubModuleController extends SubModuleController {
 			public void callback() {
 				ISubApplicationNode parent = getParentNodeOfType(getNavigationNode(), ISubApplicationNode.class);
 				parent.addChild(createModuleGroupNode());
-				String text = "Module-Group was added!"; //$NON-NLS-1$
-				SubApplicationController subAppController = getSubApplicationController();
-				subAppController.getStatuslineRidget().setMessage(text);
+				showStatusLineMessage("Module-Group was added!"); //$NON-NLS-1$
 			}
 		});
 
 		setDefaultButton(getAddModuleBtn());
 
+	}
+
+	private void showStatusLineMessage(String text) {
+		getApplicationController().getStatuslineRidget().setMessage(text);
 	}
 
 	private <N extends INavigationNode<?>> N getParentNodeOfType(INavigationNode<?> node, Class<N> clazz) {
@@ -225,8 +223,8 @@ public class NavigationSubModuleController extends SubModuleController {
 	 * 
 	 * @return sub-application controller
 	 */
-	private SubApplicationController getSubApplicationController() {
-		return (SubApplicationController) getNavigationNode().getParentOfType(ISubApplicationNode.class)
+	private ApplicationController getApplicationController() {
+		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
 				.getNavigationNodeController();
 	}
 

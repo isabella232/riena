@@ -277,7 +277,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	public String getToolTipText() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public boolean hasFocus() {

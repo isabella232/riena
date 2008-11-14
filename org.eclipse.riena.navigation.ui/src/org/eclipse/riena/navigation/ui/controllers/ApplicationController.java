@@ -12,6 +12,8 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
@@ -22,39 +24,46 @@ public class ApplicationController extends NavigationNodeController<IApplication
 
 	private IWindowRidget applicationWindow;
 	private IWindowRidgetListener windowRidgetListener;
+	private IStatuslineRidget statuslineRidget;
 	private boolean menuBarVisible;
 
-	/**
-	 * @param applicationNode
-	 */
 	public ApplicationController(IApplicationNode applicationNode) {
 		super(applicationNode);
 		applicationNode.addListener(new ApplicationNodeListener() {
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
-			 * (org.eclipse.riena.navigation.INavigationNode)
-			 */
 			@Override
 			public void labelChanged(IApplicationNode source) {
 				updateLabel();
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
-			 * (org.eclipse.riena.navigation.INavigationNode)
-			 */
 			@Override
 			public void iconChanged(IApplicationNode source) {
 				updateIcon();
 			}
 		});
+	}
+
+	boolean done = false;
+
+	private NodeEventDelegation contextUpdater = new NodeEventDelegation();
+
+	public IStatuslineRidget getStatuslineRidget() {
+		if (!done) {
+			if (statuslineRidget.getStatuslineUIProcessRidget() != null) {
+				((IStatuslineUIProcessRidget) statuslineRidget.getStatuslineUIProcessRidget())
+						.setContextLocator(contextUpdater);
+			}
+			done = true;
+		}
+		return statuslineRidget;
+	}
+
+	/**
+	 * @param statuslineRidget
+	 *            the statuslineRidget to set
+	 */
+	public void setStatuslineRidget(IStatuslineRidget statuslineRidget) {
+		this.statuslineRidget = statuslineRidget;
 	}
 
 	public void setApplicationWindow(IWindowRidget pWindowRidget) {

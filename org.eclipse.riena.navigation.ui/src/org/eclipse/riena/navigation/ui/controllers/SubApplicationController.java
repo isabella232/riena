@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -30,16 +24,12 @@ import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapater;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidget;
 import org.eclipse.riena.navigation.ui.ridgets.INavigationTreeRidgetListener;
 import org.eclipse.riena.navigation.ui.ridgets.NavigationTreeRidgetAdapter;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
-import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 
 /**
  * Implements the Controller for a Module Sub Application
@@ -53,7 +43,6 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	private IModuleNodeListener moduleNodeListener;
 	private IModuleGroupNodeListener moduleGroupNodeListener;
 	private NavigationTreeObserver navigationTreeObserver;
-	private IStatuslineRidget statuslineRidget;
 	private IUIProcessRidget uiProcessRidget;
 
 	/**
@@ -75,17 +64,10 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		navigationTreeObserver.addListenerTo(pSubApplication);
 	}
 
-	/**
-	 * @return the navigationTree
-	 */
 	public INavigationTreeRidget getNavigationTree() {
 		return navigationTree;
 	}
 
-	/**
-	 * @param navigationTree
-	 *            the navigationTree to set
-	 */
 	public void setNavigationTree(INavigationTreeRidget pNavigationTree) {
 		if (getNavigationTree() != null) {
 			getNavigationTree().removeListener(navigationTreeRidgetListener);
@@ -131,23 +113,6 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	}
 
 	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.model.NavigationNodeAdapter#afterDeactivated
-		 * (org.eclipse.riena.navigation.INavigationNode)
-		 */
-		@Override
-		public void afterDeactivated(ISubApplicationNode source) {
-			super.afterDeactivated(source);
-			if (getStatuslineRidget() != null) {
-				getStatuslineRidget().hidePopups();
-			}
-			if (getUiProcessRidget() != null) {
-				getUiProcessRidget().deactivate();
-			}
-		}
 
 		/*
 		 * (non-Javadoc)
@@ -205,117 +170,15 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 				getNavigationTree().childAdded(childAdded);
 			}
 		}
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#
-	 * afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		initRidgets();
-	}
-
-	private void initRidgets() {
 		initUiProcessRidget();
 	}
 
-	@SuppressWarnings("unchecked")
-	private class NodeEventDelegation extends SimpleNavigationNodeAdapater implements IVisualContextManager {
-
-		private List<IContextUpdateListener> listeners = new ArrayList<IContextUpdateListener>();
-		private Map<Object, List<IContextUpdateListener>> context2Observers = new HashMap<Object, List<IContextUpdateListener>>();
-
-		@Override
-		public void activated(INavigationNode source) {
-			contextUpdated(source);
-		}
-
-		@Override
-		public void beforeDeactivated(INavigationNode source) {
-			for (IContextUpdateListener listener : listeners) {
-				listener.beforeContextUpdate(source);
-			}
-		}
-
-		@Override
-		public void deactivated(INavigationNode source) {
-			contextUpdated(source);
-		}
-
-		private void contextUpdated(INavigationNode source) {
-			List<IContextUpdateListener> toDelete = new ArrayList<IContextUpdateListener>();
-			for (IContextUpdateListener listener : listeners) {
-				if (listener.contextUpdated(source)) {
-					toDelete.add(listener);
-				}
-			}
-			listeners.removeAll(toDelete);
-		}
-
-		public List<Object> getActiveContexts(List<Object> contexts) {
-			List nodes = new ArrayList();
-			for (Object object : contexts) {
-				if (object instanceof INavigationNode) {
-					INavigationNode<?> node = (INavigationNode) object;
-					if (node.isActivated()) {
-						nodes.add(node);
-					}
-				}
-			}
-			return nodes;
-		}
-
-		public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
-			if (context instanceof INavigationNode<?>) {
-				INavigationNode<?> node = (INavigationNode<?>) context;
-				node.addSimpleListener(contextUpdater);
-				registerObserver(context, listener);
-				listeners.add(listener);
-			}
-		}
-
-		private void registerObserver(Object context, IContextUpdateListener listener) {
-			List<IContextUpdateListener> observers = context2Observers.get(context);
-			if (observers == null) {
-				observers = new LinkedList<IContextUpdateListener>();
-				context2Observers.put(context, observers);
-			}
-			observers.add(listener);
-		}
-
-		public void removeContextUpdateListener(IContextUpdateListener listener, Object context) {
-			List<IContextUpdateListener> observers = context2Observers.get(context);
-
-			if (observers == null) {
-				//should never happen
-				return;
-			}
-			listeners.remove(listener);
-			if (observers.size() == 1) {
-				//don´t need observation delegation anymore
-				context2Observers.remove(context);
-				INavigationNode<?> node = null;
-				if (context instanceof INavigationNode<?>) {
-					node = INavigationNode.class.cast(context);
-					// don´t need to observe anymore
-					node.removeSimpleListener(this);
-				}
-				return;
-			}
-
-			observers.remove(listener);
-
-		}
-
-	}
-
-	private NodeEventDelegation contextUpdater = new NodeEventDelegation();
+	NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
 	private void initUiProcessRidget() {
 		if (uiProcessRidget == null) {
@@ -326,21 +189,6 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 			}
 		}
 		uiProcessRidget.setContextLocator(contextUpdater);
-	}
-
-	boolean done = false;
-
-	/**
-	 * @return the statuslineRidget
-	 */
-	public IStatuslineRidget getStatuslineRidget() {
-		if (!done) {
-			if (statuslineRidget.getStatuslineUIProcessRidget() != null) {
-				statuslineRidget.getStatuslineUIProcessRidget().setContextLocator(contextUpdater);
-			}
-			done = true;
-		}
-		return statuslineRidget;
 	}
 
 	/**
@@ -387,14 +235,6 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 			return null;
 		}
 
-	}
-
-	/**
-	 * @param statuslineRidget
-	 *            the statuslineRidget to set
-	 */
-	public void setStatuslineRidget(IStatuslineRidget statuslineRidget) {
-		this.statuslineRidget = statuslineRidget;
 	}
 
 	/**

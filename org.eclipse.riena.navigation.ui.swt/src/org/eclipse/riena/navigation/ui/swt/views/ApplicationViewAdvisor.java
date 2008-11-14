@@ -27,8 +27,11 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.swt.Statusline;
+import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -74,6 +77,10 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
+	/**
+	 * 
+	 */
+	public static final int STATUSLINE_HEIGHT = 22;
 	/**
 	 * The default and the minimum size of the application.
 	 */
@@ -189,13 +196,25 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		// create and layouts the composite of switcher, menu, tool bar etc.
 		shell.setLayout(new FormLayout());
-
-		createGrabCorner(shell);
+		Composite grabCorner = createGrabCorner(shell);
+		createStatusLine(shell, grabCorner);
 		Composite titleComposite = createTitleComposite(shell);
 		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
 		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
 		createMainComposite(shell, coolBarComposite);
+	}
 
+	private void createStatusLine(Composite shell, Composite grabCorner) {
+		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class);
+		FormData fd = new FormData();
+		fd.height = STATUSLINE_HEIGHT;
+		Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
+		fd.left = new FormAttachment(0, navigationBounds.x + navigationBounds.width
+				+ TitlelessStackPresentation.PADDING_RIGHT);
+		fd.right = new FormAttachment(grabCorner, 0);
+		fd.bottom = new FormAttachment(100, -5);
+		statusLine.setLayoutData(fd);
+		addUIControl(statusLine, "statuslineRidget"); //$NON-NLS-1$
 	}
 
 	/**
@@ -490,11 +509,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * 
 	 * @param shell
 	 */
-	private void createGrabCorner(final Shell shell) {
+	private GrabCorner createGrabCorner(final Shell shell) {
 
 		if (GrabCorner.isResizeable() && LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
-			new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
+			return new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
 		}
+
+		return null;
 
 	}
 

@@ -22,9 +22,8 @@ import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.navigation.ui.swt.views.GrabCorner;
+import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisor;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -64,7 +63,6 @@ import org.eclipse.ui.presentations.StackPresentation;
  * |              |                                                | |
  * |              |                                                | |
  * |              +------------------------------------------------+ |
- * | Status Line                                                     |
  * +-----------------------------------------------------------------+
  * 
  * legend: *1 - navigation
@@ -97,34 +95,27 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Top padding of the sub-module view.<br>
 	 * Gap between application switcher and sub-module view.
 	 */
-	private static final int PADDING_TOP = 10;
+	public static final int PADDING_TOP = 10;
 	/**
 	 * Bottom padding of the navigation/the sub-module view.<br>
 	 * Gap between bottom shell border and sub-module view.
 	 */
-	private static final int PADDING_BOTTOM = 2;
+	public static final int PADDING_BOTTOM = 2;
 	/**
 	 * Gap between navigation and sub-module view
 	 */
-	private static final int NAVIGATION_SUB_MODULE_GAP = 4;
-	/**
-	 * The height of the status line
-	 */
-	private static final int STATUSLINE_HIGHT = 22;
+	public static final int NAVIGATION_SUB_MODULE_GAP = 4;
 
 	private Set<IPresentablePart> knownParts = new HashSet<IPresentablePart>();
 	private IPresentablePart current;
 	private IPresentablePart navigation;
-	private IPresentablePart statusLine;
 	private Composite parent;
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
-	private AbstractViewBindingDelegate binding;
 
 	public TitlelessStackPresentation(Composite parent, IStackPresentationSite stackSite) {
 		super(stackSite);
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		binding = createBinding();
 		createSubModuleViewArea();
 	}
 
@@ -133,14 +124,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		initializeSubModuleChangeListener();
 		if (isNavigation(newPart)) {
 			navigation = newPart;
-		} else if (isStatusLine(newPart)) {
-			statusLine = newPart;
-			binding.addUIControl(getStatuslineWidget(statusLine.getControl()));
-			SubApplicationController controller = getSubApplicationController();
-			if (controller != null) {
-				binding.injectAndBind(controller);
-			}
-
 		}
 		knownParts.add(newPart);
 	}
@@ -164,12 +147,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 			return;
 		}
 		if (isNavigation(toSelect)) {
-			Rectangle navi = calcNavigationBounds();
+			Rectangle navi = calcNavigationBounds(parent);
 			toSelect.setBounds(navi);
 			redrawSubModuleTitle();
-		} else if (isStatusLine(toSelect)) {
-			Rectangle line = calcStatusLineBounds();
-			toSelect.setBounds(line);
 		} else if (toSelect != null) {
 			Rectangle inner = calcSubModuleInnerBounds();
 			toSelect.setBounds(inner);
@@ -188,12 +168,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 	public void setBounds(Rectangle bounds) {
 		parent.setBounds(bounds);
 		if (navigation != null) {
-			Rectangle navi = calcNavigationBounds();
+			Rectangle navi = calcNavigationBounds(parent);
 			navigation.setBounds(navi);
-		}
-		if (statusLine != null) {
-			Rectangle line = calcStatusLineBounds();
-			statusLine.setBounds(line);
 		}
 		if (current != null) {
 			Rectangle inner = calcSubModuleInnerBounds();
@@ -206,8 +182,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 	public void removePart(IPresentablePart oldPart) {
 		if (isNavigation(oldPart)) {
 			navigation = null;
-		} else if (isStatusLine(oldPart)) {
-			statusLine = null;
 		} else if (oldPart == current) {
 			current = null;
 		}
@@ -306,7 +280,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private Rectangle calcSubModuleOuterBounds() {
 
-		Rectangle naviBounds = calcNavigationBounds();
+		Rectangle naviBounds = calcNavigationBounds(parent);
 
 		int x = naviBounds.x + naviBounds.width + NAVIGATION_SUB_MODULE_GAP;
 		int y = naviBounds.y;
@@ -322,7 +296,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * 
 	 * @return bounds of navigation
 	 */
-	private Rectangle calcNavigationBounds() {
+	public static Rectangle calcNavigationBounds(Composite parent) {
 
 		GC gc = new GC(parent);
 		try {
@@ -331,29 +305,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 			int x = PADDING_LEFT;
 			int y = PADDING_TOP;
 			int width = size.x;
-			int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP - STATUSLINE_HIGHT;
+			int height = parent.getBounds().height - PADDING_BOTTOM - PADDING_TOP
+					- ApplicationViewAdvisor.STATUSLINE_HEIGHT;
 
 			return new Rectangle(x, y, width, height);
 		} finally {
 			gc.dispose();
 		}
-	}
-
-	/**
-	 * Calculates the bounds of the status line.
-	 * 
-	 * @return bounds of status line
-	 */
-	private Rectangle calcStatusLineBounds() {
-
-		Rectangle naviBounds = calcNavigationBounds();
-
-		int x = naviBounds.x;
-		int y = naviBounds.y + naviBounds.height;
-		int width = parent.getBounds().width - x - GrabCorner.getGrabCornerSize().x;
-		int height = STATUSLINE_HIGHT;
-
-		return new Rectangle(x, y, width, height);
 	}
 
 	/**
@@ -407,7 +365,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Returns the renderer of a module group.
 	 */
-	private ModuleGroupRenderer getModuleGroupRenderer() {
+	private static ModuleGroupRenderer getModuleGroupRenderer() {
 		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
 	}
 
@@ -416,26 +374,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private SubModuleViewRenderer getSubModuleViewRenderer() {
 		return (SubModuleViewRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER);
-	}
-
-	/**
-	 * Make a depth-first-search starting with parent and return the first
-	 * Status line widget found.
-	 * 
-	 * @throws RuntimeException
-	 *             if no Status line was found
-	 */
-	private Statusline getStatuslineWidget(Control parent) {
-
-		if (parent instanceof Statusline) {
-			return (Statusline) parent;
-		} else if (parent instanceof Composite) {
-			Control[] children = ((Composite) parent).getChildren();
-			for (int i = 0; i < children.length; i++) {
-				return getStatuslineWidget(children[i]);
-			}
-		}
-		throw new IllegalStateException("could not find Status line widget"); //$NON-NLS-1$
 	}
 
 	/**
