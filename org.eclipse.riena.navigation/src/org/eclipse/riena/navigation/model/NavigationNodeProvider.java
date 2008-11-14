@@ -17,6 +17,8 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IGenericNavigationAssembler;
+import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
+import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -140,12 +142,79 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 		if (targetNN == null || targetNN.getData().length == 0 || targetId == null) {
 			return null;
 		} else {
-			INavigationAssemblyExtension[] data = targetNN.getData();
-			for (int i = 0; i < data.length; i++) {
-				if (data[i].getTypeId() != null && data[i].getTypeId().equals(targetId.getTypeId())) {
-					return data[i];
+			INavigationAssemblyExtension found = null;
+			for (INavigationAssemblyExtension assembly : targetNN.getData()) {
+				if (assembly.getTypeId() != null && assembly.getTypeId().equals(targetId.getTypeId())) {
+					return assembly;
 				}
+				if (assembly.getModuleGroupNode() != null) {
+					found = getNavigationNodeTypeDefinition(assembly, assembly.getModuleGroupNode(), targetId
+							.getTypeId());
+					if (found != null) {
+						return found;
+					}
+				}
+				if (assembly.getModuleNode() != null) {
+					found = getNavigationNodeTypeDefinition(assembly, assembly.getModuleNode(), targetId.getTypeId());
+					if (found != null) {
+						return found;
+					}
+				}
+				if (assembly.getSubModuleNode() != null) {
+					found = getNavigationNodeTypeDefinition(assembly, assembly.getSubModuleNode(), targetId.getTypeId());
+					if (found != null) {
+						return found;
+					}
+				}
+			}
+		}
+		return null;
+	}
 
+	private INavigationAssemblyExtension getNavigationNodeTypeDefinition(INavigationAssemblyExtension assembly,
+			IModuleGroupNodeExtension mg, String targetId) {
+
+		if (mg.getTypeId() != null && mg.getTypeId().equals(targetId)) {
+			return assembly;
+		} else {
+			for (IModuleNodeExtension m : mg.getModuleNodes()) {
+				INavigationAssemblyExtension found = getNavigationNodeTypeDefinition(assembly, m, targetId);
+				if (found != null) {
+					return found;
+				}
+			}
+		}
+		return null;
+	}
+
+	private INavigationAssemblyExtension getNavigationNodeTypeDefinition(INavigationAssemblyExtension assembly,
+			IModuleNodeExtension module, String targetId) {
+
+		if (module.getTypeId() != null && module.getTypeId().equals(targetId)) {
+			return assembly;
+		} else {
+			for (ISubModuleNodeExtension submodule : module.getSubModuleNodes()) {
+				INavigationAssemblyExtension found = getNavigationNodeTypeDefinition(assembly, submodule, targetId);
+				if (found != null) {
+					return found;
+				}
+			}
+		}
+		return null;
+	}
+
+	private INavigationAssemblyExtension getNavigationNodeTypeDefinition(INavigationAssemblyExtension assembly,
+			ISubModuleNodeExtension submodule, String targetId) {
+
+		if (submodule.getTypeId() != null && submodule.getTypeId().equals(targetId)) {
+			return assembly;
+		} else {
+			for (ISubModuleNodeExtension nestedSubmodule : submodule.getSubModuleNodes()) {
+				INavigationAssemblyExtension found = getNavigationNodeTypeDefinition(assembly, nestedSubmodule,
+						targetId);
+				if (found != null) {
+					return found;
+				}
 			}
 		}
 		return null;
