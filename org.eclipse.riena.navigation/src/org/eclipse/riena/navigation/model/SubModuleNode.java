@@ -64,45 +64,4 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	public SubModuleNode(String label) {
 		this(null, label);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ISubModuleNode#getControllerClassForView()
-	 */
-	public Class<IController> getControllerClassForView() {
-		return controllerClassForView;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ISubModuleNode#setControllerClassForView
-	 * (java.lang.Class)
-	 */
-	@SuppressWarnings("unchecked")
-	public void setControllerClassForView(Class<?> controllerClass) {
-		controllerClassForView = (Class<IController>) controllerClass;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.ISubModuleNode#getViewId()
-	 */
-	public Object getViewId() {
-		return viewId;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ISubModuleNode#setViewId(java.lang.Object)
-	 */
-	public void setViewId(Object id) {
-		viewId = id;
-	}
 }

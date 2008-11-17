@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt;
 
+import org.eclipse.riena.core.RienaConstants;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.navigation.ui.swt.workarea.SwtExtensionWorkareaDefinitionRegistry;
+import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
+import org.eclipse.riena.workarea.spi.IWorkareaDefinitionRegistry;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -29,8 +34,15 @@ public class Activator extends AbstractRienaUIPlugin {
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
+
 		super.start(context);
 		plugin = this;
+
+		SwtExtensionWorkareaDefinitionRegistry registry = new SwtExtensionWorkareaDefinitionRegistry();
+		context.registerService(IWorkareaDefinitionRegistry.class.getName(), registry, RienaConstants
+				.newDefaultServiceProperties());
+		Inject.extension(INavigationAssemblyExtension.EXTENSIONPOINT).useType(INavigationAssemblyExtension.class).into(
+				registry).andStart(Activator.getDefault().getBundle().getBundleContext());
 	}
 
 	/**

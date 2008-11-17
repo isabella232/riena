@@ -58,6 +58,12 @@ public interface ISubModuleNodeExtension {
 	String getIcon();
 
 	/**
+	 * @return <code>true</code> if this item is initially invisible,
+	 *         <code>false</code> otherwise. Default is <code>false</code>.
+	 */
+	boolean isHidden();
+
+	/**
 	 * @return A controller that controlles the UI widgets in the view through
 	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */

@@ -22,6 +22,8 @@ import org.osgi.framework.Bundle;
 @ExtensionInterface
 public interface INavigationAssemblyExtension {
 
+	String EXTENSIONPOINT = "org.eclipse.riena.navigation.assemblies"; //$NON-NLS-1$
+
 	/**
 	 * Return the contributing bundle of the extension.
 	 * 

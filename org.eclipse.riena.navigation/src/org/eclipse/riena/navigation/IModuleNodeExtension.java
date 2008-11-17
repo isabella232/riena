@@ -52,6 +52,18 @@ public interface IModuleNodeExtension {
 	String getIcon();
 
 	/**
+	 * @return <code>true</code> if this item is closeable, <code>false</code>
+	 *         otherwise. Default is <code>false</code>.
+	 */
+	boolean isCloseable();
+
+	/**
+	 * @return <code>true</code> if this item is initially invisible,
+	 *         <code>false</code> otherwise. Default is <code>false</code>.
+	 */
+	boolean isHidden();
+
+	/**
 	 * @return A list of submodule node definitions that are children of the
 	 *         receiver
 	 */

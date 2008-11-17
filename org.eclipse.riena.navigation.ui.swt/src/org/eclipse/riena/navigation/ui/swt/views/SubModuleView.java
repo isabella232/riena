@@ -22,8 +22,8 @@ import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
@@ -322,8 +322,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			try {
 				controller = (C) def.createController();
 			} catch (Exception ex) {
-				String message = String.format(
-						"cannnot create controller for class %s", node.getControllerClassForView()); //$NON-NLS-1$ 
+				String message = String.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
 				LOGGER.log(LogService.LOG_ERROR, message, ex);
 				throw new InvocationTargetFailure(message, ex);
 			}

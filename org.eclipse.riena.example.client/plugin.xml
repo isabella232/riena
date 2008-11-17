@@ -440,17 +440,21 @@
                typeId="org.eclipse.riena.example.uiProcesses">
             <module
                   name="uiProcesses"
-                  label="UIProcess">
+                  label="UIProcess"
+                  icon="org.eclipse.riena.example.client:/icons/ledred.png"
+                  closeable="false">
                <submodule
                      typeId="org.eclipse.riena.example.uiProcess_1"
                      name="uiProcess_1"
                      label="Demo1"
+                     icon="org.eclipse.riena.example.client:/icons/ledlightgreen.png"
                      view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
                <submodule
                      typeId="org.eclipse.riena.example.uiProcess_2"
                      name="uiProcess_2"
                      label="Demo2"
+                     hidden="true"
                      view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
             </module>

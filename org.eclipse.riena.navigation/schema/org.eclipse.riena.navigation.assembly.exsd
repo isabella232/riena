@@ -164,7 +164,21 @@
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
-                  
+                  id of icon to be displayed in navigation tree
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="closeable" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  indicates if the module is closeable
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="hidden" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  indicates if the module is initially hidden
                </documentation>
             </annotation>
          </attribute>
@@ -234,7 +248,14 @@
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
-                  
+                  id of icon to be displayed in navigation tree
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="hidden" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  indicates if the module is initially hidden
                </documentation>
             </annotation>
          </attribute>
