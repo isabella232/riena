@@ -212,10 +212,23 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.swt.utils.IPropertyNameProvider#getPropertyName()
+	 */
 	public String getPropertyName() {
 		return name;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.swt.utils.IPropertyNameProvider#setPropertyName(
+	 * java.lang.String)
+	 */
 	public void setPropertyName(String propertyName) {
 		this.name = propertyName;
 	}

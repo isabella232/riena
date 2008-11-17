@@ -47,8 +47,7 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 		}
 
 		if (uiControl instanceof IPropertyNameProvider) {
-			IPropertyNameProvider nameProvider = (IPropertyNameProvider) uiControl;
-			return nameProvider.getPropertyName();
+			return ((IPropertyNameProvider) uiControl).getPropertyName();
 		}
 
 		return null;
@@ -62,8 +61,8 @@ public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 				return;
 			}
 			control.setData(BINDING_PROPERTY, id);
+		} else if (uiControl instanceof IPropertyNameProvider) {
+			((IPropertyNameProvider) uiControl).setPropertyName(id);
 		}
-
 	}
-
 }

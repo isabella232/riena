@@ -17,4 +17,5 @@ public interface IPropertyNameProvider {
 
 	String getPropertyName();
 
+	void setPropertyName(String propertyName);
 }

@@ -79,7 +79,6 @@ public class MessageBoxSubModuleView extends SubModuleView<MessageBoxSubModuleCo
 		addUIControl(selectedOption, "selectedOption"); //$NON-NLS-1$
 
 		MessageBox messageBox = UIControlsFactory.createMessageBox(parent);
-		messageBox.setPropertyName("messageBox"); //$NON-NLS-1$
 		addUIControl(messageBox, "messageBox"); //$NON-NLS-1$
 	}
 }

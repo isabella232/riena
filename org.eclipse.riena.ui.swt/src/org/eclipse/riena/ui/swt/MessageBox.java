@@ -39,7 +39,11 @@ public class MessageBox implements IPropertyNameProvider {
 	}
 
 	/*
-	 * @param propertyName the propertyName to set
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.swt.utils.IPropertyNameProvider#setPropertyName(
+	 * java.lang.String)
 	 */
 	public void setPropertyName(String propertyName) {
 		this.propertyName = propertyName;

@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.swt.uibinding;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * This class is responsible for managing a list of SWT widgets, creating
@@ -50,13 +49,16 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 		super(SWTBindingPropertyLocator.getInstance(), mapper);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate
+	 * #addUIControl(java.lang.Object, java.lang.String)
+	 */
 	@Override
 	public void addUIControl(Object uiControl, String bindingId) {
 		super.addUIControl(uiControl, bindingId);
-		if (uiControl instanceof Widget) {
-			Widget widget = (Widget) uiControl;
-			SWTBindingPropertyLocator.getInstance().setBindingProperty(widget, bindingId);
-		}
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
 	}
-
 }
