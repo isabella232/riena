@@ -19,10 +19,9 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
-import org.eclipse.riena.ui.ridgets.swt.MessageBox;
+import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Tests for the MessageBoxRidget.
@@ -441,7 +440,7 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		private int type;
 		private String[] buttonLabels;
 
-		private MockMessageBox(Control parent) {
+		private MockMessageBox(Composite parent) {
 			super(parent);
 		}
 

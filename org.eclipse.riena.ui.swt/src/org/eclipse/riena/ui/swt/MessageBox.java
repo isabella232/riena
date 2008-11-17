@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.swt;
+package org.eclipse.riena.ui.swt;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ import java.util.Set;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * The <code>MessageBox</code> pops up a standard dialog box to display
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Control;
 public class MessageBox implements IPropertyNameProvider {
 
 	private String propertyName;
-	private Control parent;
+	private Composite parent;
 	private int result;
 	private MessageDialog messageDialog;
 	private Set<FocusListener> focusListeners;
@@ -49,7 +49,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param parent
 	 *            the parent control.
 	 */
-	public MessageBox(Control parent) {
+	public MessageBox(Composite parent) {
 
 		super();
 

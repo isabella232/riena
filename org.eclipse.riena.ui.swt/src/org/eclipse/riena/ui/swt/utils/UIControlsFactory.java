@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.utils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
@@ -182,4 +183,7 @@ public final class UIControlsFactory {
 		return items;
 	}
 
+	public static MessageBox createMessageBox(Composite parent) {
+		return new MessageBox(parent);
+	}
 }

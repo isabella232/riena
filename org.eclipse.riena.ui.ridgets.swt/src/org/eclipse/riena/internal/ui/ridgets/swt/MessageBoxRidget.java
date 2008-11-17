@@ -15,7 +15,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
-import org.eclipse.riena.ui.ridgets.swt.MessageBox;
+import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
