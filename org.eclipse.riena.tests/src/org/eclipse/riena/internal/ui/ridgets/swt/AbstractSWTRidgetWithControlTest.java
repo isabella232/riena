@@ -31,7 +31,6 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
-import org.eclipse.riena.ui.ridgets.swt.MessageBox;
 import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
@@ -150,7 +149,7 @@ public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 
 	public void testGetToolTip() {
 
-		if (!(getWidget() instanceof Control) && !(getWidget() instanceof MessageBox)) {
+		if (!(getWidget() instanceof Control)) {
 			// only Control supports tool tips
 			return;
 		}
