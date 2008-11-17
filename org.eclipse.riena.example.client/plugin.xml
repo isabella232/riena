@@ -529,25 +529,6 @@
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentTypeId="playground">
       </assembly>
-      <assembly
-            typeId="org.eclipse.riena.example.client.kundensuche"
-            name="kundensuche"
-            parentTypeId="playground">
-         <modulegroup
-               name="kundesuche_group">
-            <module
-                  name="kundesuche"
-                  label="Kundensuche">
-               <submodule
-                     typeId="org.eclipse.riena.example.client.kundensuche"
-                     name="kundensuche"
-                     label="Suche"
-                     icon="/icons/ledlightgreen.png"
-                     view="org.eclipse.riena.example.kundensuche"
-                     controller="org.eclipse.riena.example.client.controllers.KundenSucheController"/>
-            </module>
-         </modulegroup>
-      </assembly>
    </extension>
    <extension
          id="example_product"

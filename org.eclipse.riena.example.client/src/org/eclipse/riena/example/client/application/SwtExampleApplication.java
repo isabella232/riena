@@ -23,6 +23,7 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+
 import org.osgi.framework.Bundle;
 
 /**
@@ -94,8 +95,6 @@ public class SwtExampleApplication extends SwtApplication {
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.playground")); //$NON-NLS-1$
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.filters")); //$NON-NLS-1$
-
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.client.kundensuche")); //$NON-NLS-1$
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.logcollector")); //$NON-NLS-1$
 
