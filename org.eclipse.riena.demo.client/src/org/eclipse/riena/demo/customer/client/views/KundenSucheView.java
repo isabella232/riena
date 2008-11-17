@@ -194,6 +194,16 @@ public class KundenSucheView extends SubModuleView<KundenSucheController> {
 		final TableColumn newColumnTableColumn_9 = new TableColumn(ergebnis, SWT.NONE);
 		newColumnTableColumn_9.setWidth(100);
 
+		final Button openCustomerButton = new Button(container, SWT.NONE);
+		openCustomerButton.setText("Open Customer");
+		openCustomerButton.setBounds(162, 477, 93, 23);
+		addUIControl(openCustomerButton, "openCustomer");
+
+		final Button newCustomerButton = new Button(container, SWT.NONE);
+		newCustomerButton.setText("New Customer");
+		newCustomerButton.setBounds(309, 477, 93, 23);
+		addUIControl(newCustomerButton, "newCustomer");
+
 	}
 
 	@Override

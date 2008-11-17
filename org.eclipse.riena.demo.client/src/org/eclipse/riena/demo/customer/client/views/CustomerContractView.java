@@ -40,7 +40,7 @@ public class CustomerContractView extends SubModuleView<CustomerContractControll
 		final Label missingCustomerContractLabel = new Label(container, SWT.NONE);
 		missingCustomerContractLabel.setFont(SWTResourceManager.getFont("", 18, SWT.BOLD));
 		missingCustomerContractLabel.setText("Customer Contract View Not Implemented");
-		missingCustomerContractLabel.setBounds(117, 236, 463, 43);
+		missingCustomerContractLabel.setBounds(10, 236, 630, 43);
 	}
 
 	@Override

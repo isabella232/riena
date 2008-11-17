@@ -13,6 +13,9 @@ package org.eclipse.riena.demo.customer.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.demo.customer.common.Anrede;
+import org.eclipse.riena.demo.customer.common.Datum;
+import org.eclipse.riena.demo.customer.common.SuchPerson;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
 /**
@@ -165,155 +168,6 @@ public class PersonenSucheBean extends AbstractBean {
 
 		trimAllBlanks();
 		clearSearchErrorMessages();
-		// if (VBHolder.istInnendienst()) {
-		// if (!isStatusKunde() && !isStatusAltkunde() &&
-		// !isStatusInteressent()) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_006);
-		// result = false;
-		// } else {
-		// if (getSucheNachKundennummer()) {
-		// if (getKundenNummer() == null || getKundenNummer().trim().length() ==
-		// 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_007);
-		// result = false;
-		// }
-		// } else if (getSucheNachVertragsnummer()) {
-		// if (getPartnergesellschaft() == null ||
-		// getPartnergesellschaft().trim().length() == 0
-		// || getVertragsnummer() == null || getVertragsnummer().trim().length()
-		// == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_025);
-		// result = false;
-		// }
-		// } else if (getSucheNachTelefonnummer()) {
-		// if (getTelefonnummer() == null || getTelefonnummer().trim().length()
-		// == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_028);
-		// result = false;
-		// }
-		// } else if (getSucheNachKFZKennzeichen()) {
-		// if (getKfzKennzeichen() == null ||
-		// getKfzKennzeichen().trim().length() == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_029);
-		// result = false;
-		// }
-		// } else {
-		// if (!getSucheOhneEinschraenkung() && (getName() == null ||
-		// getName().trim().length() == 0)) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_008);
-		// result = false;
-		// }
-		// if (getSucheOhneEinschraenkung()) {
-		// // Suche über alle VBs
-		// if ((getLengthOhneSteuerzeichen(getName()) <= 1)) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_010);
-		// result = false;
-		// }
-		// // OSC 13.08.07: Auf Anforderung von Herrn Bräuninger (KBV) muß auch
-		// die Suche nach Firmen möglich sein
-		// // Firmen haben allerdings manchmal keinen Vornamen!!!!
-		// if ((getLengthOhneSteuerzeichen(getVorname()) <= 0)) {
-		// setVorname(null);
-		// // addSearchErrorMessage( MessagesAkte.MEX_03_01_001_014 );
-		// // result = false;
-		// }
-		// }
-		// if ((!getSucheMitEinschraenkung()) && getSuchePhonetisch()) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_024);
-		// result = false;
-		// }
-		// }
-		// }
-		// // Die VbNummer kann null sein
-		// if (getVbNummer() != null) {
-		// if (getVbNummer().trim().length() != 7) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_004);
-		// result = false;
-		// } else {
-		// int tempVbNummer = -1;
-		// try {
-		// tempVbNummer = Integer.parseInt(getVbNummer());
-		// } catch (NumberFormatException ex) {
-		// //
-		// }
-		// if (tempVbNummer == -1) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_005);
-		// result = false;
-		// }
-		//
-		// }
-		// }
-		//
-		// if (getSucheMitEinschraenkung() && (getVbNummer() == null ||
-		// getVbNummer().trim().length() == 0)) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_012);
-		// result = false;
-		// }
-		//
-		// } else {
-		// if (getVbNummer() == null || getVbNummer().trim().length() == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_003);
-		// result = false;
-		// } else {
-		// if (getVbNummer().trim().length() != 7) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_004);
-		// result = false;
-		// } else {
-		// int tempVbNummer = -1;
-		// try {
-		// tempVbNummer = Integer.parseInt(getVbNummer());
-		// } catch (NumberFormatException ex) {
-		// //
-		// }
-		// if (tempVbNummer == -1) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_005);
-		// result = false;
-		// } else {
-		// if (!isStatusKunde() && !isStatusAltkunde() &&
-		// !isStatusInteressent()) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_006);
-		// result = false;
-		// } else {
-		// if (getSucheNachKundennummer()) {
-		// if (getKundenNummer() == null || getKundenNummer().trim().length() ==
-		// 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_007);
-		// result = false;
-		// }
-		// } else if (getSucheNachVertragsnummer()) {
-		// if (getPartnergesellschaft() == null ||
-		// getPartnergesellschaft().trim().length() == 0
-		// || getVertragsnummer() == null || getVertragsnummer().trim().length()
-		// == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_025);
-		// result = false;
-		// }
-		// } else if (getSucheNachTelefonnummer()) {
-		// if (getTelefonnummer() == null || getTelefonnummer().trim().length()
-		// == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_028);
-		// result = false;
-		// }
-		// } else if (getSucheNachKFZKennzeichen()) {
-		// // TODO Falsche Message
-		// if (getKfzKennzeichen() == null ||
-		// getKfzKennzeichen().trim().length() == 0) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_029);
-		// result = false;
-		// }
-		// } else {
-		// if ((getName() == null || getLengthOhneSteuerzeichen(getName()) == 0)
-		// && (getPlz() == null || getPlz().length() == 0)) {
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_008);
-		// result = false;
-		// }
-		// }
-		// }
-		// }
-		// }
-		// }
-		// }
-		// addSearchErrorMessage(MessagesAkte.MEX_03_01_001_002);
 		return result;
 	}
 
@@ -330,53 +184,10 @@ public class PersonenSucheBean extends AbstractBean {
 		return count;
 	}
 
-	// private Integer getCurrentVbNummer() {
-	// return VBHolder.getVbNummer();
-	// }
-
 	/**
 	 * 
 	 * 
 	 */
-	// public void reset() {
-	// setVorname("");
-	// setName("");
-	// setGeburtsdatum("");
-	// setStrasse("");
-	// setPlz("");
-	// setOrt("");
-	// setKundenNummer("");
-	// setVertragsnummer(null);
-	// setTelefonnummer(null);
-	// setKfzKennzeichen(null);
-	// if (VBHolder.istInnendienst()) {
-	// vbNummer = null;
-	// } else {
-	// Integer currentVbNummer = getCurrentVbNummer();
-	// if (currentVbNummer != null) {
-	// vbNummer = currentVbNummer.toString();
-	// }
-	// }
-	// setVbName(VBHolder.getNachname());
-	// setVbVorname(VBHolder.getVorname());
-	// setSuchePhonetisch(false);
-	// setStatusKunde(true);
-	// setStatusInteressent(true);
-	// setStatusAltkunde(false);
-	// if (VBHolder.istInnendienst()) {
-	// setSucheMandantAllfinanz(false);
-	// setSucheMandantDvag(false);
-	// setSucheOhneStruktur(false);
-	// setSucheMitStruktur(true);
-	// setSucheOhneEinschraenkung(true);
-	// setSucheMitEinschraenkung(false);
-	// } else {
-	// setSucheOhneStruktur(true);
-	// setSucheMitStruktur(false);
-	// }
-	// setSelection(new ArrayList<PersonenSucheErgebnisBean>());
-	// setKunden(new ArrayList<PersonenSucheErgebnisBean>());
-	// }
 	/**
 	 * 
 	 * @return boolean
@@ -439,13 +250,6 @@ public class PersonenSucheBean extends AbstractBean {
 				serviceBean.setGeburtsdatum(new Datum(getGeburtsdatum()));
 			}
 		}
-		// if (VBHolder.istInnendienst() && getVbNummer() == null) {
-		// serviceBean.setVbNummer(new Integer(8000000));
-		// serviceBean.setVornameSuchart(SuchArt.WILDCARD);
-		// serviceBean.setNachnameSuchart(SuchArt.WILDCARD);
-		// } else {
-		// serviceBean.setVbNummer(new Integer(getVbNummer()));
-		// }
 		serviceBean.setKunde(isStatusKunde());
 		serviceBean.setInteressent(isStatusInteressent());
 		serviceBean.setAltKunde(isStatusAltkunde());

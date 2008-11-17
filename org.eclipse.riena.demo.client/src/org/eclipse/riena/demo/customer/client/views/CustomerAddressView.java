@@ -40,7 +40,7 @@ public class CustomerAddressView extends SubModuleView<CustomerAddressController
 		final Label missingAddressdataLabel = new Label(container, SWT.NONE);
 		missingAddressdataLabel.setFont(SWTResourceManager.getFont("", 18, SWT.BOLD)); //$NON-NLS-1$
 		missingAddressdataLabel.setText("Customer Addressdata View not implemented"); //$NON-NLS-1$
-		missingAddressdataLabel.setBounds(188, 240, 349, 41);
+		missingAddressdataLabel.setBounds(10, 240, 618, 41);
 	}
 
 	@Override

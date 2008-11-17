@@ -28,7 +28,7 @@ public class PimSubApplicationNodeBuilder extends NavigationNodeBuilder {
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
-		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "PIM"); //$NON-NLS-1$
+		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Mail"); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 		presentation.present(subApplication, "pim"); //$NON-NLS-1$
 		subApplication.setSelected(true);

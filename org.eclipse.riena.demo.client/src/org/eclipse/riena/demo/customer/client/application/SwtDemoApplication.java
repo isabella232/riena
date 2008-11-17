@@ -74,9 +74,11 @@ public class SwtDemoApplication extends SwtApplication {
 		applicationNode.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 
 		// Navigation SubApplication
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.customerRecord")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.customer")); //$NON-NLS-1$
 
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.pim")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.order")); //$NON-NLS-1$
+
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.mail")); //$NON-NLS-1$
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.client.kundensuche")); //$NON-NLS-1$
 

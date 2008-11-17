@@ -10,14 +10,26 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.customer.client.controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.demo.customer.client.model.PersonenSucheBean;
 import org.eclipse.riena.demo.customer.client.model.PersonenSucheErgebnisBean;
-import org.eclipse.riena.demo.customer.client.model.Suchergebnis;
+import org.eclipse.riena.demo.customer.common.IPersonenAkteUebersicht;
+import org.eclipse.riena.demo.customer.common.IPersonenService;
+import org.eclipse.riena.demo.customer.common.SuchPerson;
+import org.eclipse.riena.demo.customer.common.Suchergebnis;
+import org.eclipse.riena.internal.demo.customer.client.Activator;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
@@ -26,37 +38,115 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
  *
  */
 public class KundenSucheController extends SubModuleController {
-	private SuchBean suchBean = new SuchBean();
+	private SuchPerson suchPerson = new SuchPerson();
 	private Suchergebnis ergebnis;
+	private IPersonenService personenService;
+
+	public void bind(IPersonenService personenService) {
+		this.personenService = personenService;
+	}
+
+	public void unbind(IPersonenService personenService) {
+		this.personenService = null;
+	}
 
 	@Override
 	public void configureRidgets() {
+		Inject.service(IPersonenService.class).into(this).andStart(Activator.getDefault().getBundle().getBundleContext());
+
 		ITextRidget suchName = (ITextRidget) getRidget("suchName");
-		suchName.bindToModel(suchBean, "suchName");
+		suchName.bindToModel(suchPerson, "nachname");
 		suchName.setMandatory(true);
 
-		((ITextRidget) getRidget("suchVorname")).bindToModel(suchBean, "suchVorname");
-		((ITextRidget) getRidget("suchPlz")).bindToModel(suchBean, "suchPlz");
-		((ITextRidget) getRidget("suchOrt")).bindToModel(suchBean, "suchOrt");
-		((ITextRidget) getRidget("suchStrasse")).bindToModel(suchBean, "suchStrasse");
-		((ILabelRidget) getRidget("treffer")).bindToModel(suchBean, "suchTreffer");
+		((ITextRidget) getRidget("suchVorname")).bindToModel(suchPerson, "vorname");
+		((ITextRidget) getRidget("suchPlz")).bindToModel(suchPerson, "plz");
+		((ITextRidget) getRidget("suchOrt")).bindToModel(suchPerson, "ort");
+		((ITextRidget) getRidget("suchStrasse")).bindToModel(suchPerson, "strasse");
+		// ((ILabelRidget) getRidget("treffer")).bindToModel(suchPerson,
+		// "treffer");
 
 		ITableRidget kunden = ((ITableRidget) getRidget("ergebnis"));
 		String[] columnNames = { "Name", "Vorname", "Kundennr.", "Geb.datum", "Straﬂe", "PLZ", "Ort", "Status", "Betreuer", "Rufnummer" };
 		String[] propertyNames = { "nachName", "vorName", "kundenNummer", "geburtsdatum", "strasse", "plz", "ort", "status", "vbNummer", "rufNummer" };
-		kunden.bindToModel(new PersonenSucheBean(), "kunden", PersonenSucheErgebnisBean.class, propertyNames, columnNames);
+		final PersonenSucheBean personenSucheBean = new PersonenSucheBean();
+		kunden.bindToModel(personenSucheBean, "kunden", PersonenSucheErgebnisBean.class, propertyNames, columnNames);
 
-		((IActionRidget) getRidget("search")).addListener(new IActionListener() {
+		((IActionRidget) getRidget("reset")).addListener(new IActionListener() {
 
 			public void callback() {
 				// ergebnis = getPersonenService().suche(getSuchBean());
-				getNavigationNode().navigate(new NavigationNodeId("customerRecordOverview"));
+				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord"));
+			}
+		});
+		((IActionRidget) getRidget("search")).addListener(new IActionListener() {
+
+			public void callback() {
+				personenSucheBean.setKunden(null);
+				((IRidget) getRidget("ergebnis")).updateFromModel();
+				ergebnis = personenService.suche(getSuchPerson());
+				List<PersonenSucheErgebnisBean> kundenRows = new ArrayList<PersonenSucheErgebnisBean>();
+				if (ergebnis == null || ergebnis.getFehler()) {
+					((ILabelRidget) getRidget("treffer")).setText("Keine Treffer");
+					((IRidget) getRidget("treffer")).updateFromModel();
+					return;
+				}
+				((ILabelRidget) getRidget("treffer")).setText(ergebnis.getErgebnismenge() + " Treffer");
+				((IRidget) getRidget("treffer")).updateFromModel();
+				transformSuchergebnis(ergebnis, kundenRows);
+				personenSucheBean.setKunden(kundenRows);
+				((IRidget) getRidget("ergebnis")).updateFromModel();
+				// getAktenSucheBean().getSelection().clear();
+				// if (kundenRows.size() > 0)
+				// kunden.setSelection(kundenRows.get(0));
+				// kunden.updateMultiSelectionFromModel();
+				// setDefaultButton(oeffnenAction);
+				// ((JTable) kunden.getUIControl()).requestFocusInWindow();
 			}
 		});
 	}
 
-	public SuchBean getSuchBean() {
-		return suchBean;
+	private void transformSuchergebnis(Suchergebnis ergebnis, List<PersonenSucheErgebnisBean> ergebnisListe) {
+		int treffer = ergebnis.getErgebnis() == null ? 0 : ergebnis.getErgebnis().length;
+		if (treffer > 0) {
+			for (int i = 0; i < treffer; i++) {
+				IPersonenAkteUebersicht personenAkteUebersicht = ergebnis.getErgebnis()[i];
+				PersonenSucheErgebnisBean kundenSucheErgebnisBean = new PersonenSucheErgebnisBean();
+				if (personenAkteUebersicht.getKundenNummer() != null) {
+					kundenSucheErgebnisBean.setKundenNummer(Long.toString(personenAkteUebersicht.getKundenNummer().intValue()));
+				}
+				kundenSucheErgebnisBean.setNachName(personenAkteUebersicht.getName());
+				kundenSucheErgebnisBean.setStrasse(personenAkteUebersicht.getStrasse());
+				kundenSucheErgebnisBean.setPlz(personenAkteUebersicht.getPlz());
+				kundenSucheErgebnisBean.setOrt(personenAkteUebersicht.getOrt());
+				if (personenAkteUebersicht.getStatus() != null) {
+					kundenSucheErgebnisBean.setStatus(personenAkteUebersicht.getStatus().getValue());
+				}
+				if (personenAkteUebersicht.getVbNummer() != null) {
+					kundenSucheErgebnisBean.setVbNummer(Integer.toString(personenAkteUebersicht.getVbNummer().intValue()));
+				}
+				kundenSucheErgebnisBean.setMehrfachBetreuung(personenAkteUebersicht.getMehrfachBetreuung());
+				kundenSucheErgebnisBean.setKommissarisch(false);
+				kundenSucheErgebnisBean.setRufNummer(personenAkteUebersicht.getTelefonNummer());
+				kundenSucheErgebnisBean.setVorName(personenAkteUebersicht.getVorname());
+				kundenSucheErgebnisBean.setAnrede(personenAkteUebersicht.getAnrede());
+				if (personenAkteUebersicht.getGeburtsdatum() != null) {
+					kundenSucheErgebnisBean.setGeburtsdatum(personenAkteUebersicht.getGeburtsdatum().toString());
+				}
+				kundenSucheErgebnisBean.setMandant(personenAkteUebersicht.getMandant());
+				kundenSucheErgebnisBean.setUebersicht(personenAkteUebersicht);
+				ergebnisListe.add(kundenSucheErgebnisBean);
+			}
+			Collections.sort(ergebnisListe);
+		} else {
+			if (ergebnis.getFehler())
+				JOptionPane.showMessageDialog(null, "Fehler bei Suche", "Achtung Fehler", JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, "Suche ergab keine Treffer", "Achtung", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	public SuchPerson getSuchPerson() {
+		return suchPerson;
 	}
 
 	// public void bind(IPerson)

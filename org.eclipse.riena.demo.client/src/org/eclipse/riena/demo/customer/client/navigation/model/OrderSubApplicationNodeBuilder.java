@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 
-public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
+public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
@@ -28,9 +28,9 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
 		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
-		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Customer"); //$NON-NLS-1$
+		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Order"); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
-		presentation.present(subApplication, "customer"); //$NON-NLS-1$
+		presentation.present(subApplication, "order"); //$NON-NLS-1$
 		subApplication.setSelected(true);
 
 		// getNavigationNode().navigate(new

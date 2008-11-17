@@ -12,6 +12,8 @@ package org.eclipse.riena.demo.customer.client.model;
 
 import java.util.List;
 
+import org.eclipse.riena.demo.customer.common.Anrede;
+import org.eclipse.riena.demo.customer.common.IPersonenAkteUebersicht;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
 
@@ -21,10 +23,6 @@ import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
  * 
  */
 public class PersonenSucheErgebnisBean implements Comparable {
-	private IPersistentOid personPoid;
-	private IPersistentOid mitarbeiterPoid;
-	private IPersistentOid adressePoid;
-	private IPersistentOid haushaltPoid;
 	private String kundenNummer;
 	private String vbNummer;
 	private String vorName;
@@ -264,8 +262,7 @@ public class PersonenSucheErgebnisBean implements Comparable {
 			if (this.getVorName() == null || ((PersonenSucheErgebnisBean) o).getVorName() == null) {
 				return -1;
 			}
-			return this.getVorName().toLowerCase()
-					.compareTo(((PersonenSucheErgebnisBean) o).getVorName().toLowerCase());
+			return this.getVorName().toLowerCase().compareTo(((PersonenSucheErgebnisBean) o).getVorName().toLowerCase());
 		} else {
 			return result;
 		}
@@ -287,75 +284,6 @@ public class PersonenSucheErgebnisBean implements Comparable {
 	}
 
 	/**
-	 * @return Returns the adressePoid.
-	 */
-	public IPersistentOid getAdressePoid() {
-		return adressePoid;
-	}
-
-	/**
-	 * @param adressePoid
-	 *            The adressePoid to set.
-	 */
-	public void setAdressePoid(IPersistentOid adressePoid) {
-		this.adressePoid = adressePoid;
-	}
-
-	/**
-	 * @return Returns the mitarbeiterPoid.
-	 */
-	public IPersistentOid getMitarbeiterPoid() {
-		return mitarbeiterPoid;
-	}
-
-	/**
-	 * @param mitarbeiterPoid
-	 *            The mitarbeiterPoid to set.
-	 */
-	public void setMitarbeiterPoid(IPersistentOid mitarbeiterPoid) {
-		this.mitarbeiterPoid = mitarbeiterPoid;
-	}
-
-	/**
-	 * @return Returns the personPoid.
-	 */
-	public IPersistentOid getPersonPoid() {
-		return personPoid;
-	}
-
-	/**
-	 * @param personPoid
-	 *            The personPoid to set.
-	 */
-	public void setPersonPoid(IPersistentOid personPoid) {
-		this.personPoid = personPoid;
-	}
-
-	/**
-	 * @return Returns the haushaltPoid.
-	 */
-	public IPersistentOid getHaushaltPoid() {
-		return haushaltPoid;
-	}
-
-	/**
-	 * @param haushaltPoid
-	 *            The haushaltPoid to set.
-	 */
-	public void setHaushaltPoid(IPersistentOid haushaltPoid) {
-		this.haushaltPoid = haushaltPoid;
-	}
-
-	/*
-	 * public ILabelAdapter getIcon() { ILabelAdapter kiIcon =
-	 * AdapterFactory.createLabelAdapter( "LABEL" + getPersonPoid().toString()
-	 * ); if ( mehrfachBetreuung ) { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.MEHRFACH_BETREUT, IconSize.A ) ); kiIcon.setText(
-	 * "mehrfach betreut" ); } else { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.LEER_ICON, IconSize.A ) ); } return kiIcon; }
-	 */
-
-	/**
 	 * @return the uebersicht
 	 */
 	public IPersonenAkteUebersicht getUebersicht() {
@@ -369,60 +297,6 @@ public class PersonenSucheErgebnisBean implements Comparable {
 	public void setUebersicht(IPersonenAkteUebersicht uebersicht) {
 		this.uebersicht = uebersicht;
 	}
-
-	/*
-	 * 
-	 * public ILabelAdapter getPersonIcon() {
-	 * 
-	 * if ( personIcon == null ) { if ( isKommissarisch() ) { ILabelAdapter
-	 * kiIcon = AdapterFactory.createLabelAdapter( "LABEL2" +
-	 * getPersonPoid().toString() );
-	 * kiIcon.setToolTipText("Kommissarisch betreut"); if ( getAnrede().equals(
-	 * Anrede.FIRMA ) ) { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.KUNDE_KOMMISSARISCH_BETREUT_FIRMA, IconSize.A ) ); } else
-	 * { if ( getAnrede().equals( Anrede.FRAU ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.KUNDE_KOMMISSARISCH_BETREUT_WEIBLICH, IconSize.A ) ); }
-	 * else { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.KUNDE_KOMMISSARISCH_BETREUT_MAENNLICH, IconSize.A ) ); }
-	 * } setPersonIcon( kiIcon ); } else if ( getStatus() != null &&
-	 * KundenStatus.INTERESSENT.getValue().equals( getStatus() ) ) {
-	 * ILabelAdapter kiIcon = AdapterFactory.createLabelAdapter( "LABEL2" +
-	 * getPersonPoid().toString() ); kiIcon.setToolTipText("Interessent"); if (
-	 * getAnrede().equals( Anrede.FIRMA ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.INTERESSENT_FIRMA, IconSize.A )
-	 * ); } else { if ( getAnrede().equals( Anrede.FRAU ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.INTERESSENT_WEIBLICH, IconSize.A
-	 * ) ); } else { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.INTERESSENT_MAENNLICH, IconSize.A ) ); } } setPersonIcon(
-	 * kiIcon ); } else if ( getStatus() != null &&
-	 * KundenStatus.KUNDE.getValue().equals( getStatus() ) ) { ILabelAdapter
-	 * kiIcon = AdapterFactory.createLabelAdapter( "LABEL2" +
-	 * getPersonPoid().toString() ); kiIcon.setToolTipText("Kunde"); if (
-	 * getAnrede().equals( Anrede.FIRMA ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.KUNDE_FIRMA, IconSize.A ) ); }
-	 * else { if ( getAnrede().equals( Anrede.FRAU ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.KUNDE_WEIBLICH, IconSize.A ) ); }
-	 * else { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.KUNDE_MAENNLICH, IconSize.A ) ); } } setPersonIcon(
-	 * kiIcon ); } else if ( getStatus() != null &&
-	 * KundenStatus.ALTKUNDE.getValue().equals( getStatus() ) ) { ILabelAdapter
-	 * kiIcon = AdapterFactory.createLabelAdapter( "LABEL2" +
-	 * getPersonPoid().toString() ); kiIcon.setToolTipText("Altkunde"); if (
-	 * getAnrede().equals( Anrede.FIRMA ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.ALTKUNDE_FIRMA, IconSize.A ) ); }
-	 * else { if ( getAnrede().equals( Anrede.FRAU ) ) { kiIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.ALTKUNDE_WEIBLICH, IconSize.A )
-	 * ); } else { kiIcon.setIcon( ICON_MANAGER.getIconID(
-	 * IAkteIconMapper.ALTKUNDE_MAENNLICH, IconSize.A ) ); } } setPersonIcon(
-	 * kiIcon ); } if ( personIcon != null ) { personIcon.setText( getStatus()
-	 * ); } } return personIcon; }
-	 */
-
-	/*
-	 * public void setPersonIcon( ILabelAdapter icon2 ) { this.personIcon =
-	 * icon2; }
-	 */
 
 	/**
 	 * @return Returns the anrede.
@@ -454,12 +328,4 @@ public class PersonenSucheErgebnisBean implements Comparable {
 		this.mandant = mandant;
 	}
 
-	/*
-	 * public ILabelAdapter getMandantIcon(){ ILabelAdapter mandantIcon = null;
-	 * if(getMandant() != null && getMandant().equals(new Integer(4400003))){
-	 * mandantIcon = AdapterFactory.createLabelAdapter( "MandantIcon" +
-	 * getPersonPoid().toString() ); mandantIcon.setIcon(
-	 * ICON_MANAGER.getIconID( IAkteIconMapper.MANDANT_ALLFINANZ, IconSize.A )
-	 * ); } return mandantIcon; }
-	 */
 }

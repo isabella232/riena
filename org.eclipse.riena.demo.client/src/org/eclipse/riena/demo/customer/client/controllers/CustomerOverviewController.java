@@ -20,6 +20,7 @@ public class CustomerOverviewController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 		getNavigationNode().getParent().setLabel("Hans Meier");
+
 	}
 
 }
