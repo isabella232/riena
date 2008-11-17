@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -38,10 +41,38 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 	@Override
 	protected ToolItem createItem() {
-		ToolItem toolItem = new ToolItem(parent, getStyle(), index);
-		setAllProperties(toolItem);
+
+		IContributionItem contributionItem = getContributionItem();
+		MenuManager menuManager = getMenuManager();
+		ToolItem toolItem;
+		if ((contributionItem != null) && (menuManager == null)) {
+			contributionItem.fill(parent, index);
+			toolItem = parent.getItem(index);
+			toolItem.setEnabled(true);
+			setAllProperties(toolItem, false);
+			contributionItem.update();
+		} else {
+			toolItem = new ToolItem(parent, getStyle(), index);
+			setAllProperties(toolItem, true);
+			if (menuManager != null) {
+				MenuManagerHelper helper = new MenuManagerHelper();
+				helper.createMenu(parent, toolItem, menuManager);
+			}
+		}
 		getRidget().setUIControl(toolItem);
 		return toolItem;
+
+	}
+
+	private MenuManager getMenuManager() {
+
+		IContributionItem contributionItem = getContributionItem();
+		if (contributionItem instanceof MenuManager) {
+			return (MenuManager) contributionItem;
+		}
+
+		return null;
+
 	}
 
 }

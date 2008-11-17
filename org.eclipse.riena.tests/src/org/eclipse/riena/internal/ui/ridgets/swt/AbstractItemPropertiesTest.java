@@ -15,10 +15,14 @@ import junit.framework.TestCase;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.TypedListener;
 
 /**
  * Tests of the class {@link AbstractItemProperties}.
@@ -68,15 +72,33 @@ public class AbstractItemPropertiesTest extends TestCase {
 		locator.setBindingProperty(item, id);
 		item.setText("Text4711");
 		item.setData(new Object());
+		SelectionListener selListener = new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+			}
+		};
+		item.addSelectionListener(selListener);
 		ridget.setUIControl(item);
 
 		ItemProperties itemProperties = new ItemProperties(ridget);
 		ToolItem item2 = new ToolItem(toolbar, SWT.PUSH);
-		itemProperties.setAllProperties(item2);
+		itemProperties.setAllProperties(item2, true);
 		String retId = locator.locateBindingProperty(item2);
 		assertEquals(id, retId);
 		assertEquals(item.getText(), item2.getText());
 		assertSame(item.getData(), item2.getData());
+		Listener[] listeners = item.getListeners(SWT.Selection);
+		boolean listenerAdded = false;
+		for (Listener listener : listeners) {
+			if (listener instanceof TypedListener) {
+				if (((TypedListener) listener).getEventListener() == selListener) {
+					listenerAdded = true;
+				}
+			}
+		}
+		assertTrue(listenerAdded);
 
 	}
 
@@ -92,8 +114,8 @@ public class AbstractItemPropertiesTest extends TestCase {
 		}
 
 		@Override
-		public void setAllProperties(Item item) {
-			super.setAllProperties(item);
+		public void setAllProperties(Item item, boolean addListeners) {
+			super.setAllProperties(item, addListeners);
 		}
 
 		@Override

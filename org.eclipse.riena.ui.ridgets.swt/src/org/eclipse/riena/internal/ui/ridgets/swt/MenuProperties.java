@@ -62,7 +62,7 @@ public class MenuProperties extends MenuItemProperties {
 	protected MenuItem createItem() {
 
 		MenuItem menuItem = new MenuItem(getParent(), getStyle(), getIndex());
-		setAllProperties(menuItem);
+		setAllProperties(menuItem, true);
 
 		// create menu
 		Menu menu = new Menu(menuParent, menuStyle);

@@ -38,16 +38,12 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
@@ -61,12 +57,8 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
-import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -586,104 +578,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void createMenuBar(MenuCoolBarComposite parent) {
 
-		CoolBar coolBar = new CoolBar(parent, SWT.FLAT);
-		coolBar.setBackground(getCoolbarBackground());
-
-		CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
-		ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
-		coolItem.setControl(toolBar);
-		toolBar.addMouseMoveListener(new ToolBarMouseListener());
-
-		// create for every top menu a tool item and create the corresponding
-		// menu
 		IContributionItem[] contribItems = getMenuManager().getItems();
 		for (int i = 0; i < contribItems.length; i++) {
 			if (contribItems[i] instanceof MenuManager) {
 				MenuManager topMenuManager = (MenuManager) contribItems[i];
-				ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
-				toolItem.setText(topMenuManager.getMenuText());
-				Menu menu = createMenu(toolBar, toolItem, topMenuManager);
-				parent.addMenu(menu);
+				parent.createAndAddMenu(topMenuManager);
 			}
 		}
 
-		coolBar.setLocked(true);
-		calcSize(coolItem);
-
-	}
-
-	/**
-	 * Creates with the help of the given menu manager a menu. If the given tool
-	 * item is selected, the menu is shown.
-	 * 
-	 * @param parent
-	 * @param toolItem
-	 *            - tool item with menu
-	 * @param topMenuManager
-	 *            - menu manager
-	 * @return menu
-	 */
-	private Menu createMenu(Composite parent, final ToolItem toolItem, MenuManager topMenuManager) {
-
-		final Menu menu = topMenuManager.createContextMenu(parent);
-		topMenuManager.updateAll(true);
-		menu.addMenuListener(new MenuListener() {
-
-			/**
-			 * @see org.eclipse.swt.events.MenuListener#menuHidden(org.eclipse.swt.events.MenuEvent)
-			 */
-			public void menuHidden(MenuEvent e) {
-				if (e.getSource() == menu) {
-					toolItem.setSelection(false);
-				}
-			}
-
-			/**
-			 * @see org.eclipse.swt.events.MenuListener#menuShown(org.eclipse.swt.events.MenuEvent)
-			 */
-			public void menuShown(MenuEvent e) {
-			}
-
-		});
-
-		toolItem.addSelectionListener(new SelectionListener() {
-
-			/**
-			 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-			 */
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
-			/**
-			 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-			 */
-			public void widgetSelected(SelectionEvent e) {
-				if (e.getSource() == toolItem) {
-					Rectangle itemBounds = toolItem.getBounds();
-					System.out.println(".widgetSelected() " + itemBounds);
-					Point loc = toolItem.getParent().toDisplay(itemBounds.x, itemBounds.height + itemBounds.y);
-					menu.setLocation(loc);
-					menu.setVisible(true);
-				}
-			}
-
-		});
-
-		return menu;
-
-	}
-
-	/**
-	 * Calculates and sets the size of the given cool item.
-	 * 
-	 * @param item
-	 *            - item of cool bar
-	 */
-	private void calcSize(CoolItem item) {
-		Control control = item.getControl();
-		Point pt = control.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		pt = item.computeSize(pt.x, pt.y);
-		item.setSize(pt);
 	}
 
 	/**
@@ -692,44 +594,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private Color getCoolbarBackground() {
 		return LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
-	}
-
-	/**
-	 * If the mouse moves over an unselected item of the tool bar and another
-	 * item was selected, deselect the other item and select the item below the
-	 * mouse pointer.<br>
-	 * <i>Does not work, if menu is visible.</i>
-	 */
-	private static class ToolBarMouseListener implements MouseMoveListener {
-
-		/**
-		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
-		 */
-		public void mouseMove(MouseEvent e) {
-
-			if (e.getSource() instanceof ToolBar) {
-
-				ToolBar toolBar = (ToolBar) e.getSource();
-
-				ToolItem selectedItem = null;
-				ToolItem[] items = toolBar.getItems();
-				for (int i = 0; i < items.length; i++) {
-					if (items[i].getSelection()) {
-						selectedItem = items[i];
-					}
-				}
-
-				ToolItem hoverItem = toolBar.getItem(new Point(e.x, e.y));
-				if (hoverItem != null) {
-					if (!hoverItem.getSelection() && (selectedItem != null)) {
-						selectedItem.setSelection(false);
-						hoverItem.setSelection(true);
-					}
-				}
-			}
-
-		}
-
 	}
 
 	/**

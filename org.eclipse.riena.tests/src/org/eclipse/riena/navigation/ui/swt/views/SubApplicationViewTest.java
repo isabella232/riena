@@ -15,9 +15,11 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -71,6 +73,13 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(id);
 		assertEquals("4711", id);
 
+		MenuItem item2 = new MenuItem(menu, SWT.NONE);
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		locator.setBindingProperty(item2, "0815");
+		id = ReflectionUtils.invokeHidden(view, "getItemId", item2);
+		assertNotNull(id);
+		assertEquals("0815", id);
+
 	}
 
 	/**
@@ -92,6 +101,13 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(id);
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", id);
 
+		MenuItem item2 = new MenuItem(menu, SWT.NONE);
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		locator.setBindingProperty(item2, IActionRidget.BASE_ID_MENUACTION + "0815");
+		id = ReflectionUtils.invokeHidden(view, "getMenuItemId", item2);
+		assertNotNull(id);
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "0815", id);
+
 	}
 
 	/**
@@ -112,6 +128,13 @@ public class SubApplicationViewTest extends TestCase {
 		id = ReflectionUtils.invokeHidden(view, "getToolItemId", item);
 		assertNotNull(id);
 		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "4711", id);
+
+		ToolItem item2 = new ToolItem(toolbar, SWT.NONE);
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		locator.setBindingProperty(item2, IActionRidget.BASE_ID_TOOLBARACTION + "0815");
+		id = ReflectionUtils.invokeHidden(view, "getToolItemId", item2);
+		assertNotNull(id);
+		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "0815", id);
 
 	}
 
@@ -236,6 +259,15 @@ public class SubApplicationViewTest extends TestCase {
 		assertEquals(2, items.size());
 		assertSame(item, items.get(0));
 		assertSame(item2, items.get(1));
+
+		MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(shell, SWT.NONE);
+		MenuManager manager = new MenuManager("TestMenu", "0815");
+		ToolItem topItem = menuComposite.createAndAddMenu(manager);
+		items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
+		assertNotNull(items);
+		assertFalse(items.isEmpty());
+		assertEquals(3, items.size());
+		assertTrue(items.contains(topItem));
 
 	}
 

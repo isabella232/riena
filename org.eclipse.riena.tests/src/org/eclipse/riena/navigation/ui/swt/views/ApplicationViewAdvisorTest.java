@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
@@ -21,11 +20,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 /**
@@ -77,55 +72,6 @@ public class ApplicationViewAdvisorTest extends TestCase {
 
 		SwtUtilities.disposeWidget(shell);
 
-	}
-
-	/**
-	 * Tests the method <code>createMenu</code>.
-	 */
-	public void testCreateMenu() {
-
-		Shell shell = new Shell();
-		ToolBar toolBar = new ToolBar(shell, SWT.NONE);
-		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
-		DummyMenuManager menuManager = new DummyMenuManager();
-
-		Menu menu = ReflectionUtils.invokeHidden(advisor, "createMenu", shell, toolItem, menuManager);
-		assertSame(menuManager.createContextMenu(shell), menu);
-		// MenuListener added?
-		assertTrue(menu.getListeners(SWT.Show).length == 1);
-		// SelectionListener added?
-		assertTrue(toolItem.getListeners(SWT.Selection).length == 1);
-
-		SwtUtilities.disposeWidget(toolItem);
-		SwtUtilities.disposeWidget(toolBar);
-		SwtUtilities.disposeWidget(shell);
-		menuManager.dispose();
-
-	}
-
-	private static class DummyMenuManager extends MenuManager {
-
-		private Menu menu;
-
-		/**
-		 * @see org.eclipse.jface.action.MenuManager#createContextMenu(org.eclipse.swt.widgets.Control)
-		 */
-		@Override
-		public Menu createContextMenu(Control parent) {
-			if (menu == null) {
-				menu = new Menu(parent);
-			}
-			return menu;
-		}
-
-		/**
-		 * @see org.eclipse.jface.action.MenuManager#dispose()
-		 */
-		@Override
-		public void dispose() {
-			super.dispose();
-			SwtUtilities.disposeWidget(menu);
-		}
 	}
 
 }

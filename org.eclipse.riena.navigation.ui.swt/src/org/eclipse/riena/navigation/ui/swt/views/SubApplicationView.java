@@ -231,7 +231,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		String id = null;
 		String itemId = getItemId(item);
 		if (!StringUtils.isEmpty(itemId)) {
-			id = IActionRidget.BASE_ID_MENUACTION + itemId;
+			if (itemId.startsWith(IActionRidget.BASE_ID_MENUACTION)) {
+				id = itemId;
+			} else {
+				id = IActionRidget.BASE_ID_MENUACTION + itemId;
+			}
 		}
 		return id;
 
@@ -248,7 +252,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		String id = null;
 		String itemId = getItemId(item);
 		if (!StringUtils.isEmpty(itemId)) {
-			id = IActionRidget.BASE_ID_TOOLBARACTION + itemId;
+			if (itemId.startsWith(IActionRidget.BASE_ID_TOOLBARACTION)) {
+				id = itemId;
+			} else {
+				id = IActionRidget.BASE_ID_TOOLBARACTION + itemId;
+			}
 		}
 		return id;
 
@@ -265,6 +273,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		if (item.getData() instanceof IContributionItem) {
 			IContributionItem contributionItem = (IContributionItem) item.getData();
 			id = contributionItem.getId();
+		}
+		if (StringUtils.isEmpty(id)) {
+			id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(item);
 		}
 		if (StringUtils.isEmpty(id)) {
 			id = Integer.toString(++itemId);
@@ -534,6 +545,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	private List<ToolItem> getAllToolItems() {
 
 		List<ToolItem> items = new ArrayList<ToolItem>();
+
+		List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
+		for (MenuCoolBarComposite menuComp : menuCoolBarComposites) {
+			items.addAll(menuComp.getTopLevelItems());
+		}
 
 		List<CoolBar> coolBars = getCoolBars(getShell());
 		for (CoolBar coolBar : coolBars) {

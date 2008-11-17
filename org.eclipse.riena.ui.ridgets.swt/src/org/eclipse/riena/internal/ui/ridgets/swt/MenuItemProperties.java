@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
@@ -49,8 +50,17 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 * @return menu item
 	 */
 	protected MenuItem createItem(Menu parent) {
-		MenuItem menuItem = new MenuItem(parent, getStyle(), index);
-		setAllProperties(menuItem);
+		IContributionItem contributionItem = getContributionItem();
+		MenuItem menuItem;
+		if (contributionItem != null) {
+			contributionItem.fill(parent, index);
+			menuItem = parent.getItem(index);
+			setAllProperties(menuItem, false);
+			contributionItem.update();
+		} else {
+			menuItem = new MenuItem(parent, getStyle(), index);
+			setAllProperties(menuItem, true);
+		}
 		getRidget().setUIControl(menuItem);
 		return menuItem;
 	}

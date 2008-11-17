@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapperTest;
+import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarCompositeTest;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidgetTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResourceTest;
 import org.eclipse.riena.navigation.ui.swt.lnf.LnfManagerTest;
@@ -56,6 +57,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(AbstractViewBindingDelegateTest.class);
 		suite.addTestSuite(SubApplicationSwitcherRendererTest.class);
 		suite.addTestSuite(SubApplicationSwitcherWidgetTest.class);
+		suite.addTestSuite(MenuCoolBarCompositeTest.class);
 		return suite;
 	}
 

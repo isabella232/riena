@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -68,9 +69,21 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		if (getRidget().isVisible()) {
 			getRidget().createItem();
 		} else {
+			MenuManager menuManager = getContributionItem(item);
+			if (menuManager != null) {
+				menuManager.getMenu().dispose();
+			}
 			item.dispose();
 		}
 
+	}
+
+	protected MenuManager getContributionItem(ToolItem item) {
+		if (item.getData() instanceof MenuManager) {
+			return (MenuManager) item.getData();
+		} else {
+			return null;
+		}
 	}
 
 	/**

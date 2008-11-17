@@ -48,11 +48,19 @@ public class MenuItemRidgetMatcher extends RidgetMatcher {
 	}
 
 	private String getMenuItemId() {
-		return IActionRidget.BASE_ID_MENUACTION + getId();
+		if (getId().startsWith(IActionRidget.BASE_ID_MENUACTION)) {
+			return getId();
+		} else {
+			return IActionRidget.BASE_ID_MENUACTION + getId();
+		}
 	}
 
 	private String getToolbarItemId() {
-		return IActionRidget.BASE_ID_TOOLBARACTION + getId();
+		if (getId().startsWith(IActionRidget.BASE_ID_TOOLBARACTION)) {
+			return getId();
+		} else {
+			return IActionRidget.BASE_ID_TOOLBARACTION + getId();
+		}
 	}
 
 }

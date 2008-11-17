@@ -73,6 +73,9 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 		if (getRidget().isVisible()) {
 			getRidget().createItem();
 		} else {
+			if (item.getMenu() != null) {
+				item.getMenu().dispose();
+			}
 			item.dispose();
 		}
 

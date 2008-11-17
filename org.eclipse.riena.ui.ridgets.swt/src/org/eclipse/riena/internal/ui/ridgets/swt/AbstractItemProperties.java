@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -27,7 +28,7 @@ public abstract class AbstractItemProperties {
 	private String id;
 	private String text;
 	private Image image;
-	private Listener[] listeners;
+	private Listener[] selectionListeners;
 
 	/**
 	 * Creates a new instance of {@code ItemProperties}.<br>
@@ -43,7 +44,7 @@ public abstract class AbstractItemProperties {
 		id = ridget.getID();
 		text = item.getText();
 		image = item.getImage();
-		listeners = item.getListeners(SWT.Selection);
+		selectionListeners = item.getListeners(SWT.Selection);
 		this.ridget = ridget;
 	}
 
@@ -52,14 +53,16 @@ public abstract class AbstractItemProperties {
 	 * 
 	 * @param item
 	 */
-	protected void setAllProperties(Item item) {
+	protected void setAllProperties(Item item, boolean addListeners) {
 		item.setData(data);
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(item, id);
 		item.setText(text);
 		item.setImage(image);
-		for (Listener listener : listeners) {
-			item.addListener(SWT.Selection, listener);
+		if (addListeners) {
+			for (Listener listener : selectionListeners) {
+				item.addListener(SWT.Selection, listener);
+			}
 		}
 
 	}
@@ -70,6 +73,14 @@ public abstract class AbstractItemProperties {
 
 	protected AbstractItemRidget getRidget() {
 		return ridget;
+	}
+
+	protected IContributionItem getContributionItem() {
+		if (data instanceof IContributionItem) {
+			return (IContributionItem) data;
+		} else {
+			return null;
+		}
 	}
 
 	/**
