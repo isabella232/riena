@@ -18,8 +18,8 @@ import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.workarea.IWorkareaDefinition;
-import org.eclipse.riena.workarea.WorkareaManager;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * Manages the reference between the navigation nodes and the view id's

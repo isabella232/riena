@@ -15,7 +15,7 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.swt.workarea.SwtExtensionWorkareaDefinitionRegistry;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
-import org.eclipse.riena.workarea.spi.IWorkareaDefinitionRegistry;
+import org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry;
 import org.osgi.framework.BundleContext;
 
 /**

@@ -28,7 +28,7 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
-import org.eclipse.riena.workarea.WorkareaManager;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 

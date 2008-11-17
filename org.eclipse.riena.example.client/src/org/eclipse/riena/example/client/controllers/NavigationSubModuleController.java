@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.workarea.WorkareaManager;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * This controller adds dynamically nodes to the navigation.

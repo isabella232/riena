@@ -22,7 +22,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.workarea.WorkareaManager;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  *

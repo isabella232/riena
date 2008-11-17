@@ -17,9 +17,9 @@ import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
-import org.eclipse.riena.workarea.IWorkareaDefinition;
-import org.eclipse.riena.workarea.WorkareaDefinition;
-import org.eclipse.riena.workarea.spi.IWorkareaDefinitionRegistry;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+import org.eclipse.riena.ui.workarea.WorkareaDefinition;
+import org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry;
 
 public class SwtExtensionWorkareaDefinitionRegistry implements IWorkareaDefinitionRegistry {
 
