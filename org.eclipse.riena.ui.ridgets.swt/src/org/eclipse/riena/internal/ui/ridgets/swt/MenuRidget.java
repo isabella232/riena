@@ -47,23 +47,54 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 		return new MenuProperties(this);
 	}
 
+	/**
+	 * Adds the given ridget as child to this menu ridget.
+	 * 
+	 * @param child
+	 *            - ridget to added
+	 */
 	public void addChild(MenuItemRidget child) {
 		children.add(child);
 		child.getUIControl().addDisposeListener(disposeListener);
 	}
 
+	/**
+	 * Returns all children of this menu ridget.
+	 * 
+	 * @return children
+	 */
 	public List<MenuItemRidget> getChildren() {
 		return children;
 	}
 
+	/**
+	 * Returns the child ridget with the given id.
+	 * 
+	 * @param id
+	 * @return child ridget or {@code null} if none was found
+	 */
 	private MenuItemRidget getChild(String id) {
 		List<MenuItemRidget> children = getChildren();
 		for (MenuItemRidget child : children) {
-			if (child.getID().equals(id)) {
+			if ((child.getID() != null) && child.getID().equals(id)) {
 				return child;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Removes the ridget of the given item form the list of children.
+	 * 
+	 * @param item
+	 *            - item of ridget
+	 */
+	private void removeChild(MenuItem item) {
+		String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(item);
+		MenuItemRidget child = getChild(id);
+		if (child != null) {
+			getChildren().remove(child);
+		}
 	}
 
 	private class ChildDisposeListener implements DisposeListener {
@@ -71,11 +102,7 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 		public void widgetDisposed(DisposeEvent e) {
 			if (e.getSource() instanceof MenuItem) {
 				MenuItem item = (MenuItem) e.getSource();
-				String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(item);
-				MenuItemRidget child = getChild(id);
-				if (child != null) {
-					getChildren().remove(child);
-				}
+				removeChild(item);
 			}
 		}
 

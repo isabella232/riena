@@ -97,6 +97,10 @@ public class MenuItemPropertiesTest extends TestCase {
 
 	}
 
+	/**
+	 * This class changes the visibility of some protected methods to public. So
+	 * the methods can be tested better.
+	 */
 	private class MyMenuItemProperties extends MenuItemProperties {
 
 		public MyMenuItemProperties(MenuItemRidget ridget) {

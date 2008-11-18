@@ -35,6 +35,8 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(MenuItemPropertiesTest.class);
 		suite.addTestSuite(MenuItemRidgetTest.class);
 		suite.addTestSuite(MenuItemMarkerSupportTest.class);
+		suite.addTestSuite(MenuPropertiesTest.class);
+		suite.addTestSuite(MenuRidgetTest.class);
 		suite.addTestSuite(MultipleChoiceRidgetTest.class);
 		suite.addTestSuite(NoAbstractSWTRidgetTest.class);
 		suite.addTestSuite(NumericStringTest.class);

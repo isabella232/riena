@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- * This class stores the properties of a menu item.
+ * This class stores the properties of a menu item ridget.
  */
 public class MenuItemProperties extends AbstractItemProperties {
 
@@ -23,7 +23,11 @@ public class MenuItemProperties extends AbstractItemProperties {
 	private int index;
 
 	/**
-	 * @param item
+	 * Creates a new instance of {@code MenuItemProperties}. The properties of
+	 * the given ridget are stored.
+	 * 
+	 * @param ridget
+	 *            - menu ridget
 	 */
 	public MenuItemProperties(MenuItemRidget ridget) {
 		super(ridget);

@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 /**
- *
+ * This class stores the properties of a menu ridget.
  */
 public class MenuProperties extends MenuItemProperties {
 
@@ -27,13 +27,18 @@ public class MenuProperties extends MenuItemProperties {
 	private MenuItemProperties[] children;
 
 	/**
-	 * @param item
+	 * Creates a new instance of {@code MenuProperties}. The properties of the
+	 * given ridget are stored also the children of the menu ridget.
+	 * 
+	 * @param ridget
+	 *            - menu ridget
 	 */
-	MenuProperties(MenuRidget ridget) {
+	public MenuProperties(MenuRidget ridget) {
 
 		super(ridget);
 
 		MenuItem item = ridget.getUIControl();
+		Assert.isNotNull(item);
 		Menu menu = item.getMenu();
 		Assert.isNotNull(menu);
 
