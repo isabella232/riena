@@ -338,7 +338,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 		NavigationNodeProvider p = (NavigationNodeProvider) NavigationNodeProviderAccessor.current()
 				.getNavigationNodeProvider();
-		return p.getNavigationNodeTypeDefinition(targetId);
+		return p.getAssembly(targetId);
 	}
 
 	private void doBinding() {

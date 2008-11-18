@@ -38,9 +38,10 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+
 		super.setUp();
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
-
+		Thread.sleep(500);
 		ApplicationNode appNode = new ApplicationNode();
 		SubApplicationNode subAppNode = new SubApplicationNode();
 		appNode.addChild(subAppNode);

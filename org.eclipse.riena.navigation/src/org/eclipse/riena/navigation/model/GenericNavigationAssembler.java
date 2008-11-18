@@ -17,6 +17,8 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -46,6 +48,11 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 		if (nodeDefinition != null) {
 			// build module group if it exists
+			ISubApplicationNodeExtension subapplicationDefinition = nodeDefinition.getSubApplicationNode();
+			if (subapplicationDefinition != null) {
+				return build(subapplicationDefinition, targetId);
+			}
+			// build module group if it exists
 			IModuleGroupNodeExtension groupDefinition = nodeDefinition.getModuleGroupNode();
 			if (groupDefinition != null) {
 				return build(groupDefinition, targetId);
@@ -63,7 +70,19 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 		}
 
 		throw new ExtensionPointFailure(
-				"'modulegroup', 'module' or 'submodule' element expected. ID=" + targetId.getTypeId()); //$NON-NLS-1$
+				"'subapplication', 'modulegroup', 'module' or 'submodule' element expected. ID=" + targetId.getTypeId()); //$NON-NLS-1$
+	}
+
+	protected ISubApplicationNode build(ISubApplicationNodeExtension subapplicationDefinition, NavigationNodeId targetId) {
+
+		// a module group can only contain modules
+		ISubApplicationNode subapplication = new SubApplicationNode(new NavigationNodeId(subapplicationDefinition
+				.getTypeId(), targetId.getInstanceId()));
+		for (IModuleGroupNodeExtension modulegroupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
+			subapplication.addChild(build(modulegroupDefinition, targetId));
+		}
+
+		return subapplication;
 	}
 
 	protected IModuleGroupNode build(IModuleGroupNodeExtension groupDefinition, NavigationNodeId targetId) {
@@ -106,10 +125,6 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 		// TODO we cannot set visibility state now
 		// TODO node MUST be registered first
 		//submodule.setVisible(!submoduleDefinition.isHidden());
-
-		// register view definition
-		NavigationNodeProviderAccessor.current().getNavigationNodeProvider().register(submoduleDefinition.getTypeId(),
-				submoduleDefinition);
 
 		// process nested submodules
 		for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {

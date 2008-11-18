@@ -55,6 +55,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="0" maxOccurs="1">
+            <element ref="subapplication"/>
             <element ref="modulegroup"/>
             <element ref="module"/>
             <element ref="submodule"/>
@@ -88,6 +89,38 @@
                <documentation>
                   contains the description of this navigation node for the PDE
                </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="subapplication">
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="modulegroup"/>
+         </sequence>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  description for PDE
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="typeId" type="string">
+            <annotation>
+               <documentation>
+                  Type part of the ID of the nodes created with this definition. When a subtree is defined it is the type ID of the root node.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="assembler" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.navigation.INavigationAssembler"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

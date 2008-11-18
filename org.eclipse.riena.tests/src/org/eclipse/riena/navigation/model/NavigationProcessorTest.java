@@ -43,9 +43,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		super.setUp();
-		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
 
+		super.setUp();
 		applicationNode = new ApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.application"));
 		navigationProcessor = new NavigationProcessor();
@@ -99,6 +98,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertEquals(1, applicationNode.getChildren().size());
 		assertTrue(subApplication.isActivated());
 
+		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
+		Thread.sleep(500);
 		subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
 
 		assertEquals(2, applicationNode.getChildren().size());

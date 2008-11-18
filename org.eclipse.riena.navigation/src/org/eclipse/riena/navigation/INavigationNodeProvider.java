@@ -29,17 +29,7 @@ public interface INavigationNodeProvider {
 	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
-	 * Register a submodule that is defined within an enclosing navigation node
-	 * definition.
-	 * 
-	 * @param subModuleNodeid
-	 * @param definition
-	 */
-	void register(String subModuleNodeid, ISubModuleNodeExtension definition);
-
-	/**
 	 * Perform some housekeeping
 	 */
 	void cleanUp();
-
 }

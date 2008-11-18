@@ -73,22 +73,25 @@ public interface INavigationAssemblyExtension {
 	boolean isShared();
 
 	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
+	 * @return A subapplication node definition
+	 */
+	@MapName("subapplication")
+	ISubApplicationNodeExtension getSubApplicationNode();
+
+	/**
+	 * @return A module group node definition
 	 */
 	@MapName("modulegroup")
 	IModuleGroupNodeExtension getModuleGroupNode();
 
 	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
+	 * @return A module node definition
 	 */
 	@MapName("module")
 	IModuleNodeExtension getModuleNode();
 
 	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
+	 * @return A submodule node definition
 	 */
 	@MapName("submodule")
 	ISubModuleNodeExtension getSubModuleNode();

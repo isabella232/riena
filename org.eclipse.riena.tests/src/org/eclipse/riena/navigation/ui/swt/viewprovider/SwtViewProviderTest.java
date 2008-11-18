@@ -26,16 +26,15 @@ public class SwtViewProviderTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+
 		super.setUp();
-
-		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
-
 		swtPresentationManager = new SwtViewProvider();
-
 	}
 
 	public void testGetSwtViewIdSharedView() throws Exception {
 
+		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
+		Thread.sleep(500);
 		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
 		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
 
