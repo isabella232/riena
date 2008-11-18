@@ -271,10 +271,9 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 			Object value = selectionObservable.getValue();
 			for (Control child : control.getChildren()) {
 				Button button = (Button) child;
-				boolean isSelected = canSelect && (value != null) && (child.getData() == value);
+				boolean isSelected = canSelect && (value != null) && (value.equals(child.getData()));
 				button.setSelection(isSelected);
 			}
 		}
 	}
-
 }

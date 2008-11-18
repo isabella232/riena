@@ -552,6 +552,24 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals("Option B", getSelectedControlValue(control));
 	}
 
+	/**
+	 * Test that update from model uses equals() instead of comparing
+	 * references.
+	 */
+	public void testBug255465() {
+		ISingleChoiceRidget ridget = getRidget();
+		ChoiceComposite control = getWidget();
+
+		List<String> values = Arrays.asList(new String("male"), new String("female"));
+		List<String> labels = Arrays.asList("Man", "Woman");
+		Person personEntity = new Person("Max", "Mustermann");
+		personEntity.setGender("male");
+		ridget.bindToModel(values, labels, personEntity, "gender");
+		ridget.updateFromModel();
+
+		assertEquals("male", getSelectedControlValue(control));
+	}
+
 	// helping methods
 	// ////////////////
 
