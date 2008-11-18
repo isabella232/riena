@@ -138,7 +138,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	protected static final char DECIMAL_SEPARATOR = new DecimalFormatSymbols().getDecimalSeparator();
-	private static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
+	protected static final char GROUPING_SEPARATOR = new DecimalFormatSymbols().getGroupingSeparator();
 	private static final char MINUS_SIGN = new DecimalFormatSymbols().getMinusSign();
 	private static final char ZERO = '0';
 	private static final String MINUS_ZERO = String.valueOf(MINUS_SIGN) + ZERO;
