@@ -31,15 +31,16 @@ public class DialogSubModuleController extends SubModuleController {
 	 */
 	public void configureRidgets() {
 
-		IActionRidget openShellAction = (IActionRidget) getRidget("openShell"); //$NON-NLS-1$
-		openShellAction.setText("&Open shell"); //$NON-NLS-1$
-		openShellAction.addListener(new IActionListener() {
-			public void callback() {
-				((IWindowRidget) getRidget("shell")).setVisible(true);
-			}
-		});
-
 		IWindowRidget shell = (IWindowRidget) getRidget("shell"); //$NON-NLS-1$
 		shell.setTitle("Test shell");
+
+		IActionRidget openShellAction = (IActionRidget) getRidget("openShell"); //$NON-NLS-1$
+		openShellAction.setText("&Open dialog"); //$NON-NLS-1$
+		openShellAction.addListener(new IActionListener() {
+			public void callback() {
+				System.err.println("to be implemented");
+				//((IWindowRidget) getRidget("shell")).setVisible(true);
+			}
+		});
 	}
 }
