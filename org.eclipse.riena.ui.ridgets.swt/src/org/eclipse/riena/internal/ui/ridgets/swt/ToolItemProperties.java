@@ -28,10 +28,13 @@ public class ToolItemProperties extends AbstractItemProperties {
 	 * @param item
 	 */
 	public ToolItemProperties(ToolItemRidget ridget) {
+
 		super(ridget);
+
 		ToolItem item = ridget.getUIControl();
 		parent = item.getParent();
 		index = parent.indexOf(item);
+
 	}
 
 	@Override
@@ -55,8 +58,9 @@ public class ToolItemProperties extends AbstractItemProperties {
 			toolItem = new ToolItem(parent, getStyle(), index);
 			setAllProperties(toolItem, true);
 			if (menuManager != null) {
+				toolItem.setData(menuManager);
 				MenuManagerHelper helper = new MenuManagerHelper();
-				helper.createMenu(parent, toolItem, menuManager);
+				helper.addListeners(toolItem, menuManager.getMenu());
 			}
 		}
 		getRidget().setUIControl(toolItem);

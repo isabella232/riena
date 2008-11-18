@@ -14,6 +14,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.swt.widgets.ToolItem;
 
 /**
@@ -55,6 +56,9 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 *            - tool item to update
 	 */
 	private void updateDisabled(ToolItem item) {
+		if (item.isDisposed()) {
+			return;
+		}
 		item.setEnabled(ridget.isEnabled());
 	}
 
@@ -71,7 +75,8 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		} else {
 			MenuManager menuManager = getContributionItem(item);
 			if (menuManager != null) {
-				menuManager.getMenu().dispose();
+				MenuManagerHelper helper = new MenuManagerHelper();
+				helper.removeListeners(item, menuManager.getMenu());
 			}
 			item.dispose();
 		}

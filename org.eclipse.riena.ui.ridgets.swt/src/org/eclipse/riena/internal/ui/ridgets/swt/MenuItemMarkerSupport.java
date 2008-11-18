@@ -54,11 +54,9 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 *            - menu item to update
 	 */
 	private void updateDisabled(MenuItem item) {
-		//		boolean enable = getRidget().isCommandEnabled();
-		//		if (enable) {
-		//			enable = ridget.isEnabled();
-		//		}
-		//		item.setEnabled(enable);
+		if (item.isDisposed()) {
+			return;
+		}
 		item.setEnabled(ridget.isEnabled());
 	}
 
@@ -73,7 +71,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 		if (getRidget().isVisible()) {
 			getRidget().createItem();
 		} else {
-			if (item.getMenu() != null) {
+			if ((!item.isDisposed()) && (item.getMenu() != null)) {
 				item.getMenu().dispose();
 			}
 			item.dispose();

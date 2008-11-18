@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +27,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -38,7 +36,6 @@ import org.eclipse.swt.widgets.ToolItem;
  */
 public class MenuCoolBarComposite extends Composite {
 
-	private List<Menu> menus;
 	private ToolBar toolBar;
 	private CoolItem coolItem;
 
@@ -54,7 +51,6 @@ public class MenuCoolBarComposite extends Composite {
 	 */
 	public MenuCoolBarComposite(Composite parent, int style) {
 		super(parent, style);
-		menus = new ArrayList<Menu>();
 		create();
 	}
 
@@ -99,30 +95,9 @@ public class MenuCoolBarComposite extends Composite {
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
 		toolItem.setText(menuManager.getMenuText());
 		MenuManagerHelper helper = new MenuManagerHelper();
-		Menu menu = helper.createMenu(toolBar, toolItem, menuManager);
-		addMenu(menu);
+		helper.createMenu(toolBar, toolItem, menuManager);
 		calcSize(coolItem);
 		return toolItem;
-	}
-
-	/**
-	 * Adds the given menu to the list of top-level menus of the Riena
-	 * application.
-	 * 
-	 * @param menu
-	 *            - top-level menu to add
-	 */
-	private void addMenu(Menu menu) {
-		menus.add(menu);
-	}
-
-	/**
-	 * Returns the list of top-level menus of the Riena application.
-	 * 
-	 * @return list of menus
-	 */
-	public List<Menu> getMenus() {
-		return menus;
 	}
 
 	public List<ToolItem> getTopLevelItems() {

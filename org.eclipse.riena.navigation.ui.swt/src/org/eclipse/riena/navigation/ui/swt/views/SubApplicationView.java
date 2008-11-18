@@ -12,13 +12,11 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.MenuRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -53,7 +51,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IViewPart;
@@ -73,7 +70,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	private SubApplicationNode subApplicationNode;
 	private List<Object> uiControls;
 	private static IBindingManager menuItemBindingManager;
-	private static int itemId;
+	private static int itemId = 0;
 
 	/**
 	 * Creates a new instance of {@code SubApplicationView}.
@@ -85,7 +82,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(),
 					new DefaultSwtControlRidgetMapper());
 		}
-		itemId = 0;
 	}
 
 	private IBindingManager createMenuItemBindingManager(IBindingPropertyLocator propertyStrategy,
@@ -121,85 +117,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	private void bindMenuAndToolItems(IController controller) {
-		createMenuRidgets(controller);
-		createToolRidgets(controller);
+		createRidgets(controller);
 		menuItemBindingManager.bind(controller, getUIControls());
-	}
-
-	/**
-	 * Creates for every tool item (with an ID) a ridgets and adds it to the
-	 * controller.
-	 * 
-	 * @param controller
-	 *            - controller of the sub-application
-	 */
-	private void createToolRidgets(IController controller) {
-
-		List<ToolItem> toolItems = getAllToolItems();
-		for (ToolItem item : toolItems) {
-			if (isSeparator(item)) {
-				// no ridget for separator
-				// and
-				// no ridget for tool items with control 
-				// (both tool items has the style SWT.SEPARATOR)
-				continue;
-			}
-			String toolItemId = getToolItemId(item);
-			if (!StringUtils.isEmpty(toolItemId)) {
-				IRidget ridget = createRidget(item);
-				SWTBindingPropertyLocator.getInstance().setBindingProperty(item, toolItemId);
-				getUIControls().add(item);
-				controller.addRidget(toolItemId, ridget);
-			}
-		}
-
-	}
-
-	/**
-	 * Creates for every menu item (with an ID) a ridgets and adds it to the
-	 * controller.
-	 * 
-	 * @param controller
-	 *            - controller of the sub-application
-	 */
-	private void createMenuRidgets(IController controller) {
-
-		List<MenuItem> menuItems = getAllMenuItems();
-		for (MenuItem item : menuItems) {
-			if (isSeparator(item)) {
-				continue;
-			}
-			String menuItemId = getMenuItemId(item);
-			if (!StringUtils.isEmpty(menuItemId)) {
-				IRidget ridget = createRidget(item);
-				SWTBindingPropertyLocator.getInstance().setBindingProperty(item, menuItemId);
-				getUIControls().add(item);
-				controller.addRidget(menuItemId, ridget);
-			}
-		}
-
-		Collection<? extends IRidget> ridgets = controller.getRidgets();
-		for (IRidget ridget : ridgets) {
-			if (ridget instanceof MenuRidget) {
-				MenuRidget menuRidget = (MenuRidget) ridget;
-				Menu menu = menuRidget.getUIControl().getMenu();
-				if (menu != null) {
-					MenuItem[] items = menu.getItems();
-					for (MenuItem item : items) {
-						String id = getMenuItemId(item);
-						IRidget itemRidget = controller.getRidget(id);
-						if (itemRidget instanceof MenuItemRidget) {
-							menuRidget.addChild((MenuItemRidget) itemRidget);
-						}
-					}
-				}
-			}
-		}
-
-	}
-
-	private boolean isMenu(MenuItem menuItem) {
-		return (menuItem.getMenu() != null);
 	}
 
 	private boolean isSeparator(Item item) {
@@ -207,16 +126,54 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	/**
-	 * Creates for the given widget a ridget.
+	 * Creates for the given item a ridget and adds it to the given controller.
 	 * 
-	 * @param widget
-	 * @return ridget
+	 * @param controller
+	 * @param item
 	 */
-	private IRidget createRidget(Widget widget) {
+	private void createRidget(IController controller, Item item) {
 
-		IRidget ridget = menuItemBindingManager.createRidget(widget);
-		ridget.setUIControl(widget);
-		return ridget;
+		if (isSeparator(item)) {
+			// no ridget for separator
+			// and
+			// no ridget for tool items with control 
+			// (both tool items has the style SWT.SEPARATOR)
+			return;
+		}
+
+		String itemId;
+		if (item instanceof MenuItem) {
+			itemId = getItemId((MenuItem) item);
+		} else {
+			itemId = getItemId((ToolItem) item);
+		}
+		if (StringUtils.isEmpty(itemId)) {
+			return;
+		}
+
+		IRidget ridget = menuItemBindingManager.createRidget(item);
+		ridget.setUIControl(item);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, itemId);
+		getUIControls().add(item);
+		controller.addRidget(itemId, ridget);
+
+		if (item instanceof MenuItem) {
+			MenuItem menuItem = (MenuItem) item;
+			createRidget(controller, menuItem.getMenu());
+		}
+
+	}
+
+	private void createRidget(IController controller, Menu menu) {
+
+		if (menu == null) {
+			return;
+		}
+
+		MenuItem[] items = menu.getItems();
+		for (MenuItem item : items) {
+			createRidget(controller, item);
+		}
 
 	}
 
@@ -227,39 +184,19 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 *            - menu item
 	 * @return identifier, or {@code null} if none
 	 */
-	private String getMenuItemId(MenuItem item) {
-		String id = null;
-		String itemId = getItemId(item);
-		if (!StringUtils.isEmpty(itemId)) {
-			if (itemId.startsWith(IActionRidget.BASE_ID_MENUACTION)) {
-				id = itemId;
-			} else {
-				id = IActionRidget.BASE_ID_MENUACTION + itemId;
-			}
-		}
-		return id;
-
+	private String getItemId(MenuItem item) {
+		return getItemId(item, IActionRidget.BASE_ID_MENUACTION);
 	}
 
 	/**
 	 * Returns the identifier of the given tool item.
 	 * 
 	 * @param item
-	 *            - menu item
+	 *            - tool item
 	 * @return identifier, or {@code null} if none
 	 */
-	private String getToolItemId(ToolItem item) {
-		String id = null;
-		String itemId = getItemId(item);
-		if (!StringUtils.isEmpty(itemId)) {
-			if (itemId.startsWith(IActionRidget.BASE_ID_TOOLBARACTION)) {
-				id = itemId;
-			} else {
-				id = IActionRidget.BASE_ID_TOOLBARACTION + itemId;
-			}
-		}
-		return id;
-
+	private String getItemId(ToolItem item) {
+		return getItemId(item, IActionRidget.BASE_ID_TOOLBARACTION);
 	}
 
 	/**
@@ -268,7 +205,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	 * @param item
 	 * @return identifier, or {@code null} if none
 	 */
-	private String getItemId(Item item) {
+	private String getItemId(Item item, String prefix) {
 		String id = null;
 		if (item.getData() instanceof IContributionItem) {
 			IContributionItem contributionItem = (IContributionItem) item.getData();
@@ -279,6 +216,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		}
 		if (StringUtils.isEmpty(id)) {
 			id = Integer.toString(++itemId);
+		} else {
+			if (!id.startsWith(prefix)) {
+				id = prefix + id;
+			}
 		}
 		return id;
 	}
@@ -546,11 +487,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 		List<ToolItem> items = new ArrayList<ToolItem>();
 
-		List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
-		for (MenuCoolBarComposite menuComp : menuCoolBarComposites) {
-			items.addAll(menuComp.getTopLevelItems());
-		}
-
 		List<CoolBar> coolBars = getCoolBars(getShell());
 		for (CoolBar coolBar : coolBars) {
 			List<ToolBar> toolBars = getToolBars(coolBar);
@@ -602,49 +538,32 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	/**
-	 * Returns a list of all menu items of the given menu (and also of its
-	 * sub-menus).
+	 * Creates for every menu item and tool item a ridget and adds
 	 * 
-	 * @param menu
-	 * @return list of menu items
+	 * @param controller
 	 */
-	private List<MenuItem> getMenuItems(Menu menu) {
+	private void createRidgets(IController controller) {
 
-		List<MenuItem> items = new ArrayList<MenuItem>();
-		if (menu == null) {
-			return items;
-		}
-
-		MenuItem[] menuItems = menu.getItems();
-		for (MenuItem menuItem : menuItems) {
-			if (isMenu(menuItem)) {
-				items.addAll(getMenuItems(menuItem.getMenu()));
-			}
-			items.add(menuItem);
-		}
-
-		return items;
-
-	}
-
-	/**
-	 * Returns a list of all menu items of the sub application
-	 * 
-	 * @return list of all menu items
-	 */
-	private List<MenuItem> getAllMenuItems() {
-
-		List<MenuItem> items = new ArrayList<MenuItem>();
-
+		// items of Riena "menu bar"
 		List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
-		for (MenuCoolBarComposite menuComp : menuCoolBarComposites) {
-			List<Menu> menus = menuComp.getMenus();
-			for (Menu menu : menus) {
-				items.addAll(getMenuItems(menu));
+		for (MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
+
+			List<ToolItem> toolItems = menuBarComp.getTopLevelItems();
+			for (ToolItem toolItem : toolItems) {
+				createRidget(controller, toolItem);
+				if (toolItem.getData() instanceof MenuManager) {
+					MenuManager manager = (MenuManager) toolItem.getData();
+					createRidget(controller, manager.getMenu());
+				}
 			}
+
 		}
 
-		return items;
+		// items of cool bar
+		List<ToolItem> toolItems = getAllToolItems();
+		for (ToolItem toolItem : toolItems) {
+			createRidget(controller, toolItem);
+		}
 
 	}
 

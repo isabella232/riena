@@ -15,10 +15,13 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
@@ -51,7 +54,7 @@ public class SubApplicationViewTest extends TestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code getItemId}.
+	 * Tests the <i>private</i> method {@code getItemId(MenuItem)}.
 	 */
 	public void testGetItemId() {
 
@@ -71,70 +74,14 @@ public class SubApplicationViewTest extends TestCase {
 		item.setData(contributionItem);
 		id = ReflectionUtils.invokeHidden(view, "getItemId", item);
 		assertNotNull(id);
-		assertEquals("4711", id);
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", id);
 
 		MenuItem item2 = new MenuItem(menu, SWT.NONE);
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(item2, "0815");
 		id = ReflectionUtils.invokeHidden(view, "getItemId", item2);
 		assertNotNull(id);
-		assertEquals("0815", id);
-
-	}
-
-	/**
-	 * Tests the <i>private</i> method {@code getMenuItemId}.
-	 */
-	public void testGetMenuItemId() {
-
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.NONE);
-
-		String id = ReflectionUtils.invokeHidden(view, "getMenuItemId", item);
-		assertNotNull(id);
-		assertEquals(IActionRidget.BASE_ID_MENUACTION + "1", id);
-
-		MyContributionItem contributionItem = new MyContributionItem();
-		contributionItem.setId("4711");
-		item.setData(contributionItem);
-		id = ReflectionUtils.invokeHidden(view, "getMenuItemId", item);
-		assertNotNull(id);
-		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", id);
-
-		MenuItem item2 = new MenuItem(menu, SWT.NONE);
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		locator.setBindingProperty(item2, IActionRidget.BASE_ID_MENUACTION + "0815");
-		id = ReflectionUtils.invokeHidden(view, "getMenuItemId", item2);
-		assertNotNull(id);
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "0815", id);
-
-	}
-
-	/**
-	 * Tests the <i>private</i> method {@code getToolItemId}.
-	 */
-	public void testGetToolItemId() {
-
-		ToolBar toolbar = new ToolBar(shell, SWT.NONE);
-		ToolItem item = new ToolItem(toolbar, SWT.NONE);
-
-		String id = ReflectionUtils.invokeHidden(view, "getToolItemId", item);
-		assertNotNull(id);
-		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "1", id);
-
-		MyContributionItem contributionItem = new MyContributionItem();
-		contributionItem.setId("4711");
-		item.setData(contributionItem);
-		id = ReflectionUtils.invokeHidden(view, "getToolItemId", item);
-		assertNotNull(id);
-		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "4711", id);
-
-		ToolItem item2 = new ToolItem(toolbar, SWT.NONE);
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		locator.setBindingProperty(item2, IActionRidget.BASE_ID_TOOLBARACTION + "0815");
-		id = ReflectionUtils.invokeHidden(view, "getToolItemId", item2);
-		assertNotNull(id);
-		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "0815", id);
 
 	}
 
@@ -156,40 +103,6 @@ public class SubApplicationViewTest extends TestCase {
 		assertFalse(composites.isEmpty());
 		assertEquals(1, composites.size());
 		assertSame(menuComposite, composites.get(0));
-
-	}
-
-	/**
-	 * Tests the <i>private</i> method {@code getMenuItems}.
-	 */
-	public void testGetMenuItems() {
-
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.NONE);
-		MenuItem item2 = new MenuItem(menu, SWT.NONE);
-		Menu menu2 = new Menu(menu);
-		MenuItem item3 = new MenuItem(menu, SWT.NONE);
-		Menu menu3 = new Menu(shell);
-		MenuItem item4 = new MenuItem(menu3, SWT.NONE);
-
-		List<MenuCoolBarComposite> items = ReflectionUtils.invokeHidden(view, "getMenuItems", menu);
-		assertNotNull(items);
-		assertFalse(items.isEmpty());
-		assertEquals(3, items.size());
-		assertTrue(items.contains(item));
-		assertTrue(items.contains(item2));
-		assertTrue(items.contains(item3));
-		assertFalse(items.contains(menu2));
-		assertFalse(items.contains(item4));
-
-		items = ReflectionUtils.invokeHidden(view, "getMenuItems", menu3);
-		assertNotNull(items);
-		assertFalse(items.isEmpty());
-		assertEquals(1, items.size());
-		assertFalse(items.contains(item));
-		assertFalse(items.contains(item2));
-		assertFalse(items.contains(item3));
-		assertTrue(items.contains(item4));
 
 	}
 
@@ -259,19 +172,89 @@ public class SubApplicationViewTest extends TestCase {
 		assertEquals(2, items.size());
 		assertSame(item, items.get(0));
 		assertSame(item2, items.get(1));
+		//
+		//		MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(shell, SWT.NONE);
+		//		MenuManager manager = new MenuManager("TestMenu", "0815");
+		//		ToolItem topItem = menuComposite.createAndAddMenu(manager);
+		//		items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
+		//		assertNotNull(items);
+		//		assertFalse(items.isEmpty());
+		//		assertEquals(2, items.size());
+		//		assertTrue(items.contains(topItem));
 
-		MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(shell, SWT.NONE);
-		MenuManager manager = new MenuManager("TestMenu", "0815");
-		ToolItem topItem = menuComposite.createAndAddMenu(manager);
-		items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
-		assertNotNull(items);
-		assertFalse(items.isEmpty());
-		assertEquals(3, items.size());
-		assertTrue(items.contains(topItem));
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code createRidget(IController, Item)}.
+	 */
+	public void testCreateRidgetItem() {
+
+		Controller controller = new Controller();
+		Menu menu = new Menu(shell);
+		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+		MyContributionItem contributionItem = new MyContributionItem();
+		contributionItem.setId("4711");
+		menuItem.setData(contributionItem);
+		ReflectionUtils.invokeHidden(view, "createRidget", controller, menuItem);
+		assertFalse(controller.getRidgets().isEmpty());
+		assertEquals(1, controller.getRidgets().size());
+		IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
+		assertNotNull(ridget);
+		assertTrue(ridget instanceof MenuItemRidget);
+		assertSame(menuItem, ridget.getUIControl());
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
+				.locateBindingProperty(menuItem));
+
+		CoolBar coolBar = new CoolBar(shell, SWT.NONE);
+		ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
+		ToolItem toolItem = new ToolItem(toolBar, SWT.NONE);
+		contributionItem = new MyContributionItem();
+		contributionItem.setId("0815");
+		toolItem.setData(contributionItem);
+		ReflectionUtils.invokeHidden(view, "createRidget", controller, toolItem);
+		assertFalse(controller.getRidgets().isEmpty());
+		assertEquals(2, controller.getRidgets().size());
+		ridget = controller.getRidget(IActionRidget.BASE_ID_TOOLBARACTION + "0815");
+		assertNotNull(ridget);
+		assertTrue(ridget instanceof ToolItemRidget);
+		assertSame(toolItem, ridget.getUIControl());
+		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "0815", SWTBindingPropertyLocator.getInstance()
+				.locateBindingProperty(toolItem));
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code createRidget(IController, Item)}.
+	 */
+	public void testCreateRidgetMenu() {
+
+		Controller controller = new Controller();
+		Menu menu = new Menu(shell);
+		MenuItem item = new MenuItem(menu, SWT.NONE);
+		MyContributionItem contributionItem = new MyContributionItem();
+		contributionItem.setId("4711");
+		item.setData(contributionItem);
+		ReflectionUtils.invokeHidden(view, "createRidget", controller, menu);
+		assertFalse(controller.getRidgets().isEmpty());
+		assertEquals(1, controller.getRidgets().size());
+		IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
+		assertNotNull(ridget);
+		assertTrue(ridget instanceof MenuItemRidget);
+		assertSame(item, ridget.getUIControl());
+		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
+				.locateBindingProperty(item));
 
 	}
 
 	private class MyContributionItem extends ContributionItem {
+	}
+
+	private class Controller extends AbstractRidgetController {
+
+		@Override
+		public void configureRidgets() {
+		}
+
 	}
 
 }

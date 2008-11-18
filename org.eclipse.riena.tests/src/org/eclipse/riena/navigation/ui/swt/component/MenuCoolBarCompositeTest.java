@@ -74,7 +74,6 @@ public class MenuCoolBarCompositeTest extends TestCase {
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		assertEquals("0815", locator.locateBindingProperty(topItem));
 		assertEquals("TestMenu", topItem.getText());
-		assertEquals(1, composite.getMenus().size());
 
 	}
 

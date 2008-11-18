@@ -31,6 +31,9 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	 * @return {@code true} if item is cascade menu; otherwise {@code false}
 	 */
 	protected boolean isMenu(MenuItem menuItem) {
+		if (menuItem == null) {
+			return false;
+		}
 		return ((menuItem.getStyle() & SWT.CASCADE) == SWT.CASCADE);
 	}
 

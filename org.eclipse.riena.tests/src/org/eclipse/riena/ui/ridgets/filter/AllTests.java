@@ -21,6 +21,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.eclipse.riena.ui.ridgets.filter");
 		// $JUnit-BEGIN$
+		suite.addTestSuite(MenuItemRidgetMatcherTest.class);
 		suite.addTestSuite(RidgetMatcherTest.class);
 		// $JUnit-END$
 		return suite;
