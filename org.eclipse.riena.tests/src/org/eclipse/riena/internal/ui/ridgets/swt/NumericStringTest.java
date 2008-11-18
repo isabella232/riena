@@ -36,6 +36,9 @@ public class NumericStringTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Test deleting a single character with DEL and grouping.
+	 */
 	public void testDelete() {
 		NumericString ns;
 		int cursor;
@@ -79,8 +82,31 @@ public class NumericStringTest extends TestCase {
 		cursor = ns.delete(8, 9, (char) 127);
 		assertEqualsNS("-123.457,", ns);
 		assertEquals(7, cursor);
+
+		ns = createNumericString("1.234,5678", true);
+		cursor = ns.delete(7, 8, (char) 127);
+		assertEqualsNS("1.234,578", ns);
+		assertEquals(7, cursor);
+
+		ns = createNumericString("1.234,5678", true);
+		cursor = ns.delete(5, 6, (char) 127);
+		assertEqualsNS("1.234,678", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString("1.234,", true);
+		cursor = ns.delete(5, 6, (char) 127);
+		assertEqualsNS("1.234,", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString(",123", true);
+		cursor = ns.delete(0, 1, (char) 127);
+		assertEqualsNS(",23", ns);
+		assertEquals(1, cursor);
 	}
 
+	/**
+	 * Test deleting a single character with DEL and no grouping.
+	 */
 	public void testDeleteNoGrouping() {
 		NumericString ns;
 		int cursor;
@@ -124,8 +150,26 @@ public class NumericStringTest extends TestCase {
 		cursor = ns.delete(6, 7, (char) 127);
 		assertEqualsNS("-123457,", ns);
 		assertEquals(6, cursor);
+
+		ns = createNumericString("1234,5678", false);
+		cursor = ns.delete(6, 7, (char) 127);
+		assertEqualsNS("1234,578", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString("1234,", false);
+		cursor = ns.delete(4, 5, (char) 127);
+		assertEqualsNS("1234,", ns);
+		assertEquals(5, cursor);
+
+		ns = createNumericString(",123", false);
+		cursor = ns.delete(0, 1, (char) 127);
+		assertEqualsNS(",23", ns);
+		assertEquals(1, cursor);
 	}
 
+	/**
+	 * Test deleting a single character with backspace and grouping.
+	 */
 	public void testBackspace() {
 		NumericString ns;
 		int cursor;
@@ -169,6 +213,152 @@ public class NumericStringTest extends TestCase {
 		cursor = ns.delete(8, 9, '\b');
 		assertEqualsNS("-123.457", ns);
 		assertEquals(7, cursor);
+
+		ns = createNumericString("1.234,5678", true);
+		cursor = ns.delete(7, 8, '\b');
+		assertEqualsNS("1.234,578", ns);
+		assertEquals(7, cursor);
+
+		ns = createNumericString("1.234,", true);
+		cursor = ns.delete(5, 6, '\b');
+		assertEqualsNS("123,", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString(",123", true);
+		cursor = ns.delete(0, 1, '\b');
+		assertEqualsNS(",123", ns);
+		assertEquals(0, cursor);
+	}
+
+	/**
+	 * Test deleting a single character with DEL and no grouping.
+	 */
+	public void testBackspaceNoGrouping() {
+		NumericString ns;
+		int cursor;
+
+		ns = createNumericString("123456", false);
+		cursor = ns.delete(2, 3, '\b');
+		assertEqualsNS("12456", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1456", false);
+		cursor = ns.delete(0, 1, '\b');
+		assertEqualsNS("456", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString("1234567", false);
+		cursor = ns.delete(3, 4, '\b');
+		assertEqualsNS("123567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234", false);
+		cursor = ns.delete(2, 3, '\b');
+		assertEqualsNS("124", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1234567", false);
+		cursor = ns.delete(5, 6, '\b');
+		assertEqualsNS("123457", ns);
+		assertEquals(5, cursor);
+
+		ns = createNumericString("-1234", false);
+		cursor = ns.delete(3, 4, '\b');
+		assertEqualsNS("-124", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("-1234", false);
+		cursor = ns.delete(1, 2, '\b');
+		assertEqualsNS("-234", ns);
+		assertEquals(1, cursor);
+
+		ns = createNumericString("-1234567", false);
+		cursor = ns.delete(6, 7, '\b');
+		assertEqualsNS("-123457", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString("1234,5678", false);
+		cursor = ns.delete(6, 7, '\b');
+		assertEqualsNS("1234,578", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString("1234,", false);
+		cursor = ns.delete(4, 5, '\b');
+		assertEqualsNS("123,", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString(",123", false);
+		cursor = ns.delete(0, 1, '\b');
+		assertEqualsNS(",123", ns);
+		assertEquals(0, cursor);
+	}
+
+	/**
+	 * Test deleting a sequence of characters with DEL and grouping.
+	 */
+	public void testDeleteSequence() {
+		NumericString ns;
+		int cursor;
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(5, 7, (char) 127);
+		assertEqualsNS("123.467", ns);
+		assertEquals(5, cursor);
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(4, 6, (char) 127);
+		assertEqualsNS("123.567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(4, 7, (char) 127);
+		assertEqualsNS("12.367", ns);
+		assertEquals(4, cursor);
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(2, 5, (char) 127);
+		assertEqualsNS("1.567", ns);
+		assertEquals(1, cursor);
+
+		ns = createNumericString("12.345,67", true);
+		cursor = ns.delete(4, 6, (char) 127);
+		assertEqualsNS("123,67", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("12.345,67", true);
+		cursor = ns.delete(3, 6, (char) 127);
+		assertEqualsNS("12,67", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(5, 7, (char) 127);
+		assertEqualsNS("1.234,67", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(4, 6, (char) 127);
+		assertEqualsNS("123,567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(4, 7, (char) 127);
+		assertEqualsNS("123,67", ns);
+		assertEquals(4, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(2, 9, (char) 127);
+		assertEqualsNS("1,", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(0, 9, (char) 127);
+		assertEqualsNS(",", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString("1.234", true);
+		cursor = ns.delete(0, 5, (char) 127);
+		assertEqualsNS("", ns);
+		assertEquals(0, cursor);
 	}
 
 	// helping methods

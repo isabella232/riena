@@ -62,10 +62,28 @@ public class NumericString {
 		Assert.isLegal(from < to);
 		final int delta = '\b' == ch ? -1 : 1;
 		if (to - from == 1) {
-			Digit digit = findDigit(from);
-			digit.delete(delta);
+			Digit fromDigit = findDigit(from);
+			fromDigit.delete(delta);
 		} else {
-
+			Digit fromDigit = findDigit(from);
+			Digit toDigitExcl = findDigit(to);
+			boolean endsWithSep = toDigitExcl != null && toDigitExcl.prev != null
+					&& toDigitExcl.prev.isDecimalSeparator();
+			fromDigit.delete(toDigitExcl);
+			if (delta == 1) {
+				if (endsWithSep && toDigitExcl.prev != null) {
+					toDigitExcl.prev.setCursorBefore();
+				} else if (toDigitExcl != null) {
+					toDigitExcl.setCursorBefore();
+				} else {
+					Digit lastDigit = getLastDigit();
+					if (lastDigit != null && lastDigit == start && lastDigit.isDecimalSeparator()) {
+						lastDigit.setCursorBefore();
+					} else if (lastDigit != null) {
+						lastDigit.setCursorAfter();
+					}
+				}
+			}
 		}
 		applyGrouping();
 		return getCursorLocation();
@@ -78,7 +96,7 @@ public class NumericString {
 			Digit current = start;
 			while (current != null) {
 				result.append(current.toString());
-				current = current.getNext();
+				current = current.next;
 			}
 		}
 		return result.toString();
@@ -113,7 +131,7 @@ public class NumericString {
 		Digit firstDigit = decSep != null ? decSep.prev : lastDigit;
 		int i = 2;
 		while (firstDigit != null) {
-			if (i == 0 && firstDigit.prev != null && firstDigit.prev.ch != '-') {
+			if (i == 0 && firstDigit.prev != null && Character.isDigit(firstDigit.prev.ch)) {
 				Digit sep = new Digit(NumericTextRidget.GROUPING_SEPARATOR, null);
 				sep.next = firstDigit;
 				sep.prev = firstDigit.prev;
@@ -128,7 +146,7 @@ public class NumericString {
 	}
 
 	private int getCursorLocation() {
-		int result = -1;
+		int result = start == null ? 0 : -1;
 		Digit here = start;
 		int index = 0;
 		while (result == -1 && here != null) {
@@ -138,7 +156,15 @@ public class NumericString {
 				result = index + 1;
 			}
 			index++;
-			here = here.getNext();
+			here = here.next;
+		}
+		return result;
+	}
+
+	private Digit getLastDigit() {
+		Digit result = start;
+		while (result != null && result.next != null) {
+			result = result.next;
 		}
 		return result;
 	}
@@ -204,9 +230,17 @@ public class NumericString {
 			Assert.isLegal(delta == -1 || delta == 1);
 			if (isSeparator()) {
 				if (delta == -1) {
-					prev.delete(delta);
-				} else {
-					next.delete(delta);
+					if (prev != null) {
+						prev.delete(delta);
+					} else {
+						this.setCursorBefore();
+					}
+				} else if (delta == 1) {
+					if (next != null) {
+						next.delete(delta);
+					} else {
+						this.setCursorAfter();
+					}
 				}
 			} else {
 				deleteThis();
@@ -218,8 +252,24 @@ public class NumericString {
 			}
 		}
 
-		public Digit getNext() {
-			return next;
+		public void delete(Digit end) {
+			if (this != end) {
+				boolean hasPrev = this.prev != null;
+				boolean hasNext = this.next != null;
+				if (!isDecimalSeparator()) {
+					if (hasPrev) {
+						this.prev.next = this.next;
+					} else {
+						start = this.next;
+					}
+					if (hasNext) {
+						this.next.prev = this.prev;
+					}
+				}
+				if (hasNext) {
+					this.next.delete(end);
+				}
+			}
 		}
 
 		public boolean isCursorAfterMe() {
