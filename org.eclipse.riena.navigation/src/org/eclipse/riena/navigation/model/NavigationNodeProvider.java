@@ -49,9 +49,9 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * 
 	 */
 	public NavigationNodeProvider() {
-
+		// here the symbols do not becomes replaced. This happens later at NavigationNode creation time
 		Inject.extension(getNavigationAssemblyExtensionPointSafe()).useType(getNavigationAssemblyExtensionIFSafe())
-				.into(this).andStart(Activator.getDefault().getContext());
+				.into(this).doNotReplaceSymbols().andStart(Activator.getDefault().getContext());
 	}
 
 	private String getNavigationAssemblyExtensionPointSafe() {
