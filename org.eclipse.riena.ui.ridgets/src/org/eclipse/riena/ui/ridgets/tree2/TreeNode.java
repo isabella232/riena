@@ -24,7 +24,6 @@ import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
  * 
  * @see ITreeNode
  */
-// TODO [ev] unit test
 public class TreeNode extends AbstractBean implements ITreeNode {
 
 	private static void addToParent(ITreeNode parent, ITreeNode child) {
@@ -40,8 +39,18 @@ public class TreeNode extends AbstractBean implements ITreeNode {
 
 	private List<ITreeNode> children;
 
+	/**
+	 * Creates a tree node instance.
+	 * 
+	 * @param parent
+	 *            the parent node of this tree node. The parent cannot be
+	 *            changed. The parent be null if this tree node is a 'root'
+	 *            element.
+	 * @param value
+	 *            the value to wrap in this tree node (may be null)
+	 * @see #setValue(Object)
+	 */
 	public TreeNode(ITreeNode parent, Object value) {
-		Assert.isNotNull(value);
 		this.parent = parent;
 		this.value = value;
 		if (parent != null) {
@@ -49,6 +58,14 @@ public class TreeNode extends AbstractBean implements ITreeNode {
 		}
 	}
 
+	/**
+	 * Creates a 'root' tree node instance. 'Root' nodes do not have a parent
+	 * node.
+	 * 
+	 * @param value
+	 *            the value to wrap in this tree node (may be null)
+	 * @see #setValue(Object)
+	 */
 	public TreeNode(Object value) {
 		this(null, value);
 	}
