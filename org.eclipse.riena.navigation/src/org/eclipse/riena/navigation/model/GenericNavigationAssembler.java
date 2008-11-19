@@ -30,14 +30,14 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 	// the node definition as read from extension point
-	private INavigationAssemblyExtension nodeDefinition;
+	private INavigationAssemblyExtension assembly;
 
-	public INavigationAssemblyExtension getNodeDefinition() {
-		return nodeDefinition;
+	public INavigationAssemblyExtension getAssembly() {
+		return assembly;
 	}
 
-	public void setNodeDefinition(INavigationAssemblyExtension nodeDefinition) {
-		this.nodeDefinition = nodeDefinition;
+	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
+		this.assembly = nodeDefinition;
 	}
 
 	/**
@@ -46,24 +46,24 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId targetId, NavigationArgument navigationArgument) {
 
-		if (nodeDefinition != null) {
+		if (assembly != null) {
 			// build module group if it exists
-			ISubApplicationNodeExtension subapplicationDefinition = nodeDefinition.getSubApplicationNode();
+			ISubApplicationNodeExtension subapplicationDefinition = assembly.getSubApplicationNode();
 			if (subapplicationDefinition != null) {
 				return build(subapplicationDefinition, targetId);
 			}
 			// build module group if it exists
-			IModuleGroupNodeExtension groupDefinition = nodeDefinition.getModuleGroupNode();
+			IModuleGroupNodeExtension groupDefinition = assembly.getModuleGroupNode();
 			if (groupDefinition != null) {
 				return build(groupDefinition, targetId);
 			}
 			// otherwise try module
-			IModuleNodeExtension moduleDefinition = nodeDefinition.getModuleNode();
+			IModuleNodeExtension moduleDefinition = assembly.getModuleNode();
 			if (moduleDefinition != null) {
 				return build(moduleDefinition, targetId);
 			}
 			// last resort is submodule
-			ISubModuleNodeExtension submoduleDefinition = nodeDefinition.getSubModuleNode();
+			ISubModuleNodeExtension submoduleDefinition = assembly.getSubModuleNode();
 			if (submoduleDefinition != null) {
 				return build(submoduleDefinition, targetId);
 			}
@@ -73,11 +73,16 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 				"'subapplication', 'modulegroup', 'module' or 'submodule' element expected. ID=" + targetId.getTypeId()); //$NON-NLS-1$
 	}
 
+	protected NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template, String typeId) {
+
+		return new NavigationNodeId(typeId, template.getInstanceId());
+	}
+
 	protected ISubApplicationNode build(ISubApplicationNodeExtension subapplicationDefinition, NavigationNodeId targetId) {
 
 		// a module group can only contain modules
-		ISubApplicationNode subapplication = new SubApplicationNode(new NavigationNodeId(subapplicationDefinition
-				.getTypeId(), targetId.getInstanceId()));
+		ISubApplicationNode subapplication = new SubApplicationNode(createNavigationNodeIdFromTemplate(targetId,
+				subapplicationDefinition.getTypeId()));
 		for (IModuleGroupNodeExtension modulegroupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
 			subapplication.addChild(build(modulegroupDefinition, targetId));
 		}
@@ -88,8 +93,8 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 	protected IModuleGroupNode build(IModuleGroupNodeExtension groupDefinition, NavigationNodeId targetId) {
 
 		// a module group can only contain modules
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(groupDefinition.getTypeId(), targetId
-				.getInstanceId()));
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(createNavigationNodeIdFromTemplate(targetId, groupDefinition
+				.getTypeId()));
 		for (IModuleNodeExtension moduleDefinition : groupDefinition.getModuleNodes()) {
 			moduleGroup.addChild(build(moduleDefinition, targetId));
 		}
@@ -100,14 +105,13 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 	protected IModuleNode build(IModuleNodeExtension moduleDefinition, NavigationNodeId targetId) {
 
 		// a module has a label...
-		IModuleNode module = new ModuleNode(
-				new NavigationNodeId(moduleDefinition.getTypeId(), targetId.getInstanceId()), moduleDefinition
-						.getLabel());
+		IModuleNode module = new ModuleNode(createNavigationNodeIdFromTemplate(targetId, moduleDefinition.getTypeId()),
+				moduleDefinition.getLabel());
 		module.setIcon(moduleDefinition.getIcon());
 		// TODO we cannot set visibility state now
 		// TODO node MUST be registered first
 		//module.setVisible(!moduleDefinition.isHidden());
-		module.setCloseable(moduleDefinition.isCloseable());
+		module.setCloseable(!moduleDefinition.isUncloseable());
 		// ...and may contain submodules
 		for (ISubModuleNodeExtension submoduleDefinition : moduleDefinition.getSubModuleNodes()) {
 			module.addChild(build(submoduleDefinition, targetId));
@@ -119,8 +123,8 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 	protected ISubModuleNode build(ISubModuleNodeExtension submoduleDefinition, NavigationNodeId targetId) {
 
 		// create submodule node with label (and icon)
-		ISubModuleNode submodule = new SubModuleNode(new NavigationNodeId(submoduleDefinition.getTypeId(), targetId
-				.getInstanceId()), submoduleDefinition.getLabel());
+		ISubModuleNode submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, submoduleDefinition
+				.getTypeId()), submoduleDefinition.getLabel());
 		submodule.setIcon(submoduleDefinition.getIcon());
 		// TODO we cannot set visibility state now
 		// TODO node MUST be registered first

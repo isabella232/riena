@@ -55,7 +55,7 @@ public interface IModuleNodeExtension {
 	 * @return <code>true</code> if this item is closeable, <code>false</code>
 	 *         otherwise. Default is <code>false</code>.
 	 */
-	boolean isCloseable();
+	boolean isUncloseable();
 
 	/**
 	 * @return <code>true</code> if this item is initially invisible,

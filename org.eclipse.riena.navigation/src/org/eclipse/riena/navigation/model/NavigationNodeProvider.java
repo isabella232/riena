@@ -132,8 +132,8 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 */
 	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
-		final INavigationNode<?> targetNode = _provideNode(sourceNode, targetId, argument);
-		return targetNode;
+
+		return _provideNode(sourceNode, targetId, argument);
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 		if (builder instanceof IGenericNavigationAssembler) {
 			// the extension interface of the navigation node definition is injected into the builder   
-			((IGenericNavigationAssembler) builder).setNodeDefinition(navigationNodeTypeDefiniton);
+			((IGenericNavigationAssembler) builder).setAssembly(navigationNodeTypeDefiniton);
 		}
 	}
 

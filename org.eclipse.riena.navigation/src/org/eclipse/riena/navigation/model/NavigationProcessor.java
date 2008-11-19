@@ -356,8 +356,8 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
-		INavigationNode<?> targetNode = getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
-		return targetNode;
+
+		return getNavigationNodeProvider().provideNode(sourceNode, targetId, argument);
 	}
 
 	protected INavigationNodeProvider getNavigationNodeProvider() {

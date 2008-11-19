@@ -26,12 +26,12 @@ public interface IGenericNavigationAssembler extends INavigationAssembler {
 	 * @return The extension interface representing the definition of the
 	 *         navigation node extension point
 	 */
-	INavigationAssemblyExtension getNodeDefinition();
+	INavigationAssemblyExtension getAssembly();
 
 	/**
 	 * Set the extension interface representing the definition of the navigation
 	 * node extension point. In the current implementaion this extension
 	 * interface would be injected by the {@link NavigationNodeProvider}
 	 */
-	void setNodeDefinition(INavigationAssemblyExtension nodeDefinition);
+	void setAssembly(INavigationAssemblyExtension nodeDefinition);
 }

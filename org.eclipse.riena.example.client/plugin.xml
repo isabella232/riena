@@ -442,7 +442,7 @@
                   name="uiProcesses"
                   label="UIProcess"
                   icon="org.eclipse.riena.example.client:/icons/ledred.png"
-                  closeable="false">
+                  uncloseable="true">
                <submodule
                      typeId="org.eclipse.riena.example.uiProcess_1"
                      name="uiProcess_1"
