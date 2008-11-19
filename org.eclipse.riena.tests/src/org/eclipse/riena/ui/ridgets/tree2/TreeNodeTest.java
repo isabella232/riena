@@ -1,0 +1,132 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.riena.ui.ridgets.tree2;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.easymock.EasyMock;
+import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
+
+/**
+ * Tests for the class {@link TreeNode}.
+ */
+public class TreeNodeTest extends TestCase {
+
+	private PropertyChangeListener propertyChangeListenerMock;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		propertyChangeListenerMock = EasyMock.createMock(PropertyChangeListener.class);
+	}
+
+	public void testGetSetValue() {
+		TreeNode root = new TreeNode("value");
+		root.addPropertyChangeListener(propertyChangeListenerMock);
+
+		assertEquals("value", root.getValue());
+
+		expectPropertyChangeEvent(root, ITreeNode.PROPERTY_VALUE, "value", "newValue");
+		root.setValue("newValue");
+		verifyPropertyChangeEvents();
+		assertEquals("newValue", root.getValue());
+
+		expectNoPropertyChangeEvent();
+		root.setValue("newValue");
+		verifyPropertyChangeEvents();
+		assertEquals("newValue", root.getValue());
+
+		expectPropertyChangeEvent(root, ITreeNode.PROPERTY_VALUE, "newValue", null);
+		root.setValue(null);
+		verifyPropertyChangeEvents();
+		assertNull(root.getValue());
+	}
+
+	public void testGetParent() {
+		TreeNode root = new TreeNode("value");
+
+		assertNull(root.getParent());
+
+		TreeNode child = new TreeNode(root, "child1");
+
+		assertNull(root.getParent());
+		assertSame(root, child.getParent());
+	}
+
+	public void testGetChildren() {
+		TreeNode root = new TreeNode("value");
+
+		assertEquals(0, root.getChildren().size());
+
+		TreeNode child1 = new TreeNode(root, "child1");
+		TreeNode child2 = new TreeNode(root, "child2");
+
+		assertEquals(2, root.getChildren().size());
+		assertTrue(root.getChildren().contains(child1));
+		assertTrue(root.getChildren().contains(child2));
+
+		// check that we don't expose internal list
+		root.getChildren().remove(0);
+		assertEquals(2, root.getChildren().size());
+	}
+
+	public void testSetChildren() {
+		TreeNode root = new TreeNode("value");
+		root.addPropertyChangeListener(propertyChangeListenerMock);
+		TreeNode child1 = new TreeNode(root, "child1");
+		TreeNode child2 = new TreeNode(root, "child2");
+
+		assertEquals(2, root.getChildren().size());
+
+		List<ITreeNode> twoChildren = root.getChildren();
+		List<ITreeNode> oneChild = root.getChildren();
+		oneChild.remove(child1);
+		expectPropertyChangeEvent(root, ITreeNode.PROPERTY_CHILDREN, twoChildren, oneChild);
+		root.setChildren(oneChild);
+		verifyPropertyChangeEvents();
+
+		assertEquals(1, root.getChildren().size());
+		assertTrue(root.getChildren().contains(child2));
+	}
+
+	// helping methods
+	//////////////////
+
+	private PropertyChangeEvent createArgumentMatcher(PropertyChangeEvent propertyChangeEvent) {
+		return PropertyChangeEventEquals.eqPropertyChangeEvent(propertyChangeEvent);
+	}
+
+	private final void expectNoPropertyChangeEvent() {
+		EasyMock.reset(propertyChangeListenerMock);
+		EasyMock.replay(propertyChangeListenerMock);
+	}
+
+	private final void expectPropertyChangeEvents(PropertyChangeEvent... propertyChangeEvents) {
+		EasyMock.reset(propertyChangeListenerMock);
+		for (PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
+			propertyChangeListenerMock.propertyChange(createArgumentMatcher(propertyChangeEvent));
+		}
+		EasyMock.replay(propertyChangeListenerMock);
+	}
+
+	private final void expectPropertyChangeEvent(Object bean, String propertyName, Object oldValue, Object newValue) {
+		expectPropertyChangeEvents(new PropertyChangeEvent(bean, propertyName, oldValue, newValue));
+	}
+
+	private final void verifyPropertyChangeEvents() {
+		EasyMock.verify(propertyChangeListenerMock);
+	}
+
+}
