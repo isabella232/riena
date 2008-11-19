@@ -93,7 +93,7 @@ public class SwtExtensionWorkareaDefinitionRegistry implements IWorkareaDefiniti
 
 		// create and register view definition
 		IWorkareaDefinition def = new WorkareaDefinition(submoduleDefinition.getController(), submoduleDefinition
-				.getView(), submoduleDefinition.isShared());
+				.getViewId(), submoduleDefinition.isShared());
 		register(submoduleDefinition.getTypeId(), def);
 		// a submodule may contain nested submodules
 		for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {

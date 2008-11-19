@@ -75,7 +75,15 @@ public interface ISubModuleNodeExtension {
 	 *         with the submodule. Must match the ID field of an
 	 *         "org.eclipse.ui.view" extension.
 	 */
-	String getView();
+	Object getView();
+
+	/**
+	 * @return For the SWT-based Riena UI this is the ID of the view associated
+	 *         with the submodule. Must match the ID field of an
+	 *         "org.eclipse.ui.view" extension.
+	 */
+	@MapName("view")
+	String getViewId();
 
 	/**
 	 * Indicates whether the view is shared i.e. whether one instance of the

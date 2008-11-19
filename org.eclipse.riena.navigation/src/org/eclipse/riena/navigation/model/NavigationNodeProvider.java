@@ -38,10 +38,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
-	private static final String EP_NAVIGATION_ASSEMBLIES = "org.eclipse.riena.navigation.assemblies"; //$NON-NLS-1$
-
-	private NavigationAssembliesExtensionInjectionHelper targetNN;
-
 	private Map<String, INavigationAssemblyExtension> assemblyId2AssemblyCache = new WeakHashMap<String, INavigationAssemblyExtension>();
 	private Map<String, INavigationAssemblyExtension> nodeId2AssemblyCache = new WeakHashMap<String, INavigationAssemblyExtension>();
 	private Map<String, ISubApplicationNodeExtension> nodeId2SubApplicationCache = new WeakHashMap<String, ISubApplicationNodeExtension>();
@@ -54,22 +50,39 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 */
 	public NavigationNodeProvider() {
 
-		targetNN = new NavigationAssembliesExtensionInjectionHelper();
-		Inject.extension(EP_NAVIGATION_ASSEMBLIES).useType(getNavigationNodeTypeDefinitonIFSafe()).into(targetNN)
-				.andStart(Activator.getDefault().getContext());
-
+		Inject.extension(getNavigationAssemblyExtensionPointSafe()).useType(getNavigationAssemblyExtensionIFSafe())
+				.into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	private Class<? extends INavigationAssemblyExtension> getNavigationNodeTypeDefinitonIFSafe() {
+	private String getNavigationAssemblyExtensionPointSafe() {
 
-		if (getNavigationNodeTypeDefinitonIF() != null && getNavigationNodeTypeDefinitonIF().isInterface()) {
-			return getNavigationNodeTypeDefinitonIF();
+		if (getNavigationAssemblyExtensionPoint() != null && !getNavigationAssemblyExtensionPoint().trim().isEmpty()) {
+			return getNavigationAssemblyExtensionPoint();
+		} else {
+			return INavigationAssemblyExtension.EXTENSIONPOINT;
+		}
+	}
+
+	/**
+	 * Override this method if you intend to use a different extension point
+	 * 
+	 * @return The extension point used to contribute navigation assemblies
+	 */
+	public String getNavigationAssemblyExtensionPoint() {
+
+		return INavigationAssemblyExtension.EXTENSIONPOINT;
+	}
+
+	private Class<? extends INavigationAssemblyExtension> getNavigationAssemblyExtensionIFSafe() {
+
+		if (getNavigationAssemblyExtensionIF() != null && getNavigationAssemblyExtensionIF().isInterface()) {
+			return getNavigationAssemblyExtensionIF();
 		} else {
 			return INavigationAssemblyExtension.class;
 		}
 	}
 
-	public Class<? extends INavigationAssemblyExtension> getNavigationNodeTypeDefinitonIF() {
+	public Class<? extends INavigationAssemblyExtension> getNavigationAssemblyExtensionIF() {
 
 		return INavigationAssemblyExtension.class;
 	}
@@ -145,7 +158,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 */
 	public INavigationAssemblyExtension getAssembly(NavigationNodeId targetId) {
 
-		if (targetNN == null || targetId == null || targetId.getTypeId() == null) {
+		if (targetId == null || targetId.getTypeId() == null) {
 			return null;
 		} else {
 			INavigationAssemblyExtension assembly = getAssemblyByNodeId(targetId);
@@ -279,30 +292,26 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#cleanUp()
 	 */
 	public void cleanUp() {
-		// TODO: implement, does nothing special yet
+
+		assemblyId2AssemblyCache.clear();
+		nodeId2AssemblyCache.clear();
+		nodeId2ModuleGroupCache.clear();
+		nodeId2ModuleCache.clear();
+		nodeId2SubModuleCache.clear();
 	}
 
-	public class NavigationAssembliesExtensionInjectionHelper {
+	/**
+	 * This is called by extension injection to provide the extension points
+	 * found
+	 * 
+	 * @param data
+	 *            The navigation assemblies contributed by all extension points
+	 */
+	public void update(INavigationAssemblyExtension[] data) {
 
-		private INavigationAssemblyExtension[] data;
-
-		public void update(INavigationAssemblyExtension[] data) {
-
-			this.data = data.clone();
-
-			//			assemblyId2AssemblyCache.clear();
-			//			nodeId2AssemblyCache.clear();
-			//			nodeId2ModuleGroupCache.clear();
-			//			nodeId2ModuleCache.clear();
-			//			nodeId2SubModuleCache.clear();
-
-			for (INavigationAssemblyExtension assembly : data) {
-				register(assembly);
-			}
-		}
-
-		public INavigationAssemblyExtension[] getData() {
-			return data.clone();
+		NavigationNodeProvider.this.cleanUp();
+		for (INavigationAssemblyExtension assembly : data) {
+			register(assembly);
 		}
 	}
 }
