@@ -16,15 +16,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.log4j.xml.Log4jEntityResolver;
 import org.apache.log4j.xml.SAXErrorHandler;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -119,7 +123,8 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			level = Level.INFO;
 			break;
 		default:
-			level = Level.OFF;
+			// Custom log level assumed
+			level = CustomLevel.create(extendedEntry.getLevel());
 			break;
 		}
 		logger.log(level, extendedEntry.getMessage(), extendedEntry.getException());
@@ -201,5 +206,44 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			bob.append((char) ch);
 		}
 		return bob.toString();
+	}
+
+	/**
+	 * A generic custom log level for log4j.
+	 */
+	private static class CustomLevel extends Level {
+		private static Map<Integer, CustomLevel> map = new HashMap<Integer, CustomLevel>();
+		private static final int log4jLevel = Priority.FATAL_INT * 2;
+		// This value is duplicated here (because of access restrictions) from log4j SyslogAppender
+		private static final int SyslogAppender_LOG_USER = 1 << 3;
+
+		/**
+		 * Create a generic custom log level.We assume that the custom osgi log
+		 * levels are all below 1!
+		 * 
+		 * @param osgiLogLevel
+		 * @return
+		 */
+		private static synchronized CustomLevel create(int osgiLogLevel) {
+			Assert.isTrue(osgiLogLevel < 1, "custom osgi log levels must be below 1"); //$NON-NLS-1$
+			CustomLevel customLevel = map.get(osgiLogLevel);
+			if (customLevel != null) {
+				return customLevel;
+			}
+			customLevel = new CustomLevel(log4jLevel + Math.abs(osgiLogLevel), "Custom(" + osgiLogLevel + ")", //$NON-NLS-1$ //$NON-NLS-2$
+					SyslogAppender_LOG_USER);
+			map.put(osgiLogLevel, customLevel);
+			return customLevel;
+		}
+
+		/**
+		 * @param level
+		 * @param levelStr
+		 * @param syslogEquivalent
+		 */
+		private CustomLevel(int level, String levelStr, int syslogEquivalent) {
+			super(level, levelStr, syslogEquivalent);
+		}
+
 	}
 }
