@@ -55,8 +55,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	}
 
 	private String getNavigationAssemblyExtensionPointSafe() {
-
-		if (getNavigationAssemblyExtensionPoint() != null && !getNavigationAssemblyExtensionPoint().trim().isEmpty()) {
+		if (getNavigationAssemblyExtensionPoint() != null && getNavigationAssemblyExtensionPoint().trim().length() != 0) {
 			return getNavigationAssemblyExtensionPoint();
 		} else {
 			return INavigationAssemblyExtension.EXTENSIONPOINT;
