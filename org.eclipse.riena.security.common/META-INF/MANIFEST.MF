@@ -7,8 +7,7 @@ Bundle-Activator: org.eclipse.riena.internal.security.common.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.communication.core,
  org.eclipse.riena.core,
- org.eclipse.equinox.log;bundle-version="1.1.0",
- org.eclipse.equinox.security;bundle-version="1.0.1"
+ org.eclipse.equinox.log;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.security.common,
  org.eclipse.riena.security.common.authentication,
