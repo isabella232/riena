@@ -36,12 +36,12 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * public Object getXXXXX), which may be null if this object is a tree-root
  * </ol>
  * 
- * @see ITreeRidget#bindToModel(Object, Class, String, String)
+ * @see ITreeRidget#bindToModel(Object[], Class, String, String, String)
  */
 public interface ITreeNode {
 
 	/**
-	 * Property name of the value property ("value").
+	 * Property name of the value property ({@value} ).
 	 * 
 	 * @see #getValue()
 	 * @see #setValue(Object)
@@ -49,7 +49,7 @@ public interface ITreeNode {
 	String PROPERTY_VALUE = "value"; //$NON-NLS-1$
 
 	/**
-	 * Property name of the children property ("children").
+	 * Property name of the children property ({@value} ).
 	 * 
 	 * @see #getChildren()
 	 * @see #setChildren(List)
@@ -57,7 +57,7 @@ public interface ITreeNode {
 	String PROPERTY_CHILDREN = "children"; //$NON-NLS-1$
 
 	/**
-	 * Property name of the parent property ("parnet").
+	 * Property name of the parent property ({@value} ).
 	 * 
 	 * @see #getParent()
 	 */
