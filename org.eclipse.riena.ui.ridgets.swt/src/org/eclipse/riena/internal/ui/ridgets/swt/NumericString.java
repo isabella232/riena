@@ -70,18 +70,16 @@ public class NumericString {
 			boolean endsWithSep = toDigitExcl != null && toDigitExcl.prev != null
 					&& toDigitExcl.prev.isDecimalSeparator();
 			fromDigit.delete(toDigitExcl);
-			if (delta == 1) {
-				if (endsWithSep && toDigitExcl.prev != null) {
-					toDigitExcl.prev.setCursorBefore();
-				} else if (toDigitExcl != null) {
-					toDigitExcl.setCursorBefore();
-				} else {
-					Digit lastDigit = getLastDigit();
-					if (lastDigit != null && lastDigit == start && lastDigit.isDecimalSeparator()) {
-						lastDigit.setCursorBefore();
-					} else if (lastDigit != null) {
-						lastDigit.setCursorAfter();
-					}
+			if (endsWithSep && toDigitExcl.prev != null) {
+				toDigitExcl.prev.setCursorBefore();
+			} else if (toDigitExcl != null) {
+				toDigitExcl.setCursorBefore();
+			} else {
+				Digit lastDigit = getLastDigit();
+				if (lastDigit != null && lastDigit == start && lastDigit.isDecimalSeparator()) {
+					lastDigit.setCursorBefore();
+				} else if (lastDigit != null) {
+					lastDigit.setCursorAfter();
 				}
 			}
 		}

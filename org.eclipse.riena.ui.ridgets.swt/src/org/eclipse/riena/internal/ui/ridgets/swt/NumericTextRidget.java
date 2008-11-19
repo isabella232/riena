@@ -466,13 +466,13 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				return;
 			}
 			// System.out.println(e);
-			Text control = (Text) e.widget;
+			final Text control = (Text) e.widget;
 			final String oldText = control.getText();
 			String newText = null;
 			int newCursorPos = -1;
 			boolean applyText = false;
-			boolean preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
 			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) { // insert / replace
+				boolean preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
 				if (preserveDecSep) {
 					if (oldText.charAt(e.start) == DECIMAL_SEPARATOR && oldText.length() > e.end - e.start) {
 						// #(.#)# -> #.C# or (.#)# -> .C#
@@ -488,45 +488,10 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 					newText = oldText.substring(0, e.start) + e.character + oldText.substring(e.end);
 				}
 			} else if ('\b' == e.character || 127 == e.keyCode) { // delete
-				char ch = oldText.charAt(e.start);
-				if (e.end - e.start == 1 && (ch == GROUPING_SEPARATOR || ch == DECIMAL_SEPARATOR)) {
-					// we are directly at a right / left of a separator and delete the char on the other side
-					int delta = (127 == e.keyCode) ? 1 : -1;
-					int digitPos = e.start + delta;
-					if (digitPos > -1 && digitPos < oldText.length() && Character.isDigit(oldText.charAt(digitPos))) {
-						newText = oldText.substring(0, digitPos) + oldText.substring(digitPos + 1);
-						if (127 == e.keyCode) {
-							String oldUngrouped = ungroup(oldText);
-							String newUngrouped = ungroup(newText);
-							int oldDigits = oldUngrouped.length();
-							if (oldUngrouped.lastIndexOf(DECIMAL_SEPARATOR) != -1) {
-								oldDigits = oldUngrouped.substring(0, oldUngrouped.lastIndexOf(DECIMAL_SEPARATOR))
-										.length();
-							}
-							int newDigits = newUngrouped.length();
-							if (newUngrouped.lastIndexOf(DECIMAL_SEPARATOR) != -1) {
-								newDigits = newUngrouped.substring(0, newUngrouped.lastIndexOf(DECIMAL_SEPARATOR))
-										.length();
-							}
-							boolean removedSeparator = oldDigits % 3 == 1 && newDigits % 3 == 0;
-							newCursorPos = removedSeparator ? e.start : e.start + 1;
-						} else if ('\b' == e.character) {
-							int oldDigits = ungroup(oldText.substring(0, e.start)).length();
-							int newDigits = oldDigits - 1;
-							boolean removedSeparator = oldDigits % 3 == 1 && newDigits % 3 == 0;
-							newCursorPos = removedSeparator ? e.start - 2 : e.start - 1;
-						}
-						applyText = true;
-					}
-				} else {
-					// compute text after delete
-					if (preserveDecSep) {
-						newText = oldText.substring(0, e.start) + DECIMAL_SEPARATOR + oldText.substring(e.end);
-						applyText = true;
-					} else {
-						newText = oldText.substring(0, e.start) + oldText.substring(e.end);
-					}
-				}
+				NumericString ns = new NumericString(oldText, isGrouping());
+				newCursorPos = ns.delete(e.start, e.end, e.character);
+				newText = ns.toString();
+				applyText = true;
 			}
 			boolean doFlash = true;
 			if (newText != null) {
@@ -537,18 +502,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				doFlash = !e.doit;
 				if (e.doit && applyText) {
 					e.doit = false;
-					int posFromRight = oldText.length() - e.end;
 					stopVerifyListener();
-					control.setText(newTextNoGroup);
-					if (newTextNoGroup.length() == 1 && newTextNoGroup.charAt(0) == DECIMAL_SEPARATOR) {
-						control.setSelection(0);
-					} else if (newTextNoGroup.length() == 2 && newTextNoGroup.charAt(1) == DECIMAL_SEPARATOR) {
-						control.setSelection(1);
-					} else if (newCursorPos > -1) {
-						control.setSelection(newCursorPos);
-					} else {
-						control.setSelection(control.getText().length() - posFromRight);
-					}
+					setTextAndCursor(control, newTextNoGroup, newCursorPos, e);
 					startVerifyListener();
 				}
 			} else {
@@ -556,6 +511,22 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 			if (doFlash) {
 				flash();
+			}
+		}
+
+		private void setTextAndCursor(Text control, String text, int cursorPos, VerifyEvent e) {
+			final String oldText = control.getText();
+			int oldCursorPos = control.getCaretPosition();
+			control.setText(text);
+			if (oldCursorPos != 0 && text.length() == 1 && text.charAt(0) == DECIMAL_SEPARATOR) {
+				control.setSelection(0);
+			} else if (text.length() == 2 && text.charAt(1) == DECIMAL_SEPARATOR) {
+				control.setSelection(1);
+			} else if (cursorPos > -1) {
+				control.setSelection(cursorPos);
+			} else {
+				int posFromRight = oldText.length() - e.end;
+				control.setSelection(control.getText().length() - posFromRight);
 			}
 		}
 	}
@@ -578,6 +549,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			if (!isEnabled || !isEnabled()) {
 				return;
 			}
+			// System.out.println(e);
 			Text control = (Text) e.widget;
 			String oldText = control.getText();
 			String newText = group(removeLeadingZeroes(ungroup(oldText)), isGrouping(), isDecimal());

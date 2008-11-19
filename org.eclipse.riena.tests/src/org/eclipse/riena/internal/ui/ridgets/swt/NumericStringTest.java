@@ -359,6 +359,200 @@ public class NumericStringTest extends TestCase {
 		cursor = ns.delete(0, 5, (char) 127);
 		assertEqualsNS("", ns);
 		assertEquals(0, cursor);
+
+		ns = createNumericString(",", true);
+		cursor = ns.delete(0, 1, (char) 127);
+		assertEqualsNS(",", ns);
+		assertEquals(1, cursor);
+	}
+
+	/**
+	 * Test deleting a sequence of characters with DEL and no grouping.
+	 */
+	public void testDeleteSequenceNoGrouping() {
+		NumericString ns;
+		int cursor;
+
+		ns = createNumericString("1234567", false);
+		cursor = ns.delete(3, 5, (char) 127);
+		assertEqualsNS("12367", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234567", false);
+		cursor = ns.delete(1, 4, (char) 127);
+		assertEqualsNS("1567", ns);
+		assertEquals(1, cursor);
+
+		ns = createNumericString("12345,67", false);
+		cursor = ns.delete(3, 5, (char) 127);
+		assertEqualsNS("123,67", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(4, 6, (char) 127);
+		assertEqualsNS("1234,67", ns);
+		assertEquals(5, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(3, 5, (char) 127);
+		assertEqualsNS("123,567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(3, 6, (char) 127);
+		assertEqualsNS("123,67", ns);
+		assertEquals(4, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(1, 8, (char) 127);
+		assertEqualsNS("1,", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(0, 8, (char) 127);
+		assertEqualsNS(",", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString("1234", false);
+		cursor = ns.delete(0, 4, (char) 127);
+		assertEqualsNS("", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString(",", false);
+		cursor = ns.delete(0, 1, (char) 127);
+		assertEqualsNS(",", ns);
+		assertEquals(1, cursor);
+	}
+
+	/**
+	 * Test deleting a sequence of characters with backspace and grouping.
+	 */
+	public void testBackspaceSequence() {
+		NumericString ns;
+		int cursor;
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(5, 7, '\b');
+		assertEqualsNS("123.467", ns);
+		assertEquals(5, cursor);
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(4, 6, '\b');
+		assertEqualsNS("123.567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(4, 7, '\b');
+		assertEqualsNS("12.367", ns);
+		assertEquals(4, cursor);
+
+		ns = createNumericString("1.234.567", true);
+		cursor = ns.delete(2, 5, '\b');
+		assertEqualsNS("1.567", ns);
+		assertEquals(1, cursor);
+
+		ns = createNumericString("12.345,67", true);
+		cursor = ns.delete(4, 6, '\b');
+		assertEqualsNS("123,67", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("12.345,67", true);
+		cursor = ns.delete(3, 6, '\b');
+		assertEqualsNS("12,67", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(5, 7, '\b');
+		assertEqualsNS("1.234,67", ns);
+		assertEquals(6, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(4, 6, '\b');
+		assertEqualsNS("123,567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(4, 7, '\b');
+		assertEqualsNS("123,67", ns);
+		assertEquals(4, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(2, 9, '\b');
+		assertEqualsNS("1,", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1.234,567", true);
+		cursor = ns.delete(0, 9, '\b');
+		assertEqualsNS(",", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString("1.234", true);
+		cursor = ns.delete(0, 5, '\b');
+		assertEqualsNS("", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString(",", true);
+		cursor = ns.delete(0, 1, '\b');
+		assertEqualsNS(",", ns);
+		assertEquals(0, cursor);
+	}
+
+	/**
+	 * Test deleting a sequence of characters with backspace and no grouping.
+	 */
+	public void testBackspaceSequenceNoGrouping() {
+		NumericString ns;
+		int cursor;
+
+		ns = createNumericString("1234567", false);
+		cursor = ns.delete(3, 5, '\b');
+		assertEqualsNS("12367", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234567", false);
+		cursor = ns.delete(1, 4, '\b');
+		assertEqualsNS("1567", ns);
+		assertEquals(1, cursor);
+
+		ns = createNumericString("12345,67", false);
+		cursor = ns.delete(3, 5, '\b');
+		assertEqualsNS("123,67", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(4, 6, '\b');
+		assertEqualsNS("1234,67", ns);
+		assertEquals(5, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(3, 5, '\b');
+		assertEqualsNS("123,567", ns);
+		assertEquals(3, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(3, 6, '\b');
+		assertEqualsNS("123,67", ns);
+		assertEquals(4, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(1, 8, '\b');
+		assertEqualsNS("1,", ns);
+		assertEquals(2, cursor);
+
+		ns = createNumericString("1234,567", false);
+		cursor = ns.delete(0, 8, '\b');
+		assertEqualsNS(",", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString("1234", false);
+		cursor = ns.delete(0, 4, '\b');
+		assertEqualsNS("", ns);
+		assertEquals(0, cursor);
+
+		ns = createNumericString(",", false);
+		cursor = ns.delete(0, 1, '\b');
+		assertEqualsNS(",", ns);
+		assertEquals(0, cursor);
 	}
 
 	// helping methods

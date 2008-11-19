@@ -144,7 +144,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize("123,9876"), ridget.getText());
-		assertEquals(4, control.getCaretPosition());
+		assertEquals(3, control.getCaretPosition());
 
 		ridget.setText(localize("1.234,9876"));
 		control.setSelection(5, 7);
@@ -166,7 +166,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		UITestHelper.sendKeyAction(display, UITestHelper.KC_DEL);
 
 		assertEquals(localize(",9876"), ridget.getText());
-		assertEquals(1, control.getCaretPosition());
+		assertEquals(0, control.getCaretPosition());
 
 		ridget.setText(localize("1.234,9876"));
 		control.selectAll();

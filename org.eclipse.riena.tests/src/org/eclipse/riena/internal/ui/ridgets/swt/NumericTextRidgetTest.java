@@ -396,7 +396,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		//		ridget.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 		//			public void propertyChange(PropertyChangeEvent evt) {
-		//				System.out.println(evt.getNewValue());
+		//				System.out.println(String.format("%s %s %s", evt.getPropertyName(), evt.getOldValue(), evt
+		//						.getNewValue()));
 		//			}
 		//		});
 
@@ -1055,17 +1056,41 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("23", NumericTextRidget.removeLeadingZeroes("0023"));
 	}
 
-	public void testDeleteOnSeparator() {
+	public void testDelete() {
+		INumericTextRidget ridget = getRidget();
+		ridget.setGrouping(true);
+		ridget.setSigned(true);
+
 		assertText("1^.234", UITestHelper.KC_DEL, "1^34");
+		assertText("^1.234", UITestHelper.KC_DEL, "^234");
 		assertText("12^.345", UITestHelper.KC_DEL, "1.2^45");
 		assertText("1.234^.567", UITestHelper.KC_DEL, "123.4^67");
+		assertText("1.234.5^67", UITestHelper.KC_DEL, "123.45^7");
+
+		assertText("-1^.234", UITestHelper.KC_DEL, "-1^34");
+		assertText("-^1.234", UITestHelper.KC_DEL, "-^234");
+		assertText("-1.234.5^67", UITestHelper.KC_DEL, "-123.45^7");
 	}
 
-	public void testBackspaceOnSeparator() {
+	// TODO test delete without grouping (dec too)
+
+	public void testBackspace() {
+		INumericTextRidget ridget = getRidget();
+		ridget.setGrouping(true);
+		ridget.setSigned(true);
+
 		assertText("123.^456", "\b", "12^.456");
 		assertText("1.^456", "\b", "^456");
 		assertText("1.234.^567", "\b", "123^.567");
+		assertText("1.23^4", "\b", "12^4");
+		assertText("1.234.56^7", "\b", "123.45^7");
+
+		assertText("-1.23^4", "\b", "-12^4");
+		assertText("-1^.234", "\b", "-^234");
+		assertText("-1.234.56^7", "\b", "-123.45^7");
 	}
+
+	// TODO test backspace without grouping (dec too)
 
 	// helping methods
 	//////////////////
