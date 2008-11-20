@@ -101,6 +101,48 @@ public class TreeNodeTest extends TestCase {
 		assertTrue(root.getChildren().contains(child2));
 	}
 
+	public void testSetEnabled() {
+		TreeNode root = new TreeNode("value");
+		root.addPropertyChangeListener(propertyChangeListenerMock);
+
+		assertTrue(root.isEnabled());
+
+		expectPropertyChangeEvent(root, ITreeNode2.PROPERTY_ENABLED, true, false);
+		root.setEnabled(false);
+		verifyPropertyChangeEvents();
+		assertFalse(root.isEnabled());
+
+		expectNoPropertyChangeEvent();
+		root.setEnabled(false);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(root, ITreeNode2.PROPERTY_ENABLED, false, true);
+		root.setEnabled(true);
+		verifyPropertyChangeEvents();
+		assertTrue(root.isEnabled());
+	}
+
+	public void testSetVisible() {
+		TreeNode root = new TreeNode("value");
+		root.addPropertyChangeListener(propertyChangeListenerMock);
+
+		assertTrue(root.isVisible());
+
+		expectPropertyChangeEvent(root, ITreeNode2.PROPERTY_VISIBLE, true, false);
+		root.setVisible(false);
+		verifyPropertyChangeEvents();
+		assertFalse(root.isVisible());
+
+		expectNoPropertyChangeEvent();
+		root.setVisible(false);
+		verifyPropertyChangeEvents();
+
+		expectPropertyChangeEvent(root, ITreeNode2.PROPERTY_VISIBLE, false, true);
+		root.setVisible(true);
+		verifyPropertyChangeEvents();
+		assertTrue(root.isVisible());
+	}
+
 	// helping methods
 	//////////////////
 
