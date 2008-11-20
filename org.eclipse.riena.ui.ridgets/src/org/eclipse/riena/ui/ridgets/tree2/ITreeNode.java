@@ -32,8 +32,8 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * getXXXX)</li>
  * <li>they must provide read/write accessor for a List of children (i.e. public
  * List&lt;Object&gt; get/setXXXX)</li>
- * <li>(optional) they must be able to provide their parent instance (i.e.
- * public Object getXXXXX), which may be null if this object is a tree-root
+ * <li>they must be able to provide their parent instance (i.e. public Object
+ * getXXXXX), which may be null if this object is a tree-root
  * </ol>
  * 
  * @see ITreeRidget#bindToModel(Object[], Class, String, String, String)
