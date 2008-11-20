@@ -29,7 +29,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
 import org.eclipse.core.databinding.observable.set.ISetChangeListener;
 import org.eclipse.core.databinding.observable.set.SetChangeEvent;
@@ -100,6 +99,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String parentAccessor;
 	private String[] valueAccessors;
 	private String[] columnHeaders;
+	private String enablementAccessor;
 	private boolean showRoots = true;
 
 	public TreeRidget() {
@@ -177,7 +177,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
+			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor) {
 		Assert.isNotNull(treeRoots);
 		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
@@ -206,6 +206,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		} else {
 			this.columnHeaders = null;
 		}
+		this.enablementAccessor = enablementAccessor;
 
 		expansionStack.clear();
 		if (treeRoots.length == 1) {
@@ -250,7 +251,19 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor) {
 		String[] myValueAccessors = new String[] { valueAccessor };
-		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors, null);
+		String[] columnHeaders = null;
+		String enablementAccessor = null;
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
+				columnHeaders, enablementAccessor);
+	}
+
+	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor) {
+		String[] myValueAccessors = new String[] { valueAccessor };
+		String[] columnHeaders = null;
+		// TODO [ev] honor visibilityAccessor
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
+				columnHeaders, enablementAccessor);
 	}
 
 	/** @deprecated */
@@ -428,9 +441,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewerCP, structureAdvisor));
 		viewer.setContentProvider(viewerCP);
 		// labels
-		IObservableMap[] attributeMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), treeElementClass,
-				valueAccessors);
-		ILabelProvider viewerLP = new TreeRidgetLabelProvider(viewer, attributeMap);
+		ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP
+				.getKnownElements(), valueAccessors, enablementAccessor);
 		viewer.setLabelProvider(viewerLP);
 		// input
 		if (showRoots) {

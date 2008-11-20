@@ -15,9 +15,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.jface.databinding.swt.SWTObservables;
@@ -27,6 +25,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -38,6 +37,8 @@ import org.eclipse.swt.widgets.TreeColumn;
  * Tests for the class {@link TreeRidgetLabelProvider}.
  */
 public class TreeRidgetLabelProviderTest extends TestCase {
+
+	final String[] columnProperties = { "word", "upperCase" };
 
 	private Shell shell;
 	private TreeViewer viewer;
@@ -51,13 +52,13 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		Realm realm = SWTObservables.getRealm(display);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
-		IObservableSet elements = createElements();
-		String[] columnProperties = { "word", "upperCase" };
-		IObservableMap[] attrMap = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
-
 		Shell aShell = new Shell(display);
 		viewer = new TreeViewer(createTree(aShell));
-		labelProvider = new TreeRidgetLabelProvider(viewer, attrMap);
+
+		IObservableSet elements = createElements();
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements, columnProperties,
+				null);
+
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
 		viewer.setInput(elements.toArray());
@@ -144,6 +145,22 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertNotSame(siChecked, siUnchecked);
 
 		assertEquals(null, labelProvider.getColumnImage(node, 99));
+	}
+
+	public void testGetForeground() {
+		WordNode node = new WordNode("test");
+
+		// using upperCase as the enablement accessor; true => enabled; false => disabled
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, createElements(),
+				columnProperties, "upperCase");
+
+		node.setUpperCase(true);
+		Color colorEnabled = labelProvider.getForeground(node);
+		assertNull(colorEnabled);
+
+		node.setUpperCase(false);
+		Color colorDisabled = labelProvider.getForeground(node);
+		assertNotNull(colorDisabled);
 	}
 
 	// helping methods

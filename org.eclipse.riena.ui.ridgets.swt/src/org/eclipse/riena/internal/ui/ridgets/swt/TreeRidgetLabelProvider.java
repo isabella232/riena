@@ -10,10 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyDescriptor;
+
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.IBeanObservable;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
+import org.eclipse.core.databinding.observable.set.IObservableSet;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -25,34 +33,75 @@ import org.eclipse.swt.widgets.TreeItem;
  * <li>expandable node - expanded</li>
  * <li>leaf (i.e. node with no children)</li>
  *</ul>
+ *<p>
+ * In addition, nodes corresponding to 'disabled' model values will be colored
+ * in a distinct color.
  */
-public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
+public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider implements IColorProvider {
 
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
 
 	private final TreeViewer viewer;
+	private final IObservableMap enablementAttribute;
 
 	/**
-	 * Create a new instance
+	 * Creates a new instance.
 	 * 
 	 * @param viewer
 	 *            a non-null {@link TreeViewer} instance
-	 * @param attributeMap
-	 *            a non-null {@link IObservableMap} instance
+	 * @param treeElementClass
+	 *            TODO [ev] docs
+	 * @param knownElements
+	 *            TODO [ev] docs
+	 * @param valueAccessors
+	 *            TODO [ev] docs
+	 * @param enablementAccessor
+	 *            a String specifying an accessor for obtaining a boolean value
+	 *            from each child. The returned value will determine the
+	 *            enabled/disabled state of this child. Example: 'enabled'
+	 *            specifies "isEnabled()" or "getEnabled()". The parameter can
+	 *            be {@code null} to enable all children.
 	 */
-	public TreeRidgetLabelProvider(final TreeViewer viewer, IObservableMap[] attributeMap) {
+	public static TreeRidgetLabelProvider createLabelProvider(TreeViewer viewer, Class<?> treeElementClass,
+			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor) {
+		IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors, enablementAccessor);
+		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor);
+	}
+
+	/**
+	 * Create an array of bean attribures that this label provides will observe.
+	 * If the observed attributes change the label provider will update the
+	 * appropriate element.
+	 */
+	private static IObservableMap[] createAttributeMap(Class<?> treeElementClass, IObservableSet knownElements,
+			String[] valueAccessors, String enablementAccessor) {
+		IObservableMap[] result;
+		if (enablementAccessor != null) {
+			// add the enablement attribute to the list of observed attributes for the label provider
+			String[] attributes = new String[valueAccessors.length + 1];
+			System.arraycopy(valueAccessors, 0, attributes, 0, attributes.length - 1);
+			attributes[attributes.length - 1] = enablementAccessor;
+			result = BeansObservables.observeMaps(knownElements, treeElementClass, attributes);
+		} else {
+			result = BeansObservables.observeMaps(knownElements, treeElementClass, valueAccessors);
+		}
+		return result;
+	}
+
+	private TreeRidgetLabelProvider(TreeViewer viewer, IObservableMap[] attributeMap, String enablementAccessor) {
 		super(attributeMap);
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);
+		enablementAttribute = findAttribute(attributeMap, enablementAccessor);
 		this.viewer = viewer;
 	}
 
 	@Override
 	public Image getImage(Object element) {
 		String key = getImageKey(element);
-		Image image = Activator.getSharedImage(key);
-		image = Activator.preventMissingImage(image);
-		return image;
+		Image result = Activator.getSharedImage(key);
+		result = Activator.preventMissingImage(result);
+		return result;
 	}
 
 	@Override
@@ -63,16 +112,50 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider {
 		return super.getColumnImage(element, columnIndex);
 	}
 
+	// IColorProvider methods
+	/////////////////////////
+
+	public Color getBackground(Object element) {
+		return null;
+	}
+
+	public Color getForeground(Object element) {
+		Color result = null;
+		if (enablementAttribute != null) {
+			Object value = enablementAttribute.get(element);
+			if (Boolean.FALSE.equals(value)) {
+				result = viewer.getControl().getDisplay().getSystemColor(SWT.COLOR_GRAY);
+			}
+		}
+		return result;
+	}
+
 	// helping methods
 	// ////////////////
 
+	private IObservableMap findAttribute(IObservableMap[] attributeMap, String enablementAccessor) {
+		IObservableMap result = null;
+		if (enablementAccessor != null) {
+			for (int i = attributeMap.length - 1; result == null && i > -1; i--) {
+				IObservableMap attribute = attributeMap[i];
+				IBeanObservable beanObservable = (IBeanObservable) attribute;
+				PropertyDescriptor pd = ((IBeanObservable) beanObservable).getPropertyDescriptor();
+				String property = pd != null ? pd.getName() : null;
+				if (enablementAccessor.equals(property)) {
+					result = attribute;
+				}
+			}
+		}
+		return result;
+	}
+
 	private String getImageKey(Object element) {
-		String key = SharedImages.IMG_LEAF;
+		String result = SharedImages.IMG_LEAF;
 		if (viewer.isExpandable(element)) {
 			boolean isExpanded = viewer.getExpandedState(element);
-			key = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
+			result = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
 		}
-		return key;
+		return result;
 	}
 
 	// helping classes

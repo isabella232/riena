@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 
 /**
@@ -60,28 +61,54 @@ public class TreeSubModuleView extends SubModuleView<TreeSubModuleController> {
 
 	private Composite createButtonComposite(Group group) {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
-		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(false).applyTo(buttonComposite);
+		GridLayoutFactory.fillDefaults().numColumns(6).equalWidth(true).applyTo(buttonComposite);
+
+		Label spacer = UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(spacer);
 
 		Button buttonAddSibling = UIControlsFactory.createButton(buttonComposite);
-		int widthHint = UIControlsFactory.getWidthHint(buttonAddSibling);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).hint(widthHint, SWT.DEFAULT)
-				.applyTo(buttonAddSibling);
 		addUIControl(buttonAddSibling, "buttonAddSibling"); //$NON-NLS-1$
-
-		Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
-		addUIControl(buttonAddChild, "buttonAddChild"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonAddSibling);
 
 		Button buttonRename = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonRename, "buttonRename"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonRename);
 
-		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
-		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
+		Button buttonEnable = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonEnable, "buttonEnable"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonEnable);
 
 		Button buttonExpand = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonExpand, "buttonExpand"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonExpand);
+
+		Button buttonHide = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonHide, "buttonHide"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonHide);
+
+		// next row
+
+		UIControlsFactory.createLabel(buttonComposite, ""); //$NON-NLS-1$
+
+		Button buttonAddChild = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonAddChild, "buttonAddChild"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonAddChild);
+
+		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonDelete);
+
+		Button buttonDisable = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonDisable, "buttonDisable"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonDisable);
 
 		Button buttonCollapse = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonCollapse, "buttonCollapse"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonCollapse);
+
+		Button buttonShow = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonShow, "buttonShow"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonShow);
 
 		return buttonComposite;
 	}

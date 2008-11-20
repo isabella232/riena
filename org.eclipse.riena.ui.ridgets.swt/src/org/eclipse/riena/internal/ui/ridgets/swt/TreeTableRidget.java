@@ -82,10 +82,11 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 	// ITreeTableRidget methods
 	// /////////////////////////
 
-	@Override
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
-		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders);
+		String enablementAccessor = null;
+		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
+				enablementAccessor);
 	}
 
 	// IGroupedTableRidget methods

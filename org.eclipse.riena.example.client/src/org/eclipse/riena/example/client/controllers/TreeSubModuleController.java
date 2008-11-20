@@ -62,10 +62,10 @@ public class TreeSubModuleController extends SubModuleController {
 
 	private void bindModel() {
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		ITreeNode[] roots = createTreeInput();
+		TreeNode[] roots = createTreeInput();
 		tree.setRootsVisible(false);
-		tree.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
-				ITreeNode.PROPERTY_VALUE);
+		tree.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
+				TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED, TreeNode.PROPERTY_VISIBLE);
 		tree.setSelection(roots[0].getChildren().get(0));
 	}
 
@@ -82,6 +82,10 @@ public class TreeSubModuleController extends SubModuleController {
 		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
 		final IActionRidget buttonExpand = (IActionRidget) getRidget("buttonExpand"); //$NON-NLS-1$
 		final IActionRidget buttonCollapse = (IActionRidget) getRidget("buttonCollapse"); //$NON-NLS-1$
+		final IActionRidget buttonDisable = (IActionRidget) getRidget("buttonDisable"); //$NON-NLS-1$
+		final IActionRidget buttonEnable = (IActionRidget) getRidget("buttonEnable"); //$NON-NLS-1$
+		final IActionRidget buttonHide = (IActionRidget) getRidget("buttonHide"); //$NON-NLS-1$
+		final IActionRidget buttonShow = (IActionRidget) getRidget("buttonShow"); //$NON-NLS-1$
 
 		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {
@@ -150,6 +154,46 @@ public class TreeSubModuleController extends SubModuleController {
 			}
 		});
 
+		buttonDisable.setText("D&isable"); //$NON-NLS-1$
+		buttonDisable.addListener(new IActionListener() {
+			public void callback() {
+				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				if (node != null) {
+					node.setEnabled(false);
+				}
+			}
+		});
+
+		buttonEnable.setText("&Enable"); //$NON-NLS-1$
+		buttonEnable.addListener(new IActionListener() {
+			public void callback() {
+				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				if (node != null) {
+					node.setEnabled(true);
+				}
+			}
+		});
+
+		buttonHide.setText("&Hide"); //$NON-NLS-1$
+		buttonHide.addListener(new IActionListener() {
+			public void callback() {
+				// TODO [ev] implement
+				//				ITreeNode2 node = (TreeNode2) tree.getSingleSelectionObservable().getValue();
+				//				if (node != null) {
+				//					node.setVisible(false);
+				//				}
+				System.out.println("hide - not impl"); //$NON-NLS-1$
+			}
+		});
+
+		buttonShow.setText("Sho&w children"); //$NON-NLS-1$
+		buttonShow.addListener(new IActionListener() {
+			public void callback() {
+				// TODO [ev] implement
+				System.out.println("show - not impl"); //$NON-NLS-1$
+			}
+		});
+
 		final IObservableValue viewerSelection = tree.getSingleSelectionObservable();
 		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
@@ -175,31 +219,35 @@ public class TreeSubModuleController extends SubModuleController {
 		bindEnablementToValue(dbc, buttonRename, hasSelection);
 		bindEnablementToValue(dbc, buttonExpand, hasSelection);
 		bindEnablementToValue(dbc, buttonCollapse, hasSelection);
+		bindEnablementToValue(dbc, buttonEnable, hasSelection);
+		bindEnablementToValue(dbc, buttonDisable, hasSelection);
+		bindEnablementToValue(dbc, buttonHide, hasSelection);
+		bindEnablementToValue(dbc, buttonShow, hasSelection);
 	}
 
 	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
-	private ITreeNode[] createTreeInput() {
-		ITreeNode root = new TreeNode("root"); //$NON-NLS-1$
+	private TreeNode[] createTreeInput() {
+		TreeNode root = new TreeNode("root"); //$NON-NLS-1$
 
-		ITreeNode groupA = new TreeNode(root, "group a"); //$NON-NLS-1$
+		TreeNode groupA = new TreeNode(root, "group a"); //$NON-NLS-1$
 		new TreeNode(groupA, "a_child_1"); //$NON-NLS-1$
 		new TreeNode(groupA, "a_child_2"); //$NON-NLS-1$
 		new TreeNode(groupA, "a_child_3"); //$NON-NLS-1$
 
-		ITreeNode groupB = new TreeNode(root, "group b"); //$NON-NLS-1$
+		TreeNode groupB = new TreeNode(root, "group b"); //$NON-NLS-1$
 		new TreeNode(groupB, "b_child_1"); //$NON-NLS-1$
 		new TreeNode(groupB, "b_child_2"); //$NON-NLS-1$
 		new TreeNode(groupB, "b_child_3"); //$NON-NLS-1$
 
-		ITreeNode groupC = new TreeNode(root, "group c"); //$NON-NLS-1$
+		TreeNode groupC = new TreeNode(root, "group c"); //$NON-NLS-1$
 		new TreeNode(groupC, "c_child_1"); //$NON-NLS-1$
 		new TreeNode(groupC, "c_child_2"); //$NON-NLS-1$
 		new TreeNode(groupC, "c_child_3"); //$NON-NLS-1$
 
-		return new ITreeNode[] { root };
+		return new TreeNode[] { root };
 	}
 
 	private String getNewValue(Object oldValue) {
