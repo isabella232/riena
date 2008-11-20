@@ -16,12 +16,12 @@ package org.eclipse.riena.navigation;
 public interface INavigationAssembler {
 
 	/**
-	 * Creates a node or an application model subtree. The created node (or in
-	 * the case of a subtree the root node) should have the specified node ID.
-	 * If the builder sets a different node ID (e.g. with a consecutively
-	 * numbered instance ID) then the node will not be found during later
-	 * navigate(..) or create(..)-calls and a new node will be build every time.
-	 * This may be desired though.
+	 * Creates a node or an application model subtree. The node (or in the case
+	 * of a subtree the root node) created should have the specified node ID. If
+	 * the builder sets a different node ID (e.g. with a consecutively numbered
+	 * instance ID) then the node will not be found during later navigate(..) or
+	 * create(..)-calls and a new node will be build every time. This may be
+	 * desired though.
 	 * 
 	 * @see INavigationNode#navigate(NavigationNodeId)
 	 * @see INavigationNode#create(NavigationNodeId)

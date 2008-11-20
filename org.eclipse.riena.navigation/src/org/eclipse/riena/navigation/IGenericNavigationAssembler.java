@@ -13,12 +13,13 @@ package org.eclipse.riena.navigation;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 
 /**
- * This interface is used by INavigationNodeBuilder implementations that are
- * interested in getting the extension definition element injected. The
- * extension definition element may define a hierarchy of module groups, modules
- * and submodules that can be used by the builder to create the corresponding
- * {@link IModuleGroupNode}, {@link IModuleNode} and {@link ISubModuleNode}
- * hierarchy generically.
+ * This interface is to be used by INavigationAssembler implementations that are
+ * interested in getting the extension definition element (extension pind id is
+ * 'org.eclipse.riena.navigation.assemblies') injected. The extension definition
+ * element may define a hierarchy of module subapplications, groups, modules and
+ * submodules that can be used by the builder to create the corresponding
+ * {@link ISubApplicationNode}, {@link IModuleGroupNode}, {@link IModuleNode}
+ * and {@link ISubModuleNode} hierarchy generically.
  */
 public interface IGenericNavigationAssembler extends INavigationAssembler {
 
