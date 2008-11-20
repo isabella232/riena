@@ -273,14 +273,6 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertText("      ^", "00\t", "    00");
 	}
 
-	// TODO [ev] do we need a 'jump on dot' behavior?
-	//	public void testJumpOnDot() {
-	//		assertText(" ^ .  .    ", ".08", "  .08^.    ");
-	//		assertText("  ^.  .    ", "..2008", "  .  .2008^");
-	//		assertText("  .  .   ^ ", ".", "  .  .   ^ ");
-	//		assertText("  ^.  .    ", " ", "  ^.  .    ");
-	//	}
-
 	// helping methods
 	//////////////////
 
