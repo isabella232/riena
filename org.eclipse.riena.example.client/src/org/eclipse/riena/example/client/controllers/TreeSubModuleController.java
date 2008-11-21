@@ -55,9 +55,7 @@ public class TreeSubModuleController extends SubModuleController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-
 		bindModel();
-
 	}
 
 	private void bindModel() {
@@ -159,7 +157,8 @@ public class TreeSubModuleController extends SubModuleController {
 			public void callback() {
 				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					node.setEnabled(false);
+					setEnabledRec(node, false);
+					tree.clearSelection();
 				}
 			}
 		});
@@ -169,7 +168,7 @@ public class TreeSubModuleController extends SubModuleController {
 			public void callback() {
 				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
 				if (node != null) {
-					node.setEnabled(true);
+					setEnabledRec(node, true);
 				}
 			}
 		});
@@ -178,10 +177,6 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonHide.addListener(new IActionListener() {
 			public void callback() {
 				// TODO [ev] implement
-				//				ITreeNode2 node = (TreeNode2) tree.getSingleSelectionObservable().getValue();
-				//				if (node != null) {
-				//					node.setVisible(false);
-				//				}
 				System.out.println("hide - not impl"); //$NON-NLS-1$
 			}
 		});
@@ -224,6 +219,9 @@ public class TreeSubModuleController extends SubModuleController {
 		bindEnablementToValue(dbc, buttonHide, hasSelection);
 		bindEnablementToValue(dbc, buttonShow, hasSelection);
 	}
+
+	// helping methods
+	//////////////////
 
 	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
 		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
@@ -268,5 +266,12 @@ public class TreeSubModuleController extends SubModuleController {
 			}
 		}
 		return newValue;
+	}
+
+	private void setEnabledRec(TreeNode node, boolean isEnabled) {
+		node.setEnabled(isEnabled);
+		for (ITreeNode child : node.getChildren()) {
+			setEnabledRec((TreeNode) child, isEnabled);
+		}
 	}
 }

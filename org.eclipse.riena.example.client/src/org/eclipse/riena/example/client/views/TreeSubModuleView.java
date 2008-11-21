@@ -82,9 +82,9 @@ public class TreeSubModuleView extends SubModuleView<TreeSubModuleController> {
 		addUIControl(buttonExpand, "buttonExpand"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonExpand);
 
-		Button buttonHide = UIControlsFactory.createButton(buttonComposite);
-		addUIControl(buttonHide, "buttonHide"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().applyTo(buttonHide);
+		Button buttonShow = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonShow, "buttonShow"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonShow);
 
 		// next row
 
@@ -106,9 +106,9 @@ public class TreeSubModuleView extends SubModuleView<TreeSubModuleController> {
 		addUIControl(buttonCollapse, "buttonCollapse"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(buttonCollapse);
 
-		Button buttonShow = UIControlsFactory.createButton(buttonComposite);
-		addUIControl(buttonShow, "buttonShow"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().applyTo(buttonShow);
+		Button buttonHide = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonHide, "buttonHide"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().applyTo(buttonHide);
 
 		return buttonComposite;
 	}

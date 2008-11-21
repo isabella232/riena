@@ -29,6 +29,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
 import org.eclipse.core.databinding.observable.set.ISetChangeListener;
 import org.eclipse.core.databinding.observable.set.SetChangeEvent;
@@ -40,6 +41,9 @@ import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -451,6 +455,29 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			FakeRoot fakeRoot = new FakeRoot(treeRoots[0], childrenAccessor);
 			viewer.setInput(fakeRoot);
 		}
+		// prevent disabled items from being selected
+		// this listener is executed before the SelectionTypeEnforcer
+		final IObservableMap enablementAttribute = enablementAccessor != null ? BeansObservables.observeMap(viewerCP
+				.getKnownElements(), treeElementClass, enablementAccessor) : null;
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (enablementAttribute != null) {
+					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+					List<Object> newSel = new ArrayList<Object>(selection.toList());
+					boolean changed = false;
+					for (Object element : selection.toArray()) {
+						Object isEnabled = enablementAttribute.get(element);
+						if (Boolean.FALSE.equals(isEnabled)) {
+							newSel.remove(element);
+							changed = true;
+						}
+					}
+					if (changed) {
+						viewer.setSelection(new StructuredSelection(newSel));
+					}
+				}
+			}
+		});
 	}
 
 	/**
@@ -742,8 +769,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * Extends a standard observable tree content provider with support for:
 	 * <ul>
-	 * <li>handling Object[] <b>and</b> Object input</li> <li>knowing when we
-	 * have a valid input</li>
+	 * <li>handling Object[] <b>and</b> Object input</li>
+	 * <li>knowing when we have a valid input</li>
 	 * </ul>
 	 */
 	private final class TreeContentProvider extends ObservableListTreeContentProvider {
@@ -883,8 +910,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * element. Specifically:
 	 * <ul>
 	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
-	 * have any children beforehand</li> <li>if B gets removed to A we have to
-	 * refresh the icon of A, if B was the last child underneath A</li>
+	 * have any children beforehand</li>
+	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the
+	 * last child underneath A</li>
 	 * <ul>
 	 */
 	private final class TreeContentChangeListener implements ISetChangeListener {
