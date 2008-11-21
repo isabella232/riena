@@ -176,16 +176,22 @@ public class TreeSubModuleController extends SubModuleController {
 		buttonHide.setText("&Hide"); //$NON-NLS-1$
 		buttonHide.addListener(new IActionListener() {
 			public void callback() {
-				// TODO [ev] implement
-				System.out.println("hide - not impl"); //$NON-NLS-1$
+				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				if (node != null) {
+					node.setVisible(false);
+				}
 			}
 		});
 
 		buttonShow.setText("Sho&w children"); //$NON-NLS-1$
 		buttonShow.addListener(new IActionListener() {
 			public void callback() {
-				// TODO [ev] implement
-				System.out.println("show - not impl"); //$NON-NLS-1$
+				TreeNode node = (TreeNode) tree.getSingleSelectionObservable().getValue();
+				if (node != null) {
+					for (ITreeNode child : node.getChildren()) {
+						((TreeNode) child).setVisible(true);
+					}
+				}
 			}
 		});
 
