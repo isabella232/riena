@@ -88,6 +88,9 @@ public class DeferredLoggingForwarder extends Thread {
 	}
 
 	private void appendArgs(StringBuilder bob, Object[] args) {
+		if (args == null) {
+			return;
+		}
 		for (Object arg : args) {
 			if (arg instanceof ServiceReference) {
 				ServiceReference ref = (ServiceReference) arg;
