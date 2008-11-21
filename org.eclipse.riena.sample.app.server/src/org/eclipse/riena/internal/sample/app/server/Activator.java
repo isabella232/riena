@@ -15,6 +15,7 @@ import java.util.Hashtable;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.monitor.common.ICollectibleReceiver;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
@@ -34,7 +35,9 @@ public class Activator extends RienaPlugin {
 	private ServiceRegistration regCustomerSearch;
 	private ServiceRegistration regCustomers;
 	private HelloWorldService helloWorldService;
+	private ICollectibleReceiver collectibleReceiver;
 	private ServiceRegistration regHelloWorldService;
+	private ServiceRegistration regCollectibleReceiver;
 	private ServiceRegistration regAttachmentService;
 
 	// The shared instance
@@ -48,6 +51,7 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 		customers = new Customers();
 		helloWorldService = new HelloWorldService();
+		collectibleReceiver = new CollectibleReceiver();
 	}
 
 	/*
@@ -63,6 +67,7 @@ public class Activator extends RienaPlugin {
 		startCustomerSearch(context);
 		startCustomers(context);
 		startHelloWorldService(context);
+		startCollectibleReceiver(context);
 		startAttachmentService(context);
 		context.registerService(IExceptionService.class.getName(), new ExceptionService(), null);
 		Publish.service(IExceptionService.class.getName()).usingPath("/ExceptionService").withProtocol("hessian")
@@ -140,10 +145,27 @@ public class Activator extends RienaPlugin {
 				properties);
 	}
 
+	private void startCollectibleReceiver(BundleContext context) {
+
+		Hashtable<String, String> properties = new Hashtable<String, String>(3);
+
+		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CollectibleReceiverWS");
+
+		regCollectibleReceiver = context.registerService(ICollectibleReceiver.class.getName(), collectibleReceiver,
+				properties);
+	}
+
 	public void stopHelloWorldService() {
 
 		regHelloWorldService.unregister();
 		regHelloWorldService = null;
+	}
+
+	public void stopCollectibleReceiver() {
+		regCollectibleReceiver.unregister();
+		regCollectibleReceiver = null;
 	}
 
 	private void startAttachmentService(BundleContext context) {
