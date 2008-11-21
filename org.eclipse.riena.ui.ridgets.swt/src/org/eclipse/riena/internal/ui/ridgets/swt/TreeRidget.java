@@ -29,7 +29,9 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.map.IMapChangeListener;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
+import org.eclipse.core.databinding.observable.map.MapChangeEvent;
 import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
 import org.eclipse.core.databinding.observable.set.ISetChangeListener;
 import org.eclipse.core.databinding.observable.set.SetChangeEvent;
@@ -47,6 +49,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -105,6 +108,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String[] valueAccessors;
 	private String[] columnHeaders;
 	private String enablementAccessor;
+	private String visibilityAccessor;
 	private boolean showRoots = true;
 
 	public TreeRidget() {
@@ -182,7 +186,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor) {
+			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor,
+			String visibilityAccessor) {
 		Assert.isNotNull(treeRoots);
 		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
@@ -212,6 +217,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			this.columnHeaders = null;
 		}
 		this.enablementAccessor = enablementAccessor;
+		this.visibilityAccessor = visibilityAccessor;
 
 		expansionStack.clear();
 		if (treeRoots.length == 1) {
@@ -258,17 +264,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] columnHeaders = null;
 		String enablementAccessor = null;
+		String visibilityAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor);
+				columnHeaders, enablementAccessor, visibilityAccessor);
 	}
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor) {
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] columnHeaders = null;
-		// TODO [ev] honor visibilityAccessor
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor);
+				columnHeaders, enablementAccessor, visibilityAccessor);
 	}
 
 	/** @deprecated */
@@ -441,7 +447,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		// how to get the parent from a give object
 		TreeStructureAdvisor structureAdvisor = new GenericTreeStructureAdvisor(parentAccessor, treeElementClass);
 		// how to create the content/structure for the tree
-		TreeContentProvider viewerCP = new TreeContentProvider(listFactory, structureAdvisor);
+		TreeRidgetContentProvider viewerCP = new TreeRidgetContentProvider(viewer, listFactory, structureAdvisor);
 		// refresh icons on addition / removal
 		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewerCP, structureAdvisor));
 		viewer.setContentProvider(viewerCP);
@@ -456,30 +462,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			FakeRoot fakeRoot = new FakeRoot(treeRoots[0], childrenAccessor);
 			viewer.setInput(fakeRoot);
 		}
-		// prevent disabled items from being selected
-		// this listener is executed before the SelectionTypeEnforcer
-		final IObservableMap enablementAttribute = enablementAccessor != null ? BeansObservables.observeMap(viewerCP
-				.getKnownElements(), treeElementClass, enablementAccessor) : null;
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				if (enablementAttribute != null) {
-					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-					List<Object> newSel = new ArrayList<Object>(selection.toList());
-					boolean changed = false;
-					for (Object element : selection.toArray()) {
-						Object isEnabled = enablementAttribute.get(element);
-						if (Boolean.FALSE.equals(isEnabled)) {
-							newSel.remove(element);
-							changed = true;
-						}
-					}
-					if (changed) {
-						viewer.setSelection(new StructuredSelection(newSel));
-						setSelection(newSel);
-					}
-				}
-			}
-		});
+		IObservableMap enablementAttr = createObservableAttribute(viewerCP, enablementAccessor);
+		preventDisabledItemSelection(enablementAttr);
+		IObservableMap visibilityAttr = createObservableAttribute(viewerCP, visibilityAccessor);
+		monitorVisibility(viewer, structureAdvisor, visibilityAttr);
 	}
 
 	/**
@@ -508,6 +494,72 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		int columnCount = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
 		String message = String.format("Tree has %d columns, expected: %d", columnCount, valueAccessors.length); //$NON-NLS-1$
 		Assert.isLegal(columnCount == valueAccessors.length, message);
+	}
+
+	private IObservableMap createObservableAttribute(TreeRidgetContentProvider viewerCP, String accessor) {
+		IObservableMap result = null;
+		if (accessor != null) {
+			result = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass, accessor);
+		}
+		return result;
+	}
+
+	/**
+	 * Filters out elements that are not visible. Monitors element visibility
+	 * and updates the tree ridget.
+	 */
+	private void monitorVisibility(final TreeViewer viewer, final TreeStructureAdvisor structureAdvisor,
+			final IObservableMap visibilityAttr) {
+		if (visibilityAttr != null) {
+			viewer.addFilter(new ViewerFilter() {
+				@Override
+				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					Object visible = visibilityAttr.get(element);
+					return Boolean.FALSE.equals(visible) ? false : true;
+				}
+			});
+			IMapChangeListener mapChangeListener = new IMapChangeListener() {
+				public void handleMapChange(MapChangeEvent event) {
+					Set<?> affectedElements = event.diff.getChangedKeys();
+					for (Object element : affectedElements) {
+						Object parent = structureAdvisor.getParent(element);
+						if (parent == null || (parent == treeRoots[0] && !showRoots)) {
+							viewer.refresh();
+						} else {
+							viewer.refresh(parent);
+						}
+					}
+				}
+			};
+			visibilityAttr.addMapChangeListener(mapChangeListener);
+		}
+	}
+
+	/**
+	 * prevent disabled items from being selected this listener is executed
+	 * before the SelectionTypeEnforcer
+	 */
+	private void preventDisabledItemSelection(final IObservableMap enablementAttr) {
+		if (enablementAttr != null) {
+			viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+				public void selectionChanged(SelectionChangedEvent event) {
+					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+					List<Object> newSel = new ArrayList<Object>(selection.toList());
+					boolean changed = false;
+					for (Object element : selection.toArray()) {
+						Object isEnabled = enablementAttr.get(element);
+						if (Boolean.FALSE.equals(isEnabled)) {
+							newSel.remove(element);
+							changed = true;
+						}
+					}
+					if (changed) {
+						viewer.setSelection(new StructuredSelection(newSel));
+						setSelection(newSel);
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -729,7 +781,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * @see TreeRidget#bindToModel(Object[], Class, String, String, String)
 	 * @see TreeContentProvider
 	 */
-	private static final class FakeRoot extends ArrayList<Object> {
+	static final class FakeRoot extends ArrayList<Object> {
 		private static final long serialVersionUID = 1L;
 		private final String childrenAccessor;
 		private final String accessor;
@@ -766,78 +818,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			return result;
 		}
 
-	}
-
-	/**
-	 * Extends a standard observable tree content provider with support for:
-	 * <ul>
-	 * <li>handling Object[] <b>and</b> Object input</li> <li>knowing when we
-	 * have a valid input</li>
-	 * </ul>
-	 */
-	private final class TreeContentProvider extends ObservableListTreeContentProvider {
-
-		private boolean hasInput = false;
-		private PropertyChangeListener listener;
-
-		TreeContentProvider(IObservableFactory listFactory, TreeStructureAdvisor structureAdvisor) {
-			super(listFactory, structureAdvisor);
-		}
-
-		@Override
-		public Object[] getElements(Object inputElement) {
-			if (inputElement instanceof FakeRoot) {
-				return ((FakeRoot) inputElement).toArray();
-			}
-			return (Object[]) inputElement;
-		}
-
-		@Override
-		public synchronized void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
-			/*
-			 * this is a workaround to allow our set change listener, which is
-			 * in charge triggering an update of the tree icons, to skip the
-			 * update when the viewer is in the process of disposing itself
-			 * (newInput == null)
-			 */
-			hasInput = (newInput != null);
-			if (oldInput instanceof FakeRoot) {
-				removePropertyChangeListener((FakeRoot) oldInput);
-			}
-			if (newInput instanceof FakeRoot) {
-				addPropertyChangeListener((FakeRoot) newInput);
-			}
-			super.inputChanged(viewer, oldInput, newInput);
-		}
-
-		/** Returns true if we have a valid (i.e. non-null) input. */
-		boolean hasInput() {
-			return hasInput;
-		}
-
-		/** Remove property change listener from real root element. */
-		private synchronized void removePropertyChangeListener(final FakeRoot fakeRoot) {
-			if (listener != null) {
-				ReflectionUtils.invoke(fakeRoot.getRoot(), "removePropertyChangeListener", listener); //$NON-NLS-1$
-				listener = null;
-			}
-		}
-
-		/** Add property change listener to real root element. */
-		private synchronized void addPropertyChangeListener(final FakeRoot fakeRoot) {
-			Assert.isLegal(listener == null);
-			listener = new PropertyChangeListener() {
-				private final String accessor = fakeRoot.getChildrenAccessor().toUpperCase();
-
-				public void propertyChange(PropertyChangeEvent evt) {
-					if (evt.getPropertyName().toUpperCase().endsWith(accessor)) {
-						fakeRoot.refresh();
-						viewer.refresh(fakeRoot);
-					}
-				}
-			};
-			ReflectionUtils.invoke(fakeRoot.getRoot(), "addPropertyChangeListener", listener); //$NON-NLS-1$
-		}
 	}
 
 	/**
@@ -926,10 +906,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	private final class TreeContentChangeListener implements ISetChangeListener {
 
-		private final TreeContentProvider viewerCP;
+		private final TreeRidgetContentProvider viewerCP;
 		private final TreeStructureAdvisor structureAdvisor;
 
-		private TreeContentChangeListener(TreeContentProvider viewerCP, TreeStructureAdvisor structureAdvisor) {
+		private TreeContentChangeListener(TreeRidgetContentProvider viewerCP, TreeStructureAdvisor structureAdvisor) {
 			Assert.isNotNull(viewerCP);
 			Assert.isNotNull(structureAdvisor);
 			this.structureAdvisor = structureAdvisor;

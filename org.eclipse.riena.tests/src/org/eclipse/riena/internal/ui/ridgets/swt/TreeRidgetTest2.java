@@ -794,7 +794,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		TreeNode node2 = new TreeNode("node2");
 		node2.setEnabled(false);
 		TreeNode[] roots = { node1, node2 };
-		getRidget().bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
+		ridget.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
 				TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED, null);
 		TreeItem item = control.getItem(0);
 		control.setSelection(item);
@@ -808,6 +808,50 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(1, ridget.getSelection().size());
 		assertSame(node1, ridget.getSelection().get(0));
+	}
+
+	public void testInvisibleItemsAreNotShown() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getWidget();
+
+		TreeNode node1 = new TreeNode("node1");
+		TreeNode node2 = new TreeNode("node2");
+		node2.setEnabled(false);
+		TreeNode[] roots = { node1, node2 };
+		ridget.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
+				TreeNode.PROPERTY_VALUE, null, TreeNode.PROPERTY_VISIBLE);
+
+		assertEquals(2, control.getItemCount());
+
+		node2.setVisible(false);
+
+		assertEquals(1, control.getItemCount());
+
+		node2.setVisible(true);
+
+		assertEquals(2, control.getItemCount());
+	}
+
+	public void testInvisibleItemsAreNotShownWithHiddenRoot() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getWidget();
+
+		TreeNode node1 = new TreeNode("node1");
+		TreeNode node1child1 = new TreeNode(node1, "child 1");
+		TreeNode[] roots = { node1 };
+		ridget.setRootsVisible(false);
+		ridget.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
+				TreeNode.PROPERTY_VALUE, null, TreeNode.PROPERTY_VISIBLE);
+
+		assertEquals(1, control.getItemCount());
+
+		node1child1.setVisible(false);
+
+		assertEquals(0, control.getItemCount());
+
+		node1child1.setVisible(true);
+
+		assertEquals(1, control.getItemCount());
 	}
 
 	public void testSetRootsVisible() {
