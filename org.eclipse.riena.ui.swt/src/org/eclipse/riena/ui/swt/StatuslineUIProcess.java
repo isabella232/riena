@@ -122,7 +122,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private Control locateGrabCorner() {
 		Shell shell = getShell();
 		for (Control child : shell.getChildren()) {
-			if (child.getData("sizeexecutor").equals("grabcorner")) { //$NON-NLS-1$ //$NON-NLS-2$
+			if ("grabcorner".equals(child.getData("sizeexecutor"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				return child;
 			}
 		}
