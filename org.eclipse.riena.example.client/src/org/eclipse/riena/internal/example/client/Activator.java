@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.example.client;
 
+import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.monitor.common.ICollectibleReceiver;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -24,12 +27,16 @@ public class Activator extends RienaPlugin {
 	// The shared instance
 	private static Activator plugin;
 
+	private IRemoteServiceRegistration collectibleReceiverReg;
+
 	/**
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		collectibleReceiverReg = new RemoteServiceFactory().createAndRegisterProxy(ICollectibleReceiver.class,
+				"http://localhost:8080/hessian/CollectibleReceiverWS", "hessian");
 	}
 
 	/**
@@ -37,6 +44,7 @@ public class Activator extends RienaPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		collectibleReceiverReg.unregister();
 		super.stop(context);
 	}
 
