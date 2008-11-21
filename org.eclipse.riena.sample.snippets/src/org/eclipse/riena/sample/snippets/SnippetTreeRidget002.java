@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
 /**
- * Demonstrates changing the visibility a model element
+ * Ties the visibility of a model element to the value of a method.
  */
 public class SnippetTreeRidget002 {
 
@@ -35,9 +35,13 @@ public class SnippetTreeRidget002 {
 
 		final ITreeRidget treeRidget = (ITreeRidget) SwtRidgetFactory.createRidget(tree);
 		TreeNode[] roots = createTreeInput();
-		// treeRidget.setRootsVisible(false);
 		treeRidget.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
 				TreeNode.PROPERTY_VALUE, null, TreeNode.PROPERTY_VISIBLE);
+		//                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+		// This ties the visibility of a tree item to the "boolean isVisible()"
+		// method of a TreeNode. You can use any method, as long as it returns
+		// a boolean and has no arguments. For example "upperCase" would tie
+		// the visibility to "isUpperCase() or getUpperCase()"
 
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Hide"); //$NON-NLS-1$
