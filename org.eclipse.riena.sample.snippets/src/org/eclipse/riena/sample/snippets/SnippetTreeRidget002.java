@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
 /**
- * Ties the visibility of a model element to the value of a method.
+ * Ties the visibility of a tree item to the value of a method.
  */
 public class SnippetTreeRidget002 {
 
