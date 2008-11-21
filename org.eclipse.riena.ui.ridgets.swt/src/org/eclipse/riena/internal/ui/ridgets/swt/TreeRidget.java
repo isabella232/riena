@@ -47,6 +47,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -474,6 +475,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					}
 					if (changed) {
 						viewer.setSelection(new StructuredSelection(newSel));
+						setSelection(newSel);
 					}
 				}
 			}
@@ -769,8 +771,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	/**
 	 * Extends a standard observable tree content provider with support for:
 	 * <ul>
-	 * <li>handling Object[] <b>and</b> Object input</li>
-	 * <li>knowing when we have a valid input</li>
+	 * <li>handling Object[] <b>and</b> Object input</li> <li>knowing when we
+	 * have a valid input</li>
 	 * </ul>
 	 */
 	private final class TreeContentProvider extends ObservableListTreeContentProvider {
@@ -867,8 +869,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			try {
 				descriptor = new PropertyDescriptor(propertyName, beanClass, readMethodName, null);
 			} catch (IntrospectionException exc) {
-				Logger logger = Activator.getDefault().getLogger(TreeRidget.class.getName());
-				logger.log(LogService.LOG_ERROR, "Could not introspect bean.", exc); //$NON-NLS-1$
+				log("Could not introspect bean.", exc); //$NON-NLS-1$
 				descriptor = null;
 			}
 			this.beanClass = beanClass;
@@ -885,11 +886,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				try {
 					result = readMethod.invoke(element, EMPTY_ARRAY);
 				} catch (InvocationTargetException exc) {
-					Logger logger = Activator.getDefault().getLogger(TreeRidget.class.getName());
-					logger.log(LogService.LOG_ERROR, "Error invoking.", exc); //$NON-NLS-1$
+					log("Error invoking.", exc); //$NON-NLS-1$
 				} catch (IllegalAccessException exc) {
-					Logger logger = Activator.getDefault().getLogger(TreeRidget.class.getName());
-					logger.log(LogService.LOG_ERROR, "Error invoking.", exc); //$NON-NLS-1$
+					log("Error invoking.", exc); //$NON-NLS-1$
 				}
 			}
 			return result;
@@ -902,6 +901,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			}
 			return result;
 		}
+
+		private void log(String message, Exception exc) {
+			String loggerName = TreeRidget.class.getName();
+			Logger logger;
+			if (Activator.getDefault() != null) {
+				logger = Activator.getDefault().getLogger(loggerName);
+			} else {
+				logger = new ConsoleLogger(loggerName);
+			}
+			logger.log(LogService.LOG_ERROR, message, exc);
+		}
 	}
 
 	/**
@@ -910,9 +920,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * element. Specifically:
 	 * <ul>
 	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
-	 * have any children beforehand</li>
-	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the
-	 * last child underneath A</li>
+	 * have any children beforehand</li> <li>if B gets removed to A we have to
+	 * refresh the icon of A, if B was the last child underneath A</li>
 	 * <ul>
 	 */
 	private final class TreeContentChangeListener implements ISetChangeListener {
