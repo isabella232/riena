@@ -18,7 +18,8 @@ public abstract class AbstractRemoteProgressMonitor implements IRemoteProgressMo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IProgressMonitor#start()
+	 * @seeorg.eclipse.riena.communication.core.IProgressMonitor#start(
+	 * RemoteProgressMonitorEvent event)
 	 */
 	public void start(RemoteProgressMonitorEvent event) {
 	}
@@ -26,7 +27,8 @@ public abstract class AbstractRemoteProgressMonitor implements IRemoteProgressMo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.communication.core.IProgressMonitor#end()
+	 * @seeorg.eclipse.riena.communication.core.IProgressMonitor#end(
+	 * RemoteProgressMonitorEvent event)
 	 */
 	public void end(RemoteProgressMonitorEvent event) {
 	}
