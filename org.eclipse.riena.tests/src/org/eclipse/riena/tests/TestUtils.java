@@ -29,7 +29,28 @@ public final class TestUtils {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Asserts that in the given {@code control} the text and cursor position
+	 * match the expected {@code before} value. It then applies the given key
+	 * sequence and asserts that the resulting text and cursor position matches
+	 * the expected {@code after} value.
+	 * <p>
+	 * One can use one '^' character to denote the expected cursor position, or
+	 * two '^' characters to denote the expected selection.
+	 * <p>
+	 * Example:
+	 * 
+	 * <pre>
+	 * assertText(&quot;  &circ;.  .2008&quot;, &quot;1208&quot;, &quot;12.08&circ;.2008&quot;);
+	 * </pre>
+	 * 
+	 * @param control
+	 *            a non-null Text control
+	 * @param before
+	 *            the expected before value
+	 * @param keySeq
+	 *            a String with the characters to type
+	 * @param after
+	 *            the expected after value
 	 */
 	public static void assertText(Text control, String before, String keySeq, String after) {
 		forceText(control, before);
@@ -46,7 +67,28 @@ public final class TestUtils {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Asserts that in the given {@code control} the text and cursor position
+	 * match the expected {@code before} value. It then applies the given
+	 * keyCode and asserts that the resulting text and cursor position matches
+	 * the expected {@code after} value.
+	 * <p>
+	 * One can use one '^' character to denote the expected cursor position, or
+	 * two '^' characters to denote the expected selection.
+	 * <p>
+	 * Example:
+	 * 
+	 * <pre>
+	 * assertText(&quot;  &circ;.  .2008&quot;, &quot;1208&quot;, &quot;12.08&circ;.2008&quot;);
+	 * </pre>
+	 * 
+	 * @param control
+	 *            a non-null Text control
+	 * @param before
+	 *            the expected before value
+	 * @param keySeq
+	 *            the keyCode to type
+	 * @param after
+	 *            the expected after value
 	 */
 	public static void assertText(Text control, String before, int keyCode, String after) {
 		forceText(control, before);

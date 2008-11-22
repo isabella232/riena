@@ -100,7 +100,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	 * </pre>
 	 * 
 	 * @param display
-	 *            TODO [ev] docs
+	 *            a non-null display on which to allocate the color
 	 * @param colorKey
 	 *            a non-null String; see {@link SharedColors} for valid keys
 	 * @return a non-null Color instance
