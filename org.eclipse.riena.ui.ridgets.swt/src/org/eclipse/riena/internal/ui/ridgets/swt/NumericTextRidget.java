@@ -279,7 +279,18 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	/**
-	 * TODO [ev] docs - document that text should be in 'local' format
+	 * {@inheritDoc}
+	 * <p>
+	 * If decimal and/or grouping separators are contained in the given {@code
+	 * text} value, they must follow the convention of the current locale.
+	 * <p>
+	 * Examples:
+	 * <ul>
+	 * <li>DE - valid text: "1.234,56" or "1234,56"</li>
+	 * <li>US - valid text: "1,234.56" or "1234.56"</li>
+	 * </ul>
+	 * 
+	 * @see DecimalFormatSymbols#getDecimalSeparator()
 	 */
 	@Override
 	public final synchronized void setText(String text) {
@@ -571,15 +582,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * those key strokes are:
 	 * <ol>
 	 * <ol>
-	 * <li>Left & Right arrow - will jump over grouping separators</li>
-	 * <li>Shift - ddisables jumping over grouping separators when pressed down</li>
+	 * <li>Left & Right arrow - will jump over grouping separators</li> <li>
+	 * Shift - ddisables jumping over grouping separators when pressed down</li>
 	 * <li>Decimal separator - will cause the cursor to jump over the decimal
-	 * separator if directly to the right of it. Otherwise ignored</li>
-	 * <li>minus ('-') - for signed widgets, it adds the '-' character to the
-	 * left of the widget. Otherwise ignored</li>
-	 * <li>CR ('\r') - for decimal ridgets, it will pad the fractional digits by
-	 * adding '0's until the maximum number of fractional digits is reached (as
-	 * specified by the ridgets precision value)
+	 * separator if directly to the right of it. Otherwise ignored</li> <li>
+	 * minus ('-') - for signed widgets, it adds the '-' character to the left
+	 * of the widget. Otherwise ignored</li> <li>CR ('\r') - for decimal
+	 * ridgets, it will pad the fractional digits by adding '0's until the
+	 * maximum number of fractional digits is reached (as specified by the
+	 * ridgets precision value)
 	 * </ol>
 	 */
 	private final class NumericKeyListener extends KeyAdapter {

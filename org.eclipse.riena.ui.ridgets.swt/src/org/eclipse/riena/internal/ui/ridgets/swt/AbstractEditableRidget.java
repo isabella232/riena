@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Display;
 public abstract class AbstractEditableRidget extends AbstractValueRidget implements IEditableRidget {
 
 	/**
-	 * TODO [ev] docs
+	 * The 'error' background color is shown for this duration of time, in
+	 * miliseconds ({@value} ).
 	 */
 	protected static final int FLASH_DURATION_MS = 300;
 
@@ -117,7 +118,8 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	////////////////////
 
 	/**
-	 * TODO [ev] docs
+	 * Toggles the background color of the control to
+	 * {@link SharedColors#COLOR_FLASH_ERROR} for a short duration of time.
 	 */
 	protected synchronized final void flash() {
 		final Control control = getUIControl();

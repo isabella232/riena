@@ -10,10 +10,28 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.text.DecimalFormatSymbols;
+
 import org.eclipse.core.runtime.Assert;
 
 /**
- * TODO [ev] docs
+ * Deals with manipulation of numeric strings.
+ * <p>
+ * A numeric string consists of several digits, thay may or may not be separated
+ * by grouping separators (groups of 3 digits). The string may contain a decimal
+ * separator, followed by a fractional part of 0 to <i>n</i> digits. Grouping
+ * and decimal separator must conform to the current locale. Negative values may
+ * be prefixed by a '-' character.
+ * <p>
+ * Examples:
+ * <ul>
+ * <li>DE - valid strings: "1.234,56" / "1234,56" / "1234" / "1.234" / "1234," /
+ * "1.234,"</li>
+ * <li>US - valid strings: "1,234.56" / "1234.56" / "1234" / "1,234" / "1234." /
+ * "1,234."</li>
+ * </ul>
+ * 
+ * @see DecimalFormatSymbols#getDecimalSeparator()
  */
 public class NumericString {
 
@@ -21,10 +39,15 @@ public class NumericString {
 	private final boolean isGrouping;
 
 	/**
-	 * TODO [ev] docs
+	 * Create a new instnace
 	 * 
 	 * @param value
+	 *            the non-null value of this string. See class javadoc for
+	 *            accepted formats
 	 * @param isGrouping
+	 *            true, if a grouping separator should be used, false otherwise.
+	 *            Grouping separators will automatically be added to the value
+	 *            argument, if necessary.
 	 */
 	public NumericString(String value, boolean isGrouping) {
 		Assert.isNotNull(value);
@@ -45,13 +68,13 @@ public class NumericString {
 	}
 
 	/**
-	 * TODO [ev] docs Delete between {@code from} and {@code to} (inclusive)
-	 * preserving separators.
+	 * Deletes between {@code from} and {@code to} (exclusive) preserving
+	 * separators.
 	 * 
 	 * @param from
 	 *            0-based starting position
 	 * @param to
-	 *            0-based ending position (inclusive; {@code from <= to <
+	 *            0-based ending position (exclusive; {@code from < to <=
 	 *            pattern.length})
 	 * @return the new cursor position
 	 * @throws RuntimeException

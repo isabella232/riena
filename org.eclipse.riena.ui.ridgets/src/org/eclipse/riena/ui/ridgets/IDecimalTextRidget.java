@@ -30,7 +30,7 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 
 	/**
 	 * Sets the number of fraction digits of this text field, that is the number
-	 * of digits behind the comma-separator.
+	 * of digits behind the decimal-separator.
 	 * 
 	 * @param numberOfFractionDigits
 	 *            a value equal or greater than 0
