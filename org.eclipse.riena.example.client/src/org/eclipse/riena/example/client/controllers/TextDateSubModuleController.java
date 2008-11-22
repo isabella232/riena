@@ -28,6 +28,8 @@ import org.eclipse.riena.ui.ridgets.util.beans.SingleSelectionListBean;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
 import org.eclipse.riena.ui.ridgets.util.beans.TypedBean;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -37,6 +39,9 @@ import org.eclipse.ui.PlatformUI;
  * Controller for the {@link IDateTextRidget} example.
  */
 public class TextDateSubModuleController extends SubModuleController {
+
+	private FontManager fontManager;
+	private IDateTextRidget justEights;
 
 	/**
 	 * Binds and updates the ridgets.
@@ -62,7 +67,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("HH:mm", new StringBean("23:55")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("dd.MM.yyyy_HH:mm", new StringBean("01.10.2008 23:55")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		IDateTextRidget justEights = (IDateTextRidget) getRidget("inJustEights"); //$NON-NLS-1$
+		justEights = (IDateTextRidget) getRidget("inJustEights"); //$NON-NLS-1$
 		justEights.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justEights.setOutputOnly(true);
 		justEights.bindToModel(new StringBean("88.88.8888"), StringBean.PROP_VALUE); //$NON-NLS-1$
@@ -74,7 +79,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justSpaces.updateFromModel();
 
-		final FontManager fontManager = new FontManager(PlatformUI.getWorkbench().getDisplay());
+		fontManager = new FontManager(PlatformUI.getWorkbench().getDisplay());
 		fontManager.addRidget(justEights);
 		fontManager.addRidget(justSpaces);
 
@@ -106,6 +111,19 @@ public class TextDateSubModuleController extends SubModuleController {
 		comboSizes.updateFromModel();
 	}
 
+	@Override
+	public void afterBind() {
+		// dispose fontManager when the text control is disposed
+		((Control) justEights.getUIControl()).addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				if (fontManager != null) {
+					fontManager.dispose();
+					fontManager = null;
+				}
+			}
+		});
+	}
+
 	// helping methods
 	//////////////////
 
@@ -134,7 +152,6 @@ public class TextDateSubModuleController extends SubModuleController {
 
 		private final Display display;
 
-		// TODO [ev] this is leaked, to we know when the view is disposed?
 		private Font font;
 		private String name;
 		private String size;
@@ -150,6 +167,14 @@ public class TextDateSubModuleController extends SubModuleController {
 
 		void addRidget(IRidget control) {
 			ridgets.add(control);
+		}
+
+		public synchronized void dispose() {
+			ridgets.clear();
+			if (font != null) {
+				font.dispose();
+				font = null;
+			}
 		}
 
 		void setName(String name) {
@@ -168,10 +193,7 @@ public class TextDateSubModuleController extends SubModuleController {
 			}
 		}
 
-		private void updateControls() {
-			if (name == null || size == null) {
-				return;
-			}
+		private synchronized void updateControls() {
 			if (font != null) {
 				font.dispose();
 			}
