@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.IBeanObservable;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
+import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -50,17 +51,25 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 * @param viewer
 	 *            a non-null {@link TreeViewer} instance
 	 * @param treeElementClass
-	 *            TODO [ev] docs
+	 *            the type of the elements in the tree (i.e. for treeRoot and
+	 *            all children).
 	 * @param knownElements
-	 *            TODO [ev] docs
+	 *            a non-null set of observable elements. The label provider may
+	 *            track this set to update the tree as necessary - see
+	 *            {@link ObservableListTreeContentProvider#getKnownElements()}
 	 * @param valueAccessors
-	 *            TODO [ev] docs
+	 *            a non-null; non-empty array of Strings. Each String specifies
+	 *            an accessor for obtaining an Object value from each child
+	 *            object (example "value" specifies "getValue()"). The order in
+	 *            the array corresponds to the initial order of the columns,
+	 *            i.e. the 1st accessor will be used for column one/the tree,
+	 *            the 2nd for column two, the 3rd for column three and so on
 	 * @param enablementAccessor
 	 *            a String specifying an accessor for obtaining a boolean value
 	 *            from each child. The returned value will determine the
 	 *            enabled/disabled state of this child. Example: 'enabled'
 	 *            specifies "isEnabled()" or "getEnabled()". The parameter can
-	 *            be {@code null} to enable all children.
+	 *            be {@code null} to enable all children
 	 */
 	public static TreeRidgetLabelProvider createLabelProvider(TreeViewer viewer, Class<?> treeElementClass,
 			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor) {
