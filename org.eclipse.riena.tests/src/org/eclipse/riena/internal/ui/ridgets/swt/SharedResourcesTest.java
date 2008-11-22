@@ -13,11 +13,12 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * TODO [ev] docs
+ * Tests for resource sharing helper methods.
+ * 
+ * @see Activator#getSharedColor(Display, String)
  */
 public class SharedResourcesTest extends TestCase {
 
@@ -36,10 +37,15 @@ public class SharedResourcesTest extends TestCase {
 		assertNotNull(colorOutput);
 		assertNotSame(colorFlash2, colorOutput);
 
-		assertEquals(new RGB(250, 190, 190), colorFlash1.getRGB()); // TODO [ev] ex
+		try {
+			Activator.getSharedColor(null, SharedColors.COLOR_FLASH_ERROR);
+			fail();
+		} catch (RuntimeException rex) {
+			// expected
+		}
 
 		try {
-			Activator.getSharedColor(display, "dymmy");
+			Activator.getSharedColor(display, "does_not_exist");
 			fail();
 		} catch (RuntimeException rex) {
 			// expected
