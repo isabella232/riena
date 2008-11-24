@@ -28,13 +28,13 @@ public interface ICollectibleStore {
 	boolean collect(final Collectible<?> collectible);
 
 	/**
-	 * Get all collectibles for the given category
+	 * Retrieve all collectibles for the given category
 	 * 
 	 * @param category
 	 *            the category
 	 * @return a list of ready to transfer collectibles
 	 */
-	List<Collectible<?>> getTransferables(String category);
+	List<Collectible<?>> retrieveTransferables(String category);
 
 	/**
 	 * Commit the given collectibles, i.e. remove them from the persistent
