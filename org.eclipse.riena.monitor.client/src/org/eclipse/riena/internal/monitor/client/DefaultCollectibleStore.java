@@ -118,7 +118,7 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	 * org.eclipse.riena.monitor.client.ICollectibleStore#getTransferables(java
 	 * .lang.String)
 	 */
-	public synchronized List<Collectible<?>> getTransferables(String category) {
+	public synchronized List<Collectible<?>> retrieveTransferables(String category) {
 		File[] transferables = storeFolder.listFiles(new FilenameFilter() {
 
 			public boolean accept(File dir, String name) {

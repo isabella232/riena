@@ -93,7 +93,7 @@ public class Aggregator implements IAggregator {
 		} else {
 			collectibleSender = senderExtension.createSender();
 		}
-		collectibleSender.setStore(store);
+		collectibleSender.configureStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
 
