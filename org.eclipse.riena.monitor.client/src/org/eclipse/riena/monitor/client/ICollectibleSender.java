@@ -10,25 +10,53 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
-import org.eclipse.riena.monitor.common.ICollectibleReceiver;
 
 /**
- *
+ * The {@code ICollectibleSender} is responsible for retrieving collectibles
+ * from the store, transferring them to the receiver.
  */
 public interface ICollectibleSender {
 
-	void setStore(ICollectibleStore store);
+	/**
+	 * Configure the store for the sender.
+	 * 
+	 * @param store
+	 */
+	void configureStore(ICollectibleStore store);
 
-	void addCategory(String categories);
+	/**
+	 * Add a category this sender must handle.
+	 * 
+	 * @param category
+	 */
+	void addCategory(String category);
 
+	/**
+	 * Remove a category.
+	 * 
+	 * @param category
+	 */
 	void removeCategory(String category);
 
-	void setReceiver(ICollectibleReceiver receiver);
-
+	/**
+	 * Start the sender, i.e. from now on the sender is responsible for sending
+	 * collectibles and maintain the sore appropriate.
+	 * <p>
+	 * Sender is also responsible for retrying failed send attempts.
+	 */
 	void start();
 
+	/**
+	 * Stop the sender.
+	 */
 	void stop();
 
+	/**
+	 * Trigger the transfer of the collectibles registered with the given
+	 * category.
+	 * 
+	 * @param category
+	 */
 	void trigger(String category);
 
 }

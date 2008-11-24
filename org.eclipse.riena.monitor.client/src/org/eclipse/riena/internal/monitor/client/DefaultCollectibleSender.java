@@ -77,10 +77,10 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleSender#setStoreProperties
-	 * (java.io .File, java.io.FilenameFilter)
+	 * org.eclipse.riena.monitor.client.ICollectibleSender#configureStore(org
+	 * .eclipse.riena.monitor.client.ICollectibleStore)
 	 */
-	public void setStore(ICollectibleStore store) {
+	public void configureStore(ICollectibleStore store) {
 		Assert.isNotNull(store, "store must not be null");
 		this.store = store;
 	}
@@ -107,18 +107,6 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 	public void removeCategory(String category) {
 		Assert.isNotNull(category, "category must not be null");
 		this.categories.remove(category);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleSender#setReceiver(org.eclipse
-	 * .riena .monitor.core.ICollectibleReceiver)
-	 */
-	public void setReceiver(ICollectibleReceiver receiver) {
-		Assert.isNotNull(receiver, "receiver must not be null");
-		this.receiver = receiver;
 	}
 
 	public void start() {
@@ -173,7 +161,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 				System.out.println("sender ended(no receiver) - " + category);
 				return;
 			}
-			List<Collectible<?>> transferables = store.getTransferables(category);
+			List<Collectible<?>> transferables = store.retrieveTransferables(category);
 			if (transferables.size() == 0) {
 				System.out.println("sender ended(nothing to do) - " + category);
 				return;
