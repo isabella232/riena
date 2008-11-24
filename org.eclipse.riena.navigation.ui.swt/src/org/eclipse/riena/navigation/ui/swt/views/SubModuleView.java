@@ -57,7 +57,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(SubModuleView.class.getName());
 
-	private Map<ISubModuleNode, C> node2Controler;
+	private Map<ISubModuleNode, C> node2Controller;
 	private AbstractViewBindingDelegate binding;
 	private C currentController;
 
@@ -86,7 +86,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 */
 	public SubModuleView() {
 		binding = createBinding();
-		node2Controler = new HashMap<ISubModuleNode, C>();
+		node2Controller = new HashMap<ISubModuleNode, C>();
 		updateListeners = new ListenerList<IComponentUpdateListener>(IComponentUpdateListener.class);
 	}
 
@@ -136,7 +136,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 * @return the controller
 	 */
 	public C getController() {
-		return node2Controler.get(getNavigationNode());
+		return node2Controller.get(getNavigationNode());
 	}
 
 	/**
@@ -144,8 +144,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 *            the controller to set
 	 */
 	public void setController(C controller) {
-		if (node2Controler.get(getNavigationNode()) == null) {
-			node2Controler.put(getNavigationNode(), controller);
+		if (node2Controller.get(getNavigationNode()) == null) {
+			node2Controller.put(getNavigationNode(), controller);
 		}
 	}
 
@@ -296,7 +296,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected void createViewFacade() {
-		if (!node2Controler.containsKey(getNavigationNode())) {
+		if (!node2Controller.containsKey(getNavigationNode())) {
 			setController(createController(getNavigationNode()));
 		}
 		if (getController() != null) {
@@ -347,7 +347,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 				}
 				binding.unbind(currentController);
 			}
-			if ((getNavigationNode() != null) && (node2Controler.get(getNavigationNode()) == null)) {
+			if ((getNavigationNode() != null) && (node2Controller.get(getNavigationNode()) == null)) {
 				createViewFacade();
 			}
 			if (getController() != null) {
@@ -378,10 +378,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			return;
 		}
 
-		C controller = node2Controler.get(node);
+		C controller = node2Controller.get(node);
 		if (controller != null) {
 			binding.unbind(controller);
-			node2Controler.remove(node);
+			node2Controller.remove(node);
 		}
 
 	}
@@ -398,7 +398,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] elements = registry
-				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies");
+				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies"); //$NON-NLS-1$
 		String viewId = getViewSite().getId();
 
 		return getRCPSubModuleNode(viewId, elements);
@@ -408,10 +408,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 		for (int i = 0; rcpSubModuleNode == null && i < elements.length; i++) {
 			IConfigurationElement element = elements[i];
-			if ("submodule".equals(element.getName())) {
-				String view = element.getAttribute("view");
+			if ("submodule".equals(element.getName())) { //$NON-NLS-1$
+				String view = element.getAttribute("view"); //$NON-NLS-1$
 				if (viewId.equals(view)) {
-					String typeId = element.getAttribute("typeId");
+					String typeId = element.getAttribute("typeId"); //$NON-NLS-1$
 					if (typeId != null) {
 						rcpSubModuleNode = new SubModuleNode(new NavigationNodeId(typeId), getPartName());
 					}
