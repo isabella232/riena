@@ -15,7 +15,7 @@ import org.eclipse.riena.core.extension.MapName;
 import org.eclipse.riena.monitor.client.ICollectibleSender;
 
 /**
- *
+ * Extension interface for the sender definition.
  */
 @ExtensionInterface
 public interface ISenderExtension {

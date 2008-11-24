@@ -15,7 +15,7 @@ import org.eclipse.riena.core.extension.MapName;
 import org.eclipse.riena.monitor.client.ICollector;
 
 /**
- *
+ * Extension interface for collector definitions.
  */
 @ExtensionInterface
 public interface ICollectorExtension {

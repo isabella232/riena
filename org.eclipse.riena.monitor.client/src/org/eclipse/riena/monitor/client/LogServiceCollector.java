@@ -26,7 +26,10 @@ import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 
 /**
- * Collect logs. TODO Configuration - threshold, ..
+ * Collects logs that are delivered by the {@code
+ * org.osgi.service.log.LogListener}.
+ * <p>
+ * TODO Configuration - threshold, ..
  */
 public class LogServiceCollector implements ICollector, LogListener, IExecutableExtension {
 
@@ -91,8 +94,8 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#setMonitor(org.eclipse.riena
-	 * .monitor.core.IMonitor)
+	 * org.eclipse.riena.monitor.client.ICollector#configureAggregator(org.eclipse
+	 * .riena.monitor.client.IAggregator)
 	 */
 	public void configureAggregator(IAggregator aggregator) {
 		this.aggregator = aggregator;
@@ -102,7 +105,8 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#setCategory(java.lang.String)
+	 * org.eclipse.riena.monitor.client.ICollector#configureCategory(java.lang
+	 * .String)
 	 */
 	public void configureCategory(String category) {
 		this.category = category;

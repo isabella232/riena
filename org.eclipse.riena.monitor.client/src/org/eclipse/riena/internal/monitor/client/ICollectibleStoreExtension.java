@@ -15,7 +15,7 @@ import org.eclipse.riena.core.extension.MapName;
 import org.eclipse.riena.monitor.client.ICollectibleStore;
 
 /**
- *
+ * Extension interface for store definitions
  */
 @ExtensionInterface
 public interface ICollectibleStoreExtension {
