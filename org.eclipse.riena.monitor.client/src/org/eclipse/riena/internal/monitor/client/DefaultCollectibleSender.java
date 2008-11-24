@@ -118,7 +118,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 		senderExecutor.schedule(new Runnable() {
 			public void run() {
 				for (String category : categories) {
-					trigger(category);
+					triggerTransfer(category);
 				}
 			}
 		}, 5, TimeUnit.SECONDS);
@@ -134,7 +134,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 		senderExecutor.shutdown();
 	}
 
-	public void trigger(String category) {
+	public void triggerTransfer(String category) {
 		if (stopped) {
 			return;
 		}
@@ -186,7 +186,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 				System.out.println("retrying in 10 minutes");
 				senderExecutor.schedule(new Runnable() {
 					public void run() {
-						trigger(category);
+						triggerTransfer(category);
 					}
 				}, 10 * 60, TimeUnit.SECONDS);
 			}

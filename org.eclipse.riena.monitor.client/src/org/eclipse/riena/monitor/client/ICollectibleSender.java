@@ -57,6 +57,6 @@ public interface ICollectibleSender {
 	 * 
 	 * @param category
 	 */
-	void trigger(String category);
+	void triggerTransfer(String category);
 
 }
