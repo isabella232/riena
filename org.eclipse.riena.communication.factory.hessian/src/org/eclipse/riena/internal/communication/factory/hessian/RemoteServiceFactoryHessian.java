@@ -40,9 +40,20 @@ import org.eclipse.riena.core.injector.Inject;
  * 
  */
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
-	private final ICallMessageContextAccessor mca = new CallMsgCtxAcc();
-	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
 	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
+	private final ICallMessageContextAccessor messageContextAccessor;
+	private final RienaHessianProxyFactory rienaHessianProxyFactory;
+	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
+
+	public RemoteServiceFactoryHessian() {
+		messageContextAccessor = new CallMsgCtxAcc();
+		rienaHessianProxyFactory = new RienaHessianProxyFactory();
+		rienaHessianProxyFactory.setCallMessageContextAccessor(messageContextAccessor);
+
+		// inject progressmonitor registry into THIS
+		Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
+				Activator.getDefault().getContext());
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -56,17 +67,10 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			uri = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
 		}
 		try {
-			RienaHessianProxyFactory mhpf = new RienaHessianProxyFactory();
-
-			mhpf.setCallMessageContextAccessor(mca);
-			Object proxy = mhpf.create(endpoint.getServiceInterfaceClass(), uri);
-			Object service = proxy;
+			Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), uri);
 			RemoteServiceReference serviceReference = new RemoteServiceReference(endpoint);
 			// set the create proxy as service instance
-			serviceReference.setServiceInstance(service);
-			// inject progressmonitor registry into THIS
-			Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
-					Activator.getDefault().getContext());
+			serviceReference.setServiceInstance(proxy);
 			return serviceReference;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("MalformedURLException", e); //$NON-NLS-1$
@@ -96,7 +100,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	}
 
 	public ICallMessageContextAccessor getMessageContextAccessor() {
-		return mca;
+		return messageContextAccessor;
 	}
 
 	class CallMsgCtxAcc implements ICallMessageContextAccessor {
