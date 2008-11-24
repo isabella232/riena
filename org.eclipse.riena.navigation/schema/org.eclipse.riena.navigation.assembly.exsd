@@ -247,7 +247,7 @@
                   For the SWT-based Riena UI this is the ID of the view associated with the submodule. Must match the ID field of an &quot;org.eclipse.ui.view&quot; extension.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="java.lang.Object:"/>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.views/view/@id"/>
                </appinfo>
             </annotation>
          </attribute>
