@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.customer.client.navigation.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.riena.demo.customer.client.application.ExampleIcons;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -20,6 +25,8 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 
 public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
+
+	private Set<String> knownTargetIds = null;
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
@@ -39,4 +46,17 @@ public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		return subApplication;
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		if (knownTargetIds == null) {
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.demo.customer.client.order" //$NON-NLS-1$
+					));
+			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
+		}
+
+		return knownTargetIds.contains(nodeId.getTypeId());
+	}
 }

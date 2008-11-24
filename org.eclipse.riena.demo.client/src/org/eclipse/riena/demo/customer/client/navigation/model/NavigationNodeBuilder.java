@@ -11,11 +11,12 @@
 package org.eclipse.riena.demo.customer.client.navigation.model;
 
 import org.eclipse.riena.internal.demo.customer.client.Activator;
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.INavigationAssembler;
 
 import org.osgi.framework.Bundle;
 
-public abstract class NavigationNodeBuilder implements INavigationAssembler {
+public abstract class NavigationNodeBuilder extends AbstractNavigationAssembler implements INavigationAssembler {
 
 	protected String createIconPath(String subPath) {
 		Bundle bundle = Activator.getDefault().getBundle();
