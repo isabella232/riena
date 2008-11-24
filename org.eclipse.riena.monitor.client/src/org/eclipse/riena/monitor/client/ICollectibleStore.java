@@ -28,6 +28,13 @@ public interface ICollectibleStore {
 	boolean collect(final Collectible<?> collectible);
 
 	/**
+	 * Prepare (mark) collectibles for the given category as ready to transfer.
+	 * 
+	 * @param category
+	 */
+	void prepareTransferables(String category);
+
+	/**
 	 * Retrieve all collectibles for the given category
 	 * 
 	 * @param category

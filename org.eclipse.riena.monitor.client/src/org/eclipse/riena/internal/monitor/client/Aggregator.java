@@ -116,12 +116,19 @@ public class Aggregator implements IAggregator {
 	 * .monitor .core.Collectible)
 	 */
 	public synchronized boolean collect(final Collectible<?> collectible) {
-		store.collect(collectible);
+		return store.collect(collectible);
+	}
 
-		if (collectible.isTriggeringTransfer()) {
-			collectibleSender.trigger(collectible.getCategory());
-		}
-		return true;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.monitor.client.IAggregator#triggerTransfer(java.lang
+	 * .String)
+	 */
+	public void triggerTransfer(String category) {
+		store.prepareTransferables(category);
+		collectibleSender.triggerTransfer(category);
 	}
 
 }

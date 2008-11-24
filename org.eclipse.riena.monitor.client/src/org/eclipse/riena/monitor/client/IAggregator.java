@@ -39,4 +39,10 @@ public interface IAggregator {
 	 */
 	boolean collect(final Collectible<?> collectible);
 
+	/**
+	 * Trigger transfer of collectibles for the given category.
+	 * 
+	 * @param category
+	 */
+	void triggerTransfer(String category);
 }

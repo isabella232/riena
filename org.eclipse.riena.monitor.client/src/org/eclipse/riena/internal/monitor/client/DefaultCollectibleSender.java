@@ -163,7 +163,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 			}
 			List<Collectible<?>> transferables = store.retrieveTransferables(category);
 			if (transferables.size() == 0) {
-				System.out.println("sender ended(nothing to do) - " + category);
+				System.out.println("sender ended(nothing to send) - " + category);
 				return;
 			}
 			transfer(transferables);
@@ -174,8 +174,9 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 		 * 
 		 */
 		private void transfer(List<Collectible<?>> transferables) {
+			System.out.println("sender transfer " + transferables.size() + " transferables:");
 			for (Collectible<?> transferable : transferables) {
-				System.out.println("sender transfer:" + transferable);
+				System.out.println(" - " + transferable);
 			}
 			try {
 				if (receiver.take(System.currentTimeMillis(), transferables)) {

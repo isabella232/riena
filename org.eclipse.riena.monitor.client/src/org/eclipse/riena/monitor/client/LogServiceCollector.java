@@ -168,15 +168,10 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 			return;
 		}
 		aggregator.collect(new Collectible<LogEntryTransferObject>(category, new LogEntryTransferObject(
-				(ExtendedLogEntry) entry), triggerTransmission(entry)));
-	}
-
-	/**
-	 * @param entry
-	 * @return
-	 */
-	protected boolean triggerTransmission(LogEntry entry) {
-		return triggerRange.matches(entry.getLevel());
+				(ExtendedLogEntry) entry)));
+		if (triggerRange.matches(entry.getLevel())) {
+			aggregator.triggerTransfer(category);
+		}
 	}
 
 	private CoreException configurationException(String message, ParseException e) {

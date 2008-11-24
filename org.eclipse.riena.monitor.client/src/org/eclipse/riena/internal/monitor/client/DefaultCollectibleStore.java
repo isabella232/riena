@@ -84,21 +84,23 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 			out = new ObjectOutputStream(gzip);
 			out.writeObject(collectible);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Error handling!!?
 			e.printStackTrace();
+			return false;
 		} finally {
 			IOUtils.close(out);
-		}
-		if (collectible.isTriggeringTransfer()) {
-			makeTransferable(collectible.getCategory());
 		}
 		return true;
 	}
 
-	/**
-	 * @param category
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.monitor.client.ICollectibleStore#prepareForTransfer
+	 * (java.lang.String)
 	 */
-	private void makeTransferable(final String category) {
+	public void prepareTransferables(final String category) {
 		File[] trans = storeFolder.listFiles(new FilenameFilter() {
 
 			public boolean accept(File dir, String name) {
@@ -181,4 +183,5 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	public void flush() {
 		// nothing to do here
 	}
+
 }

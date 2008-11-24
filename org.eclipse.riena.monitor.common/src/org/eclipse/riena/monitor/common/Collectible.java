@@ -22,7 +22,6 @@ public class Collectible<T extends Serializable> implements Serializable {
 	private final UUID uuid;
 	private final long collectionTime;
 	private final T payload;
-	private final transient boolean triggeringTransfer;
 
 	private static final long serialVersionUID = 1218813380792765109L;
 
@@ -33,16 +32,12 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 *            the category for this collectible
 	 * @param payload
 	 *            the payload of this collectible
-	 * @param triggeringTransfer
-	 *            if true this collectible will trigger a transfer attempt;
-	 *            otherwise not
 	 */
-	public Collectible(final String category, T payload, final boolean triggeringTransfer) {
+	public Collectible(final String category, final T payload) {
 		this.category = category;
 		this.uuid = UUID.randomUUID();
 		this.collectionTime = System.currentTimeMillis();
 		this.payload = payload;
-		this.triggeringTransfer = triggeringTransfer;
 	}
 
 	/**
@@ -65,10 +60,6 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 */
 	public T getPayload() {
 		return payload;
-	}
-
-	public boolean isTriggeringTransfer() {
-		return triggeringTransfer;
 	}
 
 	/*
@@ -95,7 +86,7 @@ public class Collectible<T extends Serializable> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Collectible(" + category + ": " + payload + ")";
+		return "Collectible(" + category + ": " + payload + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }
