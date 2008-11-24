@@ -10,10 +10,25 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.riena.navigation.model.NavigationNodeProvider;
+
 /**
  * Creates a node or a subtree for the application model tree.
  */
 public interface INavigationAssembler {
+
+	/**
+	 * @return The extension interface representing the definition of the
+	 *         navigation node extension point
+	 */
+	INavigationAssemblyExtension getAssembly();
+
+	/**
+	 * Set the extension interface representing the definition of the navigation
+	 * node extension point. In the current implementaion this extension
+	 * interface would be injected by the {@link NavigationNodeProvider}
+	 */
+	void setAssembly(INavigationAssemblyExtension nodeDefinition);
 
 	/**
 	 * Creates a node or an application model subtree. The node (or in the case
@@ -34,4 +49,14 @@ public interface INavigationAssembler {
 	 */
 	INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument);
 
+	/**
+	 * @param nodeId
+	 *            The ID of the node to create.
+	 * @param argument
+	 *            The navigation argument. May provide additional information
+	 *            for node creation.
+	 * @return <code>true</code> if this assembler knows how to build the node
+	 *         with the provided id, <code>false</code> otherwise.
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument);
 }

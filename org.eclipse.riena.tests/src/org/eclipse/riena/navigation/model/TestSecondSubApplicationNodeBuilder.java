@@ -10,13 +10,30 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.NavigationNodeId;
 
 public class TestSecondSubApplicationNodeBuilder implements INavigationAssembler {
+
+	private INavigationAssemblyExtension assembly;
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
+	 */
+	public INavigationAssemblyExtension getAssembly() {
+		return assembly;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
+	 */
+	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
+		assembly = nodeDefinition;
+	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
@@ -27,4 +44,15 @@ public class TestSecondSubApplicationNodeBuilder implements INavigationAssembler
 		return subApplication;
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		return true;
+	}
+
+	public String getParentNodeId() {
+		return "application";
+	}
 }

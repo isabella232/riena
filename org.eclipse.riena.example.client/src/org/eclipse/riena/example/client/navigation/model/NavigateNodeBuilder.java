@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.example.client.views.NavigateSubModuleView;
@@ -28,6 +33,8 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  *
  */
 public class NavigateNodeBuilder extends NavigationNodeBuilder {
+
+	private Set<String> knownTargetIds = null;
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
@@ -49,5 +56,19 @@ public class NavigateNodeBuilder extends NavigationNodeBuilder {
 
 		module.addChild(subModule);
 		return moduleGroup;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		if (knownTargetIds == null) {
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.form" //$NON-NLS-1$
+					));
+			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
+		}
+
+		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 }

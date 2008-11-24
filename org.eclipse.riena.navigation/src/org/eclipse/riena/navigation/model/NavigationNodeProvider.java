@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
-import org.eclipse.riena.navigation.IGenericNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssembler;
@@ -38,12 +38,8 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
-	private Map<String, INavigationAssemblyExtension> assemblyId2AssemblyCache = new WeakHashMap<String, INavigationAssemblyExtension>();
-	private Map<String, INavigationAssemblyExtension> nodeId2AssemblyCache = new WeakHashMap<String, INavigationAssemblyExtension>();
-	private Map<String, ISubApplicationNodeExtension> nodeId2SubApplicationCache = new WeakHashMap<String, ISubApplicationNodeExtension>();
-	private Map<String, IModuleGroupNodeExtension> nodeId2ModuleGroupCache = new WeakHashMap<String, IModuleGroupNodeExtension>();
-	private Map<String, IModuleNodeExtension> nodeId2ModuleCache = new WeakHashMap<String, IModuleNodeExtension>();
-	private Map<String, ISubModuleNodeExtension> nodeId2SubModuleCache = new WeakHashMap<String, ISubModuleNodeExtension>();
+	private Map<String, INavigationAssembler> assemblyId2AssemblerCache = new WeakHashMap<String, INavigationAssembler>();
+	private Map<String, INavigationAssembler> nodeId2AssemblerCache = new WeakHashMap<String, INavigationAssembler>();
 
 	/**
 	 * 
@@ -99,19 +95,17 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
 				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
 			}
-			INavigationAssemblyExtension assembly = getAssembly(targetId);
-			if (assembly != null) {
-				INavigationAssembler builder = assembly.createNavigationAssembler();
-				if (builder == null) {
-					builder = createDefaultBuilder();
-				}
-				prepareNavigationNodeBuilder(assembly, targetId, builder);
-				targetNode = builder.buildNode(targetId, argument);
+
+			INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
+			if (assembler != null) {
+				prepareNavigationNodeBuilder(targetId, assembler);
+				targetNode = assembler.buildNode(targetId, argument);
 				INavigationNode parentNode = null;
 				if (argument != null && argument.getParentNodeId() != null) {
 					parentNode = _provideNode(sourceNode, argument.getParentNodeId(), null);
 				} else {
-					parentNode = _provideNode(sourceNode, new NavigationNodeId(assembly.getParentTypeId()), null);
+					parentNode = _provideNode(sourceNode, new NavigationNodeId(assembler.getAssembly()
+							.getParentTypeId()), null);
 				}
 				parentNode.addChild(targetNode);
 			} else {
@@ -121,7 +115,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 		return targetNode;
 	}
 
-	protected GenericNavigationAssembler createDefaultBuilder() {
+	protected GenericNavigationAssembler createDefaultAssembler() {
 		return new GenericNavigationAssembler();
 	}
 
@@ -140,57 +134,32 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * Used to prepare the NavigationNodeBuilder in a application specific way.
 	 * 
 	 * @param targetId
-	 * @param builder
+	 * @param assembler
 	 */
-	protected void prepareNavigationNodeBuilder(INavigationAssemblyExtension navigationNodeTypeDefiniton,
-			NavigationNodeId targetId, INavigationAssembler builder) {
-
-		if (builder instanceof IGenericNavigationAssembler) {
-			// the extension interface of the navigation node definition is injected into the builder   
-			((IGenericNavigationAssembler) builder).setAssembly(navigationNodeTypeDefiniton);
-		}
+	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationAssembler assembler) {
+		// do nothing by default
 	}
 
-	/**
-	 * @param targetId
-	 * @return
-	 */
-	public INavigationAssemblyExtension getAssembly(NavigationNodeId targetId) {
+	public Collection<INavigationAssembler> getNavigationAssemblers() {
+		return assemblyId2AssemblerCache.values();
+	}
 
-		if (targetId == null || targetId.getTypeId() == null) {
-			return null;
-		} else {
-			INavigationAssemblyExtension assembly = getAssemblyByNodeId(targetId);
-			if (assembly != null) {
-				return assembly;
-			} else {
-				return getAssemblyByAssemblyId(targetId.getTypeId());
+	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
+		assemblyId2AssemblerCache.put(id, assembler);
+	}
+
+	public INavigationAssembler getNavigationAssembler(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		// TODO should we cache the result?
+		if (nodeId != null && nodeId.getTypeId() != null) {
+			for (INavigationAssembler probe : getNavigationAssemblers()) {
+				if (probe.acceptsToBuildNode(nodeId, argument)) {
+					return probe;
+				}
 			}
 		}
-	}
 
-	protected INavigationAssemblyExtension getAssemblyByAssemblyId(String assemblyId) {
-		return assemblyId2AssemblyCache.get(assemblyId);
-	}
-
-	protected INavigationAssemblyExtension getAssemblyByNodeId(NavigationNodeId targetId) {
-		return nodeId2AssemblyCache.get(targetId.getTypeId());
-	}
-
-	protected ISubApplicationNodeExtension getSubApplicationNodeDefinition(NavigationNodeId targetId) {
-		return nodeId2SubApplicationCache.get(targetId.getTypeId());
-	}
-
-	protected IModuleGroupNodeExtension getModuleGroupNodeDefinition(NavigationNodeId targetId) {
-		return nodeId2ModuleGroupCache.get(targetId.getTypeId());
-	}
-
-	protected IModuleNodeExtension getModuleNodeDefinition(NavigationNodeId targetId) {
-		return nodeId2ModuleCache.get(targetId.getTypeId());
-	}
-
-	protected ISubModuleNodeExtension getSubModuleNodeDefinition(NavigationNodeId targetId) {
-		return nodeId2SubModuleCache.get(targetId.getTypeId());
+		return null;
 	}
 
 	/**
@@ -227,76 +196,82 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 	public void register(INavigationAssemblyExtension assembly) {
 
-		assemblyId2AssemblyCache.put(assembly.getTypeId(), assembly);
+		INavigationAssembler assembler = assembly.createNavigationAssembler();
+		if (assembler == null) {
+			assembler = createDefaultAssembler();
+		}
+		assembler.setAssembly(assembly);
+
+		registerNavigationAssembler(assembly.getTypeId(), assembler);
+
 		// TODO register for parent?
 		if (assembly.getSubApplicationNode() != null) {
-			register(assembly.getSubApplicationNode(), assembly);
+			register(assembly.getSubApplicationNode(), assembler, assembly);
 		}
 		if (assembly.getModuleGroupNode() != null) {
-			register(assembly.getModuleGroupNode(), assembly);
+			register(assembly.getModuleGroupNode(), assembler, assembly);
 		}
 		if (assembly.getModuleNode() != null) {
-			register(assembly.getModuleNode(), assembly);
+			register(assembly.getModuleNode(), assembler, assembly);
 		}
 		if (assembly.getSubModuleNode() != null) {
-			register(assembly.getSubModuleNode(), assembly);
+			register(assembly.getSubModuleNode(), assembler, assembly);
 		}
 	}
 
-	public void register(ISubApplicationNodeExtension subapplication, INavigationAssemblyExtension assembly) {
+	public void register(ISubApplicationNodeExtension subapplication, INavigationAssembler assembler,
+			INavigationAssemblyExtension assembly) {
 
 		if (subapplication.getTypeId() != null) {
-			nodeId2AssemblyCache.put(subapplication.getTypeId(), assembly);
-			nodeId2SubApplicationCache.put(subapplication.getTypeId(), subapplication);
 		}
 		for (IModuleGroupNodeExtension group : subapplication.getModuleGroupNodes()) {
-			register(group, assembly);
+			register(group, assembler, assembly);
 		}
 	}
 
-	public void register(IModuleGroupNodeExtension group, INavigationAssemblyExtension assembly) {
+	public void register(IModuleGroupNodeExtension group, INavigationAssembler assembler,
+			INavigationAssemblyExtension assembly) {
 
 		if (group.getTypeId() != null) {
-			nodeId2AssemblyCache.put(group.getTypeId(), assembly);
-			nodeId2ModuleGroupCache.put(group.getTypeId(), group);
+			register(group.getTypeId(), assembler);
 		}
 		for (IModuleNodeExtension module : group.getModuleNodes()) {
-			register(module, assembly);
+			register(module, assembler, assembly);
 		}
 	}
 
-	public void register(IModuleNodeExtension module, INavigationAssemblyExtension assembly) {
+	public void register(IModuleNodeExtension module, INavigationAssembler assembler,
+			INavigationAssemblyExtension assembly) {
 
 		if (module.getTypeId() != null) {
-			nodeId2AssemblyCache.put(module.getTypeId(), assembly);
-			nodeId2ModuleCache.put(module.getTypeId(), module);
+			register(module.getTypeId(), assembler);
 		}
 		for (ISubModuleNodeExtension submodule : module.getSubModuleNodes()) {
-			register(submodule, assembly);
+			register(submodule, assembler, assembly);
 		}
 	}
 
-	public void register(ISubModuleNodeExtension submodule, INavigationAssemblyExtension assembly) {
+	public void register(ISubModuleNodeExtension submodule, INavigationAssembler assembler,
+			INavigationAssemblyExtension assembly) {
 
 		if (submodule.getTypeId() != null) {
-			nodeId2AssemblyCache.put(submodule.getTypeId(), assembly);
-			nodeId2SubModuleCache.put(submodule.getTypeId(), submodule);
+			register(submodule.getTypeId(), assembler);
 		}
 		for (ISubModuleNodeExtension nestedSubmodule : submodule.getSubModuleNodes()) {
-			register(nestedSubmodule, assembly);
+			register(nestedSubmodule, assembler, assembly);
 		}
+	}
+
+	public void register(String typeId, INavigationAssembler assembler) {
+
+		nodeId2AssemblerCache.put(typeId, assembler);
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationNodeProvider#cleanUp()
 	 */
 	public void cleanUp() {
-
-		assemblyId2AssemblyCache.clear();
-		nodeId2AssemblyCache.clear();
-		nodeId2ModuleGroupCache.clear();
-		nodeId2ModuleCache.clear();
-		nodeId2SubModuleCache.clear();
+		// nothing to do
 	}
 
 	/**

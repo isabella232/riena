@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
@@ -26,12 +31,15 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 
+	private Set<String> knownTargetIds = null;
+
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(
+				new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
 
 		IModuleNode sharedViewModule = new ModuleNode(null, "Shared View Demo"); //$NON-NLS-1$
 		sharedViewModule.setIcon(createIconPath(ExampleIcons.ICON_SAMPLE));
@@ -58,4 +66,18 @@ public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 		return moduleGroup;
 	}
 
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		if (knownTargetIds == null) {
+			knownTargetIds = new HashSet<String>(Arrays.asList(
+					"org.eclipse.riena.example.sharedViews", "org.eclipse.riena.example.sharedView" //$NON-NLS-1$ //$NON-NLS-2$
+			));
+			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
+		}
+
+		return knownTargetIds.contains(nodeId.getTypeId());
+	}
 }

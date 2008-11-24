@@ -22,14 +22,11 @@ import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.model.NavigationNodeProvider;
-import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -332,13 +329,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 
 		return controller;
-	}
-
-	protected INavigationAssemblyExtension getNavigationNodeDefinition(NavigationNodeId targetId) {
-
-		NavigationNodeProvider p = (NavigationNodeProvider) NavigationNodeProviderAccessor.current()
-				.getNavigationNodeProvider();
-		return p.getAssembly(targetId);
 	}
 
 	private void doBinding() {

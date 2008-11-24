@@ -466,10 +466,11 @@
             parentTypeId="playground">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.filters"
+            typeId="org.eclipse.riena.example.filters.assembly"
             name="filters_definition"
             parentTypeId="playground">
          <modulegroup
+               typeId="org.eclipse.riena.example.filters"
                name="uiProcesses_group">
             <module
                   name="filters"
@@ -502,10 +503,11 @@
          </modulegroup>
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.logcollector"
+            typeId="org.eclipse.riena.example.logcollector.assembly"
             name="logcollector"
             parentTypeId="playground">
          <modulegroup
+               typeId="org.eclipse.riena.example.logcollector"
                name="logcollector_group">
             <module
                   name="logcollector"
@@ -525,7 +527,7 @@
             parentTypeId="org.eclipse.riena.example.navigation">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.navigate.tableTextAndTree"
+            typeId="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentTypeId="playground">
       </assembly>

@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.navigation.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
@@ -49,8 +54,9 @@ import org.eclipse.riena.example.client.views.TreeTableSubModuleView;
 import org.eclipse.riena.example.client.views.ValidationSubModuleView;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationAssembler;
+import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -63,6 +69,23 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  *
  */
 public class PlaygroundNodeBuilder implements INavigationAssembler {
+
+	private Set<String> knownTargetIds = null;
+	private INavigationAssemblyExtension assembly;
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
+	 */
+	public INavigationAssemblyExtension getAssembly() {
+		return assembly;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
+	 */
+	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
+		assembly = nodeDefinition;
+	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
@@ -193,5 +216,39 @@ public class PlaygroundNodeBuilder implements INavigationAssembler {
 		playgroundModule.addChild(messageBoxSubModule);
 
 		return moduleGroup;
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		if (knownTargetIds == null) {
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.playground", //$NON-NLS-1$
+					"org.eclipse.riena.example.uiProcesses", //$NON-NLS-1$
+					"org.eclipse.riena.example.buttons", //$NON-NLS-1$
+					"org.eclipse.riena.example.choice", //$NON-NLS-1$
+					"org.eclipse.riena.example.combo", //$NON-NLS-1$
+					"org.eclipse.riena.example.list", //$NON-NLS-1$
+					"org.eclipse.riena.example.text", //$NON-NLS-1$
+					"org.eclipse.riena.example.text.numeric", //$NON-NLS-1$
+					"org.eclipse.riena.example.text.date", //$NON-NLS-1$
+					"org.eclipse.riena.example.marker", //$NON-NLS-1$
+					"org.eclipse.riena.example.focusable", //$NON-NLS-1$
+					"org.eclipse.riena.example.validation", //$NON-NLS-1$
+					"org.eclipse.riena.example.tree", //$NON-NLS-1$
+					"org.eclipse.riena.example.treeTable", //$NON-NLS-1$
+					"org.eclipse.riena.example.table", //$NON-NLS-1$
+					"org.eclipse.riena.example.systemProperties", //$NON-NLS-1$
+					"org.eclipse.riena.example.statusLine", //$NON-NLS-1$
+					"org.eclipse.riena.example.blocking", //$NON-NLS-1$
+					"org.eclipse.riena.example.noController", //$NON-NLS-1$
+					"org.eclipse.riena.example.dialog", //$NON-NLS-1$
+					"org.eclipse.riena.example.messageBox" //$NON-NLS-1$
+			));
+			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
+		}
+
+		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 }

@@ -29,6 +29,14 @@ public interface INavigationNodeProvider {
 	INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
+	 * Registers the navigation node type id with the corresponding assembler
+	 * 
+	 * @param typeId
+	 * @param assembler
+	 */
+	void register(String typeId, INavigationAssembler assembler);
+
+	/**
 	 * Perform some housekeeping
 	 */
 	void cleanUp();

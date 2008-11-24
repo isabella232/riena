@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.riena.core.util.VariableManagerUtil;
-import org.eclipse.riena.navigation.IGenericNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
+import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -48,7 +52,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
  * ${riena.navigation.nodeid:instanceId}
  * </pre>
  */
-public class GenericNavigationAssembler implements IGenericNavigationAssembler {
+public class GenericNavigationAssembler implements INavigationAssembler {
 
 	/** dynamic variable referencing navigation node id */
 	static public final String VAR_NAVIGATION_NODEID = "riena.navigation.nodeid"; //$NON-NLS-1$
@@ -59,6 +63,10 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 	// the node definition as read from extension point
 	private INavigationAssemblyExtension assembly;
 
+	private String parentNodeId;
+
+	private Set<String> acceptedTargetIds = null;
+
 	/**
 	 * @see org.eclipse.riena.navigation.IGenericNavigationAssembler#getAssembly()
 	 */
@@ -66,11 +74,16 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 		return assembly;
 	}
 
+	public String getParentNodeId() {
+		return parentNodeId;
+	}
+
 	/**
 	 * @see org.eclipse.riena.navigation.IGenericNavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
 	 */
 	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
 		this.assembly = nodeDefinition;
+		this.parentNodeId = nodeDefinition.getParentTypeId();
 	}
 
 	/**
@@ -104,6 +117,29 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 		throw new ExtensionPointFailure(
 				"'subapplication', 'modulegroup', 'module' or 'submodule' element expected. ID=" + targetId.getTypeId()); //$NON-NLS-1$
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(java
+	 *      .lang.String)
+	 */
+	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+
+		return getAcceptedTargetIds().contains(nodeId.getTypeId());
+	}
+
+	/**
+	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAcceptedNodeIds()
+	 */
+	public Collection<String> getAcceptedTargetIds() {
+
+		if (acceptedTargetIds == null) {
+			acceptedTargetIds = new HashSet<String>();
+			initializeAcceptedTargetIds();
+			acceptedTargetIds = Collections.unmodifiableSet(acceptedTargetIds);
+		}
+
+		return new HashSet<String>(acceptedTargetIds);
 	}
 
 	protected ISubApplicationNode build(ISubApplicationNodeExtension subapplicationDefinition,
@@ -182,6 +218,76 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 		}
 
 		return submodule;
+	}
+
+	private void initializeAcceptedTargetIds() {
+
+		if (assembly != null) {
+			// build module group if it exists
+			ISubApplicationNodeExtension subapplicationDefinition = assembly.getSubApplicationNode();
+			if (subapplicationDefinition != null) {
+				resolveTargetIds(subapplicationDefinition);
+			}
+			// build module group if it exists
+			IModuleGroupNodeExtension groupDefinition = assembly.getModuleGroupNode();
+			if (groupDefinition != null) {
+				resolveTargetIds(groupDefinition);
+			}
+			// otherwise try module
+			IModuleNodeExtension moduleDefinition = assembly.getModuleNode();
+			if (moduleDefinition != null) {
+				resolveTargetIds(moduleDefinition);
+			}
+			// last resort is submodule
+			ISubModuleNodeExtension submoduleDefinition = assembly.getSubModuleNode();
+			if (submoduleDefinition != null) {
+				resolveTargetIds(submoduleDefinition);
+			}
+		}
+	}
+
+	private void resolveTargetIds(ISubApplicationNodeExtension subapplicationDefinition) {
+
+		if (subapplicationDefinition.getTypeId() != null) {
+			acceptedTargetIds.add(subapplicationDefinition.getTypeId());
+		}
+
+		for (IModuleGroupNodeExtension groupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
+			resolveTargetIds(groupDefinition);
+		}
+	}
+
+	private void resolveTargetIds(IModuleGroupNodeExtension groupDefinition) {
+
+		if (groupDefinition.getTypeId() != null) {
+			acceptedTargetIds.add(groupDefinition.getTypeId());
+		}
+
+		for (IModuleNodeExtension moduleDefinition : groupDefinition.getModuleNodes()) {
+			resolveTargetIds(moduleDefinition);
+		}
+	}
+
+	private void resolveTargetIds(IModuleNodeExtension moduleDefinition) {
+
+		if (moduleDefinition.getTypeId() != null) {
+			acceptedTargetIds.add(moduleDefinition.getTypeId());
+		}
+
+		for (ISubModuleNodeExtension submoduleDefinition : moduleDefinition.getSubModuleNodes()) {
+			resolveTargetIds(submoduleDefinition);
+		}
+	}
+
+	private void resolveTargetIds(ISubModuleNodeExtension submoduleDefinition) {
+
+		if (submoduleDefinition.getTypeId() != null) {
+			acceptedTargetIds.add(submoduleDefinition.getTypeId());
+		}
+
+		for (ISubModuleNodeExtension nestedDefinition : submoduleDefinition.getSubModuleNodes()) {
+			resolveTargetIds(nestedDefinition);
+		}
 	}
 
 	protected NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template, String typeId,

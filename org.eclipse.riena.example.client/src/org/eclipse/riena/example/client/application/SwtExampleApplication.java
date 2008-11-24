@@ -23,7 +23,6 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-
 import org.osgi.framework.Bundle;
 
 /**
@@ -78,7 +77,7 @@ public class SwtExampleApplication extends SwtApplication {
 		// Navigation SubApplication
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
 
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigate")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigate.form")); //$NON-NLS-1$
 
 		// Playground SubApplication
 		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
