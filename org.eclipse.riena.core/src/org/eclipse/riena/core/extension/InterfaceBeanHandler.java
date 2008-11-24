@@ -87,11 +87,11 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		final Class<?> returnType = method.getReturnType();
 		final String name = getAttributeName(method, methodKind);
 		if (returnType == String.class) {
-			return Result.cache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
+			return Result.noCache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
 					: configurationElement.getAttribute(name)));
 		}
 		if (returnType.isPrimitive()) {
-			return Result.cache(coerce(returnType, modify(configurationElement.getAttribute(name))));
+			return Result.noCache(coerce(returnType, modify(configurationElement.getAttribute(name))));
 		}
 		if (returnType == Bundle.class) {
 			return Result.cache(ContributorFactoryOSGi.resolve(configurationElement.getContributor()));
