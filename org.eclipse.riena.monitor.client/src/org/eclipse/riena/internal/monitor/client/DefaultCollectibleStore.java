@@ -12,7 +12,6 @@ package org.eclipse.riena.internal.monitor.client;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -30,7 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.monitor.client.ICollectibleStore;
-import org.eclipse.riena.monitor.client.IEncrypter;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
 
@@ -39,7 +37,6 @@ import org.osgi.service.log.LogService;
  */
 public class DefaultCollectibleStore implements ICollectibleStore {
 
-	private IEncrypter encrypter = new DefaultEncrypter();
 	private File storeFolder;
 
 	private static final String TRANSFER_FILE_EXTENSION = ".trans"; //$NON-NLS-1$
@@ -72,23 +69,20 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	 * .eclipse.riena.monitor.core.Collectible)
 	 */
 	public synchronized boolean collect(final Collectible<?> collectible) {
-		if (encrypter == null) {
-			return false;
-		}
-		ObjectOutputStream out = null;
+		ObjectOutputStream objectos = null;
 		try {
 			File file = getFile(collectible, COLLECT_FILE_EXTENSION);
-			FileOutputStream fos = new FileOutputStream(file);
-			OutputStream enc = encrypter.getEncrypter(fos);
-			GZIPOutputStream gzip = new GZIPOutputStream(enc);
-			out = new ObjectOutputStream(gzip);
-			out.writeObject(collectible);
+			OutputStream fos = new FileOutputStream(file);
+			OutputStream encos = getEncryptor(fos);
+			OutputStream gzipos = getCompressor(encos);
+			objectos = new ObjectOutputStream(gzipos);
+			objectos.writeObject(collectible);
 		} catch (IOException e) {
 			// TODO Error handling!!?
 			e.printStackTrace();
 			return false;
 		} finally {
-			IOUtils.close(out);
+			IOUtils.close(objectos);
 		}
 		return true;
 	}
@@ -129,28 +123,81 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 		});
 		List<Collectible<?>> collectibles = new ArrayList<Collectible<?>>();
 		for (File transferable : transferables) {
-			ObjectInputStream in = null;
+			ObjectInputStream objectis = null;
 			try {
-				FileInputStream fis = new FileInputStream(transferable);
-				InputStream decr = encrypter.getDecrypter(fis);
-				GZIPInputStream gzip = new GZIPInputStream(decr);
-				in = new ObjectInputStream(gzip);
-				Collectible<?> collectible = (Collectible<?>) in.readObject();
+				InputStream fis = new FileInputStream(transferable);
+				InputStream decris = getDecryptor(fis);
+				InputStream gzipis = getDecompressor(decris);
+				objectis = new ObjectInputStream(gzipis);
+				Collectible<?> collectible = (Collectible<?>) objectis.readObject();
 				collectibles.add(collectible);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
-				IOUtils.close(in);
+				IOUtils.close(objectis);
 			}
 		}
 		return collectibles;
+	}
+
+	/**
+	 * Get the decryptor for storing the collectibles.
+	 * <p>
+	 * <b>Note: </b>This hook method is intended to be overwritten to provide
+	 * encrypted storage on the local file system on the client. Otherwise no
+	 * encryption will be used.
+	 * 
+	 * @param is
+	 * @return
+	 */
+	protected InputStream getDecryptor(InputStream is) throws IOException {
+		return is;
+	}
+
+	/**
+	 * 
+	 * Get the encryptor for retrieving the collectibles.
+	 * <p>
+	 * <b>Note: </b>This hook method is intended to be overwritten to provide
+	 * encrypted storage on the local file system on the client. Otherwise no
+	 * encryption will be used.
+	 * 
+	 * @param os
+	 * @return
+	 */
+	protected OutputStream getEncryptor(OutputStream os) throws IOException {
+		return os;
+	}
+
+	/**
+	 * Get the compressor for storing the collectibles.
+	 * <p>
+	 * <b>Note: </b>This hook method may be overwritten to provide another
+	 * compressing technology. This method uses GZIP.
+	 * 
+	 * @param os
+	 * @return
+	 * @throws IOException
+	 */
+	protected OutputStream getCompressor(OutputStream os) throws IOException {
+		return new GZIPOutputStream(os);
+	}
+
+	/**
+	 * 
+	 * Get the encryptor for retrieving the collectibles.
+	 * <p>
+	 * <b>Note: </b>This hook method is intended to be overwritten to provide
+	 * encrypted storage on the local file system on the client. Otherwise no
+	 * encryption will be used.
+	 * 
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
+	protected InputStream getDecompressor(InputStream is) throws IOException {
+		return new GZIPInputStream(is);
 	}
 
 	/*
