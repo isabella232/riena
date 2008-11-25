@@ -111,7 +111,7 @@ public class RangeTest extends TestCase {
 			new Range("n");
 			fail();
 		} catch (ParseException t) {
-			System.out.println(t);
+			System.out.println("Expected error: " + t);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class RangeTest extends TestCase {
 			new Range("1 ()");
 			fail();
 		} catch (ParseException t) {
-			System.out.println(t);
+			System.out.println("Expected error: " + t);
 		}
 	}
 
