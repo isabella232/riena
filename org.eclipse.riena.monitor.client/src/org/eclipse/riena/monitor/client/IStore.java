@@ -15,9 +15,9 @@ import java.util.List;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
- * The {@code ICollectibleStore} defines a store for collectibles.
+ * The {@code IStore} defines a store for collectibles.
  */
-public interface ICollectibleStore {
+public interface IStore {
 
 	/**
 	 * Make the given collectible persistent.

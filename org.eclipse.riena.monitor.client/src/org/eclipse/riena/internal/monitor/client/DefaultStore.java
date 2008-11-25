@@ -28,14 +28,14 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.IOUtils;
-import org.eclipse.riena.monitor.client.ICollectibleStore;
+import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
 
 /**
  * TODO config
  */
-public class DefaultCollectibleStore implements ICollectibleStore {
+public class DefaultStore implements IStore {
 
 	private File storeFolder;
 
@@ -43,9 +43,9 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	private static final String COLLECT_FILE_EXTENSION = ".coll"; //$NON-NLS-1$
 	private static final String DEL_FILE_EXTENSION = ".del"; //$NON-NLS-1$
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(DefaultCollectibleStore.class);
+	private static final Logger LOGGER = Activator.getDefault().getLogger(DefaultStore.class);
 
-	public DefaultCollectibleStore() {
+	public DefaultStore() {
 		//		System.out.println("Platform.getConfigurationLocation: " + Platform.getConfigurationLocation().getURL());
 		//		System.out.println("Platform.getInstallLocation: " + Platform.getInstallLocation().getURL());
 		//		System.out.println("Platform.getInstanceLocation: " + Platform.getInstanceLocation().getURL());
@@ -58,7 +58,7 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 		storeFolder.mkdirs();
 		Assert.isTrue(storeFolder.exists());
 		Assert.isTrue(storeFolder.isDirectory());
-		LOGGER.log(LogService.LOG_DEBUG, "DefaultCollectibleStore at " + storeFolder);
+		LOGGER.log(LogService.LOG_DEBUG, "DefaultStore at " + storeFolder);
 	}
 
 	/*
@@ -90,8 +90,7 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleStore#prepareForTransfer
+	 * @see org.eclipse.riena.monitor.client.IStore#prepareForTransfer
 	 * (java.lang.String)
 	 */
 	public void prepareTransferables(final String category) {
@@ -110,8 +109,7 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleStore#getTransferables(java
+	 * @see org.eclipse.riena.monitor.client.IStore#getTransferables(java
 	 * .lang.String)
 	 */
 	public synchronized List<Collectible<?>> retrieveTransferables(String category) {
@@ -203,8 +201,7 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleStore#commitTransferred(
+	 * @see org.eclipse.riena.monitor.client.IStore#commitTransferred(
 	 * java.util.List)
 	 */
 	public synchronized void commitTransferred(List<Collectible<?>> collectibles) {
@@ -225,7 +222,7 @@ public class DefaultCollectibleStore implements ICollectibleStore {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.monitor.client.ICollectibleStore#flush()
+	 * @see org.eclipse.riena.monitor.client.IStore#flush()
 	 */
 	public void flush() {
 		// nothing to do here
