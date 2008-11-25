@@ -31,7 +31,7 @@
    <extension point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.demo.customer.client.views.KundenSucheView"
+            class="org.eclipse.riena.demo.customer.client.views.CustomerSearchView"
             id="org.eclipse.riena.demo.kundensuche"
             name="org.eclipse.riena.demo.customer.client.views.KundenSucheView"
             restorable="true">
@@ -307,7 +307,7 @@
                      label="Suche"
                      icon="/icons/ledlightgreen.png"
                      view="org.eclipse.riena.demo.kundensuche"
-                     controller="org.eclipse.riena.demo.customer.client.controllers.KundenSucheController"/>
+                     controller="org.eclipse.riena.demo.customer.client.controllers.CustomerSearchController"/>
             </module>
          </modulegroup>
       </assembly>

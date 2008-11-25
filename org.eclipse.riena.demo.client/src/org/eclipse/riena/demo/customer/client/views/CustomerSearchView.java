@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.customer.client.views;
 
-import org.eclipse.riena.demo.customer.client.controllers.KundenSucheController;
+import org.eclipse.riena.demo.customer.client.controllers.CustomerSearchController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 import org.eclipse.swt.SWT;
@@ -30,7 +30,7 @@ import com.swtdesigner.SWTResourceManager;
 /**
  *
  */
-public class KundenSucheView extends SubModuleView<KundenSucheController> {
+public class CustomerSearchView extends SubModuleView<CustomerSearchController> {
 
 	private Table ergebnis;
 	private Text suchOrt;

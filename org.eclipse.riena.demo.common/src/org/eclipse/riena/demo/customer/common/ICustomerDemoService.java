@@ -24,4 +24,6 @@ public interface ICustomerDemoService {
 	 */
 	CustomerSearchResult suche(CustomerSearchBean personValueObject);
 
+	boolean suche(String name);
+
 }

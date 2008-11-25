@@ -31,9 +31,9 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 
 /**
- *
+ * customer search view controller
  */
-public class KundenSucheController extends SubModuleController {
+public class CustomerSearchController extends SubModuleController {
 	private CustomerSearchBean customerSearchBean = new CustomerSearchBean();
 	private CustomerSearchResult ergebnis;
 	private ICustomerDemoService customerDemoService;
@@ -90,82 +90,19 @@ public class KundenSucheController extends SubModuleController {
 				}
 				((ILabelRidget) getRidget("treffer")).setText(ergebnis.getErgebnismenge() + " Treffer");
 				((IRidget) getRidget("treffer")).updateFromModel();
-				// transformSuchergebnis(ergebnis, kundenRows);
 				List<CustomerRecordOverview> result = new ArrayList<CustomerRecordOverview>();
 				for (CustomerRecordOverview cust : ergebnis.getErgebnis()) {
 					result.add(cust);
 				}
 				searchResultContainer.setCustomerList(result);
 				((IRidget) getRidget("ergebnis")).updateFromModel();
-				// getAktenSucheBean().getSelection().clear();
-				// if (kundenRows.size() > 0)
-				// kunden.setSelection(kundenRows.get(0));
-				// kunden.updateMultiSelectionFromModel();
-				// setDefaultButton(oeffnenAction);
-				// ((JTable) kunden.getUIControl()).requestFocusInWindow();
 			}
 		});
 	}
 
-	// private void transformSuchergebnis(CustomerSearchResult ergebnis,
-	// List<PersonenSucheErgebnisBean> ergebnisListe) {
-	// int treffer = ergebnis.getErgebnis() == null ? 0 :
-	// ergebnis.getErgebnis().length;
-	// if (treffer > 0) {
-	// for (int i = 0; i < treffer; i++) {
-	// IPersonenAkteUebersicht personenAkteUebersicht =
-	// ergebnis.getErgebnis()[i];
-	// PersonenSucheErgebnisBean kundenSucheErgebnisBean = new
-	// PersonenSucheErgebnisBean();
-	// if (personenAkteUebersicht.getKundenNummer() != null) {
-	// kundenSucheErgebnisBean.setKundenNummer(Long.toString(
-	// personenAkteUebersicht.getKundenNummer().intValue()));
-	// }
-	// kundenSucheErgebnisBean.setNachName(personenAkteUebersicht.getName());
-	// kundenSucheErgebnisBean.setStrasse(personenAkteUebersicht.getStrasse());
-	// kundenSucheErgebnisBean.setPlz(personenAkteUebersicht.getPlz());
-	// kundenSucheErgebnisBean.setOrt(personenAkteUebersicht.getOrt());
-	// if (personenAkteUebersicht.getStatus() != null) {
-	// kundenSucheErgebnisBean.setStatus(personenAkteUebersicht.getStatus().
-	// getValue());
-	// }
-	// if (personenAkteUebersicht.getVbNummer() != null) {
-	//kundenSucheErgebnisBean.setVbNummer(Integer.toString(personenAkteUebersicht
-	// .getVbNummer().intValue()));
-	// }
-	// // kundenSucheErgebnisBean.setMehrfachBetreuung(
-	// // personenAkteUebersicht.getMehrfachBetreuung());
-	// // kundenSucheErgebnisBean.setKommissarisch(false);
-	// kundenSucheErgebnisBean.setRufNummer(personenAkteUebersicht.
-	// getTelefonNummer());
-	// kundenSucheErgebnisBean.setVorName(personenAkteUebersicht.getVorname());
-	// // kundenSucheErgebnisBean.setAnrede(personenAkteUebersicht.
-	// // getAnrede());
-	// if (personenAkteUebersicht.getGeburtsdatum() != null) {
-	// kundenSucheErgebnisBean.setGeburtsdatum(personenAkteUebersicht.
-	// getGeburtsdatum().toString());
-	// }
-	// // kundenSucheErgebnisBean.setMandant(personenAkteUebersicht.
-	// // getMandant());
-	// //kundenSucheErgebnisBean.setUebersicht(personenAkteUebersicht);
-	// ergebnisListe.add(kundenSucheErgebnisBean);
-	// }
-	// Collections.sort(ergebnisListe);
-	// } else {
-	// if (ergebnis.getFehler())
-	// JOptionPane.showMessageDialog(null, "Fehler bei Suche", "Achtung Fehler",
-	// JOptionPane.ERROR_MESSAGE);
-	// else
-	// JOptionPane.showMessageDialog(null, "Suche ergab keine Treffer",
-	// "Achtung", JOptionPane.WARNING_MESSAGE);
-	// }
-	// }
-
 	public CustomerSearchBean getSuchPerson() {
 		return customerSearchBean;
 	}
-
-	// public void bind(IPerson)
 
 	/*
 	 * (non-Javadoc)
@@ -184,64 +121,4 @@ public class KundenSucheController extends SubModuleController {
 			kunden.setColumnSortable(i, true);
 		}
 	}
-
-	// class SuchBean {
-	//
-	// private String suchName;
-	// private String suchVorname;
-	// private String suchPlz;
-	// private String suchOrt;
-	// private String suchStrasse;
-	// private String suchTreffer;
-	//
-	// public String getSuchName() {
-	// return suchName;
-	// }
-	//
-	// public void setSuchName(String suchName) {
-	// this.suchName = suchName;
-	// }
-	//
-	// public String getSuchVorname() {
-	// return suchVorname;
-	// }
-	//
-	// public void setSuchVorname(String suchVorname) {
-	// this.suchVorname = suchVorname;
-	// }
-	//
-	// public String getSuchPlz() {
-	// return suchPlz;
-	// }
-	//
-	// public void setSuchPlz(String suchPlz) {
-	// this.suchPlz = suchPlz;
-	// }
-	//
-	// public String getSuchOrt() {
-	// return suchOrt;
-	// }
-	//
-	// public void setSuchOrt(String suchOrt) {
-	// this.suchOrt = suchOrt;
-	// }
-	//
-	// public String getSuchTreffer() {
-	// return suchTreffer;
-	// }
-	//
-	// public void setSuchTreffer(String suchTreffer) {
-	// this.suchTreffer = suchTreffer;
-	// }
-	//
-	// public String getSuchStrasse() {
-	// return suchStrasse;
-	// }
-	//
-	// public void setSuchStrasse(String suchStrasse) {
-	// this.suchStrasse = suchStrasse;
-	// }
-	//
-	// }
-
 }
