@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.monitor.client;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
-import org.eclipse.riena.monitor.client.ICollectibleSender;
+import org.eclipse.riena.monitor.client.ISender;
 
 /**
  * Extension interface for the sender definition.
@@ -23,5 +23,5 @@ public interface ISenderExtension {
 	String getName();
 
 	@MapName("class")
-	ICollectibleSender createSender();
+	ISender createSender();
 }

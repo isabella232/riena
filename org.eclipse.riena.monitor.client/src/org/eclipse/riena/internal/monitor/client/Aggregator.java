@@ -16,8 +16,8 @@ import java.util.List;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.monitor.client.IAggregator;
-import org.eclipse.riena.monitor.client.ICollectibleSender;
-import org.eclipse.riena.monitor.client.ICollectibleStore;
+import org.eclipse.riena.monitor.client.ISender;
+import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.common.Collectible;
 
@@ -27,8 +27,8 @@ import org.eclipse.riena.monitor.common.Collectible;
  */
 public class Aggregator implements IAggregator {
 
-	private ICollectibleStore store;
-	private ICollectibleSender collectibleSender;
+	private IStore store;
+	private ISender sender;
 	private ICollector[] collectors;
 	private boolean started;
 
@@ -47,7 +47,7 @@ public class Aggregator implements IAggregator {
 			Inject
 					.extension("org.eclipse.riena.monitor.collector").useType(ICollectorExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 			Inject
-					.extension("org.eclipse.riena.monitor.store").expectingMinMax(0, 1).useType(ICollectibleStoreExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+					.extension("org.eclipse.riena.monitor.store").expectingMinMax(0, 1).useType(IStoreExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 			Inject
 					.extension("org.eclipse.riena.monitor.sender").expectingMinMax(0, 1).useType(ISenderExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 		}
@@ -58,10 +58,10 @@ public class Aggregator implements IAggregator {
 			return;
 		}
 		for (ICollector collector : Iter.able(collectors)) {
-			collectibleSender.addCategory(collector.getCategory());
+			sender.addCategory(collector.getCategory());
 			collector.start();
 		}
-		collectibleSender.start();
+		sender.start();
 		started = true;
 	}
 
@@ -71,9 +71,9 @@ public class Aggregator implements IAggregator {
 		}
 		for (ICollector collector : Iter.able(collectors)) {
 			collector.stop();
-			collectibleSender.removeCategory(collector.getCategory());
+			sender.removeCategory(collector.getCategory());
 		}
-		collectibleSender.stop();
+		sender.stop();
 		store.flush();
 		started = false;
 	}
@@ -94,26 +94,26 @@ public class Aggregator implements IAggregator {
 	}
 
 	public void update(ISenderExtension senderExtension) {
-		if (collectibleSender != null) {
-			collectibleSender.stop();
+		if (sender != null) {
+			sender.stop();
 		}
 		if (senderExtension == null) {
-			collectibleSender = new DefaultCollectibleSender();
+			sender = new DefaultSender();
 		} else {
-			collectibleSender = senderExtension.createSender();
+			sender = senderExtension.createSender();
 		}
-		collectibleSender.configureStore(store);
+		sender.configureStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
 
-	public void update(ICollectibleStoreExtension storeExtension) {
+	public void update(IStoreExtension storeExtension) {
 		if (store != null) {
 			store.flush();
 		}
 		if (storeExtension == null) {
-			store = new DefaultCollectibleStore();
+			store = new DefaultStore();
 		} else {
-			store = storeExtension.createCollectibleStore();
+			store = storeExtension.createStore();
 		}
 	}
 
@@ -137,7 +137,7 @@ public class Aggregator implements IAggregator {
 	 */
 	public void triggerTransfer(String category) {
 		store.prepareTransferables(category);
-		collectibleSender.triggerTransfer(category);
+		sender.triggerTransfer(category);
 	}
 
 }
