@@ -165,34 +165,34 @@ public class KundenSucheView extends SubModuleView<KundenSucheController> {
 		addUIControl(ergebnis, "ergebnis");
 
 		final TableColumn newColumnTableColumn = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn.setWidth(94);
+		newColumnTableColumn.setWidth(83);
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_1.setWidth(82);
+		newColumnTableColumn_1.setWidth(65);
 
 		final TableColumn newColumnTableColumn_2 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_2.setWidth(73);
+		newColumnTableColumn_2.setWidth(71);
 
 		final TableColumn newColumnTableColumn_3 = new TableColumn(ergebnis, SWT.NONE);
 		newColumnTableColumn_3.setWidth(75);
 
 		final TableColumn newColumnTableColumn_4 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_4.setWidth(51);
+		newColumnTableColumn_4.setWidth(93);
 
 		final TableColumn newColumnTableColumn_5 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_5.setWidth(59);
+		newColumnTableColumn_5.setWidth(51);
 
 		final TableColumn newColumnTableColumn_6 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_6.setWidth(55);
+		newColumnTableColumn_6.setWidth(74);
 
 		final TableColumn newColumnTableColumn_7 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_7.setWidth(49);
+		newColumnTableColumn_7.setWidth(70);
 
 		final TableColumn newColumnTableColumn_8 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_8.setWidth(74);
+		newColumnTableColumn_8.setWidth(58);
 
 		final TableColumn newColumnTableColumn_9 = new TableColumn(ergebnis, SWT.NONE);
-		newColumnTableColumn_9.setWidth(100);
+		newColumnTableColumn_9.setWidth(64);
 
 		final Button openCustomerButton = new Button(container, SWT.NONE);
 		openCustomerButton.setText("Open Customer");

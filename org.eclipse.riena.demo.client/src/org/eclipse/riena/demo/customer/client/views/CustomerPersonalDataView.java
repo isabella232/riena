@@ -99,7 +99,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label anredeLabel = new Label(container, SWT.NONE);
 		anredeLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		anredeLabel.setText("Anrede");
+		anredeLabel.setText("Salutation");
 		anredeLabel.setBounds(95, 64, 42, 15);
 
 		final Label nameLabel = new Label(container, SWT.NONE);
@@ -198,7 +198,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label label_13 = new Label(container, SWT.NONE);
 		label_13.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_13.setText("Persönliche Anrede");
+		label_13.setText("Persönliche Salutation");
 		label_13.setBounds(331, 270, 91, 13);
 
 		final Button sieButton = new Button(container, SWT.RADIO);

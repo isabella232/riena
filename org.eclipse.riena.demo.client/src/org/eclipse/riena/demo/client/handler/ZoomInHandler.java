@@ -8,17 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.model;
+package org.eclipse.riena.demo.client.handler;
 
 /**
- *
  * 
- *
  */
-public interface IPersonenSucheChangeHandler {
+public class ZoomInHandler extends DummyHandler {
+
 	/**
-	 *
-	 *
+	 * @see org.eclipse.riena.demo.client.handler.DummyHandler#getTitle()
 	 */
-	void personenSucheChanged();
+	@Override
+	protected String getTitle() {
+		return "Zoom In"; //$NON-NLS-1$
+	}
+
 }

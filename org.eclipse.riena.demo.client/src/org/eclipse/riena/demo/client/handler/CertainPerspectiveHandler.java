@@ -8,30 +8,27 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.model;
+package org.eclipse.riena.demo.client.handler;
 
 /**
- * Konstanten für Messagetypen
  * 
  */
-public enum MessageType {
-	/**
-	 * Frage
-	 */
-	QUESTION,
+public class CertainPerspectiveHandler extends DummyHandler {
 
 	/**
-	 * Information
+	 * @see org.eclipse.riena.demo.client.handler.DummyHandler#getTitle()
 	 */
-	INFO,
+	@Override
+	protected String getTitle() {
+		return "Certain view"; //$NON-NLS-1$
+	}
 
 	/**
-	 * Warnung
+	 * @see org.eclipse.riena.demo.client.handler.DummyHandler#getMessage()
 	 */
-	WARNING,
+	@Override
+	protected String getMessage() {
+		return "This command is only enabled for a certain perspective (Playground)!\n"; //$NON-NLS-1$
+	}
 
-	/**
-	 * Fehler
-	 */
-	ERROR
 }
