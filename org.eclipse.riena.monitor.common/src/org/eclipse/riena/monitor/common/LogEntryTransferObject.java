@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Date;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.eclipse.riena.core.util.IOUtils;
 
@@ -23,34 +24,42 @@ import org.eclipse.riena.core.util.IOUtils;
  */
 public class LogEntryTransferObject implements Serializable {
 
-	private String bundleName;
-	private String context;
-	private String exception;
-	private int level;
-	private String loggerName;
-	private String message;
-	private String threadName;
-	private long time;
+	private final String bundleName;
+	private final String context;
+	private final String exception;
+	private final int level;
+	private final String loggerName;
+	private final String message;
+	private final String threadName;
+	private final long time;
 
 	private static final long serialVersionUID = 189322808250966598L;
 
-	public LogEntryTransferObject() {
+	@SuppressWarnings("unused")
+	private LogEntryTransferObject() {
 		// just4Hessian
+		this.bundleName = null;
+		this.context = null;
+		this.exception = null;
+		this.level = 0;
+		this.loggerName = null;
+		this.message = null;
+		this.threadName = null;
+		this.time = 0;
 	}
 
 	public LogEntryTransferObject(ExtendedLogEntry logEntry) {
-		if (logEntry.getBundle() != null) {
-			this.bundleName = logEntry.getBundle().getSymbolicName();
-		}
-		if (logEntry.getContext() != null) {
-			this.context = logEntry.getContext().toString();
-		}
+		Assert.isNotNull(logEntry, "logEntry must not be null"); //$NON-NLS-1$
+		this.bundleName = logEntry.getBundle() != null ? logEntry.getBundle().getSymbolicName() : null;
+		this.context = logEntry.getContext() != null ? logEntry.getContext().toString() : null;
 		if (logEntry.getException() != null) {
 			StringWriter string = new StringWriter();
 			PrintWriter writer = new PrintWriter(string);
 			logEntry.getException().printStackTrace(writer);
 			IOUtils.close(writer);
 			this.exception = string.toString();
+		} else {
+			this.exception = null;
 		}
 		this.level = logEntry.getLevel();
 		this.loggerName = logEntry.getLoggerName();

@@ -13,6 +13,9 @@ package org.eclipse.riena.monitor.common;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.core.util.StringUtils;
+
 /**
  * A {@code Collectible} is the generic transportation element.
  */
@@ -26,6 +29,17 @@ public class Collectible<T extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1218813380792765109L;
 
 	/**
+	 * This constructor is necessary for Hessian's (Riena remote services)
+	 * serialization.
+	 */
+	protected Collectible() {
+		this.category = null;
+		this.uuid = null;
+		this.collectionTime = 0;
+		this.payload = null;
+	}
+
+	/**
 	 * Create a {@code Collectible} for a given category.
 	 * 
 	 * @param category
@@ -34,6 +48,8 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 *            the payload of this collectible
 	 */
 	public Collectible(final String category, final T payload) {
+		Assert.isTrue(StringUtils.isGiven(category), "category must not be empty"); //$NON-NLS-1$
+		Assert.isNotNull(payload, "payload must not be null"); //$NON-NLS-1$
 		this.category = category;
 		this.uuid = UUID.randomUUID();
 		this.collectionTime = System.currentTimeMillis();
