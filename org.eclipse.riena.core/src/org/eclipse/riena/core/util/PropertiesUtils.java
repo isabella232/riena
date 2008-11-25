@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.eclipse.core.runtime.Assert;
+
 /**
  * PropertiesUtils class
  * 
@@ -34,12 +42,47 @@ public final class PropertiesUtils {
 	public static String accessProperty(Object propValue, String returnIfNoString) {
 		if (propValue instanceof String) { // if api programmed we receive
 			return (String) propValue; // a String
-		} else {
-			if (propValue instanceof String[]) { // for DS we receive a
-				return ((String[]) propValue)[0]; // String array
-			}
+		} else if (propValue instanceof String[]) { // for DS we receive a
+			return ((String[]) propValue)[0]; // String array
 		}
+
 		return returnIfNoString;
+	}
+
+	/**
+	 * Transform the string representation of a map into a map and optionally
+	 * check the existence of the specified expected keys.
+	 * 
+	 * <pre>
+	 * The format of the string is: 
+	 * [ &lt;key&gt; &quot;=&quot; &lt;value&gt; ] { [ &quot;,&quot; &lt;key&gt; &quot;=&quot; &lt;value&gt; ] }
+	 * </pre>
+	 * 
+	 * @param stringified
+	 * @param expectedKeys
+	 * @return
+	 */
+	public static Map<String, String> asMap(String stringified, String... expectedKeys) {
+		if (StringUtils.isEmpty(stringified)) {
+			Assert.isLegal(expectedKeys.length == 0,
+					"Excpeted keys " + Arrays.toString(expectedKeys) + " not found in empty string."); //$NON-NLS-1$ //$NON-NLS-2$
+			return Collections.emptyMap();
+		}
+		Map<String, String> result = new HashMap<String, String>();
+		StringTokenizer parts = new StringTokenizer(stringified, ","); //$NON-NLS-1$
+		while (parts.hasMoreTokens()) {
+			String part = parts.nextToken();
+			int equal = part.indexOf('=');
+			Assert.isLegal(equal > 0, "Error within definition. Expecting a string of the form: " //$NON-NLS-1$
+					+ " [ <key> \"=\" <value> ] { [ \",\" <key> \"=\" <value> ] }"); //$NON-NLS-1$
+			result.put(part.substring(0, equal).trim(), part.substring(equal + 1).trim());
+		}
+
+		for (String expectedKey : expectedKeys) {
+			Assert.isLegal(result.containsKey(expectedKey), "Map " + stringified + "does not contain expected key " //$NON-NLS-1$ //$NON-NLS-2$
+					+ expectedKey + "."); //$NON-NLS-1$
+		}
+		return Collections.unmodifiableMap(result);
 	}
 
 }
