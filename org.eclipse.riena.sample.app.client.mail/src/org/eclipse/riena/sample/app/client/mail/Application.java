@@ -19,8 +19,7 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 import org.osgi.framework.Bundle;
 
 /**
@@ -32,20 +31,18 @@ public class Application extends SwtApplication {
 
 	@Override
 	protected IApplicationNode createModel() {
-		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		ApplicationNode app = new ApplicationNode("Riena Mail"); //$NON-NLS-1$
 
 		ISubApplicationNode subApp = new SubApplicationNode("Your Mail"); //$NON-NLS-1$
 		app.addChild(subApp);
-		presentation.present(subApp, "rcp.mail.perspective"); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(subApp, "rcp.mail.perspective"); //$NON-NLS-1$
 
 		IModuleGroupNode groupMailboxes = new ModuleGroupNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		subApp.addChild(groupMailboxes);
 
 		IModuleNode moduleAccount1 = NodeFactory.createModule("me@this.com", groupMailboxes); //$NON-NLS-1$
 		moduleAccount1.setCloseable(false);
-		presentation.registerView(View.ID, false);
 		NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
 		NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
 		NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$

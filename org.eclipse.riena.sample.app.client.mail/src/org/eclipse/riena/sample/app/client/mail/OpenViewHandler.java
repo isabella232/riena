@@ -18,7 +18,6 @@ import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 
 /**
  * Creates a new module group with an associated message view.
@@ -32,7 +31,6 @@ public class OpenViewHandler extends AbstractHandler implements IHandler {
 		IModuleGroupNode group = (IModuleGroupNode) node.findNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
 		String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		IModuleNode moduleAccount1 = NodeFactory.createModule(title, group);
-		SwtViewProviderAccessor.getViewProvider().registerView(View.ID, false);
 		NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
 		NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
 		NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$

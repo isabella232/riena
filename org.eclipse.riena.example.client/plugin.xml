@@ -417,14 +417,14 @@
    <extension
          point="org.eclipse.riena.navigation.assemblies">
       <assembly
-            typeId="org.eclipse.riena.example.navigation"
+            typeId="org.eclipse.riena.example.navigation.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
             parentTypeId="application">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.navigate"
+            typeId="org.eclipse.riena.example.navigate.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
-            parentTypeId="org.eclipse.riena.example.navigation">
+            parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
       <assembly
             typeId="org.eclipse.riena.example.sharedViews"
@@ -524,7 +524,7 @@
       <assembly
             typeId="org.eclipse.riena.example.navigate.comboAndList"
             assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
-            parentTypeId="org.eclipse.riena.example.navigation">
+            parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
       <assembly
             typeId="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"

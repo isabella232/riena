@@ -19,10 +19,9 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 import org.osgi.framework.Bundle;
 
 /**
@@ -68,21 +67,23 @@ public class SwtExampleApplication extends SwtApplication {
 
 		ISubApplicationNode subApplication = null;
 
-		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
+		//		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Riena Navigation Example"); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationNode.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 
 		// Navigation SubApplication
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
+		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigation.subapplication")); //$NON-NLS-1$
 
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigate.form")); //$NON-NLS-1$
 
 		// Playground SubApplication
 		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_SAMPLE));
-		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
+		//		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.2", false); //$NON-NLS-1$
+
 		applicationNode.addChild(subApplication);
 
 		// shared view demo

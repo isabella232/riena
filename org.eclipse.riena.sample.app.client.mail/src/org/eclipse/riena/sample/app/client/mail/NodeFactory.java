@@ -15,7 +15,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * Factory to help create {@link IModuleNode}s and {@link ISubModuleNode}s.
@@ -35,7 +35,7 @@ public final class NodeFactory {
 	public static ISubModuleNode createSubMobule(String caption, IModuleNode parent, String viewId) {
 		ISubModuleNode result = new SubModuleNode(caption);
 		parent.addChild(result);
-		SwtViewProviderAccessor.getViewProvider().present(result, viewId);
+		WorkareaManager.getInstance().registerDefinition(result, viewId);
 		return result;
 	}
 }

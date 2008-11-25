@@ -19,10 +19,9 @@ import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -34,24 +33,9 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class ComboAndListNodeBuilder implements INavigationAssembler {
+public class ComboAndListNodeBuilder extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
-	private INavigationAssemblyExtension assembly;
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
-	 */
-	public INavigationAssemblyExtension getAssembly() {
-		return assembly;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
-	 */
-	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
-		assembly = nodeDefinition;
-	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,

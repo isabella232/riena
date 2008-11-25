@@ -370,7 +370,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		 */
 		private void showView(String id, String secondary) {
 			try {
-				getActivePage().showView(id, secondary, 1);
+				getActivePage().showView(id, secondary, IWorkbenchPage.VIEW_ACTIVATE);
 			} catch (PartInitException e) {
 				e.printStackTrace();
 			}
