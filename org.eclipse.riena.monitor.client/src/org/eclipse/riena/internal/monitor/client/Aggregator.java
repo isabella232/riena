@@ -30,6 +30,7 @@ public class Aggregator implements IAggregator {
 	private ICollectibleStore store;
 	private ICollectibleSender collectibleSender;
 	private ICollector[] collectors;
+	private boolean started;
 
 	public Aggregator() {
 		this(true);
@@ -52,21 +53,29 @@ public class Aggregator implements IAggregator {
 		}
 	}
 
-	public void start() {
+	public synchronized void start() {
+		if (started) {
+			return;
+		}
 		for (ICollector collector : Iter.able(collectors)) {
 			collectibleSender.addCategory(collector.getCategory());
 			collector.start();
 		}
 		collectibleSender.start();
+		started = true;
 	}
 
-	public void stop() {
+	public synchronized void stop() {
+		if (!started) {
+			return;
+		}
 		for (ICollector collector : Iter.able(collectors)) {
 			collector.stop();
 			collectibleSender.removeCategory(collector.getCategory());
 		}
 		collectibleSender.stop();
 		store.flush();
+		started = false;
 	}
 
 	public void update(ICollectorExtension[] collectorExtensions) {
