@@ -12,17 +12,17 @@ package org.eclipse.riena.internal.monitor.client;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
-import org.eclipse.riena.monitor.client.ICollectibleStore;
+import org.eclipse.riena.monitor.client.IStore;
 
 /**
  * Extension interface for store definitions
  */
 @ExtensionInterface
-public interface ICollectibleStoreExtension {
+public interface IStoreExtension {
 
 	String getName();
 
 	@MapName("class")
-	ICollectibleStore createCollectibleStore();
+	IStore createStore();
 
 }
