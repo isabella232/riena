@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.example.client;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.monitor.common.ICollectibleReceiver;
+import org.eclipse.riena.monitor.common.IReceiver;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -35,7 +35,7 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		collectibleReceiverReg = new RemoteServiceFactory().createAndRegisterProxy(ICollectibleReceiver.class,
+		collectibleReceiverReg = new RemoteServiceFactory().createAndRegisterProxy(IReceiver.class,
 				"http://localhost:8080/hessian/CollectibleReceiverWS", "hessian");
 	}
 
