@@ -10,15 +10,23 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.eclipse.riena.ui.filter.impl.RulesProvider;
+
 /**
- *
+ * Tests all test cases within package:
+ * 
+ * org.eclipse.riena.ui.filter.*
  */
-public interface IFilterNodeIds {
+public class AllTests extends TestCase {
 
-	/**
-	 * Returns the id
-	 */
-
-	public String getId();
+	public static Test suite() {
+		TestSuite suite = new TestSuite(AllTests.class.getName());
+		suite.addTestSuite(RulesProvider.class);
+		return suite;
+	}
 
 }

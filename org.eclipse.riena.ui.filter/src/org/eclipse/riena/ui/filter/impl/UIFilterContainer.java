@@ -13,9 +13,9 @@ package org.eclipse.riena.ui.filter.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.riena.ui.filter.IFilterNodeIds;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
+import org.eclipse.riena.ui.filter.extension.IFilterNodeId;
 
 /**
  *
@@ -25,9 +25,9 @@ public class UIFilterContainer implements IUIFilterContainer {
 	Collection<String> nodeIds;
 	IUIFilter filter;
 
-	public UIFilterContainer(IUIFilter filter, IFilterNodeIds[] ids) {
+	public UIFilterContainer(IUIFilter filter, IFilterNodeId[] ids) {
 
-		nodeIds = new ArrayList();
+		nodeIds = new ArrayList<String>();
 		for (int i = 0; i < ids.length; i++) {
 			nodeIds.add((ids[i].getId()));
 		}
@@ -35,21 +35,10 @@ public class UIFilterContainer implements IUIFilterContainer {
 		this.filter = filter;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.filter.IUIFilterContainer#getFilter()
-	 */
 	public IUIFilter getFilter() {
 		return filter;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.filter.IUIFilterContainer#getFilterTargetNodeId()
-	 */
 	public Collection<String> getFilterTargetNodeIds() {
 		return nodeIds;
 	}

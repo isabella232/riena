@@ -8,30 +8,17 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.extension;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 
 /**
- * Interface for a UIFiltere extension that defines how to create a filter with
- * a list of ruels.
+ * The mapped rule class to mark a ridget.
  */
 @ExtensionInterface
-public interface IUIFilterExtension {
+public interface IRuleMarkerRidgetMapper extends IRuleMapper {
 
-	/**
-	 * Returns the filterID
-	 */
-	String getFilterId();
-
-	/**
-	 * Returns the list of rules
-	 */
-	IMarkerRule[] getMarkerRules();
-
-	/**
-	 * Returns the nodeIds
-	 */
-	IFilterNodeIds[] getNodeIds();
+	public IUIFilterRuleMarkerRidget getRuleClass();
 
 }

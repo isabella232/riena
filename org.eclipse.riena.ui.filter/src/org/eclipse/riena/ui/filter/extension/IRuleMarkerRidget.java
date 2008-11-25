@@ -8,16 +8,28 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.extension;
+
+import org.eclipse.riena.core.extension.ExtensionInterface;
 
 /**
- *
+ * The rule to mark a ridget.
  */
-public interface IUIFilterRuleMarkerNavigation extends IUIFilterRuleMarker {
+@ExtensionInterface
+public interface IRuleMarkerRidget {
 
 	/**
-	 * Sets the ID of the navigation node
+	 * Returns the ID of a ridget.
+	 * 
+	 * @return ID
 	 */
-	void setNode(String nodeId);
+	String getRidgetId();
+
+	/**
+	 * Returns the type of a marker (e.g. hidden).
+	 * 
+	 * @return a string that represent the type of a marker
+	 */
+	String getMarker();
 
 }

@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.filter" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.riena.ui.filter" id="org.eclipse.riena.filter.uiFilter" name="uiFilter"/>
+         <meta.schema plugin="org.eclipse.riena.ui.filter" id="org.eclipse.riena.filter.ruleMapper" name="ruleMapper"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,8 +17,8 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="filter"/>
+         <sequence>
+            <element ref="mapper"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,125 +47,103 @@
       </complexType>
    </element>
 
-   <element name="filter">
+   <element name="mapper">
       <complexType>
          <sequence>
-            <element ref="nodeId" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="ruleMarkerRidget" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="ruleMarkerNavigation" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="ruleValidatorRidget" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="ridgetHiddenMarker" minOccurs="0" maxOccurs="1"/>
+            <element ref="ridgetDisabledMarker" minOccurs="0" maxOccurs="1"/>
+            <element ref="ridgetOutputMarker" minOccurs="0" maxOccurs="1"/>
+            <element ref="ridgetMandatoryMarker" minOccurs="0" maxOccurs="1"/>
+            <element ref="navigationHiddenMarker" minOccurs="0" maxOccurs="1"/>
+            <element ref="navigationDisabledMarker" minOccurs="0" maxOccurs="1"/>
          </sequence>
-         <attribute name="filterId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
       </complexType>
    </element>
 
-   <element name="nodeId">
+   <element name="ridgetHiddenMarker">
       <complexType>
-         <attribute name="id" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="ruleMarkerRidget">
-      <complexType>
-         <attribute name="ridgetId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="marker" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-            <simpleType>
-               <restriction base="string">
-                  <enumeration value="hidden">
-                  </enumeration>
-                  <enumeration value="disabled">
-                  </enumeration>
-                  <enumeration value="output">
-                  </enumeration>
-                  <enumeration value="mandatory">
-                  </enumeration>
-               </restriction>
-            </simpleType>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="ruleMarkerNavigation">
-      <complexType>
-         <attribute name="nodeId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="marker" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-            <simpleType>
-               <restriction base="string">
-                  <enumeration value="hidden">
-                  </enumeration>
-                  <enumeration value="disabled">
-                  </enumeration>
-               </restriction>
-            </simpleType>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="ruleValidatorRidget">
-      <complexType>
-         <attribute name="ridgetId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="validationTime" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-            <simpleType>
-               <restriction base="string">
-                  <enumeration value="onUIControlEdit">
-                  </enumeration>
-                  <enumeration value="onUpdateToModel">
-                  </enumeration>
-               </restriction>
-            </simpleType>
-         </attribute>
-         <attribute name="validator" type="string" use="required">
+         <attribute name="ruleClass" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.core.databinding.validation.IValidator"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ridgetDisabledMarker">
+      <complexType>
+         <attribute name="ruleClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ridgetOutputMarker">
+      <complexType>
+         <attribute name="ruleClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ridgetMandatoryMarker">
+      <complexType>
+         <attribute name="ruleClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="navigationHiddenMarker">
+      <complexType>
+         <attribute name="ruleClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="navigationDisabledMarker">
+      <complexType>
+         <attribute name="ruleClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation"/>
                </appinfo>
             </annotation>
          </attribute>

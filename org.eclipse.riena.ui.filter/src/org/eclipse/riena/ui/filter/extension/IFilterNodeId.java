@@ -8,16 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.extension;
+
+import org.eclipse.riena.core.extension.ExtensionInterface;
 
 /**
- *
+ * The ID of the navigation node to that the filter will be added.
  */
-public interface IUIFilterRuleMarkerNavigation extends IUIFilterRuleMarker {
+@ExtensionInterface
+public interface IFilterNodeId {
 
 	/**
-	 * Sets the ID of the navigation node
+	 * Returns the id
 	 */
-	void setNode(String nodeId);
+	String getId();
 
 }

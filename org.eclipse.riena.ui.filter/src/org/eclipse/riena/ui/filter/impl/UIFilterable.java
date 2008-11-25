@@ -51,10 +51,11 @@ public class UIFilterable implements IUIFilterable {
 	}
 
 	public void removeFilter(String filterID) {
-		for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
-			IUIFilter type = (IUIFilter) iterator.next();
-			if (type.getFilterID() != null && type.getFilterID().equals(filterID)) {
-				filters.remove(type);
+
+		for (Iterator<IUIFilter> iterator = filters.iterator(); iterator.hasNext();) {
+			IUIFilter filter = iterator.next();
+			if ((filter.getFilterID() != null) && (filter.getFilterID().equals(filterID))) {
+				filters.remove(filter);
 				break;
 			}
 

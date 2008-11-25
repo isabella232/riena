@@ -8,16 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter;
+package org.eclipse.riena.ui.filter.extension;
+
+import org.eclipse.riena.ui.filter.IUIFilterRule;
 
 /**
- *
+ * The mapped rule class.
  */
-public interface IUIFilterRuleMarkerNavigation extends IUIFilterRuleMarker {
+public interface IRuleMapper {
 
 	/**
-	 * Sets the ID of the navigation node
+	 * Creates and returns (a new) rule class.
 	 */
-	void setNode(String nodeId);
+	IUIFilterRule getRuleClass();
 
 }
