@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -18,6 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.client.Range.ParseException;
 import org.eclipse.riena.monitor.common.Collectible;
@@ -38,6 +41,9 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 	private String category;
 	private Range collectRange;
 	private Range triggerRange;
+
+	private static final String TRIGGER_RANGE = "triggerRange"; //$NON-NLS-1$
+	private static final String COLLECT_RANGE = "collectRange"; //$NON-NLS-1$
 
 	/**
 	 * Default/Standard constructor
@@ -72,19 +78,19 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 		if (!(data instanceof String)) {
 			throw configurationException("Bad configuration data type. Expecting a String.", null); //$NON-NLS-1$
 		}
-		String[] ranges = ((String) data).split(","); //$NON-NLS-1$
-		if (ranges.length != 2) {
-			throw configurationException(
-					"Bad configuration. Expecting two string parts, i.e. collect range and trigger range separated by a comma ','.", //$NON-NLS-1$
-					null);
+		Map<String, String> properties = null;
+		try {
+			properties = PropertiesUtils.asMap((String) data, COLLECT_RANGE, TRIGGER_RANGE);
+		} catch (IllegalArgumentException e) {
+			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 		try {
-			collectRange = new Range(ranges[0]);
+			collectRange = new Range(properties.get(COLLECT_RANGE));
 		} catch (ParseException e) {
 			throw configurationException("Bad configuration. Parsing collect range fails.", e); //$NON-NLS-1$
 		}
 		try {
-			triggerRange = new Range(ranges[1]);
+			triggerRange = new Range(properties.get(TRIGGER_RANGE));
 		} catch (ParseException e) {
 			throw configurationException("Bad configuration. Parsing trigger range fails.", e); //$NON-NLS-1$
 		}
@@ -174,7 +180,7 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 		}
 	}
 
-	private CoreException configurationException(String message, ParseException e) {
+	private CoreException configurationException(String message, Exception e) {
 		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 
