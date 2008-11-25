@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
+import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.monitor.client.IAggregator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -23,6 +25,7 @@ public class Activator extends RienaPlugin {
 	public static final String PLUGIN_ID = "org.eclipse.riena.monitor.client"; //$NON-NLS-1$
 
 	private IAggregator aggregator;
+	private ServiceRegistration aggregatorRegistration;
 
 	// The shared instance
 	private static Activator plugin;
@@ -44,6 +47,8 @@ public class Activator extends RienaPlugin {
 		plugin = this;
 		aggregator = new Aggregator();
 		aggregator.start();
+		aggregatorRegistration = getContext().registerService(IAggregator.class.getName(), aggregator,
+				RienaConstants.newDefaultServiceProperties());
 	}
 
 	/*
@@ -55,6 +60,7 @@ public class Activator extends RienaPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		aggregator.stop();
+		getContext().ungetService(aggregatorRegistration.getReference());
 		super.stop(context);
 	}
 
