@@ -10,15 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.publisher.hessian;
 
+import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -54,6 +58,13 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	 * RemoteServiceDescription rsd )
 	 */
 	public synchronized String publishService(RemoteServiceDescription rsd) {
+		if (!testInterface(rsd.getServiceInterfaceClass())) {
+			String error = "cannot publish " //$NON-NLS-1$
+					+ rsd + " because its interface contains multiple methods with the same name." //$NON-NLS-1$
+					+ "That is not allowed for remote services (even if they have a different signature)."; //$NON-NLS-1$
+			throw new RuntimeException(error);
+		}
+
 		String localhost = "localhost"; //$NON-NLS-1$
 		try {
 			localhost = Inet4Address.getLocalHost().getHostAddress();
@@ -65,6 +76,18 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 		LOGGER.log(LogService.LOG_DEBUG, "published web service. " + rsd); //$NON-NLS-1$
 		LOGGER.log(LogService.LOG_DEBUG, "web service count: " + webServiceDescriptions.size()); //$NON-NLS-1$
 		return url;
+	}
+
+	private boolean testInterface(Class<?> interfaceClazz) {
+		Set<String> methods = new HashSet<String>();
+		Method[] declaredMethods = interfaceClazz.getDeclaredMethods();
+		for (Method method : declaredMethods) {
+			if (methods.contains(method.getName())) {
+				return false;
+			}
+			methods.add(method.getName());
+		}
+		return true;
 	}
 
 	/*

@@ -16,12 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 import org.eclipse.riena.internal.communication.publisher.ServiceHooksProxy;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
@@ -163,7 +164,13 @@ public class ServicePublishBinder implements IServicePublishBinder {
 				unpublishedServices.add(rsd);
 				return;
 			}
-			String url = servicePublisher.publishService(rsd);
+			String url = null;
+			try {
+				url = servicePublisher.publishService(rsd);
+			} catch (RuntimeException e) {
+				LOGGER.log(LogService.LOG_ERROR, e.getMessage());
+				return;
+			}
 			// set full URL under which the service is available
 			rsd.setURL(url);
 			handler.setMessageContextAccessor(servicePublisher.getMessageContextAccessor());
