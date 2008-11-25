@@ -25,6 +25,7 @@ public class AllTests extends TestCase {
 		// suite.addTestSuite(ContainerModelTest.class);
 		suite.addTestSuite(IterTest.class);
 		suite.addTestSuite(ListenerListTest.class);
+		suite.addTestSuite(PropertiesUtilsTest.class);
 		suite.addTestSuite(ReflectionUtilsTest.class);
 		suite.addTestSuite(StringUtilsTest.class);
 		suite.addTestSuite(VariableManagerUtilTest.class);
