@@ -113,48 +113,24 @@ public class Range {
 	}
 
 	private class OpenOpen extends Interval {
-
-		public OpenOpen() {
-			super();
-			stack.push(this);
-		}
-
 		public boolean matches(final int value) {
 			return lower < value && value < upper;
 		}
 	}
 
 	private class CloseClose extends Interval {
-
-		public CloseClose() {
-			super();
-			stack.push(this);
-		}
-
 		public boolean matches(final int value) {
 			return lower <= value && value <= upper;
 		}
 	}
 
 	private class OpenClose extends Interval {
-
-		public OpenClose() {
-			super();
-			stack.push(this);
-		}
-
 		public boolean matches(final int value) {
 			return lower < value && value <= upper;
 		}
 	}
 
 	private class CloseOpen extends Interval {
-
-		public CloseOpen() {
-			super();
-			stack.push(this);
-		}
-
 		public boolean matches(final int value) {
 			return lower <= value && value < upper;
 		}
