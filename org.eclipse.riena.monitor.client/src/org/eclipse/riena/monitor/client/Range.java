@@ -37,8 +37,8 @@ public class Range {
 	private static final String CLOSE_CLOSE_TOKEN = "[]"; //$NON-NLS-1$
 	private static final String OPEN_OPEN_TOKEN = "()"; //$NON-NLS-1$
 
-	public Range(String range) throws ParseException {
-		StringTokenizer tokenizer = new StringTokenizer(range);
+	public Range(final String range) throws ParseException {
+		final StringTokenizer tokenizer = new StringTokenizer(range);
 		String token = null;
 		try {
 			while (tokenizer.hasMoreTokens()) {
@@ -60,7 +60,7 @@ public class Range {
 		}
 	}
 
-	public boolean matches(int value) {
+	public boolean matches(final int value) {
 		for (Match match : stack) {
 			if (match.matches(value)) {
 				return true;
@@ -72,11 +72,11 @@ public class Range {
 	/**
 	 * Parsing error exception
 	 */
-	public class ParseException extends Exception {
+	public static class ParseException extends Exception {
 
 		private static final long serialVersionUID = -7362170629769240938L;
 
-		public ParseException(String string, Throwable t) {
+		public ParseException(final String string, final Throwable t) {
 			super(string, t);
 		}
 
@@ -86,14 +86,14 @@ public class Range {
 		boolean matches(int value);
 	}
 
-	private class Value implements Match {
+	private static class Value implements Match {
 		private final int value;
 
-		public Value(String token) {
+		public Value(final String token) {
 			value = Integer.valueOf(token);
 		}
 
-		public boolean matches(int value) {
+		public boolean matches(final int value) {
 			return this.value == value;
 		}
 
@@ -119,7 +119,7 @@ public class Range {
 			stack.push(this);
 		}
 
-		public boolean matches(int value) {
+		public boolean matches(final int value) {
 			return lower < value && value < upper;
 		}
 	}
@@ -131,7 +131,7 @@ public class Range {
 			stack.push(this);
 		}
 
-		public boolean matches(int value) {
+		public boolean matches(final int value) {
 			return lower <= value && value <= upper;
 		}
 	}
@@ -143,7 +143,7 @@ public class Range {
 			stack.push(this);
 		}
 
-		public boolean matches(int value) {
+		public boolean matches(final int value) {
 			return lower < value && value <= upper;
 		}
 	}
@@ -155,7 +155,7 @@ public class Range {
 			stack.push(this);
 		}
 
-		public boolean matches(int value) {
+		public boolean matches(final int value) {
 			return lower <= value && value < upper;
 		}
 	}
