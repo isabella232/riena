@@ -12,17 +12,17 @@ package org.eclipse.riena.monitor.client;
 
 
 /**
- * The {@code ICollectibleSender} is responsible for retrieving collectibles
+ * The {@code ISender} is responsible for retrieving collectibles
  * from the store, transferring them to the receiver.
  */
-public interface ICollectibleSender {
+public interface ISender {
 
 	/**
 	 * Configure the store for the sender.
 	 * 
 	 * @param store
 	 */
-	void configureStore(ICollectibleStore store);
+	void configureStore(IStore store);
 
 	/**
 	 * Add a category this sender must handle.

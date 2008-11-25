@@ -18,26 +18,26 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.monitor.client.ICollectibleSender;
-import org.eclipse.riena.monitor.client.ICollectibleStore;
+import org.eclipse.riena.monitor.client.ISender;
+import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
-import org.eclipse.riena.monitor.common.ICollectibleReceiver;
+import org.eclipse.riena.monitor.common.IReceiver;
 
 /**
  *
  */
-public class DefaultCollectibleSender implements ICollectibleSender {
+public class DefaultSender implements ISender {
 
-	private ICollectibleStore store;
-	private ICollectibleReceiver receiver;
+	private IStore store;
+	private IReceiver receiver;
 	private final ScheduledExecutorService senderExecutor;
 	private boolean stopped;
 	private List<String> categories = new ArrayList<String>();
 
 	/**
-	 * Creates the {@code DefaultCollectibleSender}.
+	 * Creates the {@code DefaultSender}.
 	 */
-	public DefaultCollectibleSender() {
+	public DefaultSender() {
 		this(true);
 	}
 
@@ -47,14 +47,14 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 	 * @param autoConfig
 	 *            true perform configuration; otherwise do not configure
 	 */
-	public DefaultCollectibleSender(boolean autoConfig) {
+	public DefaultSender(boolean autoConfig) {
 		senderExecutor = Executors.newSingleThreadScheduledExecutor();
 		if (autoConfig) {
-			Inject.service(ICollectibleReceiver.class).useRanking().into(this).andStart(
+			Inject.service(IReceiver.class).useRanking().into(this).andStart(
 					Activator.getDefault().getContext());
 		} else {
 			// Test stuff
-			this.receiver = new ICollectibleReceiver() {
+			this.receiver = new IReceiver() {
 				public boolean take(long senderTime, List<Collectible<?>> collectibles) {
 					for (Collectible<?> collectible : collectibles) {
 						System.out.println("Got(" + senderTime + " ms): " + collectible);
@@ -65,22 +65,21 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 		}
 	}
 
-	public void bind(ICollectibleReceiver receiver) {
+	public void bind(IReceiver receiver) {
 		this.receiver = receiver;
 	}
 
-	public void unbind(ICollectibleReceiver receiver) {
+	public void unbind(IReceiver receiver) {
 		this.receiver = null;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleSender#configureStore(org
+	 * @see org.eclipse.riena.monitor.client.ISender#configureStore(org
 	 * .eclipse.riena.monitor.client.ICollectibleStore)
 	 */
-	public void configureStore(ICollectibleStore store) {
+	public void configureStore(IStore store) {
 		Assert.isNotNull(store, "store must not be null");
 		this.store = store;
 	}
@@ -88,8 +87,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleSender#addCategory(java.
+	 * @see org.eclipse.riena.monitor.client.ISender#addCategory(java.
 	 * lang.String )
 	 */
 	public void addCategory(String category) {
@@ -100,9 +98,8 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectibleSender#removeCategory(java
-	 * .lang. String)
+	 * @see org.eclipse.riena.monitor.client.ISender#removeCategory(java .lang.
+	 * String)
 	 */
 	public void removeCategory(String category) {
 		Assert.isNotNull(category, "category must not be null");
@@ -127,7 +124,7 @@ public class DefaultCollectibleSender implements ICollectibleSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.monitor.client.ICollectibleSender#stop()
+	 * @see org.eclipse.riena.monitor.client.ISender#stop()
 	 */
 	public void stop() {
 		stopped = true;
