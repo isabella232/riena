@@ -9,11 +9,11 @@
    <!--extension point="org.eclipse.riena.monitor.collector">
       <collector
             category="LogCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector:1 4 [],1 2">
+            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1 4 [], triggerRange=1 2">
       </collector>
       <collector
             category="CustomCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector:-2 0 [],-2">
+            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2 0 [], triggerRange=-2">
       </collector>
    </extension-->
 
