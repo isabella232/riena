@@ -548,6 +548,9 @@
          point="org.eclipse.riena.filter.uifilter">
       <filter
             filterId="rienaExample.offline">
+         <nodeId
+               id="application">
+         </nodeId>
          
          <markerRules
                ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker"
@@ -568,9 +571,31 @@
                targetId="org.eclipse.riena.example.navigation">
          </markerRules>
          
-         <nodeIds
-               id="application">
-         </nodeIds>
+         <ruleValidatorRidget
+               ridgetId="org.eclipse.riena.example.client.ruleValidatorRidget1"
+               validationTime="onUIControlEdit"
+               validator="org.eclipse.riena.ui.ridgets.validation.MinLength">
+         </ruleValidatorRidget>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="org.eclipse.riena.example.uiProcesses">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="org.eclipse.riena.example.navigation">
+         </ruleMarkerNavigation>
+         <ruleMarkerRidget
+               marker="hidden"
+               ridgetId="textPassword">
+         </ruleMarkerRidget>
+         <ruleMarkerRidget
+               marker="hidden"
+               ridgetId="ui_label2">
+         </ruleMarkerRidget>
+         <ruleMarkerRidget
+               marker="output"
+               ridgetId="textField">
+         </ruleMarkerRidget>
                 
       </filter>
       

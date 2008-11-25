@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ridgets Plug-in (Incubation)
-Bundle-SymbolicName: org.eclipse.riena.ui.ridgets
+Bundle-SymbolicName: org.eclipse.riena.ui.ridgets;singleton:=true
 Bundle-Version: 1.0.0.M5
 Bundle-Activator: org.eclipse.riena.internal.ui.ridgets.Activator
 Require-Bundle: org.eclipse.core.runtime,
