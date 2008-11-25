@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Pass collectibles to a receiver.
  */
-public interface ICollectibleReceiver {
+public interface IReceiver {
 
 	/**
 	 * Receive collectibles.
