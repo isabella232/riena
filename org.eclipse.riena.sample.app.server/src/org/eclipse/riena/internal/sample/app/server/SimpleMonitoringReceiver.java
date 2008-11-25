@@ -14,12 +14,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.eclipse.riena.monitor.common.Collectible;
-import org.eclipse.riena.monitor.common.ICollectibleReceiver;
+import org.eclipse.riena.monitor.common.IReceiver;
 
 /**
  *
  */
-public class CollectibleReceiver implements ICollectibleReceiver {
+public class SimpleMonitoringReceiver implements IReceiver {
 
 	/*
 	 * (non-Javadoc)
