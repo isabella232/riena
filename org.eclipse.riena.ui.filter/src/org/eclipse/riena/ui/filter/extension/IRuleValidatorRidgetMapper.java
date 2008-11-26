@@ -11,36 +11,14 @@
 package org.eclipse.riena.ui.filter.extension;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
 
 /**
- * Interface for a UIFiltere extension that defines how to create a filter with
- * a list of rules.
+ * The mapper rule class to add a validator to a ridget.
  */
 @ExtensionInterface
-public interface IUIFilterExtension {
+public interface IRuleValidatorRidgetMapper extends IRuleMapper {
 
-	/**
-	 * Returns the filterID
-	 */
-	String getFilterId();
-
-	/**
-	 * Returns the nodeIds
-	 */
-	@MapName("nodeId")
-	IFilterNodeId[] getNodeIds();
-
-	@MapName("ruleMarkerRidget")
-	IRuleMarkerRidget[] getRuleMarkerRidgets();
-
-	@MapName("ruleMarkerMenuItem")
-	IRuleMarkerMenuItem[] getRuleMarkerMenuItems();
-
-	@MapName("ruleMarkerNavigation")
-	IRuleMarkerNavigation[] getRuleMarkerNavigations();
-
-	@MapName("ruleValidatorRidget")
-	IRuleValidatorRidget[] getRuleValidatorRidgets();
+	public IUIFilterRuleValidatorRidget getRuleClass();
 
 }

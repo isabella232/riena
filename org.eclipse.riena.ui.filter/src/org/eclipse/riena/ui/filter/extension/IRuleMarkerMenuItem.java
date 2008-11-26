@@ -11,36 +11,25 @@
 package org.eclipse.riena.ui.filter.extension;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
 
 /**
- * Interface for a UIFiltere extension that defines how to create a filter with
- * a list of rules.
+ * The rule to mark a ridget.
  */
 @ExtensionInterface
-public interface IUIFilterExtension {
+public interface IRuleMarkerMenuItem {
 
 	/**
-	 * Returns the filterID
+	 * Returns the ID of a menu- or toolItem.
+	 * 
+	 * @return ID
 	 */
-	String getFilterId();
+	String getItemId();
 
 	/**
-	 * Returns the nodeIds
+	 * Returns the type of a marker (e.g. hidden).
+	 * 
+	 * @return a string that represent the type of a marker
 	 */
-	@MapName("nodeId")
-	IFilterNodeId[] getNodeIds();
-
-	@MapName("ruleMarkerRidget")
-	IRuleMarkerRidget[] getRuleMarkerRidgets();
-
-	@MapName("ruleMarkerMenuItem")
-	IRuleMarkerMenuItem[] getRuleMarkerMenuItems();
-
-	@MapName("ruleMarkerNavigation")
-	IRuleMarkerNavigation[] getRuleMarkerNavigations();
-
-	@MapName("ruleValidatorRidget")
-	IRuleValidatorRidget[] getRuleValidatorRidgets();
+	String getMarker();
 
 }

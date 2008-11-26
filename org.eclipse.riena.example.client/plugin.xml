@@ -552,30 +552,7 @@
                id="application">
          </nodeId>
          
-         <markerRules
-               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker"
-               targetId="org.eclipse.riena.example.uiProcesses">
-         </markerRules>
-         <markerRules
-               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker"
-               targetId="textPassword"></markerRules>
-         <markerRules
-               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetOutputMarker"
-               targetId="textField"></markerRules>
-         <markerRules
-               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker"
-               targetId="ui_label2">
-         </markerRules>
-         <markerRules
-               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker"
-               targetId="org.eclipse.riena.example.navigation">
-         </markerRules>
          
-         <ruleValidatorRidget
-               ridgetId="org.eclipse.riena.example.client.ruleValidatorRidget1"
-               validationTime="onUIControlEdit"
-               validator="org.eclipse.riena.ui.ridgets.validation.MinLength">
-         </ruleValidatorRidget>
          <ruleMarkerNavigation
                marker="hidden"
                nodeId="org.eclipse.riena.example.uiProcesses">
@@ -596,6 +573,15 @@
                marker="output"
                ridgetId="textField">
          </ruleMarkerRidget>
+         <ruleValidatorRidget
+               ridgetId="ui_text1"
+               validationTime="onUIControlEdit"
+               validator="org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress">
+         </ruleValidatorRidget>
+         <ruleMarkerMenuItem
+               itemId="org.eclipse.riena.example.client.exitToolBarItem"
+               marker="disabled">
+         </ruleMarkerMenuItem>
                 
       </filter>
       

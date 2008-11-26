@@ -13,9 +13,11 @@ package org.eclipse.riena.ui.filter.impl;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
+import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
 import org.eclipse.riena.ui.filter.extension.IRuleMapperExtension;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerNavigationMapper;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerRidgetMapper;
+import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidgetMapper;
 import org.eclipse.riena.ui.internal.Activator;
 
 /**
@@ -85,6 +87,40 @@ public class RulesProvider {
 	}
 
 	/**
+	 * Returns the rule to set a marker for a menu-/toolItem.
+	 * 
+	 * @param type
+	 *            - type of marker (hidden or disabled)
+	 * @return rule or {@code null} if no rule was found.
+	 */
+	public IUIFilterRuleMarkerRidget getRuleMarkerMenuItem(String type) {
+
+		IUIFilterRuleMarkerRidget rule = null;
+		if (type == null) {
+			return rule;
+		}
+
+		for (IRuleMapperExtension ruleMapperExtension : getData()) {
+
+			IRuleMarkerRidgetMapper mapper = null;
+			if (type.equals("hidden")) { //$NON-NLS-1$
+				mapper = ruleMapperExtension.getMenuItemHiddenMarker();
+			} else if (type.equals("disabled")) { //$NON-NLS-1$
+				mapper = ruleMapperExtension.getMenuItemDisabledMarker();
+			}
+			if (mapper != null) {
+				rule = mapper.getRuleClass();
+				if (rule != null) {
+					return rule;
+				}
+			}
+		}
+
+		return rule;
+
+	}
+
+	/**
 	 * Returns the rule to set a marker for a navigation node.
 	 * 
 	 * @param type
@@ -106,6 +142,29 @@ public class RulesProvider {
 			} else if (type.equals("disabled")) { //$NON-NLS-1$
 				mapper = ruleMapperExtension.getNavigationDisabledMarker();
 			}
+			if (mapper != null) {
+				rule = mapper.getRuleClass();
+				if (rule != null) {
+					return rule;
+				}
+			}
+		}
+
+		return rule;
+
+	}
+
+	/**
+	 * Returns the rule to add a validator to a ridget.
+	 * 
+	 * @return rule or {@code null} if no rule was found.
+	 */
+	public IUIFilterRuleValidatorRidget getRuleValidatorRidget() {
+
+		IUIFilterRuleValidatorRidget rule = null;
+
+		for (IRuleMapperExtension ruleMapperExtension : getData()) {
+			IRuleValidatorRidgetMapper mapper = ruleMapperExtension.getRidgetValidator();
 			if (mapper != null) {
 				rule = mapper.getRuleClass();
 				if (rule != null) {

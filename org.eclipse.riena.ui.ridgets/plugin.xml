@@ -16,6 +16,15 @@
          <ridgetMandatoryMarker
                ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetMandatoryMarker">
          </ridgetMandatoryMarker>
+         <menuItemDisabledMarker
+               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemDisabledMarker">
+         </menuItemDisabledMarker>
+         <menuItemHiddenMarker
+               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemHiddenMarker">
+         </menuItemHiddenMarker>
+         <ridgetValidator
+               ruleClass="org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetValidator">
+         </ridgetValidator>
       </mapper>
    </extension>
 

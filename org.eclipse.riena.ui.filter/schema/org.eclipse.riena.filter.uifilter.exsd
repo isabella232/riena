@@ -50,10 +50,11 @@
    <element name="filter">
       <complexType>
          <sequence>
-            <element ref="nodeId" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="ruleMarkerRidget" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="ruleMarkerNavigation" minOccurs="1" maxOccurs="unbounded"/>
-            <element ref="ruleValidatorRidget" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="nodeId" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="ruleMarkerRidget" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="ruleMarkerMenuItem" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="ruleMarkerNavigation" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="ruleValidatorRidget" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="filterId" type="string" use="required">
             <annotation>
@@ -101,6 +102,33 @@
                   <enumeration value="output">
                   </enumeration>
                   <enumeration value="mandatory">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ruleMarkerMenuItem">
+      <complexType>
+         <attribute name="itemId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="marker" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="hidden">
+                  </enumeration>
+                  <enumeration value="disabled">
                   </enumeration>
                </restriction>
             </simpleType>

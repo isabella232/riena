@@ -22,6 +22,7 @@ import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 import org.eclipse.riena.ui.filter.extension.IRuleMapperExtension;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerNavigationMapper;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerRidgetMapper;
+import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidgetMapper;
 
 /**
  * Tests of the class {@link RulesProvider}.
@@ -78,6 +79,27 @@ public class RulesProviderTest extends TestCase {
 		rule = provider.getRuleMarkerNavigation("output");
 		assertNull(rule);
 		rule = provider.getRuleMarkerNavigation("dummy");
+		assertNull(rule);
+
+	}
+
+	/**
+	 * Tests the method {@code getRuleMarkerMenuItem(String).}
+	 */
+	public void testGetRuleMarkerMenuItem() {
+
+		IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
+		provider.update(mappers);
+
+		IUIFilterRuleMarkerRidget rule = provider.getRuleMarkerMenuItem("disabled");
+		assertEquals(new DisabledMarker(), rule.getMarker());
+		rule = provider.getRuleMarkerMenuItem("hidden");
+		assertEquals(new HiddenMarker(), rule.getMarker());
+		rule = provider.getRuleMarkerMenuItem("mandatory");
+		assertNull(rule);
+		rule = provider.getRuleMarkerMenuItem("output");
+		assertNull(rule);
+		rule = provider.getRuleMarkerMenuItem("dummy");
 		assertNull(rule);
 
 	}
@@ -156,6 +178,33 @@ public class RulesProviderTest extends TestCase {
 			};
 		}
 
+		public IRuleMarkerRidgetMapper getMenuItemDisabledMarker() {
+			return new IRuleMarkerRidgetMapper() {
+				public IUIFilterRuleMarkerRidget getRuleClass() {
+					return new AbstractRuleMarkerRidget() {
+						public IMarker getMarker() {
+							return new DisabledMarker();
+						}
+					};
+				}
+			};
+		}
+
+		public IRuleMarkerRidgetMapper getMenuItemHiddenMarker() {
+			return new IRuleMarkerRidgetMapper() {
+				public IUIFilterRuleMarkerRidget getRuleClass() {
+					return new AbstractRuleMarkerRidget() {
+						public IMarker getMarker() {
+							return new HiddenMarker();
+						}
+					};
+				}
+			};
+		}
+
+		public IRuleValidatorRidgetMapper getRidgetValidator() {
+			return null;
+		}
 	}
 
 	private abstract class AbstractRuleMarkerNavigation implements IUIFilterRuleMarkerNavigation {

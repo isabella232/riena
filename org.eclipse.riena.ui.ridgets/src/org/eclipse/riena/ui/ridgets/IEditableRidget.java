@@ -63,7 +63,7 @@ public interface IEditableRidget extends IValueRidget, IValidationCallback {
 	 * @param validator
 	 *            The validator to add (non-null).
 	 * @param validationTime
-	 *            a value specifying when to evalute the validator (non-null)
+	 *            a value specifying when to evaluate the validator (non-null)
 	 * @throws RuntimeException
 	 *             if the validator or validationTime is null
 	 * @see #removeValidationRule(IValidator)

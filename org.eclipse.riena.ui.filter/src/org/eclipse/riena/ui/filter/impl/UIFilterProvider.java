@@ -13,14 +13,21 @@ package org.eclipse.riena.ui.filter.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
+import org.eclipse.riena.ui.filter.IUIFilterRuleValidator;
+import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
+import org.eclipse.riena.ui.filter.extension.IRuleMarkerMenuItem;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerRidget;
+import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidget;
 import org.eclipse.riena.ui.filter.extension.IUIFilterExtension;
 import org.eclipse.riena.ui.internal.Activator;
 
@@ -28,8 +35,6 @@ import org.eclipse.riena.ui.internal.Activator;
  * 
  */
 public class UIFilterProvider implements IUIFilterProvider {
-
-	// private final static Logger LOGGER = Activator.getDefault().getLogger(UIFilterProvider.class.getName());
 
 	private static final String EP_UIFILTER = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
 	private IUIFilterExtension[] data;
@@ -98,6 +103,19 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 		}
 
+		// rules for marker/menu- and toolItems
+		for (IRuleMarkerMenuItem ruleExtension : filterExtension.getRuleMarkerMenuItems()) {
+
+			String markerType = ruleExtension.getMarker();
+			IUIFilterRuleMarkerRidget rule = rulesProvider.getRuleMarkerMenuItem(markerType);
+			if (rule != null) {
+				String id = ruleExtension.getItemId();
+				rule.setId(id);
+				rules.add(rule);
+			}
+
+		}
+
 		// rules for marker/navigation
 		for (IRuleMarkerNavigation ruleExtension : filterExtension.getRuleMarkerNavigations()) {
 
@@ -111,9 +129,48 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 		}
 
+		// rules for validator
+		for (IRuleValidatorRidget ruleExtension : filterExtension.getRuleValidatorRidgets()) {
+
+			IUIFilterRuleValidator rule = createRuleValidatorRidget(ruleExtension);
+			if (rule != null) {
+				rules.add(rule);
+			}
+
+		}
+
 		UIFilter filterResult = new UIFilter(filterID, rules);
 
 		return new UIFilterContainer(filterResult, filterExtension.getNodeIds());
+
+	}
+
+	/**
+	 * Creates a rule to add an validator to a ridget.
+	 * 
+	 * @param ruleExtension
+	 *            - extension that defines the rule
+	 * @return rule or {@code null} if no rule was created
+	 */
+	private IUIFilterRuleValidator createRuleValidatorRidget(IRuleValidatorRidget ruleExtension) {
+
+		RulesProvider rulesProvider = new RulesProvider();
+		IUIFilterRuleValidatorRidget rule = rulesProvider.getRuleValidatorRidget();
+		if (rule != null) {
+			rule.setId(ruleExtension.getRidgetId());
+			String timeString = ruleExtension.getValidationTime();
+			ValidationTime time = ValidationTime.ON_UPDATE_TO_MODEL;
+			if (timeString != null) {
+				if (timeString.equals("onUIControlEdit")) { //$NON-NLS-1$
+					time = ValidationTime.ON_UI_CONTROL_EDIT;
+				}
+			}
+			rule.setValidationTime(time);
+			IValidator validator = ReflectionUtils.newInstance(ruleExtension.getValidator());
+			rule.setValidator(validator);
+		}
+
+		return rule;
 
 	}
 

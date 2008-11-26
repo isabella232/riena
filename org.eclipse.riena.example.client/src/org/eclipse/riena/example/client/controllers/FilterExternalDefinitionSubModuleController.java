@@ -144,8 +144,6 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 
 		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
 
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-
 		for (Iterator<String> iterator = ids.iterator(); iterator.hasNext();) {
 			String id = iterator.next();
 			nodes.addAll(findNodes(id));

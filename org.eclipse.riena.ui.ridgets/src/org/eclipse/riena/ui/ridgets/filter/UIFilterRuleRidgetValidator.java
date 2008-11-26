@@ -12,15 +12,24 @@ package org.eclipse.riena.ui.ridgets.filter;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
 import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleValidator;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 
 /**
  * Filter rule to provide a validator for a ridget.
  */
-public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator {
+public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator implements IUIFilterRuleValidatorRidget {
 
 	private RidgetMatcher matcher;
+	private String id;
+
+	/**
+	 * Creates a new instance of {@code UIFilterRuleRidgetValidator}.
+	 */
+	public UIFilterRuleRidgetValidator() {
+		super();
+	}
 
 	/**
 	 * Creates a new instance of {@code UIFilterRuleRidgetValidator}.
@@ -29,10 +38,23 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator {
 	 *            - ID
 	 * @param validator
 	 *            - validator
+	 * @param validationTime
+	 *            - time of validation
 	 */
 	public UIFilterRuleRidgetValidator(String id, IValidator validator, ValidationTime validationTime) {
 		super(validator, validationTime);
-		matcher = new RidgetMatcher(id);
+	}
+
+	/**
+	 * Returns and - if necessary - creates the matcher.
+	 * 
+	 * @return matcher
+	 */
+	private RidgetMatcher getMatcher() {
+		if (matcher == null) {
+			matcher = new RidgetMatcher(id);
+		}
+		return matcher;
 	}
 
 	/**
@@ -41,7 +63,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator {
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 	public boolean matches(Object object) {
-		return matcher.matches(object);
+		return getMatcher().matches(object);
 	}
 
 	/**
@@ -74,6 +96,11 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator {
 			editableRidget.updateFromModel();
 		}
 
+	}
+
+	public void setId(String id) {
+		this.id = id;
+		matcher = null;
 	}
 
 }

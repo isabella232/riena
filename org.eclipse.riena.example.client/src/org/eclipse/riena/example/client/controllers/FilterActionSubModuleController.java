@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuActionHiddenMarker;
+import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemHiddenMarker;
 import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemDisabledMarker;
 
 /**
@@ -195,7 +195,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 			if (filterValue instanceof DisabledMarker) {
 				attribute = new UIFilterRuleMenuItemDisabledMarker(model.getItemId());
 			} else if (filterValue instanceof HiddenMarker) {
-				attribute = new UIFilterRuleMenuActionHiddenMarker(model.getItemId());
+				attribute = new UIFilterRuleMenuItemHiddenMarker(model.getItemId());
 			}
 			break;
 		}

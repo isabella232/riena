@@ -26,8 +26,14 @@ public interface IRuleMapperExtension {
 
 	IRuleMarkerRidgetMapper getRidgetMandatoryMarker();
 
+	IRuleMarkerRidgetMapper getMenuItemHiddenMarker();
+
+	IRuleMarkerRidgetMapper getMenuItemDisabledMarker();
+
 	IRuleMarkerNavigationMapper getNavigationHiddenMarker();
 
 	IRuleMarkerNavigationMapper getNavigationDisabledMarker();
+
+	IRuleValidatorRidgetMapper getRidgetValidator();
 
 }

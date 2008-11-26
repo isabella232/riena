@@ -18,10 +18,15 @@ import org.eclipse.riena.ui.filter.IUIFilterRuleValidator;
  * Filter rule for with validator.
  */
 public abstract class AbstractUIFilterRuleValidator implements IUIFilterRuleValidator {
-
 	private IValidator validator;
 
 	private ValidationTime validationTime;
+
+	/**
+	 * Create a new filter rule for validation.
+	 */
+	public AbstractUIFilterRuleValidator() {
+	}
 
 	/**
 	 * Create a new filter rule with the given validator.
@@ -42,6 +47,14 @@ public abstract class AbstractUIFilterRuleValidator implements IUIFilterRuleVali
 
 	public ValidationTime getValidationTime() {
 		return validationTime;
+	}
+
+	public void setValidator(IValidator validator) {
+		this.validator = validator;
+	}
+
+	public void setValidationTime(ValidationTime validationTime) {
+		this.validationTime = validationTime;
 	}
 
 }

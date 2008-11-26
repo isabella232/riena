@@ -10,37 +10,34 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.extension;
 
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
 
 /**
- * Interface for a UIFiltere extension that defines how to create a filter with
- * a list of rules.
+ * The rule to add a validator to a ridget.
  */
 @ExtensionInterface
-public interface IUIFilterExtension {
+public interface IRuleValidatorRidget {
 
 	/**
-	 * Returns the filterID
+	 * Returns the ID of a ridget.
+	 * 
+	 * @return ID
 	 */
-	String getFilterId();
+	String getRidgetId();
 
 	/**
-	 * Returns the nodeIds
+	 * Returns a string that specifies when to evaluate the validator.
+	 * 
+	 * @return "onUIControlEdit" or "onUpdateToModel"
 	 */
-	@MapName("nodeId")
-	IFilterNodeId[] getNodeIds();
+	String getValidationTime();
 
-	@MapName("ruleMarkerRidget")
-	IRuleMarkerRidget[] getRuleMarkerRidgets();
-
-	@MapName("ruleMarkerMenuItem")
-	IRuleMarkerMenuItem[] getRuleMarkerMenuItems();
-
-	@MapName("ruleMarkerNavigation")
-	IRuleMarkerNavigation[] getRuleMarkerNavigations();
-
-	@MapName("ruleValidatorRidget")
-	IRuleValidatorRidget[] getRuleValidatorRidgets();
+	/**
+	 * Returns the class of the validator.
+	 * 
+	 * @return validator class.
+	 */
+	Class<IValidator> getValidator();
 
 }

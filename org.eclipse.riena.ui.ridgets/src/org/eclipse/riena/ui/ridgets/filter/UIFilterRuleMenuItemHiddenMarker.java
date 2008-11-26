@@ -13,17 +13,17 @@ package org.eclipse.riena.ui.ridgets.filter;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
- * Filter rule to provide a hidden marker for a menu and tool bar action.
+ * Filter rule to provide a hidden marker for a menu and tool bar item.
  */
-public class UIFilterRuleMenuActionHiddenMarker extends AbstractUIFilterRuleRidgetMarker {
+public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleMenuActionHiddenMarker}.
+	 * Creates a new instance of {@code UIFilterRuleMenuItemHiddenMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public UIFilterRuleMenuActionHiddenMarker() {
+	public UIFilterRuleMenuItemHiddenMarker() {
 		super(null, new HiddenMarker(false));
 	}
 
@@ -35,7 +35,7 @@ public class UIFilterRuleMenuActionHiddenMarker extends AbstractUIFilterRuleRidg
 	 * @param marker
 	 *            - marker
 	 */
-	public UIFilterRuleMenuActionHiddenMarker(String id) {
+	public UIFilterRuleMenuItemHiddenMarker(String id) {
 		super(id, new HiddenMarker(false));
 	}
 
