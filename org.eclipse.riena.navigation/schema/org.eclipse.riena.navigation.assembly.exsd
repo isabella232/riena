@@ -220,6 +220,9 @@
 
    <element name="submodule">
       <complexType>
+         <sequence>
+            <element ref="submodule" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
