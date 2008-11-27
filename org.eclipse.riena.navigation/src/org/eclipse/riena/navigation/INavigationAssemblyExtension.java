@@ -51,6 +51,14 @@ public interface INavigationAssemblyExtension {
 	String getTypeId();
 
 	/**
+	 * @return The index this assembly takes in the system startup sequence. 0
+	 *         or less indicates that automatic startup of this assembly is not
+	 *         desired.
+	 */
+	@MapName("autostartsequence")
+	int getAutostartSequence();
+
+	/**
 	 * @return A controller that controlles the UI widgets in the view through
 	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */

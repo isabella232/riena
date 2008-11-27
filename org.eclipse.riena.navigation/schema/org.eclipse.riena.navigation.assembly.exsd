@@ -91,13 +91,20 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="autostartindex" type="string">
+            <annotation>
+               <documentation>
+                  Indicates if the nodes described by this assembly should be automatically created upon startup
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
    <element name="subapplication">
       <complexType>
-         <sequence minOccurs="0" maxOccurs="unbounded">
-            <element ref="modulegroup"/>
+         <sequence>
+            <element ref="modulegroup" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -123,13 +130,37 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="view" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.perspectives/perspective/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string">
+            <annotation>
+               <documentation>
+                  label to be displayed in navigation tree
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  id of icon to be displayed in navigation tree
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
    <element name="modulegroup">
       <complexType>
-         <sequence minOccurs="0" maxOccurs="unbounded">
-            <element ref="module"/>
+         <sequence>
+            <element ref="module" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -160,8 +191,8 @@
 
    <element name="module">
       <complexType>
-         <sequence minOccurs="0" maxOccurs="unbounded">
-            <element ref="submodule"/>
+         <sequence>
+            <element ref="submodule" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -205,13 +236,6 @@
             <annotation>
                <documentation>
                   indicates if the module is closeable
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="hidden" type="boolean" use="default" value="false">
-            <annotation>
-               <documentation>
-                  indicates if the module is initially hidden
                </documentation>
             </annotation>
          </attribute>
@@ -285,13 +309,6 @@
             <annotation>
                <documentation>
                   id of icon to be displayed in navigation tree
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="hidden" type="boolean" use="default" value="false">
-            <annotation>
-               <documentation>
-                  indicates if the module is initially hidden
                </documentation>
             </annotation>
          </attribute>

@@ -12,34 +12,40 @@ package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
-import org.osgi.framework.Bundle;
 
 /**
  * Interface for a SubApplicationNode extension that defines how to create a
  * node or a subtree in the application model tree.
  */
 @ExtensionInterface
-public interface ISubApplicationNodeExtension {
+public interface ISubApplicationNodeExtension extends INodeExtension {
 
 	/**
-	 * Return the contributing bundle of the extension.
-	 * 
-	 * @return The contributing bundle
+	 * @return This subapplications label
 	 */
-	Bundle getContributingBundle();
+	String getLabel();
 
 	/**
-	 * @return A navigation assembler that creates a node or a subtree for this
-	 *         modul or <code>null</code>.
+	 * @return This subapplications icon id
 	 */
-	@MapName("assembler")
-	INavigationAssembler createNavigationAssembler();
+	String getIcon();
 
 	/**
-	 * @return The type part of the ID of a navigation node.
-	 * @see NavigationNodeId#getTypeId()
+	 * @return For the SWT-based Riena UI this is the ID of the perspective
+	 *         associated with the subapplication. Must match an perspective
+	 *         elements id attribute of an "org.eclipse.ui.perspectives"
+	 *         extension.
 	 */
-	String getTypeId();
+	Object getView();
+
+	/**
+	 * @return For the SWT-based Riena UI this is the ID of the perspective
+	 *         associated with the subapplication. Must match an perspective
+	 *         elements id attribute of an "org.eclipse.ui.perspectives"
+	 *         extension.
+	 */
+	@MapName("view")
+	String getViewId();
 
 	/**
 	 * @return A list of submodule node definitions that are children of the

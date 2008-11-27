@@ -24,8 +24,8 @@
       </perspective>
       <perspective
             class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
-            id="mail"
-            name="Mail">
+            id="pim"
+            name="PIM">
       </perspective>
    </extension>
    <extension point="org.eclipse.ui.views">
@@ -279,25 +279,32 @@
      <extension
          point="org.eclipse.riena.navigation.assemblies">
          <assembly
-               assembler="org.eclipse.riena.demo.customer.client.navigation.model.NavigationSubApplicationNodeBuilder"
-               name="customer subapp"
+               name="customer"
+               autostartsequence="100"
                parentTypeId="application"
-               typeId="org.eclipse.riena.demo.customer.client.customer">
+               typeId="org.eclipse.riena.demo.customer.client.customer.assemly">
+            <subapplication
+                  label="Customer"
+                  icon="org.eclipse.riena.demo.client:/icons/0457_a_a00.png"
+                  typeId="org.eclipse.riena.demo.customer.client.customer"
+                  view="customer"/>
          </assembly>
          <assembly
-               assembler="org.eclipse.riena.demo.customer.client.navigation.model.PimSubApplicationNodeBuilder"
                name="pim subApp"
+               autostartsequence="200"
+               assembler="org.eclipse.riena.demo.customer.client.navigation.model.PimSubApplicationNodeBuilder"
                parentTypeId="application"
                typeId="org.eclipse.riena.demo.customer.client.mail">
          </assembly>
       
-           <assembly
+         <assembly
             typeId="org.eclipse.riena.demo.client.kundensuche"
+               autostartsequence="110"
             name="kundensuche"
-            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="org.eclipse.riena.demo.customer.client.customer">
          <modulegroup
-               name="kundesuche_group">
+               name="kundesuche_group"
+               typeId="org.eclipse.riena.demo.client.kundensuche.group">
             <module
                   name="kundesuche"
                   label="Kundensuche">
@@ -305,7 +312,7 @@
                      typeId="org.eclipse.riena.demo.client.kundensuche"
                      name="kundensuche"
                      label="Suche"
-                     icon="/icons/ledlightgreen.png"
+                     icon="org.eclipse.riena.demo.client:/icons/ledlightgreen.png"
                      view="org.eclipse.riena.demo.kundensuche"
                      controller="org.eclipse.riena.demo.customer.client.controllers.CustomerSearchController"/>
             </module>
@@ -313,14 +320,12 @@
       </assembly>
       <assembly
             name="customerRecord"
-            nodeBuilder="org.eclipse.riena.navigation.model.GenericNodeBuilder"
             parentTypeId="org.eclipse.riena.demo.customer.client.customer"
-            shared="false"
             typeId="org.eclipse.riena.demo.client.customerRecord">
          <modulegroup
                typeId="customerRecordGroup">
             <module
-                  label="customerRecordModule"
+                  label="${riena.navigation.paramenter:firstName} ${riena.navigation.paramenter:lastName}"
                   typeId="org.eclipse.riena.demo.client.module.CustomerRecord">
                <submodule
                      controller="org.eclipse.riena.demo.customer.client.controllers.CustomerOverviewController"
@@ -354,8 +359,9 @@
          </modulegroup>
       </assembly>
       <assembly
-            assembler="org.eclipse.riena.demo.customer.client.navigation.model.OrderSubApplicationNodeBuilder"
             name="order subapp"
+            autostartsequence="300"
+            assembler="org.eclipse.riena.demo.customer.client.navigation.model.OrderSubApplicationNodeBuilder"
             parentTypeId="application"
             typeId="org.eclipse.riena.demo.customer.client.order">
       </assembly>

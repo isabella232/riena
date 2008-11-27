@@ -13,16 +13,12 @@ package org.eclipse.riena.demo.customer.client.application;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.demo.customer.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-
 import org.osgi.framework.Bundle;
 
 /**
@@ -66,28 +62,21 @@ public class SwtDemoApplication extends SwtApplication {
 	@Override
 	protected IApplicationNode createModel() {
 
-		ISubApplicationNode subApplication = null;
-
-		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
-
 		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Riena Demo"); //$NON-NLS-1$ //$NON-NLS-2$
 		applicationNode.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 
-		// Navigation SubApplication
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.customer")); //$NON-NLS-1$
-
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.order")); //$NON-NLS-1$
-
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.mail")); //$NON-NLS-1$
-
-		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.client.kundensuche")); //$NON-NLS-1$
-
+		// create and startup subapplications
+//		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.customer")); //$NON-NLS-1$
+//		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.order")); //$NON-NLS-1$
+//		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.mail")); //$NON-NLS-1$
+//
+//		// create and startup customer search module
+//		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.client.kundensuche")); //$NON-NLS-1$
+		
 		return applicationNode;
 	}
-
-	@Override
+		
 	protected Bundle getBundle() {
 		return Activator.getDefault().getBundle();
 	}
-
 }

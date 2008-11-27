@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation.model;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
@@ -38,16 +38,15 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
-	private Map<String, INavigationAssembler> assemblyId2AssemblerCache = new WeakHashMap<String, INavigationAssembler>();
-	private Map<String, INavigationAssembler> nodeId2AssemblerCache = new WeakHashMap<String, INavigationAssembler>();
+	private Map<String, INavigationAssembler> assemblyId2AssemblerCache = new HashMap<String, INavigationAssembler>();
 
 	/**
 	 * 
 	 */
 	public NavigationNodeProvider() {
-		// here the symbols do not becomes replaced. This happens later at NavigationNode creation time
+		// symbols are not replaced here - this happens upon creation of the NavigationNode
 		Inject.extension(getNavigationAssemblyExtensionPointSafe()).useType(getNavigationAssemblyExtensionIFSafe())
-				.into(this).doNotReplaceSymbols().andStart(Activator.getDefault().getContext());
+				.into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	private String getNavigationAssemblyExtensionPointSafe() {
@@ -222,8 +221,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	public void register(ISubApplicationNodeExtension subapplication, INavigationAssembler assembler,
 			INavigationAssemblyExtension assembly) {
 
-		if (subapplication.getTypeId() != null) {
-		}
 		for (IModuleGroupNodeExtension group : subapplication.getModuleGroupNodes()) {
 			register(group, assembler, assembly);
 		}
@@ -232,9 +229,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	public void register(IModuleGroupNodeExtension group, INavigationAssembler assembler,
 			INavigationAssemblyExtension assembly) {
 
-		if (group.getTypeId() != null) {
-			register(group.getTypeId(), assembler);
-		}
 		for (IModuleNodeExtension module : group.getModuleNodes()) {
 			register(module, assembler, assembly);
 		}
@@ -243,9 +237,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	public void register(IModuleNodeExtension module, INavigationAssembler assembler,
 			INavigationAssemblyExtension assembly) {
 
-		if (module.getTypeId() != null) {
-			register(module.getTypeId(), assembler);
-		}
 		for (ISubModuleNodeExtension submodule : module.getSubModuleNodes()) {
 			register(submodule, assembler, assembly);
 		}
@@ -254,17 +245,9 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	public void register(ISubModuleNodeExtension submodule, INavigationAssembler assembler,
 			INavigationAssemblyExtension assembly) {
 
-		if (submodule.getTypeId() != null) {
-			register(submodule.getTypeId(), assembler);
-		}
 		for (ISubModuleNodeExtension nestedSubmodule : submodule.getSubModuleNodes()) {
 			register(nestedSubmodule, assembler, assembly);
 		}
-	}
-
-	public void register(String typeId, INavigationAssembler assembler) {
-
-		nodeId2AssemblerCache.put(typeId, assembler);
 	}
 
 	/**
@@ -283,7 +266,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 */
 	public void update(INavigationAssemblyExtension[] data) {
 
-		NavigationNodeProvider.this.cleanUp();
+		cleanUp();
 		for (INavigationAssemblyExtension assembly : data) {
 			register(assembly);
 		}

@@ -12,34 +12,13 @@ package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
-import org.osgi.framework.Bundle;
 
 /**
  * Interface for a ModuleGroupNode extension that defines how to create a node
  * or a subtree in the application model tree.
  */
 @ExtensionInterface
-public interface IModuleGroupNodeExtension {
-
-	/**
-	 * Return the contributing bundle of the extension.
-	 * 
-	 * @return The contributing bundle
-	 */
-	Bundle getContributingBundle();
-
-	/**
-	 * @return A navigation assembler that creates a node or a subtree for this
-	 *         modul group or <code>null</code>.
-	 */
-	@MapName("assembler")
-	INavigationAssembler createNavigationAssembler();
-
-	/**
-	 * @return The type part of the ID of a navigation node.
-	 * @see NavigationNodeId#getTypeId()
-	 */
-	String getTypeId();
+public interface IModuleGroupNodeExtension extends INodeExtension {
 
 	/**
 	 * @return A list of submodule node definitions that are children of the

@@ -57,13 +57,14 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 	/** dynamic variable referencing navigation node id */
 	static public final String VAR_NAVIGATION_NODEID = "riena.navigation.nodeid"; //$NON-NLS-1$
 
+	/** dynamic variable referencing navigation node id */
+	static public final String VAR_NAVIGATION_NODECONTEXT = "riena.navigation.nodecontext"; //$NON-NLS-1$
+
 	/** dynamic variable referencing navigation parameter */
 	static public final String VAR_NAVIGATION_PARAMETER = "riena.navigation.paramenter"; //$NON-NLS-1$
 
 	// the node definition as read from extension point
 	private INavigationAssemblyExtension assembly;
-
-	private String parentNodeId;
 
 	private Set<String> acceptedTargetIds = null;
 
@@ -74,16 +75,11 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 		return assembly;
 	}
 
-	public String getParentNodeId() {
-		return parentNodeId;
-	}
-
 	/**
 	 * @see org.eclipse.riena.navigation.IGenericNavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
 	 */
 	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
 		this.assembly = nodeDefinition;
-		this.parentNodeId = nodeDefinition.getParentTypeId();
 	}
 
 	/**
@@ -147,7 +143,9 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 		// a module group can only contain modules
 		ISubApplicationNode subapplication = new SubApplicationNode(createNavigationNodeIdFromTemplate(targetId,
-				subapplicationDefinition.getTypeId(), navigationArgument));
+				subapplicationDefinition.getTypeId(), navigationArgument), subapplicationDefinition.getLabel());
+		subapplication.setIcon(subapplicationDefinition.getIcon());
+
 		for (IModuleGroupNodeExtension modulegroupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
 			subapplication.addChild(build(modulegroupDefinition, targetId, navigationArgument));
 		}
@@ -177,11 +175,8 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 			startVariableResolver(mapping);
 			// create module node with label (and icon)
 			module = new ModuleNode(createNavigationNodeIdFromTemplate(targetId, moduleDefinition.getTypeId(),
-					navigationArgument), resolveVariables(moduleDefinition.getLabel()));
+					navigationArgument), moduleDefinition.getLabel());
 			module.setIcon(moduleDefinition.getIcon());
-			// TODO we cannot set visibility state now
-			// TODO node MUST be registered first
-			//module.setVisible(!moduleDefinition.isHidden());
 			module.setCloseable(!moduleDefinition.isUncloseable());
 			// ...and may contain submodules
 			for (ISubModuleNodeExtension submoduleDefinition : moduleDefinition.getSubModuleNodes()) {
@@ -203,12 +198,8 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 			startVariableResolver(mapping);
 			// create submodule node with label (and icon)
 			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, submoduleDefinition.getTypeId(),
-					navigationArgument), resolveVariables(submoduleDefinition.getLabel()));
+					navigationArgument), submoduleDefinition.getLabel());
 			submodule.setIcon(submoduleDefinition.getIcon());
-			// TODO we cannot set visibility state now
-			// TODO node MUST be registered first
-			//submodule.setVisible(!submoduleDefinition.isHidden());
-
 			// process nested submodules
 			for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {
 				submodule.addChild(build(nestedSubmoduleDefinition, targetId, navigationArgument));

@@ -20,6 +20,7 @@ import org.eclipse.riena.demo.customer.common.CustomerSearchBean;
 import org.eclipse.riena.demo.customer.common.CustomerSearchResult;
 import org.eclipse.riena.demo.customer.common.ICustomerDemoService;
 import org.eclipse.riena.internal.demo.customer.client.Activator;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -71,8 +72,11 @@ public class CustomerSearchController extends SubModuleController {
 		((IActionRidget) getRidget("reset")).addListener(new IActionListener() {
 
 			public void callback() {
-				// ergebnis = getPersonenService().suche(getSuchBean());
-				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord"));
+				CustomerRecordOverview c = new CustomerRecordOverview();
+				c.setCustomerNumber(1234567L);
+				c.setFirstName("Holger");
+				c.setLastName("Hoch");
+				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord"), new NavigationArgument(c));
 			}
 		});
 		((IActionRidget) getRidget("search")).addListener(new IActionListener() {

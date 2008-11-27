@@ -42,16 +42,11 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		//		SwtViewProvider presentation = SwtViewProviderAccessor.getViewProvider();
 
 		ISubApplicationNode subApplication = new SubApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigation.subapplication"), "Navigation"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
-
-		//		presentation.present(subApplication, "subapplication.1"); //$NON-NLS-1$
-
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.1", false); //$NON-NLS-1$
-
 		subApplication.setSelected(true);
 
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(null);
