@@ -111,4 +111,13 @@ public class PropertiesUtilsTest extends TestCase {
 		assertEquals("", actual[0]);
 		assertEquals("", actual[1]);
 	}
+
+	public void testAsArrayWithBalckslashComma() {
+		String[] actual = PropertiesUtils.asArray("1,2\\,3,4");
+		assertEquals(3, actual.length);
+		assertEquals("1", actual[0]);
+		assertEquals("2,3", actual[1]);
+		assertEquals("4", actual[2]);
+	}
+
 }
