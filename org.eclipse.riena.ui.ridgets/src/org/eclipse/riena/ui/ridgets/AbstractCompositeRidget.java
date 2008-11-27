@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.riena.ui.common.IComplexComponent;
+
 /**
  * 
  */

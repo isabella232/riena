@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.util.Comparator;
 
+import org.eclipse.riena.ui.common.ISortableByColumn;
+
 /**
  * Ridget for a tree table.
  */

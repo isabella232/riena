@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.Comparator;
 
-import org.eclipse.riena.ui.ridgets.ISortableByColumn;
+import org.eclipse.riena.ui.common.ISortableByColumn;
 
 import org.eclipse.core.runtime.Assert;
 

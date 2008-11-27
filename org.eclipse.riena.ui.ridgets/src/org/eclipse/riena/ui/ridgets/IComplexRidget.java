@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.riena.ui.common.IComplexComponent;
 
 /**
  * A Ridget that is bound to an IComplexComponent. The implementation of the

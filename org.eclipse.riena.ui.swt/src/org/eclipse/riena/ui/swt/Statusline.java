@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IComplexComponent;
+import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -195,14 +195,14 @@ public class Statusline extends Composite implements IComplexComponent {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IComplexComponent#getName()
+	 * @see org.eclipse.riena.ui.common.IComplexComponent#getName()
 	 */
 	public String getName() {
 		return null;
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.IComplexComponent#getUIControls()
+	 * @see org.eclipse.riena.ui.common.IComplexComponent#getUIControls()
 	 */
 	public List<Object> getUIControls() {
 		return uiControls;
