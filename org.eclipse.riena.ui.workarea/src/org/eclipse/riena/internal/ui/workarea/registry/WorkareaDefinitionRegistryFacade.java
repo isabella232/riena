@@ -15,7 +15,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.riena.internal.ui.workarea.Activator;
-import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaDefinition;
@@ -34,9 +34,9 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 	public static WorkareaDefinitionRegistryFacade getInstance() {
 		return instance;
 	}
-	
+
 	private WorkareaDefinitionRegistryFacade() {
-		
+
 		contributedRegistries = new TreeSet<WorkareaDefinitionRegistryWithRank>();
 		registerExplicitDefinitionRegistry();
 	}
@@ -48,9 +48,9 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 			if (definition != null) {
 				return definition;
 			}
-			
-			if (id instanceof ISubModuleNode) {
-				ISubModuleNode node = (ISubModuleNode)id;
+
+			if (id instanceof INavigationNode) {
+				INavigationNode<?> node = (INavigationNode<?>) id;
 				if (node.getNodeId() != null && node.getNodeId().getTypeId() != null) {
 					definition = registry.getDefinition(node.getNodeId().getTypeId());
 					if (definition != null) {
@@ -63,13 +63,14 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 		return null;
 	}
 
-	public IWorkareaDefinition registerDefinition(Object id, Class<? extends IController> controllerClass, Object viewId, boolean isViewShared) {
-		
+	public IWorkareaDefinition registerDefinition(Object id, Class<? extends IController> controllerClass,
+			Object viewId, boolean isViewShared) {
+
 		return register(id, new WorkareaDefinition(controllerClass, viewId, isViewShared));
 	}
 
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
-		
+
 		for (IWorkareaDefinitionRegistry registry : contributedRegistries) {
 			IWorkareaDefinition def = registry.register(id, definition);
 			if (def != null) {
@@ -86,27 +87,35 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 		IWorkareaDefinitionRegistry registry = ExplicitWorkareaDefinitionRegistry.getInstance();
 		Hashtable<String, Object> props = new Hashtable<String, Object>();
 		props.put(Constants.SERVICE_RANKING, 100);
-		
+
 		context.registerService(IWorkareaDefinitionRegistry.class.getName(), registry, props);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.osgi.util.tracker.ServiceTrackerCustomizer#addingService(org.osgi.framework.ServiceReference)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.osgi.util.tracker.ServiceTrackerCustomizer#addingService(org.osgi
+	 * .framework.ServiceReference)
 	 */
 	public Object addingService(ServiceReference reference) {
 
 		// get service and increase use count
 		BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
-		IWorkareaDefinitionRegistry registry = (IWorkareaDefinitionRegistry)bundleContext.getService(reference); 
+		IWorkareaDefinitionRegistry registry = (IWorkareaDefinitionRegistry) bundleContext.getService(reference);
 
 		// add registry
 		contributedRegistries.add(createEntry(reference, registry));
-		
+
 		return registry;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.osgi.util.tracker.ServiceTrackerCustomizer#modifiedService(org.osgi.framework.ServiceReference, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.osgi.util.tracker.ServiceTrackerCustomizer#modifiedService(org.osgi
+	 * .framework.ServiceReference, java.lang.Object)
 	 */
 	public void modifiedService(ServiceReference reference, Object service) {
 
@@ -116,8 +125,12 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 		contributedRegistries.add(entry);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.osgi.util.tracker.ServiceTrackerCustomizer#removedService(org.osgi.framework.ServiceReference, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.osgi.util.tracker.ServiceTrackerCustomizer#removedService(org.osgi
+	 * .framework.ServiceReference, java.lang.Object)
 	 */
 	public void removedService(ServiceReference reference, Object service) {
 
@@ -129,24 +142,25 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 		BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
 		bundleContext.ungetService(reference);
 	}
-		
+
 	private WorkareaDefinitionRegistryWithRank createEntry(ServiceReference reference, Object registry) {
 
 		Object rankingProperty = reference.getProperty(Constants.SERVICE_RANKING);
 		int ranking = (rankingProperty instanceof Integer) ? ((Integer) rankingProperty).intValue() : 0;
-		return new WorkareaDefinitionRegistryWithRank(ranking, (IWorkareaDefinitionRegistry)registry);
+		return new WorkareaDefinitionRegistryWithRank(ranking, (IWorkareaDefinitionRegistry) registry);
 	}
-	
-	private static class WorkareaDefinitionRegistryWithRank implements IWorkareaDefinitionRegistry, Comparable<WorkareaDefinitionRegistryWithRank> {
-	
+
+	private static class WorkareaDefinitionRegistryWithRank implements IWorkareaDefinitionRegistry,
+			Comparable<WorkareaDefinitionRegistryWithRank> {
+
 		private int ranking;
 		private IWorkareaDefinitionRegistry registry;
-		
+
 		WorkareaDefinitionRegistryWithRank(int ranking, IWorkareaDefinitionRegistry registry) {
 			this.ranking = ranking;
 			this.registry = registry;
 		}
-		
+
 		public int getRanking() {
 			return ranking;
 		}
@@ -155,39 +169,41 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 			return registry;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#getDefinition(java.lang.Object)
+		/** 
+		 * @seeorg.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#
+		 * getDefinition(java.lang.Object)
 		 */
 		public IWorkareaDefinition getDefinition(Object id) {
 			return registry.getDefinition(id);
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#register(java.lang.Object)
+
+		/** @see
+		 * org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#register
+		 * (java.lang.Object)
 		 */
 		public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
 			return registry.register(id, definition);
 		}
 
-		/* (non-Javadoc)
+		/** 
 		 * @see java.lang.Comparable#compareTo(java.lang.Object)
 		 */
 		public int compareTo(WorkareaDefinitionRegistryWithRank other) {
-			
+
 			if (this.getRanking() != other.getRanking())
 				return this.getRanking() > other.getRanking() ? -1 : 1;
 			return 0;
 		}
-		
+
 		public boolean equals(Object other) {
-			
+
 			if (other instanceof WorkareaDefinitionRegistryWithRank) {
-				return registry.equals(((WorkareaDefinitionRegistryWithRank)other).getRegistry());
+				return registry.equals(((WorkareaDefinitionRegistryWithRank) other).getRegistry());
 			} else {
 				return registry.equals(other);
 			}
 		}
-		
+
 		public int hashCode() {
 			return registry.hashCode();
 		}

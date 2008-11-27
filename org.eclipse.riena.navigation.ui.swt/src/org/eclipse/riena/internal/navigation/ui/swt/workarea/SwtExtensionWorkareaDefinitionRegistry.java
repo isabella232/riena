@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaDefinition;
@@ -48,6 +49,12 @@ public class SwtExtensionWorkareaDefinitionRegistry implements IWorkareaDefiniti
 	private void register(INavigationAssemblyExtension nodeDefinition) {
 
 		if (nodeDefinition != null) {
+			// build subapplication if it exists
+			ISubApplicationNodeExtension subapplicationDefinition = nodeDefinition.getSubApplicationNode();
+			if (subapplicationDefinition != null) {
+				register(subapplicationDefinition);
+				return;
+			}
 			// build module group if it exists
 			IModuleGroupNodeExtension groupDefinition = nodeDefinition.getModuleGroupNode();
 			if (groupDefinition != null) {
@@ -70,6 +77,18 @@ public class SwtExtensionWorkareaDefinitionRegistry implements IWorkareaDefiniti
 
 		//		throw new ExtensionPointFailure(
 		//				"'modulegroup', 'module' or 'submodule' element expected. ID=" + nodeDefinition.getTypeId()); //$NON-NLS-1$
+	}
+
+	protected void register(ISubApplicationNodeExtension subapplicationDefinition) {
+
+		// create and register subapplication perspective definition
+		IWorkareaDefinition def = new WorkareaDefinition(subapplicationDefinition.getViewId());
+		register(subapplicationDefinition.getTypeId(), def);
+
+		// a subapplication must only contain module groups
+		for (IModuleGroupNodeExtension groupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
+			register(groupDefinition);
+		}
 	}
 
 	protected void register(IModuleGroupNodeExtension groupDefinition) {
