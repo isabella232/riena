@@ -112,11 +112,11 @@ public class DefaultStore implements IStore {
 	 * @see org.eclipse.riena.monitor.client.IStore#getTransferables(java
 	 * .lang.String)
 	 */
-	public synchronized List<Collectible<?>> retrieveTransferables(String category) {
+	public synchronized List<Collectible<?>> retrieveTransferables(final String category) {
 		File[] transferables = storeFolder.listFiles(new FilenameFilter() {
 
 			public boolean accept(File dir, String name) {
-				return name.endsWith(TRANSFER_FILE_EXTENSION);
+				return name.startsWith(category) && name.endsWith(TRANSFER_FILE_EXTENSION);
 			}
 		});
 		List<Collectible<?>> collectibles = new ArrayList<Collectible<?>>();
