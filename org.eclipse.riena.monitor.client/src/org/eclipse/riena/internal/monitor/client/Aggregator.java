@@ -11,21 +11,24 @@
 package org.eclipse.riena.internal.monitor.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Iter;
-import org.eclipse.riena.monitor.client.IAggregator;
+import org.eclipse.riena.monitor.client.ICollectingAggregator;
+import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
-import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
  * The {@code Aggregator} aggregates all collectibles from the collectors. Each
  * collectible may trigger the transmission of the collectibles.
  */
-public class Aggregator implements IAggregator {
+public class Aggregator implements ICollectingAggregator {
 
 	private IStore store;
 	private ISender sender;
@@ -82,8 +85,12 @@ public class Aggregator implements IAggregator {
 		for (ICollector collector : Iter.able(this.collectors)) {
 			collector.stop();
 		}
+		Set<String> categories = new HashSet<String>(collectorExtensions.length);
 		List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
 		for (ICollectorExtension extension : collectorExtensions) {
+			Assert.isLegal(!categories.contains(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
+					+ " is defined twice. Categories must be unique."); //$NON-NLS-1$
+			categories.add(extension.getCategory());
 			ICollector collector = extension.createCollector();
 			collector.configureCategory(extension.getCategory());
 			collector.configureAggregator(this);
