@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.AbstractRemoteProgressMonitor;
+import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.RemoteProgressMonitorEvent;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -25,13 +26,20 @@ import org.eclipse.riena.navigation.ui.application.VisualizerFactory;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 
+/**
+ * An {@link IRemoteProgressMonitor} visualizing progress inside an
+ * {@link IUIProcessRidget}
+ */
 public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 
 	private final static double NORMALIZED_TOTAL_WORK = 10000;
 
+	// the monitor for delegation
 	private IProgressMonitor progressMonitor;
 
+	//name of the task working on
 	private String taskName;
 
 	private Map<CommunicationDirection, CommunicationChannel> channels = new HashMap<CommunicationDirection, CommunicationChannel>();
@@ -40,6 +48,9 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		REQUEST, RESPONSE;
 	}
 
+	/**
+	 * describes the progress and total work of a {@link CommunicationDirection}
+	 */
 	class CommunicationChannel {
 
 		int actualTotalWork = 0;
@@ -65,6 +76,10 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 			setActualWorkedUnits(getActualWorkedUnits() + bytes);
 		}
 
+		/*
+		 * normalize means recalculate the actual work as part of
+		 * "total work for direction" which is the half of total work
+		 */
 		int normalizeActualWorkedUnits() {
 			double workMultiplier = Double.valueOf(actualWorkedUnits) / Double.valueOf(actualTotalWork);
 			return (int) ((NORMALIZED_TOTAL_WORK / 2) * workMultiplier);
@@ -75,15 +90,18 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	public ServiceProgressVisualizer(String taskname) {
 		this.taskName = taskname;
 		initChannels();
+		// ui stuff goes here
 		UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UIProcess
 				.getSynchronizerFromExtensionPoint());
 		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
+		// init delegation
 		callBackDispatcher.addUIMonitor(new VisualizerFactory().getProgressVisualizer(subApplicationNode));
 		progressMonitor = callBackDispatcher.createThreadSwitcher();
 		configureProcessInfo(callBackDispatcher, subApplicationNode);
 	}
 
 	private void initChannels() {
+		// we can write and read ..
 		channels.put(CommunicationDirection.REQUEST, new CommunicationChannel());
 		channels.put(CommunicationDirection.RESPONSE, new CommunicationChannel());
 	}
@@ -111,10 +129,13 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (ProcessInfo.PROPERTY_CANCELED.equals(evt.getPropertyName())) {
-
+				//TODO which is the best way to handle that?
 			}
 		}
 	}
+
+	//
+	/// implement needed callbacks
 
 	@Override
 	public void start(RemoteProgressMonitorEvent event) {
@@ -154,6 +175,9 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		progressMonitor.worked(calculateTotalNormalizedProgress());
 	}
 
+	/*
+	 * are we done?
+	 */
 	private boolean transferComplete() {
 		return calculateTotalNormalizedProgress() >= NORMALIZED_TOTAL_WORK;
 	}
@@ -166,6 +190,9 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		return sum;
 	}
 
+	/*
+	 * update the channel
+	 */
 	private void updateWorked(int bytes, CommunicationChannel communicationChannel) {
 		communicationChannel.workUnitsDone(bytes);
 	}
