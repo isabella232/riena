@@ -73,24 +73,8 @@ public class CustomerSearchController extends SubModuleController {
 			public void callback() {
 				int selectionIndex = kunden.getSelectionIndex();
 				if (selectionIndex == 0) {
-					CustomerLoader.setFirstName("Josef");
-					CustomerLoader.setLastName("Mundl");
-				}
-				if (selectionIndex == 1) {
-					CustomerLoader.setFirstName("Robert");
-					CustomerLoader.setLastName("Muster");
-				}
-				if (selectionIndex == 2) {
-					CustomerLoader.setFirstName("Trulli");
-					CustomerLoader.setLastName("Muster-Maier");
-				}
-				if (selectionIndex == 3) {
-					CustomerLoader.setFirstName("Elfriede");
-					CustomerLoader.setLastName("Mustermann");
-				}
-				if (selectionIndex == 4) {
-					CustomerLoader.setFirstName("Ingo");
-					CustomerLoader.setLastName("Mustermann");
+					CustomerLoader.setFirstName(searchResultContainer.getCustomerList().get(selectionIndex).getFirstName());
+					CustomerLoader.setLastName(searchResultContainer.getCustomerList().get(selectionIndex).getLastName());
 				}
 				getNavigationNode().navigate(
 						new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord", Integer.valueOf(selectionIndex).toString()));

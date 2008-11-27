@@ -36,7 +36,7 @@ public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Order"); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 		WorkareaManager.getInstance().registerDefinition(subApplication, "order"); //$NON-NLS-1$
-		subApplication.setSelected(true);
+		// subApplication.setSelected(true);
 
 		// getNavigationNode().navigate(new
 		// NavigationNodeId("org.eclipse.riena.example.client.CustomerRecord"));

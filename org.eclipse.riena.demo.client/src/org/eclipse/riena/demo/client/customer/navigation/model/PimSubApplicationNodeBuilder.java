@@ -36,7 +36,7 @@ public class PimSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Mail"); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 		WorkareaManager.getInstance().registerDefinition(subApplication, "pim"); //$NON-NLS-1$
-		subApplication.setSelected(true);
+		// subApplication.setSelected(true);
 
 		// getNavigationNode().navigate(new
 		// NavigationNodeId("org.eclipse.riena.example.client.CustomerRecord"));
