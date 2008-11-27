@@ -18,21 +18,13 @@ public interface IRemoteProgressMonitor {
 
 	/**
 	 * called before the first byte is send on the line
-	 * 
-	 * @param event
-	 *            ProgressMonitorEvent object with information about the
-	 *            progress on this call
 	 */
-	void start(RemoteProgressMonitorEvent event);
+	void start();
 
 	/**
 	 * called after the webservice call is over
-	 * 
-	 * @param event
-	 *            ProgressMonitorEvent object with information about the
-	 *            progress on this call
 	 */
-	void end(RemoteProgressMonitorEvent event);
+	void end();
 
 	/**
 	 * Called in arbitrary (currently not configurable intervals) when data
