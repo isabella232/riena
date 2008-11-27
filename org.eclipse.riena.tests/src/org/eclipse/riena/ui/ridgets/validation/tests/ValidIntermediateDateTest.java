@@ -138,4 +138,26 @@ public class ValidIntermediateDateTest extends TestCase {
 		assertFalse(rule.validate("30.02.2007").isOK());
 	}
 
+	public void testSetInitializationData() throws Exception {
+
+		ValidIntermediateDate validator = new ValidIntermediateDate();
+		validator.setInitializationData(null, null, "dd.MM");
+		assertTrue(validator.validate("28.03").isOK());
+		assertFalse(validator.validate("32.03").isOK());
+
+		validator = new ValidIntermediateDate();
+		validator.setInitializationData(null, null, "dd.MM.yy");
+		assertFalse(validator.validate("28.03").isOK());
+		assertTrue(validator.validate("28.03.00").isOK());
+		assertFalse(validator.validate("32.03.00").isOK());
+
+		validator = new ValidIntermediateDate();
+		validator.setInitializationData(null, null, "dd.MM.yyyy");
+		assertFalse(validator.validate("28.03").isOK());
+		assertTrue(validator.validate("28.03.2000").isOK());
+		assertFalse(validator.validate("28.03.00").isOK());
+		assertFalse(validator.validate("32.03.2000").isOK());
+
+	}
+
 }

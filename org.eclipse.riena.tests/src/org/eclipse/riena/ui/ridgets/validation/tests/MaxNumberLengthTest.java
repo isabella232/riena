@@ -185,4 +185,46 @@ public class MaxNumberLengthTest extends TestCase {
 		assertFalse(maxNumberLength.validate(DecimalFormat.getInstance(new Locale("ar", "AE")).format(12345678)).isOK());
 
 	}
+
+	/**
+	 * Tests the method {@code setInitializationData}.
+	 * 
+	 * @throws Exception
+	 *             - Handled by JUnit.
+	 */
+	public void testSetInitializationData() throws Exception {
+
+		MaxNumberLength rule = new MaxNumberLength();
+		assertTrue(rule.validate("").isOK());
+		assertFalse(rule.validate("1").isOK());
+
+		rule = new MaxNumberLength();
+		rule.setInitializationData(null, null, "5");
+		assertTrue(rule.validate("1").isOK());
+		assertTrue(rule.validate("12345").isOK());
+		assertFalse(rule.validate("123456").isOK());
+
+		rule = new MaxNumberLength();
+		String localString = Locale.GERMANY.getLanguage() + "," + Locale.GERMANY.getCountry();
+		rule.setInitializationData(null, null, "5," + localString);
+		assertTrue(rule.validate("10000").isOK());
+		assertFalse(rule.validate("100000").isOK());
+		assertTrue(rule.validate("10.000").isOK());
+		assertFalse(rule.validate("10,000").isOK());
+		assertFalse(rule.validate("100.000").isOK());
+		assertTrue(rule.validate("1,012").isOK());
+		assertTrue(rule.validate("123,0").isOK());
+		assertFalse(rule.validate("12345,0").isOK());
+
+		rule = new MaxNumberLength();
+		localString = Locale.US.getLanguage() + "," + Locale.US.getCountry();
+		rule.setInitializationData(null, null, "5," + localString);
+		assertTrue(rule.validate("10000").isOK());
+		assertFalse(rule.validate("100000").isOK());
+		assertTrue(rule.validate("10,000").isOK());
+		assertFalse(rule.validate("10.000").isOK());
+		assertFalse(rule.validate("100,000").isOK());
+
+	}
+
 }

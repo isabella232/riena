@@ -191,4 +191,44 @@ public class ValidRangeTest extends TestCase {
 		}
 	}
 
+	public void testSetInitializationData() throws Exception {
+
+		ValidRange rule = new ValidRange();
+		assertTrue(rule.validate("0").isOK());
+		assertFalse(rule.validate("10").isOK());
+
+		rule = new ValidRange();
+		rule.setInitializationData(null, null, "1");
+		assertFalse(rule.validate("1").isOK());
+		assertFalse(rule.validate("10").isOK());
+
+		rule = new ValidRange();
+		rule.setInitializationData(null, null, "1,10");
+		assertTrue(rule.validate("1").isOK());
+		assertTrue(rule.validate("10").isOK());
+		assertFalse(rule.validate("0").isOK());
+		assertFalse(rule.validate("11").isOK());
+
+		rule = new ValidRange();
+		rule.setInitializationData(null, null, "1.1,10.1");
+		assertFalse(rule.validate("1").isOK());
+		assertTrue(rule.validate("2").isOK());
+		assertTrue(rule.validate("10").isOK());
+		assertFalse(rule.validate("0").isOK());
+		assertFalse(rule.validate("11").isOK());
+
+		rule = new ValidRange();
+		String localString = Locale.US.getLanguage() + "," + Locale.US.getCountry();
+		rule.setInitializationData(null, null, "1.1,10.1," + localString);
+		assertFalse(rule.validate("1").isOK());
+		assertTrue(rule.validate("1.1").isOK());
+
+		rule = new ValidRange();
+		localString = Locale.GERMANY.getLanguage() + "," + Locale.GERMANY.getCountry();
+		rule.setInitializationData(null, null, "1.1,10.1," + localString);
+		assertFalse(rule.validate("1").isOK());
+		assertTrue(rule.validate("1,1").isOK());
+
+	}
+
 }

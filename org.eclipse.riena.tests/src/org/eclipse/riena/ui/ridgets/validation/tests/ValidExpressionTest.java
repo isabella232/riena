@@ -136,4 +136,24 @@ public class ValidExpressionTest extends TestCase {
 		assertEquals(IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
 	}
 
+	/**
+	 * Tests the method {@code setInitializationData}.
+	 * 
+	 * @throws Exception
+	 *             - Handled by JUnit.
+	 */
+	public void testSetInitializationData() throws Exception {
+
+		ValidExpression validator = new ValidExpression();
+		validator.setInitializationData(null, null, "^test$");
+		assertTrue(validator.validate("test").isOK());
+		assertFalse(validator.validate("TEST").isOK());
+
+		validator = new ValidExpression();
+		validator.setInitializationData(null, null, "^test$,DUMM*");
+		assertTrue(validator.validate("test").isOK());
+		assertFalse(validator.validate("TEST").isOK());
+
+	}
+
 }

@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.validation.ValidDecimal;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
@@ -37,6 +38,7 @@ public class ValidDecimalTest extends TestCase {
 		assertTrue(rule.validate("1.01").isOK());
 		assertTrue(rule.validate("1.000").isOK());
 		assertTrue(rule.validate("123.31").isOK());
+		assertTrue(rule.validate("1,234.31").isOK());
 		assertTrue(rule.validate("1,234.31").isOK());
 
 		assertTrue(rule.validate("-0.00").isOK());
@@ -429,4 +431,71 @@ public class ValidDecimalTest extends TestCase {
 			}
 		}
 	}
+
+	/**
+	 * Tests the method {@code setLocal(String[])}.
+	 */
+	public final void testSetLocalStringArray() throws Exception {
+
+		MyValidDecimal validator = new MyValidDecimal();
+		Locale locale = ReflectionUtils.getHidden(validator, "locale");
+		assertSame(locale, Locale.getDefault());
+
+		validator.setLocal(new String[] {});
+		locale = ReflectionUtils.getHidden(validator, "locale");
+		assertSame(locale, Locale.getDefault());
+
+		validator.setLocal(new String[] { "hi" });
+		locale = ReflectionUtils.getHidden(validator, "locale");
+		assertEquals("hi", locale.getLanguage());
+		assertEquals("", locale.getCountry());
+		assertEquals("", locale.getVariant());
+
+		validator.setLocal(new String[] { "hi", "IND" });
+		locale = ReflectionUtils.getHidden(validator, "locale");
+		assertEquals("hi", locale.getLanguage());
+		assertEquals("IND", locale.getCountry());
+		assertEquals("", locale.getVariant());
+
+		validator.setLocal(new String[] { "es", "ES", "Traditional_WIN" });
+		locale = ReflectionUtils.getHidden(validator, "locale");
+		assertEquals("es", locale.getLanguage());
+		assertEquals("ES", locale.getCountry());
+		assertEquals("Traditional_WIN", locale.getVariant());
+
+	}
+
+	public void testSetInitializationData() throws Exception {
+
+		ValidDecimal validator = new ValidDecimal();
+		String localString = Locale.US.getLanguage() + "," + Locale.US.getCountry();
+		validator.setInitializationData(null, null, "false," + localString);
+		assertTrue(validator.validate("1,234.31").isOK());
+		assertFalse(validator.validate("1").isOK());
+		assertTrue(validator.validate("1.").isOK());
+
+		validator = new ValidDecimal();
+		validator.setInitializationData(null, null, "true," + localString);
+		assertTrue(validator.validate("1,234.31").isOK());
+		assertTrue(validator.validate("1").isOK());
+		assertTrue(validator.validate("1.").isOK());
+
+		validator = new ValidDecimal();
+		localString = Locale.GERMANY.getLanguage() + "," + Locale.GERMANY.getCountry();
+		validator.setInitializationData(null, null, "false," + localString);
+		assertTrue(validator.validate("1.234,31").isOK());
+		assertFalse(validator.validate("1").isOK());
+		assertTrue(validator.validate("1,").isOK());
+
+	}
+
+	private class MyValidDecimal extends ValidDecimal {
+
+		@Override
+		public void setLocal(String[] localArgs) {
+			super.setLocal(localArgs);
+		}
+
+	}
+
 }

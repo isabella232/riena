@@ -13,7 +13,11 @@ package org.eclipse.riena.ui.ridgets.validation;
 import org.apache.oro.text.perl.Perl5Util;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * Implementation for a regular expression check. If the rule fails it will
@@ -36,7 +40,7 @@ import org.eclipse.core.runtime.IStatus;
  * @see org.apache.oro.text.perl.Perl5Util#match(String, String)
  * @see java.util.regex.Pattern
  */
-public class ValidExpression implements IValidator {
+public class ValidExpression implements IValidator, IExecutableExtension {
 
 	/** <code>GERMAN_ZIP</code> */
 	public static final String GERMAN_ZIP = "^[0-9]{5}$"; //$NON-NLS-1$
@@ -73,8 +77,15 @@ public class ValidExpression implements IValidator {
 	 */
 	private final Perl5Util matcher = new Perl5Util();
 
-	private final String pattern;
+	private String pattern;
 	private final StringBuffer options;
+
+	/**
+	 * Constructs a new ValidExpression rule with the given options.
+	 */
+	public ValidExpression() {
+		this("*"); //$NON-NLS-1$
+	}
 
 	/**
 	 * Constructs a new ValidExpression rule with the given options.
@@ -114,6 +125,26 @@ public class ValidExpression implements IValidator {
 		}
 		return ValidationRuleStatus.error(false, "'String '" + string + "' does not match regex '" + pattern + "'.", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				this);
+	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code ValidExpression} this method is
+	 * called to initialize the instance. The argument for initialization is in
+	 * the parameter {@code data}. Is the data a string the argument is the
+	 * initial value of {@code pattern}.
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			pattern = args[0];
+		}
+
 	}
 
 }

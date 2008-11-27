@@ -13,13 +13,17 @@ package org.eclipse.riena.ui.ridgets.validation;
 import java.util.Arrays;
 
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * Implementation for a plausibility rule which checks if the typed character is
  * contained in a set of allowed characters. <br>
  */
-public class ValidCharacters implements IValidator {
+public class ValidCharacters implements IValidator, IExecutableExtension {
 
 	/** <code>VALID_NUMBERS</code> defines 0-9 */
 	public static final String VALID_NUMBERS = "0123456789"; //$NON-NLS-1$
@@ -34,6 +38,13 @@ public class ValidCharacters implements IValidator {
 
 	private String allowedChars;
 	private char[] allowedCharsSorted = new char[0];
+
+	/**
+	 * Constructs a valid characters check plausibilisation rule
+	 */
+	public ValidCharacters() {
+		setAllowedChars(null);
+	}
 
 	/**
 	 * Constructs a valid characters check plausibilisation rule
@@ -82,6 +93,26 @@ public class ValidCharacters implements IValidator {
 		// operate on a sorted copy, so getter returns the same value as set.
 		allowedCharsSorted = allowedChars == null ? new char[0] : allowedChars.toCharArray();
 		Arrays.sort(allowedCharsSorted);
+	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code ValidCharacters} this method is
+	 * called to initialize the instance. The argument for initialization is in
+	 * the parameter {@code data}. Is the data a string the argument is the
+	 * initial value of {@code allowedChars}.
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			setAllowedChars(args[0]);
+		}
+
 	}
 
 }

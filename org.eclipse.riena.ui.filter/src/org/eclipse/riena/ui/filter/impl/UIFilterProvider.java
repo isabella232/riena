@@ -15,7 +15,6 @@ import java.util.Collection;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
@@ -166,7 +165,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 				}
 			}
 			rule.setValidationTime(time);
-			IValidator validator = ReflectionUtils.newInstance(ruleExtension.getValidator());
+			IValidator validator = ruleExtension.getValidator();
 			rule.setValidator(validator);
 		}
 

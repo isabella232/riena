@@ -33,4 +33,28 @@ public class MaxLengthTest extends TestCase {
 		assertFalse(rule.validate("abcdeabcdefg").isOK());
 	}
 
+	/**
+	 * Tests the method {@code setInitializationData}.
+	 * 
+	 * @throws Exception
+	 *             - Handled by JUnit.
+	 */
+	public void testSetInitializationData() throws Exception {
+
+		MaxLength rule = new MaxLength();
+		assertTrue(rule.validate("").isOK());
+		assertFalse(rule.validate("1").isOK());
+
+		rule = new MaxLength();
+		rule.setInitializationData(null, null, "5");
+		assertTrue(rule.validate("1").isOK());
+		assertFalse(rule.validate("123456").isOK());
+
+		rule = new MaxLength();
+		rule.setInitializationData(null, null, "6,7");
+		assertTrue(rule.validate("123456").isOK());
+		assertFalse(rule.validate("1234567").isOK());
+
+	}
+
 }

@@ -71,4 +71,22 @@ public class ValidCharactersTest extends TestCase {
 		assertTrue(nullRule.validate("").isOK());
 	}
 
+	/**
+	 * Tests the method {@code setInitializationData}.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testSetInitializationData() throws Exception {
+
+		ValidCharacters validator = new ValidCharacters();
+		assertTrue(validator.validate("A").isOK());
+
+		validator = new ValidCharacters();
+		validator.setInitializationData(null, null, "a");
+		assertTrue(validator.validate("a").isOK());
+		assertFalse(validator.validate("A").isOK());
+
+	}
+
 }

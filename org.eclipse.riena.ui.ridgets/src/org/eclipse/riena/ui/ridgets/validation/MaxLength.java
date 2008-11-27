@@ -11,14 +11,21 @@
 package org.eclipse.riena.ui.ridgets.validation;
 
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * 
  */
-public class MaxLength implements IValidator {
+public class MaxLength implements IValidator, IExecutableExtension {
 
-	private int maxLength;
+	protected int maxLength;
+
+	public MaxLength() {
+	}
 
 	public MaxLength(int length) {
 		this.maxLength = length;
@@ -54,6 +61,26 @@ public class MaxLength implements IValidator {
 		buffer.append(maxLength);
 		buffer.append("]"); //$NON-NLS-1$
 		return buffer.toString();
+	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code MaxLength} this method is called
+	 * to initialize the instance. The argument for initialization is in the
+	 * parameter {@code data}. Is the data a string the argument is the initial
+	 * value of {@code maxLength}.
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			maxLength = Integer.parseInt(args[0]);
+		}
+
 	}
 
 }

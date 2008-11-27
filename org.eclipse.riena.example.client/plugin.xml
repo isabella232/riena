@@ -444,12 +444,13 @@
                   icon="org.eclipse.riena.example.client:/icons/ledred.png"
                   uncloseable="true">
                <submodule
-                     typeId="org.eclipse.riena.example.uiProcess_1"
-                     name="uiProcess_1"
-                     label="Demo1"
+                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
                      icon="org.eclipse.riena.example.client:/icons/ledlightgreen.png"
-                     view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
+                     label="Demo1"
+                     name="uiProcess_1"
+                     typeId="org.eclipse.riena.example.uiProcess_1"
+                     view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView">
+               </submodule>
                <submodule
                      typeId="org.eclipse.riena.example.uiProcess_2"
                      name="uiProcess_2"
@@ -471,7 +472,7 @@
             parentTypeId="playground">
          <modulegroup
                typeId="org.eclipse.riena.example.filters"
-               name="uiProcesses_group">
+               name="uiFilters_group">
             <module
                   name="filters"
                   label="UI-Filters">
@@ -576,7 +577,7 @@
          <ruleValidatorRidget
                ridgetId="ui_text1"
                validationTime="onUIControlEdit"
-               validator="org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress">
+               validator="org.eclipse.riena.ui.ridgets.validation.ValidRange:10,100">
          </ruleValidatorRidget>
          <ruleMarkerMenuItem
                itemId="org.eclipse.riena.example.client.exitToolBarItem"

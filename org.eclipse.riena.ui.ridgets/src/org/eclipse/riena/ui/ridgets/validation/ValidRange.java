@@ -14,10 +14,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * Implementation for a plausibility rule for a number range check. Checks <br>
@@ -26,10 +31,14 @@ import org.eclipse.core.runtime.IStatus;
  * String is treated as zero.<br>
  * This rule does not support partial correctness checking.
  */
-public class ValidRange extends ValidDecimal {
+public class ValidRange extends ValidDecimal implements IExecutableExtension {
 
 	private BigDecimal min;
 	private BigDecimal max;
+
+	public ValidRange() {
+		this(0, 0);
+	}
 
 	/**
 	 * Constructs a number type check plausibilisation rule for the default
@@ -136,4 +145,39 @@ public class ValidRange extends ValidDecimal {
 			return new BigDecimal(number.longValue());
 		}
 	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code ValidRange} this method is called
+	 * to initialize the instance. The arguments for initialization are in the
+	 * parameter {@code data}. Is the data a string the arguments are separated
+	 * with ','. The order of the arguments in data is equivalent to the order
+	 * of the parameters of one of the constructors.<br>
+	 * If data has more than two arguments. The last arguments are used to set
+	 * the Local for this validator.
+	 * 
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			if (args.length > 0) {
+				this.min = new BigDecimal(args[0]);
+			}
+			if (args.length > 1) {
+				this.max = new BigDecimal(args[1]);
+			}
+			if (args.length > 2) {
+				String[] localArgs = Arrays.copyOfRange(args, 2, args.length);
+				setLocal(localArgs);
+			}
+		}
+
+	}
+
 }

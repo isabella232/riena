@@ -13,10 +13,16 @@ package org.eclipse.riena.ui.ridgets.validation;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * Checks if a given string could be safely converted to a decimal number, that
@@ -27,12 +33,15 @@ import org.eclipse.core.runtime.IStatus;
  * we do not treat missing fraction as error, where &quot;missing fraction&quot;
  * means there no fraction digit.
  */
-public class ValidDecimal implements IValidator {
+public class ValidDecimal implements IValidator, IExecutableExtension {
 
 	private static final char FRENCH_GROUPING_SEPARATOR = (char) 0xA0;
-	private final boolean partialCheckSupported;
-	private final DecimalFormat format;
-	private final DecimalFormatSymbols symbols;
+	private boolean partialCheckSupported;
+	private DecimalFormat format;
+	private DecimalFormatSymbols symbols;
+	private int numberOfFractionDigits;
+	private int maxLength;
+	private Locale locale;
 
 	/**
 	 * Constructs a decimal type check plausibilisation rule with no
@@ -82,12 +91,12 @@ public class ValidDecimal implements IValidator {
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, int numberOfFractionDigits, int maxLength,
 			boolean withSign, final Locale locale) {
+		Assert.isNotNull(locale);
 		this.partialCheckSupported = partialCheckSupported;
-		format = (DecimalFormat) DecimalFormat.getInstance(locale);
-		format.setMaximumFractionDigits(numberOfFractionDigits);
-		format.setMaximumIntegerDigits(maxLength);
+		this.numberOfFractionDigits = numberOfFractionDigits;
+		this.maxLength = maxLength;
 		// TODO: Configure format with withSign?!
-		symbols = format.getDecimalFormatSymbols();
+		this.locale = locale;
 	}
 
 	/**
@@ -111,13 +120,16 @@ public class ValidDecimal implements IValidator {
 				if (!partialCheckSupported) {
 					if (scanned.decimalSeperatorIndex < 0) {
 						return ValidationRuleStatus.error(true, "no decimal separator '" //$NON-NLS-1$
-								+ symbols.getDecimalSeparator() + "' in String '" + string + '\'', this); //$NON-NLS-1$
+								+ getSymbols().getDecimalSeparator() + "' in String '" + string + '\'', this); //$NON-NLS-1$
 					}
 					// test if grouping character is behind decimal separator:
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
-						return ValidationRuleStatus.error(true, "grouping-separator '" + symbols.getGroupingSeparator() //$NON-NLS-1$
-								+ "' behind decimal-seperator '" + symbols.getDecimalSeparator() + "' in string '" //$NON-NLS-1$ //$NON-NLS-2$
-								+ string + '\'', this);
+						return ValidationRuleStatus
+								.error(
+										true,
+										"grouping-separator '" + getSymbols().getGroupingSeparator() //$NON-NLS-1$
+												+ "' behind decimal-seperator '" + getSymbols().getDecimalSeparator() + "' in string '" //$NON-NLS-1$ //$NON-NLS-2$
+												+ string + '\'', this);
 					}
 				}
 				// test if alien character present:
@@ -126,8 +138,8 @@ public class ValidDecimal implements IValidator {
 							+ "' in string '" + string + '\'', this); //$NON-NLS-1$
 				}
 				try {
-					synchronized (format) {// NumberFormat not threadsafe!
-						format.parse(string);
+					synchronized (getFormat()) {// NumberFormat not threadsafe!
+						getFormat().parse(string);
 					}
 				} catch (final ParseException e) {
 					return ValidationRuleStatus.error(true, "cannot parse string '" + string + "' to number.", this); //$NON-NLS-1$ //$NON-NLS-2$
@@ -194,14 +206,14 @@ public class ValidDecimal implements IValidator {
 	 */
 	protected ScanResult scan(final String string) {
 		final ScanResult result = new ScanResult();
-		final boolean acceptWhitespaceAsGroupingSeperator = Character.isWhitespace(symbols.getGroupingSeparator())
-				|| symbols.getGroupingSeparator() == FRENCH_GROUPING_SEPARATOR;
-		final char minusSign = symbols.getMinusSign();
+		final boolean acceptWhitespaceAsGroupingSeperator = Character.isWhitespace(getSymbols().getGroupingSeparator())
+				|| getSymbols().getGroupingSeparator() == FRENCH_GROUPING_SEPARATOR;
+		final char minusSign = getSymbols().getMinusSign();
 		for (int t = 0; t < string.length(); ++t) {
 			final char currentChar = string.charAt(t);
-			if (currentChar == symbols.getDecimalSeparator()) {
+			if (currentChar == getSymbols().getDecimalSeparator()) {
 				result.decimalSeperatorIndex = t;
-			} else if (currentChar == symbols.getGroupingSeparator()
+			} else if (currentChar == getSymbols().getGroupingSeparator()
 					|| (Character.isWhitespace(currentChar) && acceptWhitespaceAsGroupingSeperator)) {
 				result.groupingSeparatorIndex = t;
 			} else if (currentChar == minusSign) {
@@ -222,6 +234,11 @@ public class ValidDecimal implements IValidator {
 	 * @return a {@linkplain DecimalFormat} instance
 	 */
 	protected DecimalFormat getFormat() {
+		if (format == null) {
+			format = (DecimalFormat) DecimalFormat.getInstance(locale);
+			format.setMaximumFractionDigits(numberOfFractionDigits);
+			format.setMaximumIntegerDigits(maxLength);
+		}
 		return format;
 	}
 
@@ -234,7 +251,92 @@ public class ValidDecimal implements IValidator {
 	 * @see #getFormat()
 	 */
 	protected DecimalFormatSymbols getSymbols() {
+		if (symbols == null) {
+			symbols = getFormat().getDecimalFormatSymbols();
+		}
 		return symbols;
+	}
+
+	/**
+	 * Creates and sets the Local for this validator.
+	 * 
+	 * @param localArgs
+	 *            - language, country, variant
+	 */
+	protected void setLocal(String[] localArgs) {
+		if (localArgs.length > 0) {
+			String language = localArgs[0];
+			String country = ""; //$NON-NLS-1$
+			String variant = ""; //$NON-NLS-1$
+			if (localArgs.length > 1) {
+				country = localArgs[1];
+			}
+			if (localArgs.length > 2) {
+				variant = localArgs[2];
+			}
+			setLocale(new Locale(language, country, variant));
+		}
+
+	}
+
+	private void setLocale(Locale locale) {
+		this.locale = locale;
+	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code ValidDecimal} this method is
+	 * called to initialize the instance. The arguments for initialization are
+	 * in the parameter {@code data}. Is the data a string the arguments are
+	 * separated with ','. The order of the arguments in data is equivalent to
+	 * the order of the parameters of one of the constructors.
+	 * 
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			int localStart = 0;
+			if (args.length > 0) {
+				if (args[0].equals(Boolean.TRUE.toString())) {
+					this.partialCheckSupported = true;
+					localStart++;
+				} else if (args[0].equals(Boolean.FALSE.toString())) {
+					this.partialCheckSupported = false;
+					localStart++;
+				}
+			}
+			if ((args.length > 1) && (args[1].length() > 0)) {
+				try {
+					this.numberOfFractionDigits = Integer.parseInt(args[1]);
+					localStart++;
+					if ((args.length > 2) && (args[2].length() > 0)) {
+						this.maxLength = Integer.parseInt(args[2]);
+						localStart++;
+						if ((args.length > 3) && (args[3].length() > 0)) {
+							if (args[3].equals(Boolean.TRUE.toString())) {
+								// TODO: Configure format with withSign?!
+								localStart++;
+							} else if (args[3].equals(Boolean.FALSE.toString())) {
+								// TODO: Configure format with withSign?!
+								localStart++;
+							}
+						}
+					}
+				} catch (NumberFormatException e1) {
+				}
+			}
+			if (args.length > localStart) {
+				String[] localArgs = Arrays.copyOfRange(args, localStart, args.length);
+				setLocal(localArgs);
+			}
+		}
+
 	}
 
 }

@@ -17,6 +17,10 @@ package org.eclipse.riena.ui.ridgets.validation;
  */
 public class ValidIntermediateDate extends AbstractValidDate {
 
+	public ValidIntermediateDate() {
+		super(true);
+	}
+
 	public ValidIntermediateDate(String pattern) {
 		super(pattern, true);
 	}

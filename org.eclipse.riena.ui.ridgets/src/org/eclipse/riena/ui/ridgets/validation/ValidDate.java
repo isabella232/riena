@@ -15,6 +15,10 @@ package org.eclipse.riena.ui.ridgets.validation;
  */
 public class ValidDate extends AbstractValidDate {
 
+	public ValidDate() {
+		super(false);
+	}
+
 	public ValidDate(String pattern) {
 		super(pattern, false);
 	}

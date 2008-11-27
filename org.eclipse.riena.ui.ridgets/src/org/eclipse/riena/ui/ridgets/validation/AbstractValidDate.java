@@ -14,13 +14,17 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
 /**
  * Validator checking that a String matches a given pattern for a Date.
  */
-public abstract class AbstractValidDate implements IValidator {
+public abstract class AbstractValidDate implements IValidator, IExecutableExtension {
 
 	private static final String DAY_COMPONENT_LETTER = "d"; //$NON-NLS-1$
 	private static final String MONTH_COMPONENT_LETTER = "M"; //$NON-NLS-1$
@@ -46,6 +50,13 @@ public abstract class AbstractValidDate implements IValidator {
 	private String pattern;
 
 	private boolean checkValidIntermediate;
+
+	/**
+	 * Creates a StringToDateValidator.
+	 */
+	protected AbstractValidDate(final boolean checkValidIntermediate) {
+		this("", checkValidIntermediate);
+	}
 
 	/**
 	 * Creates a StringToDateValidator.
@@ -182,6 +193,34 @@ public abstract class AbstractValidDate implements IValidator {
 			}
 		}
 		return -1;
+	}
+
+	protected void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+	protected void setCheckValidIntermediate(boolean checkValidIntermediate) {
+		this.checkValidIntermediate = checkValidIntermediate;
+	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code AbstractValidDate} this method is
+	 * called to initialize the instance. The argument for initialization is in
+	 * the parameter {@code data}. Is the data a string the argument is the
+	 * initial value of {@code pattern}.
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 */
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			setPattern(args[0]);
+		}
+
 	}
 
 }

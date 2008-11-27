@@ -107,4 +107,29 @@ public class ValidDateTest extends TestCase {
 			fail("expected ValidationFailure instead of " + e.getClass().getName());
 		}
 	}
+
+	public void testSetInitializationData() throws Exception {
+
+		ValidDate validator = new ValidDate();
+		validator.setInitializationData(null, null, "dd.MM");
+		assertTrue(validator.validate("28.03").isOK());
+		assertFalse(validator.validate("28.03.2000").isOK());
+		assertFalse(validator.validate("32.03").isOK());
+
+		validator = new ValidDate();
+		validator.setInitializationData(null, null, "dd.MM.yy");
+		assertFalse(validator.validate("28.03").isOK());
+		assertFalse(validator.validate("28.03.2000").isOK());
+		assertTrue(validator.validate("28.03.00").isOK());
+		assertFalse(validator.validate("32.03.00").isOK());
+
+		validator = new ValidDate();
+		validator.setInitializationData(null, null, "dd.MM.yyyy");
+		assertFalse(validator.validate("28.03").isOK());
+		assertTrue(validator.validate("28.03.2000").isOK());
+		assertFalse(validator.validate("28.03.00").isOK());
+		assertFalse(validator.validate("32.03.2000").isOK());
+
+	}
+
 }

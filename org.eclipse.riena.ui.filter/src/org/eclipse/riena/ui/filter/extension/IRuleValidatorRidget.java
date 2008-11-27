@@ -34,10 +34,10 @@ public interface IRuleValidatorRidget {
 	String getValidationTime();
 
 	/**
-	 * Returns the class of the validator.
+	 * Returns the a new instance of validator.
 	 * 
-	 * @return validator class.
+	 * @return validator.
 	 */
-	Class<IValidator> getValidator();
+	IValidator getValidator();
 
 }

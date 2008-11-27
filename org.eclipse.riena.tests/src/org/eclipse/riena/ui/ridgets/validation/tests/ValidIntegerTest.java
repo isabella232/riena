@@ -307,4 +307,45 @@ public class ValidIntegerTest extends TestCase {
 			}
 		}
 	}
+
+	/**
+	 * Tests the method {@code setInitializationData}.
+	 * 
+	 * @throws Exception
+	 */
+	public void testSetInitializationData() throws Exception {
+
+		ValidInteger validator = new ValidInteger();
+		validator.setInitializationData(null, null, "true");
+		assertTrue(validator.validate("2").isOK());
+		assertTrue(validator.validate("-2").isOK());
+
+		validator = new ValidInteger();
+		validator.setInitializationData(null, null, "false");
+		assertTrue(validator.validate("2").isOK());
+		assertFalse(validator.validate("-2").isOK());
+
+		validator = new ValidInteger();
+		String localString = Locale.GERMANY.getLanguage() + "," + Locale.GERMANY.getCountry();
+		validator.setInitializationData(null, null, localString);
+		assertTrue(validator.validate("2.000").isOK());
+		assertFalse(validator.validate("2,000").isOK());
+		assertTrue(validator.validate("-2").isOK());
+
+		validator = new ValidInteger();
+		localString = Locale.US.getLanguage() + "," + Locale.US.getCountry();
+		validator.setInitializationData(null, null, localString);
+		assertFalse(validator.validate("2.000").isOK());
+		assertTrue(validator.validate("2,000").isOK());
+		assertTrue(validator.validate("-2").isOK());
+
+		validator = new ValidInteger();
+		localString = Locale.US.getLanguage() + "," + Locale.US.getCountry();
+		validator.setInitializationData(null, null, "false," + localString);
+		assertFalse(validator.validate("2.000").isOK());
+		assertTrue(validator.validate("2,000").isOK());
+		assertFalse(validator.validate("-2").isOK());
+
+	}
+
 }

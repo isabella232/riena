@@ -55,4 +55,27 @@ public class MinLengthTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code setInitializationData}.
+	 * 
+	 * @throws Exception
+	 *             - Handled by JUnit.
+	 */
+	public void testSetInitializationData() throws Exception {
+
+		MinLength rule = new MinLength();
+		assertTrue(rule.validate("").isOK());
+
+		rule = new MinLength();
+		rule.setInitializationData(null, null, "5");
+		assertFalse(rule.validate("1").isOK());
+		assertTrue(rule.validate("12345").isOK());
+
+		rule = new MinLength();
+		rule.setInitializationData(null, null, "6,7");
+		assertFalse(rule.validate("12345").isOK());
+		assertTrue(rule.validate("123456").isOK());
+
+	}
+
 }

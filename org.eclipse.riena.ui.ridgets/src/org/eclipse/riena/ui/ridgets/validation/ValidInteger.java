@@ -12,9 +12,13 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Locale;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
  * Tests, if input is an valid integer, which may be signed or not.
@@ -23,7 +27,7 @@ import org.eclipse.core.runtime.IStatus;
  */
 public class ValidInteger extends ValidDecimal {
 
-	private final boolean signed;
+	private boolean signed;
 
 	/**
 	 * Constructs a rule t check whether the given object is a String which can
@@ -115,5 +119,44 @@ public class ValidInteger extends ValidDecimal {
 			}
 		}
 		return ValidationRuleStatus.ok();
+	}
+
+	/**
+	 * This method is called on a newly constructed extension for validation.
+	 * After creating a new instance of {@code ValidInteger} this method is
+	 * called to initialize the instance. The argument for initialization are in
+	 * the parameter {@code data}. Is the data a string the arguments are
+	 * separated with ','. The order of the arguments in data is equivalent to
+	 * the order of the parameters of one of the constructors.<br>
+	 * If data has more than one argument. The last arguments are used to set
+	 * the Local for this validator.
+	 * 
+	 * 
+	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+	 *      java.lang.String, java.lang.Object)
+	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
+	 */
+	@Override
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		if (data instanceof String) {
+			String[] args = PropertiesUtils.asArray((String) data);
+			int localStart = 0;
+			if (args.length > 0) {
+				if (args[0].equals(Boolean.TRUE.toString())) {
+					this.signed = true;
+					localStart = 1;
+				} else if (args[0].equals(Boolean.FALSE.toString())) {
+					this.signed = false;
+					localStart = 1;
+				}
+			}
+			if (args.length > localStart) {
+				String[] localArgs = Arrays.copyOfRange(args, localStart, args.length);
+				setLocal(localArgs);
+			}
+		}
+
 	}
 }

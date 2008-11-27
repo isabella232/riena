@@ -190,7 +190,10 @@
          <attribute name="validator" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The validator must have a default constructor.
+
+It is possible to pass arguments, if the validator implements also implements the inteface &lt;tt&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/tt&gt;. The arguments are appended to class name of the validator. Class name and argument are separated with &quot;:&quot;. The single arguments a separated with &quot;,&quot;. 
+Example: &lt;tt&gt;&lt;/tt&gt;
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.core.databinding.validation.IValidator"/>
