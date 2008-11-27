@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -55,7 +57,8 @@ public final class PropertiesUtils {
 	 * 
 	 * <pre>
 	 * The format of the string is: 
-	 * [ &lt;key&gt; &quot;=&quot; &lt;value&gt; ] { [ &quot;,&quot; &lt;key&gt; &quot;=&quot; &lt;value&gt; ] }
+	 * string := [ pair ] | pair { , pair }
+	 * pair := key = value
 	 * </pre>
 	 * 
 	 * @param stringified
@@ -85,4 +88,31 @@ public final class PropertiesUtils {
 		return Collections.unmodifiableMap(result);
 	}
 
+	private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+	/**
+	 * Transform the string representation of a list into a array.
+	 * 
+	 * <pre>
+	 * The format of the string is: 
+	 *  string = [ value ] | value { , value }
+	 * </pre>
+	 * 
+	 * @param stringified
+	 * @return
+	 */
+	public static String[] asArray(String stringified) {
+		if (StringUtils.isEmpty(stringified)) {
+			return EMPTY_STRING_ARRAY;
+		}
+		List<String> result = new ArrayList<String>();
+		int comma;
+		int fromIndex = 0;
+		while ((comma = stringified.indexOf(',', fromIndex)) != -1) {
+			result.add(stringified.substring(fromIndex, comma));
+			fromIndex = comma + 1;
+		}
+		result.add(stringified.substring(fromIndex));
+		return result.toArray(new String[result.size()]);
+	}
 }

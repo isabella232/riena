@@ -64,4 +64,51 @@ public class PropertiesUtilsTest extends TestCase {
 			// ok
 		}
 	}
+
+	public void testAsArrayEmpty() {
+		assertEquals(0, PropertiesUtils.asArray("").length);
+		assertEquals(0, PropertiesUtils.asArray(null).length);
+	}
+
+	public void testAsArrayWithContent() {
+		String[] actual = PropertiesUtils.asArray("a,b,c");
+		assertEquals(3, actual.length);
+		assertEquals("a", actual[0]);
+		assertEquals("b", actual[1]);
+		assertEquals("c", actual[2]);
+	}
+
+	public void testAsArrayWithContentPlusFinalComma() {
+		String[] actual = PropertiesUtils.asArray("a,b,c,");
+		assertEquals(4, actual.length);
+		assertEquals("a", actual[0]);
+		assertEquals("b", actual[1]);
+		assertEquals("c", actual[2]);
+		assertEquals("", actual[3]);
+	}
+
+	public void testAsArrayWithEmptyContentWithinCommas() {
+		String[] actual = PropertiesUtils.asArray("a,b,,c");
+		assertEquals(4, actual.length);
+		assertEquals("a", actual[0]);
+		assertEquals("b", actual[1]);
+		assertEquals("", actual[2]);
+		assertEquals("c", actual[3]);
+	}
+
+	public void testAsArrayWithOnlyEmptyContentWithinCommas() {
+		String[] actual = PropertiesUtils.asArray(",,,");
+		assertEquals(4, actual.length);
+		assertEquals("", actual[0]);
+		assertEquals("", actual[1]);
+		assertEquals("", actual[2]);
+		assertEquals("", actual[3]);
+	}
+
+	public void testAsArrayWithOnlyOneComma() {
+		String[] actual = PropertiesUtils.asArray(",");
+		assertEquals(2, actual.length);
+		assertEquals("", actual[0]);
+		assertEquals("", actual[1]);
+	}
 }
