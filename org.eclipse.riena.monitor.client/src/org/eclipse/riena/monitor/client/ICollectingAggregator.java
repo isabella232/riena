@@ -10,29 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+import org.eclipse.riena.monitor.common.Collectible;
+
 /**
- * The {@code IAggregator} is responsible for the life cycle of the client side
- * monitoring and its components.
- * <p>
- * The default implementation {@code Aggregator} is very unlikely to be
- * re-implemented by clients.
+ * The consumer of the IAggregator service shall not see the possibility to
+ * collect collectibles. Only {@code ICollectors} shall collect stuff and pass
+ * it to the aggregator.
  */
-public interface IAggregator {
-
+public interface ICollectingAggregator extends IAggregator {
 	/**
-	 * Start the {@code IAggregator}.
-	 */
-	void start();
-
-	/**
-	 * Stop the {@code IAggregator}.
-	 */
-	void stop();
-
-	/**
-	 * Trigger transfer of collectibles for the given category.
+	 * Collect the given collectible
 	 * 
-	 * @param category
+	 * @param collectible
+	 * @return true on success
 	 */
-	void triggerTransfer(String category);
+	boolean collect(final Collectible<?> collectible);
+
 }
