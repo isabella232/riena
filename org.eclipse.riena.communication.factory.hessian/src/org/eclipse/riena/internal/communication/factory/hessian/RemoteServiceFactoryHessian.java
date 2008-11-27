@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.communication.factory.hessian;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,8 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private final ICallMessageContextAccessor messageContextAccessor;
 	private final RienaHessianProxyFactory rienaHessianProxyFactory;
 	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
+	private final static SecureRandom random = new SecureRandom();
+	private final static long base = 115825100000L; // some base time in millisec around 14.9.2006 18:40 (arbitrary picked) just to make the long a short number
 
 	public RemoteServiceFactoryHessian() {
 		messageContextAccessor = new CallMsgCtxAcc();
@@ -107,8 +110,8 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 		private ThreadLocal<ICallMessageContext> contexts = new ThreadLocal<ICallMessageContext>();
 
-		public ICallMessageContext createMessageContext(Object proxy) {
-			ICallMessageContext mc = new MsgCtx(proxy);
+		public ICallMessageContext createMessageContext(Object proxy, String methodName, String requestId) {
+			ICallMessageContext mc = new MsgCtx(proxy, methodName, requestId);
 			contexts.set(mc);
 			return mc;
 		}
@@ -126,9 +129,13 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			private int bytesWritten;
 			private int totalBytesWritten = 0;
 			private boolean firstEvent = true;
+			private String methodName;
+			private String requestId = null;
 
-			public MsgCtx(Object proxy) {
+			public MsgCtx(Object proxy, String methodName, String requestId) {
 				super();
+				this.methodName = methodName;
+				this.requestId = requestId;
 				if (remoteProgressMonitorRegistry != null) {
 					remoteProgressMonitorList = remoteProgressMonitorRegistry.getProgressMonitors(proxy);
 				} else {
@@ -224,6 +231,36 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				totalBytesWritten += bytesWritten;
 				bytesWritten = 0;
 				remoteProgressMonitorList.fireWriteEvent(-1, totalBytesWritten);
+			}
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.riena.communication.core.hooks.ICallMessageContext
+			 * #getMethodName()
+			 */
+			public String getMethodName() {
+				return methodName;
+			}
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.riena.communication.core.hooks.ICallMessageContext
+			 * #getRequestId()
+			 */
+			public String getRequestId() {
+				if (requestId == null || requestId.length() == 0) {
+					// FINDBUGS: if random.nextInt()==Integer.MIN_VALUE then Math.abs(i) = i
+					int i = random.nextInt();
+					if (i == Integer.MIN_VALUE) {
+						i = i + 1;
+					}
+					requestId = "RID-" + Long.toString(System.currentTimeMillis() - base + Math.abs(i), 36); //$NON-NLS-1$
+				}
+				return requestId;
 			}
 		}
 	}

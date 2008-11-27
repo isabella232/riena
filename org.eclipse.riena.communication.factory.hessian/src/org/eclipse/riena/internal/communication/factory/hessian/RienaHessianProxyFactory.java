@@ -21,11 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
+
+import org.eclipse.equinox.log.Logger;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractDeserializer;
@@ -55,8 +56,17 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	@Override
 	protected URLConnection openConnection(URL url) throws IOException {
 		URLConnection connection;
-		connection = super.openConnection(url);
 		ICallMessageContext mc = mca.getMessageContext();
+		String methodName = mc.getMethodName();
+		String requestId = mc.getRequestId();
+		if (methodName != null || requestId != null) {
+			if (requestId != null) {
+				methodName = methodName + "&" + requestId; //$NON-NLS-1$
+			}
+			connection = super.openConnection(new URL(url.toString() + "?" + methodName)); //$NON-NLS-1$
+		} else {
+			connection = super.openConnection(url);
+		}
 		Map<String, List<String>> headers = mc.listRequestHeaders();
 		if (headers != null) {
 			for (Map.Entry<String, List<String>> entry : headers.entrySet()) {

@@ -35,4 +35,8 @@ public interface ICallMessageContext {
 
 	void fireWriteEvent(int bytesSent);
 
+	String getMethodName();
+
+	String getRequestId();
+
 }

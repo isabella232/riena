@@ -40,7 +40,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		ICallMessageContext mc = null;
 		if (mca != null) {
-			mc = mca.createMessageContext(getProxiedInstance());
+			mc = mca.createMessageContext(getProxiedInstance(), method.getName(), null);
 		}
 
 		CallContext context = new CallContext(rsd, method.getName(), mc);

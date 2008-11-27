@@ -12,7 +12,7 @@ package org.eclipse.riena.communication.core.hooks;
 
 public interface ICallMessageContextAccessor {
 
-	ICallMessageContext createMessageContext(Object proxy);
+	ICallMessageContext createMessageContext(Object proxy, String methodName, String requestId);
 
 	ICallMessageContext getMessageContext();
 }
