@@ -76,7 +76,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		this(name, getSynchronizerFromExtensionPoint(), user, context);
 	}
 
-	private static IUISynchronizer getSynchronizerFromExtensionPoint() {
+	public static IUISynchronizer getSynchronizerFromExtensionPoint() {
 		final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		final IConfigurationElement[] configurations = extensionRegistry
 				.getConfigurationElementsFor(EXTENSION_POINT_ID);

@@ -194,6 +194,13 @@
             name="org.eclipse.riena.example.client.views.MessageBoxSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
+            id="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
+            name="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -459,6 +466,19 @@
                      view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
             </module>
+            <module
+                  name="remoteProgress"
+                  label="service call progress"
+                  icon="org.eclipse.riena.example.client:/icons/ledred.png">
+               <submodule
+                     typeId="org.eclipse.riena.example.remoteProgress"
+                     name="org.eclipse.riena.example.remoteProgress"
+                     label="service call progress"
+                     icon="org.eclipse.riena.example.client:/icons/ledlightgreen.png"
+                     view="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
+                     controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
+            </module>
+            
          </modulegroup>
       </assembly>
       <assembly

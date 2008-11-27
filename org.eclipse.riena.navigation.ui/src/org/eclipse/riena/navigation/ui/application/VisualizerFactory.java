@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer;
+package org.eclipse.riena.navigation.ui.application;
 
 import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinsishedObserver;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -31,6 +31,9 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 			aVisualizer.addObserver(((ApplicationController) node.getParentOfType(IApplicationNode.class)
 					.getNavigationNodeController()).getStatuslineRidget().getStatuslineUIProcessRidget());
 			ISubApplicationNode subApp = (ISubApplicationNode) node.getParentOfType(ISubApplicationNode.class);
+			if (subApp == null && context instanceof ISubApplicationNode) {
+				subApp = (ISubApplicationNode) context;
+			}
 			if (subApp != null) {
 				aVisualizer.addObserver(getUIProcessRidget(subApp));
 				aVisualizer.addObserver(createObserver(node));

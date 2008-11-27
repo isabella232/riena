@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -137,7 +138,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 
 		private void cancelCurrentVisualizer(boolean windowClosed) {
-			if (windowClosed) {// TODO make smoother
+			if (windowClosed) {
 				cancelAllVisualizersInContext();
 			} else {
 				getCurrentProcessInfo().cancel();
@@ -212,13 +213,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.internal.ui.ridgets.swt.IContextUpdateListener#
-		 * beforeContextUpdate(java.lang.Object)
-		 */
 		public void beforeContextUpdate(Object context) {
 			// save the bounds in all context parts
 			List<Object> activeContexts = getActiveContexts();
@@ -257,6 +251,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	public void finalUpdateUI(IProgressVisualizer visualizer) {
+		if (!visualizer.getProcessInfo().isDialogVisible()) {
+			return;
+		}
 		// if it´s the only visualizer for the current context: close window
 		if (isActive(visualizer) && isLonelyVisualizer(visualizer)) {
 			visualizer.getProcessInfo().setIgnoreCancel(true);
@@ -283,6 +280,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	public void initialUpdateUI(IProgressVisualizer visualizer, int totalWork) {
+		if (!visualizer.getProcessInfo().isDialogVisible()) {
+			return;
+		}
 		if (isActive(visualizer)) {
 			// all this makes sense if the visualizers is part of one of the
 			// active contexts
@@ -394,8 +394,20 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	public void removeProgressVisualizer(IProgressVisualizer visualizer) {
 		removeVisualizerFromContextData(visualizer);
 		removeVisualizerProgress(visualizer);
+		cleanContext();
 		if (getCurrentVisualizer() != null) {
 			updateUi();
+		}
+	}
+
+	private void cleanContext() {
+		Iterator<Object> contextIter = contexts.keySet().iterator();
+		while (contextIter.hasNext()) {
+			Object context = contextIter.next();
+			VisualizerContainer container = contexts.get(context);
+			if (container.size() == 0) {
+				contextIter.remove();
+			}
 		}
 	}
 
@@ -421,6 +433,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	public void updateProgress(IProgressVisualizer visualizer, int progress) {
+		if (!visualizer.getProcessInfo().isDialogVisible()) {
+			return;
+		}
 		saveProgress(visualizer, progress);
 		if (isActive(visualizer)) {
 			getUIControl().showProgress(progress, getTotalWork(visualizer));
@@ -467,9 +482,6 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		this.contextLocator = contextLocator;
 	}
 
-	/**
-	 * @return the contextLocator
-	 */
 	public IVisualContextManager getContextLocator() {
 		return contextLocator;
 	}

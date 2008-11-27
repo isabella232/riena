@@ -42,8 +42,12 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	public UICallbackDispatcher(IUISynchronizer syncher) {
 		this.uiMonitors = new ArrayList<IUIMonitor>();
 		this.syncher = syncher;
-		this.pInfo = new ProcessInfo();
+		this.pInfo = createProcessInfo();
 		this.visualize = true;
+	}
+
+	private ProcessInfo createProcessInfo() {
+		return new ProcessInfo();
 	}
 
 	public ProcessInfo getProcessInfo() {
@@ -67,9 +71,13 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 	@Override
 	public final IProgressMonitor createMonitor(Job job) {
-		threadSwitcher = new ThreadSwitcher(createWrappedMonitor(job));
+		threadSwitcher = createThreadSwitcher();
 		observeJob(job);
 		return threadSwitcher;
+	}
+
+	public ThreadSwitcher createThreadSwitcher() {
+		return new ThreadSwitcher(createWrappedMonitor());
 	}
 
 	private void observeJob(Job job) {
@@ -100,11 +108,9 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 * Creates the wrapped {@link IProgressMonitor} which will by serialized to
 	 * the UI-Thread.
 	 * 
-	 * @param job -
-	 *            for which the monitor is created
 	 * @return - The wrapping monitor with a delegate inside
 	 */
-	protected IProgressMonitor createWrappedMonitor(Job job) {
+	protected IProgressMonitor createWrappedMonitor() {
 		/**
 		 * Default implementation of a monitor just delegating to the uiProcess
 		 * Methods. This monitor gets called on the ui-Thread as a delegate of

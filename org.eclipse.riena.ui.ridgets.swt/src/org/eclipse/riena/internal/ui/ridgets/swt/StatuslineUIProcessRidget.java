@@ -236,12 +236,14 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			// anybody there?
 			ProcessDetail pDetail = detailForVisualizer(visualizer);
 			assert pDetail != null : "no ProcessDetail for visualizer " + visualizer; //$NON-NLS-1$
-			// pending?
-			if (pDetail.isPending()) {
-				// no more!
-				pDetail.setState(ProcessState.RUNNING);
+			if (pDetail != null) {
+				// pending?
+				if (pDetail.isPending()) {
+					// no more!
+					pDetail.setState(ProcessState.RUNNING);
+				}
+				pDetail.setProgress(progress);
 			}
-			pDetail.setProgress(progress);
 		}
 	}
 
@@ -424,8 +426,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		contexts.add(visualizer.getProcessInfo().getContext());
 		ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
 		if (detail != null
-				&& (detail.getState().equals(ProcessState.FINISHED) || detail.getState()
-						.equals(ProcessState.CANCELED)) && contextLocator.getActiveContexts(contexts).size() == 1) {
+				&& (detail.getState().equals(ProcessState.FINISHED) || detail.getState().equals(ProcessState.CANCELED))
+				&& contextLocator.getActiveContexts(contexts).size() == 1) {
 			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
 			unregisterContextUpdateListener(visualizer, false);
 			return false;

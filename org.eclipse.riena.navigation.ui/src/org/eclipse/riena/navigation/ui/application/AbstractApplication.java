@@ -18,7 +18,6 @@ import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.navigation.ui.Activator;
-import org.eclipse.riena.internal.navigation.ui.uiprocess.visualizer.VisualizerFactory;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
