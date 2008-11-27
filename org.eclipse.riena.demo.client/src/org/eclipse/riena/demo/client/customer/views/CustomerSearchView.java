@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.views;
+package org.eclipse.riena.demo.client.customer.views;
 
-import org.eclipse.riena.demo.customer.client.controllers.CustomerSearchController;
+import org.eclipse.riena.demo.client.customer.controllers.CustomerSearchController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 import org.eclipse.swt.SWT;
@@ -195,12 +195,12 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 		newColumnTableColumn_9.setWidth(64);
 
 		final Button openCustomerButton = new Button(container, SWT.NONE);
-		openCustomerButton.setText("Open Customer");
+		openCustomerButton.setText("Öffnen Kunden");
 		openCustomerButton.setBounds(162, 477, 93, 23);
 		addUIControl(openCustomerButton, "openCustomer");
 
 		final Button newCustomerButton = new Button(container, SWT.NONE);
-		newCustomerButton.setText("New Customer");
+		newCustomerButton.setText("Neuer Customer");
 		newCustomerButton.setBounds(309, 477, 93, 23);
 		addUIControl(newCustomerButton, "newCustomer");
 

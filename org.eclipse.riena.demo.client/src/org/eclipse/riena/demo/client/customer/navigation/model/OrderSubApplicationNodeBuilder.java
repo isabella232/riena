@@ -8,14 +8,14 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.navigation.model;
+package org.eclipse.riena.demo.client.customer.navigation.model;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.riena.demo.customer.client.application.ExampleIcons;
+import org.eclipse.riena.demo.client.customer.application.ExampleIcons;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -36,7 +36,7 @@ public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Order"); //$NON-NLS-1$
 		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
 		WorkareaManager.getInstance().registerDefinition(subApplication, "order"); //$NON-NLS-1$
-//		subApplication.setSelected(true);
+		subApplication.setSelected(true);
 
 		// getNavigationNode().navigate(new
 		// NavigationNodeId("org.eclipse.riena.example.client.CustomerRecord"));
@@ -50,7 +50,7 @@ public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.demo.customer.client.order" //$NON-NLS-1$
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.demo.client.customer.order" //$NON-NLS-1$
 					));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}

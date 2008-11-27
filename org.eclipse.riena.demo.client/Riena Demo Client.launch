@@ -7,7 +7,7 @@
 <booleanAttribute key="automaticValidate" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="org.eclipse.ui.workbench"/>
-<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearConfig" value="true"/>
 <booleanAttribute key="clearws" value="true"/>
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Riena Demo Client"/>
@@ -22,8 +22,8 @@
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.riena.sample.app.client.mail.product"/>
 <stringAttribute key="selectedPlugin" value="org.eclipse.ui.workbench"/>
-<stringAttribute key="selected_target_plugins" value="org.eclipse.core.commands,org.apache.commons.logging,org.eclipse.equinox.common,org.eclipse.help,org.eclipse.swt,org.eclipse.jface.databinding,org.eclipse.core.expressions,org.eclipse.core.runtime.compatibility.auth,org.eclipse.equinox.transforms.hook,org.eclipse.equinox.preferences,org.eclipse.osgi,org.eclipse.ui.workbench,org.eclipse.equinox.registry,org.eclipse.jface,org.eclipse.osgi.services,org.eclipse.ui,com.ibm.icu,org.eclipse.core.jobs,org.eclipse.core.databinding,org.eclipse.equinox.app,org.eclipse.core.databinding.beans,org.eclipse.core.contenttype,org.eclipse.swt.win32.win32.x86,org.eclipse.core.runtime"/>
-<stringAttribute key="selected_workspace_plugins" value="org.eclipse.riena.communication.factory.hessian,com.caucho.hessian,org.eclipse.riena.ui.workarea,org.eclipse.riena.core,org.eclipse.riena.navigation.ui.swt,org.eclipse.riena.demo.common,org.eclipse.riena.communication.core,org.eclipse.core.variables,org.eclipse.riena.ui.ridgets.swt,org.eclipse.riena.ui.core,org.eclipse.riena.navigation.ui,org.apache.commons.beanutils,org.eclipse.riena.demo.client,org.eclipse.riena.client,javax.servlet,org.eclipse.equinox.log,org.apache.log4j,org.eclipse.riena.navigation,org.eclipse.riena.ui.filter,org.eclipse.riena.ui.ridgets,org.eclipse.riena.communication.console,org.eclipse.riena.ui.swt"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.ui,org.eclipse.equinox.common,org.eclipse.equinox.registry,org.eclipse.equinox.transforms.hook,org.eclipse.jface.databinding,org.eclipse.core.runtime.compatibility.auth,org.eclipse.core.runtime,org.eclipse.equinox.app,org.apache.commons.logging,org.eclipse.core.databinding,org.eclipse.help,org.eclipse.core.databinding.beans,org.eclipse.osgi,org.eclipse.core.jobs,org.eclipse.equinox.preferences,org.eclipse.jface,org.eclipse.osgi.services,org.eclipse.core.contenttype,com.ibm.icu,org.eclipse.swt,org.eclipse.ui.workbench,org.eclipse.core.expressions,org.eclipse.core.commands,org.eclipse.swt.win32.win32.x86"/>
+<stringAttribute key="selected_workspace_plugins" value="org.eclipse.riena.communication.factory.hessian,com.caucho.hessian,org.eclipse.riena.core,org.eclipse.riena.ui.workarea,org.eclipse.riena.demo.common,org.eclipse.riena.navigation.ui.swt,org.eclipse.riena.communication.core,org.eclipse.core.variables,org.eclipse.riena.ui.ridgets.swt,org.eclipse.riena.ui.core,org.eclipse.riena.navigation.ui,org.apache.commons.beanutils,org.eclipse.riena.demo.client,org.eclipse.riena.client,javax.servlet,org.eclipse.equinox.log,org.apache.log4j,org.eclipse.riena.navigation,org.eclipse.riena.ui.filter,org.eclipse.riena.ui.ridgets,org.eclipse.riena.communication.console,org.eclipse.riena.ui.swt,org.eclipse.riena.ui.common"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <stringAttribute key="templateConfig" value="${target_home}\configuration\config.ini"/>
 <booleanAttribute key="tracing" value="true"/>

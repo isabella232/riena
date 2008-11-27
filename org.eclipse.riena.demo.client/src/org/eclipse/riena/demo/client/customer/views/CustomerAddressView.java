@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.views;
+package org.eclipse.riena.demo.client.customer.views;
 
-import org.eclipse.riena.demo.customer.client.controllers.CustomerContractController;
+import org.eclipse.riena.demo.client.customer.controllers.CustomerAddressController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 import org.eclipse.swt.SWT;
@@ -23,9 +23,9 @@ import com.swtdesigner.SWTResourceManager;
 /**
  *
  */
-public class CustomerContractView extends SubModuleView<CustomerContractController> {
+public class CustomerAddressView extends SubModuleView<CustomerAddressController> {
 
-	public static final String ID = "org.eclipse.riena.example.client.views.CustomerContractView"; //$NON-NLS-1$
+	public static final String ID = "org.eclipse.riena.example.client.views.CustomerAddressView"; //$NON-NLS-1$
 
 	/**
 	 * Create contents of the view part
@@ -37,10 +37,10 @@ public class CustomerContractView extends SubModuleView<CustomerContractControll
 		Composite container = new Composite(parent, SWT.NONE);
 		parent.setLayout(new FillLayout());
 
-		final Label missingCustomerContractLabel = new Label(container, SWT.NONE);
-		missingCustomerContractLabel.setFont(SWTResourceManager.getFont("", 18, SWT.BOLD));
-		missingCustomerContractLabel.setText("Customer Contract View Not Implemented");
-		missingCustomerContractLabel.setBounds(10, 236, 630, 43);
+		final Label missingAddressdataLabel = new Label(container, SWT.NONE);
+		missingAddressdataLabel.setFont(SWTResourceManager.getFont("", 18, SWT.BOLD)); //$NON-NLS-1$
+		missingAddressdataLabel.setText("Customer Addressdata View not implemented"); //$NON-NLS-1$
+		missingAddressdataLabel.setBounds(10, 240, 618, 41);
 	}
 
 	@Override

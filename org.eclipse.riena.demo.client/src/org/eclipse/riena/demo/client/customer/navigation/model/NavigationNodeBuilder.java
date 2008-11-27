@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.navigation.model;
+package org.eclipse.riena.demo.client.customer.navigation.model;
 
 import org.eclipse.riena.internal.demo.customer.client.Activator;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;

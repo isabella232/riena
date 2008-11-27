@@ -8,13 +8,13 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.controllers;
+package org.eclipse.riena.demo.client.customer.controllers;
 
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 
 /**
  *
  */
-public class CustomerContractController extends SubModuleController {
+public class CustomerAddressController extends SubModuleController {
 
 }

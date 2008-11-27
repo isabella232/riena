@@ -8,11 +8,12 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.views;
+package org.eclipse.riena.demo.client.customer.views;
 
-import org.eclipse.riena.demo.customer.client.controllers.CustomerPersonalDataController;
+import org.eclipse.riena.demo.client.customer.controllers.CustomerPersonalDataController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -128,6 +129,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		text = new Text(container, SWT.BORDER);
 		text.setBounds(170, 95, 136, 18);
+		addUIControl(text, "lastname");
 
 		final Label vornameLabel = new Label(container, SWT.NONE);
 		vornameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
@@ -136,6 +138,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		text_1 = new Text(container, SWT.BORDER);
 		text_1.setBounds(365, 97, 128, 18);
+		addUIControl(text_1, "firstname");
 
 		text_2 = new Text(container, SWT.BORDER);
 		text_2.setBounds(170, 125, 136, 18);
@@ -313,6 +316,10 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 	@Override
 	public void setFocus() {
 		// Set the focus
+	}
+
+	private void initializeToolBar() {
+		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.application;
+package org.eclipse.riena.demo.client.customer.application;
 
 public final class ExampleIcons {
 

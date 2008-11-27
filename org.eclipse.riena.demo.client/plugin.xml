@@ -6,7 +6,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="org.eclipse.riena.demo.customer.client.application.SwtDemoApplication">
+               class="org.eclipse.riena.demo.client.customer.application.SwtDemoApplication">
          </run>
       </application>
    </extension>
@@ -25,41 +25,41 @@
       <perspective
             class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
             id="pim"
-            name="PIM">
+            name="Mail">
       </perspective>
    </extension>
    <extension point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.demo.customer.client.views.CustomerSearchView"
+            class="org.eclipse.riena.demo.client.customer.views.CustomerSearchView"
             id="org.eclipse.riena.demo.kundensuche"
-            name="org.eclipse.riena.demo.customer.client.views.KundenSucheView"
+            name="org.eclipse.riena.demo.client.customer.views.KundenSucheView"
             restorable="true">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.demo.customer.client.views.CustomerAddressView"
+            class="org.eclipse.riena.demo.client.customer.views.CustomerAddressView"
             id="org.eclipse.riena.demo.customerRecordAddress"
             name="customerRecordAddress"
             restorable="true">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.demo.customer.client.views.CustomerContractView"
+            class="org.eclipse.riena.demo.client.customer.views.CustomerContractView"
             id="org.eclipse.riena.demo.customerRecordContract"
             name="customerRecordContract"
             restorable="true">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.demo.customer.client.views.CustomerOverview"
+            class="org.eclipse.riena.demo.client.customer.views.CustomerOverview"
             id="org.eclipse.riena.demo.customerRecordOverview"
             name="customerRecordOverview"
             restorable="true">
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.demo.customer.client.views.CustomerPersonalDataView"
+            class="org.eclipse.riena.demo.client.customer.views.CustomerPersonalDataView"
             id="org.eclipse.riena.demo.customerRecordPersonalData"
             name="customerRecordPersonalData"
             restorable="true">
@@ -282,26 +282,26 @@
                name="customer"
                autostartsequence="100"
                parentTypeId="application"
-               typeId="org.eclipse.riena.demo.customer.client.customer.assemly">
-            <subapplication
+               typeId="org.eclipse.riena.demo.client.customer.customer.assembly">
+               <subapplication
                   label="Customer"
                   icon="org.eclipse.riena.demo.client:/icons/0457_a_a00.png"
-                  typeId="org.eclipse.riena.demo.customer.client.customer"
+                  typeId="org.eclipse.riena.demo.client.customer.customer"
                   view="customer"/>
          </assembly>
          <assembly
                name="pim subApp"
                autostartsequence="200"
-               assembler="org.eclipse.riena.demo.customer.client.navigation.model.PimSubApplicationNodeBuilder"
+               assembler="org.eclipse.riena.demo.client.customer.navigation.model.PimSubApplicationNodeBuilder"
                parentTypeId="application"
-               typeId="org.eclipse.riena.demo.customer.client.mail">
+               typeId="org.eclipse.riena.demo.client.customer.mail">
          </assembly>
       
-         <assembly
+           <assembly
             typeId="org.eclipse.riena.demo.client.kundensuche"
                autostartsequence="110"
             name="kundensuche"
-            parentTypeId="org.eclipse.riena.demo.customer.client.customer">
+            parentTypeId="org.eclipse.riena.demo.client.customer.customer">
          <modulegroup
                name="kundesuche_group"
                typeId="org.eclipse.riena.demo.client.kundensuche.group">
@@ -314,13 +314,13 @@
                      label="Suche"
                      icon="org.eclipse.riena.demo.client:/icons/ledlightgreen.png"
                      view="org.eclipse.riena.demo.kundensuche"
-                     controller="org.eclipse.riena.demo.customer.client.controllers.CustomerSearchController"/>
+                     controller="org.eclipse.riena.demo.client.customer.controllers.CustomerSearchController"/>
             </module>
          </modulegroup>
       </assembly>
       <assembly
             name="customerRecord"
-            parentTypeId="org.eclipse.riena.demo.customer.client.customer"
+            parentTypeId="org.eclipse.riena.demo.client.customer.customer"
             typeId="org.eclipse.riena.demo.client.customerRecord">
          <modulegroup
                typeId="customerRecordGroup">
@@ -328,28 +328,28 @@
                   label="${riena.navigation.paramenter:firstName} ${riena.navigation.paramenter:lastName}"
                   typeId="org.eclipse.riena.demo.client.module.CustomerRecord">
                <submodule
-                     controller="org.eclipse.riena.demo.customer.client.controllers.CustomerOverviewController"
+                     controller="org.eclipse.riena.demo.client.customer.controllers.CustomerOverviewController"
                      label="Übersicht"
                      shared="false"
                      typeId="customerRecordOverview"
                      view="org.eclipse.riena.demo.customerRecordOverview">
                </submodule>
                <submodule
-                     controller="org.eclipse.riena.demo.customer.client.controllers.CustomerPersonalDataController"
+                     controller="org.eclipse.riena.demo.client.customer.controllers.CustomerPersonalDataController"
                      label="Personendaten"
                      shared="false"
                      typeId="customerRecordPersonalData"
                      view="org.eclipse.riena.demo.customerRecordPersonalData">
                </submodule>
                <submodule
-                     controller="org.eclipse.riena.demo.customer.client.controllers.CustomerAddressController"
+                     controller="org.eclipse.riena.demo.client.customer.controllers.CustomerAddressController"
                      label="Adressdaten"
                      shared="false"
                      typeId="customerRecordAddress"
                      view="org.eclipse.riena.demo.customerRecordAddress">
                </submodule>
                <submodule
-                     controller="org.eclipse.riena.demo.customer.client.controllers.CustomerContractController"
+                     controller="org.eclipse.riena.demo.client.customer.controllers.CustomerContractController"
                      label="Verträge"
                      shared="false"
                      typeId="customerRecordContract"
@@ -361,9 +361,9 @@
       <assembly
             name="order subapp"
             autostartsequence="300"
-            assembler="org.eclipse.riena.demo.customer.client.navigation.model.OrderSubApplicationNodeBuilder"
+            assembler="org.eclipse.riena.demo.client.customer.navigation.model.OrderSubApplicationNodeBuilder"
             parentTypeId="application"
-            typeId="org.eclipse.riena.demo.customer.client.order">
+            typeId="org.eclipse.riena.demo.client.customer.order">
       </assembly>
      </extension>
 

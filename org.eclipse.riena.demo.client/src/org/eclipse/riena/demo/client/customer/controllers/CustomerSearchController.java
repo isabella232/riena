@@ -8,19 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.controllers;
+package org.eclipse.riena.demo.client.customer.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.demo.customer.client.model.SearchResultContainer;
+import org.eclipse.riena.demo.client.customer.model.SearchResultContainer;
 import org.eclipse.riena.demo.customer.common.CustomerRecordOverview;
 import org.eclipse.riena.demo.customer.common.CustomerSearchBean;
 import org.eclipse.riena.demo.customer.common.CustomerSearchResult;
 import org.eclipse.riena.demo.customer.common.ICustomerDemoService;
 import org.eclipse.riena.internal.demo.customer.client.Activator;
-import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -62,21 +61,47 @@ public class CustomerSearchController extends SubModuleController {
 		// ((ILabelRidget) getRidget("treffer")).bindToModel(customerSearchBean,
 		// "treffer");
 
-		ITableRidget kunden = ((ITableRidget) getRidget("ergebnis"));
+		final ITableRidget kunden = ((ITableRidget) getRidget("ergebnis"));
 		String[] columnNames = { "lastname", "firstname", "custno.", "birthdate", "street", "zip", "city", "status", "salesrep", "phone" };
 		String[] propertyNames = { "lastName", "firstName", "customerNumber", "birthdate", "street", "zipcode", "city", "status", "salesrepno",
 				"telefoneNumber" };
 		final SearchResultContainer searchResultContainer = new SearchResultContainer();
 		kunden.bindToModel(searchResultContainer, "customerList", CustomerRecordOverview.class, propertyNames, columnNames);
 
+		((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() {
+
+			public void callback() {
+				int selectionIndex = kunden.getSelectionIndex();
+				if (selectionIndex == 0) {
+					CustomerLoader.setFirstName("Josef");
+					CustomerLoader.setLastName("Mundl");
+				}
+				if (selectionIndex == 1) {
+					CustomerLoader.setFirstName("Robert");
+					CustomerLoader.setLastName("Muster");
+				}
+				if (selectionIndex == 2) {
+					CustomerLoader.setFirstName("Trulli");
+					CustomerLoader.setLastName("Muster-Maier");
+				}
+				if (selectionIndex == 3) {
+					CustomerLoader.setFirstName("Elfriede");
+					CustomerLoader.setLastName("Mustermann");
+				}
+				if (selectionIndex == 4) {
+					CustomerLoader.setFirstName("Ingo");
+					CustomerLoader.setLastName("Mustermann");
+				}
+				getNavigationNode().navigate(
+						new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord", Integer.valueOf(selectionIndex).toString()));
+			}
+		});
+
 		((IActionRidget) getRidget("reset")).addListener(new IActionListener() {
 
 			public void callback() {
-				CustomerRecordOverview c = new CustomerRecordOverview();
-				c.setCustomerNumber(1234567L);
-				c.setFirstName("Holger");
-				c.setLastName("Hoch");
-				getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord"), new NavigationArgument(c));
+				searchResultContainer.setCustomerList(null);
+				((IRidget) getRidget("ergebnis")).updateFromModel();
 			}
 		});
 		((IActionRidget) getRidget("search")).addListener(new IActionListener() {

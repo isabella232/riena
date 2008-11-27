@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.views;
+package org.eclipse.riena.demo.client.customer.views;
 
-import org.eclipse.riena.demo.customer.client.controllers.CustomerOverviewController;
+import org.eclipse.riena.demo.client.customer.controllers.CustomerOverviewController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 
 import org.eclipse.swt.SWT;
@@ -56,19 +56,16 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 		table = new Table(container, SWT.BORDER);
 		table.setLinesVisible(true);
 		table.setBounds(125, 29, 258, 33);
+		addUIControl(table, "table1");
 
 		final TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-		tableColumn.setWidth(100);
+		tableColumn.setWidth(110);
 		tableColumn.setText("New column");
-
-		new TableColumn(table, SWT.NONE);
 
 		final TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
 		tableColumn_1.setAlignment(SWT.RIGHT);
-		tableColumn_1.setWidth(100);
+		tableColumn_1.setWidth(126);
 		tableColumn_1.setText("New column");
-
-		new TableColumn(table, SWT.NONE);
 
 		table_1 = new Table(container, SWT.BORDER);
 		table_1.setLinesVisible(true);

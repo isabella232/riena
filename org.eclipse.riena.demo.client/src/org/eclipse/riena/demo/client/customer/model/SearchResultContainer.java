@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.customer.client.model;
+package org.eclipse.riena.demo.client.customer.model;
 
 import java.util.ArrayList;
 import java.util.List;

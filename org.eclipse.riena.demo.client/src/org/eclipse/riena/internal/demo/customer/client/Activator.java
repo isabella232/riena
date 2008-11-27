@@ -12,7 +12,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.demo.customer.client";
+	public static final String PLUGIN_ID = "org.eclipse.riena.demo.client.customer";
 
 	// The shared instance
 	private static Activator plugin;
