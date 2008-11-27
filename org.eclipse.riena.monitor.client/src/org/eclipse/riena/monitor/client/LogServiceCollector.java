@@ -36,7 +36,7 @@ import org.osgi.service.log.LogListener;
  */
 public class LogServiceCollector implements ICollector, LogListener, IExecutableExtension {
 
-	private IAggregator aggregator;
+	private ICollectingAggregator aggregator;
 	private boolean active;
 	private String category;
 	private Range collectRange;
@@ -103,7 +103,7 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 	 * org.eclipse.riena.monitor.client.ICollector#configureAggregator(org.eclipse
 	 * .riena.monitor.client.IAggregator)
 	 */
-	public void configureAggregator(IAggregator aggregator) {
+	public void configureAggregator(ICollectingAggregator aggregator) {
 		this.aggregator = aggregator;
 	}
 
@@ -155,7 +155,7 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 		extendedLogReaderService.removeLogListener(this);
 	}
 
-	public void bind(IAggregator aggregator) {
+	public void bind(ICollectingAggregator aggregator) {
 		this.aggregator = aggregator;
 	}
 

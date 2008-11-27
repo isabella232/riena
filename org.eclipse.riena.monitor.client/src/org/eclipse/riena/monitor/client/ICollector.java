@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
+
 /**
  * The {@code ICollector} interface defines the protocol for collectors.
  */
@@ -27,7 +28,7 @@ public interface ICollector {
 	 * 
 	 * @param aggregator
 	 */
-	void configureAggregator(IAggregator aggregator);
+	void configureAggregator(ICollectingAggregator aggregator);
 
 	/**
 	 * Start the collector, i.e. the collector can now start collecting
