@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.AbstractRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.RemoteProgressMonitorEvent;
@@ -26,8 +27,6 @@ import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * An {@link IRemoteProgressMonitor} visualizing progress inside an
@@ -82,15 +81,20 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		 * "total work for direction" which is the half of total work
 		 */
 		int normalizeActualWorkedUnits() {
+			if (actualWorkedUnits == 0) {
+				return 0;
+			}
 			double workMultiplier = Double.valueOf(actualWorkedUnits) / Double.valueOf(actualTotalWork);
 			return (int) ((NORMALIZED_TOTAL_WORK / 2) * workMultiplier);
 		}
 
 	}
 
+	public ServiceProgressVisualizer(String taskname, IProgressMonitor progressMonitor) {
+		init(taskname, progressMonitor);
+	}
+
 	public ServiceProgressVisualizer(String taskname) {
-		this.taskName = taskname;
-		initChannels();
 		// ui stuff goes here
 		UICallbackDispatcher callBackDispatcher = new UICallbackDispatcher(UIProcess
 				.getSynchronizerFromExtensionPoint());
@@ -98,7 +102,14 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		// init delegation
 		callBackDispatcher.addUIMonitor(new VisualizerFactory().getProgressVisualizer(subApplicationNode));
 		progressMonitor = callBackDispatcher.createThreadSwitcher();
+		init(taskname, progressMonitor);
 		configureProcessInfo(callBackDispatcher, subApplicationNode);
+	}
+
+	private void init(String taskname, IProgressMonitor progressMonitor) {
+		initChannels();
+		this.taskName = taskname;
+		this.progressMonitor = progressMonitor;
 	}
 
 	private void initChannels() {

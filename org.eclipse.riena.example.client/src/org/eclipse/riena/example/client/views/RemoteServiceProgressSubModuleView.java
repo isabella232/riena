@@ -35,10 +35,16 @@ public class RemoteServiceProgressSubModuleView extends SubModuleView<RemoteServ
 	private Group createUIProcessGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "&Visualized Remote Service Call Progress"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(1, true));
-		Button startUIProcess = UIControlsFactory.createButton(group);
-		int xHint = UIControlsFactory.getWidthHint(startUIProcess) + 10;
-		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startUIProcess);
-		addUIControl(startUIProcess, RemoteServiceProgressSubModuleController.SERVICE_CALL_ACTION);
+		Button startCommunicationManuel = UIControlsFactory.createButton(group);
+		int xHint = UIControlsFactory.getWidthHint(startCommunicationManuel) + 10;
+		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startCommunicationManuel);
+		addUIControl(startCommunicationManuel, RemoteServiceProgressSubModuleController.SERVICE_CALL_ACTION_MANUAL);
+
+		Button startCommunicationUIProcess = UIControlsFactory.createButton(group);
+		xHint = UIControlsFactory.getWidthHint(startCommunicationUIProcess);
+		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startCommunicationUIProcess);
+		addUIControl(startCommunicationUIProcess,
+				RemoteServiceProgressSubModuleController.SERVICE_CALL_ACTION_UIPROCESS); //$NON-NLS-1$
 		return group;
 	}
 

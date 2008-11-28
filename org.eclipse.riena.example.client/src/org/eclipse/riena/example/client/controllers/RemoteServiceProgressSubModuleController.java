@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.example.client.communication.IInfoService;
+import org.eclipse.riena.example.client.communication.InfoServiceFake;
+import org.eclipse.riena.example.client.communication.RemoteCallProcess;
 import org.eclipse.riena.example.client.communication.ServiceProgressVisualizer;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -21,11 +24,14 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 public class RemoteServiceProgressSubModuleController extends SubModuleController {
 
-	public static final String SERVICE_CALL_ACTION = "serviceCallAction"; //$NON-NLS-1$
+	public static final String SERVICE_CALL_ACTION_MANUAL = "serviceCallActionManual"; //$NON-NLS-1$
+	public static final String SERVICE_CALL_ACTION_UIPROCESS = "serviceCallActionUIProcess"; //$NON-NLS-1$
 
 	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
+	private IInfoService remoteService;
 
 	public RemoteServiceProgressSubModuleController() {
+		remoteService = new InfoServiceFake();
 		Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
 				Activator.getDefault().getContext());
 	}
@@ -40,19 +46,40 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 
 	@Override
 	public void configureRidgets() {
-		getActionRidget().setText("Simulate Call"); //$NON-NLS-1$
-		registerRemoteServiceCallback();
+		getActionRidgetManual().setText("[Manual Way]"); //$NON-NLS-1$
+		registerManualRemoteServiceCallback();
+		getActionRidgetUIProcess().setText("[UIProcess Way]"); //$NON-NLS-1$
+		registerUIProcessRemoteServiceCallback();
 	}
 
-	private IActionRidget getActionRidget() {
-		return IActionRidget.class.cast(getRidget(SERVICE_CALL_ACTION));
+	private IActionRidget getActionRidgetManual() {
+		return getActionRidget(SERVICE_CALL_ACTION_MANUAL);
 	}
 
-	private void registerRemoteServiceCallback() {
-		getActionRidget().addListener(new RemoteServiceCallbackAdapter());
+	private IActionRidget getActionRidgetUIProcess() {
+		return getActionRidget(SERVICE_CALL_ACTION_UIPROCESS);
 	}
 
-	private void simulateRemoteServiceCall() {
+	private IActionRidget getActionRidget(String ridgetName) {
+		return IActionRidget.class.cast(getRidget(ridgetName));
+	}
+
+	//
+	/// The manual way shows that ServiceProgressVisualizer implicit visualizes Service calls with a progress box
+
+	private void registerManualRemoteServiceCallback() {
+		getActionRidgetManual().addListener(new RemoteServiceManualCallbackAdapter());
+	}
+
+	class RemoteServiceManualCallbackAdapter implements IActionListener {
+
+		public void callback() {
+			simulateManualRemoteServiceCall();
+		}
+
+	}
+
+	private void simulateManualRemoteServiceCall() {
 		//fork
 		new CommunicationSimulator().start();
 	}
@@ -60,56 +87,53 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 	class CommunicationSimulator extends Thread {
 		@Override
 		public void run() {
-			final Object proxy = new Object();
 			ServiceProgressVisualizer serviceProgress = new ServiceProgressVisualizer("remote"); //$NON-NLS-1$
-			remoteProgressMonitorRegistry.addProgressMonitor(proxy, serviceProgress,
+
+			// add monitor
+			remoteProgressMonitorRegistry.addProgressMonitor(remoteService, serviceProgress,
 					IRemoteProgressMonitorRegistry.MONITOR_MANY_CALLS);
-			IRemoteProgressMonitorList progressMonitors = remoteProgressMonitorRegistry.getProgressMonitors(proxy);
-			startCommunication(progressMonitors);
-			communicate(progressMonitors);
-			endCommuncation(progressMonitors);
-			remoteProgressMonitorRegistry.removeAllProgressMonitors(proxy);
+
+			remoteService.getInfo("foo"); //$NON-NLS-1$
+
+			// remove monitor
+			remoteProgressMonitorRegistry.removeAllProgressMonitors(remoteService);
 		}
 
-		private void endCommuncation(IRemoteProgressMonitorList progressMonitors) {
-			progressMonitors.fireEndEvent(0);
-		}
-
-		private void startCommunication(IRemoteProgressMonitorList progressMonitors) {
-			progressMonitors.fireStartEvent();
-		}
-
-		private void communicate(IRemoteProgressMonitorList progressMonitors) {
-			for (int i = 0; i < 100; i += 1) {
-				sendData(progressMonitors);
-				delay();
-				receiveData(progressMonitors);
-			}
-		}
-
-		private void sendData(IRemoteProgressMonitorList progressMonitors) {
-			progressMonitors.fireWriteEvent(100, 1);
-		}
-
-		private void receiveData(IRemoteProgressMonitorList progressMonitors) {
-			progressMonitors.fireReadEvent(100, 1);
-		}
-
-		private void delay() {
-			try {
-				sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
-	class RemoteServiceCallbackAdapter implements IActionListener {
+	//
+	/// The UIProcess way ..
+
+	private void registerUIProcessRemoteServiceCallback() {
+		getActionRidgetUIProcess().addListener(new RemoteServiceUIProcessCallbackAdapter());
+	}
+
+	class RemoteServiceUIProcessCallbackAdapter implements IActionListener {
 
 		public void callback() {
-			simulateRemoteServiceCall();
+			simulateUIProcessRemoteServiceCall();
 		}
 
+	}
+
+	private void simulateUIProcessRemoteServiceCall() {
+		RemoteCallProcess<IInfoService> process = new RemoteCallProcess<IInfoService>("remote", true, //$NON-NLS-1$
+				getNavigationNode()) {
+
+			@Override
+			public boolean runJob(IProgressMonitor monitor) {
+				getService().getInfo("foo"); //$NON-NLS-1$
+				return true;
+			}
+
+			@Override
+			protected IInfoService getService() {
+				return remoteService;
+			}
+
+		};
+
+		process.start();
 	}
 
 }

@@ -147,6 +147,10 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		}
 	}
 
+	protected boolean forceMonitorBegin() {
+		return true;
+	}
+
 	private final class InternalJob extends Job {
 
 		public InternalJob(String name) {
@@ -155,12 +159,26 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			monitor.beginTask(getName(), getTotalWork());
+			beforeRun(monitor);
+			if (forceMonitorBegin()) {
+				monitor.beginTask(getName(), getTotalWork());
+			}
 			boolean state = runJob(monitor);
 			monitor.done();
+			afterRun(monitor);
 			return state ? Status.OK_STATUS : Status.CANCEL_STATUS;
 		}
 
+	}
+
+	protected Job getJob() {
+		return job;
+	}
+
+	protected void beforeRun(IProgressMonitor monitor) {
+	}
+
+	protected void afterRun(IProgressMonitor monitor) {
 	}
 
 	protected int getTotalWork() {
