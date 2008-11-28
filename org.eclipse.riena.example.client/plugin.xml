@@ -448,8 +448,7 @@
             <module
                   name="uiProcesses"
                   label="UIProcess"
-                  icon="org.eclipse.riena.example.client:/icons/ledred.png"
-                  uncloseable="true">
+                  icon="org.eclipse.riena.example.client:/icons/ledred.png">
                <submodule
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
                      icon="org.eclipse.riena.example.client:/icons/ledlightgreen.png"
