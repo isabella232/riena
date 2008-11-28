@@ -14,9 +14,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.riena.example.client.communication.IInfoService;
-import org.eclipse.riena.example.client.communication.InfoServiceFake;
-import org.eclipse.riena.example.client.communication.RemoteCallProcess;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
@@ -68,25 +65,51 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 
 	void runUIProcess() {
 
-		final IInfoService service = new InfoServiceFake();
+		UIProcess p = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
 
-		RemoteCallProcess<IInfoService> process = new RemoteCallProcess<IInfoService>("remote", true,
-				getNavigationNode()) {
+			@Override
+			public void initialUpdateUI(int totalWork) {
+				super.initialUpdateUI(totalWork);
+				setBlocked(true);
+			}
 
 			@Override
 			public boolean runJob(IProgressMonitor monitor) {
-				getService().getInfo("foo");
+				try {
+					Thread.sleep(2500);
+				} catch (InterruptedException e1) {
+
+				}
+				for (int i = 0; i <= 10; i++) {
+					if (monitor.isCanceled()) {
+						monitor.done();
+						return false;
+					}
+					try {
+						Thread.sleep(800);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+					monitor.worked(i);
+				}
 				return true;
 			}
 
 			@Override
-			protected IInfoService getService() {
-				return service;
+			public void finalUpdateUI() {
+				super.finalUpdateUI();
+				setBlocked(false);
 			}
 
+			@Override
+			protected int getTotalWork() {
+				return 10;
+			}
 		};
-
-		process.start();
+		p.setNote("samlpe uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
+		p.setTitle("sample uiProcess"); //$NON-NLS-1$
+		p.start();
 
 	}
 
