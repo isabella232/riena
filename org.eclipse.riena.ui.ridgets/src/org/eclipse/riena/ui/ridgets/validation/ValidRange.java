@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.Assert;
@@ -22,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
@@ -173,7 +173,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 				this.max = new BigDecimal(args[1]);
 			}
 			if (args.length > 2) {
-				String[] localArgs = Arrays.copyOfRange(args, 2, args.length);
+				String[] localArgs = ArraysUtil.copyRange(args, 2, args.length);
 				setLocal(localArgs);
 			}
 		}

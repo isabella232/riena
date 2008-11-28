@@ -12,12 +12,12 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
 
 /**
@@ -120,7 +120,7 @@ public class MaxNumberLength extends MaxLength {
 				localStart++;
 			}
 			if (args.length > localStart) {
-				String[] localArgs = Arrays.copyOfRange(args, localStart, args.length);
+				String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
 				setLocal(localArgs);
 			}
 		}
