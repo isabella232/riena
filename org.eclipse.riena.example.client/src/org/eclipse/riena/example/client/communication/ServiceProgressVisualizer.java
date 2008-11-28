@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.AbstractRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitor;
 import org.eclipse.riena.communication.core.progressmonitor.RemoteProgressMonitorEvent;
@@ -27,6 +26,8 @@ import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UICallbackDispatcher;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * An {@link IRemoteProgressMonitor} visualizing progress inside an
@@ -138,8 +139,8 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	/// implement needed callbacks
 
 	@Override
-	public void start(RemoteProgressMonitorEvent event) {
-		super.start(event);
+	public void start() {
+		super.start();
 		progressMonitor.beginTask(taskName, (int) NORMALIZED_TOTAL_WORK);
 	}
 
