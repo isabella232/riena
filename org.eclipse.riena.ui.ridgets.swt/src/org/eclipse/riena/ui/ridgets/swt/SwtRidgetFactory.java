@@ -45,7 +45,7 @@ public final class SwtRidgetFactory {
 
 	private static final List<Object> CONTROL_LIST = new ArrayList<Object>(1);
 
-	public static IRidget createRidget(Control control) {
+	public static IRidget createRidget(Object control) {
 		Assert.isNotNull(control);
 		CONTAINER.clear();
 		CONTROL_LIST.clear();
