@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.util.Iterator;
+
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
@@ -161,6 +164,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	public void configureRidgets() {
 		// unused
+	}
+
+	/**
+	 * calls updateFromModel for all registered ridgets in this controller
+	 */
+	public void updateAllRidgetsFromModel() {
+		Iterator<? extends IRidget> r = getRidgets().iterator();
+		while (r.hasNext()) {
+			r.next().updateFromModel();
+		}
 	}
 
 }
