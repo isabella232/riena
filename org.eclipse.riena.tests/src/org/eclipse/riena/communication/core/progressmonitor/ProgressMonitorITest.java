@@ -195,13 +195,13 @@ public final class ProgressMonitorITest extends RienaTestCase {
 			lastResponseLength = event.getBytesProcessed();
 		}
 
-		public void start(RemoteProgressMonitorEvent event) {
+		public void start() {
 			assertFalse(start);
 			System.out.println("start");
 			start = true;
 		}
 
-		public void end(RemoteProgressMonitorEvent event) {
+		public void end() {
 			assertFalse(end);
 			System.out.println("end");
 			end = true;

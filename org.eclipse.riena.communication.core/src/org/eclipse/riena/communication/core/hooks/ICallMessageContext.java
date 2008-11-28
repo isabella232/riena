@@ -27,9 +27,9 @@ public interface ICallMessageContext {
 
 	IRemoteProgressMonitorList getProgressMonitorList();
 
-	void startCall();
+	void fireStartCall();
 
-	void endCall();
+	void fireEndCall();
 
 	void fireReadEvent(int bytesRead);
 

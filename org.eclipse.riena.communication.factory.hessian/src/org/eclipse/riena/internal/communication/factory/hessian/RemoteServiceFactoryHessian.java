@@ -179,11 +179,15 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				return remoteProgressMonitorList;
 			}
 
-			public void startCall() {
+			public void fireStartCall() {
+				//				List<String> list = RienaHessianProxyFactory.getHttpURLConnection().getRequestProperties().get(
+				//						"Content-Length"); //$NON-NLS-1$
 				remoteProgressMonitorList.fireStartEvent();
+				firstEvent = false;
+
 			}
 
-			public void endCall() {
+			public void fireEndCall() {
 				// if no communication happened than this was a local call (like for equals or hashCode)
 				if (totalBytesRead == 0 && totalBytesWritten == 0 && bytesRead == 0 && bytesWritten == 0) {
 					return;
@@ -217,8 +221,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 			public void fireWriteEvent(int parmBytesWritten) {
 				if (firstEvent) {
-					remoteProgressMonitorList.fireStartEvent();
-					firstEvent = false;
+					fireStartCall();
 				}
 
 				bytesWritten += parmBytesWritten;
@@ -262,6 +265,7 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 				}
 				return requestId;
 			}
+
 		}
 	}
 }
