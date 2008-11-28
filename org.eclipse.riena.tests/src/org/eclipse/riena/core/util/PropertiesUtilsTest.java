@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -24,6 +25,26 @@ public class PropertiesUtilsTest extends TestCase {
 		assertEquals(0, map.size());
 	}
 
+	public void testAsMapWithHashtable() {
+		Hashtable<String, String> hashtable = new Hashtable<String, String>();
+		hashtable.put("a", "1");
+		hashtable.put("b", "2");
+		Map<String, String> map = PropertiesUtils.asMap(hashtable);
+		assertEquals(2, map.size());
+		assertEquals("1", map.get("a"));
+		assertEquals("2", map.get("b"));
+	}
+
+	public void testAsMapWithHashtableWithExpectation() {
+		Hashtable<String, String> hashtable = new Hashtable<String, String>();
+		hashtable.put("a", "1");
+		hashtable.put("b", "2");
+		Map<String, String> map = PropertiesUtils.asMap(hashtable, "a", "b");
+		assertEquals(2, map.size());
+		assertEquals("1", map.get("a"));
+		assertEquals("2", map.get("b"));
+	}
+
 	public void testAsMapEmptyString() {
 		Map<String, String> map = PropertiesUtils.asMap("");
 		assertEquals(0, map.size());
@@ -31,6 +52,7 @@ public class PropertiesUtilsTest extends TestCase {
 
 	public void testAsMap() {
 		Map<String, String> map = PropertiesUtils.asMap("a=1,b=2");
+		assertEquals(2, map.size());
 		assertEquals("1", map.get("a"));
 		assertEquals("2", map.get("b"));
 	}
@@ -79,12 +101,10 @@ public class PropertiesUtilsTest extends TestCase {
 	}
 
 	public void testAsArrayWithContentPlusFinalComma() {
-		String[] actual = PropertiesUtils.asArray("a,b,c,");
-		assertEquals(4, actual.length);
+		String[] actual = PropertiesUtils.asArray("a,");
+		assertEquals(2, actual.length);
 		assertEquals("a", actual[0]);
-		assertEquals("b", actual[1]);
-		assertEquals("c", actual[2]);
-		assertEquals("", actual[3]);
+		assertEquals("", actual[1]);
 	}
 
 	public void testAsArrayWithEmptyContentWithinCommas() {
@@ -112,12 +132,30 @@ public class PropertiesUtilsTest extends TestCase {
 		assertEquals("", actual[1]);
 	}
 
-	public void testAsArrayWithBalckslashComma() {
+	public void testAsArrayWithBackslashComma() {
 		String[] actual = PropertiesUtils.asArray("1,2\\,3,4");
 		assertEquals(3, actual.length);
 		assertEquals("1", actual[0]);
 		assertEquals("2,3", actual[1]);
 		assertEquals("4", actual[2]);
+	}
+
+	public void testAsArrayWithBackslashBackSlashComma() {
+		String[] actual = PropertiesUtils.asArray("1,2\\,3,\\\\,4");
+		assertEquals(4, actual.length);
+		assertEquals("1", actual[0]);
+		assertEquals("2,3", actual[1]);
+		assertEquals("\\", actual[2]);
+		assertEquals("4", actual[3]);
+	}
+
+	public void testAsArrayWithUnknownEscapeCharacter() {
+		try {
+			PropertiesUtils.asArray("1,2\\n,3,\\\\,4");
+			fail();
+		} catch (IllegalArgumentException e) {
+			// ok
+		}
 	}
 
 }
