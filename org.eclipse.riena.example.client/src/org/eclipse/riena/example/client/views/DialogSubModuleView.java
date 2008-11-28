@@ -19,7 +19,6 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * SWT sample view for a Dialog.
@@ -35,11 +34,8 @@ public class DialogSubModuleView extends SubModuleView<DialogSubModuleController
 		parent.setLayout(new GridLayout(1, false));
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();
 
-		Button openShell = UIControlsFactory.createButton(parent);
-		fillFactory.applyTo(openShell);
-		addUIControl(openShell, "openShell"); //$NON-NLS-1$
-
-		Shell shell = new Shell();
-		addUIControl(shell, "shell"); //$NON-NLS-1$
+		Button openDialog = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(openDialog);
+		addUIControl(openDialog, DialogSubModuleController.RIDGET_ID_OPEN_DIALOG);
 	}
 }

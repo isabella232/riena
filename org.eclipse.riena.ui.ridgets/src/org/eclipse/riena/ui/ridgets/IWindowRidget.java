@@ -65,4 +65,9 @@ public interface IWindowRidget extends IRidget {
 	void setCloseable(boolean closeable);
 
 	void setActive(boolean active);
+
+	/**
+	 * Releases all of the native screen resources used by this window.
+	 */
+	void dispose();
 }

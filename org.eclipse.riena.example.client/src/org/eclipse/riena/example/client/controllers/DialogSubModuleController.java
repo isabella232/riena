@@ -10,36 +10,37 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.riena.example.client.views.HelloDialogView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
  * Controller for the {@link DialogSubModuleController} example.
  */
 public class DialogSubModuleController extends SubModuleController {
 
+	public static final String RIDGET_ID_OPEN_DIALOG = "openDialog"; //$NON-NLS-1$
+
 	public DialogSubModuleController() {
 		super(null);
 	}
 
 	/**
-	 * Binds and updates the ridgets.
-	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 
-		IWindowRidget shell = (IWindowRidget) getRidget("shell"); //$NON-NLS-1$
-		shell.setTitle("Test shell");
-
-		IActionRidget openShellAction = (IActionRidget) getRidget("openShell"); //$NON-NLS-1$
+		IActionRidget openShellAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_DIALOG);
 		openShellAction.setText("&Open dialog"); //$NON-NLS-1$
 		openShellAction.addListener(new IActionListener() {
+			private HelloDialogView dialog;
+
 			public void callback() {
-				System.err.println("to be implemented");
-				//((IWindowRidget) getRidget("shell")).setVisible(true);
+				if (dialog == null) {
+					dialog = new HelloDialogView();
+				}
+				dialog.build();
 			}
 		});
 	}

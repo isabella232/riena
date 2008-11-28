@@ -183,6 +183,15 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#dispose()
+	 */
+	public void dispose() {
+		getUIControl().dispose();
+	}
+
 	// helping methods
 	// ////////////////
 

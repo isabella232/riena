@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizerLocator;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
@@ -79,13 +78,6 @@ public abstract class AbstractWindowController implements IController {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#setUICallbackDispatcherFactory(org.eclipse.riena.ui.internal.core.uiprocess.IProgressVisualizerLocator)
-	 */
-	public void setUICallbackDispatcherFactory(IProgressVisualizerLocator uiprocessCallBackDispatcherFactory) {
-		// do nothing by default
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#setBlocked(boolean)
 	 */
 	public void setBlocked(boolean blocked) {
@@ -103,9 +95,19 @@ public abstract class AbstractWindowController implements IController {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
+	 * @see
+	 * org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
 		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.ui.ridgets.controller.IController#afterBind()
+	 */
+	public void afterBind() {
+		getWindowRidget().updateFromModel();
 	}
 }
