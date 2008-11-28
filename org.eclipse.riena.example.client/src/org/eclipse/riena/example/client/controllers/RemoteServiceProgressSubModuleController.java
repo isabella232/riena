@@ -19,6 +19,7 @@ import org.eclipse.riena.example.client.communication.RemoteCallProcess;
 import org.eclipse.riena.example.client.communication.ServiceProgressVisualizer;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
@@ -87,6 +88,8 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 	class CommunicationSimulator extends Thread {
 		@Override
 		public void run() {
+			blockSubModule(true);
+
 			ServiceProgressVisualizer serviceProgress = new ServiceProgressVisualizer("remote"); //$NON-NLS-1$
 
 			// add monitor
@@ -97,6 +100,18 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 
 			// remove monitor
 			remoteProgressMonitorRegistry.removeAllProgressMonitors(remoteService);
+
+			blockSubModule(false);
+		}
+
+		private void blockSubModule(final boolean block) {
+			UIProcess.getSynchronizerFromExtensionPoint().synchronize(new Runnable() {
+
+				public void run() {
+					setBlocked(block);
+				}
+
+			});
 		}
 
 	}
@@ -121,9 +136,21 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 				getNavigationNode()) {
 
 			@Override
+			public void initialUpdateUI(int totalWork) {
+				super.initialUpdateUI(totalWork);
+				setBlocked(true);
+			}
+
+			@Override
 			public boolean runJob(IProgressMonitor monitor) {
 				getService().getInfo("foo"); //$NON-NLS-1$
 				return true;
+			}
+
+			@Override
+			public void finalUpdateUI() {
+				super.finalUpdateUI();
+				setBlocked(false);
 			}
 
 			@Override
