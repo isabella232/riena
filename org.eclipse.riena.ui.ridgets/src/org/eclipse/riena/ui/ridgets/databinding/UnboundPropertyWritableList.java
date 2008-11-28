@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.runtime.Assert;
 
 public class UnboundPropertyWritableList extends WritableList implements IUnboundPropertyObservable {
 
@@ -27,8 +29,12 @@ public class UnboundPropertyWritableList extends WritableList implements IUnboun
 	private final PropertyDescriptor propertyDescriptor;
 
 	public UnboundPropertyWritableList(Object listBean, String listPropertyName) {
+		Assert.isNotNull(listBean, "bound property for " + listPropertyName + " cannot be null."); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			propertyDescriptor = PropertyUtils.getPropertyDescriptor(listBean, listPropertyName);
+			if (propertyDescriptor == null) {
+				throw new UIBindingFailure("Could not read propertyDescriptor " + listPropertyName + " in " + listBean); //$NON-NLS-1$//$NON-NLS-2$
+			}
 			bean = listBean;
 		} catch (IllegalAccessException e) {
 			throw new UIBindingFailure("Could not read property '" + listPropertyName + "' of bean " + listBean + ".", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
