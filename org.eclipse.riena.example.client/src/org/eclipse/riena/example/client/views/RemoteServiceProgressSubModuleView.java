@@ -44,7 +44,7 @@ public class RemoteServiceProgressSubModuleView extends SubModuleView<RemoteServ
 		xHint = UIControlsFactory.getWidthHint(startCommunicationUIProcess);
 		GridDataFactory.fillDefaults().hint(xHint, SWT.DEFAULT).applyTo(startCommunicationUIProcess);
 		addUIControl(startCommunicationUIProcess,
-				RemoteServiceProgressSubModuleController.SERVICE_CALL_ACTION_UIPROCESS); //$NON-NLS-1$
+				RemoteServiceProgressSubModuleController.SERVICE_CALL_ACTION_UIPROCESS);
 		return group;
 	}
 
