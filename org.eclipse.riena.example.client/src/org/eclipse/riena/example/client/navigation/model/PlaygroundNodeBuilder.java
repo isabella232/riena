@@ -209,7 +209,6 @@ public class PlaygroundNodeBuilder extends AbstractNavigationAssembler {
 
 		if (knownTargetIds == null) {
 			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.playground", //$NON-NLS-1$
-					"org.eclipse.riena.example.uiProcesses", //$NON-NLS-1$
 					"org.eclipse.riena.example.buttons", //$NON-NLS-1$
 					"org.eclipse.riena.example.choice", //$NON-NLS-1$
 					"org.eclipse.riena.example.combo", //$NON-NLS-1$
