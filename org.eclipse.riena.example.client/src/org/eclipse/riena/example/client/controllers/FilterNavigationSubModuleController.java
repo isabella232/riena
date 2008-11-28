@@ -19,12 +19,9 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -96,9 +93,9 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void initNavigationFilterGroup() {
 
-		ITextRidget ridgetID = (ITextRidget) getRidget("nodeLabel"); //$NON-NLS-1$
+		ITextRidget ridgetID = (ITextRidget) getRidget("nodeId"); //$NON-NLS-1$
 		filterModel = new FilterModel();
-		ridgetID.bindToModel(filterModel, "nodeLabel"); //$NON-NLS-1$
+		ridgetID.bindToModel(filterModel, "nodeId"); //$NON-NLS-1$
 		ridgetID.updateFromModel();
 
 		ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
@@ -163,13 +160,11 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void doAddFilter() {
 
-		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
-		for (INavigationNode<?> node : nodes) {
-			Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-			attributes.add(createFilterAttribute(filterModel, node));
-			IUIFilter filter = new UIFilter(attributes);
-			node.addFilter(filter);
-		}
+		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
+		rules.add(createFilterRule(filterModel, filterModel.getNodeId()));
+		IUIFilter filter = new UIFilter(rules);
+		applNode.addFilter(filter);
 
 	}
 
@@ -178,10 +173,8 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveFilters() {
 
-		List<INavigationNode<?>> nodes = findNodes(filterModel.getNodeLabel());
-		for (INavigationNode<?> node : nodes) {
-			node.removeAllFilters();
-		}
+		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		applNode.removeAllFilters();
 
 	}
 
@@ -193,20 +186,12 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 *            - model with selections.
 	 * @return filter attribute
 	 */
-	private IUIFilterRule createFilterAttribute(FilterModel model, INavigationNode<?> node) {
+	private IUIFilterRule createFilterRule(FilterModel model, String nodeId) {
 
 		IUIFilterRule attribute = null;
 
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
-
-		String nodeId;
-		if (node.getNodeId() != null) {
-			nodeId = node.getNodeId().getTypeId();
-		} else {
-			nodeId = "";
-			node.setNodeId(new NavigationNodeId(""));
-		}
 
 		switch (type) {
 		case MARKER:
@@ -220,37 +205,6 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		}
 
 		return attribute;
-
-	}
-
-	/**
-	 * Returns all node with the given label.
-	 * 
-	 * @param label
-	 * @return list of found nodes.
-	 */
-	private List<INavigationNode<?>> findNodes(String label) {
-
-		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
-
-		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		findNodes(label, applNode, nodes);
-
-		return nodes;
-
-	}
-
-	private void findNodes(String label, INavigationNode<?> node, List<INavigationNode<?>> nodes) {
-
-		if (StringUtils.equals(node.getLabel(), label)) {
-			nodes.add(node);
-		}
-		List<?> children = node.getChildren();
-		for (Object child : children) {
-			if (child instanceof INavigationNode<?>) {
-				findNodes(label, (INavigationNode<?>) child, nodes);
-			}
-		}
 
 	}
 
@@ -270,13 +224,13 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private class FilterModel {
 
-		private String nodeLabel;
+		private String nodeId;
 		private List<FilterType> types;
 		private FilterType selectedType;
 		private Object selectedFilterTypeValue;
 
 		public FilterModel() {
-			nodeLabel = ""; //$NON-NLS-1$
+			nodeId = ""; //$NON-NLS-1$
 		}
 
 		public List<FilterType> getTypes() {
@@ -306,12 +260,12 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			return selectedFilterTypeValue;
 		}
 
-		public void setNodeLabel(String nodeLabel) {
-			this.nodeLabel = nodeLabel;
+		public void setNodeId(String nodeId) {
+			this.nodeId = nodeId;
 		}
 
-		public String getNodeLabel() {
-			return nodeLabel;
+		public String getNodeId() {
+			return nodeId;
 		}
 
 	}

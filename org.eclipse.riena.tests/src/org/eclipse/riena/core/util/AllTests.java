@@ -29,7 +29,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ReflectionUtilsTest.class);
 		suite.addTestSuite(StringUtilsTest.class);
 		suite.addTestSuite(VariableManagerUtilTest.class);
-		suite.addTestSuite(SimpleWildcardTest.class);
+		suite.addTestSuite(StringMatcherTest.class);
 		return suite;
 	}
 

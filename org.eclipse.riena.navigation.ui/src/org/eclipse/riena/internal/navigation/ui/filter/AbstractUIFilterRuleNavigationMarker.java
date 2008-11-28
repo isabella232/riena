@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker;
@@ -32,17 +33,36 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 
 		if (object instanceof INavigationNode) {
 			INavigationNode node = (INavigationNode) object;
-			if (node.getNodeId() != null && nodeId != null) {
-				String typeId = node.getNodeId().getTypeId();
-				if (typeId == null) {
-					return false;
-				}
-				return nodeId.startsWith(typeId);
-			} else {
-				return false;
-			}
+			String longNodeId = getLongNodeId(node);
+			StringMatcher stringMatcher = new StringMatcher(nodeId);
+			return stringMatcher.match(longNodeId);
 		} else {
 			return false;
+		}
+
+	}
+
+	private String getLongNodeId(INavigationNode node) {
+
+		StringBuilder builder = new StringBuilder();
+		addToLongNodeId(builder, node);
+		return builder.toString();
+
+	}
+
+	private void addToLongNodeId(StringBuilder builder, INavigationNode node) {
+
+		if (node != null) {
+			String id = null;
+			if (node.getNodeId() != null) {
+				id = node.getNodeId().getTypeId();
+			}
+			if (id == null) {
+				id = "";
+			}
+			builder.insert(0, id);
+			builder.insert(0, "/");
+			addToLongNodeId(builder, node.getParent());
 		}
 
 	}
@@ -64,7 +84,6 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 
 	public void setNode(String id) {
 		this.nodeId = id;
-
 	}
 
 }

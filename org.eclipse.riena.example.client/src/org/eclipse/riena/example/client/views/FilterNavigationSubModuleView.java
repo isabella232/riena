@@ -48,11 +48,11 @@ public class FilterNavigationSubModuleView extends SubModuleView<FilterNavigatio
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(10, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Label label1 = UIControlsFactory.createLabel(group, "Node Label"); //$NON-NLS-1$
+		Label label1 = UIControlsFactory.createLabel(group, "Node ID"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(false, false).span(1, 1).applyTo(label1);
-		Text nodeLabel = UIControlsFactory.createText(group);
-		addUIControl(nodeLabel, "nodeLabel"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(nodeLabel);
+		Text nodeId = UIControlsFactory.createText(group);
+		addUIControl(nodeId, "nodeId"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().grab(true, false).span(1, 1).applyTo(nodeId);
 
 		ChoiceComposite filterType = new ChoiceComposite(group, SWT.NONE, false);
 		filterType.setOrientation(SWT.HORIZONTAL);

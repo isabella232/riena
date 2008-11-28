@@ -576,31 +576,31 @@
          
          <ruleMarkerNavigation
                marker="hidden"
-               nodeId="org.eclipse.riena.example.uiProcesses">
+               nodeId="*/org.eclipse.riena.example.uiProcesses">
          </ruleMarkerNavigation>
          <ruleMarkerNavigation
                marker="hidden"
-               nodeId="org.eclipse.riena.example.navigation">
+               nodeId="*/org.eclipse.riena.example.navigation*">
          </ruleMarkerNavigation>
          <ruleMarkerRidget
                marker="hidden"
-               ridgetId="textPassword">
+               ridgetId="*/textPassword">
          </ruleMarkerRidget>
          <ruleMarkerRidget
                marker="hidden"
-               ridgetId="ui_label2">
+               ridgetId="*/ui_label2">
          </ruleMarkerRidget>
          <ruleMarkerRidget
                marker="output"
-               ridgetId="textField">
+               ridgetId="*/textField">
          </ruleMarkerRidget>
          <ruleValidatorRidget
-               ridgetId="ui_text1"
+               ridgetId="*/ui_text1"
                validationTime="onUIControlEdit"
                validator="org.eclipse.riena.ui.ridgets.validation.ValidRange:10,100">
          </ruleValidatorRidget>
          <ruleMarkerMenuItem
-               itemId="org.eclipse.riena.example.client.exitToolBarItem"
+               itemId="*/org.eclipse.riena.example.client.exitToolBarItem"
                marker="disabled">
          </ruleMarkerMenuItem>
                 
