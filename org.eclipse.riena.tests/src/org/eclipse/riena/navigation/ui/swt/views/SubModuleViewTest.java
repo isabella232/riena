@@ -41,7 +41,6 @@ public class SubModuleViewTest extends RienaTestCase {
 
 		super.setUp();
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
-		Thread.sleep(500);
 		ApplicationNode appNode = new ApplicationNode();
 		SubApplicationNode subAppNode = new SubApplicationNode();
 		appNode.addChild(subAppNode);
