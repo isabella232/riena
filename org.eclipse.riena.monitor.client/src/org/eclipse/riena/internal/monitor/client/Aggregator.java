@@ -64,6 +64,7 @@ public class Aggregator implements ICollectingAggregator {
 			sender.addCategory(collector.getCategory());
 			collector.start();
 		}
+		store.open();
 		sender.start();
 		started = true;
 	}
@@ -77,7 +78,7 @@ public class Aggregator implements ICollectingAggregator {
 			sender.removeCategory(collector.getCategory());
 		}
 		sender.stop();
-		store.flush();
+		store.close();
 		started = false;
 	}
 
