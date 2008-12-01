@@ -138,6 +138,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 					}
 				}
 			});
+			getShell().pack();
 		}
 
 		/*
