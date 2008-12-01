@@ -21,7 +21,7 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(Range.class);
+		suite.addTestSuite(RangeTest.class);
 		return suite;
 	}
 
