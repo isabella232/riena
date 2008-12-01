@@ -23,6 +23,7 @@ public class AllTests extends TestCase {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		// TODO fails!
 		// suite.addTestSuite(ContainerModelTest.class);
+		suite.addTestSuite(ArraysUtilTest.class);
 		suite.addTestSuite(IterTest.class);
 		suite.addTestSuite(ListenerListTest.class);
 		suite.addTestSuite(LiteralTest.class);
