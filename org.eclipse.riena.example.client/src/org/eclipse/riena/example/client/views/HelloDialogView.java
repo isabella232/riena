@@ -52,7 +52,7 @@ public class HelloDialogView extends DialogView {
 		super.buildView(parent);
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, true));
+		composite.setLayout(new GridLayout(2, false));
 
 		UIControlsFactory.createLabel(composite, "Input"); //$NON-NLS-1$
 		Text input = UIControlsFactory.createText(composite);
