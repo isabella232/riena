@@ -20,6 +20,13 @@ import junit.framework.TestCase;
  */
 public class PropertiesUtilsTest extends TestCase {
 
+	/**
+	 *
+	 */
+	public interface IDefault {
+		String get(String key);
+	}
+
 	public void testAsMapNullString() {
 		Map<String, String> map = PropertiesUtils.asMap(null);
 		assertEquals(0, map.size());
@@ -85,6 +92,14 @@ public class PropertiesUtilsTest extends TestCase {
 		} catch (IllegalArgumentException e) {
 			// ok
 		}
+	}
+
+	public void testAsMapWithDefaults() {
+		Map<String, String> map = PropertiesUtils.asMap("a=5", Literal.map("a", "1").map("b", "2").map("c", "3"));
+		assertEquals(3, map.size());
+		assertEquals("5", map.get("a"));
+		assertEquals("2", map.get("b"));
+		assertEquals("3", map.get("c"));
 	}
 
 	public void testAsArrayEmpty() {
