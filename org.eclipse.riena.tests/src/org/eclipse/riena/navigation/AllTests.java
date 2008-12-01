@@ -23,6 +23,8 @@ public class AllTests extends TestCase {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTest(org.eclipse.riena.navigation.model.AllTests.suite());
 		suite.addTestSuite(ApplicationNodeManagerTest.class);
+		suite.addTestSuite(NavigationNodeIdTest.class);
+		suite.addTestSuite(NavigationNodeUtilityTest.class);
 		return suite;
 	}
 }

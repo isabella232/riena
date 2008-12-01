@@ -8,9 +8,12 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
+import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.NavigationNodeUtility;
 import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
@@ -31,20 +34,34 @@ public class RidgetMatcher {
 	}
 
 	/**
-	 * This method compares the ID of this matcher and the given ID of a ridget.
+	 * This method compares the ID of this matcher and the given ID of a ridget
+	 * or the combined ID of navigation nod and ridget.
 	 * 
-	 * @param object
+	 * @param args
 	 *            - object to check
 	 * 
-	 * @return {@code true} if the object is an ridget and the IDs match;
-	 *         otherwise {@code false}
+	 * @return {@code true} if IDs match; otherwise {@code false}
 	 */
-	public boolean matches(Object object) {
+	public boolean matches(Object... args) {
 
-		if (object instanceof IRidget) {
-			IRidget ridget = (IRidget) object;
-			String ridgetId = ridget.getID();
+		if ((args == null) || (args.length <= 0)) {
+			return false;
+		}
+		if (!(args[0] instanceof IRidget)) {
+			return false;
+		}
+
+		IRidget ridget = (IRidget) args[0];
+		String ridgetId = ridget.getID();
+		if (args.length == 1) {
 			return StringUtils.equals(ridgetId, getId());
+		} else {
+			if (args[1] instanceof INavigationNode) {
+				String nodeId = NavigationNodeUtility.getLongNodeId((INavigationNode) args[1]);
+				String longRidgetId = nodeId + "/" + ridgetId; //$NON-NLS-1$
+				StringMatcher matcher = new StringMatcher(getId());
+				return matcher.match(longRidgetId);
+			}
 		}
 
 		return false;

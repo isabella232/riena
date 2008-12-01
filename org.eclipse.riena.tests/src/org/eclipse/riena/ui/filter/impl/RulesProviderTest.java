@@ -215,7 +215,7 @@ public class RulesProviderTest extends TestCase {
 		public void apply(Object object) {
 		}
 
-		public boolean matches(Object object) {
+		public boolean matches(Object... object) {
 			return false;
 		}
 
@@ -232,7 +232,7 @@ public class RulesProviderTest extends TestCase {
 		public void apply(Object object) {
 		}
 
-		public boolean matches(Object object) {
+		public boolean matches(Object... object) {
 			return false;
 		}
 

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
 import junit.framework.TestCase;
 
@@ -16,6 +16,10 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -56,8 +60,6 @@ public class RidgetMatcherTest extends TestCase {
 	public void testMatches() {
 
 		RidgetMatcher matcher = new RidgetMatcher("4711");
-		assertFalse(matcher.matches(null));
-
 		assertFalse(matcher.matches((IRidget) null));
 
 		assertFalse(matcher.matches(new Object()));
@@ -68,6 +70,12 @@ public class RidgetMatcherTest extends TestCase {
 
 		control.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "4711");
 		assertTrue(matcher.matches(ridget));
+
+		INavigationNode<ISubModuleNode> node = new SubModuleNode(new NavigationNodeId("subMod0815"));
+		assertFalse(matcher.matches(node, ridget));
+
+		matcher = new RidgetMatcher("*4711");
+		assertTrue(matcher.matches(ridget, node));
 
 		SwtUtilities.disposeWidget(control);
 

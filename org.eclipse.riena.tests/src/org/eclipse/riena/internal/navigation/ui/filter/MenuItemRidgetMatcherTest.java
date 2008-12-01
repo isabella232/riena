@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
 import junit.framework.TestCase;
 
@@ -73,6 +73,12 @@ public class MenuItemRidgetMatcherTest extends TestCase {
 		assertTrue(matcher.matches(ridget));
 
 		matcher = new MenuItemRidgetMatcher(IActionRidget.BASE_ID_MENUACTION + "4711");
+		assertTrue(matcher.matches(ridget));
+
+		matcher = new MenuItemRidgetMatcher(IActionRidget.BASE_ID_MENUACTION + "*11");
+		assertTrue(matcher.matches(ridget));
+
+		matcher = new MenuItemRidgetMatcher("4711");
 		assertTrue(matcher.matches(ridget));
 
 	}

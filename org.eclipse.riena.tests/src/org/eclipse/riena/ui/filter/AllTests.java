@@ -14,7 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.ui.filter.impl.RulesProvider;
+import org.eclipse.riena.ui.filter.impl.RulesProviderTest;
 
 /**
  * Tests all test cases within package:
@@ -25,7 +25,7 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(RulesProvider.class);
+		suite.addTestSuite(RulesProviderTest.class);
 		return suite;
 	}
 

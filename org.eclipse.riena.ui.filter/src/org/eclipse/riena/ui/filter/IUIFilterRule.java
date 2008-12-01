@@ -23,7 +23,7 @@ public interface IUIFilterRule {
 	 *            - object to check
 	 * @return {@code true} if the given object matches; otherwise {@code false}
 	 */
-	boolean matches(Object object);
+	boolean matches(Object... args);
 
 	/**
 	 * Modifies the given object.

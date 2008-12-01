@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
@@ -33,8 +33,12 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#matches(java.lang.Object)
 	 */
-	public boolean matches(Object object) {
-		return matcher.matches(object);
+
+	public boolean matches(Object... args) {
+		if ((args == null) || (args.length <= 0)) {
+			return false;
+		}
+		return matcher.matches(args);
 	}
 
 	/**

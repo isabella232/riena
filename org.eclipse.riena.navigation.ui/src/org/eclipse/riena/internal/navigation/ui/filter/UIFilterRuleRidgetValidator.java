@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
@@ -62,8 +62,11 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#matches(java.lang.Object)
 	 */
-	public boolean matches(Object object) {
-		return getMatcher().matches(object);
+	public boolean matches(Object... args) {
+		if ((args == null) || (args.length <= 0)) {
+			return false;
+		}
+		return getMatcher().matches(args);
 	}
 
 	/**

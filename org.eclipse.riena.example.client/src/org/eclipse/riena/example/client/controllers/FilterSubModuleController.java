@@ -21,8 +21,16 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetDisabledMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetHiddenMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetMandatoryMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetOutputMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetValidator;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeUtility;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -39,11 +47,6 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetDisabledMarker;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetMandatoryMarker;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetOutputMarker;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetValidator;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
@@ -221,7 +224,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doAddFilter() {
 		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-		attributes.add(createFilterAttribute(filterModel));
+		attributes.add(createFilterAttribute(filterModel, true));
 		IUIFilter filter = new UIFilter(attributes);
 		getNavigationNode().addFilter(filter);
 	}
@@ -231,7 +234,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doGlobalAddFilter() {
 		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-		attributes.add(createFilterAttribute(globalFilterModel));
+		attributes.add(createFilterAttribute(globalFilterModel, false));
 		IUIFilter filter = new UIFilter(attributes);
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.addFilter(filter);
@@ -245,11 +248,17 @@ public class FilterSubModuleController extends SubModuleController {
 	 *            - model with selections.
 	 * @return filter attribute
 	 */
-	private IUIFilterRule createFilterAttribute(FilterModel model) {
+	private IUIFilterRule createFilterAttribute(FilterModel model, boolean local) {
 
 		IUIFilterRule attribute = null;
 
 		String id = model.getSelectedId();
+		if (local) {
+			INavigationNode<ISubModuleNode> node = getNavigationNode();
+			id = NavigationNodeUtility.getLongNodeId(node) + "/" + id; //$NON-NLS-1$
+		} else {
+			id = "*/" + id; //$NON-NLS-1$
+		}
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
 

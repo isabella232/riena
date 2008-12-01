@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
@@ -30,17 +30,24 @@ public class MenuItemRidgetMatcher extends RidgetMatcher {
 	}
 
 	@Override
-	public boolean matches(Object object) {
+	public boolean matches(Object... args) {
 
-		if (object instanceof IActionRidget) {
-			IActionRidget ridget = (IActionRidget) object;
-			String ridgetId = ridget.getID();
-			if (StringUtils.equals(ridgetId, getMenuItemId())) {
-				return true;
-			}
-			if (StringUtils.equals(ridgetId, getToolbarItemId())) {
-				return true;
-			}
+		if ((args == null) || (args.length <= 0)) {
+			return false;
+		}
+		if (!(args[0] instanceof IActionRidget)) {
+			return false;
+		}
+
+		IActionRidget ridget = (IActionRidget) args[0];
+		String ridgetId = ridget.getID();
+		StringMatcher matcher = new StringMatcher(getMenuItemId());
+		if (matcher.match(ridgetId)) {
+			return true;
+		}
+		matcher = new StringMatcher(getToolbarItemId());
+		if (matcher.match(ridgetId)) {
+			return true;
 		}
 
 		return false;

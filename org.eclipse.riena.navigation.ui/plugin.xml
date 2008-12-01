@@ -10,6 +10,27 @@
          <navigationDisabledMarker
                ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker">
          </navigationDisabledMarker>
+         <ridgetHiddenMarker
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetHiddenMarker">
+         </ridgetHiddenMarker>
+         <ridgetDisabledMarker
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetDisabledMarker">
+         </ridgetDisabledMarker>
+         <ridgetOutputMarker
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetOutputMarker">
+         </ridgetOutputMarker>
+         <ridgetMandatoryMarker
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetMandatoryMarker">
+         </ridgetMandatoryMarker>
+         <menuItemDisabledMarker
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleMenuItemDisabledMarker">
+         </menuItemDisabledMarker>
+         <menuItemHiddenMarker
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleMenuItemHiddenMarker">
+         </menuItemHiddenMarker>
+         <ridgetValidator
+               ruleClass="org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetValidator">
+         </ridgetValidator>
       </mapper>
    </extension>
 

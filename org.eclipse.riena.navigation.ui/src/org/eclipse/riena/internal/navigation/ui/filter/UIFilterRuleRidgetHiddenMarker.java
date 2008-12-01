@@ -8,33 +8,33 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
 /**
- * Filter rule to provide a output marker for a ridget.
+ * Filter rule to provide a hidden marker for a ridget.
  */
-public class UIFilterRuleRidgetOutputMarker extends AbstractUIFilterRuleRidgetMarker {
+public class UIFilterRuleRidgetHiddenMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleRidgetOutputMarker}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetHiddenMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public UIFilterRuleRidgetOutputMarker() {
-		super(null, new OutputMarker(false));
+	public UIFilterRuleRidgetHiddenMarker() {
+		super(null, new HiddenMarker(false));
 	}
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleRidgetOutputMarker}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetHiddenMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public UIFilterRuleRidgetOutputMarker(String id) {
-		super(id, new OutputMarker(false));
+	public UIFilterRuleRidgetHiddenMarker(String id) {
+		super(id, new HiddenMarker(false));
 	}
 
 }

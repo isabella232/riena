@@ -84,11 +84,17 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	protected MenuManager getContributionItem(ToolItem item) {
-		if (item.getData() instanceof MenuManager) {
+
+		if (item.isDisposed()) {
+			return null;
+		}
+
+		if ((item.getData() instanceof MenuManager)) {
 			return (MenuManager) item.getData();
 		} else {
 			return null;
 		}
+
 	}
 
 	/**

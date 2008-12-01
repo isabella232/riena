@@ -13,16 +13,12 @@ package org.eclipse.riena.navigation.model;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ISubModuleNodeListener;
-import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * Default implementation for the sub module node
  */
 public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> implements
 		ISubModuleNode {
-
-	private Object viewId;
-	private Class<IController> controllerClassForView;
 
 	/**
 	 * Creates a SubModuleNode.

@@ -125,7 +125,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 		if (controller instanceof IRidgetContainer) {
 			IRidgetContainer container = (IRidgetContainer) controller;
 			for (IRidget ridget : container.getRidgets()) {
-				if (filterRule.matches(ridget)) {
+				if (filterRule.matches(ridget, node)) {
 					closure.exeute(filterRule, ridget);
 				}
 			}

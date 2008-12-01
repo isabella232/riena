@@ -20,6 +20,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetHiddenMarker;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -29,7 +30,6 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
 import org.eclipse.riena.ui.filter.impl.UIFilter;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleRidgetHiddenMarker;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -178,7 +178,7 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		LabelRidget ridget = new LabelRidget(label);
 		controller.addRidget("0815", ridget);
 
-		attribute = new UIFilterRuleRidgetHiddenMarker("0815");
+		attribute = new UIFilterRuleRidgetHiddenMarker("*0815");
 		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(ridget.getMarkersOfType(HiddenMarker.class).isEmpty());
 

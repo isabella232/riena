@@ -23,6 +23,8 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTestSuite(AbstractUIFilterRuleNavigationMarkerTest.class);
+		suite.addTestSuite(MenuItemRidgetMatcherTest.class);
+		suite.addTestSuite(RidgetMatcherTest.class);
 		return suite;
 	}
 

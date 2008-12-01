@@ -8,40 +8,35 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 
 /**
- * Filter rule to provide a disabled marker for a menu and tool bar item.
+ * Filter rule to provide a disabled marker for a ridget.
  */
-public class UIFilterRuleMenuItemDisabledMarker extends AbstractUIFilterRuleRidgetMarker {
+public class UIFilterRuleRidgetDisabledMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleMenuActionDisabledMarker}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetDisabledMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public UIFilterRuleMenuItemDisabledMarker() {
+	public UIFilterRuleRidgetDisabledMarker() {
 		super(null, new DisabledMarker(false));
 	}
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleMenuItemDisabledMarker}.
+	 * Creates a new instance of {@code UIFilterRuleRidgetDisabledMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 * @param marker
 	 *            - marker
 	 */
-	public UIFilterRuleMenuItemDisabledMarker(String id) {
+	public UIFilterRuleRidgetDisabledMarker(String id) {
 		super(id, new DisabledMarker(false));
-	}
-
-	@Override
-	protected RidgetMatcher createMatcher(String id) {
-		return new MenuItemRidgetMatcher(id);
 	}
 
 }

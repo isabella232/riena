@@ -12,7 +12,9 @@ package org.eclipse.riena.navigation;
 
 /**
  * An ID that identifies a node in the application model tree. The ID is used to
- * find navigate targets and to associated sub module nodes with their views.
+ * find navigate targets and to associated sub module nodes with their views.<br>
+ * The following characters are not allowed in an ID: * (asterisk), ? (question
+ * mark) and / (slash)
  */
 public class NavigationNodeId {
 
@@ -21,6 +23,9 @@ public class NavigationNodeId {
 	private int hash = 0;
 
 	public NavigationNodeId(String typeId, String instanceId) {
+		if (!checkId(typeId)) {
+			throw new IllegalArgumentException("ID with illegal characters: " + typeId); //$NON-NLS-1$
+		}
 		this.typeId = typeId;
 		this.instanceId = instanceId;
 	}
@@ -70,18 +75,18 @@ public class NavigationNodeId {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("NavNodeId:");
+		StringBuilder sb = new StringBuilder("NavNodeId:"); //$NON-NLS-1$
 		if (typeId != null) {
 			sb.append(typeId);
 		} else {
-			sb.append("null");
+			sb.append("null"); //$NON-NLS-1$
 		}
 		if (instanceId != null) {
 			sb.append("["); //$NON-NLS-1$
 			sb.append(instanceId);
 			sb.append("]"); //$NON-NLS-1$
 		} else {
-			sb.append("[null]");
+			sb.append("[null]"); //$NON-NLS-1$
 		}
 		return sb.toString();
 	}
@@ -104,6 +109,33 @@ public class NavigationNodeId {
 
 	private boolean equals(String string1, String string2) {
 		return (string1 == null && string2 == null) || (string1 != null && string1.equals(string2));
+	}
+
+	/**
+	 * Checks if the given ID contains illegal characters.
+	 * 
+	 * @param id
+	 *            - ID
+	 * @return <code>true</code> if the ID is OK; otherwise <code>false</code>
+	 */
+	private boolean checkId(String id) {
+
+		if (id == null) {
+			return true;
+		}
+
+		if (id.contains("*")) { //$NON-NLS-1$
+			return false;
+		}
+		if (id.contains("?")) { //$NON-NLS-1$
+			return false;
+		}
+		if (id.contains("/")) { //$NON-NLS-1$
+			return false;
+		}
+
+		return true;
+
 	}
 
 }

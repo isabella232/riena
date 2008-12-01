@@ -8,35 +8,35 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.filter;
+package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 
 /**
- * Filter rule to provide a hidden marker for a menu and tool bar item.
+ * Filter rule to provide a disabled marker for a menu and tool bar item.
  */
-public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleRidgetMarker {
+public class UIFilterRuleMenuItemDisabledMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleMenuItemHiddenMarker}.
+	 * Creates a new instance of {@code UIFilterRuleMenuActionDisabledMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 */
-	public UIFilterRuleMenuItemHiddenMarker() {
-		super(null, new HiddenMarker(false));
+	public UIFilterRuleMenuItemDisabledMarker() {
+		super(null, new DisabledMarker(false));
 	}
 
 	/**
-	 * Creates a new instance of {@code UIFilterRuleMenuActionHiddenMarker}.
+	 * Creates a new instance of {@code UIFilterRuleMenuItemDisabledMarker}.
 	 * 
 	 * @param id
 	 *            - ID
 	 * @param marker
 	 *            - marker
 	 */
-	public UIFilterRuleMenuItemHiddenMarker(String id) {
-		super(id, new HiddenMarker(false));
+	public UIFilterRuleMenuItemDisabledMarker(String id) {
+		super(id, new DisabledMarker(false));
 	}
 
 	@Override

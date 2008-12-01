@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleMenuItemDisabledMarker;
+import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleMenuItemHiddenMarker;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
@@ -31,8 +33,6 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemHiddenMarker;
-import org.eclipse.riena.ui.ridgets.filter.UIFilterRuleMenuItemDisabledMarker;
 
 /**
  * Controller of the sub module that demonstrates UI filters for navigation
