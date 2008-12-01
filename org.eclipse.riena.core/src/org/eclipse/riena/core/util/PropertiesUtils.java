@@ -73,13 +73,49 @@ public final class PropertiesUtils {
 	 *            (IConfigurationElement config, String propertyName, Object
 	 *            data) method.
 	 * @param expectedKeys
+	 *            optional expected keys
+	 * @return a map
+	 * @throws IllegalArgumentException
+	 *             for any errors
+	 * @see IExecutableExtension.setInitializationData()
+	 */
+	public static Map<String, String> asMap(Object data, String... expectedKeys) {
+		return asMap(data, null, expectedKeys);
+	}
+
+	/**
+	 * Check the given data object and if it is a {@code Hashtable} as it may be
+	 * provided by the {@code IExecutableExtension.setInitializationData()}
+	 * method return the {@code Hashtable} with optional checking of the
+	 * expected keys.<br>
+	 * If the data object is a {@code String} than transform the given string
+	 * representation of a map into a map.<br>
+	 * The optional defaults parameter may be specified to define defaults for
+	 * expected keys. The optional expectedKeys parameter can be used to check
+	 * the existence of expected keys.
+	 * 
+	 * <pre>
+	 * The format of the string is: 
+	 * string := [ pair ] | pair { , pair }
+	 * pair := key = value
+	 * </pre>
+	 * 
+	 * @param data
+	 *            this can be the data parameter of the
+	 *            IExecutableExtension.setInitializationData
+	 *            (IConfigurationElement config, String propertyName, Object
+	 *            data) method.
+	 * @param defaults
+	 *            optional defaults
+	 * @param expectedKeys
+	 *            optional expected keys
 	 * @return a map
 	 * @throws IllegalArgumentException
 	 *             for any errors
 	 * @see IExecutableExtension.setInitializationData()
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String, String> asMap(Object data, String... expectedKeys) {
+	public static Map<String, String> asMap(Object data, Map<String, String> defaults, String... expectedKeys) {
 		Map<String, String> result = null;
 		if (data == null) {
 			result = Collections.emptyMap();
@@ -104,7 +140,15 @@ public final class PropertiesUtils {
 		} else {
 			Assert.isLegal(false, "Can not deal with data type: " + data.getClass().getName()); //$NON-NLS-1$
 		}
-		// validate expected keys
+		// if optional defaults add them if necessary
+		if (defaults != null) {
+			for (Map.Entry<String, String> entry : defaults.entrySet()) {
+				if (!result.containsKey(entry.getKey())) {
+					result.put(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+		// validate optional expected keys
 		for (String expectedKey : expectedKeys) {
 			Assert.isLegal(result.containsKey(expectedKey), "data " + data + "does not contain expected key " //$NON-NLS-1$ //$NON-NLS-2$
 					+ expectedKey + "."); //$NON-NLS-1$
