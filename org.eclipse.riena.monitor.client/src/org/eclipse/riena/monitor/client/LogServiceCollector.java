@@ -75,12 +75,9 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 	 */
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
-		if (!(data instanceof String)) {
-			throw configurationException("Bad configuration data type. Expecting a String.", null); //$NON-NLS-1$
-		}
 		Map<String, String> properties = null;
 		try {
-			properties = PropertiesUtils.asMap((String) data, COLLECT_RANGE, TRIGGER_RANGE);
+			properties = PropertiesUtils.asMap(data, COLLECT_RANGE, TRIGGER_RANGE);
 		} catch (IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
