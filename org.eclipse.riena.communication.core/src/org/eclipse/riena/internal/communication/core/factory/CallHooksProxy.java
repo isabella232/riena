@@ -64,7 +64,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				}
 			}
 			// otherwise throw a remote failure
-			throw new RemoteFailure("error while invoke remote service", e.getTargetException()); //$NON-NLS-1$
+			throw new RemoteFailure("error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
 			// throw e.getTargetException();
 		} finally {
 			context.getMessageContext().fireEndCall();
