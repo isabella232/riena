@@ -10,13 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import java.util.Hashtable;
+
+import org.eclipse.riena.core.RienaConstants;
+import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.exception.IExceptionHandler;
+import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.core.exceptionhandler.SimpleExceptionHandler;
+import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
+import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
+import org.eclipse.riena.internal.core.logging.LoggerMill;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.RienaConstants;
-import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.internal.core.logging.LoggerMill;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -41,6 +50,8 @@ public class Activator extends RienaPlugin {
 	private ServiceRegistration loggerMillServiceReg;
 	private LoggerMill loggerMill;
 
+	private ExceptionHandlerManagerAccessor exceptionHandlerManagerAccessor;
+
 	// The shared instance
 	private static Activator plugin;
 	{
@@ -63,6 +74,20 @@ public class Activator extends RienaPlugin {
 		logStage(logger);
 		startForcedRienaBundles(logger);
 
+		SimpleExceptionHandler handler = new SimpleExceptionHandler();
+		context.registerService(IExceptionHandler.class.getName(), handler, RienaConstants
+				.newDefaultServiceProperties());
+
+		SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
+		String handlerId = IExceptionHandler.class.getName();
+
+		Inject.service(handlerId).into(handlerManager).andStart(getContext());
+
+		Hashtable<String, String> properties = new Hashtable<String, String>(0);
+		context.registerService(IExceptionHandlerManager.class.getName(), handlerManager, properties);
+		this.exceptionHandlerManagerAccessor = new ExceptionHandlerManagerAccessor();
+		Inject.service(IExceptionHandlerManager.class).into(exceptionHandlerManagerAccessor).andStart(context);
+
 		active = true;
 	}
 
@@ -73,6 +98,8 @@ public class Activator extends RienaPlugin {
 		loggerMill = new LoggerMill(context);
 		loggerMillServiceReg = context.registerService(LoggerMill.class.getName(), loggerMill, RienaConstants
 				.newDefaultServiceProperties());
+
+		this.exceptionHandlerManagerAccessor = null;
 	}
 
 	/**

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.exceptionmanager;
+package org.eclipse.riena.core.exceptionmanager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.List;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.exceptionmanager.TopologicalNode;
-import org.eclipse.riena.internal.exceptionmanager.TopologicalSort;
+import org.eclipse.riena.internal.core.exceptionmanager.TopologicalNode;
+import org.eclipse.riena.internal.core.exceptionmanager.TopologicalSort;
 
 /**
  * Tests the Topological sorting

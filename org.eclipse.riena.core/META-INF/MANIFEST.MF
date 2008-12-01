@@ -19,7 +19,9 @@ Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.core.logging,
  org.eclipse.riena.core.marker,
  org.eclipse.riena.core.service,
- org.eclipse.riena.core.util
+ org.eclipse.riena.core.util,
+ org.eclipse.riena.internal.core.exceptionhandler,
+ org.eclipse.riena.internal.core.exceptionmanager
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.log;bundle-version="1.1.0",
  org.eclipse.core.variables;bundle-version="3.2.0"

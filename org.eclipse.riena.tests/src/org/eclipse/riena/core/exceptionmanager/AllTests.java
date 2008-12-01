@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.exceptionmanager;
+package org.eclipse.riena.core.exceptionmanager;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -17,7 +17,7 @@ import junit.framework.TestSuite;
 /**
  * Tests all test cases within package:
  * 
- * org.eclipse.riena.exceptionmanager.test.internal
+ * org.eclipse.riena.core.exceptionmanager.test.internal
  */
 public class AllTests extends TestCase {
 

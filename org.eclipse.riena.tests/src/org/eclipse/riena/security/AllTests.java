@@ -20,7 +20,7 @@ import org.eclipse.riena.security.common.Callback2CredentialConverterTest;
 /**
  * Tests all test cases within package:
  * 
- * org.eclipse.riena.exceptionmanager.test.internal
+ * org.eclipse.riena.core.exceptionmanager.test.internal
  */
 public class AllTests extends TestCase {
 

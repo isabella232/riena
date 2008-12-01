@@ -25,7 +25,7 @@ public class AllNonUITests extends TestCase {
 		suite.addTest(org.eclipse.riena.communication.core.attachment.AllTests.suite());
 		suite.addTest(org.eclipse.riena.core.AllTests.suite());
 		suite.addTest(org.eclipse.riena.core.util.AllTests.suite());
-		suite.addTest(org.eclipse.riena.exceptionmanager.AllTests.suite());
+		suite.addTest(org.eclipse.riena.core.exceptionmanager.AllTests.suite());
 		suite.addTest(org.eclipse.riena.monitor.client.AllTests.suite());
 		suite.addTest(org.eclipse.riena.navigation.AllTests.suite());
 		suite.addTest(org.eclipse.riena.objecttransaction.AllTests.suite());
