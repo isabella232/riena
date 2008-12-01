@@ -20,14 +20,28 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.IOUtils;
+import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
@@ -35,13 +49,19 @@ import org.osgi.service.log.LogService;
 /**
  * TODO config
  */
-public class DefaultStore implements IStore {
+public class DefaultStore implements IStore, IExecutableExtension {
 
 	private File storeFolder;
+	private int maxItems;
+
+	private final ScheduledExecutorService storeExecutor;
 
 	private static final String TRANSFER_FILE_EXTENSION = ".trans"; //$NON-NLS-1$
 	private static final String COLLECT_FILE_EXTENSION = ".coll"; //$NON-NLS-1$
 	private static final String DEL_FILE_EXTENSION = ".del"; //$NON-NLS-1$
+	private static final String CATEGORY_DELIMITER = "#"; //$NON-NLS-1$
+
+	private static final String MAX_ITEMS = "maxItems"; //$NON-NLS-1$
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(DefaultStore.class);
 
@@ -58,7 +78,55 @@ public class DefaultStore implements IStore {
 		storeFolder.mkdirs();
 		Assert.isTrue(storeFolder.exists());
 		Assert.isTrue(storeFolder.isDirectory());
-		LOGGER.log(LogService.LOG_DEBUG, "DefaultStore at " + storeFolder);
+		LOGGER.log(LogService.LOG_DEBUG, "DefaultStore at " + storeFolder); //$NON-NLS-1$
+		storeExecutor = Executors.newSingleThreadScheduledExecutor();
+	}
+
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+		Map<String, String> properties = null;
+		try {
+			properties = PropertiesUtils.asMap(data, Literal.map(MAX_ITEMS, "100")); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
+		}
+		try {
+			maxItems = Integer.valueOf(properties.get(MAX_ITEMS));
+			Assert.isLegal(maxItems > 0, "maxItems must be greater than 0."); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			throw configurationException("Bad configuration. Parsing maxItems failed.", e); //$NON-NLS-1$
+		}
+	}
+
+	private CoreException configurationException(String message, Exception e) {
+		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.monitor.client.IStore#close()
+	 */
+	public void close() {
+		storeExecutor.shutdown();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.monitor.client.IStore#open()
+	 */
+	public void open() {
+		storeExecutor.scheduleWithFixedDelay(new Cleaner(), 2l, 15l * 60, TimeUnit.SECONDS);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.monitor.client.IStore#flush()
+	 */
+	public void flush() {
+		// nothing to do here
 	}
 
 	/*
@@ -69,21 +137,9 @@ public class DefaultStore implements IStore {
 	 * .eclipse.riena.monitor.core.Collectible)
 	 */
 	public synchronized boolean collect(final Collectible<?> collectible) {
-		ObjectOutputStream objectos = null;
-		try {
-			File file = getFile(collectible, COLLECT_FILE_EXTENSION);
-			OutputStream fos = new FileOutputStream(file);
-			OutputStream encos = getEncryptor(fos);
-			OutputStream gzipos = getCompressor(encos);
-			objectos = new ObjectOutputStream(gzipos);
-			objectos.writeObject(collectible);
-		} catch (IOException e) {
-			// TODO Error handling!!?
-			e.printStackTrace();
-			return false;
-		} finally {
-			IOUtils.close(objectos);
-		}
+		File file = getFile(collectible, COLLECT_FILE_EXTENSION);
+		putCollectible(collectible, file);
+
 		return true;
 	}
 
@@ -121,19 +177,9 @@ public class DefaultStore implements IStore {
 		});
 		List<Collectible<?>> collectibles = new ArrayList<Collectible<?>>();
 		for (File transferable : transferables) {
-			ObjectInputStream objectis = null;
-			try {
-				InputStream fis = new FileInputStream(transferable);
-				InputStream decris = getDecryptor(fis);
-				InputStream gzipis = getDecompressor(decris);
-				objectis = new ObjectInputStream(gzipis);
-				Collectible<?> collectible = (Collectible<?>) objectis.readObject();
+			Collectible<?> collectible = getCollectible(transferable);
+			if (collectible != null) {
 				collectibles.add(collectible);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				IOUtils.close(objectis);
 			}
 		}
 		return collectibles;
@@ -206,26 +252,125 @@ public class DefaultStore implements IStore {
 	 */
 	public synchronized void commitTransferred(List<Collectible<?>> collectibles) {
 		for (Collectible<?> collectible : collectibles) {
-			File transferred = getFile(collectible, TRANSFER_FILE_EXTENSION);
-			if (!transferred.delete()) {
-				File toDelete = new File(transferred, DEL_FILE_EXTENSION);
-				transferred.renameTo(toDelete);
-				toDelete.deleteOnExit();
+			delete(getFile(collectible, TRANSFER_FILE_EXTENSION));
+		}
+	}
+
+	/**
+	 * Try to delete the given file. If it is not deletable mark it deletable
+	 * and try to delete on jvm exit.
+	 * 
+	 * @param file
+	 */
+	private void delete(File file) {
+		if (!file.delete()) {
+			if (file.getName().endsWith(DEL_FILE_EXTENSION)) {
+				file.deleteOnExit();
+				return;
 			}
+			File toDelete = new File(file, DEL_FILE_EXTENSION);
+			file.renameTo(toDelete);
+			toDelete.deleteOnExit();
+		}
+	}
+
+	/**
+	 * Get collectible from file.
+	 * 
+	 * @param file
+	 * @return
+	 */
+	private Collectible<?> getCollectible(File file) {
+		ObjectInputStream objectis = null;
+		try {
+			InputStream fis = new FileInputStream(file);
+			InputStream decris = getDecryptor(fis);
+			InputStream gzipis = getDecompressor(decris);
+			objectis = new ObjectInputStream(gzipis);
+			return (Collectible<?>) objectis.readObject();
+		} catch (Exception e) {
+			// TODO Error handling
+			e.printStackTrace();
+			return null;
+		} finally {
+			IOUtils.close(objectis);
+		}
+	}
+
+	/**
+	 * Store collectible into file.
+	 * 
+	 * @param collectible
+	 * @param file
+	 */
+	private void putCollectible(Collectible<?> collectible, File file) {
+		ObjectOutputStream objectos = null;
+		try {
+			OutputStream fos = new FileOutputStream(file);
+			OutputStream encos = getEncryptor(fos);
+			OutputStream gzipos = getCompressor(encos);
+			objectos = new ObjectOutputStream(gzipos);
+			objectos.writeObject(collectible);
+		} catch (IOException e) {
+			// TODO Error handling!!?
+			e.printStackTrace();
+		} finally {
+			IOUtils.close(objectos);
 		}
 	}
 
 	private File getFile(Collectible<?> collectible, String extension) {
-		return new File(storeFolder, collectible.getCategory() + "-" + collectible.getUUID().toString() + extension); //$NON-NLS-1$
+		return new File(storeFolder, collectible.getCategory() + CATEGORY_DELIMITER + collectible.getUUID().toString()
+				+ extension);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#flush()
+	/**
+	 * Perform cleanup of the store as defined by the configuration properties.
 	 */
-	public void flush() {
-		// nothing to do here
+	public class Cleaner implements Runnable {
+		public void run() {
+			File[] scrutinizedFiles = storeFolder.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.endsWith(COLLECT_FILE_EXTENSION) || name.endsWith(DEL_FILE_EXTENSION);
+				}
+			});
+			Map<String, List<File>> categorizedScrutinized = new HashMap<String, List<File>>(scrutinizedFiles.length);
+			for (File scrutinizedFile : scrutinizedFiles) {
+				int categoryDelimiterIndex = scrutinizedFile.getName().indexOf(CATEGORY_DELIMITER);
+				if (categoryDelimiterIndex == -1) {
+					continue;
+				}
+				String category = scrutinizedFile.getName().substring(0, categoryDelimiterIndex);
+				List<File> files = categorizedScrutinized.get(category);
+				if (files == null) {
+					files = new ArrayList<File>();
+					categorizedScrutinized.put(category, files);
+				}
+				files.add(scrutinizedFile);
+			}
+			for (Map.Entry<String, List<File>> entry : categorizedScrutinized.entrySet()) {
+				clean(entry.getValue());
+			}
+		}
+
+		/**
+		 * @param value
+		 */
+		private void clean(List<File> files) {
+			if (files.size() < maxItems) {
+				return;
+			}
+			Collections.sort(files, new Comparator<File>() {
+				public int compare(File file1, File file2) {
+					Long time1 = file1.lastModified();
+					Long time2 = file2.lastModified();
+					return time1.compareTo(time2);
+				}
+			});
+			for (int i = 0; i < files.size() - maxItems; i++) {
+				delete(files.get(i));
+			}
+		}
 	}
 
 }
