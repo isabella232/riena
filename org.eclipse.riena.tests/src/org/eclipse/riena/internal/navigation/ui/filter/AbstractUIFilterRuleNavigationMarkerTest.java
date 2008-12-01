@@ -33,7 +33,7 @@ public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 
 		INavigationNode<?> node = new SubModuleNode();
 		node.setNodeId(new NavigationNodeId("id"));
-		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getInstanceId(), null);
+		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker("*/" + node.getNodeId().getTypeId(), null);
 		assertFalse(attribute.matches(null));
 		assertFalse(attribute.matches(new Object()));
 		SubModuleNode sm = new SubModuleNode();
@@ -52,8 +52,7 @@ public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 		node.setNodeId(new NavigationNodeId("id"));
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertTrue(node.isVisible());
-		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getInstanceId(),
-				new HiddenMarker());
+		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getTypeId(), new HiddenMarker());
 
 		attribute.apply(node);
 		assertFalse(node.isVisible());
@@ -69,8 +68,7 @@ public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 		node.setNodeId(new NavigationNodeId("id"));
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertTrue(node.isEnabled());
-		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getInstanceId(),
-				new DisabledMarker());
+		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker(node.getNodeId().getTypeId(), new DisabledMarker());
 		attribute.apply(node);
 		assertFalse(node.isEnabled());
 
@@ -83,7 +81,6 @@ public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 
 		public MyUIFilterRuleNavigationMarker(String nodeId, IMarker marker) {
 			super(nodeId, marker);
-			setNode("id");
 		}
 
 	}

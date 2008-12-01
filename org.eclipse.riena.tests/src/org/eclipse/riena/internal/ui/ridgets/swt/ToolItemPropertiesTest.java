@@ -90,6 +90,11 @@ public class ToolItemPropertiesTest extends TestCase {
 			return super.createItem();
 		}
 
+		@Override
+		public ToolItemRidget getRidget() {
+			return super.getRidget();
+		}
+
 	}
 
 }

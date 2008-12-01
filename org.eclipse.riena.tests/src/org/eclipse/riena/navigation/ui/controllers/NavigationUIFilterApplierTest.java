@@ -105,11 +105,11 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-		attributes.add(new UIFilterRuleNavigationDisabledMarker(node.getNodeId().getTypeId()));
+		attributes.add(new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId()));
 		IUIFilter filter = new UIFilter(attributes);
 		node.addFilter(filter);
 		Collection<IUIFilterRule> attributes2 = new ArrayList<IUIFilterRule>(1);
-		attributes2.add(new UIFilterRuleNavigationHiddenMarker(node.getNodeId().getTypeId()));
+		attributes2.add(new UIFilterRuleNavigationHiddenMarker("*" + node.getNodeId().getTypeId()));
 		IUIFilter filter2 = new UIFilter(attributes2);
 		node.addFilter(filter2);
 		ReflectionUtils.invokeHidden(applier, "applyFilters", node);
@@ -134,8 +134,8 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		node.addChild(node2);
 
 		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(2);
-		attributes.add(new UIFilterRuleNavigationDisabledMarker(node.getNodeId().getTypeId()));
-		attributes.add(new UIFilterRuleNavigationHiddenMarker(node.getNodeId().getTypeId()));
+		attributes.add(new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId()));
+		attributes.add(new UIFilterRuleNavigationHiddenMarker("*" + node.getNodeId().getTypeId()));
 		IUIFilter filter = new UIFilter(attributes);
 		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
 		ReflectionUtils.invokeHidden(applier, "applyFilter", node, filter, closure);
@@ -164,7 +164,7 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		IUIFilterRule attribute = new UIFilterRuleNavigationDisabledMarker(node.getNodeId().getTypeId());
+		IUIFilterRule attribute = new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId());
 		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
 		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
