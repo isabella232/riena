@@ -18,6 +18,21 @@ import org.eclipse.riena.monitor.common.Collectible;
  * The {@code IStore} defines a store for collectibles.
  */
 public interface IStore {
+	/**
+	 * Open the store.
+	 */
+	void open();
+
+	/**
+	 * Close the store.
+	 */
+	void close();
+
+	/**
+	 * In case that the store implementation buffers entries calling this method
+	 * assures persisting them.
+	 */
+	void flush();
 
 	/**
 	 * Make the given collectible persistent.
@@ -52,11 +67,5 @@ public interface IStore {
 	 * @param collectibles
 	 */
 	void commitTransferred(List<Collectible<?>> collectibles);
-
-	/**
-	 * In case that the store implementation buffers entries calling this method
-	 * assures persisting them.
-	 */
-	void flush();
 
 }
