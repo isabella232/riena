@@ -30,11 +30,6 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		setPrint(true);
 	}
 
-	/**
-	 * In some test we have to sleep because of asynchronous processing.
-	 */
-	private static final int SLEEP_TIME = 500;
-
 	public void testConstructorConstraints() {
 		printTestName();
 		try {
@@ -221,22 +216,16 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				getContext());
 		assertEquals(0, target.getData().length);
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
-		Thread.sleep(SLEEP_TIME);
 		assertEquals(1, target.getData().length);
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
-		Thread.sleep(SLEEP_TIME);
 		assertEquals(2, target.getData().length);
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
-		Thread.sleep(SLEEP_TIME);
 		assertEquals(3, target.getData().length);
 		removeExtension("core.test.extpoint.id1");
-		Thread.sleep(SLEEP_TIME);
 		assertEquals(2, target.getData().length);
 		removeExtension("core.test.extpoint.id2");
-		Thread.sleep(SLEEP_TIME);
 		assertEquals(1, target.getData().length);
 		removeExtension("core.test.extpoint.id3");
-		Thread.sleep(SLEEP_TIME);
 		assertEquals(0, target.getData().length);
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
