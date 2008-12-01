@@ -13,6 +13,7 @@ package org.eclipse.riena.tests;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.riena.internal.tests.Activator;
 import org.osgi.framework.Bundle;
@@ -155,13 +157,19 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @param forLoad
 	 * @param pluginResource
+	 * @throws InterruptedException
 	 */
 	protected void addPluginXml(Class<?> forLoad, String pluginResource) {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
 		IContributor contributor = ContributorFactoryOSGi.createContributor(context.getBundle());
-		assertTrue(registry.addContribution(inputStream, contributor, false, null, null, ((ExtensionRegistry) registry)
-				.getTemporaryUserToken()));
+		RegistryEventListener listener = new RegistryEventListener();
+		registry.addListener(listener);
+		boolean success = registry.addContribution(inputStream, contributor, false, null, null,
+				((ExtensionRegistry) registry).getTemporaryUserToken());
+		listener.waitAdded();
+		registry.removeListener(listener);
+		assertTrue(success);
 	}
 
 	/**
@@ -173,7 +181,12 @@ public abstract class RienaTestCase extends TestCase {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		IExtension extension = registry.getExtension(extensionId);
 		assertNotNull(extension);
-		assertTrue(registry.removeExtension(extension, ((ExtensionRegistry) registry).getTemporaryUserToken()));
+		RegistryEventListener listener = new RegistryEventListener();
+		registry.addListener(listener);
+		boolean success = registry.removeExtension(extension, ((ExtensionRegistry) registry).getTemporaryUserToken());
+		listener.waitExtensionRemoved();
+		registry.removeListener(listener);
+		assertTrue(success);
 	}
 
 	/**
@@ -185,8 +198,13 @@ public abstract class RienaTestCase extends TestCase {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointId);
 		assertNotNull(extensionPoint);
-		assertTrue(registry
-				.removeExtensionPoint(extensionPoint, ((ExtensionRegistry) registry).getTemporaryUserToken()));
+		RegistryEventListener listener = new RegistryEventListener();
+		registry.addListener(listener);
+		boolean success = registry.removeExtensionPoint(extensionPoint, ((ExtensionRegistry) registry)
+				.getTemporaryUserToken());
+		listener.waitExtensionPointRemoved();
+		registry.removeListener(listener);
+		assertTrue(success);
 	}
 
 	/**
@@ -330,4 +348,51 @@ public abstract class RienaTestCase extends TestCase {
 	protected interface IClosure {
 		void execute(Bundle bundle) throws BundleException;
 	}
+
+	private static class RegistryEventListener implements IRegistryEventListener {
+
+		private CountDownLatch added = new CountDownLatch(1);
+		private CountDownLatch extensionRemoved = new CountDownLatch(1);
+		private CountDownLatch extensionPointRemoved = new CountDownLatch(1);
+
+		public void waitAdded() {
+			try {
+				added.await();
+			} catch (InterruptedException e) {
+				TestCase.fail("CountDownLatch failed with. " + e);
+			}
+		}
+
+		public void waitExtensionRemoved() {
+			try {
+				extensionRemoved.await();
+			} catch (InterruptedException e) {
+				TestCase.fail("CountDownLatch failed with. " + e);
+			}
+		}
+
+		public void waitExtensionPointRemoved() {
+			try {
+				extensionPointRemoved.await();
+			} catch (InterruptedException e) {
+				TestCase.fail("CountDownLatch failed with. " + e);
+			}
+		}
+
+		public void added(IExtension[] extensions) {
+			added.countDown();
+		}
+
+		public void added(IExtensionPoint[] extensionPoints) {
+			added.countDown();
+		}
+
+		public void removed(IExtension[] extensions) {
+			extensionRemoved.countDown();
+		}
+
+		public void removed(IExtensionPoint[] extensionPoints) {
+			extensionPointRemoved.countDown();
+		}
+	};
 }
