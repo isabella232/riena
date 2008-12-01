@@ -12,12 +12,20 @@ package org.eclipse.riena.internal.monitor.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
@@ -26,13 +34,15 @@ import org.eclipse.riena.monitor.common.IReceiver;
 /**
  *
  */
-public class DefaultSender implements ISender {
+public class DefaultSender implements ISender, IExecutableExtension {
 
 	private IStore store;
 	private IReceiver receiver;
 	private final ScheduledExecutorService senderExecutor;
 	private boolean stopped;
+	private int retryTime = 10;
 	private List<String> categories = new ArrayList<String>();
+	private static final String RETRY_TIME = "retryTime"; //$NON-NLS-1$
 
 	/**
 	 * Creates the {@code DefaultSender}.
@@ -50,8 +60,7 @@ public class DefaultSender implements ISender {
 	public DefaultSender(boolean autoConfig) {
 		senderExecutor = Executors.newSingleThreadScheduledExecutor();
 		if (autoConfig) {
-			Inject.service(IReceiver.class).useRanking().into(this).andStart(
-					Activator.getDefault().getContext());
+			Inject.service(IReceiver.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 		} else {
 			// Test stuff
 			this.receiver = new IReceiver() {
@@ -63,6 +72,27 @@ public class DefaultSender implements ISender {
 				}
 			};
 		}
+	}
+
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+
+		Map<String, String> properties = null;
+		try {
+			properties = PropertiesUtils.asMap(data, Literal.map(RETRY_TIME, "10")); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
+		}
+		try {
+			retryTime = Integer.valueOf(properties.get(RETRY_TIME));
+			Assert.isLegal(retryTime > 0, "retryTime must be greater than 0."); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			throw configurationException("Bad configuration. Parsing retry time failed.", e); //$NON-NLS-1$
+		}
+	}
+
+	private CoreException configurationException(String message, Exception e) {
+		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 
 	public void bind(IReceiver receiver) {
@@ -181,12 +211,12 @@ public class DefaultSender implements ISender {
 				}
 			} catch (Throwable t) {
 				System.out.println("sending failed with: " + t);
-				System.out.println("retrying in 10 minutes");
+				System.out.println("retrying in " + retryTime + " minutes");
 				senderExecutor.schedule(new Runnable() {
 					public void run() {
 						triggerTransfer(category);
 					}
-				}, 10 * 60, TimeUnit.SECONDS);
+				}, retryTime * 60, TimeUnit.SECONDS);
 			}
 		}
 	}
