@@ -14,7 +14,6 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 
-// TODO: Implement IControlledView?!
 /**
  * View bound to a controller.
  */
