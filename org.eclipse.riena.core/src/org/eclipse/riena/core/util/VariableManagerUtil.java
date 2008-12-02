@@ -36,6 +36,7 @@ public final class VariableManagerUtil {
 	 * @param expression
 	 * @return the substituted expression
 	 * @throws CoreException
+	 *             if unable to resolve the value of one or more variables
 	 */
 	public static String substitute(final String expression) throws CoreException {
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
@@ -48,11 +49,12 @@ public final class VariableManagerUtil {
 	 * @param key
 	 * @param value
 	 * @throws CoreException
+	 *             if variable already exists with a different value
 	 */
 	public static void addVariable(final String key, final String value) throws CoreException {
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-		final IValueVariable[] variables = new IValueVariable[] { variableManager.newValueVariable((String) key, null,
-				true, (String) value) };
+		final IValueVariable[] variables = new IValueVariable[] { variableManager.newValueVariable(key, null, true,
+				value) };
 		try {
 			variableManager.addVariables(variables);
 		} catch (CoreException e) {
@@ -65,4 +67,15 @@ public final class VariableManagerUtil {
 		}
 	}
 
+	/**
+	 * Remove a string variable from the <code>StringVariableManager</code>.
+	 * 
+	 * @param key
+	 */
+	public static void removeVariable(final String key) {
+		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		final IValueVariable[] variables = new IValueVariable[] { variableManager.newValueVariable(key, null, true,
+				null) };
+		variableManager.removeVariables(variables);
+	}
 }
