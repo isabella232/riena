@@ -470,6 +470,90 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		injector.stop();
 	}
 
+	public void testModifyGlobalOn() throws CoreException, InvalidSyntaxException {
+		printTestName();
+		VariableManagerUtil.addVariable("value", "true");
+		VariableManagerUtil.addVariable("text", "Hallo!");
+
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
+		ConfigurableThingModify target = new ConfigurableThingModify();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).andStart(
+				getContext());
+		assertNotNull(target.getData());
+		assertTrue(target.getData().isRequired());
+		assertEquals("Hallo!", target.getData().getText());
+
+		removeExtension("core.test.extpoint.id.modify");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+		VariableManagerUtil.removeVariable("value");
+		VariableManagerUtil.removeVariable("key");
+	}
+
+	public void testModifyGlobalOff() throws CoreException, InvalidSyntaxException {
+		printTestName();
+		VariableManagerUtil.addVariable("value", "true");
+		VariableManagerUtil.addVariable("text", "Hallo!");
+
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
+		ConfigurableThingModify target = new ConfigurableThingModify();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+				.doNotReplaceSymbols().andStart(getContext());
+		assertNotNull(target.getData());
+		assertEquals("${value}", target.getData().getRequired());
+		assertEquals("${text}", target.getData().getText());
+
+		removeExtension("core.test.extpoint.id.modify");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+		VariableManagerUtil.removeVariable("value");
+		VariableManagerUtil.removeVariable("key");
+	}
+
+	public void testModifyInterfaceOff() throws CoreException, InvalidSyntaxException {
+		printTestName();
+		VariableManagerUtil.addVariable("value", "true");
+		VariableManagerUtil.addVariable("text", "Hallo!");
+
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
+		ConfigurableThingModifyInterfaceOff target = new ConfigurableThingModifyInterfaceOff();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).andStart(
+				getContext());
+		assertNotNull(target.getData());
+		assertEquals("${value}", target.getData().getRequired());
+		assertEquals("${text}", target.getData().getText());
+
+		removeExtension("core.test.extpoint.id.modify");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+		VariableManagerUtil.removeVariable("value");
+		VariableManagerUtil.removeVariable("key");
+	}
+
+	public void testModifyMethodOff() throws CoreException, InvalidSyntaxException {
+		printTestName();
+		VariableManagerUtil.addVariable("value", "true");
+		VariableManagerUtil.addVariable("text", "Hallo!");
+
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
+		ConfigurableThingModifyMethodOff target = new ConfigurableThingModifyMethodOff();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target).andStart(
+				getContext());
+		assertNotNull(target.getData());
+		assertEquals("true", target.getData().getRequired());
+		assertEquals("${text}", target.getData().getText());
+
+		removeExtension("core.test.extpoint.id.modify");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+		VariableManagerUtil.removeVariable("value");
+		VariableManagerUtil.removeVariable("key");
+	}
+
 	// public void testMasses() {
 	// printTestName();
 	// addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
