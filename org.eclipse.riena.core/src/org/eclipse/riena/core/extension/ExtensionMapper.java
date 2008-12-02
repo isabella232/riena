@@ -68,6 +68,8 @@ import org.eclipse.core.runtime.RegistryFactory;
  * nested element or to nested elements.</li>
  * <li><code>org.osgi.framework.Bundle</code> than the methods returns the
  * contributing bundle.</li>
+ * <li><code>org.eclipse.core.runtime.IConfigurationElement</code> than the
+ * methods returns the underlying configuration element.</li>
  * <li><code>java.lang.Class</code> than the attribute is interpreted as a class
  * name and a class instance will be returned.</li>
  * <li>and finally if none of the above matches the mapping tries to create an
