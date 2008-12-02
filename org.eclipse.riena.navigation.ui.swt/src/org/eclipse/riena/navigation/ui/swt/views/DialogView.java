@@ -43,7 +43,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 	 */
 	protected RienaDialog createDialog() {
 
-		return new RienaDialog(parent.getShell());
+		return new RienaDialog(getParentShell());
 	}
 
 	protected void createAndBindController() {
@@ -76,14 +76,28 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 
 	private void initializeParent(Composite parent) {
 		if (parent == null) {
-			this.parent = getShell();
+			this.parent = getWorkbenchShell();
 		} else {
 			this.parent = parent;
 		}
 	}
 
-	private Shell getShell() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	private Shell getWorkbenchShell() {
+
+		if (PlatformUI.isWorkbenchRunning()) {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		} else {
+			return null;
+		}
+	}
+
+	private Shell getParentShell() {
+
+		if (parent != null) {
+			return parent.getShell();
+		} else {
+			return null;
+		}
 	}
 
 	private class RienaDialog extends Dialog {
