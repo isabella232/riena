@@ -99,6 +99,9 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		if (returnType == Bundle.class) {
 			return Result.cache(ContributorFactoryOSGi.resolve(configurationElement.getContributor()));
 		}
+		if (returnType == IConfigurationElement.class) {
+			return Result.cache(configurationElement);
+		}
 		if (returnType == Class.class) {
 			String value = configurationElement.getAttribute(name);
 			if (value == null) {
