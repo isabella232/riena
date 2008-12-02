@@ -43,4 +43,50 @@ public class NavigationNodeUtilityTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the method {@code findNode(String, INavigationNode<?>)}.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testFindNode() throws Exception {
+
+		ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
+		assertNull(NavigationNodeUtility.findNode("sm2", sm));
+
+		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		sm.addChild(sm2);
+		assertSame(sm2, NavigationNodeUtility.findNode("sm2", sm));
+
+		ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm2"));
+		sm.addChild(sm22);
+		assertSame(sm, NavigationNodeUtility.findNode("sm*", sm));
+		assertSame(sm2, NavigationNodeUtility.findNode("sm2", sm));
+		assertSame(sm22, NavigationNodeUtility.findNode("sm2", sm22));
+
+	}
+
+	/**
+	 * Tests the method {@code findNodeLongId(String, INavigationNode<?>)}.
+	 * 
+	 * @throws Exception
+	 *             - handled by JUnit
+	 */
+	public void testFindNodeLongId() throws Exception {
+
+		ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
+		assertNull(NavigationNodeUtility.findNodeLongId("sm2", sm));
+
+		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		sm.addChild(sm2);
+		assertNull(NavigationNodeUtility.findNodeLongId("sm2", sm));
+		assertSame(sm2, NavigationNodeUtility.findNodeLongId("/sm/sm2", sm));
+
+		ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm2"));
+		sm.addChild(sm22);
+		assertSame(sm2, NavigationNodeUtility.findNodeLongId("/sm/sm2", sm));
+		assertSame(sm22, NavigationNodeUtility.findNodeLongId("/sm/sm2", sm22));
+
+	}
+
 }

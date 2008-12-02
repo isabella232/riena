@@ -136,7 +136,7 @@ public class NavigationNodeUtility {
 		List<?> children = node.getChildren();
 		for (Object child : children) {
 			if (child instanceof INavigationNode<?>) {
-				return findNode(id, (INavigationNode<?>) child);
+				return findNode(id, (INavigationNode<?>) child, closure);
 			}
 		}
 
