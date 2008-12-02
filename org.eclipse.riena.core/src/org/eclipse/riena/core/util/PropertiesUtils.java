@@ -118,7 +118,7 @@ public final class PropertiesUtils {
 	public static Map<String, String> asMap(Object data, Map<String, String> defaults, String... expectedKeys) {
 		Map<String, String> result = null;
 		if (data == null) {
-			result = Collections.emptyMap();
+			result = new HashMap<String, String>();
 		} else if (data instanceof Hashtable) {
 			result = (Hashtable<String, String>) data;
 		} else if (data instanceof String) {
@@ -127,7 +127,7 @@ public final class PropertiesUtils {
 			if (StringUtils.isEmpty(stringified)) {
 				Assert.isLegal(expectedKeys.length == 0,
 						"Excpeted keys " + Arrays.toString(expectedKeys) + " not found in empty string."); //$NON-NLS-1$ //$NON-NLS-2$
-				return Collections.emptyMap();
+				return new HashMap<String, String>();
 			}
 			StringTokenizer parts = new StringTokenizer(stringified, ","); //$NON-NLS-1$
 			while (parts.hasMoreTokens()) {
