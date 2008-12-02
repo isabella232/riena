@@ -14,16 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.equinox.log.ExtendedLogReaderService;
-import org.eclipse.equinox.log.ExtendedLogService;
-import org.eclipse.equinox.log.LogFilter;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.logging.CommandProviderLogFilter;
 import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
 import org.eclipse.riena.core.logging.PlatformLogCatcher;
 import org.eclipse.riena.core.logging.SysoLogListener;
+
+import org.eclipse.equinox.log.ExtendedLogReaderService;
+import org.eclipse.equinox.log.ExtendedLogService;
+import org.eclipse.equinox.log.LogFilter;
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
 
@@ -111,18 +112,22 @@ public class LoggerMill {
 	/**
 	 * Bind ExtendedLogReaderService
 	 * 
+	 * 
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
 		LoggerMill.logReaderService = logReaderService;
+		//	if no extension is found AND '-Driena.defaultlogging=true' a default SysoLogListener is created
 		if (listenerDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
 			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
 		}
+		//	Iterates over "org.eclipse.riena.core.logging.listeners" = ILogListenerDefinition
 		for (ILogListenerDefinition logListenerDef : listenerDefs) {
 			LogListener listener = logListenerDef.createLogListener();
 			if (listener == null) {
 				listener = new SysoLogListener();
 			}
+			// if the logListenerDef required synced output, we wrap it with an adapter
 			if (logListenerDef.isSynchronous()) {
 				listener = new SynchronousLogListenerAdapter(listener);
 			}
@@ -134,10 +139,15 @@ public class LoggerMill {
 				logReaderService.addLogListener(listener, filter);
 			}
 		}
+		// if no catcher is specified AND '-Driena.defaultlogging=true' 
+		// specify two catchers by default
+		// * PlatformLogCatcher collects Platform logs and moves them to Riena logging
+		// * LogServiceCatcher collects the LogReaderService events and moves them to Riena logging
 		if (catcherDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
 			catcherDefs = new ILogCatcherDefinition[] { new PlatformLogCatcherDefinition(),
 					new LogServiceLogCatcherDefinition() };
 		}
+		// iterates over "org.eclipse.riena.core.logging.catchers" = ILogCatcherDefinition
 		for (ILogCatcherDefinition catcherDef : catcherDefs) {
 			ILogCatcher logCatcher = catcherDef.createLogCatcher();
 			logCatcher.attach();
