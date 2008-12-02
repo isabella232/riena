@@ -34,7 +34,6 @@ import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
  */
 public class HelloDialogController extends AbstractWindowController {
 
-	public static final String RIDGET_ID_INPUT = "input"; //$NON-NLS-1$
 	public static final String RIDGET_ID_OK = "okButton"; //$NON-NLS-1$
 	public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
 
