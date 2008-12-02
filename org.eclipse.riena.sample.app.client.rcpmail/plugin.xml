@@ -102,7 +102,7 @@
    </extension>
    <extension point="org.eclipse.riena.navigation.assemblies">
       <assembly
-            typeId="org.eclipse.riena.sample.app.client.rcpmail.marker"
+            id="org.eclipse.riena.sample.app.client.rcpmail.marker"
             name="marker"
             parentTypeId="ignored">
          <submodule

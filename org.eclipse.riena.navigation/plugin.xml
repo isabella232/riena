@@ -20,7 +20,7 @@
 			supportsArgument="true"/>
 		<variable
 			description="Navigation parameter. Argument MUST be an accessable property of navigation user object."
-			name="riena.navigation.paramenter"
+			name="riena.navigation.parameter"
 			resolver="org.eclipse.riena.navigation.model.ThreadLocalMapResolver"
 			supportsArgument="true"/>
 	</extension>

@@ -201,7 +201,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 		}
 		assembler.setAssembly(assembly);
 
-		registerNavigationAssembler(assembly.getTypeId(), assembler);
+		registerNavigationAssembler(assembly.getId(), assembler);
 
 		// TODO register for parent?
 		if (assembly.getSubApplicationNode() != null) {

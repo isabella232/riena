@@ -13,6 +13,8 @@ package org.eclipse.riena.demo.client.customer.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.demo.customer.common.CustomerRecordOverview;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 
@@ -21,15 +23,15 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
  */
 public class CustomerOverviewController extends SubModuleController {
 
-	private Customer customer = new Customer(CustomerLoader.getFirstName(), CustomerLoader.getLastName());
 	private OverviewTable overview;
 
 	@Override
 	public void configureRidgets() {
 
 		overview = new OverviewTable();
-		overview.addEntry(new OverviewEntry("Vorname", customer.getFirstName()));
-		overview.addEntry(new OverviewEntry("Nachname", customer.getLastName()));
+		CustomerRecordOverview cro = (CustomerRecordOverview)getNavigationNode().getContext(NavigationArgument.CONTEXT_KEY_PARAMETER);
+		overview.addEntry(new OverviewEntry("Vorname", cro.getFirstName()));
+		overview.addEntry(new OverviewEntry("Nachname", cro.getLastName()));
 
 		//getNavigationNode().getParent().setLabel(CustomerLoader.getFirstName()
 		// + " " + CustomerLoader.getLastName());

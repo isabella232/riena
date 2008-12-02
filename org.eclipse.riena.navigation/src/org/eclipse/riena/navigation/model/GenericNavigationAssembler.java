@@ -26,6 +26,7 @@ import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssembler;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INodeExtension;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -61,7 +62,7 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 	static public final String VAR_NAVIGATION_NODECONTEXT = "riena.navigation.nodecontext"; //$NON-NLS-1$
 
 	/** dynamic variable referencing navigation parameter */
-	static public final String VAR_NAVIGATION_PARAMETER = "riena.navigation.paramenter"; //$NON-NLS-1$
+	static public final String VAR_NAVIGATION_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
 
 	// the node definition as read from extension point
 	private INavigationAssemblyExtension assembly;
@@ -89,25 +90,26 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 	public INavigationNode<?> buildNode(NavigationNodeId targetId, NavigationArgument navigationArgument) {
 
 		if (assembly != null) {
+			Map<String, Object> context = new HashMap<String, Object>();
 			// build module group if it exists
 			ISubApplicationNodeExtension subapplicationDefinition = assembly.getSubApplicationNode();
 			if (subapplicationDefinition != null) {
-				return build(subapplicationDefinition, targetId, navigationArgument);
+				return build(subapplicationDefinition, targetId, navigationArgument, context);
 			}
 			// build module group if it exists
 			IModuleGroupNodeExtension groupDefinition = assembly.getModuleGroupNode();
 			if (groupDefinition != null) {
-				return build(groupDefinition, targetId, navigationArgument);
+				return build(groupDefinition, targetId, navigationArgument, context);
 			}
 			// otherwise try module
 			IModuleNodeExtension moduleDefinition = assembly.getModuleNode();
 			if (moduleDefinition != null) {
-				return build(moduleDefinition, targetId, navigationArgument);
+				return build(moduleDefinition, targetId, navigationArgument, context);
 			}
 			// last resort is submodule
 			ISubModuleNodeExtension submoduleDefinition = assembly.getSubModuleNode();
 			if (submoduleDefinition != null) {
-				return build(submoduleDefinition, targetId, navigationArgument);
+				return build(submoduleDefinition, targetId, navigationArgument, context);
 			}
 		}
 
@@ -139,35 +141,38 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 	}
 
 	protected ISubApplicationNode build(ISubApplicationNodeExtension subapplicationDefinition,
-			NavigationNodeId targetId, NavigationArgument navigationArgument) {
+			NavigationNodeId targetId, NavigationArgument navigationArgument, Map<String, Object> context) {
 
 		// a module group can only contain modules
 		ISubApplicationNode subapplication = new SubApplicationNode(createNavigationNodeIdFromTemplate(targetId,
 				subapplicationDefinition.getTypeId(), navigationArgument), subapplicationDefinition.getLabel());
 		subapplication.setIcon(subapplicationDefinition.getIcon());
+		updateContext(subapplication, navigationArgument);
 
 		for (IModuleGroupNodeExtension modulegroupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
-			subapplication.addChild(build(modulegroupDefinition, targetId, navigationArgument));
+			subapplication.addChild(build(modulegroupDefinition, targetId, navigationArgument, context));
 		}
 
 		return subapplication;
 	}
 
 	protected IModuleGroupNode build(IModuleGroupNodeExtension groupDefinition, NavigationNodeId targetId,
-			NavigationArgument navigationArgument) {
+			NavigationArgument navigationArgument, Map<String, Object> context) {
 
 		// a module group can only contain modules
 		IModuleGroupNode moduleGroup = new ModuleGroupNode(createNavigationNodeIdFromTemplate(targetId, groupDefinition
 				.getTypeId(), navigationArgument));
+		updateContext(moduleGroup, navigationArgument);
+
 		for (IModuleNodeExtension moduleDefinition : groupDefinition.getModuleNodes()) {
-			moduleGroup.addChild(build(moduleDefinition, targetId, navigationArgument));
+			moduleGroup.addChild(build(moduleDefinition, targetId, navigationArgument, copy(context)));
 		}
 
 		return moduleGroup;
 	}
 
 	protected IModuleNode build(IModuleNodeExtension moduleDefinition, NavigationNodeId targetId,
-			NavigationArgument navigationArgument) {
+			NavigationArgument navigationArgument, Map<String, Object> context) {
 
 		IModuleNode module = null;
 		Map<String, Object> mapping = createMapping(targetId, navigationArgument);
@@ -178,9 +183,11 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 					navigationArgument), moduleDefinition.getLabel());
 			module.setIcon(moduleDefinition.getIcon());
 			module.setCloseable(!moduleDefinition.isUncloseable());
+			updateContext(module, navigationArgument);
+
 			// ...and may contain submodules
 			for (ISubModuleNodeExtension submoduleDefinition : moduleDefinition.getSubModuleNodes()) {
-				module.addChild(build(submoduleDefinition, targetId, navigationArgument));
+				module.addChild(build(submoduleDefinition, targetId, navigationArgument, copy(context)));
 			}
 		} finally {
 			cleanupVariableResolver();
@@ -190,7 +197,7 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 	}
 
 	protected ISubModuleNode build(ISubModuleNodeExtension submoduleDefinition, NavigationNodeId targetId,
-			NavigationArgument navigationArgument) {
+			NavigationArgument navigationArgument, Map<String, Object> context) {
 
 		ISubModuleNode submodule = null;
 		Map<String, Object> mapping = createMapping(targetId, navigationArgument);
@@ -200,15 +207,22 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, submoduleDefinition.getTypeId(),
 					navigationArgument), submoduleDefinition.getLabel());
 			submodule.setIcon(submoduleDefinition.getIcon());
+			updateContext(submodule, navigationArgument);
+
 			// process nested submodules
 			for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {
-				submodule.addChild(build(nestedSubmoduleDefinition, targetId, navigationArgument));
+				submodule.addChild(build(nestedSubmoduleDefinition, targetId, navigationArgument, copy(context)));
 			}
 		} finally {
 			cleanupVariableResolver();
 		}
 
 		return submodule;
+	}
+
+	protected Map<String, Object> copy(Map<String, Object> context) {
+
+		return new HashMap<String, Object>(context);
 	}
 
 	private void initializeAcceptedTargetIds() {
@@ -239,10 +253,7 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 	private void resolveTargetIds(ISubApplicationNodeExtension subapplicationDefinition) {
 
-		if (subapplicationDefinition.getTypeId() != null) {
-			acceptedTargetIds.add(subapplicationDefinition.getTypeId());
-		}
-
+		updateAcceptedTargetIds(subapplicationDefinition);
 		for (IModuleGroupNodeExtension groupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
 			resolveTargetIds(groupDefinition);
 		}
@@ -250,10 +261,7 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 	private void resolveTargetIds(IModuleGroupNodeExtension groupDefinition) {
 
-		if (groupDefinition.getTypeId() != null) {
-			acceptedTargetIds.add(groupDefinition.getTypeId());
-		}
-
+		updateAcceptedTargetIds(groupDefinition);
 		for (IModuleNodeExtension moduleDefinition : groupDefinition.getModuleNodes()) {
 			resolveTargetIds(moduleDefinition);
 		}
@@ -261,10 +269,7 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 	private void resolveTargetIds(IModuleNodeExtension moduleDefinition) {
 
-		if (moduleDefinition.getTypeId() != null) {
-			acceptedTargetIds.add(moduleDefinition.getTypeId());
-		}
-
+		updateAcceptedTargetIds(moduleDefinition);
 		for (ISubModuleNodeExtension submoduleDefinition : moduleDefinition.getSubModuleNodes()) {
 			resolveTargetIds(submoduleDefinition);
 		}
@@ -272,13 +277,25 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 	private void resolveTargetIds(ISubModuleNodeExtension submoduleDefinition) {
 
-		if (submoduleDefinition.getTypeId() != null) {
-			acceptedTargetIds.add(submoduleDefinition.getTypeId());
-		}
-
+		updateAcceptedTargetIds(submoduleDefinition);
 		for (ISubModuleNodeExtension nestedDefinition : submoduleDefinition.getSubModuleNodes()) {
 			resolveTargetIds(nestedDefinition);
 		}
+	}
+
+	private void updateAcceptedTargetIds(INodeExtension nodeDefinition) {
+
+		if (nodeDefinition.getTypeId() != null) {
+			acceptedTargetIds.add(nodeDefinition.getTypeId());
+		}
+	}
+
+	protected void updateContext(INavigationNode<?> node, NavigationArgument navigationArgument) {
+
+		if (navigationArgument != null) {
+			node.setContext(NavigationArgument.CONTEXT_KEY_PARAMETER, navigationArgument.getParameter());
+		}
+
 	}
 
 	protected NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template, String typeId,
@@ -302,7 +319,7 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 		Map<String, Object> mapping = new HashMap<String, Object>();
 		mapping.put(VAR_NAVIGATION_NODEID, targetId);
 		if (navigationArgument != null) {
-			mapping.put(VAR_NAVIGATION_PARAMETER, navigationArgument.getInputParameter());
+			mapping.put(VAR_NAVIGATION_PARAMETER, navigationArgument.getParameter());
 		}
 
 		return mapping;

@@ -49,7 +49,7 @@ public class TestSecondSubApplicationNodeBuilder implements INavigationAssembler
 	 */
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 
-		return true;
+		return nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubApplication");
 	}
 
 	public String getParentNodeId() {

@@ -20,7 +20,10 @@ package org.eclipse.riena.navigation;
  *
  */
 public class NavigationArgument {
-	private Object inputParameter;
+
+	public static final String CONTEXT_KEY_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
+
+	private Object parameter;
 	private NavigationNodeId parentNodeId;
 	private INavigationArgumentListener argumentListener;
 	private boolean navigateAsync = false;
@@ -41,14 +44,14 @@ public class NavigationArgument {
 	}
 
 	/**
-	 * @param inputParameter
+	 * @param parameter
 	 * @param argumentListener
 	 * @param parentNodeId
 	 */
 	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener,
 			NavigationNodeId parentNodeId) {
 		super();
-		this.inputParameter = argument;
+		this.parameter = argument;
 		this.argumentListener = argumentListener;
 		this.parentNodeId = parentNodeId;
 	}
@@ -60,36 +63,36 @@ public class NavigationArgument {
 	}
 
 	/**
-	 * @param inputParameter
+	 * @param parameter
 	 */
 	public NavigationArgument(Object argument) {
 		super();
-		this.inputParameter = argument;
+		this.parameter = argument;
 	}
 
 	/**
-	 * @param inputParameter
+	 * @param parameter
 	 * @param argumentListener
 	 */
 	public NavigationArgument(Object argument, INavigationArgumentListener argumentListener) {
 		super();
-		this.inputParameter = argument;
+		this.parameter = argument;
 		this.argumentListener = argumentListener;
 	}
 
 	/**
 	 * @return the externalParameter
 	 */
-	public Object getInputParameter() {
-		return inputParameter;
+	public Object getParameter() {
+		return parameter;
 	}
 
 	/**
 	 * @param externalParameter
 	 *            the externalParameter to set
 	 */
-	public void setInputParameter(Object externalParameter) {
-		this.inputParameter = externalParameter;
+	public void setParameter(Object externalParameter) {
+		this.parameter = externalParameter;
 	}
 
 	/**

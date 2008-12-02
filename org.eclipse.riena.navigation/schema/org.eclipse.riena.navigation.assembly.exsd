@@ -60,7 +60,7 @@
             <element ref="module"/>
             <element ref="submodule"/>
          </choice>
-         <attribute name="typeId" type="string" use="required">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   Type part of the ID of the nodes created with this definition. When a subtree is defined it is the type ID of the root node.
@@ -91,7 +91,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="autostartindex" type="string">
+         <attribute name="autostartsequence" type="string">
             <annotation>
                <documentation>
                   Indicates if the nodes described by this assembly should be automatically created upon startup

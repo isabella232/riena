@@ -279,27 +279,27 @@
      <extension
          point="org.eclipse.riena.navigation.assemblies">
          <assembly
+               id="org.eclipse.riena.demo.client.customer.customer.assembly"
                name="customer"
                autostartsequence="100"
-               parentTypeId="application"
-               typeId="org.eclipse.riena.demo.client.customer.customer.assembly">
-               <subapplication
+               parentTypeId="application">
+            <subapplication
                   label="Customer"
                   icon="org.eclipse.riena.demo.client:/icons/0457_a_a00.png"
                   typeId="org.eclipse.riena.demo.client.customer.customer"
                   view="customer"/>
          </assembly>
          <assembly
+               id="org.eclipse.riena.demo.client.customer.mail"
                name="pim subApp"
                autostartsequence="200"
                assembler="org.eclipse.riena.demo.client.customer.navigation.model.PimSubApplicationNodeBuilder"
-               parentTypeId="application"
-               typeId="org.eclipse.riena.demo.client.customer.mail">
+               parentTypeId="application">
          </assembly>
       
-           <assembly
-            typeId="org.eclipse.riena.demo.client.kundensuche"
-               autostartsequence="110"
+         <assembly
+            id="org.eclipse.riena.demo.client.kundensuche"
+            autostartsequence="110"
             name="kundensuche"
             parentTypeId="org.eclipse.riena.demo.client.customer.customer">
          <modulegroup
@@ -319,13 +319,13 @@
          </modulegroup>
       </assembly>
       <assembly
+            id="org.eclipse.riena.demo.client.customerRecord"
             name="customerRecord"
-            parentTypeId="org.eclipse.riena.demo.client.customer.customer"
-            typeId="org.eclipse.riena.demo.client.customerRecord">
+            parentTypeId="org.eclipse.riena.demo.client.customer.customer">
          <modulegroup
                typeId="customerRecordGroup">
             <module
-                  label="${riena.navigation.paramenter:firstName} ${riena.navigation.paramenter:lastName}"
+                  label="${riena.navigation.parameter:firstName} ${riena.navigation.parameter:lastName}"
                   typeId="org.eclipse.riena.demo.client.module.CustomerRecord">
                <submodule
                      controller="org.eclipse.riena.demo.client.customer.controllers.CustomerOverviewController"
@@ -359,11 +359,11 @@
          </modulegroup>
       </assembly>
       <assembly
+            id="org.eclipse.riena.demo.client.customer.order"
             name="order subapp"
             autostartsequence="300"
             assembler="org.eclipse.riena.demo.client.customer.navigation.model.OrderSubApplicationNodeBuilder"
-            parentTypeId="application"
-            typeId="org.eclipse.riena.demo.client.customer.order">
+            parentTypeId="application">
       </assembly>
      </extension>
 

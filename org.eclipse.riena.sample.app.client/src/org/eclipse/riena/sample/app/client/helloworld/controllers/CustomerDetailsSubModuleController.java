@@ -64,7 +64,7 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 	}
 
 	private Customer getCustomer() {
-		return (Customer) getNavigationNode().getContext();
+		return (Customer) getNavigationNode().getContext(Customer.class.getName());
 	}
 
 	public ITextRidget getNumberFacade() {

@@ -14,11 +14,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.riena.core.marker.IMarkable;
@@ -68,7 +70,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private List<ISimpleNavigationNodeListener> simpleListeners;
 	private IMarkable markable;
 	private IUIFilterable filterable;
-	private Object context;
+	private Map<String, Object> context;
 	private Set<IAction> actions;
 	private PropertyChangeSupport propertyChangeSupport;
 	private IMarker hiddenMarker;
@@ -92,6 +94,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		filterable = createFilterable();
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
+		context = null;
 		// TODO: scp How can we use IIconManager.DEFAULT_ICON
 		// icon = "0044";
 	}
@@ -626,15 +629,22 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * @see java.lang.Object#getContext()
 	 */
-	public Object getContext() {
-		return context;
+	public Object getContext(String key) {
+		if (context == null) {
+			return null;
+		}
+		return context.get(key);
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#setContext(java.lang.Object)
+	 * @see org.eclipse.riena.navigation.INavigationNode#setContextData(String,
+	 *      Object)
 	 */
-	public void setContext(Object pContext) {
-		context = pContext;
+	public void setContext(String key, Object value) {
+		if (context == null) {
+			context = new HashMap<String, Object>();
+		}
+		context.put(key, value);
 	}
 
 	/**

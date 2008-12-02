@@ -295,14 +295,15 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	IMarkable getMarkable();
 
 	/**
+	 * @param key
 	 * @return the next in hierarchy available context
 	 */
-	Object getContext();
+	Object getContext(String key);
 
 	/**
 	 * sets the context
 	 */
-	void setContext(Object pContext);
+	void setContext(String key, Object pContext);
 
 	/**
 	 * Adds an action to the node. Actions can be associated with nodes to

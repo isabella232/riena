@@ -424,22 +424,22 @@
    <extension
          point="org.eclipse.riena.navigation.assemblies">
       <assembly
-            typeId="org.eclipse.riena.example.navigation.assembly"
+            id="org.eclipse.riena.example.navigation.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
             parentTypeId="application">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.navigate.assembly"
+            id="org.eclipse.riena.example.navigate.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
             parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.sharedViews"
+            id="org.eclipse.riena.example.sharedViews"
             assembler="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeBuilder"
             parentTypeId="playground">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.uiProcesses"
+            id="org.eclipse.riena.example.uiProcesses"
             name="uiProcesses_definition"
             parentTypeId="playground">
          <modulegroup
@@ -481,12 +481,12 @@
          </modulegroup>
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.playground"
+            id="org.eclipse.riena.example.playground"
             assembler="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
             parentTypeId="playground">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.filters.assembly"
+            id="org.eclipse.riena.example.filters.assembly"
             name="filters_definition"
             parentTypeId="playground">
          <modulegroup
@@ -523,7 +523,7 @@
          </modulegroup>
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.logcollector.assembly"
+            id="org.eclipse.riena.example.logcollector.assembly"
             name="logcollector"
             parentTypeId="playground">
          <modulegroup
@@ -542,12 +542,12 @@
          </modulegroup>
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.navigate.comboAndList"
+            id="org.eclipse.riena.example.navigate.comboAndList"
             assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
             parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
       <assembly
-            typeId="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
+            id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentTypeId="playground">
       </assembly>

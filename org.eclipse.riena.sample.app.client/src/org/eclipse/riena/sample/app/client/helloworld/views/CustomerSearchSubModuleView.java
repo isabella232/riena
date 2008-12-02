@@ -199,7 +199,7 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 
 		ISubModuleNode node = getNode();
 		SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
-		cNode.setContext(selected);
+		cNode.setContext(Customer.class.getName(), selected);
 		WorkareaManager.getInstance().registerDefinition(cNode, CustomerDetailsSubModuleView.ID);
 		node.addChild(cNode);
 		cNode.activate();

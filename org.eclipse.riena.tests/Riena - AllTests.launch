@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.pde.ui.JunitLaunchConfig">
 <booleanAttribute key="append.args" value="true"/>
 <stringAttribute key="application" value="org.eclipse.pde.junit.runtime.coretestapplication"/>
@@ -13,6 +13,7 @@
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
 <booleanAttribute key="default" value="false"/>
+<stringAttribute key="deselected_workspace_plugins" value="de.compeople.scp.example.client,de.compeople.scp.ui.swing.lnf.default,de.compeople.scp.ui.widgets.swing,de.compeople.scp.ui.swing,de.compeople.scp.ui.templates,de.compeople.scp.offline.jserialization,de.compeople.scp.example.client.bank,de.compeople.scp.navigation,de.compeople.scp.example.client.person.common,de.compeople.scp.offline.xstream.gzipcrypt,de.compeople.scp.server,de.compeople.scp.offline.xstream.xml,de.compeople.scp.sample.app.client,de.compeople.scp.offline.xstream,de.compeople.scp.example.common,de.compeople.scp.navigation.ui.swing,de.compeople.scp.ui.core,de.compeople.scp.office,de.compeople.scp.offline.common,de.compeople.scp.example.client.person,de.compeople.scp.onlinestatus,de.compeople.scp.client,de.compeople.scp.ui.ridgets.swing,de.compeople.scp.tests,de.compeople.scp.offline.xstream.gzip"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
@@ -22,8 +23,8 @@
 <listEntry value="1"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
@@ -35,7 +36,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.riena.sample.app.client.mail.product"/>
-<stringAttribute key="selected_target_plugins" value="org.eclipse.core.runtime.compatibility.auth,org.eclipse.swt.win32.win32.x86,org.eclipse.equinox.common,org.eclipse.equinox.registry,org.eclipse.equinox.transforms.hook,org.eclipse.equinox.preferences,org.junit,org.eclipse.jface,org.eclipse.equinox.app,org.eclipse.swt,com.ibm.icu,org.eclipse.update.configurator,org.eclipse.core.expressions,org.mortbay.jetty,org.eclipse.help,org.eclipse.core.jobs,org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.contenttype,org.eclipse.core.commands,org.eclipse.jface.databinding,org.apache.commons.logging,org.eclipse.core.databinding,org.eclipse.osgi.services,org.eclipse.equinox.security,org.eclipse.core.databinding.beans,org.eclipse.ui.workbench,org.eclipse.osgi,org.eclipse.equinox.http.servlet"/>
+<stringAttribute key="selected_target_plugins" value="org.apache.commons.logging,org.eclipse.swt.win32.win32.x86,org.eclipse.equinox.common,org.eclipse.jface,org.eclipse.ui,org.eclipse.core.expressions,org.eclipse.core.contenttype,org.eclipse.update.configurator,org.eclipse.help,org.mortbay.jetty,org.eclipse.core.databinding,org.eclipse.core.commands,org.eclipse.jface.databinding,org.eclipse.core.runtime.compatibility.auth,org.eclipse.core.databinding.beans,org.eclipse.core.jobs,org.eclipse.osgi,org.eclipse.equinox.preferences,org.eclipse.core.runtime,org.eclipse.equinox.http.servlet,org.eclipse.osgi.services,org.eclipse.equinox.app,org.eclipse.ui.workbench,org.eclipse.swt,org.eclipse.equinox.transforms.hook,org.eclipse.equinox.registry,com.ibm.icu"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>

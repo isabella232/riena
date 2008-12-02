@@ -45,10 +45,9 @@ public interface INavigationAssemblyExtension {
 	String getParentTypeId();
 
 	/**
-	 * @return The type part of the ID of a navigation node.
-	 * @see NavigationNodeId#getTypeId()
+	 * @return This assemblies id.
 	 */
-	String getTypeId();
+	String getId();
 
 	/**
 	 * @return The index this assembly takes in the system startup sequence. 0

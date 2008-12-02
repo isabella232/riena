@@ -99,7 +99,6 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertTrue(subApplication.isActivated());
 
 		addPluginXml(NavigationProcessorTest.class, "NavigationProcessorTest.xml");
-		Thread.sleep(500);
 		subModule.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
 
 		assertEquals(2, applicationNode.getChildren().size());

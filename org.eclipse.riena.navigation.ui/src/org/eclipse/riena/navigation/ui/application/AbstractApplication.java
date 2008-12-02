@@ -97,9 +97,9 @@ public abstract class AbstractApplication implements IApplication {
 							if (id != null) {
 								startups.add(new StartupSortable(StartupLevel.SUBMODULE, sequence, id));
 							} else {
-								id = assembler.getAssembly().getTypeId();
+								id = assembler.getAssembly().getId();
 								if (id != null) {
-									startups.add(new StartupSortable(StartupLevel.UNKNOWN, sequence, id));
+									startups.add(new StartupSortable(StartupLevel.CUSTOM, sequence, id));
 								}
 							}
 						}
@@ -109,7 +109,7 @@ public abstract class AbstractApplication implements IApplication {
 		}
 
 		for (StartupSortable startup : startups) {
-			String message = "creating startup module %s [level=%s sequence=%d]\n"; //$NON-NLS-1$
+			String message = "creating startup module %s [level=%s sequence=%d]"; //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_INFO, String.format(message, startup.id, startup.level, startup.sequence));
 			applicationNode.create(new NavigationNodeId(startup.id));
 		}
@@ -189,7 +189,7 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	enum StartupLevel {
-		SUBAPPLICATION, MODULEGROUP, MODULE, SUBMODULE, UNKNOWN
+		SUBAPPLICATION, MODULEGROUP, MODULE, SUBMODULE, CUSTOM
 	}
 
 	static class StartupSortable implements Comparable<StartupSortable> {

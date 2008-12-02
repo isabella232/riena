@@ -57,7 +57,9 @@ public class TestSecondModuleGroupNodeBuilder implements INavigationAssembler {
 	 */
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 
-		return true;
+		return nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondModuleGroup")
+				|| nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondModule")
+				|| nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubModule");
 	}
 
 	public String getParentNodeId() {

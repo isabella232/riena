@@ -117,7 +117,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 			Customer selected = (Customer) selectedValue;
 			ISubModuleNode node = getNavigationNode();
 			SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
-			cNode.setContext(selected);
+			cNode.setContext(Customer.class.getName(), selected);
 			WorkareaManager.getInstance().registerDefinition(cNode, CustomerDetailsSubModuleView.ID);
 			node.addChild(cNode);
 			cNode.activate();
