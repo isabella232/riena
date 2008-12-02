@@ -46,7 +46,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			final IConfigurationElement configurationElement) {
 		this.interfaceType = interfaceType;
 		this.configurationElement = configurationElement;
-		this.symbolReplace = symbolReplace;
+		this.symbolReplace = symbolReplace && !interfaceType.isAnnotationPresent(DoNotReplaceSymbols.class);
 		this.resolved = new HashMap<Method, Result>();
 		if (!interfaceType.isAnnotationPresent(ExtensionInterface.class)) {
 			LOGGER.log(LogService.LOG_WARNING, "The interface '" + interfaceType.getName() //$NON-NLS-1$
@@ -87,11 +87,14 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		final Class<?> returnType = method.getReturnType();
 		final String name = getAttributeName(method, methodKind);
 		if (returnType == String.class) {
+			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
 			return Result.noCache(modify(method.isAnnotationPresent(MapContent.class) ? configurationElement.getValue()
-					: configurationElement.getAttribute(name)));
+					: configurationElement.getAttribute(name), methodSymbolReplace));
 		}
 		if (returnType.isPrimitive()) {
-			return Result.noCache(coerce(returnType, modify(configurationElement.getAttribute(name))));
+			final boolean methodSymbolReplace = !method.isAnnotationPresent(DoNotReplaceSymbols.class);
+			return Result.noCache(coerce(returnType, modify(configurationElement.getAttribute(name),
+					methodSymbolReplace)));
 		}
 		if (returnType == Bundle.class) {
 			return Result.cache(ContributorFactoryOSGi.resolve(configurationElement.getContributor()));
@@ -234,8 +237,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		return value;
 	}
 
-	private String modify(final String value) {
-		if (!symbolReplace || value == null) {
+	private String modify(final String value, final boolean methodSymbolReplace) {
+		if (!symbolReplace || !methodSymbolReplace || value == null) {
 			return value;
 		}
 
