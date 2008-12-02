@@ -13,6 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -31,20 +32,19 @@ public class TextSubModuleController extends SubModuleController {
 	/**
 	 * Binds and updates the ridgets.
 	 */
+	@Override
 	public void configureRidgets() {
-
-		// private ITextRidget textArea;
-		// private ITextRidget textPassword;
-		// private ITextRidget textField10;
 
 		ITextRidget textModel1 = (ITextRidget) getRidget("textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
+		textModel1.addMarker(new OutputMarker());
 		ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
 
 		ITextRidget textModel2 = (ITextRidget) getRidget("textModel2"); //$NON-NLS-1$
 		textModel2.setText("type something"); //$NON-NLS-1$
+		textModel2.addMarker(new OutputMarker());
 		ITextRidget textDirectWrite = (ITextRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);

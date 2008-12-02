@@ -38,7 +38,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 
 		if (args[0] instanceof INavigationNode) {
 			INavigationNode node = (INavigationNode) args[0];
-			String longNodeId = NavigationNodeUtility.getLongNodeId(node);
+			String longNodeId = NavigationNodeUtility.getNodeLongId(node);
 			StringMatcher stringMatcher = new StringMatcher(nodeId);
 			return stringMatcher.match(longNodeId);
 		} else {

@@ -61,22 +61,14 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	private void doAddFilters() {
 
 		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
-				"rienaExample.offline");
-
+				"rienaExample.offline"); //$NON-NLS-1$
 		IUIFilter filter = container.getFilter();
-
-		Collection targetNodeIds = container.getFilterTargetNodeIds();
-
+		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
-
 		if (nodes != null && !nodes.isEmpty()) {
-
-			for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
-				INavigationNode<?> navigationNode = (INavigationNode<?>) iterator.next();
+			for (INavigationNode<?> navigationNode : nodes) {
 				navigationNode.addFilter(filter);
-
 			}
-
 		}
 
 	}
@@ -87,26 +79,21 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	private void doRemoveFilters() {
 
 		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
-				"rienaExample.offline");
-
+				"rienaExample.offline"); //$NON-NLS-1$
 		IUIFilter filter = container.getFilter();
-
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
-
 		List<INavigationNode<?>> nodes = findNodes(targetNodeIds);
-
-		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
-			INavigationNode<?> navigationNode = (INavigationNode<?>) iterator.next();
+		for (INavigationNode<?> navigationNode : nodes) {
 			navigationNode.removeFilter(filter.getFilterID());
-
 		}
 
 	}
 
 	/**
-	 * Returns all node with the given label.
+	 * Returns all node with the given id.
 	 * 
-	 * @param label
+	 * @param id
+	 *            - node ID
 	 * @return list of found nodes.
 	 */
 	private List<INavigationNode<?>> findNodes(String id) {
@@ -135,9 +122,10 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	}
 
 	/**
-	 * Returns all node with the given label.
+	 * Returns all node with the given ids.
 	 * 
-	 * @param label
+	 * @param ids
+	 *            - node IDs
 	 * @return list of found nodes.
 	 */
 	private List<INavigationNode<?>> findNodes(Collection<String> ids) {

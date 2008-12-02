@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +41,7 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterable;
 import org.eclipse.riena.ui.filter.impl.UIFilterable;
+import org.eclipse.riena.ui.ridgets.tree2.ITreeNode2;
 
 /**
  * Default implementation of all features common to all navigation node objects
@@ -556,7 +556,15 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	public void addMarker(IMarker marker) {
+		boolean oldEnabled = isEnabled();
+		boolean oldVisible = isVisible();
 		getNavigationProcessor().addMarker(this, marker);
+		if (oldEnabled != isEnabled()) {
+			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
+		}
+		if (oldVisible != isVisible()) {
+			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_VISIBLE, oldVisible, isVisible());
+		}
 	}
 
 	public void addMarker(INavigationContext context, IMarker marker) {
@@ -591,8 +599,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		if (getMarkable().getMarkers().isEmpty()) {
 			return;
 		}
+		boolean oldEnabled = isEnabled();
+		boolean oldVisible = isVisible();
 		getMarkable().removeAllMarkers();
 		notifyMarkersChanged();
+		if (oldEnabled != isEnabled()) {
+			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
+		}
+		if (oldVisible != isVisible()) {
+			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_VISIBLE, oldVisible, isVisible());
+		}
 	}
 
 	/**
@@ -600,10 +616,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void removeMarker(IMarker marker) {
+		boolean oldEnabled = isEnabled();
+		boolean oldVisible = isVisible();
 		if (!getMarkable().getMarkers().contains(marker)) {
 			return;
 		}
 		getMarkable().removeMarker(marker);
+		if (oldEnabled != isEnabled()) {
+			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
+		}
+		if (oldVisible != isVisible()) {
+			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_VISIBLE, oldVisible, isVisible());
+		}
 		notifyMarkersChanged();
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
 			List<?> children = getChildren();
@@ -1099,15 +1123,19 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	public void removeFilter(String filterID) {
+
 		Collection<? extends IUIFilter> filters = getFilters();
-		for (Iterator<? extends IUIFilter> iterator = filters.iterator(); iterator.hasNext();) {
-			IUIFilter type = iterator.next();
-			if (type.getFilterID() != null && type.getFilterID().equals(filterID)) {
-				getFilterable().removeFilter(type);
-				notifyFilterRemoved(type);
 
+		List<IUIFilter> toRemove = new ArrayList<IUIFilter>();
+		for (IUIFilter filter : filters) {
+			if (filter.getFilterID() != null && filter.getFilterID().equals(filterID)) {
+				toRemove.add(filter);
 			}
+		}
 
+		for (IUIFilter filter : toRemove) {
+			getFilterable().removeFilter(filter);
+			notifyFilterRemoved(filter);
 		}
 
 	}

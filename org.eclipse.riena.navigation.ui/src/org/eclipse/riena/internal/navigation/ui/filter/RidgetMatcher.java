@@ -57,7 +57,7 @@ public class RidgetMatcher {
 			return StringUtils.equals(ridgetId, getId());
 		} else {
 			if (args[1] instanceof INavigationNode) {
-				String nodeId = NavigationNodeUtility.getLongNodeId((INavigationNode) args[1]);
+				String nodeId = NavigationNodeUtility.getNodeLongId((INavigationNode) args[1]);
 				String longRidgetId = nodeId + "/" + ridgetId; //$NON-NLS-1$
 				StringMatcher matcher = new StringMatcher(getId());
 				return matcher.match(longRidgetId);

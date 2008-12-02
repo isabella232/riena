@@ -179,12 +179,12 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	}
 
 	/**
-	 * Creates a filter attribute for a ridget, dependent on the selected type
-	 * of filter.
+	 * Creates a filter rule for a ridget, dependent on the selected type of
+	 * filter.
 	 * 
 	 * @param model
 	 *            - model with selections.
-	 * @return filter attribute
+	 * @return filter rule
 	 */
 	private IUIFilterRule createFilterRule(FilterModel model, String nodeId) {
 

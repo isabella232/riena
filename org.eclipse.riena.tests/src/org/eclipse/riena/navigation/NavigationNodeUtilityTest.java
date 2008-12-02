@@ -27,19 +27,19 @@ public class NavigationNodeUtilityTest extends TestCase {
 	public void testGetLongNodeId() {
 
 		ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
-		assertEquals("/sm", NavigationNodeUtility.getLongNodeId(sm));
+		assertEquals("/sm", NavigationNodeUtility.getNodeLongId(sm));
 
 		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		sm.setParent(sm2);
-		assertEquals("/sm2/sm", NavigationNodeUtility.getLongNodeId(sm));
+		assertEquals("/sm2/sm", NavigationNodeUtility.getNodeLongId(sm));
 
 		IModuleNode m = new ModuleNode();
 		sm2.setParent(m);
-		assertEquals("//sm2/sm", NavigationNodeUtility.getLongNodeId(sm));
+		assertEquals("//sm2/sm", NavigationNodeUtility.getNodeLongId(sm));
 
 		IModuleGroupNode mg = new ModuleGroupNode(new NavigationNodeId("group"));
 		m.setParent(mg);
-		assertEquals("/group//sm2/sm", NavigationNodeUtility.getLongNodeId(sm));
+		assertEquals("/group//sm2/sm", NavigationNodeUtility.getNodeLongId(sm));
 
 	}
 

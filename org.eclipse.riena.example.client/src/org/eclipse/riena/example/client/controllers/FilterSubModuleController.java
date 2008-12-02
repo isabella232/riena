@@ -224,7 +224,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doAddFilter() {
 		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-		attributes.add(createFilterAttribute(filterModel, true));
+		attributes.add(createFilterRule(filterModel, true));
 		IUIFilter filter = new UIFilter(attributes);
 		getNavigationNode().addFilter(filter);
 	}
@@ -234,28 +234,28 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doGlobalAddFilter() {
 		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
-		attributes.add(createFilterAttribute(globalFilterModel, false));
+		attributes.add(createFilterRule(globalFilterModel, false));
 		IUIFilter filter = new UIFilter(attributes);
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		applNode.addFilter(filter);
 	}
 
 	/**
-	 * Creates a filter attribute for a ridget, dependent on the selected type
-	 * of filter.
+	 * Creates a filter rule for a ridget, dependent on the selected type of
+	 * filter.
 	 * 
 	 * @param model
 	 *            - model with selections.
-	 * @return filter attribute
+	 * @return filter rule
 	 */
-	private IUIFilterRule createFilterAttribute(FilterModel model, boolean local) {
+	private IUIFilterRule createFilterRule(FilterModel model, boolean local) {
 
 		IUIFilterRule attribute = null;
 
 		String id = model.getSelectedId();
 		if (local) {
 			INavigationNode<ISubModuleNode> node = getNavigationNode();
-			id = NavigationNodeUtility.getLongNodeId(node) + "/" + id; //$NON-NLS-1$
+			id = NavigationNodeUtility.getNodeLongId(node) + "/" + id; //$NON-NLS-1$
 		} else {
 			id = "*/" + id; //$NON-NLS-1$
 		}

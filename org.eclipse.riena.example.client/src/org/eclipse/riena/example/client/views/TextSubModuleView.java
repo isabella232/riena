@@ -40,8 +40,6 @@ public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
 
 		UIControlsFactory.createLabel(parent, "Model:"); //$NON-NLS-1$
 		Text textModel1 = UIControlsFactory.createText(parent);
-		textModel1.setEnabled(false);
-		textModel1.setEditable(false);
 		addUIControl(textModel1, "textModel1"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Text Field (direct writing):"); //$NON-NLS-1$
@@ -50,8 +48,6 @@ public class TextSubModuleView extends SubModuleView<TextSubModuleController> {
 
 		UIControlsFactory.createLabel(parent, "Model:"); //$NON-NLS-1$
 		Text textModel2 = UIControlsFactory.createText(parent);
-		textModel2.setEnabled(false);
-		textModel2.setEditable(false);
 		addUIControl(textModel2, "textModel2"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(parent, "Text Area:"); //$NON-NLS-1$

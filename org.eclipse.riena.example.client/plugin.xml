@@ -201,6 +201,13 @@
             name="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
+            id="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
+            name="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -496,29 +503,37 @@
                   name="filters"
                   label="UI-Filters">
                <submodule
+                     controller="org.eclipse.riena.example.client.controllers.FilterExampleSubModuleController"
+                     label="Example"
+                     shared="false"
+                     typeId="org.eclipse.riena.example.filterexample"
+                     view="org.eclipse.riena.example.client.views.FilterExampleSubModuleView">
+               </submodule>
+               <submodule
                      typeId="org.eclipse.riena.example.filterridget"
                      name="filterridget"
-                     label="UI-Filter (Ridgets)"
+                     label="Ridget"
                      view="org.eclipse.riena.example.client.views.FilterSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.FilterSubModuleController"/>
                <submodule
                      typeId="org.eclipse.riena.example.filternavigation"
                      name="filternavigation"
-                     label="UI-Filter (Navigation)"
+                     label="Navigation"
                      view="org.eclipse.riena.example.client.views.FilterNavigationSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.FilterNavigationSubModuleController"/>
                <submodule
+                     controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"
+                     label="Menu Item"
+                     name="filteraction"
+                     typeId="org.eclipse.riena.example.filteraction"
+                     view="org.eclipse.riena.example.client.views.FilterActionSubModuleView">
+               </submodule>
+               <submodule
                      typeId="org.eclipse.riena.example.filterdefinition"
                      name="filterdefinition"
-                     label="UI-Filter (External definition)"
+                     label="External Definition"
                      view="org.eclipse.riena.example.client.views.FilterExternalDefinitionSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.FilterExternalDefinitionSubModuleController"/>
-               <submodule
-                     typeId="org.eclipse.riena.example.filteraction"
-                     name="filteraction"
-                     label="UI-Filter (MenuItem)"
-                     view="org.eclipse.riena.example.client.views.FilterActionSubModuleView"
-                     controller="org.eclipse.riena.example.client.controllers.FilterActionSubModuleController"/>
             </module>
          </modulegroup>
       </assembly>
@@ -530,8 +545,9 @@
                typeId="org.eclipse.riena.example.logcollector"
                name="logcollector_group">
             <module
+                  label="LogCollector"
                   name="logcollector"
-                  label="LogCollector">
+                  typeId="logcollectorModule">
                <submodule
                      typeId="org.eclipse.riena.example.logcollectorlog"
                      name="logcollectorlog"
@@ -571,8 +587,6 @@
          <nodeId
                id="application">
          </nodeId>
-         
-         
          <ruleMarkerNavigation
                marker="hidden"
                nodeId="*/org.eclipse.riena.example.uiProcesses">
@@ -602,12 +616,92 @@
                itemId="org.eclipse.riena.example.client.exitToolBarItem"
                marker="disabled">
          </ruleMarkerMenuItem>
-                
       </filter>
-      
+      <filter
+            filterId="rienaExample.menuToolBar">
+         <nodeId
+               id="/application">
+         </nodeId>
+         <ruleMarkerMenuItem
+               itemId="org.eclipse.riena.example.client.zoom*MenuItem"
+               marker="disabled">
+         </ruleMarkerMenuItem>
+         <ruleMarkerMenuItem
+               itemId="org.eclipse.riena.example.client.exitMenuItem"
+               marker="disabled">
+         </ruleMarkerMenuItem>
+         <ruleMarkerMenuItem
+               itemId="org.eclipse.riena.example.client.exitToolBarItem"
+               marker="disabled">
+         </ruleMarkerMenuItem>
+         <ruleMarkerMenuItem
+               itemId="navigationMenu"
+               marker="hidden">
+         </ruleMarkerMenuItem>
+      </filter>
+      <filter
+            filterId="rienaExample.ridget">
+         <nodeId
+               id="/application">
+         </nodeId>
+         <ruleMarkerRidget
+               marker="hidden"
+               ridgetId="/application/*/org.eclipse.riena.example.text/textModel?">
+         </ruleMarkerRidget>
+         <ruleValidatorRidget
+               ridgetId="/application/*/org.eclipse.riena.example.text/*"
+               validationTime="onUIControlEdit"
+               validator="org.eclipse.riena.ui.ridgets.validation.MaxLength:12">
+         </ruleValidatorRidget>
+      </filter>
+      <filter
+            filterId="rienaExample.navigation">
+         <nodeId
+               id="/application">
+         </nodeId>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.sharedViews">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.uiProcesses">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/logcollectorModule">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.tree">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.treeTable">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.table">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterridget">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filternavigation">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filteraction">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterdefinition">
+         </ruleMarkerNavigation>
+      </filter>
    </extension>
-      
-      <extension point="org.eclipse.riena.monitor.collector">
+   <extension point="org.eclipse.riena.monitor.collector">
       <collector
             category="LogCollector"
             class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1 4 [], triggerRange=1 2">
