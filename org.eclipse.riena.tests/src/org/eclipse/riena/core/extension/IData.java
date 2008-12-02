@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.extension;
 
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.osgi.framework.Bundle;
 
 @ExtensionInterface
@@ -47,6 +48,8 @@ public interface IData {
 	IData3[] getMoreData();
 
 	Bundle getContributingBundle();
+
+	IConfigurationElement getConfigurationElement();
 
 	@MapName("objectType")
 	Class<?> getLazyThingType();

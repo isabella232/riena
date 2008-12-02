@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.tests.Activator;
@@ -380,6 +381,21 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				getContext());
 		assertEquals(1, target.getData().length);
 		assertEquals(Activator.getDefault().getBundle(), target.getData()[0].getContributingBundle());
+		removeExtension("core.test.extpoint.id1");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testGetConfigurationElement() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
+		ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
+				getContext());
+		assertEquals(1, target.getData().length);
+		IConfigurationElement conf = target.getData()[0].getConfigurationElement();
+		assertEquals("test1", conf.getAttribute("text"));
 		removeExtension("core.test.extpoint.id1");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
