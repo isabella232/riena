@@ -115,4 +115,16 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		VariableManagerUtil.addVariable("host", WWW_ECLIPSE_ORG);
 		assertEquals("http://" + WWW_ECLIPSE_ORG + "/path", VariableManagerUtil.substitute("${url}"));
 	}
+
+	public void testRemoveVariable() throws CoreException {
+		VariableManagerUtil.addVariable("a", "1");
+		assertEquals("1", VariableManagerUtil.substitute("${a}"));
+		VariableManagerUtil.removeVariable("a");
+		try {
+			VariableManagerUtil.substitute("${a}");
+			fail();
+		} catch (CoreException e) {
+			// ok
+		}
+	}
 }
