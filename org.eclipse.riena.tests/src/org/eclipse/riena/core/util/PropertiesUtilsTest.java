@@ -102,6 +102,14 @@ public class PropertiesUtilsTest extends TestCase {
 		assertEquals("3", map.get("c"));
 	}
 
+	public void testAsMapWithDefaultsAndNoData() {
+		Map<String, String> map = PropertiesUtils.asMap(null, Literal.map("a", "1").map("b", "2").map("c", "3"));
+		assertEquals(3, map.size());
+		assertEquals("1", map.get("a"));
+		assertEquals("2", map.get("b"));
+		assertEquals("3", map.get("c"));
+	}
+
 	public void testAsArrayEmpty() {
 		assertEquals(0, PropertiesUtils.asArray("").length);
 		assertEquals(0, PropertiesUtils.asArray(null).length);
