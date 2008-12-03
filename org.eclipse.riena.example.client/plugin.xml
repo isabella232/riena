@@ -468,7 +468,6 @@
                      typeId="org.eclipse.riena.example.uiProcess_2"
                      name="uiProcess_2"
                      label="Demo2"
-                     hidden="true"
                      view="org.eclipse.riena.example.client.views.UIProcessDemoSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"/>
             </module>
