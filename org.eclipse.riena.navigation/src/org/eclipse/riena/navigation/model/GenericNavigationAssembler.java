@@ -17,8 +17,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.util.VariableManagerUtil;
+import org.eclipse.riena.navigation.IAssemblerProvider;
+import org.eclipse.riena.navigation.IForEachExtension;
+import org.eclipse.riena.navigation.IGenericNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -45,7 +50,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
  * <li>riena.navigation.paramenter
  * </ul>
  * These variables reference the NavigationNodeId and
- * NavigationArgument.getInputParameter() objects, reps. The user is required to
+ * NavigationArgument.getParameter() objects, resp. The user is required to
  * provide a parameter pointing to the desired property. For example to access
  * the instanceId property of the current NavigationNodeId one would write:
  * 
@@ -53,19 +58,26 @@ import org.eclipse.riena.navigation.NavigationNodeId;
  * ${riena.navigation.nodeid:instanceId}
  * </pre>
  */
-public class GenericNavigationAssembler implements INavigationAssembler {
+public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 	/** dynamic variable referencing navigation node id */
-	static public final String VAR_NAVIGATION_NODEID = "riena.navigation.nodeid"; //$NON-NLS-1$
+	public static final String VAR_NAVIGATION_NODEID = "riena.navigation.nodeid"; //$NON-NLS-1$
 
 	/** dynamic variable referencing navigation node id */
-	static public final String VAR_NAVIGATION_NODECONTEXT = "riena.navigation.nodecontext"; //$NON-NLS-1$
+	public static final String VAR_NAVIGATION_NODECONTEXT = "riena.navigation.nodecontext"; //$NON-NLS-1$
 
 	/** dynamic variable referencing navigation parameter */
-	static public final String VAR_NAVIGATION_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
+	public static final String VAR_NAVIGATION_PARAMETER = "riena.navigation.parameter"; //$NON-NLS-1$
+
+	private static final String VARIABLE_START = "${"; //$NON-NLS-1$
+	private static final char VARIABLE_ARG = ':';
+	private static final char VARIABLE_END = '}';
 
 	// the node definition as read from extension point
 	private INavigationAssemblyExtension assembly;
+
+	// the IAssemblyProvider that can be used to resolve assembly references
+	private IAssemblerProvider assemblerProvider;
 
 	private Set<String> acceptedTargetIds = null;
 
@@ -81,6 +93,14 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 	 */
 	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
 		this.assembly = nodeDefinition;
+	}
+
+	public void setAssemblerProvider(IAssemblerProvider assemblyProvider) {
+		this.assemblerProvider = assemblyProvider;
+	}
+
+	public IAssemblerProvider getAssemblerProvider() {
+		return assemblerProvider;
 	}
 
 	/**
@@ -145,12 +165,29 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 		// a module group can only contain modules
 		ISubApplicationNode subapplication = new SubApplicationNode(createNavigationNodeIdFromTemplate(targetId,
-				subapplicationDefinition.getTypeId(), navigationArgument), subapplicationDefinition.getLabel());
+				subapplicationDefinition, navigationArgument), subapplicationDefinition.getLabel());
 		subapplication.setIcon(subapplicationDefinition.getIcon());
 		updateContext(subapplication, navigationArgument);
 
-		for (IModuleGroupNodeExtension modulegroupDefinition : subapplicationDefinition.getModuleGroupNodes()) {
-			subapplication.addChild(build(modulegroupDefinition, targetId, navigationArgument, context));
+		Map<IConfigurationElement, Object> elementMap = createElementMap(subapplicationDefinition);
+
+		for (IConfigurationElement element : subapplicationDefinition.getConfigurationElement().getChildren()) {
+			if (elementMap.get(element) != null) {
+				if (elementMap.get(element) instanceof IModuleGroupNodeExtension) {
+					subapplication.addChild(build((IModuleGroupNodeExtension) elementMap.get(element), targetId,
+							navigationArgument, copy(context)));
+				} else if (elementMap.get(element) instanceof INavigationAssemblyExtension) {
+					INavigationAssemblyExtension assemblyref = (INavigationAssemblyExtension) elementMap.get(element);
+					if (assemblyref != null) {
+						INavigationAssembler assembler = getAssemblerProvider().getNavigationAssembler(
+								assemblyref.getRef());
+						if (assembler != null && assembler.getAssembly().getModuleGroupNode() != null) {
+							subapplication.addChild(build(assembler.getAssembly().getModuleGroupNode(), targetId,
+									navigationArgument, copy(context)));
+						}
+					}
+				}
+			}
 		}
 
 		return subapplication;
@@ -160,12 +197,29 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 			NavigationArgument navigationArgument, Map<String, Object> context) {
 
 		// a module group can only contain modules
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(createNavigationNodeIdFromTemplate(targetId, groupDefinition
-				.getTypeId(), navigationArgument));
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(createNavigationNodeIdFromTemplate(targetId,
+				groupDefinition, navigationArgument));
 		updateContext(moduleGroup, navigationArgument);
 
-		for (IModuleNodeExtension moduleDefinition : groupDefinition.getModuleNodes()) {
-			moduleGroup.addChild(build(moduleDefinition, targetId, navigationArgument, copy(context)));
+		Map<IConfigurationElement, Object> elementMap = createElementMap(groupDefinition);
+
+		for (IConfigurationElement element : groupDefinition.getConfigurationElement().getChildren()) {
+			if (elementMap.get(element) != null) {
+				if (elementMap.get(element) instanceof IModuleNodeExtension) {
+					moduleGroup.addChild(build((IModuleNodeExtension) elementMap.get(element), targetId,
+							navigationArgument, copy(context)));
+				} else if (elementMap.get(element) instanceof INavigationAssemblyExtension) {
+					INavigationAssemblyExtension assemblyref = (INavigationAssemblyExtension) elementMap.get(element);
+					if (assemblyref != null) {
+						INavigationAssembler assembler = getAssemblerProvider().getNavigationAssembler(
+								assemblyref.getRef());
+						if (assembler != null && assembler.getAssembly().getModuleNode() != null) {
+							moduleGroup.addChild(build(assembler.getAssembly().getModuleNode(), targetId,
+									navigationArgument, copy(context)));
+						}
+					}
+				}
+			}
 		}
 
 		return moduleGroup;
@@ -179,16 +233,34 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 		try {
 			startVariableResolver(mapping);
 			// create module node with label (and icon)
-			module = new ModuleNode(createNavigationNodeIdFromTemplate(targetId, moduleDefinition.getTypeId(),
-					navigationArgument), moduleDefinition.getLabel());
+			module = new ModuleNode(createNavigationNodeIdFromTemplate(targetId, moduleDefinition, navigationArgument),
+					moduleDefinition.getLabel());
 			module.setIcon(moduleDefinition.getIcon());
 			module.setCloseable(!moduleDefinition.isUncloseable());
 			updateContext(module, navigationArgument);
 
-			// ...and may contain submodules
-			for (ISubModuleNodeExtension submoduleDefinition : moduleDefinition.getSubModuleNodes()) {
-				module.addChild(build(submoduleDefinition, targetId, navigationArgument, copy(context)));
+			Map<IConfigurationElement, Object> elementMap = createElementMap(moduleDefinition);
+
+			for (IConfigurationElement element : moduleDefinition.getConfigurationElement().getChildren()) {
+				if (elementMap.get(element) != null) {
+					if (elementMap.get(element) instanceof ISubModuleNodeExtension) {
+						module.addChild(build((ISubModuleNodeExtension) elementMap.get(element), targetId,
+								navigationArgument, copy(context)));
+					} else if (elementMap.get(element) instanceof INavigationAssemblyExtension) {
+						INavigationAssemblyExtension assemblyref = (INavigationAssemblyExtension) elementMap
+								.get(element);
+						if (assemblyref != null) {
+							INavigationAssembler assembler = getAssemblerProvider().getNavigationAssembler(
+									assemblyref.getRef());
+							if (assembler != null && assembler.getAssembly().getSubModuleNode() != null) {
+								module.addChild(build(assembler.getAssembly().getSubModuleNode(), targetId,
+										navigationArgument, copy(context)));
+							}
+						}
+					}
+				}
 			}
+
 		} finally {
 			cleanupVariableResolver();
 		}
@@ -201,23 +273,92 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 		ISubModuleNode submodule = null;
 		Map<String, Object> mapping = createMapping(targetId, navigationArgument);
+		mapping.put(VAR_NAVIGATION_NODECONTEXT, context);
+
 		try {
 			startVariableResolver(mapping);
 			// create submodule node with label (and icon)
-			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, submoduleDefinition.getTypeId(),
+			submodule = new SubModuleNode(createNavigationNodeIdFromTemplate(targetId, submoduleDefinition,
 					navigationArgument), submoduleDefinition.getLabel());
 			submodule.setIcon(submoduleDefinition.getIcon());
 			updateContext(submodule, navigationArgument);
 
-			// process nested submodules
-			for (ISubModuleNodeExtension nestedSubmoduleDefinition : submoduleDefinition.getSubModuleNodes()) {
-				submodule.addChild(build(nestedSubmoduleDefinition, targetId, navigationArgument, copy(context)));
+			Map<IConfigurationElement, Object> elementMap = createElementMap(submoduleDefinition);
+
+			for (IConfigurationElement element : submoduleDefinition.getConfigurationElement().getChildren()) {
+				if (elementMap.get(element) != null) {
+					if (elementMap.get(element) instanceof ISubModuleNodeExtension) {
+						// process nested submodule
+						submodule.addChild(build((ISubModuleNodeExtension) elementMap.get(element), targetId,
+								navigationArgument, copy(context)));
+					} else if (elementMap.get(element) instanceof INavigationAssemblyExtension) {
+						// process assembly reference
+						INavigationAssemblyExtension assemblyref = (INavigationAssemblyExtension) elementMap
+								.get(element);
+						if (assemblyref != null) {
+							INavigationAssembler assembler = getAssemblerProvider().getNavigationAssembler(
+									assemblyref.getRef());
+							if (assembler != null && assembler.getAssembly().getSubModuleNode() != null) {
+								submodule.addChild(build(assembler.getAssembly().getSubModuleNode(), targetId,
+										navigationArgument, copy(context)));
+							}
+						}
+					} else if (elementMap.get(element) instanceof IForEachExtension) {
+						// process foreach loop element
+						processForeachLoop(targetId, navigationArgument, context, submodule,
+								(IForEachExtension) elementMap.get(element));
+					}
+				}
 			}
+
 		} finally {
 			cleanupVariableResolver();
 		}
 
 		return submodule;
+	}
+
+	private void processForeachLoop(NavigationNodeId targetId, NavigationArgument navigationArgument,
+			Map<String, Object> context, ISubModuleNode submodule, IForEachExtension foreach) {
+
+		String loopVar = foreach.getElement();
+		String in = foreach.getIn();
+		String variable = getVariable(in);
+		String argument = getArgument(in);
+		if (variable != null) {
+			try {
+				Object bean = resolveCoreVariable(variable, navigationArgument);
+				if (bean != null) {
+					Object obj = bean;
+					if (argument != null) {
+						obj = new PropertyUtilsBean().getNestedProperty(bean, argument);
+					}
+					if (obj != null) {
+						if (obj instanceof Collection<?>) {
+							for (Object each : (Collection<?>) obj) {
+								Map<String, Object> nodecontext = copy(context);
+								nodecontext.put(loopVar, each);
+								for (ISubModuleNodeExtension nestedSubmoduleDefinition : foreach.getSubModuleNodes()) {
+									submodule.addChild(build(nestedSubmoduleDefinition, targetId, navigationArgument,
+											nodecontext));
+								}
+							}
+						} else if (obj.getClass().isArray()) {
+							for (Object each : (Object[]) obj) {
+								Map<String, Object> nodecontext = copy(context);
+								nodecontext.put(loopVar, each);
+								for (ISubModuleNodeExtension nestedSubmoduleDefinition : foreach.getSubModuleNodes()) {
+									submodule.addChild(build(nestedSubmoduleDefinition, targetId, navigationArgument,
+											nodecontext));
+								}
+							}
+						}
+					}
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 
 	protected Map<String, Object> copy(Map<String, Object> context) {
@@ -298,10 +439,14 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 	}
 
-	protected NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template, String typeId,
-			NavigationArgument navigationArgument) {
+	protected NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template,
+			INodeExtension nodeExtendion, NavigationArgument navigationArgument) {
 
-		return new NavigationNodeId(typeId, template.getInstanceId());
+		String typeId = nodeExtendion.getTypeId();
+		String instanceId = nodeExtendion.getInstanceId() == null ? template.getInstanceId() : nodeExtendion
+				.getInstanceId();
+
+		return new NavigationNodeId(typeId, instanceId);
 	}
 
 	protected String resolveVariables(String string) {
@@ -331,5 +476,75 @@ public class GenericNavigationAssembler implements INavigationAssembler {
 
 	protected void cleanupVariableResolver() {
 		ThreadLocalMapResolver.cleanup();
+	}
+
+	private Map<IConfigurationElement, Object> createElementMap(INodeExtension nodeDefinition) {
+
+		Map<IConfigurationElement, Object> elementMap = new HashMap<IConfigurationElement, Object>();
+		// add child node definitions
+		for (INodeExtension childNodeDefinition : nodeDefinition.getChildNodes()) {
+			elementMap.put(childNodeDefinition.getConfigurationElement(), childNodeDefinition);
+		}
+		// add assembly references
+		for (INavigationAssemblyExtension assemblyref : nodeDefinition.getAssemblies()) {
+			elementMap.put(assemblyref.getConfigurationElement(), assemblyref);
+		}
+		// add foreach definition if present and the node is a submodule
+		if (nodeDefinition instanceof ISubModuleNodeExtension) {
+			IForEachExtension foreachDefinition = ((ISubModuleNodeExtension) nodeDefinition).getForeach();
+			if (foreachDefinition != null) {
+				elementMap.put(foreachDefinition.getConfigurationElement(), foreachDefinition);
+			}
+		}
+
+		return elementMap;
+	}
+
+	/*
+	 * variableDef has the form '${variablename:argument}'
+	 */
+	private String getVariable(String variableDef) {
+
+		int start = 0;
+		if (variableDef.startsWith(VARIABLE_START)) {
+			start += VARIABLE_START.length();
+		}
+		int variableArgumentSeparator = variableDef.indexOf(VARIABLE_ARG);
+		if (variableArgumentSeparator > 0) {
+			return variableDef.substring(start, variableArgumentSeparator);
+		} else {
+			int end = variableDef.length();
+			if (variableDef.charAt(end - 1) == VARIABLE_END) {
+				end--;
+			}
+			return variableDef.substring(start, end);
+		}
+	}
+
+	/*
+	 * variableDef has the form '${variablename:argument}'
+	 */
+	private String getArgument(String variableDef) {
+
+		int end = variableDef.length();
+		if (variableDef.charAt(end - 1) == VARIABLE_END) {
+			end--;
+		}
+		int variableArgumentSeparator = variableDef.indexOf(VARIABLE_ARG);
+		if (variableArgumentSeparator > 0) {
+			return variableDef.substring(variableArgumentSeparator + 1, end);
+		} else {
+			// assume variable without argument
+			return null;
+		}
+	}
+
+	protected Object resolveCoreVariable(String variable, NavigationArgument navigationArgument) {
+
+		if (NavigationArgument.CONTEXT_KEY_PARAMETER.equals(variable)) {
+			return navigationArgument.getParameter();
+		}
+
+		return null;
 	}
 }

@@ -98,13 +98,26 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="ref" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.riena.navigation.assemblies/assembly/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
    <element name="subapplication">
       <complexType>
-         <sequence>
-            <element ref="modulegroup" minOccurs="0" maxOccurs="unbounded"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <choice>
+               <element ref="modulegroup"/>
+               <element ref="assembly"/>
+            </choice>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -120,6 +133,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="instanceId" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="assembler" type="string">
             <annotation>
                <documentation>
@@ -130,37 +150,16 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="view" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.perspectives/perspective/@id"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="label" type="string">
-            <annotation>
-               <documentation>
-                  label to be displayed in navigation tree
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="icon" type="string">
-            <annotation>
-               <documentation>
-                  id of icon to be displayed in navigation tree
-               </documentation>
-            </annotation>
-         </attribute>
       </complexType>
    </element>
 
    <element name="modulegroup">
       <complexType>
-         <sequence>
-            <element ref="module" minOccurs="0" maxOccurs="unbounded"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <choice>
+               <element ref="module"/>
+               <element ref="assembly"/>
+            </choice>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -173,6 +172,13 @@
             <annotation>
                <documentation>
                   Type part of the ID of the nodes created with this definition. When a subtree is defined it is the type ID of the root node.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="instanceId" type="string">
+            <annotation>
+               <documentation>
+                  
                </documentation>
             </annotation>
          </attribute>
@@ -191,8 +197,11 @@
 
    <element name="module">
       <complexType>
-         <sequence>
-            <element ref="submodule" minOccurs="0" maxOccurs="unbounded"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <choice>
+               <element ref="submodule"/>
+               <element ref="assembly"/>
+            </choice>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -212,6 +221,13 @@
             <annotation>
                <documentation>
                   Type part of the ID of the nodes created with this definition. When a subtree is defined it is the type ID of the root node.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="instanceId" type="string">
+            <annotation>
+               <documentation>
+                  
                </documentation>
             </annotation>
          </attribute>
@@ -244,8 +260,12 @@
 
    <element name="submodule">
       <complexType>
-         <sequence>
-            <element ref="submodule" minOccurs="0" maxOccurs="unbounded"/>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <choice>
+               <element ref="submodule"/>
+               <element ref="foreach"/>
+               <element ref="assembly"/>
+            </choice>
          </sequence>
          <attribute name="name" type="string">
             <annotation>
@@ -265,6 +285,13 @@
             <annotation>
                <documentation>
                   Type part of the ID of the nodes created with this definition. When a subtree is defined it is the type ID of the root node.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="instanceId" type="string">
+            <annotation>
+               <documentation>
+                  
                </documentation>
             </annotation>
          </attribute>
@@ -309,6 +336,28 @@
             <annotation>
                <documentation>
                   id of icon to be displayed in navigation tree
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="foreach">
+      <complexType>
+         <sequence>
+            <element ref="submodule"/>
+         </sequence>
+         <attribute name="element" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="in" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
                </documentation>
             </annotation>
          </attribute>

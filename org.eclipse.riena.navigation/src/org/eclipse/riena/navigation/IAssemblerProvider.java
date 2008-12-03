@@ -10,23 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
-
 /**
- * Interface for a ModuleGroupNode extension that defines how to create a node
- * or a subtree in the application model tree.
+ * Somebody who would be able to answer an assembler for an id.
  */
-@ExtensionInterface
-public interface IModuleGroupNodeExtension extends INodeExtension {
+public interface IAssemblerProvider {
 
 	/**
-	 * @return A list of submodule node definitions that are children of the
-	 *         receiver
+	 * @return The navigation assembler with id=assemblyId.
 	 */
-	@MapName("module")
-	IModuleNodeExtension[] getModuleNodes();
-
-	@MapName("module")
-	IModuleNodeExtension[] getChildNodes();
+	INavigationAssembler getNavigationAssembler(String assemblyId);
 }

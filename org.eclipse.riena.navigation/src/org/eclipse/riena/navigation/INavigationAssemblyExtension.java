@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.extension.ExtensionInterface;
 import org.eclipse.riena.core.extension.MapName;
-import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.osgi.framework.Bundle;
 
 /**
@@ -23,6 +23,8 @@ import org.osgi.framework.Bundle;
 public interface INavigationAssemblyExtension {
 
 	String EXTENSIONPOINT = "org.eclipse.riena.navigation.assemblies"; //$NON-NLS-1$
+
+	IConfigurationElement getConfigurationElement();
 
 	/**
 	 * Return the contributing bundle of the extension.
@@ -58,28 +60,6 @@ public interface INavigationAssemblyExtension {
 	int getAutostartSequence();
 
 	/**
-	 * @return A controller that controlles the UI widgets in the view through
-	 *         ridgets (see org.eclipse.riena.ui.internal.ridgets.IRidget)
-	 */
-	IController createController();
-
-	/**
-	 * @return For the SWT-based Riena UI this is the ID of the view associated
-	 *         with the submodule. Must match the ID field of an
-	 *         "org.eclipse.ui.view" extension.
-	 */
-	String getView();
-
-	/**
-	 * Indicates whether the view is shared i.e. whether one instance of the
-	 * view should be used for all submodule instances.
-	 * 
-	 * @return true if the specified view should be a shared view, false
-	 *         otherwise
-	 */
-	boolean isShared();
-
-	/**
 	 * @return A subapplication node definition
 	 */
 	@MapName("subapplication")
@@ -102,4 +82,10 @@ public interface INavigationAssemblyExtension {
 	 */
 	@MapName("submodule")
 	ISubModuleNodeExtension getSubModuleNode();
+
+	/**
+	 * @return The id of the assembly to be included. If this value is not null
+	 *         all other attributse or elements must be null.
+	 */
+	String getRef();
 }

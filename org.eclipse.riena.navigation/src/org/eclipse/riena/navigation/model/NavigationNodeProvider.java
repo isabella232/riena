@@ -17,6 +17,8 @@ import java.util.Map;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
+import org.eclipse.riena.navigation.IAssemblerProvider;
+import org.eclipse.riena.navigation.IGenericNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNodeExtension;
 import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssembler;
@@ -34,7 +36,7 @@ import org.osgi.service.log.LogService;
  * WorkAreaPresentationDefinitions and NavigationNodePresentationDefitinios
  * identified by a given presentationID.
  */
-public class NavigationNodeProvider implements INavigationNodeProvider {
+public class NavigationNodeProvider implements INavigationNodeProvider, IAssemblerProvider {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
 
@@ -136,7 +138,9 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 	 * @param assembler
 	 */
 	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationAssembler assembler) {
-		// do nothing by default
+		if (assembler instanceof IGenericNavigationAssembler) {
+			((IGenericNavigationAssembler) assembler).setAssemblerProvider(this);
+		}
 	}
 
 	public Collection<INavigationAssembler> getNavigationAssemblers() {
@@ -145,6 +149,10 @@ public class NavigationNodeProvider implements INavigationNodeProvider {
 
 	public void registerNavigationAssembler(String id, INavigationAssembler assembler) {
 		assemblyId2AssemblerCache.put(id, assembler);
+	}
+
+	public INavigationAssembler getNavigationAssembler(String assemblyId) {
+		return assemblyId2AssemblerCache.get(assemblyId);
 	}
 
 	public INavigationAssembler getNavigationAssembler(NavigationNodeId nodeId, NavigationArgument argument) {

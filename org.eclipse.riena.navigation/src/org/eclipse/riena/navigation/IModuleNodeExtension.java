@@ -42,4 +42,7 @@ public interface IModuleNodeExtension extends INodeExtension {
 	 */
 	@MapName("submodule")
 	ISubModuleNodeExtension[] getSubModuleNodes();
+
+	@MapName("submodule")
+	ISubModuleNodeExtension[] getChildNodes();
 }

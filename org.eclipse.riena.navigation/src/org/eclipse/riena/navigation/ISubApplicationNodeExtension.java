@@ -53,4 +53,7 @@ public interface ISubApplicationNodeExtension extends INodeExtension {
 	 */
 	@MapName("modulegroup")
 	IModuleGroupNodeExtension[] getModuleGroupNodes();
+
+	@MapName("modulegroup")
+	IModuleGroupNodeExtension[] getChildNodes();
 }
