@@ -61,10 +61,10 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	}
 
 	/**
-	 * Removes all rule for menu and tool items form the given node and also its
-	 * child nodes.<br>
+	 * Removes all rules for menu and tool items form the given node and also
+	 * its child nodes.<br>
 	 * This this necessary because every sub-application has its "own" menu and
-	 * tool bar.
+	 * tool bar: same widget but different ridgets.
 	 * 
 	 * @param node
 	 *            - navigation node

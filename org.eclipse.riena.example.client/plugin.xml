@@ -699,6 +699,37 @@
                nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterdefinition">
          </ruleMarkerNavigation>
       </filter>
+      <filter
+            filterId="rienaExample.ridget01">
+         <nodeId
+               id="/application">
+         </nodeId>
+         <ruleValidatorRidget
+               ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sampleText"
+               validationTime="onUpdateToModel"
+               validator="org.eclipse.riena.ui.ridgets.validation.ValidCharacters:01">
+         </ruleValidatorRidget>
+      </filter>
+      <filter
+            filterId="rienaExample.ridgetDisable">
+         <nodeId
+               id="/application">
+         </nodeId>
+         <ruleMarkerRidget
+               marker="disabled"
+               ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sample*">
+         </ruleMarkerRidget>
+      </filter>
+      <filter
+            filterId="rienaExample.ridgetHide">
+         <nodeId
+               id="/application">
+         </nodeId>
+         <ruleMarkerRidget
+               marker="hidden"
+               ridgetId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterexample/sample*">
+         </ruleMarkerRidget>
+      </filter>
    </extension>
    <extension point="org.eclipse.riena.monitor.collector">
       <collector
