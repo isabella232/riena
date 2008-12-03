@@ -21,9 +21,10 @@ import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.listener.NavigationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
-import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
+import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IToolItemRidget;
 
 /**
  * This class applies the UI filters after a filter was added or removed; also
@@ -49,9 +50,6 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 		if (node == null) {
 			return;
 		}
-
-		IApplicationNode appNode = node.getParentOfType(IApplicationNode.class);
-		removeAllMenuItemRules(appNode);
 
 		Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
 		collectFilters(node, filters);
@@ -179,6 +177,13 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	}
 
 	@Override
+	public void beforeDeactivated(INavigationNode source) {
+		super.beforeDeactivated(source);
+		IApplicationNode appNode = (IApplicationNode) source.getParentOfType(IApplicationNode.class);
+		removeAllMenuItemRules(appNode);
+	}
+
+	@Override
 	public void filterAdded(INavigationNode source, IUIFilter filter) {
 		super.filterAdded(source, filter);
 		applyFilter(source, filter, APPLY_CLOSURE);
@@ -196,9 +201,12 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	private static class ApplyClosure implements IUIFilterRuleClosure {
 
 		public void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
-			if (node.isActivated() || !(attr instanceof IUIFilterRuleMarkerRidget)) {
-				attr.apply(obj);
+			if (obj instanceof IRidget) {
+				if (isMenuItemOfDeactivatedNode(node, (IRidget) obj)) {
+					return;
+				}
 			}
+			attr.apply(obj);
 		}
 
 	}
@@ -209,8 +217,37 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	private static class RemoveClosure implements IUIFilterRuleClosure {
 
 		public void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
+			if (obj instanceof IRidget) {
+				if (isMenuItemOfDeactivatedNode(node, (IRidget) obj)) {
+					return;
+				}
+			}
 			attr.remove(obj);
 		}
+
+	}
+
+	/**
+	 * Tests if the given ridget is a menu or tool item and belongs to a
+	 * deactivated node.<br>
+	 * This this necessary because every sub-application has its "own" menu and
+	 * tool bar.
+	 * 
+	 * @param node
+	 *            - navigation node to which the ridget belongs.
+	 * @param ridget
+	 * @return {@code true} if ridget is a menu item and the node is
+	 *         deactivated; otherwise {@code false}
+	 */
+	private static boolean isMenuItemOfDeactivatedNode(INavigationNode<?> node, IRidget ridget) {
+
+		if (!(node instanceof IApplicationNode)) {
+			if ((ridget instanceof IToolItemRidget) || (ridget instanceof IMenuItemRidget)) {
+				return node.isDeactivated();
+			}
+		}
+
+		return false;
 
 	}
 
