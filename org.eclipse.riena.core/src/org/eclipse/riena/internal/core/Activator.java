@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
-import java.util.Hashtable;
-
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.core.exceptionhandler.SimpleExceptionHandler;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
+import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
 
@@ -74,19 +71,24 @@ public class Activator extends RienaPlugin {
 		logStage(logger);
 		startForcedRienaBundles(logger);
 
-		SimpleExceptionHandler handler = new SimpleExceptionHandler();
-		context.registerService(IExceptionHandler.class.getName(), handler, RienaConstants
+		//		SimpleExceptionHandler handler = new SimpleExceptionHandler();
+		//		context.registerService(IExceptionHandler.class.getName(), handler, RienaConstants
+		//				.newDefaultServiceProperties());
+
+		// create simple exceptionhandler manager, inject all IExceptionHandler extensions and register it as service
+		SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
+		//		String handlerId = IExceptionHandler.class.getName();
+		//
+		//		Inject.service(handlerId).into(handlerManager).andStart(getContext());
+		Inject.extension(IExceptionHandlerDefinition.EXTENSION_POINT).into(handlerManager).andStart(context);
+
+		context.registerService(IExceptionHandlerManager.class.getName(), handlerManager, RienaConstants
 				.newDefaultServiceProperties());
 
-		SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
-		String handlerId = IExceptionHandler.class.getName();
-
-		Inject.service(handlerId).into(handlerManager).andStart(getContext());
-
-		Hashtable<String, String> properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandlerManager.class.getName(), handlerManager, properties);
+		// create some instance of ExceptionHandlerManagerAccessor and inject ONE ExceptionHandlerManger
 		this.exceptionHandlerManagerAccessor = new ExceptionHandlerManagerAccessor();
-		Inject.service(IExceptionHandlerManager.class).into(exceptionHandlerManagerAccessor).andStart(context);
+		Inject.service(IExceptionHandlerManager.class).useRanking().into(exceptionHandlerManagerAccessor).andStart(
+				context);
 
 		active = true;
 	}

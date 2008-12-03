@@ -13,37 +13,45 @@ package org.eclipse.riena.internal.core.exceptionmanager;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.internal.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
+import org.osgi.service.log.LogService;
 
 /**
  * 
  */
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
-	private List<IExceptionHandler> handlers;
+	private List<ExceptionHandlerEntry> handlers;
+	private Logger LOGGER = Activator.getDefault().getLogger(SimpleExceptionHandlerManager.class);
 
-	public SimpleExceptionHandlerManager() {
-		handlers = new ArrayList<IExceptionHandler>();
+	public void update(IExceptionHandlerDefinition[] exceptionHandlerDefinitions) {
+		handlers = new ArrayList<ExceptionHandlerEntry>();
+		for (IExceptionHandlerDefinition handlerDefinition : exceptionHandlerDefinitions) {
+			IExceptionHandler exceptionHandler = handlerDefinition.createExceptionHandler();
+			if (exceptionHandler == null) {
+				LOGGER.log(LogService.LOG_ERROR, "could not instantiate exception handler " //$NON-NLS-1$
+						+ handlerDefinition.getName() + " for class " + handlerDefinition.getExceptionHandler()); //$NON-NLS-1$
+			}
+			handlers = sort(handlers, exceptionHandler, handlerDefinition);
+		}
 	}
 
-	public void bind(IExceptionHandler handler) {
-		handlers = sort(handlers, handler);
-	}
-
-	public void unbind(IExceptionHandler handler) {
-		handlers.remove(handler);
-	}
-
-	private List<IExceptionHandler> sort(List<IExceptionHandler> existsHandler, IExceptionHandler handler) {
-		List<TopologicalNode<IExceptionHandler>> nodes = new ArrayList<TopologicalNode<IExceptionHandler>>(
-				existsHandler.size() + 1);
-		TopologicalNode<IExceptionHandler> node = new TopologicalNode<IExceptionHandler>(handler.getName(), handler
-				.getBefore(), handler);
+	private List<ExceptionHandlerEntry> sort(List<ExceptionHandlerEntry> existingHandlers, IExceptionHandler handler,
+			IExceptionHandlerDefinition definition) {
+		List<TopologicalNode<ExceptionHandlerEntry>> nodes = new ArrayList<TopologicalNode<ExceptionHandlerEntry>>(
+				existingHandlers.size() + 1);
+		ExceptionHandlerEntry exceptionHandlerEntry = new ExceptionHandlerEntry(handler, definition.getName(),
+				definition.getBefore());
+		TopologicalNode<ExceptionHandlerEntry> node = new TopologicalNode<ExceptionHandlerEntry>(definition.getName(),
+				definition.getBefore(), exceptionHandlerEntry);
 		nodes.add(node);
-		for (IExceptionHandler nextHandler : existsHandler) {
-			node = new TopologicalNode<IExceptionHandler>(nextHandler.getName(), nextHandler.getBefore(), nextHandler);
+		for (ExceptionHandlerEntry nextHandler : existingHandlers) {
+			node = new TopologicalNode<ExceptionHandlerEntry>(nextHandler.getName(), nextHandler.getBefore(),
+					nextHandler);
 			nodes.add(node);
 		}
 		return TopologicalSort.sort(nodes);
@@ -57,7 +65,7 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	 * (java.lang.Throwable)
 	 */
 	public Action handleCaught(Throwable t) {
-		return handleCaught(t, null, null);
+		return handleCaught(t, null, LOGGER);
 	}
 
 	/*
@@ -79,7 +87,7 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	 * (java.lang.Throwable, java.lang.String)
 	 */
 	public Action handleCaught(Throwable t, String msg) {
-		return handleCaught(t, msg, null);
+		return handleCaught(t, msg, LOGGER);
 	}
 
 	/*
@@ -90,8 +98,8 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	 * (java.lang.Throwable, java.lang.String, org.eclipse.equinox.log.Logger)
 	 */
 	public Action handleCaught(Throwable t, String msg, Logger logger) {
-		for (IExceptionHandler handler : handlers) {
-			Action action = handler.handleCaught(t, msg, logger);
+		for (ExceptionHandlerEntry handler : handlers) {
+			Action action = handler.getExceptionHandler().handleCaught(t, msg, logger);
 			if (action != Action.NotHandled) {
 				return action;
 			}
@@ -107,13 +115,39 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	 * (java.lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
 	 */
 	public Action handleUncaught(Throwable t, String msg, Logger logger) {
-		for (IExceptionHandler handler : handlers) {
-			Action action = handler.handleUncaught(t, msg, logger);
+		for (ExceptionHandlerEntry handler : handlers) {
+			Action action = handler.getExceptionHandler().handleUncaught(t, msg, logger);
 			if (action != Action.NotHandled) {
 				return action;
 			}
 		}
 		return Action.NotHandled;
+	}
+
+	class ExceptionHandlerEntry {
+		private IExceptionHandler exceptionHandler;
+		String before;
+		String name;
+
+		public ExceptionHandlerEntry(IExceptionHandler exceptionHandler, String name, String before) {
+			super();
+			this.exceptionHandler = exceptionHandler;
+			this.name = name;
+			this.before = before;
+		}
+
+		public IExceptionHandler getExceptionHandler() {
+			return exceptionHandler;
+		}
+
+		public String getBefore() {
+			return before;
+		}
+
+		public String getName() {
+			return name;
+		}
+
 	}
 
 }

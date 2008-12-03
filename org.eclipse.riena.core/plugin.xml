@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="org.eclipse.riena.core.logging.listeners" name="org.eclipse.riena.core.logging.listeners" schema="schema/org.eclipse.riena.core.logging.listeners.exsd"/>
    <extension-point id="org.eclipse.riena.core.logging.catchers" name="org.eclipse.riena.core.logging.catchers" schema="schema/org.eclipse.riena.core.logging.catchers.exsd"/>
+   <extension-point id="org.eclipse.riena.core.exception.handlers" name="org.eclipse.riena.core.exception.handlers" schema="schema/org.eclipse.riena.core.exception.handlers.exsd"/>
    <extension
          point="org.eclipse.riena.core.logging.listeners">
          <!-- This is examplary!
@@ -15,5 +16,12 @@
          <!-- This is examplary!
          <logCatcher name="Platform" class="org.eclipse.riena.core.logging.PlatformLogCatcher"/>
          -->
+   </extension>
+   <extension
+         point="org.eclipse.riena.core.exception.handlers">
+      <exceptionHandler
+            class="org.eclipse.riena.internal.core.exceptionhandler.SimpleExceptionHandler"
+            name="Simple riena core handler">
+      </exceptionHandler>
    </extension>
 </plugin>

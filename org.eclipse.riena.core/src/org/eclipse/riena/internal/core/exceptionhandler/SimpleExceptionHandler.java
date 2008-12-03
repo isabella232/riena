@@ -21,30 +21,6 @@ import org.osgi.service.log.LogService;
  */
 public class SimpleExceptionHandler implements IExceptionHandler {
 
-	/**
-	 * This handler name is "riena.exceptionhandler.default"
-	 */
-	public static final String NAME = "riena.exceptionhandler.default"; //$NON-NLS-1$
-
-	/**
-	 * this handler will not be invoked before any other handler
-	 * 
-	 * @see org.eclipse.riena.core.exception.IExceptionHandler#getBefore()
-	 */
-	public String getBefore() {
-		// this handler will not be invoked before any other handler
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.core.exception.IExceptionHandler#getName()
-	 */
-	public String getName() {
-		return NAME;
-	}
-
 	public Action handleCaught(Throwable t, String msg, Logger logger) {
 		if (logger != null) {
 			logger.log(LogService.LOG_ERROR, msg, t);

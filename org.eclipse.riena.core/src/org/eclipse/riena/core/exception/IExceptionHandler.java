@@ -10,32 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.exception;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
+
+import org.eclipse.equinox.log.Logger;
 
 /**
  * ExceptionHandler can handle exceptions
  */
 public interface IExceptionHandler {
-
-	/**
-	 * Indicate that this handler will be invoked before the named handler
-	 * <code>before</code> If <code>before</code> is <code>null</code> or
-	 * the named handler does not exists and there are more than one handlers
-	 * then the time of invocation for this handler will be indeterminate.
-	 * 
-	 * @return a handler name
-	 */
-	String getBefore();
-
-	/**
-	 * Anwers this handler name
-	 * 
-	 * @pre name != null
-	 * 
-	 * @return this handler name
-	 */
-	String getName();
 
 	/**
 	 * Check if the exception passed can be handled and return an {@link Action}
