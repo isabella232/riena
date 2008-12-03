@@ -10,18 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.filter;
 
-import org.eclipse.riena.ui.core.marker.DisabledMarker;
+import org.eclipse.riena.core.marker.IMarker;
 
 /**
- * Filter rule to provide a disabled marker for a menu and tool bar item.
+ *
  */
-public class UIFilterRuleMenuItemDisabledMarker extends AbstractUIFilterRuleMenuItemMarker {
+public abstract class AbstractUIFilterRuleMenuItemMarker extends AbstractUIFilterRuleRidgetMarker {
 
 	/**
 	 * Creates a new instance of {@code UIFilterRuleMenuActionDisabledMarker}.
+	 * 
+	 * @param marker
 	 */
-	public UIFilterRuleMenuItemDisabledMarker() {
-		super(null, new DisabledMarker(false));
+	public AbstractUIFilterRuleMenuItemMarker(IMarker marker) {
+		super(null, marker);
 	}
 
 	/**
@@ -29,9 +31,15 @@ public class UIFilterRuleMenuItemDisabledMarker extends AbstractUIFilterRuleMenu
 	 * 
 	 * @param id
 	 *            - ID
+	 * @param marker
 	 */
-	public UIFilterRuleMenuItemDisabledMarker(String id) {
-		super(id, new DisabledMarker(false));
+	public AbstractUIFilterRuleMenuItemMarker(String id, IMarker marker) {
+		super(id, marker);
+	}
+
+	@Override
+	protected RidgetMatcher createMatcher(String id) {
+		return new MenuItemRidgetMatcher(id);
 	}
 
 }

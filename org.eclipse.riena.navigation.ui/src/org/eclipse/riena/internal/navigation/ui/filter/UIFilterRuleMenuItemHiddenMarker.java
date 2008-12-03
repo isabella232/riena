@@ -15,13 +15,10 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 /**
  * Filter rule to provide a hidden marker for a menu and tool bar item.
  */
-public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleRidgetMarker {
+public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleMenuItemMarker {
 
 	/**
 	 * Creates a new instance of {@code UIFilterRuleMenuItemHiddenMarker}.
-	 * 
-	 * @param id
-	 *            - ID
 	 */
 	public UIFilterRuleMenuItemHiddenMarker() {
 		super(null, new HiddenMarker(false));
@@ -32,16 +29,9 @@ public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleRidget
 	 * 
 	 * @param id
 	 *            - ID
-	 * @param marker
-	 *            - marker
 	 */
 	public UIFilterRuleMenuItemHiddenMarker(String id) {
 		super(id, new HiddenMarker(false));
-	}
-
-	@Override
-	protected RidgetMatcher createMatcher(String id) {
-		return new MenuItemRidgetMatcher(id);
 	}
 
 }

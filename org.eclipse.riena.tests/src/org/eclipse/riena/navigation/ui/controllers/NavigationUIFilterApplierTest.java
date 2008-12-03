@@ -23,6 +23,7 @@ import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHid
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetHiddenMarker;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
@@ -163,11 +164,16 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		NavigationNodeId id = new NavigationNodeId("4711");
 		SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
+		node.setParent(new ModuleNode());
+		node.activate();
 
 		IUIFilterRule attribute = new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId());
 		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
 		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
+
+		IUIFilterRuleClosure removeClosure = ReflectionUtils.getHidden(applier, "REMOVE_CLOSURE");
+		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, removeClosure);
 
 		SubModuleController controller = new SubModuleController();
 		node.setNavigationNodeController(controller);
@@ -178,6 +184,7 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		LabelRidget ridget = new LabelRidget(label);
 		controller.addRidget("0815", ridget);
 
+		node.activate();
 		attribute = new UIFilterRuleRidgetHiddenMarker("*0815");
 		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(ridget.getMarkersOfType(HiddenMarker.class).isEmpty());

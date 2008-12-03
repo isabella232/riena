@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
 
 /**
@@ -25,6 +26,6 @@ public interface IUIFilterRuleClosure {
 	 * @param obj
 	 *            - object that is given as a parameter to the method
 	 */
-	void exeute(IUIFilterRule attr, Object obj);
+	void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj);
 
 }

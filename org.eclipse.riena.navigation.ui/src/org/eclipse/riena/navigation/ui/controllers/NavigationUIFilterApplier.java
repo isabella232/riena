@@ -14,11 +14,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.riena.internal.navigation.ui.filter.AbstractUIFilterRuleMenuItemMarker;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.listener.NavigationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
+import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 
@@ -47,10 +50,46 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 			return;
 		}
 
+		IApplicationNode appNode = node.getParentOfType(IApplicationNode.class);
+		removeAllMenuItemRules(appNode);
+
 		Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
 		collectFilters(node, filters);
+
 		for (IUIFilter filter : filters) {
 			applyFilter(node, filter, APPLY_CLOSURE);
+		}
+
+	}
+
+	/**
+	 * Removes all rule for menu and tool items form the given node and also its
+	 * child nodes.<br>
+	 * This this necessary because every sub-application has its "own" menu and
+	 * tool bar.
+	 * 
+	 * @param node
+	 *            - navigation node
+	 */
+	private void removeAllMenuItemRules(INavigationNode<?> node) {
+
+		if (node == null) {
+			return;
+		}
+
+		for (IUIFilter filter : node.getFilters()) {
+			for (IUIFilterRule rule : filter.getFilterRules()) {
+				if (rule instanceof AbstractUIFilterRuleMenuItemMarker) {
+					applyFilterRule(node, rule, REMOVE_CLOSURE);
+				}
+			}
+		}
+
+		List<?> children = node.getChildren();
+		for (Object child : children) {
+			if (child instanceof INavigationNode<?>) {
+				removeAllMenuItemRules((INavigationNode<?>) child);
+			}
 		}
 
 	}
@@ -118,7 +157,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	private void applyFilterRule(INavigationNode<?> node, IUIFilterRule filterRule, IUIFilterRuleClosure closure) {
 
 		if (filterRule.matches(node)) {
-			closure.exeute(filterRule, node);
+			closure.exeute(node, filterRule, node);
 		}
 
 		INavigationNodeController controller = node.getNavigationNodeController();
@@ -126,7 +165,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 			IRidgetContainer container = (IRidgetContainer) controller;
 			for (IRidget ridget : container.getRidgets()) {
 				if (filterRule.matches(ridget, node)) {
-					closure.exeute(filterRule, ridget);
+					closure.exeute(node, filterRule, ridget);
 				}
 			}
 		}
@@ -156,8 +195,10 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * */
 	private static class ApplyClosure implements IUIFilterRuleClosure {
 
-		public void exeute(IUIFilterRule attr, Object obj) {
-			attr.apply(obj);
+		public void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
+			if (node.isActivated() || !(attr instanceof IUIFilterRuleMarkerRidget)) {
+				attr.apply(obj);
+			}
 		}
 
 	}
@@ -167,7 +208,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 */
 	private static class RemoveClosure implements IUIFilterRuleClosure {
 
-		public void exeute(IUIFilterRule attr, Object obj) {
+		public void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
 			attr.remove(obj);
 		}
 
