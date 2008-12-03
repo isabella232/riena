@@ -12,8 +12,8 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.IModuleNodeListener;
 
 /**
@@ -110,13 +110,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 			return 0;
 		}
 
-		int depth = 0;
-		for (INavigationNode<?> child : getChildren()) {
-			depth++;
-			depth += calcDepth(child);
-		}
-
-		return depth;
+		return calcDepth(this);
 
 	}
 
@@ -131,10 +125,12 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	private int calcDepth(INavigationNode<?> node) {
 
 		int depth = 0;
-		if (node.isExpanded()) {
+		if ((node == this) || node.isExpanded()) {
 			for (INavigationNode<?> child : node.getChildren()) {
-				depth++;
-				depth += calcDepth(child);
+				if (child.isVisible()) {
+					depth++;
+					depth += calcDepth(child);
+				}
 			}
 		}
 

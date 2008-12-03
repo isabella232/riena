@@ -24,6 +24,7 @@ public class AllTests {
 		suite.addTestSuite(NavigationProcessorTest.class);
 		suite.addTestSuite(NavigationNodeTest.class);
 		suite.addTestSuite(ModuleGroupNodeTest.class);
+		suite.addTestSuite(ModuleNodeTest.class);
 		//$JUnit-END$
 		return suite;
 	}
