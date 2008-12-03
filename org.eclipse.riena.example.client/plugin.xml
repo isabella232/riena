@@ -208,6 +208,13 @@
             name="org.eclipse.riena.example.client.views.FilterExampleSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ExceptionTestView"
+            id="org.eclipse.riena.example.client.exceptiontest.view"
+            name="org.eclipse.riena.example.client.views.ExceptionTestView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -741,5 +748,35 @@
             class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2 0 [], triggerRange=-2">
       </collector>
    </extension>
+    <extension
+           point="org.eclipse.riena.core.exception.handlers">
+        <exceptionHandler
+              class="org.eclipse.riena.example.client.exceptionhandler.ExceptionMessageBox"
+              name="riena example exception message box">
+        </exceptionHandler>
+     </extension>
+    <extension
+          point="org.eclipse.riena.navigation.assemblies">
+       <assembly
+             autostartsequence="1"
+             id="org.eclipse.riena.example.exceptiontest"
+             parentTypeId="playground">
+          <modulegroup
+                name="ExceptionTest"
+                typeId="org.eclipse.riena.example.exceptiontest.mg">
+             <module
+                   label="Exception Test"
+                   typeId="org.eclipse.riena.example.exceptiontest.module"
+                   uncloseable="false">
+                <submodule
+                      controller="org.eclipse.riena.example.client.controllers.ExceptionTestController"
+                      shared="false"
+                      typeId="org.eclipse.riena.example.exceptiontest.submodule"
+                      view="org.eclipse.riena.example.client.exceptiontest.view">
+                </submodule>
+             </module>
+          </modulegroup>
+       </assembly>
+    </extension>
    
 </plugin>
