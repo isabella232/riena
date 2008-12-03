@@ -64,7 +64,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			Result result = resolved.get(method);
 			if (result == null) {
 				result = invoke(method, args, methodKind);
-				if (result.cash) {
+				if (result.cacheIt) {
 					resolved.put(method, result);
 				}
 			}
@@ -261,7 +261,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 	private final static class Result {
 
 		private final Object object;
-		private final boolean cash;
+		private final boolean cacheIt;
 
 		private static final Result CACHED_NULL = Result.cache(null);
 
@@ -273,9 +273,9 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return new Result(object, true);
 		}
 
-		private Result(final Object object, final boolean cash) {
+		private Result(final Object object, final boolean cacheIt) {
 			this.object = object;
-			this.cash = cash;
+			this.cacheIt = cacheIt;
 		}
 	}
 
