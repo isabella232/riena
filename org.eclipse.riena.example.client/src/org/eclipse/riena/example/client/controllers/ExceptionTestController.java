@@ -36,8 +36,8 @@ public class ExceptionTestController extends SubModuleController {
 			}
 		});
 
-		IActionRidget uiprocessNullPtr = (IActionRidget) getRidget("uiprocessNullPointerAction");
-		uiprocessNullPtr.addListener(new IActionListener() {
+		IActionRidget uiprocessNullPtr1 = (IActionRidget) getRidget("uiprocessNullPointerActionRunJob");
+		uiprocessNullPtr1.addListener(new IActionListener() {
 
 			public void callback() {
 				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
@@ -45,6 +45,43 @@ public class ExceptionTestController extends SubModuleController {
 					@Override
 					public boolean runJob(IProgressMonitor monitor) {
 						throw new NullPointerException("nullpointer in runJob"); //$NON-NLS-1$
+					}
+
+				};
+				process.start();
+
+			}
+		});
+		IActionRidget uiprocessNullPtr2 = (IActionRidget) getRidget("uiprocessNullPointerActionUpdateUI");
+		uiprocessNullPtr2.addListener(new IActionListener() {
+
+			public void callback() {
+				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
+
+					public boolean runJob(IProgressMonitor monitor) {
+						notifyUpdateUI();
+						return false;
+					}
+
+					@Override
+					public void updateUi() {
+						throw new NullPointerException("nullpointer in updateUI"); //$NON-NLS-1$
+					}
+
+				};
+				process.start();
+
+			}
+		});
+		IActionRidget uiprocessNullPtr3 = (IActionRidget) getRidget("uiprocessNullPointerActionFinalUpdateUI");
+		uiprocessNullPtr3.addListener(new IActionListener() {
+
+			public void callback() {
+				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
+
+					@Override
+					public void finalUpdateUI() {
+						throw new NullPointerException("nullpointer in finalUpdateUI"); //$NON-NLS-1$
 					}
 
 				};

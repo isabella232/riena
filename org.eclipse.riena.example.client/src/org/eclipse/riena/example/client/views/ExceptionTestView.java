@@ -48,17 +48,26 @@ public class ExceptionTestView extends SubModuleView<ExceptionTestController> {
 		testingVariousExceptionsLabel.setText("Testing various Exceptions");
 		testingVariousExceptionsLabel.setBounds(26, 34, 173, 13);
 
-		final Button uiprocessNullPointer = new Button(container, SWT.NONE);
-		uiprocessNullPointer.setText("throw NullPointerException in UIProcess");
-		uiprocessNullPointer.setBounds(49, 149, 245, 31);
-		addUIControl(uiprocessNullPointer, "uiprocessNullPointerAction");
+		final Button uiprocessNullPointer1 = new Button(container, SWT.NONE);
+		uiprocessNullPointer1.setText("throw NullPointerException in UIProcess (runJob)");
+		uiprocessNullPointer1.setBounds(49, 149, 261, 23);
+		addUIControl(uiprocessNullPointer1, "uiprocessNullPointerActionRunJob");
+
+		final Button uiprocessNullPointer2 = new Button(container, SWT.NONE);
+		uiprocessNullPointer2.setText("throw NullPointerException in UIProcess (finalUpdateUI)");
+		uiprocessNullPointer2.setBounds(48, 188, 288, 23);
+		addUIControl(uiprocessNullPointer2, "uiprocessNullPointerActionFinalUpdateUI");
+
+		final Button uiprocessNullPointer3 = new Button(container, SWT.NONE);
+		uiprocessNullPointer3.setText("throw NullPointerException in UIProcess (updateUI)");
+		uiprocessNullPointer3.setBounds(48, 228, 288, 23);
+		addUIControl(uiprocessNullPointer3, "uiprocessNullPointerActionUpdateUI");
 
 		final Button serverNullPointer = new Button(container, SWT.NONE);
 		serverNullPointer.setText("throw NullPointerException on server");
-		serverNullPointer.setBounds(48, 218, 246, 31);
+		serverNullPointer.setBounds(48, 411, 246, 31);
 		parent.setLayout(new FillLayout());
 		addUIControl(serverNullPointer, "serverNullPointerAction");
-
 	}
 
 	private void initializeToolBar() {
