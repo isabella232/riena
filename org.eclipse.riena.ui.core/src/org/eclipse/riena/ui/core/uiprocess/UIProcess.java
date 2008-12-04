@@ -175,9 +175,15 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		return job;
 	}
 
+	/**
+	 * called before {@link #runJob(IProgressMonitor)} is invoked (async)
+	 */
 	protected void beforeRun(IProgressMonitor monitor) {
 	}
 
+	/**
+	 * called after {@link #runJob(IProgressMonitor)} is invoked (async)
+	 */
 	protected void afterRun(IProgressMonitor monitor) {
 	}
 
@@ -194,19 +200,38 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		return callbackDispatcher;
 	}
 
+	/**
+	 * called whenever a unit of work is completed
+	 */
 	public void updateProgress(int progress) {
 	};
 
+	/**
+	 * called on the user interface thread before aynch work is done
+	 */
 	public void initialUpdateUI(int totalWork) {
 	};
 
+	/**
+	 * called on the user interface thread after aynch work is done
+	 */
 	public void finalUpdateUI() {
 	};
 
+	/**
+	 * override this method for implementation of logic on a worker thread
+	 * 
+	 * @param monitor
+	 *            - the jobs API monitor used to control the {@link UIProcess}
+	 * @return - true if the method has been run without errors
+	 */
 	public boolean runJob(IProgressMonitor monitor) {
 		return true;
 	}
 
+	/**
+	 * starts the {@link UIProcess} using jobs API
+	 */
 	public void start() {
 		job.schedule();
 	}
@@ -216,7 +241,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		Object adapted = super.getAdapter(adapter);
 		if (adapted == null) {
 			if (adapter.isInstance(this)) {
-				return this;
+				adapted = this;
 			}
 			if (adapter.equals(UICallbackDispatcher.class)) {
 				adapted = getCallbackDispatcher();
@@ -270,6 +295,10 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		});
 	}
 
+	/**
+	 * called on the user interface thread as the result of a call to
+	 * {@link #notifyUpdateUI()}
+	 */
 	public void updateUi() {
 	}
 

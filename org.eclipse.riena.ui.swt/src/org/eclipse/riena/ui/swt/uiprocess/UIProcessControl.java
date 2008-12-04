@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.swt.uiprocess;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -62,10 +63,16 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	}
 
+	/**
+	 * open the Jface Window
+	 */
 	private void showWindow() {
 		processWindow.openWindow();
 	}
 
+	/**
+	 * close the window
+	 */
 	public void stop() {
 		closeWindow();
 	}
@@ -78,6 +85,10 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	}
 
+	/**
+	 * 
+	 * @return true if the window is in processing state
+	 */
 	protected synchronized boolean isProcessing() {
 		return processing;
 	}
@@ -86,11 +97,17 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		this.processing = processing;
 	}
 
+	/**
+	 * changes the window into processing state
+	 */
 	public void showProcessing() {
 		startProcessing();
 
 	}
 
+	/**
+	 * technical implementation of progressing in the window
+	 */
 	private void startProcessing() {
 		// only if not allready processing
 		if (!isProcessing()) {// use the synched way..
@@ -103,6 +120,10 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		}
 	}
 
+	/*
+	 * starts the update thread needed in conjunction with the progressing state
+	 * to visualize some activity
+	 */
 	private void startUpdateThread() {
 		processUpdateThread = new ProcessUpdateThread();
 		processUpdateThread.start();
@@ -121,6 +142,9 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		}
 	}
 
+	/*
+	 * called by a worker thread used to visualize progressing activity
+	 */
 	private void processUpdateLoop() {
 		final int[] selection = new int[] { 0 };
 
@@ -151,10 +175,16 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		}
 	}
 
+	/*
+	 * returns the progressbar of the window
+	 */
 	private ProgressBar getProgressBar() {
 		return processWindow.getProgressBar();
 	}
 
+	/**
+	 * visualizes a specific progress of the {@link UIProcess}
+	 */
 	public void showProgress(int value, int maxValue) {
 		stopProcessing();
 		int percentValue = calcSelection(value, maxValue);
