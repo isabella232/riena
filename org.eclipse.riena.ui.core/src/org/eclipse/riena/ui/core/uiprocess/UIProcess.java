@@ -163,7 +163,13 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 			if (forceMonitorBegin()) {
 				monitor.beginTask(getName(), getTotalWork());
 			}
-			boolean state = runJob(monitor);
+			boolean state = true;
+			try {
+				state = runJob(monitor);
+			} catch (Throwable t) {
+				// do error handling here
+				state = false;
+			}
 			monitor.done();
 			afterRun(monitor);
 			return state ? Status.OK_STATUS : Status.CANCEL_STATUS;
