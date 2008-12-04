@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
@@ -101,12 +102,12 @@ public class Aggregator implements ICollectingAggregator {
 		// TODO if we were really dynamic aware we should start them here
 	}
 
-	public void update(ISenderExtension senderExtension) {
+	public void update(ISenderExtension senderExtension) throws CoreException {
 		if (sender != null) {
 			sender.stop();
 		}
 		if (senderExtension == null) {
-			sender = new DefaultSender();
+			sender = new SimpleSender();
 		} else {
 			sender = senderExtension.createSender();
 		}
@@ -114,12 +115,12 @@ public class Aggregator implements ICollectingAggregator {
 		// TODO if we were really dynamic aware we should start it here
 	}
 
-	public void update(IStoreExtension storeExtension) {
+	public void update(IStoreExtension storeExtension) throws CoreException {
 		if (store != null) {
 			store.flush();
 		}
 		if (storeExtension == null) {
-			store = new DefaultStore();
+			store = new SimpleStore();
 		} else {
 			store = storeExtension.createStore();
 		}
