@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.riena.example.client;singleton:=true
-Bundle-Version: 1.0.0.M5
+Bundle-Version: 1.0.0.M6
 Bundle-Activator: org.eclipse.riena.internal.example.client.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.databinding,

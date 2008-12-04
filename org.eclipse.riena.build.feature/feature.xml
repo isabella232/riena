@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.riena.build.feature"
       label="Riena Feature solely used for build (Incubation)"
-      version="1.0.0.M5">
+      version="1.0.0.M6">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -339,6 +339,20 @@
 
    <plugin
          id="org.eclipse.riena.ui.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.demo.client"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.riena.demo.common"
          download-size="0"
          install-size="0"
          version="0.0.0"
