@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -28,7 +29,7 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * 
+ * The window visualizing the progress of an {@link UIProcess}
  */
 public class UIProcessWindow extends ApplicationWindow implements IUIProcessWindow {
 
@@ -68,36 +69,35 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 	protected Control createContents(Composite parent) {
 		createWindowLayout(parent);
 
-		// TODO create constants
-		FormData d = new FormData();
+		FormData formDate = new FormData();
 
 		// description
-		d.width = 210;
-		d.height = 35;
+		formDate.width = 210;
+		formDate.height = 35;
 
 		description = new Label(parent, SWT.NONE);
 		description.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		description.setLayoutData(d);
+		description.setLayoutData(formDate);
 
 		// percent
-		d = new FormData();
+		formDate = new FormData();
 
-		d.width = 30;
-		d.height = 13;
-		d.top = new FormAttachment(description, 5);
+		formDate.width = 30;
+		formDate.height = 13;
+		formDate.top = new FormAttachment(description, 5);
 		percent = new Label(parent, SWT.NONE);
 		percent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		percent.setLayoutData(d);
+		percent.setLayoutData(formDate);
 		// progressBar
-		d = new FormData();
-		d.top = new FormAttachment(percent, 10);
-		d.width = PROGRESS_BAR_WIDTH;
-		d.height = 15;
+		formDate = new FormData();
+		formDate.top = new FormAttachment(percent, 10);
+		formDate.width = PROGRESS_BAR_WIDTH;
+		formDate.height = 15;
 
 		progressBar = new ProgressBar(parent, SWT.HORIZONTAL);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);
-		progressBar.setLayoutData(d);
+		progressBar.setLayoutData(formDate);
 		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		// cancel
@@ -115,11 +115,12 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 		});
 		cancel.setText("cancel"); //$NON-NLS-1$
-		d = new FormData();
-		d.top = new FormAttachment(progressBar, 10);
-		d.width = CANCEL_BUTTON_WIDTH;
-		d.left = new FormAttachment(0, (int) ((double) PROGRESS_BAR_WIDTH / 2 - (double) CANCEL_BUTTON_WIDTH / 2));
-		cancel.setLayoutData(d);
+		formDate = new FormData();
+		formDate.top = new FormAttachment(progressBar, 10);
+		formDate.width = CANCEL_BUTTON_WIDTH;
+		formDate.left = new FormAttachment(0,
+				(int) ((double) PROGRESS_BAR_WIDTH / 2 - (double) CANCEL_BUTTON_WIDTH / 2));
+		cancel.setLayoutData(formDate);
 
 		return parent;
 	}

@@ -28,6 +28,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	private boolean processing;
 
+	// the jface window
 	private UIProcessWindow processWindow;
 
 	private ListenerList<ICancelListener> cancelListeners = new ListenerList<ICancelListener>(ICancelListener.class);
