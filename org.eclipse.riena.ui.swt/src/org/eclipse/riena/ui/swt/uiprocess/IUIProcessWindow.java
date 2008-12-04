@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.swt.widgets.ProgressBar;
 
 /**
- * 
+ * Interface describing a window for the {@link UIProcess}
  */
 public interface IUIProcessWindow {
 

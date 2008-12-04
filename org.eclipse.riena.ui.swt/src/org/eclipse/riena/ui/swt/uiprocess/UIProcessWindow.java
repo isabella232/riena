@@ -29,7 +29,9 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * The window visualizing the progress of an {@link UIProcess}
+ * The window visualizing the progress of an {@link UIProcess}. Have a look at
+ * {@link ApplicationWindow} to get more detailed inforation about window
+ * handling.
  */
 public class UIProcessWindow extends ApplicationWindow implements IUIProcessWindow {
 
