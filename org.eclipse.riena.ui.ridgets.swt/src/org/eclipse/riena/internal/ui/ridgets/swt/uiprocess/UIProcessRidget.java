@@ -82,6 +82,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	}
 
+	//get the container of the active context if exists
 	private VisualizerContainer getActiveContextContainer() {
 		List<VisualizerContainer> data = getActiveContextContainerList();
 		Collections.sort(data, new ContextDataComparator());
@@ -91,6 +92,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return null;
 	}
 
+	// get the list of active contexts
 	private List<VisualizerContainer> getActiveContextContainerList() {
 		List<Object> activeContexts = getActiveContexts();
 		List<VisualizerContainer> data = new ArrayList<VisualizerContainer>();
@@ -120,11 +122,17 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		getUIControl().showProcessing();
 	}
 
+	/**
+	 * open the window controlled by the ridget
+	 */
 	public void open() {
 		getUIControl().start();
 		updateUi();
 	}
 
+	/**
+	 * close the window controlled by the ridget
+	 */
 	public void close() {
 		getUIControl().stop();
 	}
@@ -150,6 +158,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 
 		private void cancelAllVisualizersInContext() {
+			// clean up
 			List<VisualizerContainer> activeContextDataList = getActiveContextContainerList();
 			for (VisualizerContainer visualizerContextData : activeContextDataList) {
 				for (IProgressVisualizer visualizer : visualizerContextData.keySet()) {
@@ -205,6 +214,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	private ContextChangeHandler contextChangeHandler = new ContextChangeHandler();
 
+	// saves the bounds of the window whenever the execution context changes
 	private class ContextChangeHandler implements IContextUpdateListener {
 
 		public boolean contextUpdated(Object context) {
@@ -250,6 +260,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 	}
 
+	/**
+	 * @see IProgressVisualizer#finalUpdateUI()
+	 */
 	public void finalUpdateUI(IProgressVisualizer visualizer) {
 		if (!visualizer.getProcessInfo().isDialogVisible()) {
 			return;
@@ -262,6 +275,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 
 	}
 
+	// is the visualizer the only one?
 	private boolean isLonelyVisualizer(IProgressVisualizer visualizer) {
 		List<VisualizerContainer> activeContextContainerList = getActiveContextContainerList();
 		if (activeContextContainerList.size() == 0) {
@@ -279,6 +293,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return true;
 	}
 
+	/**
+	 * @see IProgressVisualizer#initialUpdateUI(int)
+	 */
 	public void initialUpdateUI(IProgressVisualizer visualizer, int totalWork) {
 		if (!visualizer.getProcessInfo().isDialogVisible()) {
 			return;
@@ -298,6 +315,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		visualizerProgress.put(visualizer, new Progress());
 	}
 
+	// save the time when tihe visualizer has been first seen 
 	private void saveVisualizerStartupTime(IProgressVisualizer visualizer, VisualizerContainer contextData) {
 		long time = System.currentTimeMillis();
 		contextData.put(visualizer, Integer.valueOf((int) time));
@@ -383,6 +401,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return shell;
 	}
 
+	// get the info for the current visualizer
 	private ProcessInfo getCurrentProcessInfo() {
 		return getCurrentVisualizer().getProcessInfo();
 	}
@@ -391,6 +410,10 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		this.visualizerProgress.get(visualizer).totalWork = totalWork;
 	}
 
+	/**
+	 * cleanly remove the visualizer from the it´s container and udpdate user
+	 * interface
+	 */
 	public void removeProgressVisualizer(IProgressVisualizer visualizer) {
 		removeVisualizerFromContextData(visualizer);
 		removeVisualizerProgress(visualizer);
@@ -432,6 +455,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return visualizer != null && visualizer == getCurrentVisualizer();
 	}
 
+	/**
+	 * @see IProgressVisualizer#updateProgress(int)
+	 */
 	public void updateProgress(IProgressVisualizer visualizer, int progress) {
 		if (!visualizer.getProcessInfo().isDialogVisible()) {
 			return;
@@ -442,6 +468,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		}
 	}
 
+	// cache the progress of a visualizer
 	private void saveProgress(IProgressVisualizer visualizer, int progressValue) {
 		Progress progress = getProgress(visualizer);
 		if (progress != null) {
@@ -519,6 +546,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		return false;
 	}
 
+	/**
+	 * request focus of window
+	 */
 	public void requestFocus() {
 		if (getWindowShell() != null && !getWindowShell().isDisposed() && isFocusable()) {
 			getWindowShell().forceFocus();
