@@ -29,11 +29,12 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
+		suite.addTestSuite(AbstractMarkerTest.class);
 		suite.addTestSuite(ExceptionHandlerManagerTest.class);
-		suite.addTestSuite(ServiceInjectorTest.class);
 		suite.addTestSuite(ExtensionInjectorTest.class);
 		suite.addTestSuite(HeterogeneousInjectingTest.class);
-		suite.addTestSuite(AbstractMarkerTest.class);
+		suite.addTestSuite(RienaLocationsTest.class);
+		suite.addTestSuite(ServiceInjectorTest.class);
 		return suite;
 	}
 
