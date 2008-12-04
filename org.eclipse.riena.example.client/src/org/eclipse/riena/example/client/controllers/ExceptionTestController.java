@@ -43,39 +43,9 @@ public class ExceptionTestController extends SubModuleController {
 				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
 
 					@Override
-					protected void afterRun(IProgressMonitor monitor) {
-						// TODO Auto-generated method stub
-						super.afterRun(monitor);
-					}
-
-					@Override
-					protected void beforeRun(IProgressMonitor monitor) {
-						// TODO Auto-generated method stub
-						super.beforeRun(monitor);
-					}
-
-					@Override
-					public void finalUpdateUI() {
-						// TODO Auto-generated method stub
-						super.finalUpdateUI();
-					}
-
-					@Override
 					public boolean runJob(IProgressMonitor monitor) {
 						throw new NullPointerException("nullpointer in runJob"); //$NON-NLS-1$
 					}
-
-					@Override
-					public void updateProgress(int progress) {
-						// TODO Auto-generated method stub
-						super.updateProgress(progress);
-					}
-
-					@Override
-					public void updateUi() {
-						// TODO Auto-generated method stub
-						super.updateUi();
-					} //$NON-NLS-1$
 
 				};
 				process.start();
