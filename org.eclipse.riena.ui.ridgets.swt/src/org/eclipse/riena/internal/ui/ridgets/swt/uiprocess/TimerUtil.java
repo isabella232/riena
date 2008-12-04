@@ -14,17 +14,21 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Utility class for sharing of a common timer
+ * Utility class for sharing of a common timer. We don´t want to have a big
+ * number of worker threads.
  */
 public class TimerUtil {
 
+	// the common timer instance
 	private final static Timer timer = new Timer();
 
 	public static void schedule(TimerTask task, int delay, int period) {
+		// the actual task of work
 		timer.schedule(task, delay, period);
 	}
 
 	public static void stop(TimerTask task) {
+		// stop a specific task
 		task.cancel();
 	}
 
