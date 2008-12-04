@@ -23,6 +23,8 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
@@ -609,7 +611,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		int padding = getShellBorderWith();
+		int padding = getCoolBarSeparatorPadding();
+
 		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous);
@@ -635,6 +638,27 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		return composite;
 
+	}
+
+	private int getCoolBarSeparatorPadding() {
+
+		ModuleGroupRenderer mgRenderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.MODULE_GROUP_RENDERER);
+		if (mgRenderer == null) {
+			mgRenderer = new ModuleGroupRenderer();
+		}
+		int padding = mgRenderer.getModuleGroupPadding();
+
+		EmbeddedBorderRenderer borderRenderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
+				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+		if (borderRenderer == null) {
+			borderRenderer = new EmbeddedBorderRenderer();
+		}
+		padding += borderRenderer.getBorderWidth();
+
+		padding += getShellPadding();
+
+		return padding;
 	}
 
 	/**
@@ -675,14 +699,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
-
-	}
-
-	private int getShellBorderWith() {
-
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		return borderRenderer.getBorderWidth();
 
 	}
 
