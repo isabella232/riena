@@ -80,7 +80,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 *            true perform configuration; otherwise do not configure
 	 */
 	public SimpleSender(boolean autoConfig) {
-		senderExecutor = Executors.newSingleThreadScheduledExecutor();
+		senderExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
 		if (autoConfig) {
 			Inject.service(IReceiver.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 		}

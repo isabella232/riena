@@ -69,6 +69,7 @@ import org.osgi.service.log.LogService;
  */
 public class SimpleStore implements IStore, IExecutableExtension {
 
+	private String name;
 	private File storeFolder;
 	private int maxItems;
 
@@ -84,7 +85,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SimpleStore.class);
 
 	public SimpleStore() throws CoreException {
-		this(true);
+		this("simplestore", true);
 		// perform default initialization
 		setInitializationData(null, null, null);
 	}
@@ -92,10 +93,10 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	/**
 	 * @param autoConfig
 	 */
-	private SimpleStore(boolean autoConfig) {
-		storeExecutor = Executors.newSingleThreadScheduledExecutor();
+	private SimpleStore(final String storeFolderName, final boolean autoConfig) {
+		storeExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
 		if (autoConfig) {
-			storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), "simplestore"); //$NON-NLS-1$
+			storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
 			storeFolder.mkdirs();
 			Assert.isTrue(storeFolder.exists());
 			Assert.isTrue(storeFolder.isDirectory());
@@ -126,19 +127,19 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#close()
+	 * @see org.eclipse.riena.monitor.client.IStore#open()
 	 */
-	public void close() {
-		storeExecutor.shutdown();
+	public void open() {
+		storeExecutor.scheduleWithFixedDelay(new Cleaner(), 2l, 15l * 60, TimeUnit.SECONDS);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#open()
+	 * @see org.eclipse.riena.monitor.client.IStore#close()
 	 */
-	public void open() {
-		storeExecutor.scheduleWithFixedDelay(new Cleaner(), 2l, 15l * 60, TimeUnit.SECONDS);
+	public void close() {
+		storeExecutor.shutdown();
 	}
 
 	/*
