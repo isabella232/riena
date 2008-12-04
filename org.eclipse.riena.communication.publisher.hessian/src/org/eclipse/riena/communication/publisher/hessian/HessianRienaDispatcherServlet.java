@@ -23,7 +23,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -31,6 +30,9 @@ import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
 import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
+import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.io.AbstractDeserializer;
@@ -149,7 +151,12 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		try {
 			sk.invoke(inp, out);
 		} catch (Throwable t) {
-			t.printStackTrace();
+			Throwable t2 = t;
+			while (t2.getCause() != null) {
+				t2 = t2.getCause();
+			}
+			LOGGER.log(LogService.LOG_ERROR, t.getMessage(), t2);
+			ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleCaught(t2);
 			throw new ServletException(t);
 		}
 	}
