@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *
+ * Utility class for sharing of a common timer
  */
 public class TimerUtil {
 

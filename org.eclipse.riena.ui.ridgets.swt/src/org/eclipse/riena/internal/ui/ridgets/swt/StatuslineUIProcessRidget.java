@@ -415,9 +415,11 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	public synchronized void finalUpdateUI(IProgressVisualizer visualizer) {
+		checkTrigger();
 		getProcessManager().detailForVisualizer(visualizer).setState(
 				visualizer.getProcessInfo().isCanceled() ? ProcessState.CANCELED : ProcessState.FINISHED);
 		checkStillNeeded(visualizer);
+
 		updateUserInterface();
 	}
 

@@ -13,6 +13,9 @@ package org.eclipse.riena.ui.swt.uiprocess;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * serializes a runnable to the SWT-Thread
+ */
 public class SwtUISynchronizer implements IUISynchronizer {
 
 	public void synchronize(Runnable r) {
