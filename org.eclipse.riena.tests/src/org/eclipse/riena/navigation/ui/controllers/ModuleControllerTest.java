@@ -29,7 +29,7 @@ public class ModuleControllerTest extends TestCase {
 	public void testAfterBind() throws Exception {
 
 		ModuleNode node = new ModuleNode();
-		node.setCloseable(true);
+		node.setClosable(true);
 		node.setLabel("Hello");
 		ModuleController controller = new ModuleController(node);
 		ShellRidget shellRidget = new ShellRidget();
@@ -39,7 +39,7 @@ public class ModuleControllerTest extends TestCase {
 		assertTrue(controller.isCloseable());
 		assertEquals("Hello", shellRidget.getTitle());
 
-		node.setCloseable(false);
+		node.setClosable(false);
 		controller.configureRidgets();
 		assertFalse(controller.isCloseable());
 

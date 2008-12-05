@@ -236,7 +236,7 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 			module = new ModuleNode(createNavigationNodeIdFromTemplate(targetId, moduleDefinition, navigationArgument),
 					moduleDefinition.getLabel());
 			module.setIcon(moduleDefinition.getIcon());
-			module.setCloseable(!moduleDefinition.isUncloseable());
+			module.setClosable(!moduleDefinition.isUnclosable());
 			updateContext(module, navigationArgument);
 
 			Map<IConfigurationElement, Object> elementMap = createElementMap(moduleDefinition);

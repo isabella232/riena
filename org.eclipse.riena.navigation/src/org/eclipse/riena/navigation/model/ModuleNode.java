@@ -139,16 +139,16 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.IModuleNode#isCloseable()
+	 * @see org.eclipse.riena.navigation.IModuleNode#isClosable()
 	 */
-	public boolean isCloseable() {
+	public boolean isClosable() {
 		return closeable;
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.IModuleNode#setCloseable(boolean)
+	 * @see org.eclipse.riena.navigation.IModuleNode#setClosable(boolean)
 	 */
-	public void setCloseable(boolean closeable) {
+	public void setClosable(boolean closeable) {
 		this.closeable = closeable;
 	}
 

@@ -248,7 +248,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="uncloseable" type="boolean" use="default" value="false">
+         <attribute name="unclosable" type="boolean" use="default" value="false">
             <annotation>
                <documentation>
                   indicates if the module is closeable

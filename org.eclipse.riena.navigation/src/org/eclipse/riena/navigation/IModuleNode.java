@@ -25,8 +25,8 @@ public interface IModuleNode extends INavigationNode<ISubModuleNode>,
 	boolean isPresentSingleSubModule();
 
 	/**
-	 * @param pPresentSingleSubModule -
-	 *            true if a single sub module should be shown
+	 * @param pPresentSingleSubModule
+	 *            - true if a single sub module should be shown
 	 */
 	void setPresentSingleSubModule(boolean pPresentSingleSubModule);
 
@@ -51,12 +51,12 @@ public interface IModuleNode extends INavigationNode<ISubModuleNode>,
 	 * 
 	 * @return false if the module should never be closed; by default is true.
 	 */
-	boolean isCloseable();
+	boolean isClosable();
 
 	/**
-	 * @param closeable
+	 * @param closable
 	 *            false if the module should never be closed.
 	 */
-	void setCloseable(boolean closeable);
+	void setClosable(boolean closable);
 
 }

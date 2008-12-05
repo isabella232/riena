@@ -93,7 +93,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
-		setCloseable(getNavigationNode().isCloseable());
+		setCloseable(getNavigationNode().isClosable());
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 
 	private void updateCloseable() {
 		if (windowRidget != null) {
-			windowRidget.setCloseable(getNavigationNode().isCloseable());
+			windowRidget.setCloseable(getNavigationNode().isClosable());
 		}
 	}
 

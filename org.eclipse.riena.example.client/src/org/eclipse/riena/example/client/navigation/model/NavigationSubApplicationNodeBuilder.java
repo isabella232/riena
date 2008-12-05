@@ -92,7 +92,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 		moduleGroup.setPresentWithSingleModule(false);
 		subApplication.addChild(moduleGroup);
 		module = new ModuleNode(null, "Module 1.2.1 (not closeable)"); //$NON-NLS-1$
-		module.setCloseable(false);
+		module.setClosable(false);
 		module.setIcon(createIconPath(ExampleIcons.ICON_RED_LED));
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(

@@ -1156,6 +1156,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * Notifies every interested listener that the filters have changed.
 	 */
+	@SuppressWarnings("unchecked")
 	private void notifyFilterAdded(IUIFilter filter) {
 		for (L next : getListeners()) {
 			next.filterAdded((S) this, filter);
@@ -1168,6 +1169,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * Notifies every interested listener that the filters have changed.
 	 */
+	@SuppressWarnings("unchecked")
 	private void notifyFilterRemoved(IUIFilter filter) {
 		for (L next : getListeners()) {
 			next.filterRemoved((S) this, filter);

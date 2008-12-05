@@ -31,10 +31,10 @@ public interface IModuleNodeExtension extends INodeExtension {
 	String getIcon();
 
 	/**
-	 * @return <code>true</code> if this item is closeable, <code>false</code>
+	 * @return <code>true</code> if this item is closable, <code>false</code>
 	 *         otherwise. Default is <code>false</code>.
 	 */
-	boolean isUncloseable();
+	boolean isUnclosable();
 
 	/**
 	 * @return A list of submodule node definitions that are children of the

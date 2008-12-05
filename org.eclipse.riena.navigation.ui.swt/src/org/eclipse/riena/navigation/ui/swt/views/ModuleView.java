@@ -597,7 +597,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		if (getNavigationNode() == null) {
 			return false;
 		}
-		return getNavigationNode().isCloseable();
+		return getNavigationNode().isClosable();
 	}
 
 	/**

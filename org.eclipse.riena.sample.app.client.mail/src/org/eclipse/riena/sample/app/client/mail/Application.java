@@ -42,7 +42,7 @@ public class Application extends SwtApplication {
 		subApp.addChild(groupMailboxes);
 
 		IModuleNode moduleAccount1 = NodeFactory.createModule("me@this.com", groupMailboxes); //$NON-NLS-1$
-		moduleAccount1.setCloseable(false);
+		moduleAccount1.setClosable(false);
 		NodeFactory.createSubMobule("Inbox", moduleAccount1, View.ID); //$NON-NLS-1$
 		NodeFactory.createSubMobule("Drafts", moduleAccount1, View.ID); //$NON-NLS-1$
 		NodeFactory.createSubMobule("Sent", moduleAccount1, View.ID); //$NON-NLS-1$
