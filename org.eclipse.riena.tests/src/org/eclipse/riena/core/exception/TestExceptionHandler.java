@@ -50,7 +50,7 @@ public class TestExceptionHandler implements IExceptionHandler {
      * @see org.eclipse.riena.core.exception.IExceptionHandler#handleCaught(java.lang.Throwable, java.lang.Object,
      *      org.eclipse.equinox.log.Logger)
      */
-    public Action handleCaught(Throwable t, String msg, Logger logger) {
+    public Action handleException(Throwable t, String msg, Logger logger) {
         throwable = t;
         return action;
     }

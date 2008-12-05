@@ -10,83 +10,79 @@
  *******************************************************************************/
 package org.eclipse.riena.core.exception;
 
-import java.util.Hashtable;
-
 import junit.framework.Assert;
 
+import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
+import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.tests.RienaTestCase;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 
 /**
  * 
  */
 public class ExceptionHandlerManagerTest extends RienaTestCase {
 
+	private SimpleExceptionHandlerManager manager;
+
 	public void setUp() throws Exception {
 		super.setUp();
-		startBundles("org\\.eclipse\\.riena\\.exception.*", null);
+		manager = new SimpleExceptionHandlerManager();
 	}
 
-	public void testGetManager() {
-		BundleContext context = getContext();
-
-		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.class.getName());
-		Assert.assertNotNull(managerRef);
-
-		IExceptionHandlerManager manager = (IExceptionHandlerManager) context.getService(managerRef);
-		Assert.assertNotNull(manager);
-
+	public void tearDown() throws Exception {
+		manager = null;
 	}
 
 	public void testAddHandler() {
 		BundleContext context = getContext();
-		TestExceptionHandler test = new TestExceptionHandler();
-		test.name = "test.scp.handler1";
-
-		Hashtable<String, String> properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandler.class.getName(), test, properties);
-
-		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.class.getName());
-		Assert.assertNotNull(managerRef);
-
-		IExceptionHandlerManager manager = (IExceptionHandlerManager) context.getService(managerRef);
-		Assert.assertNotNull(manager);
+		TestExceptionHandler testEH = new TestExceptionHandler();
+		testEH.name = "test.exception.handler1";
+		manager.update(new IExceptionHandlerDefinition[] { getTestDefinition(testEH) });
 
 		Exception exception = new Exception("test");
-		manager.handleCaught(exception);
+		manager.handleException(exception);
 
-		Assert.assertEquals("expected exception", test.throwable, exception);
+		Assert.assertEquals("expected exception", testEH.throwable, exception);
+	}
+
+	private IExceptionHandlerDefinition getTestDefinition(final TestExceptionHandler testEH) {
+		return new IExceptionHandlerDefinition() {
+
+			public IExceptionHandler createExceptionHandler() {
+				return testEH;
+			}
+
+			public String getBefore() {
+				return null;
+			}
+
+			public String getExceptionHandler() {
+				return TestExceptionHandler.class.getName();
+			}
+
+			public String getName() {
+				return testEH.getName();
+			}
+		};
 	}
 
 	public void testAddHandlerChain() {
 		BundleContext context = getContext();
-		TestExceptionHandler test1 = new TestExceptionHandler();
-		test1.name = "test.scp.handler1";
+		TestExceptionHandler testEH1 = new TestExceptionHandler();
+		testEH1.name = "test.exception.handler1";
 
-		Hashtable<String, String> properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandler.class.getName(), test1, properties);
-
-		TestExceptionHandler test2 = new TestExceptionHandler();
-		test2.name = "test.scp.handler2";
-		test2.before = "test.scp.handler1";
-		test2.action = IExceptionHandlerManager.Action.Ok;
-
-		properties = new Hashtable<String, String>(0);
-		context.registerService(IExceptionHandler.class.getName(), test2, properties);
-
-		ServiceReference managerRef = context.getServiceReference(IExceptionHandlerManager.class.getName());
-		Assert.assertNotNull(managerRef);
-
-		IExceptionHandlerManager manager = (IExceptionHandlerManager) context.getService(managerRef);
-		Assert.assertNotNull(manager);
+		TestExceptionHandler testEH2 = new TestExceptionHandler();
+		testEH2.name = "test.exception.handler2";
+		testEH2.before = "test.exception.handler1";
+		testEH2.action = IExceptionHandlerManager.Action.Ok;
+		manager.update(new IExceptionHandlerDefinition[] { getTestDefinition(testEH1), getTestDefinition(testEH2) });
 
 		Exception exception = new Exception("test");
-		manager.handleCaught(exception);
+		manager.handleException(exception);
 
-		Assert.assertEquals("expected exception", test2.throwable, exception);
-		Assert.assertNull("expected no exception", test1.throwable);
+		Assert.assertEquals("expected exception", testEH2.throwable, exception);
+		Assert.assertNull("expected no exception", testEH1.throwable);
 	}
 
 }
