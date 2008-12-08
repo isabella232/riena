@@ -359,6 +359,9 @@ public abstract class RienaTestCase extends TestCase {
 		public void waitAdded() {
 			try {
 				added.await(1, TimeUnit.SECONDS);
+				if (added.getCount() == 1) {
+					System.err.println("Expected extension/point ´added´ has not be called.");
+				}
 			} catch (InterruptedException e) {
 				TestCase.fail("CountDownLatch failed with. " + e);
 			}
@@ -367,6 +370,9 @@ public abstract class RienaTestCase extends TestCase {
 		public void waitExtensionRemoved() {
 			try {
 				extensionRemoved.await(1, TimeUnit.SECONDS);
+				if (extensionRemoved.getCount() == 1) {
+					System.err.println("Expected extension ´removed´ has not be called.");
+				}
 			} catch (InterruptedException e) {
 				TestCase.fail("CountDownLatch failed with. " + e);
 			}
@@ -375,6 +381,9 @@ public abstract class RienaTestCase extends TestCase {
 		public void waitExtensionPointRemoved() {
 			try {
 				extensionPointRemoved.await(1, TimeUnit.SECONDS);
+				if (extensionPointRemoved.getCount() == 1) {
+					System.err.println("Expected extension point ´removed´ has not be called.");
+				}
 			} catch (InterruptedException e) {
 				TestCase.fail("CountDownLatch failed with. " + e);
 			}
