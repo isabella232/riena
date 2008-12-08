@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
@@ -357,7 +358,7 @@ public abstract class RienaTestCase extends TestCase {
 
 		public void waitAdded() {
 			try {
-				added.await();
+				added.await(1, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				TestCase.fail("CountDownLatch failed with. " + e);
 			}
@@ -365,7 +366,7 @@ public abstract class RienaTestCase extends TestCase {
 
 		public void waitExtensionRemoved() {
 			try {
-				extensionRemoved.await();
+				extensionRemoved.await(1, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				TestCase.fail("CountDownLatch failed with. " + e);
 			}
@@ -373,7 +374,7 @@ public abstract class RienaTestCase extends TestCase {
 
 		public void waitExtensionPointRemoved() {
 			try {
-				extensionPointRemoved.await();
+				extensionPointRemoved.await(1, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				TestCase.fail("CountDownLatch failed with. " + e);
 			}
