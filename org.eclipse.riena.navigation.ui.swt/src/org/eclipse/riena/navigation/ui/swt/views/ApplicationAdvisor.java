@@ -52,7 +52,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 
 			@Override
 			public void handle(StatusAdapter statusAdapter, int style) {
-				ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleCaught(
+				ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleException(
 						statusAdapter.getStatus().getException(), statusAdapter.getStatus().getMessage());
 			}
 		};

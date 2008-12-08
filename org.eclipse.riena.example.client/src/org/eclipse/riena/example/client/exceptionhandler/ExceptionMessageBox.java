@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class ExceptionMessageBox implements IExceptionHandler {
 
-	public Action handleCaught(Throwable t, String msg, Logger logger) {
+	public Action handleException(Throwable t, String msg, Logger logger) {
 		MessageBox messageBox = new MessageBox(Display.getCurrent().getActiveShell());
 		final IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) SwtRidgetFactory.createRidget(messageBox);
 

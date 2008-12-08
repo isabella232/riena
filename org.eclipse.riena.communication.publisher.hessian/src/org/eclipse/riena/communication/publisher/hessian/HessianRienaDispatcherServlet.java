@@ -156,7 +156,7 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 				t2 = t2.getCause();
 			}
 			LOGGER.log(LogService.LOG_ERROR, t.getMessage(), t2);
-			ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleCaught(t2);
+			ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleException(t2);
 			throw new ServletException(t);
 		}
 	}

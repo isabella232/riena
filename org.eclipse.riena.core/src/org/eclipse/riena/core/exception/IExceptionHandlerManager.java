@@ -43,7 +43,7 @@ public interface IExceptionHandlerManager {
 	 *            exception to be handled
 	 * @return the Action how to process
 	 */
-	Action handleCaught(Throwable t);
+	Action handleException(Throwable t);
 
 	/**
 	 * Check if the exception passed can be handled and return an {@link Action}
@@ -59,7 +59,7 @@ public interface IExceptionHandlerManager {
 	 *            to be used for logging
 	 * @return the Action how to process
 	 */
-	Action handleCaught(Throwable t, Logger logger);
+	Action handleException(Throwable t, Logger logger);
 
 	/**
 	 * Check if the exception passed can be handled and return an {@link Action}
@@ -75,7 +75,7 @@ public interface IExceptionHandlerManager {
 	 *            an optional message
 	 * @return the Action how to process
 	 */
-	Action handleCaught(Throwable t, String msg);
+	Action handleException(Throwable t, String msg);
 
 	/**
 	 * Check if the exception passed can be handled and return an {@link Action}
@@ -93,24 +93,6 @@ public interface IExceptionHandlerManager {
 	 *            to be used for logging
 	 * @return the Action how to process
 	 */
-	Action handleCaught(Throwable t, String msg, Logger logger);
+	Action handleException(Throwable t, String msg, Logger logger);
 
-	/**
-	 * Check if the exception passed can be handled and return an {@link Action}
-	 * how might to process. This method should only be called in top level
-	 * catch blocks like main, ui thread etc... From other locations inside a
-	 * catch block use handleCaught(..)
-	 * 
-	 * @pre t != null
-	 * @post result != null
-	 * 
-	 * @param t
-	 *            exception to be handled
-	 * @param msg
-	 *            an optional message
-	 * @param logger
-	 *            to be used for logging
-	 * @return the Action how to process
-	 */
-	Action handleUncaught(Throwable t, String msg, Logger logger);
 }
