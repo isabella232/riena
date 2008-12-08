@@ -288,7 +288,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	private Shell getShell() {
-		return Display.getDefault().getShells()[0];
+		Shell[] shells = Display.getDefault().getShells();
+		return shells[0];
 	}
 
 	/**

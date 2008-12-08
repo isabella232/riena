@@ -182,5 +182,7 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(ridget.getMarkersOfType(HiddenMarker.class).isEmpty());
 
+		shell.dispose();
+
 	}
 }

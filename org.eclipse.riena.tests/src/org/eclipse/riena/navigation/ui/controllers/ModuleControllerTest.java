@@ -33,7 +33,8 @@ public class ModuleControllerTest extends TestCase {
 		node.setLabel("Hello");
 		ModuleController controller = new ModuleController(node);
 		ShellRidget shellRidget = new ShellRidget();
-		shellRidget.setUIControl(new Shell());
+		Shell shell = new Shell();
+		shellRidget.setUIControl(shell);
 		controller.setWindowRidget(shellRidget);
 		controller.afterBind();
 		assertTrue(controller.isCloseable());
@@ -42,6 +43,8 @@ public class ModuleControllerTest extends TestCase {
 		node.setClosable(false);
 		controller.configureRidgets();
 		assertFalse(controller.isCloseable());
+
+		shell.dispose();
 
 	}
 
