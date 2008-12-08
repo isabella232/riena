@@ -41,6 +41,13 @@ public interface INavigationAssemblyExtension {
 	INavigationAssembler createNavigationAssembler();
 
 	/**
+	 * @return Same as above but only returns the name of the class of the
+	 *         assembler.
+	 */
+	@MapName("assembler")
+	String getNavigationAssembler();
+
+	/**
 	 * @return ID of the parent indicating where to insert a node or subtree
 	 *         created with this definition in the application model tree.
 	 */

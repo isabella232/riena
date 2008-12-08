@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IAssemblerProvider;
@@ -29,6 +31,8 @@ import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -39,6 +43,7 @@ import org.osgi.service.log.LogService;
 public class NavigationNodeProvider implements INavigationNodeProvider, IAssemblerProvider {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
+	private static Random random = null;
 
 	private Map<String, INavigationAssembler> assemblyId2AssemblerCache = new HashMap<String, INavigationAssembler>();
 
@@ -203,13 +208,28 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 
 	public void register(INavigationAssemblyExtension assembly) {
 
+		String assemblyId = assembly.getId();
+
+		if (assemblyId == null) {
+			if (random == null) {
+				try {
+					random = SecureRandom.getInstance("SHA1PRNG"); //$NON-NLS-1$
+				} catch (NoSuchAlgorithmException e) {
+					random = new Random(System.currentTimeMillis());
+				}
+			}
+			assemblyId = "Riena.random.assemblyid." + new Long(random.nextLong()).toString(); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, "Assembly has no id. Generated a random '" + assemblyId //$NON-NLS-1$
+					+ "'. For Assembler=" + assembly.getNavigationAssembler()); //$NON-NLS-1$
+		}
+
 		INavigationAssembler assembler = assembly.createNavigationAssembler();
 		if (assembler == null) {
 			assembler = createDefaultAssembler();
 		}
 		assembler.setAssembly(assembly);
 
-		registerNavigationAssembler(assembly.getId(), assembler);
+		registerNavigationAssembler(assemblyId, assembler);
 
 		// TODO register for parent?
 		if (assembly.getSubApplicationNode() != null) {
