@@ -13,10 +13,6 @@ package org.eclipse.riena.navigation.ui.application;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.equinox.app.IApplication;
-import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -35,6 +31,11 @@ import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
+
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -43,7 +44,6 @@ import org.osgi.service.log.LogService;
 public abstract class AbstractApplication implements IApplication {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(AbstractApplication.class);
-	public static final String DEFAULT_APPLICATION_TYPEID = "application"; //$NON-NLS-1$
 
 	public Object start(IApplicationContext context) throws Exception {
 
@@ -53,6 +53,10 @@ public abstract class AbstractApplication implements IApplication {
 		}
 
 		IApplicationNode node = createModel();
+		if (node == null) {
+			throw new RuntimeException(
+					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue");
+		}
 		createStartupsFromExtensions(node);
 		ApplicationNodeManager.registerApplicationNode(node);
 		initializeNode(node);
@@ -73,7 +77,8 @@ public abstract class AbstractApplication implements IApplication {
 	 *         model
 	 */
 	protected IApplicationNode createModel() {
-		IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(DEFAULT_APPLICATION_TYPEID));
+		IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(
+				ApplicationNode.DEFAULT_APPLICATION_TYPEID));
 		return applicationModel;
 	}
 

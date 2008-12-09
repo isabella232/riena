@@ -30,7 +30,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 * 
 	 */
 	public ApplicationNode() {
-		super(null);
+		super(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID));
 		initializeNavigationProcessor();
 	}
 
