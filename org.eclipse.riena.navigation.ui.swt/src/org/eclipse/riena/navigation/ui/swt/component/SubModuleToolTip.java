@@ -65,7 +65,7 @@ public class SubModuleToolTip extends DefaultToolTip {
 			setBackgroundColor(color);
 		}
 		Font font = lnf.getFont(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT);
-		if (color != null) {
+		if (font != null) {
 			setFont(font);
 		}
 

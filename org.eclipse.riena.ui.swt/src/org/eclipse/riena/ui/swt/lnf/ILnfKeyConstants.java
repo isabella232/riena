@@ -92,6 +92,7 @@ public final class ILnfKeyConstants {
 
 	public static final String MODULE_ITEM_TOOLTIP_FONT = "ModuleItemToolTip.font"; //$NON-NLS-1$
 
+	public static final String SUB_MODULE_ITEM_FONT = "SubModuleItem.font"; //$NON-NLS-1$
 	public static final String SUB_MODULE_ITEM_TOOLTIP_FONT = "SubModuleItemToolTip.font"; //$NON-NLS-1$
 
 	public static final String EMBEDDED_TITLEBAR_FONT = "EmbeddedTitlebar.font"; //$NON-NLS-1$

@@ -62,6 +62,7 @@ public class MenuCoolBarComposite extends Composite {
 
 		CoolBar coolBar = new CoolBar(this, SWT.FLAT);
 		coolBar.setBackground(getCoolbarBackground());
+		coolBar.setBackgroundMode(SWT.INHERIT_FORCE);
 
 		coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
 		toolBar = new ToolBar(coolBar, SWT.FLAT);

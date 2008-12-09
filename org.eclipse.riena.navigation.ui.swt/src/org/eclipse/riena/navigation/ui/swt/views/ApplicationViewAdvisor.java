@@ -633,6 +633,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		if (control instanceof CoolBar) {
 			CoolBar coolbar = (CoolBar) control;
 			coolbar.setLocked(true);
+			coolbar.setBackgroundMode(SWT.INHERIT_FORCE);
 		}
 		control.setBackground(getCoolbarBackground());
 
