@@ -36,8 +36,8 @@ import org.eclipse.swt.widgets.ToolItem;
  */
 public class MenuCoolBarComposite extends Composite {
 
-	private ToolBar toolBar;
 	private CoolItem coolItem;
+	private ToolBar toolBar;
 
 	/**
 	 * Creates an new instance of {@code MenuCoolBarComposite} given its parent
@@ -61,15 +61,37 @@ public class MenuCoolBarComposite extends Composite {
 	private void create() {
 
 		CoolBar coolBar = new CoolBar(this, SWT.FLAT);
-		coolBar.setBackground(getCoolbarBackground());
-		coolBar.setBackgroundMode(SWT.INHERIT_FORCE);
+		coolItem = initCoolBar(coolBar);
 
-		coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
-		toolBar = new ToolBar(coolBar, SWT.FLAT);
-		coolItem.setControl(toolBar);
+		toolBar = (ToolBar) coolItem.getControl();
 		toolBar.addMouseMoveListener(new ToolBarMouseListener());
 
+	}
+
+	/**
+	 * Initializes the given cool bar.<br>
+	 * E.g. sets the background of the cool bar and if the cool bar is empty
+	 * adds necessary cool item with the height 1.
+	 * 
+	 * @param coolBar
+	 *            - cool bar
+	 * @return the first cool item of the given cool bar
+	 */
+	public static CoolItem initCoolBar(CoolBar coolBar) {
+
+		if (coolBar.getItemCount() == 0) {
+			CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
+			ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
+			coolItem.setControl(toolBar);
+			// sets the default size of an empty menu bar or tool bar
+			coolItem.setSize(new Point(0, 1));
+		}
+
+		coolBar.setBackground(getCoolbarBackground());
+		coolBar.setBackgroundMode(SWT.INHERIT_FORCE);
 		coolBar.setLocked(true);
+
+		return coolBar.getItem(0);
 
 	}
 
@@ -112,7 +134,7 @@ public class MenuCoolBarComposite extends Composite {
 	 * Return the coolbar / menubar background color according to the
 	 * look-and-feel.
 	 */
-	private Color getCoolbarBackground() {
+	private static Color getCoolbarBackground() {
 		return LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
 	}
 

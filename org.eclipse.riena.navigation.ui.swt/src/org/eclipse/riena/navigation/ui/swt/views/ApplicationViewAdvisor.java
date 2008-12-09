@@ -46,7 +46,6 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -72,7 +71,7 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	/**
-	 * 
+	 * The default height of the status line.
 	 */
 	public static final int STATUSLINE_HEIGHT = 22;
 	/**
@@ -560,13 +559,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// menu bar
 		MenuCoolBarComposite composite = new MenuCoolBarComposite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
+
+		createMenuBar(composite);
+
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, COOLBAR_TOP_MARGIN);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
 		composite.setLayoutData(formData);
-
-		createMenuBar(composite);
 
 		return composite;
 
@@ -588,14 +588,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			}
 		}
 
-	}
-
-	/**
-	 * Return the coolbar / menubar background color according to the
-	 * look-and-feel.
-	 */
-	private Color getCoolbarBackground() {
-		return LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
 	}
 
 	/**
@@ -632,10 +624,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		Control control = getWindowConfigurer().createCoolBarControl(composite);
 		if (control instanceof CoolBar) {
 			CoolBar coolbar = (CoolBar) control;
-			coolbar.setLocked(true);
-			coolbar.setBackgroundMode(SWT.INHERIT_FORCE);
+			MenuCoolBarComposite.initCoolBar(coolbar);
 		}
-		control.setBackground(getCoolbarBackground());
 
 		return composite;
 
