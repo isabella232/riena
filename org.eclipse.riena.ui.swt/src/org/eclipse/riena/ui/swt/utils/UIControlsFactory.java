@@ -24,9 +24,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -151,6 +153,13 @@ public final class UIControlsFactory {
 			style |= SWT.V_SCROLL;
 		}
 		return new List(parent, style);
+	}
+
+	public static Shell createShell(Display display) {
+		Assert.isNotNull(display);
+		Shell shell = new Shell(display);
+		shell.setBackground(SHARED_BG_COLOR);
+		return shell;
 	}
 
 	public static int getWidthHint(Button button) {
