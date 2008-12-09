@@ -22,9 +22,11 @@ import org.eclipse.riena.navigation.listener.IApplicationNodeListener;
 public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplicationNode, IApplicationNodeListener>
 		implements IApplicationNode {
 
+	public static final String DEFAULT_APPLICATION_TYPEID = "application"; //$NON-NLS-1$
+
 	/**
-	 * Creates an ApplicationNode node which is the root of an application
-	 * model tree.
+	 * Creates an ApplicationNode node which is the root of an application model
+	 * tree.
 	 * 
 	 */
 	public ApplicationNode() {
@@ -33,8 +35,8 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	}
 
 	/**
-	 * Creates an ApplicationNode node which is the root of an application
-	 * model tree.
+	 * Creates an ApplicationNode node which is the root of an application model
+	 * tree.
 	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
@@ -45,8 +47,8 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	}
 
 	/**
-	 * Creates an ApplicationNode node which is the root of an application
-	 * model tree.
+	 * Creates an ApplicationNode node which is the root of an application model
+	 * tree.
 	 * 
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
@@ -59,14 +61,14 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	}
 
 	/**
-	 * Creates an ApplicationNode node which is the root of an application
-	 * model tree.
+	 * Creates an ApplicationNode node which is the root of an application model
+	 * tree.
 	 * 
 	 * @param label
 	 *            Label of the application displayed in the title bar.
 	 */
 	public ApplicationNode(String label) {
-		this(null, label);
+		this(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID), label);
 	}
 
 	/**
