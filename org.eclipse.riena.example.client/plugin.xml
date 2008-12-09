@@ -738,6 +738,7 @@
          </ruleMarkerRidget>
       </filter>
    </extension>
+   <!-- To activate client monitoring for the example client simply uncomment this. 
    <extension point="org.eclipse.riena.monitor.collector">
       <collector
             category="LogCollector"
@@ -748,6 +749,7 @@
             class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2 0 [], triggerRange=-2">
       </collector>
    </extension>
+   -->
     <extension
            point="org.eclipse.riena.core.exception.handlers">
         <exceptionHandler
@@ -767,7 +769,7 @@
              <module
                    label="Exception Test"
                    typeId="org.eclipse.riena.example.exceptiontest.module"
-                   uncloseable="false">
+                   unclosable="false">
                 <submodule
                       controller="org.eclipse.riena.example.client.controllers.ExceptionTestController"
                       shared="false"
