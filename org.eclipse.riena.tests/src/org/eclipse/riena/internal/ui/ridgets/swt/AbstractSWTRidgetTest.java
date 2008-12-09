@@ -434,6 +434,33 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		verifyPropertyChangeEvents();
 	}
 
+	/**
+	 * Tests that the combo control becomes visible after toggling
+	 * ridget.setVisible().
+	 */
+	public void testBug257484() {
+		Widget widget = getWidget();
+		if (!(widget instanceof Control)) {
+			// skip if not a control - only controls can be hidden / visible
+			return;
+		}
+		IRidget ridget = getRidget();
+		Control control = (Control) widget;
+
+		assertTrue(ridget.isVisible());
+		assertTrue(control.isVisible());
+
+		ridget.setVisible(false);
+
+		assertFalse(ridget.isVisible());
+		assertFalse(control.isVisible());
+
+		ridget.setVisible(true);
+
+		assertTrue(ridget.isVisible());
+		assertTrue(control.isVisible());
+	}
+
 	// helping methods
 	// ////////////////
 

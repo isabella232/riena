@@ -23,7 +23,10 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
@@ -213,7 +216,7 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	private void updateUIControl() {
 		Control control = (Control) ridget.getUIControl();
 		if (control != null) {
-			control.setRedraw(false); // prevent flicker
+			stopRedraw(control);
 			try {
 				updateVisible(control);
 				updateDisabled(control);
@@ -222,10 +225,29 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 				updateError(control);
 				updateNegative(control);
 			} finally {
-				control.setRedraw(true);
-				control.redraw();
+				startRedraw(control);
 			}
 		}
+	}
+
+	private void startRedraw(Control control) {
+		if (!skipRedrawForBug258176(control)) {
+			control.setRedraw(true);
+			control.redraw();
+		}
+	}
+
+	private void stopRedraw(Control control) {
+		if (!skipRedrawForBug258176(control)) {
+			control.setRedraw(false);
+		}
+	}
+
+	/**
+	 * These controls are affected by bug 258176 in SWT.
+	 */
+	private boolean skipRedrawForBug258176(Control control) {
+		return (control instanceof Combo) || (control instanceof Table) || (control instanceof List);
 	}
 
 }
