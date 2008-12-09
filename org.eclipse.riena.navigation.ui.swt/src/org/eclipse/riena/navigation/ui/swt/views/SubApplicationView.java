@@ -287,9 +287,27 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		binding.addUIControl(uiControl);
 	}
 
+	/**
+	 * Returns the shell of the application.
+	 * 
+	 * @return application shell
+	 */
 	private Shell getShell() {
+
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		Shell[] shells = Display.getDefault().getShells();
-		return shells[0];
+		for (Shell shell : shells) {
+			String value = locator.locateBindingProperty(shell);
+			if ((value != null) && value.equals(ApplicationViewAdvisor.SHELL_RIDGET_PROPERTY)) {
+				return shell;
+			}
+		}
+		if (PlatformUI.isWorkbenchRunning()) {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		}
+
+		return Display.getDefault().getActiveShell();
+
 	}
 
 	/**

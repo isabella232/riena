@@ -45,6 +45,8 @@ public class SubApplicationViewTest extends TestCase {
 	protected void setUp() throws Exception {
 		view = new SubApplicationView();
 		shell = new Shell();
+		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		locator.setBindingProperty(shell, ApplicationViewAdvisor.SHELL_RIDGET_PROPERTY);
 	}
 
 	@Override
