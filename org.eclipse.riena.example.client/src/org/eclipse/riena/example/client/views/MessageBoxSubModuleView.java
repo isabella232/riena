@@ -37,6 +37,8 @@ public class MessageBoxSubModuleView extends SubModuleView<MessageBoxSubModuleCo
 		GD230.widthHint = 230;
 	}
 
+	private Font font;
+
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 
@@ -46,7 +48,8 @@ public class MessageBoxSubModuleView extends SubModuleView<MessageBoxSubModuleCo
 		parent.setLayout(layout);
 
 		Label explanation = UIControlsFactory.createLabel(parent, "Message displayed in a popup dialog"); //$NON-NLS-1$
-		explanation.setFont(new Font(explanation.getDisplay(), "Arial", 8, SWT.BOLD)); //$NON-NLS-1$
+		font = new Font(explanation.getDisplay(), "Arial", 8, SWT.BOLD); //$NON-NLS-1$
+		explanation.setFont(font);
 		explanation.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
 		UIControlsFactory.createLabel(parent, "Title"); //$NON-NLS-1$
@@ -80,5 +83,11 @@ public class MessageBoxSubModuleView extends SubModuleView<MessageBoxSubModuleCo
 
 		MessageBox messageBox = UIControlsFactory.createMessageBox(parent);
 		addUIControl(messageBox, "messageBox"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void dispose() {
+		font.dispose();
+		super.dispose();
 	}
 }
