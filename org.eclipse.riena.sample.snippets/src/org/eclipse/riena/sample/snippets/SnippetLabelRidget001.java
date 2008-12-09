@@ -15,13 +15,12 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.swt.SWT;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -35,11 +34,11 @@ public final class SnippetLabelRidget001 {
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			Shell shell = UIControlsFactory.createShell(display);
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			createLabel(shell, "DateTime:"); //$NON-NLS-1$
-			Label dateTimeWidget = createLabel(shell, ""); //$NON-NLS-1$
+			UIControlsFactory.createLabel(shell, "DateTime:"); //$NON-NLS-1$
+			Label dateTimeWidget = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(dateTimeWidget);
 
 			final DateBean dateBean = new DateBean();
@@ -68,7 +67,7 @@ public final class SnippetLabelRidget001 {
 
 			}, new Date(), 1000);
 
-			shell.setSize(200, 200);
+			shell.setSize(300, 100);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {
@@ -78,12 +77,6 @@ public final class SnippetLabelRidget001 {
 		} finally {
 			display.dispose();
 		}
-	}
-
-	private static Label createLabel(Shell shell, String caption) {
-		Label result = new Label(shell, SWT.NONE);
-		result.setText(caption);
-		return result;
 	}
 
 	private static class DateBean {
