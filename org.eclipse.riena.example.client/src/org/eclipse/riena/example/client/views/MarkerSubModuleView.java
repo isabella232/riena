@@ -175,9 +175,6 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		return group;
 	}
 
-	// helping methods
-	// ////////////////
-
 	private Composite createComposite(Group group) {
 		Composite composite = new Composite(group, SWT.NONE);
 		composite.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
