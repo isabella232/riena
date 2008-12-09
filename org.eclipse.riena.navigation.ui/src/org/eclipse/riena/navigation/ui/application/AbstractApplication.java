@@ -46,6 +46,12 @@ public abstract class AbstractApplication implements IApplication {
 	public static final String DEFAULT_APPLICATION_TYPEID = "application"; //$NON-NLS-1$
 
 	public Object start(IApplicationContext context) throws Exception {
+
+		Object result = performLogin(context);
+		if (!EXIT_OK.equals(result)) {
+			return result;
+		}
+
 		IApplicationNode node = createModel();
 		createStartupsFromExtensions(node);
 		ApplicationNodeManager.registerApplicationNode(node);
@@ -168,6 +174,10 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	abstract protected Object createView(IApplicationContext context, IApplicationNode pNode) throws Exception;
+
+	protected Object performLogin(IApplicationContext context) throws Exception {
+		return EXIT_OK;
+	}
 
 	private Integer getAutostartSequence(INavigationAssemblyExtension assembly) {
 

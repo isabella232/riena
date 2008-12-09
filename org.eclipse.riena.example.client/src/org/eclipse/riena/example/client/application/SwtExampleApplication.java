@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.example.client.views.LoginDialogView;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -22,6 +26,8 @@ import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 /**
@@ -106,4 +112,44 @@ public class SwtExampleApplication extends SwtApplication {
 		return Activator.getDefault().getBundle();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ui.application.AbstractApplication#performLogin
+	 * (org.eclipse.equinox.app.IApplicationContext)
+	 */
+	@Override
+	protected Object performLogin(IApplicationContext context) throws Exception {
+
+		return open(new LoginDialogView());
+	}
+
+	private Object open(final LoginDialogView loginDialogView) {
+
+		Display display = getDisplay();
+		do {
+			Realm.runWithDefault(SWTObservables.getRealm(display), new Runnable() {
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.lang.Runnable#run()
+				 */
+				public void run() {
+					loginDialogView.build();
+				}
+			});
+		} while (EXIT_RESTART.equals(loginDialogView.getResult()));
+
+		return loginDialogView.getResult();
+	}
+
+	private Display getDisplay() {
+
+		if (PlatformUI.isWorkbenchRunning()) {
+			return PlatformUI.getWorkbench().getDisplay();
+		} else {
+			return PlatformUI.createDisplay();
+		}
+	}
 }

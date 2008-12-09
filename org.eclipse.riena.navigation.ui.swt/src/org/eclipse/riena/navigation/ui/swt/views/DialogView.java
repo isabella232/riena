@@ -100,6 +100,10 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		}
 	}
 
+	protected void onClose() {
+		// Do nothing by default
+	}
+
 	private class RienaDialog extends Dialog {
 
 		private boolean closing;
@@ -120,6 +124,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		public boolean close() {
 
 			closing = true;
+			onClose();
 			unbind(getController());
 			boolean result = super.close();
 			closing = false;
