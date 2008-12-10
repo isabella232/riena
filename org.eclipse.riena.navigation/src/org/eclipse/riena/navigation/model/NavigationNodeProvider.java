@@ -37,8 +37,7 @@ import org.osgi.service.log.LogService;
 
 /**
  * This class provides service methods to get information provided by
- * WorkAreaPresentationDefinitions and NavigationNodePresentationDefitinios
- * identified by a given presentationID.
+ * WorkAreaDefinitions.
  */
 public class NavigationNodeProvider implements INavigationNodeProvider, IAssemblerProvider {
 
@@ -110,12 +109,17 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 				if (argument != null && argument.getParentNodeId() != null) {
 					parentNode = _provideNode(sourceNode, argument.getParentNodeId(), null);
 				} else {
-					parentNode = _provideNode(sourceNode, new NavigationNodeId(assembler.getAssembly()
-							.getParentTypeId()), null);
+					String parentTypeId = assembler.getAssembly().getParentTypeId();
+					if (parentTypeId == null || parentTypeId.length() == 0) {
+						throw new ExtensionPointFailure("parentTypeId cannot be null or blank for assembly ID=" //$NON-NLS-1$
+								+ assembler.getAssembly().getId());
+					}
+					parentNode = _provideNode(sourceNode, new NavigationNodeId(parentTypeId), null);
 				}
 				parentNode.addChild(targetNode);
 			} else {
-				throw new ExtensionPointFailure("NavigationNodeType not found. ID=" + targetId.getTypeId()); //$NON-NLS-1$
+				// TODO distinguish between assembly ID and typeID in error message (to help the user)
+				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
 		}
 		return targetNode;

@@ -17,9 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.beanutils.PropertyUtilsBean;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.navigation.IAssemblerProvider;
 import org.eclipse.riena.navigation.IForEachExtension;
@@ -38,6 +35,11 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+
+import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
  * The GenericNavigationAssembler can handle the hierarchical definition of
@@ -162,6 +164,11 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 
 	protected ISubApplicationNode build(ISubApplicationNodeExtension subapplicationDefinition,
 			NavigationNodeId targetId, NavigationArgument navigationArgument, Map<String, Object> context) {
+
+		Assert.isNotNull(subapplicationDefinition, "Error building subapplication. Subapplication cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(subapplicationDefinition.getViewId(),
+				"Error building subapplication. Attribute 'view' cannot be null for subapplication = " //$NON-NLS-1$
+						+ subapplicationDefinition.getTypeId());
 
 		// a module group can only contain modules
 		ISubApplicationNode subapplication = new SubApplicationNode(createNavigationNodeIdFromTemplate(targetId,
