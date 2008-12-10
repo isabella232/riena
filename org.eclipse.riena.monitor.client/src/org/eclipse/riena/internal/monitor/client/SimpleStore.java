@@ -25,9 +25,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -35,12 +32,15 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaLocations;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
@@ -55,6 +55,8 @@ import org.osgi.service.log.LogService;
  * <ul>
  * <li>maxItems - defines the maximum number of items to keep for each category
  * (default value is 100 if not defined)</li>
+ * <li>cleanupDelay - defines the time in minutes between store cleanup steps
+ * (default value is 60 minutes if not defined)</li>
  * </ul>
  * Example extension:
  * 
@@ -62,18 +64,17 @@ import org.osgi.service.log.LogService;
  * &lt;extension point=&quot;org.eclipse.riena.monitor.store&quot;&gt;
  *     &lt;store
  *           name=&quot;SimpleStore&quot;
- *           class=&quot;org.eclipse.riena.internal.monitor.client.SimpleStore:maxItems=200&quot;&gt;
+ *           class=&quot;org.eclipse.riena.internal.monitor.client.SimpleStore:maxItems=200,cleanupDelay=120&quot;&gt;
  *     &lt;/store&gt;
  * &lt;/extension&gt;
  * </pre>
  */
 public class SimpleStore implements IStore, IExecutableExtension {
 
-	private String name;
 	private File storeFolder;
 	private int maxItems;
-
-	private final ScheduledExecutorService storeExecutor;
+	private int cleanupDelay;
+	private Cleaner cleaner;
 
 	private static final String TRANSFER_FILE_EXTENSION = ".trans"; //$NON-NLS-1$
 	private static final String COLLECT_FILE_EXTENSION = ".coll"; //$NON-NLS-1$
@@ -81,8 +82,12 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CATEGORY_DELIMITER = "#"; //$NON-NLS-1$
 
 	private static final String MAX_ITEMS = "maxItems"; //$NON-NLS-1$
+	private static final String MAX_ITEMS_DEFAULT = "100"; //$NON-NLS-1$
+	private static final String CLEANUP_DELAY = "cleanupDelay"; //$NON-NLS-1$
+	private static final String CLEANUP_DELAY_DEFAULT = "60"; //$NON-NLS-1$
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SimpleStore.class);
+	private static final boolean TRACE = false;
 
 	public SimpleStore() throws CoreException {
 		this("simplestore", true);
@@ -94,8 +99,8 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param autoConfig
 	 */
 	private SimpleStore(final String storeFolderName, final boolean autoConfig) {
-		storeExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
 		if (autoConfig) {
+			cleaner = new Cleaner();
 			storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
 			storeFolder.mkdirs();
 			Assert.isTrue(storeFolder.exists());
@@ -108,15 +113,14 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			throws CoreException {
 		Map<String, String> properties = null;
 		try {
-			properties = PropertiesUtils.asMap(data, Literal.map(MAX_ITEMS, "100")); //$NON-NLS-1$
-		} catch (IllegalArgumentException e) {
-			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
-		}
-		try {
+			properties = PropertiesUtils.asMap(data, Literal.map(MAX_ITEMS, MAX_ITEMS_DEFAULT).map(CLEANUP_DELAY,
+					CLEANUP_DELAY_DEFAULT));
 			maxItems = Integer.valueOf(properties.get(MAX_ITEMS));
 			Assert.isLegal(maxItems > 0, "maxItems must be greater than 0."); //$NON-NLS-1$
+			cleanupDelay = Integer.valueOf(properties.get(CLEANUP_DELAY));
+			Assert.isLegal(cleanupDelay > 0, "cleanupDelay must be greater than 0."); //$NON-NLS-1$
 		} catch (IllegalArgumentException e) {
-			throw configurationException("Bad configuration. Parsing maxItems failed.", e); //$NON-NLS-1$
+			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -130,7 +134,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @see org.eclipse.riena.monitor.client.IStore#open()
 	 */
 	public void open() {
-		storeExecutor.scheduleWithFixedDelay(new Cleaner(), 2l, 15l * 60, TimeUnit.SECONDS);
+		cleaner.schedule(Millis.seconds(15));
 	}
 
 	/*
@@ -139,7 +143,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @see org.eclipse.riena.monitor.client.IStore#close()
 	 */
 	public void close() {
-		storeExecutor.shutdown();
+		cleaner.cancel();
 	}
 
 	/*
@@ -291,8 +295,9 @@ public class SimpleStore implements IStore, IExecutableExtension {
 				return;
 			}
 			File toDelete = new File(file, DEL_FILE_EXTENSION);
-			file.renameTo(toDelete);
-			toDelete.deleteOnExit();
+			if (file.renameTo(toDelete)) {
+				toDelete.deleteOnExit();
+			}
 		}
 	}
 
@@ -349,8 +354,34 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	/**
 	 * Perform cleanup of the store as defined by the configuration properties.
 	 */
-	public class Cleaner implements Runnable {
-		public void run() {
+	public class Cleaner extends Job {
+		/**
+		 * @param name
+		 */
+		public Cleaner() {
+			super("SimpleStoreCleaner"); //$NON-NLS-1$
+			setUser(true);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @seeorg.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.
+		 * IProgressMonitor)
+		 */
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			trace("Store Cleaner started");
+			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN);
+			clean();
+			monitor.done();
+			// reschedule for periodic work
+			schedule(Millis.seconds(cleanupDelay));
+			trace("Store Cleaner ended");
+			return Status.OK_STATUS;
+		}
+
+		private void clean() {
 			File[] scrutinizedFiles = storeFolder.listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
 					return name.endsWith(COLLECT_FILE_EXTENSION) || name.endsWith(DEL_FILE_EXTENSION);
@@ -392,6 +423,12 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			for (int i = 0; i < files.size() - maxItems; i++) {
 				delete(files.get(i));
 			}
+		}
+	}
+
+	private static void trace(String line) {
+		if (TRACE) {
+			System.out.println(line);
 		}
 	}
 

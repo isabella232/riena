@@ -10,21 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
@@ -56,11 +56,13 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 	private IStore store;
 	private IReceiver receiver;
-	private final ScheduledExecutorService senderExecutor;
 	private boolean stopped;
-	private int retryTime = 10;
-	private List<String> categories = new ArrayList<String>();
+	private int retryTime;
+	private Map<String, Sender> categories = new HashMap<String, Sender>();
 	private static final String RETRY_TIME = "retryTime"; //$NON-NLS-1$
+	private static final String RETRY_TIME_DEFAULT = "10"; //$NON-NLS-1$
+
+	private static final boolean TRACE = false;
 
 	/**
 	 * Creates the {@code SimpleSender}.
@@ -80,7 +82,6 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 *            true perform configuration; otherwise do not configure
 	 */
 	public SimpleSender(boolean autoConfig) {
-		senderExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
 		if (autoConfig) {
 			Inject.service(IReceiver.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 		}
@@ -91,15 +92,11 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 		Map<String, String> properties = null;
 		try {
-			properties = PropertiesUtils.asMap(data, Literal.map(RETRY_TIME, "10")); //$NON-NLS-1$
-		} catch (IllegalArgumentException e) {
-			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
-		}
-		try {
+			properties = PropertiesUtils.asMap(data, Literal.map(RETRY_TIME, RETRY_TIME_DEFAULT));
 			retryTime = Integer.valueOf(properties.get(RETRY_TIME));
 			Assert.isLegal(retryTime > 0, "retryTime must be greater than 0."); //$NON-NLS-1$
 		} catch (IllegalArgumentException e) {
-			throw configurationException("Bad configuration. Parsing retry time failed.", e); //$NON-NLS-1$
+			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 	}
 
@@ -133,8 +130,8 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 * lang.String )
 	 */
 	public void addCategory(String category) {
-		Assert.isNotNull(category, "category must not be null");
-		this.categories.add(category);
+		Assert.isNotNull(category, "category must not be null"); //$NON-NLS-1$
+		this.categories.put(category, new Sender(category));
 	}
 
 	/*
@@ -144,7 +141,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 * String)
 	 */
 	public void removeCategory(String category) {
-		Assert.isNotNull(category, "category must not be null");
+		Assert.isNotNull(category, "category must not be null"); //$NON-NLS-1$
 		this.categories.remove(category);
 	}
 
@@ -154,13 +151,9 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		// check if there are remaining collectibles, 
 		// if so trigger transfer in the background 
 		// with a slight delay
-		senderExecutor.schedule(new Runnable() {
-			public void run() {
-				for (String category : categories) {
-					triggerTransfer(category);
-				}
-			}
-		}, 5, TimeUnit.SECONDS);
+		for (Sender sender : categories.values()) {
+			sender.tryIt(Millis.seconds(5));
+		}
 	}
 
 	/*
@@ -170,67 +163,92 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 */
 	public void stop() {
 		stopped = true;
-		senderExecutor.shutdown();
+		for (Sender sender : categories.values()) {
+			sender.cancel();
+		}
 	}
 
-	public void triggerTransfer(String category) {
+	public synchronized void triggerTransfer(String category) {
 		if (stopped) {
 			return;
 		}
-		Sender sender = new Sender(category);
-		senderExecutor.execute(sender);
+		Sender sender = categories.get(category);
+		if (sender == null) {
+			return;
+		}
+		sender.tryIt(0);
 	}
 
-	private class Sender implements Runnable {
+	private final class Sender extends Job {
 
 		private final String category;
+		private boolean retrying;
 
 		private Sender(String category) {
+			super("SimpleSender"); //$NON-NLS-1$
 			this.category = category;
+		}
+
+		private void tryIt(long delay) {
+			if (retrying) {
+				trace("Retry already scheduled.");
+				return;
+			}
+			schedule(delay);
 		}
 
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see java.lang.Runnable#run()
+		 * @seeorg.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.
+		 * IProgressMonitor)
 		 */
-		public void run() {
-			System.out.println("sender start - " + category);
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			trace("Sender retrying: " + retrying);
+			trace("sender start - " + category);
 			if (receiver == null) {
-				System.out.println("sender ended(no receiver) - " + category);
-				return;
+				trace("sender ended(no receiver) - " + category);
+				return Status.OK_STATUS;
 			}
 			List<Collectible<?>> transferables = store.retrieveTransferables(category);
 			if (transferables.size() == 0) {
-				System.out.println("sender ended(nothing to send) - " + category);
-				return;
+				trace("sender ended(nothing to send) - " + category);
+				return Status.OK_STATUS;
 			}
 			transfer(transferables);
-			System.out.println("sender ended - " + category);
+			trace("sender ended - " + category);
+			return Status.OK_STATUS;
 		}
 
 		/**
 		 * 
 		 */
 		private void transfer(List<Collectible<?>> transferables) {
-			System.out.println("sender transfer " + transferables.size() + " transferables:");
+			trace("sender transfer " + transferables.size() + " transferables:");
 			for (Collectible<?> transferable : transferables) {
-				System.out.println(" - " + transferable);
+				trace(" - " + transferable);
 			}
 			try {
 				if (receiver.take(System.currentTimeMillis(), transferables)) {
 					store.commitTransferred(transferables);
+				} else {
+					// TODO What do we do if the receiver does not take it?
 				}
+				retrying = false;
 			} catch (Throwable t) {
-				System.out.println("sending failed with: " + t);
-				System.out.println("retrying in " + retryTime + " minutes");
-				senderExecutor.schedule(new Runnable() {
-					public void run() {
-						triggerTransfer(category);
-					}
-				}, retryTime * 60, TimeUnit.SECONDS);
+				trace("sending failed with: " + t);
+				trace("retrying in " + retryTime + " minutes");
+				retrying = true;
+				schedule(Millis.minutes(retryTime));
 			}
 		}
+
 	}
 
+	private static void trace(String line) {
+		if (TRACE) {
+			System.out.println(line);
+		}
+	}
 }
