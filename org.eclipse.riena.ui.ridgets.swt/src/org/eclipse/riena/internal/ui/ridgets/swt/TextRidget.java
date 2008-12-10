@@ -271,7 +271,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private IStatus suppressBlockWithFlash(IStatus status) {
 		IStatus theStatus;
 		if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-			final int newCode = 0;
+			final int newCode = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
 			theStatus = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
 					.getException());
 		} else {
