@@ -81,6 +81,11 @@
             name="org.eclipse.riena.example.client.views.MarkerSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
+            id="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
+            name="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.FocusableSubModuleView"
             id="org.eclipse.riena.example.client.views.FocusableSubModuleView"
             name="org.eclipse.riena.example.client.views.FocusableSubModuleView">

@@ -23,6 +23,7 @@ import org.eclipse.riena.example.client.controllers.FocusableSubModuleController
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.MessageBoxSubModuleController;
+import org.eclipse.riena.example.client.controllers.MessageMarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
@@ -41,6 +42,7 @@ import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
 import org.eclipse.riena.example.client.views.MessageBoxSubModuleView;
+import org.eclipse.riena.example.client.views.MessageMarkerSubModuleView;
 import org.eclipse.riena.example.client.views.NoControllerSubModuleView;
 import org.eclipse.riena.example.client.views.RidgetsSubModuleView;
 import org.eclipse.riena.example.client.views.StatuslineSubModuleView;
@@ -126,6 +128,19 @@ public class PlaygroundNodeBuilder extends AbstractNavigationAssembler {
 		WorkareaManager.getInstance().registerDefinition(markerSubModule, MarkerSubModuleController.class,
 				MarkerSubModuleView.ID, false);
 		playgroundModule.addChild(markerSubModule);
+
+		ISubModuleNode messageBoxSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.messageBox"), "Message Box"); //$NON-NLS-1$ //$NON-NLS-2$
+		WorkareaManager.getInstance().registerDefinition(messageBoxSubModule, MessageBoxSubModuleController.class,
+				MessageBoxSubModuleView.ID, false);
+		playgroundModule.addChild(messageBoxSubModule);
+
+		ISubModuleNode messageMarkerSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.messagemarker"), "Message Marker"); //$NON-NLS-1$ //$NON-NLS-2$
+		WorkareaManager.getInstance().registerDefinition(messageMarkerSubModule,
+				MessageMarkerSubModuleController.class, MessageMarkerSubModuleView.ID, false);
+		playgroundModule.addChild(messageMarkerSubModule);
+
 		//
 		//		ISubModuleNode filterSubModule = new SubModuleNode(new NavigationNodeId(
 		//				"org.eclipse.riena.example.filterridget"), "UI-Filter (Ridgets)"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -193,12 +208,6 @@ public class PlaygroundNodeBuilder extends AbstractNavigationAssembler {
 				DialogSubModuleView.ID, false);
 		playgroundModule.addChild(dialogSubModule);
 
-		ISubModuleNode messageBoxSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.messageBox"), "Message Box"); //$NON-NLS-1$ //$NON-NLS-2$
-		WorkareaManager.getInstance().registerDefinition(messageBoxSubModule, MessageBoxSubModuleController.class,
-				MessageBoxSubModuleView.ID, false);
-		playgroundModule.addChild(messageBoxSubModule);
-
 		return moduleGroup;
 	}
 
@@ -217,6 +226,7 @@ public class PlaygroundNodeBuilder extends AbstractNavigationAssembler {
 					"org.eclipse.riena.example.text.numeric", //$NON-NLS-1$
 					"org.eclipse.riena.example.text.date", //$NON-NLS-1$
 					"org.eclipse.riena.example.marker", //$NON-NLS-1$
+					"org.eclipse.riena.example.messagemarker", //$NON-NLS-1$
 					"org.eclipse.riena.example.focusable", //$NON-NLS-1$
 					"org.eclipse.riena.example.validation", //$NON-NLS-1$
 					"org.eclipse.riena.example.tree", //$NON-NLS-1$
