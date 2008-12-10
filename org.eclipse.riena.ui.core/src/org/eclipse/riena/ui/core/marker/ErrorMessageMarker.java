@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.marker;
 
+import org.eclipse.core.runtime.Assert;
+
 /**
  * A Marker working as ErrorMarker and as MessageMarker
  */
@@ -30,7 +32,7 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	 */
 	public ErrorMessageMarker(String pMessage) {
 		super();
-		assert pMessage != null : "The message of the message marker mus not be null"; //$NON-NLS-1$
+		Assert.isNotNull(pMessage, "The message of the message marker must not be null"); //$NON-NLS-1$
 		setAttribute(MESSAGE, pMessage);
 	}
 
