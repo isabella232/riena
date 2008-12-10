@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
@@ -24,6 +25,7 @@ import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
+import org.osgi.service.log.LogService;
 
 /**
  * The {@code Aggregator} aggregates all collectibles from the collectors. Each
@@ -35,6 +37,8 @@ public class Aggregator implements ICollectingAggregator {
 	private ISender sender;
 	private ICollector[] collectors;
 	private boolean started;
+
+	private static final Logger LOGGER = Activator.getDefault().getLogger(Aggregator.class);
 
 	public Aggregator() {
 		this(true);
@@ -61,6 +65,10 @@ public class Aggregator implements ICollectingAggregator {
 		if (started) {
 			return;
 		}
+		if (collectors.length == 0) {
+			LOGGER.log(LogService.LOG_DEBUG, "Client monitoring not started. No collectors defined."); //$NON-NLS-1$
+			return;
+		}
 		for (ICollector collector : Iter.able(collectors)) {
 			sender.addCategory(collector.getCategory());
 			collector.start();
@@ -83,7 +91,7 @@ public class Aggregator implements ICollectingAggregator {
 		started = false;
 	}
 
-	public void update(ICollectorExtension[] collectorExtensions) {
+	public synchronized void update(ICollectorExtension[] collectorExtensions) {
 		for (ICollector collector : Iter.able(this.collectors)) {
 			collector.stop();
 		}
@@ -134,6 +142,9 @@ public class Aggregator implements ICollectingAggregator {
 	 * .monitor .core.Collectible)
 	 */
 	public synchronized boolean collect(final Collectible<?> collectible) {
+		if (!started) {
+			return false;
+		}
 		return store.collect(collectible);
 	}
 
@@ -144,7 +155,10 @@ public class Aggregator implements ICollectingAggregator {
 	 * org.eclipse.riena.monitor.client.IAggregator#triggerTransfer(java.lang
 	 * .String)
 	 */
-	public void triggerTransfer(String category) {
+	public synchronized void triggerTransfer(String category) {
+		if (!started) {
+			return;
+		}
 		store.prepareTransferables(category);
 		sender.triggerTransfer(category);
 	}
