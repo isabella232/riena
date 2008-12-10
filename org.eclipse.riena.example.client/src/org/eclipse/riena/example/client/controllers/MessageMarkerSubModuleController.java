@@ -69,6 +69,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		sometimesMarkedMultipleRules.bindToModel(bean, "sometimesMarkedMultipleRulesText"); //$NON-NLS-1$
 		sometimesMarkedMultipleRules.updateFromModel();
 
+		// Show error messages in the status line
 		IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
 		ApplicationController applicationController = (ApplicationController) application.getNavigationNodeController();
 		IStatuslineRidget statuslineRidget = applicationController.getStatuslineRidget();
@@ -78,11 +79,13 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		statuslineMessageMarkerViewer.addRidget(sometimesMarked);
 		statuslineMessageMarkerViewer.addRidget(sometimesMarkedMultipleRules);
 
+		// Show error messages as a tool tip, when hovering over the text
 		TooltipMessageMarkerViewer tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 		tooltipMessageMarkerViewer.addRidget(alwaysMarked);
 		tooltipMessageMarkerViewer.addRidget(sometimesMarked);
 		tooltipMessageMarkerViewer.addRidget(sometimesMarkedMultipleRules);
 
+		// Show error messages in a message box
 		IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) getRidget("messageBox"); //$NON-NLS-1$
 		messageBoxRidget.setType(IMessageBoxRidget.Type.ERROR);
 		messageBoxRidget.setTitle("Problems Summary"); //$NON-NLS-1$
