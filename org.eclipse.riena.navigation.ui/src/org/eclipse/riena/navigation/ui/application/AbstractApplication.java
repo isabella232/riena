@@ -13,6 +13,10 @@ package org.eclipse.riena.navigation.ui.application;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -31,11 +35,6 @@ import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
-
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.equinox.app.IApplication;
-import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -47,15 +46,16 @@ public abstract class AbstractApplication implements IApplication {
 
 	public Object start(IApplicationContext context) throws Exception {
 
-		Object result = performLogin(context);
-		if (!EXIT_OK.equals(result)) {
-			return result;
-		}
+		// TODO: Temporary commented out login, because no real authentication occurs sofar.
+		//		Object result = performLogin(context);
+		//		if (!EXIT_OK.equals(result)) {
+		//			return result;
+		//		}
 
 		IApplicationNode node = createModel();
 		if (node == null) {
 			throw new RuntimeException(
-					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue");
+					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
 		}
 		createStartupsFromExtensions(node);
 		ApplicationNodeManager.registerApplicationNode(node);
