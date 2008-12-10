@@ -13,11 +13,10 @@ package org.eclipse.riena.internal.core.exceptionmanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.internal.core.Activator;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -107,10 +106,10 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 		return Action.NotHandled;
 	}
 
-	class ExceptionHandlerEntry {
+	static class ExceptionHandlerEntry {
 		private IExceptionHandler exceptionHandler;
-		String before;
-		String name;
+		private String before;
+		private String name;
 
 		public ExceptionHandlerEntry(IExceptionHandler exceptionHandler, String name, String before) {
 			super();
