@@ -26,6 +26,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
+import org.eclipse.riena.ui.ridgets.marker.TooltipMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.util.beans.DateBean;
 import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
@@ -1210,6 +1211,51 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(TEXT_ONE, bean.getProperty());
 	}
 
+	public void testShowOneValidationRuleMessageInTooltip() {
+		ITextRidget ridget = getRidget();
+		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
+		viewer.addRidget(ridget);
+		ridget.setToolTipText("original text");
+		AlwaysWrongValidator rule = new AlwaysWrongValidator();
+		ridget.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.revalidate();
+
+		assertEquals("message1", ridget.getToolTipText());
+
+		ridget.revalidate();
+
+		assertEquals("message2", ridget.getToolTipText());
+
+		ridget.removeValidationRule(rule);
+		ridget.revalidate();
+
+		assertEquals("original text", ridget.getToolTipText());
+	}
+
+	public void testShowSeveralValidationRuleMessagesInTooltip() {
+		ITextRidget ridget = getRidget();
+		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
+		viewer.addRidget(ridget);
+		ridget.setToolTipText("original text");
+		AlwaysWrongValidator rule1 = new AlwaysWrongValidator();
+		AlwaysWrongValidator rule2 = new AlwaysWrongValidator();
+		ridget.addValidationRule(rule1, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.addValidationRule(rule2, ValidationTime.ON_UI_CONTROL_EDIT);
+		ridget.revalidate();
+
+		assertEquals("message1\nmessage1", ridget.getToolTipText());
+
+		ridget.removeValidationRule(rule1);
+		ridget.revalidate();
+
+		assertEquals("message2", ridget.getToolTipText());
+
+		ridget.removeValidationRule(rule2);
+		ridget.revalidate();
+
+		assertEquals("original text", ridget.getToolTipText());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -1241,4 +1287,16 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 	}
 
+	// helping classes
+	//////////////////
+
+	private static final class AlwaysWrongValidator implements IValidator {
+		private int i = 0;
+
+		public IStatus validate(Object value) {
+			i++;
+			return ValidationRuleStatus.error(false, "message" + i, this); //$NON-NLS-1$
+		}
+
+	}
 }

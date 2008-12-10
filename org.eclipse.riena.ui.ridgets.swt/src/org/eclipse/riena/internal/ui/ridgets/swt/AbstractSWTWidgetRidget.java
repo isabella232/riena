@@ -18,6 +18,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
@@ -39,7 +40,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private Widget uiControl;
 	private String toolTip = null;
 	private boolean blocked;
-	private ErrorMarker errorMarker;
+	private ErrorMessageMarker errorMarker;
 	private DisabledMarker disabledMarker;
 	private MandatoryMarker mandatoryMarker;
 	private OutputMarker outputMarker;
@@ -255,13 +256,19 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public final void setErrorMarked(boolean errorMarked) {
+		setErrorMarked(errorMarked, null);
+	}
+
+	protected final void setErrorMarked(boolean errorMarked, String message) {
 		if (!errorMarked) {
 			if (errorMarker != null) {
 				removeMarker(errorMarker);
 			}
 		} else {
 			if (errorMarker == null) {
-				errorMarker = new ErrorMarker();
+				errorMarker = new ErrorMessageMarker(message);
+			} else {
+				errorMarker.setMessage(message);
 			}
 			addMarker(errorMarker);
 		}

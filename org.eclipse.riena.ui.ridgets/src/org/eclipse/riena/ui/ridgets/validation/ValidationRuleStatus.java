@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation;
 
-import org.eclipse.riena.internal.ui.ridgets.Activator;
-
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
  * Result of a validation performed by an IValidationRule. Extends the IStatus
@@ -74,13 +74,24 @@ public final class ValidationRuleStatus extends Status implements IValidationRul
 	 * @return The joined status.
 	 */
 	public static IStatus join(IStatus[] statuses) {
-		int code = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
-		for (IStatus status : statuses) {
-			if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-				code = IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
+		IStatus result;
+		if (statuses.length == 1) {
+			result = statuses[0];
+		} else {
+			int code = IValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
+			StringBuilder allMessages = new StringBuilder();
+			for (IStatus status : statuses) {
+				if (status.getCode() == IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
+					code = IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
+				}
+				if (!StringUtils.isDeepEmpty(status.getMessage())) {
+					allMessages.append(status.getMessage() + "\n"); //$NON-NLS-1$
+				}
 			}
+			String message = allMessages.length() == 0 ? null : allMessages.toString();
+			result = new MultiStatus(Activator.PLUGIN_ID, code, statuses, message, null);
 		}
-		return new MultiStatus(Activator.PLUGIN_ID, code, statuses, null, null);
+		return result;
 	}
 
 }

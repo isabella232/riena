@@ -75,7 +75,7 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 			setErrorMarked(false);
 		} else {
 			if (status.getCode() != IValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
-				setErrorMarked(true);
+				setErrorMarked(true, status.getMessage());
 			} else {
 				flash();
 			}
