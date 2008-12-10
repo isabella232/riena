@@ -21,7 +21,7 @@
    <extension point="org.eclipse.riena.monitor.store">
       <store
             name="SimpleStore"
-            class="org.eclipse.riena.internal.monitor.client.SimpleStore:maxItems=200">
+            class="org.eclipse.riena.internal.monitor.client.SimpleStore:maxItems=200,cleanupDelay=120">
       </store>
 	</extension>
 	
