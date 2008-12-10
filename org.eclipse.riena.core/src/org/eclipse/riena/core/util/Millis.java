@@ -26,8 +26,8 @@ public final class Millis {
 	 * @param seconds
 	 * @return
 	 */
-	public final static long seconds(final int seconds) {
-		return 1000l * seconds;
+	public static long seconds(final int seconds) {
+		return 1000L * seconds;
 	}
 
 	/**
@@ -36,7 +36,7 @@ public final class Millis {
 	 * @param minutes
 	 * @return
 	 */
-	public final static long minutes(final int minutes) {
+	public static long minutes(final int minutes) {
 		return seconds(60 * minutes);
 	}
 
@@ -46,7 +46,7 @@ public final class Millis {
 	 * @param hours
 	 * @return
 	 */
-	public final static long hours(final int hours) {
+	public static long hours(final int hours) {
 		return minutes(60 * hours);
 	}
 
@@ -56,7 +56,7 @@ public final class Millis {
 	 * @param days
 	 * @return
 	 */
-	public final static long days(final int days) {
+	public static long days(final int days) {
 		return hours(24 * days);
 	}
 }
