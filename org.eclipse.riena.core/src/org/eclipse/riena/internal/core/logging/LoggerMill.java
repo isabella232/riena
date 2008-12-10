@@ -46,8 +46,7 @@ public class LoggerMill {
 	private ILogListenerDefinition[] listenerDefs;
 	private ILogCatcherDefinition[] catcherDefs;
 
-	private final static AtomicReference<ExtendedLogService> LOG_SERIVCE_REF = new AtomicReference<ExtendedLogService>(
-			null);
+	private final AtomicReference<ExtendedLogService> logServiceRef = new AtomicReference<ExtendedLogService>(null);
 
 	/**
 	 * Create the logger mill.
@@ -87,7 +86,7 @@ public class LoggerMill {
 	 * @return
 	 */
 	public Logger getLogger(String category) {
-		return isReady() ? LOG_SERIVCE_REF.get().getLogger(category) : null;
+		return isReady() ? logServiceRef.get().getLogger(category) : null;
 	}
 
 	/**
@@ -96,7 +95,7 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void bind(ExtendedLogService logService) {
-		LoggerMill.LOG_SERIVCE_REF.set(logService);
+		logServiceRef.set(logService);
 	}
 
 	/**
@@ -105,7 +104,7 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void unbind(ExtendedLogService logService) {
-		LoggerMill.LOG_SERIVCE_REF.set(null);
+		logServiceRef.set(null);
 	}
 
 	/**
@@ -169,7 +168,7 @@ public class LoggerMill {
 	}
 
 	public boolean isReady() {
-		return LOG_SERIVCE_REF.get() != null;
+		return logServiceRef.get() != null;
 	}
 
 	/**
