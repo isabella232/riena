@@ -23,7 +23,7 @@ import org.osgi.service.log.LogReaderService;
  */
 public class LogServiceLogCatcher implements ILogCatcher, LogListener {
 
-	private ServiceInjector logReaderInjector;
+	private ServiceInjector logReaderInjector = null;
 
 	/*
 	 * (non-Javadoc)
@@ -41,6 +41,9 @@ public class LogServiceLogCatcher implements ILogCatcher, LogListener {
 	 * @see org.eclipse.riena.core.logging.ILogCatcher#detach()
 	 */
 	public void detach() {
+		if (logReaderInjector == null) {
+			return;
+		}
 		logReaderInjector.stop();
 	}
 
