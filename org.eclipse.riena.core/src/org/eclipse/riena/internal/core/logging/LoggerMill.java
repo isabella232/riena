@@ -46,8 +46,8 @@ public class LoggerMill {
 	private ILogListenerDefinition[] listenerDefs;
 	private ILogCatcherDefinition[] catcherDefs;
 
-	private static ExtendedLogReaderService logReaderService;
-	private final static AtomicReference<ExtendedLogService> logService = new AtomicReference<ExtendedLogService>(null);
+	private final static AtomicReference<ExtendedLogService> LOG_SERIVCE_REF = new AtomicReference<ExtendedLogService>(
+			null);
 
 	/**
 	 * Create the logger mill.
@@ -87,7 +87,7 @@ public class LoggerMill {
 	 * @return
 	 */
 	public Logger getLogger(String category) {
-		return isReady() ? logService.get().getLogger(category) : null;
+		return isReady() ? LOG_SERIVCE_REF.get().getLogger(category) : null;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void bind(ExtendedLogService logService) {
-		LoggerMill.logService.set(logService);
+		LoggerMill.LOG_SERIVCE_REF.set(logService);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void unbind(ExtendedLogService logService) {
-		LoggerMill.logService.set(null);
+		LoggerMill.LOG_SERIVCE_REF.set(null);
 	}
 
 	/**
@@ -114,7 +114,6 @@ public class LoggerMill {
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
-		LoggerMill.logReaderService = logReaderService;
 		if (listenerDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
 			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
 		}
@@ -153,14 +152,12 @@ public class LoggerMill {
 	 */
 	public void unbind(ExtendedLogReaderService logReaderService) {
 		for (LogListener logListener : logListeners) {
-			LoggerMill.logReaderService.removeLogListener(logListener);
+			logReaderService.removeLogListener(logListener);
 		}
 
 		for (ILogCatcher logCatcher : logCatchers) {
 			logCatcher.detach();
 		}
-
-		LoggerMill.logReaderService = null;
 	}
 
 	public void update(final ILogListenerDefinition[] listenerDefs) {
@@ -172,7 +169,7 @@ public class LoggerMill {
 	}
 
 	public boolean isReady() {
-		return logService.get() != null;
+		return LOG_SERIVCE_REF.get() != null;
 	}
 
 	/**
@@ -214,7 +211,7 @@ public class LoggerMill {
 	/**
 	 * Definition of log catcher that defines a {@code LogServiceLogCatcher}.
 	 */
-	private class LogServiceLogCatcherDefinition implements ILogCatcherDefinition {
+	private final static class LogServiceLogCatcherDefinition implements ILogCatcherDefinition {
 
 		public ILogCatcher createLogCatcher() {
 			return new LogServiceLogCatcher();
