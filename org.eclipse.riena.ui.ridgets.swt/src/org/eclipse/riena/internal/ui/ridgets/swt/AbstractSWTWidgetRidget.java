@@ -133,14 +133,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 	public final void setToolTipText(String toolTipText) {
 		this.toolTip = toolTipText;
+		updateToolTip();
 	}
 
 	public final String getToolTipText() {
 		return toolTip;
-	}
-
-	protected void updateToolTip() {
-		// not supported
 	}
 
 	public final boolean isBlocked() {
@@ -193,7 +190,16 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 */
 	abstract protected void unbindUIControl();
 
+	/**
+	 * Returns true if mandatory markers should be disabled (i.e. if the ridget
+	 * has non empty input).
+	 */
 	abstract public boolean isDisableMandatoryMarker();
+
+	/**
+	 * Update the tooltip for the ridget's control.
+	 */
+	abstract protected void updateToolTip();
 
 	// helping methods
 	// ////////////////

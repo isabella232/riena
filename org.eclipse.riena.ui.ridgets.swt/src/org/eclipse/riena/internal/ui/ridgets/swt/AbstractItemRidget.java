@@ -171,6 +171,14 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		}
 	}
 
+	/**
+	 * Does nothing; item's don't have a tooltip.
+	 */
+	@Override
+	protected void updateToolTip() {
+		// does nothing
+	}
+
 	protected ActionObserver getActionObserver() {
 		return actionObserver;
 	}

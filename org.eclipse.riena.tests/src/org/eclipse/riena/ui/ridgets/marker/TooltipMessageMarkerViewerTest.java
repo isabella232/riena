@@ -16,7 +16,9 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the TooltipMessageMarkerViewer.
@@ -27,6 +29,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 	private Shell shell;
 	private TooltipMessageMarkerViewer tooltipMessageMarkerViewer;
 	private TextRidget ridget;
+	private Text control;
 	private String errorMessage;
 	private ErrorMessageMarker errorMessageMarker;
 
@@ -38,8 +41,10 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		super.setUp();
 		realm = new DefaultRealm();
 		shell = new Shell();
+		control = new Text(shell, SWT.BORDER);
 
 		ridget = new TextRidget();
+		ridget.setUIControl(control);
 
 		tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 		tooltipMessageMarkerViewer.addRidget(ridget);
@@ -68,10 +73,12 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		ridget.addMarker(errorMessageMarker);
 
 		assertEquals(errorMessage, ridget.getToolTipText());
+		assertEquals(errorMessage, control.getToolTipText());
 
 		ridget.removeMarker(errorMessageMarker);
 
 		assertNull(ridget.getToolTipText());
+		assertNull(control.getToolTipText());
 	}
 
 	public void testSetMessageExistingTooltip() throws Exception {
@@ -83,10 +90,12 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		ridget.addMarker(errorMessageMarker);
 
 		assertEquals(errorMessage, ridget.getToolTipText());
+		assertEquals(errorMessage, control.getToolTipText());
 
 		ridget.removeMarker(errorMessageMarker);
 
 		assertEquals(existingTooltip, ridget.getToolTipText());
+		assertEquals(existingTooltip, control.getToolTipText());
 	}
 
 	public void testAddRidgetWithMarker() throws Exception {
@@ -130,10 +139,12 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		tooltipMessageMarkerViewer.setVisible(false);
 
 		assertNull(ridget.getToolTipText());
+		assertNull(control.getToolTipText());
 
 		tooltipMessageMarkerViewer.setVisible(true);
 
 		assertEquals(errorMessage, ridget.getToolTipText());
+		assertEquals(errorMessage, control.getToolTipText());
 	}
 
 	public void testSetMessageTwoMarkers() throws Exception {
