@@ -37,24 +37,33 @@ public final class SnippetTextRidget002 {
 			Shell shell = new Shell();
 			GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).spacing(20, 10).applyTo(shell);
 
+			// #1 Showing error message returned by AlwaysWrongValidator
+			Text text0 = UIControlsFactory.createText(shell);
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(text0);
+			ITextRidget textRidget0 = (ITextRidget) SwtRidgetFactory.createRidget(text0);
+			textRidget0.addValidationRule(new AlwaysWrongValidator(), ValidationTime.ON_UI_CONTROL_EDIT);
+			textRidget0.setText("Hover over this..."); //$NON-NLS-1$
+
+			// #2 Showing error message from an ErrorMessageMarker. 
 			Text text1 = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text1);
 			ITextRidget textRidget1 = (ITextRidget) SwtRidgetFactory.createRidget(text1);
 			textRidget1.setText("Hover over this..."); //$NON-NLS-1$
 			textRidget1.addMarker(new ErrorMessageMarker("Brought to you by an ErrorMessageMarker!")); //$NON-NLS-1$
 
+			// #3 Showing error message via addValidationMessage(...)
 			Text text2 = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text2);
 			ITextRidget textRidget2 = (ITextRidget) SwtRidgetFactory.createRidget(text2);
 			IValidator alwaysWrong = new AlwaysWrongValidator();
 			textRidget2.addValidationMessage("Brought to you by a ValidationMessage", alwaysWrong); //$NON-NLS-1$
 			textRidget2.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
-			textRidget2.setText("Hover over this too..."); //$NON-NLS-1$
+			textRidget2.setText("Hover over this..."); //$NON-NLS-1$
 
 			TooltipMessageMarkerViewer messageViewer = new TooltipMessageMarkerViewer();
+			messageViewer.addRidget(textRidget0);
 			messageViewer.addRidget(textRidget1);
 			messageViewer.addRidget(textRidget2);
-			messageViewer.addMarkerType(ErrorMessageMarker.class);
 
 			shell.setSize(200, 200);
 			shell.open();
@@ -76,7 +85,7 @@ public final class SnippetTextRidget002 {
 	 */
 	private static final class AlwaysWrongValidator implements IValidator {
 		public IStatus validate(Object value) {
-			return ValidationRuleStatus.error(false, "message", this); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, "Brought to you by an IStatus", this); //$NON-NLS-1$
 		}
 
 	}
