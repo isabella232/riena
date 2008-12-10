@@ -44,7 +44,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Tests of the class <code>TextFieldRidget</code>.
+ * Tests for the class {@link TextRidget}.
+ * 
+ * @see TextRidgetTest
  */
 public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
