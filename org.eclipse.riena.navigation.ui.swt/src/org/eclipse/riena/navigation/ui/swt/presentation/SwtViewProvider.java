@@ -69,6 +69,7 @@ public class SwtViewProvider {
 			throw new RuntimeException("viewId is null for nodeId " + node.getNodeId()); //$NON-NLS-1$
 		}
 
+		// TODO why do we allways generate a secondary view id, that makes it mandatory that all views are allow shared = true in the current code
 		swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
 		views.put(node, swtViewId);
 

@@ -169,6 +169,8 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		return Activator.getDefault().getPublisher();
 	}
 
+	// TODO check if we could not replace that with registering a regular serializerfactory rather than patching an internal map
+	// then we can also fix #258320 which complains that the serializer never closes the inputstream
 	@SuppressWarnings("unchecked")
 	private void addSpecialDeserializer(SerializerFactory serializerFactory) {
 		HashMap staticDeSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
