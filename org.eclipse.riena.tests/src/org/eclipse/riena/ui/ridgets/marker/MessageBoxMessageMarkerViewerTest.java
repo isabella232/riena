@@ -44,7 +44,6 @@ public class MessageBoxMessageMarkerViewerTest extends TestCase {
 		messageBoxRidget = EasyMock.createMock(IMessageBoxRidget.class);
 		messageMarkerViewer = new MessageBoxMessageMarkerViewer(messageBoxRidget);
 		messageMarkerViewer.addRidget(ridget);
-		messageMarkerViewer.addMarkerType(ErrorMessageMarker.class);
 
 		errorMessage = "TestErrorMessage";
 		errorMessageMarker = new ErrorMessageMarker(errorMessage);

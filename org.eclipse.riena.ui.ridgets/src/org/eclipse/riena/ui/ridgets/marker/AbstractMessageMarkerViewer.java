@@ -22,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
@@ -39,6 +40,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		ridgets = new ListenerList<IMarkableRidget>(IMarkableRidget.class);
 		visible = true;
 		markerTypes.add(ValidationMessageMarker.class);
+		markerTypes.add(ErrorMessageMarker.class);
 	}
 
 	public void addRidget(IMarkableRidget markableRidget) {

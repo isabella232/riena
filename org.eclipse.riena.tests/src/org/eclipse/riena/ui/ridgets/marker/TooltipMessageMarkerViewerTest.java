@@ -48,7 +48,6 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 
 		tooltipMessageMarkerViewer = new TooltipMessageMarkerViewer();
 		tooltipMessageMarkerViewer.addRidget(ridget);
-		tooltipMessageMarkerViewer.addMarkerType(ErrorMessageMarker.class);
 
 		errorMessage = "TestErrorMessage";
 		errorMessageMarker = new ErrorMessageMarker(errorMessage);

@@ -61,7 +61,6 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(statuslineRidget);
 		statuslineMessageMarkerViewer.addRidget(ridget1);
 		statuslineMessageMarkerViewer.addRidget(ridget2);
-		statuslineMessageMarkerViewer.addMarkerType(ErrorMessageMarker.class);
 
 		shell.setSize(100, 100);
 		shell.setLocation(0, 0);

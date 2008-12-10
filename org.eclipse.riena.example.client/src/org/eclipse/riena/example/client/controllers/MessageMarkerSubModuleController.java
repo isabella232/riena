@@ -119,7 +119,6 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		public void addViewer(IMessageMarkerViewer viewer, String label) {
 			viewers.add(viewer);
 			viewerLabels.add(label);
-			viewer.addMarkerType(ErrorMessageMarker.class);
 			updateViewers();
 		}
 
