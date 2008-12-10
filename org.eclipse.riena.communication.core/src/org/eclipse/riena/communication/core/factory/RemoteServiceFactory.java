@@ -14,8 +14,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -25,6 +23,9 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -76,8 +77,6 @@ public class RemoteServiceFactory {
 	 */
 	public RemoteServiceFactory() {
 		this(Activator.getDefault().getContext());
-		Inject.service(IRemoteServiceRegistry.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
 	}
 
 	public void bind(IRemoteServiceRegistry registry) {
@@ -98,6 +97,7 @@ public class RemoteServiceFactory {
 	 */
 	public RemoteServiceFactory(BundleContext context) {
 		this.context = context;
+		Inject.service(IRemoteServiceRegistry.class.getName()).useRanking().into(this).andStart(context);
 	}
 
 	/**
