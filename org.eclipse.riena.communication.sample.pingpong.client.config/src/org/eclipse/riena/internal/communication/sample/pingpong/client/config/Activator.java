@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.communication.sample.pingpong.client.config;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
