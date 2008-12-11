@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.ui.swt.Activator;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 
 /**
  * Utility class to manage images.
@@ -68,4 +68,22 @@ public final class ImageUtil {
 
 	}
 
+	/**
+	 * @param bundle
+	 *            the bundle.
+	 * @param subPath
+	 *            the sub path of the image (i.e. the path relative to the
+	 *            bundle directory).
+	 * @return the icon path..
+	 */
+	public static String getIconPath(Bundle bundle, String subPath) {
+
+		if (bundle == null) {
+			return null;
+		}
+		StringBuilder builder = new StringBuilder(bundle.getSymbolicName());
+		builder.append(":"); //$NON-NLS-1$
+		builder.append(subPath);
+		return builder.toString();
+	}
 }
