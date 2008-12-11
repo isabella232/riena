@@ -10,15 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
@@ -27,12 +30,14 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
+	private static Image missingImage;
 	private Shell shell;
 	private String toolTip = null;
 	private boolean blocked;
 	private boolean closeable;
 	private boolean active;
 	private String title;
+	private String icon;
 	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
 	private ShellListener shellListener;
 
@@ -163,9 +168,58 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setIcon(java.lang.String)
 	 */
-	public void setIcon(String iconName) {
-		// TODO: icon handling needed
-		// shell.setImage();
+	public void setIcon(String icon) {
+		String oldIcon = this.icon;
+		this.icon = icon;
+		if (hasChanged(oldIcon, icon)) {
+			updateIcon();
+		}
+	}
+
+	/*
+	 * Updates the icon of the UI control.
+	 */
+	private void updateIcon() {
+		Shell control = getUIControl();
+		if (control != null) {
+			Image image = null;
+			if (icon != null) {
+				image = getManagedImage(icon);
+			}
+			control.setImage(image);
+		}
+	}
+
+	protected Image getManagedImage(String key) {
+		Image image = ImageUtil.getImage(key);
+		if (image == null) {
+			image = getMissingImage();
+		}
+		return image;
+	}
+
+	public final synchronized Image getMissingImage() {
+		if (missingImage == null) {
+			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
+		}
+		return missingImage;
+	}
+
+	/*
+	 * Compares the two given values.
+	 * 
+	 * @param oldValue - old value
+	 * 
+	 * @param newValue - new value
+	 * 
+	 * @return true, if value has changed; otherwise false
+	 */
+	protected boolean hasChanged(Object oldValue, Object newValue) {
+		if (oldValue == null && newValue == null) {
+			return false;
+		}
+		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
+				|| !oldValue.equals(newValue);
 	}
 
 	/*
@@ -305,7 +359,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 		if (getUIControl() != null) {
 			updateTitle();
-			// TODO: updateIcon()
+			updateIcon();
 			updateActive();
 		}
 	}
