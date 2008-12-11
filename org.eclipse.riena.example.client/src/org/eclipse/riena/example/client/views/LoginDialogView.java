@@ -15,6 +15,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.HelloDialogController;
 import org.eclipse.riena.example.client.controllers.LoginDialogController;
+import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.views.DialogView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
@@ -31,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * The view for the hello dialog of the dialog example.
  */
-public class LoginDialogView extends DialogView {
+public class LoginDialogView extends DialogView implements ILoginDialogView {
 
 	private IntegerBean result;
 
@@ -97,8 +98,12 @@ public class LoginDialogView extends DialogView {
 		return content;
 	}
 
-	/**
-	 * @return the result
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.internal.navigation.ui.login.ILoginDialogView#getResult
+	 * ()
 	 */
 	public int getResult() {
 		return result.getValue();

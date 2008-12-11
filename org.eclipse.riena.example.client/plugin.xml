@@ -785,5 +785,8 @@
           </modulegroup>
        </assembly>
     </extension>
+    <extension
+          point="org.eclipse.riena.navigation.ui.loginDialogViewDefinition">
+    </extension>
    
 </plugin>

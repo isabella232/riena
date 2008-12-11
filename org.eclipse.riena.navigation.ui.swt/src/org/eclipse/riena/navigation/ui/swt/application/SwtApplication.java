@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.application;
 
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
+import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -31,8 +34,6 @@ import org.osgi.framework.Bundle;
  * controller.
  */
 public abstract class SwtApplication extends AbstractApplication {
-
-	private static String LOGIN_NON_ACTIVITY_DURATION = "riena.loginNonActivityDuration"; //$NON-NLS-1$
 
 	private LoginNonActivityTimer loginNonActivityTimer;
 
@@ -92,33 +93,17 @@ public abstract class SwtApplication extends AbstractApplication {
 	private void initializeLoginNonActivityTimer(Display display, IApplicationContext context) {
 
 		if (isUseLoginNonActivityTimer()) {
-			loginNonActivityTimer = new LoginNonActivityTimer(display, context, getLoginNonActivityDuration());
+			loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewDefinition
+					.getNonActivityDuration());
 			loginNonActivityTimer.schedule();
 		}
 	}
 
 	private boolean isUseLoginNonActivityTimer() {
-		return getLoginNonActivityDuration() > 0;
+		return loginDialogViewDefinition != null && loginDialogViewDefinition.getNonActivityDuration() > 0;
 	}
 
-	/*
-	 * Return the duration of non activity in the application, after which the
-	 * login dialog is presented to the user again for a duration greater than
-	 * 0. For a duration equal or less than 0 the login timer is not used at
-	 * all. The property is specified as VM argument:
-	 * -Driena.loginNonActivityDuration=x, where x measured in milliseconds.
-	 * 
-	 * @return the duration or -1, if system property does not exist.
-	 */
-	private int getLoginNonActivityDuration() {
-		try {
-			return Integer.parseInt(System.getProperty(LOGIN_NON_ACTIVITY_DURATION));
-		} catch (NumberFormatException e) {
-			return -1;
-		}
-	}
-
-	private class LoginNonActivityTimer implements Runnable {
+	private final class LoginNonActivityTimer implements Runnable {
 
 		private Display display;
 		private IApplicationContext context;
@@ -140,21 +125,18 @@ public abstract class SwtApplication extends AbstractApplication {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			display.syncExec(new Runnable() {
-				public void run() {
-					try {
-						if (eventListener.activity) {
-							schedule();
-							return;
-						}
 
-						prePerformLogin(context);
-						postPerformLogin(context, performLogin(context));
-					} catch (Exception e) {
-						throw new ExceptionFailure(e.getLocalizedMessage(), e);
-					}
+			try {
+				if (eventListener.activity) {
+					schedule();
+					return;
 				}
-			});
+
+				prePerformLogin(context);
+				postPerformLogin(context, performLogin(context));
+			} catch (Exception e) {
+				throw new ExceptionFailure(e.getLocalizedMessage(), e);
+			}
 		}
 
 		private void initializeEventListener() {
@@ -178,7 +160,7 @@ public abstract class SwtApplication extends AbstractApplication {
 			display.timerExec(nonActivityDuration, this);
 		}
 
-		private class EventListener implements Listener {
+		private final class EventListener implements Listener {
 
 			private boolean activity;
 
@@ -212,6 +194,41 @@ public abstract class SwtApplication extends AbstractApplication {
 		} else {
 			getWorkbenchShell().setMinimized(false);
 			loginNonActivityTimer.schedule();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.ui.application.AbstractApplication#
+	 * doPerformLogin
+	 * (org.eclipse.riena.internal.navigation.ui.login.ILoginDialogView)
+	 */
+	protected Object doPerformLogin(final ILoginDialogView loginDialogView) {
+
+		Realm realm = SWTObservables.getRealm(getDisplay());
+		do {
+			Realm.runWithDefault(realm, new Runnable() {
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.lang.Runnable#run()
+				 */
+				public void run() {
+					loginDialogView.build();
+				}
+			});
+		} while (EXIT_RESTART.equals(loginDialogView.getResult()));
+
+		return loginDialogView.getResult();
+	}
+
+	private Display getDisplay() {
+
+		if (PlatformUI.isWorkbenchRunning()) {
+			return PlatformUI.getWorkbench().getDisplay();
+		} else {
+			return PlatformUI.createDisplay();
 		}
 	}
 

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -33,6 +34,8 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
+import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
+import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 import org.osgi.service.log.LogService;
@@ -43,14 +46,15 @@ import org.osgi.service.log.LogService;
 public abstract class AbstractApplication implements IApplication {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(AbstractApplication.class);
+	private final static String EP_TYPE_LOGIN_DIALOG_VIEW_DEFINITION = "org.eclipse.riena.navigation.ui.loginDialogViewDefinition"; //$NON-NLS-1$
+	protected ILoginDialogViewDefinition loginDialogViewDefinition;
 
 	public Object start(IApplicationContext context) throws Exception {
 
-		// TODO: Temporary commented out login, because no real authentication occurs sofar.
-		//		Object result = performLogin(context);
-		//		if (!EXIT_OK.equals(result)) {
-		//			return result;
-		//		}
+		Object result = initialzePerformLogin(context);
+		if (!EXIT_OK.equals(result)) {
+			return result;
+		}
 
 		IApplicationNode node = createModel();
 		if (node == null) {
@@ -180,8 +184,38 @@ public abstract class AbstractApplication implements IApplication {
 
 	abstract protected Object createView(IApplicationContext context, IApplicationNode pNode) throws Exception;
 
-	protected Object performLogin(IApplicationContext context) throws Exception {
+	protected Object initialzePerformLogin(IApplicationContext context) throws Exception {
+
+		initialzeLoginDialogViewDefinition();
+
+		if (loginDialogViewDefinition != null) {
+			return performLogin(context);
+		} else {
+			return EXIT_OK;
+		}
+	}
+
+	protected Object doPerformLogin(ILoginDialogView loginDialogView) {
+
 		return EXIT_OK;
+	}
+
+	protected Object performLogin(IApplicationContext context) throws Exception {
+
+		return doPerformLogin(loginDialogViewDefinition.createViewClass());
+	}
+
+	public void update(ILoginDialogViewDefinition[] data) {
+
+		if (data.length > 0) {
+			loginDialogViewDefinition = data[0];
+		}
+	}
+
+	private void initialzeLoginDialogViewDefinition() {
+
+		Inject.extension(EP_TYPE_LOGIN_DIALOG_VIEW_DEFINITION).useType(ILoginDialogViewDefinition.class).into(this)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	private Integer getAutostartSequence(INavigationAssemblyExtension assembly) {
