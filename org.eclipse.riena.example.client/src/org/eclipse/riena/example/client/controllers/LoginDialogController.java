@@ -11,11 +11,14 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.equinox.app.IApplication;
+import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 
 /**
  * The controller for the hello dialog of the dialog example.
@@ -48,7 +51,9 @@ public class LoginDialogController extends AbstractWindowController {
 
 		super.configureRidgets();
 
-		getWindowRidget().setTitle("Login"); //$NON-NLS-1$
+		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
+		// TODO:getWindowRidget().setIcon(IconManagerAccessor.fetchIconManager().getIconID(IIconManager.LOGIN, IconSize.A));
+		getWindowRidget().setIcon(getIconPath(ExampleIcons.ICON_SAMPLE));
 
 		((ITextRidget) getRidget(RIDGET_ID_USER)).setText("john"); //$NON-NLS-1$
 		((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).setText("john"); //$NON-NLS-1$
@@ -102,5 +107,9 @@ public class LoginDialogController extends AbstractWindowController {
 	private boolean checkLogin() {
 		return "john".equalsIgnoreCase(((ITextRidget) getRidget(RIDGET_ID_USER)).getText()) //$NON-NLS-1$
 				&& "john".equals(((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText()); //$NON-NLS-1$
+	}
+
+	private String getIconPath(String subPath) {
+		return ImageUtil.getIconPath(Activator.getDefault().getBundle(), subPath);
 	}
 }

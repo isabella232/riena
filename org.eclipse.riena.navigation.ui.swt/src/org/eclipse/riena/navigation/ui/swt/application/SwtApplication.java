@@ -20,6 +20,7 @@ import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -78,16 +79,8 @@ public abstract class SwtApplication extends AbstractApplication {
 
 	protected abstract Bundle getBundle();
 
-	protected String createIconPath(String subPath) {
-		Bundle bundle = getBundle();
-
-		if (bundle == null) {
-			return null;
-		}
-		StringBuilder builder = new StringBuilder(bundle.getSymbolicName());
-		builder.append(":"); //$NON-NLS-1$
-		builder.append(subPath);
-		return builder.toString();
+	protected String getIconPath(String subPath) {
+		return ImageUtil.getIconPath(getBundle(), subPath);
 	}
 
 	private void initializeLoginNonActivityTimer(Display display, IApplicationContext context) {
