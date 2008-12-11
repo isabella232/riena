@@ -11,12 +11,8 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.Collection;
+import java.util.Iterator;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -35,6 +31,12 @@ import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
+
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
@@ -715,7 +717,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "1");
 
 		assertEquals(2, ridget.getMarkers().size());
-		assertEquals("ValidationErrorMessage", getMessageMarker(ridget.getMarkers()).getMessage());
+		Iterator<? extends IMarker> iterator = ridget.getMarkers().iterator();
+		while (iterator.hasNext()) {
+			IMarker next = iterator.next();
+			assertTrue(next instanceof IMessageMarker);
+			IMessageMarker marker = (IMessageMarker) next;
+			assertTrue(marker.getMessage().equals("ValidationErrorMessage")
+					|| marker.getMessage().equals("Odd number of characters."));
+		}
 
 		UITestHelper.sendString(control.getDisplay(), "2");
 
