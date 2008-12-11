@@ -80,7 +80,7 @@ public class SwtViewProvider {
 
 		SwtViewId swtViewId = null;
 		String viewId = null;
-		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(submodule.getNodeId().getTypeId());
+		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(submodule);
 		if (def != null) {
 			viewId = (String) def.getViewId();
 		} else {
