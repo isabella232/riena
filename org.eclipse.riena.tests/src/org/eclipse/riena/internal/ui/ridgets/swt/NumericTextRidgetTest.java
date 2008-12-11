@@ -13,6 +13,11 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -31,12 +36,6 @@ import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
@@ -1081,8 +1080,6 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertText("-1.234.5^67", UITestHelper.KC_DEL, "-123.45^7");
 	}
 
-	// TODO test delete without grouping (dec too)
-
 	public void testBackspace() {
 		INumericTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
@@ -1098,8 +1095,6 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertText("-1^.234", "\b", "-^234");
 		assertText("-1.234.56^7", "\b", "-123.45^7");
 	}
-
-	// TODO test backspace without grouping (dec too)
 
 	// helping methods
 	//////////////////
