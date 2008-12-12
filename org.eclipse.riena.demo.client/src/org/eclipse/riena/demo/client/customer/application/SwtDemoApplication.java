@@ -64,7 +64,7 @@ public class SwtDemoApplication extends SwtApplication {
 	protected IApplicationNode createModel() {
 
 		final IApplicationNode applicationNode = new ApplicationNode(new NavigationNodeId("application"), "Riena Demo"); //$NON-NLS-1$ //$NON-NLS-2$
-		applicationNode.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
+		applicationNode.setIcon(getIconPath(ExampleIcons.ICON_APPLICATION));
 
 		// create and startup subapplications
 		//		applicationNode.create(new NavigationNodeId("org.eclipse.riena.demo.customer.client.customer")); //$NON-NLS-1$
