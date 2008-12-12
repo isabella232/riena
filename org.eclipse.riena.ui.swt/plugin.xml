@@ -5,5 +5,16 @@
    <extension
          point="org.riena.ui.core.uiprocess">
 		<uisynchronizer class="org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer"/>         
+   </extension>
+   <extension
+         point="org.eclipse.riena.ui.swt.lnfrenderer">
+      <renderer
+            class="org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer"
+            lnfkey="Dialog.borderRenderer">
+      </renderer>
+      <renderer
+            class="org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer"
+            lnfkey="Dialog.renderer">
+      </renderer>
    </extension>>
 </plugin>

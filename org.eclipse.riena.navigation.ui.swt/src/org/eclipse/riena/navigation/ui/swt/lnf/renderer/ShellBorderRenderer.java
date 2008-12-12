@@ -10,108 +10,61 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 
 /**
  * Renderer of the border of the (undecorated (no OS-border, no OS-titlebar))
  * shell.
  */
-public class ShellBorderRenderer extends AbstractLnfRenderer {
+public class ShellBorderRenderer extends DialogBorderRenderer {
 
-	private final static int BORDER_WIDTH = 2;
-
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
-	 */
 	@Override
-	public void paint(GC gc, Object value) {
-
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		if (!lnf.getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
-			return;
-		}
-
-		gc.setAdvanced(true);
-		gc.setAntialias(SWT.OFF);
-
-		// Border
-
-		// -outer
-		// --top
-		Color borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
-		gc.setForeground(borderColor);
-		int x = getBounds().x;
-		int y = getBounds().y;
-		int w = getWidth();
-		gc.drawLine(x, y, x + w, y);
-		// --bottom
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
-		gc.setForeground(borderColor);
-		y = getBounds().y + getHeight();
-		gc.drawLine(x, y, x + w, y);
-		// --left
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
-		gc.setForeground(borderColor);
-		x = getBounds().x;
-		y = getBounds().y;
-		int h = getHeight();
-		gc.drawLine(x, y, x, y + h);
-		// --right
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
-		gc.setForeground(borderColor);
-		x = getBounds().x + getWidth();
-		gc.drawLine(x, y, x, y + h);
-
-		// -inner
-		// --top
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
-		gc.setForeground(borderColor);
-		x = getBounds().x + 1;
-		y = getBounds().y + 1;
-		w = getWidth() - 2;
-		gc.drawLine(x, y, x + w, y);
-		// --bottom
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
-		gc.setForeground(borderColor);
-		y = getBounds().y + getHeight() - 1;
-		gc.drawLine(x, y, x + w, y);
-		// --left
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
-		gc.setForeground(borderColor);
-		x = getBounds().x + 1;
-		y = getBounds().y + 1;
-		h = getHeight() - 2;
-		gc.drawLine(x, y, x, y + h);
-		// --right
-		borderColor = lnf.getColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
-		gc.setForeground(borderColor);
-		x = getBounds().x + getWidth() - 1;
-		y = getBounds().y + 2;
-		h = getHeight() - 4;
-		gc.drawLine(x, y, x, y + h);
-
+	protected Boolean hideOsBorder() {
+		return LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER);
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
-	 */
-	public void dispose() {
-		// nothing to do
+	@Override
+	protected Color getInnerBorderColorBottom() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
-	private int getHeight() {
-		return getBounds().height - 1;
+	@Override
+	protected Color getInnerBorderColorRight() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
-	private int getWidth() {
-		return getBounds().width - 1;
+	@Override
+	protected Color getInnerBorderColorTop() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
+	}
+
+	@Override
+	protected Color getInnerBorderColorLeft() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
+	}
+
+	@Override
+	protected Color getBorderColorBottom() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
+	}
+
+	@Override
+	protected Color getBorderColorRight() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
+	}
+
+	@Override
+	protected Color getBorderColorTop() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
+	}
+
+	@Override
+	protected Color getBorderColorLeft() {
+		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
 	}
 
 	/**
@@ -133,18 +86,4 @@ public class ShellBorderRenderer extends AbstractLnfRenderer {
 
 	}
 
-	/**
-	 * Returns the width of the border.
-	 * 
-	 * @return border width
-	 */
-	public int getBorderWidth() {
-
-		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
-			return BORDER_WIDTH;
-		} else {
-			return 0;
-		}
-
-	}
 }

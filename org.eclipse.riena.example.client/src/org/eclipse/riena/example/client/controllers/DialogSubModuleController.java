@@ -29,6 +29,7 @@ public class DialogSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		IActionRidget openShellAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_DIALOG);

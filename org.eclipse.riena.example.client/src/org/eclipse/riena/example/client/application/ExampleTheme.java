@@ -18,7 +18,6 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
-
 import org.eclipse.swt.SWT;
 
 /**
@@ -95,8 +94,6 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomSettings(table);
 
-		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, false);
-
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 3);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
@@ -106,28 +103,24 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryForeground()
-	 */
 	@Override
 	protected ColorLnfResource getPrimaryForeground() {
 		return new ColorLnfResource(0, 0, 0);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryBackground()
-	 */
 	@Override
 	protected ColorLnfResource getPrimaryBackground() {
 		return new ColorLnfResource(255, 255, 215);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme#getPrimaryFont()
-	 */
 	@Override
 	protected FontLnfResource getPrimaryFont() {
 		return new FontLnfResource("Arial", 11, SWT.BOLD); //$NON-NLS-1$
+	}
+
+	@Override
+	protected boolean hideOsBorder() {
+		return false;
 	}
 
 }

@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.swt.RienaDialog;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
@@ -41,9 +42,9 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 	/**
 	 * Creates the dialog of this view
 	 */
-	protected RienaDialog createDialog() {
+	protected ControlledRienaDialog createDialog() {
 
-		return new RienaDialog(getParentShell());
+		return new ControlledRienaDialog(getParentShell());
 	}
 
 	protected void createAndBindController() {
@@ -51,6 +52,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		AbstractWindowController controller = createController();
 		initialize(controller);
 		bind(controller);
+
 	}
 
 	protected Control buildView(Composite parent) {
@@ -104,19 +106,17 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		// Do nothing by default
 	}
 
-	private class RienaDialog extends Dialog {
+	private class ControlledRienaDialog extends RienaDialog {
 
 		private boolean closing;
 
-		private RienaDialog(Shell shell) {
-
+		private ControlledRienaDialog(Shell shell) {
 			super(shell);
-
 			closing = false;
 		}
 
-		/*
-		 * (non-Javadoc)
+		/**
+		 * Closes this dialog. But before closing the controller is unbinded.
 		 * 
 		 * @see org.eclipse.jface.dialogs.Dialog#close()
 		 */
@@ -130,12 +130,14 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 			closing = false;
 
 			return result;
+
 		}
 
-		/*
-		 * (non-Javadoc)
+		/**
+		 * Creates the dialog (also indirectly the view) and the corresponding
+		 * controller. Binds view and controller
 		 * 
-		 * @see org.eclipse.jface.dialogs.Dialog#create()
+		 * @see org.eclipse.riena.ui.swt.RienaDialog#create()
 		 */
 		@Override
 		public void create() {
@@ -143,14 +145,8 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 			super.create();
 
 			createAndBindController();
+
 			getShell().addDisposeListener(new DisposeListener() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * org.eclipse.swt.events.DisposeListener#widgetDisposed(org
-				 * .eclipse.swt.events.DisposeEvent)
-				 */
 				public void widgetDisposed(DisposeEvent e) {
 					if (!closing) {
 						close();
@@ -158,18 +154,14 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 				}
 			});
 			getShell().pack();
+
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.jface.dialogs.Dialog#createContents(org.eclipse.swt.widgets
-		 * .Composite)
-		 */
 		@Override
-		protected Control createContents(Composite parent) {
+		protected Control createDialogArea(Composite parent) {
 			return buildView(parent);
 		}
+
 	}
+
 }

@@ -34,6 +34,15 @@ public final class ILnfKeyConstants {
 
 	public static final String COOLBAR_BACKGROUND = "Coolbar.background"; //$NON-NLS-1$
 
+	public static final String DIALOG_FOREGROUND = "Dialog.foreground"; //$NON-NLS-1$
+	public static final String DIALOG_PASSIVE_FOREGROUND = "Dialog.passiveForeground"; //$NON-NLS-1$
+	public static final String DIALOG_BORDER_BOTTOM_RIGHT_COLOR = "Dialog.bottomRightColor"; //$NON-NLS-1$
+	public static final String DIALOG_BORDER_TOP_LEFT_COLOR = "Dialog.borderTopLeftColor"; //$NON-NLS-1$
+	public static final String DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR = "Dialog.innerBorderBottomRightColor"; //$NON-NLS-1$
+	public static final String DIALOG_INNER_BORDER_TOP_LEFT_COLOR = "Dialog.innerBorderTopLeftColor"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_START_COLOR = "DialogTitleBar.backgroundStartColor"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_END_COLOR = "DialogTitleBar.backgroundEndColor"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = "SubApplicationSwitcher.foreground"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND = "SubApplicationSwitcher.disabledForeground"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_BACKGROUND = "SubApplicationSwitcher.background"; //$NON-NLS-1$
@@ -88,6 +97,8 @@ public final class ILnfKeyConstants {
 	 */
 	public static final String TITLELESS_SHELL_FONT = "TitlelessShell.font"; //$NON-NLS-1$
 
+	public static final String DIALOG_FONT = "Dialog.font"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_FONT = "SubApplicationSwitcher.font"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_FONT = "ModuleItemToolTip.font"; //$NON-NLS-1$
@@ -122,6 +133,23 @@ public final class ILnfKeyConstants {
 	public static final String TITLELESS_SHELL_HAND_IMAGE = "TitlelessShell.handImage"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_GRAB_CORNER_IMAGE = "TitlelessShell.grabCornerImage"; //$NON-NLS-1$
 
+	public static final String DIALOG_CLOSE_ICON = "Dialog.closeIcon"; //$NON-NLS-1$
+	public static final String DIALOG_CLOSE_HOVER_ICON = "Dialog.closeHoverIcon"; //$NON-NLS-1$
+	public static final String DIALOG_CLOSE_HOVER_SELECTED_ICON = "Dialog.closeHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String DIALOG_CLOSE_INACTIVE_ICON = "Dialog.closeInactiveIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MAX_ICON = "Dialog.maxIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MAX_HOVER_ICON = "Dialog.maxHoverIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MAX_HOVER_SELECTED_ICON = "Dialog.maxHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MAX_INACTIVE_ICON = "Dialog.maxInactiveIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MIN_ICON = "Dialog.minIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MIN_HOVER_ICON = "Dialog.minHoverIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MIN_HOVER_SELECTED_ICON = "Dialog.minHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String DIALOG_MIN_INACTIVE_ICON = "Dialog.minInactiveIcon"; //$NON-NLS-1$
+	public static final String DIALOG_RESTORE_ICON = "Dialog.restoreIcon"; //$NON-NLS-1$
+	public static final String DIALOG_RESTORE_HOVER_ICON = "Dialog.restoreHoverIcon"; //$NON-NLS-1$
+	public static final String DIALOG_RESTORE_HOVER_SELECTED_ICON = "Dialog.restoreHoverSelectedIcon"; //$NON-NLS-1$
+	public static final String DIALOG_RESTORE_INACTIVE_ICON = "Dialog.restoreInactiveIcon"; //$NON-NLS-1$
+
 	public static final String SUB_MODULE_TREE_FOLDER_OPEN_ICON = "subModuleTreeFolderOpen.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
@@ -155,6 +183,8 @@ public final class ILnfKeyConstants {
 	public static final String TITLELESS_SHELL_SHOW_CLOSE = "TitlelessShell.showClose"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_RESIZEABLE = "TitlelessShell.resizeable"; //$NON-NLS-1$
 
+	public static final String DIALOG_HIDE_OS_BORDER = "Dialog.hideOsBorder"; //$NON-NLS-1$
+
 	public static final String SUB_APPLICATION_SWITCHER_TOP_MARGIN = "SubApplicationSwitcher.topMargin"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_HEIGHT = "SubApplicationSwitcher.height"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION = "SubApplicationSwitcher.horizontalTabPosition"; //$NON-NLS-1$
@@ -170,6 +200,9 @@ public final class ILnfKeyConstants {
 	public static final String TITLELESS_SHELL_RENDERER = "TitlelessShell.renderer"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_BORDER_RENDERER = "TitlelessShell.borderRenderer"; //$NON-NLS-1$
 	public static final String TITLELESS_SHELL_LOGO_RENDERER = "TitlelessShell.logoRenderer"; //$NON-NLS-1$
+
+	public static final String DIALOG_RENDERER = "Dialog.renderer"; //$NON-NLS-1$
+	public static final String DIALOG_BORDER_RENDERER = "Dialog.borderRenderer"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_TAB_RENDERER = "SubApplication.tabRenderer"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_RENDERER = "SubApplication.switcherRenderer"; //$NON-NLS-1$

@@ -83,13 +83,21 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 95, 94));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180, 205));
 		table
 				.put(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161, 168,
 						190));
 
 		table.put(ILnfKeyConstants.COOLBAR_BACKGROUND, getPrimaryBackground());
+
+		table.put(ILnfKeyConstants.DIALOG_FOREGROUND, new ColorLnfResource(255, 255, 255));
+		table.put(ILnfKeyConstants.DIALOG_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
+		table.put(ILnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(83, 85, 94));
+		table.put(ILnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(121, 124, 137));
+		table.put(ILnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR, new ColorLnfResource(173, 180, 205));
+		table.put(ILnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR, new ColorLnfResource(161, 168, 190));
+		table.put(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR, new ColorLnfResource(196, 225, 244));
+		table.put(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR, new ColorLnfResource(100, 153, 186));
 
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND, getPrimaryForeground());
 		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
@@ -174,6 +182,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_FONT, getPrimaryFont());
 
+		table.put(ILnfKeyConstants.DIALOG_FONT, getPrimaryFont());
+
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
 
 		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
@@ -217,6 +227,24 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE, new ImageLnfResource(IMAGE_GRAB));
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE, new ImageLnfResource(IMAGE_GRAB_CORNER));
 
+		table.put(ILnfKeyConstants.DIALOG_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
+		table.put(ILnfKeyConstants.DIALOG_CLOSE_HOVER_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER));
+		table.put(ILnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_CLOSE_HOVER_SELECTED));
+		table.put(ILnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON, new ImageLnfResource(IMAGE_CLOSE_INACTIVE));
+		table.put(ILnfKeyConstants.DIALOG_MAX_ICON, new ImageLnfResource(IMAGE_MAX));
+		table.put(ILnfKeyConstants.DIALOG_MAX_HOVER_ICON, new ImageLnfResource(IMAGE_MAX_HOVER));
+		table.put(ILnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MAX_HOVER_SELECTED));
+		table.put(ILnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, new ImageLnfResource(IMAGE_MAX_INACTIVE));
+		table.put(ILnfKeyConstants.DIALOG_MIN_ICON, new ImageLnfResource(IMAGE_MIN));
+		table.put(ILnfKeyConstants.DIALOG_MIN_HOVER_ICON, new ImageLnfResource(IMAGE_MIN_HOVER));
+		table.put(ILnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON, new ImageLnfResource(IMAGE_MIN_HOVER_SELECTED));
+		table.put(ILnfKeyConstants.DIALOG_MIN_INACTIVE_ICON, new ImageLnfResource(IMAGE_MIN_INACTIVE));
+		table.put(ILnfKeyConstants.DIALOG_RESTORE_ICON, new ImageLnfResource(IMAGE_RESTORE));
+		table.put(ILnfKeyConstants.DIALOG_RESTORE_HOVER_ICON, new ImageLnfResource(IMAGE_RESTORE_HOVER));
+		table.put(ILnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON, new ImageLnfResource(
+				IMAGE_RESTORE_HOVER_SELECTED));
+		table.put(ILnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON, new ImageLnfResource(IMAGE_RESTORE_INACTIVE_ICON));
+
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 		table.put(ILnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
@@ -244,7 +272,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	public void addCustomSettings(Map<String, Object> table) {
 
-		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, true);
+		table.put(ILnfKeyConstants.SHELL_HIDE_OS_BORDER, hideOsBorder());
 
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
@@ -256,6 +284,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true);
 		table.put(ILnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
+
+		table.put(ILnfKeyConstants.DIALOG_HIDE_OS_BORDER, hideOsBorder());
 
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN, 22);
 		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT, 40);
@@ -298,7 +328,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	}
 
 	/**
-	 * Returns the color used for the foreground of widgets.
+	 * Returns the color used for the foreground of widgets (of the navigation).
 	 * 
 	 * @return foreground color
 	 */
@@ -310,7 +340,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	}
 
 	/**
-	 * Returns the color used for the background of widgets.
+	 * Returns the color used for the background of widgets (of the navigation).
 	 * 
 	 * @return background color
 	 */
@@ -322,7 +352,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	}
 
 	/**
-	 * Returns the font used for widgets.
+	 * Returns the font used for widgets (of the navigation).
 	 * 
 	 * @return font
 	 */
@@ -333,6 +363,16 @@ public class RienaDefaultTheme implements ILnfTheme {
 			primaryFont = new FontLnfResource(name, height, SWT.NORMAL);
 		}
 		return primaryFont;
+	}
+
+	/**
+	 * Returns whether the border of the operation system should be used for the
+	 * shell and the dialog windows or the border of the Riena Look&Feel.
+	 * 
+	 * @return
+	 */
+	protected boolean hideOsBorder() {
+		return true;
 	}
 
 }

@@ -19,6 +19,8 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -28,6 +30,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 
 /**
  * The controller for the hello dialog of the dialog example.
@@ -49,6 +52,7 @@ public class HelloDialogController extends AbstractWindowController {
 		super.configureRidgets();
 
 		getWindowRidget().setTitle("James' Car Configurator"); //$NON-NLS-1$
+		getWindowRidget().setIcon(getIconPath(ExampleIcons.ICON_SAMPLE));
 
 		final CarConfig carConfig = new CarConfig();
 
@@ -204,11 +208,11 @@ public class HelloDialogController extends AbstractWindowController {
 			if (model != null) {
 				price += 100000;
 			}
-			price += ((long) options.size()) * 25000L;
+			price += options.size() * 25000L;
 			if (warranty == CarWarranties.EXTENDED) {
 				price += 10000;
 			}
-			price += ((long) plates.size()) * 200L;
+			price += plates.size() * 200L;
 			return price;
 		}
 	}
@@ -236,6 +240,7 @@ public class HelloDialogController extends AbstractWindowController {
 	private enum CarWarranties {
 		STANDARD, EXTENDED;
 
+		@Override
 		public String toString() {
 			char[] result = super.toString().toLowerCase().toCharArray();
 			result[0] = Character.toUpperCase(result[0]);
@@ -244,4 +249,9 @@ public class HelloDialogController extends AbstractWindowController {
 	}
 
 	private String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+
+	private String getIconPath(String subPath) {
+		return ImageUtil.getImagePath(Activator.getDefault().getBundle(), subPath);
+	}
+
 }
