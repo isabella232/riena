@@ -30,13 +30,13 @@ public class UIFilterRuleRidgetDisabledMarker extends AbstractUIFilterRuleRidget
 	/**
 	 * Creates a new instance of {@code UIFilterRuleRidgetDisabledMarker}.
 	 * 
-	 * @param id
+	 * @param ridgetIdPattern
 	 *            - ID
 	 * @param marker
 	 *            - marker
 	 */
-	public UIFilterRuleRidgetDisabledMarker(String id) {
-		super(id, new DisabledMarker(false));
+	public UIFilterRuleRidgetDisabledMarker(String ridgetIdPattern) {
+		super(ridgetIdPattern, new DisabledMarker(false));
 	}
 
 }

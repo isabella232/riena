@@ -27,11 +27,11 @@ public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleMenuIt
 	/**
 	 * Creates a new instance of {@code UIFilterRuleMenuActionHiddenMarker}.
 	 * 
-	 * @param id
+	 * @param idPattern
 	 *            - ID
 	 */
-	public UIFilterRuleMenuItemHiddenMarker(String id) {
-		super(id, new HiddenMarker(false));
+	public UIFilterRuleMenuItemHiddenMarker(String idPattern) {
+		super(idPattern, new HiddenMarker(false));
 	}
 
 }

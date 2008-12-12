@@ -30,11 +30,11 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	/**
 	 * Creates a new instance of {@code UIFilterRuleRidgetMandatoryMarker}.
 	 * 
-	 * @param id
+	 * @param ridgetIdPattern
 	 *            - ID
 	 */
-	public UIFilterRuleRidgetMandatoryMarker(String id) {
-		super(id, new MandatoryMarker(false));
+	public UIFilterRuleRidgetMandatoryMarker(String ridgetIdPattern) {
+		super(ridgetIdPattern, new MandatoryMarker(false));
 	}
 
 }

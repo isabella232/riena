@@ -22,11 +22,11 @@ public class MenuItemRidgetMatcher extends RidgetMatcher {
 	/**
 	 * Creates a new instance of {@code MenuItemRidgetMatcher}.
 	 * 
-	 * @param id
+	 * @param idPattern
 	 *            - ID
 	 */
-	public MenuItemRidgetMatcher(String id) {
-		super(id);
+	public MenuItemRidgetMatcher(String idPattern) {
+		super(idPattern);
 	}
 
 	@Override

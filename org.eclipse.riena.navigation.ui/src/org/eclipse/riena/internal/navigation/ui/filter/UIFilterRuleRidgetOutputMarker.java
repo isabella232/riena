@@ -30,11 +30,11 @@ public class UIFilterRuleRidgetOutputMarker extends AbstractUIFilterRuleRidgetMa
 	/**
 	 * Creates a new instance of {@code UIFilterRuleRidgetOutputMarker}.
 	 * 
-	 * @param id
+	 * @param ridgetIdPattern
 	 *            - ID
 	 */
-	public UIFilterRuleRidgetOutputMarker(String id) {
-		super(id, new OutputMarker(false));
+	public UIFilterRuleRidgetOutputMarker(String ridgetIdPattern) {
+		super(ridgetIdPattern, new OutputMarker(false));
 	}
 
 }

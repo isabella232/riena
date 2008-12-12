@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.IEditableRidget;
 public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator implements IUIFilterRuleValidatorRidget {
 
 	private RidgetMatcher matcher;
-	private String idPattern;
+	private String ridgetIdPattern;
 
 	/**
 	 * Creates a new instance of {@code UIFilterRuleRidgetValidator}.
@@ -35,16 +35,16 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	/**
 	 * Creates a new instance of {@code UIFilterRuleRidgetValidator}.
 	 * 
-	 * @param idPattern
+	 * @param ridgetIdPattern
 	 *            - pattern ({@link StringMatcher}) for ridget IDs
 	 * @param validator
 	 *            - validator
 	 * @param validationTime
 	 *            - time of validation
 	 */
-	public UIFilterRuleRidgetValidator(String idPattern, IValidator validator, ValidationTime validationTime) {
+	public UIFilterRuleRidgetValidator(String ridgetIdPattern, IValidator validator, ValidationTime validationTime) {
 		super(validator, validationTime);
-		this.idPattern = idPattern;
+		this.ridgetIdPattern = ridgetIdPattern;
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 */
 	private RidgetMatcher getMatcher() {
 		if (matcher == null) {
-			matcher = new RidgetMatcher(idPattern);
+			matcher = new RidgetMatcher(ridgetIdPattern);
 		}
 		return matcher;
 	}
@@ -104,7 +104,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	}
 
 	public void setId(String idPattern) {
-		this.idPattern = idPattern;
+		this.ridgetIdPattern = idPattern;
 		matcher = null;
 	}
 

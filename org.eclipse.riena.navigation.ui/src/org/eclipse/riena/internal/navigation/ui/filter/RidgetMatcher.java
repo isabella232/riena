@@ -26,11 +26,11 @@ public class RidgetMatcher {
 	/**
 	 * Creates a new instance of {@code RidgetMatcher}.
 	 * 
-	 * @param id
+	 * @param idPattern
 	 *            - ID
 	 */
-	public RidgetMatcher(String id) {
-		setId(id);
+	public RidgetMatcher(String idPattern) {
+		setId(idPattern);
 	}
 
 	/**
