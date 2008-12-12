@@ -110,6 +110,6 @@ public class LoginDialogController extends AbstractWindowController {
 	}
 
 	private String getIconPath(String subPath) {
-		return ImageUtil.getIconPath(Activator.getDefault().getBundle(), subPath);
+		return ImageUtil.getImagePath(Activator.getDefault().getBundle(), subPath);
 	}
 }

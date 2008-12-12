@@ -74,9 +74,9 @@ public final class ImageUtil {
 	 * @param subPath
 	 *            the sub path of the image (i.e. the path relative to the
 	 *            bundle directory).
-	 * @return the icon path..
+	 * @return the image path.
 	 */
-	public static String getIconPath(Bundle bundle, String subPath) {
+	public static String getImagePath(Bundle bundle, String subPath) {
 
 		if (bundle == null) {
 			return null;

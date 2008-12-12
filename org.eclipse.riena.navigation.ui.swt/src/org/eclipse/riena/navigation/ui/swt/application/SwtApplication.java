@@ -80,7 +80,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	protected abstract Bundle getBundle();
 
 	protected String getIconPath(String subPath) {
-		return ImageUtil.getIconPath(getBundle(), subPath);
+		return ImageUtil.getImagePath(getBundle(), subPath);
 	}
 
 	private void initializeLoginNonActivityTimer(Display display, IApplicationContext context) {
