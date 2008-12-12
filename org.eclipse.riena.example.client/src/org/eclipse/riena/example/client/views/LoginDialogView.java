@@ -23,16 +23,21 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
  * The view for the hello dialog of the dialog example.
  */
 public class LoginDialogView extends DialogView implements ILoginDialogView {
+
+	private static final GridData GD11FILL = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+	private static final GridData GD21FILL = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+	private static final GridData GD41FILL = new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1);
 
 	private IntegerBean result;
 
@@ -65,7 +70,7 @@ public class LoginDialogView extends DialogView implements ILoginDialogView {
 		super.buildView(parent);
 
 		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.setLayout(new GridLayout(1, false));
+		GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 20).applyTo(parent);
 
 		Composite content = createContentView(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(content);
@@ -76,24 +81,41 @@ public class LoginDialogView extends DialogView implements ILoginDialogView {
 	private Composite createContentView(Composite parent) {
 
 		Composite content = UIControlsFactory.createComposite(parent);
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(content);
+		GridLayoutFactory.fillDefaults().numColumns(4).spacing(6, 9).equalWidth(false).applyTo(content);
+
+		// dummy to occupy the cell
+		UIControlsFactory.createLabel(content, "                  "); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(content, "User"); //$NON-NLS-1$
 		Text user = UIControlsFactory.createText(content);
+		user.setLayoutData(GD21FILL);
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
+
+		// dummy to occupy the cell
+		UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(content, "Password"); //$NON-NLS-1$
 		Text password = UIControlsFactory.createText(content);
+		password.setLayoutData(GD21FILL);
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
 
+		// dummy to occupy the cell
+		UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
+		// dummy to occupy the cell
+		UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
+
 		Button okButton = UIControlsFactory.createButton(content);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(okButton);
-		okButton.setText("Ok"); //$NON-NLS-1$
+		okButton.setText("   Login   "); //$NON-NLS-1$
+		okButton.setLayoutData(GD11FILL);
 		addUIControl(okButton, HelloDialogController.RIDGET_ID_OK);
 
 		Button cancelButton = UIControlsFactory.createButton(content);
-		cancelButton.setText("Cancel"); //$NON-NLS-1$
+		cancelButton.setText("   Cancel   "); //$NON-NLS-1$
+		cancelButton.setLayoutData(GD11FILL);
 		addUIControl(cancelButton, HelloDialogController.RIDGET_ID_CANCEL);
+
+		Label info = UIControlsFactory.createLabel(content, "\nTo login type:\n   user=john, password=john"); //$NON-NLS-1$
+		info.setLayoutData(GD41FILL);
 
 		return content;
 	}

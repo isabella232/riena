@@ -52,11 +52,12 @@ public class LoginDialogController extends AbstractWindowController {
 		super.configureRidgets();
 
 		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
-		// TODO:getWindowRidget().setIcon(IconManagerAccessor.fetchIconManager().getIconID(IIconManager.LOGIN, IconSize.A));
 		getWindowRidget().setIcon(getIconPath(ExampleIcons.ICON_SAMPLE));
 
-		((ITextRidget) getRidget(RIDGET_ID_USER)).setText("john"); //$NON-NLS-1$
-		((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).setText("john"); //$NON-NLS-1$
+		ITextRidget user = (ITextRidget) getRidget(RIDGET_ID_USER);
+		user.setMandatory(true);
+		ITextRidget password = (ITextRidget) getRidget(RIDGET_ID_PASSWORD);
+		password.setMandatory(true);
 
 		IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
