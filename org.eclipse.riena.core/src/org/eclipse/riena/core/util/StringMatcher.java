@@ -14,6 +14,7 @@ import java.util.Vector;
 
 /**
  * A string pattern matcher, supporting "*" and "?" wildcards.<br>
+ * 
  * <i>Note: this class is a copy of {@code
  * org.eclipse.ui.internal.misc.StringMatcher}. The original class is internal
  * and the bundle does not export is.</i>

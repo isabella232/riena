@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.navigation.ui.filter;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.StringMatcher;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -23,9 +24,16 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 
 	protected RidgetMatcher matcher;
 
-	public AbstractUIFilterRuleRidgetMarker(String id, IMarker marker) {
+	/**
+	 * Creates a new instance of {@code AbstractUIFilterRuleRidgetMarker}.
+	 * 
+	 * @param idPattern
+	 *            - pattern ({@link StringMatcher}) for ridget IDs
+	 * @param marker
+	 */
+	public AbstractUIFilterRuleRidgetMarker(String idPattern, IMarker marker) {
 		super(marker);
-		matcher = createMatcher(id);
+		matcher = createMatcher(idPattern);
 	}
 
 	/**
@@ -67,12 +75,12 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 		}
 	}
 
-	public void setId(String id) {
-		matcher.setId(id);
+	public void setId(String idPattern) {
+		matcher.setId(idPattern);
 	}
 
-	protected RidgetMatcher createMatcher(String id) {
-		return new RidgetMatcher(id);
+	protected RidgetMatcher createMatcher(String idPattern) {
+		return new RidgetMatcher(idPattern);
 	}
 
 }

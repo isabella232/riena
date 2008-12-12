@@ -23,11 +23,18 @@ import org.eclipse.riena.ui.filter.impl.AbstractUIFilterRuleMarker;
 public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFilterRuleMarker implements
 		IUIFilterRuleMarkerNavigation {
 
-	private String nodeId;
+	private String nodeIdPattern;
 
-	public AbstractUIFilterRuleNavigationMarker(String nodeId, IMarker marker) {
+	/**
+	 * Creates a new instance of {@code AbstractUIFilterRuleNavigationMarker}.
+	 * 
+	 * @param nodeIdPattern
+	 *            - pattern ({@link StringMatcher}) for navigation node IDs
+	 * @param marker
+	 */
+	public AbstractUIFilterRuleNavigationMarker(String nodeIdPattern, IMarker marker) {
 		super(marker);
-		this.nodeId = nodeId;
+		this.nodeIdPattern = nodeIdPattern;
 	}
 
 	public boolean matches(Object... args) {
@@ -39,7 +46,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 		if (args[0] instanceof INavigationNode) {
 			INavigationNode node = (INavigationNode) args[0];
 			String longNodeId = NavigationNodeUtility.getNodeLongId(node);
-			StringMatcher stringMatcher = new StringMatcher(nodeId);
+			StringMatcher stringMatcher = new StringMatcher(nodeIdPattern);
 			return stringMatcher.match(longNodeId);
 		} else {
 			return false;
@@ -63,7 +70,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 	}
 
 	public void setNode(String id) {
-		this.nodeId = id;
+		this.nodeIdPattern = id;
 	}
 
 }
