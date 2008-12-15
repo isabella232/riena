@@ -556,14 +556,17 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	public void addMarker(IMarker marker) {
-		boolean oldEnabled = isEnabled();
-		boolean oldVisible = isVisible();
-		getNavigationProcessor().addMarker(this, marker);
-		if (oldEnabled != isEnabled()) {
-			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
-		}
-		if (oldVisible != isVisible()) {
-			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_VISIBLE, oldVisible, isVisible());
+		INavigationProcessor proc = getNavigationProcessor();
+		if (proc != null) {
+			boolean oldEnabled = isEnabled();
+			boolean oldVisible = isVisible();
+			proc.addMarker(this, marker);
+			if (oldEnabled != isEnabled()) {
+				propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
+			}
+			if (oldVisible != isVisible()) {
+				propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_VISIBLE, oldVisible, isVisible());
+			}
 		}
 	}
 
