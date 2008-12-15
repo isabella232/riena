@@ -16,7 +16,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 /**
- * SWT {@link ITreeRidget} sample.
+ * SWT {@link ITableRidget} sample.
  */
 public class TableSubModuleView extends SubModuleView<TableSubModuleController> {
 
@@ -51,10 +51,10 @@ public class TableSubModuleView extends SubModuleView<TableSubModuleController> 
 		Group group = UIControlsFactory.createGroup(parent, "&Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
-		Composite treeComposite = new Composite(group, SWT.NONE);
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(treeComposite);
+		Composite tableComposite = new Composite(group, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(tableComposite);
 
-		Table table = new Table(treeComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = new Table(tableComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		addUIControl(table, "table"); //$NON-NLS-1$
@@ -67,7 +67,7 @@ public class TableSubModuleView extends SubModuleView<TableSubModuleController> 
 		layout.setColumnData(columnWord, new ColumnWeightData(30));
 		layout.setColumnData(columnUppercase, new ColumnWeightData(30));
 		layout.setColumnData(columnACount, new ColumnWeightData(30));
-		treeComposite.setLayout(layout);
+		tableComposite.setLayout(layout);
 
 		Composite buttonComposite = createButtonComposite(group);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(buttonComposite);

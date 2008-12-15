@@ -22,7 +22,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.riena.example.client.views.TreeSubModuleView;
+import org.eclipse.riena.example.client.views.TableSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Controller for the {@link TreeSubModuleView} example.
+ * Controller for the {@link TableSubModuleView} example.
  */
 public class TableSubModuleController extends SubModuleController {
 
