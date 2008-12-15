@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Label;
  */
 public class LabelRidgetTest extends AbstractSWTRidgetTest {
 
-	private final static String PLUGIN_ID = "org.eclipse.riena.ui.tests:";
+	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";
 	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
 
 	private final static String LABEL = "testlabel";

@@ -25,10 +25,8 @@ import org.eclipse.swt.graphics.Rectangle;
  */
 public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 
-	private final static int DEFAULT_HEIGHT = 25;
 	private final static int IMAGE_TITLE_GAP = 5;
 	private final static int BORDER_IMAGE_GAP = 5;
-	private final static int TITLE_BUTTONS_GAP = 5;
 
 	private String[] btnImageKeys = new String[] { ILnfKeyConstants.DIALOG_CLOSE_ICON,
 			ILnfKeyConstants.DIALOG_MAX_ICON, ILnfKeyConstants.DIALOG_MIN_ICON, ILnfKeyConstants.DIALOG_RESTORE_ICON };
@@ -41,39 +39,6 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	private String[] btnInactiveImageKeys = new String[] { ILnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON,
 			ILnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, ILnfKeyConstants.DIALOG_MIN_INACTIVE_ICON,
 			ILnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON };
-
-	/**
-	 * Returns the height of the title bar.
-	 * 
-	 * @return height of title bar
-	 */
-	public int getHeight() {
-
-		int height = 0;
-		if (getBounds() != null) {
-			height = getBounds().height;
-		}
-		if (height <= 0) {
-			height = DEFAULT_HEIGHT;
-		}
-
-		return height;
-
-	}
-
-	@Override
-	protected boolean[] getBtnShow() {
-
-		boolean[] btnShow = new boolean[BTN_COUNT];
-
-		// TODO
-		btnShow[CLOSE_BTN_INDEX] = true;
-		btnShow[MAX_BTN_INDEX] = true;
-		btnShow[MIN_BTN_INDEX] = true;
-
-		return btnShow;
-
-	}
 
 	@Override
 	protected String[] getBtnHoverImageKeys() {
@@ -98,10 +63,29 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	@Override
 	protected void paintBackground(GC gc) {
 
-		// TODO
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR));
-		gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR));
-		gc.fillGradientRectangle(0, 0, getBounds().width, getBounds().height, true);
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR));
+		gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR));
+		gc.fillGradientRectangle(3, 3, getBounds().width - 3, getBounds().height - 4, true);
+
+		// top and left
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1));
+		gc.drawLine(0, 0, getBounds().width - 1, 0);
+		gc.drawLine(0, 0, 0, getHeight() - 1);
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2));
+		gc.drawLine(1, 1, getBounds().width - 1, 1);
+		gc.drawLine(1, 1, 1, getHeight() - 2);
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3));
+		gc.drawLine(2, 2, getBounds().width - 1, 2);
+		gc.drawLine(2, 2, 2, getHeight() - 2);
+
+		// bottom and right
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1));
+		gc.drawLine(0, getHeight() - 3, getBounds().width - 1, getHeight() - 3);
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2));
+		gc.drawLine(1, getHeight() - 4, getBounds().width - 1, getHeight() - 4);
+		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3));
+		gc.drawLine(2, getHeight() - 5, getBounds().width - 1, getHeight() - 5);
+		gc.drawLine(getBounds().width - 1, 0, getBounds().width - 1, getHeight() - 5);
 
 	}
 
@@ -126,23 +110,14 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 		Font font = LnfManager.getLnf().getFont(ILnfKeyConstants.DIALOG_FONT);
 		gc.setFont(font);
 
-		int btnX = getBounds().width;
-		int btnHeight = 0;
-		for (int i = 0; i < getButtonsBounds().length; i++) {
-			btnHeight = Math.max(btnHeight, getButtonsBounds()[i].height);
-			btnX = Math.min(btnX, getButtonsBounds()[i].x);
-		}
-		btnX -= TITLE_BUTTONS_GAP;
-		int y = TOP_BUTTON_GAP;
 		int textHeight = gc.getFontMetrics().getHeight();
-		if (btnHeight > textHeight) {
-			y = (btnHeight - textHeight) / 2;
-		}
+		int y = getHeight() / 2 - textHeight / 2;
+		y -= 2;
 
 		int x = getImageBounds().x + getImageBounds().width + IMAGE_TITLE_GAP;
 		int textWidth = SwtUtilities.calcTextWidth(gc, title);
-		if (textWidth + x > btnX) {
-			textWidth = btnX - x;
+		if (textWidth + x > getBounds().width) {
+			textWidth = getBounds().width - x;
 			title = SwtUtilities.clipText(gc, title, textWidth);
 		}
 
@@ -166,15 +141,8 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 
 		int x = BORDER_IMAGE_GAP;
 		int imageWidth = image.getImageData().width;
-		int btnHeight = 0;
-		for (int i = 0; i < getButtonsBounds().length; i++) {
-			btnHeight = Math.max(btnHeight, getButtonsBounds()[i].height);
-		}
-		int y = TOP_BUTTON_GAP;
 		int imageHeight = image.getImageData().height;
-		if (btnHeight > imageHeight) {
-			y = (btnHeight - imageHeight) / 2;
-		}
+		int y = getHeight() / 2 - imageHeight / 2;
 
 		gc.drawImage(image, x, y);
 

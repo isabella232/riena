@@ -32,8 +32,6 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	 */
 	private final static int TITLE_MARGIN = 5;
 
-	private String[] btnShowKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE,
-			ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN };
 	private String[] btnImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
 			ILnfKeyConstants.TITLELESS_SHELL_MAX_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_ICON,
 			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
@@ -81,15 +79,9 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 		Font font = LnfManager.getLnf().getFont(ILnfKeyConstants.TITLELESS_SHELL_FONT);
 		gc.setFont(font);
 
-		int btnHeight = 0;
-		for (int i = 0; i < getButtonsBounds().length; i++) {
-			btnHeight = Math.max(btnHeight, getButtonsBounds()[i].height);
-		}
-		int y = TOP_BUTTON_GAP;
 		int textHeight = gc.getFontMetrics().getHeight();
-		if (btnHeight > textHeight) {
-			y = (btnHeight - textHeight) / 2;
-		}
+		int y = getBounds().height / 2 - textHeight / 2;
+		y -= 2;
 
 		int x = getBounds().x + getBounds().width;
 		for (int i = 0; i < getButtonsBounds().length; i++) {
@@ -169,18 +161,6 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 			int h = getBounds().height - y;
 			gc.fillRectangle(0, y, getBounds().width, h);
 		}
-	}
-
-	@Override
-	protected boolean[] getBtnShow() {
-
-		boolean[] btnShow = new boolean[BTN_COUNT];
-
-		for (int i = 0; i < BTN_COUNT; i++) {
-			btnShow[i] = LnfManager.getLnf().getBooleanSetting(btnShowKeys[i]);
-		}
-		return btnShow;
-
 	}
 
 }

@@ -42,6 +42,12 @@ public final class ILnfKeyConstants {
 	public static final String DIALOG_INNER_BORDER_TOP_LEFT_COLOR = "Dialog.innerBorderTopLeftColor"; //$NON-NLS-1$
 	public static final String DIALOG_TITLEBAR_BACKGROUND_START_COLOR = "DialogTitleBar.backgroundStartColor"; //$NON-NLS-1$
 	public static final String DIALOG_TITLEBAR_BACKGROUND_END_COLOR = "DialogTitleBar.backgroundEndColor"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1 = "DialogTitleBar.backgroundTopColor1"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2 = "DialogTitleBar.backgroundTopColor2"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3 = "DialogTitleBar.backgroundTopColor3"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1 = "DialogTitleBar.backgroundBottomColor1"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2 = "DialogTitleBar.backgroundBottomColor2"; //$NON-NLS-1$
+	public static final String DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3 = "DialogTitleBar.backgroundBottomColor3"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = "SubApplicationSwitcher.foreground"; //$NON-NLS-1$
 	public static final String SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND = "SubApplicationSwitcher.disabledForeground"; //$NON-NLS-1$

@@ -35,8 +35,31 @@ public class RienaDialog extends Dialog {
 	private boolean hideOsBorder;
 	private AbstractTitleBarMouseListener mouseListener;
 
+	private boolean closeable;
+	private boolean maximizeable;
+	private boolean minimizeable;
+	private boolean resizeable;
+	private boolean applicationModal;
+
 	public RienaDialog(Shell shell) {
 		super(shell);
+		evaluateStyle();
+
+	}
+
+	/**
+	 * Evaluates the style of the shell and sets corresponding properties of the
+	 * dialog.
+	 */
+	private void evaluateStyle() {
+
+		int style = getShellStyle();
+		setCloseable((style & SWT.CLOSE) == SWT.CLOSE);
+		setMinimizeable((style & SWT.MIN) == SWT.MIN);
+		setMaximizeable((style & SWT.MAX) == SWT.MAX);
+		setResizeable((style & SWT.RESIZE) == SWT.RESIZE);
+		setApplicationModal((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL);
+
 	}
 
 	@Override
@@ -62,11 +85,16 @@ public class RienaDialog extends Dialog {
 
 		int style = getShellStyle();
 		if (isHideOsBorder()) {
-			style |= SWT.DIALOG_TRIM;
-			style &= SWT.NO_TRIM;
-		} else {
-			style &= SWT.DIALOG_TRIM;
+			style ^= SWT.DIALOG_TRIM;
 			style |= SWT.NO_TRIM;
+		} else {
+			style |= SWT.DIALOG_TRIM;
+			style ^= SWT.NO_TRIM;
+		}
+		if (isApplicationModal()) {
+			style |= SWT.APPLICATION_MODAL;
+		} else {
+			style ^= SWT.APPLICATION_MODAL;
 		}
 		setShellStyle(style);
 
@@ -199,7 +227,7 @@ public class RienaDialog extends Dialog {
 	/**
 	 * This listener paints the dialog (the border of the shell).
 	 */
-	private static class DialogPaintListener implements PaintListener {
+	private class DialogPaintListener implements PaintListener {
 
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
@@ -226,6 +254,9 @@ public class RienaDialog extends Dialog {
 				renderer.setShell(control.getShell());
 				final Rectangle bounds = new Rectangle(0, 0, dialogBounds.width, renderer.getHeight());
 				renderer.setBounds(bounds);
+				renderer.setCloseable(isCloseable());
+				renderer.setMaximizable(isMaximizeable());
+				renderer.setMinimizable(isMinimizeable());
 				renderer.paint(e.gc, control);
 
 			}
@@ -240,6 +271,46 @@ public class RienaDialog extends Dialog {
 			return (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.DIALOG_RENDERER);
 		}
 
+	}
+
+	public boolean isCloseable() {
+		return closeable;
+	}
+
+	private void setCloseable(boolean closeable) {
+		this.closeable = closeable;
+	}
+
+	public boolean isMaximizeable() {
+		return maximizeable;
+	}
+
+	private void setMaximizeable(boolean maximizeable) {
+		this.maximizeable = maximizeable;
+	}
+
+	public boolean isMinimizeable() {
+		return minimizeable;
+	}
+
+	private void setMinimizeable(boolean minimizeable) {
+		this.minimizeable = minimizeable;
+	}
+
+	public boolean isResizeable() {
+		return resizeable;
+	}
+
+	private void setResizeable(boolean resizeable) {
+		this.resizeable = resizeable;
+	}
+
+	public boolean isApplicationModal() {
+		return applicationModal;
+	}
+
+	private void setApplicationModal(boolean applicationModal) {
+		this.applicationModal = applicationModal;
 	}
 
 }

@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
+	private final static int DEFAULT_HEIGHT = 26;
 	protected final static int TOP_BUTTON_GAP = 2;
 	private final static int BUTTON_RIGHT_GAP = 2;
 	private final static int BUTTON_BUTTON_GAP = 2;
@@ -34,6 +35,9 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	protected final static int MIN_BTN_INDEX = 2;
 	protected final static int RESTORE_BTN_INDEX = 3;
 
+	private boolean closeable;
+	private boolean maximizable;
+	private boolean minimizable;
 	private boolean[] pressed = new boolean[BTN_COUNT];
 	private boolean[] hover = new boolean[BTN_COUNT];
 	private boolean active;
@@ -172,8 +176,10 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 				x -= BUTTON_BUTTON_GAP;
 			}
 		}
-		int y = getBounds().y + TOP_BUTTON_GAP;
+		int y = 0;
 		if (image != null) {
+			y = getBounds().height / 2 - image.getImageData().height / 2;
+			y -= 2;
 			x -= image.getImageData().width;
 			gc.drawImage(image, x, y);
 			btnBounds[btnIndex].width = image.getImageData().width;
@@ -467,6 +473,58 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
 	abstract protected String[] getBtnInactiveImageKeys();
 
-	abstract protected boolean[] getBtnShow();
+	private boolean[] getBtnShow() {
+
+		boolean[] btnShow = new boolean[BTN_COUNT];
+
+		btnShow[CLOSE_BTN_INDEX] = isCloseable();
+		btnShow[MAX_BTN_INDEX] = isMaximizable();
+		btnShow[MIN_BTN_INDEX] = isMinimizable();
+		return btnShow;
+
+	}
+
+	public void setCloseable(boolean closeable) {
+		this.closeable = closeable;
+	}
+
+	public boolean isCloseable() {
+		return closeable;
+	}
+
+	public void setMaximizable(boolean maximizable) {
+		this.maximizable = maximizable;
+	}
+
+	public boolean isMaximizable() {
+		return maximizable;
+	}
+
+	public void setMinimizable(boolean minimizable) {
+		this.minimizable = minimizable;
+	}
+
+	public boolean isMinimizable() {
+		return minimizable;
+	}
+
+	/**
+	 * Returns the height of the title bar.
+	 * 
+	 * @return height of title bar
+	 */
+	public int getHeight() {
+
+		int height = 0;
+		if (getBounds() != null) {
+			height = getBounds().height;
+		}
+		if (height <= 0) {
+			height = DEFAULT_HEIGHT;
+		}
+
+		return height;
+
+	}
 
 }

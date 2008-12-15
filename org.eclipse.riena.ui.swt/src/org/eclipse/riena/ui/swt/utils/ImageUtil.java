@@ -15,7 +15,6 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 
 /**
@@ -53,7 +52,7 @@ public final class ImageUtil {
 			} else {
 				String pluginID = parts[0];
 				String iconPath = parts[1];
-				descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(pluginID, iconPath);
+				// descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(pluginID, iconPath);
 				descriptor = Activator.imageDescriptorFromPlugin(pluginID, iconPath);
 				if (descriptor == null) {
 					return null;

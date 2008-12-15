@@ -39,6 +39,7 @@ import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -671,17 +672,19 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 				Control shell = (Control) e.getSource();
 
+				ShellRenderer shellRenderer = getShellRenderer();
 				Rectangle shellBounds = shell.getBounds();
-				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
-
-				ILnfRenderer shellRenderer = getShellRenderer();
+				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellRenderer.getHeight());
 				shellRenderer.setBounds(bounds);
+				RienaDefaultLnf lnf = LnfManager.getLnf();
+				shellRenderer.setCloseable(lnf.getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE));
+				shellRenderer.setMaximizable(lnf.getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX));
+				shellRenderer.setMinimizable(lnf.getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN));
 				shellRenderer.paint(e.gc, shell);
 
 			}
 
 		}
-
 	}
 
 	/**
