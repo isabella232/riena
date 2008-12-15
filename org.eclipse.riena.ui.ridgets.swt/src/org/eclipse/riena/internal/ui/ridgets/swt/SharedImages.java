@@ -14,7 +14,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Provides access to a set of shared images. The images can be accessed using
@@ -56,12 +55,16 @@ public final class SharedImages {
 	public static final String IMG_ERROR_DECO = "IMG_ERROR_DECO"; //$NON-NLS-1$
 
 	static void initializeImageRegistry(ImageRegistry reg) {
-		doPut(reg, IMG_NODE_COLLAPSED, "/icons/obj16/node_collapsed.gif"); //$NON-NLS-1$
-		doPut(reg, IMG_NODE_EXPANDED, "/icons/obj16/node_expanded.gif"); //$NON-NLS-1$
-		doPut(reg, IMG_LEAF, "/icons/obj16/leaf.gif"); //$NON-NLS-1$
-		doPut(reg, IMG_CHECKED, "/icons/obj16/checkbox_checked.gif"); //$NON-NLS-1$
-		doPut(reg, IMG_UNCHECKED, "/icons/obj16/checkbox_unchecked.gif"); //$NON-NLS-1$
-		reg.put(IMG_ERROR_DECO, LnfManager.getLnf().getImage(ILnfKeyConstants.ERROR_MARKER_ICON));
+		doPut(reg, IMG_NODE_COLLAPSED, SharedImages.class, "node_collapsed.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_NODE_EXPANDED, SharedImages.class, "node_expanded.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_LEAF, SharedImages.class, "leaf.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.gif"); //$NON-NLS-1$
+		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.gif"); //$NON-NLS-1$
+		if (Activator.getDefault() != null) { // running as plug-in
+			reg.put(IMG_ERROR_DECO, LnfManager.getLnf().getImage(ILnfKeyConstants.ERROR_MARKER_ICON));
+		} else {
+			doPut(reg, IMG_ERROR_DECO, SharedImages.class, "errorMarker.png"); //$NON-NLS-1$
+		}
 	}
 
 	private SharedImages() {
@@ -71,8 +74,8 @@ public final class SharedImages {
 	// helping methods
 	// ////////////////
 
-	private static void doPut(ImageRegistry reg, String key, String path) {
-		ImageDescriptor descr = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, path);
+	private static void doPut(ImageRegistry reg, String key, Class<?> location, String filename) {
+		ImageDescriptor descr = ImageDescriptor.createFromFile(location, filename);
 		if (descr == null) {
 			descr = ImageDescriptor.getMissingImageDescriptor();
 		}
