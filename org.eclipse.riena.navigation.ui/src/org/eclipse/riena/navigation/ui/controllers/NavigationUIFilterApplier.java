@@ -155,7 +155,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	private void applyFilterRule(INavigationNode<?> node, IUIFilterRule filterRule, IUIFilterRuleClosure closure) {
 
 		if (filterRule.matches(node)) {
-			closure.exeute(node, filterRule, node);
+			closure.execute(node, filterRule, node);
 		}
 
 		INavigationNodeController controller = node.getNavigationNodeController();
@@ -163,7 +163,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 			IRidgetContainer container = (IRidgetContainer) controller;
 			for (IRidget ridget : container.getRidgets()) {
 				if (filterRule.matches(ridget, node)) {
-					closure.exeute(node, filterRule, ridget);
+					closure.execute(node, filterRule, ridget);
 				}
 			}
 		}
@@ -200,7 +200,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * */
 	private static class ApplyClosure implements IUIFilterRuleClosure {
 
-		public void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
+		public void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
 			if (obj instanceof IRidget) {
 				if (isMenuItemOfDeactivatedNode(node, (IRidget) obj)) {
 					return;
@@ -216,7 +216,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 */
 	private static class RemoveClosure implements IUIFilterRuleClosure {
 
-		public void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
+		public void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
 			if (obj instanceof IRidget) {
 				if (isMenuItemOfDeactivatedNode(node, (IRidget) obj)) {
 					return;

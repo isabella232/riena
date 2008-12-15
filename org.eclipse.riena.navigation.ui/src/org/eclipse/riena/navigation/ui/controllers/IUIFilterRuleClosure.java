@@ -26,6 +26,6 @@ public interface IUIFilterRuleClosure {
 	 * @param obj
 	 *            - object that is given as a parameter to the method
 	 */
-	void exeute(INavigationNode<?> node, IUIFilterRule attr, Object obj);
+	void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj);
 
 }
