@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -19,6 +18,8 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Image;
@@ -147,7 +148,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	 * org.eclipse.riena.ui.ridgets.IWindowRidget#setTitle(java.lang.String)
 	 */
 	public void setTitle(String title) {
-		if (title != null && this.title != title) {
+		if (title != null && !this.title.equals(title)) {
 			this.title = title;
 			updateTitle();
 		}
