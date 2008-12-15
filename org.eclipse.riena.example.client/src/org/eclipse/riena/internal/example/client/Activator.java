@@ -14,6 +14,7 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.monitor.common.IReceiver;
+import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -23,11 +24,13 @@ public class Activator extends RienaPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.example.client"; //$NON-NLS-1$
+	private static final String PROTOCOL_HESSIAN = "hessian"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
 
 	private IRemoteServiceRegistration collectibleReceiverReg;
+	private IRemoteServiceRegistration authenticationService;
 
 	/**
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
@@ -36,7 +39,9 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		plugin = this;
 		collectibleReceiverReg = new RemoteServiceFactory().createAndRegisterProxy(IReceiver.class,
-				"http://localhost:8080/hessian/CollectibleReceiverWS", "hessian");
+				"http://localhost:8080/hessian/CollectibleReceiverWS", PROTOCOL_HESSIAN); //$NON-NLS-1$
+		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
+				"http://localhost:8080/hessian/AuthenticationService", PROTOCOL_HESSIAN); //$NON-NLS-1$
 	}
 
 	/**
@@ -45,6 +50,7 @@ public class Activator extends RienaPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		collectibleReceiverReg.unregister();
+		authenticationService.unregister();
 		super.stop(context);
 	}
 

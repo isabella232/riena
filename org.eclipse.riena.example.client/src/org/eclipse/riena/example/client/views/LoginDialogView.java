@@ -13,7 +13,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.HelloDialogController;
 import org.eclipse.riena.example.client.controllers.LoginDialogController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.views.DialogView;
@@ -107,15 +106,21 @@ public class LoginDialogView extends DialogView implements ILoginDialogView {
 		Button okButton = UIControlsFactory.createButton(content);
 		okButton.setText("   Login   "); //$NON-NLS-1$
 		okButton.setLayoutData(GD11FILL);
-		addUIControl(okButton, HelloDialogController.RIDGET_ID_OK);
+		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
 		Button cancelButton = UIControlsFactory.createButton(content);
 		cancelButton.setText("   Cancel   "); //$NON-NLS-1$
 		cancelButton.setLayoutData(GD11FILL);
-		addUIControl(cancelButton, HelloDialogController.RIDGET_ID_CANCEL);
+		addUIControl(cancelButton, LoginDialogController.RIDGET_ID_CANCEL);
 
-		Label info = UIControlsFactory.createLabel(content, "\nTo login type:\n   user=john, password=john"); //$NON-NLS-1$
+		Label info = UIControlsFactory
+				.createLabel(
+						content,
+						"\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
 		info.setLayoutData(GD41FILL);
+
+		addUIControl(UIControlsFactory.createMessageBox(content),
+				LoginDialogController.RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
 
 		return content;
 	}

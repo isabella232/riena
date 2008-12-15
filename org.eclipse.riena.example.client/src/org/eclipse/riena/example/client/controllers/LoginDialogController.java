@@ -10,11 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import java.net.URL;
+
+import javax.security.auth.login.LoginException;
+
 import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.internal.example.client.Activator;
+import org.eclipse.riena.internal.example.client.security.authentication.LocalLoginCallbackHandler;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
@@ -29,8 +37,10 @@ public class LoginDialogController extends AbstractWindowController {
 	public static final String RIDGET_ID_PASSWORD = "password"; //$NON-NLS-1$
 	public static final String RIDGET_ID_OK = "okButton"; //$NON-NLS-1$
 	public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
+	public static final String RIDGET_ID_MESSAGE_LOGIN_EXCEPTION = "messageLoginException"; //$NON-NLS-1$
 	public static final int EXIT_ABORT = -1;
 
+	private static final String JAAS_CONFIG_FILE = "config/sample_jaas.config"; //$NON-NLS-1$
 	private IntegerBean result;
 
 	public LoginDialogController(IntegerBean result) {
@@ -67,8 +77,7 @@ public class LoginDialogController extends AbstractWindowController {
 			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 			 */
 			public void callback() {
-				getWindowRidget().dispose();
-				result.setValue(checkLogin() ? IApplication.EXIT_OK : IApplication.EXIT_RESTART);
+				dispose(checkLogin() ? IApplication.EXIT_OK : IApplication.EXIT_RESTART);
 			}
 		});
 		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
@@ -79,10 +88,14 @@ public class LoginDialogController extends AbstractWindowController {
 			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 			 */
 			public void callback() {
-				getWindowRidget().dispose();
-				result.setValue(EXIT_ABORT);
+				dispose(EXIT_ABORT);
 			}
 		});
+	}
+
+	private void dispose(int result) {
+		getWindowRidget().dispose();
+		this.result.setValue(result);
 	}
 
 	public void onClose() {
@@ -106,8 +119,35 @@ public class LoginDialogController extends AbstractWindowController {
 	}
 
 	private boolean checkLogin() {
-		return "john".equalsIgnoreCase(((ITextRidget) getRidget(RIDGET_ID_USER)).getText()) //$NON-NLS-1$
-				&& "john".equals(((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText()); //$NON-NLS-1$
+
+		// do not use server authentication in case user = "" and password=""
+		if (((ITextRidget) getRidget(RIDGET_ID_USER)).getText().isEmpty()
+				&& ((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText().isEmpty()) {
+			return true;
+		}
+
+		// set the user, password that the authenticating callback handler will set (as user input)
+		LocalLoginCallbackHandler.setSuppliedCredentials(((ITextRidget) getRidget(RIDGET_ID_USER)).getText(),
+				((ITextRidget) getRidget(RIDGET_ID_PASSWORD)).getText());
+
+		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		ILoginContext secureContext = LoginContextFactory.createContext("Remote", configUrl); //$NON-NLS-1$
+
+		try {
+			secureContext.login();
+			return true;
+		} catch (LoginException e) {
+			showMessage(e);
+			return false;
+		}
+	}
+
+	private void showMessage(LoginException e) {
+		IMessageBoxRidget messageLoginException = (IMessageBoxRidget) getRidget(RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
+		messageLoginException.setType(IMessageBoxRidget.Type.ERROR);
+		messageLoginException.setTitle("Login exception"); //$NON-NLS-1$
+		messageLoginException.setText(e.getMessage()); //$NON-NLS-1
+		messageLoginException.show();
 	}
 
 	private String getIconPath(String subPath) {
