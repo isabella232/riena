@@ -146,7 +146,7 @@ public class Activator extends RienaPlugin {
 				} catch (RuntimeException rte) {
 					logger.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() //$NON-NLS-1$
 							+ "' failed with exception.", rte); //$NON-NLS-1$
-					throw rte;
+					//					throw rte; commented out so that riena.core is able to start itself
 				}
 			} else if (bundle.getState() == Bundle.STARTING
 					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
@@ -161,7 +161,7 @@ public class Activator extends RienaPlugin {
 				} catch (RuntimeException rte) {
 					logger.log(LogService.LOG_ERROR, "Forced <<lazy>> start(): '" + bundle.getSymbolicName() //$NON-NLS-1$
 							+ "' failed with exception.", rte); //$NON-NLS-1$
-					throw rte;
+					//					throw rte; commented out so that riena.core is able to start itself
 				}
 
 			} else if (bundle.getState() == Bundle.INSTALLED) {
