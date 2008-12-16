@@ -16,6 +16,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.menus.CommandContributionItem;
 
 /**
  * Helper class for SWT Tool Item Ridgets to delegate their marker issues to.
@@ -59,7 +60,12 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		if (item.isDisposed()) {
 			return;
 		}
-		item.setEnabled(ridget.isEnabled());
+		boolean enabled = ridget.isEnabled();
+		CommandContributionItem commandItem = getContributionItem(item);
+		if (commandItem != null) {
+			enabled = enabled && commandItem.isEnabled();
+		}
+		item.setEnabled(enabled);
 	}
 
 	/**
@@ -73,7 +79,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 		if (getRidget().isVisible()) {
 			getRidget().createItem();
 		} else {
-			MenuManager menuManager = getContributionItem(item);
+			MenuManager menuManager = getMenuManager(item);
 			if (menuManager != null) {
 				MenuManagerHelper helper = new MenuManagerHelper();
 				helper.removeListeners(item, menuManager.getMenu());
@@ -83,7 +89,16 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 
 	}
 
-	protected MenuManager getContributionItem(ToolItem item) {
+	/**
+	 * Returns form the data of the given item the {@link MenuManager}.<br>
+	 * <i>Only top level items of the menu bar have a MenuManger.</i>
+	 * 
+	 * @param item
+	 *            - tool item
+	 * @return the menu manager or <{@code null} if the item has no menu
+	 *         manager.
+	 */
+	private MenuManager getMenuManager(ToolItem item) {
 
 		if (item.isDisposed()) {
 			return null;
@@ -91,6 +106,29 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 
 		if ((item.getData() instanceof MenuManager)) {
 			return (MenuManager) item.getData();
+		} else {
+			return null;
+		}
+
+	}
+
+	/**
+	 * Returns form the data of the given item the
+	 * {@link CommandContributionItem}.
+	 * 
+	 * @param item
+	 *            - tool item
+	 * @return the {@code CommandContributionItem} or <{@code null} if the item
+	 *         has no {@code CommandContributionItem}.
+	 */
+	private CommandContributionItem getContributionItem(ToolItem item) {
+
+		if (item.isDisposed()) {
+			return null;
+		}
+
+		if ((item.getData() instanceof CommandContributionItem)) {
+			return (CommandContributionItem) item.getData();
 		} else {
 			return null;
 		}

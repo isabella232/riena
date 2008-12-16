@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -22,7 +27,7 @@ import org.eclipse.swt.widgets.ToolItem;
 public class ToolItemProperties extends AbstractItemProperties {
 
 	private ToolBar parent;
-	private int index;
+	private List<String> prevSiblingIds;
 
 	/**
 	 * @param item
@@ -33,7 +38,44 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 		ToolItem item = ridget.getUIControl();
 		parent = item.getParent();
-		index = parent.indexOf(item);
+		storePreviousSiblings(item);
+
+	}
+
+	/**
+	 * Stores all the previous siblings of the given tool item.
+	 * 
+	 * @param item
+	 *            - item of tool bar
+	 */
+	private void storePreviousSiblings(ToolItem item) {
+		int index = parent.indexOf(item);
+		Item[] siblings = parent.getItems();
+		prevSiblingIds = new ArrayList<String>();
+		for (int i = 0; i < index; i++) {
+			prevSiblingIds.add(SWTBindingPropertyLocator.getInstance().locateBindingProperty(siblings[i]));
+		}
+	}
+
+	/**
+	 * Returns the index of this tool item to insert it at the correct position
+	 * in the tool bar.
+	 * 
+	 * @return index
+	 */
+	private int getIndex() {
+
+		int index = 0;
+
+		Item[] siblings = parent.getItems();
+		for (int i = 0; i < siblings.length; i++) {
+			String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(siblings[i]);
+			if (prevSiblingIds.contains(id)) {
+				index++;
+			}
+		}
+
+		return index;
 
 	}
 
@@ -49,13 +91,13 @@ public class ToolItemProperties extends AbstractItemProperties {
 		MenuManager menuManager = getMenuManager();
 		ToolItem toolItem;
 		if ((contributionItem != null) && (menuManager == null)) {
-			contributionItem.fill(parent, index);
-			toolItem = parent.getItem(index);
+			contributionItem.fill(parent, getIndex());
+			toolItem = parent.getItem(getIndex());
 			toolItem.setEnabled(true);
 			setAllProperties(toolItem, false);
 			contributionItem.update();
 		} else {
-			toolItem = new ToolItem(parent, getStyle(), index);
+			toolItem = new ToolItem(parent, getStyle(), getIndex());
 			setAllProperties(toolItem, true);
 			if (menuManager != null) {
 				toolItem.setData(menuManager);

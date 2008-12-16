@@ -60,7 +60,6 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 			updateUIText();
 			updateUIIcon();
 			setItemProperties(createProperties());
-
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.eclipse.riena.internal.navigation.ui.filter.AbstractUIFilterRuleMenuI
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.NavigationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
@@ -56,6 +57,13 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
 		for (IUIFilter filter : filters) {
 			applyFilter(node, filter, APPLY_CLOSURE);
+		}
+
+		ISubApplicationNode subAppNode = node.getParentOfType(ISubApplicationNode.class);
+		if ((subAppNode != null) && (subAppNode != node)) {
+			for (IUIFilter filter : filters) {
+				applyFilter(subAppNode, filter, APPLY_CLOSURE);
+			}
 		}
 
 	}

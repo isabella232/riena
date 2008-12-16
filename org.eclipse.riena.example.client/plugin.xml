@@ -371,6 +371,7 @@
             <command
                   commandId="org.eclipse.riena.example.client.histBackCommand"
                   icon="icons/backward.gif"
+                  id="backToolItem"
                   label="History Back"
                   mnemonic="B"
                   style="push">
@@ -378,6 +379,7 @@
             <command
                   commandId="org.eclipse.riena.example.client.histForCommand"
                   icon="icons/forward.gif"
+                  id="forwardToolItem"
                   label="History Forward"
                   mnemonic="F"
                   style="push">

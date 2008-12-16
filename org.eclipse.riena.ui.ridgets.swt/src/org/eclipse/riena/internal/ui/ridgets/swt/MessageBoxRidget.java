@@ -214,7 +214,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 */
 	public String getID() {
 		if (getUIControl() != null) {
-			return ((MessageBox) getUIControl()).getPropertyName();
+			return getUIControl().getPropertyName();
 		}
 
 		return null;
@@ -345,6 +345,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidget#updateFromModel()
 	 */
+	@Override
 	public void updateFromModel() {
 		// do nothing
 	}

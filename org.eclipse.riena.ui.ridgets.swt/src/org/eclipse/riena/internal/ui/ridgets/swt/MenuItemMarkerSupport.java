@@ -14,6 +14,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.menus.CommandContributionItem;
 
 /**
  * Helper class for SWT Menu Item Ridgets to delegate their marker issues to.
@@ -57,7 +58,12 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 		if (item.isDisposed()) {
 			return;
 		}
-		item.setEnabled(ridget.isEnabled());
+		boolean enabled = ridget.isEnabled();
+		CommandContributionItem commandItem = getContributionItem(item);
+		if (commandItem != null) {
+			enabled = enabled && commandItem.isEnabled();
+		}
+		item.setEnabled(enabled);
 	}
 
 	/**
@@ -90,6 +96,29 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 				updateDisabled(item);
 			}
 		}
+	}
+
+	/**
+	 * Returns form the data of the given item the
+	 * {@link CommandContributionItem}.
+	 * 
+	 * @param item
+	 *            - menu item
+	 * @return the {@code CommandContributionItem} or <{@code null} if the item
+	 *         has no {@code CommandContributionItem}.
+	 */
+	private CommandContributionItem getContributionItem(MenuItem item) {
+
+		if (item.isDisposed()) {
+			return null;
+		}
+
+		if ((item.getData() instanceof CommandContributionItem)) {
+			return (CommandContributionItem) item.getData();
+		} else {
+			return null;
+		}
+
 	}
 
 }
