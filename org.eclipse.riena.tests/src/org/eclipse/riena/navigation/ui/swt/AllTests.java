@@ -27,6 +27,8 @@ import org.eclipse.riena.navigation.ui.swt.viewprovider.SwtViewIdTest;
 import org.eclipse.riena.navigation.ui.swt.views.AbstractViewBindingDelegateTest;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
+import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRendererTest;
+import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRendererTest;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRendererTest;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
 
@@ -58,6 +60,8 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(SubApplicationSwitcherRendererTest.class);
 		suite.addTestSuite(SubApplicationSwitcherWidgetTest.class);
 		suite.addTestSuite(MenuCoolBarCompositeTest.class);
+		suite.addTestSuite(AbstractTitleBarRendererTest.class);
+		suite.addTestSuite(DialogTitleBarRendererTest.class);
 		return suite;
 	}
 

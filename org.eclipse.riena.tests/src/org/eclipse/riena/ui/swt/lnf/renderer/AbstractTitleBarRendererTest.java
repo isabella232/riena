@@ -84,7 +84,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		Image image = ImageUtil.getImage(ICON_ECLIPSE);
 		ImageData imageData = image.getImageData();
 
-		LnfManager.setLnf(new TestLnf());
+		LnfManager.setLnf(new TitleBarLnf());
 		renderer.setCloseable(true);
 		renderer.setMaximizable(true);
 		renderer.setMinimizable(true);
@@ -171,12 +171,11 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 
 	}
 
-	private class TestLnf extends RienaDefaultLnf {
-
-		@Override
-		public void initialize() {
-			super.initialize();
-		}
+	/**
+	 * This Look and Feel adds additional images. This images are used for
+	 * testing.
+	 */
+	private class TitleBarLnf extends RienaDefaultLnf {
 
 		@Override
 		protected void initImageDefaults() {
