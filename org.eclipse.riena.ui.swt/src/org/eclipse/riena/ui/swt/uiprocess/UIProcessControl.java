@@ -11,10 +11,12 @@
 package org.eclipse.riena.ui.swt.uiprocess;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.jface.window.Window;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -57,9 +59,9 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	}
 
 	/**
-	 * @return - the {@link ApplicationWindow}
+	 * @return - the {@link Window}
 	 */
-	public ApplicationWindow getWindow() {
+	public Window getWindow() {
 		return processWindow;
 
 	}
@@ -218,7 +220,12 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	}
 
 	public void setTitle(String text) {
-		processWindow.getShell().setText(text);
+		Shell shell = processWindow.getShell();
+		if (!StringUtils.equals(text, shell.getText())) {
+			shell.setText(text);
+			Rectangle bounds = shell.getBounds();
+			shell.redraw(0, 0, bounds.width, bounds.height, true);
+		}
 	}
 
 	/**

@@ -33,7 +33,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(SwtUtilitiesTest.class);
 		suite.addTestSuite(EmbeddedTitleBarTest.class);
 		suite.addTestSuite(FlasherSupportForRendererTest.class);
-		suite.addTestSuite(RienaDialogTest.class);
+		suite.addTestSuite(RienaDialogDelegateTest.class);
 		return suite;
 	}
 

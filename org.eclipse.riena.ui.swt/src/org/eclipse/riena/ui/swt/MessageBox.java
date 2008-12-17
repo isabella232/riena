@@ -78,13 +78,11 @@ public class MessageBox implements IPropertyNameProvider {
 	 */
 	public void show(String title, String text, int type, String[] buttonLabels) {
 
-		messageDialog = new MessageDialog(parent.getShell(), title, null, // accept the default window icon
+		messageDialog = new RienaMessageDialog(parent.getShell(), title, null, // accept the default window icon
 				text, type, buttonLabels, 0) {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.jface.dialogs.Dialog#close()
-			 */
+			//		messageDialog = new MessageDialog(parent.getShell(), title, null, // accept the default window icon
+			//				text, type, buttonLabels, 0) {
+
 			@Override
 			public boolean close() {
 
@@ -97,11 +95,6 @@ public class MessageBox implements IPropertyNameProvider {
 				return closed;
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.jface.dialogs.Dialog#create()
-			 */
 			@Override
 			public void create() {
 
@@ -114,6 +107,7 @@ public class MessageBox implements IPropertyNameProvider {
 		};
 
 		result = messageDialog.open();
+
 	}
 
 	/**

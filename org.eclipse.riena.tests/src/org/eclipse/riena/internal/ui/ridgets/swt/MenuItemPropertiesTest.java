@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
@@ -44,6 +45,7 @@ public class MenuItemPropertiesTest extends TestCase {
 		Menu menu = new Menu(shell);
 		new MenuItem(menu, SWT.PUSH);
 		MenuItem item = new MenuItem(menu, SWT.PUSH);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item1");
 		ridget.setUIControl(item);
 
 		MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);

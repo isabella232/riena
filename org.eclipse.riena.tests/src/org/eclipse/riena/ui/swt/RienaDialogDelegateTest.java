@@ -18,21 +18,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tests of the class {@link RienaDialog}.
+ * Tests of the class {@link RienaDialogDelegate}.
  */
-public class RienaDialogTest extends TestCase {
+public class RienaDialogDelegateTest extends TestCase {
 
 	private Shell shell;
-	private MyRienaDialog dlg;
+	private RienaDialog dlg;
+	private RienaDialogDelegate delegate;
 
 	@Override
 	protected void setUp() throws Exception {
 		shell = new Shell();
-		dlg = new MyRienaDialog(shell);
+		dlg = new RienaDialog(shell);
+		delegate = new RienaDialogDelegate(dlg);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
+		delegate = null;
 		dlg = null;
 		SwtUtilities.disposeWidget(shell);
 	}
@@ -43,39 +46,39 @@ public class RienaDialogTest extends TestCase {
 	public void testEvaluateStyle() {
 
 		dlg.setShellStyle(SWT.MAX | SWT.MIN | SWT.RESIZE | SWT.CLOSE);
-		ReflectionUtils.invokeHidden(dlg, "evaluateStyle");
-		assertTrue(dlg.isCloseable());
-		assertTrue(dlg.isMaximizeable());
-		assertTrue(dlg.isMinimizeable());
-		assertTrue(dlg.isResizeable());
+		ReflectionUtils.invokeHidden(delegate, "evaluateStyle");
+		assertTrue(delegate.isCloseable());
+		assertTrue(delegate.isMaximizeable());
+		assertTrue(delegate.isMinimizeable());
+		assertTrue(delegate.isResizeable());
 
 		dlg.setShellStyle(SWT.CLOSE);
-		ReflectionUtils.invokeHidden(dlg, "evaluateStyle");
-		assertTrue(dlg.isCloseable());
-		assertFalse(dlg.isMaximizeable());
-		assertFalse(dlg.isMinimizeable());
-		assertFalse(dlg.isResizeable());
+		ReflectionUtils.invokeHidden(delegate, "evaluateStyle");
+		assertTrue(delegate.isCloseable());
+		assertFalse(delegate.isMaximizeable());
+		assertFalse(delegate.isMinimizeable());
+		assertFalse(delegate.isResizeable());
 
 		dlg.setShellStyle(SWT.MAX);
-		ReflectionUtils.invokeHidden(dlg, "evaluateStyle");
-		assertFalse(dlg.isCloseable());
-		assertTrue(dlg.isMaximizeable());
-		assertFalse(dlg.isMinimizeable());
-		assertFalse(dlg.isResizeable());
+		ReflectionUtils.invokeHidden(delegate, "evaluateStyle");
+		assertFalse(delegate.isCloseable());
+		assertTrue(delegate.isMaximizeable());
+		assertFalse(delegate.isMinimizeable());
+		assertFalse(delegate.isResizeable());
 
 		dlg.setShellStyle(SWT.MIN);
-		ReflectionUtils.invokeHidden(dlg, "evaluateStyle");
-		assertFalse(dlg.isCloseable());
-		assertFalse(dlg.isMaximizeable());
-		assertTrue(dlg.isMinimizeable());
-		assertFalse(dlg.isResizeable());
+		ReflectionUtils.invokeHidden(delegate, "evaluateStyle");
+		assertFalse(delegate.isCloseable());
+		assertFalse(delegate.isMaximizeable());
+		assertTrue(delegate.isMinimizeable());
+		assertFalse(delegate.isResizeable());
 
 		dlg.setShellStyle(SWT.RESIZE);
-		ReflectionUtils.invokeHidden(dlg, "evaluateStyle");
-		assertFalse(dlg.isCloseable());
-		assertFalse(dlg.isMaximizeable());
-		assertFalse(dlg.isMinimizeable());
-		assertTrue(dlg.isResizeable());
+		ReflectionUtils.invokeHidden(delegate, "evaluateStyle");
+		assertFalse(delegate.isCloseable());
+		assertFalse(delegate.isMaximizeable());
+		assertFalse(delegate.isMinimizeable());
+		assertTrue(delegate.isResizeable());
 
 	}
 
@@ -84,43 +87,22 @@ public class RienaDialogTest extends TestCase {
 	 */
 	public void testUpdateDialogStyle() {
 
-		dlg.setHideOsBorder(true);
+		delegate.setHideOsBorder(true);
 		dlg.setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
-		ReflectionUtils.invokeHidden(dlg, "updateDialogStyle");
+		ReflectionUtils.invokeHidden(delegate, "updateDialogStyle");
 		int style = dlg.getShellStyle();
 		assertFalse((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM);
 		assertTrue((style & SWT.NO_TRIM) == SWT.NO_TRIM);
 		assertTrue((style & SWT.RESIZE) == SWT.RESIZE);
 		assertTrue((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL);
 
-		dlg.setHideOsBorder(false);
+		delegate.setHideOsBorder(false);
 		dlg.setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
-		ReflectionUtils.invokeHidden(dlg, "updateDialogStyle");
+		ReflectionUtils.invokeHidden(delegate, "updateDialogStyle");
 		style = dlg.getShellStyle();
 		assertTrue((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM);
 		assertTrue((style & SWT.RESIZE) == SWT.RESIZE);
 		assertTrue((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL);
-
-	}
-
-	/**
-	 * This class changes the visibility of some method for testing.
-	 */
-	private class MyRienaDialog extends RienaDialog {
-
-		public MyRienaDialog(Shell shell) {
-			super(shell);
-		}
-
-		@Override
-		public void setShellStyle(int newShellStyle) {
-			super.setShellStyle(newShellStyle);
-		}
-
-		@Override
-		public int getShellStyle() {
-			return super.getShellStyle();
-		}
 
 	}
 

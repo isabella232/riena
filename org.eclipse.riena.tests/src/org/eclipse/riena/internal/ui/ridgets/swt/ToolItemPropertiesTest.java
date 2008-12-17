@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -44,14 +45,15 @@ public class ToolItemPropertiesTest extends TestCase {
 		ToolItemRidget ridget = new ToolItemRidget();
 		ToolBar toolbar = new ToolBar(shell, SWT.BORDER);
 		ToolItem item = new ToolItem(toolbar, SWT.PUSH);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item1");
 		ridget.setUIControl(item);
 
 		MyToolItemProperties itemProperties = new MyToolItemProperties(ridget);
 		ToolBar parent = ReflectionUtils.getHidden(itemProperties, "parent");
 		assertSame(ridget, itemProperties.getRidget());
 		assertSame(toolbar, parent);
-		int index = ReflectionUtils.getHidden(itemProperties, "index");
-		assertEquals(0, index);
+		int index = ReflectionUtils.invokeHidden(itemProperties, "getIndex");
+		assertEquals(1, index);
 
 	}
 

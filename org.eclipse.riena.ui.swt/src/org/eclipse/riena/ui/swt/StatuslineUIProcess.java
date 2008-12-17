@@ -235,6 +235,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 */
 	class PopupController extends MouseAdapter {
 
+		@Override
 		public void mouseDown(MouseEvent e) {
 			if (popup.getShell() == null) {
 				openPopup();
@@ -434,9 +435,11 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param label
 	 */
 	private void updateLabel(ProgressInfoDataObject pido, Label label) {
-		String strV = pido.getProcessName() + " " //$NON-NLS-1$
-				+ stateValueMappers.get(pido.getProcessState()).formatValue(pido.getValue());
-		label.setText(strV);
+		if ((label != null) && (!label.isDisposed())) {
+			String strV = pido.getProcessName() + " " //$NON-NLS-1$
+					+ stateValueMappers.get(pido.getProcessState()).formatValue(pido.getValue());
+			label.setText(strV);
+		}
 	}
 
 	/**
