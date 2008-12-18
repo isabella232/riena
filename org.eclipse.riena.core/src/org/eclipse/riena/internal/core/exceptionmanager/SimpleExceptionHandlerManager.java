@@ -25,7 +25,7 @@ import org.osgi.service.log.LogService;
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	private List<ExceptionHandlerEntry> handlers;
-	private Logger LOGGER = Activator.getDefault().getLogger(SimpleExceptionHandlerManager.class);
+	private final static Logger LOGGER = Activator.getDefault().getLogger(SimpleExceptionHandlerManager.class);
 
 	public void update(IExceptionHandlerDefinition[] exceptionHandlerDefinitions) {
 		handlers = new ArrayList<ExceptionHandlerEntry>();
