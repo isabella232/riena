@@ -135,30 +135,47 @@ public abstract class SwtApplication extends AbstractApplication {
 		private void initializeEventListener() {
 
 			eventListener = new EventListener();
-			// TODO: which filters are really needed?
 			display.addFilter(SWT.KeyDown, eventListener);
 			display.addFilter(SWT.KeyUp, eventListener);
 			display.addFilter(SWT.MouseDoubleClick, eventListener);
 			display.addFilter(SWT.MouseDown, eventListener);
-			display.addFilter(SWT.MouseEnter, eventListener);
+			//display.addFilter(SWT.MouseEnter, eventListener);
 			display.addFilter(SWT.MouseExit, eventListener);
-			display.addFilter(SWT.MouseHover, eventListener);
+			//display.addFilter(SWT.MouseHover, eventListener);
 			display.addFilter(SWT.MouseMove, eventListener);
 			display.addFilter(SWT.MouseUp, eventListener);
 			display.addFilter(SWT.MouseWheel, eventListener);
+			display.addFilter(SWT.Traverse, eventListener);
 		}
 
 		private void schedule() {
+			initializeForSchedule();
+			display.timerExec(getTimerDelay(), this);
+		}
+
+		private void initializeForSchedule() {
+
+			if (eventListener.activityTime == -1) {// initialize on first schedule
+				eventListener.activityTime = System.currentTimeMillis();
+			}
 			eventListener.activity = false;
-			display.timerExec(nonActivityDuration, this);
+		}
+
+		private int getTimerDelay() {
+			long diff = System.currentTimeMillis() - eventListener.activityTime;
+			int d = nonActivityDuration - (int) diff;
+			return d;
+			//return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
 		}
 
 		private final class EventListener implements Listener {
 
 			private boolean activity;
+			private long activityTime;
 
 			private EventListener() {
 				activity = false;
+				activityTime = -1;
 			}
 
 			/*
@@ -169,6 +186,7 @@ public abstract class SwtApplication extends AbstractApplication {
 			 */
 			public void handleEvent(Event event) {
 				activity = true;
+				activityTime = System.currentTimeMillis();
 			}
 		}
 	}
