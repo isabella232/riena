@@ -88,19 +88,20 @@ public class RienaDialogDelegateTest extends TestCase {
 	public void testUpdateDialogStyle() {
 
 		delegate.setHideOsBorder(true);
-		dlg.setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
+		dlg.setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE | SWT.APPLICATION_MODAL);
 		ReflectionUtils.invokeHidden(delegate, "updateDialogStyle");
 		int style = dlg.getShellStyle();
 		assertFalse((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM);
 		assertTrue((style & SWT.NO_TRIM) == SWT.NO_TRIM);
 		assertTrue((style & SWT.RESIZE) == SWT.RESIZE);
-		assertTrue((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL);
+		assertFalse((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL);
 
 		delegate.setHideOsBorder(false);
+		ReflectionUtils.invokeHidden(delegate, "setApplicationModal", true);
 		dlg.setShellStyle(SWT.DIALOG_TRIM | SWT.RESIZE);
 		ReflectionUtils.invokeHidden(delegate, "updateDialogStyle");
 		style = dlg.getShellStyle();
-		assertTrue((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM);
+		assertFalse((style & SWT.DIALOG_TRIM) == SWT.DIALOG_TRIM);
 		assertTrue((style & SWT.RESIZE) == SWT.RESIZE);
 		assertTrue((style & SWT.APPLICATION_MODAL) == SWT.APPLICATION_MODAL);
 

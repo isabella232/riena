@@ -53,7 +53,7 @@ public class ToolItemPropertiesTest extends TestCase {
 		assertSame(ridget, itemProperties.getRidget());
 		assertSame(toolbar, parent);
 		int index = ReflectionUtils.invokeHidden(itemProperties, "getIndex");
-		assertEquals(1, index);
+		assertEquals(0, index);
 
 	}
 
