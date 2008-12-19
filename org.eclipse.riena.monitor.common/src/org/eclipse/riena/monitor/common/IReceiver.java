@@ -21,7 +21,7 @@ public interface IReceiver {
 	 * Receive collectibles.
 	 * 
 	 * @param senderTime
-	 *            the current time (ms) these collectibles have been sent
+	 *            the current client time (ms) these collectibles have been sent
 	 * @param collectibles
 	 *            the list of collectibles
 	 * @return true on success; otherwise false (may result in retrying with
