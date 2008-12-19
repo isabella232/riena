@@ -21,7 +21,7 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public class Collectible<T extends Serializable> implements Serializable {
 
-	private final String category;
+	private final String categoryName;
 	private final UUID uuid;
 	private final long collectionTime;
 	private final T payload;
@@ -33,34 +33,35 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 * serialization.
 	 */
 	protected Collectible() {
-		this.category = null;
+		this.categoryName = null;
 		this.uuid = null;
 		this.collectionTime = 0;
 		this.payload = null;
 	}
 
 	/**
-	 * Create a {@code Collectible} for a given category.
+	 * Create a {@code Collectible} for a given categoryName.
 	 * 
-	 * @param category
-	 *            the category for this collectible
+	 * @param categoryName
+	 *            the categoryName for this collectible
 	 * @param payload
 	 *            the payload of this collectible
 	 */
-	public Collectible(final String category, final T payload) {
-		Assert.isTrue(StringUtils.isGiven(category), "category must not be empty"); //$NON-NLS-1$
+	public Collectible(final String categoryName, final T payload) {
+		Assert.isTrue(StringUtils.isGiven(categoryName), "categoryName must not be empty"); //$NON-NLS-1$
+		//		Assert.isTrue(categoryName != null, "categoryName must not be empty"); //$NON-NLS-1$
 		Assert.isNotNull(payload, "payload must not be null"); //$NON-NLS-1$
-		this.category = category;
+		this.categoryName = categoryName;
 		this.uuid = UUID.randomUUID();
 		this.collectionTime = System.currentTimeMillis();
 		this.payload = payload;
 	}
 
 	/**
-	 * @return the category
+	 * @return the categoryName
 	 */
 	public String getCategory() {
-		return category;
+		return categoryName;
 	}
 
 	public UUID getUUID() {
@@ -102,7 +103,7 @@ public class Collectible<T extends Serializable> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Collectible(" + category + ": " + payload + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Collectible(" + categoryName + ": " + payload + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }
