@@ -37,7 +37,13 @@ public class Range {
 	private static final String CLOSE_CLOSE_TOKEN = "[]"; //$NON-NLS-1$
 	private static final String OPEN_OPEN_TOKEN = "()"; //$NON-NLS-1$
 
-	public Range(final String range) throws ParseException {
+	/**
+	 * Parse the give range.
+	 * 
+	 * @param range
+	 * @throws IllegalArgumentException
+	 */
+	public Range(final String range) {
 		final StringTokenizer tokenizer = new StringTokenizer(range);
 		String token = null;
 		try {
@@ -56,7 +62,7 @@ public class Range {
 				}
 			}
 		} catch (Throwable t) {
-			throw new ParseException("Error parsing range '" + range + "' with token '" + token + "'.", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new IllegalArgumentException("Error parsing range '" + range + "' with token '" + token + "'.", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
