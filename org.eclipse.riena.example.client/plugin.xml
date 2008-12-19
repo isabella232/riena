@@ -745,18 +745,36 @@
          </ruleMarkerRidget>
       </filter>
    </extension>
-   <!-- To activate client monitoring for the example client simply uncomment this. 
-   <extension point="org.eclipse.riena.monitor.collector">
+   
+   <!-- To activate client monitoring for the example client simply uncomment this. -->
+   <extension point="org.eclipse.riena.monitor.collectors">
       <collector
             category="LogCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1 4 [], triggerRange=1 2">
+            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1 2, triggerRange=1 2"
+            maxItems="50">
       </collector>
       <collector
             category="CustomCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2 0 [], triggerRange=-2">
+            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2 0 [], triggerRange=-2"
+            maxItems="250">
       </collector>
    </extension>
-   -->
+   
+   <extension point="org.eclipse.riena.monitor.store">
+      <store
+            name="SimpleStore"
+            class="org.eclipse.riena.monitor.client.SimpleStore:cleanupDelay=1 h">
+      </store>
+	</extension>
+	
+   <extension point="org.eclipse.riena.monitor.sender">
+      <sender
+            name="SimpleSender"
+            class="org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m">
+      </sender>
+	</extension>
+	
+    <!-- -->
     <extension
            point="org.eclipse.riena.core.exception.handlers">
         <exceptionHandler
