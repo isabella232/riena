@@ -10,25 +10,24 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
-
 /**
  * The {@code ICollector} interface defines the protocol for collectors.
  */
 public interface ICollector {
 
 	/**
-	 * Configure the category for this collector.
+	 * Set the category for this collector.
 	 * 
 	 * @param category
 	 */
-	void configureCategory(String category);
+	void setCategory(Category category);
 
 	/**
-	 * Configure the {@code IAggregator} for this collector.
+	 * Set the {@code IAggregator} for this collector.
 	 * 
 	 * @param aggregator
 	 */
-	void configureAggregator(ICollectingAggregator aggregator);
+	void setAggregator(ICollectingAggregator aggregator);
 
 	/**
 	 * Start the collector, i.e. the collector can now start collecting
@@ -45,5 +44,5 @@ public interface ICollector {
 	 * 
 	 * @return
 	 */
-	String getCategory();
+	Category getCategory();
 }
