@@ -110,7 +110,7 @@ public class RangeTest extends TestCase {
 		try {
 			new Range("n");
 			fail();
-		} catch (ParseException t) {
+		} catch (IllegalArgumentException t) {
 			System.out.println("Expected error: " + t);
 		}
 	}
@@ -119,7 +119,7 @@ public class RangeTest extends TestCase {
 		try {
 			new Range("1 ()");
 			fail();
-		} catch (ParseException t) {
+		} catch (IllegalArgumentException t) {
 			System.out.println("Expected error: " + t);
 		}
 	}
