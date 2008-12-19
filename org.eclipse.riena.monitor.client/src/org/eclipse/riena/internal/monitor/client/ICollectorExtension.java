@@ -24,4 +24,6 @@ public interface ICollectorExtension {
 
 	@MapName("class")
 	ICollector createCollector();
+
+	int getMaxItems();
 }
