@@ -11,4 +11,11 @@
 			initialValue="localhost:8080"/>
 	</extension>
 
+	<extension
+        point="org.eclipse.riena.core.startups">
+      <startup 
+      	activateSelf="true">
+      </startup>
+   </extension>
+
 </plugin>
