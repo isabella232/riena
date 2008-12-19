@@ -11,19 +11,25 @@
 package org.eclipse.riena.internal.monitor.client;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.monitor.client.Category;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
 import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
+import org.eclipse.riena.monitor.client.SimpleSender;
+import org.eclipse.riena.monitor.client.SimpleStore;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
 
@@ -37,6 +43,9 @@ public class Aggregator implements ICollectingAggregator {
 	private ISender sender;
 	private ICollector[] collectors;
 	private boolean started;
+	private final BlockingQueue<Runnable> workQueue;
+	private final Map<String, Category> categories = new HashMap<String, Category>();
+	private final CountDownLatch workSignal;
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(Aggregator.class);
 
@@ -53,12 +62,15 @@ public class Aggregator implements ICollectingAggregator {
 	protected Aggregator(boolean autoConfig) {
 		if (autoConfig) {
 			Inject
-					.extension("org.eclipse.riena.monitor.collector").useType(ICollectorExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+					.extension("org.eclipse.riena.monitor.collectors").useType(ICollectorExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 			Inject
 					.extension("org.eclipse.riena.monitor.store").expectingMinMax(0, 1).useType(IStoreExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 			Inject
 					.extension("org.eclipse.riena.monitor.sender").expectingMinMax(0, 1).useType(ISenderExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 		}
+		workSignal = new CountDownLatch(1);
+		workQueue = new LinkedBlockingQueue<Runnable>();
+		new Thread(new Worker(), "Client Monitoring Aggregator Worker").start(); //$NON-NLS-1$
 	}
 
 	public synchronized void start() {
@@ -69,13 +81,15 @@ public class Aggregator implements ICollectingAggregator {
 			LOGGER.log(LogService.LOG_DEBUG, "Client monitoring not started. No collectors defined."); //$NON-NLS-1$
 			return;
 		}
-		for (ICollector collector : Iter.able(collectors)) {
-			sender.addCategory(collector.getCategory());
-			collector.start();
-		}
+		store.setCategories(categories);
+		sender.setCategories(categories);
 		store.open();
 		sender.start();
+		for (ICollector collector : Iter.able(collectors)) {
+			collector.start();
+		}
 		started = true;
+		workSignal.countDown();
 	}
 
 	public synchronized void stop() {
@@ -84,33 +98,32 @@ public class Aggregator implements ICollectingAggregator {
 		}
 		for (ICollector collector : Iter.able(collectors)) {
 			collector.stop();
-			sender.removeCategory(collector.getCategory());
 		}
 		sender.stop();
 		store.close();
 		started = false;
 	}
 
-	public synchronized void update(ICollectorExtension[] collectorExtensions) {
+	public synchronized void update(final ICollectorExtension[] collectorExtensions) {
 		for (ICollector collector : Iter.able(this.collectors)) {
 			collector.stop();
 		}
-		Set<String> categories = new HashSet<String>(collectorExtensions.length);
 		List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
 		for (ICollectorExtension extension : collectorExtensions) {
-			Assert.isLegal(!categories.contains(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
+			Assert.isLegal(!categories.containsKey(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
 					+ " is defined twice. Categories must be unique."); //$NON-NLS-1$
-			categories.add(extension.getCategory());
+			Category category = new Category(extension.getCategory(), extension.getMaxItems());
+			categories.put(extension.getCategory(), category);
 			ICollector collector = extension.createCollector();
-			collector.configureCategory(extension.getCategory());
-			collector.configureAggregator(this);
+			collector.setCategory(category);
+			collector.setAggregator(this);
 			list.add(collector);
 		}
 		collectors = list.toArray(new ICollector[list.size()]);
 		// TODO if we were really dynamic aware we should start them here
 	}
 
-	public void update(ISenderExtension senderExtension) throws CoreException {
+	public void update(final ISenderExtension senderExtension) throws CoreException {
 		if (sender != null) {
 			sender.stop();
 		}
@@ -119,11 +132,11 @@ public class Aggregator implements ICollectingAggregator {
 		} else {
 			sender = senderExtension.createSender();
 		}
-		sender.configureStore(store);
+		sender.setStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
 
-	public void update(IStoreExtension storeExtension) throws CoreException {
+	public void update(final IStoreExtension storeExtension) throws CoreException {
 		if (store != null) {
 			store.flush();
 		}
@@ -138,14 +151,15 @@ public class Aggregator implements ICollectingAggregator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.monitor.client.IAggregator#collect(org.eclipse.riena
-	 * .monitor .core.Collectible)
+	 * org.eclipse.riena.monitor.client.ICollectingAggregator#collect(org.eclipse
+	 * .riena.monitor.common.Collectible)
 	 */
-	public synchronized boolean collect(final Collectible<?> collectible) {
-		if (!started) {
-			return false;
-		}
-		return store.collect(collectible);
+	public synchronized void collect(final Collectible<?> collectible) {
+		workQueue.offer(new Runnable() {
+			public void run() {
+				store.collect(collectible);
+			}
+		});
 	}
 
 	/*
@@ -155,12 +169,39 @@ public class Aggregator implements ICollectingAggregator {
 	 * org.eclipse.riena.monitor.client.IAggregator#triggerTransfer(java.lang
 	 * .String)
 	 */
-	public synchronized void triggerTransfer(String category) {
-		if (!started) {
-			return;
-		}
-		store.prepareTransferables(category);
-		sender.triggerTransfer(category);
+	public synchronized void triggerTransfer(final String category) {
+		workQueue.offer(new Runnable() {
+			public void run() {
+				store.prepareTransferables(category);
+				sender.triggerTransfer(category);
+			}
+		});
 	}
 
+	private class Worker implements Runnable {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			try {
+				workSignal.await();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return;
+			}
+
+			while (true) {
+				try {
+					Runnable runnable = workQueue.take();
+					runnable.run();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					break;
+				}
+			}
+		}
+	}
 }
