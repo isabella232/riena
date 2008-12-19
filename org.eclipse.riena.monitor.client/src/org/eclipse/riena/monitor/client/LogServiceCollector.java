@@ -22,8 +22,6 @@ import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.internal.monitor.client.Activator;
-import org.eclipse.riena.monitor.client.Range.ParseException;
-import org.eclipse.riena.monitor.common.Collectible;
 import org.eclipse.riena.monitor.common.LogEntryTransferObject;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
@@ -34,13 +32,11 @@ import org.osgi.service.log.LogListener;
  * <p>
  * TODO Configuration - threshold, ..
  */
-public class LogServiceCollector implements ICollector, LogListener, IExecutableExtension {
+public class LogServiceCollector extends AbstractCollector implements IExecutableExtension {
 
-	private ICollectingAggregator aggregator;
-	private boolean active;
-	private String category;
 	private Range collectRange;
 	private Range triggerRange;
+	private final LogListener logListener;
 
 	private static final String TRIGGER_RANGE = "triggerRange"; //$NON-NLS-1$
 	private static final String COLLECT_RANGE = "collectRange"; //$NON-NLS-1$
@@ -59,6 +55,7 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 	 *            true perform configuration; otherwise do not configure
 	 */
 	protected LogServiceCollector(boolean autoConfig) {
+		logListener = newLogListener();
 		if (autoConfig) {
 			Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(
 					Activator.getDefault().getContext());
@@ -78,103 +75,33 @@ public class LogServiceCollector implements ICollector, LogListener, IExecutable
 		Map<String, String> properties = null;
 		try {
 			properties = PropertiesUtils.asMap(data, COLLECT_RANGE, TRIGGER_RANGE);
+			collectRange = new Range(properties.get(COLLECT_RANGE));
+			triggerRange = new Range(properties.get(TRIGGER_RANGE));
 		} catch (IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
-		try {
-			collectRange = new Range(properties.get(COLLECT_RANGE));
-		} catch (ParseException e) {
-			throw configurationException("Bad configuration. Parsing collect range fails.", e); //$NON-NLS-1$
-		}
-		try {
-			triggerRange = new Range(properties.get(TRIGGER_RANGE));
-		} catch (ParseException e) {
-			throw configurationException("Bad configuration. Parsing trigger range fails.", e); //$NON-NLS-1$
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#configureAggregator(org.eclipse
-	 * .riena.monitor.client.IAggregator)
-	 */
-	public void configureAggregator(ICollectingAggregator aggregator) {
-		this.aggregator = aggregator;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollector#configureCategory(java.lang
-	 * .String)
-	 */
-	public void configureCategory(String category) {
-		this.category = category;
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.ICollector#startCollecting
-	 * (org.eclipse.riena.monitor.client.IAggregator)
-	 */
-	public void start() {
-		active = true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.ICollector#stopCollecting()
-	 */
-	public void stop() {
-		active = false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.ICollector#getCategory()
-	 */
-	public String getCategory() {
-		return category;
 	}
 
 	public void bind(ExtendedLogReaderService extendedLogReaderService) {
-		extendedLogReaderService.addLogListener(this);
+		extendedLogReaderService.addLogListener(logListener);
 	}
 
 	public void unbind(ExtendedLogReaderService extendedLogReaderService) {
-		extendedLogReaderService.removeLogListener(this);
+		extendedLogReaderService.removeLogListener(logListener);
 	}
 
-	public void bind(ICollectingAggregator aggregator) {
-		this.aggregator = aggregator;
-	}
-
-	public void unbind(IAggregator aggregator) {
-		this.aggregator = null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.osgi.service.log.LogListener#logged(org.osgi.service.log.LogEntry)
-	 */
-	public void logged(LogEntry entry) {
-		if (aggregator == null || !active || !collectRange.matches(entry.getLevel())) {
-			return;
-		}
-		aggregator.collect(new Collectible<LogEntryTransferObject>(category, new LogEntryTransferObject(
-				(ExtendedLogEntry) entry)));
-		if (triggerRange.matches(entry.getLevel())) {
-			aggregator.triggerTransfer(category);
-		}
+	private LogListener newLogListener() {
+		return new LogListener() {
+			public void logged(LogEntry entry) {
+				if (!collectRange.matches(entry.getLevel())) {
+					return;
+				}
+				collect(new LogEntryTransferObject((ExtendedLogEntry) entry));
+				if (triggerRange.matches(entry.getLevel())) {
+					triggerTransfer();
+				}
+			}
+		};
 	}
 
 	private CoreException configurationException(String message, Exception e) {
