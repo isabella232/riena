@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
@@ -18,25 +24,13 @@ import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerA
 import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.variables.IStringVariableManager;
-import org.eclipse.core.variables.VariablesPlugin;
-import org.eclipse.equinox.log.Logger;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.Constants;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
-
-	/**
-	 * Bundles marked with this header set to <code>true</code> will be started
-	 * by Riena.
-	 */
-	public static final String RIENA_FORCE_START = "Riena-ForceStart"; //$NON-NLS-1$
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.core"; //$NON-NLS-1$
@@ -46,7 +40,6 @@ public class Activator extends RienaPlugin {
 
 	private ServiceRegistration loggerMillServiceReg;
 	private LoggerMill loggerMill;
-
 	private ExceptionHandlerManagerAccessor exceptionHandlerManagerAccessor;
 
 	// The shared instance
@@ -65,11 +58,11 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		startLogging(context);
-		final Logger logger = getLogger(Activator.class);
+		startLogging();
+		Logger logger = getLogger(Activator.class);
 
 		logStage(logger);
-		startForcedRienaBundles(logger);
+		startStartupListener();
 
 		//		SimpleExceptionHandler handler = new SimpleExceptionHandler();
 		//		context.registerService(IExceptionHandler.class.getName(), handler, RienaConstants
@@ -89,19 +82,15 @@ public class Activator extends RienaPlugin {
 		this.exceptionHandlerManagerAccessor = new ExceptionHandlerManagerAccessor();
 		Inject.service(IExceptionHandlerManager.class).useRanking().into(exceptionHandlerManagerAccessor).andStart(
 				context);
-
-		active = true;
 	}
 
 	/**
 	 * 
 	 */
-	private void startLogging(BundleContext context) {
-		loggerMill = new LoggerMill(context);
-		loggerMillServiceReg = context.registerService(LoggerMill.class.getName(), loggerMill, RienaConstants
-				.newDefaultServiceProperties());
-
-		this.exceptionHandlerManagerAccessor = null;
+	private void startLogging() {
+		loggerMill = new LoggerMill(getContext());
+		loggerMillServiceReg = getContext().registerService(LoggerMill.class.getName(), loggerMill,
+				RienaConstants.newDefaultServiceProperties());
 	}
 
 	/**
@@ -118,59 +107,9 @@ public class Activator extends RienaPlugin {
 		logger.log(LogService.LOG_INFO, stage);
 	}
 
-	/**
-	 * Force starting of bundles that are marked true with the
-	 * <code>RIENA_FORCE_START</code> bundle header.
-	 * 
-	 * @param context
-	 * @param logger
-	 * @throws BundleException
-	 */
-	private void startForcedRienaBundles(final Logger logger) throws BundleException {
-		Bundle[] bundles = getContext().getBundles();
-		for (Bundle bundle : bundles) {
-			boolean forceStart = Boolean.parseBoolean((String) bundle.getHeaders().get(RIENA_FORCE_START));
-			if (bundle.getState() != Bundle.ACTIVE
-					&& (bundle.getSymbolicName().equals("org.eclipse.equinox.cm") || bundle.getSymbolicName().equals( //$NON-NLS-1$
-							"org.eclipse.equinox.log"))) { //$NON-NLS-1$
-				forceStart = true;
-			}
-			if (!forceStart) {
-				continue;
-			}
-
-			if (bundle.getState() == Bundle.RESOLVED) {
-				try {
-					bundle.start();
-					logger.log(LogService.LOG_INFO, "Forced start: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (RuntimeException rte) {
-					logger.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() //$NON-NLS-1$
-							+ "' failed with exception.", rte); //$NON-NLS-1$
-					//					throw rte; commented out so that riena.core is able to start itself
-				}
-			} else if (bundle.getState() == Bundle.STARTING
-					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
-				try {
-					bundle.start();
-					logger.log(LogService.LOG_INFO,
-							"Forced <<lazy>> start(): '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (BundleException be) {
-					logger.log(LogService.LOG_WARNING, "Forced <<lazy>> start(): '" + bundle.getSymbolicName() //$NON-NLS-1$
-							+ "' failed but may succeed (bundle state is in transition):\n\t\t" + be.getMessage() //$NON-NLS-1$
-							+ (be.getCause() != null ? " cause: " + be.getCause() : "")); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (RuntimeException rte) {
-					logger.log(LogService.LOG_ERROR, "Forced <<lazy>> start(): '" + bundle.getSymbolicName() //$NON-NLS-1$
-							+ "' failed with exception.", rte); //$NON-NLS-1$
-					//					throw rte; commented out so that riena.core is able to start itself
-				}
-
-			} else if (bundle.getState() == Bundle.INSTALLED) {
-				logger.log(LogService.LOG_ERROR, "Forced start: '" + bundle.getSymbolicName() + "' failed. Header '" //$NON-NLS-1$ //$NON-NLS-2$
-						+ RIENA_FORCE_START + "' is set but is only in state INSTALLED (not RESOLVED)."); //$NON-NLS-1$
-			} else if (bundle.getState() == Bundle.ACTIVE) {
-				logger.log(LogService.LOG_DEBUG, "Forced start: '" + bundle.getSymbolicName() + "' is already ACTIVE."); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}
+	private void startStartupListener() {
+		BundleListener bundleListener = new StartupBundleListener();
+		getContext().addBundleListener(bundleListener);
 	}
 
 	/*
@@ -200,6 +139,26 @@ public class Activator extends RienaPlugin {
 	 */
 	public boolean isActive() {
 		return active;
+	}
+
+	/**
+	 *
+	 */
+	private class StartupBundleListener implements BundleListener {
+
+		public void bundleChanged(BundleEvent event) {
+			if (Activator.getDefault() == null) {
+				return;
+			}
+			if (event.getBundle() == Activator.getDefault().getContext().getBundle()
+					&& event.getType() == BundleEvent.STARTED) {
+				active = true;
+				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
+				Inject.extension("org.eclipse.riena.core.startups").into(safeRunnable).andStart( //$NON-NLS-1$
+						Activator.getDefault().getContext());
+				SafeRunner.run(safeRunnable);
+			}
+		}
 	}
 
 }
