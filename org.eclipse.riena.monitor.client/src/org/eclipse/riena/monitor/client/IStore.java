@@ -11,6 +11,7 @@
 package org.eclipse.riena.monitor.client;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.riena.monitor.common.Collectible;
 
@@ -18,6 +19,14 @@ import org.eclipse.riena.monitor.common.Collectible;
  * The {@code IStore} defines a store for collectibles.
  */
 public interface IStore {
+
+	/**
+	 * Set the categories this store must handle.
+	 * 
+	 * @param categories
+	 */
+	void setCategories(Map<String, Category> categories);
+
 	/**
 	 * Open the store.
 	 */
