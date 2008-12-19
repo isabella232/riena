@@ -131,7 +131,7 @@ public class LogEntryTransferObject implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return new Date(time) + " Level: " + level + " [" + threadName + "] " + message
+		return new Date(time) + " " + loggerName + " Level: " + level + " [" + threadName + "] " + message
 				+ (exception == null ? "" : "\n" + exception);
 	}
 
