@@ -52,18 +52,25 @@
          <attribute name="category" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  must be unique
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="class" type="string">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.riena.monitor.core.ICollector"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.riena.monitor.client.AbstractCollector:org.eclipse.riena.monitor.core.ICollector"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="maxItems" type="string">
+            <annotation>
+               <documentation>
+                  maximum number of items (collectibles) that should be kept in the store for this collector
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
