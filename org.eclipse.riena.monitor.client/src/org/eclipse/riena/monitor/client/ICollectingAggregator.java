@@ -22,8 +22,7 @@ public interface ICollectingAggregator extends IAggregator {
 	 * Collect the given collectible
 	 * 
 	 * @param collectible
-	 * @return true on success
 	 */
-	boolean collect(final Collectible<?> collectible);
+	void collect(final Collectible<?> collectible);
 
 }
