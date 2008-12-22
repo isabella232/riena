@@ -31,9 +31,14 @@
 			<property name="plugin-name" value="${plugin-name}"/>
 			<property name="classname" 
                 value="org.eclipse.riena.AllTests"/>
-	<!--       An optional argument string to pass to the VM running the tests: -->
-	<!--       <property name="vmargs" value="-Drdt.rubyInterpreter=&quot;${rdt.rubyInterpreter}&quot;"/> -->
-		</ant>
+			<!-- An optional argument string to pass to the VM running the tests: -->
+			<!-- Setting -Dosgi.parentClassloader=ext has also worked. However app is preferred, 
+				 because the VM sets up the classloaders with the following hierarchy:
+				 app->ext->boot 
+				 Since there were occasionally several class-loading problems the securest option has been preferred. -->  
+			<property name="vmargs" value="-classpath ${instrumented}/*.jar;${jars}/*.jar -Dosgi.parentClassloader=app -Dnet.sourceforge.cobertura.datafile=${coberturaScripts}\cobertura.ser"/>
+			<property name="jvm" value="${jvmHome}"/>
+			</ant>
 	</target>
 	
 	<!-- This target holds code to cleanup the testing environment after -->
