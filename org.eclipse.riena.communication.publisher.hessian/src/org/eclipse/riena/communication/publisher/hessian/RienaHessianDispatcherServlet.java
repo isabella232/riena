@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher.hessian;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -35,8 +34,6 @@ import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerA
 import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
-import com.caucho.hessian.io.AbstractDeserializer;
-import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
@@ -49,18 +46,18 @@ import com.caucho.hessian.server.HessianSkeleton;
  * 
  */
 @SuppressWarnings("serial")
-public class HessianRienaDispatcherServlet extends GenericServlet {
+public class RienaHessianDispatcherServlet extends GenericServlet {
 
 	private SerializerFactory serializerFactory = null;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(HessianRienaDispatcherServlet.class);
+	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianDispatcherServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		serializerFactory = new SerializerFactory();
 		serializerFactory.setAllowNonSerializable(true);
-		addSpecialDeserializer(serializerFactory);
+		removeInputStreamSerializerDeserializer(serializerFactory);
 		Inject.extension("org.eclipse.riena.communication.hessian.AbstractSerializerFactory").into(this).update( //$NON-NLS-1$
 				"setFactory").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 
@@ -161,28 +158,20 @@ public class HessianRienaDispatcherServlet extends GenericServlet {
 		}
 	}
 
+	private void removeInputStreamSerializerDeserializer(SerializerFactory serializerFactory) {
+		HashMap<?, ?> staticDeSerMap = ReflectionUtils
+				.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
+		staticDeSerMap.remove(java.io.InputStream.class);
+		HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticSerializerMap"); //$NON-NLS-1$
+		staticSerMap.remove(java.io.InputStream.class);
+	}
+
 	/**
 	 * 
 	 * @return the publisher
 	 */
 	protected HessianRemoteServicePublisher getPublisher() {
 		return Activator.getDefault().getPublisher();
-	}
-
-	// TODO check if we could not replace that with registering a regular serializerfactory rather than patching an internal map
-	// then we can also fix #258320 which complains that the serializer never closes the inputstream
-	@SuppressWarnings("unchecked")
-	private void addSpecialDeserializer(SerializerFactory serializerFactory) {
-		HashMap staticDeSerMap = ReflectionUtils.getHidden(serializerFactory.getClass(), "_staticDeserializerMap"); //$NON-NLS-1$
-		staticDeSerMap.put(java.io.InputStream.class, new SpecificInputStreamDeserializer());
-	}
-
-	static class SpecificInputStreamDeserializer extends AbstractDeserializer {
-		public Object readObject(AbstractHessianInput in) throws IOException {
-
-			byte[] bytes = in.readBytes();
-			return new ByteArrayInputStream(bytes);
-		}
 	}
 
 }
