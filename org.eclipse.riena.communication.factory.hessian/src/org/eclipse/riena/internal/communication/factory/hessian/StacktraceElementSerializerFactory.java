@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
-import java.security.Principal;
-
 import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
@@ -19,10 +17,9 @@ import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
 /**
- * SerializerFactory for Hessian Protocol that supports serializer the Principal
- * objects. Used on client and server
+ *
  */
-public class PrincipalSerializerFactory extends AbstractSerializerFactory {
+public class StacktraceElementSerializerFactory extends AbstractSerializerFactory {
 
 	/*
 	 * (non-Javadoc)
@@ -33,8 +30,14 @@ public class PrincipalSerializerFactory extends AbstractSerializerFactory {
 	 */
 	@Override
 	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
-		if (cl.isInterface() && (!cl.getPackage().getName().startsWith("java") || cl == Principal.class)) { //$NON-NLS-1$
-			return new JavaDeserializer(cl);
+		if (cl.equals(StackTraceElement.class)) {
+			return new JavaDeserializer(cl) {
+
+				@Override
+				protected Object instantiate() throws Exception {
+					return new StackTraceElement("x", "x", "x", 1); // just return a dummy, fields will be set by the JavaDeserializer //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				}
+			};
 		}
 		return null;
 	}

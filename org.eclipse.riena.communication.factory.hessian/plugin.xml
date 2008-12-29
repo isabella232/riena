@@ -9,6 +9,13 @@
             implementation="org.eclipse.riena.internal.communication.factory.hessian.PrincipalSerializerFactory">
       </factory>
    </extension>
+   <extension
+         id="org.eclipse.riena.communication.hessian.InputSerializerFactory"
+         point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
+      <factory
+            implementation="org.eclipse.riena.internal.communication.factory.hessian.InputStreamSerializerFactory">
+      </factory>
+   </extension>
 
 	<extension
         point="org.eclipse.riena.core.startups">
@@ -16,5 +23,12 @@
       	activateSelf="true">
       </startup>
    </extension>
+ <extension
+       id="org.eclipse.riena.communication.hessian.StacktraceElementSerializerFactory"
+       point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
+    <factory
+          implementation="org.eclipse.riena.internal.communication.factory.hessian.StacktraceElementSerializerFactory">
+    </factory>
+ </extension>
 
 </plugin>

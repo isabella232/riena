@@ -155,6 +155,8 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			LOGGER.log(LogService.LOG_ERROR, t.getMessage(), t2);
 			ExceptionHandlerManagerAccessor.getExceptionHandlerManager().handleException(t2);
 			throw new ServletException(t);
+		} finally {
+			out.close(); // Hessian2Output forgets to close if the service throws an exception
 		}
 	}
 

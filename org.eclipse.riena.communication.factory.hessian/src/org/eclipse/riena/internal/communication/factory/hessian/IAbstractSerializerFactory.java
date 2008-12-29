@@ -22,4 +22,6 @@ public interface IAbstractSerializerFactory {
 
 	AbstractSerializerFactory createImplementation();
 
+	String getImplementation();
+
 }

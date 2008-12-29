@@ -63,7 +63,8 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 		// callProxy.equals(new Object());
 		List<IRemoteProgressMonitor> pmList = remoteProgressMonitors.get(callProxy);
 		if (pmList == null) {
-			return new ProgressMonitorListImpl(new IRemoteProgressMonitor[0]);
+			return null;
+			//			return new ProgressMonitorListImpl(new IRemoteProgressMonitor[0]);
 		}
 		return new ProgressMonitorListImpl(pmList.toArray(new IRemoteProgressMonitor[pmList.size()]));
 	}
