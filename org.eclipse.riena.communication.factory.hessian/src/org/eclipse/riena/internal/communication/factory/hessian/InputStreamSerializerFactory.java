@@ -14,6 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.riena.communication.core.RemoteFailure;
+
 import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
@@ -43,8 +45,13 @@ public class InputStreamSerializerFactory extends AbstractSerializerFactory {
 
 				@Override
 				public Object readObject(AbstractHessianInput in) throws IOException {
-					byte[] bytes = in.readBytes();
-					return new ByteArrayInputStream(bytes);
+					try {
+						byte[] bytes = in.readBytes();
+						return new ByteArrayInputStream(bytes);
+					} catch (HessianProtocolException e) {
+						throw new RemoteFailure(
+								"Error while reading Attachment content. Probably incomplete or interrupted Attachment inputstream. " + e.getMessage()); //$NON-NLS-1$
+					}
 				}
 			};
 		}
@@ -78,11 +85,9 @@ public class InputStreamSerializerFactory extends AbstractSerializerFactory {
 								try {
 									len = is.read(buf, 0, buf.length);
 								} catch (IOException e) {
-									out.writeNull();
 									// catch the exception only for the inputstream and close
-									//									out.writeByteBufferEnd(buf, 0, 0);
-									out.writeFault("???", "IOException while reading attachment input "
-											+ e.getMessage(), e);
+									// write null so that the client gets a "hick-up" and can tell that there is something wrong
+									out.writeNull();
 									break;
 								}
 								if (len > 0) {

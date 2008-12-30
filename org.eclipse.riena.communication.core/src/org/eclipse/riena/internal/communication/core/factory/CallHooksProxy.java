@@ -26,6 +26,9 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.core.Activator;
 
+import com.caucho.hessian.client.HessianRuntimeException;
+import com.caucho.hessian.io.HessianProtocolException;
+
 public class CallHooksProxy extends AbstractHooksProxy {
 
 	private HashSet<ICallHook> callHooks = new HashSet<ICallHook>();
@@ -54,6 +57,19 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (InvocationTargetException e) {
+			// first check for specific Hessian exceptions
+			if (e.getTargetException() instanceof HessianRuntimeException
+					|| e.getTargetException() instanceof HessianProtocolException) {
+				Throwable cause = e.getTargetException();
+				while (cause.getCause() != null) {
+					if (cause.getCause() instanceof RemoteFailure) {
+						throw new RemoteFailure(null, cause.getCause()); //$NON-NLS-1$
+					}
+					cause = cause.getCause();
+				}
+				throw new RemoteFailure("", e.getTargetException()); //$NON-NLS-1$
+			}
+			// if runtime exception throw it anyway
 			if (e.getTargetException() instanceof RuntimeException) {
 				throw e.getTargetException();
 			}
