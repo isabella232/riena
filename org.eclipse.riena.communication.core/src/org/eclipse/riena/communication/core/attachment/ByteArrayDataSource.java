@@ -61,7 +61,9 @@ public class ByteArrayDataSource implements IDataSource {
 		if (input == null) {
 			return null;
 		}
-		input.reset();
+		if (input.markSupported()) {
+			input.reset();
+		}
 		return input;
 	}
 
