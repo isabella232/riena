@@ -22,6 +22,7 @@ import java.security.SecureRandom;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.tests.RienaTestCase;
@@ -276,6 +277,26 @@ public final class AttachmentClientITest extends RienaTestCase {
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
 		System.out.println("done");
 		assertTrue(i == 15000000);
+	}
+
+	public void testSendFileAndTestIfItIsClosed() throws Exception {
+		File file = File.createTempFile("attachTest", null);
+		PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
+		printWriter.write("This text file is accessed in AttachmentTest to test the Attachment class.");
+		printWriter.close();
+		Attachment attach = new Attachment(file);
+		assertTrue(file.exists());
+		// the object gets serialized
+		AttachmentSerialized attach2 = (AttachmentSerialized) attach.writeReplace();
+		ByteArrayDataSource byteArray = (ByteArrayDataSource) ReflectionUtils.getHidden(attach2, "internalDataSource");
+		InputStream inputStream = byteArray.getInputStream();
+		while (inputStream.read() != -1) {
+		}
+		inputStream.close();
+		assertTrue(file.exists());
+		file.delete();
+		assertFalse(file.exists());
+
 	}
 
 	private Attachment generateLargeAttachment(final int countInBytes) throws IOException {
