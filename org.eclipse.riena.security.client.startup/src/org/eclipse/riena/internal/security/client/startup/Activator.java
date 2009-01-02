@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.security.client.startup;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
@@ -49,11 +50,20 @@ public class Activator extends RienaActivator {
 		super.start(context);
 		Activator.plugin = this;
 
-		authenticationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://${riena.securehostname}/hessian/AuthenticationService", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			authenticationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
+					"http://${riena.securehostname}/hessian/AuthenticationService", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (ProxyAlreadyRegisteredFailure e) {
+			// do nothing, can happen if other projects already registered this remote service
+		}
 
-		authorizationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class, "hessian", //$NON-NLS-1$
-				"http://${riena.securehostname}/hessian/AuthorizationServiceWS"); //$NON-NLS-1$
+		try {
+			authorizationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class,
+					"hessian", //$NON-NLS-1$
+					"http://${riena.securehostname}/hessian/AuthorizationServiceWS", context); //$NON-NLS-1$
+		} catch (ProxyAlreadyRegisteredFailure e) {
+			// do nothing, can happen if other projects already registered this remote service
+		}
 	}
 
 	/*

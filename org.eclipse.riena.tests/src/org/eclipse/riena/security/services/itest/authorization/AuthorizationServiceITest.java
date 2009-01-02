@@ -46,11 +46,11 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", "hessian");
+				"http://localhost:8080/hessian/AuthenticationService", "hessian", Activator.getDefault().getContext());
 		authorizationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class,
-				"http://localhost:8080/hessian/AuthorizationService", "hessian");
+				"http://localhost:8080/hessian/AuthorizationService", "hessian", Activator.getDefault().getContext());
 		customerService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian");
+				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", Activator.getDefault().getContext());
 	}
 
 	@Override

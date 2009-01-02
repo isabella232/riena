@@ -13,10 +13,12 @@ package org.eclipse.riena.security.services.itest.session;
 import java.security.Principal;
 
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
+
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -46,7 +48,7 @@ public class SessionServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
-				"http://localhost:8080/hessian/SessionService", "hessian");
+				"http://localhost:8080/hessian/SessionService", "hessian", Activator.getDefault().getContext());
 	}
 
 	/*

@@ -46,6 +46,7 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	private HashMap<String, RemoteServiceDescription> webServiceDescriptions;
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(HessianRemoteServicePublisher.class);
+	private final static String port = System.getProperty("org.eclipse.equinox.http.jetty.http.port"); // get the jetty port //$NON-NLS-1$
 
 	public HessianRemoteServicePublisher() {
 		webServiceDescriptions = new HashMap<String, RemoteServiceDescription>();
@@ -69,6 +70,9 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 		try {
 			localhost = Inet4Address.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
+		}
+		if (port != null) {
+			localhost = localhost + ":" + port; //$NON-NLS-1$
 		}
 		String url = "http://" + localhost + SERVLET_PATH + rsd.getPath(); //$NON-NLS-1$
 		rsd.setURL(url);

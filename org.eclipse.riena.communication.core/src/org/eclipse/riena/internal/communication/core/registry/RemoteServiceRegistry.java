@@ -20,9 +20,11 @@ import java.util.Properties;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
+import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.internal.communication.core.Activator;
 
 import org.eclipse.equinox.log.Logger;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
@@ -59,7 +61,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * org.eclipse.riena.communication.core.IRemoteServiceRegistry#registerService
 	 * (org.eclipse.riena.communication.core.IRemoteServiceReference)
 	 */
-	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference) {
+	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference, BundleContext context) {
 
 		String url = reference.getDescription().getURL();
 		synchronized (registeredServices) {
@@ -69,8 +71,9 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 				Properties props = new Properties();
 				props.put("service.url", url); //$NON-NLS-1$
 				props.put("service.protocol", reference.getDescription().getProtocol()); //$NON-NLS-1$
-				ServiceRegistration serviceRegistration = Activator.getDefault().getContext().registerService(
-						reference.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
+				ServiceRegistration serviceRegistration = context.registerService(reference
+						.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
+				reference.setContext(context);
 				reference.setServiceRegistration(serviceRegistration);
 
 				RemoteServiceRegistration remoteServiceReg = new RemoteServiceRegistration(reference, this);
@@ -80,11 +83,14 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 						+ reference.getServiceInterfaceClassName());
 				return remoteServiceReg;
 			} else {
-				// for existing services copy over the service registration
-				// @TODO review this logic
-				reference.setServiceRegistration(foundRemoteServiceReg.getReference().getServiceRegistration());
-				foundRemoteServiceReg.setReference(reference);
-				return foundRemoteServiceReg;
+				// if proxy for this url already exists, throw exception
+				throw new ProxyAlreadyRegisteredFailure(
+						"Cannot register two remote service proxies with the same URL. Proxy for " + url //$NON-NLS-1$
+								+ " already exists. Registered by bundle " //$NON-NLS-1$
+								+ foundRemoteServiceReg.getReference().getContext().getBundle().getSymbolicName() + "."); //$NON-NLS-1$
+				//				reference.setServiceRegistration(foundRemoteServiceReg.getReference().getServiceRegistration());
+				//				foundRemoteServiceReg.setReference(reference);
+				//				return foundRemoteServiceReg;
 			}
 		}
 	}
@@ -101,7 +107,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 		synchronized (registeredServices) {
 			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
 			// we have commented out the following line
-			// because the service gets unregistered automatically when bundle creating it is
+			// because the service gets unregistered automatically when the bundle, that created it, is
 			// stopped. the explicit call sometimes fails because that bundle is already stopped
 			// and so unregister fails with an IllegalStateException
 			//			serviceRegistration.unregister();
@@ -118,18 +124,18 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 * @seeorg.eclipse.riena.communication.core.IRemoteServiceRegistry#
 	 * registeredServices(java.lang.String)
 	 */
-	public List<IRemoteServiceRegistration> registeredServices(String hostId) {
+	public List<IRemoteServiceRegistration> registeredServices(BundleContext context) {
 		synchronized (registeredServices) {
 			Collection<IRemoteServiceRegistration> values = registeredServices.values();
-			// Answers all service registrations when hostId is null or "*"
-			if (hostId == null || hostId.equals("*")) { //$NON-NLS-1$
+			// Answers all service registrations when hostId is null
+			if (context == null) {
 				return new ArrayList<IRemoteServiceRegistration>(values);
 			}
 
 			List<IRemoteServiceRegistration> result = new ArrayList<IRemoteServiceRegistration>();
 			for (IRemoteServiceRegistration serviceReg : values) {
-				String registeredHostId = serviceReg.getReference().getHostId();
-				if (hostId.equals(registeredHostId)) {
+				BundleContext registeredBundleContext = serviceReg.getReference().getContext();
+				if (context.equals(registeredBundleContext)) {
 					result.add(serviceReg);
 				}
 			}

@@ -60,7 +60,7 @@ public class CommunicationConsole implements CommandProvider {
 		for (RemoteServiceDescription rsDesc : rsDescs) {
 			if (rsDesc.getState() == RemoteServiceDescription.State.REGISTERED) {
 				found = true;
-				System.out.println("Riena:: published end point=(" + rsDesc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+				System.out.println("Riena:: Published OSGi Service=(" + rsDesc + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		if (!found) {
@@ -75,14 +75,14 @@ public class CommunicationConsole implements CommandProvider {
 			// System.out.println("Riena:: no OSGi services registered");
 			return;
 		}
-		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices("*"); //$NON-NLS-1$
+		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices(null); //$NON-NLS-1$
 		if (rsRegs.size() == 0) {
-			System.out.println("Riena:: no Remote OSGi services registered"); //$NON-NLS-1$
+			System.out.println("Riena:: no RemoteServiceProxies registered"); //$NON-NLS-1$
 			return;
 		}
 		for (IRemoteServiceRegistration rsReg : rsRegs) {
 			IRemoteServiceReference rsRef = rsReg.getReference();
-			System.out.println("Riena:: registered remoteServiceRef=(" + rsRef + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out.println("Riena:: Registered RemoteServiceProxy=(" + rsRef + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

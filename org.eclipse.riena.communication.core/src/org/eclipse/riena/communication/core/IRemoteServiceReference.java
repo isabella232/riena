@@ -25,7 +25,6 @@ import org.osgi.framework.ServiceRegistration;
  * A IRemoteServiceReference is managed by the IRemoteServiceRegistry OSGi
  * Service.
  * 
- * @author Alexander Ziegler
  * 
  * @see IRemoteServiceRegistry#registerService(IRemoteServiceReference)
  * @see IRemoteServiceRegistry#unregisterService(IRemoteServiceReference)
@@ -33,11 +32,6 @@ import org.osgi.framework.ServiceRegistration;
  * 
  */
 public interface IRemoteServiceReference {
-
-	/**
-	 * @return the hostId who is responsible for this remote service object
-	 */
-	String getHostId();
 
 	/**
 	 * 
@@ -93,11 +87,18 @@ public interface IRemoteServiceReference {
 	void setServiceRegistration(ServiceRegistration serviceRegistration);
 
 	/**
-	 * Sets the hostId who is responsible for this remote service object
+	 * The bundle context for which this proxy was registered
 	 * 
-	 * @param hostId
+	 * @return BundleContext
 	 */
-	void setHostId(String hostId);
+	BundleContext getContext();
+
+	/**
+	 * To set the BundleContext in which this service is registered
+	 * 
+	 * @param context
+	 */
+	void setContext(BundleContext context);
 
 	/**
 	 * Disposes this reference

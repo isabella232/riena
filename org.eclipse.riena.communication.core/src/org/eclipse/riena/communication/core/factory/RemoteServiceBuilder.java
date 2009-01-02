@@ -12,6 +12,7 @@ package org.eclipse.riena.communication.core.factory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.internal.communication.core.Activator;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceRegistration;
@@ -58,7 +59,6 @@ import org.osgi.service.component.ComponentContext;
  */
 public class RemoteServiceBuilder {
 
-	private static final String HOST_ID = RemoteServiceBuilder.class.getName();
 	private IRemoteServiceRegistration rsReg;
 
 	/**
@@ -87,7 +87,7 @@ public class RemoteServiceBuilder {
 			String protocol = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PROTOCOL);
 
 			RemoteServiceFactory factory = new RemoteServiceFactory();
-			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, HOST_ID);
+			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, Activator.getDefault().getContext());
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

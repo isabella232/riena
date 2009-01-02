@@ -13,18 +13,18 @@ package org.eclipse.riena.communication.core.factory;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 /**
  * This is a default implementation of {@link IRemoteServiceReference}.
  * 
- * @author Alexander Ziegler
  */
 public class RemoteServiceReference implements IRemoteServiceReference {
 	private Object serviceInstance;
 	private ServiceRegistration serviceRegistration;
 	private RemoteServiceDescription description;
-	private String hostId;
+	private BundleContext context;
 
 	/**
 	 * Creates an instance with the given service end point description
@@ -33,16 +33,6 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 */
 	public RemoteServiceReference(RemoteServiceDescription description) {
 		this.description = description;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.communication.core.IRemoteServiceReference#getHostId()
-	 */
-	public String getHostId() {
-		return hostId;
 	}
 
 	/*
@@ -129,15 +119,29 @@ public class RemoteServiceReference implements IRemoteServiceReference {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.riena.communication.core.IRemoteServiceReference#setHostId
-	 * (java.lang.String)
+	 * org.eclipse.riena.communication.core.IRemoteServiceReference#getContext()
 	 */
-	public void setHostId(String hostId) {
-		this.hostId = hostId;
+	public BundleContext getContext() {
+		return context;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.communication.core.IRemoteServiceReference#setContext
+	 * (org.osgi.framework.BundleContext)
+	 */
+	public void setContext(BundleContext context) {
+		this.context = context;
 	}
 
 	@Override
 	public String toString() {
-		return "hostId= " + hostId + ", end point=(" + getDescription() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String symbolicName = "no context"; //$NON-NLS-1$
+		if (context != null) {
+			symbolicName = context.getBundle().getSymbolicName();
+		}
+		return "context for bundle=" + symbolicName + ", end point=(" + getDescription() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 }

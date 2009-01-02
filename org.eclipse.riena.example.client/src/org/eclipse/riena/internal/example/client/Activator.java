@@ -11,10 +11,12 @@
 package org.eclipse.riena.internal.example.client;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.monitor.common.IReceiver;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
+
 import org.osgi.framework.BundleContext;
 
 /**
@@ -39,9 +41,13 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		plugin = this;
 		collectibleReceiverReg = new RemoteServiceFactory().createAndRegisterProxy(IReceiver.class,
-				"http://localhost:8080/hessian/CollectibleReceiverWS", PROTOCOL_HESSIAN); //$NON-NLS-1$
-		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", PROTOCOL_HESSIAN); //$NON-NLS-1$
+				"http://localhost:8080/hessian/CollectibleReceiverWS", PROTOCOL_HESSIAN, context); //$NON-NLS-1$
+		try {
+			authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
+					"http://localhost:8080/hessian/AuthenticationService", PROTOCOL_HESSIAN, context); //$NON-NLS-1$
+		} catch (ProxyAlreadyRegisteredFailure e) {
+			// do nothing, can happen if some other bundle registered this service
+		}
 	}
 
 	/**

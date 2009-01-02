@@ -15,6 +15,7 @@ import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
+
 import org.osgi.framework.BundleContext;
 
 /**
@@ -49,10 +50,10 @@ public class Activator extends AbstractRienaUIPlugin {
 
 		// register hessian proxy for riena remote service
 		helloWorldServiceReg = new RemoteServiceFactory().createAndRegisterProxy(IHelloWorldService.class,
-				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian");
+				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian", context);
 
 		customerSearchService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian");
+				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", context);
 
 	}
 

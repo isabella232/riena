@@ -40,7 +40,7 @@ public final class ProgressMonitorITest extends RienaTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		regAttachmentService = new RemoteServiceFactory().createAndRegisterProxy(IAttachmentService.class,
-				"http://localhost:8080/hessian/AttachmentService", "hessian");
+				"http://localhost:8080/hessian/AttachmentService", "hessian", Activator.getDefault().getContext());
 		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
 		BundleContext context = Activator.getDefault().getContext();

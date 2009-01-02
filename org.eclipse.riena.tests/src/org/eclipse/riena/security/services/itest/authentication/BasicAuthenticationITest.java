@@ -16,11 +16,13 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.security.common.BasicAuthenticationCallHook;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.tests.RienaTestCase;
+
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -41,7 +43,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null); //$NON-NLS-1$
 
 		customerSearchRegistration = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class, TESTURL,
-				"hessian"); //$NON-NLS-1$
+				"hessian", Activator.getDefault().getContext()); //$NON-NLS-1$
 	}
 
 	@Override

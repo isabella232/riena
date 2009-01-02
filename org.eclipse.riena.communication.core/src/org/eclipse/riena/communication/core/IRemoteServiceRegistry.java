@@ -15,6 +15,8 @@ import java.util.List;
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 
+import org.osgi.framework.BundleContext;
+
 /**
  * The IRemoteServiceRegistry adds the ability to register, unregister and
  * manage "remote services" as OSGi Services within an OSGi runtime (called
@@ -68,7 +70,7 @@ public interface IRemoteServiceRegistry {
 	 * @see #unregisterService(IRemoteServiceReference)
 	 * @see IRemoteServiceRegistration#unregister()
 	 */
-	IRemoteServiceRegistration registerService(IRemoteServiceReference reference);
+	IRemoteServiceRegistration registerService(IRemoteServiceReference reference, BundleContext context);
 
 	/**
 	 * Unregisters the given reference from the Remote Service Registry. The
@@ -85,8 +87,9 @@ public interface IRemoteServiceRegistry {
 	 * Answers a list of {@link IRemoteServiceRegistration} objects for all
 	 * registered "remote" OSGi Services for the given hostId
 	 * 
-	 * @param hostId
+	 * @param context
+	 *            BundleContext in which the service (proxy) is registered
 	 * @return a list of IRemoteServiceRegistration objects
 	 */
-	List<IRemoteServiceRegistration> registeredServices(String hostId);
+	List<IRemoteServiceRegistration> registeredServices(BundleContext context);
 }

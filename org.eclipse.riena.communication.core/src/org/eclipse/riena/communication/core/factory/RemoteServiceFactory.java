@@ -64,7 +64,6 @@ public class RemoteServiceFactory {
 
 	private BundleContext context;
 	private IRemoteServiceRegistry registry;
-	private static final String HOST_ID = RemoteServiceFactory.class.getName();
 	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceFactory.class);
 
 	/**
@@ -106,53 +105,23 @@ public class RemoteServiceFactory {
 	 * registered reference becomes automatically registered as "remote" OSGi
 	 * Service within the local OSGi container. Answers the registration object
 	 * for the reference. If no protocol specific {@link IRemoteServiceFactory}
-	 * OSGI Service available answers <code>null</code>.
-	 * 
-	 * @param interfaceClass
-	 * @param url
-	 * @param protocol
-	 * @return the registration object or <code>null</code>
-	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol) {
-		return createAndRegisterProxy(interfaceClass, url, protocol, HOST_ID);
-	}
-
-	/**
-	 * Creates and registers a protocol specific remote service reference and
-	 * registers the reference into the {@link IRemoteServiceRegistry}. A
-	 * registered reference becomes automatically registered as "remote" OSGi
-	 * Service within the local OSGi container. Answers the registration object
-	 * for the reference. If no protocol specific {@link IRemoteServiceFactory}
 	 * OSGI Service available answers <code>null</code>.<br>
 	 * <p>
-	 * The hostId identifies who is responsible for this remote service
-	 * registration
 	 * 
 	 * @param interfaceClass
+	 *            the interface of the OSGi Service
 	 * @param url
+	 *            the URL of the remote service location
 	 * @param protocol
-	 * @param hostId
+	 *            the used protocol
+	 * @param context
+	 *            the context in which the proxy is registered
 	 * @return the registration object or <code>null</code>
 	 */
 	public IRemoteServiceRegistration createAndRegisterProxy(Class<?> interfaceClass, String url, String protocol,
-			String hostId) {
+			BundleContext context) {
 		RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
-		return createAndRegisterProxy(rsd);
-	}
-
-	/**
-	 * Creates and registers a protocol specific remote service reference and
-	 * registers the reference into the {@link IRemoteServiceRegistry}. A
-	 * registered reference becomes automatically registered as "remote" OSGi
-	 * Service within the local OSGi container. Answers the registration object
-	 * for the reference. If no protocol specific {@link IRemoteServiceFactory}
-	 * OSGI Service available answers <code>null</code>.
-	 * 
-	 * @param rsDesc
-	 * @return the registration object or <code>null</code>
-	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(RemoteServiceDescription rsDesc) {
-		return createAndRegisterProxy(rsDesc, HOST_ID);
+		return createAndRegisterProxy(rsd, context);
 	}
 
 	/**
@@ -167,10 +136,13 @@ public class RemoteServiceFactory {
 	 * registration
 	 * 
 	 * @param rsDesc
-	 * @param hostId
+	 *            the remote service description with all the metadata about the
+	 *            remote service
+	 * @param context
+	 *            the context in which the proxy is registered
 	 * @return the registration object or <code>null</code>
 	 */
-	public IRemoteServiceRegistration createAndRegisterProxy(RemoteServiceDescription rsDesc, String hostId) {
+	public IRemoteServiceRegistration createAndRegisterProxy(RemoteServiceDescription rsDesc, BundleContext context) {
 		// create serviceInstance first
 		IRemoteServiceReference rsRef = createProxy(rsDesc);
 		if (rsRef == null) {
@@ -182,10 +154,9 @@ public class RemoteServiceFactory {
 							+ rsDesc);
 			return null;
 		}
-		rsRef.setHostId(hostId);
 		// register directly
 		if (registry != null) {
-			IRemoteServiceRegistration reg = registry.registerService(rsRef);
+			IRemoteServiceRegistration reg = registry.registerService(rsRef, context);
 			return reg;
 		}
 		return null;
@@ -387,7 +358,7 @@ public class RemoteServiceFactory {
 		private Object serviceInstance;
 		private String serviceClass;
 		private IRemoteServiceReference delegateReference;
-		private String tempHostId;
+		private BundleContext tempBundleContext;
 		private RemoteServiceDescription rsd;
 		private ServiceRegistration serviceRegistration;
 
@@ -400,8 +371,8 @@ public class RemoteServiceFactory {
 
 		public void setDelegateRef(IRemoteServiceReference delegateRef) {
 			this.delegateReference = delegateRef;
-			if (tempHostId != null) {
-				delegateRef.setHostId(tempHostId);
+			if (tempBundleContext != null) {
+				delegateRef.setContext(tempBundleContext);
 			}
 		}
 
@@ -426,11 +397,11 @@ public class RemoteServiceFactory {
 			return delegateReference.getDescription();
 		}
 
-		public String getHostId() {
+		public BundleContext getContext() {
 			if (delegateReference == null) {
-				return tempHostId;
+				return tempBundleContext;
 			} else {
-				return delegateReference.getHostId();
+				return delegateReference.getContext();
 			}
 		}
 
@@ -467,11 +438,11 @@ public class RemoteServiceFactory {
 			}
 		}
 
-		public void setHostId(String hostId) {
+		public void setContext(BundleContext context) {
 			if (delegateReference == null) {
-				tempHostId = hostId;
+				tempBundleContext = context;
 			} else {
-				delegateReference.setHostId(hostId);
+				delegateReference.setContext(context);
 			}
 		}
 
@@ -480,7 +451,7 @@ public class RemoteServiceFactory {
 				delegateReference.setServiceInstance(serviceInstance);
 			} else {
 				throw new RuntimeException(
-						"trying to set serviceInstance for lazyRemoteServiceReference with no delegate");
+						"trying to set serviceInstance for lazyRemoteServiceReference with no delegate"); //$NON-NLS-1$
 			}
 		}
 
@@ -492,7 +463,11 @@ public class RemoteServiceFactory {
 			if (delegateReference != null) {
 				return delegateReference.toString();
 			}
-			return super.toString();
+			String symbolicName = "no context"; //$NON-NLS-1$
+			if (tempBundleContext != null) {
+				symbolicName = tempBundleContext.getBundle().getSymbolicName();
+			}
+			return "(lazyreference) context for bundle=" + symbolicName + ", end point=(" + getDescription() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 	}

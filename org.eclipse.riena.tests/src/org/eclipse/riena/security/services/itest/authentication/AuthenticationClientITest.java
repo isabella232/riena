@@ -15,7 +15,6 @@ import java.util.Arrays;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.internal.tests.Activator;
@@ -28,6 +27,8 @@ import org.eclipse.riena.security.common.authentication.credentials.NameCredenti
 import org.eclipse.riena.security.common.authentication.credentials.PasswordCredential;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
@@ -48,9 +49,10 @@ public class AuthenticationClientITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		sessionServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
-				"http://localhost:8080/hessian/SessionService", "hessian");
+				"http://localhost:8080/hessian/SessionService", "hessian", Activator.getDefault().getContext());
 		authenticationServiceRegistration = new RemoteServiceFactory().createAndRegisterProxy(
-				IAuthenticationService.class, "http://localhost:8080/hessian/AuthenticationService", "hessian");
+				IAuthenticationService.class, "http://localhost:8080/hessian/AuthenticationService", "hessian",
+				Activator.getDefault().getContext());
 
 	}
 

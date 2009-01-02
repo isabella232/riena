@@ -42,7 +42,8 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		new RemoteServiceFactory().createAndRegisterProxy(ICustomerDemoService.class, "http://localhost:8080/hessian" + ICustomerDemoService.WS_ID, "hessian");
+		new RemoteServiceFactory().createAndRegisterProxy(ICustomerDemoService.class, "http://localhost:8080/hessian"
+				+ ICustomerDemoService.WS_ID, "hessian", context);
 	}
 
 	/*
