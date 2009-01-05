@@ -180,13 +180,6 @@
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.KundenSucheView"
-            id="org.eclipse.riena.example.kundensuche"
-            name="org.eclipse.riena.example.client.views.KundenSucheView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.DialogSubModuleView"
             id="org.eclipse.riena.example.client.views.DialogSubModuleView"
             name="org.eclipse.riena.example.client.views.DialogSubModuleView"
