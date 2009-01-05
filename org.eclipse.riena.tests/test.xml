@@ -38,7 +38,7 @@
 				 Since there were occasionally several class-loading problems the securest option has been preferred. -->  
 			<property name="vmargs" value="-classpath ${instrumented}/*.jar;${jars}/*.jar -Dosgi.parentClassloader=app -Dnet.sourceforge.cobertura.datafile=${coberturaScripts}\cobertura.ser"/>
 			<property name="jvm" value="${jvmHome}"/>
-			</ant>
+		</ant>
 	</target>
 	
 	<!-- This target holds code to cleanup the testing environment after -->
