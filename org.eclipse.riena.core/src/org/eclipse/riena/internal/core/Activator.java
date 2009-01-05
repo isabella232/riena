@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
@@ -65,14 +64,6 @@ public class Activator extends RienaPlugin {
 
 		logStage(logger);
 		startStartupListener();
-
-		// awful hack to make sure communication works in the unittests HACK TODO
-		for (Bundle bundle : context.getBundles()) {
-			if (bundle.getSymbolicName().equals("org.eclipse.riena.communication.factory.hessian")
-					&& (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.STARTING)) {
-				bundle.start();
-			}
-		}
 
 		//		SimpleExceptionHandler handler = new SimpleExceptionHandler();
 		//		context.registerService(IExceptionHandler.class.getName(), handler, RienaConstants

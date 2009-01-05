@@ -13,6 +13,7 @@ package org.eclipse.riena.communication.core.factory;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
@@ -27,7 +28,6 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
@@ -62,9 +62,9 @@ import org.osgi.service.log.LogService;
  */
 public class RemoteServiceFactory {
 
-	private BundleContext context;
-	private IRemoteServiceRegistry registry;
+	private static IRemoteServiceRegistry registry;
 	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceFactory.class);
+	private static HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
 
 	/**
 	 * Creates a RemoteServiceFactory instance with the default bundle context.
@@ -75,28 +75,31 @@ public class RemoteServiceFactory {
 	 * 
 	 */
 	public RemoteServiceFactory() {
-		this(Activator.getDefault().getContext());
-	}
-
-	public void bind(IRemoteServiceRegistry registry) {
-		this.registry = registry;
-	}
-
-	public void unbind(IRemoteServiceRegistry registry) {
-		if (this.registry == registry) {
-			this.registry = null;
+		if (registry == null) {
+			Inject.service(IRemoteServiceRegistry.class.getName()).useRanking().into(this).andStart(
+					Activator.getDefault().getContext());
+		}
+		if (remoteServiceFactoryImplementations == null) {
+			Inject.extension(IRemoteServiceFactoryProperties.EXTENSION_POINT_ID).into(this).andStart(
+					Activator.getDefault().getContext());
 		}
 	}
 
-	/**
-	 * Creates a RemoteServiceFactory instance with the given bundle context.
-	 * This bundle context should refer the service interface type.
-	 * 
-	 * @param context
-	 */
-	public RemoteServiceFactory(BundleContext context) {
-		this.context = context;
-		Inject.service(IRemoteServiceRegistry.class.getName()).useRanking().into(this).andStart(context);
+	public void bind(IRemoteServiceRegistry registryParm) {
+		registry = registryParm;
+	}
+
+	public void unbind(IRemoteServiceRegistry registryParm) {
+		if (registry == registryParm) {
+			registry = null;
+		}
+	}
+
+	public void update(IRemoteServiceFactoryProperties[] factories) {
+		remoteServiceFactoryImplementations = new HashMap<String, IRemoteServiceFactory>();
+		for (IRemoteServiceFactoryProperties factory : factories) {
+			remoteServiceFactoryImplementations.put(factory.getProtocol(), factory.createRemoteServiceFactory());
+		}
 	}
 
 	/**
@@ -198,6 +201,7 @@ public class RemoteServiceFactory {
 	 * @return the serviceInstance references or <code>null</code>
 	 */
 	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
+		BundleContext context = Activator.getDefault().getContext();
 		if (!RienaStatus.isActive()) {
 			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This will probably not work."); //$NON-NLS-1$
 		}
@@ -214,33 +218,40 @@ public class RemoteServiceFactory {
 			return null;
 		}
 		// find a factory for this specific protocol
-		String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		try {
-			references = context.getServiceReferences(IRemoteServiceFactory.class.getName(), filter);
-		} catch (InvalidSyntaxException e) {
-			e.printStackTrace();
-			return null;
-		}
-		// no factory for this protocol
-		if (references == null) {
-			LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory serviceRef available protocol [" //$NON-NLS-1$
-					+ rsd.getProtocol() + "]"); //$NON-NLS-1$
-			return null;
-		}
-
 		ServiceReference refFactory = null;
 		IRemoteServiceFactory factory = null;
-		for (ServiceReference reference : references) {
-			factory = (IRemoteServiceFactory) context.getService(reference);
-			if (factory != null) {
-				refFactory = reference;
-				break;
-			}
-		}
+
+		factory = (remoteServiceFactoryImplementations.get(rsd.getProtocol()));
+
+		// if not found in extension list, search for it as an OSGi Service
+		//		if (factory == null) {
+		//
+		//			String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//			try {
+		//				references = context.getServiceReferences(IRemoteServiceFactory.class.getName(), filter);
+		//			} catch (InvalidSyntaxException e) {
+		//				e.printStackTrace();
+		//				return null;
+		//			}
+		//			// no factory for this protocol
+		//			if (references == null) {
+		//				LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory serviceRef available protocol [" //$NON-NLS-1$
+		//						+ rsd.getProtocol() + "]"); //$NON-NLS-1$
+		//				return null;
+		//			}
+		//
+		//			for (ServiceReference reference : references) {
+		//				factory = (IRemoteServiceFactory) context.getService(reference);
+		//				if (factory != null) {
+		//					refFactory = reference;
+		//					break;
+		//				}
+		//			}
+		//		}
 
 		// could not get instance for existing reference
 		if (factory == null) {
-			LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory service available protocol [" //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory extension available protocol [" //$NON-NLS-1$
 					+ rsd.getProtocol() + "] id [" + rsd.getServiceInterfaceClassName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
@@ -258,7 +269,9 @@ public class RemoteServiceFactory {
 					new Class[] { rsd.getServiceInterfaceClass() }, callHooksProxy));
 			return rsr;
 		} finally {
-			context.ungetService(refFactory);
+			//			if (refFactory != null) {
+			//				context.ungetService(refFactory);
+			//			}
 		}
 	}
 

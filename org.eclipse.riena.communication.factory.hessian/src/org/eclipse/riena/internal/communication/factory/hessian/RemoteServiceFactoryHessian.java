@@ -99,9 +99,6 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		return PROTOCOL;
 	}
 
-	public void dispose() {
-	}
-
 	public ICallMessageContextAccessor getMessageContextAccessor() {
 		return messageContextAccessor;
 	}

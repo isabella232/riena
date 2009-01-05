@@ -17,17 +17,18 @@
       </factory>
    </extension>
 
-	<extension
-        point="org.eclipse.riena.core.startups">
-      <startup 
-      	activateSelf="true">
-      </startup>
-   </extension>
  <extension
        id="org.eclipse.riena.communication.hessian.StacktraceElementSerializerFactory"
        point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
     <factory
           implementation="org.eclipse.riena.internal.communication.factory.hessian.StacktraceElementSerializerFactory">
+    </factory>
+ </extension>
+ <extension
+       point="org.eclipse.riena.communication.core.remoteservicefactory">
+    <factory
+          protocol="hessian"
+          remoteServiceFactory="org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian">
     </factory>
  </extension>
 
