@@ -16,6 +16,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.internal.core.Activator;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -23,7 +25,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
@@ -238,7 +239,8 @@ public class ExtensionInjector {
 		}
 
 		if (candidates.size() == 0) {
-			throw new IllegalStateException("No suitable 'bind' method found."); //$NON-NLS-1$
+			throw new IllegalStateException(
+					"No suitable 'bind' method found. Looking for method='" + updateMethodName + "(<any interface>[])' with annotation='ExtensionInterface'"); //$NON-NLS-1$
 		}
 
 		if (candidates.size() == 1) {
