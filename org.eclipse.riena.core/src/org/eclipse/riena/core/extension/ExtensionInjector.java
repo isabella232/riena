@@ -240,7 +240,7 @@ public class ExtensionInjector {
 
 		if (candidates.size() == 0) {
 			throw new IllegalStateException(
-					"No suitable 'bind' method found. Looking for method='" + updateMethodName + "(<any interface>[])' with annotation='ExtensionInterface'"); //$NON-NLS-1$
+					"No suitable 'bind' method found. Looking for method='" + updateMethodName + "(<someinterface>[])'. someinterface must have annotation='ExtensionInterface'"); //$NON-NLS-1$
 		}
 
 		if (candidates.size() == 1) {
