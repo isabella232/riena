@@ -12,6 +12,7 @@ package org.eclipse.riena.core.extension;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -345,6 +346,24 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		assertEquals("test1", target.getData().getText());
 		assertEquals(String.class, target.getData().createObjectType().getClass());
 		removeExtension("core.test.extpoint.id1");
+		removeExtensionPoint("core.test.extpoint");
+		injector.stop();
+	}
+
+	public void testBug259478WithSingleData() {
+		printTestName();
+		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
+		addPluginXml(ExtensionInjectorTest.class, "plugin_ext259478.xml");
+		ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+		ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).expectingExactly(1)
+				.into(target).update("configure").andStart(getContext());
+		assertNotNull(target.getData());
+		Object obj = target.getData().createObjectType();
+		assertTrue(obj instanceof Thing259478);
+		Map<String, String> properties = ((Thing259478) obj).properties;
+		assertEquals("1", properties.get("eins"));
+		assertEquals("2", properties.get("zwei"));
+		removeExtension("core.test.extpoint.id8");
 		removeExtensionPoint("core.test.extpoint");
 		injector.stop();
 	}
