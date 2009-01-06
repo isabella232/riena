@@ -16,8 +16,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.internal.core.Activator;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -25,6 +23,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
@@ -37,16 +36,17 @@ public class ExtensionInjector {
 	private final ExtensionDescriptor extensionDesc;
 	private final Object target;
 
-	// private BundleContext context;
+	// private BundleContext context; // see comment in andStart()
 	private boolean started;
 	private boolean symbolReplace = true;
 	private boolean nonSpecific = true;
-	private String updateMethodName = "update"; //$NON-NLS-1$
+	private String updateMethodName = DEFAULT_UPDATE_METHOD_NAME;
 	private Method updateMethod;
 	private IRegistryEventListener injectorListener;
 	private boolean isArray;
 	private Class<?> componentType;
 
+	private final static String DEFAULT_UPDATE_METHOD_NAME = "update"; //$NON-NLS-1$
 	private final static Logger LOGGER = Activator.getDefault().getLogger(ExtensionInjector.class);
 
 	/**
@@ -199,14 +199,16 @@ public class ExtensionInjector {
 			}
 
 		} catch (SecurityException e) {
-			throw new IllegalStateException("Could not find 'bind' method.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Could not find 'bind' method " + updateMethodName + "(" //$NON-NLS-1$ //$NON-NLS-2$
+					+ extensionDesc.getInterfaceType() + ").", e); //$NON-NLS-1$
 		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException("Could not find 'bind' method.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Could not find 'bind' method " + updateMethodName + "(" //$NON-NLS-1$ //$NON-NLS-2$
+					+ extensionDesc.getInterfaceType() + ").", e); //$NON-NLS-1$
 		}
 	}
 
 	private Method seekMatchingUpdateMethod(final Class<?> interfaceType, final boolean isArray)
-			throws SecurityException, NoSuchMethodException {
+			throws NoSuchMethodException {
 		try {
 			final Class<?> seeking = isArray ? Array.newInstance(interfaceType, 0).getClass() : interfaceType;
 			return target.getClass().getMethod(updateMethodName, seeking);
@@ -239,8 +241,8 @@ public class ExtensionInjector {
 		}
 
 		if (candidates.size() == 0) {
-			throw new IllegalStateException(
-					"No suitable 'bind' method found. Looking for method='" + updateMethodName + "(<someinterface>[])'. someinterface must have annotation='ExtensionInterface'"); //$NON-NLS-1$
+			throw new IllegalStateException("No suitable 'bind' method found. Looking for method " + updateMethodName //$NON-NLS-1$
+					+ "(<someinterface>[]). someinterface must be annotated with @ExtensionInterface."); //$NON-NLS-1$
 		}
 
 		if (candidates.size() == 1) {
@@ -248,12 +250,13 @@ public class ExtensionInjector {
 				return candidates.get(0);
 			} else {
 				throw new IllegalStateException("Found method " + candidates.get(0) //$NON-NLS-1$
-						+ " does not match extension point constraints."); //$NON-NLS-1$
+						+ " does not match extension point constraints (e.g. requires an array type)."); //$NON-NLS-1$
 			}
 		}
 
 		if (candidates.size() > 2) {
-			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method."); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalStateException("Too much (>2) candidates (" + candidates + ") for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
+					+ updateMethodName + "."); //$NON-NLS-1$
 		}
 
 		if (matchesExtensionPointConstraint(candidates.get(0).getParameterTypes()[0])) {
@@ -264,7 +267,8 @@ public class ExtensionInjector {
 			return candidates.get(1);
 		}
 
-		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method."); //$NON-NLS-1$ //$NON-NLS-2$
+		throw new IllegalStateException("No suitable candidate from (" + candidates + ") found for 'bind' method " //$NON-NLS-1$ //$NON-NLS-2$
+				+ updateMethodName + "."); //$NON-NLS-1$
 	}
 
 	/**
@@ -308,11 +312,11 @@ public class ExtensionInjector {
 		try {
 			updateMethod.invoke(target, params);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Calling 'update' method fails.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Calling 'update' method fails.", e); //$NON-NLS-1$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling 'update' method fails.", e.getCause()); //$NON-NLS-1$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
