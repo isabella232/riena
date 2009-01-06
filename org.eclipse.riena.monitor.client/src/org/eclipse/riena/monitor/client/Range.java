@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 compeople AG and others.
+ * Copyright (c) 2007, 2009 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,32 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.monitor.client;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
  * The {@code Range} class implements a simple solution to specify ranges of
  * integers. A range may consist of several intervals and single values.
- * Intervals may be open or closed or a mixture of them {@link http
- * ://en.wikipedia.org/wiki/Interval_(mathematics)}
  * <p>
  * Ranges are specified with a reverse polish notation, e.g.
  * <ul>
- * <li>1 3 () -> (1,3): just 2 is within the range</li>
- * <li>1 3 [] -> [1,3]: 1,2 and 3 are within the range</li>
- * <li>1 3 [] 5 8 () -> [1,3] (5,8): 1,2,3,6 and 7 are within the range</li>
- * <li>1 3 [] 9 -> [1,3] 9: 1,2,3 and 9 are within the range</li>
+ * <li>1..3 -> 1,2 and 3 are within the range</li>
+ * <li>1..3, 5..8 -> 1,2,3,5,6,7 and 8 are within the range</li>
+ * <li>1..3, 9 -> 1,2,3 and 9 are within the range</li>
  * <li>etc.</li>
  *</ul>
  */
 public class Range {
 
-	private final Stack<Match> stack = new Stack<Match>();
-
-	private static final String CLOSE_OPEN_TOKEN = "[)"; //$NON-NLS-1$
-	private static final String OPEN_CLOSE_TOKEN = "(]"; //$NON-NLS-1$
-	private static final String CLOSE_CLOSE_TOKEN = "[]"; //$NON-NLS-1$
-	private static final String OPEN_OPEN_TOKEN = "()"; //$NON-NLS-1$
+	private final List<Match> list = new ArrayList<Match>();
+	private static final String DELIM = ","; //$NON-NLS-1$
+	private static final String TILL = ".."; //$NON-NLS-1$
 
 	/**
 	 * Parse the give range.
@@ -44,21 +39,15 @@ public class Range {
 	 * @throws IllegalArgumentException
 	 */
 	public Range(final String range) {
-		final StringTokenizer tokenizer = new StringTokenizer(range);
+		final StringTokenizer tokenizer = new StringTokenizer(range, DELIM);
 		String token = null;
 		try {
 			while (tokenizer.hasMoreTokens()) {
-				token = tokenizer.nextToken();
-				if (token.equals(OPEN_OPEN_TOKEN)) {
-					stack.push(new OpenOpen());
-				} else if (token.equals(CLOSE_CLOSE_TOKEN)) {
-					stack.push(new CloseClose());
-				} else if (token.equals(OPEN_CLOSE_TOKEN)) {
-					stack.push(new OpenClose());
-				} else if (token.equals(CLOSE_OPEN_TOKEN)) {
-					stack.push(new CloseOpen());
+				token = tokenizer.nextToken().trim();
+				if (token.contains(TILL)) {
+					list.add(new Interval(token));
 				} else {
-					stack.push(new Value(token));
+					list.add(new Value(token));
 				}
 			}
 		} catch (Throwable t) {
@@ -67,7 +56,7 @@ public class Range {
 	}
 
 	public boolean matches(final int value) {
-		for (Match match : stack) {
+		for (Match match : list) {
 			if (match.matches(value)) {
 				return true;
 			}
@@ -102,44 +91,21 @@ public class Range {
 		public boolean matches(final int value) {
 			return this.value == value;
 		}
-
-		public int getValue() {
-			return value;
-		}
 	}
 
-	private abstract class Interval implements Match {
+	private class Interval implements Match {
 		protected final int lower;
 		protected final int upper;
 
-		public Interval() {
-			upper = Integer.valueOf(((Value) stack.pop()).getValue());
-			lower = Integer.valueOf(((Value) stack.pop()).getValue());
+		public Interval(String token) {
+			int dotdot = token.indexOf(TILL);
+			assert dotdot > 0;
+			lower = Integer.valueOf(token.substring(0, dotdot).trim());
+			upper = Integer.valueOf(token.substring(dotdot + TILL.length()).trim());
 		}
-	}
 
-	private class OpenOpen extends Interval {
-		public boolean matches(final int value) {
-			return lower < value && value < upper;
-		}
-	}
-
-	private class CloseClose extends Interval {
 		public boolean matches(final int value) {
 			return lower <= value && value <= upper;
 		}
 	}
-
-	private class OpenClose extends Interval {
-		public boolean matches(final int value) {
-			return lower < value && value <= upper;
-		}
-	}
-
-	private class CloseOpen extends Interval {
-		public boolean matches(final int value) {
-			return lower <= value && value < upper;
-		}
-	}
-
 }

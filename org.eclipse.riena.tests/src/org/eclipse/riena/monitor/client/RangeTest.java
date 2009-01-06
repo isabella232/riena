@@ -34,76 +34,53 @@ public class RangeTest extends TestCase {
 	}
 
 	public void testDoubleValue() throws ParseException {
-		Range range = new Range("2 9");
+		Range range = new Range("2, 9");
 		assertFalse(range.matches(1));
 		assertTrue(range.matches(2));
 		assertFalse(range.matches(3));
 		assertTrue(range.matches(9));
 	}
 
-	public void testSingleRangeOpenOpen() throws ParseException {
-		Range range = new Range("1 3 ()");
-		assertFalse(range.matches(1));
-		assertTrue(range.matches(2));
-		assertFalse(range.matches(3));
-	}
-
-	public void testSingleRangeCloseClose() throws ParseException {
-		Range range = new Range("1 3 []");
-		assertFalse(range.matches(0));
+	public void testSingleRangeInterval() throws ParseException {
+		Range range = new Range("1..3");
 		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
 		assertTrue(range.matches(3));
-		assertFalse(range.matches(4));
 	}
 
-	public void testSingleRangeOpenClose() throws ParseException {
-		Range range = new Range("1 3 (]");
-		assertFalse(range.matches(0));
-		assertFalse(range.matches(1));
-		assertTrue(range.matches(2));
-		assertTrue(range.matches(3));
-		assertFalse(range.matches(4));
-	}
-
-	public void testSingleRangeCloseOpen() throws ParseException {
-		Range range = new Range("1 3 [)");
-		assertFalse(range.matches(0));
+	public void testRangeIntervalPlusValue() throws ParseException {
+		Range range = new Range("1..3,5");
 		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
-		assertFalse(range.matches(3));
-		assertFalse(range.matches(4));
-	}
-
-	public void testRangeOpenOpenPlusValue() throws ParseException {
-		Range range = new Range("1 3 () 5");
-		assertFalse(range.matches(1));
-		assertTrue(range.matches(2));
-		assertFalse(range.matches(3));
+		assertTrue(range.matches(3));
 		assertFalse(range.matches(4));
 		assertTrue(range.matches(5));
 	}
 
-	public void testValuePlusRangeOpenOpenPlusValue() throws ParseException {
-		Range range = new Range("-2 1 3 () 5");
+	public void testValuePlusRangeIntervalPlusValue() throws ParseException {
+		Range range = new Range("-2, 1..3 , 5");
 		assertTrue(range.matches(-2));
 		assertFalse(range.matches(-1));
 		assertFalse(range.matches(0));
-		assertFalse(range.matches(1));
+		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
-		assertFalse(range.matches(3));
+		assertTrue(range.matches(3));
 		assertFalse(range.matches(4));
 		assertTrue(range.matches(5));
 	}
 
 	public void testSingleRangeOpenOpenPlusRangeCloseClose() throws ParseException {
-		Range range = new Range("1 3 () 10 12 []");
+		Range range = new Range("-2..0, 10..12");
+		assertFalse(range.matches(-3));
+		assertTrue(range.matches(-2));
+		assertTrue(range.matches(-1));
+		assertTrue(range.matches(0));
 		assertFalse(range.matches(1));
-		assertTrue(range.matches(2));
-		assertFalse(range.matches(3));
+		assertFalse(range.matches(9));
 		assertTrue(range.matches(10));
 		assertTrue(range.matches(11));
 		assertTrue(range.matches(12));
+		assertFalse(range.matches(13));
 	}
 
 	public void testSingleValueError() {
@@ -117,7 +94,7 @@ public class RangeTest extends TestCase {
 
 	public void testIncompleteInterval() {
 		try {
-			new Range("1 ()");
+			new Range("1..");
 			fail();
 		} catch (IllegalArgumentException t) {
 			System.out.println("Expected error: " + t);
