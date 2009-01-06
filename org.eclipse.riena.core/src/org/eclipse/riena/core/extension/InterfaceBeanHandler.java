@@ -148,7 +148,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		}
 		// Now try to create a fresh instance,i.e.
 		// createExecutableExtension() ()
-		if (configurationElement.getAttribute(name) == null) {
+		if (configurationElement.getAttribute(name) == null && configurationElement.getChildren(name).length == 0) {
 			return Result.CACHED_NULL;
 		}
 		if (method.isAnnotationPresent(CreateLazy.class)) {
