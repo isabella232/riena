@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
@@ -245,16 +247,62 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		navigationProcessor = pProcessor;
 	}
 
-	public void addChild(C pChild) {
-		if (pChild != null && !hasChild(pChild) && !pChild.isDisposed()) {
-			List<C> oldList = new ArrayList<C>(children);
-			children.add(pChild);
-			addChildParent(pChild);
+	/**
+	 * Checks if the given class (or a superclass) implements the correct type
+	 * of children.
+	 * 
+	 * @param childClass
+	 *            - class of child
+	 */
+	protected boolean checkChildClass(Class<?> childClass) {
 
-			propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
-			notifyChildAdded(pChild);
+		Assert.isNotNull(childClass);
+
+		Type[] types = childClass.getInterfaces();
+		for (Type type : types) {
+			if (type == getValidChildType()) {
+				return true;
+			}
+			if (type == INavigationNode.class) {
+				return false;
+			}
 		}
-		// TODO do something if the node cannot be added
+
+		Class<?> superClass = childClass.getSuperclass();
+		if (superClass != null) {
+			return checkChildClass(superClass);
+		}
+
+		return false;
+
+	}
+
+	public void addChild(C pChild) {
+
+		if (pChild == null) {
+			throw new NavigationModelFailure("Cannot add null!"); //$NON-NLS-1$
+		}
+		if (hasChild(pChild)) {
+			throw new NavigationModelFailure("Child node \"" + pChild.toString() + "\" is already added!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (pChild.isDisposed()) {
+			throw new NavigationModelFailure("Cannot add disposed child node \"" + pChild.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (pChild == this) {
+			throw new NavigationModelFailure("Cannot add node \"" + pChild.toString() + "\" to itself!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		if (!checkChildClass(pChild.getClass())) {
+			throw new NavigationModelFailure("Child node \"" + pChild.toString() + "\" isn't an instance of " //$NON-NLS-1$ //$NON-NLS-2$
+					+ getValidChildType().toString() + "!"); //$NON-NLS-1$
+		}
+
+		List<C> oldList = new ArrayList<C>(children);
+		children.add(pChild);
+		addChildParent(pChild);
+
+		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
+		notifyChildAdded(pChild);
+
 	}
 
 	protected boolean hasChild(INavigationNode<?> pChild) {
@@ -270,18 +318,28 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	@SuppressWarnings("unchecked")
-	public void removeChild(INavigationContext context, INavigationNode<?> child) {
-		if (child != null && hasChild(child) && !child.isActivated()) {
-			List<C> oldList = new ArrayList<C>(children);
-			children.remove(child);
-			child.setParent(null);
+	public void removeChild(INavigationNode<?> child) {
 
-			propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
-			// if this node has the child, than it can be casted to C,
-			// because it must be C
-			notifyChildRemoved((C) child);
+		if (child == null) {
+			throw new NavigationModelFailure("Cannot remove null!"); //$NON-NLS-1$
 		}
-		// TODO do something if the node cannot be removed
+		if (!hasChild(child)) {
+			throw new NavigationModelFailure(
+					"Node \"" + child.toString() + "\" isn't a child of \"" + this.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		if (child.isActivated()) {
+			throw new NavigationModelFailure("Cannot remove active child \"" + child.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		List<C> oldList = new ArrayList<C>(children);
+		children.remove(child);
+		child.setParent(null);
+
+		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
+		// if this node has the child, than it can be casted to C,
+		// because it must be C
+		notifyChildRemoved((C) child);
+
 	}
 
 	/**

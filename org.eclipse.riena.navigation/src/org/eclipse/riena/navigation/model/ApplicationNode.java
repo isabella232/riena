@@ -34,6 +34,10 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 		initializeNavigationProcessor();
 	}
 
+	public Class<ISubApplicationNode> getValidChildType() {
+		return ISubApplicationNode.class;
+	}
+
 	/**
 	 * Creates an ApplicationNode node which is the root of an application model
 	 * tree.

@@ -33,6 +33,10 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 		initialize();
 	}
 
+	public Class<ISubModuleNode> getValidChildType() {
+		return ISubModuleNode.class;
+	}
+
 	/**
 	 * Creates a ModuleNode.
 	 * 

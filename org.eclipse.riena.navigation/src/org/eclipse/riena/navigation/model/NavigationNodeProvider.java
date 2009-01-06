@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IAssemblerProvider;
@@ -31,8 +32,6 @@ import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -222,7 +221,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 					random = new Random(System.currentTimeMillis());
 				}
 			}
-			assemblyId = "Riena.random.assemblyid." + new Long(random.nextLong()).toString(); //$NON-NLS-1$
+			assemblyId = "Riena.random.assemblyid." + Long.valueOf(random.nextLong()).toString(); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_WARNING, "Assembly has no id. Generated a random '" + assemblyId //$NON-NLS-1$
 					+ "'. For Assembler=" + assembly.getNavigationAssembler()); //$NON-NLS-1$
 		}

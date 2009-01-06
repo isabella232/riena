@@ -15,6 +15,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -41,7 +42,7 @@ public class NavigationNodeTest extends TestCase {
 
 		assertSame(id, node.getNodeId());
 
-		List<?> listeners = ReflectionUtils.invokeHidden(node, "getListeners", null);
+		List<?> listeners = ReflectionUtils.invokeHidden(node, "getListeners");
 		assertNotNull(listeners);
 		assertTrue(listeners.isEmpty());
 
@@ -364,16 +365,30 @@ public class NavigationNodeTest extends TestCase {
 
 	/**
 	 * Tests the method {@code addNode}.
+	 * 
+	 * @throws IllegalAccessException
+	 *             - handled by JUnit
+	 * @throws InstantiationException
+	 *             - handled by JUnit
 	 */
-	public void testAddChild() {
+	@SuppressWarnings("unchecked")
+	public void testAddChild() throws InstantiationException, IllegalAccessException {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
 		NaviNode node = new NaviNode(id);
+
+		// add null
 		node.reset();
-		node.addChild(null);
+		try {
+			node.addChild(null);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
 		assertTrue(node.getChildren().isEmpty());
 		assertFalse(node.isChildAddedCalled());
 
+		// add new node
 		NavigationNodeId id2 = new NavigationNodeId("2");
 		NaviNode node2 = new NaviNode(id2);
 		node.reset();
@@ -383,24 +398,63 @@ public class NavigationNodeTest extends TestCase {
 		assertSame(node, node2.getParent());
 		assertTrue(node.isChildAddedCalled());
 
+		// add same node again
 		node.reset();
-		node.addChild(node2);
+		try {
+			node.addChild(node2);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node2, node.getChildren().get(0));
 		assertSame(node, node2.getParent());
 		assertFalse(node.isChildAddedCalled());
 
+		// add disposed node
 		NavigationNodeId id3 = new NavigationNodeId("3");
 		NaviNode node3 = new NaviNode(id3);
 		node3.setNavigationProcessor(new NavigationProcessor());
 		node3.dispose();
 		node.reset();
-		node.addChild(node3);
+		try {
+			node.addChild(node3);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node2, node.getChildren().get(0));
 		assertNull(node3.getParent());
 		assertFalse(node.isChildAddedCalled());
 
+		// add node to itself
+		try {
+			node.addChild(node);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
+
+		// add wrong kind of node 
+		try {
+			getParentNode(ApplicationNode.class).addChild(node);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
+
+		// add correct kind of node 
+		INavigationNode module = getParentNode(ModuleNode.class);
+		module.addChild(node);
+		assertSame(node, module.getChild(module.getChildren().size() - 1));
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private INavigationNode getParentNode(Class<? extends INavigationNode> clazz) throws InstantiationException,
+			IllegalAccessException {
+		return clazz.newInstance();
 	}
 
 	/**
@@ -422,7 +476,12 @@ public class NavigationNodeTest extends TestCase {
 		node.reset();
 		node2.reset();
 		node3.reset();
-		node.removeChild(null, null);
+		try {
+			node.removeChild(null);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
 		assertTrue(node.getChildren().size() == 2);
 		assertSame(node, node2.getParent());
 		assertSame(node, node3.getParent());
@@ -434,7 +493,7 @@ public class NavigationNodeTest extends TestCase {
 		node.reset();
 		node2.reset();
 		node3.reset();
-		node.removeChild(null, node3);
+		node.removeChild(node3);
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node, node2.getParent());
 		assertNull(node3.getParent());
@@ -447,7 +506,12 @@ public class NavigationNodeTest extends TestCase {
 		node2.reset();
 		node3.reset();
 		node2.activate(null);
-		node.removeChild(null, node2);
+		try {
+			node.removeChild(node2);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node, node2.getParent());
 		assertNull(node3.getParent());
@@ -460,7 +524,7 @@ public class NavigationNodeTest extends TestCase {
 		node2.reset();
 		node3.reset();
 		node2.deactivate(null);
-		node.removeChild(null, node2);
+		node.removeChild(node2);
 		assertTrue(node.getChildren().isEmpty());
 		assertNull(node2.getParent());
 		assertNull(node3.getParent());
@@ -472,13 +536,40 @@ public class NavigationNodeTest extends TestCase {
 		node.reset();
 		node2.reset();
 		node3.reset();
-		node.removeChild(null, node2);
+		try {
+			node.removeChild(node2);
+			fail("NavigationModelFailure expected"); //$NON-NLS-1$
+		} catch (NavigationModelFailure failure) {
+			// expected
+		}
 		assertTrue(node.getChildren().isEmpty());
 		assertNull(node2.getParent());
 		assertNull(node3.getParent());
 		assertFalse(node.isChildRemovedCalled());
 		assertFalse(node2.isChildRemovedCalled());
 		assertFalse(node3.isChildRemovedCalled());
+
+	}
+
+	/**
+	 * Tests the method {@code checkChildClass}
+	 */
+	public void testCheckChildClass() {
+
+		NavigationNodeId id = new NavigationNodeId("4711");
+		NaviNode node = new NaviNode(id);
+
+		assertTrue(node.checkChildClass(NaviNode.class));
+		assertTrue(node.checkChildClass(SubModuleNode.class));
+		assertFalse(node.checkChildClass(ModuleNode.class));
+		assertFalse(node.checkChildClass(Object.class));
+
+		try {
+			node.checkChildClass(null);
+			fail("Exception expected");
+		} catch (AssertionFailedException e) {
+			// expected
+		}
 
 	}
 
@@ -580,6 +671,11 @@ public class NavigationNodeTest extends TestCase {
 
 		public boolean isChildRemovedCalled() {
 			return childRemovedCalled;
+		}
+
+		@Override
+		public boolean checkChildClass(Class<?> childClass) {
+			return super.checkChildClass(childClass);
 		}
 
 	}

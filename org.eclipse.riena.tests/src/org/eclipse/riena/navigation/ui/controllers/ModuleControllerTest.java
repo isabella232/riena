@@ -105,7 +105,7 @@ public class ModuleControllerTest extends TestCase {
 		sub2.setVisible(true);
 		assertFalse(controller.hasSingleLeafChild());
 
-		node.removeChild(null, sub2);
+		node.removeChild(sub2);
 		assertTrue(controller.hasSingleLeafChild());
 
 	}

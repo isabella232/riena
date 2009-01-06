@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.navigation.IModuleGroupNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ISubApplicationNodeListener;
 
 /**
@@ -28,6 +28,10 @@ public class SubApplicationNode extends
 	 */
 	public SubApplicationNode() {
 		super(null);
+	}
+
+	public Class<IModuleGroupNode> getValidChildType() {
+		return IModuleGroupNode.class;
 	}
 
 	/**

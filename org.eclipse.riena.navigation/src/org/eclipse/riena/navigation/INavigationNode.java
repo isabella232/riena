@@ -171,13 +171,10 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	/**
 	 * Called from the navigation processor to remove a node during dispose
 	 * Removes the passed node from the list child nodes
-	 * 
 	 * @param pChild
 	 *            - the child node to remove
-	 * @param context
-	 *            - the navigation context to word in
 	 */
-	void removeChild(INavigationContext context, INavigationNode<?> pChild);
+	void removeChild(INavigationNode<?> pChild);
 
 	/**
 	 * @return - an ordered list of child nodes of this node
@@ -499,4 +496,12 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @param pContext
 	 */
 	void addMarker(INavigationContext pContext, IMarker marker);
+
+	/**
+	 * Returns the valid type of the possible child nodes.
+	 * 
+	 * @return type of child nodes.
+	 */
+	Class<C> getValidChildType();
+
 }

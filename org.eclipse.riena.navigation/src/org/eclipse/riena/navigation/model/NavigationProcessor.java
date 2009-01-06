@@ -666,7 +666,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			// remove the node from tree
 			INavigationNode<?> parent = nextToDispose.getParent();
 			if (parent != null) {
-				parent.removeChild(context, nextToDispose);
+				parent.removeChild(nextToDispose);
 			}
 		}
 		for (INavigationNode<?> nextToDispose : context.getToDeactivate()) {
@@ -724,7 +724,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (moduleNode != null) {
 			ISubModuleNode nextChild = getSelectedChild(moduleNode);
 			if (nextChild != null) {
-				while (nextChild != null) {
+				while (true) {
 					ISubModuleNode nextTmp = getSelectedChild(nextChild);
 					if (nextTmp != null) {
 						nextChild = nextTmp;

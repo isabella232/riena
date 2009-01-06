@@ -27,6 +27,10 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 		super(null);
 	}
 
+	public Class<ISubModuleNode> getValidChildType() {
+		return ISubModuleNode.class;
+	}
+
 	/**
 	 * Creates a SubModuleNode.
 	 * 

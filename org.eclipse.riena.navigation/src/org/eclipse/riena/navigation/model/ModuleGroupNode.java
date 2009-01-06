@@ -32,6 +32,10 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 		this(null);
 	}
 
+	public Class<IModuleNode> getValidChildType() {
+		return IModuleNode.class;
+	}
+
 	/**
 	 * Creates a ModuleGroupNode.
 	 * 
