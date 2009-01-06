@@ -22,10 +22,17 @@ import java.util.StringTokenizer;
 import org.eclipse.core.runtime.Assert;
 
 /**
- * PropertiesUtils class
- * 
+ * The {@code PropertiesUtils} class helps with converting string representation
+ * of maps and lists to their Java counter parts.
  */
 public final class PropertiesUtils {
+
+	// Delimiter of pairs in a map.
+	private static final String PAIR_DELIM = ";"; //$NON-NLS-1$
+	// Delimiter of items in a list
+	private static final char LIST_DELIM = ',';
+	// Escape character for lists
+	private static final char ESCAPE_CHAR = '\\';
 
 	private PropertiesUtils() {
 		// Utility
@@ -63,7 +70,7 @@ public final class PropertiesUtils {
 	 * 
 	 * <pre>
 	 * The format of the string is: 
-	 * string := [ pair ] | pair { , pair }
+	 * string := [ pair ] | pair { ; pair }
 	 * pair := key = value
 	 * </pre>
 	 * 
@@ -129,12 +136,12 @@ public final class PropertiesUtils {
 						"Excpeted keys " + Arrays.toString(expectedKeys) + " not found in empty string."); //$NON-NLS-1$ //$NON-NLS-2$
 				return new HashMap<String, String>();
 			}
-			StringTokenizer parts = new StringTokenizer(stringified, ","); //$NON-NLS-1$
+			StringTokenizer parts = new StringTokenizer(stringified, PAIR_DELIM);
 			while (parts.hasMoreTokens()) {
 				String part = parts.nextToken();
 				int equal = part.indexOf('=');
 				Assert.isLegal(equal > 0, "Error within definition. Expecting a string of the form: " //$NON-NLS-1$
-						+ " [ <key> \"=\" <value> ] { [ \",\" <key> \"=\" <value> ] }"); //$NON-NLS-1$
+						+ " [ <key> \"=\" <value> ] { [ \"" + PAIR_DELIM + "\" <key> \"=\" <value> ] }"); //$NON-NLS-1$
 				result.put(part.substring(0, equal).trim(), part.substring(equal + 1).trim());
 			}
 		} else {
@@ -194,9 +201,9 @@ public final class PropertiesUtils {
 			ch = stringified.charAt(i);
 			switch (state) {
 			case CHAR:
-				if (ch == '\\') {
+				if (ch == ESCAPE_CHAR) {
 					state = BACK_SLASH;
-				} else if (ch == ',') {
+				} else if (ch == LIST_DELIM) {
 					result.add(value.toString());
 					value.setLength(0);
 				} else {
@@ -204,7 +211,7 @@ public final class PropertiesUtils {
 				}
 				break;
 			case BACK_SLASH:
-				if (ch == '\\' || ch == ',') {
+				if (ch == ESCAPE_CHAR || ch == LIST_DELIM) {
 					value.append(ch);
 				} else {
 					Assert.isLegal(false, "Unknown escaped character: " + ch + "."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -216,7 +223,7 @@ public final class PropertiesUtils {
 			}
 		}
 		// final comma
-		if (value.length() != 0 || ch == ',') {
+		if (value.length() != 0 || ch == LIST_DELIM) {
 			result.add(value.toString());
 		}
 		return result.toArray(new String[result.size()]);

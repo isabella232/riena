@@ -58,21 +58,21 @@ public class PropertiesUtilsTest extends TestCase {
 	}
 
 	public void testAsMap() {
-		Map<String, String> map = PropertiesUtils.asMap("a=1,b=2");
+		Map<String, String> map = PropertiesUtils.asMap("a=1;b=2");
 		assertEquals(2, map.size());
 		assertEquals("1", map.get("a"));
 		assertEquals("2", map.get("b"));
 	}
 
 	public void testAsMapWithExpectationFullfill() {
-		Map<String, String> map = PropertiesUtils.asMap("a=1,b=2", "a", "b");
+		Map<String, String> map = PropertiesUtils.asMap("a=1;b=2", "a", "b");
 		assertEquals("1", map.get("a"));
 		assertEquals("2", map.get("b"));
 	}
 
 	public void testAsMapWithExpectationFails() {
 		try {
-			PropertiesUtils.asMap("a=1,b=2", "a", "c");
+			PropertiesUtils.asMap("a=1;b=2", "a", "c");
 			fail();
 		} catch (IllegalArgumentException e) {
 			//ok
@@ -80,14 +80,14 @@ public class PropertiesUtilsTest extends TestCase {
 	}
 
 	public void testAsMapIgnoreWhitespace() {
-		Map<String, String> map = PropertiesUtils.asMap(" a= 1 ,  b = 2   ");
+		Map<String, String> map = PropertiesUtils.asMap(" a= 1 ;  b = 2   ");
 		assertEquals("1", map.get("a"));
 		assertEquals("2", map.get("b"));
 	}
 
 	public void testAsMapFailMissingEquals() {
 		try {
-			PropertiesUtils.asMap(" a: 1 ,  b = 2   ");
+			PropertiesUtils.asMap(" a: 1 ;  b = 2   ");
 			fail();
 		} catch (IllegalArgumentException e) {
 			// ok
