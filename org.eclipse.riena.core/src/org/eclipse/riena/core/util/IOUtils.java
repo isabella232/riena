@@ -25,7 +25,7 @@ import org.osgi.service.log.LogService;
 /**
  * A collection of i/o utilities.
  */
-public class IOUtils {
+public final class IOUtils {
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(IOUtils.class);
 

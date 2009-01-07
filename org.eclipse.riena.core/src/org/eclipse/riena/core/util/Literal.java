@@ -17,7 +17,11 @@ import java.util.HashSet;
 /**
  * Helper for creating literal maps, lists and sets.
  */
-public class Literal {
+public final class Literal {
+
+	private Literal() {
+		// Utility class
+	}
 
 	/**
 	 * Start creating a literal {@code Map}.

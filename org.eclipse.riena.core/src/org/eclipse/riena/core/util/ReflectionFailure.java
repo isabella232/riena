@@ -16,6 +16,8 @@ package org.eclipse.riena.core.util;
  */
 public class ReflectionFailure extends UtilFailure {
 
+	private static final long serialVersionUID = 5597581412524466878L;
+
 	/**
 	 * Constructor. Create a failure with a message.
 	 * 

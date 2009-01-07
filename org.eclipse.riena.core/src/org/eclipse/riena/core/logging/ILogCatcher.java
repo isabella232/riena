@@ -20,11 +20,11 @@ public interface ILogCatcher {
 	/**
 	 * Attach to the log source.
 	 */
-	public void attach();
+	void attach();
 
 	/**
 	 * Detach from log source.
 	 */
-	public void detach();
+	void detach();
 
 }

@@ -211,11 +211,11 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 	/**
 	 * A generic custom log level for log4j.
 	 */
-	private static class CustomLevel extends Level {
+	private static final class CustomLevel extends Level {
 		private static Map<Integer, CustomLevel> map = new HashMap<Integer, CustomLevel>();
-		private static final int log4jLevel = Priority.FATAL_INT * 2;
+		private static final int LOG4J_LEVEL = Priority.FATAL_INT * 2;
 		// This value is duplicated here (because of access restrictions) from log4j SyslogAppender
-		private static final int SyslogAppender_LOG_USER = 1 << 3;
+		private static final int SYSLOG_APPENDER_LOG_USER = 1 << 3;
 
 		/**
 		 * Create a generic custom log level.We assume that the custom osgi log
@@ -230,8 +230,8 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 			if (customLevel != null) {
 				return customLevel;
 			}
-			customLevel = new CustomLevel(log4jLevel + Math.abs(osgiLogLevel), "Custom(" + osgiLogLevel + ")", //$NON-NLS-1$ //$NON-NLS-2$
-					SyslogAppender_LOG_USER);
+			customLevel = new CustomLevel(LOG4J_LEVEL + Math.abs(osgiLogLevel), "Custom(" + osgiLogLevel + ")", //$NON-NLS-1$ //$NON-NLS-2$
+					SYSLOG_APPENDER_LOG_USER);
 			map.put(osgiLogLevel, customLevel);
 			return customLevel;
 		}

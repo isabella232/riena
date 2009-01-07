@@ -17,7 +17,11 @@ import org.eclipse.core.runtime.Assert;
 /**
  * Helper for Array operations.
  */
-public class ArraysUtil {
+public final class ArraysUtil {
+
+	private ArraysUtil() {
+		// Utility class
+	}
 
 	/**
 	 * Copy from the given source array from index from to index to into a newly

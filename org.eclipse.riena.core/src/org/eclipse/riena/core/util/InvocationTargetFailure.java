@@ -18,6 +18,8 @@ package org.eclipse.riena.core.util;
  */
 public class InvocationTargetFailure extends ReflectionFailure {
 
+	private static final long serialVersionUID = -3653981097011011976L;
+
 	/**
 	 * Constructor. Create a failure with a message.
 	 * 
