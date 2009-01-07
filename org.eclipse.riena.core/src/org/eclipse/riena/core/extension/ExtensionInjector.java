@@ -220,7 +220,7 @@ public class ExtensionInjector {
 				}
 			}
 		}
-		throw new NoSuchMethodError("In class " + target.getClass() + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
+		throw new NoSuchMethodError("In " + target.getClass() + " is no method matching " + updateMethodName //$NON-NLS-1$ //$NON-NLS-2$
 				+ "(" + interfaceType + " )"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
