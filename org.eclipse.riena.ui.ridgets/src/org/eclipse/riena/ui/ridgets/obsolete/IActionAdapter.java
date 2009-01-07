@@ -8,9 +8,10 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets;
+package org.eclipse.riena.ui.ridgets.obsolete;
 
-import org.eclipse.riena.ui.core.util.IPositionable;
+import org.eclipse.riena.ui.ridgets.IMarkableAdapter;
+
 
 /**
  * An adapter for UI controls that allow an action to be performed on them, like
@@ -24,7 +25,7 @@ import org.eclipse.riena.ui.core.util.IPositionable;
  * @deprecated Use org.eclipse.riena.ui.internal.ridgets.IActionListener
  */
 @Deprecated
-public interface IActionAdapter extends IMarkableAdapter, IPositionable {
+public interface IActionAdapter extends IMarkableAdapter {
 
 	/**
 	 * <code>PROPERTY_TEXT</code>

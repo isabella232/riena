@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.obsolete;
 
-import org.eclipse.riena.ui.ridgets.IActionAdapter;
 import org.eclipse.riena.ui.ridgets.util.IAcceleratorConstants;
 
 /**
