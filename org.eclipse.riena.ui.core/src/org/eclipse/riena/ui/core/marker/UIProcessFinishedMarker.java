@@ -64,9 +64,9 @@ public class UIProcessFinishedMarker extends AbstractMarker implements IIconizab
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
+	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfigurationKey()
 	 */
-	public String getIconConfiguationKey() {
+	public String getIconConfigurationKey() {
 		return MARKER_KEY;
 	}
 

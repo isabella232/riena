@@ -32,9 +32,9 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
+	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfigurationKey()
 	 */
-	public String getIconConfiguationKey() {
+	public String getIconConfigurationKey() {
 		return MARKER_KEY;
 	}
 

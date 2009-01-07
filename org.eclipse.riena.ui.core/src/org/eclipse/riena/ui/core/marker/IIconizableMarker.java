@@ -29,7 +29,7 @@ public interface IIconizableMarker extends IMarker {
 	 * 
 	 * @return The key to the configuration of the marker icon.
 	 */
-	String getIconConfiguationKey();
+	String getIconConfigurationKey();
 
 	/**
 	 * Returns the position of the marker.

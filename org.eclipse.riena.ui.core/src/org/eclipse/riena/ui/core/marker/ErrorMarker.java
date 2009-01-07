@@ -20,9 +20,9 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	public static final String MARKER_KEY = "ErrorMarker"; //$NON-NLS-1$
 
 	/**
-	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfiguationKey()
+	 * @see org.eclipse.riena.ui.core.marker.IIconizableMarker#getIconConfigurationKey()
 	 */
-	public String getIconConfiguationKey() {
+	public String getIconConfigurationKey() {
 		return MARKER_KEY;
 	}
 

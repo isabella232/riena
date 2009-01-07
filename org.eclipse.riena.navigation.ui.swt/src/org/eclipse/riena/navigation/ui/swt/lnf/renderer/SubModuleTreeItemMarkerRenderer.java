@@ -91,7 +91,7 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 			}
 
 			Image itemImage = item.getImage();
-			String key = iconizableMarker.getIconConfiguationKey();
+			String key = iconizableMarker.getIconConfigurationKey();
 			Image markerImage = LnfManager.getLnf().getImage(key);
 			Point pos = calcMarkerCoordinates(itemImage, markerImage, iconizableMarker.getPositionOfMarker());
 			gc.drawImage(markerImage, pos.x, pos.y);
