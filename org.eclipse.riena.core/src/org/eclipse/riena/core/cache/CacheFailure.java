@@ -19,6 +19,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class CacheFailure extends Failure {
 
+	private static final long serialVersionUID = 8131505473671580214L;
+
 	/**
 	 * @param msg
 	 */
