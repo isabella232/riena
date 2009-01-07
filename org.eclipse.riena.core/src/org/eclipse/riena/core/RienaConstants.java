@@ -36,7 +36,7 @@ public final class RienaConstants {
 	 * 
 	 * @return default service properties
 	 */
-	public final static Hashtable<String, Object> newDefaultServiceProperties() {
+	public static Hashtable<String, Object> newDefaultServiceProperties() {
 		Hashtable<String, Object> props = new Hashtable<String, Object>();
 		props.put(Constants.SERVICE_RANKING, DEFAULT_RANKING);
 		return props;
