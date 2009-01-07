@@ -45,7 +45,7 @@ public class ComboAndListNodeBuilder extends AbstractNavigationAssembler {
 
 		IModuleGroupNode node = new ModuleGroupNode(presentationId);
 		IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList"), "Combo&List"); //$NON-NLS-1$
+				new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList"), "Combo&List"); //$NON-NLS-1$ //$NON-NLS-2$
 		node.addChild(module);
 
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$

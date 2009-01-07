@@ -32,6 +32,7 @@ public class NavigateSubModuleController extends SubModuleController /*
 	/*
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		IActionRidget comboAndList = (IActionRidget) getRidget("comboAndList"); //$NON-NLS-1$
