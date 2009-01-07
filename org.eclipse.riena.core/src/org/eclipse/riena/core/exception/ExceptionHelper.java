@@ -30,12 +30,6 @@ import org.eclipse.core.runtime.AssertionFailedException;
  */
 public final class ExceptionHelper {
 
-	/*
-	 * Note: The usage of the LOGGER has been completely removed, because
-	 * creating the logger via hivemind caused in some situations throwing an
-	 * ExceptionInInitializerError!!!
-	 */
-
 	private static final String DOT_STR = "."; //$NON-NLS-1$
 
 	/**
@@ -70,7 +64,8 @@ public final class ExceptionHelper {
 		javaVersion = System.getProperty("java.version"); //$NON-NLS-1$
 	}
 
-	private ExceptionHelper() { /* utitlity class */
+	private ExceptionHelper() {
+		// Utility class
 	}
 
 	/**
@@ -299,7 +294,7 @@ public final class ExceptionHelper {
 	 * @throws ExceptionFailure
 	 *             wrappes checked exceptions from java reflection.
 	 */
-	public static StackTraceElement[] parseStackTrace(String stacktrace) throws ExceptionFailure {
+	public static StackTraceElement[] parseStackTrace(String stacktrace) {
 
 		// if we do not have a stacktrace (empty string) we don't need to do
 		// anything.
@@ -408,7 +403,7 @@ public final class ExceptionHelper {
 	}
 
 	/**
-	 * Get the java version running inside the environmenal JVM.
+	 * Get the java version running inside the environmental JVM.
 	 * 
 	 * @return java version string
 	 */
