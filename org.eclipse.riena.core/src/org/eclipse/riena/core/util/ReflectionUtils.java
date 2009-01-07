@@ -48,6 +48,7 @@ public final class ReflectionUtils {
 	 * @return the new instance.
 	 * @pre className != null
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(String className, Object... args) {
 		Assert.isNotNull(className, "className must be given!"); //$NON-NLS-1$
 
@@ -98,6 +99,7 @@ public final class ReflectionUtils {
 	 * @pre interfaceName != null
 	 * @pre invocationHandler != null
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(String interfaceName, InvocationHandler invocationHandler) {
 		Assert.isNotNull(interfaceName, "interfaceName must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(invocationHandler, "invocationHandler must be given!"); //$NON-NLS-1$
@@ -253,6 +255,7 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
+	@SuppressWarnings("unchecked")
 	private static <T> T invoke(boolean open, Object instance, String methodName, Object... args) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(methodName, "methodName must be given!"); //$NON-NLS-1$
@@ -547,16 +550,24 @@ public final class ReflectionUtils {
 			cnfe = e;
 		}
 		// ok, do it the hard way!!
-		// TODO Check for ambiguity? Do we find more than one bundle capable of
-		// loading the requested class?
 		Bundle[] bundles = Activator.getDefault().getContext().getBundles();
+		Class<T> foundClass = null;
 		for (Bundle bundle : bundles) {
 			try {
+				if (foundClass != null) {
+					throw new ReflectionFailure(
+							"Could not load class " + className + " because it exists in at least two bundles."); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				cnfe = null;
+				foundClass = (Class<T>) bundle.loadClass(className);
 				return (Class<T>) bundle.loadClass(className);
 			} catch (ClassNotFoundException e) {
 				cnfe = e;
 			}
 		}
-		throw new ReflectionFailure("Could not load class " + className + ".", cnfe); //$NON-NLS-1$ //$NON-NLS-2$
+		if (foundClass == null) {
+			throw new ReflectionFailure("Could not load class " + className + ".", cnfe); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return foundClass;
 	}
 }
