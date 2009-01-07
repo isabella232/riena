@@ -141,7 +141,7 @@ public final class PropertiesUtils {
 				String part = parts.nextToken();
 				int equal = part.indexOf('=');
 				Assert.isLegal(equal > 0, "Error within definition. Expecting a string of the form: " //$NON-NLS-1$
-						+ " [ <key> \"=\" <value> ] { [ \"" + PAIR_DELIM + "\" <key> \"=\" <value> ] }"); //$NON-NLS-1$
+						+ " [ <key> \"=\" <value> ] { [ \"" + PAIR_DELIM + "\" <key> \"=\" <value> ] }"); //$NON-NLS-1$ //$NON-NLS-2$
 				result.put(part.substring(0, equal).trim(), part.substring(equal + 1).trim());
 			}
 		} else {
