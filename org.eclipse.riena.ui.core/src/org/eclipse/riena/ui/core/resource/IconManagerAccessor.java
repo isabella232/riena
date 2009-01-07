@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.resource;
 
-import org.eclipse.riena.ui.core.resource.internal.IconManager;
+import org.eclipse.riena.internal.ui.core.resource.IconManager;
 
 /**
  * Retrieves the implementation of <code>IIconManager</code>.

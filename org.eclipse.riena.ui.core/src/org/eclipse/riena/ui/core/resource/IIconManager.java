@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.resource;
 
-import org.eclipse.riena.ui.core.resource.internal.IconSize;
-import org.eclipse.riena.ui.core.resource.internal.IconState;
 
 /**
  * Describes how the icons of the application are maintained. Icons are

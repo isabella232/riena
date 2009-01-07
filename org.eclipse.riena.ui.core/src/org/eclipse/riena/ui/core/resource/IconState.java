@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.core.resource.internal;
+package org.eclipse.riena.ui.core.resource;
 
 /**
  * Constants for icon states.

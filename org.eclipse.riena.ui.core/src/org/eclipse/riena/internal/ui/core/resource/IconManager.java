@@ -8,12 +8,14 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.core.resource.internal;
+package org.eclipse.riena.internal.ui.core.resource;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.core.resource.IIconManager;
+import org.eclipse.riena.ui.core.resource.IconSize;
+import org.eclipse.riena.ui.core.resource.IconState;
 
 /**
  * Maintains the icons used by the application.
@@ -33,7 +35,7 @@ public final class IconManager implements IIconManager {
 
 	/**
 	 * @see org.eclipse.riena.ui.core.resource#getIconID(java.lang.String,
-	 *      org.eclipse.riena.ui.core.resource.internal.IconSize)
+	 *      org.eclipse.riena.ui.core.resource.IconSize)
 	 */
 	public String getIconID(String name, IconSize size) {
 
@@ -42,8 +44,8 @@ public final class IconManager implements IIconManager {
 
 	/**
 	 * @see org.eclipse.riena.ui.core.resource#getIconID(java.lang.String,
-	 *      org.eclipse.riena.ui.core.resource.internal.IconSize,
-	 *      org.eclipse.riena.ui.core.resource.internal.IconState)
+	 *      org.eclipse.riena.ui.core.resource.IconSize,
+	 *      org.eclipse.riena.ui.core.resource.IconState)
 	 */
 	public String getIconID(String name, IconSize size, IconState state) {
 
