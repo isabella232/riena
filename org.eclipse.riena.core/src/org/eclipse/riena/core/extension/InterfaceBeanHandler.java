@@ -168,7 +168,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 				return configurationElement.equals(((InterfaceBeanHandler) handler).configurationElement);
 			}
 		} catch (IllegalArgumentException e) {
-			// fall thru
+			return false;
 		}
 		return false;
 	}

@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.RegistryFactory;
 
 /**
@@ -169,7 +168,7 @@ public final class ExtensionMapper {
 		 * org.eclipse.core.runtime.IConfigurationElement#getAttribute(java.
 		 * lang.String)
 		 */
-		public String getAttribute(String name) throws InvalidRegistryObjectException {
+		public String getAttribute(String name) {
 			return null;
 		}
 
@@ -180,7 +179,7 @@ public final class ExtensionMapper {
 		 * org.eclipse.core.runtime.IConfigurationElement#getAttributeAsIs(java
 		 * .lang.String)
 		 */
-		public String getAttributeAsIs(String name) throws InvalidRegistryObjectException {
+		public String getAttributeAsIs(String name) {
 			return null;
 		}
 
@@ -190,7 +189,7 @@ public final class ExtensionMapper {
 		 * @see
 		 * org.eclipse.core.runtime.IConfigurationElement#getAttributeNames()
 		 */
-		public String[] getAttributeNames() throws InvalidRegistryObjectException {
+		public String[] getAttributeNames() {
 			return new String[0];
 		}
 
@@ -199,7 +198,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getChildren()
 		 */
-		public IConfigurationElement[] getChildren() throws InvalidRegistryObjectException {
+		public IConfigurationElement[] getChildren() {
 			if (wrappedExtension != null) {
 				return wrappedExtension.getConfigurationElements();
 			}
@@ -219,7 +218,7 @@ public final class ExtensionMapper {
 		 * org.eclipse.core.runtime.IConfigurationElement#getChildren(java.lang
 		 * .String)
 		 */
-		public IConfigurationElement[] getChildren(String name) throws InvalidRegistryObjectException {
+		public IConfigurationElement[] getChildren(String name) {
 			final IConfigurationElement[] configurationElements = wrappedExtension != null ? wrappedExtension
 					.getConfigurationElements() : wrappedExtensionPoint.getConfigurationElements();
 
@@ -237,7 +236,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getContributor()
 		 */
-		public IContributor getContributor() throws InvalidRegistryObjectException {
+		public IContributor getContributor() {
 			return wrappedExtension != null ? wrappedExtension.getContributor() : wrappedExtensionPoint
 					.getContributor();
 		}
@@ -249,7 +248,7 @@ public final class ExtensionMapper {
 		 * org.eclipse.core.runtime.IConfigurationElement#getDeclaringExtension
 		 * ()
 		 */
-		public IExtension getDeclaringExtension() throws InvalidRegistryObjectException {
+		public IExtension getDeclaringExtension() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getDeclaringExtension()"); //$NON-NLS-1$
 		}
 
@@ -258,7 +257,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getName()
 		 */
-		public String getName() throws InvalidRegistryObjectException {
+		public String getName() {
 			return wrappedExtension != null ? wrappedExtension.getLabel() : wrappedExtensionPoint.getLabel();
 		}
 
@@ -267,7 +266,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getNamespace()
 		 */
-		public String getNamespace() throws InvalidRegistryObjectException {
+		public String getNamespace() {
 			return wrappedExtension != null ? wrappedExtension.getNamespace() : wrappedExtensionPoint.getNamespace();
 		}
 
@@ -278,7 +277,7 @@ public final class ExtensionMapper {
 		 * org.eclipse.core.runtime.IConfigurationElement#getNamespaceIdentifier
 		 * ()
 		 */
-		public String getNamespaceIdentifier() throws InvalidRegistryObjectException {
+		public String getNamespaceIdentifier() {
 			return wrappedExtension != null ? wrappedExtension.getNamespaceIdentifier() : wrappedExtensionPoint
 					.getNamespaceIdentifier();
 		}
@@ -288,7 +287,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getParent()
 		 */
-		public Object getParent() throws InvalidRegistryObjectException {
+		public Object getParent() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getParent()"); //$NON-NLS-1$
 		}
 
@@ -297,7 +296,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getValue()
 		 */
-		public String getValue() throws InvalidRegistryObjectException {
+		public String getValue() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getValue()"); //$NON-NLS-1$
 		}
 
@@ -306,7 +305,7 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getValueAsIs()
 		 */
-		public String getValueAsIs() throws InvalidRegistryObjectException {
+		public String getValueAsIs() {
 			throw new UnsupportedOperationException("IExtensionPoint does not support getValueAsIs()"); //$NON-NLS-1$
 		}
 
