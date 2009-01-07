@@ -21,9 +21,13 @@ import org.osgi.framework.Bundle;
 /**
  * Riena locations.
  */
-public class RienaLocations {
+public final class RienaLocations {
 
 	public static final String RIENA_NAME = "riena"; //$NON-NLS-1$
+
+	private RienaLocations() {
+		// utility class
+	}
 
 	/**
 	 * Return the data area.<br>
