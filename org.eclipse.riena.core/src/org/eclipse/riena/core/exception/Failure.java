@@ -23,6 +23,7 @@ import java.util.Date;
  */
 public abstract class Failure extends RuntimeException {
 
+	private static final long serialVersionUID = -4261070069626717501L;
 	private static final String UNKNOWN = "<unknown>"; //$NON-NLS-1$
 	private static final String NONE = "<none>"; //$NON-NLS-1$
 	private static final String NO_DETAILS = "No details."; //$NON-NLS-1$

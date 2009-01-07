@@ -12,10 +12,10 @@ package org.eclipse.riena.core.exception;
 
 /**
  * Failure class for exception handler specific failures.
- * 
- * @author Stefan Liebig
  */
 public class ExceptionFailure extends Failure {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Failure with a simple message.
