@@ -21,14 +21,7 @@ public interface IExceptionHandlerManager {
 	 * Defines actions how to process after the exception was handled.
 	 */
 	public enum Action {
-
-		NotHandled,
-
-		Ok,
-
-		Retry,
-
-		Cancel
+		NOT_HANDLED, OK, RETRY, CANCEL
 	}
 
 	/**
