@@ -107,9 +107,9 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	}
 
 	static class ExceptionHandlerEntry {
-		private IExceptionHandler exceptionHandler;
-		private String before;
-		private String name;
+		private final IExceptionHandler exceptionHandler;
+		private final String before;
+		private final String name;
 
 		public ExceptionHandlerEntry(IExceptionHandler exceptionHandler, String name, String before) {
 			super();

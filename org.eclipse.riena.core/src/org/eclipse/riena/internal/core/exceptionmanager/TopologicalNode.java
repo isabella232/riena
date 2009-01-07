@@ -14,10 +14,10 @@ package org.eclipse.riena.internal.core.exceptionmanager;
  * 
  */
 public class TopologicalNode<T> {
-	private String name;
-	private String before;
+	private final String name;
+	private final String before;
+	private final T element;
 	private int pointToMe;
-	private T element;
 
 	public TopologicalNode(String name, String before, T element) {
 		this.name = name;
