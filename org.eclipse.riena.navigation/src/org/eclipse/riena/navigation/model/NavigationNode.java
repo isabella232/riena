@@ -292,8 +292,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			throw new NavigationModelFailure("Cannot add node \"" + pChild.toString() + "\" to itself!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (!checkChildClass(pChild.getClass())) {
-			throw new NavigationModelFailure("Child node \"" + pChild.toString() + "\" isn't an instance of " //$NON-NLS-1$ //$NON-NLS-2$
-					+ getValidChildType().toString() + "!"); //$NON-NLS-1$
+			String msg = "Cannot add \"" + pChild.toString() + "\" to \"" + this.toString() + "\"!"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			msg += " Because node isn't instance of " + getValidChildType().toString() + "."; //$NON-NLS-1$ //$NON-NLS-2$
+			throw new NavigationModelFailure(msg);
 		}
 
 		List<C> oldList = new ArrayList<C>(children);
@@ -493,6 +494,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		String llabel = getLabel();
 		if (llabel != null) {
 			return llabel;
+		} else if (nodeId != null) {
+			return "ID=" + nodeId.getTypeId(); //$NON-NLS-1$
 		}
 		return super.toString();
 	}
