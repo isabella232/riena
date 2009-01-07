@@ -22,11 +22,12 @@ import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
 
 /**
- *
+ * A log filter where the log level threshold can be set thru its command
+ * provider interface.
  */
 public class CommandProviderLogFilter implements LogFilter, CommandProvider, IExecutableExtension {
 
-	int threshold = LogService.LOG_DEBUG;
+	private int threshold = LogService.LOG_DEBUG;
 
 	public CommandProviderLogFilter() {
 		Activator.getDefault().getContext().registerService(CommandProvider.class.getName(), this, null);
