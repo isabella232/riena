@@ -13,57 +13,68 @@ package org.eclipse.riena.core.exception;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
 
-
 /**
  * Test class for ExceptionHandler
  */
 public class TestExceptionHandler implements IExceptionHandler {
 
-    String name;
-    String before;
-    Throwable throwable;
-    Action action = IExceptionHandlerManager.Action.NotHandled;
+	private String name;
+	private String before;
+	private Action action = IExceptionHandlerManager.Action.NOT_HANDLED;
+	private Throwable throwable;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.riena.core.exception.IExceptionHandler#getBefore()
-     */
-    public String getBefore() {
-        // TODO Auto-generated method stub
-        return before;
-    }
+	public TestExceptionHandler(String name, String before, Action action) {
+		this.name = name;
+		this.before = before;
+		if (action != null) {
+			this.action = action;
+		}
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.riena.core.exception.IExceptionHandler#getName()
-     */
-    public String getName() {
-        // TODO Auto-generated method stub
-        return name;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.core.exception.IExceptionHandler#getBefore()
+	 */
+	public String getBefore() {
+		return before;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.riena.core.exception.IExceptionHandler#handleCaught(java.lang.Throwable, java.lang.Object,
-     *      org.eclipse.equinox.log.Logger)
-     */
-    public Action handleException(Throwable t, String msg, Logger logger) {
-        throwable = t;
-        return action;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.core.exception.IExceptionHandler#getName()
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.riena.core.exception.IExceptionHandler#handleUncaught(java.lang.Throwable,
-     *      java.lang.Object, org.eclipse.equinox.log.Logger)
-     */
-    public Action handleUncaught(Throwable t, String msg, Logger logger) {
-        throwable = t;
-        return action;
-    }
+	Throwable getThrowable() {
+		return throwable;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.core.exception.IExceptionHandler#handleCaught(java.
+	 * lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
+	 */
+	public Action handleException(Throwable t, String msg, Logger logger) {
+		throwable = t;
+		return action;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.core.exception.IExceptionHandler#handleUncaught(java
+	 * .lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
+	 */
+	public Action handleUncaught(Throwable t, String msg, Logger logger) {
+		throwable = t;
+		return action;
+	}
 
 }

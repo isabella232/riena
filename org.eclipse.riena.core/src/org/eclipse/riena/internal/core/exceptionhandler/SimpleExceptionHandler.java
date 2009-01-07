@@ -25,9 +25,9 @@ public class SimpleExceptionHandler implements IExceptionHandler {
 	public Action handleException(Throwable t, String msg, Logger logger) {
 		if (logger != null) {
 			logger.log(LogService.LOG_ERROR, msg, t);
-			return Action.Ok;
+			return Action.OK;
 		}
-		return Action.NotHandled;
+		return Action.NOT_HANDLED;
 	}
 
 }

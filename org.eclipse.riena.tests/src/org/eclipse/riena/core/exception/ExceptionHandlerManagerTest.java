@@ -16,8 +16,6 @@ import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinit
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.tests.RienaTestCase;
 
-import org.osgi.framework.BundleContext;
-
 /**
  * 
  */
@@ -35,15 +33,13 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 	}
 
 	public void testAddHandler() {
-		BundleContext context = getContext();
-		TestExceptionHandler testEH = new TestExceptionHandler();
-		testEH.name = "test.exception.handler1";
+		TestExceptionHandler testEH = new TestExceptionHandler("test.exception.handler1", null, null);
 		manager.update(new IExceptionHandlerDefinition[] { getTestDefinition(testEH) });
 
 		Exception exception = new Exception("test");
 		manager.handleException(exception);
 
-		Assert.assertEquals("expected exception", testEH.throwable, exception);
+		Assert.assertEquals("expected exception", testEH.getThrowable(), exception);
 	}
 
 	private IExceptionHandlerDefinition getTestDefinition(final TestExceptionHandler testEH) {
@@ -68,21 +64,16 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 	}
 
 	public void testAddHandlerChain() {
-		BundleContext context = getContext();
-		TestExceptionHandler testEH1 = new TestExceptionHandler();
-		testEH1.name = "test.exception.handler1";
-
-		TestExceptionHandler testEH2 = new TestExceptionHandler();
-		testEH2.name = "test.exception.handler2";
-		testEH2.before = "test.exception.handler1";
-		testEH2.action = IExceptionHandlerManager.Action.Ok;
+		TestExceptionHandler testEH1 = new TestExceptionHandler("test.exception.handler1", null, null);
+		TestExceptionHandler testEH2 = new TestExceptionHandler("test.exception.handler2", "test.exception.handler1",
+				IExceptionHandlerManager.Action.OK);
 		manager.update(new IExceptionHandlerDefinition[] { getTestDefinition(testEH1), getTestDefinition(testEH2) });
 
 		Exception exception = new Exception("test");
 		manager.handleException(exception);
 
-		Assert.assertEquals("expected exception", testEH2.throwable, exception);
-		Assert.assertNull("expected no exception", testEH1.throwable);
+		Assert.assertEquals("expected exception", testEH2.getThrowable(), exception);
+		Assert.assertNull("expected no exception", testEH1.getThrowable());
 	}
 
 }

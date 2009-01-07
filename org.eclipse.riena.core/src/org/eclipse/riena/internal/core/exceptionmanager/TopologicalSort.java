@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 
  */
-public class TopologicalSort {
+public final class TopologicalSort {
 
 	private TopologicalSort() {
 		// utility class

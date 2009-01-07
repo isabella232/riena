@@ -99,11 +99,11 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 	public Action handleException(Throwable t, String msg, Logger logger) {
 		for (ExceptionHandlerEntry handler : handlers) {
 			Action action = handler.getExceptionHandler().handleException(t, msg, logger);
-			if (action != Action.NotHandled) {
+			if (action != Action.NOT_HANDLED) {
 				return action;
 			}
 		}
-		return Action.NotHandled;
+		return Action.NOT_HANDLED;
 	}
 
 	static class ExceptionHandlerEntry {
