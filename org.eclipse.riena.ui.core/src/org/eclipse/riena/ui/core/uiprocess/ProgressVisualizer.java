@@ -124,6 +124,7 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		if (adapter == IProcessInfoAware.class || adapter == IProgressVisualizer.class) {
 			return this;
