@@ -37,12 +37,12 @@ public class StringMatcher {
 	/* boundary value beyond which we don't need to search in the text */
 	protected int fBound = 0;
 
-	protected static final char fSingleWildCard = '\u0000';
+	protected static final char F_SINGLE_WILD_CARD = '\u0000';
 
 	public static class Position {
-		int start; //inclusive
+		private int start; //inclusive
 
-		int end; //exclusive
+		private int end; //exclusive
 
 		public Position(int start, int end) {
 			this.start = start;
@@ -266,7 +266,7 @@ public class StringMatcher {
 		while (i < segCount) {
 			current = fSegments[i];
 			int currentMatch;
-			int k = current.indexOf(fSingleWildCard);
+			int k = current.indexOf(F_SINGLE_WILD_CARD);
 			if (k < 0) {
 				currentMatch = textPosIn(text, tCurPos, end, current);
 				if (currentMatch < 0) {
@@ -352,7 +352,7 @@ public class StringMatcher {
 				break;
 			case '?':
 				/* append special character representing single match wildcard */
-				buf.append(fSingleWildCard);
+				buf.append(F_SINGLE_WILD_CARD);
 				break;
 			default:
 				buf.append(c);
@@ -447,7 +447,7 @@ public class StringMatcher {
 			/* process wild cards */
 			if (!fIgnoreWildCards) {
 				/* skip single wild cards */
-				if (pchar == fSingleWildCard) {
+				if (pchar == F_SINGLE_WILD_CARD) {
 					continue;
 				}
 			}
