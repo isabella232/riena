@@ -15,19 +15,28 @@ import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.exception.ExceptionFailure;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
+import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
+import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.splash.AbstractSplashHandler;
 import org.osgi.framework.Bundle;
 
 /**
@@ -36,6 +45,7 @@ import org.osgi.framework.Bundle;
  */
 public abstract class SwtApplication extends AbstractApplication {
 
+	protected ILoginSplashViewDefinition loginSplashViewDefinition;
 	private LoginNonActivityTimer loginNonActivityTimer;
 
 	/**
@@ -47,7 +57,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		Display display = PlatformUI.createDisplay();
 		try {
 			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode));
-			initializeLoginNonActivityTimer(display, context);
+			initializeLoginNonActivityTimer(display, pNode, context);
 			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
@@ -83,17 +93,29 @@ public abstract class SwtApplication extends AbstractApplication {
 		return ImageUtil.getImagePath(getBundle(), subPath);
 	}
 
-	private void initializeLoginNonActivityTimer(Display display, IApplicationContext context) {
+	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
+			final IApplicationContext context) {
 
-		if (isUseLoginNonActivityTimer()) {
-			loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewDefinition
-					.getNonActivityDuration());
-			loginNonActivityTimer.schedule();
-		}
-	}
-
-	private boolean isUseLoginNonActivityTimer() {
-		return loginDialogViewDefinition != null && loginDialogViewDefinition.getNonActivityDuration() > 0;
+		pNode.addListener(new ApplicationNodeListener() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener
+			 * #afterActivated(org.eclipse.riena.navigation.INavigationNode)
+			 */
+			@Override
+			public void afterActivated(IApplicationNode source) {
+				if (isSplashLogin(context) && loginSplashViewDefinition.getNonActivityDuration() > 0) {
+					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewDefinition
+							.getNonActivityDuration());
+					loginNonActivityTimer.schedule();
+				} else if (isDialogLogin(context) && loginDialogViewDefinition.getNonActivityDuration() > 0) {
+					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginDialogViewDefinition
+							.getNonActivityDuration());
+					loginNonActivityTimer.schedule();
+				}
+			}
+		});
 	}
 
 	private final class LoginNonActivityTimer implements Runnable {
@@ -162,10 +184,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 
 		private int getTimerDelay() {
-			long diff = System.currentTimeMillis() - eventListener.activityTime;
-			int d = nonActivityDuration - (int) diff;
-			return d;
-			//return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
+			return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
 		}
 
 		private final class EventListener implements Listener {
@@ -192,11 +211,13 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	protected void prePerformLogin(IApplicationContext context) {
-		// To minimize the workbench and show the login dialog later, the workbench has be made first invisible and then minimized.
-		getWorkbenchShell().setVisible(false);
-		getWorkbenchShell().setMinimized(true);
-		// Make workbench visible to be shown as minimized in the (windows) task bar.
-		getWorkbenchShell().setVisible(true);
+		if (getWorkbenchShell() != null) {
+			// To minimize the workbench and show the login dialog later, the workbench has be made first invisible and then minimized.
+			getWorkbenchShell().setVisible(false);
+			getWorkbenchShell().setMinimized(true);
+			// Make workbench visible to be shown as minimized in the (windows) task bar.
+			getWorkbenchShell().setVisible(true);
+		}
 	}
 
 	protected void postPerformLogin(IApplicationContext context, Object result) {
@@ -234,6 +255,105 @@ public abstract class SwtApplication extends AbstractApplication {
 		return loginDialogView.getResult();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.ui.application.AbstractApplication#
+	 * doPerformSplashLogin(org.eclipse.equinox.app.IApplicationContext)
+	 */
+	@Override
+	protected Object doPerformSplashLogin(IApplicationContext context) {
+
+		Shell shell = new Shell(getDisplay(), SWT.NO_TRIM | SWT.APPLICATION_MODAL);
+		initilizeShellBackgroundImage(shell, getBackgroundImagePath(context));
+		AbstractLoginSplashHandler loginSplashHandler = getLoginSplashHandler();
+		loginSplashHandler.init(shell);
+		shell.open();
+		while (!shell.isDisposed()) {
+			if (!getDisplay().readAndDispatch()) {
+				getDisplay().sleep();
+			}
+		}
+
+		return loginSplashHandler.getResult();
+	}
+
+	private void initilizeShellBackgroundImage(Shell shell, String fullPath) {
+		Image bi = ImageUtil.getImage(fullPath);
+		shell.setSize(bi.getImageData().width, bi.getImageData().height);
+		shell.setBackgroundImage(bi);
+	}
+
+	private String getBackgroundImagePath(IApplicationContext context) {
+		return ImageUtil.getImagePath(context.getBrandingBundle(), "splash.bmp"); //$NON-NLS-1$
+	}
+
+	private AbstractLoginSplashHandler getLoginSplashHandler() {
+
+		if (!PlatformUI.isWorkbenchRunning()) {
+			return null;
+		}
+
+		// TODO: bugzilla request?!
+		AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash", null);
+		if (loginSplashHandler instanceof AbstractLoginSplashHandler) {
+			return (AbstractLoginSplashHandler) loginSplashHandler;
+		} else {
+			return null;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ui.application.AbstractApplication#isSplashLogin
+	 * (org.eclipse.equinox.app.IApplicationContext)
+	 */
+	@Override
+	protected boolean isSplashLogin(IApplicationContext context) {
+		return loginSplashViewDefinition != null && getLoginSplashHandler() != null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.navigation.ui.application.AbstractApplication#isDialogLogin
+	 * (org.eclipse.equinox.app.IApplicationContext)
+	 */
+	@Override
+	protected boolean isDialogLogin(IApplicationContext context) {
+		return super.isDialogLogin(context) && loginSplashViewDefinition == null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.ui.application.AbstractApplication#
+	 * initialzeLoginViewDefinition()
+	 */
+	@Override
+	protected void initialzeLoginViewDefinition() {
+
+		super.initialzeLoginViewDefinition();
+
+		initialzeLoginSplashViewDefinition();
+	}
+
+	public void update(ILoginSplashViewDefinition[] data) {
+
+		if (data.length > 0) {
+			loginSplashViewDefinition = data[0];
+		}
+	}
+
+	private void initialzeLoginSplashViewDefinition() {
+
+		Inject.extension(ILoginSplashViewDefinition.EP_TYPE).useType(ILoginSplashViewDefinition.class).into(this)
+				.andStart(Activator.getDefault().getContext());
+	}
+
 	private Display getDisplay() {
 
 		if (PlatformUI.isWorkbenchRunning()) {
@@ -246,7 +366,7 @@ public abstract class SwtApplication extends AbstractApplication {
 	private Shell getWorkbenchShell() {
 
 		// TODO: copied from org.eclipse.riena.navigation.ui.swt.views.DialogView (implement only once)
-		if (PlatformUI.isWorkbenchRunning()) {
+		if (PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
 			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		} else {
 			return null;

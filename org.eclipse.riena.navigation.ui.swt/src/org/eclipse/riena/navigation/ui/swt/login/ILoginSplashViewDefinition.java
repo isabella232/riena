@@ -8,19 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.login;
+package org.eclipse.riena.navigation.ui.swt.login;
 
 import org.eclipse.riena.core.extension.ExtensionInterface;
 
 /**
- * The definition for the login dialog view.
+ * The definition for the login splash dialog view.
  */
 @ExtensionInterface
-public interface ILoginDialogViewDefinition {
+public interface ILoginSplashViewDefinition {
 
-	String EP_TYPE = "org.eclipse.riena.navigation.ui.loginDialogViewDefinition"; //$NON-NLS-1$
+	String EP_TYPE = "org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition"; //$NON-NLS-1$
 
-	ILoginDialogView createViewClass();
+	ILoginSplashView createViewClass();
 
 	/**
 	 * Return the duration of non activity in the application, after which the

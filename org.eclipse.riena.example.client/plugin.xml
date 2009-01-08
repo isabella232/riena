@@ -800,10 +800,10 @@
     </extension>
     <extension
           point="org.eclipse.riena.navigation.ui.loginDialogViewDefinition">
-       <loginDialogViewDefinition
-             nonActivityDuration="0"
+       <!--loginDialogViewDefinition
+             nonActivityDuration="3000"
              viewClass="org.eclipse.riena.example.client.views.LoginDialogView">
-       </loginDialogViewDefinition>
+       </loginDialogViewDefinition-->
     </extension>
     <extension
           id="LocalCallback"
@@ -826,6 +826,24 @@
              callbackHandlerId="org.eclipse.riena.example.client.LocalCallback"
              configName="Remote">
        </callbackHandlerMapping>
+    </extension>
+    <extension
+          point="org.eclipse.ui.splashHandlers">
+       <splashHandler
+             class="org.eclipse.riena.example.client.splashHandlers.LoginSplashHandler"
+             id="org.eclipse.riena.example.client.splashHandlers.interactive">
+       </splashHandler>
+       <splashHandlerProductBinding
+             productId="org.eclipse.riena.example.client.example_product"
+             splashId="org.eclipse.riena.example.client.splashHandlers.interactive">
+       </splashHandlerProductBinding>
+    </extension>
+    <extension
+          point="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition">
+       <loginSplashViewDefinition
+             nonActivityDuration="0"
+             viewClass="org.eclipse.riena.example.client.views.LoginSplashView">
+       </loginSplashViewDefinition>
     </extension>
    
 </plugin>

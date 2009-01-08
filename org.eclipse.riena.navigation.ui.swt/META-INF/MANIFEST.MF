@@ -24,7 +24,9 @@ Export-Package: org.eclipse.riena.navigation.ui.swt.application,
  org.eclipse.riena.navigation.ui.swt.binding,
  org.eclipse.riena.navigation.ui.swt.component;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.navigation.ui.swt.lnf.renderer,
+ org.eclipse.riena.navigation.ui.swt.login,
  org.eclipse.riena.navigation.ui.swt.presentation,
+ org.eclipse.riena.navigation.ui.swt.splashHandlers,
  org.eclipse.riena.navigation.ui.swt.views
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -3,12 +3,28 @@
 
 <product name="Riena Example" id="org.eclipse.riena.example.client.example_product" application="org.eclipse.riena.example.client.application" useFeatures="false">
 
+
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
+
+   <windowImages/>
+
+   <splash
+      handlerType="interactive" />
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
 
    <plugins>
       <plugin id="com.caucho.hessian"/>
@@ -23,13 +39,15 @@
       <plugin id="org.eclipse.core.expressions"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.runtime"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry"/>
       <plugin id="org.eclipse.core.variables"/>
       <plugin id="org.eclipse.equinox.app"/>
       <plugin id="org.eclipse.equinox.common"/>
       <plugin id="org.eclipse.equinox.log"/>
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.security"/>
+      <plugin id="org.eclipse.equinox.transforms.hook" fragment="true"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
@@ -41,9 +59,12 @@
       <plugin id="org.eclipse.riena.communication.factory.hessian"/>
       <plugin id="org.eclipse.riena.core"/>
       <plugin id="org.eclipse.riena.example.client"/>
+      <plugin id="org.eclipse.riena.monitor.common"/>
       <plugin id="org.eclipse.riena.navigation"/>
       <plugin id="org.eclipse.riena.navigation.ui"/>
       <plugin id="org.eclipse.riena.navigation.ui.swt"/>
+      <plugin id="org.eclipse.riena.security.common"/>
+      <plugin id="org.eclipse.riena.ui.common"/>
       <plugin id="org.eclipse.riena.ui.core"/>
       <plugin id="org.eclipse.riena.ui.filter"/>
       <plugin id="org.eclipse.riena.ui.ridgets"/>

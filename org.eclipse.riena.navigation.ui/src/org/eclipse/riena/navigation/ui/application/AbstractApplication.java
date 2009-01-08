@@ -46,7 +46,6 @@ import org.osgi.service.log.LogService;
 public abstract class AbstractApplication implements IApplication {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(AbstractApplication.class);
-	private final static String EP_TYPE_LOGIN_DIALOG_VIEW_DEFINITION = "org.eclipse.riena.navigation.ui.loginDialogViewDefinition"; //$NON-NLS-1$
 	protected ILoginDialogViewDefinition loginDialogViewDefinition;
 
 	public Object start(IApplicationContext context) throws Exception {
@@ -186,13 +185,21 @@ public abstract class AbstractApplication implements IApplication {
 
 	protected Object initialzePerformLogin(IApplicationContext context) throws Exception {
 
-		initialzeLoginDialogViewDefinition();
+		initialzeLoginViewDefinition();
 
-		if (loginDialogViewDefinition != null) {
+		if (isDialogLogin(context)) {
 			return performLogin(context);
 		} else {
 			return EXIT_OK;
 		}
+	}
+
+	protected boolean isDialogLogin(IApplicationContext context) {
+		return loginDialogViewDefinition != null;
+	}
+
+	protected boolean isSplashLogin(IApplicationContext context) {
+		return false;
 	}
 
 	protected Object doPerformLogin(ILoginDialogView loginDialogView) {
@@ -200,9 +207,18 @@ public abstract class AbstractApplication implements IApplication {
 		return EXIT_OK;
 	}
 
+	protected Object doPerformSplashLogin(IApplicationContext context) {
+
+		return EXIT_OK;
+	}
+
 	protected Object performLogin(IApplicationContext context) throws Exception {
 
-		return doPerformLogin(loginDialogViewDefinition.createViewClass());
+		if (isSplashLogin(context)) {
+			return doPerformSplashLogin(context);
+		} else {
+			return doPerformLogin(loginDialogViewDefinition.createViewClass());
+		}
 	}
 
 	public void update(ILoginDialogViewDefinition[] data) {
@@ -212,9 +228,9 @@ public abstract class AbstractApplication implements IApplication {
 		}
 	}
 
-	private void initialzeLoginDialogViewDefinition() {
+	protected void initialzeLoginViewDefinition() {
 
-		Inject.extension(EP_TYPE_LOGIN_DIALOG_VIEW_DEFINITION).useType(ILoginDialogViewDefinition.class).into(this)
+		Inject.extension(ILoginDialogViewDefinition.EP_TYPE).useType(ILoginDialogViewDefinition.class).into(this)
 				.andStart(Activator.getDefault().getContext());
 	}
 

@@ -30,7 +30,7 @@ import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 
 /**
- * The controller for the hello dialog of the dialog example.
+ * The controller for the login dialog of the example.
  */
 public class LoginDialogController extends AbstractWindowController {
 
@@ -65,7 +65,7 @@ public class LoginDialogController extends AbstractWindowController {
 		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
 		getWindowRidget().setIcon(getIconPath(ExampleIcons.ICON_SAMPLE));
 
-		ITextRidget user = (ITextRidget) getRidget(RIDGET_ID_USER);
+		final ITextRidget user = (ITextRidget) getRidget(RIDGET_ID_USER);
 		user.setMandatory(true);
 		ITextRidget password = (ITextRidget) getRidget(RIDGET_ID_PASSWORD);
 		password.setMandatory(true);
@@ -78,7 +78,12 @@ public class LoginDialogController extends AbstractWindowController {
 			 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 			 */
 			public void callback() {
-				dispose(checkLogin() ? IApplication.EXIT_OK : IApplication.EXIT_RESTART);
+				Boolean checkLogin = checkLogin();
+				if (checkLogin) {
+					dispose(IApplication.EXIT_OK);
+				} else {
+					user.requestFocus();
+				}
 			}
 		});
 		IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
@@ -117,6 +122,7 @@ public class LoginDialogController extends AbstractWindowController {
 		super.afterBind();
 
 		getWindowRidget().setDefaultButton(getRidget(RIDGET_ID_OK).getUIControl());
+		getRidget(RIDGET_ID_USER).requestFocus();
 	}
 
 	private boolean checkLogin() {
