@@ -149,7 +149,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 		return description;
 	}
 
-	public void setDescrition(String description) {
+	public void setDescription(String description) {
 		getDescription().setText(description);
 	}
 

@@ -29,11 +29,11 @@ public interface IUIProcessWindow {
 	void closeWindow();
 
 	/**
-	 * sets the desription of the uiProcess
+	 * sets the description of the uiProcess
 	 * 
 	 * @param description
 	 */
-	void setDescrition(String description);
+	void setDescription(String description);
 
 	/**
 	 * 

@@ -216,7 +216,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	}
 
 	public void setDescription(String text) {
-		processWindow.setDescrition(text);
+		processWindow.setDescription(text);
 	}
 
 	public void setTitle(String text) {
