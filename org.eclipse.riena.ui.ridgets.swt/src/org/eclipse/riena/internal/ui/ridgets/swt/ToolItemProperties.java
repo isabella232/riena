@@ -17,6 +17,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -28,6 +29,8 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 	private ToolBar parent;
 	private List<String> prevSiblingIds;
+	private Image hotImage;
+	private Image disabledImage;
 
 	/**
 	 * @param item
@@ -38,6 +41,8 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 		ToolItem item = ridget.getUIControl();
 		parent = item.getParent();
+		hotImage = item.getHotImage();
+		disabledImage = item.getDisabledImage();
 		storePreviousSiblings(item);
 
 	}
@@ -107,6 +112,19 @@ public class ToolItemProperties extends AbstractItemProperties {
 		}
 		getRidget().setUIControl(toolItem);
 		return toolItem;
+
+	}
+
+	@Override
+	protected void setAllProperties(Item item, boolean addListeners) {
+		super.setAllProperties(item, addListeners);
+		ToolItem toolItem = (ToolItem) item;
+		if (hotImage == null || !hotImage.isDisposed()) {
+			toolItem.setHotImage(hotImage);
+		}
+		if (disabledImage == null || !disabledImage.isDisposed()) {
+			toolItem.setDisabledImage(disabledImage);
+		}
 
 	}
 

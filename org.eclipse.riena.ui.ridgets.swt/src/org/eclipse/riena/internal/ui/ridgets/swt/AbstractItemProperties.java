@@ -58,7 +58,9 @@ public abstract class AbstractItemProperties {
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(item, id);
 		item.setText(text);
-		item.setImage(image);
+		if (image == null || !image.isDisposed()) {
+			item.setImage(image);
+		}
 		if (addListeners) {
 			for (Listener listener : selectionListeners) {
 				item.addListener(SWT.Selection, listener);
