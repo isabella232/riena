@@ -230,10 +230,10 @@ public class SimpleSender implements ISender, IExecutableExtension {
 			try {
 				if (receiver.take(System.currentTimeMillis(), transferables)) {
 					store.commitTransferred(transferables);
+					retrying = false;
 				} else {
-					// TODO What do we do if the receiver does not take it?
+					throw new RuntimeException("Retry sending later because receiver rejected it."); //$NON-NLS-1$
 				}
-				retrying = false;
 			} catch (Throwable t) {
 				trace("sending failed with: " + t);
 				trace("retrying in " + retryTime + " milli seconds");
