@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.communication.core;
+package org.eclipse.riena.core.cache;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -21,7 +21,9 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(RemoteServiceDescriptionTest.class);
+		suite.addTestSuite(GenericObjectCacheTest.class);
+		suite.addTestSuite(LRUCacheTest.class);
 		return suite;
 	}
+
 }

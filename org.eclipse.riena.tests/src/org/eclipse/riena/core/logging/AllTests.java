@@ -8,20 +8,21 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.communication.core;
+package org.eclipse.riena.core.logging;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Tests all test cases within this package.
+ * Tests all test cases within this.
  */
 public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(RemoteServiceDescriptionTest.class);
+		suite.addTestSuite(ConsoleLoggerTest.class);
 		return suite;
 	}
+
 }

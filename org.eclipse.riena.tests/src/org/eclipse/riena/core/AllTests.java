@@ -14,27 +14,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.eclipse.riena.core.exception.ExceptionHandlerManagerTest;
-import org.eclipse.riena.core.extension.ExtensionInjectorTest;
-import org.eclipse.riena.core.extension.HeterogeneousInjectingTest;
-import org.eclipse.riena.core.marker.AbstractMarkerTest;
-import org.eclipse.riena.core.service.ServiceInjectorTest;
-
 /**
- * Tests all test cases within package:
- * 
- * org.eclipse.riena.core
+ * Tests all test cases within this package.
  */
 public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(AbstractMarkerTest.class);
-		suite.addTestSuite(ExceptionHandlerManagerTest.class);
-		suite.addTestSuite(ExtensionInjectorTest.class);
-		suite.addTestSuite(HeterogeneousInjectingTest.class);
 		suite.addTestSuite(RienaLocationsTest.class);
-		suite.addTestSuite(ServiceInjectorTest.class);
 		return suite;
 	}
 

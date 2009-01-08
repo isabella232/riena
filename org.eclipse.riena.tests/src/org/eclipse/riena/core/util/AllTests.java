@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Tests cases within package: <code>org.eclipse.riena.core.util</code>
+ * Tests all test cases within this package.
  */
 public class AllTests extends TestCase {
 
