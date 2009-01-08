@@ -236,8 +236,9 @@ public abstract class SwtApplication extends AbstractApplication {
 	 * doPerformLogin
 	 * (org.eclipse.riena.internal.navigation.ui.login.ILoginDialogView)
 	 */
-	protected Object doPerformLogin(final ILoginDialogView loginDialogView) {
+	protected Object doPerformLogin(IApplicationContext context) {
 
+		final ILoginDialogView loginDialogView = loginDialogViewDefinition.createViewClass();
 		Realm realm = SWTObservables.getRealm(getDisplay());
 		do {
 			Realm.runWithDefault(realm, new Runnable() {

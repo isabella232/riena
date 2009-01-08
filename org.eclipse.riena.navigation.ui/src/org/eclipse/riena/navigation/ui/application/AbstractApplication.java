@@ -34,7 +34,6 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor;
-import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.login.ILoginDialogViewDefinition;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
@@ -202,7 +201,7 @@ public abstract class AbstractApplication implements IApplication {
 		return false;
 	}
 
-	protected Object doPerformLogin(ILoginDialogView loginDialogView) {
+	protected Object doPerformLogin(IApplicationContext context) {
 
 		return EXIT_OK;
 	}
@@ -217,7 +216,7 @@ public abstract class AbstractApplication implements IApplication {
 		if (isSplashLogin(context)) {
 			return doPerformSplashLogin(context);
 		} else {
-			return doPerformLogin(loginDialogViewDefinition.createViewClass());
+			return doPerformLogin(context);
 		}
 	}
 
