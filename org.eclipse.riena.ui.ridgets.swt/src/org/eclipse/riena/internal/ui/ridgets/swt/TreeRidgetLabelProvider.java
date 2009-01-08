@@ -146,7 +146,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			for (int i = attributeMap.length - 1; result == null && i > -1; i--) {
 				IObservableMap attribute = attributeMap[i];
 				IBeanObservable beanObservable = (IBeanObservable) attribute;
-				PropertyDescriptor pd = ((IBeanObservable) beanObservable).getPropertyDescriptor();
+				PropertyDescriptor pd = beanObservable.getPropertyDescriptor();
 				String property = pd != null ? pd.getName() : null;
 				if (enablementAccessor.equals(property)) {
 					result = attribute;

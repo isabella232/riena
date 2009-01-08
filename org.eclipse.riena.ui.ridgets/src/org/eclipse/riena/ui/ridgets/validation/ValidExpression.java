@@ -141,7 +141,7 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			pattern = args[0];
 		}
 

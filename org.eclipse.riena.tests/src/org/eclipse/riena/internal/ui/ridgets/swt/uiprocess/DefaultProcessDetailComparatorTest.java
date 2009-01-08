@@ -10,18 +10,27 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
-import java.util.Comparator;
-
-import org.eclipse.riena.ui.swt.StatuslineUIProcess;
+import junit.framework.TestCase;
 
 /**
- * Default implementation for the {@link Comparator} for {@link ProcessDetail}
- * instances for control of order in the {@link StatuslineUIProcess} window.
+ * Tests of the class {@link DefaultProcessDetailComparator}
  */
-public class DefaultProcessDetailComparator implements Comparator<ProcessDetail> {
+public class DefaultProcessDetailComparatorTest extends TestCase {
 
-	public int compare(ProcessDetail detail1, ProcessDetail detail2) {
-		return ((Long) detail2.getStartupTS()).compareTo(detail1.getStartupTS());
+	/**
+	 * Tests the method {@code compare}.
+	 */
+	public void testCompare() {
+
+		DefaultProcessDetailComparator comparator = new DefaultProcessDetailComparator();
+
+		ProcessDetail detail1 = new ProcessDetail(1, null);
+		ProcessDetail detail2 = new ProcessDetail(2, null);
+
+		assertEquals(1, comparator.compare(detail1, detail2));
+		assertEquals(-1, comparator.compare(detail2, detail1));
+		assertEquals(0, comparator.compare(detail1, detail1));
+
 	}
 
 }

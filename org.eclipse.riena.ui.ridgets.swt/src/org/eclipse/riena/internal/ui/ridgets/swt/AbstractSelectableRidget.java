@@ -228,7 +228,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		@Override
 		protected void fireValueChange(ValueDiff diff) {
 			super.fireValueChange(diff);
-			String key = ISelectableRidget.PROPERTY_SINGLE_SELECTION;
+			String key = ISelectableRidget.PROPERTY_SELECTION;
 			Object oldValue = diff.getOldValue();
 			Object newValue = diff.getNewValue();
 			AbstractSelectableRidget.this.firePropertyChange(key, oldValue, newValue);
@@ -251,7 +251,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 			super.fireListChange(diff);
 			List<Object> newSelection = Arrays.asList(toArray());
 			List<Object> oldSelection = computeOldSelection(diff, newSelection);
-			String key = ISelectableRidget.PROPERTY_MULTI_SELECTION;
+			String key = ISelectableRidget.PROPERTY_SELECTION;
 			AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, oldSelection, newSelection);
 		}
 

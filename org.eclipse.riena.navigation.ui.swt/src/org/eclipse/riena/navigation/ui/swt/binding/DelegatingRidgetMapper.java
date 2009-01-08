@@ -32,10 +32,9 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 		this.mappings = new HashMap<Class<? extends Object>, Class<? extends IRidget>>();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 		if (Widget.class.isAssignableFrom(controlClazz)) {
-			delegate.addMapping((Class<? extends Widget>) controlClazz, ridgetClazz);
+			delegate.addMapping(controlClazz, ridgetClazz);
 			return;
 		}
 		mappings.put(controlClazz, ridgetClazz);
@@ -47,10 +46,9 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 		if (Widget.class.isAssignableFrom(controlClazz)) {
-			return delegate.getRidgetClass((Class<? extends Widget>) controlClazz);
+			return delegate.getRidgetClass(controlClazz);
 		}
 		return mappings.get(controlClazz);
 
@@ -58,7 +56,7 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
 	public Class<? extends IRidget> getRidgetClass(Object control) {
 		if (Widget.class.isAssignableFrom(control.getClass())) {
-			return delegate.getRidgetClass((Widget) control);
+			return delegate.getRidgetClass(control);
 		}
 
 		return getRidgetClass(control.getClass());

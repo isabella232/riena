@@ -164,14 +164,14 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
-
-		// avoid URL.equals(...) since it opens a network connection :(
-		if ((oldValue == null && newValue != null) || (oldValue != null && newValue == null)) {
+		if (oldValue == null || newValue == null) {
 			return true;
 		}
+
+		// avoid URL.equals(...) since it opens a network connection :(
 		String str1 = oldValue.toExternalForm();
 		String str2 = newValue.toExternalForm();
-		return str1.equals(str2);
+		return !str1.equals(str2);
 	}
 
 }

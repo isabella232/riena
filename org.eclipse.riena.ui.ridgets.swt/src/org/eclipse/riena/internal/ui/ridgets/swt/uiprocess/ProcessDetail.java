@@ -121,8 +121,8 @@ public class ProcessDetail {
 	}
 
 	private static int calculatePercentage(int ivalue, int imaxValue) {
-		double dmaxValue = (double) imaxValue;
-		double dValue = (double) ivalue;
+		double dmaxValue = imaxValue;
+		double dValue = ivalue;
 		return (int) ((dValue / dmaxValue) * 100);
 	}
 

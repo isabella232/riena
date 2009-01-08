@@ -247,8 +247,10 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
-		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
-				|| !oldValue.equals(newValue);
+		if (oldValue == null || newValue == null) {
+			return true;
+		}
+		return !oldValue.equals(newValue);
 	}
 
 	public final boolean isErrorMarked() {

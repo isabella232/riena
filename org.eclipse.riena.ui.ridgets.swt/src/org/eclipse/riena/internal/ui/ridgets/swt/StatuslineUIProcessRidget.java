@@ -236,14 +236,12 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			// anybody there?
 			ProcessDetail pDetail = detailForVisualizer(visualizer);
 			assert pDetail != null : "no ProcessDetail for visualizer " + visualizer; //$NON-NLS-1$
-			if (pDetail != null) {
-				// pending?
-				if (pDetail.isPending()) {
-					// no more!
-					pDetail.setState(ProcessState.RUNNING);
-				}
-				pDetail.setProgress(progress);
+			// pending?
+			if (pDetail.isPending()) {
+				// no more!
+				pDetail.setState(ProcessState.RUNNING);
 			}
+			pDetail.setProgress(progress);
 		}
 	}
 

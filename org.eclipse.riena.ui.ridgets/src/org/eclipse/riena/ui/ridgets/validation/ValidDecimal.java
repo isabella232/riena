@@ -300,7 +300,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			int localStart = 0;
 			if (args.length > 0) {
 				if (args[0].equals(Boolean.TRUE.toString())) {

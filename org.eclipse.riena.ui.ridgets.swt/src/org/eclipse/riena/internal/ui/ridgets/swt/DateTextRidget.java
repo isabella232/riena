@@ -72,6 +72,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 	}
 
+	@Override
 	protected final synchronized void addListeners(Text control) {
 		control.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
@@ -229,10 +230,11 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * those key strokes are:
 	 * <ol>
 	 * <ol>
-	 * <li>Left & Right arrow - will jump over separators and spaces</li> <li>
+	 * <li>Left & Right arrow - will jump over separators and spaces</li>
+	 * <li>
 	 * Delete / Backspace at a single separator - will jump to the next valid
-	 * location in the same direction</li> <li>Shift - disables jumping over
-	 * grouping separators when pressed down</li>
+	 * location in the same direction</li>
+	 * <li>Shift - disables jumping over grouping separators when pressed down</li>
 	 * </ol>
 	 */
 	private final class DateKeyListener extends KeyAdapter {

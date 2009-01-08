@@ -161,11 +161,12 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 *      java.lang.String, java.lang.Object)
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
 	 */
+	@Override
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			if (args.length > 0) {
 				this.min = new BigDecimal(args[0]);
 			}

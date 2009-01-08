@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
@@ -360,6 +361,30 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
 		assertEquals("Hello!", ridget.getText());
 		assertEquals("World", control.getText());
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code hasChanged.}
+	 * 
+	 * @throws MalformedURLException
+	 */
+	public void testHasChanged() throws MalformedURLException {
+
+		ILabelRidget ridget = getRidget();
+
+		URL url1 = new URL("file:/a");
+		URL url2 = new URL("file:/b");
+		boolean ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", url1, url2);
+		assertTrue(ret);
+		ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", url1, url1);
+		assertFalse(ret);
+		ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", url1, (URL) null);
+		assertTrue(ret);
+		ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", (URL) null, url2);
+		assertTrue(ret);
+		ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", (URL) null, (URL) null);
+		assertFalse(ret);
 
 	}
 

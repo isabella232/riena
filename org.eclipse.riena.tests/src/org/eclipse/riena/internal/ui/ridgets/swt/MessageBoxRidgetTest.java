@@ -318,10 +318,12 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		assertEquals(getWidget(), getRidget().getUIControl());
 	}
 
+	@Override
 	public void testGetToolTip() {
 		// no test, because tooltips not yet supported
 	}
 
+	@Override
 	public void testGetFocusable() {
 
 		IRidget aRidget = getRidget();
@@ -337,10 +339,11 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		assertTrue(aRidget.isFocusable());
 	}
 
+	@Override
 	public void testSetFocusable() {
 
 		IRidget aRidget = getRidget();
-		MockMessageBox aControl = (MockMessageBox) getWidget();
+		MockMessageBox aControl = getWidget();
 		// getOtherControl().moveAbove(aControl); ???
 
 		aControl.requestFocus();
@@ -365,9 +368,10 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		}
 	}
 
+	@Override
 	public void testRequestFocus() throws Exception {
 
-		MessageBox aControl = (MessageBox) getWidget();
+		MessageBox aControl = getWidget();
 		aControl.requestFocus();
 		// TODO: focus not gained here, because control has to be shown to requested focus
 		if (aControl.hasFocus()) { // skip if control cannot receive focus
@@ -436,7 +440,7 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		failNotEquals(null, expected, actual);
 	}
 
-	private class MockMessageBox extends MessageBox {
+	private static class MockMessageBox extends MessageBox {
 
 		private String title;
 		private String text;
@@ -447,16 +451,8 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 			super(parent);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.ui.ridgets.swt.MessageBox#show(java.lang.String,
-		 * java.lang.String, int, java.lang.String[])
-		 */
 		@Override
 		public void show(String title, String text, int type, String[] buttonLabels) {
-
 			// save values her to check after showing that the call of show was performed with the correct arguments.
 			this.title = title;
 			this.text = text;
@@ -464,4 +460,5 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 			this.buttonLabels = buttonLabels;
 		}
 	}
+
 }

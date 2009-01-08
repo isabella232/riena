@@ -211,8 +211,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 	}
 
 	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
-			String renderingMethod, Object selectionBean, String selectionPropertyName,
-			IComboEntryFactory entryFactory) {
+			String renderingMethod, Object selectionBean, String selectionPropertyName, IComboEntryFactory entryFactory) {
 		throw new UnsupportedOperationException(); // TODO implement
 
 	}
@@ -252,6 +251,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
 
+	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
 	}

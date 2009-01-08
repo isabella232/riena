@@ -27,9 +27,9 @@ public abstract class AbstractViewBindingDelegate {
 	private List<Object> uiControls;
 
 	private IBindingManager bindingManager;
-	private IControlRidgetMapper mapper;
+	private IControlRidgetMapper<Object> mapper;
 
-	public AbstractViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+	public AbstractViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 		bindingManager = createBindingManager(propertyStrategy, mapper);
 		uiControls = new ArrayList<Object>();
 	}
@@ -39,7 +39,8 @@ public abstract class AbstractViewBindingDelegate {
 	 * 
 	 * @return binding manager
 	 */
-	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy,
+			IControlRidgetMapper<Object> mapper) {
 		this.mapper = mapper;
 		return new DefaultBindingManager(propertyStrategy, mapper);
 	}

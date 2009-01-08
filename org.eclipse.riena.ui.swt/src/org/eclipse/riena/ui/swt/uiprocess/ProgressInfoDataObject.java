@@ -80,11 +80,6 @@ public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject
 		return key;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
 	public int compareTo(ProgressInfoDataObject other) {
 		if (equals(other) && getProcessState().equals(other.getProcessState()) && getValue() == other.getValue()) {
 			return 0;

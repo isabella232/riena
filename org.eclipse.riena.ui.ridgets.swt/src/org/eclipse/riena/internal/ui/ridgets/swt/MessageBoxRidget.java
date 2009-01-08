@@ -49,89 +49,38 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		focusManager = new FocusManager();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IMessageBoxRidget#getOptions()
-	 */
 	public MessageBoxOption[] getOptions() {
 		return options;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IMessageBoxRidget#getText()
-	 */
 	public String getText() {
 		return text;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IMessageBoxRidget#getTitle()
-	 */
 	public String getTitle() {
 		return title;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IMessageBoxRidget#getType()
-	 */
 	public Type getType() {
 		return type;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IMessageBoxRidget#setOptions(org.eclipse
-	 * .riena.ui.ridgets.IMessageBoxRidget.MessageBoxOption[])
-	 */
 	public void setOptions(MessageBoxOption[] options) {
 		this.options = options;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IMessageBoxRidget#setText(java.lang.String)
-	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IMessageBoxRidget#setTitle(java.lang.String)
-	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IMessageBoxRidget#setType(org.eclipse.riena
-	 * .ui.ridgets.IMessageBoxRidget.Type)
-	 */
 	public void setType(Type type) {
 		this.type = type;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IMessageBoxRidget#show()
-	 */
 	public MessageBoxOption show() {
 
 		if (messageBox != null) {
@@ -207,11 +156,6 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getID()
-	 */
 	public String getID() {
 		if (getUIControl() != null) {
 			return getUIControl().getPropertyName();
@@ -220,107 +164,51 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getToolTipText()
-	 */
 	public String getToolTipText() {
 		// not supported
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getUIControl()
-	 */
 	public MessageBox getUIControl() {
 		return messageBox;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#hasFocus()
-	 */
 	public boolean hasFocus() {
 		return messageBox.hasFocus();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isBlocked()
-	 */
 	public boolean isBlocked() {
 		return blocked;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isFocusable()
-	 */
 	public boolean isFocusable() {
 		return focusable;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isVisible()
-	 */
 	public boolean isVisible() {
 		return messageBox != null && visible;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#requestFocus()
-	 */
 	public void requestFocus() {
 		if (isFocusable()) {
 			messageBox.requestFocus();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setBlocked(boolean)
-	 */
 	public void setBlocked(boolean blocked) {
 
 		this.blocked = blocked;
 		setFocusable(!blocked);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
-	 */
 	public void setFocusable(boolean focusable) {
 		this.focusable = focusable;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
-	 */
 	public void setToolTipText(String toolTipText) {
 		// not supported
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setUIControl(java.lang.Object)
-	 */
 	public void setUIControl(Object uiControl) {
 		assertUIControlType(uiControl, MessageBox.class);
 
@@ -330,21 +218,11 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		updateUIControl();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setVisible(boolean)
-	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 		updateUIControl();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#updateFromModel()
-	 */
 	@Override
 	public void updateFromModel() {
 		// do nothing
@@ -360,15 +238,17 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		messageBox.setVisible(visible);
 	}
 
-	/*
+	/**
 	 * Checks the type of the UI-control. If the test fails, some kind of
 	 * unchecked exception is thrown.
 	 * 
-	 * @param uiControl The UI-control to be checked.
+	 * @param uiControl
+	 *            The UI-control to be checked.
 	 * 
-	 * @param requiredUIControlType The required type.
+	 * @param requiredUIControlType
+	 *            The required type.
 	 */
-	protected void assertUIControlType(Object uiControl, Class requiredUIControlType) {
+	protected void assertUIControlType(Object uiControl, Class<MessageBox> requiredUIControlType) {
 		Assert.isTrue(uiControl == null || requiredUIControlType.isAssignableFrom(uiControl.getClass()),
 				"Wrong UI-control type. Expected " + requiredUIControlType); //$NON-NLS-1$
 	}

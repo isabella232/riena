@@ -36,11 +36,13 @@ public class Activator extends AbstractRienaUIPlugin {
 	// Helper class for shared colors
 	private static SharedColors sharedColors;
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 	}
 
+	@Override
 	public synchronized void stop(BundleContext context) throws Exception {
 		if (sharedColors != null) {
 			sharedColors.dispose();

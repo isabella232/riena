@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
@@ -18,8 +19,6 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Image;
@@ -92,61 +91,26 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IWindowRidget#addWindowRidgetListener(org
-	 * .eclipse.riena.ui.ridgets.listener.IWindowRidgetListener)
-	 */
 	public void addWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.add(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IWindowRidget#removeWindowRidgetListener
-	 * (org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener)
-	 */
 	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isVisible()
-	 */
 	public boolean isVisible() {
 		return getUIControl().isVisible();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setVisible(boolean)
-	 */
 	public void setVisible(boolean visible) {
 		getUIControl().setVisible(visible);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#dispose()
-	 */
 	public void dispose() {
 		getUIControl().dispose();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IWindowRidget#setTitle(java.lang.String)
-	 */
 	public void setTitle(String title) {
 		if (title != null && !this.title.equals(title)) {
 			this.title = title;
@@ -164,11 +128,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		return title;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IWindowRidget#setIcon(java.lang.String)
-	 */
 	public void setIcon(String icon) {
 		String oldIcon = this.icon;
 		this.icon = icon;
@@ -177,7 +136,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
-	/*
+	/**
 	 * Updates the icon of the UI control.
 	 */
 	private void updateIcon() {
@@ -206,21 +165,26 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		return missingImage;
 	}
 
-	/*
+	/**
 	 * Compares the two given values.
 	 * 
-	 * @param oldValue - old value
+	 * @param oldValue
+	 *            - old value
 	 * 
-	 * @param newValue - new value
+	 * @param newValue
+	 *            - new value
 	 * 
 	 * @return true, if value has changed; otherwise false
 	 */
 	protected boolean hasChanged(Object oldValue, Object newValue) {
+
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
-		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
-				|| !oldValue.equals(newValue);
+		if (oldValue == null || newValue == null) {
+			return true;
+		}
+		return !oldValue.equals(newValue);
 	}
 
 	/*
@@ -258,40 +222,19 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#isFocusable()
-	 */
 	public boolean isFocusable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#setFocusable(boolean)
-	 */
 	public void setFocusable(boolean focusable) {
 		// TODO Auto-generated method stub
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getToolTipText()
-	 */
 	public String getToolTipText() {
 		return toolTip;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IRidget#setToolTipText(java.lang.String)
-	 */
 	public void setToolTipText(String toolTipText) {
 		toolTip = toolTipText;
 	}
@@ -348,11 +291,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.AbstractRidget#updateFromModel()
-	 */
 	@Override
 	public void updateFromModel() {
 
@@ -365,11 +303,6 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidget#getID()
-	 */
 	public String getID() {
 		if (getUIControl() != null) {
 			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
@@ -381,61 +314,26 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 
 	private class RidgetShellListener implements ShellListener {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.ShellListener#shellActivated(org.eclipse.swt
-		 * .events.ShellEvent)
-		 */
 		public void shellActivated(ShellEvent e) {
 			for (IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
 				l.activated();
 			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.ShellListener#shellClosed(org.eclipse.swt.
-		 * events.ShellEvent)
-		 */
 		public void shellClosed(ShellEvent e) {
 			for (IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
 				l.closed();
 			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.ShellListener#shellDeactivated(org.eclipse
-		 * .swt.events.ShellEvent)
-		 */
 		public void shellDeactivated(ShellEvent e) {
 			// do nothing yet
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.ShellListener#shellDeiconified(org.eclipse
-		 * .swt.events.ShellEvent)
-		 */
 		public void shellDeiconified(ShellEvent e) {
 			// do nothing yet
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.swt.events.ShellListener#shellIconified(org.eclipse.swt
-		 * .events.ShellEvent)
-		 */
 		public void shellIconified(ShellEvent e) {
 			// do nothing yet
 		}

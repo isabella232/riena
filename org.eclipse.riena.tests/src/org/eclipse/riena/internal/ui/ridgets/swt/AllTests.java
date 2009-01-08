@@ -57,6 +57,8 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ToolItemMarkerSupportTest.class);
 		suite.addTestSuite(ToolItemPropertiesTest.class);
 		suite.addTestSuite(MessageBoxRidgetTest.class);
+		suite.addTestSuite(ShellRidgetTest.class);
+		suite.addTestSuite(AbstractSWTWidgetRidgetTest.class);
 		return suite;
 	}
 }

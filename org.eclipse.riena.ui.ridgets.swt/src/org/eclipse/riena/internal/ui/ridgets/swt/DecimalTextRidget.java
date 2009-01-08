@@ -44,6 +44,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 		}
 	}
 
+	@Override
 	protected boolean isNegative(String text) {
 		BigDecimal value = new BigDecimal(localStringToBigDecimal(text));
 		return value.compareTo(BigDecimal.ZERO) < 0;

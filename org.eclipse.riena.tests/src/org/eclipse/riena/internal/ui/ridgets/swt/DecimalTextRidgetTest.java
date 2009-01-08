@@ -280,6 +280,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testDoubleValueProviderAndHighNumbers() {
 		final DoubleBean doubleValueBean = new DoubleBean() {
+			@Override
 			public Double getValue() {
 				return 1000000000000000.0;
 			}
@@ -296,6 +297,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testDoubleValueProviderAndHighNumbersB() {
 		final DoubleBean doubleValueBean = new DoubleBean() {
+			@Override
 			public Double getValue() {
 				return 1000000000000000.0;
 			}
