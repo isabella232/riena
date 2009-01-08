@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.internal.util.BundleUtility;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.BundleUtil;
 import org.osgi.framework.Bundle;
 
 /**
@@ -80,7 +79,7 @@ public final class LnfManager {
 			String pluginID = parts[0];
 			String classPath = parts[1];
 			Bundle bundle = Platform.getBundle(pluginID);
-			if (!BundleUtility.isReady(bundle)) {
+			if (!BundleUtil.isReady(bundle)) {
 				return null;
 			}
 			lnfClass = bundle.loadClass(classPath);
