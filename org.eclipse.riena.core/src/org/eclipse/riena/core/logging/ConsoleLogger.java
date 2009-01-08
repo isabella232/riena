@@ -186,16 +186,7 @@ public class ConsoleLogger implements Logger {
 	}
 
 	private PrintStream getPrintStream(int level) {
-		switch (level) {
-		case LogService.LOG_DEBUG:
-		case LogService.LOG_INFO:
-			return System.out;
-		case LogService.LOG_WARNING:
-		case LogService.LOG_ERROR:
-			return System.err;
-		default:
-			return System.out;
-		}
+		return LogService.LOG_WARNING == level || LogService.LOG_ERROR == level ? System.err : System.out;
 	}
 
 }
