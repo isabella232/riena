@@ -44,29 +44,19 @@ public class PlatformLogCatcher implements ILogListener, ILogCatcher {
 	 * .IStatus, java.lang.String)
 	 */
 	public void logging(IStatus status, String plugin) {
-		int logLevel;
-		switch (status.getSeverity()) {
-		case IStatus.ERROR:
-			logLevel = LogService.LOG_ERROR;
-			break;
-		case IStatus.WARNING:
-			logLevel = LogService.LOG_WARNING;
-			break;
-		case IStatus.INFO:
-			logLevel = LogService.LOG_INFO;
-			break;
-		case IStatus.OK:
-			logLevel = LogService.LOG_INFO;
-			break;
-		case IStatus.CANCEL:
-			logLevel = LogService.LOG_DEBUG;
-			break;
-		default:
-			logLevel = LogService.LOG_DEBUG;
-			break;
-		}
 		if (Activator.getDefault() == null) {
 			return;
+		}
+		int logLevel;
+		int severity = status.getSeverity();
+		if (IStatus.ERROR == severity) {
+			logLevel = LogService.LOG_ERROR;
+		} else if (IStatus.WARNING == severity) {
+			logLevel = LogService.LOG_WARNING;
+		} else if (IStatus.INFO == severity || IStatus.OK == severity) {
+			logLevel = LogService.LOG_INFO;
+		} else {
+			logLevel = LogService.LOG_DEBUG;
 		}
 		StringBuilder bob = new StringBuilder("Message: "); //$NON-NLS-1$
 		bob.append(status.getMessage()).append(", Code: "); //$NON-NLS-1$
