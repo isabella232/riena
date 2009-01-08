@@ -70,7 +70,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		Collection<IMarkableRidget> localMarkableAdapter = new HashSet<IMarkableRidget>();
 		localMarkableAdapter.addAll(getRidgets());
 		for (Iterator<IMarkableRidget> i = localMarkableAdapter.iterator(); i.hasNext();) {
-			nextMarkableAdapter = (IMarkableRidget) i.next();
+			nextMarkableAdapter = i.next();
 			allMessageMarker.addAll(getMessageMarker(nextMarkableAdapter, false));
 		}
 		return constructMessage(allMessageMarker);

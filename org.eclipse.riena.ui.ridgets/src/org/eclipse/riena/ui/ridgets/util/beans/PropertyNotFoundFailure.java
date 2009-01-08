@@ -16,6 +16,8 @@ package org.eclipse.riena.ui.ridgets.util.beans;
  */
 public final class PropertyNotFoundFailure extends PropertyFailure {
 
+	private static final long serialVersionUID = -3127926982719247061L;
+
 	/**
 	 * Constructs a new exception instance with the specified detail message.
 	 * The cause is not initialized.

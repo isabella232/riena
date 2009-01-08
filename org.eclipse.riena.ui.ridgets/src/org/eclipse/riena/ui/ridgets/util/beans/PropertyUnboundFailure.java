@@ -24,6 +24,8 @@ package org.eclipse.riena.ui.ridgets.util.beans;
  */
 public final class PropertyUnboundFailure extends PropertyFailure {
 
+	private static final long serialVersionUID = -857499942518059862L;
+
 	/**
 	 * Constructs a new exception instance with the specified detail message.
 	 * The cause is not initialized.

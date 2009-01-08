@@ -25,7 +25,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * Tests of the class {@code DefaultBindingManager}
@@ -171,13 +170,13 @@ public class DefaultBindingManagerTest extends TestCase {
 	/**
 	 * This Mapper returns always the class <code>LabelRidget</code>.
 	 */
-	private static class ControlRidgetMapper implements IControlRidgetMapper<Widget> {
+	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
 		/**
 		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addMapping(java.lang.Class,
 		 *      java.lang.Class)
 		 */
-		public void addMapping(Class<? extends Widget> controlClazz, Class<? extends IRidget> ridgetClazz) {
+		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 			// not supported in this test
 		}
 
@@ -192,14 +191,14 @@ public class DefaultBindingManagerTest extends TestCase {
 		/**
 		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Class)
 		 */
-		public Class<? extends IRidget> getRidgetClass(Class<? extends Widget> controlClazz) {
+		public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 			return LabelRidget.class;
 		}
 
 		/**
 		 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Object)
 		 */
-		public Class<? extends IRidget> getRidgetClass(Widget control) {
+		public Class<? extends IRidget> getRidgetClass(Object control) {
 			return LabelRidget.class;
 		}
 

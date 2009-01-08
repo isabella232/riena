@@ -55,7 +55,7 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 	 * Creates a StringToDateValidator.
 	 */
 	protected AbstractValidDate(final boolean checkValidIntermediate) {
-		this("", checkValidIntermediate);
+		this("", checkValidIntermediate); //$NON-NLS-1$
 	}
 
 	/**
@@ -217,7 +217,7 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			setPattern(args[0]);
 		}
 

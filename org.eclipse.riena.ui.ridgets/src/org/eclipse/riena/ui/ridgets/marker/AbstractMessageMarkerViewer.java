@@ -97,7 +97,7 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		}
 		if (pRemove) {
 			for (Iterator<IMessageMarker> j = result.iterator(); j.hasNext();) {
-				markableRidget.removeMarker((IMessageMarker) j.next());
+				markableRidget.removeMarker(j.next());
 			}
 		}
 		Collections.sort(result, new MessageMarkerComparator());

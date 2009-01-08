@@ -18,6 +18,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 abstract public class PropertyFailure extends Failure {
 
+	private static final long serialVersionUID = -7432493570829272979L;
+
 	/**
 	 * Constructs a new exception instance with the specified detail message.
 	 * The cause is not initialized.

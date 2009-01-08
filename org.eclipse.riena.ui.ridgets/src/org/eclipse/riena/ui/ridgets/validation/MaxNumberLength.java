@@ -113,7 +113,7 @@ public class MaxNumberLength extends MaxLength {
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			int localStart = 0;
 			if (args.length > 0) {
 				this.maxLength = Integer.parseInt(args[0]);

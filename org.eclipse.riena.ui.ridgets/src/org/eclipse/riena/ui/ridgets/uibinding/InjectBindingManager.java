@@ -44,7 +44,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 * @param mapper
 	 *            - mapping for UI control-classes to ridget-classes
 	 */
-	public InjectBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+	public InjectBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 		super(propertyStrategy, mapper);
 		binding2PropertyDesc = new HashMap<String, PropertyDescriptor>();
 	}

@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 public class DefaultBindingManager implements IBindingManager {
 
 	private IBindingPropertyLocator propertyStrategy;
-	private IControlRidgetMapper mapper;
+	private IControlRidgetMapper<Object> mapper;
 
 	/**
 	 * Creates the managers of all bindings of a view.
@@ -45,7 +45,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @param mapper
 	 *            - mapping for UI control-classes to ridget-classes
 	 */
-	public DefaultBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+	public DefaultBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 		this.propertyStrategy = propertyStrategy;
 		this.mapper = mapper;
 	}

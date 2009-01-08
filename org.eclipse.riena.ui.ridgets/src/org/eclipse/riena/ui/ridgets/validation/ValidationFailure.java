@@ -19,6 +19,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class ValidationFailure extends Failure {
 
+	private static final long serialVersionUID = 6433769669502871767L;
+
 	/**
 	 * Creates a ValidationFailure.
 	 * 

@@ -17,6 +17,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class UIBindingFailure extends Failure {
 
+	private static final long serialVersionUID = -1361489127000931906L;
+
 	/**
 	 * @param msg
 	 * @param args

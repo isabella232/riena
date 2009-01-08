@@ -109,7 +109,7 @@ public class ValidCharacters implements IValidator, IExecutableExtension {
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			setAllowedChars(args[0]);
 		}
 

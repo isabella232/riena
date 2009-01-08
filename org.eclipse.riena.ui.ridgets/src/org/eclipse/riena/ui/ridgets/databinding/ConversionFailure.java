@@ -20,6 +20,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class ConversionFailure extends Failure {
 
+	private static final long serialVersionUID = -527421462771521337L;
+
 	/**
 	 * Creates a ConversionFailure.
 	 * 

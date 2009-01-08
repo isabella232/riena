@@ -15,6 +15,8 @@ package org.eclipse.riena.ui.ridgets.util.beans;
  */
 public class PropertyAccessFailure extends PropertyFailure {
 
+	private static final long serialVersionUID = 3430407290999660809L;
+
 	/**
 	 * Constructor for exception if accessing a bean property fails
 	 * 

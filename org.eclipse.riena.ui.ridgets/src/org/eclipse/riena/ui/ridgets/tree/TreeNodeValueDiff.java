@@ -50,4 +50,12 @@ public class TreeNodeValueDiff extends TreeDiff {
 	protected void dispatch(TreeModelEvent event, IObservablesListener listener) {
 		((ITreeModelListener) listener).treeNodesChanged(event);
 	}
+
+	public Object getOldValue() {
+		return oldValue;
+	}
+
+	public Object getNewValue() {
+		return newValue;
+	}
 }

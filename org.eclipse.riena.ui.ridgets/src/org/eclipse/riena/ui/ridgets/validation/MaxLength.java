@@ -77,7 +77,7 @@ public class MaxLength implements IValidator, IExecutableExtension {
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray((String) data);
+			String[] args = PropertiesUtils.asArray(data);
 			maxLength = Integer.parseInt(args[0]);
 		}
 

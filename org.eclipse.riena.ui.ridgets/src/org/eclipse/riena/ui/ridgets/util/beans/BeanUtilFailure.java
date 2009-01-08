@@ -17,6 +17,8 @@ import org.eclipse.riena.core.util.UtilFailure;
  */
 public class BeanUtilFailure extends UtilFailure {
 
+	private static final long serialVersionUID = -6871383716536677582L;
+
 	/**
 	 * Failure with a simple message.
 	 * 
