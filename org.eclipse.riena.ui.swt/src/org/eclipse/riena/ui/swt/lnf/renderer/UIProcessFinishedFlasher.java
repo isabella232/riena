@@ -65,10 +65,10 @@ public class UIProcessFinishedFlasher extends Thread {
 					Thread.sleep(sleepTime);
 				}
 			} catch (InterruptedException e) {
-				// Checkstyle warning can be ignored because it is save to swallow
-				// this InterruptedException: the flashing of the process finished
-				// marked is not intended to be cancelable. If a caller invokes
-				// .interrupt() on this thread it may be ignored.
+				e.getCause(); // ...can be swallowed because the flashing of the process
+				// finished marked is not intended to be cancelable. If a caller invokes
+				// .interrupt() on this thread it may be ignored. The pointless statement
+				// avoids a Checkstyle warning.
 			}
 		}
 
