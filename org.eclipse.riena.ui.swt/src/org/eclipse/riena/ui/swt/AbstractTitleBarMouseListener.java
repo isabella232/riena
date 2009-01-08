@@ -160,6 +160,8 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 					redraw = true;
 				}
 				break;
+			default:
+				throw new AssertionError("Illegal button index: " + i); //$NON-NLS-1$
 			}
 		}
 
