@@ -266,7 +266,9 @@ public final class ExtensionMapper {
 		 * 
 		 * @see org.eclipse.core.runtime.IConfigurationElement#getNamespace()
 		 */
+		@SuppressWarnings("deprecation")
 		public String getNamespace() {
+			// This method is also @deprecated so it must use the @deprecated methods 
 			return wrappedExtension != null ? wrappedExtension.getNamespace() : wrappedExtensionPoint.getNamespace();
 		}
 
