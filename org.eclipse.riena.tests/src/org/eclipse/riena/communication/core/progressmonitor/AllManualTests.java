@@ -21,7 +21,7 @@ public class AllManualTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(AllManualTests.class.getName());
-		suite.addTestSuite(ProgressMonitorITest.class);
+		suite.addTestSuite(RemoteProgressMonitorITest.class);
 		return suite;
 	}
 }
