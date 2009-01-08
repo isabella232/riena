@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.obsolete;
 import java.util.List;
 
 import org.eclipse.riena.ui.ridgets.IActionCallback;
-import org.eclipse.riena.ui.ridgets.IMarkableAdapter;
 import org.eclipse.riena.ui.ridgets.tree.ITreeModel;
 import org.eclipse.riena.ui.ridgets.tree.ITreeModelListener;
 import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
@@ -31,7 +30,7 @@ import org.eclipse.riena.ui.ridgets.tree.ITreeNode;
 @Deprecated
 // public interface ITreeAdapter extends IMarkableAdapter, IDragnDropCapability,
 // IPopupMenuCapable {
-public interface ITreeAdapter extends IMarkableAdapter {
+public interface ITreeAdapter {
 
 	/**
 	 * Bound property name for <code>selectedTreeNode</code>

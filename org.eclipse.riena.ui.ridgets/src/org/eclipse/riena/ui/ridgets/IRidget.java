@@ -24,6 +24,8 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 public interface IRidget {
 
+	String PROPERTY_BLOCKED = "blocked"; //$NON-NLS-1$
+
 	/**
 	 * @return Indicates whether the UI-control is visible.
 	 */
