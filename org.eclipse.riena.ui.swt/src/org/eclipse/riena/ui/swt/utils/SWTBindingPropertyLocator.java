@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Helper class to get the ID of a SWT UI control used for binding.
  */
-public class SWTBindingPropertyLocator implements IBindingPropertyLocator {
+public final class SWTBindingPropertyLocator implements IBindingPropertyLocator {
 
 	public final static String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$
 	private static SWTBindingPropertyLocator locator;
