@@ -477,9 +477,13 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * just a container for a {@link ProgressBar} and a {@link Label} for
 	 * caching
 	 */
-	final static class ControlHolder {
-		ProgressBar progressBar;
-		Label label;
+	private final static class ControlHolder {
+		private ProgressBar progressBar;
+		private Label label;
+
+		private ControlHolder() {
+			// private constructor of utility class.
+		}
 	}
 
 	// maps the pido´s key to a ControlHolder
