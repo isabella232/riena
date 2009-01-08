@@ -22,9 +22,9 @@ public class Activator extends Plugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
-	private ServiceTracker workareaDefinitionRegistryTracker; 
-	
+
+	private ServiceTracker workareaDefinitionRegistryTracker;
+
 	/**
 	 * @return the shared instance
 	 */
@@ -32,31 +32,18 @@ public class Activator extends Plugin {
 		return plugin;
 	}
 
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
-		
+
 		super.start(context);
 		plugin = this;
-		workareaDefinitionRegistryTracker = new ServiceTracker(
-				context, 
-				org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry.class.getName(), 
+		workareaDefinitionRegistryTracker = new ServiceTracker(context,
+				org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry.class.getName(),
 				WorkareaDefinitionRegistryFacade.getInstance());
 		workareaDefinitionRegistryTracker.open();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 		if (workareaDefinitionRegistryTracker != null) {

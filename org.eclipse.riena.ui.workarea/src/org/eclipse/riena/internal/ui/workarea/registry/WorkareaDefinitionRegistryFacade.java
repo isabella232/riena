@@ -169,23 +169,30 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 			return registry;
 		}
 
-		/** 
-		 * @seeorg.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#
-		 * getDefinition(java.lang.Object)
+		/**
+		 * @seeorg.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry# 
+		 *                                                                    getDefinition
+		 *                                                                    (
+		 *                                                                    java
+		 *                                                                    .
+		 *                                                                    lang
+		 *                                                                    .
+		 *                                                                    Object
+		 *                                                                    )
 		 */
 		public IWorkareaDefinition getDefinition(Object id) {
 			return registry.getDefinition(id);
 		}
 
-		/** @see
-		 * org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#register
-		 * (java.lang.Object)
+		/**
+		 * @see org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#register
+		 *      (java.lang.Object)
 		 */
 		public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
 			return registry.register(id, definition);
 		}
 
-		/** 
+		/**
 		 * @see java.lang.Comparable#compareTo(java.lang.Object)
 		 */
 		public int compareTo(WorkareaDefinitionRegistryWithRank other) {
@@ -195,6 +202,7 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 			return 0;
 		}
 
+		@Override
 		public boolean equals(Object other) {
 
 			if (other instanceof WorkareaDefinitionRegistryWithRank) {
@@ -204,6 +212,7 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 			}
 		}
 
+		@Override
 		public int hashCode() {
 			return registry.hashCode();
 		}
