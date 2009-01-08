@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Assert;
  * Nodes of class <code>ChangeVisibilityTreeNode</code> can change their
  * visibility (visible/invisible).
  */
+@SuppressWarnings("serial")
 public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibleTreeNode {
 
 	private boolean visible;
@@ -81,10 +82,6 @@ public class ChangeVisibilityTreeNode extends ToolTipTreeNode implements IVisibl
 
 	/**
 	 * @see de.compeople.spirit.core.client.uibinding.adapter.tree.IVisibleTreeNode#
-	 *     
-	 *     
-	 *     
-	 *     
 	 *      getVisibleIndex(de.compeople.spirit.core.client.uibinding.adapter.tree.IVisibleTreeNode)
 	 */
 	public int getVisibleIndex(IVisibleTreeNode node) {

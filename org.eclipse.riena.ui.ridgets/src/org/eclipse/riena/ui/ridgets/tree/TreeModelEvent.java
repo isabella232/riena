@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.observable.ObservableEvent;
  * Encapsulates information describing changes to a tree model, and used to
  * notify tree model listeners of the change.
  */
+@SuppressWarnings("serial")
 public class TreeModelEvent extends ObservableEvent {
 
 	static final Object TYPE = new Object();
@@ -58,11 +59,11 @@ public class TreeModelEvent extends ObservableEvent {
 	 * constructor. Used to create an event when nodes have been changed,
 	 * inserted, or removed.
 	 * 
-	 * @param source -
-	 *            the object that has caused the change.
-	 * @param diff -
-	 *            object describing the diffenrence in the tree before and after
-	 *            the operation that triggered this event took place
+	 * @param source
+	 *            - the object that has caused the change.
+	 * @param diff
+	 *            - object describing the diffenrence in the tree before and
+	 *            after the operation that triggered this event took place
 	 */
 	public TreeModelEvent(IObservable source, TreeDiff diff) {
 
@@ -72,7 +73,8 @@ public class TreeModelEvent extends ObservableEvent {
 	} // end constructor
 
 	/*
-	 * @see org.eclipse.core.databinding.observable.ObservableEvent#getListenerType()
+	 * @see
+	 * org.eclipse.core.databinding.observable.ObservableEvent#getListenerType()
 	 */
 	@Override
 	protected Object getListenerType() {
@@ -80,7 +82,9 @@ public class TreeModelEvent extends ObservableEvent {
 	}
 
 	/*
-	 * @see org.eclipse.core.databinding.observable.ObservableEvent#dispatch(org.eclipse.core.databinding.observable.IObservablesListener)
+	 * @see
+	 * org.eclipse.core.databinding.observable.ObservableEvent#dispatch(org.
+	 * eclipse.core.databinding.observable.IObservablesListener)
 	 */
 	@Override
 	protected void dispatch(IObservablesListener listener) {

@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.observable.Realm;
 /**
  * 
  */
+@SuppressWarnings("serial")
 public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 
 	private DefaultObservableTreeModel model;
@@ -161,8 +162,8 @@ public class DefaultObservableTreeNode extends AbstractObservableTreeNode {
 
 	/*
 	 * @see
-	 * org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getIndex(org.eclipse.riena
-	 * .ui.ridgets.tree.ITreeNode)
+	 * org.eclipse.riena.ui.internal.ridgets.tree.ITreeNode#getIndex(org.eclipse
+	 * .riena .ui.ridgets.tree.ITreeNode)
 	 */
 	public int getIndex(ITreeNode node) {
 		return children.indexOf(node);

@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.observable.Realm;
 /**
  * 
  */
+@SuppressWarnings("serial")
 public abstract class AbstractObservableTreeNode extends AbstractObservable implements ITreeNode {
 
 	private boolean stale = false;

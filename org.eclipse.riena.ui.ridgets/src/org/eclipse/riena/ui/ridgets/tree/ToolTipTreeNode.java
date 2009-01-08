@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.tree;
 /**
  * Tree node providing a tooltip.
  */
+@SuppressWarnings("serial")
 public class ToolTipTreeNode extends DefaultTreeNode implements ITreeNodeToolTip {
 
 	private String toolTipText;
