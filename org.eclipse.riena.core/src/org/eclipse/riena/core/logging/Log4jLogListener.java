@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -45,6 +46,7 @@ import org.osgi.service.log.LogService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * The <code>Log4LogListener</code> reroutes all logging within Riena into the
@@ -169,7 +171,13 @@ public class Log4jLogListener implements LogListener, IExecutableExtension {
 				inputSource.setSystemId("dummy://log4j.dtd"); //$NON-NLS-1$
 				Document doc = db.parse(inputSource);
 				root = doc.getDocumentElement();
-			} catch (Exception e) {
+			} catch (ParserConfigurationException e) {
+				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"Could not configure log4j. Parser configuration error.", e)); //$NON-NLS-1$
+			} catch (SAXException e) {
+				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"Could not configure log4j. Unable to parse xml configuration.", e)); //$NON-NLS-1$
+			} catch (IOException e) {
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not configure log4j.", e)); //$NON-NLS-1$
 			}
 			// workaround to fix class loader problems with log4j
