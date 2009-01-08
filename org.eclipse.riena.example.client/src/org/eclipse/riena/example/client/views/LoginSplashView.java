@@ -30,8 +30,8 @@ public class LoginSplashView extends AbstractLoginSplashView {
 
 	private static final GridData GD11FILL = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 	private static final GridData GD21FILL = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
-	private static final GridData GD41FILL = new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1);
-	private static final GridData GD11RIGHTBOTTOM = new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1);
+	private static final GridData GD11RIGHTBOTTOMFILL = new GridData(SWT.RIGHT, SWT.BOTTOM, true, true, 1, 1);
+	private static final GridData GD11LEFTBOTTOMFILL = new GridData(SWT.LEFT, SWT.BOTTOM, true, true, 1, 1);
 
 	protected AbstractWindowController createController() {
 		return new LoginDialogController(result);
@@ -40,79 +40,69 @@ public class LoginSplashView extends AbstractLoginSplashView {
 	protected Control buildView(Composite parent) {
 
 		addUIControl(parent.getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(5, 10).applyTo(parent);
 
-		//parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
-		GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).applyTo(parent);
-
-		Composite content = createContentView(parent);
-		//GridDataFactory.fillDefaults().grab(true, true).applyTo(content);
-
-		return content;
+		return createContentView(parent);
 	}
 
 	private Composite createContentView(Composite parent) {
 
+		//		Label info = UIControlsFactory
+		//						.createLabel(
+		//								content,
+		//								"\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
+		Label infoArea = new Label(parent, SWT.NONE);
+		infoArea
+				.setText("\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
+		infoArea.setLayoutData(GD11LEFTBOTTOMFILL);
+
 		//Composite content = UIControlsFactory.createComposite(parent);
-		Composite content = new Composite(parent, SWT.NONE);
-		GridLayoutFactory.fillDefaults().numColumns(4).spacing(6, 9).equalWidth(false).applyTo(content);
-		content.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, true, true, 1, 1));
+		Composite inputArea = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(4).spacing(6, 9).equalWidth(false).applyTo(inputArea);
+		inputArea.setLayoutData(GD11RIGHTBOTTOMFILL);
 		// Force composite to inherit the splash background
-		content.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		inputArea.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
 		// dummy to occupy the cell
-		//UIControlsFactory.createLabel(content, "                  "); //$NON-NLS-1$
-		new Label(content, SWT.NONE).setText("                  ");
+		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
+		new Label(inputArea, SWT.NONE).setText(""); //$NON-NLS-1$
 
 		//UIControlsFactory.createLabel(content, "User"); //$NON-NLS-1$
-		new Label(content, SWT.NONE).setText("User");
-		Text user = UIControlsFactory.createText(content);
+		new Label(inputArea, SWT.NONE).setText("User"); //$NON-NLS-1$
+		Text user = UIControlsFactory.createText(inputArea);
 		user.setLayoutData(GD21FILL);
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
 
 		// dummy to occupy the cell
 		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
-		new Label(content, SWT.NONE);
+		new Label(inputArea, SWT.NONE);
 
 		//UIControlsFactory.createLabel(content, "Password"); //$NON-NLS-1$
-		new Label(content, SWT.NONE).setText("Password");
-		Text password = UIControlsFactory.createText(content);
+		new Label(inputArea, SWT.NONE).setText("Password"); //$NON-NLS-1$
+		Text password = UIControlsFactory.createText(inputArea);
 		password.setLayoutData(GD21FILL);
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
 
 		// dummy to occupy the cell
 		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
-		new Label(content, SWT.NONE);
+		new Label(inputArea, SWT.NONE);
 		// dummy to occupy the cell
 		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
-		new Label(content, SWT.NONE);
+		new Label(inputArea, SWT.NONE);
 
-		Button okButton = UIControlsFactory.createButton(content);
+		Button okButton = UIControlsFactory.createButton(inputArea);
 		okButton.setText("   Login   "); //$NON-NLS-1$
 		okButton.setLayoutData(GD11FILL);
 		addUIControl(okButton, LoginDialogController.RIDGET_ID_OK);
 
-		Button cancelButton = UIControlsFactory.createButton(content);
+		Button cancelButton = UIControlsFactory.createButton(inputArea);
 		cancelButton.setText("   Cancel   "); //$NON-NLS-1$
 		cancelButton.setLayoutData(GD11FILL);
 		addUIControl(cancelButton, LoginDialogController.RIDGET_ID_CANCEL);
 
-		//		Label info = UIControlsFactory
-		//				.createLabel(
-		//						content,
-		//						"\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
-		//		Label info = new Label(content, SWT.NONE);
-		//		info
-		//				.setText("\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
-		//		info.setLayoutData(GD41FILL);
-
-		addUIControl(UIControlsFactory.createMessageBox(content),
+		addUIControl(UIControlsFactory.createMessageBox(inputArea),
 				LoginDialogController.RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
 
-		return content;
-	}
-
-	// TODO:
-	private void onClose() {
-		((LoginDialogController) getController()).onClose();
+		return inputArea;
 	}
 }
