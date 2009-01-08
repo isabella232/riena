@@ -232,7 +232,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	private void updateActive() {
 		EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
-			control.setActive(active);
+			control.setWindowActive(active);
 		}
 	}
 

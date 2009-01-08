@@ -191,7 +191,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		if (!isRCP()) {
 			title = new EmbeddedTitleBar(parent, SWT.NONE);
 			addUIControl(title, SubModuleController.WINDOW_RIDGET);
-			title.setActive(true);
+			title.setWindowActive(true);
 			FormData formData = new FormData();
 			// don't show the top border of the title => -1
 			formData.top = new FormAttachment(0, -1);
@@ -357,7 +357,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			binding.bind(currentController);
 			currentController.afterBind();
 			if (title != null) {
-				title.setActive(currentController.isActivated());
+				title.setWindowActive(currentController.isActivated());
 			}
 		}
 	}

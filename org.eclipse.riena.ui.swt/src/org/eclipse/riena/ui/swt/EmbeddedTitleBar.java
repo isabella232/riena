@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class EmbeddedTitleBar extends Canvas {
 
-	private boolean active;
+	private boolean windowActive;
 	private boolean pressed;
 	private boolean hover;
 	private boolean closeButtonPressed;
@@ -86,7 +86,7 @@ public class EmbeddedTitleBar extends Canvas {
 		GC gc = e.gc;
 
 		// title bar
-		getLnfTitlebarRenderer().setActive(isActive());
+		getLnfTitlebarRenderer().setActive(isWindowActive());
 		getLnfTitlebarRenderer().setCloseable(isCloseable());
 		getLnfTitlebarRenderer().setPressed(isPressed());
 		getLnfTitlebarRenderer().setHover(isHover());
@@ -147,19 +147,19 @@ public class EmbeddedTitleBar extends Canvas {
 	}
 
 	/**
-	 * @return the active
+	 * @return the windowActive
 	 */
-	public boolean isActive() {
-		return active;
+	public boolean isWindowActive() {
+		return windowActive;
 	}
 
 	/**
-	 * @param active
-	 *            the active to set
+	 * @param windowActive
+	 *            the windowActive to set
 	 */
-	public void setActive(boolean active) {
-		if (hasChanged(this.active, active)) {
-			this.active = active;
+	public void setWindowActive(boolean active) {
+		if (hasChanged(this.windowActive, active)) {
+			this.windowActive = active;
 			redraw();
 		}
 	}

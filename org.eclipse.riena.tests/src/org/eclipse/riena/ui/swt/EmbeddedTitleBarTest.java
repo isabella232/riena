@@ -89,13 +89,13 @@ public class EmbeddedTitleBarTest extends TestCase {
 	 */
 	public void testSetActive() {
 
-		titleBar.setActive(true);
+		titleBar.setWindowActive(true);
 		titleBar.resetRedrawCalled();
 
-		titleBar.setActive(true);
+		titleBar.setWindowActive(true);
 		assertFalse(titleBar.isRedrawCalled());
 
-		titleBar.setActive(false);
+		titleBar.setWindowActive(false);
 		assertTrue(titleBar.isRedrawCalled());
 
 	}

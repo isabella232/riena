@@ -683,7 +683,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		getParent().layout();
-		title.setActive(active);
+		title.setWindowActive(active);
 
 	}
 
