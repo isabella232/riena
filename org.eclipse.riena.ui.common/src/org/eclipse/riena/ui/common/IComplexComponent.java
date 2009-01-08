@@ -26,9 +26,4 @@ public interface IComplexComponent {
 	 */
 	List<Object> getUIControls();
 
-	/**
-	 * @return A name that identifies the corresponding IComplexRidget.
-	 */
-	String getName();
-
 }

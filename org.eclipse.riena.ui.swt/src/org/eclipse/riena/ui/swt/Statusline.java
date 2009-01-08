@@ -195,13 +195,6 @@ public class Statusline extends Composite implements IComplexComponent {
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.common.IComplexComponent#getName()
-	 */
-	public String getName() {
-		return null;
-	}
-
-	/**
 	 * @see org.eclipse.riena.ui.common.IComplexComponent#getUIControls()
 	 */
 	public List<Object> getUIControls() {
