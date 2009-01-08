@@ -245,7 +245,7 @@ public class RienaDialogDelegate {
 		}
 	}
 
-	private class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
+	private static class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
 
 		@Override
 		protected AbstractTitleBarRenderer getTitleBarRenderer() {

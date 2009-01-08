@@ -302,11 +302,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @return true, if value has changed; otherwise false
 	 */
 	private boolean hasChanged(Object oldValue, Object newValue) {
-		if (oldValue == null && newValue == null) {
-			return false;
-		}
-		return (oldValue == null && newValue != null) || (oldValue != null && newValue == null)
-				|| !oldValue.equals(newValue);
+		return (oldValue == null && newValue != null) || (oldValue != null && !oldValue.equals(newValue));
 	}
 
 	public void setCloseButtonPressed(boolean closeButtonPressed) {

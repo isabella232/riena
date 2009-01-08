@@ -68,7 +68,7 @@ public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!ProgressInfoDataObject.class.isAssignableFrom(obj.getClass())) {
+		if (obj == null || !ProgressInfoDataObject.class.isAssignableFrom(obj.getClass())) {
 			return false;
 		}
 		ProgressInfoDataObject other = ProgressInfoDataObject.class.cast(obj);
