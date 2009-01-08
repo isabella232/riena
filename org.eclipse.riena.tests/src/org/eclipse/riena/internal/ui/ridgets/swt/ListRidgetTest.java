@@ -585,7 +585,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		ridget.setEnabled(true);
 
-		assertEquals(count, listener.getCount());
+		assertTrue(count < listener.getCount());
 	}
 
 	/**

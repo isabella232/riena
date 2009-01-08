@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Assert;
  * A <code>DefaultTreeNode</code> is a general-purpose node in a tree data
  * structure.
  */
+@SuppressWarnings("serial")
 public class DefaultTreeNode implements ITreeNode {
 
 	private DefaultTreeNode parent;

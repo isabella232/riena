@@ -21,28 +21,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 public interface ISelectableRidget extends IMarkableRidget {
 
 	/**
-	 * Property name of the single selection property.
-	 * <p>
-	 * If the selection type is set to multiple selection and changes the
-	 * {@link #PROPERTY_SINGLE_SELECTION} will still be fired. The single
-	 * selection will then contain one of the selected items.
-	 * 
-	 * @deprecated use {@link #PROPERTY_SELECTION}
-	 */
-	String PROPERTY_SINGLE_SELECTION = "singleSelection"; //$NON-NLS-1$
-
-	/**
-	 * Property name of the multiple selection property.
-	 * <p>
-	 * If the selection type is set to single selection the
-	 * {@link #PROPERTY_MULTI_SELECTION} will still be fired. The multiple
-	 * selection will be either empty or contain the single selected item.
-	 * 
-	 * @deprecated use {@link #PROPERTY_SELECTION}
-	 */
-	String PROPERTY_MULTI_SELECTION = "selection"; //$NON-NLS-1$
-
-	/**
 	 * Property name of the selection property.
 	 * <p>
 	 * This property will be fired every time the selection changes. If the

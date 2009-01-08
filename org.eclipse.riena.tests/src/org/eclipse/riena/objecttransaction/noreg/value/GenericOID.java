@@ -17,7 +17,7 @@ import org.eclipse.riena.objecttransaction.IObjectId;
 
 /**
  * TODO Fehlender Klassen-Kommentar
- *
+ * 
  * @author Christian Campo
  */
 public class GenericOID implements IObjectId {
@@ -30,7 +30,7 @@ public class GenericOID implements IObjectId {
 	 * @param primName
 	 * @param primValue
 	 */
-	public GenericOID( String type, String primName, Object primValue ) {
+	public GenericOID(String type, String primName, Object primValue) {
 		super();
 		this.type = type;
 		this.primName = primName;
@@ -47,36 +47,39 @@ public class GenericOID implements IObjectId {
 	/**
 	 * @see de.compeople.scp.objecttransaction.IObjectId#getProperties()
 	 */
-	protected Map<String,Object> getProperties() {
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put( primName, primValue );
+	protected Map<String, Object> getProperties() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put(primName, primValue);
 		return map;
 	}
 
 	/**
 	 * @see de.compeople.scp.objecttransaction.IObjectId#equals(de.compeople.scp.objecttransaction.IObjectId)
 	 */
-	public boolean equals( Object oid ) {
-		if ( oid instanceof GenericOID ) {
+	@Override
+	public boolean equals(Object oid) {
+		if (oid instanceof GenericOID) {
 			GenericOID gOID = (GenericOID) oid;
-			if ( gOID.type.equals( type ) && gOID.primName.equals( primName ) && gOID.primValue.equals( primValue ) ) {
+			if (gOID.type.equals(type) && gOID.primName.equals(primName) && gOID.primValue.equals(primValue)) {
 				return true;
 			}
 		}
-		return super.equals( oid );
+		return super.equals(oid);
 	}
 
+	@Override
 	public int hashCode() {
 		try {
-			if ( primValue instanceof Integer ) {
-				return ( (Integer) primValue ).intValue();
+			if (primValue instanceof Integer) {
+				return ((Integer) primValue).intValue();
 			}
-			return Integer.parseInt( (String) primValue );
-		} catch ( NumberFormatException e ) {
+			return Integer.parseInt((String) primValue);
+		} catch (NumberFormatException e) {
 			return super.hashCode();
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "type:" + type + " primName:" + primName + " primValue:" + primValue;
 	}

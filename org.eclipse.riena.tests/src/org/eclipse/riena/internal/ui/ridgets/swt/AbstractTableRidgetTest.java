@@ -614,10 +614,10 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
 		java.util.List<?> newSelection = Arrays.asList(new Object[] { person1 });
-		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION,
+		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION,
 				oldSelection, newSelection);
-		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION,
-				null, person1);
+		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null,
+				person1);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(0);
@@ -632,9 +632,8 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		oldSelection = newSelection;
 		newSelection = Collections.EMPTY_LIST;
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
-				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, person1, null);
+		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, person1, null);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(Collections.EMPTY_LIST);
@@ -643,9 +642,8 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		oldSelection = Collections.EMPTY_LIST;
 		newSelection = Arrays.asList(new Object[] { person2 });
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
-				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, null, person2);
+		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null, person2);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(new int[] { 1, 2 });
@@ -672,10 +670,10 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		java.util.List<?> oldSelection = Collections.EMPTY_LIST;
 		java.util.List<?> newSelection = Arrays.asList(new Object[] { person1 });
-		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION,
+		PropertyChangeEvent multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION,
 				oldSelection, newSelection);
-		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION,
-				null, person1);
+		PropertyChangeEvent singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null,
+				person1);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(0);
@@ -690,9 +688,8 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		oldSelection = newSelection;
 		newSelection = Collections.EMPTY_LIST;
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
-				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, person1, null);
+		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, person1, null);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(Collections.EMPTY_LIST);
@@ -701,9 +698,8 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		oldSelection = Collections.EMPTY_LIST;
 		newSelection = Arrays.asList(new Object[] { person2, person3 });
-		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_MULTI_SELECTION, oldSelection,
-				newSelection);
-		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SINGLE_SELECTION, null, person2);
+		multiEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, oldSelection, newSelection);
+		singleEvent = new PropertyChangeEvent(ridget, ISelectableRidget.PROPERTY_SELECTION, null, person2);
 		expectPropertyChangeEvents(multiEvent, singleEvent);
 
 		ridget.setSelection(new int[] { 1, 2 });

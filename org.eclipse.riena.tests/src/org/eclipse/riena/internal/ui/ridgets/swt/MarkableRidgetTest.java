@@ -25,7 +25,6 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -97,7 +96,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsDisableMandatoryMarker() {
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarkableRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
 		assertFalse(ridget.isDisableMandatoryMarker());
