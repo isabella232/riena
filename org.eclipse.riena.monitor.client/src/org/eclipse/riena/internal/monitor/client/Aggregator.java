@@ -28,8 +28,6 @@ import org.eclipse.riena.monitor.client.ICollectingAggregator;
 import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
-import org.eclipse.riena.monitor.client.SimpleSender;
-import org.eclipse.riena.monitor.client.SimpleStore;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
 
@@ -60,6 +58,9 @@ public class Aggregator implements ICollectingAggregator {
 	 *            true perform configuration; otherwise do not configure
 	 */
 	protected Aggregator(boolean autoConfig) {
+		workSignal = new CountDownLatch(1);
+		workQueue = new LinkedBlockingQueue<Runnable>();
+		new Thread(new Worker(), "Client Monitoring Aggregator Worker").start(); //$NON-NLS-1$
 		if (autoConfig) {
 			Inject
 					.extension("org.eclipse.riena.monitor.collectors").useType(ICollectorExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
@@ -68,9 +69,6 @@ public class Aggregator implements ICollectingAggregator {
 			Inject
 					.extension("org.eclipse.riena.monitor.sender").expectingMinMax(0, 1).useType(ISenderExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 		}
-		workSignal = new CountDownLatch(1);
-		workQueue = new LinkedBlockingQueue<Runnable>();
-		new Thread(new Worker(), "Client Monitoring Aggregator Worker").start(); //$NON-NLS-1$
 	}
 
 	public synchronized void start() {
@@ -78,7 +76,15 @@ public class Aggregator implements ICollectingAggregator {
 			return;
 		}
 		if (collectors.length == 0) {
-			LOGGER.log(LogService.LOG_DEBUG, "Client monitoring not started. No collectors defined."); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, "Client monitoring not started. No collectors defined."); //$NON-NLS-1$
+			return;
+		}
+		if (sender == null) {
+			LOGGER.log(LogService.LOG_WARNING, "Client monitoring not started. No sender defined."); //$NON-NLS-1$
+			return;
+		}
+		if (store == null) {
+			LOGGER.log(LogService.LOG_WARNING, "Client monitoring not started. No store defined."); //$NON-NLS-1$
 			return;
 		}
 		store.setCategories(categories);
@@ -127,11 +133,11 @@ public class Aggregator implements ICollectingAggregator {
 		if (sender != null) {
 			sender.stop();
 		}
+		sender = null;
 		if (senderExtension == null) {
-			sender = new SimpleSender();
-		} else {
-			sender = senderExtension.createSender();
+			return;
 		}
+		sender = senderExtension.createSender();
 		sender.setStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
@@ -140,11 +146,11 @@ public class Aggregator implements ICollectingAggregator {
 		if (store != null) {
 			store.flush();
 		}
+		store = null;
 		if (storeExtension == null) {
-			store = new SimpleStore();
-		} else {
-			store = storeExtension.createStore();
+			return;
 		}
+		store = storeExtension.createStore();
 	}
 
 	/*
