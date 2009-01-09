@@ -27,20 +27,20 @@ public class ExceptionTestController extends SubModuleController {
 		// TODO Auto-generated method stub
 		super.configureRidgets();
 
-		IActionRidget localNullPtr = (IActionRidget) getRidget("localNullPointerAction");
+		IActionRidget localNullPtr = (IActionRidget) getRidget("localNullPointerAction"); //$NON-NLS-1$
 		localNullPtr.addListener(new IActionListener() {
 
 			public void callback() {
-				throw new NullPointerException("test nullpointer exception ");
+				throw new NullPointerException("test nullpointer exception "); //$NON-NLS-1$
 
 			}
 		});
 
-		IActionRidget uiprocessNullPtr1 = (IActionRidget) getRidget("uiprocessNullPointerActionRunJob");
+		IActionRidget uiprocessNullPtr1 = (IActionRidget) getRidget("uiprocessNullPointerActionRunJob"); //$NON-NLS-1$
 		uiprocessNullPtr1.addListener(new IActionListener() {
 
 			public void callback() {
-				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
+				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
 					@Override
 					public boolean runJob(IProgressMonitor monitor) {
@@ -52,11 +52,11 @@ public class ExceptionTestController extends SubModuleController {
 
 			}
 		});
-		IActionRidget uiprocessNullPtr2 = (IActionRidget) getRidget("uiprocessNullPointerActionUpdateUI");
+		IActionRidget uiprocessNullPtr2 = (IActionRidget) getRidget("uiprocessNullPointerActionUpdateUI"); //$NON-NLS-1$
 		uiprocessNullPtr2.addListener(new IActionListener() {
 
 			public void callback() {
-				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
+				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
 					public boolean runJob(IProgressMonitor monitor) {
 						notifyUpdateUI();
@@ -73,11 +73,11 @@ public class ExceptionTestController extends SubModuleController {
 
 			}
 		});
-		IActionRidget uiprocessNullPtr3 = (IActionRidget) getRidget("uiprocessNullPointerActionFinalUpdateUI");
+		IActionRidget uiprocessNullPtr3 = (IActionRidget) getRidget("uiprocessNullPointerActionFinalUpdateUI"); //$NON-NLS-1$
 		uiprocessNullPtr3.addListener(new IActionListener() {
 
 			public void callback() {
-				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) {
+				UIProcess process = new UIProcess("TestException", true, getNavigationNode()) { //$NON-NLS-1$
 
 					@Override
 					public void finalUpdateUI() {

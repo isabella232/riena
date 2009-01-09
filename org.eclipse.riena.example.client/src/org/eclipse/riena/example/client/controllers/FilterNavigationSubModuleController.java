@@ -83,7 +83,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 
 		SubApplicationNode subAppNode = getNavigationNode().getParentOfType(SubApplicationNode.class);
 		SubApplicationController subApp = (SubApplicationController) subAppNode.getNavigationNodeController();
-		IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem");
+		IActionRidget ridget = subApp.getMenuActionRidget("org.eclipse.riena.example.client.histBackMenuItem"); //$NON-NLS-1$
 		ridget.setEnabled(false);
 
 	}
@@ -193,15 +193,12 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
 
-		switch (type) {
-		case MARKER:
+		if (type == FilterType.MARKER) {
 			if (filterValue instanceof DisabledMarker) {
 				attribute = new UIFilterRuleNavigationDisabledMarker(nodeId);
 			} else if (filterValue instanceof HiddenMarker) {
 				attribute = new UIFilterRuleNavigationHiddenMarker(nodeId);
 			}
-
-			break;
 		}
 
 		return attribute;

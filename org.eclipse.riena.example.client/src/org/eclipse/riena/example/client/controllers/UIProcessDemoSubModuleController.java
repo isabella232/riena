@@ -78,7 +78,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 				try {
 					Thread.sleep(2500);
 				} catch (InterruptedException e1) {
-
+					e1.getCause(); // .ignore();
 				}
 				for (int i = 0; i <= 10; i++) {
 					if (monitor.isCanceled()) {
@@ -126,8 +126,9 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 							e.printStackTrace();
 						}
 						monitor.worked(i);
-						if (monitor.isCanceled())
+						if (monitor.isCanceled()) {
 							return Status.CANCEL_STATUS;
+						}
 					}
 				} finally {
 					monitor.done();

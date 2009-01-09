@@ -16,7 +16,7 @@ public class CommunicationFaker {
 
 	public void communicate(IRemoteProgressMonitorList progressMonitors) {
 		startCommunication(progressMonitors);
-		_communicate(progressMonitors);
+		doCommunicate(progressMonitors);
 		endCommuncation(progressMonitors);
 	}
 
@@ -28,7 +28,7 @@ public class CommunicationFaker {
 		progressMonitors.fireStartEvent();
 	}
 
-	private void _communicate(IRemoteProgressMonitorList progressMonitors) {
+	private void doCommunicate(IRemoteProgressMonitorList progressMonitors) {
 		for (int i = 0; i < 100; i += 1) {
 			sendData(progressMonitors);
 			delay();

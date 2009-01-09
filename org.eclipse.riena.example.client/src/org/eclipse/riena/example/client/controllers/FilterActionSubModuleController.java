@@ -190,14 +190,12 @@ public class FilterActionSubModuleController extends SubModuleController {
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
 
-		switch (type) {
-		case MARKER:
+		if (type == FilterType.MARKER) {
 			if (filterValue instanceof DisabledMarker) {
 				attribute = new UIFilterRuleMenuItemDisabledMarker(model.getItemId());
 			} else if (filterValue instanceof HiddenMarker) {
 				attribute = new UIFilterRuleMenuItemHiddenMarker(model.getItemId());
 			}
-			break;
 		}
 
 		return attribute;

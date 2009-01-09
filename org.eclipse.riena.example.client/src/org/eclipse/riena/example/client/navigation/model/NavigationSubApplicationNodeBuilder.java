@@ -110,7 +110,7 @@ public class NavigationSubApplicationNodeBuilder extends NavigationNodeBuilder {
 	}
 
 	public String getParentNodeId() {
-		return "application";
+		return "application"; //$NON-NLS-1$
 	}
 
 	/**

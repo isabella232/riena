@@ -53,8 +53,8 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	 */
 	class CommunicationChannel {
 
-		int actualTotalWork = 0;
-		int actualWorkedUnits = 0;
+		private int actualTotalWork = 0;
+		private int actualWorkedUnits = 0;
 
 		int getActualTotalWork() {
 			return actualTotalWork;

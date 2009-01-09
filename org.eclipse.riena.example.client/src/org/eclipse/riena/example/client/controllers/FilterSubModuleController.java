@@ -262,8 +262,7 @@ public class FilterSubModuleController extends SubModuleController {
 		Object filterValue = model.getSelectedFilterTypeValue();
 		FilterType type = model.getSelectedType();
 
-		switch (type) {
-		case MARKER:
+		if (type == FilterType.MARKER) {
 			if (filterValue instanceof OutputMarker) {
 				attribute = new UIFilterRuleRidgetOutputMarker(id);
 			} else if (filterValue instanceof DisabledMarker) {
@@ -273,8 +272,7 @@ public class FilterSubModuleController extends SubModuleController {
 			} else if (filterValue instanceof HiddenMarker) {
 				attribute = new UIFilterRuleRidgetHiddenMarker(id);
 			}
-			break;
-		case VALIDATOR:
+		} else if (type == FilterType.VALIDATOR) {
 			if (filterValue instanceof IValidator) {
 				attribute = new UIFilterRuleRidgetValidator(id, (IValidator) filterValue,
 						ValidationTime.ON_UI_CONTROL_EDIT);
