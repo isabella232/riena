@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
-import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -57,8 +55,6 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 		// layout
 		FormLayout layout = new FormLayout();
 		parent.setLayout(layout);
-		ILabelRidget labelFacade = new LabelRidget();
-		labelFacade.setUIControl(helloLabel);
 		addUIControl(helloLabel, "labelFacade"); //$NON-NLS-1$
 		// getController().setLabelFacade(labelFacade);
 

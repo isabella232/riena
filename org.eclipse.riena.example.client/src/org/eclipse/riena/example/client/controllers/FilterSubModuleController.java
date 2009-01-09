@@ -26,7 +26,6 @@ import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetHiddenM
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetMandatoryMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetOutputMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleRidgetValidator;
-import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -44,6 +43,7 @@ import org.eclipse.riena.ui.filter.impl.UIFilter;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -330,7 +330,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doAddMarker() {
 		if (markerModel.getSelectedId() != null) {
-			AbstractSWTRidget ridget = (AbstractSWTRidget) getRidget(markerModel.getSelectedId());
+			IMarkableRidget ridget = (IMarkableRidget) getRidget(markerModel.getSelectedId());
 			ridget.addMarker(markerModel.getSelectedMarker().getMarker());
 		}
 	}
@@ -340,7 +340,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveMarker() {
 		if (markerModel.getSelectedId() != null) {
-			AbstractSWTRidget ridget = (AbstractSWTRidget) getRidget(markerModel.getSelectedId());
+			IMarkableRidget ridget = (IMarkableRidget) getRidget(markerModel.getSelectedId());
 			ridget.removeMarker(markerModel.getSelectedMarker().getMarker());
 		}
 	}
