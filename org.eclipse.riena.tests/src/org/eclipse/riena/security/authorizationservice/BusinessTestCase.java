@@ -18,10 +18,6 @@ import org.eclipse.riena.security.common.authorization.Sentinel;
 public class BusinessTestCase {
 
 	boolean hasPermission() {
-		if (Sentinel.checkAccess(new TestcasePermission("testPerm"))) {
-			return true;
-		} else {
-			return false;
-		}
+		return Sentinel.getInstance().checkAccess(new TestcasePermission("testPerm"));
 	}
 }

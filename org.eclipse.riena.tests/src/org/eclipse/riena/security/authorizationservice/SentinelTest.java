@@ -22,7 +22,6 @@ import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.Sentinel;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
-
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -69,7 +68,7 @@ public class SentinelTest extends RienaTestCase {
 	}
 
 	public void testWithoutUser() {
-		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
+		boolean result = Sentinel.getInstance().checkAccess(new TestcasePermission("testPerm"));
 		assertFalse("no permission if there is no subject", result);
 	}
 
@@ -78,7 +77,7 @@ public class SentinelTest extends RienaTestCase {
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
 		SubjectAccessor.setSubject(subject);
 
-		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
+		boolean result = Sentinel.getInstance().checkAccess(new TestcasePermission("testPerm"));
 		assertTrue("has permission since valid subject", result);
 	}
 
@@ -87,7 +86,7 @@ public class SentinelTest extends RienaTestCase {
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
 		SubjectAccessor.setSubject(subject);
 
-		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
+		boolean result = Sentinel.getInstance().checkAccess(new TestcasePermission("testPerm"));
 		assertFalse("has no permission since subject has no permission", result);
 
 	}

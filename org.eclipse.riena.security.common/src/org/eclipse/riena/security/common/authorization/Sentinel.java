@@ -23,24 +23,17 @@ import org.eclipse.riena.internal.security.common.Activator;
  */
 public final class Sentinel {
 
-	private static ISentinelService sentinelService;
+	private Helper helper = new Helper();
+	private ISentinelService sentinelService;
 	private static Sentinel myself = new Sentinel();
 
 	private Sentinel() {
 		super();
-		Inject.service(ISentinelService.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
+		Inject.service(ISentinelService.class).useRanking().into(helper).andStart(Activator.getDefault().getContext());
 	}
 
-	protected Sentinel getInstance() {
+	public static Sentinel getInstance() {
 		return myself;
-	}
-
-	public void bind(ISentinelService sentinelServiceParm) {
-		sentinelService = sentinelServiceParm;
-	}
-
-	public void unbind(ISentinelService sentinelServiceParm) {
-		sentinelService = null;
 	}
 
 	/**
@@ -52,11 +45,23 @@ public final class Sentinel {
 	 *            permission to be checked
 	 * @return
 	 */
-	public static boolean checkAccess(Permission permission) {
+	public boolean checkAccess(Permission permission) {
 		if (sentinelService == null) {
 			return false;
 		}
 		return sentinelService.checkAccess(permission);
+	}
+
+	private class Helper {
+
+		public void bind(ISentinelService sentinelServiceParm) {
+			sentinelService = sentinelServiceParm;
+		}
+
+		public void unbind(ISentinelService sentinelServiceParm) {
+			sentinelService = null;
+		}
+
 	}
 
 }
