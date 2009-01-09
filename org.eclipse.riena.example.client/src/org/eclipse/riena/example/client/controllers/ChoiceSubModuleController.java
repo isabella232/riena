@@ -45,6 +45,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@SuppressWarnings("unchecked")
 	public void configureRidgets() {
 		final CarConfig carConfig = new CarConfig();
 

@@ -46,6 +46,7 @@ public class HelloDialogController extends AbstractWindowController {
 	 * @seeorg.eclipse.riena.ui.ridgets.controller.AbstractWindowController#
 	 * configureRidgets()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void configureRidgets() {
 
