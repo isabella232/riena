@@ -19,7 +19,7 @@ import org.eclipse.riena.internal.security.common.Activator;
  * A convenient class to access the current Subject from the
  * SubjectHolderService
  */
-public class SubjectAccessor {
+public final class SubjectAccessor {
 
 	private ISubjectHolderService subjectHolderService;
 	private static SubjectAccessor myself;

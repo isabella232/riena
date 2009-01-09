@@ -104,12 +104,12 @@ public class SentinelServiceImpl implements ISentinelService {
 		Set<Principal> principals = subject.getPrincipals();
 		Permissions allPerms = new Permissions();
 		ArrayList<Principal> missingPrincipals = new ArrayList<Principal>();
-		IPermissionCache permCache = getPermissionCache();
+		IPermissionCache thePermCache = getPermissionCache();
 
 		// iterate over the principals in the subject and try to find an entry in the PermissionCache
 		// add principals for which there are no permissions into the missingPrincipals ArrayList
 		for (Principal principal : principals) {
-			Permissions perms = (Permissions) permCache.getPermissions(principal);
+			Permissions perms = (Permissions) thePermCache.getPermissions(principal);
 			if (perms == null) {
 				missingPrincipals.add(principal);
 			} else {
@@ -126,7 +126,7 @@ public class SentinelServiceImpl implements ISentinelService {
 			Permissions[] permissionsArray = authService.getPermissions(missingPrincipals
 					.toArray(new Principal[missingPrincipals.size()]));
 			for (int i = 0; i < missingPrincipals.size(); i++) {
-				permCache.putPermissions(missingPrincipals.get(i), permissionsArray[i]);
+				thePermCache.putPermissions(missingPrincipals.get(i), permissionsArray[i]);
 				Enumeration<Permission> permEnum = permissionsArray[i].elements();
 				while (permEnum.hasMoreElements()) {
 					allPerms.add(permEnum.nextElement());
