@@ -155,7 +155,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 
 	}
 
-	private class MySampleBean {
+	private static class MySampleBean {
 
 		private String text = ""; //$NON-NLS-1$
 

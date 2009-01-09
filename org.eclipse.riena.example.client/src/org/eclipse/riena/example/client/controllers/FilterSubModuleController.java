@@ -462,7 +462,7 @@ public class FilterSubModuleController extends SubModuleController {
 	/**
 	 * Wrapper for IMarker with an own {@code toString()} method.
 	 */
-	private class MarkerWrapper {
+	private static class MarkerWrapper {
 
 		private IMarker marker;
 

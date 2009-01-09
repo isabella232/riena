@@ -12,6 +12,7 @@ package com.swtdesigner;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -191,7 +192,7 @@ public final class SWTResourceManager {
 				image = getImage(fis);
 				classImageMap.put(key, image);
 				fis.close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				image = getMissingImage();
 				classImageMap.put(key, image);
 			}
@@ -411,10 +412,10 @@ public final class SWTResourceManager {
 					Object logFont = FontData.class.getField("data").get(fontData); //$NON-NLS-1$
 					if (logFont != null && logFontClass != null) {
 						if (strikeout) {
-							logFontClass.getField("lfStrikeOut").set(logFont, new Byte((byte) 1)); //$NON-NLS-1$
+							logFontClass.getField("lfStrikeOut").set(logFont, Byte.valueOf((byte) 1)); //$NON-NLS-1$
 						}
 						if (underline) {
-							logFontClass.getField("lfUnderline").set(logFont, new Byte((byte) 1)); //$NON-NLS-1$
+							logFontClass.getField("lfUnderline").set(logFont, Byte.valueOf((byte) 1)); //$NON-NLS-1$
 						}
 					}
 				} catch (Throwable e) {
@@ -513,7 +514,7 @@ public final class SWTResourceManager {
 	 * @return Cursor The system cursor matching the specific ID
 	 */
 	public static Cursor getCursor(int id) {
-		Integer key = new Integer(id);
+		Integer key = Integer.valueOf(id);
 		Cursor cursor = idToCursorMap.get(key);
 		if (cursor == null) {
 			cursor = new Cursor(Display.getDefault(), id);

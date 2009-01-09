@@ -12,6 +12,7 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.riena.example.client.model.Person;
@@ -135,7 +136,8 @@ public class ListSubModuleController extends SubModuleController {
 	/**
 	 * Compares two strings.
 	 */
-	private static final class StringComparator implements Comparator<Object> {
+	@SuppressWarnings("serial")
+	private static final class StringComparator implements Comparator<Object>, Serializable {
 		public int compare(Object o1, Object o2) {
 			String s1 = (String) o1;
 			String s2 = (String) o2;

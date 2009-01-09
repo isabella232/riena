@@ -51,7 +51,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 	/**
 	 * describes the progress and total work of a {@link CommunicationDirection}
 	 */
-	class CommunicationChannel {
+	private static class CommunicationChannel {
 
 		private int actualTotalWork = 0;
 		private int actualWorkedUnits = 0;
@@ -137,7 +137,7 @@ public class ServiceProgressVisualizer extends AbstractRemoteProgressMonitor {
 		return null;
 	}
 
-	class RemoteServiceCancelListener implements PropertyChangeListener {
+	private static class RemoteServiceCancelListener implements PropertyChangeListener {
 
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (ProcessInfo.PROPERTY_CANCELED.equals(evt.getPropertyName())) {

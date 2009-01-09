@@ -56,7 +56,7 @@ public class BlockingSubModuleController extends SubModuleController {
 		new BlockerUIProcess(node).start();
 	}
 
-	private class BlockerUIProcess extends UIProcess {
+	private static class BlockerUIProcess extends UIProcess {
 
 		private INavigationNode<?> toBlock;
 
