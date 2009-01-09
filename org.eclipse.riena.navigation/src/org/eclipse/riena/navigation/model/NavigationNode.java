@@ -635,11 +635,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getMarkable().addMarker(marker);
 		notifyMarkersChanged();
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
-			List<?> children = getChildren();
-			for (Object child : children) {
+			for (Object child : getChildren()) {
 				if (child instanceof INavigationNode<?>) {
-					INavigationNode<?> childNode = (INavigationNode<?>) child;
-					childNode.addMarker(marker);
+					((INavigationNode<?>) child).addMarker(marker);
 				}
 			}
 		}
@@ -694,11 +692,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 		notifyMarkersChanged();
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
-			List<?> children = getChildren();
-			for (Object child : children) {
+			for (Object child : getChildren()) {
 				if (child instanceof INavigationNode<?>) {
-					INavigationNode<?> childNode = (INavigationNode<?>) child;
-					childNode.removeMarker(marker);
+					((INavigationNode<?>) child).removeMarker(marker);
 				}
 			}
 		}

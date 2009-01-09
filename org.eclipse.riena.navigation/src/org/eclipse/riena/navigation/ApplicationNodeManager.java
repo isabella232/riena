@@ -20,9 +20,13 @@ import java.util.Map;
  * 
  * @author Stefan Flick
  */
-public class ApplicationNodeManager {
+public final class ApplicationNodeManager {
 	private static Map<String, IApplicationNode> nodeMap = new HashMap<String, IApplicationNode>();
 	private final static String DEFAULT_NODE_NAME = "default"; //$NON-NLS-1$
+
+	private ApplicationNodeManager() {
+		super();
+	}
 
 	/**
 	 * Answer the default applicationModel

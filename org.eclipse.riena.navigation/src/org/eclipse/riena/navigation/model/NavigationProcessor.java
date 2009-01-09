@@ -46,7 +46,7 @@ import org.osgi.service.log.LogService;
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
-	private static Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class);
+	private static final Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class);
 	private static int maxStacksize = 20;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
@@ -121,7 +121,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#dispose(org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public void dispose(INavigationNode<?> toDispose) {
-		// TODO implement dispose
 		// 1. check which nodes are active from the node toDispose and all its
 		// children must be deactivated
 		// 2. find nodes to activate automatically
@@ -136,25 +135,20 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// if there was no sub module active in the module,
 		// than no other module has to be activated
 		INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
-		if (nodeToDispose != null) {
-			if (nodeToDispose.isDisposed()) {
-				// this case should never occur, because a disposed node cannot
-				// be in the navigation tree
-			} else {
-				List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
-				List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
-				INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
-				if (allowsDeactivate(navigationContext)) {
-					if (allowsDispose(navigationContext)) {
-						if (allowsActivate(navigationContext)) {
-							deactivate(navigationContext);
-							dispose(navigationContext);
-							activate(navigationContext);
-						}
+		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
+			List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
+			List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
+			INavigationContext navigationContext = new NavigationContext(toActivateList, toDeactivateList);
+			if (allowsDeactivate(navigationContext)) {
+				if (allowsDispose(navigationContext)) {
+					if (allowsActivate(navigationContext)) {
+						deactivate(navigationContext);
+						dispose(navigationContext);
+						activate(navigationContext);
 					}
 				}
-				cleanupHistory(nodeToDispose);
 			}
+			cleanupHistory(nodeToDispose);
 		}
 	}
 
@@ -239,8 +233,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			final NavigationArgument navigation) {
 		if (navigation != null && navigation.isNavigateAsync()) {
 			navigateAsync(sourceNode, targetId, navigation);
-		} else
+		} else {
 			navigateSync(sourceNode, targetId, navigation);
+		}
 	}
 
 	/**
@@ -277,81 +272,66 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 		final boolean debug = LOGGER.isLoggable(LogService.LOG_DEBUG);
 
-		if (debug)
-
+		if (debug) {
 			LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " started..."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 
 		UIProcess p = new UIProcess("navigate", true, sourceNode) { //$NON-NLS-1$
+			private INavigationNode<?> targetNode;
+			private final long startTime = System.currentTimeMillis();
 
-			INavigationNode<?> targetNode;
-
-			final long startTime = System.currentTimeMillis();
-
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.riena.ui.core.uiprocess.UIProcess#runJob(org.eclipse
+			 * .core.runtime.IProgressMonitor)
+			 */
 			@Override
 			public boolean runJob(IProgressMonitor monitor) {
 
 				targetNode = provideNode(sourceNode, targetId, navigation);
 
 				return true;
-
 			}
 
 			private void activateOrFlash(INavigationNode<?> activationNode) {
 
 				if (System.currentTimeMillis() - startTime < 200) {
-
 					activationNode.activate();
-
 				} else {
-
 					// TODO FLASHING but no activation
-
 				}
-
 			}
 
 			@Override
 			public void finalUpdateUI() {
 
 				if (targetNode != null) {
-
 					INavigationNode<?> activateNode = targetNode.findNode(targetId);
-
 					if (activateNode == null) {
-
 						activateNode = targetNode;
-
 					}
 
 					navigationMap.put(activateNode, sourceNode);
-
 					activateOrFlash(activateNode);
-
 				}
 
-				if (debug)
-
+				if (debug) {
 					LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " completed"); //$NON-NLS-1$//$NON-NLS-2$
-
+				}
 			}
 
 			@Override
 			protected int getTotalWork() {
-
 				return 10;
-
 			}
-
 		};
 
 		// TODO must be set?
-
 		p.setNote("sample uiProcess note"); //$NON-NLS-1$ 
-
 		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
-
 		p.start();
-
 	}
 
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
@@ -900,7 +880,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				activate(node);
 			}
 		} catch (EmptyStackException ex) {
-			// should we throw exception here?
+			// TODO: should we throw exception here?
 		}
 	}
 
@@ -908,8 +888,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * Fires a INavigationHistoryEvent when the backward history changes.
 	 */
 	private void fireBackHistoryChangedEvent() {
-		// if (LOGGER.isLoggable(LogService.LOG_DEBUG))
-		// LOGGER.log(LogService.LOG_DEBUG, "BACK " + histBack.size() + "," + histBack);//$NON-NLS-1$ //$NON-NLS-2$
 		if (navigationListener.size() == 0) {
 			return;
 		}
@@ -934,7 +912,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				fireBackHistoryChangedEvent();
 			}
 		} catch (EmptyStackException ex) {
-			// TODO should we throw exception here?
+			// TODO: should we throw exception here?
 		}
 	}
 
@@ -942,9 +920,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * Fires a INavigationHistoryEvent when the forward history changes.
 	 */
 	private void fireForewardHistoryChangedEvent() {
-		// if (LOGGER.isLoggable(LogService.LOG_DEBUG))
-		// LOGGER.log(LogService.LOG_DEBUG, "FORW " //$NON-NLS-1$
-		// + histForward.size() + "," + histForward); //$NON-NLS-1$
 		if (navigationListener.size() == 0) {
 			return;
 		}

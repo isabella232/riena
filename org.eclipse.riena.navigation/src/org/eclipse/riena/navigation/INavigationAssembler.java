@@ -60,5 +60,5 @@ public interface INavigationAssembler {
 	 * @return <code>true</code> if this assembler knows how to build the node
 	 *         with the provided id, <code>false</code> otherwise.
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument);
+	boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument);
 }

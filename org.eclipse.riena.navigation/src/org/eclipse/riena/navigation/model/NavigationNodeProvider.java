@@ -92,7 +92,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	@SuppressWarnings("unchecked")
-	protected INavigationNode<?> _provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
+	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
@@ -106,14 +106,14 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 				targetNode = assembler.buildNode(targetId, argument);
 				INavigationNode parentNode = null;
 				if (argument != null && argument.getParentNodeId() != null) {
-					parentNode = _provideNode(sourceNode, argument.getParentNodeId(), null);
+					parentNode = provideNodeHook(sourceNode, argument.getParentNodeId(), null);
 				} else {
 					String parentTypeId = assembler.getAssembly().getParentTypeId();
 					if (parentTypeId == null || parentTypeId.length() == 0) {
 						throw new ExtensionPointFailure("parentTypeId cannot be null or blank for assembly ID=" //$NON-NLS-1$
 								+ assembler.getAssembly().getId());
 					}
-					parentNode = _provideNode(sourceNode, new NavigationNodeId(parentTypeId), null);
+					parentNode = provideNodeHook(sourceNode, new NavigationNodeId(parentTypeId), null);
 				}
 				parentNode.addChild(targetNode);
 			} else {
@@ -136,7 +136,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 
-		return _provideNode(sourceNode, targetId, argument);
+		return provideNodeHook(sourceNode, targetId, argument);
 	}
 
 	/**

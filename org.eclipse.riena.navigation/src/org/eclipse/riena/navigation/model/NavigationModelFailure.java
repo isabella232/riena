@@ -17,8 +17,12 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class NavigationModelFailure extends Failure {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2725327200301100618L;
+
 	public NavigationModelFailure(String msg) {
 		super(msg);
 	}
-
 }

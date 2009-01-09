@@ -18,6 +18,11 @@ import org.eclipse.riena.core.exception.Failure;
 public class ExtensionPointFailure extends Failure {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6236123264651424352L;
+
+	/**
 	 * @param msg
 	 * @param args
 	 * @param cause
@@ -58,7 +63,5 @@ public class ExtensionPointFailure extends Failure {
 	 */
 	public ExtensionPointFailure(String msg, Object arg1, Object arg2, Throwable cause) {
 		super(msg, arg1, arg2, cause);
-		// TODO Auto-generated constructor stub
 	}
-
 }

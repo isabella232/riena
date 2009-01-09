@@ -18,7 +18,7 @@ import org.eclipse.riena.core.util.StringMatcher;
 /**
  * Utility class for navigation nodes.
  */
-public class NavigationNodeUtility {
+public final class NavigationNodeUtility {
 
 	private NavigationNodeUtility() {
 		// utility class
