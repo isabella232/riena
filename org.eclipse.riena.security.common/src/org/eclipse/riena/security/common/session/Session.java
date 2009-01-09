@@ -18,6 +18,8 @@ import java.io.Serializable;
  */
 public final class Session implements Serializable {
 
+	private static final long serialVersionUID = -9068902157549411681L;
+
 	private String sessionId;
 
 	/**

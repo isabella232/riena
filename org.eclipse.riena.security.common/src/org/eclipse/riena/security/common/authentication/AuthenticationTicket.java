@@ -24,6 +24,8 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public class AuthenticationTicket implements Serializable {
 
+	private static final long serialVersionUID = 4136974967239039236L;
+
 	private Session session;
 	private Set<Principal> principals;
 
