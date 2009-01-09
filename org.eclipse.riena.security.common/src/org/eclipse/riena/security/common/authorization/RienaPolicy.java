@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common.authorization;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.CodeSource;
 import java.security.Permission;
 import java.security.PermissionCollection;
@@ -60,36 +58,6 @@ public class RienaPolicy extends Policy {
 		RienaPolicy rp = new RienaPolicy();
 		Policy.setPolicy(rp);
 		defaultPolicy = new PolicyFile();
-		// TODO Is this true!!!
-		if (true) {
-			return;
-		}
-		try {
-			Class<?> clz = RienaPolicy.class.getClassLoader().getSystemClassLoader().loadClass(
-					"org.eclipse.riena.security.common.policyproxy.PolicyProxy"); //$NON-NLS-1$
-			Method method = clz.getMethod("setRealPolicy", Policy.class); //$NON-NLS-1$
-			method.invoke(clz, rp);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// PolicyProxy.setRealPolicy(rp);
-
 	}
 
 	/*
