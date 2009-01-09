@@ -24,10 +24,9 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.internal.security.simpleservices.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -38,11 +37,6 @@ public class SampleLoginModule implements LoginModule {
 
 	private Subject subject;
 	private CallbackHandler callbackHandler;
-	private Map<String, ?> sharedState;
-	private Map<String, ?> options;
-
-	// configurable option
-	private boolean debug = false;
 
 	private String username;
 	private String password;
@@ -83,17 +77,12 @@ public class SampleLoginModule implements LoginModule {
 			Map<String, ?> options) {
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
-		this.sharedState = sharedState;
-		this.options = options;
 
 		try {
 			accounts = loadProperties((String) options.get("accounts.file")); //$NON-NLS-1$
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// initialize any configured options
-		debug = Boolean.valueOf((String) options.get("debug")); //$NON-NLS-1$
 	}
 
 	private Properties loadProperties(String path) throws IOException {
@@ -121,11 +110,7 @@ public class SampleLoginModule implements LoginModule {
 			username = ((NameCallback) callbacks[0]).getName();
 			password = new String(((PasswordCallback) callbacks[1]).getPassword());
 			String psw = (String) accounts.get(username);
-			if (psw != null && psw.equals(password)) {
-				return true;
-			} else {
-				return false;
-			}
+			return psw != null && psw.equals(password);
 			//			if (username != null && password != null) {
 			//				if (username.equals("testuser") && password.equals("testpass")) { //$NON-NLS-1$ //$NON-NLS-2$
 			//					return true;

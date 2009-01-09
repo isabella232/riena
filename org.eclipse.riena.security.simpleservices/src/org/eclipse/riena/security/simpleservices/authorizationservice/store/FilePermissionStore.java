@@ -12,7 +12,6 @@ package org.eclipse.riena.security.simpleservices.authorizationservice.store;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -40,7 +39,7 @@ public class FilePermissionStore implements IPermissionStore {
 
 	private Document permissionTree;
 
-	public FilePermissionStore(File permissionFile) throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
+	public FilePermissionStore(File permissionFile) throws SAXException, IOException, ParserConfigurationException {
 		this(new FileInputStream(permissionFile));
 	}
 
