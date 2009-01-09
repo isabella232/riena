@@ -10,24 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common.authorization.internal;
 
-import java.security.Permission;
 import java.security.Permissions;
 import java.security.Principal;
-import java.util.Enumeration;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.util.ContainerModel;
-import org.eclipse.riena.internal.security.common.Activator;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 
 public class PermissionCache implements IPermissionCache {
 
 	private final GenericObjectCache<String, Permissions> permCache = new GenericObjectCache<String, Permissions>();
-
-	private static final Logger LOGGER = Activator.getDefault().getLogger(PermissionCache.class);
 
 	public PermissionCache() {
 		super();
@@ -49,16 +43,6 @@ public class PermissionCache implements IPermissionCache {
 	public void putPermissions(Principal principal, Permissions permissions) {
 		permCache.put(principal.getName(), permissions);
 
-	}
-
-	private Permissions addPerms(Permissions allPerms, Permissions perms) {
-		Enumeration<Permission> enumPerms = perms.elements();
-		while (enumPerms.hasMoreElements()) {
-			Permission perm = enumPerms.nextElement();
-			allPerms.add(perm);
-		}
-
-		return allPerms;
 	}
 
 	public void purgePermissions(Subject subject) {

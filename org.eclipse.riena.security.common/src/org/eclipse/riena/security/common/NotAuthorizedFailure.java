@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.security.common;
 
-
 public class NotAuthorizedFailure extends SecurityFailure {
+
+	private static final long serialVersionUID = 4187279179455530447L;
 
 	/**
 	 * @param msg

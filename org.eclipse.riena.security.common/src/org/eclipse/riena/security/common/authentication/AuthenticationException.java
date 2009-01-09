@@ -18,6 +18,8 @@ package org.eclipse.riena.security.common.authentication;
  */
 public class AuthenticationException extends Exception {
 
+	private static final long serialVersionUID = 8380874620101404873L;
+
 	/**
 	 * constructor.
 	 */

@@ -19,6 +19,8 @@ import org.eclipse.riena.security.common.SecurityFailure;
  */
 public class AuthenticationFailure extends SecurityFailure {
 
+	private static final long serialVersionUID = 6621574350342798828L;
+
 	/**
 	 * Creates a new instance of <code>AuthenticationFailure</code>
 	 * 

@@ -18,6 +18,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class SecurityFailure extends Failure {
 
+	private static final long serialVersionUID = -4828670387343650064L;
+
 	/**
 	 * Creates a new instance of <code>SecurityFailure</code>
 	 * 
