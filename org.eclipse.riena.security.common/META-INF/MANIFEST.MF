@@ -13,7 +13,6 @@ Export-Package: org.eclipse.riena.security.common,
  org.eclipse.riena.security.common.authentication,
  org.eclipse.riena.security.common.authentication.credentials,
  org.eclipse.riena.security.common.authorization,
- org.eclipse.riena.security.common.policies,
  org.eclipse.riena.security.common.session
 Import-Package: org.osgi.service.log;version="1.3.0"
 Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
