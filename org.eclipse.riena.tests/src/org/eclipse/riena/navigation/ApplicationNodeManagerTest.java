@@ -13,13 +13,15 @@ package org.eclipse.riena.navigation;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.navigation.model.ApplicationNode;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests of the class <code>DefaultSwtControlRidgetMapper</code>
  */
+@NonUITestCase
 public class ApplicationNodeManagerTest extends TestCase {
 
-	IApplicationNode model = null;
+	private IApplicationNode model = null;
 
 	@Override
 	protected void setUp() throws Exception {

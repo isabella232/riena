@@ -24,6 +24,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
@@ -32,6 +33,7 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 /**
  * Tests for the NavigationProcessor.
  */
+@NonUITestCase
 public class NavigationProcessorTest extends RienaTestCase {
 
 	private NavigationProcessor navigationProcessor;

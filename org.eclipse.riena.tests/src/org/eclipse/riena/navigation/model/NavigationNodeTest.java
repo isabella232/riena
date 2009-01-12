@@ -21,6 +21,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
@@ -30,6 +31,7 @@ import org.eclipse.riena.ui.filter.IUIFilter;
 /**
  * Tests of the class {@code NavigationNode}.
  */
+@NonUITestCase
 public class NavigationNodeTest extends TestCase {
 
 	/**

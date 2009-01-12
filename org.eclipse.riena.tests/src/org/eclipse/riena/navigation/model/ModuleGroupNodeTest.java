@@ -12,9 +12,12 @@ package org.eclipse.riena.navigation.model;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link ModuleGroupNode}.
  */
+@NonUITestCase
 public class ModuleGroupNodeTest extends TestCase {
 
 	/**

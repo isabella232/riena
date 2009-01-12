@@ -13,10 +13,12 @@ package org.eclipse.riena.navigation;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests of the class {@link NavigationNodeId}.
  */
+@NonUITestCase
 public class NavigationNodeIdTest extends TestCase {
 
 	/**

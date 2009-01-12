@@ -13,10 +13,12 @@ package org.eclipse.riena.monitor.client;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.monitor.client.Range.ParseException;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code Range} class.
  */
+@NonUITestCase
 public class RangeTest extends TestCase {
 
 	public void testEmptyRange() throws ParseException {

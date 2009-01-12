@@ -11,22 +11,20 @@
 package org.eclipse.riena.navigation.model;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
+
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- *
+ * Tests all test cases within this package.
  */
-public class AllTests {
+@NonGatherableTestCase("This is not a ´TestCase´!")
+public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.model");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(NavigationProcessorTest.class);
-		suite.addTestSuite(NavigationNodeTest.class);
-		suite.addTestSuite(ModuleGroupNodeTest.class);
-		suite.addTestSuite(ModuleNodeTest.class);
-		//$JUnit-END$
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 }
