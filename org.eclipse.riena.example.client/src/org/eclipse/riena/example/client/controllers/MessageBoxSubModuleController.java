@@ -159,7 +159,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 		}
 	}
 
-	private class LabeledMessageType {
+	private static class LabeledMessageType {
 
 		private IMessageBoxRidget.Type type;
 		private String label;
@@ -178,7 +178,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 		}
 	}
 
-	private class LabeledOptions {
+	private static class LabeledOptions {
 
 		private IMessageBoxRidget.MessageBoxOption[] options;
 		private String label;

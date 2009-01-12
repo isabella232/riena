@@ -219,7 +219,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	/**
 	 * Model with the filter types and value of the filter group.
 	 */
-	private class FilterModel {
+	private static class FilterModel {
 
 		private String nodeId;
 		private List<FilterType> types;

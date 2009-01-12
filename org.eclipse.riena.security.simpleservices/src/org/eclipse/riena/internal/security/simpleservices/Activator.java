@@ -24,7 +24,7 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends RienaActivator {
+public final class Activator extends RienaActivator {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.security.simpleservices.simple.services"; //$NON-NLS-1$

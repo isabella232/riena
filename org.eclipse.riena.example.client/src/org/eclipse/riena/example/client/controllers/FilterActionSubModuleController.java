@@ -216,7 +216,7 @@ public class FilterActionSubModuleController extends SubModuleController {
 	/**
 	 * Model with the filter types and value of the filter group.
 	 */
-	private class FilterModel {
+	private static class FilterModel {
 
 		private String itemId;
 		private List<FilterType> types;
