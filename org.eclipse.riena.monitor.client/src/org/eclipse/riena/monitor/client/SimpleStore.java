@@ -112,9 +112,8 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		if (autoConfig) {
 			cleaner = new Cleaner();
 			storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
-			storeFolder.mkdirs();
-			Assert.isTrue(storeFolder.exists());
-			Assert.isTrue(storeFolder.isDirectory());
+			boolean directoryCreated = storeFolder.mkdirs();
+			Assert.isTrue(directoryCreated);
 			try {
 				encrypt = getCipher(Cipher.ENCRYPT_MODE);
 				decrypt = getCipher(Cipher.DECRYPT_MODE);
@@ -206,7 +205,8 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		});
 		for (File file : trans) {
 			String name = file.getName().replace(COLLECT_FILE_EXTENSION, TRANSFER_FILE_EXTENSION);
-			file.renameTo(new File(file.getParent(), name));
+			boolean fileRenamed = file.renameTo(new File(file.getParent(), name));
+			Assert.isTrue(fileRenamed);
 		}
 	}
 
