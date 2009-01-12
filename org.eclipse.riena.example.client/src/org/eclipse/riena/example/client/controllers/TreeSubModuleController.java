@@ -196,12 +196,7 @@ public class TreeSubModuleController extends SubModuleController {
 		});
 
 		final IObservableValue viewerSelection = tree.getSingleSelectionObservable();
-		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
-			@Override
-			protected Object calculate() {
-				return Boolean.valueOf(viewerSelection.getValue() != null);
-			}
-		};
+		IObservableValue hasSelection = new NotNullValue(viewerSelection);
 		IObservableValue hasNonRootSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
@@ -280,4 +275,20 @@ public class TreeSubModuleController extends SubModuleController {
 			setEnabledRec((TreeNode) child, isEnabled);
 		}
 	}
+
+	private final class NotNullValue extends ComputedValue {
+
+		private final IObservableValue value;
+
+		private NotNullValue(IObservableValue value) {
+			super(Boolean.TYPE);
+			this.value = value;
+		}
+
+		@Override
+		protected Object calculate() {
+			return Boolean.valueOf(value.getValue() != null);
+		}
+	}
+
 }
