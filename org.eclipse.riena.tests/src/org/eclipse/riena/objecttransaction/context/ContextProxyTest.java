@@ -12,10 +12,12 @@ package org.eclipse.riena.objecttransaction.context;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * TestCase for the ContextProxy
  */
-
+@NonUITestCase
 public class ContextProxyTest extends TestCase {
 
 	private IContext activatedContext;
