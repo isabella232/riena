@@ -35,17 +35,17 @@ public class HelloServerSubModuleView extends SubModuleView<HelloServerSubModule
 		parent.setLayout(layout);
 
 		Button messageButton = new Button(parent, SWT.PUSH);
-		messageButton.setText("Get Message");
-		addUIControl(messageButton, "actionFacade");
+		messageButton.setText("Get Message"); //$NON-NLS-1$
+		addUIControl(messageButton, "actionFacade"); //$NON-NLS-1$
 
 		Text messageText = new Text(parent, SWT.NONE);
 		messageText.setBackground(new Color(parent.getDisplay(), new RGB(135, 206, 235)));
-		addUIControl(messageText, "textFacade");
+		addUIControl(messageText, "textFacade"); //$NON-NLS-1$
 
 		Label info = new Label(parent, SWT.None);
 		info.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		info.setEnabled(false);
-		info.setText("This sample demonstrates usage of riena communication in a view.");
+		info.setText("This sample demonstrates usage of riena communication in a view."); //$NON-NLS-1$
 		info.setSize(300, 200);
 
 		// layout

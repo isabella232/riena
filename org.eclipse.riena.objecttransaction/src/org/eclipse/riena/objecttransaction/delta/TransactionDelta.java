@@ -205,6 +205,7 @@ public class TransactionDelta implements Cloneable {
 		return referenceChanges;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("##### objectId:" + objectId + " #####\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -217,10 +218,12 @@ public class TransactionDelta implements Cloneable {
 		return sb.toString();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Object clone() throws CloneNotSupportedException {
 		TransactionDelta delta = (TransactionDelta) super.clone();
-		delta.referenceChanges = (Map<String, AbstractBaseChange>) ((HashMap<String, AbstractBaseChange>) referenceChanges).clone();
+		delta.referenceChanges = (Map<String, AbstractBaseChange>) ((HashMap<String, AbstractBaseChange>) referenceChanges)
+				.clone();
 		return delta;
 	}
 

@@ -46,46 +46,46 @@ public class HelloWorldApplication extends SwtApplication {
 	@Override
 	protected IApplicationNode createModel() {
 
-		application = new ApplicationNode("Hello World Application");
-		ISubApplicationNode subApplication = new SubApplicationNode("Riena Samples");
-		WorkareaManager.getInstance().registerDefinition(subApplication, "helloWorldSubApplication");
+		application = new ApplicationNode("Hello World Application"); //$NON-NLS-1$
+		ISubApplicationNode subApplication = new SubApplicationNode("Riena Samples"); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(subApplication, "helloWorldSubApplication"); //$NON-NLS-1$
 		application.addChild(subApplication);
 
 		IModuleGroupNode moduleGroup = new ModuleGroupNode();
 		subApplication.addChild(moduleGroup);
 
 		// simple hello world
-		IModuleNode helloWorldModule = new ModuleNode("Hello World");
+		IModuleNode helloWorldModule = new ModuleNode("Hello World"); //$NON-NLS-1$
 		moduleGroup.addChild(helloWorldModule);
 
-		ISubModuleNode helloWorldSubModule = new SubModuleNode("Hello World");
+		ISubModuleNode helloWorldSubModule = new SubModuleNode("Hello World"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(helloWorldSubModule, HelloWorldSubModuleView.ID);
 		helloWorldModule.addChild(helloWorldSubModule);
 
 		// hello server
-		IModuleNode helloServerModule = new ModuleNode("Hello Server");
+		IModuleNode helloServerModule = new ModuleNode("Hello Server"); //$NON-NLS-1$
 		moduleGroup.addChild(helloServerModule);
 
-		ISubModuleNode helloServerSubModule = new SubModuleNode("Hello Server");
+		ISubModuleNode helloServerSubModule = new SubModuleNode("Hello Server"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(helloServerSubModule, HelloServerSubModuleView.ID);
 		helloServerModule.addChild(helloServerSubModule);
 
 		// customer search sample
-		IModuleNode cSearchModule = new ModuleNode("Customer Search");
+		IModuleNode cSearchModule = new ModuleNode("Customer Search"); //$NON-NLS-1$
 		moduleGroup.addChild(cSearchModule);
 
-		ISubModuleNode cSearchSubModule = new SubModuleNode("Customer Search");
+		ISubModuleNode cSearchSubModule = new SubModuleNode("Customer Search"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(cSearchSubModule, CustomerSearchSubModuleView.ID);
 		cSearchModule.addChild(cSearchSubModule);
 
-		ISubApplicationNode subApplication2 = new SubApplicationNode("Simple Subapplication");
-		WorkareaManager.getInstance().registerDefinition(subApplication2, "org.eclipse.riena.sample.app.client.second");
+		ISubApplicationNode subApplication2 = new SubApplicationNode("Simple Subapplication"); //$NON-NLS-1$
+		WorkareaManager.getInstance().registerDefinition(subApplication2, "org.eclipse.riena.sample.app.client.second"); //$NON-NLS-1$
 		application.addChild(subApplication2);
 		moduleGroup = new ModuleGroupNode();
 		subApplication2.addChild(moduleGroup);
-		IModuleNode module = new ModuleNode("Module 1");
+		IModuleNode module = new ModuleNode("Module 1"); //$NON-NLS-1$
 		moduleGroup.addChild(module);
-		helloWorldSubModule = new SubModuleNode("Hello World");
+		helloWorldSubModule = new SubModuleNode("Hello World"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(helloWorldSubModule, HelloWorldSubModuleView.ID);
 		module.addChild(helloWorldSubModule);
 

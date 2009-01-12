@@ -22,8 +22,9 @@ public class CustomersPermission extends Permission {
 	private String actions;
 	private String[] actionList;
 
+	@SuppressWarnings("unused")
 	private CustomersPermission() { // for hessian only
-		super("");
+		super(""); //$NON-NLS-1$
 	}
 
 	public CustomersPermission(String name, String actions) {
@@ -33,7 +34,7 @@ public class CustomersPermission extends Permission {
 	}
 
 	private String[] makeActionList(String actions) {
-		StringTokenizer st = new StringTokenizer(actions, ",", false);
+		StringTokenizer st = new StringTokenizer(actions, ",", false); //$NON-NLS-1$
 		String[] list = new String[st.countTokens()];
 		int i = 0;
 		while (st.hasMoreTokens()) {

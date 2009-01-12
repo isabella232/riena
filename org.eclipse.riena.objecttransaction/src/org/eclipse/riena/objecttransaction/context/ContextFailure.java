@@ -19,6 +19,8 @@ import org.eclipse.riena.core.exception.Failure;
 
 public class ContextFailure extends Failure {
 
+	private static final long serialVersionUID = 2796815564631629552L;
+
 	/**
 	 * Creates a new instance of this failure.
 	 * 

@@ -18,8 +18,6 @@ import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerSearch
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -43,10 +41,6 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 	private static final int LINE_GAP = 12;
 	private static final int COL_GAP = 30;
 
-	private Customer sample;
-
-	private Composite parent;
-
 	private Table searchResultTable;
 
 	private Text kundennummerText;
@@ -55,24 +49,19 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 
 	private Text vornameText;
 
-	public CustomerSearchSubModuleView() {
-		sample = new Customer();
-	}
-
 	@Override
 	public void basicCreatePartControl(Composite parent) {
-		this.parent = parent;
 		parent.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		parent.setLayout(new FormLayout());
 
-		Label personLabel = createSectionLabel(parent, "Person");
+		Label personLabel = createSectionLabel(parent, "Person"); //$NON-NLS-1$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);
 		personLabel.setLayoutData(fd);
 
 		Label kundennummerLabel = new Label(parent, SWT.LEFT);
-		kundennummerLabel.setText("Kundennummer");
+		kundennummerLabel.setText("Kundennummer"); //$NON-NLS-1$
 		kundennummerLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(personLabel, 0, SWT.TOP);
@@ -87,7 +76,7 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 		kundennummerText.setLayoutData(fd);
 
 		Label nameLabel = new Label(parent, SWT.LEFT);
-		nameLabel.setText("Name");
+		nameLabel.setText("Name"); //$NON-NLS-1$
 		nameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, LINE_GAP);
@@ -100,10 +89,10 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 		fd.left = new FormAttachment(kundennummerText, 0, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		nameText.setLayoutData(fd);
-		addUIControl(nameText, "lastNameRidget");
+		addUIControl(nameText, "lastNameRidget"); //$NON-NLS-1$
 
 		Label vornameLabel = new Label(parent, SWT.LEFT);
-		vornameLabel.setText("Vorname");
+		vornameLabel.setText("Vorname"); //$NON-NLS-1$
 		vornameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
@@ -116,30 +105,30 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 		fd.left = new FormAttachment(vornameLabel, LABEL_WIDTH, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		vornameText.setLayoutData(fd);
-		addUIControl(vornameText, "firstNameRidget");
+		addUIControl(vornameText, "firstNameRidget"); //$NON-NLS-1$
 
 		Button searchButton = new Button(parent, 0);
-		searchButton.setText("Suchen");
+		searchButton.setText("Suchen"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(vornameText, LINE_GAP);
 		fd.left = new FormAttachment(vornameText, 0, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		searchButton.setLayoutData(fd);
-		addUIControl(searchButton, "searchAction");
+		addUIControl(searchButton, "searchAction"); //$NON-NLS-1$
 
 		Button clearButton = new Button(parent, 0);
-		clearButton.setText("Clear");
+		clearButton.setText("Clear"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(vornameText, LINE_GAP);
 		fd.left = new FormAttachment(nameText, 0, SWT.LEFT);
 		fd.width = FIELD_WIDTH;
 		clearButton.setLayoutData(fd);
-		addUIControl(clearButton, "clearAction");
+		addUIControl(clearButton, "clearAction"); //$NON-NLS-1$
 
 		// create table
 		searchResultTable = new Table(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		searchResultTable.setLinesVisible(true);
-		addUIControl(searchResultTable, "tableRidget");
+		addUIControl(searchResultTable, "tableRidget"); //$NON-NLS-1$
 		// searchResultTable.addSelectionListener(new CustomerOpener());
 		TableColumn customerNumberColumn = new TableColumn(searchResultTable, SWT.CENTER);
 		TableColumn lastNameColumn = new TableColumn(searchResultTable, SWT.CENTER);
@@ -161,31 +150,13 @@ public class CustomerSearchSubModuleView extends SubModuleView<CustomerSearchSub
 
 		// open button
 		Button openButton = new Button(parent, 0);
-		openButton.setText("Open");
+		openButton.setText("Open"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(searchResultTable, LINE_GAP);
 		fd.left = new FormAttachment(searchResultTable, 0, SWT.CENTER);
 		fd.width = FIELD_WIDTH;
 		openButton.setLayoutData(fd);
-		addUIControl(openButton, "openAction");
-
-	}
-
-	private class CustomerOpener extends SelectionAdapter {
-
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			if (e.getSource() instanceof Button) {
-				openCustomer();
-			}
-		}
-
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-			if (e.getSource() instanceof Table) {
-				openCustomer();
-			}
-		}
+		addUIControl(openButton, "openAction"); //$NON-NLS-1$
 
 	}
 

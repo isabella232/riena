@@ -25,6 +25,6 @@ public class HelloWorldService implements IHelloWorldService {
 	 */
 	public String getMessage() {
 
-		return new Date() + ": Hello World!";
+		return new Date() + ": Hello World!"; //$NON-NLS-1$
 	}
 }

@@ -74,6 +74,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "TransactedObject: objectId='" + objectId + "', version='" + version + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
@@ -81,6 +82,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object object) {
 		if (object instanceof ITransactedObject) {
 			return objectId.equals(((ITransactedObject) object).getObjectId());
@@ -92,6 +94,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return getObjectId().hashCode();
 	}

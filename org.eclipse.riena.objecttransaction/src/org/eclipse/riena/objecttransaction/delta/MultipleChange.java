@@ -70,6 +70,7 @@ public class MultipleChange extends AbstractBaseChange {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		if (changeEntries.size() == 0) {
 			return "SetChange: <no changes>"; //$NON-NLS-1$

@@ -135,27 +135,27 @@ public class BankData implements Cloneable {
 	@Override
 	public String toString() {
 
-		String strg = "";
+		String strg = ""; //$NON-NLS-1$
 		if (accountNumber != null) {
 			strg += accountNumber;
 		} else {
-			strg += "?";
+			strg += "?"; //$NON-NLS-1$
 		} // end if
 
-		strg += " - ";
+		strg += " - "; //$NON-NLS-1$
 
 		if (bank != null) {
 			strg += bank;
 		} else {
-			strg += "?";
+			strg += "?"; //$NON-NLS-1$
 		} // end if
 
-		strg += " - ";
+		strg += " - "; //$NON-NLS-1$
 
 		if (bankCode != null) {
 			strg += bankCode;
 		} else {
-			strg += "?";
+			strg += "?"; //$NON-NLS-1$
 		} // end if
 
 		return strg;

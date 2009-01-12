@@ -67,6 +67,7 @@ public class HelloServerSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		actionFacade = (IActionRidget) getRidget("actionFacade"); //$NON-NLS-1$
 		textFacade = (ITextRidget) getRidget("textFacade"); //$NON-NLS-1$

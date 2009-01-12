@@ -35,7 +35,7 @@ public class SampleInputStream extends InputStream {
 		if (offset++ < 100) {
 			return 'x';
 		} else {
-			throw new IOException("could not read past 100 chars (by design)");
+			throw new IOException("could not read past 100 chars (by design)"); //$NON-NLS-1$
 		}
 	}
 

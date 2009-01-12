@@ -19,6 +19,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class ObjectTransactionFailure extends Failure {
 
+	private static final long serialVersionUID = -8680824324437292930L;
+
 	/**
 	 * @param message
 	 */

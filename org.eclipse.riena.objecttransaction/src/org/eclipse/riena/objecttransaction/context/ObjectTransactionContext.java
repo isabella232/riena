@@ -45,8 +45,8 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	/**
 	 * Creates a new ObjectTransactionContext on the passe object transaction
 	 * 
-	 * @param transaction -
-	 *            the Transaction to activate
+	 * @param transaction
+	 *            - the Transaction to activate
 	 */
 	public ObjectTransactionContext(IObjectTransaction transaction) {
 		super();
@@ -100,6 +100,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 		return !replaced.empty();
 	}
 
+	@Override
 	public String toString() {
 		return super.toString() + "ObjectTransaction=" + objectTransaction; //$NON-NLS-1$
 	}

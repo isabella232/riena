@@ -20,19 +20,19 @@ import java.util.List;
  */
 public class Customer {
 
-	public final static String PROPERTY_CUSTOMER_NUMBER = "customerNumber";
-	public final static String PROPERTY_FORM = "form";
-	public final static String PROPERTY_TITLE = "title";
-	public final static String PROPERTY_FIRST_NAME = "firstName";
-	public final static String PROPERTY_LAST_NAME = "lastName";
-	public final static String PROPERTY_ADDRESS = "address";
-	public final static String PROPERTY_BIRTH = "birth";
-	public final static String PROPERTY_PHONE_PRIVATE = "phonePrivate";
-	public final static String PROPERTY_PHONE_BUSINESS = "phoneBusiness";
-	public final static String PROPERTY_PHONE_MOBILE = "phoneMobile";
-	public final static String PROPERTY_FAX = "fax";
-	public final static String PROPERTY_EMAIL = "email";
-	public final static String PROPERTY_BANK_DATA = "bankData";
+	public final static String PROPERTY_CUSTOMER_NUMBER = "customerNumber"; //$NON-NLS-1$
+	public final static String PROPERTY_FORM = "form"; //$NON-NLS-1$
+	public final static String PROPERTY_TITLE = "title"; //$NON-NLS-1$
+	public final static String PROPERTY_FIRST_NAME = "firstName"; //$NON-NLS-1$
+	public final static String PROPERTY_LAST_NAME = "lastName"; //$NON-NLS-1$
+	public final static String PROPERTY_ADDRESS = "address"; //$NON-NLS-1$
+	public final static String PROPERTY_BIRTH = "birth"; //$NON-NLS-1$
+	public final static String PROPERTY_PHONE_PRIVATE = "phonePrivate"; //$NON-NLS-1$
+	public final static String PROPERTY_PHONE_BUSINESS = "phoneBusiness"; //$NON-NLS-1$
+	public final static String PROPERTY_PHONE_MOBILE = "phoneMobile"; //$NON-NLS-1$
+	public final static String PROPERTY_FAX = "fax"; //$NON-NLS-1$
+	public final static String PROPERTY_EMAIL = "email"; //$NON-NLS-1$
+	public final static String PROPERTY_BANK_DATA = "bankData"; //$NON-NLS-1$
 
 	/**
 	 * db4o - id
@@ -77,8 +77,8 @@ public class Customer {
 		birth = new Birth();
 		// offers = new ArrayList<Offer>();
 		bankData = new ArrayList<BankData>();
-		firstName = "";
-		lastName = "";
+		firstName = ""; //$NON-NLS-1$
+		lastName = ""; //$NON-NLS-1$
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -438,7 +438,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return getFullCustomerName() + " --> customer number=" + this.getCustomerNumber();
+		return getFullCustomerName() + " --> customer number=" + this.getCustomerNumber(); //$NON-NLS-1$
 	}
 
 	public String getFullCustomerName() {
@@ -447,7 +447,7 @@ public class Customer {
 
 		if (getLastName() != null) {
 			builder.append(getLastName());
-			builder.append(", ");
+			builder.append(", "); //$NON-NLS-1$
 		}
 		builder.append(getFirstName());
 

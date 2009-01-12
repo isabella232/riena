@@ -65,7 +65,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 	public void store(Customer customer) {
 		SecurityManager sm = System.getSecurityManager();
 		if (sm != null) {
-			sm.checkPermission(new CustomersPermission("riena.sample", "store"));
+			sm.checkPermission(new CustomersPermission("riena.sample", "store")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		storeInternal(customer);
 	}
@@ -137,7 +137,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 
 	private boolean contains(String original, String other) {
 
-		if (other == null || other.equals("")) {
+		if (other == null || other.equals("")) { //$NON-NLS-1$
 			return true;
 		}
 
@@ -147,64 +147,64 @@ public class Customers implements ICustomers, ICustomerSearch {
 	private void initializeCustomers() {
 
 		Customer customer = new Customer();
-		customer.setFirstName("Han");
-		customer.setLastName("Solo");
+		customer.setFirstName("Han"); //$NON-NLS-1$
+		customer.setLastName("Solo"); //$NON-NLS-1$
 		Address address = new Address();
-		address.setCity("Frankfurt am Main");
-		address.setStreet("Am Main 233");
-		address.setZipCode("61236");
-		address.setCountry("Germany");
+		address.setCity("Frankfurt am Main"); //$NON-NLS-1$
+		address.setStreet("Am Main 233"); //$NON-NLS-1$
+		address.setZipCode("61236"); //$NON-NLS-1$
+		address.setCountry("Germany"); //$NON-NLS-1$
 		customer.setAddress(address);
 
 		customer.setBirth(new Birth());
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
 		try {
-			customer.getBirth().setBirthDay(format.parse("01.04.1962"));
+			customer.getBirth().setBirthDay(format.parse("01.04.1962")); //$NON-NLS-1$
 		} catch (ParseException e) {
 			// TODO Throw exception
 			e.printStackTrace();
 		}
-		customer.getBirth().setBirthPlace("Frankfurt");
+		customer.getBirth().setBirthPlace("Frankfurt"); //$NON-NLS-1$
 		customer.setBankData(new ArrayList<BankData>());
 		initializeCustomerNumber(customer);
 
 		customer = new Customer();
-		customer.setFirstName("Luke");
-		customer.setLastName("Skywalker");
+		customer.setFirstName("Luke"); //$NON-NLS-1$
+		customer.setLastName("Skywalker"); //$NON-NLS-1$
 		address = new Address();
-		address.setCity("Washington");
-		address.setStreet("Any Road 845");
-		address.setZipCode("98123898");
-		address.setCountry("USA");
+		address.setCity("Washington"); //$NON-NLS-1$
+		address.setStreet("Any Road 845"); //$NON-NLS-1$
+		address.setZipCode("98123898"); //$NON-NLS-1$
+		address.setCountry("USA"); //$NON-NLS-1$
 		customer.setAddress(address);
 		customer.setBirth(new Birth());
 		try {
-			customer.getBirth().setBirthDay(format.parse("01.04.1963"));
+			customer.getBirth().setBirthDay(format.parse("01.04.1963")); //$NON-NLS-1$
 		} catch (ParseException e) {
 			// TODO Throw exception
 			e.printStackTrace();
 		}
-		customer.getBirth().setBirthPlace("Frankfurt");
+		customer.getBirth().setBirthPlace("Frankfurt"); //$NON-NLS-1$
 		customer.setBankData(new ArrayList<BankData>());
 		initializeCustomerNumber(customer);
 
 		customer = new Customer();
-		customer.setFirstName("Frodo");
-		customer.setLastName("Baggins");
+		customer.setFirstName("Frodo"); //$NON-NLS-1$
+		customer.setLastName("Baggins"); //$NON-NLS-1$
 		address = new Address();
-		address.setCity("Hanau");
-		address.setStreet("Grüner Weg 3");
-		address.setZipCode("62342");
-		address.setCountry("Germany");
+		address.setCity("Hanau"); //$NON-NLS-1$
+		address.setStreet("Grüner Weg 3"); //$NON-NLS-1$
+		address.setZipCode("62342"); //$NON-NLS-1$
+		address.setCountry("Germany"); //$NON-NLS-1$
 		customer.setAddress(address);
 		customer.setBirth(new Birth());
 		try {
-			customer.getBirth().setBirthDay(format.parse("01.04.1964"));
+			customer.getBirth().setBirthDay(format.parse("01.04.1964")); //$NON-NLS-1$
 		} catch (ParseException e) {
 			// TODO Throw exception
 			e.printStackTrace();
 		}
-		customer.getBirth().setBirthPlace("Frankfurt");
+		customer.getBirth().setBirthPlace("Frankfurt"); //$NON-NLS-1$
 		customer.setBankData(new ArrayList<BankData>());
 		initializeCustomerNumber(customer);
 	}

@@ -46,6 +46,7 @@ public class SnippetTreeRidget002 {
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Hide"); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final List<Object> selection = treeRidget.getSelection();
 				for (Object element : selection) {

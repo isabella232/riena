@@ -44,6 +44,7 @@ public class MultipleChangeEntry {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "obj:" + childObject + " state:" + State.toString(state); //$NON-NLS-1$ //$NON-NLS-2$
 	}

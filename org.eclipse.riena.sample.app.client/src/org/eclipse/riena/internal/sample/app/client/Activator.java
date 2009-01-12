@@ -15,7 +15,6 @@ import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
-
 import org.osgi.framework.BundleContext;
 
 /**
@@ -24,7 +23,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractRienaUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.riena.sample.app.client.helloworld";
+	public static final String PLUGIN_ID = "org.eclipse.riena.sample.app.client.helloworld"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -38,9 +37,6 @@ public class Activator extends AbstractRienaUIPlugin {
 	public Activator() {
 	}
 
-	/**
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -50,20 +46,13 @@ public class Activator extends AbstractRienaUIPlugin {
 
 		// register hessian proxy for riena remote service
 		helloWorldServiceReg = new RemoteServiceFactory().createAndRegisterProxy(IHelloWorldService.class,
-				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian", context);
+				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 
 		customerSearchService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", context);
+				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);

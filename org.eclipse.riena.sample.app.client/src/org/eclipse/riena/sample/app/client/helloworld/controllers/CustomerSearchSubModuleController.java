@@ -79,6 +79,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		tableRidget = (ITableRidget) getRidget("tableRidget"); //$NON-NLS-1$
 		searchAction = (IActionRidget) getRidget("searchAction"); //$NON-NLS-1$

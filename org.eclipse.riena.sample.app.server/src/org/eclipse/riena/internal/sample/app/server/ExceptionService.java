@@ -45,7 +45,7 @@ public class ExceptionService implements IExceptionService {
 		int month = cld.get(Calendar.MONTH);
 		int year = cld.get(Calendar.YEAR);
 
-		return day + "." + month + "." + year;
+		return day + "." + month + "." + year; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// public String throwFailure(String name) throws Failure {
@@ -97,7 +97,7 @@ public class ExceptionService implements IExceptionService {
 	public String throwException(String name) throws Throwable {
 		Throwable exception = null;
 
-		LOGGER.log(LogService.LOG_INFO, "The client requested an Exception '" + name + "'"); //$NON-NLS-1$
+		LOGGER.log(LogService.LOG_INFO, "The client requested an Exception '" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		if (name == null) {
 			LOGGER.log(LogService.LOG_ERROR, "The name of the requested Exception/Failure is null!"); //$NON-NLS-1$
@@ -187,6 +187,6 @@ public class ExceptionService implements IExceptionService {
 	}
 
 	private String generateNestedException() throws NullPointerException {
-		throw new NullPointerException("ExceptionService: Here is your requested nested Exception.");
+		throw new NullPointerException("ExceptionService: Here is your requested nested Exception."); //$NON-NLS-1$
 	}
 }

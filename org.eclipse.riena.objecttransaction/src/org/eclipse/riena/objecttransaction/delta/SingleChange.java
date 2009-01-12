@@ -42,6 +42,7 @@ public class SingleChange extends AbstractBaseChange {
 		this.childObject = childObject;
 	}
 
+	@Override
 	public String toString() {
 		return "SingleChange: new:" + childObject; //$NON-NLS-1$
 	}

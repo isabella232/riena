@@ -42,7 +42,9 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	}
 
 	/*
-	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionExtract#addTransactedObject(org.eclipse.riena.objecttransaction.ITransactedObject)
+	 * @seeorg.eclipse.riena.objecttransaction.IObjectTransactionExtract#
+	 * addTransactedObject
+	 * (org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
 	public void addCleanTransactedObject(ITransactedObject transObject) {
 		Assert.isTrue((!contains(transObject.getObjectId())), "object must not exist in extract"); //$NON-NLS-1$
@@ -50,7 +52,9 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	}
 
 	/*
-	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionExtract#contains(org.eclipse.riena.objecttransaction.IObjectId)
+	 * @see
+	 * org.eclipse.riena.objecttransaction.IObjectTransactionExtract#contains
+	 * (org.eclipse.riena.objecttransaction.IObjectId)
 	 */
 	public boolean contains(IObjectId objectid) {
 		for (int i = 0; i < deltas.size(); i++) {
@@ -73,6 +77,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("----------extract--------------------\n"); //$NON-NLS-1$

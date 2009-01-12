@@ -26,7 +26,7 @@ public class ValidOutputServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter printWriter = new PrintWriter(resp.getOutputStream());
-		printWriter.write("here is what I got to say....");
+		printWriter.write("here is what I got to say...."); //$NON-NLS-1$
+		printWriter.close();
 	}
-
 }

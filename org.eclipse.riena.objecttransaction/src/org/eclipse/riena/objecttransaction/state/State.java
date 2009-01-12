@@ -49,6 +49,7 @@ public final class State {
 		this.state = state;
 	}
 
+	@Override
 	public String toString() {
 		if (state == CREATED_CODE) {
 			return "created"; //$NON-NLS-1$
@@ -83,6 +84,7 @@ public final class State {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object object) {
 		if (object instanceof State) {
 			return ((State) object).state == state;
@@ -93,6 +95,7 @@ public final class State {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return state;
 	}

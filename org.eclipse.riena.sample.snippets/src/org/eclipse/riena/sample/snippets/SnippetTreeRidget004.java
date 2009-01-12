@@ -46,6 +46,7 @@ public class SnippetTreeRidget004 {
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Disable"); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final List<Object> selection = treeRidget.getSelection();
 				for (Object element : selection) {

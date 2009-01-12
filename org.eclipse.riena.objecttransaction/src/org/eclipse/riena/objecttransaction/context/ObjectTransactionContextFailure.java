@@ -20,6 +20,8 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionFailure;
 
 public class ObjectTransactionContextFailure extends ObjectTransactionFailure {
 
+	private static final long serialVersionUID = -3593546404699369566L;
+
 	/**
 	 * Creates a new instance of this failure
 	 * 

@@ -24,14 +24,14 @@ public class BasicAuthenticationTestServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String auth = req.getHeader("Authorization");
-		String correctAuth = "Basic c2NwOnNjcHRlc3RwYXNzd29yZA==";// encoded
+		String auth = req.getHeader("Authorization"); //$NON-NLS-1$
+		String correctAuth = "Basic c2NwOnNjcHRlc3RwYXNzd29yZA==";// encoded //$NON-NLS-1$
 		// version
 		// of
 		// userid=scp,
 		// password=scptestpassword
 		if (auth != null && auth.equals(correctAuth)) {
-			resp.getOutputStream().write("OK".getBytes());
+			resp.getOutputStream().write("OK".getBytes()); //$NON-NLS-1$
 		} else {
 			resp.sendError(401);
 		}

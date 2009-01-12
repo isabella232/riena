@@ -29,7 +29,7 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class Activator extends RienaPlugin {
 
-	private static final String REMOTE_PROTOCOL_HESSIAN = "hessian";
+	private static final String REMOTE_PROTOCOL_HESSIAN = "hessian"; //$NON-NLS-1$
 
 	private Customers customers;
 	private ServiceRegistration regCustomerSearch;
@@ -70,7 +70,7 @@ public class Activator extends RienaPlugin {
 		startCollectibleReceiver(context);
 		startAttachmentService(context);
 		context.registerService(IExceptionService.class.getName(), new ExceptionService(), null);
-		Publish.service(IExceptionService.class.getName()).usingPath("/ExceptionService").withProtocol("hessian")
+		Publish.service(IExceptionService.class.getName()).usingPath("/ExceptionService").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(context); // stops automatically when bundle stops
 	}
 
@@ -105,7 +105,7 @@ public class Activator extends RienaPlugin {
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomerSearchWS");
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomerSearchWS"); //$NON-NLS-1$
 
 		regCustomerSearch = context.registerService(ICustomerSearch.class.getName(), customers, properties);
 	}
@@ -122,7 +122,7 @@ public class Activator extends RienaPlugin {
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomersWS");
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CustomersWS"); //$NON-NLS-1$
 
 		regCustomers = context.registerService(ICustomers.class.getName(), customers, properties);
 	}
@@ -139,7 +139,7 @@ public class Activator extends RienaPlugin {
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/HelloWorldServiceWS");
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/HelloWorldServiceWS"); //$NON-NLS-1$
 
 		regHelloWorldService = context.registerService(IHelloWorldService.class.getName(), helloWorldService,
 				properties);
@@ -151,7 +151,7 @@ public class Activator extends RienaPlugin {
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
-		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CollectibleReceiverWS");
+		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CollectibleReceiverWS"); //$NON-NLS-1$
 
 		regCollectibleReceiver = context.registerService(IReceiver.class.getName(), monitoringReceiver, properties);
 	}
@@ -171,7 +171,7 @@ public class Activator extends RienaPlugin {
 		regAttachmentService = context.registerService(IAttachmentService.class.getName(), new AttachmentService(),
 				null);
 
-		Publish.service(IAttachmentService.class.getName()).usingPath("/AttachmentService").withProtocol("hessian")
+		Publish.service(IAttachmentService.class.getName()).usingPath("/AttachmentService").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(context);
 
 	}

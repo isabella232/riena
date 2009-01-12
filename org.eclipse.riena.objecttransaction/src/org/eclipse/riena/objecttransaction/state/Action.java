@@ -45,6 +45,7 @@ public final class Action {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		if (actionCode == NEW_CODE) {
 			return "new"; //$NON-NLS-1$
@@ -75,6 +76,7 @@ public final class Action {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Action) {
 			return ((Action) object).actionCode == actionCode;
@@ -86,6 +88,7 @@ public final class Action {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return actionCode;
 	}

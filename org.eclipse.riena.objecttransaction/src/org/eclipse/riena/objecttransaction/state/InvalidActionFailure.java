@@ -18,6 +18,8 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionFailure;
  */
 public class InvalidActionFailure extends ObjectTransactionFailure {
 
+	private static final long serialVersionUID = 4548211115892016006L;
+
 	/**
 	 * @param message
 	 */

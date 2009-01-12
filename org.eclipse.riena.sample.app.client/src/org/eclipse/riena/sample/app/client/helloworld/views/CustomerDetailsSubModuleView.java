@@ -15,6 +15,8 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.sample.app.client.helloworld.controllers.CustomerDetailsSubModuleController;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
@@ -44,19 +46,19 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		setTitle("test");
+		setTitle("test"); //$NON-NLS-1$
 		this.contentArea = parent;
 		contentArea.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		contentArea.setLayout(new FormLayout());
 
-		Label personLabel = createSectionLabel(contentArea, "Person");
+		Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);
 		personLabel.setLayoutData(fd);
 
 		Label kundennummerLabel = new Label(contentArea, SWT.LEFT);
-		kundennummerLabel.setText("Customer No.");
+		kundennummerLabel.setText("Customer No."); //$NON-NLS-1$
 		kundennummerLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(personLabel, 0, SWT.TOP);
@@ -64,7 +66,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		kundennummerLabel.setLayoutData(fd);
 
 		Text numberText = new Text(contentArea, SWT.SINGLE);
-		TextRidget textFacade = new TextRidget();
+		ITextRidget textFacade = new TextRidget();
 		textFacade.setUIControl(numberText);
 		getController().setNumberFacade(textFacade);
 		numberText.setEditable(false);
@@ -75,7 +77,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		numberText.setLayoutData(fd);
 
 		Label nameLabel = new Label(contentArea, SWT.LEFT);
-		nameLabel.setText("Last Name");
+		nameLabel.setText("Last Name"); //$NON-NLS-1$
 		nameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, LINE_GAP);
@@ -93,7 +95,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		nameText.setLayoutData(fd);
 
 		Label vornameLabel = new Label(contentArea, SWT.LEFT);
-		vornameLabel.setText("First Name");
+		vornameLabel.setText("First Name"); //$NON-NLS-1$
 		vornameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, 0, SWT.TOP);
@@ -111,7 +113,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		firstnameText.setLayoutData(fd);
 
 		Label birthdayLabel = new Label(contentArea, SWT.LEFT);
-		birthdayLabel.setText("Birthday");
+		birthdayLabel.setText("Birthday"); //$NON-NLS-1$
 		birthdayLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(nameLabel, LINE_GAP);
@@ -132,7 +134,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		birthdayText.setLayoutData(fd);
 
 		Label birthplaceLabel = new Label(contentArea, SWT.LEFT);
-		birthplaceLabel.setText("Birthplace");
+		birthplaceLabel.setText("Birthplace"); //$NON-NLS-1$
 		birthplaceLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
@@ -150,11 +152,11 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		birthplaceText.setLayoutData(fd);
 
 		Button openOffers = new Button(contentArea, 0);
-		ActionRidget actionAdapter = new ActionRidget();
+		IActionRidget actionAdapter = new ActionRidget();
 		actionAdapter.setUIControl(openOffers);
 		getController().setOffersFacade(actionAdapter);
 		openOffers.setEnabled(false);
-		openOffers.setText("Offers");
+		openOffers.setText("Offers"); //$NON-NLS-1$
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
 		fd.left = new FormAttachment(birthdayText, 0, SWT.LEFT);
@@ -165,7 +167,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 		actionAdapter = new ActionRidget();
 		actionAdapter.setUIControl(saveButton);
 		getController().setSaveFacade(actionAdapter);
-		saveButton.setText("Save");
+		saveButton.setText("Save"); //$NON-NLS-1$
 		// saveButton.addSelectionListener(new StoreCustomerListener());
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
@@ -186,7 +188,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView<CustomerDetailsS
 	}
 
 	public Image getIcon() {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("de.compeople.scp.sample.client", "/icons/user_16.png")
+		return AbstractUIPlugin.imageDescriptorFromPlugin("de.compeople.scp.sample.client", "/icons/user_16.png") //$NON-NLS-1$ //$NON-NLS-2$
 				.createImage();
 	}
 

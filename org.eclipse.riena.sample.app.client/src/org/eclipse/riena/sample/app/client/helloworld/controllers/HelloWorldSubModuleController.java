@@ -48,6 +48,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 		labelRidget = (ILabelRidget) getRidget("labelRidget"); //$NON-NLS-1$
 	}
