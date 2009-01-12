@@ -17,13 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.internal.communication.core.Activator;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
@@ -105,11 +104,11 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	public void unregisterService(IRemoteServiceReference reference) {
 		assert reference != null : "RemoteServiceReference must not be null"; //$NON-NLS-1$
 		synchronized (registeredServices) {
-			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
-			// we have commented out the following line
+			// we have commented out the following lines
 			// because the service gets unregistered automatically when the bundle, that created it, is
 			// stopped. the explicit call sometimes fails because that bundle is already stopped
 			// and so unregister fails with an IllegalStateException
+			//			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
 			//			serviceRegistration.unregister();
 			String id = reference.getServiceInterfaceClassName();
 			registeredServices.remove(reference.getURL());

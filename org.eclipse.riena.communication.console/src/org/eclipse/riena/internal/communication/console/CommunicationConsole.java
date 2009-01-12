@@ -12,14 +12,13 @@ package org.eclipse.riena.internal.communication.console;
 
 import java.util.List;
 
+import org.eclipse.osgi.framework.console.CommandInterpreter;
+import org.eclipse.osgi.framework.console.CommandProvider;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
-
-import org.eclipse.osgi.framework.console.CommandInterpreter;
-import org.eclipse.osgi.framework.console.CommandProvider;
 
 public class CommunicationConsole implements CommandProvider {
 	private IServicePublishBinder servicePublisher;
@@ -75,7 +74,7 @@ public class CommunicationConsole implements CommandProvider {
 			// System.out.println("Riena:: no OSGi services registered");
 			return;
 		}
-		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices(null); //$NON-NLS-1$
+		List<IRemoteServiceRegistration> rsRegs = serviceRegistry.registeredServices(null);
 		if (rsRegs.size() == 0) {
 			System.out.println("Riena:: no RemoteServiceProxies registered"); //$NON-NLS-1$
 			return;

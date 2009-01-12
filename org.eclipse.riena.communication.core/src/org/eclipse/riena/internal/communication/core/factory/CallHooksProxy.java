@@ -40,6 +40,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		Inject.service(ICallHook.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
+	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		ICallMessageContext mc = null;
 		if (mca != null) {
@@ -63,7 +64,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				Throwable cause = e.getTargetException();
 				while (cause.getCause() != null) {
 					if (cause.getCause() instanceof RemoteFailure) {
-						throw new RemoteFailure(null, cause.getCause()); //$NON-NLS-1$
+						throw new RemoteFailure(null, cause.getCause());
 					}
 					cause = cause.getCause();
 				}
@@ -113,6 +114,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		this.mca = mca;
 	}
 
+	@Override
 	public Subject getSubject() {
 		return null;
 	}

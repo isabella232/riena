@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
@@ -24,11 +26,7 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
@@ -201,7 +199,7 @@ public class RemoteServiceFactory {
 	 * @return the serviceInstance references or <code>null</code>
 	 */
 	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
-		BundleContext context = Activator.getDefault().getContext();
+		// BundleContext context = Activator.getDefault().getContext();
 		if (!RienaStatus.isActive()) {
 			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This will probably not work."); //$NON-NLS-1$
 		}
@@ -213,12 +211,12 @@ public class RemoteServiceFactory {
 			LOGGER.log(LogService.LOG_ERROR, "Could not substitute url '" + rsd.getURL() + "'.", e); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
-		ServiceReference[] references;
+		// ServiceReference[] references;
 		if (rsd.getProtocol() == null) {
 			return null;
 		}
 		// find a factory for this specific protocol
-		ServiceReference refFactory = null;
+		// ServiceReference refFactory = null;
 		IRemoteServiceFactory factory = null;
 
 		factory = (remoteServiceFactoryImplementations.get(rsd.getProtocol()));
@@ -395,6 +393,7 @@ public class RemoteServiceFactory {
 			}
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			if (delegateReference != null) {
 				return delegateReference.equals(obj);
@@ -443,6 +442,7 @@ public class RemoteServiceFactory {
 			return null;
 		}
 
+		@Override
 		public int hashCode() {
 			if (delegateReference != null) {
 				return delegateReference.hashCode();
@@ -472,6 +472,7 @@ public class RemoteServiceFactory {
 			this.serviceRegistration = serviceRegistration;
 		}
 
+		@Override
 		public String toString() {
 			if (delegateReference != null) {
 				return delegateReference.toString();

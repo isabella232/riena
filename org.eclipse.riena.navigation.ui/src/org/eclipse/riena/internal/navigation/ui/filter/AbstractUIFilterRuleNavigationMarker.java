@@ -44,7 +44,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 		}
 
 		if (args[0] instanceof INavigationNode) {
-			INavigationNode node = (INavigationNode) args[0];
+			INavigationNode<?> node = (INavigationNode<?>) args[0];
 			String longNodeId = NavigationNodeUtility.getNodeLongId(node);
 			StringMatcher stringMatcher = new StringMatcher(nodeIdPattern);
 			return stringMatcher.match(longNodeId);
@@ -56,7 +56,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 
 	public void apply(Object object) {
 		if (object instanceof INavigationNode) {
-			INavigationNode node = (INavigationNode) object;
+			INavigationNode<?> node = (INavigationNode<?>) object;
 			node.addMarker(getMarker());
 		}
 
@@ -64,7 +64,7 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 
 	public void remove(Object object) {
 		if (object instanceof INavigationNode) {
-			INavigationNode node = (INavigationNode) object;
+			INavigationNode<?> node = (INavigationNode<?>) object;
 			node.removeMarker(getMarker());
 		}
 	}

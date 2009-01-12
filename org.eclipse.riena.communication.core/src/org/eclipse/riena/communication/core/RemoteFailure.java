@@ -17,6 +17,8 @@ import org.eclipse.riena.core.exception.Failure;
  */
 public class RemoteFailure extends Failure {
 
+	private static final long serialVersionUID = -7485563916742344058L;
+
 	public RemoteFailure(String msg, Object arg1, Object arg2, Throwable cause) {
 		super(msg, arg1, arg2, cause);
 		// TODO Auto-generated constructor stub

@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.controllers;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
-import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
@@ -50,8 +49,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	public IStatuslineRidget getStatuslineRidget() {
 		if (!done) {
 			if (statuslineRidget.getStatuslineUIProcessRidget() != null) {
-				((IStatuslineUIProcessRidget) statuslineRidget.getStatuslineUIProcessRidget())
-						.setContextLocator(contextUpdater);
+				statuslineRidget.getStatuslineUIProcessRidget().setContextLocator(contextUpdater);
 			}
 			done = true;
 		}

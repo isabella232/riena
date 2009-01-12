@@ -178,12 +178,14 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void afterActivated(INavigationNode source) {
 		super.afterActivated(source);
 		applyFilters(source);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void beforeDeactivated(INavigationNode source) {
 		super.beforeDeactivated(source);
@@ -191,12 +193,14 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 		removeAllMenuItemRules(appNode);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void filterAdded(INavigationNode source, IUIFilter filter) {
 		super.filterAdded(source, filter);
 		applyFilter(source, filter, APPLY_CLOSURE);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void filterRemoved(INavigationNode source, IUIFilter filter) {
 		super.filterRemoved(source, filter);

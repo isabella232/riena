@@ -78,7 +78,6 @@ public class ProgressMonitorListImpl implements IRemoteProgressMonitorList {
 	 * #fireEndEvent(int)
 	 */
 	public void fireEndEvent(int totalBytes) {
-		RemoteProgressMonitorEvent remoteProgressMonitorEvent = new RemoteProgressMonitorEvent();
 		for (IRemoteProgressMonitor listener : progressMonitorList.getListeners()) {
 			listener.end();
 		}
