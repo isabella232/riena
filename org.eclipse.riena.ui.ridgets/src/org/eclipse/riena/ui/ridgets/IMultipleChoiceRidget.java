@@ -65,7 +65,7 @@ public interface IMultipleChoiceRidget extends IChoiceRidget {
 	 * 
 	 * @return the selection list.
 	 */
-	List getSelection();
+	List<?> getSelection();
 
 	/**
 	 * Set the selection.
@@ -73,5 +73,5 @@ public interface IMultipleChoiceRidget extends IChoiceRidget {
 	 * @param selection
 	 *            the selection list.
 	 */
-	void setSelection(List selection);
+	void setSelection(List<?> selection);
 }
