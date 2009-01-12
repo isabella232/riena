@@ -536,12 +536,15 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * prevent disabled items from being selected this listener is executed
-	 * before the SelectionTypeEnforcer
+	 * Prevent disabled items from being selected. This listener is executed
+	 * before the SelectionTypeEnforcer.
 	 */
 	private void preventDisabledItemSelection(final IObservableMap enablementAttr) {
 		if (enablementAttr != null) {
 			viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+				/* Holds the last selection. */
+				private List<Object> lastSel;
+
 				public void selectionChanged(SelectionChangedEvent event) {
 					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 					List<Object> newSel = new ArrayList<Object>(selection.toList());
@@ -554,8 +557,20 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 						}
 					}
 					if (changed) {
-						viewer.setSelection(new StructuredSelection(newSel));
-						setSelection(newSel);
+						/*
+						 * If the current selection is empty after rejecting
+						 * disabled elements, restore the last selection.
+						 */
+						if (newSel.isEmpty() && lastSel != null) {
+							viewer.setSelection(new StructuredSelection(lastSel));
+							setSelection(lastSel);
+						} else {
+							viewer.setSelection(new StructuredSelection(newSel));
+							setSelection(newSel);
+							lastSel = newSel;
+						}
+					} else {
+						lastSel = newSel;
 					}
 				}
 			});
@@ -586,6 +601,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	private synchronized void saveSelection() {
 		if (viewer != null && isOutputOnly()) {
+			// only save selection when in 'output only' mode
 			savedSelection = viewer.getTree().getSelection();
 		} else {
 			savedSelection = new TreeItem[0];

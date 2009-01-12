@@ -759,7 +759,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(2, control.getSelectionCount());
 	}
 
-	public void testDisabledItemNotSelectableFromByAPI() {
+	public void testDisabledItemNotSelectableByAPI() {
 		ITreeRidget ridget = getRidget();
 		Tree control = getWidget();
 
@@ -778,8 +778,15 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 		ridget.setSelection(node2);
 
-		assertEquals(0, control.getSelectionCount());
-		assertEquals(0, ridget.getSelection().size());
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(1, ridget.getSelection().size());
+		assertSame(node1, ridget.getSelection().get(0));
+
+		ridget.setSelection(Arrays.asList(new Object[] { node1, node2 }));
+
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(1, ridget.getSelection().size());
+		assertSame(node1, ridget.getSelection().get(0));
 	}
 
 	public void testDisabledItemNotSelectableByUser() {
@@ -792,12 +799,18 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 		TreeNode[] roots = { node1, node2 };
 		ridget.bindToModel(roots, TreeNode.class, TreeNode.PROPERTY_CHILDREN, TreeNode.PROPERTY_PARENT,
 				TreeNode.PROPERTY_VALUE, TreeNode.PROPERTY_ENABLED, null);
-		TreeItem item = control.getItem(0);
-		control.setSelection(item);
+
+		ridget.setSelection(node1);
+
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(1, ridget.getSelection().size());
+		assertSame(node1, ridget.getSelection().get(0));
+
 		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
 
-		assertEquals(0, ridget.getSelection().size());
-		assertEquals(0, control.getSelectionCount());
+		assertEquals(1, control.getSelectionCount());
+		assertEquals(1, ridget.getSelection().size());
+		assertSame(node1, ridget.getSelection().get(0));
 
 		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_UP);
 
