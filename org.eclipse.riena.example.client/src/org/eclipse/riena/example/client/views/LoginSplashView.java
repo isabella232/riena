@@ -47,16 +47,11 @@ public class LoginSplashView extends AbstractLoginSplashView {
 
 	private Composite createContentView(Composite parent) {
 
-		//		Label info = UIControlsFactory
-		//						.createLabel(
-		//								content,
-		//								"\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
 		Label infoArea = new Label(parent, SWT.NONE);
 		infoArea
 				.setText("\nTo authenticate with running Sample App Server\n    type: user=john, password=john.\n    To omit it just press login."); //$NON-NLS-1$
 		infoArea.setLayoutData(GD11LEFTBOTTOMFILL);
 
-		//Composite content = UIControlsFactory.createComposite(parent);
 		Composite inputArea = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(4).spacing(6, 9).equalWidth(false).applyTo(inputArea);
 		inputArea.setLayoutData(GD11RIGHTBOTTOMFILL);
@@ -64,30 +59,24 @@ public class LoginSplashView extends AbstractLoginSplashView {
 		inputArea.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
 		// dummy to occupy the cell
-		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 		new Label(inputArea, SWT.NONE).setText(""); //$NON-NLS-1$
 
-		//UIControlsFactory.createLabel(content, "User"); //$NON-NLS-1$
 		new Label(inputArea, SWT.NONE).setText("User"); //$NON-NLS-1$
 		Text user = UIControlsFactory.createText(inputArea);
 		user.setLayoutData(GD21FILL);
 		addUIControl(user, LoginDialogController.RIDGET_ID_USER);
 
 		// dummy to occupy the cell
-		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 		new Label(inputArea, SWT.NONE);
 
-		//UIControlsFactory.createLabel(content, "Password"); //$NON-NLS-1$
 		new Label(inputArea, SWT.NONE).setText("Password"); //$NON-NLS-1$
 		Text password = UIControlsFactory.createText(inputArea);
 		password.setLayoutData(GD21FILL);
 		addUIControl(password, LoginDialogController.RIDGET_ID_PASSWORD);
 
 		// dummy to occupy the cell
-		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 		new Label(inputArea, SWT.NONE);
 		// dummy to occupy the cell
-		//UIControlsFactory.createLabel(content, ""); //$NON-NLS-1$
 		new Label(inputArea, SWT.NONE);
 
 		Button okButton = UIControlsFactory.createButton(inputArea);
