@@ -24,6 +24,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.UITestHelper;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Text;
  * Abstract test class for <code>control</code>s of type <code>Control</code> or
  * controls supporting simular features.
  */
+@UITestCase
 public abstract class AbstractSWTRidgetWithControlTest extends TestCase {
 
 	private Shell shell;

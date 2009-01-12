@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -24,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests for the class {@link ChoiceComposite}.
  */
+@UITestCase
 public class ChoiceCompositeTest extends TestCase {
 
 	private Shell shell;

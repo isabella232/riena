@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Tests for the {@code StatuslineMessageMarkerViewer}.
  */
+@UITestCase
 public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 	private static final String EMPTY_STATUSLINE_MESSAGE = "TestEmptyStatusline";
