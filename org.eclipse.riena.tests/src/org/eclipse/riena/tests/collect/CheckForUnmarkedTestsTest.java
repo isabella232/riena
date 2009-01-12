@@ -26,6 +26,6 @@ public class CheckForUnmarkedTestsTest extends TestCase {
 	public void testUnmarkedTests() {
 		List<Class<? extends TestCase>> unmarked = TestCollector.collectUnmarked(Activator.getDefault().getBundle(),
 				null);
-		assertEquals("Unmarked test(s) found: " + unmarked, 0, unmarked.size());
+		assertEquals(unmarked.size() + " unmarked test(s) found: " + unmarked, 0, unmarked.size());
 	}
 }
