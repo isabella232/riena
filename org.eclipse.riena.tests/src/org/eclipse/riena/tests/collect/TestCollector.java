@@ -61,8 +61,10 @@ public final class TestCollector {
 		}
 		if (annotationClasses.length > 0) {
 			bob.setLength(bob.length() - PLUS.length());
+		} else {
+			bob.append("none");
 		}
-		bob.append("'");
+		bob.append("'.");
 		TestSuite suite = new TestSuite(bob.toString());
 		for (Class<? extends TestCase> clazz : collectWith(bundle, withinPackage, annotationClasses)) {
 			suite.addTestSuite(clazz);
