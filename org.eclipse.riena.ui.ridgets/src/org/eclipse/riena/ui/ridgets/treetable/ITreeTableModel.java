@@ -55,4 +55,10 @@ public interface ITreeTableModel extends ITreeModel {
 	 */
 	Object getValueAt(ITreeTableNode node, int column);
 
+	/**
+	 * @param node
+	 * @return
+	 */
+	boolean isLeaf(Object node);
+
 }
