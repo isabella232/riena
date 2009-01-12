@@ -20,13 +20,15 @@ import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.ManualTestCase;
 import org.osgi.framework.BundleContext;
 
 /**
  * This Testclass sends large byte streams to the Attachment Service and other
- * services and installs a progress monitor and watches the behaviour.
+ * services and installs a progress monitor and watches the behavior.
  * 
  */
+@ManualTestCase
 public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	private IAttachmentService attachService;

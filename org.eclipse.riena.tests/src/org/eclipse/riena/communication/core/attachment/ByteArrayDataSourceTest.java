@@ -16,11 +16,13 @@ import java.io.InputStream;
 
 import org.easymock.MockControl;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the ByteArrayDataSource class.
  * 
  */
+@NonUITestCase
 public class ByteArrayDataSourceTest extends RienaTestCase {
 
 	private IDataSource dataSourceMock;

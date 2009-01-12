@@ -16,9 +16,12 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Test the {@code Literal} class.
  */
+@NonUITestCase
 public class LiteralTest extends TestCase {
 
 	public void testCreateLiteralMap() {

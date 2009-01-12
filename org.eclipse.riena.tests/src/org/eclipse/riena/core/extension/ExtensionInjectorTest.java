@@ -20,11 +20,13 @@ import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.framework.InvalidSyntaxException;
 
 /**
  * 
  */
+@NonUITestCase
 public class ExtensionInjectorTest extends RienaTestCase {
 
 	{

@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.tests.nanohttp.TestServer;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -22,6 +23,7 @@ import org.osgi.framework.BundleException;
 /**
  * 
  */
+@NonUITestCase
 public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testZeroConfiguration() throws BundleException {

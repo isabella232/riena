@@ -26,11 +26,13 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.ManualTestCase;
 
 /**
  * Integration test for testing attachment together with the AttachmentService.
  * 
  */
+@ManualTestCase
 public final class AttachmentClientITest extends RienaTestCase {
 
 	private static final String STRING1 = "das sind testdaten, die wir mal einfach so verschicken um et+das sind "

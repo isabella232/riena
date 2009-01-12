@@ -15,6 +15,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -22,6 +23,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 /**
  * Tests of the class {@link Markable}
  */
+@NonUITestCase
 public class MarkableTest extends TestCase {
 
 	/**

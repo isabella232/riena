@@ -14,9 +14,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+
 /**
  * 
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllManualTests extends TestCase {
 
 	public static Test suite() {

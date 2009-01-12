@@ -12,6 +12,7 @@ package org.eclipse.riena.communication.core.exception;
 
 import java.io.IOException;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
@@ -20,8 +21,7 @@ import org.eclipse.riena.core.exception.Failure;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.tests.collect.IntegrationTestCase;
 import org.osgi.service.log.LogService;
 
 /**
@@ -29,6 +29,7 @@ import org.osgi.service.log.LogService;
  * 
  * 
  */
+@IntegrationTestCase
 public class ExceptionClientITest extends RienaTestCase {
 	private IExceptionService exceptionService;
 	private IRemoteServiceRegistration regExceptionService;

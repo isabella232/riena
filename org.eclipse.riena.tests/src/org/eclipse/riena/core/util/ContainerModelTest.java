@@ -12,9 +12,14 @@ package org.eclipse.riena.core.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * 
  */
+@NonUITestCase
+@NonGatherableTestCase("Fails when executed along with other test cases!")
 public class ContainerModelTest extends TestCase {
 
 	private static final String INITIALIZE_METHOD_NAME = "initialize"; //$NON-NLS-1$

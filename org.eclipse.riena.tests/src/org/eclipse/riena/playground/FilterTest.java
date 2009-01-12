@@ -8,23 +8,27 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.exceptionmanager;
+package org.eclipse.riena.playground;
 
-import junit.framework.Test;
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import junit.framework.TestCase;
 
-import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.collect.NonGatherableTestCase;
-import org.eclipse.riena.tests.collect.TestCollector;
+import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.osgi.framework.Filter;
+import org.osgi.framework.FrameworkUtil;
 
 /**
- * Tests all test cases within this package.
+ *
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
-public class AllTests extends TestCase {
+@NonUITestCase
+public class FilterTest extends TestCase {
 
-	public static Test suite() {
-		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
+	public void testFilters() throws Exception {
+		Filter filter = FrameworkUtil.createFilter("(value>=2)");
+		Dictionary<String, Integer> dict = new Hashtable<String, Integer>();
+		dict.put("value", 1);
+		System.out.println(filter.match(dict));
 	}
-
 }

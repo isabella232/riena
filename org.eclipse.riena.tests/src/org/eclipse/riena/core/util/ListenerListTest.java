@@ -13,11 +13,13 @@ package org.eclipse.riena.core.util;
 import java.util.EventListener;
 
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
  * Tests the <code>ListenerList</code>
  */
+@NonUITestCase
 public class ListenerListTest extends RienaTestCase {
 
 	private ListenerList<TestListener> listenerList = new ListenerList<TestListener>(TestListener.class);

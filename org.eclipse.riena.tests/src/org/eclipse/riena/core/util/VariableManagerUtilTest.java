@@ -15,10 +15,12 @@ import java.lang.reflect.Field;
 import org.eclipse.core.internal.variables.StringVariableManager;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the <code>ConfigSymbolReplace</code> class.
  */
+@NonUITestCase
 public class VariableManagerUtilTest extends RienaTestCase {
 
 	private static Field fgManager;

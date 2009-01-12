@@ -12,31 +12,21 @@ package org.eclipse.riena;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
+import org.eclipse.riena.tests.collect.UITestCase;
 
 /**
  * Tests all test cases within this bundle related to UI.
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllUITests extends TestCase {
 
+	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTest(org.eclipse.riena.navigation.ui.AllTests.suite());
-		suite.addTest(org.eclipse.riena.navigation.ui.swt.AllTests.suite());
-		suite.addTest(org.eclipse.riena.internal.navigation.ui.filter.AllTests.suite());
-		suite.addTest(org.eclipse.riena.internal.ui.ridgets.swt.AllTests.suite());
-		suite.addTest(org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.core.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.filter.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.ridgets.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.ridgets.databinding.AllTests.suite());
-		suite.addTest(org.eclipse.riena.internal.navigation.ui.filter.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.ridgets.marker.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.ridgets.tree2.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.ridgets.uibinding.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.ridgets.validation.tests.AllTests.suite());
-		suite.addTest(org.eclipse.riena.ui.swt.AllTests.suite());
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null, UITestCase.class);
 	}
 
 }

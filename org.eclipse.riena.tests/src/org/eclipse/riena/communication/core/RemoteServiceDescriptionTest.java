@@ -10,17 +10,18 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core;
 
+import org.easymock.EasyMock;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.easymock.EasyMock;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 
 /**
  *
  */
+@NonUITestCase
 public class RemoteServiceDescriptionTest extends RienaTestCase {
 
 	public void testDefaultCreation() {

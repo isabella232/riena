@@ -12,17 +12,22 @@ package org.eclipse.riena;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
+import org.eclipse.riena.tests.collect.UITestCase;
 
 /**
  * Tests all test cases within this bundle
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
+	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTest(AllNonUITests.suite());
-		suite.addTest(AllUITests.suite());
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null, UITestCase.class,
+				NonUITestCase.class);
 	}
 }

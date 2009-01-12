@@ -12,9 +12,12 @@ package org.eclipse.riena.core.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Nomen est omen!
  */
+@NonUITestCase
 public class StringUtilsTest extends TestCase {
 
 	/**

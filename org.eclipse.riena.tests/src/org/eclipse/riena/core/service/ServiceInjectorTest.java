@@ -15,12 +15,14 @@ import java.util.Hashtable;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 
 /**
  * 
  */
+@NonUITestCase
 public class ServiceInjectorTest extends RienaTestCase {
 
 	@Override

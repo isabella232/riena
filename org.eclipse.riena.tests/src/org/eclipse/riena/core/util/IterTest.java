@@ -19,10 +19,12 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the Iter class
  */
+@NonUITestCase
 public class IterTest extends RienaTestCase {
 
 	/**

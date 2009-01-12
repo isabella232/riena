@@ -15,10 +15,12 @@ import junit.framework.Assert;
 import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * 
  */
+@NonUITestCase
 public class ExceptionHandlerManagerTest extends RienaTestCase {
 
 	private SimpleExceptionHandlerManager manager;

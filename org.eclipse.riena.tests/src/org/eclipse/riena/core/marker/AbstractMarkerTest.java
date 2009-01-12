@@ -12,9 +12,12 @@ package org.eclipse.riena.core.marker;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link AbstractMarker}.
  */
+@NonUITestCase
 public class AbstractMarkerTest extends TestCase {
 
 	/**

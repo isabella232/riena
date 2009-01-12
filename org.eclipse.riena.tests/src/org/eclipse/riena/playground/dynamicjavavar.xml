@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.variables.dynamicVariables">
+      <variable
+            description="description"
+            name="java_user.home"
+            resolver="org.eclipse.riena.core.util.JavaVariableResolver"
+            supportsArgument="false">
+      </variable>
+   </extension>
+</plugin>

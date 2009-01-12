@@ -18,10 +18,12 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.core.exceptionmanager.TopologicalNode;
 import org.eclipse.riena.internal.core.exceptionmanager.TopologicalSort;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests the Topological sorting
  */
+@NonUITestCase
 public class TopologicalSortTest extends TestCase {
 
 	public void testSortEmpty() {

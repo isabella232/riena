@@ -8,25 +8,40 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena;
+package org.eclipse.riena.playground;
+
+import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.tests.collect.NonGatherableTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- * Tests all test cases within this bundle NOT related to UI
+ *
  */
-@NonGatherableTestCase("This is not a ´TestCase´!")
-public class AllNonUITests extends TestCase {
+public final class TestCollectorTest extends TestCase {
+	private static final String ORG_ECLIPSE_RIENA = "org.eclipse.riena";
+
+	public void testThis() {
+		List<Class<? extends TestCase>> testClasses = TestCollector.collectWith((Activator.getDefault().getBundle()),
+				null, NonUITestCase.class);
+		System.out.println("NonUITestCases:");
+		for (Class<?> clazz : testClasses) {
+			System.out.println(clazz);
+		}
+		System.out.println("NonMarkedTestCases:");
+		testClasses = TestCollector.collectUnmarked(Activator.getDefault().getBundle(), null);
+		for (Class<?> clazz : testClasses) {
+			System.out.println(clazz);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null, NonUITestCase.class);
+		return TestCollector.createTestSuiteWith((Activator.getDefault().getBundle()), TestCollectorTest.class
+				.getPackage(), NonUITestCase.class);
 	}
-
 }

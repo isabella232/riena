@@ -12,9 +12,12 @@ package org.eclipse.riena.core.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Test the {@code Milli} class.
  */
+@NonUITestCase
 public class MillisTest extends TestCase {
 
 	public void testSeconds() {

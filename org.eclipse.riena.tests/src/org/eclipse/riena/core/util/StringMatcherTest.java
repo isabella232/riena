@@ -12,9 +12,12 @@ package org.eclipse.riena.core.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link StringMatcher}.
  */
+@NonUITestCase
 public class StringMatcherTest extends TestCase {
 
 	/**

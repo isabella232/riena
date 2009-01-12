@@ -15,9 +15,12 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Test stuff from {@code PropertiesUtils}.
  */
+@NonUITestCase
 public class PropertiesUtilsTest extends TestCase {
 
 	/**

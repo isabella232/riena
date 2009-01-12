@@ -20,9 +20,12 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Test the ReflectionUtils class.
  */
+@NonUITestCase
 public class ReflectionUtilsTest extends TestCase {
 
 	/**

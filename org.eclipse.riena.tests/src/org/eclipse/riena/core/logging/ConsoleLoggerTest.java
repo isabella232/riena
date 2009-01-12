@@ -14,9 +14,9 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.eclipse.riena.tests.RienaTestCase;
-
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -25,6 +25,7 @@ import org.osgi.service.log.LogService;
 /**
  * 
  */
+@NonUITestCase
 public class ConsoleLoggerTest extends RienaTestCase {
 
 	private Logger logger;

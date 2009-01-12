@@ -14,9 +14,12 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Test the {@code ArraysUtil} class.
  */
+@NonUITestCase
 public class ArraysUtilTest extends TestCase {
 
 	public void testCopy() {

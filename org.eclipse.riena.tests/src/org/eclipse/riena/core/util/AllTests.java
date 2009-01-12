@@ -12,28 +12,19 @@ package org.eclipse.riena.core.util;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
  * Tests all test cases within this package.
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		// TODO fails!
-		// suite.addTestSuite(ContainerModelTest.class);
-		suite.addTestSuite(ArraysUtilTest.class);
-		suite.addTestSuite(IterTest.class);
-		suite.addTestSuite(ListenerListTest.class);
-		suite.addTestSuite(LiteralTest.class);
-		suite.addTestSuite(MillisTest.class);
-		suite.addTestSuite(PropertiesUtilsTest.class);
-		suite.addTestSuite(ReflectionUtilsTest.class);
-		suite.addTestSuite(StringUtilsTest.class);
-		suite.addTestSuite(VariableManagerUtilTest.class);
-		suite.addTestSuite(StringMatcherTest.class);
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 }
