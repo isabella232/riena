@@ -100,7 +100,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final boolean TRACE = true;
 
 	public SimpleStore() throws CoreException {
-		this("simplestore", true);
+		this("simplestore", true); //$NON-NLS-1$
 		// perform default initialization
 		setInitializationData(null, null, null);
 	}
@@ -338,7 +338,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			objectis = new ObjectInputStream(gzipis);
 			return (Collectible<?>) objectis.readObject();
 		} catch (Exception e) {
-			trace("Error retrieving collectible: " + e.getMessage());
+			trace("Error retrieving collectible: " + e.getMessage()); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
 			}
@@ -363,7 +363,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			objectos = new ObjectOutputStream(gzipos);
 			objectos.writeObject(collectible);
 		} catch (IOException e) {
-			trace("Error storing collectible: " + e.getMessage());
+			trace("Error storing collectible: " + e.getMessage()); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
 			}
@@ -397,13 +397,13 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		 */
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			trace("Store Cleaner started");
-			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN);
+			trace("Store Cleaner started"); //$NON-NLS-1$
+			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			clean();
 			monitor.done();
 			// reschedule for periodic work
 			schedule(cleanupDelay);
-			trace("Store Cleaner ended");
+			trace("Store Cleaner ended"); //$NON-NLS-1$
 			return Status.OK_STATUS;
 		}
 

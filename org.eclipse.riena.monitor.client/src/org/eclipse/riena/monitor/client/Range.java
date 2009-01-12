@@ -93,7 +93,7 @@ public class Range {
 		}
 	}
 
-	private class Interval implements Match {
+	private static class Interval implements Match {
 		protected final int lower;
 		protected final int upper;
 

@@ -121,7 +121,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 * .eclipse.riena.monitor.client.ICollectibleStore)
 	 */
 	public void setStore(IStore store) {
-		Assert.isNotNull(store, "store must not be null");
+		Assert.isNotNull(store, "store must not be null"); //$NON-NLS-1$
 		this.store = store;
 	}
 
@@ -189,7 +189,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 		private void tryIt(long delay) {
 			if (retrying) {
-				trace("Retry already scheduled.");
+				trace("Retry already scheduled."); //$NON-NLS-1$
 				return;
 			}
 			schedule(delay);
@@ -203,19 +203,19 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		 */
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
-			trace("Sender retrying: " + retrying);
-			trace("sender start - " + category);
+			trace("Sender retrying: " + retrying); //$NON-NLS-1$
+			trace("sender start - " + category); //$NON-NLS-1$
 			if (receiver == null) {
-				trace("sender ended(no receiver) - " + category);
+				trace("sender ended(no receiver) - " + category); //$NON-NLS-1$
 				return Status.OK_STATUS;
 			}
 			List<Collectible<?>> transferables = store.retrieveTransferables(category);
 			if (transferables.size() == 0) {
-				trace("sender ended(nothing to send) - " + category);
+				trace("sender ended(nothing to send) - " + category); //$NON-NLS-1$
 				return Status.OK_STATUS;
 			}
 			transfer(transferables);
-			trace("sender ended - " + category);
+			trace("sender ended - " + category); //$NON-NLS-1$
 			return Status.OK_STATUS;
 		}
 
@@ -223,9 +223,9 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		 * 
 		 */
 		private void transfer(List<Collectible<?>> transferables) {
-			trace("sender transfer " + transferables.size() + " transferables:");
+			trace("sender transfer " + transferables.size() + " transferables:"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (Collectible<?> transferable : transferables) {
-				trace(" - " + transferable);
+				trace(" - " + transferable); //$NON-NLS-1$
 			}
 			try {
 				if (receiver.take(System.currentTimeMillis(), transferables)) {
@@ -235,8 +235,8 @@ public class SimpleSender implements ISender, IExecutableExtension {
 					throw new RuntimeException("Retry sending later because receiver rejected it."); //$NON-NLS-1$
 				}
 			} catch (Throwable t) {
-				trace("sending failed with: " + t);
-				trace("retrying in " + retryTime + " milli seconds");
+				trace("sending failed with: " + t); //$NON-NLS-1$
+				trace("retrying in " + retryTime + " milli seconds"); //$NON-NLS-1$ //$NON-NLS-2$
 				retrying = true;
 				schedule(retryTime);
 			}
