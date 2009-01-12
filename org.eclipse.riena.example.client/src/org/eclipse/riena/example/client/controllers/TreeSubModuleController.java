@@ -276,7 +276,7 @@ public class TreeSubModuleController extends SubModuleController {
 		}
 	}
 
-	private final class NotNullValue extends ComputedValue {
+	private static final class NotNullValue extends ComputedValue {
 
 		private final IObservableValue value;
 
