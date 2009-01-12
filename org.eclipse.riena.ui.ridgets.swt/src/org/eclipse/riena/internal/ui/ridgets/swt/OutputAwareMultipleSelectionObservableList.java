@@ -25,6 +25,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
  * selection observable (at the other end of the binding) when the ridget is in
  * "output only" mode.
  */
+@SuppressWarnings("restriction")
 public final class OutputAwareMultipleSelectionObservableList extends SelectionProviderMultipleSelectionObservableList {
 
 	private final IMarkableRidget ridget;
@@ -36,6 +37,7 @@ public final class OutputAwareMultipleSelectionObservableList extends SelectionP
 		this.ridget = ridget;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void updateWrappedList(List newList) {
 		if (!ridget.isOutputOnly()) {

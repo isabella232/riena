@@ -16,12 +16,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.ui.ridgets.UIBindingFailure;
+import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
 
 public class UnboundPropertyWritableList extends WritableList implements IUnboundPropertyObservable {
 
@@ -61,6 +60,7 @@ public class UnboundPropertyWritableList extends WritableList implements IUnboun
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void updateToBean() {
 		List<Object> newValue = new ArrayList<Object>(this);
 		BeanPropertyAccessor.setPropertyValue(bean, propertyDescriptor, newValue);

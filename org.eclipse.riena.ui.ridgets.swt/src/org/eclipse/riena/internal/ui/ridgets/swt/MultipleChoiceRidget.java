@@ -132,7 +132,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		if (selectionBinding.getModel() instanceof IUnboundPropertyObservable) {
 			((IUnboundPropertyObservable) selectionBinding.getModel()).updateFromBean();
 		}
-		List oldSelection = new ArrayList(selectionObservable);
+		List<?> oldSelection = new ArrayList<Object>(selectionObservable);
 		selectionBinding.updateModelToTarget();
 		ChoiceComposite control = getUIControl();
 		disposeChildren(control);
@@ -144,14 +144,14 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		return selectionObservable;
 	}
 
-	public List getSelection() {
-		return new ArrayList(selectionObservable);
+	public List<?> getSelection() {
+		return new ArrayList<Object>(selectionObservable);
 	}
 
-	public void setSelection(List selection) {
+	public void setSelection(List<?> selection) {
 		assertIsBoundToModel();
-		List oldSelection = new ArrayList(selectionObservable);
-		List newSelection = selection == null ? Collections.EMPTY_LIST : selection;
+		List<?> oldSelection = new ArrayList<Object>(selectionObservable);
+		List<?> newSelection = selection == null ? Collections.EMPTY_LIST : selection;
 		for (Object candidate : newSelection) {
 			if (!optionsObservable.contains(candidate)) {
 				throw new BindingException("candidate not in option list: " + candidate); //$NON-NLS-1$
@@ -240,12 +240,12 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 						} else {
 							if (button.getSelection()) {
 								if (!selectionObservable.contains(data)) {
-									List oldSelection = new ArrayList(selectionObservable);
+									List<?> oldSelection = new ArrayList<Object>(selectionObservable);
 									selectionObservable.add(data);
 									firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 								}
 							} else {
-								List oldSelection = new ArrayList(selectionObservable);
+								List<?> oldSelection = new ArrayList<Object>(selectionObservable);
 								selectionObservable.remove(data);
 								firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 							}
