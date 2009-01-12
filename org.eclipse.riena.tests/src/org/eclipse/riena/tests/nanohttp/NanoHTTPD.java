@@ -192,8 +192,9 @@ public class NanoHTTPD {
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				try {
-					while (!stop)
+					while (!stop) {
 						new HTTPSession(ss.accept());
+					}
 				} catch (IOException ioe) {
 				}
 			}
@@ -217,19 +218,22 @@ public class NanoHTTPD {
 
 		// Show licence if requested
 		int lopt = -1;
-		for (int i = 0; i < args.length; ++i)
+		for (int i = 0; i < args.length; ++i) {
 			if (args[i].toLowerCase().endsWith("licence")) {
 				lopt = i;
 				System.out.println(LICENCE + "\n");
 			}
+		}
 
 		// Change port if requested
 		int port = 80;
-		if (args.length > 0 && lopt != 0)
+		if (args.length > 0 && lopt != 0) {
 			port = Integer.parseInt(args[0]);
+		}
 
-		if (args.length > 1 && args[1].toLowerCase().endsWith("licence"))
+		if (args.length > 1 && args[1].toLowerCase().endsWith("licence")) {
 			System.out.println(LICENCE + "\n");
+		}
 
 		NanoHTTPD nh = null;
 		try {
@@ -247,7 +251,6 @@ public class NanoHTTPD {
 			System.in.read();
 		} catch (Throwable t) {
 		}
-		;
 	}
 
 	/**
@@ -265,19 +268,22 @@ public class NanoHTTPD {
 		public void run() {
 			try {
 				InputStream is = mySocket.getInputStream();
-				if (is == null)
+				if (is == null) {
 					return;
+				}
 				BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
 				// Read the request line
 				StringTokenizer st = new StringTokenizer(in.readLine());
-				if (!st.hasMoreTokens())
+				if (!st.hasMoreTokens()) {
 					sendError(HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html");
+				}
 
 				String method = st.nextToken();
 
-				if (!st.hasMoreTokens())
+				if (!st.hasMoreTokens()) {
 					sendError(HTTP_BADREQUEST, "BAD REQUEST: Missing URI. Usage: GET /example/file.html");
+				}
 
 				String uri = decodePercent(st.nextToken());
 
@@ -306,7 +312,7 @@ public class NanoHTTPD {
 				// If the method is POST, there may be parameters
 				// in data section, too, read it:
 				if (method.equalsIgnoreCase("POST")) {
-					long size = 0x7FFFFFFFFFFFFFFFl;
+					long size = 0x7FFFFFFFFFFFFFFFL;
 					String contentLength = header.getProperty("content-length");
 					if (contentLength != null) {
 						try {
@@ -320,8 +326,9 @@ public class NanoHTTPD {
 					while (read >= 0 && size > 0 && !postLine.endsWith("\r\n")) {
 						size -= read;
 						postLine += String.valueOf(buf, 0, read);
-						if (size > 0)
+						if (size > 0) {
 							read = in.read(buf);
+						}
 					}
 					postLine = postLine.trim();
 					decodeParms(postLine, parms);
@@ -329,10 +336,11 @@ public class NanoHTTPD {
 
 				// Ok, now do the serve()
 				Response r = serve(uri, method, header, parms);
-				if (r == null)
+				if (r == null) {
 					sendError(HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response.");
-				else
+				} else {
 					sendResponse(r.status, r.mimeType, r.header, r.data);
+				}
 
 				in.close();
 			} catch (IOException ioe) {
@@ -380,15 +388,17 @@ public class NanoHTTPD {
 		 * Properties.
 		 */
 		private void decodeParms(String parms, Properties p) throws InterruptedException {
-			if (parms == null)
+			if (parms == null) {
 				return;
+			}
 
 			StringTokenizer st = new StringTokenizer(parms, "&");
 			while (st.hasMoreTokens()) {
 				String e = st.nextToken();
 				int sep = e.indexOf('=');
-				if (sep >= 0)
+				if (sep >= 0) {
 					p.put(decodePercent(e.substring(0, sep)).trim(), decodePercent(e.substring(sep + 1)));
+				}
 			}
 		}
 
@@ -406,18 +416,21 @@ public class NanoHTTPD {
 		 */
 		private void sendResponse(String status, String mime, Properties header, InputStream data) {
 			try {
-				if (status == null)
+				if (status == null) {
 					throw new Error("sendResponse(): Status can't be null.");
+				}
 
 				OutputStream out = mySocket.getOutputStream();
 				PrintWriter pw = new PrintWriter(out);
 				pw.print("HTTP/1.0 " + status + " \r\n");
 
-				if (mime != null)
+				if (mime != null) {
 					pw.print("Content-Type: " + mime + "\r\n");
+				}
 
-				if (header == null || header.getProperty("Date") == null)
+				if (header == null || header.getProperty("Date") == null) {
 					pw.print("Date: " + gmtFrmt.format(new Date()) + "\r\n");
+				}
 
 				if (header != null) {
 					Enumeration e = header.keys();
@@ -435,15 +448,17 @@ public class NanoHTTPD {
 					byte[] buff = new byte[2048];
 					while (true) {
 						int read = data.read(buff, 0, 2048);
-						if (read <= 0)
+						if (read <= 0) {
 							break;
+						}
 						out.write(buff, 0, read);
 					}
 				}
 				out.flush();
 				out.close();
-				if (data != null)
+				if (data != null) {
 					data.close();
+				}
 			} catch (IOException ioe) {
 				// Couldn't write? No can do.
 				try {
@@ -465,11 +480,11 @@ public class NanoHTTPD {
 		StringTokenizer st = new StringTokenizer(uri, "/ ", true);
 		while (st.hasMoreTokens()) {
 			String tok = st.nextToken();
-			if (tok.equals("/"))
+			if (tok.equals("/")) {
 				newUri += "/";
-			else if (tok.equals(" "))
+			} else if (tok.equals(" ")) {
 				newUri += "%20";
-			else {
+			} else {
 				newUri += URLEncoder.encode(tok);
 				// For Java 1.4 you'll want to use this instead:
 				// try { newUri += URLEncoder.encode( tok, "UTF-8" ); } catch (
@@ -492,22 +507,26 @@ public class NanoHTTPD {
 	 */
 	public Response serveFile(String uri, Properties header, File homeDir, boolean allowDirectoryListing) {
 		// Make sure we won't die of an exception later
-		if (!homeDir.isDirectory())
+		if (!homeDir.isDirectory()) {
 			return new Response(HTTP_INTERNALERROR, MIME_PLAINTEXT,
 					"INTERNAL ERRROR: serveFile(): given homeDir is not a directory.");
+		}
 
 		// Remove URL arguments
 		uri = uri.trim().replace(File.separatorChar, '/');
-		if (uri.indexOf('?') >= 0)
+		if (uri.indexOf('?') >= 0) {
 			uri = uri.substring(0, uri.indexOf('?'));
+		}
 
 		// Prohibit getting out of current directory
-		if (uri.startsWith("..") || uri.endsWith("..") || uri.indexOf("../") >= 0)
+		if (uri.startsWith("..") || uri.endsWith("..") || uri.indexOf("../") >= 0) {
 			return new Response(HTTP_FORBIDDEN, MIME_PLAINTEXT, "FORBIDDEN: Won't serve ../ for security reasons.");
+		}
 
 		File f = new File(homeDir, uri);
-		if (!f.exists())
+		if (!f.exists()) {
 			return new Response(HTTP_NOTFOUND, MIME_PLAINTEXT, "Error 404, file not found.");
+		}
 
 		// List the directory, if necessary
 		if (f.isDirectory()) {
@@ -522,21 +541,20 @@ public class NanoHTTPD {
 			}
 
 			// First try index.html and index.htm
-			if (new File(f, "index.html").exists())
+			if (new File(f, "index.html").exists()) {
 				f = new File(homeDir, uri + "/index.html");
-			else if (new File(f, "index.htm").exists())
+			} else if (new File(f, "index.htm").exists()) {
 				f = new File(homeDir, uri + "/index.htm");
-
-			// No index file, list the directory
-			else if (allowDirectoryListing) {
+			} else if (allowDirectoryListing) {
 				String[] files = f.list();
 				String msg = "<html><body><h1>Directory " + uri + "</h1><br/>";
 
 				if (uri.length() > 1) {
 					String u = uri.substring(0, uri.length() - 1);
 					int slash = u.lastIndexOf('/');
-					if (slash >= 0 && slash < u.length())
+					if (slash >= 0 && slash < u.length()) {
 						msg += "<b><a href=\"" + uri.substring(0, slash + 1) + "\">..</a></b><br/>";
+					}
 				}
 
 				for (int i = 0; i < files.length; ++i) {
@@ -553,19 +571,21 @@ public class NanoHTTPD {
 					if (curFile.isFile()) {
 						long len = curFile.length();
 						msg += " &nbsp;<font size=2>(";
-						if (len < 1024)
+						if (len < 1024) {
 							msg += curFile.length() + " bytes";
-						else if (len < 1024 * 1024)
+						} else if (len < 1024 * 1024) {
 							msg += curFile.length() / 1024 + "." + (curFile.length() % 1024 / 10 % 100) + " KB";
-						else
+						} else {
 							msg += curFile.length() / (1024 * 1024) + "." + curFile.length() % (1024 * 1024) / 10 % 100
 									+ " MB";
+						}
 
 						msg += ")</font>";
 					}
 					msg += "<br/>";
-					if (dir)
+					if (dir) {
 						msg += "</b>";
+					}
 				}
 				return new Response(HTTP_OK, MIME_HTML, msg);
 			} else {
@@ -577,10 +597,12 @@ public class NanoHTTPD {
 			// Get MIME type from file name extension, if possible
 			String mime = null;
 			int dot = f.getCanonicalPath().lastIndexOf('.');
-			if (dot >= 0)
+			if (dot >= 0) {
 				mime = (String) theMimeTypes.get(f.getCanonicalPath().substring(dot + 1).toLowerCase());
-			if (mime == null)
+			}
+			if (mime == null) {
 				mime = MIME_DEFAULT_BINARY;
+			}
 
 			// Support (simple) skipping:
 			long startFrom = 0;
@@ -589,8 +611,9 @@ public class NanoHTTPD {
 				if (range.startsWith("bytes=")) {
 					range = range.substring("bytes=".length());
 					int minus = range.indexOf('-');
-					if (minus > 0)
+					if (minus > 0) {
 						range = range.substring(0, minus);
+					}
 					try {
 						startFrom = Long.parseLong(range);
 					} catch (NumberFormatException nfe) {
@@ -619,8 +642,9 @@ public class NanoHTTPD {
 				+ "mp3		audio/mpeg " + "m3u		audio/mpeg-url " + "pdf		application/pdf " + "doc		application/msword "
 				+ "ogg		application/x-ogg " + "zip		application/octet-stream " + "exe		application/octet-stream "
 				+ "class		application/octet-stream ");
-		while (st.hasMoreTokens())
+		while (st.hasMoreTokens()) {
 			theMimeTypes.put(st.nextToken(), st.nextToken());
+		}
 	}
 
 	/**

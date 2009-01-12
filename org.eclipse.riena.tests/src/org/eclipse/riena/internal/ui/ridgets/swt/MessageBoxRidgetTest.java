@@ -440,7 +440,7 @@ public class MessageBoxRidgetTest extends AbstractSWTRidgetWithControlTest {
 		failNotEquals(null, expected, actual);
 	}
 
-	private static class MockMessageBox extends MessageBox {
+	private final static class MockMessageBox extends MessageBox {
 
 		private String title;
 		private String text;

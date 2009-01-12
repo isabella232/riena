@@ -33,14 +33,14 @@ import org.osgi.service.log.LogService;
  */
 public class TestRemoteLoginModule implements LoginModule {
 
-	private Logger LOGGER = Activator.getDefault().getLogger(TestRemoteLoginModule.class);
+	private static final Logger LOGGER = Activator.getDefault().getLogger(TestRemoteLoginModule.class);
 
 	private CallbackHandler callbackHandler;
 
-	String username;
-	String password;
+	private String username;
+	private String password;
 	// AuthenticationTicket ticket;
-	RemoteLoginProxy remoteLoginProxy;
+	private RemoteLoginProxy remoteLoginProxy;
 
 	/*
 	 * (non-Javadoc)

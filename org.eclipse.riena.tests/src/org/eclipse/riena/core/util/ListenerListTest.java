@@ -83,7 +83,7 @@ public class ListenerListTest extends RienaTestCase {
 	 * adding/removing several anonymous classes from the same listener list.
 	 */
 	public void testFixArrayStoreExceptionWithAnonymousClasses() {
-		final ListenerList<IWindowRidgetListener> listenerList = new ListenerList<IWindowRidgetListener>(
+		final ListenerList<IWindowRidgetListener> windowListenerList = new ListenerList<IWindowRidgetListener>(
 				IWindowRidgetListener.class);
 
 		IWindowRidgetListener listener1 = new IWindowRidgetListener() {
@@ -93,7 +93,7 @@ public class ListenerListTest extends RienaTestCase {
 			public void closed() {
 			}
 		};
-		listenerList.add(listener1);
+		windowListenerList.add(listener1);
 
 		IWindowRidgetListener listener2 = new IWindowRidgetListener() {
 			public void activated() {
@@ -102,14 +102,14 @@ public class ListenerListTest extends RienaTestCase {
 			public void closed() {
 			}
 		};
-		listenerList.add(listener2);
+		windowListenerList.add(listener2);
 
-		listenerList.remove(listener1);
-		listenerList.remove(listener2);
+		windowListenerList.remove(listener1);
+		windowListenerList.remove(listener2);
 	}
 
 	private static class TestListener implements EventListener {
-		public static int pieps;
+		private static int pieps;
 
 		public void piep() {
 			pieps++;

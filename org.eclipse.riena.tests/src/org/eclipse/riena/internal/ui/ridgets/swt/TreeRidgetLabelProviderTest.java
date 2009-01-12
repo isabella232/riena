@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.TreeColumn;
  */
 public class TreeRidgetLabelProviderTest extends TestCase {
 
-	final String[] columnProperties = { "word", "upperCase" };
+	private static final String[] COLUMN_PROPERTIES = { "word", "upperCase" };
 
 	private Shell shell;
 	private TreeViewer viewer;
@@ -56,7 +56,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		viewer = new TreeViewer(createTree(aShell));
 
 		IObservableSet elements = createElements();
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements, columnProperties,
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements, COLUMN_PROPERTIES,
 				null);
 
 		viewer.setContentProvider(new FTTreeContentProvider());
@@ -148,18 +148,18 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetForeground() {
-		WordNode node = new WordNode("test");
+		WordNode wordNode = new WordNode("test");
 
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, createElements(),
-				columnProperties, "upperCase");
+				COLUMN_PROPERTIES, "upperCase");
 
-		node.setUpperCase(true);
-		Color colorEnabled = labelProvider.getForeground(node);
+		wordNode.setUpperCase(true);
+		Color colorEnabled = labelProvider.getForeground(wordNode);
 		assertNull(colorEnabled);
 
-		node.setUpperCase(false);
-		Color colorDisabled = labelProvider.getForeground(node);
+		wordNode.setUpperCase(false);
+		Color colorDisabled = labelProvider.getForeground(wordNode);
 		assertNotNull(colorDisabled);
 	}
 

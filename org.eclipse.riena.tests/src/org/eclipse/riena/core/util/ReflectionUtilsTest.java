@@ -90,9 +90,9 @@ public class ReflectionUtilsTest extends TestCase {
 		Object object = new Thrower();
 		try {
 			ReflectionUtils.invokeHidden(object, "setUrl", MalformedURLException.class, "filez://murks.at");
-			fail();
-		} catch (MalformedURLException e) {
-			// ok
+			fail("MalformedURLException expected");
+		} catch (MalformedURLException expected) {
+			// ok, expected
 		}
 	}
 
@@ -173,8 +173,8 @@ public class ReflectionUtilsTest extends TestCase {
 	public void testSetGetHiddenDeepField() {
 
 		TestTestClass ttc = new TestTestClass("Hallo");
-		ReflectionUtils.setHidden(ttc, "_string", "hurz");
-		String hurz = (String) ReflectionUtils.getHidden(ttc, "_string");
+		ReflectionUtils.setHidden(ttc, "privateString", "hurz");
+		String hurz = (String) ReflectionUtils.getHidden(ttc, "privateString");
 		assertEquals("hurz", hurz);
 	}
 
@@ -193,6 +193,7 @@ public class ReflectionUtilsTest extends TestCase {
 	/**
 	 * Nomen est Omen!
 	 */
+	@SuppressWarnings("unchecked")
 	public void testNewLazyInstanceByClass() {
 		HaeshMaep.created = false;
 		Map<String, String> map = ReflectionUtils.newLazyInstance(Map.class, HaeshMaep.class);
@@ -204,6 +205,7 @@ public class ReflectionUtilsTest extends TestCase {
 	/**
 	 * Nomen est Omen!
 	 */
+	@SuppressWarnings("unchecked")
 	public void testNewLazyInstanceByString() {
 		HaeshMaep.created = false;
 		Map<String, String> map = ReflectionUtils.newLazyInstance(Map.class, HaeshMaep.class.getName());
@@ -213,35 +215,43 @@ public class ReflectionUtilsTest extends TestCase {
 	}
 
 	private static class TestClass {
+
+		@SuppressWarnings("unused")
+		private String privateString;
 		private static String string;
-		private String _string;
 		private static Integer integerObject;
 		private static int intPrimitive;
 
 		private TestClass(String str) {
-			_string = str;
+			privateString = str;
 		}
 
+		@SuppressWarnings("unused")
 		private static void setString(String string) {
 			TestClass.string = string;
 		}
 
+		@SuppressWarnings("unused")
 		private static String getString() {
 			return string;
 		}
 
+		@SuppressWarnings("unused")
 		private static void setIntegerObject(Integer integerObject) {
 			TestClass.integerObject = integerObject;
 		}
 
+		@SuppressWarnings("unused")
 		private static Integer getIntegerObject() {
 			return integerObject;
 		}
 
+		@SuppressWarnings("unused")
 		private static void setIntPrimitive(int intPrimitive) {
 			TestClass.intPrimitive = intPrimitive;
 		}
 
+		@SuppressWarnings("unused")
 		private static int getIntPrimitive() {
 			return intPrimitive;
 		}
@@ -255,21 +265,28 @@ public class ReflectionUtilsTest extends TestCase {
 			super(str);
 		}
 
+		@SuppressWarnings("unused")
 		private static void setString(String string) {
 			TestTestClass.stringString = string;
 		}
 
+		@SuppressWarnings("unused")
 		private static String getString() {
 			return stringString;
 		}
 	}
 
-	private static class Thrower {
+	private final static class Thrower {
 
+		private Thrower() {
+		}
+
+		@SuppressWarnings("unused")
 		private void setUrl(String url) throws MalformedURLException {
 			new URL(url);
 		}
 
+		@SuppressWarnings("unused")
 		private static String throwIOException() throws IOException {
 			throw new IOException("Yippie!");
 		}

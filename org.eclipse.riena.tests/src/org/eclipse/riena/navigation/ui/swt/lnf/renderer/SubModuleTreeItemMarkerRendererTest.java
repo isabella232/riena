@@ -224,11 +224,11 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 	 */
 	private Image createItemImage() {
 		Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
-		GC gc = new GC(image);
-		gc.setForeground(LnfManager.getLnf().getColor("green"));
-		gc.setBackground(LnfManager.getLnf().getColor("green"));
-		gc.fillRectangle(0, 0, 5, 5);
-		gc.dispose();
+		GC imageGC = new GC(image);
+		imageGC.setForeground(LnfManager.getLnf().getColor("green"));
+		imageGC.setBackground(LnfManager.getLnf().getColor("green"));
+		imageGC.fillRectangle(0, 0, 5, 5);
+		imageGC.dispose();
 		return image;
 	}
 
@@ -239,11 +239,11 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 	 */
 	private Image createMarkerImage() {
 		Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 5, 5));
-		GC gc = new GC(image);
-		gc.setForeground(LnfManager.getLnf().getColor("red"));
-		gc.setBackground(LnfManager.getLnf().getColor("red"));
-		gc.fillRectangle(0, 0, 2, 2);
-		gc.dispose();
+		GC imageGC = new GC(image);
+		imageGC.setForeground(LnfManager.getLnf().getColor("red"));
+		imageGC.setBackground(LnfManager.getLnf().getColor("red"));
+		imageGC.fillRectangle(0, 0, 2, 2);
+		imageGC.dispose();
 		return image;
 	}
 

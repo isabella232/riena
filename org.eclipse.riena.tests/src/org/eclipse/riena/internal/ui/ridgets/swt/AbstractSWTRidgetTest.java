@@ -277,29 +277,29 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
 		IMarker marker = new MandatoryMarker();
-		HashSet<IMarker> before = new HashSet<IMarker>(ridget.getMarkers());
+		HashSet<IMarker> before = new HashSet<IMarker>(markableRidget.getMarkers());
 		HashSet<IMarker> after = new HashSet<IMarker>(before);
 		after.add(marker);
 
-		assertTrue(ridget.isEnabled());
+		assertTrue(markableRidget.isEnabled());
 		assertEquals(before.size() + 1, after.size());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, before, after);
-		ridget.addMarker(marker);
+		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.addMarker(marker);
+		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, after, before);
-		ridget.removeMarker(marker);
+		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.removeMarker(marker);
+		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 	}
 
@@ -307,26 +307,26 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
-		ridget.removePropertyChangeListener(propertyChangeListenerMock);
-		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
+		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
+		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
-		assertTrue(ridget.isEnabled());
+		assertTrue(markableRidget.isEnabled());
 
 		expectNoPropertyChangeEvent();
-		ridget.setEnabled(true);
+		markableRidget.setEnabled(true);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.TRUE, Boolean.FALSE);
-		ridget.setEnabled(false);
+		markableRidget.setEnabled(false);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.setEnabled(false);
+		markableRidget.setEnabled(false);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.FALSE, Boolean.TRUE);
-		ridget.setEnabled(true);
+		markableRidget.setEnabled(true);
 		verifyPropertyChangeEvents();
 	}
 
@@ -334,27 +334,27 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
 		IMarker marker = new DisabledMarker();
-		ridget.removePropertyChangeListener(propertyChangeListenerMock);
-		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
+		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
+		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
-		assertTrue(ridget.isEnabled());
+		assertTrue(markableRidget.isEnabled());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.TRUE, Boolean.FALSE);
-		ridget.addMarker(marker);
+		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.addMarker(marker);
+		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.FALSE, Boolean.TRUE);
-		ridget.removeMarker(marker);
+		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.removeMarker(marker);
+		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 	}
 
@@ -365,44 +365,44 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
-		ridget.setUIControl(null);
+		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		markableRidget.setUIControl(null);
 
-		assertTrue(ridget.isEnabled());
+		assertTrue(markableRidget.isEnabled());
 
-		ridget.setEnabled(false);
+		markableRidget.setEnabled(false);
 
-		assertFalse(ridget.isEnabled());
+		assertFalse(markableRidget.isEnabled());
 
-		ridget.setEnabled(true);
+		markableRidget.setEnabled(true);
 
-		assertTrue(ridget.isEnabled());
+		assertTrue(markableRidget.isEnabled());
 	}
 
 	public void testFiresOutputPropertyUsingSetter() {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
-		ridget.removePropertyChangeListener(propertyChangeListenerMock);
-		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
+		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
+		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
-		assertFalse(ridget.isOutputOnly());
+		assertFalse(markableRidget.isOutputOnly());
 
 		expectNoPropertyChangeEvent();
-		ridget.setOutputOnly(false);
+		markableRidget.setOutputOnly(false);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.FALSE, Boolean.TRUE);
-		ridget.setOutputOnly(true);
+		markableRidget.setOutputOnly(true);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.setOutputOnly(true);
+		markableRidget.setOutputOnly(true);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.TRUE, Boolean.FALSE);
-		ridget.setOutputOnly(false);
+		markableRidget.setOutputOnly(false);
 		verifyPropertyChangeEvents();
 	}
 
@@ -410,27 +410,27 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget ridget = (IMarkableRidget) getRidget();
+		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
 		IMarker marker = new OutputMarker();
-		ridget.removePropertyChangeListener(propertyChangeListenerMock);
-		ridget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
+		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
+		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
-		assertFalse(ridget.isOutputOnly());
+		assertFalse(markableRidget.isOutputOnly());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.FALSE, Boolean.TRUE);
-		ridget.addMarker(marker);
+		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.addMarker(marker);
+		markableRidget.addMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.TRUE, Boolean.FALSE);
-		ridget.removeMarker(marker);
+		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 
 		expectNoPropertyChangeEvent();
-		ridget.removeMarker(marker);
+		markableRidget.removeMarker(marker);
 		verifyPropertyChangeEvents();
 	}
 
@@ -439,25 +439,25 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 	 * ridget.setVisible().
 	 */
 	public void testBug257484() {
-		Widget widget = getWidget();
-		if (!(widget instanceof Control)) {
+		Widget theWidget = getWidget();
+		if (!(theWidget instanceof Control)) {
 			// skip if not a control - only controls can be hidden / visible
 			return;
 		}
-		IRidget ridget = getRidget();
-		Control control = (Control) widget;
+		IRidget theRidget = getRidget();
+		Control control = (Control) theWidget;
 
-		assertTrue(ridget.isVisible());
+		assertTrue(theRidget.isVisible());
 		assertTrue(control.isVisible());
 
-		ridget.setVisible(false);
+		theRidget.setVisible(false);
 
-		assertFalse(ridget.isVisible());
+		assertFalse(theRidget.isVisible());
 		assertFalse(control.isVisible());
 
-		ridget.setVisible(true);
+		theRidget.setVisible(true);
 
-		assertTrue(ridget.isVisible());
+		assertTrue(theRidget.isVisible());
 		assertTrue(control.isVisible());
 	}
 

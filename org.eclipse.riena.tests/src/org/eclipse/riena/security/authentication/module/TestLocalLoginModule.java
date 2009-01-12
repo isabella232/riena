@@ -36,13 +36,13 @@ public class TestLocalLoginModule implements LoginModule {
 	private Subject subject;
 	private CallbackHandler callbackHandler;
 
-	private Logger LOGGER = Activator.getDefault().getLogger(TestLocalLoginModule.class);
+	private static final Logger LOGGER = Activator.getDefault().getLogger(TestLocalLoginModule.class);
 
-	String username;
-	String password;
+	private String username;
+	private String password;
 
-	static String checkedUsername;
-	static String checkedPassword;
+	private static String checkedUsername;
+	private static String checkedPassword;
 
 	/**
 	 * @param string
