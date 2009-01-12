@@ -28,6 +28,7 @@ public class View extends ViewPart {
 
 	public static final String ID = "rcp.mail.view"; //$NON-NLS-1$
 
+	@Override
 	public void createPartControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -60,6 +61,7 @@ public class View extends ViewPart {
 		final Link link = new Link(banner, SWT.NONE);
 		link.setText("<a>nicole@mail.org</a>"); //$NON-NLS-1$
 		link.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				MessageDialog.openInformation(getSite().getShell(),
 						"Not Implemented", "Imagine the address book or a new message being created now."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -85,6 +87,8 @@ public class View extends ViewPart {
 		text.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
+	@Override
 	public void setFocus() {
 	}
+
 }

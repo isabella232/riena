@@ -15,7 +15,7 @@ package org.eclipse.riena.demo.customer.common;
  */
 public interface ICustomerDemoService {
 	public static final String ID = ICustomerDemoService.class.getName();
-	public static final String WS_ID = "/CustomerDemoServiceWS";
+	public static final String WS_ID = "/CustomerDemoServiceWS"; //$NON-NLS-1$
 
 	/**
 	 * 

@@ -12,7 +12,6 @@ package org.eclipse.riena.demo.client.customer.views;
 
 import org.eclipse.riena.demo.client.customer.controllers.CustomerOverviewController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -49,23 +48,23 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 
 		final Label label = new Label(container, SWT.NONE);
 		label.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label.setText("Personendaten");
+		label.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label.setText("Personendaten"); //$NON-NLS-1$
 		label.setBounds(10, 29, 96, 13);
 
 		table = new Table(container, SWT.BORDER);
 		table.setLinesVisible(true);
 		table.setBounds(125, 29, 258, 33);
-		addUIControl(table, "table1");
+		addUIControl(table, "table1"); //$NON-NLS-1$
 
 		final TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 		tableColumn.setWidth(110);
-		tableColumn.setText("New column");
+		tableColumn.setText("New column"); //$NON-NLS-1$
 
 		final TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
 		tableColumn_1.setAlignment(SWT.RIGHT);
 		tableColumn_1.setWidth(126);
-		tableColumn_1.setText("New column");
+		tableColumn_1.setText("New column"); //$NON-NLS-1$
 
 		table_1 = new Table(container, SWT.BORDER);
 		table_1.setLinesVisible(true);
@@ -73,21 +72,21 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 
 		final TableColumn newColumnTableColumn = new TableColumn(table_1, SWT.NONE);
 		newColumnTableColumn.setWidth(100);
-		newColumnTableColumn.setText("New column");
+		newColumnTableColumn.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_1, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(table_1, SWT.NONE);
 		newColumnTableColumn_1.setAlignment(SWT.RIGHT);
 		newColumnTableColumn_1.setWidth(100);
-		newColumnTableColumn_1.setText("New column");
+		newColumnTableColumn_1.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_1, SWT.NONE);
 
 		final Label label_1 = new Label(container, SWT.NONE);
 		label_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_1.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label_1.setText("Wohnort");
+		label_1.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label_1.setText("Wohnort"); //$NON-NLS-1$
 		label_1.setBounds(10, 131, 96, 13);
 
 		table_2 = new Table(container, SWT.BORDER);
@@ -100,8 +99,8 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 
 		final Label label_2 = new Label(container, SWT.NONE);
 		label_2.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_2.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label_2.setText("Personen im Haushalt");
+		label_2.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label_2.setText("Personen im Haushalt"); //$NON-NLS-1$
 		label_2.setBounds(10, 232, 157, 13);
 
 		table_4 = new Table(container, SWT.BORDER);
@@ -111,62 +110,62 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 
 		final TableColumn newColumnTableColumn_2 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_2.setWidth(79);
-		newColumnTableColumn_2.setText("New column");
+		newColumnTableColumn_2.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_3 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_3.setWidth(74);
-		newColumnTableColumn_3.setText("New column");
+		newColumnTableColumn_3.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_4 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_4.setWidth(78);
-		newColumnTableColumn_4.setText("New column");
+		newColumnTableColumn_4.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_5 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_5.setWidth(80);
-		newColumnTableColumn_5.setText("New column");
+		newColumnTableColumn_5.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_6 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_6.setWidth(79);
-		newColumnTableColumn_6.setText("New column");
+		newColumnTableColumn_6.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_7 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_7.setWidth(79);
-		newColumnTableColumn_7.setText("New column");
+		newColumnTableColumn_7.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_8 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_8.setWidth(68);
-		newColumnTableColumn_8.setText("New column");
+		newColumnTableColumn_8.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_9 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_9.setWidth(76);
-		newColumnTableColumn_9.setText("New column");
+		newColumnTableColumn_9.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_10 = new TableColumn(table_4, SWT.NONE);
 		newColumnTableColumn_10.setWidth(61);
-		newColumnTableColumn_10.setText("New column");
+		newColumnTableColumn_10.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_4, SWT.NONE);
 
 		final Label label_3 = new Label(container, SWT.NONE);
 		label_3.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_3.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label_3.setText("Aktive Verträge");
+		label_3.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label_3.setText("Aktive Verträge"); //$NON-NLS-1$
 		label_3.setBounds(10, 356, 96, 13);
 
 		table_5 = new Table(container, SWT.BORDER);
@@ -176,66 +175,66 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 
 		final TableColumn newColumnTableColumn_11 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_11.setWidth(47);
-		newColumnTableColumn_11.setText("New column");
+		newColumnTableColumn_11.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_12 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_12.setWidth(62);
-		newColumnTableColumn_12.setText("New column");
+		newColumnTableColumn_12.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_13 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_13.setWidth(55);
-		newColumnTableColumn_13.setText("New column");
+		newColumnTableColumn_13.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_14 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_14.setWidth(59);
-		newColumnTableColumn_14.setText("New column");
+		newColumnTableColumn_14.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_15 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_15.setWidth(73);
-		newColumnTableColumn_15.setText("New column");
+		newColumnTableColumn_15.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_16 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_16.setWidth(69);
-		newColumnTableColumn_16.setText("New column");
+		newColumnTableColumn_16.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_17 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_17.setWidth(72);
-		newColumnTableColumn_17.setText("New column");
+		newColumnTableColumn_17.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_18 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_18.setWidth(75);
-		newColumnTableColumn_18.setText("New column");
+		newColumnTableColumn_18.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_19 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_19.setWidth(70);
-		newColumnTableColumn_19.setText("New column");
+		newColumnTableColumn_19.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_20 = new TableColumn(table_5, SWT.NONE);
 		newColumnTableColumn_20.setWidth(89);
-		newColumnTableColumn_20.setText("New column");
+		newColumnTableColumn_20.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table_5, SWT.NONE);
 
 		final Button button = new Button(container, SWT.NONE);
-		button.setText("Speichern");
+		button.setText("Speichern"); //$NON-NLS-1$
 		button.setBounds(627, 481, 66, 23);
 	}
 

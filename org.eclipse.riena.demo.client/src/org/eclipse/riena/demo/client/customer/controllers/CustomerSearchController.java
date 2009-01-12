@@ -26,7 +26,6 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
@@ -49,70 +48,79 @@ public class CustomerSearchController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		Inject.service(ICustomerDemoService.class).into(this).andStart(Activator.getDefault().getBundle().getBundleContext());
+		Inject.service(ICustomerDemoService.class).into(this).andStart(
+				Activator.getDefault().getBundle().getBundleContext());
 
-		ITextRidget suchName = (ITextRidget) getRidget("suchName");
-		suchName.bindToModel(customerSearchBean, "lastName");
+		ITextRidget suchName = (ITextRidget) getRidget("suchName"); //$NON-NLS-1$
+		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);
 
-		((ITextRidget) getRidget("suchVorname")).bindToModel(customerSearchBean, "firstName");
-		((ITextRidget) getRidget("suchPlz")).bindToModel(customerSearchBean, "zipcode");
-		((ITextRidget) getRidget("suchOrt")).bindToModel(customerSearchBean, "city");
-		((ITextRidget) getRidget("suchStrasse")).bindToModel(customerSearchBean, "street");
+		((ITextRidget) getRidget("suchVorname")).bindToModel(customerSearchBean, "firstName"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("suchPlz")).bindToModel(customerSearchBean, "zipcode"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("suchOrt")).bindToModel(customerSearchBean, "city"); //$NON-NLS-1$ //$NON-NLS-2$
+		((ITextRidget) getRidget("suchStrasse")).bindToModel(customerSearchBean, "street"); //$NON-NLS-1$ //$NON-NLS-2$
 		// ((ILabelRidget) getRidget("treffer")).bindToModel(customerSearchBean,
 		// "treffer");
 
-		final ITableRidget kunden = ((ITableRidget) getRidget("ergebnis"));
-		String[] columnNames = { "lastname", "firstname", "custno.", "birthdate", "street", "zip", "city", "status", "salesrep", "phone" };
-		String[] propertyNames = { "lastName", "firstName", "customerNumber", "birthdate", "street", "zipcode", "city", "status", "salesrepno",
-				"telefoneNumber" };
+		final ITableRidget kunden = ((ITableRidget) getRidget("ergebnis")); //$NON-NLS-1$
+		String[] columnNames = {
+				"lastname", "firstname", "custno.", "birthdate", "street", "zip", "city", "status", "salesrep", "phone" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+		String[] propertyNames = {
+				"lastName", "firstName", "customerNumber", "birthdate", "street", "zipcode", "city", "status", "salesrepno", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+				"telefoneNumber" }; //$NON-NLS-1$
 		final SearchResultContainer searchResultContainer = new SearchResultContainer();
-		kunden.bindToModel(searchResultContainer, "customerList", CustomerRecordOverview.class, propertyNames, columnNames);
+		kunden.bindToModel(searchResultContainer,
+				"customerList", CustomerRecordOverview.class, propertyNames, columnNames); //$NON-NLS-1$
 
-		((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() {
+		((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() { //$NON-NLS-1$
 
-			public void callback() {
-				int selectionIndex = kunden.getSelectionIndex();
-				if (selectionIndex >= 0) {
-					CustomerLoader.setFirstName(searchResultContainer.getCustomerList().get(selectionIndex).getFirstName());
-					CustomerLoader.setLastName(searchResultContainer.getCustomerList().get(selectionIndex).getLastName());
-					getNavigationNode().navigate(
-							new NavigationNodeId("org.eclipse.riena.demo.client.module.CustomerRecord", Integer.valueOf(selectionIndex).toString()),
-							new NavigationArgument(searchResultContainer.getCustomerList().get(selectionIndex)));
-				}
-			}
-		});
+					public void callback() {
+						int selectionIndex = kunden.getSelectionIndex();
+						if (selectionIndex >= 0) {
+							CustomerLoader.setFirstName(searchResultContainer.getCustomerList().get(selectionIndex)
+									.getFirstName());
+							CustomerLoader.setLastName(searchResultContainer.getCustomerList().get(selectionIndex)
+									.getLastName());
+							getNavigationNode()
+									.navigate(
+											new NavigationNodeId(
+													"org.eclipse.riena.demo.client.module.CustomerRecord", Integer.valueOf(selectionIndex).toString()), //$NON-NLS-1$
+											new NavigationArgument(searchResultContainer.getCustomerList().get(
+													selectionIndex)));
+						}
+					}
+				});
 
-		((IActionRidget) getRidget("reset")).addListener(new IActionListener() {
+		((IActionRidget) getRidget("reset")).addListener(new IActionListener() { //$NON-NLS-1$
 
-			public void callback() {
-				searchResultContainer.setCustomerList(null);
-				((IRidget) getRidget("ergebnis")).updateFromModel();
-			}
-		});
-		((IActionRidget) getRidget("search")).addListener(new IActionListener() {
+					public void callback() {
+						searchResultContainer.setCustomerList(null);
+						getRidget("ergebnis").updateFromModel(); //$NON-NLS-1$
+					}
+				});
+		((IActionRidget) getRidget("search")).addListener(new IActionListener() { //$NON-NLS-1$
 
-			public void callback() {
-				searchResultContainer.setCustomerList(null);
-				((IRidget) getRidget("ergebnis")).updateFromModel();
-				ergebnis = customerDemoService.suche(getSuchPerson());
-				// List<PersonenSucheErgebnisBean> kundenRows = new
-				// ArrayList<PersonenSucheErgebnisBean>();
-				if (ergebnis == null || ergebnis.getFehler()) {
-					((ILabelRidget) getRidget("treffer")).setText("Keine Treffer");
-					((IRidget) getRidget("treffer")).updateFromModel();
-					return;
-				}
-				((ILabelRidget) getRidget("treffer")).setText(ergebnis.getErgebnismenge() + " Treffer");
-				((IRidget) getRidget("treffer")).updateFromModel();
-				List<CustomerRecordOverview> result = new ArrayList<CustomerRecordOverview>();
-				for (CustomerRecordOverview cust : ergebnis.getErgebnis()) {
-					result.add(cust);
-				}
-				searchResultContainer.setCustomerList(result);
-				((IRidget) getRidget("ergebnis")).updateFromModel();
-			}
-		});
+					public void callback() {
+						searchResultContainer.setCustomerList(null);
+						getRidget("ergebnis").updateFromModel(); //$NON-NLS-1$
+						ergebnis = customerDemoService.suche(getSuchPerson());
+						// List<PersonenSucheErgebnisBean> kundenRows = new
+						// ArrayList<PersonenSucheErgebnisBean>();
+						if (ergebnis == null || ergebnis.getFehler()) {
+							((ILabelRidget) getRidget("treffer")).setText("Keine Treffer"); //$NON-NLS-1$ //$NON-NLS-2$
+							getRidget("treffer").updateFromModel(); //$NON-NLS-1$
+							return;
+						}
+						((ILabelRidget) getRidget("treffer")).setText(ergebnis.getErgebnismenge() + " Treffer"); //$NON-NLS-1$ //$NON-NLS-2$
+						getRidget("treffer").updateFromModel(); //$NON-NLS-1$
+						List<CustomerRecordOverview> result = new ArrayList<CustomerRecordOverview>();
+						for (CustomerRecordOverview cust : ergebnis.getErgebnis()) {
+							result.add(cust);
+						}
+						searchResultContainer.setCustomerList(result);
+						getRidget("ergebnis").updateFromModel(); //$NON-NLS-1$
+					}
+				});
 	}
 
 	public CustomerSearchBean getSuchPerson() {
@@ -130,7 +138,7 @@ public class CustomerSearchController extends SubModuleController {
 	public void afterBind() {
 		super.afterBind();
 
-		ITableRidget kunden = ((ITableRidget) getRidget("ergebnis"));
+		ITableRidget kunden = ((ITableRidget) getRidget("ergebnis")); //$NON-NLS-1$
 		kunden.setSelectionType(SelectionType.MULTI);
 		for (int i = 0; i < 9; i++) {
 			kunden.setColumnSortable(i, true);

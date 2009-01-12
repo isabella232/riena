@@ -12,8 +12,6 @@ package org.eclipse.riena.demo.client.customer.views;
 
 import org.eclipse.riena.demo.client.customer.controllers.CustomerPersonalDataController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -65,14 +63,14 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label label = new Label(container, SWT.NONE);
 		label.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label.setText("Auswahl");
+		label.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label.setText("Auswahl"); //$NON-NLS-1$
 		label.setBounds(10, 26, 79, 13);
 
 		final Label label_1 = new Label(container, SWT.NONE);
 		label_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_1.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label_1.setText("Stammdaten");
+		label_1.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label_1.setText("Stammdaten"); //$NON-NLS-1$
 		label_1.setBounds(10, 64, 79, 13);
 
 		final Label label_2 = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -81,8 +79,8 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label label_3 = new Label(container, SWT.NONE);
 		label_3.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_3.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-		label_3.setText("Betreuung");
+		label_3.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
+		label_3.setText("Betreuung"); //$NON-NLS-1$
 		label_3.setBounds(10, 305, 64, 13);
 
 		final Label label_4 = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -95,22 +93,22 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label personLabel = new Label(container, SWT.NONE);
 		personLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		personLabel.setText("Person");
+		personLabel.setText("Person"); //$NON-NLS-1$
 		personLabel.setBounds(98, 26, 39, 13);
 
 		final Label anredeLabel = new Label(container, SWT.NONE);
 		anredeLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		anredeLabel.setText("Salutation");
+		anredeLabel.setText("Salutation"); //$NON-NLS-1$
 		anredeLabel.setBounds(95, 64, 42, 15);
 
 		final Label nameLabel = new Label(container, SWT.NONE);
 		nameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		nameLabel.setText("Name");
+		nameLabel.setText("Name"); //$NON-NLS-1$
 		nameLabel.setBounds(95, 100, 42, 15);
 
 		final Label geburtsnameLabel = new Label(container, SWT.NONE);
 		geburtsnameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		geburtsnameLabel.setText("Geburtsname");
+		geburtsnameLabel.setText("Geburtsname"); //$NON-NLS-1$
 		geburtsnameLabel.setBounds(95, 130, 64, 15);
 
 		combo = new Combo(container, SWT.NONE);
@@ -121,7 +119,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label titelLabel = new Label(container, SWT.NONE);
 		titelLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		titelLabel.setText("Titel");
+		titelLabel.setText("Titel"); //$NON-NLS-1$
 		titelLabel.setBounds(261, 64, 25, 13);
 
 		combo_2 = new Combo(container, SWT.NONE);
@@ -129,38 +127,38 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		text = new Text(container, SWT.BORDER);
 		text.setBounds(170, 95, 136, 18);
-		addUIControl(text, "lastname");
+		addUIControl(text, "lastname"); //$NON-NLS-1$
 
 		final Label vornameLabel = new Label(container, SWT.NONE);
 		vornameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		vornameLabel.setText("Vorname");
+		vornameLabel.setText("Vorname"); //$NON-NLS-1$
 		vornameLabel.setBounds(314, 100, 42, 13);
 
 		text_1 = new Text(container, SWT.BORDER);
 		text_1.setBounds(365, 97, 128, 18);
-		addUIControl(text_1, "firstname");
+		addUIControl(text_1, "firstname"); //$NON-NLS-1$
 
 		text_2 = new Text(container, SWT.BORDER);
 		text_2.setBounds(170, 125, 136, 18);
 
 		final Label familienstandLabel = new Label(container, SWT.NONE);
 		familienstandLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		familienstandLabel.setText("Familienstand");
+		familienstandLabel.setText("Familienstand"); //$NON-NLS-1$
 		familienstandLabel.setBounds(95, 168, 64, 13);
 
 		final Label geburtsdatumLabel = new Label(container, SWT.NONE);
 		geburtsdatumLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		geburtsdatumLabel.setText("Geburtsdatum");
+		geburtsdatumLabel.setText("Geburtsdatum"); //$NON-NLS-1$
 		geburtsdatumLabel.setBounds(95, 203, 70, 13);
 
 		final Label geburtsortLabel = new Label(container, SWT.NONE);
 		geburtsortLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		geburtsortLabel.setText("Geburtsort");
+		geburtsortLabel.setText("Geburtsort"); //$NON-NLS-1$
 		geburtsortLabel.setBounds(95, 231, 64, 13);
 
 		final Label geschlechtLabel = new Label(container, SWT.NONE);
 		geschlechtLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		geschlechtLabel.setText("Geschlecht");
+		geschlechtLabel.setText("Geschlecht"); //$NON-NLS-1$
 		geschlechtLabel.setBounds(95, 270, 64, 13);
 
 		combo_3 = new Combo(container, SWT.NONE);
@@ -175,17 +173,17 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 		final Button weiblichButton = new Button(container, SWT.RADIO);
 		weiblichButton.setBackground(SWTResourceManager.getColor(255, 255, 255));
 
-		weiblichButton.setText("weiblich");
+		weiblichButton.setText("weiblich"); //$NON-NLS-1$
 		weiblichButton.setBounds(171, 268, 64, 16);
 
 		final Button button = new Button(container, SWT.RADIO);
 		button.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		button.setText("männlich");
+		button.setText("männlich"); //$NON-NLS-1$
 		button.setBounds(236, 268, 64, 16);
 
 		final Label label_11 = new Label(container, SWT.NONE);
 		label_11.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_11.setText("Staatsangehörigkeit");
+		label_11.setText("Staatsangehörigkeit"); //$NON-NLS-1$
 		label_11.setBounds(331, 171, 102, 13);
 
 		combo_4 = new Combo(container, SWT.NONE);
@@ -193,7 +191,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label label_12 = new Label(container, SWT.NONE);
 		label_12.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_12.setText("Label");
+		label_12.setText("Label"); //$NON-NLS-1$
 		label_12.setBounds(308, 231, 25, 13);
 
 		combo_5 = new Combo(container, SWT.NONE);
@@ -201,37 +199,37 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label label_13 = new Label(container, SWT.NONE);
 		label_13.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_13.setText("Persönliche Salutation");
+		label_13.setText("Persönliche Salutation"); //$NON-NLS-1$
 		label_13.setBounds(331, 270, 91, 13);
 
 		final Button sieButton = new Button(container, SWT.RADIO);
 		sieButton.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		sieButton.setText("Sie");
+		sieButton.setText("Sie"); //$NON-NLS-1$
 		sieButton.setBounds(429, 268, 35, 16);
 
 		final Button duButton = new Button(container, SWT.RADIO);
 		duButton.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		duButton.setText("Du");
+		duButton.setText("Du"); //$NON-NLS-1$
 		duButton.setBounds(470, 268, 35, 16);
 
 		final Label kindLabel = new Label(container, SWT.NONE);
 		kindLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		kindLabel.setText("Kind");
+		kindLabel.setText("Kind"); //$NON-NLS-1$
 		kindLabel.setBounds(539, 270, 25, 13);
 
 		final Button jaButton = new Button(container, SWT.RADIO);
 		jaButton.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		jaButton.setText("Ja");
+		jaButton.setText("Ja"); //$NON-NLS-1$
 		jaButton.setBounds(578, 268, 35, 16);
 
 		final Button neinButton = new Button(container, SWT.RADIO);
 		neinButton.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		neinButton.setText("Nein");
+		neinButton.setText("Nein"); //$NON-NLS-1$
 		neinButton.setBounds(619, 268, 42, 16);
 
 		final Label label_7 = new Label(container, SWT.NONE);
 		label_7.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_7.setText("Betreuung erwünscht");
+		label_7.setText("Betreuung erwünscht"); //$NON-NLS-1$
 		label_7.setBounds(95, 305, 102, 13);
 
 		combo_6 = new Combo(container, SWT.NONE);
@@ -239,17 +237,17 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label bewertungLabel = new Label(container, SWT.NONE);
 		bewertungLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		bewertungLabel.setText("Bewertung");
+		bewertungLabel.setText("Bewertung"); //$NON-NLS-1$
 		bewertungLabel.setBounds(95, 340, 91, 13);
 
 		final Label vbnummerLabel = new Label(container, SWT.NONE);
 		vbnummerLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		vbnummerLabel.setText("VB-Nummer");
+		vbnummerLabel.setText("VB-Nummer"); //$NON-NLS-1$
 		vbnummerLabel.setBounds(95, 374, 64, 13);
 
 		final Label kundennummerLabel = new Label(container, SWT.NONE);
 		kundennummerLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		kundennummerLabel.setText("Kundennummer");
+		kundennummerLabel.setText("Kundennummer"); //$NON-NLS-1$
 		kundennummerLabel.setBounds(95, 407, 79, 13);
 
 		combo_7 = new Combo(container, SWT.NONE);
@@ -260,7 +258,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label vbnameLabel = new Label(container, SWT.NONE);
 		vbnameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		vbnameLabel.setText("VB-Name");
+		vbnameLabel.setText("VB-Name"); //$NON-NLS-1$
 		vbnameLabel.setBounds(296, 374, 54, 13);
 
 		text_6 = new Text(container, SWT.BORDER);
@@ -271,7 +269,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label kundenstatusLabel = new Label(container, SWT.NONE);
 		kundenstatusLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		kundenstatusLabel.setText("Kundenstatus");
+		kundenstatusLabel.setText("Kundenstatus"); //$NON-NLS-1$
 		kundenstatusLabel.setBounds(314, 407, 70, 13);
 
 		text_8 = new Text(container, SWT.BORDER);
@@ -279,7 +277,7 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final Label erfasstAmLabel = new Label(container, SWT.NONE);
 		erfasstAmLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		erfasstAmLabel.setText("Erfasst am");
+		erfasstAmLabel.setText("Erfasst am"); //$NON-NLS-1$
 		erfasstAmLabel.setBounds(499, 407, 54, 13);
 
 		text_9 = new Text(container, SWT.BORDER);
@@ -292,34 +290,30 @@ public class CustomerPersonalDataView extends SubModuleView<CustomerPersonalData
 
 		final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
 		newColumnTableColumn.setWidth(100);
-		newColumnTableColumn.setText("New column");
+		newColumnTableColumn.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
 		newColumnTableColumn_1.setWidth(100);
-		newColumnTableColumn_1.setText("New column");
+		newColumnTableColumn_1.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table, SWT.NONE);
 
 		final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
 		newColumnTableColumn_2.setWidth(100);
-		newColumnTableColumn_2.setText("New column");
+		newColumnTableColumn_2.setText("New column"); //$NON-NLS-1$
 
 		new TableColumn(table, SWT.NONE);
 
 		final Button speichernButton = new Button(container, SWT.NONE);
-		speichernButton.setText("Speichern");
+		speichernButton.setText("Speichern"); //$NON-NLS-1$
 		speichernButton.setBounds(578, 518, 69, 23);
 	}
 
 	@Override
 	public void setFocus() {
 		// Set the focus
-	}
-
-	private void initializeToolBar() {
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
 }

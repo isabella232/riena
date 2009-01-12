@@ -19,7 +19,6 @@ import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-
 import org.osgi.framework.Bundle;
 
 /**
@@ -77,6 +76,7 @@ public class SwtDemoApplication extends SwtApplication {
 		return applicationNode;
 	}
 
+	@Override
 	protected Bundle getBundle() {
 		return Activator.getDefault().getBundle();
 	}

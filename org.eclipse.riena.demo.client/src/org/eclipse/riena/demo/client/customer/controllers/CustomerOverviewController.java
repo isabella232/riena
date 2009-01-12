@@ -29,16 +29,17 @@ public class CustomerOverviewController extends SubModuleController {
 	public void configureRidgets() {
 
 		overview = new OverviewTable();
-		CustomerRecordOverview cro = (CustomerRecordOverview)getNavigationNode().getContext(NavigationArgument.CONTEXT_KEY_PARAMETER);
-		overview.addEntry(new OverviewEntry("Vorname", cro.getFirstName()));
-		overview.addEntry(new OverviewEntry("Nachname", cro.getLastName()));
+		CustomerRecordOverview cro = (CustomerRecordOverview) getNavigationNode().getContext(
+				NavigationArgument.CONTEXT_KEY_PARAMETER);
+		overview.addEntry(new OverviewEntry("Vorname", cro.getFirstName())); //$NON-NLS-1$
+		overview.addEntry(new OverviewEntry("Nachname", cro.getLastName())); //$NON-NLS-1$
 
 		//getNavigationNode().getParent().setLabel(CustomerLoader.getFirstName()
 		// + " " + CustomerLoader.getLastName());
-		final ITableRidget kunden = ((ITableRidget) getRidget("table1"));
+		final ITableRidget kunden = ((ITableRidget) getRidget("table1")); //$NON-NLS-1$
 
-		String[] propertyNames = { "key", "value" };
-		kunden.bindToModel(overview, "entries", OverviewEntry.class, propertyNames, null);
+		String[] propertyNames = { "key", "value" }; //$NON-NLS-1$ //$NON-NLS-2$
+		kunden.bindToModel(overview, "entries", OverviewEntry.class, propertyNames, null); //$NON-NLS-1$
 
 	}
 
@@ -48,7 +49,7 @@ public class CustomerOverviewController extends SubModuleController {
 		// getRidget("table1")).getUIControl()).setHeaderVisible(false);
 	}
 
-	class Customer {
+	static class Customer {
 
 		String firstName;
 		String lastName;
@@ -76,7 +77,7 @@ public class CustomerOverviewController extends SubModuleController {
 
 	}
 
-	class OverviewTable {
+	static class OverviewTable {
 
 		List<OverviewEntry> entries = new ArrayList<OverviewEntry>();
 

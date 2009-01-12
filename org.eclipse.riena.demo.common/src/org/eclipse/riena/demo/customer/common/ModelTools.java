@@ -23,7 +23,7 @@ public final class ModelTools {
 	/**
 	 *  
 	 */
-	public static final String DATUMSFORMAT = "dd.MM.yyyy";
+	public static final String DATUMSFORMAT = "dd.MM.yyyy"; //$NON-NLS-1$
 
 	private ModelTools() {
 		// 	

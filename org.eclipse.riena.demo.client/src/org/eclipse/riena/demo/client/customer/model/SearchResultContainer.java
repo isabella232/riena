@@ -23,8 +23,6 @@ public class SearchResultContainer extends AbstractBean {
 
 	private List<CustomerRecordOverview> customerList = new ArrayList<CustomerRecordOverview>();
 
-	private List<CustomerRecordOverview> selectionList = new ArrayList<CustomerRecordOverview>();
-
 	/**
 	 * @return Returns the customerOverview.
 	 */

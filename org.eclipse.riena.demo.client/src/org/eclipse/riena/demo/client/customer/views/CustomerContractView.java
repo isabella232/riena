@@ -12,7 +12,6 @@ package org.eclipse.riena.demo.client.customer.views;
 
 import org.eclipse.riena.demo.client.customer.controllers.CustomerContractController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -38,8 +37,8 @@ public class CustomerContractView extends SubModuleView<CustomerContractControll
 		parent.setLayout(new FillLayout());
 
 		final Label missingCustomerContractLabel = new Label(container, SWT.NONE);
-		missingCustomerContractLabel.setFont(SWTResourceManager.getFont("", 18, SWT.BOLD));
-		missingCustomerContractLabel.setText("Customer Contract View Not Implemented");
+		missingCustomerContractLabel.setFont(SWTResourceManager.getFont("", 18, SWT.BOLD)); //$NON-NLS-1$
+		missingCustomerContractLabel.setText("Customer Contract View Not Implemented"); //$NON-NLS-1$
 		missingCustomerContractLabel.setBounds(10, 236, 630, 43);
 	}
 
