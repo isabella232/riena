@@ -17,28 +17,29 @@ package org.eclipse.riena.communication.sample.pingpong.common;
  * 
  */
 public abstract class Message {
-    private String text;
+	private String text;
 
-    /**
-     * @return the text message
-     */
-    public String getText() {
-        return text;
-    }
+	/**
+	 * @return the text message
+	 */
+	public String getText() {
+		return text;
+	}
 
-    /**
-     * Sets the given ping text
-     * 
-     * @param text
-     */
-    public void setText(String text) {
-        this.text = text;
-    }
+	/**
+	 * Sets the given ping text
+	 * 
+	 * @param text
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    /**
-     * @return this message text
-     */
-    public String toString() {
-        return "[" + getClass().getSimpleName() + "] says = " + getText(); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+	/**
+	 * @return this message text
+	 */
+	@Override
+	public String toString() {
+		return "[" + getClass().getSimpleName() + "] says = " + getText(); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

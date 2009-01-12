@@ -13,7 +13,6 @@ package org.eclipse.riena.internal.communication.sample.pingpong.client.config;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
-
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -37,7 +36,6 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
 	private IRemoteServiceRegistration pingPongReg;
-	private IRemoteServiceRegistration pingPongRegXFire;
 
 	/**
 	 * Creates a RemoteServiceReferences based on Hessian protocol and registers
