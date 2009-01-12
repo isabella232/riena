@@ -86,8 +86,9 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Collectible))
+		if (!(obj instanceof Collectible)) {
 			return false;
+		}
 		return uuid.equals(((Collectible<?>) obj).uuid);
 	}
 
