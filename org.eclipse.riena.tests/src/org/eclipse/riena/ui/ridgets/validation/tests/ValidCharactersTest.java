@@ -12,12 +12,14 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the ValidCharacters rule.
  */
+@NonUITestCase
 public class ValidCharactersTest extends TestCase {
 
 	/**

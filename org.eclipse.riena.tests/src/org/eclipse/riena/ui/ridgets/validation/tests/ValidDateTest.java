@@ -12,12 +12,14 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the ValidDate rule.
  */
+@NonUITestCase
 public class ValidDateTest extends TestCase {
 
 	/**

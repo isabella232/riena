@@ -13,9 +13,12 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+
 /**
  *
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests {
 
 	public static Test suite() {

@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.viewprovider;
 
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
-
 import junit.framework.TestCase;
+
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test of the class <code>SwtViewId</code>.
  */
+@NonUITestCase
 public class SwtViewIdTest extends TestCase {
 
 	/**

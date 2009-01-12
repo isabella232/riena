@@ -15,6 +15,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
@@ -23,6 +24,7 @@ import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 /**
  * Tests of the class {@link AbstractViewBindingDelegate}.
  */
+@NonUITestCase
 public class AbstractViewBindingDelegateTest extends TestCase {
 
 	private AbstractViewBindingDelegate binding;

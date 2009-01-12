@@ -24,8 +24,10 @@ import junit.framework.TestCase;
 
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.xml.sax.SAXException;
 
+@NonUITestCase
 public class FilePermissionStoreTest extends TestCase {
 
 	public void testReadPermission() throws FileNotFoundException, SAXException, IOException,

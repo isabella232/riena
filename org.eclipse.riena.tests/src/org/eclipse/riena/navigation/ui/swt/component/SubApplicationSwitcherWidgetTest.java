@@ -20,6 +20,7 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link SubApplicationSwitcherWidget}.
  */
+@UITestCase
 public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	private SubApplicationSwitcherWidget switcher;

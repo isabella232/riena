@@ -19,6 +19,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
@@ -36,6 +37,7 @@ import org.eclipse.swt.widgets.ToolItem;
 /**
  * Tests of the class {@link SubApplicationView}.
  */
+@UITestCase
 public class SubApplicationViewTest extends TestCase {
 
 	private Shell shell;

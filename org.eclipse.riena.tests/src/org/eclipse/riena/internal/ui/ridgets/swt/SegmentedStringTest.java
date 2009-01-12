@@ -12,11 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
 /**
  * Tests for the {@link SegmentedString} class.
  */
+@NonUITestCase
 public class SegmentedStringTest extends TestCase {
 
 	public void testCreateSegmentedString() {

@@ -12,11 +12,13 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.MaxLength;
 
 /**
  * Tests for the MaxLength rule.
  */
+@NonUITestCase
 public class MaxLengthTest extends TestCase {
 
 	/**

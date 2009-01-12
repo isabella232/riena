@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.graphics.Font;
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link EmbeddedTitlebarRenderer}.
  */
+@UITestCase
 public class EmbeddedTitlebarRendererTest extends TestCase {
 
 	/**

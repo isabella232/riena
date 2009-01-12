@@ -17,11 +17,13 @@ import java.util.Locale;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.tests.TestUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 
 /**
  * Tests for the MaxLength rule.
  */
+@NonUITestCase
 public class ValidRangeTest extends TestCase {
 
 	/**

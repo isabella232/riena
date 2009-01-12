@@ -20,6 +20,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link RidgetMatcher}.
  */
+@UITestCase
 public class RidgetMatcherTest extends TestCase {
 
 	private Shell shell;

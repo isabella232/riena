@@ -18,12 +18,14 @@ import java.util.Locale;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidDecimal;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the ValidCharacters rule.
  */
+@NonUITestCase
 public class ValidDecimalTest extends TestCase {
 
 	/**

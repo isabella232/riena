@@ -14,10 +14,13 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests for the classes {@link DateToStringConverter} and
  * {@link StringToDateConverter}.
  */
+@NonUITestCase
 public class DateToStringConverterTest extends TestCase {
 
 	public void testConvertToString() {

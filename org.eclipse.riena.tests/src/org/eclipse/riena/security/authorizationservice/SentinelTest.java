@@ -22,6 +22,7 @@ import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.Sentinel;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -31,6 +32,7 @@ import org.osgi.framework.ServiceRegistration;
  * actually activating java security. Permissions are checked by the Sentinel
  * instead
  */
+@NonUITestCase
 public class SentinelTest extends RienaTestCase {
 	private ServiceRegistration authorizationServiceReg;
 

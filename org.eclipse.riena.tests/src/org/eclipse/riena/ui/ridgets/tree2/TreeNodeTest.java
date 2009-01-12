@@ -17,11 +17,13 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.tests.base.PropertyChangeEventEquals;
 
 /**
  * Tests for the class {@link TreeNode}.
  */
+@NonUITestCase
 public class TreeNodeTest extends TestCase {
 
 	private PropertyChangeListener propertyChangeListenerMock;

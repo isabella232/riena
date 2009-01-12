@@ -14,17 +14,17 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
 import org.eclipse.swt.graphics.Color;
 
 /**
  * Tests of the class <code>RienaDefaultLnf</code>.
  */
+@NonUITestCase
 public class RienaDefaultLnfTest extends TestCase {
 
 	private RienaDefaultLnf lnf;

@@ -16,6 +16,7 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link ModuleGroupView}.
  */
+@UITestCase
 public class ModuleGroupViewTest extends TestCase {
 
 	private ModuleGroupView view;

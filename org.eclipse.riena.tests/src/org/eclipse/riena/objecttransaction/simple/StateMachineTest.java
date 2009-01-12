@@ -13,12 +13,14 @@ package org.eclipse.riena.objecttransaction.simple;
 import org.eclipse.riena.objecttransaction.state.State;
 import org.eclipse.riena.objecttransaction.state.StateMachine;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TestCase that tests (a little) of the StateMachine
  * 
  * @author Christian Campo
  */
+@NonUITestCase
 public class StateMachineTest extends RienaTestCase {
 
 	/**

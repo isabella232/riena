@@ -12,9 +12,12 @@ package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link DefaultProcessDetailComparator}
  */
+@NonUITestCase
 public class DefaultProcessDetailComparatorTest extends TestCase {
 
 	/**

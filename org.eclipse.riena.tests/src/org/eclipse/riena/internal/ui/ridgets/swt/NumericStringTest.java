@@ -13,10 +13,12 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.tests.TestUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests for the {@link NumericString} class.
  */
+@NonUITestCase
 public class NumericStringTest extends TestCase {
 
 	public void testCreateNumericString() {

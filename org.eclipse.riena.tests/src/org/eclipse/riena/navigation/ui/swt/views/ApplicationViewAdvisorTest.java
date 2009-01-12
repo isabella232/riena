@@ -16,6 +16,7 @@ import org.easymock.EasyMock;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
@@ -26,6 +27,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 /**
  * Tests of the class <code>ApplicationViewAdvisor</code>.
  */
+@UITestCase
 public class ApplicationViewAdvisorTest extends TestCase {
 
 	private ApplicationViewAdvisor advisor;

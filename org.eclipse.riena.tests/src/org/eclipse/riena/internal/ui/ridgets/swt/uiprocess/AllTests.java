@@ -14,10 +14,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+
 /**
  * Tests all test cases within package:
  * <code>org.eclipse.riena.internal.ui.ridgets.swt.uiprocess</code>
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {

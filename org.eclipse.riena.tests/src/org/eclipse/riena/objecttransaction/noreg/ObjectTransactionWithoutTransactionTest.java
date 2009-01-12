@@ -16,6 +16,7 @@ import org.eclipse.riena.objecttransaction.noreg.value.Addresse;
 import org.eclipse.riena.objecttransaction.noreg.value.Kunde;
 import org.eclipse.riena.objecttransaction.noreg.value.Vertrag;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests that you can use transacted objects in clean modus without doing any
@@ -23,6 +24,7 @@ import org.eclipse.riena.tests.RienaTestCase;
  * 
  * @author Christian Campo
  */
+@NonUITestCase
 public class ObjectTransactionWithoutTransactionTest extends RienaTestCase {
 
 	public void setUp() throws Exception {

@@ -27,6 +27,7 @@ import org.eclipse.riena.navigation.ui.swt.viewprovider.SwtViewIdTest;
 import org.eclipse.riena.navigation.ui.swt.views.AbstractViewBindingDelegateTest;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
 import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRendererTest;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRendererTest;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRendererTest;
@@ -37,6 +38,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
  * 
  * org.eclipse.riena.navigation.ui.swt
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {

@@ -22,6 +22,7 @@ import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Tests for the class {@link TableRidgetLabelProvider}.
  */
+@NonUITestCase
 public class TableRidgetLabelProviderTest extends TestCase {
 
 	private TableRidgetLabelProvider labelProvider;

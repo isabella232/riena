@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -36,6 +37,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 /**
  * Tests for the class {@link TreeRidgetLabelProvider}.
  */
+@UITestCase
 public class TreeRidgetLabelProviderTest extends TestCase {
 
 	private static final String[] COLUMN_PROPERTIES = { "word", "upperCase" };
@@ -56,8 +58,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		viewer = new TreeViewer(createTree(aShell));
 
 		IObservableSet elements = createElements();
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements, COLUMN_PROPERTIES,
-				null);
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
+				COLUMN_PROPERTIES, null);
 
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);

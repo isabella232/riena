@@ -19,11 +19,13 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class <code>ModuleController</code>.
  */
+@UITestCase
 public class ModuleControllerTest extends TestCase {
 
 	public void testAfterBind() throws Exception {

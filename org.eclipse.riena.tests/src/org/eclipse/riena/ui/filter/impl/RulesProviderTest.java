@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.filter.impl;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -27,6 +28,7 @@ import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidgetMapper;
 /**
  * Tests of the class {@link RulesProvider}.
  */
+@NonUITestCase
 public class RulesProviderTest extends TestCase {
 
 	private RulesProvider provider;

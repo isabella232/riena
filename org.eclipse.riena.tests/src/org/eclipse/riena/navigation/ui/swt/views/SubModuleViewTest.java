@@ -22,6 +22,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
@@ -31,6 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests for the SubModuleNodeView.
  */
+@UITestCase
 public class SubModuleViewTest extends RienaTestCase {
 
 	private SubModuleView<SubModuleController> subModuleNodeView;

@@ -17,12 +17,14 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidInteger;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the ValidCharacters rule.
  */
+@NonUITestCase
 public class ValidIntegerTest extends TestCase {
 
 	/**

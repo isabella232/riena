@@ -27,10 +27,12 @@ import org.eclipse.riena.security.common.authentication.credentials.CustomCreden
 import org.eclipse.riena.security.common.authentication.credentials.NameCredential;
 import org.eclipse.riena.security.common.authentication.credentials.PasswordCredential;
 import org.eclipse.riena.security.common.authentication.credentials.TextInputCredential;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * 
  */
+@NonUITestCase
 public class Callback2CredentialConverterTest extends TestCase {
 
 	@Override

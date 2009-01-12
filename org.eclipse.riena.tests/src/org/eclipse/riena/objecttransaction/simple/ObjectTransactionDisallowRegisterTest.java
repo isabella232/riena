@@ -14,12 +14,14 @@ import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.ObjectTransactionFactoryAccessor;
 import org.eclipse.riena.objecttransaction.simple.value.Addresse;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TODO Fehlender Klassen-Kommentar
  * 
  * @author Christian Campo
  */
+@NonUITestCase
 public class ObjectTransactionDisallowRegisterTest extends RienaTestCase {
 
 	public void setUp() throws Exception {

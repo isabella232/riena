@@ -14,12 +14,14 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 /**
  *
  */
+@NonUITestCase
 public class PreferencesTest extends TestCase {
 
 	public void testIt() throws BackingStoreException {

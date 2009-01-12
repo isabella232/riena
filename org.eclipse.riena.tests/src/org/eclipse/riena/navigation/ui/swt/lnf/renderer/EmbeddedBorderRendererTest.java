@@ -12,19 +12,20 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * Tests of the class <code>EmbeddedBorderRenderer</code>.
  */
+@NonUITestCase
 public class EmbeddedBorderRendererTest extends TestCase {
 
 	/**
 	 * Test of the method <code>computeInnerBounds(Rectangle)</code>.
 	 * 
-	 * @throws Exception -
-	 *             handled by JUnit
+	 * @throws Exception
+	 *             - handled by JUnit
 	 */
 	public void testComputeInnerBounds() throws Exception {
 

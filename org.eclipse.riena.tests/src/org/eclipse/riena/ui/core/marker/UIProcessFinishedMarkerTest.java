@@ -12,9 +12,12 @@ package org.eclipse.riena.ui.core.marker;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link UIProcessFinishedMarker}.
  */
+@NonUITestCase
 public class UIProcessFinishedMarkerTest extends TestCase {
 
 	/**

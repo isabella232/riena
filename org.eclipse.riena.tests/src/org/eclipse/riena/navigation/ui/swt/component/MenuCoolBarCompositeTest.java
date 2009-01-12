@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.ToolItem;
 /**
  * Tests of the class {@link MenuCoolBarComposite}.
  */
+@UITestCase
 public class MenuCoolBarCompositeTest extends TestCase {
 
 	private Shell shell;

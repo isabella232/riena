@@ -12,9 +12,12 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class {@link AbstractSWTWidgetRidget}.
  */
+@NonUITestCase
 public class AbstractSWTWidgetRidgetTest extends TestCase {
 
 	/**

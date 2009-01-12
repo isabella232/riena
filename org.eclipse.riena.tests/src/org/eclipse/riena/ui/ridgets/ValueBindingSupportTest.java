@@ -23,6 +23,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -35,6 +36,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 /**
  * Tests for the ValueBindingSupport.
  */
+@NonUITestCase
 public class ValueBindingSupportTest extends TestCase {
 
 	private DefaultRealm realm;

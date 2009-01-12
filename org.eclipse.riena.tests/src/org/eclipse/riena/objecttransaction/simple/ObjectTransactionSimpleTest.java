@@ -19,12 +19,14 @@ import org.eclipse.riena.objecttransaction.simple.value.Kunde;
 import org.eclipse.riena.objecttransaction.simple.value.Vertrag;
 import org.eclipse.riena.objecttransaction.state.State;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TODO Fehlender Klassen-Kommentar
  * 
  * @author Christian Campo
  */
+@NonUITestCase
 public class ObjectTransactionSimpleTest extends RienaTestCase {
 
 	public void setUp() throws Exception {

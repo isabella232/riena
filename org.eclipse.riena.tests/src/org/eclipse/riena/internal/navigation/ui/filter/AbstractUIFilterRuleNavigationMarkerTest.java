@@ -17,6 +17,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
@@ -24,6 +25,7 @@ import org.eclipse.riena.ui.filter.IUIFilterRule;
 /**
  * Tests of the class {@link AbstractUIFilterRuleNavigationMarker}.
  */
+@NonUITestCase
 public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 
 	/**

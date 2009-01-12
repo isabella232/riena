@@ -13,9 +13,12 @@ package org.eclipse.riena.ui.ridgets.databinding;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+
 /**
  * All tests of the package org.eclipse.riena.ui.ridgets.databinding.
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests {
 
 	public static Test suite() {

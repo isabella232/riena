@@ -22,12 +22,14 @@ import org.eclipse.riena.objecttransaction.simple.ObjectTransactionDisallowRegis
 import org.eclipse.riena.objecttransaction.simple.ObjectTransactionSimpleTest;
 import org.eclipse.riena.objecttransaction.simple.ObjectTransactionVariousSimpleTest;
 import org.eclipse.riena.objecttransaction.simple.StateMachineTest;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
 
 /**
  * Tests all test cases within package:
  * 
  * org.eclipse.riena.core.exceptionmanager.test.internal
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {

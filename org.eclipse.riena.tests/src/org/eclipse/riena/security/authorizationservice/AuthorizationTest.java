@@ -21,11 +21,12 @@ import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.simpleservices.authorizationservice.store.FilePermissionStore;
 import org.eclipse.riena.tests.RienaTestCase;
-
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
+@NonUITestCase
 public class AuthorizationTest extends RienaTestCase {
 
 	//	private ServiceRegistration fileStoreReg;

@@ -15,9 +15,12 @@ import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
+
 /**
  * Tests of the class <code>StringToGregorianCalendarConverter</code>.
  */
+@NonUITestCase
 public class StringToGregorianCalendarConverterTest extends TestCase {
 
 	public void testConvert() throws Exception {

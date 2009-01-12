@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link AbstractTitleBarRenderer}.
  */
+@UITestCase
 public class AbstractTitleBarRendererTest extends RienaTestCase {
 
 	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";

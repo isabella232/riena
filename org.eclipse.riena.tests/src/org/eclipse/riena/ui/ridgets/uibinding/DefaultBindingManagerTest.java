@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@code DefaultBindingManager}
  */
+@UITestCase
 public class DefaultBindingManagerTest extends TestCase {
 
 	static final String BINDING_PROPERTY = "binding_property"; //$NON-NLS-1$

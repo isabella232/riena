@@ -25,6 +25,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link NavigationUIFilterApplier}.
  */
+@UITestCase
 public class NavigationUIFilterApplierTest extends TestCase {
 
 	@Override

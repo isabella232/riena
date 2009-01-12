@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link MenuItemRidgetMatcher}.
  */
+@UITestCase
 public class MenuItemRidgetMatcherTest extends TestCase {
 
 	private Shell shell;

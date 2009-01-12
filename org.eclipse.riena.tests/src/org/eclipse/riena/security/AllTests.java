@@ -16,12 +16,14 @@ import junit.framework.TestSuite;
 
 import org.eclipse.riena.security.authorizationservice.FilePermissionStoreTest;
 import org.eclipse.riena.security.common.Callback2CredentialConverterTest;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
 
 /**
  * Tests all test cases within package:
  * 
  * org.eclipse.riena.core.exceptionmanager.test.internal
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {

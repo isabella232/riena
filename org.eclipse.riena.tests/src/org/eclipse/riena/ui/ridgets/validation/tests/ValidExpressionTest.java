@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidExpression;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -20,6 +21,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 /**
  * 
  */
+@NonUITestCase
 public class ValidExpressionTest extends TestCase {
 
 	public void testInvalidArgs() throws Exception {

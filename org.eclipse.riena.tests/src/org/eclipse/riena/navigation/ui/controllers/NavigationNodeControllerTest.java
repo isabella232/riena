@@ -24,6 +24,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Tests of the class {@link NavigationNodeController}.
  */
+@NonUITestCase
 public class NavigationNodeControllerTest extends TestCase {
 
 	private MyNavigationNodeContoller controller;

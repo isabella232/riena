@@ -16,6 +16,7 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.swt.graphics.GC;
@@ -23,6 +24,7 @@ import org.eclipse.swt.graphics.GC;
 /**
  * Tests of the class {@link FlasherSupportForRenderer}.
  */
+@NonUITestCase
 public class FlasherSupportForRendererTest extends TestCase {
 
 	/**

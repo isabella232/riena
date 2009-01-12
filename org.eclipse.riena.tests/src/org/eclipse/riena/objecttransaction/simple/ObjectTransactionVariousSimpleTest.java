@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.objecttransaction.simple;
 
+import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionExtract;
 import org.eclipse.riena.objecttransaction.InvalidTransactionFailure;
@@ -20,14 +21,14 @@ import org.eclipse.riena.objecttransaction.simple.value.Kunde;
 import org.eclipse.riena.objecttransaction.simple.value.Vertrag;
 import org.eclipse.riena.objecttransaction.state.State;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * TODO Fehlender Klassen-Kommentar
  * 
  * @author Christian Campo
  */
+@NonUITestCase
 public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 
 	public void setUp() throws Exception {
@@ -257,14 +258,14 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 				|| deltas[0].getObjectId() == kunde.getObjectId());
 		if (deltas[0].getObjectId() == v2.getObjectId()) {
 			assertSame("single delta should reference v2", deltas[0].getObjectId(), v2.getObjectId());
-			assertEquals("delta status must be modified",State.CREATED, deltas[0].getState());
+			assertEquals("delta status must be modified", State.CREATED, deltas[0].getState());
 			assertSame("single delta should reference kunde", deltas[1].getObjectId(), kunde.getObjectId());
-			assertEquals("delta status must be modified",State.MODIFIED, deltas[1].getState());
+			assertEquals("delta status must be modified", State.MODIFIED, deltas[1].getState());
 		} else {
 			assertSame("single delta should reference v2", deltas[1].getObjectId(), v2.getObjectId());
-			assertEquals("delta status must be modified",State.CREATED, deltas[1].getState());
+			assertEquals("delta status must be modified", State.CREATED, deltas[1].getState());
 			assertSame("single delta should reference kunde", deltas[0].getObjectId(), kunde.getObjectId());
-			assertEquals("delta status must be modified", State.MODIFIED,deltas[0].getState());
+			assertEquals("delta status must be modified", State.MODIFIED, deltas[0].getState());
 		}
 	}
 

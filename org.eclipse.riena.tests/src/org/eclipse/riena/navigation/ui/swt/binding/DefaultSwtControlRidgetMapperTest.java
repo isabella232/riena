@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class <code>DefaultSwtControlRidgetMapper</code>
  */
+@UITestCase
 public class DefaultSwtControlRidgetMapperTest extends TestCase {
 
 	private DefaultSwtControlRidgetMapper mapper;

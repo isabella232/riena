@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -22,6 +23,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * 
  * @author Wanja Gayk
  */
+@NonUITestCase
 public class ValidEmailAddressTest extends TestCase {
 
 	/**

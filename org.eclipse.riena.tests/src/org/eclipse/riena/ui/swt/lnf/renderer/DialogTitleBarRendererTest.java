@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link DialogTitleBarRenderer}.
  */
+@UITestCase
 public class DialogTitleBarRendererTest extends RienaTestCase {
 
 	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";

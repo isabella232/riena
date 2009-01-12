@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
@@ -20,6 +21,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @see Activator#getSharedColor(Display, String)
  */
+@NonUITestCase
 public class SharedResourcesTest extends TestCase {
 
 	public void testSharedColors() {

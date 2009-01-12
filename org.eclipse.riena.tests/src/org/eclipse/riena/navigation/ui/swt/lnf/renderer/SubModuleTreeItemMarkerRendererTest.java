@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
@@ -38,6 +39,7 @@ import org.eclipse.swt.widgets.TreeItem;
 /**
  * Tests of the class {@link SubModuleTreeItemMarkerRenderer}.
  */
+@UITestCase
 public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 
 	private Shell shell;

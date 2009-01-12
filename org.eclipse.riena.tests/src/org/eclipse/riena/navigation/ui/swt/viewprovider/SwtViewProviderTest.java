@@ -16,10 +16,12 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests for the SwtViewProvider.
  */
+@NonUITestCase
 public class SwtViewProviderTest extends RienaTestCase {
 
 	private SwtViewProvider swtPresentationManager;

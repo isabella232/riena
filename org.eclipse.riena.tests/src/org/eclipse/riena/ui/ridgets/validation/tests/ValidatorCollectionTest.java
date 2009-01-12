@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
@@ -21,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 /**
  * Tests for the MinLength rule.
  */
+@NonUITestCase
 public class ValidatorCollectionTest extends TestCase {
 
 	private static final IValidator ALWAYS_SUCCEED_1 = new IValidator() {

@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.RequiredField;
 
 /**
@@ -19,6 +20,7 @@ import org.eclipse.riena.ui.ridgets.validation.RequiredField;
  * 
  * @author Wanja Gayk
  */
+@NonUITestCase
 public class RequiredFieldTest extends TestCase {
 
 	/**

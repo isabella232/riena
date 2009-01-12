@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Tests of the class {@link StatuslineMessage}.
  */
+@UITestCase
 public class StatuslineMessageTest extends TestCase {
 
 	private Shell shell;

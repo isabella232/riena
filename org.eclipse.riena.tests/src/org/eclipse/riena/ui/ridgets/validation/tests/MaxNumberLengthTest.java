@@ -16,12 +16,14 @@ import java.util.Locale;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.tests.TestUtils;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.MaxNumberLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 
 /**
  * Tests for the MaxNumberLength rule.
  */
+@NonUITestCase
 public class MaxNumberLengthTest extends TestCase {
 
 	/**
