@@ -60,7 +60,7 @@ public class Aggregator implements ICollectingAggregator {
 	protected Aggregator(boolean autoConfig) {
 		workSignal = new CountDownLatch(1);
 		workQueue = new LinkedBlockingQueue<Runnable>();
-		new Thread(new Worker(), "Client Monitoring Aggregator Worker").start(); //$NON-NLS-1$
+		startWorker();
 		if (autoConfig) {
 			Inject
 					.extension("org.eclipse.riena.monitor.collectors").useType(ICollectorExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
@@ -69,6 +69,10 @@ public class Aggregator implements ICollectingAggregator {
 			Inject
 					.extension("org.eclipse.riena.monitor.sender").expectingMinMax(0, 1).useType(ISenderExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 		}
+	}
+
+	private void startWorker() {
+		new Thread(new Worker(), "Client Monitoring Aggregator Worker").start(); //$NON-NLS-1$
 	}
 
 	public synchronized void start() {
@@ -161,11 +165,12 @@ public class Aggregator implements ICollectingAggregator {
 	 * .riena.monitor.common.Collectible)
 	 */
 	public synchronized void collect(final Collectible<?> collectible) {
-		workQueue.offer(new Runnable() {
+		boolean elementAdded = workQueue.offer(new Runnable() {
 			public void run() {
 				store.collect(collectible);
 			}
 		});
+		Assert.isTrue(elementAdded);
 	}
 
 	/*
@@ -176,12 +181,13 @@ public class Aggregator implements ICollectingAggregator {
 	 * .String)
 	 */
 	public synchronized void triggerTransfer(final String category) {
-		workQueue.offer(new Runnable() {
+		boolean elementAdded = workQueue.offer(new Runnable() {
 			public void run() {
 				store.prepareTransferables(category);
 				sender.triggerTransfer(category);
 			}
 		});
+		Assert.isTrue(elementAdded);
 	}
 
 	private class Worker implements Runnable {

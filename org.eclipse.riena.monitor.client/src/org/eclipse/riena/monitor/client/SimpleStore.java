@@ -112,8 +112,10 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		if (autoConfig) {
 			cleaner = new Cleaner();
 			storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
-			boolean directoryCreated = storeFolder.mkdirs();
-			Assert.isTrue(directoryCreated);
+			if (!storeFolder.isDirectory()) {
+				boolean directoryCreated = storeFolder.mkdirs();
+				Assert.isTrue(directoryCreated);
+			}
 			try {
 				encrypt = getCipher(Cipher.ENCRYPT_MODE);
 				decrypt = getCipher(Cipher.DECRYPT_MODE);
