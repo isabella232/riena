@@ -36,7 +36,8 @@ Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena.security.authorizationservice,
  org.eclipse.riena.security.services.itest.authentication.module,
- org.eclipse.riena.tests
+ org.eclipse.riena.tests,
+ org.eclipse.riena.tests.collect
 Import-Package: org.easymock,
  org.eclipse.equinox.security.auth;version="1.0.0",
  org.osgi.service.log;version="1.3.0"
