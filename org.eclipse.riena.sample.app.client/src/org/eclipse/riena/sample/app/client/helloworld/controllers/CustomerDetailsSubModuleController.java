@@ -22,98 +22,108 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  */
 public class CustomerDetailsSubModuleController extends SubModuleController {
 
-	private ITextRidget numberFacade;
-	private ITextRidget nameFacade;
-	private ITextRidget firstnameFacade;
-	private ITextRidget birthplaceFacade;
-	private IActionRidget offersFacade;
-	private IActionRidget saveFacade;
+	public static final String RIDGET_ID_CUSTOMER_NUMBER = "customerNumber"; //$NON-NLS-1$
+	public static final String RIDGET_ID_LAST_NAME = "lastName"; //$NON-NLS-1$
+	public static final String RIDGET_ID_FIRST_NAME = "firstName"; //$NON-NLS-1$
+	public static final String RIDGET_ID_BIRTHPLACE = "birthPlace"; //$NON-NLS-1$
+	public static final String RIDGET_ID_SAVE = "save"; //$NON-NLS-1$
+	public static final String RIDGET_ID_OPEN_OFFERS = "openOffers"; //$NON-NLS-1$
 
 	public CustomerDetailsSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.riena.navigation.ui.controllers.SubModuleController#
+	 * configureRidgets()
+	 */
 	@Override
-	public void afterBind() {
-		super.afterBind();
-		intializeControlBindings();
-	}
+	public void configureRidgets() {
 
-	private void intializeControlBindings() {
+		super.configureRidgets();
 
 		Customer customer = getCustomer();
 
-		numberFacade.bindToModel(customer, "customerNumber"); //$NON-NLS-1$
-		numberFacade.updateFromModel();
+		ITextRidget customerNumber = (ITextRidget) getRidget(RIDGET_ID_CUSTOMER_NUMBER);
+		customerNumber.setOutputOnly(true);
+		customerNumber.bindToModel(customer, "customerNumber"); //$NON-NLS-1$
+		customerNumber.updateFromModel();
 
-		nameFacade.bindToModel(customer, "lastName"); //$NON-NLS-1$
-		nameFacade.updateFromModel();
+		ITextRidget lastName = (ITextRidget) getRidget(RIDGET_ID_LAST_NAME);
+		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
+		lastName.updateFromModel();
 
-		firstnameFacade.bindToModel(customer, "firstName"); //$NON-NLS-1$
-		firstnameFacade.updateFromModel();
+		ITextRidget firstName = (ITextRidget) getRidget(RIDGET_ID_FIRST_NAME);
+		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
+		firstName.updateFromModel();
 
-		birthplaceFacade.bindToModel(customer.getBirth(), "birthPlace"); //$NON-NLS-1$
-		birthplaceFacade.updateFromModel();
+		ITextRidget birthPlace = (ITextRidget) getRidget(RIDGET_ID_BIRTHPLACE);
+		birthPlace.bindToModel(customer.getBirth(), "birthPlace"); //$NON-NLS-1$
+		birthPlace.updateFromModel();
 
-		IActionListener callback = new SaveCallback();
-		saveFacade.addListener(callback);
+		IActionRidget saveAction = (IActionRidget) getRidget(RIDGET_ID_SAVE);
+		saveAction.addListener(new SaveCallback());
+		saveAction.setText("Save"); //$NON-NLS-1$
 
-		callback = new OffersCallback();
-		offersFacade.addListener(callback);
-
+		IActionRidget openOffersAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_OFFERS);
+		openOffersAction.addListener(new OffersCallback());
+		openOffersAction.setEnabled(false);
+		openOffersAction.setText("Offers"); //$NON-NLS-1$
 	}
 
 	private Customer getCustomer() {
 		return (Customer) getNavigationNode().getContext(Customer.class.getName());
 	}
 
-	public ITextRidget getNumberFacade() {
-		return numberFacade;
-	}
-
-	public void setNumberFacade(ITextRidget numberFacade) {
-		this.numberFacade = numberFacade;
-	}
-
-	public ITextRidget getNameFacade() {
-		return nameFacade;
-	}
-
-	public void setNameFacade(ITextRidget nameFacade) {
-		this.nameFacade = nameFacade;
-	}
-
-	public ITextRidget getFirstnameFacade() {
-		return firstnameFacade;
-	}
-
-	public void setFirstnameFacade(ITextRidget firstnameFacade) {
-		this.firstnameFacade = firstnameFacade;
-	}
-
-	public ITextRidget getBirthplaceFacade() {
-		return birthplaceFacade;
-	}
-
-	public void setBirthplaceFacade(ITextRidget birthplaceFacade) {
-		this.birthplaceFacade = birthplaceFacade;
-	}
-
-	public IActionRidget getOffersFacade() {
-		return offersFacade;
-	}
-
-	public void setOffersFacade(IActionRidget offersFacade) {
-		this.offersFacade = offersFacade;
-	}
-
-	public IActionRidget getSaveFacade() {
-		return saveFacade;
-	}
-
-	public void setSaveFacade(IActionRidget saveFacade) {
-		this.saveFacade = saveFacade;
-	}
+	//	public ITextRidget getNumberFacade() {
+	//		return numberFacade;
+	//	}
+	//
+	//	public void setNumberFacade(ITextRidget numberFacade) {
+	//		this.numberFacade = numberFacade;
+	//	}
+	//
+	//	public ITextRidget getNameFacade() {
+	//		return nameFacade;
+	//	}
+	//
+	//	public void setNameFacade(ITextRidget nameFacade) {
+	//		this.nameFacade = nameFacade;
+	//	}
+	//
+	//	public ITextRidget getFirstnameFacade() {
+	//		return firstnameFacade;
+	//	}
+	//
+	//	public void setFirstnameFacade(ITextRidget firstnameFacade) {
+	//		this.firstnameFacade = firstnameFacade;
+	//	}
+	//
+	//	public ITextRidget getBirthplaceFacade() {
+	//		return birthplaceFacade;
+	//	}
+	//
+	//	public void setBirthplaceFacade(ITextRidget birthplaceFacade) {
+	//		this.birthplaceFacade = birthplaceFacade;
+	//	}
+	//
+	//	public IActionRidget getOffersFacade() {
+	//		return offersFacade;
+	//	}
+	//
+	//	public void setOffersFacade(IActionRidget offersFacade) {
+	//		this.offersFacade = offersFacade;
+	//	}
+	//
+	//	public IActionRidget getSaveFacade() {
+	//		return saveFacade;
+	//	}
+	//
+	//	public void setSaveFacade(IActionRidget saveFacade) {
+	//		this.saveFacade = saveFacade;
+	//	}
 
 	private static class SaveCallback implements IActionListener {
 
