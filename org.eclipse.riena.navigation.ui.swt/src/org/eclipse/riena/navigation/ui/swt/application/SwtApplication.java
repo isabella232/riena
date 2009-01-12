@@ -187,27 +187,23 @@ public abstract class SwtApplication extends AbstractApplication {
 			return nonActivityDuration - (int) (System.currentTimeMillis() - eventListener.activityTime);
 		}
 
-		private final class EventListener implements Listener {
+	}
 
-			private boolean activity;
-			private long activityTime;
+	private static final class EventListener implements Listener {
 
-			private EventListener() {
-				activity = false;
-				activityTime = -1;
-			}
+		private boolean activity;
+		private long activityTime;
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.
-			 * swt.widgets.Event)
-			 */
-			public void handleEvent(Event event) {
-				activity = true;
-				activityTime = System.currentTimeMillis();
-			}
+		private EventListener() {
+			activity = false;
+			activityTime = -1;
 		}
+
+		public void handleEvent(Event event) {
+			activity = true;
+			activityTime = System.currentTimeMillis();
+		}
+
 	}
 
 	protected void prePerformLogin(IApplicationContext context) {
@@ -229,13 +225,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.ui.application.AbstractApplication#
-	 * doPerformLogin
-	 * (org.eclipse.riena.internal.navigation.ui.login.ILoginDialogView)
-	 */
+	@Override
 	protected Object doPerformLogin(IApplicationContext context) {
 
 		final ILoginDialogView loginDialogView = loginDialogViewDefinition.createViewClass();
@@ -256,12 +246,6 @@ public abstract class SwtApplication extends AbstractApplication {
 		return loginDialogView.getResult();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.ui.application.AbstractApplication#
-	 * doPerformSplashLogin(org.eclipse.equinox.app.IApplicationContext)
-	 */
 	@Override
 	protected Object doPerformSplashLogin(IApplicationContext context) {
 
@@ -296,7 +280,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 
 		// TODO: bugzilla request?!
-		AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash", null);
+		AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash"); //$NON-NLS-1$
 		if (loginSplashHandler instanceof AbstractLoginSplashHandler) {
 			return (AbstractLoginSplashHandler) loginSplashHandler;
 		} else {
@@ -304,36 +288,16 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ui.application.AbstractApplication#isSplashLogin
-	 * (org.eclipse.equinox.app.IApplicationContext)
-	 */
 	@Override
 	protected boolean isSplashLogin(IApplicationContext context) {
 		return loginSplashViewDefinition != null && getLoginSplashHandler() != null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.ui.application.AbstractApplication#isDialogLogin
-	 * (org.eclipse.equinox.app.IApplicationContext)
-	 */
 	@Override
 	protected boolean isDialogLogin(IApplicationContext context) {
 		return super.isDialogLogin(context) && loginSplashViewDefinition == null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.navigation.ui.application.AbstractApplication#
-	 * initialzeLoginViewDefinition()
-	 */
 	@Override
 	protected void initialzeLoginViewDefinition() {
 

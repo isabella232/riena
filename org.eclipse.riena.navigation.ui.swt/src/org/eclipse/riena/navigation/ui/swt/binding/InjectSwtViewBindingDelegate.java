@@ -29,8 +29,7 @@ public class InjectSwtViewBindingDelegate extends DefaultSwtBindingDelegate {
 		super();
 	}
 
-	@SuppressWarnings("unchecked")
-	public InjectSwtViewBindingDelegate(IControlRidgetMapper ridgetMapper) {
+	public InjectSwtViewBindingDelegate(IControlRidgetMapper<Object> ridgetMapper) {
 		super(ridgetMapper);
 	}
 
@@ -39,7 +38,8 @@ public class InjectSwtViewBindingDelegate extends DefaultSwtBindingDelegate {
 	 *      org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper)
 	 */
 	@Override
-	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy,
+			IControlRidgetMapper<Object> mapper) {
 		return new InjectBindingManager(propertyStrategy, mapper);
 	}
 

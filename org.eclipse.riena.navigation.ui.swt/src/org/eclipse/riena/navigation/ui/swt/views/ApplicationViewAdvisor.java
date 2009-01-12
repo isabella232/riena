@@ -239,19 +239,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	}
 
-	private class MyApplicationNodeListener extends ApplicationNodeListener {
+	private static class MyApplicationNodeListener extends ApplicationNodeListener {
 
 		@Override
 		public void filterAdded(IApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
-
 			super.filterAdded(source, filter);
-
 			try {
 				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
 				navi.updateNavigationSize();
 			} catch (PartInitException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -263,14 +259,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		@Override
 		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 
 			try {
 				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
 				navi.updateNavigationSize();
 			} catch (PartInitException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

@@ -39,13 +39,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		initialzeLoginSplashViewDefinition();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.splash.AbstractSplashHandler#init(org.eclipse.swt.widgets
-	 * .Shell)
-	 */
+	@Override
 	public void init(final Shell splash) {
 		// Store the shell
 		super.init(splash);
@@ -107,11 +101,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.splash.AbstractSplashHandler#dispose()
-	 */
+	@Override
 	public void dispose() {
 
 		if (!getSplash().isDisposed()) {
