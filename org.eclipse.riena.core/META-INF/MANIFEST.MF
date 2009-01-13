@@ -21,7 +21,8 @@ Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.core.service,
  org.eclipse.riena.core.util,
  org.eclipse.riena.internal.core.exceptionhandler,
- org.eclipse.riena.internal.core.exceptionmanager
+ org.eclipse.riena.internal.core.exceptionmanager,
+ org.eclipse.riena.internal.core.ignore;x-internal:=true
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.equinox.log;bundle-version="1.1.0",
  org.eclipse.core.variables;bundle-version="3.2.0"
