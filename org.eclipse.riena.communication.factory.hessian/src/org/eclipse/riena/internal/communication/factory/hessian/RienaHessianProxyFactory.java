@@ -20,12 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.client.HessianProxyFactory;
@@ -55,9 +54,9 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 				AbstractSerializerFactory serializerFactory = factory.createImplementation();
 				getSerializerFactory().addFactory(serializerFactory);
 			} catch (Exception e) {
-				LOGGER.log(LogService.LOG_ERROR, "Error instantiation AbstractSerializerFactor = "
+				LOGGER.log(LogService.LOG_ERROR, "Error instantiation AbstractSerializerFactor = " //$NON-NLS-1$
 						+ factory.getImplementation());
-				throw new RuntimeException("Error instantiation AbstractSerializerFactor = "
+				throw new RuntimeException("Error instantiation AbstractSerializerFactor = " //$NON-NLS-1$
 						+ factory.getImplementation(), e);
 			}
 		}

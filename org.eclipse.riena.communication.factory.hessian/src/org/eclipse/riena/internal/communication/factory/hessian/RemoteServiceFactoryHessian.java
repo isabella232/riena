@@ -45,8 +45,8 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private final ICallMessageContextAccessor messageContextAccessor;
 	private final RienaHessianProxyFactory rienaHessianProxyFactory;
 	private final static String PROTOCOL = "hessian"; //$NON-NLS-1$
-	private final static SecureRandom random = new SecureRandom();
-	private final static long base = 115825100000L; // some base time in millisec around 14.9.2006 18:40 (arbitrary picked) just to make the long a short number
+	private final static SecureRandom RANDOM = new SecureRandom();
+	private final static long BASE_LONG = 115825100000L; // some BASE_LONG time in millisec around 14.9.2006 18:40 (arbitrary picked) just to make the long a short number
 
 	public RemoteServiceFactoryHessian() {
 		messageContextAccessor = new CallMsgCtxAcc();
@@ -253,12 +253,12 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			 */
 			public String getRequestId() {
 				if (requestId == null || requestId.length() == 0) {
-					// FINDBUGS: if random.nextInt()==Integer.MIN_VALUE then Math.abs(i) = i
-					int i = random.nextInt();
+					// FINDBUGS: if RANDOM.nextInt()==Integer.MIN_VALUE then Math.abs(i) = i
+					int i = RANDOM.nextInt();
 					if (i == Integer.MIN_VALUE) {
 						i = i + 1;
 					}
-					requestId = "RID-" + Long.toString(System.currentTimeMillis() - base + Math.abs(i), 36); //$NON-NLS-1$
+					requestId = "RID-" + Long.toString(System.currentTimeMillis() - BASE_LONG + Math.abs(i), 36); //$NON-NLS-1$
 				}
 				return requestId;
 			}
