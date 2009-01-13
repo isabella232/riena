@@ -131,19 +131,15 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			} else {
 				Control control = (Control) e.widget;
 				Composite parent = control.getParent();
-				Control[] tabList = parent.getTabList();
-				int i = findNextElement(control, tabList);
-				if (i != -1) {
-					Control nextFocusControl = tabList[i];
-					nextFocusControl.setFocus();
+				Control target = findFocusTarget(control, parent.getTabList());
+				if (target != null) {
+					target.setFocus();
 				} else { // no suitable control found, try one level up
 					Composite pParent = parent.getParent();
 					if (pParent != null) {
-						tabList = pParent.getTabList();
-						i = findNextElement(parent, tabList);
-						if (i != -1) {
-							Control nextFocusControl = tabList[i];
-							nextFocusControl.setFocus();
+						target = findFocusTarget(parent, pParent.getTabList());
+						if (target != null) {
+							target.setFocus();
 						}
 					}
 				}
@@ -157,7 +153,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			}
 		}
 
-		private int findNextElement(Control control, Control[] controls) {
+		private Control findFocusTarget(Control control, Control[] controls) {
 			int myIndex = -1;
 			// find index for control
 			for (int i = 0; myIndex == -1 && i < controls.length; i++) {
@@ -180,7 +176,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 					result = i;
 				}
 			}
-			return result;
+			return result != -1 ? controls[result] : null;
 		}
 	};
 
