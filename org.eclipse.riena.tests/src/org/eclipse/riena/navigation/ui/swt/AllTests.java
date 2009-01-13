@@ -12,59 +12,19 @@ package org.eclipse.riena.navigation.ui.swt;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.eclipse.riena.navigation.ui.swt.binding.DefaultSwtControlRidgetMapperTest;
-import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarCompositeTest;
-import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidgetTest;
-import org.eclipse.riena.navigation.ui.swt.lnf.AbstractLnfResourceTest;
-import org.eclipse.riena.navigation.ui.swt.lnf.LnfManagerTest;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRendererTest;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRendererTest;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRendererTest;
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRendererTest;
-import org.eclipse.riena.navigation.ui.swt.viewprovider.SwtViewIdTest;
-import org.eclipse.riena.navigation.ui.swt.views.AbstractViewBindingDelegateTest;
-import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisorTest;
-import org.eclipse.riena.navigation.ui.swt.views.GrabCornerListenerWithTrackerTest;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.collect.NonGatherableTestCase;
-import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRendererTest;
-import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRendererTest;
-import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRendererTest;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnfTest;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- * Tests all test cases within package:
- * 
- * org.eclipse.riena.navigation.ui.swt
+ * Tests all test cases within this package.
  */
 @NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-
-		suite.addTest(org.eclipse.riena.navigation.ui.swt.viewprovider.AllTests.suite());
-		suite.addTest(org.eclipse.riena.navigation.ui.swt.views.AllTests.suite());
-
-		suite.addTestSuite(DefaultSwtControlRidgetMapperTest.class);
-		suite.addTestSuite(AbstractLnfResourceTest.class);
-		suite.addTestSuite(LnfManagerTest.class);
-		suite.addTestSuite(EmbeddedBorderRendererTest.class);
-		suite.addTestSuite(EmbeddedTitlebarRendererTest.class);
-		suite.addTestSuite(RienaDefaultLnfTest.class);
-		suite.addTestSuite(SwtViewIdTest.class);
-		suite.addTestSuite(ShellBorderRendererTest.class);
-		suite.addTestSuite(SubModuleTreeItemMarkerRendererTest.class);
-		suite.addTestSuite(ApplicationViewAdvisorTest.class);
-		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
-		suite.addTestSuite(AbstractViewBindingDelegateTest.class);
-		suite.addTestSuite(SubApplicationSwitcherRendererTest.class);
-		suite.addTestSuite(SubApplicationSwitcherWidgetTest.class);
-		suite.addTestSuite(MenuCoolBarCompositeTest.class);
-		suite.addTestSuite(AbstractTitleBarRendererTest.class);
-		suite.addTestSuite(DialogTitleBarRendererTest.class);
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage(), true);
 	}
 
 }

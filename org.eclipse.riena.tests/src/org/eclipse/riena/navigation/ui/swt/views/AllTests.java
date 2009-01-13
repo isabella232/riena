@@ -11,29 +11,20 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
 
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- *
+ * Tests all test cases within this package.
  */
 @NonGatherableTestCase("This is not a ´TestCase´!")
-public final class AllTests {
-
-	private AllTests() {
-	}
+public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.swt.views");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(GrabCornerListenerWithTrackerTest.class);
-		suite.addTestSuite(ApplicationViewAdvisorTest.class);
-		suite.addTestSuite(SubApplicationViewTest.class);
-		suite.addTestSuite(SubModuleViewTest.class);
-		suite.addTestSuite(ModuleGroupViewTest.class);
-		//$JUnit-END$
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 }
