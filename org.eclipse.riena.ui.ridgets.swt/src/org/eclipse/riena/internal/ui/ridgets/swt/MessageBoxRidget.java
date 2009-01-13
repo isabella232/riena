@@ -205,8 +205,12 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		this.focusable = focusable;
 	}
 
+	/**
+	 * @throws UnsupportedOperationException
+	 *             this class does not support this operation
+	 */
 	public void setToolTipText(String toolTipText) {
-		// not supported
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 	public void setUIControl(Object uiControl) {

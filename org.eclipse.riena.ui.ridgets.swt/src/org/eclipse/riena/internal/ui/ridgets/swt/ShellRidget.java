@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -236,7 +237,10 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	}
 
 	public void setToolTipText(String toolTipText) {
+		String oldValue = toolTip;
 		toolTip = toolTipText;
+		updateToolTip();
+		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
 	}
 
 	private void updateToolTip() {

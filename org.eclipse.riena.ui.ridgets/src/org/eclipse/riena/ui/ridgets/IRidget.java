@@ -27,6 +27,12 @@ public interface IRidget {
 	String PROPERTY_BLOCKED = "blocked"; //$NON-NLS-1$
 
 	/**
+	 * The name of the PropertyChangeEvent that will be fired when the ridget's
+	 * tooltip is changed ({@value} ).
+	 */
+	String PROPERTY_TOOLTIP = "tooltip"; //$NON-NLS-1$
+
+	/**
 	 * @return Indicates whether the UI-control is visible.
 	 */
 	boolean isVisible();

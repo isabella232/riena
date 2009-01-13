@@ -133,8 +133,10 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	public final void setToolTipText(String toolTipText) {
+		String oldValue = this.toolTip;
 		this.toolTip = toolTipText;
 		updateToolTip();
+		firePropertyChange(PROPERTY_TOOLTIP, oldValue, this.toolTip);
 	}
 
 	public final String getToolTipText() {

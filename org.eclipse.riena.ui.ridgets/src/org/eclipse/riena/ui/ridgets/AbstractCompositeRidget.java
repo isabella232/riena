@@ -44,16 +44,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		visible = true;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#isVisible()
-	 */
 	public boolean isVisible() {
 		return uiControl != null && visible;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setVisible(boolean)
-	 */
 	public void setVisible(boolean visible) {
 		if (this.visible != visible) {
 			this.visible = visible;
@@ -61,22 +55,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
-	private void updateVisible() {
-		if (uiControl != null && uiControl instanceof Component) {
-			((Component) uiControl).setVisible(this.visible);
-		}
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#getUIControl()
-	 */
 	public IComplexComponent getUIControl() {
 		return uiControl;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setUIControl(java.lang.Object)
-	 */
 	public void setUIControl(Object uiControl) {
 
 		if (uiControl != null && !(uiControl instanceof IComplexComponent)) {
@@ -88,44 +70,28 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		updateVisible();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
-	 */
 	public void addRidget(String id, IRidget ridget) {
 
 		ridget.addPropertyChangeListener(propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidget(java.lang.String)
-	 */
 	public IRidget getRidget(String id) {
 
 		return ridgets.get(id);
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
-	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#requestFocus()
-	 */
 	public void requestFocus() {
 		if (!getRidgets().isEmpty()) {
 			getRidgets().iterator().next().requestFocus();
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#hasFocus()
-	 */
 	public boolean hasFocus() {
 		Collection<? extends IRidget> myRidgets = getRidgets();
 		for (IRidget ridget : myRidgets) {
@@ -136,9 +102,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return false;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setFocusable(boolean)
-	 */
 	public void setFocusable(boolean focusable) {
 		Collection<? extends IRidget> r = getRidgets();
 		for (Iterator<? extends IRidget> iterator = r.iterator(); iterator.hasNext();) {
@@ -148,52 +111,32 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#isFocusable()
-	 */
 	public boolean isFocusable() {
 		return false;
 	}
 
 	private class PropertyChangeHandler implements PropertyChangeListener {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seejava.beans.PropertyChangeListener#propertyChange(java.beans.
-		 * PropertyChangeEvent)
-		 */
 		public void propertyChange(PropertyChangeEvent evt) {
 
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#getToolTipText()
-	 */
 	public String getToolTipText() {
 		return toolTip;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setToolTipText(java.lang.String)
-	 */
 	public void setToolTipText(String toolTipText) {
+		String oldValue = toolTip;
 		toolTip = toolTipText;
-
+		updateToolTipText();
+		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#isBlocked()
-	 */
 	public boolean isBlocked() {
 		return blocked;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidget#setBlocked(boolean)
-	 */
 	public void setBlocked(boolean blocked) {
 
 		Collection<? extends IRidget> r = getRidgets();
@@ -205,14 +148,25 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	public void configureRidgets() {
 	}
 
 	public String getID() {
 		return null;
+	}
+
+	// protected methods
+	////////////////////
+
+	protected void updateVisible() {
+		// TODO [ev] javadoc + bugzilla
+		if (uiControl != null && uiControl instanceof Component) {
+			((Component) uiControl).setVisible(this.visible);
+		}
+	}
+
+	protected void updateToolTipText() {
+		// TODO [ev] javadoc + comment
 	}
 
 }

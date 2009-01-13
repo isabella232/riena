@@ -275,6 +275,24 @@ public abstract class AbstractSWTRidgetTest extends TestCase {
 		}
 	}
 
+	public void testFiresTooltipProperty() {
+		expectPropertyChangeEvent(IRidget.PROPERTY_TOOLTIP, null, "begood");
+
+		ridget.setToolTipText("begood");
+
+		verifyPropertyChangeEvents();
+		expectNoPropertyChangeEvent();
+
+		ridget.setToolTipText("begood");
+
+		verifyPropertyChangeEvents();
+		expectPropertyChangeEvent(IRidget.PROPERTY_TOOLTIP, "begood", null);
+
+		ridget.setToolTipText(null);
+
+		verifyPropertyChangeEvents();
+	}
+
 	public void testFiresMarkerProperty() {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
