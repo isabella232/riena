@@ -50,6 +50,8 @@ public final class ContextProxy implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		try {
 			ContextHelper.activateContext(contextProvider.getContext());
+			// TODO not sure why accessible has to be true, fix some day
+			method.setAccessible(true);
 
 			return method.invoke(service, args);
 		} catch (InvocationTargetException e) {
@@ -66,19 +68,20 @@ public final class ContextProxy implements InvocationHandler {
 	 * The created proxy covers automatically the whole public interface of the
 	 * passed object
 	 * 
-	 * @param <T> -
-	 *            the expected interface typ equal also the type expected
-	 * @param pObject -
-	 *            the Object to create proxy on
-	 * @param pContext -
-	 *            the context to work on with this proxy
+	 * @param <T>
+	 *            - the expected interface typ equal also the type expected
+	 * @param pObject
+	 *            - the Object to create proxy on
+	 * @param pContext
+	 *            - the context to work on with this proxy
 	 * @return the Proxy
 	 */
 	@SuppressWarnings( { "unchecked" })
 	public static <T> T cover(T pObject, IContextProvider pContextProvider) {
 		assert pObject != null : "The object to proxy must not be null"; //$NON-NLS-1$
 		assert pContextProvider != null : "The context carrier must not be null"; //$NON-NLS-1$
-		return (T) Proxy.newProxyInstance(pObject.getClass().getClassLoader(), getInterfaces(pObject.getClass()), new ContextProxy(pObject, pContextProvider));
+		return (T) Proxy.newProxyInstance(pObject.getClass().getClassLoader(), getInterfaces(pObject.getClass()),
+				new ContextProxy(pObject, pContextProvider));
 	}
 
 	/**
@@ -88,17 +91,17 @@ public final class ContextProxy implements InvocationHandler {
 	 * The created proxy covers automatically the whole public interface of the
 	 * passed object
 	 * 
-	 * @param <T> -
-	 *            the expected interface typ equals the type passe to
-	 * @param pContext -
-	 *            the context to work on with this proxy
+	 * @param <T>
+	 *            - the expected interface typ equals the type passe to
+	 * @param pContext
+	 *            - the context to work on with this proxy
 	 * @return the Proxy
 	 */
 	@SuppressWarnings( { "unchecked" })
 	public static <T extends IContextProvider> T cover(T pContextProvider) {
 		assert pContextProvider != null : "The context carrier must not be null"; //$NON-NLS-1$
-		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(), getInterfaces(pContextProvider.getClass()), new ContextProxy(
-				pContextProvider, pContextProvider));
+		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(), getInterfaces(pContextProvider
+				.getClass()), new ContextProxy(pContextProvider, pContextProvider));
 	}
 
 	/**
