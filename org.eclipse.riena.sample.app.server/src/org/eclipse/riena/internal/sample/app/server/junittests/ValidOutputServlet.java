@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  */
+@SuppressWarnings("serial")
 public class ValidOutputServlet extends HttpServlet {
 
 	@Override

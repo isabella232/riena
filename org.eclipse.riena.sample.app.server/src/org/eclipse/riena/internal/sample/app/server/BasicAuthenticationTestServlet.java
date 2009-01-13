@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 
  */
+@SuppressWarnings("serial")
 public class BasicAuthenticationTestServlet extends HttpServlet {
 
 	@Override

@@ -158,7 +158,7 @@ public class ExceptionService implements IExceptionService {
 	 */
 	public String throwNestedException() throws Throwable {
 		try {
-			generateNestedException();
+			newNullPointerException();
 		} catch (Exception e) {
 			Exception x = new Exception(e);
 			x.printStackTrace();
@@ -186,7 +186,7 @@ public class ExceptionService implements IExceptionService {
 		return null;
 	}
 
-	private String generateNestedException() throws NullPointerException {
+	private String newNullPointerException() {
 		throw new NullPointerException("ExceptionService: Here is your requested nested Exception."); //$NON-NLS-1$
 	}
 }
