@@ -11,13 +11,13 @@
 package org.eclipse.riena.core.cache;
 
 import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.tests.collect.ManualTestCase;
 
 /**
  * Tests the GenericObjectCache class.
  * 
  */
-@NonUITestCase
+@ManualTestCase
 public class GenericObjectCacheTest extends RienaTestCase {
 
 	private IGenericObjectCache<String, Integer> genericCache;

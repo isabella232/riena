@@ -11,13 +11,13 @@
 package org.eclipse.riena.core.cache;
 
 import org.eclipse.riena.tests.RienaTestCase;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.tests.collect.ManualTestCase;
 
 /**
  * Tests the LRUCache class.
  * 
  */
-@NonUITestCase
+@ManualTestCase
 public class LRUCacheTest extends RienaTestCase {
 
 	private IGenericObjectCache<String, Integer> genericCache;
