@@ -16,7 +16,10 @@ package org.eclipse.riena.communication.publisher;
  * "hessian").AndStart();
  * Publish.allServices().filter("riena.remote").AndStart();
  */
-public class Publish {
+public final class Publish {
+
+	private Publish() {
+	}
 
 	public static SingleServicePublisher service(String name) {
 		return new SingleServicePublisher(name);
@@ -29,5 +32,4 @@ public class Publish {
 	public static MultiServicePublisher allServices() {
 		return new MultiServicePublisher();
 	}
-
 }
