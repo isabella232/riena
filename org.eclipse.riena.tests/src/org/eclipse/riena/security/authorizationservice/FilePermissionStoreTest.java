@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.security.authorizationservice;
 
-import java.io.FileNotFoundException;
 import java.io.FilePermission;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,8 +29,7 @@ import org.xml.sax.SAXException;
 @NonUITestCase
 public class FilePermissionStoreTest extends TestCase {
 
-	public void testReadPermission() throws FileNotFoundException, SAXException, IOException,
-			ParserConfigurationException {
+	public void testReadPermission() throws SAXException, IOException, ParserConfigurationException {
 		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml");
 		FilePermissionStore permStore = new FilePermissionStore(inputStream);
 		Permissions perms = permStore.loadPermissions(new SimplePrincipal("christian"));
