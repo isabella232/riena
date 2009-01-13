@@ -17,12 +17,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -46,7 +45,7 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 	private HashMap<String, RemoteServiceDescription> webServiceDescriptions;
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(HessianRemoteServicePublisher.class);
-	private final static String port = System.getProperty("org.eclipse.equinox.http.jetty.http.port"); // get the jetty port //$NON-NLS-1$
+	private final static String PORT = System.getProperty("org.eclipse.equinox.http.jetty.http.port"); // get the jetty PORT //$NON-NLS-1$
 
 	public HessianRemoteServicePublisher() {
 		webServiceDescriptions = new HashMap<String, RemoteServiceDescription>();
@@ -70,9 +69,10 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 		try {
 			localhost = Inet4Address.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
+			// TODO: ok??
 		}
-		if (port != null) {
-			localhost = localhost + ":" + port; //$NON-NLS-1$
+		if (PORT != null) {
+			localhost = localhost + ":" + PORT; //$NON-NLS-1$
 		}
 		String url = "http://" + localhost + SERVLET_PATH + rsd.getPath(); //$NON-NLS-1$
 		rsd.setURL(url);
