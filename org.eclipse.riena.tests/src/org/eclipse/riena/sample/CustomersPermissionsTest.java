@@ -20,7 +20,7 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
  * 
  */
 @NonUITestCase
-public class TestCustomersPermissions extends TestCase {
+public class CustomersPermissionsTest extends TestCase {
 
 	public void testCustomersPermission() {
 		CustomersPermission cp1 = new CustomersPermission("german", "load,save");
