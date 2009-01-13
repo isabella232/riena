@@ -116,7 +116,7 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 
 }
 
-class MySecurityAction implements PrivilegedExceptionAction {
+class MySecurityAction implements PrivilegedExceptionAction<Object> {
 
 	private Method proxyMethod;
 	private Object proxiedInstance;

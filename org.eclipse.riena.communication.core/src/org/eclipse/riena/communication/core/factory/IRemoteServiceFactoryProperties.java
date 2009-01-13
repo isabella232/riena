@@ -24,11 +24,10 @@ public interface IRemoteServiceFactoryProperties {
 	/**
 	 * @return the protocol property
 	 */
-	public String getProtocol();
+	String getProtocol();
 
 	/**
 	 * @return the RemoteServiceFactory instance for this protocol
 	 */
-	public IRemoteServiceFactory createRemoteServiceFactory();
-
+	IRemoteServiceFactory createRemoteServiceFactory();
 }
