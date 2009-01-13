@@ -19,6 +19,8 @@ import java.util.StringTokenizer;
  */
 public class CustomersPermission extends Permission {
 
+	private static final long serialVersionUID = -606601630674230084L;
+
 	private String actions;
 	private String[] actionList;
 

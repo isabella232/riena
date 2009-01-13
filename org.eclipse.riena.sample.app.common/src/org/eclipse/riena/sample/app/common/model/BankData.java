@@ -60,6 +60,16 @@ public class BankData implements Cloneable {
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return accountNumber.hashCode() + bank.hashCode() + bankCode.hashCode();
+	}
+
 	/**
 	 * Returns the account number
 	 * 
