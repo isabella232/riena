@@ -43,7 +43,7 @@ public class Attachment {
 	// contains the file object from which the Attachment was constructed
 	private transient File file;
 	// contains the url object from which the Attachment was constructed
-	private transient URL url;
+	//	private transient URL url;
 	// contains the datasource with the data
 	private transient IDataSource dataSource;
 
@@ -65,7 +65,7 @@ public class Attachment {
 	 * @throws java.io.FileNotFoundException
 	 */
 	public Attachment(File file) throws FileNotFoundException, IOException {
-		super();
+		this();
 		type = Type.FILE;
 		this.file = file;
 		this.dataSource = new FileDataSource(file);
@@ -77,9 +77,9 @@ public class Attachment {
 	 *            create attachment from url content
 	 */
 	public Attachment(URL url) throws IOException {
-		super();
+		this();
 		type = Type.URL;
-		this.url = url;
+		//		this.url = url;
 		this.dataSource = new HttpURLDataSource(url);
 		this.dataSource.checkValid();
 	}
@@ -88,14 +88,14 @@ public class Attachment {
 	 * @param dataHandler
 	 */
 	public Attachment(InputStream inputStream) throws IOException {
-		super();
+		this();
 		type = Type.INPUTSTREAM;
 		this.dataSource = new InputStreamDataSource(inputStream);
 		this.dataSource.checkValid();
 	}
 
 	protected Attachment(ByteArrayDataSource dataSource) {
-		super();
+		this();
 		type = Type.INPUTSTREAM;
 		this.dataSource = dataSource;
 	}
@@ -175,7 +175,7 @@ public class Attachment {
 						input.reset();
 					}
 				} catch (IOException e) {
-					// null the dataSource if the inputstream does not work
+					// TODO: null the dataSource if the inputstream does not work
 					// anyway ??
 				}
 			}

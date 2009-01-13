@@ -216,36 +216,9 @@ public class RemoteServiceFactory {
 			return null;
 		}
 		// find a factory for this specific protocol
-		// ServiceReference refFactory = null;
 		IRemoteServiceFactory factory = null;
 
 		factory = (remoteServiceFactoryImplementations.get(rsd.getProtocol()));
-
-		// if not found in extension list, search for it as an OSGi Service
-		//		if (factory == null) {
-		//
-		//			String filter = "(" + IRemoteServiceFactory.PROP_PROTOCOL + "=" + rsd.getProtocol() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		//			try {
-		//				references = context.getServiceReferences(IRemoteServiceFactory.class.getName(), filter);
-		//			} catch (InvalidSyntaxException e) {
-		//				e.printStackTrace();
-		//				return null;
-		//			}
-		//			// no factory for this protocol
-		//			if (references == null) {
-		//				LOGGER.log(LogService.LOG_WARNING, "no IRemoteServiceFactory serviceRef available protocol [" //$NON-NLS-1$
-		//						+ rsd.getProtocol() + "]"); //$NON-NLS-1$
-		//				return null;
-		//			}
-		//
-		//			for (ServiceReference reference : references) {
-		//				factory = (IRemoteServiceFactory) context.getService(reference);
-		//				if (factory != null) {
-		//					refFactory = reference;
-		//					break;
-		//				}
-		//			}
-		//		}
 
 		// could not get instance for existing reference
 		if (factory == null) {
@@ -256,21 +229,14 @@ public class RemoteServiceFactory {
 		LOGGER.log(LogService.LOG_INFO, "found protocol [" + rsd.getProtocol() + "] " + factory); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// ask factory to create a serviceInstance for me, and intercept the
-		// calls with a
-		// CallHooksProxy instance
-		try {
-			IRemoteServiceReference rsr = factory.createProxy(rsd);
-			CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
-			callHooksProxy.setRemoteServiceDescription(rsd);
-			callHooksProxy.setMessageContextAccessor(factory.getMessageContextAccessor());
-			rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
-					new Class[] { rsd.getServiceInterfaceClass() }, callHooksProxy));
-			return rsr;
-		} finally {
-			//			if (refFactory != null) {
-			//				context.ungetService(refFactory);
-			//			}
-		}
+		// calls with a CallHooksProxy instance
+		IRemoteServiceReference rsr = factory.createProxy(rsd);
+		CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
+		callHooksProxy.setRemoteServiceDescription(rsd);
+		callHooksProxy.setMessageContextAccessor(factory.getMessageContextAccessor());
+		rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
+				new Class[] { rsd.getServiceInterfaceClass() }, callHooksProxy));
+		return rsr;
 	}
 
 	private IRemoteServiceReference createLazyProxy(RemoteServiceDescription rsd) {
