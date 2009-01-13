@@ -219,16 +219,16 @@ public final class TestCollector {
 			// Brute force detecting of how many chars we have to skip to find a class within the url
 			String name = entry;
 			int dot = 0;
-			while ((dot = name.indexOf('.', 1)) != -1) {
-				name = name.substring(dot + 1);
+			while ((dot = name.indexOf('.', dot)) != -1) {
+				String className = name.substring(dot + 1);
 				try {
-					bundle.loadClass(name);
-					skipChars = entry.indexOf(name);
-					return name;
+					bundle.loadClass(className);
+					skipChars = entry.indexOf(className);
+					return className;
 				} catch (ClassNotFoundException e) {
-					//go on
+					dot++;
 				} catch (NoClassDefFoundError e) {
-					//go on
+					dot++;
 				}
 			}
 		}
