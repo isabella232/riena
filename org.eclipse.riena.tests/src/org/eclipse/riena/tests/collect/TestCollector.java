@@ -112,7 +112,7 @@ public final class TestCollector {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
 		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, subPackages)) {
-			boolean collect = false;
+			boolean collect = annotationClasses.length == 0 ? true : false;
 			for (Class<? extends Annotation> annotationClass : annotationClasses) {
 				collect = collect || testClass.isAnnotationPresent(annotationClass);
 			}
