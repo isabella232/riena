@@ -17,6 +17,7 @@ import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
 import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
 import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
@@ -50,6 +51,7 @@ public class CommandProviderLogFilter implements LogFilter, CommandProvider, IEx
 	 * @param ci
 	 * @throws Exception
 	 */
+	@IgnoreCheckStyle("the _ is the pattern for console commands - do not change!!")
 	public void _logLevel(CommandInterpreter ci) throws Exception {
 		String level = ci.nextArgument();
 		if (level != null) {

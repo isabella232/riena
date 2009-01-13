@@ -13,6 +13,7 @@ package org.eclipse.riena.core.service;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -114,6 +115,7 @@ public class RankingInjector extends ServiceInjector {
 		return serviceRefs[0];
 	}
 
+	@IgnoreFindBugs(value = "SE_COMPARATOR_SHOULD_BE_SERIALIZABLE", justification = "only used locally")
 	private static final class ObjectRankingComparator implements Comparator<ServiceReference> {
 
 		/*

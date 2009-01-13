@@ -14,6 +14,8 @@ package org.eclipse.riena.core.util;
 
 import java.lang.reflect.Array;
 
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
+
 /**
  * This class is a thread safe list that is designed for storing lists of
  * listeners. The implementation is optimized for minimal memory footprint,
@@ -83,8 +85,8 @@ public class ListenerList<L> {
 	private final Object emptyArray;
 
 	/**
-     * The listener class (used internally for creating arrays of this type).
-     */
+	 * The listener class (used internally for creating arrays of this type).
+	 */
 	private final Class<?> listenerClass;
 
 	@SuppressWarnings("unused")
@@ -161,6 +163,7 @@ public class ListenerList<L> {
 	 * 
 	 * @return the list of registered listeners
 	 */
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP", justification = "we allow that because this impl. is all about saving time.")
 	public L[] getListeners() {
 		return listeners;
 	}

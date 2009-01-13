@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.Bundle;
 
 /**
@@ -82,9 +83,9 @@ public final class ReflectionUtils {
 				constructor = findMatchingConstructor(clazz, clazzes);
 			}
 			return constructor.newInstance(args);
-		} catch (Exception e) {
+		} catch (Throwable t) {
 			throw new ReflectionFailure("Error creating instance for " + clazz.getName() + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
-					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
+					+ Arrays.asList(args) + "!", t); //$NON-NLS-1$
 		}
 	}
 
@@ -306,6 +307,7 @@ public final class ReflectionUtils {
 	 * @pre fieldName != null
 	 * @pre value != null
 	 */
+	@IgnoreFindBugs(value = "DP_DO_INSIDE_DO_PRIVILEGED", justification = "only intended for unit tests")
 	public static void setHidden(Object instance, String fieldName, Object value) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
@@ -334,6 +336,7 @@ public final class ReflectionUtils {
 	 * @pre fieldName != null
 	 */
 	@SuppressWarnings("unchecked")
+	@IgnoreFindBugs(value = "DP_DO_INSIDE_DO_PRIVILEGED", justification = "only intended for unit tests")
 	public static <T> T getHidden(Object instance, String fieldName) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
 		Assert.isNotNull(fieldName, "fieldName must be given!"); //$NON-NLS-1$
