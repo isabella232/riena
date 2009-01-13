@@ -23,17 +23,30 @@ import org.eclipse.riena.internal.security.common.Activator;
  */
 public final class Sentinel {
 
-	private Helper helper = new Helper();
 	private ISentinelService sentinelService;
+	// this private instance is only held in the class so that it does not get garbage collected
+	// because it holds the injected reference to the SentinelService
 	private static Sentinel myself = new Sentinel();
 
 	private Sentinel() {
 		super();
-		Inject.service(ISentinelService.class).useRanking().into(helper).andStart(Activator.getDefault().getContext());
+		Inject.service(ISentinelService.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public static Sentinel getInstance() {
+	private static Sentinel getInstance() {
 		return myself;
+	}
+
+	private ISentinelService getSentinelService() {
+		return sentinelService;
+	}
+
+	public void bind(ISentinelService sentinelServiceParm) {
+		sentinelService = sentinelServiceParm;
+	}
+
+	public void unbind(ISentinelService sentinelServiceParm) {
+		sentinelService = null;
 	}
 
 	/**
@@ -45,23 +58,11 @@ public final class Sentinel {
 	 *            permission to be checked
 	 * @return
 	 */
-	public boolean checkAccess(Permission permission) {
-		if (sentinelService == null) {
+	public static boolean checkAccess(Permission permission) {
+		if (getInstance().getSentinelService() == null) {
 			return false;
 		}
-		return sentinelService.checkAccess(permission);
-	}
-
-	private class Helper {
-
-		public void bind(ISentinelService sentinelServiceParm) {
-			sentinelService = sentinelServiceParm;
-		}
-
-		public void unbind(ISentinelService sentinelServiceParm) {
-			sentinelService = null;
-		}
-
+		return getInstance().getSentinelService().checkAccess(permission);
 	}
 
 }
