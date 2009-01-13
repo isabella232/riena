@@ -35,15 +35,6 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 		super.setUp();
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		loader.setDefaultAssertionStatus(true);
-
-		// this.setTraceOn(true);
-		// trainModules("META-INF/hivetestmodule.xml");
-		// replay();
-	}
-
-	public void tearDown() throws Exception {
-		// verify();
-		super.tearDown();
 	}
 
 	/**

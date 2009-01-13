@@ -29,18 +29,6 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 @NonUITestCase
 public class ObjectTransactionListTest extends RienaTestCase {
 
-	public void setUp() throws Exception {
-		super.setUp();
-		// this.setTraceOn(false);
-		// trainModules("META-INF/hivetestmodule.xml");
-		// replay();
-	}
-
-	public void tearDown() throws Exception {
-		// verify();
-		super.tearDown();
-	}
-
 	/**
 	 * 
 	 */

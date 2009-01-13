@@ -24,18 +24,6 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 @NonUITestCase
 public class ObjectTransactionVariousNoRegTest extends RienaTestCase {
 
-	public void setUp() throws Exception {
-		super.setUp();
-		// this.setTraceOn(true);
-		// trainModules("META-INF/hivetestmodule.xml");
-		// replay();
-	}
-
-	public void tearDown() throws Exception {
-		// verify();
-		super.tearDown();
-	}
-
 	/**
 	 * @throws Exception
 	 */
