@@ -19,15 +19,15 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- * Tests all test cases within this package.
+ * Tests all test cases within this package/sub-packages.
  */
 @NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllManualTests.class.getPackage(),
-				true, NonUITestCase.class);
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage(), true,
+				NonUITestCase.class);
 	}
 
 }
