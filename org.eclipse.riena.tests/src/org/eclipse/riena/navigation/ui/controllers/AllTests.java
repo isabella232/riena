@@ -11,9 +11,10 @@
 package org.eclipse.riena.navigation.ui.controllers;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
 
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
  *
@@ -25,14 +26,7 @@ public final class AllTests {
 	}
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.controllers");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(ModuleControllerTest.class);
-		suite.addTestSuite(NavigationUIFilterApplierTest.class);
-		suite.addTestSuite(NavigationNodeControllerTest.class);
-		suite.addTestSuite(SubApplicationControllerTest.class);
-		//$JUnit-END$
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 }
