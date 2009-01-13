@@ -70,7 +70,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 
 		marker.reset();
 		marker.setAttribute("lastname", 12);
-		assertEquals(new Integer(12), marker.getAttribute("lastname"));
+		assertEquals(Integer.valueOf(12), marker.getAttribute("lastname"));
 		assertTrue(marker.isChangeFired());
 
 		marker.reset();
@@ -101,7 +101,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 
 	}
 
-	private class DummyMarker extends AbstractMarker implements IMarkerAttributeChangeListener {
+	private static class DummyMarker extends AbstractMarker implements IMarkerAttributeChangeListener {
 
 		private boolean changeFired;
 

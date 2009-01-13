@@ -39,6 +39,8 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		renderer = new OpenDialogTitleBarRenderer();
 		shell = new Shell();
 		renderer.setShell(shell);
@@ -52,6 +54,8 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 		gc = null;
 		renderer.dispose();
 		renderer = null;
+
+		super.tearDown();
 	}
 
 	/**
@@ -109,7 +113,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	 * This look and feel sets the font of the dialog and some setting can be
 	 * changed for testing.
 	 */
-	private class DialogLnf extends RienaDefaultLnf {
+	private static class DialogLnf extends RienaDefaultLnf {
 
 		@Override
 		protected void initFontDefaults() {
@@ -127,7 +131,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	 * This class changes the visibility of some method for testing and
 	 * implements the abstract methods.
 	 */
-	private class OpenDialogTitleBarRenderer extends DialogTitleBarRenderer {
+	private static class OpenDialogTitleBarRenderer extends DialogTitleBarRenderer {
 
 		@Override
 		public Rectangle paintTitle(GC gc) {

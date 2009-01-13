@@ -366,6 +366,10 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("B", getRidget().getSelection());
 	}
 
+	/**
+	 * Should be deleted when the deprecated method getSelectionObservable() is
+	 * removed.
+	 */
 	public void testGetSelectionObservable() {
 		ComboRidget ridget = getRidget();
 		StringManager aManager = new StringManager("A", "B", "C", "D", "E");

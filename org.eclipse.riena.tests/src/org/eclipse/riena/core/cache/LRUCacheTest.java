@@ -38,9 +38,9 @@ public class LRUCacheTest extends RienaTestCase {
 	 * test basic instantiation
 	 */
 	public void testInstantiate() {
-		genericCache.put("test", new Integer(2));
+		genericCache.put("test", Integer.valueOf(2));
 		assertNotNull("did not find put object in cache", genericCache.get("test"));
-		assertTrue("object in cache has incorrect value", genericCache.get("test").equals(new Integer(2)));
+		assertTrue("object in cache has incorrect value", genericCache.get("test").equals(Integer.valueOf(2)));
 		genericCache.clear();
 	}
 
@@ -48,7 +48,7 @@ public class LRUCacheTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testTimeout() throws Exception {
-		genericCache.put("test", new Integer(3));
+		genericCache.put("test", Integer.valueOf(3));
 		genericCache.setTimeout(500);
 		Thread.sleep(100);
 		assertNotNull("did not find put object in cache", genericCache.get("test"));
@@ -63,11 +63,11 @@ public class LRUCacheTest extends RienaTestCase {
 	public void testPutMultiple() throws Exception {
 		genericCache3 = new LRUCache<Integer, String>();
 		for (int i = 0; i < 30; i++) {
-			genericCache3.put(new Integer(i), "testvalue");
+			genericCache3.put(Integer.valueOf(i), "testvalue");
 		}
 
 		for (int i = 0; i < 30; i++) {
-			assertNotNull("object not found in cache", genericCache3.get(new Integer(i)));
+			assertNotNull("object not found in cache", genericCache3.get(Integer.valueOf(i)));
 		}
 		genericCache.clear();
 	}
@@ -164,10 +164,10 @@ public class LRUCacheTest extends RienaTestCase {
 		public void run() {
 			for (int i = 0; i < runs; i++) {
 				for (int k = lowRange; k <= highRange; k++) {
-					genericCache2.put(new Integer(k), this);
+					genericCache2.put(Integer.valueOf(k), this);
 				}
 				for (int k = lowRange; k <= highRange; k++) {
-					assertNotNull("object not found in cache", genericCache2.get(new Integer(k)));
+					assertNotNull("object not found in cache", genericCache2.get(Integer.valueOf(k)));
 				}
 			}
 		}

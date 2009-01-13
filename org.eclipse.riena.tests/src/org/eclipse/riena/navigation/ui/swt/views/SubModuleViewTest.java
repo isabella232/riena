@@ -61,7 +61,7 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	public void testCreateController() throws Exception {
 
-		assertTrue(subModuleNodeView.getController() instanceof SubModuleController);
+		assertNotNull(subModuleNodeView.getController());
 		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
 

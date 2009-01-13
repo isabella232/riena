@@ -38,7 +38,7 @@ public class ShellRidgetTest extends TestCase {
 	/**
 	 * This class reduces the visibility of some protected method for testing.
 	 */
-	private class MockShellRidget extends ShellRidget {
+	private static class MockShellRidget extends ShellRidget {
 
 		@Override
 		public boolean hasChanged(Object oldValue, Object newValue) {

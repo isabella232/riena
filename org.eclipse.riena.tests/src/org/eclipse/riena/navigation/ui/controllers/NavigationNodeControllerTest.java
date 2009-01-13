@@ -145,7 +145,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 	}
 
-	private class MyNavigationNodeContoller extends SubModuleController {
+	private static class MyNavigationNodeContoller extends SubModuleController {
 
 		public MyNavigationNodeContoller(ISubModuleNode navigationNode) {
 			super(navigationNode);
@@ -158,7 +158,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 	}
 
-	private class CompositeRidget extends AbstractCompositeRidget {
+	private static class CompositeRidget extends AbstractCompositeRidget {
 	}
 
 }

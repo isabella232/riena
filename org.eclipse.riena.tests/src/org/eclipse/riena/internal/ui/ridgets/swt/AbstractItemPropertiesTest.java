@@ -104,7 +104,7 @@ public class AbstractItemPropertiesTest extends TestCase {
 
 	}
 
-	private class ItemProperties extends AbstractItemProperties {
+	private static class ItemProperties extends AbstractItemProperties {
 
 		public ItemProperties(AbstractItemRidget ridget) {
 			super(ridget);

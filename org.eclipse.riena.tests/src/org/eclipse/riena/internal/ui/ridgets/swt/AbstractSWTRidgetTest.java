@@ -55,6 +55,8 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		Display display = Display.getDefault();
 
 		Realm realm = SWTObservables.getRealm(display);
@@ -88,6 +90,8 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		otherControl = null;
 		shell.dispose();
 		shell = null;
+
+		super.tearDown();
 	}
 
 	// protected methods

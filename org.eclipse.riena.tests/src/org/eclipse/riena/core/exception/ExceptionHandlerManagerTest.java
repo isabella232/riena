@@ -32,6 +32,7 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 
 	public void tearDown() throws Exception {
 		manager = null;
+		super.tearDown();
 	}
 
 	public void testAddHandler() {

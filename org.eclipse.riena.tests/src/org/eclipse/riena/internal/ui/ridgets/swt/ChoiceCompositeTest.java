@@ -31,6 +31,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		Display display = Display.getDefault();
 
 		shell = new Shell(display);
@@ -45,6 +47,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 		shell.dispose();
 		shell = null;
+
+		super.tearDown();
 	}
 
 	// testing methods

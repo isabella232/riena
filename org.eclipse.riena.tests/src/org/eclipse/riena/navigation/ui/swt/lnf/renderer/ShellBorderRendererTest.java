@@ -52,7 +52,7 @@ public class ShellBorderRendererTest extends TestCase {
 	/**
 	 * Look and Feel where it is possible to change the setting for padding.
 	 */
-	private class MyLnf extends RienaDefaultLnf {
+	private static class MyLnf extends RienaDefaultLnf {
 
 		public void removePadding() {
 			getSettingTable().remove(ILnfKeyConstants.TITLELESS_SHELL_PADDING);

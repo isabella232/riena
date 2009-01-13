@@ -164,7 +164,6 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.addMarker(marker2);
 
 		verifyPropertyChangeEvents();
-		newValue = ridget.getMarkers();
 		markers = ridget.getMarkers();
 		assertEquals(2, markers.size());
 		assertEquals(true, markers.contains(marker1));
@@ -206,7 +205,6 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.removeMarker(marker1);
 
 		verifyPropertyChangeEvents();
-		newValue = ridget.getMarkers();
 		Collection<?> markers = ridget.getMarkers();
 		assertEquals(1, markers.size());
 		assertEquals(true, markers.contains(marker2));

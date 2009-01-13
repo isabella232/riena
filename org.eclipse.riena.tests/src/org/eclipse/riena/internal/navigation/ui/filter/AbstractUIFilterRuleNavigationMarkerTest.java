@@ -79,7 +79,7 @@ public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 
 	}
 
-	private class MyUIFilterRuleNavigationMarker extends AbstractUIFilterRuleNavigationMarker {
+	private static class MyUIFilterRuleNavigationMarker extends AbstractUIFilterRuleNavigationMarker {
 
 		public MyUIFilterRuleNavigationMarker(String nodeId, IMarker marker) {
 			super(nodeId, marker);

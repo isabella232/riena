@@ -81,7 +81,7 @@ public class ModuleGroupViewTest extends TestCase {
 
 	}
 
-	private class MyLnF extends RienaDefaultLnf {
+	private static class MyLnF extends RienaDefaultLnf {
 
 		@Override
 		protected void initWidgetRendererDefaults() {

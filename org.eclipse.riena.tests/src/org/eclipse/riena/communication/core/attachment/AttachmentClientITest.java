@@ -239,11 +239,15 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void testSendAndDeleteFile() throws IOException {
 		File file = new File("/testattachments.txt");
-		OutputStream out = new FileOutputStream(file);
-		for (int i = 0; i < 200; i++) {
-			out.write(i);
+		OutputStream out = null;
+		try {
+			out = new FileOutputStream(file);
+			for (int i = 0; i < 200; i++) {
+				out.write(i);
+			}
+		} finally {
+			out.close();
 		}
-		out.close();
 
 		// attachService.sendFile(new Attachment(file));
 		boolean deleted = file.delete();
@@ -296,7 +300,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		}
 		inputStream.close();
 		assertTrue(file.exists());
-		file.delete();
+		assertTrue(file.delete());
 		assertFalse(file.exists());
 
 	}

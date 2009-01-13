@@ -15,7 +15,7 @@ package org.eclipse.riena.core.extension;
  */
 public class LazyThing implements ILazyThing {
 
-	public static boolean instantiated;
+	static boolean instantiated;
 
 	public LazyThing() {
 		instantiated = true;

@@ -211,7 +211,7 @@ public class EmbeddedTitleBarTest extends TestCase {
 	 * Mock of the class {@link EmbeddedTitleBar}. The mock notice if the method
 	 * {@code redraw()} was called.
 	 */
-	private class EmbeddedTitleBarMock extends EmbeddedTitleBar {
+	private static class EmbeddedTitleBarMock extends EmbeddedTitleBar {
 
 		private boolean redrawCalled;
 

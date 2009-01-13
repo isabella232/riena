@@ -567,7 +567,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
-	private class TestSubModuleNode extends SubModuleNode {
+	private static class TestSubModuleNode extends SubModuleNode {
 
 		private boolean allowsActivate;
 		private boolean allowsDeactivate;

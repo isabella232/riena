@@ -40,6 +40,8 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		mapper = new DefaultSwtControlRidgetMapper();
 		shell = new Shell();
 	}
@@ -49,6 +51,8 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 		mapper = null;
 		shell.dispose();
 		shell = null;
+
+		super.tearDown();
 	}
 
 	/**
@@ -125,7 +129,7 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 			condition2.setMatch(false);
 
 			try {
-				ridgetClass = mapper.getRidgetClass(widget);
+				mapper.getRidgetClass(widget);
 				fail();
 			} catch (BindingException bex) {
 				ok();
@@ -148,7 +152,7 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 		assertEquals(LabelRidget.class.getName(), ridget.getName());
 
 		try {
-			ridget = mapper.getRidgetClass(MockComposite.class);
+			mapper.getRidgetClass(MockComposite.class);
 			fail("BindingException expected");
 		} catch (BindingException e) {
 			ok("BindingException expected");

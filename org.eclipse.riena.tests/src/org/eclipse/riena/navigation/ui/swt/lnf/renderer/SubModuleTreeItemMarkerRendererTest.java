@@ -267,7 +267,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 
 	}
 
-	private class MockRenderer extends SubModuleTreeItemMarkerRenderer {
+	private static class MockRenderer extends SubModuleTreeItemMarkerRenderer {
 
 		private boolean paintMarkersCalled;
 

@@ -52,7 +52,7 @@ public class TestServer extends NanoHTTPD {
 		super.stop();
 		try {
 			new URL("http://localhost:" + port).openStream();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			// no action necessary
 		}
 	}

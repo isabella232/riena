@@ -250,10 +250,10 @@ public class SubApplicationViewTest extends TestCase {
 
 	}
 
-	private class MyContributionItem extends ContributionItem {
+	private static class MyContributionItem extends ContributionItem {
 	}
 
-	private class Controller extends AbstractRidgetController {
+	private static class Controller extends AbstractRidgetController {
 
 		@Override
 		public void configureRidgets() {

@@ -31,12 +31,16 @@ public class MenuRidgetTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		shell = new Shell();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		SwtUtilities.disposeWidget(shell);
+
+		super.tearDown();
 	}
 
 	/**
@@ -116,7 +120,7 @@ public class MenuRidgetTest extends RienaTestCase {
 	 * This class changes the visibility of some protected methods to public. So
 	 * the methods can be tested better.
 	 */
-	private class MyMenuRidget extends MenuRidget {
+	private static class MyMenuRidget extends MenuRidget {
 
 		@Override
 		public void checkUIControl(Object uiControl) {

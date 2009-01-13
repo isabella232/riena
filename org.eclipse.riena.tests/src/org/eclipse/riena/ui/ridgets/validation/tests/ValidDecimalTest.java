@@ -490,7 +490,7 @@ public class ValidDecimalTest extends RienaTestCase {
 
 	}
 
-	private class MyValidDecimal extends ValidDecimal {
+	private static class MyValidDecimal extends ValidDecimal {
 
 		@Override
 		public void setLocal(String[] localArgs) {

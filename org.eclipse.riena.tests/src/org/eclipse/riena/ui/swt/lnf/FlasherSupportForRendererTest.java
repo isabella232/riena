@@ -56,7 +56,7 @@ public class FlasherSupportForRendererTest extends TestCase {
 	/**
 	 * This renderer doesn't paint anything. It only collects the markers.
 	 */
-	private class MockRenderer extends AbstractLnfRenderer {
+	private static class MockRenderer extends AbstractLnfRenderer {
 
 		@Override
 		public void paint(GC gc, Object value) {

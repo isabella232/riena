@@ -83,7 +83,7 @@ public class ToolItemPropertiesTest extends TestCase {
 
 	}
 
-	private class MyToolItemProperties extends ToolItemProperties {
+	private static class MyToolItemProperties extends ToolItemProperties {
 
 		public MyToolItemProperties(ToolItemRidget ridget) {
 			super(ridget);

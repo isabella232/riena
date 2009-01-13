@@ -35,7 +35,7 @@ public class AbstractSWTWidgetRidgetTest extends TestCase {
 
 	}
 
-	private class MockRidget extends AbstractSWTWidgetRidget {
+	private static class MockRidget extends AbstractSWTWidgetRidget {
 
 		@Override
 		protected void bindUIControl() {

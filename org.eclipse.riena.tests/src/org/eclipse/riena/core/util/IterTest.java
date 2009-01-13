@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -171,6 +172,9 @@ public class IterTest extends RienaTestCase {
 				}
 
 				public Object next() {
+					if (i == strings.length) {
+						throw new NoSuchElementException();
+					}
 					return strings[i++];
 				}
 

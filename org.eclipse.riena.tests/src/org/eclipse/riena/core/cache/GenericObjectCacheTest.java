@@ -39,9 +39,9 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 * test basic instantiation
 	 */
 	public void testInstantiate() {
-		genericCache.put("test", new Integer(2));
+		genericCache.put("test", Integer.valueOf(2));
 		assertNotNull("did not find put object in cache", genericCache.get("test"));
-		assertTrue("object in cache has incorrect value", genericCache.get("test").equals(new Integer(2)));
+		assertTrue("object in cache has incorrect value", genericCache.get("test").equals(Integer.valueOf(2)));
 		genericCache.clear();
 	}
 
@@ -49,7 +49,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testTimeout() throws Exception {
-		genericCache.put("test", new Integer(3));
+		genericCache.put("test", Integer.valueOf(3));
 		genericCache.setTimeout(300);
 		Thread.sleep(100);
 		assertNotNull("did not find put object in cache", genericCache.get("test"));
@@ -64,11 +64,11 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	public void testPutMultiple() throws Exception {
 		IGenericObjectCache<Integer, String> genericCacheLocal = new GenericObjectCache<Integer, String>();
 		for (int i = 0; i < 30; i++) {
-			genericCacheLocal.put(new Integer(i), "testvalue");
+			genericCacheLocal.put(Integer.valueOf(i), "testvalue");
 		}
 
 		for (int i = 0; i < 30; i++) {
-			assertNotNull("object not found in cache", genericCacheLocal.get(new Integer(i)));
+			assertNotNull("object not found in cache", genericCacheLocal.get(Integer.valueOf(i)));
 		}
 		genericCacheLocal.clear();
 	}
@@ -135,7 +135,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 
 		int x = 1;
 		for (int i = 0; i < 5000; i++) {
-			genericCache3.put(new Integer(i).toString(), new StringBuffer(20000));
+			genericCache3.put(Integer.valueOf(i).toString(), new StringBuffer(20000));
 			//			System.out.print(".");
 			x++;
 			if (x > 100) {
@@ -198,10 +198,10 @@ public class GenericObjectCacheTest extends RienaTestCase {
 			try {
 				for (int i = 0; i < runs; i++) {
 					for (int k = lowRange; k <= highRange; k++) {
-						genericCache2.put(new Integer(k), this);
+						genericCache2.put(Integer.valueOf(k), this);
 					}
 					for (int k = lowRange; k <= highRange; k++) {
-						assertNotNull("object not found in cache", genericCache2.get(new Integer(k)));
+						assertNotNull("object not found in cache", genericCache2.get(Integer.valueOf(k)));
 					}
 				}
 			} catch (Exception e) {
@@ -211,7 +211,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 		}
 	}
 
-	class Status {
+	static class Status {
 		private Exception lastException;
 
 		/**

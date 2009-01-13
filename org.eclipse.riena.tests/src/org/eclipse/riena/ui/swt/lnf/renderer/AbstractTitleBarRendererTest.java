@@ -39,6 +39,8 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		shell = new Shell();
 		gc = new GC(shell);
 		renderer = new TitleBarRenderer();
@@ -52,6 +54,8 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		gc = null;
 		renderer.dispose();
 		renderer = null;
+
+		super.tearDown();
 	}
 
 	/**
@@ -120,7 +124,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	 * This class changes the visibility of some method for testing and
 	 * implements the abstract methods.
 	 */
-	private class TitleBarRenderer extends AbstractTitleBarRenderer {
+	private static class TitleBarRenderer extends AbstractTitleBarRenderer {
 
 		@Override
 		protected String[] getBtnHoverImageKeys() {
@@ -177,7 +181,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	 * This Look and Feel adds additional images. This images are used for
 	 * testing.
 	 */
-	private class TitleBarLnf extends RienaDefaultLnf {
+	private static class TitleBarLnf extends RienaDefaultLnf {
 
 		@Override
 		protected void initImageDefaults() {

@@ -146,7 +146,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	public void testSetGetHiddenInstance() {
 
 		String s = "Hallo";
-		ReflectionUtils.setHidden(s, "count", new Integer(2));
+		ReflectionUtils.setHidden(s, "count", Integer.valueOf(2));
 		Integer count = (Integer) ReflectionUtils.getHidden(s, "count");
 		assertEquals(2, count.intValue());
 		assertEquals(s, "Ha");

@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.riena.tests.TreeUtils;
@@ -684,7 +685,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * Compares two strings.
 	 */
-	private static final class StringComparator implements Comparator<Object> {
+	@SuppressWarnings("serial")
+	private static final class StringComparator implements Comparator<Object>, Serializable {
 		public int compare(Object o1, Object o2) {
 			String s1 = (String) o1;
 			String s2 = (String) o2;
@@ -695,7 +697,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * Comparets two Integers.
 	 */
-	private static final class IntegerComparator implements Comparator<Object> {
+	@SuppressWarnings("serial")
+	private static final class IntegerComparator implements Comparator<Object>, Serializable {
 		public int compare(Object o1, Object o2) {
 			Integer i1 = (Integer) o1;
 			Integer i2 = (Integer) o2;
