@@ -44,7 +44,7 @@ public final class TestCollector {
 	 *            if not null, only {@code TestCase}s within this package are
 	 *            collected
 	 * @param annotationClasses
-	 *            only {@code TestCase}s that have these annotations are
+	 *            only {@code TestCase}s that have one of these annotations are
 	 *            collected
 	 * @return
 	 */
@@ -63,7 +63,7 @@ public final class TestCollector {
 	 *            if not null, only {@code TestCase}s within this package are
 	 *            collected
 	 * @param annotationClasses
-	 *            only {@code TestCase}s that have these annotations are
+	 *            only {@code TestCase}s that have one of these annotations are
 	 *            collected
 	 * @param subPackages
 	 *            on true also collect sub-packages
@@ -101,7 +101,7 @@ public final class TestCollector {
 	 *            if not null, only {@code TestCase}s within this package are
 	 *            collected
 	 * @param annotationClasses
-	 *            only {@code TestCase}s that have these annotations are
+	 *            only {@code TestCase}s that have one of these annotations are
 	 *            collected
 	 * @param subPackages
 	 *            on true also collect sub-packages
@@ -112,13 +112,9 @@ public final class TestCollector {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
 		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, subPackages)) {
-			boolean collect = true;
+			boolean collect = false;
 			for (Class<? extends Annotation> annotationClass : annotationClasses) {
-				if (!testClass.isAnnotationPresent(annotationClass)) {
-					// Skip class with wrong annotation
-					collect = false;
-					continue;
-				}
+				collect = collect || testClass.isAnnotationPresent(annotationClass);
 			}
 			if (collect) {
 				testClasses.add(testClass);
@@ -141,8 +137,30 @@ public final class TestCollector {
 	public static List<Class<? extends TestCase>> collectUnmarked(final Bundle bundle, final Package withinPackage) {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
-		for (Class<? extends TestCase> testClass : collect(bundle, null, true)) {
+		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
 			if (testClass.getAnnotations().length == 0) {
+				testClasses.add(testClass);
+			}
+		}
+
+		return testClasses;
+	}
+
+	/**
+	 * Collect all badly named {@code TestCase}e within the given bundle.
+	 * 
+	 * @param bundle
+	 *            bundle to collect all {@code TestCase}s
+	 * @param withinPackage
+	 *            if not null, only {@code TestCase}s within this package are
+	 *            collected
+	 * @return
+	 */
+	public static List<Class<? extends TestCase>> collectBadlyNamed(final Bundle bundle, final Package withinPackage) {
+		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
+
+		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
+			if (!testClass.getName().endsWith("Test")) {
 				testClasses.add(testClass);
 			}
 		}
