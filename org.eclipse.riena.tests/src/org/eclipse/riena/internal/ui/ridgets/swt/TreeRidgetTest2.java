@@ -195,7 +195,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			ridget.setSelection((List<?>) null);
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 	}
 
@@ -234,14 +234,14 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			ridget.setSelection((Object) null);
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setSelection(Collections.EMPTY_LIST);
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -600,7 +600,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			ridget.setSelectionType(null);
 			fail();
 		} catch (RuntimeException npe) {
-			// expected
+			ok();
 		}
 	}
 
@@ -611,7 +611,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			ridget.setSelectionType(ISelectableRidget.SelectionType.NONE);
 			fail();
 		} catch (RuntimeException iae) {
-			// expected
+			ok();
 		}
 	}
 
@@ -723,7 +723,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			ridget.setSelectionType(ITreeRidget.SelectionType.NONE);
 			fail("IllegalArgumentException expected");
 		} catch (IllegalArgumentException expected) {
-			// ok, expected
+			ok("IllegalArgumentException expected");
 		}
 
 		assertEquals(ITreeRidget.SelectionType.MULTI, ridget.getSelectionType());
@@ -1183,7 +1183,7 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 	 * This method will fully expand the tree to ensure all tree items are
 	 * created.
 	 */
-	private final TreeItem getUIControlItem(int index) {
+	private TreeItem getUIControlItem(int index) {
 		getRidget().expandAll();
 		Tree control = getWidget();
 		switch (index) {
@@ -1195,8 +1195,9 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			return control.getItem(0).getItem(0).getItem(0);
 		case 3:
 			return control.getItem(0).getItem(1);
+		default:
+			throw new IndexOutOfBoundsException("index= " + index);
 		}
-		throw new IndexOutOfBoundsException("index= " + index);
 	}
 
 	/**
@@ -1211,8 +1212,9 @@ public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 			return rootChild1;
 		case 2:
 			return rootChild1Child1;
+		default:
+			throw new IndexOutOfBoundsException("index= " + index);
 		}
-		throw new IndexOutOfBoundsException("index= " + index);
 	}
 
 }

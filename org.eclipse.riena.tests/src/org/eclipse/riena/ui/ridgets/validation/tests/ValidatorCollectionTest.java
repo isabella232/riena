@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
@@ -23,7 +22,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
  * Tests for the MinLength rule.
  */
 @NonUITestCase
-public class ValidatorCollectionTest extends TestCase {
+public class ValidatorCollectionTest extends RienaTestCase {
 
 	private static final IValidator ALWAYS_SUCCEED_1 = new IValidator() {
 		public IStatus validate(final Object value) {
@@ -128,21 +127,21 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_THROW_EXCEPTION);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 		// two exception throwing rules
 		rule.add(ALWAYS_THROW_EXCEPTION);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 		rule = new ValidatorCollection();
@@ -150,11 +149,11 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_THROW_EXCEPTION);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 		rule = new ValidatorCollection();
@@ -162,11 +161,11 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_SUCCEED_1);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 		rule = new ValidatorCollection();
@@ -174,11 +173,11 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_THROW_EXCEPTION);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 		rule = new ValidatorCollection();
@@ -187,11 +186,11 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_FAIL_1);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 		rule = new ValidatorCollection();
@@ -200,11 +199,11 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_SUCCEED_1);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 		rule = new ValidatorCollection();
@@ -213,11 +212,11 @@ public class ValidatorCollectionTest extends TestCase {
 		rule.add(ALWAYS_THROW_EXCEPTION);
 		try {
 			rule.validate(new Object());
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		} catch (RuntimeException e) {
-			fail("expected a thrown " + ValidationFailure.class.getName());
+			fail("expected a thrown ValidationFailure instead");
 		}
 
 	}

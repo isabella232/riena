@@ -38,9 +38,9 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		printTestName();
 		try {
 			Inject.extension(null);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 	}
 
@@ -48,21 +48,21 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		printTestName();
 		try {
 			Inject.extension("id").useType(null);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").useType(IData.class).useType(IData.class);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").useType(String.class);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 	}
 
@@ -70,21 +70,21 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		printTestName();
 		try {
 			Inject.extension("id").expectingMinMax(2, 1);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").expectingMinMax(-1, 0);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").expectingMinMax(0, 0);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 	}
 
@@ -92,9 +92,9 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		printTestName();
 		try {
 			Inject.extension("id").into(null);
-			fail("That should not happen!");
-		} catch (RuntimeException e) {
-			// ok
+			fail("Exception expected");
+		} catch (RuntimeException expected) {
+			ok("Exception expected");
 		}
 	}
 

@@ -117,7 +117,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 			authenticationService.login("Test", creds);
 			fail("exception expected");
 		} catch (AuthenticationFailure e) {
-			// ok();
+			ok("exception expected");
 		}
 	}
 

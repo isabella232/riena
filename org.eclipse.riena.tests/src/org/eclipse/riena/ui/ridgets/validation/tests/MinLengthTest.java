@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -20,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * Tests for the MinLength rule.
  */
 @NonUITestCase
-public class MinLengthTest extends TestCase {
+public class MinLengthTest extends RienaTestCase {
 
 	/**
 	 * @throws Exception
@@ -33,7 +32,7 @@ public class MinLengthTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("ValidationFailure expected");
 		}
 
 		assertTrue(rule.validate("0123456789ab").isOK());

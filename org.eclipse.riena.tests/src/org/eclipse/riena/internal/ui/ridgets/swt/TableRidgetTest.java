@@ -101,7 +101,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 					new String[] { "First Name" });
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -117,7 +117,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 					new String[] { "First Name", "Last Name", "First - Last" });
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		// table has 1 default column, expected 3
@@ -125,7 +125,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			ridget.setUIControl(new Table(getShell(), SWT.NONE));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -147,7 +147,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			getRidget().bindToModel(manager, "persons", Person.class, properties1, headers1);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -287,7 +287,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			ridget.addDoubleClickListener(null);
 			fail();
 		} catch (RuntimeException npe) {
-			// expected
+			ok();
 		}
 
 		FTActionListener listener1 = new FTActionListener();
@@ -323,14 +323,14 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			ridget.setComparator(-1, comparator);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setComparator(2, comparator);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		ridget.setSortedAscending(true);
@@ -375,7 +375,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			ridget.setSortedColumn(2);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		assertEquals(-1, ridget.getSortedColumn());
@@ -414,14 +414,14 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			assertFalse(ridget.isColumnSortable(-1));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			assertFalse(ridget.isColumnSortable(2));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		for (int i = 0; i < 2; i++) {

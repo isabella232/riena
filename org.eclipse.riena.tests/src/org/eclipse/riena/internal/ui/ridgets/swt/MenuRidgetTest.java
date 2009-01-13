@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -26,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
  * Tests of the class {@link MenuRidget}.
  */
 @UITestCase
-public class MenuRidgetTest extends TestCase {
+public class MenuRidgetTest extends RienaTestCase {
 
 	private Shell shell;
 
@@ -50,7 +49,7 @@ public class MenuRidgetTest extends TestCase {
 			ridget.checkUIControl(null);
 			fail("BindingException was expected");
 		} catch (BindingException e) {
-			// expected
+			ok("BindingException was expected");
 		}
 
 		Menu menu = new Menu(shell);
@@ -59,13 +58,12 @@ public class MenuRidgetTest extends TestCase {
 			ridget.checkUIControl(menuItem);
 			fail("BindingException was expected");
 		} catch (BindingException e) {
-			// expected
+			ok("BindingException was expected");
 		}
 		menuItem = new MenuItem(menu, SWT.CASCADE);
 		try {
 			ridget.checkUIControl(menuItem);
 		} catch (BindingException e) {
-			// expected
 			fail("No BindingException was expected");
 		}
 

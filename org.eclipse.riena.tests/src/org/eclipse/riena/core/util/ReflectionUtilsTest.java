@@ -18,15 +18,14 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the ReflectionUtils class.
  */
 @NonUITestCase
-public class ReflectionUtilsTest extends TestCase {
+public class ReflectionUtilsTest extends RienaTestCase {
 
 	/**
 	 * Test creating an instance #1
@@ -92,7 +91,7 @@ public class ReflectionUtilsTest extends TestCase {
 			ReflectionUtils.invokeHidden(object, "setUrl", MalformedURLException.class, "filez://murks.at");
 			fail("MalformedURLException expected");
 		} catch (MalformedURLException expected) {
-			// ok, expected
+			ok("MalformedURLException expected");
 		}
 	}
 

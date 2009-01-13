@@ -74,7 +74,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setUIControl(getShell());
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -83,7 +83,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 			getRidget().addListener(null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -137,7 +137,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (IllegalArgumentException iae) {
-			// expected
+			ok();
 		}
 
 		ridget.setText(LABEL);

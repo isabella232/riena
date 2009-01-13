@@ -167,7 +167,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 			attachment.readAsStream();
 			fail();
 		} catch (RemoteFailure e) {
-			// ok();
+			ok();
 		}
 	}
 
@@ -181,7 +181,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 			trace(output);
 			fail();
 		} catch (RuntimeException e) {
-			// ok();
+			ok();
 		}
 	}
 
@@ -230,7 +230,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 			trace(attachment);
 			fail();
 		} catch (IOException e) {
-			// ok();
+			ok();
 		}
 	}
 

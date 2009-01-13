@@ -154,35 +154,35 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("abc");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("12102008");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("12/10/2008");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("12.ab");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 

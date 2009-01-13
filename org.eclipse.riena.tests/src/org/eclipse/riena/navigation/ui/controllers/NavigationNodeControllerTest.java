@@ -119,14 +119,14 @@ public class NavigationNodeControllerTest extends TestCase {
 		LabelRidget ridget2 = new LabelRidget();
 		controller.addRidget("0815", ridget2);
 
-		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", null);
+		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
 		assertNotNull(markers);
 
 		ErrorMarker errorMarker = new ErrorMarker();
 		ridget.addMarker(errorMarker);
 		OutputMarker outputMarker = new OutputMarker();
 		ridget2.addMarker(outputMarker);
-		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", null);
+		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
 		assertNotNull(markers);
 		assertEquals(2, markers.size());
 		assertTrue(markers.contains(errorMarker));
@@ -138,7 +138,7 @@ public class NavigationNodeControllerTest extends TestCase {
 		controller.addRidget("comp", compositeRidget);
 		MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget3.addMarker(mandatoryMarker);
-		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", null);
+		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
 		assertNotNull(markers);
 		assertEquals(3, markers.size());
 		assertTrue(markers.contains(mandatoryMarker));

@@ -126,7 +126,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 			VariableManagerUtil.substitute("${a}");
 			fail();
 		} catch (CoreException e) {
-			// ok
+			ok();
 		}
 	}
 }

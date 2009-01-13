@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -19,7 +18,7 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
  * Tests for the {@link NumericString} class.
  */
 @NonUITestCase
-public class NumericStringTest extends TestCase {
+public class NumericStringTest extends RienaTestCase {
 
 	public void testCreateNumericString() {
 		NumericString ns;
@@ -34,7 +33,7 @@ public class NumericStringTest extends TestCase {
 			new NumericString(null, false);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 

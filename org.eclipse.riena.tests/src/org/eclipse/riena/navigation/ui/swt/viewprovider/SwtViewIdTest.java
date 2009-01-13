@@ -10,16 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.viewprovider;
 
-import junit.framework.TestCase;
-
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test of the class <code>SwtViewId</code>.
  */
 @NonUITestCase
-public class SwtViewIdTest extends TestCase {
+public class SwtViewIdTest extends RienaTestCase {
 
 	/**
 	 * Tests the constructor <code>SwtViewId(String,String)</code>
@@ -45,21 +44,21 @@ public class SwtViewIdTest extends TestCase {
 			new SwtViewId(null);
 			fail("Exception expected");
 		} catch (RuntimeException e) {
-			// expected
+			ok("Exception expected");
 		}
 
 		try {
 			new SwtViewId("ab");
 			fail("Exception expected");
 		} catch (RuntimeException e) {
-			// expected
+			ok("Exception expected");
 		}
 
 		try {
 			new SwtViewId(null);
 			fail("Exception expected");
 		} catch (RuntimeException e) {
-			// expected
+			ok("Exception expected");
 		}
 
 	}

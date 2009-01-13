@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
 import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
@@ -24,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * @author Wanja Gayk
  */
 @NonUITestCase
-public class ValidEmailAddressTest extends TestCase {
+public class ValidEmailAddressTest extends RienaTestCase {
 
 	/**
 	 * @throws Exception
@@ -91,7 +90,7 @@ public class ValidEmailAddressTest extends TestCase {
 			new ValidEmailAddress().validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure e) {
-			// passed
+			ok("expected a thrown ValidationFailure");
 		} catch (final RuntimeException e) {
 			fail("expected a " + ValidationFailure.class.getName());
 		}

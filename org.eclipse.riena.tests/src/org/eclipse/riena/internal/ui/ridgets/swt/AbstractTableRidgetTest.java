@@ -182,7 +182,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(99);
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 
 		assertEquals(1, getUIControlSelectedRowCount());
@@ -195,7 +195,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(-1);
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 
 		assertEquals(1, getUIControlSelectedRowCount());
@@ -240,7 +240,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(new int[] { 1, -1, 2 });
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 	}
 
@@ -289,7 +289,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection((List<?>) null);
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 	}
 
@@ -330,28 +330,28 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(0);
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setSelection(new int[] { 0 });
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setSelection((Object) null);
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setSelection(Collections.EMPTY_LIST);
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -725,7 +725,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.getOption(-1);
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 
 		try {
@@ -733,7 +733,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.getOption(tooBig);
 			fail();
 		} catch (RuntimeException e) {
-			// expected
+			ok();
 		}
 
 		assertSame(person1, ridget.getOption(0));
@@ -765,7 +765,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelectionType(null);
 			fail();
 		} catch (RuntimeException npe) {
-			// expected
+			ok();
 		}
 	}
 
@@ -776,7 +776,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelectionType(ISelectableRidget.SelectionType.NONE);
 			fail();
 		} catch (RuntimeException iae) {
-			// expected
+			ok();
 		}
 	}
 

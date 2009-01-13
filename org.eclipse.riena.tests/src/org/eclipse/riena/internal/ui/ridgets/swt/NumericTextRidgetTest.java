@@ -111,21 +111,21 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			ridget.setText(localize("98.765,12"));
 			fail();
 		} catch (NumberFormatException nfe) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("abcd");
 			fail();
 		} catch (NumberFormatException nfe) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("a,bcd");
 			fail();
 		} catch (NumberFormatException nfe) {
-			// expected
+			ok();
 		}
 	}
 
@@ -153,14 +153,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			ridget.setText(localize("98.765,12"));
 			fail();
 		} catch (NumberFormatException nfe) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setText("abcd");
 			fail();
 		} catch (NumberFormatException nfe) {
-			// expected
+			ok();
 		}
 	}
 
@@ -173,7 +173,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (RuntimeException rex) {
-			// ok
+			ok();
 		}
 	}
 
@@ -254,14 +254,14 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			ridget.setUIControl(control);
 			fail();
 		} catch (RuntimeException exc) {
-			// expected;
+			ok();
 		}
 
 		try {
 			ridget.setUIControl(new Button(getShell(), SWT.PUSH));
 			fail();
 		} catch (RuntimeException exc) {
-			// expected;
+			ok();
 		}
 	}
 

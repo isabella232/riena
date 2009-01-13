@@ -90,14 +90,14 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setUIControl(getShell());
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setUIControl(new Combo(getShell(), SWT.NONE));
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -424,7 +424,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(999);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -477,7 +477,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(new Object());
 			fail();
 		} catch (BindingException bex) {
-			// expected
+			ok();
 		}
 	}
 

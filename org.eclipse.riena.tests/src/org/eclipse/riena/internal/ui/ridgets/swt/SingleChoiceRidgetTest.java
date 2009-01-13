@@ -336,13 +336,13 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			ridget.bindToModel(null, BeansObservables.observeValue(optionProvider, "selectedOption"));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(BeansObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -356,25 +356,25 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			ridget.bindToModel(null, "options", optionProvider, "selectedOption");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider, null, optionProvider, "selectedOption");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider, "options", null, "selectedOption");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider, "options", optionProvider, null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -388,7 +388,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			ridget.bindToModel(null, optionProvider.getOptionLabels(), optionProvider, "selectedOption");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), (List<String>) null, optionProvider, "selectedOption");
@@ -399,19 +399,19 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			ridget.bindToModel(optionProvider.getOptions(), new ArrayList<String>(), optionProvider, "selectedOption");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), null, "selectedOption");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider, null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 

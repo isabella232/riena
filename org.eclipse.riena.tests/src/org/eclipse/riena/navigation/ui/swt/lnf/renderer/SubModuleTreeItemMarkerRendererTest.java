@@ -14,12 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
@@ -40,7 +39,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * Tests of the class {@link SubModuleTreeItemMarkerRenderer}.
  */
 @UITestCase
-public class SubModuleTreeItemMarkerRendererTest extends TestCase {
+public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 
 	private Shell shell;
 	private GC gc;
@@ -83,21 +82,21 @@ public class SubModuleTreeItemMarkerRendererTest extends TestCase {
 			renderer.paint(gc, null);
 			fail("AssertionFailedException expected");
 		} catch (AssertionFailedException e) {
-			// ok, expected
+			ok("AssertionFailedException expected");
 		}
 
 		try {
 			renderer.paint(gc, shell);
 			fail("AssertionFailedException expected");
 		} catch (AssertionFailedException e) {
-			// ok, expected
+			ok("AssertionFailedException expected");
 		}
 
 		try {
 			renderer.paint(null, item);
 			fail("AssertionFailedException expected");
 		} catch (AssertionFailedException e) {
-			// ok, expected
+			ok("AssertionFailedException expected");
 		}
 
 		renderer.resetPaintMarkersCalled();

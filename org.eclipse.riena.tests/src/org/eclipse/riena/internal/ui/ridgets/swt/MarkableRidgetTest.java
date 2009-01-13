@@ -132,6 +132,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isOutputOnly());
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testAddMarker() throws Exception {
 		IMarkableRidget ridget = getRidget();
 		IMarker marker1 = new ErrorMarker();
@@ -198,7 +199,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		Collection newValue = new HashSet<IMarker>(ridget.getMarkers());
+		Collection<?> newValue = new HashSet<IMarker>(ridget.getMarkers());
 		newValue.remove(marker1);
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
@@ -206,7 +207,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 		newValue = ridget.getMarkers();
-		Collection markers = ridget.getMarkers();
+		Collection<?> markers = ridget.getMarkers();
 		assertEquals(1, markers.size());
 		assertEquals(true, markers.contains(marker2));
 
@@ -231,7 +232,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.removeAllMarkers();
 
 		verifyPropertyChangeEvents();
-		Collection markers = ridget.getMarkers();
+		Collection<?> markers = ridget.getMarkers();
 		assertEquals(0, markers.size());
 
 		expectNoPropertyChangeEvent();
@@ -248,11 +249,11 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		IMarkableRidget ridget = getRidget();
 		IMarker marker = new ErrorMarker();
 
-		Collection markers = ridget.getMarkers();
+		Collection<?> markers = ridget.getMarkers();
 		assertNotNull(markers);
 
 		ridget.addMarker(marker);
-		Collection markers2 = ridget.getMarkers();
+		Collection<?> markers2 = ridget.getMarkers();
 
 		assertEquals(0, markers.size());
 		assertEquals(1, markers2.size());

@@ -12,15 +12,14 @@ package org.eclipse.riena.core.util;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code ArraysUtil} class.
  */
 @NonUITestCase
-public class ArraysUtilTest extends TestCase {
+public class ArraysUtilTest extends RienaTestCase {
 
 	public void testCopy() {
 		String[] source = new String[] { "1", "2", "3", "4" };
@@ -37,7 +36,7 @@ public class ArraysUtilTest extends TestCase {
 			ArraysUtil.copyRange(null, 0, 2);
 			fail();
 		} catch (IllegalArgumentException e) {
-			// ok
+			ok();
 		}
 	}
 
@@ -47,7 +46,7 @@ public class ArraysUtilTest extends TestCase {
 			ArraysUtil.copyRange(source, 0, 5);
 			fail();
 		} catch (IllegalArgumentException e) {
-			// ok
+			ok();
 		}
 	}
 
@@ -56,7 +55,7 @@ public class ArraysUtilTest extends TestCase {
 			ArraysUtil.copyRange(null, 2, 0);
 			fail();
 		} catch (IllegalArgumentException e) {
-			// ok
+			ok();
 		}
 	}
 }

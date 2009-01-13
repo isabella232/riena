@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidCharacters;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -20,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * Tests for the ValidCharacters rule.
  */
 @NonUITestCase
-public class ValidCharactersTest extends TestCase {
+public class ValidCharactersTest extends RienaTestCase {
 
 	/**
 	 * @throws Exception
@@ -44,7 +43,7 @@ public class ValidCharactersTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		}
 
 		final ValidCharacters nullRule = new ValidCharacters(null);
@@ -62,7 +61,7 @@ public class ValidCharactersTest extends TestCase {
 			nullRule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		}
 
 	}

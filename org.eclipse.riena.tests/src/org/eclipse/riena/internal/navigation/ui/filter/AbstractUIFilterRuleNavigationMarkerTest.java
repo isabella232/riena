@@ -36,7 +36,7 @@ public class AbstractUIFilterRuleNavigationMarkerTest extends TestCase {
 		INavigationNode<?> node = new SubModuleNode();
 		node.setNodeId(new NavigationNodeId("id"));
 		IUIFilterRule attribute = new MyUIFilterRuleNavigationMarker("*/" + node.getNodeId().getTypeId(), null);
-		assertFalse(attribute.matches(null));
+		assertFalse(attribute.matches((Object[]) null));
 		assertFalse(attribute.matches(new Object()));
 		SubModuleNode sm = new SubModuleNode();
 		sm.setNodeId(new NavigationNodeId("id2"));

@@ -66,9 +66,9 @@ public class LoginModuleTest extends RienaTestCase {
 
 			secureContext.login();
 
-			assertTrue("login MUST fail since the password is wrong", true);
+			fail("login MUST fail since the password is wrong");
 		} catch (LoginException e) {
-			// expecting an exception
+			ok("expecting an exception");
 		}
 
 	}

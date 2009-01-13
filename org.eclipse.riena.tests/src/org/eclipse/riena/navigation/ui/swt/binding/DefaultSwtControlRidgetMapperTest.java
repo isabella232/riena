@@ -12,12 +12,11 @@ package org.eclipse.riena.navigation.ui.swt.binding;
 
 import java.beans.PropertyChangeListener;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
  * Tests of the class <code>DefaultSwtControlRidgetMapper</code>
  */
 @UITestCase
-public class DefaultSwtControlRidgetMapperTest extends TestCase {
+public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 
 	private DefaultSwtControlRidgetMapper mapper;
 	private Shell shell;
@@ -129,7 +128,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 				ridgetClass = mapper.getRidgetClass(widget);
 				fail();
 			} catch (BindingException bex) {
-				// expected: no matching widget
+				ok();
 			}
 		} finally {
 			widget.dispose();
@@ -152,6 +151,7 @@ public class DefaultSwtControlRidgetMapperTest extends TestCase {
 			ridget = mapper.getRidgetClass(MockComposite.class);
 			fail("BindingException expected");
 		} catch (BindingException e) {
+			ok("BindingException expected");
 		}
 
 	}

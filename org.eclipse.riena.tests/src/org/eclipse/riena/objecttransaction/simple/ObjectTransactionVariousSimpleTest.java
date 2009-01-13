@@ -498,8 +498,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 			extract.addCleanTransactedObject(kunde);
 			fail();
 		} catch (AssertionFailedException e) {
-			// ok(); expected exception TODO check if we should add that to
-			// RienaTestCase
+			ok();
 		}
 	}
 
@@ -628,7 +627,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 			objectTransaction2.importOnlyModifedObjectsFromExtract(extract);
 			fail();
 		} catch (InvalidTransactionFailure e) {
-			// ok(); expected behaviour TODO
+			ok();
 		}
 	}
 
@@ -663,7 +662,7 @@ public class ObjectTransactionVariousSimpleTest extends RienaTestCase {
 			objectTransaction2.importOnlyModifedObjectsFromExtract(extract);
 			fail();
 		} catch (InvalidTransactionFailure e) {
-			// ok(); expected behaviour TODO
+			ok();
 		}
 	}
 

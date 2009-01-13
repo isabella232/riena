@@ -36,11 +36,11 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
-	PersonNode[] roots;
-	PersonNode node1;
-	PersonNode node2;
-	PersonNode node3;
-	PersonNode node4;
+	private PersonNode[] roots;
+	private PersonNode node1;
+	private PersonNode node2;
+	private PersonNode node3;
+	private PersonNode node4;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -112,7 +112,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 					new String[] { "First Name" });
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -128,7 +128,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 					new String[] { "First Name", "Last Name", "First - Last" });
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		// tree has 1 default column, expected 3
@@ -136,7 +136,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			getRidget().setUIControl(new Tree(getShell(), SWT.NONE));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -158,7 +158,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			getRidget().bindToModel(roots, PersonNode.class, "children", "parent", properties1, headers1);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -235,14 +235,14 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setComparator(-1, comparator);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setComparator(2, comparator);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		ridget.setSortedAscending(true);
@@ -277,7 +277,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSortedColumn(2);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		assertEquals(-1, ridget.getSortedColumn());
@@ -316,14 +316,14 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			assertFalse(ridget.isColumnSortable(-1));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			assertFalse(ridget.isColumnSortable(2));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		for (int i = 0; i < 2; i++) {
@@ -661,7 +661,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * This method will fully expand the tree to ensure all tree items are
 	 * created.
 	 */
-	private final TreeItem getUIControlItem(int index) {
+	private TreeItem getUIControlItem(int index) {
 		getRidget().expandAll();
 		Tree control = getWidget();
 		switch (index) {
@@ -673,8 +673,9 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			return control.getItem(0).getItem(0).getItem(0);
 		case 3:
 			return control.getItem(0).getItem(1);
+		default:
+			throw new IndexOutOfBoundsException("index= " + index);
 		}
-		throw new IndexOutOfBoundsException("index= " + index);
 	}
 
 	// helping classes

@@ -60,7 +60,8 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 		IApplicationNode node = new ApplicationNode();
 		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
 		subNode1.setIcon("icon1");
-		List<SubApplicationNodeListener> listeners = ReflectionUtils.invokeHidden(subNode1, "getListeners", null);
+		List<SubApplicationNodeListener> listeners = ReflectionUtils.invokeHidden(subNode1, "getListeners",
+				(Object[]) null);
 		assertNotNull(listeners);
 		assertTrue(listeners.isEmpty());
 		node.addChild(subNode1);
@@ -69,7 +70,7 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
 
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", null);
+		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 		assertNotNull(items);
 		assertEquals(2, items.size());
 		assertEquals("sub1", items.get(0).getLabel());
@@ -77,7 +78,7 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 		assertEquals("icon1", items.get(0).getIcon());
 		assertEquals("icon2", items.get(1).getIcon());
 
-		listeners = ReflectionUtils.invokeHidden(subNode1, "getListeners", null);
+		listeners = ReflectionUtils.invokeHidden(subNode1, "getListeners", (Object[]) null);
 		assertNotNull(listeners);
 		assertFalse(listeners.isEmpty());
 		assertEquals(1, listeners.size());
@@ -125,7 +126,7 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 		SubApplicationNode node = new SubApplicationNode();
 		SubApplicationItem item = new SubApplicationItem(switcher, node);
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", null);
+		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 
 		Point point = new Point(0, 0);
 		SubApplicationItem retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { point });

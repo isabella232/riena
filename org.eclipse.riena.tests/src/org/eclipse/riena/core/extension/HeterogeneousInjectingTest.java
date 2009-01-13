@@ -26,10 +26,8 @@ public class HeterogeneousInjectingTest extends RienaTestCase {
 	private IPreferencesDesc[] prefs;
 	private static final String PREFERENCES = "org.eclipse.core.runtime.preferences";
 
-	{
-		// If you want printing remove the comments below:
-		// setPrint(true);
-	}
+	// If you want printing enable the comment below:
+	// setPrint(true);
 
 	public void update(IPreferencesDesc[] prefs) {
 		this.prefs = prefs;

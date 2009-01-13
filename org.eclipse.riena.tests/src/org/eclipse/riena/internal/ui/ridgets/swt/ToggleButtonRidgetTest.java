@@ -190,7 +190,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 			ridget.addListener(null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -207,7 +207,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (IllegalArgumentException iae) {
-			// expected
+			ok();
 		}
 
 		ridget.setText(LABEL);

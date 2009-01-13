@@ -65,7 +65,7 @@ public class AbstractViewBindingDelegateTest extends TestCase {
 		 * @param propertyStrategy
 		 * @param mapper
 		 */
-		public MyViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper mapper) {
+		public MyViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
 			super(propertyStrategy, mapper);
 		}
 

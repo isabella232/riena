@@ -152,12 +152,12 @@ public class TreeNodeTest extends TestCase {
 		return PropertyChangeEventEquals.eqPropertyChangeEvent(propertyChangeEvent);
 	}
 
-	private final void expectNoPropertyChangeEvent() {
+	private void expectNoPropertyChangeEvent() {
 		EasyMock.reset(propertyChangeListenerMock);
 		EasyMock.replay(propertyChangeListenerMock);
 	}
 
-	private final void expectPropertyChangeEvents(PropertyChangeEvent... propertyChangeEvents) {
+	private void expectPropertyChangeEvents(PropertyChangeEvent... propertyChangeEvents) {
 		EasyMock.reset(propertyChangeListenerMock);
 		for (PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
 			propertyChangeListenerMock.propertyChange(createArgumentMatcher(propertyChangeEvent));
@@ -165,11 +165,11 @@ public class TreeNodeTest extends TestCase {
 		EasyMock.replay(propertyChangeListenerMock);
 	}
 
-	private final void expectPropertyChangeEvent(Object bean, String propertyName, Object oldValue, Object newValue) {
+	private void expectPropertyChangeEvent(Object bean, String propertyName, Object oldValue, Object newValue) {
 		expectPropertyChangeEvents(new PropertyChangeEvent(bean, propertyName, oldValue, newValue));
 	}
 
-	private final void verifyPropertyChangeEvents() {
+	private void verifyPropertyChangeEvents() {
 		EasyMock.verify(propertyChangeListenerMock);
 	}
 

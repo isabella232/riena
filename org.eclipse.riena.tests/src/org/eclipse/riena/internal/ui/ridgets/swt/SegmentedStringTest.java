@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 
@@ -19,7 +18,7 @@ import org.eclipse.riena.ui.ridgets.IDateTextRidget;
  * Tests for the {@link SegmentedString} class.
  */
 @NonUITestCase
-public class SegmentedStringTest extends TestCase {
+public class SegmentedStringTest extends RienaTestCase {
 
 	public void testCreateSegmentedString() {
 		SegmentedString ss;
@@ -44,7 +43,7 @@ public class SegmentedStringTest extends TestCase {
 			new SegmentedString("ddabcMM");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 

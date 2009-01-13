@@ -153,7 +153,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			ridget.addDoubleClickListener(null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		FTActionListener listener1 = new FTActionListener();
@@ -189,14 +189,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			ridget.setComparator(-1, comparator);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setComparator(1, comparator);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		int lastItemIndex = control.getItemCount() - 1;
@@ -223,14 +223,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			ridget.setSortedColumn(1);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.setSortedColumn(-2);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		assertEquals(-1, ridget.getSortedColumn());
@@ -264,14 +264,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			assertFalse(ridget.isColumnSortable(-1));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			assertFalse(ridget.isColumnSortable(1));
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		assertFalse(ridget.isColumnSortable(0));
@@ -292,7 +292,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			ridget.setColumnSortable(0, true);
 			fail();
 		} catch (UnsupportedOperationException uoe) {
-			// expected
+			ok();
 		}
 	}
 
@@ -392,7 +392,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			ridget.setMoveableColumns(true);
 			fail();
 		} catch (UnsupportedOperationException ex) {
-			// expected
+			ok();
 		}
 	}
 

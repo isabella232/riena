@@ -132,7 +132,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (IllegalArgumentException iae) {
-			// expected
+			ok();
 		}
 	}
 

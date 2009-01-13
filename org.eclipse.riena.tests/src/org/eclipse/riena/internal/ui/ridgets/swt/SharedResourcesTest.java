@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -22,7 +21,7 @@ import org.eclipse.swt.widgets.Display;
  * @see Activator#getSharedColor(Display, String)
  */
 @NonUITestCase
-public class SharedResourcesTest extends TestCase {
+public class SharedResourcesTest extends RienaTestCase {
 
 	public void testSharedColors() {
 		Display display = Display.getDefault();
@@ -43,21 +42,21 @@ public class SharedResourcesTest extends TestCase {
 			Activator.getSharedColor(null, SharedColors.COLOR_FLASH_ERROR);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			Activator.getSharedColor(display, "does_not_exist");
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			Activator.getSharedColor(display, null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 }

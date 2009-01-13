@@ -63,6 +63,31 @@ public abstract class RienaTestCase extends TestCase {
 		this.context = Activator.getDefault().getContext();
 	}
 
+	/**
+	 * A counterpart to Assert.fail() that may be invoked to indicate that
+	 * everything is fine and that the test should continue. May be used e.g. in
+	 * an otherwise empty catch block that handles an expected exception. In
+	 * this use case its advantages over a comment are that it allows a more
+	 * uniform way of documentation than the numerous variations of "// ignore"
+	 * and that it avoids a Checkstyle warning about the empty block.
+	 */
+	protected void ok() {
+		// nothing to do, everything is OK...
+	}
+
+	/**
+	 * A counterpart to Assert.fail(String) that may be invoked to indicate that
+	 * everything is fine and that the test should continue.
+	 * 
+	 * @see #ok()
+	 * 
+	 * @param message
+	 *            A message explaining why nothing is wrong.
+	 */
+	protected void ok(String message) {
+		ok();
+	}
+
 	/*
 	 * @see junit.framework.TestCase#setUp()
 	 */

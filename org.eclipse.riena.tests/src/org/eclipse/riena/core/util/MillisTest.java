@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test the {@code Milli} class.
  */
 @NonUITestCase
-public class MillisTest extends TestCase {
+public class MillisTest extends RienaTestCase {
 
 	public void testSeconds() {
 		assertEquals(1000, Millis.seconds(1));
@@ -41,7 +40,7 @@ public class MillisTest extends TestCase {
 			Millis.valueOf(null);
 			fail();
 		} catch (IllegalArgumentException e) {
-			// ok
+			ok();
 		}
 	}
 

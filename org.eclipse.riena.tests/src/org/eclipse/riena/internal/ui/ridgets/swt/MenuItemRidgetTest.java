@@ -84,7 +84,7 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (IllegalArgumentException iae) {
-			// expected
+			ok();
 		}
 
 		ridget.setText(LABEL);

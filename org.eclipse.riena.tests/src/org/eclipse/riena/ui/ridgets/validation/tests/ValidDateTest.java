@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -20,7 +19,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * Tests for the ValidDate rule.
  */
 @NonUITestCase
-public class ValidDateTest extends TestCase {
+public class ValidDateTest extends RienaTestCase {
 
 	/**
 	 * Checks for validity of an input string against the date format DDMMYYYY
@@ -104,7 +103,7 @@ public class ValidDateTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected thrown ValidationFailure.");
 		} catch (final ValidationFailure e) {
-			// passed
+			ok("expected thrown ValidationFailure.");
 		} catch (final RuntimeException e) {
 			fail("expected ValidationFailure instead of " + e.getClass().getName());
 		}

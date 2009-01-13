@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -36,9 +38,6 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -1144,7 +1143,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 			ridget.setText(null);
 			fail();
 		} catch (RuntimeException rex) {
-			// ok
+			ok();
 		}
 	}
 

@@ -123,7 +123,7 @@ public class AuthorizationServiceITest extends RienaTestCase {
 			// assertTrue(foundCustomers.length > 0);
 			// assertTrue(foundCustomers[0].getLastName().equals("Solo"));
 		} catch (AccessControlException ex) {
-			// expected exception
+			ok("expected exception");
 		}
 
 		as.logout();

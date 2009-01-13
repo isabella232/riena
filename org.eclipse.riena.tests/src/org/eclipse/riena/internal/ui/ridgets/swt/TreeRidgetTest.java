@@ -104,7 +104,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 					ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
@@ -112,28 +112,28 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 					ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.bindToModel(roots, ITreeNode.class, null, ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, null, ITreeNode.PROPERTY_VALUE);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		try {
 			ridget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, null);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 	}
 
@@ -350,7 +350,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			ridget.addDoubleClickListener(null);
 			fail();
 		} catch (RuntimeException npe) {
-			// expected
+			ok();
 		}
 
 		FTActionListener listener1 = new FTActionListener();
@@ -406,7 +406,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * This method will fully expand the tree to ensure all tree items are
 	 * created.
 	 */
-	private final TreeItem getUIControlItem(int index) {
+	private TreeItem getUIControlItem(int index) {
 		getRidget().expandAll();
 		Tree control = getWidget();
 		switch (index) {
@@ -418,8 +418,9 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			return control.getItem(0).getItem(0).getItem(0);
 		case 3:
 			return control.getItem(0).getItem(1);
+		default:
+			throw new IndexOutOfBoundsException("index= " + index);
 		}
-		throw new IndexOutOfBoundsException("index= " + index);
 	}
 
 }

@@ -14,7 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.easymock.MockControl;
+import org.easymock.EasyMock;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -26,7 +26,6 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 public class ByteArrayDataSourceTest extends RienaTestCase {
 
 	private IDataSource dataSourceMock;
-	private MockControl dataSourceControl;
 	private final static String NAME = "Test";
 
 	/**
@@ -37,16 +36,12 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	}
 
 	private void setUpDataSourceMock(int length) throws Exception {
-		dataSourceControl = MockControl.createControl(IDataSource.class);
-		dataSourceMock = (IDataSource) dataSourceControl.getMock();
+		dataSourceMock = EasyMock.createMock(IDataSource.class);
 
-		dataSourceMock.getName();
-		dataSourceControl.setReturnValue(NAME);
+		EasyMock.expect(dataSourceMock.getName()).andReturn(NAME);
+		EasyMock.expect(dataSourceMock.getInputStream()).andReturn(getInputStream(length));
 
-		dataSourceMock.getInputStream();
-		dataSourceControl.setReturnValue(getInputStream(length));
-
-		dataSourceControl.replay();
+		EasyMock.replay(dataSourceMock);
 	}
 
 	private InputStream getInputStream(int length) {
@@ -61,8 +56,8 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	protected void tearDown() throws Exception {
-		if (dataSourceControl != null) {
-			dataSourceControl.verify();
+		if (dataSourceMock != null) {
+			EasyMock.verify(dataSourceMock);
 		}
 		super.tearDown();
 	}
@@ -115,7 +110,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 			dataSource.getOutputStream();
 			fail("Should throw an IOException!");
 		} catch (IOException ioe) {
-			// ok();
+			ok("IOException expected.");
 		}
 	}
 

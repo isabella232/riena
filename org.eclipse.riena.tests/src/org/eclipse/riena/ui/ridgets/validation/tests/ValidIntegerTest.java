@@ -15,8 +15,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.ridgets.validation.ValidInteger;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
@@ -25,7 +24,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
  * Tests for the ValidCharacters rule.
  */
 @NonUITestCase
-public class ValidIntegerTest extends TestCase {
+public class ValidIntegerTest extends RienaTestCase {
 
 	/**
 	 * @throws Exception
@@ -38,7 +37,7 @@ public class ValidIntegerTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		}
 
 		assertTrue(rule.validate(null).isOK());
@@ -88,7 +87,7 @@ public class ValidIntegerTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		}
 
 		assertTrue(rule.validate(null).isOK());
@@ -138,7 +137,7 @@ public class ValidIntegerTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		}
 
 		assertTrue(rule.validate(null).isOK());
@@ -188,7 +187,7 @@ public class ValidIntegerTest extends TestCase {
 			rule.validate(new Object());
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
-			// test passed
+			ok("expected a thrown ValidationFailure");
 		}
 
 		assertTrue(rule.validate(null).isOK());

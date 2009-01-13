@@ -13,15 +13,14 @@ package org.eclipse.riena.core.util;
 import java.util.Hashtable;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Test stuff from {@code PropertiesUtils}.
  */
 @NonUITestCase
-public class PropertiesUtilsTest extends TestCase {
+public class PropertiesUtilsTest extends RienaTestCase {
 
 	/**
 	 *
@@ -78,7 +77,7 @@ public class PropertiesUtilsTest extends TestCase {
 			PropertiesUtils.asMap("a=1;b=2", "a", "c");
 			fail();
 		} catch (IllegalArgumentException e) {
-			//ok
+			ok();
 		}
 	}
 
@@ -93,7 +92,7 @@ public class PropertiesUtilsTest extends TestCase {
 			PropertiesUtils.asMap(" a: 1 ;  b = 2   ");
 			fail();
 		} catch (IllegalArgumentException e) {
-			// ok
+			ok();
 		}
 	}
 
@@ -180,7 +179,7 @@ public class PropertiesUtilsTest extends TestCase {
 			PropertiesUtils.asArray("1,2\\n,3,\\\\,4");
 			fail();
 		} catch (IllegalArgumentException e) {
-			// ok
+			ok();
 		}
 	}
 

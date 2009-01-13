@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -23,6 +21,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -37,7 +36,7 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
  * Tests for the ValueBindingSupport.
  */
 @NonUITestCase
-public class ValueBindingSupportTest extends TestCase {
+public class ValueBindingSupportTest extends RienaTestCase {
 
 	private DefaultRealm realm;
 	private ValueBindingSupport valueBindingSupport;
@@ -253,7 +252,7 @@ public class ValueBindingSupportTest extends TestCase {
 			valueBindingSupport.addValidationRule(null, ValidationTime.ON_UPDATE_TO_MODEL);
 			fail();
 		} catch (RuntimeException rex) {
-			// expected
+			ok();
 		}
 
 		boolean result = valueBindingSupport.removeValidationRule(null);

@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.marker;
 
-import junit.framework.TestCase;
-
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
  * Tests of the class {@link AbstractMarker}.
  */
 @NonUITestCase
-public class AbstractMarkerTest extends TestCase {
+public class AbstractMarkerTest extends RienaTestCase {
 
 	/**
 	 * Test of the constructor {@code AbstractMarker()}.
@@ -77,9 +76,9 @@ public class AbstractMarkerTest extends TestCase {
 		marker.reset();
 		try {
 			marker.setAttribute(null, 12);
-			fail("Exception expectd");
+			fail("Exception expected");
 		} catch (Exception e) {
-			// OK
+			ok("Exception expected");
 		}
 		assertFalse(marker.isChangeFired());
 

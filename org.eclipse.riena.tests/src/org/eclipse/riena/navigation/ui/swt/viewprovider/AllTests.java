@@ -19,7 +19,10 @@ import org.eclipse.riena.tests.collect.NonGatherableTestCase;
  *
  */
 @NonGatherableTestCase("This is not a ´TestCase´!")
-public class AllTests {
+public final class AllTests {
+
+	private AllTests() {
+	}
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.eclipse.riena.navigation.ui.swt.viewprovider");

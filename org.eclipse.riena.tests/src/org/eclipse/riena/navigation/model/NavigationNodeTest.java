@@ -13,14 +13,13 @@ package org.eclipse.riena.navigation.model;
 import java.util.Collection;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -32,7 +31,7 @@ import org.eclipse.riena.ui.filter.IUIFilter;
  * Tests of the class {@code NavigationNode}.
  */
 @NonUITestCase
-public class NavigationNodeTest extends TestCase {
+public class NavigationNodeTest extends RienaTestCase {
 
 	/**
 	 * Tests the constructor of the
@@ -385,7 +384,7 @@ public class NavigationNodeTest extends TestCase {
 			node.addChild(null);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().isEmpty());
 		assertFalse(node.isChildAddedCalled());
@@ -406,7 +405,7 @@ public class NavigationNodeTest extends TestCase {
 			node.addChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node2, node.getChildren().get(0));
@@ -423,7 +422,7 @@ public class NavigationNodeTest extends TestCase {
 			node.addChild(node3);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node2, node.getChildren().get(0));
@@ -435,7 +434,7 @@ public class NavigationNodeTest extends TestCase {
 			node.addChild(node);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 
 		// add wrong kind of node 
@@ -443,7 +442,7 @@ public class NavigationNodeTest extends TestCase {
 			getParentNode(ApplicationNode.class).addChild(node);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 
 		// add correct kind of node 
@@ -482,7 +481,7 @@ public class NavigationNodeTest extends TestCase {
 			node.removeChild(null);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 2);
 		assertSame(node, node2.getParent());
@@ -512,7 +511,7 @@ public class NavigationNodeTest extends TestCase {
 			node.removeChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 1);
 		assertSame(node, node2.getParent());
@@ -542,7 +541,7 @@ public class NavigationNodeTest extends TestCase {
 			node.removeChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
 		} catch (NavigationModelFailure failure) {
-			// expected
+			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().isEmpty());
 		assertNull(node2.getParent());
@@ -570,7 +569,7 @@ public class NavigationNodeTest extends TestCase {
 			node.checkChildClass(null);
 			fail("Exception expected");
 		} catch (AssertionFailedException e) {
-			// expected
+			ok("Exception expected");
 		}
 
 	}
