@@ -98,7 +98,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 	}
 
 	public Customer[] findCustomerWithPermission(Customer searchedCustomer) {
-		if (!Sentinel.getInstance().checkAccess(new CustomersPermission("riena.sample", "find"))) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (!Sentinel.checkAccess(new CustomersPermission("riena.sample", "find"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			throw new AccessControlException("no rights for current user for this operation"); //$NON-NLS-1$
 		}
 		return findCustomer(searchedCustomer);
