@@ -12,25 +12,22 @@ package org.eclipse.riena.security;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.eclipse.riena.security.authorizationservice.FilePermissionStoreTest;
-import org.eclipse.riena.security.common.Callback2CredentialConverterTest;
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- * Tests all test cases within package:
- * 
- * org.eclipse.riena.core.exceptionmanager.test.internal
+ * Tests all test cases within this package.
  */
 @NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
+	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(FilePermissionStoreTest.class);
-		suite.addTestSuite(Callback2CredentialConverterTest.class);
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllManualTests.class.getPackage(),
+				true, NonUITestCase.class);
 	}
 
 }

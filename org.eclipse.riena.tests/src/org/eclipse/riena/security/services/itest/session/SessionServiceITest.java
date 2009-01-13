@@ -18,7 +18,7 @@ import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
-
+import org.eclipse.riena.tests.collect.IntegrationTestCase;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -27,6 +27,7 @@ import org.osgi.framework.ServiceReference;
  * area.
  * 
  */
+@IntegrationTestCase
 public class SessionServiceITest extends RienaTestCase {
 
 	private final static int LOOP_5 = 5;

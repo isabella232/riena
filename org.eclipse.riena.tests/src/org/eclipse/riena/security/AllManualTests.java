@@ -12,29 +12,22 @@ package org.eclipse.riena.security;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.eclipse.riena.security.authorizationservice.AuthorizationTest;
-import org.eclipse.riena.security.services.itest.authentication.AuthenticationClientITest;
-import org.eclipse.riena.security.services.itest.authentication.AuthenticationLoginModuleITest;
-import org.eclipse.riena.security.services.itest.authorization.AuthorizationServiceITest;
-import org.eclipse.riena.security.services.itest.session.SessionServiceITest;
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.ManualTestCase;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- * Tests all test cases within package:
- * 
- * org.eclipse.riena.core.exceptionmanager.test.internal
+ * Tests all manual test cases within this package.
  */
+@NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllManualTests extends TestCase {
 
+	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllManualTests.class.getName());
-		suite.addTestSuite(AuthenticationClientITest.class);
-		suite.addTestSuite(AuthenticationLoginModuleITest.class);
-		suite.addTestSuite(AuthorizationServiceITest.class);
-		suite.addTestSuite(SessionServiceITest.class);
-		suite.addTestSuite(AuthorizationTest.class);
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllManualTests.class.getPackage(),
+				true, ManualTestCase.class);
 	}
 
 }

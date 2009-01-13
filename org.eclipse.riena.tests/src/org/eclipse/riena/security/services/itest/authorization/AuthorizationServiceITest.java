@@ -13,6 +13,8 @@ package org.eclipse.riena.security.services.itest.authorization;
 import java.net.URL;
 import java.security.AccessControlException;
 
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.internal.tests.Activator;
@@ -23,14 +25,13 @@ import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
+import org.eclipse.riena.tests.collect.IntegrationTestCase;
 import org.osgi.framework.ServiceReference;
 
 /**
  * 
  */
+@IntegrationTestCase
 public class AuthorizationServiceITest extends RienaTestCase {
 
 	private IRemoteServiceRegistration authenticationService;

@@ -22,12 +22,13 @@ import org.eclipse.riena.security.common.BasicAuthenticationCallHook;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.tests.RienaTestCase;
-
+import org.eclipse.riena.tests.collect.IntegrationTestCase;
 import org.osgi.framework.ServiceRegistration;
 
 /**
  * 
  */
+@IntegrationTestCase
 public class BasicAuthenticationITest extends RienaTestCase {
 
 	private IRemoteServiceRegistration customerSearchRegistration;

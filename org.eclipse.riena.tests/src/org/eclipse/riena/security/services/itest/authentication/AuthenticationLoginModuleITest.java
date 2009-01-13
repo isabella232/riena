@@ -14,20 +14,21 @@ import java.net.URL;
 
 import javax.security.auth.login.LoginException;
 
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.authentication.callbackhandler.TestLocalCallbackHandler;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.tests.RienaTestCase;
-
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
+import org.eclipse.riena.tests.collect.IntegrationTestCase;
 
 /**
  * @author campo
  * 
  */
+@IntegrationTestCase
 public class AuthenticationLoginModuleITest extends RienaTestCase {
 
 	private IRemoteServiceRegistration authenticationService;
