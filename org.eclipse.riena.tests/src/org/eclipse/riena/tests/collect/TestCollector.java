@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.tests.collect;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -22,7 +21,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.eclipse.riena.core.util.Iter;
-import org.objectweb.asm.ClassReader;
 import org.osgi.framework.Bundle;
 
 /**
@@ -52,9 +50,31 @@ public final class TestCollector {
 	 */
 	public static TestSuite createTestSuiteWith(final Bundle bundle, final Package withinPackage,
 			final Class<? extends Annotation>... annotationClasses) {
+		return createTestSuiteWith(bundle, withinPackage, false, annotationClasses);
+	}
+
+	/**
+	 * Create a {@code TestSuite} that contains all test case in the given
+	 * bundle.
+	 * 
+	 * @param bundle
+	 *            bundle to collect all {@code TestCase}s
+	 * @param withinPackage
+	 *            if not null, only {@code TestCase}s within this package are
+	 *            collected
+	 * @param annotationClasses
+	 *            only {@code TestCase}s that have these annotations are
+	 *            collected
+	 * @param subPackages
+	 *            on true also collect sub-packages
+	 * @return
+	 */
+	public static TestSuite createTestSuiteWith(final Bundle bundle, final Package withinPackage, boolean subPackages,
+			final Class<? extends Annotation>... annotationClasses) {
 		StringBuilder bob = new StringBuilder("Tests within bundle '").append(bundle.getSymbolicName()).append(
 				"' and package '");
-		bob.append(withinPackage == null ? "all" : withinPackage.getName()).append("'");
+		bob.append(withinPackage == null ? "all" : withinPackage.getName()).append("'").append(" recursive '").append(
+				subPackages).append("'");
 		bob.append(" and restricted to '");
 		for (Class<? extends Annotation> annotationClass : annotationClasses) {
 			bob.append(annotationClass.getSimpleName()).append(PLUS);
@@ -66,7 +86,7 @@ public final class TestCollector {
 		}
 		bob.append("'.");
 		TestSuite suite = new TestSuite(bob.toString());
-		for (Class<? extends TestCase> clazz : collectWith(bundle, withinPackage, annotationClasses)) {
+		for (Class<? extends TestCase> clazz : collectWith(bundle, withinPackage, subPackages, annotationClasses)) {
 			suite.addTestSuite(clazz);
 		}
 		return suite;
@@ -83,13 +103,15 @@ public final class TestCollector {
 	 * @param annotationClasses
 	 *            only {@code TestCase}s that have these annotations are
 	 *            collected
+	 * @param subPackages
+	 *            on true also collect sub-packages
 	 * @return
 	 */
 	public static List<Class<? extends TestCase>> collectWith(final Bundle bundle, final Package withinPackage,
-			final Class<? extends Annotation>... annotationClasses) {
+			boolean subPackages, final Class<? extends Annotation>... annotationClasses) {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
-		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage)) {
+		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage, subPackages)) {
 			boolean collect = true;
 			for (Class<? extends Annotation> annotationClass : annotationClasses) {
 				if (!testClass.isAnnotationPresent(annotationClass)) {
@@ -119,7 +141,7 @@ public final class TestCollector {
 	public static List<Class<? extends TestCase>> collectUnmarked(final Bundle bundle, final Package withinPackage) {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 
-		for (Class<? extends TestCase> testClass : collect(bundle, withinPackage)) {
+		for (Class<? extends TestCase> testClass : collect(bundle, null, true)) {
 			if (testClass.getAnnotations().length == 0) {
 				testClasses.add(testClass);
 			}
@@ -136,10 +158,13 @@ public final class TestCollector {
 	 * @param withinPackage
 	 *            if not null, only {@code TestCase}s within this package are
 	 *            collected
+	 * @param subPackages
+	 *            on true also collect sub-packages
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Class<? extends TestCase>> collect(final Bundle bundle, final Package withinPackage) {
+	public static List<Class<? extends TestCase>> collect(final Bundle bundle, final Package withinPackage,
+			boolean subPackages) {
 		List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
 		Enumeration<URL> allClasses = bundle.findEntries("", "*.class", true);
 		for (URL entryURL : Iter.able(allClasses)) {
@@ -148,7 +173,7 @@ public final class TestCollector {
 				// Skip inner classes
 				continue;
 			}
-			String className = getClassName(entryURL);
+			String className = getClassName(bundle, entryURL);
 			if (className == null) {
 				trace("Could not get class name from ", url);
 				continue;
@@ -160,8 +185,16 @@ public final class TestCollector {
 				System.out.println(e);
 				continue;
 			}
-			if (withinPackage != null && !className.equals(withinPackage.getName() + "." + clazz.getSimpleName())) {
-				continue;
+			if (withinPackage != null) {
+				if (subPackages) {
+					if (!(className.startsWith(withinPackage.getName()) && className.endsWith(clazz.getSimpleName()))) {
+						continue;
+					}
+				} else {
+					if (!className.equals(withinPackage.getName() + "." + clazz.getSimpleName())) {
+						continue;
+					}
+				}
 			}
 			if (!TestCase.class.isAssignableFrom(clazz)) {
 				continue;
@@ -177,15 +210,30 @@ public final class TestCollector {
 		return testClasses;
 	}
 
-	private static String getClassName(URL entryURL) {
-		try {
-			ClassReader classReader = new ClassReader(entryURL.openStream());
-			return classReader.getClassName().replace('/', '.');
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+	private static int skipChars = -1;
 
+	private static String getClassName(Bundle bundle, URL entryURL) {
+		String entry = entryURL.toExternalForm();
+		entry = entry.replace(".class", "").replace('/', '.');
+		if (skipChars == -1) {
+			// Brute force detecting of how many chars we have to skip to find a class within the url
+			String name = entry;
+			int dot = 0;
+			while ((dot = name.indexOf('.', 1)) != -1) {
+				name = name.substring(dot + 1);
+				try {
+					bundle.loadClass(name);
+					skipChars = entry.indexOf(name);
+					return name;
+				} catch (ClassNotFoundException e) {
+					//go on
+				} catch (NoClassDefFoundError e) {
+					//go on
+				}
+			}
+		}
+		String name = entry.substring(skipChars);
+		return name;
 	}
 
 	private static void trace(Object... objects) {
@@ -195,4 +243,5 @@ public final class TestCollector {
 		}
 		System.err.println(bob.toString());
 	}
+
 }
