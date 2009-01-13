@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.security.client.startup;
 
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
 import org.eclipse.riena.core.RienaActivator;
@@ -26,9 +25,6 @@ public class Activator extends RienaActivator {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.riena.security.client.startup"; //$NON-NLS-1$
-
-	private IRemoteServiceRegistration authenticationReg;
-	private IRemoteServiceRegistration authorizationReg;
 
 	// The shared instance
 	private static Activator plugin;
@@ -51,15 +47,14 @@ public class Activator extends RienaActivator {
 		Activator.plugin = this;
 
 		try {
-			authenticationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
+			new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
 					"http://${riena.securehostname}/hessian/AuthenticationService", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (ProxyAlreadyRegisteredFailure e) {
 			// do nothing, can happen if other projects already registered this remote service
 		}
 
 		try {
-			authorizationReg = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class,
-					"hessian", //$NON-NLS-1$
+			new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class, "hessian", //$NON-NLS-1$
 					"http://${riena.securehostname}/hessian/AuthorizationServiceWS", context); //$NON-NLS-1$
 		} catch (ProxyAlreadyRegisteredFailure e) {
 			// do nothing, can happen if other projects already registered this remote service
@@ -74,12 +69,6 @@ public class Activator extends RienaActivator {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		if (authenticationReg != null) {
-			authenticationReg.unregister();
-		}
-		if (authorizationReg != null) {
-			authorizationReg.unregister();
-		}
 		Activator.plugin = null;
 		super.stop(context);
 	}
