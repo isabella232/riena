@@ -41,8 +41,11 @@ public final class RienaLocations {
 		Location installLocation = Platform.getInstallLocation();
 		Assert.isLegal(installLocation != null, "Platform.getInstallLocation() should not be null."); //$NON-NLS-1$
 		File dataArea = new File(installLocation.getURL().getFile(), RIENA_NAME);
-		dataArea.mkdirs();
-		Assert.isLegal(dataArea.isDirectory(), "data area is not a directory or does not exist."); //$NON-NLS-1$
+		if (dataArea.isDirectory()) {
+			return dataArea;
+		}
+		boolean created = dataArea.mkdirs();
+		Assert.isLegal(created, "data area is not a directory or does not exist."); //$NON-NLS-1$
 		return dataArea;
 	}
 
@@ -59,8 +62,11 @@ public final class RienaLocations {
 		String symbolicName = bundle.getSymbolicName();
 		Assert.isLegal(StringUtils.isGiven(symbolicName), "no symbolic name for bundle."); //$NON-NLS-1$
 		File dataArea = new File(getDataArea(), symbolicName);
-		dataArea.mkdirs();
-		Assert.isLegal(dataArea.isDirectory(), "data area is not a directory or does not exist."); //$NON-NLS-1$
+		if (dataArea.isDirectory()) {
+			return dataArea;
+		}
+		boolean created = dataArea.mkdirs();
+		Assert.isLegal(created, "data area is not a directory or does not exist."); //$NON-NLS-1$
 		return dataArea;
 	}
 }
