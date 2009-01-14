@@ -90,8 +90,6 @@ public class Birth {
 
 		this.birthPlace = birthPlace;
 
-		System.out.println(this.birthPlace);
-
 	} // end method
 
 } // end class
