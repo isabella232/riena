@@ -7,7 +7,8 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.ui.filter,
  org.eclipse.riena.ui.filter.extension;x-friends:="org.eclipse.riena.tests",
- org.eclipse.riena.ui.filter.impl
+ org.eclipse.riena.ui.filter.impl,
+ org.eclipse.riena.ui.internal;x-internal:=true
 Require-Bundle: org.eclipse.riena.core;bundle-version="1.0.0",
  org.eclipse.riena.ui.core;bundle-version="1.0.0",
  org.eclipse.core.databinding;bundle-version="1.1.0",

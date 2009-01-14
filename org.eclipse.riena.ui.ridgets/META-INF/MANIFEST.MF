@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.filter;bundle-version="1.0.0",
  org.eclipse.riena.ui.common
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.riena.ui.ridgets,
+Export-Package: org.eclipse.riena.internal.ui.ridgets;x-internal:=true,
+ org.eclipse.riena.ui.ridgets,
  org.eclipse.riena.ui.ridgets.controller,
  org.eclipse.riena.ui.ridgets.databinding,
  org.eclipse.riena.ui.ridgets.listener,

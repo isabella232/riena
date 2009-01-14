@@ -7,4 +7,5 @@ Bundle-Activator: org.eclipse.riena.internal.ui.common.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.riena.ui.common
+Export-Package: org.eclipse.riena.internal.ui.common;x-internal:=true,
+ org.eclipse.riena.ui.common
