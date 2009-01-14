@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Common Beans Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.riena.beans.common
-Bundle-Version: 1.0.0.M6
+Bundle-Version: 1.0.0.RC1
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.riena.beans.common
 Require-Bundle: org.eclipse.riena.core,
