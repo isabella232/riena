@@ -158,15 +158,27 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	// protected methods
 	////////////////////
 
+	/**
+	 * The default implementation can update the visibility of a
+	 * java.awt.Component.
+	 * <p>
+	 * Subclasses should override, to update the visibility of their UI controls
+	 * in an appropriate way.
+	 */
 	protected void updateVisible() {
-		// TODO [ev] javadoc + bugzilla
 		if (uiControl != null && uiControl instanceof Component) {
 			((Component) uiControl).setVisible(this.visible);
 		}
 	}
 
+	/**
+	 * Does nothing by default.
+	 * <p>
+	 * Subclasses should override to update the tooltip(s) of their controls in
+	 * an appropriate way.
+	 */
 	protected void updateToolTipText() {
-		// TODO [ev] javadoc + comment
+		// does nothing
 	}
 
 }
