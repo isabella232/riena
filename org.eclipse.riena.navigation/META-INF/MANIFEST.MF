@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.core;bundle-version="1.0.0",
  org.eclipse.riena.ui.filter;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.riena.navigation,
+Export-Package: org.eclipse.riena.internal.navigation;x-internal:=true,
+ org.eclipse.riena.navigation,
  org.eclipse.riena.navigation.common,
  org.eclipse.riena.navigation.listener,
  org.eclipse.riena.navigation.model
