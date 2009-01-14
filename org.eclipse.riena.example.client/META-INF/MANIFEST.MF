@@ -18,3 +18,16 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.service.log;version="1.3.0"
+Export-Package: com.swtdesigner;x-internal:=true,
+ org.eclipse.riena.example.client.application,
+ org.eclipse.riena.example.client.communication,
+ org.eclipse.riena.example.client.controllers,
+ org.eclipse.riena.example.client.exceptionhandler,
+ org.eclipse.riena.example.client.handler,
+ org.eclipse.riena.example.client.model,
+ org.eclipse.riena.example.client.navigation.model,
+ org.eclipse.riena.example.client.splashHandlers,
+ org.eclipse.riena.example.client.views,
+ org.eclipse.riena.internal.example.client;x-internal:=true,
+ org.eclipse.riena.internal.example.client.beans;x-internal:=true,
+ org.eclipse.riena.internal.example.client.security.authentication;x-internal:=true

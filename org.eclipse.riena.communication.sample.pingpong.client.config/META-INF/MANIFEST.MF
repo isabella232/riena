@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.riena.communication.sample.pingpong.common,
  org.eclipse.riena.communication.core;bundle-version="1.0.0",
  org.eclipse.riena.communication.factory.hessian;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.eclipse.riena.internal.communication.sample.pingpong.client.config;x-internal:=true

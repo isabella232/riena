@@ -11,3 +11,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.demo.common;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: com.swtdesigner;x-internal:=true,
+ org.eclipse.riena.demo.client.customer.application,
+ org.eclipse.riena.demo.client.customer.controllers,
+ org.eclipse.riena.demo.client.customer.model,
+ org.eclipse.riena.demo.client.customer.navigation.model,
+ org.eclipse.riena.demo.client.customer.views,
+ org.eclipse.riena.demo.client.handler,
+ org.eclipse.riena.internal.demo.customer.client;x-internal:=true

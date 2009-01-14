@@ -17,7 +17,10 @@ Export-Package: org.eclipse.riena.communication.core,
  org.eclipse.riena.communication.core.progressmonitor,
  org.eclipse.riena.communication.core.publisher,
  org.eclipse.riena.communication.core.ssl;x-friends:="org.eclipse.riena.tests",
- org.eclipse.riena.communication.core.util
+ org.eclipse.riena.communication.core.util,
+ org.eclipse.riena.internal.communication.core;x-internal:=true,
+ org.eclipse.riena.internal.communication.core.factory;x-internal:=true,
+ org.eclipse.riena.internal.communication.core.registry;x-internal:=true
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: com.caucho.hessian
 Require-Bundle: org.eclipse.core.runtime,

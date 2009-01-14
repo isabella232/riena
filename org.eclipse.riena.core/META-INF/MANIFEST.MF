@@ -13,6 +13,7 @@ Import-Package: org.apache.log4j;resolution:=optional,
  org.osgi.service.log;version="1.3.0"
 Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.core.cache,
+ org.eclipse.riena.core.cache.internal,
  org.eclipse.riena.core.exception,
  org.eclipse.riena.core.extension,
  org.eclipse.riena.core.injector,
@@ -20,9 +21,11 @@ Export-Package: org.eclipse.riena.core,
  org.eclipse.riena.core.marker,
  org.eclipse.riena.core.service,
  org.eclipse.riena.core.util,
- org.eclipse.riena.internal.core.exceptionhandler,
- org.eclipse.riena.internal.core.exceptionmanager,
- org.eclipse.riena.internal.core.ignore;x-internal:=true
+ org.eclipse.riena.internal.core;x-internal:=true,
+ org.eclipse.riena.internal.core.exceptionhandler;x-internal:=true,
+ org.eclipse.riena.internal.core.exceptionmanager;x-internal:=true,
+ org.eclipse.riena.internal.core.ignore;x-internal:=true,
+ org.eclipse.riena.internal.core.logging;x-internal:=true
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.equinox.log;bundle-version="1.1.0",
  org.eclipse.core.variables;bundle-version="3.2.0"
