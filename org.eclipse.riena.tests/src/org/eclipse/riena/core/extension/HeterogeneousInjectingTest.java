@@ -39,7 +39,7 @@ public class HeterogeneousInjectingTest extends RienaTestCase {
 
 	public void testPreferencesInjectionHeterogeneousSpecific() {
 		printTestName();
-		Inject.extension(PREFERENCES).heterogeneous().into(this).specific().doNotTrack().andStart(getContext());
+		Inject.extension(PREFERENCES).heterogeneous().into(this).specific().andStart(getContext());
 
 		assertNotNull(prefs);
 		assertTrue(prefs.length > 1);
@@ -74,7 +74,7 @@ public class HeterogeneousInjectingTest extends RienaTestCase {
 
 	public void testPreferencesInjectionHeterogeneousUnspecific() {
 		printTestName();
-		Inject.extension(PREFERENCES).heterogeneous().into(this).doNotTrack().andStart(getContext());
+		Inject.extension(PREFERENCES).heterogeneous().into(this).andStart(getContext());
 
 		assertNotNull(prefs);
 		assertEquals(1, prefs.length);

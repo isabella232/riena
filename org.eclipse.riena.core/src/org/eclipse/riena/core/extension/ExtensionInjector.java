@@ -119,18 +119,6 @@ public class ExtensionInjector {
 	}
 
 	/**
-	 * Explicitly forbid tracking of changes of the extensions.
-	 * 
-	 * @return itself
-	 */
-	@Deprecated
-	public ExtensionInjector doNotTrack() {
-		Assert.isTrue(!started, "ExtensionInjector already started."); //$NON-NLS-1$
-		// track = false;
-		return this;
-	}
-
-	/**
 	 * Explicitly force specific injection, i.e. the injected types reflect that
 	 * they are contributed from different extensions. Otherwise (which is the
 	 * default) it will not be differentiated.
