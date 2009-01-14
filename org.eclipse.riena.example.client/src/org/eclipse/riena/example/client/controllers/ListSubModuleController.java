@@ -15,8 +15,8 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.eclipse.riena.example.client.model.Person;
-import org.eclipse.riena.example.client.model.PersonManager;
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;

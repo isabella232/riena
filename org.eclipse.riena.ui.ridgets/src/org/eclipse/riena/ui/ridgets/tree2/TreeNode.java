@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
 /**
  * A TreeNode wraps an arbitary object value to make it usable in the tree

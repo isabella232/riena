@@ -17,12 +17,12 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.beans.common.BeanPropertyAccessor;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
 import org.osgi.service.log.LogService;
 
 /**

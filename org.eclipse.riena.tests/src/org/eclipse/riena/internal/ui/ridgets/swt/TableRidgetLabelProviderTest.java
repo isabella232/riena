@@ -21,9 +21,9 @@ import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 

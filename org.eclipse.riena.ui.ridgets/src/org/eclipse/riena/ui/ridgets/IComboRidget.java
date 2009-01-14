@@ -12,7 +12,7 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.ui.ridgets.util.IComboEntryFactory;
+import org.eclipse.riena.ui.common.IComboEntryFactory;
 
 /**
  * @author Frank Schepp

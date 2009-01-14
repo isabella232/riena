@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -29,7 +30,6 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 
 /**

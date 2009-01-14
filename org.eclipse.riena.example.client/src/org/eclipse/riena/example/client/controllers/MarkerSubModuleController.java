@@ -17,7 +17,8 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.riena.example.client.model.Person;
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.model.TestBean;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonFactory;
@@ -38,7 +39,6 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
-import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**

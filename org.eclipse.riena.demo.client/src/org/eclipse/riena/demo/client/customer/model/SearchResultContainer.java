@@ -13,8 +13,8 @@ package org.eclipse.riena.demo.client.customer.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.demo.customer.common.CustomerRecordOverview;
-import org.eclipse.riena.ui.ridgets.util.beans.AbstractBean;
 
 /**
  * SearchResultContainer

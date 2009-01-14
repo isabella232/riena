@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.util;
+package org.eclipse.riena.ui.common;
 
 /**
  * Interface to be implemented by classes, which may be used by a

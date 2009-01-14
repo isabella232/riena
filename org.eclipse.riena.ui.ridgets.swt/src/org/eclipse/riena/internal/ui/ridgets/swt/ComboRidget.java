@@ -32,10 +32,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.common.IComboEntryFactory;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.util.IComboEntryFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 

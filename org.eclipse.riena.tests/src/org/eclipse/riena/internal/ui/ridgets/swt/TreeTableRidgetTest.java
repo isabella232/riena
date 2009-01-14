@@ -14,6 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
@@ -23,7 +25,6 @@ import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
-import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

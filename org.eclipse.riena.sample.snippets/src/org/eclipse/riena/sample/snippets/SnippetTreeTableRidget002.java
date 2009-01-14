@@ -12,9 +12,9 @@ package org.eclipse.riena.sample.snippets;
 
 import java.util.Comparator;
 
+import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.ridgets.util.beans.WordNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;

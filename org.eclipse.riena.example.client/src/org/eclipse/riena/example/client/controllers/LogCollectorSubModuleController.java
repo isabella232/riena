@@ -11,6 +11,8 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.beans.common.StringBean;
+import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.Activator;
@@ -20,8 +22,6 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.util.beans.StringBean;
-import org.eclipse.riena.ui.ridgets.util.beans.StringManager;
 
 /**
  * Controller for the {@link ComboSubModuleView} example.

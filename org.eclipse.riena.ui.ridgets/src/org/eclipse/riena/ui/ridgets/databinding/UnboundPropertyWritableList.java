@@ -19,8 +19,8 @@ import java.util.List;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.beans.common.BeanPropertyAccessor;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-import org.eclipse.riena.ui.ridgets.util.beans.BeanPropertyAccessor;
 
 public class UnboundPropertyWritableList extends WritableList implements IUnboundPropertyObservable {
 

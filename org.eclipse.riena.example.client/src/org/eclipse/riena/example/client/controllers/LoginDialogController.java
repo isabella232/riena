@@ -17,6 +17,7 @@ import javax.security.auth.login.LoginException;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
+import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.internal.example.client.Activator;
@@ -26,7 +27,6 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.ridgets.util.beans.IntegerBean;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 
 /**

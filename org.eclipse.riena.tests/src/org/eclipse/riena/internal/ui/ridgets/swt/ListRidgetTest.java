@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.tests.UITestHelper;

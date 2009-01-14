@@ -24,6 +24,8 @@ import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;

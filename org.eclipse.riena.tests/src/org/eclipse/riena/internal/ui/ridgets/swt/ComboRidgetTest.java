@@ -18,11 +18,13 @@ import java.util.Iterator;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonManager;
+import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.util.beans.StringManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
