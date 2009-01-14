@@ -372,6 +372,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	 * Should be deleted when the deprecated method getSelectionObservable() is
 	 * removed.
 	 */
+	@SuppressWarnings("deprecation")
 	public void testGetSelectionObservable() {
 		ComboRidget ridget = getRidget();
 		StringManager aManager = new StringManager("A", "B", "C", "D", "E");

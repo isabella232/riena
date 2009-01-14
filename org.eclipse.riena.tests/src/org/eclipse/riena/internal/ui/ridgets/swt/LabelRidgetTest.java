@@ -287,9 +287,11 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Test method getUIControlObservable().
+	 * Test deprecated method getRidgetObservable(). When this method is removed
+	 * the test may be removed too.
 	 */
-	public void testGetUIControlObservable() throws Exception {
+	@SuppressWarnings("deprecation")
+	public void testGetRidgetObservable() throws Exception {
 		ILabelRidget ridget = getRidget();
 		IObservableValue ridgetObservable = ridget.getRidgetObservable();
 
@@ -311,8 +313,10 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Test method getValueType().
+	 * Test method getValueType(). When the deprecated method
+	 * getRidgetObservable() is removed this test may be removed too.
 	 */
+	@SuppressWarnings("deprecation")
 	public void testGetValueType() throws Exception {
 		ILabelRidget ridget = getRidget();
 		assertEquals(String.class, ridget.getRidgetObservable().getValueType());
