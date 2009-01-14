@@ -9,6 +9,7 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.factory.hessian,org.eclipse.riena.communication.factory.hessian"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.publisher,org.eclipse.riena.communication.publisher"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.publisher.hessian,org.eclipse.riena.communication.publisher.hessian"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.beans.common,org.eclipse.riena.beans.common"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.core,org.eclipse.riena.core"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/com.caucho.hessian,com.caucho.hessian"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.sample.pingpong.client,org.eclipse.riena.communication.sample.pingpong.client"/>
