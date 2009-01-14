@@ -11,12 +11,13 @@
 package org.eclipse.riena.core.cache;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.cache.internal.ICacheEntry;
 import org.eclipse.riena.core.cache.internal.SimpleCacheEntry;
 import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.service.log.LogService;
 
 /**
@@ -106,8 +107,10 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 		}
 	}
 
+	@IgnoreFindBugs(value = "IS2_INCONSISTENT_SYNC", justification = "not that critical, just statisitcs")
 	public String getStatistic() {
-		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statTimeout; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return name + "Hit / NotFound / Miss / Timeout " //$NON-NLS-1$
+				+ statHit + " / " + statNotFound + " / " + statTimeout; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -150,13 +153,13 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	/**
 	 * @see org.eclipse.riena.core.cache.IGenericObjectCache#setMinimumSize(int)
 	 */
-	public void setMinimumSize(int minSize) {
+	public synchronized void setMinimumSize(int minSize) {
 		LOGGER.log(LogService.LOG_INFO, "setMinSize = " + minSize); //$NON-NLS-1$
 		minimumSize = minSize;
 		lruMap = new LRUHashMap<K, V>(minSize);
 	}
 
-	public int getMinimumSize() {
+	public synchronized int getMinimumSize() {
 		return minimumSize;
 	}
 
@@ -164,7 +167,9 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 	 * HashMap that implements a Last Recently Used schema on a LinkedHashMap
 	 */
 	public static class LRUHashMap<K, V> extends LinkedHashMap<K, ICacheEntry<K, V>> {
+
 		private int minSize;
+		private static final long serialVersionUID = 6499327049035525641L;
 
 		/**
 		 * @param minSize
@@ -174,10 +179,13 @@ public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 			this.minSize = minSize;
 		}
 
-		/**
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.util.LinkedHashMap#removeEldestEntry(java.util.Map.Entry)
 		 */
-		public boolean removeEldestEntry(Map.Entry eldest) {
+		@Override
+		protected boolean removeEldestEntry(Entry<K, ICacheEntry<K, V>> eldest) {
 			return size() > minSize;
 		}
 	}

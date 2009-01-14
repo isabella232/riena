@@ -28,9 +28,6 @@ import org.osgi.service.log.LogService;
  */
 public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 
-	private static final String SPIRIT_CORE_BASE_INTERNAL_REFERENCE_QUEUE = "spirit.core.base.internal.ReferenceQueue"; //$NON-NLS-1$
-	private static final String SPIRIT_CORE_BASE_INTERNAL_HARD_LINKS = "spirit.core.base.internal.HardLinks"; //$NON-NLS-1$
-	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class);
 	private HashMap<K, ICacheEntry<K, V>> cacheEntries;
 	/** timeout in milliseconds * */
 	private long timeout;
@@ -45,6 +42,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	private int statTimeout;
 	private static int statDisplayCount;
 	private String name = "Cache : "; //$NON-NLS-1$
+	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class);
 
 	/**
 	 * Constructor.
@@ -123,8 +121,8 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	}
 
 	public String getStatistic() {
-		return name + "Hit / NotFound / Miss / Timeout " + statHit + " / " + statNotFound + " / " + statMiss + " / " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				+ statTimeout;
+		return name + "Hit / NotFound / Miss / Timeout " //$NON-NLS-1$
+				+ statHit + " / " + statNotFound + " / " + statMiss + " / " + statTimeout;//$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 	}
 
 	private void touchValue(V value) {
@@ -229,18 +227,15 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 
 	private void processQueue() {
 		LOGGER.log(LogService.LOG_DEBUG, "processQueue"); //$NON-NLS-1$
-		SoftReference<V> ref;
-		ICacheEntry<K, V> tempEntry;
-		K key = null;
+		SoftReference<ICacheEntry<K, V>> ref;
 		int count = 0;
 		synchronized (cacheEntries) {
-			while ((ref = (SoftReference<V>) queue.poll()) != null) {
-				tempEntry = (ICacheEntry<K, V>) ref.get();
-				if (tempEntry instanceof ICacheEntry) {
-					key = tempEntry.getKey();
+			while ((ref = (SoftReference<ICacheEntry<K, V>>) queue.poll()) != null) {
+				ICacheEntry<K, V> entry = ref.get();
+				if (entry != null) {
+					cacheEntries.remove(entry.getKey());
+					count++;
 				}
-				cacheEntries.remove(key);
-				count++;
 			}
 		}
 		if (count > 0) {
