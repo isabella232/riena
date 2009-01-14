@@ -92,8 +92,10 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
-	 * Test method getSelectionObservable().
+	 * Test method getSelectionObservable(). This test may be deleted when this
+	 * deprecated method is removed.
 	 */
+	@SuppressWarnings("deprecation")
 	public void testGetSelectionObservable() {
 		ISingleChoiceRidget ridget = getRidget();
 
@@ -561,7 +563,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ISingleChoiceRidget ridget = getRidget();
 		ChoiceComposite control = getWidget();
 
-		List<String> values = Arrays.asList(new String("male"), new String("female"));
+		List<String> values = Arrays.asList("male", "female");
 		List<String> labels = Arrays.asList("Man", "Woman");
 		Person personEntity = new Person("Max", "Mustermann");
 		personEntity.setGender("male");
