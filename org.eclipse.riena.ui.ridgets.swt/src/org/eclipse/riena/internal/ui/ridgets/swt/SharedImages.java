@@ -14,6 +14,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Provides access to a set of shared images. The images can be accessed using
@@ -61,7 +63,12 @@ public final class SharedImages {
 		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.gif"); //$NON-NLS-1$
 		if (Activator.getDefault() != null) { // running as plug-in
-			reg.put(IMG_ERROR_DECO, LnfManager.getLnf().getImage(ILnfKeyConstants.ERROR_MARKER_ICON));
+			Image lnfImage = LnfManager.getLnf().getImage(ILnfKeyConstants.ERROR_MARKER_ICON);
+			// create an independent copy so we can keep using it, even if  
+			// lnfImage is disposed by the LnfManager. Note: if the L&F is  
+			// changed later, we 'll still keep using our copy.
+			Image copy = new Image(lnfImage.getDevice(), lnfImage, SWT.IMAGE_COPY);
+			reg.put(IMG_ERROR_DECO, copy);
 		} else {
 			doPut(reg, IMG_ERROR_DECO, SharedImages.class, "errorMarker.png"); //$NON-NLS-1$
 		}
