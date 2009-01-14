@@ -144,11 +144,6 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		return selectionObservable.getValue();
 	}
 
-	@Deprecated
-	public IObservableValue getSelectionObservable() {
-		return selectionObservable;
-	}
-
 	public void setSelection(Object candidate) {
 		assertIsBoundToModel();
 		if (candidate != null && !optionsObservable.contains(candidate)) {

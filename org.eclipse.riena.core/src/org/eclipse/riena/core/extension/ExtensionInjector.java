@@ -93,18 +93,6 @@ public class ExtensionInjector {
 	}
 
 	/**
-	 * Define the bind method name.<br>
-	 * If not given 'update' will be assumed.
-	 * 
-	 * @param bindMethodName
-	 * @return itself
-	 */
-	@Deprecated
-	public ExtensionInjector bind(final String bindMethodName) {
-		return update(bindMethodName);
-	}
-
-	/**
 	 * Define the update method name.<br>
 	 * If not given 'update' will be assumed.
 	 * 

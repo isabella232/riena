@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
@@ -18,18 +17,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
  * Ridget with a value.
  */
 public interface IValueRidget extends IRidget {
-
-	/**
-	 * @return The observable value of the Ridget. Can be used as target value
-	 *         in a custom binding with a model value.
-	 * 
-	 * @see DataBindingContext#bindValue(IObservableValue, IObservableValue,
-	 *      org.eclipse.core.databinding.UpdateValueStrategy,
-	 *      org.eclipse.core.databinding.UpdateValueStrategy)
-	 * 
-	 * @deprecated use BeansObservables.observeValue(bean, propertyName)
-	 */
-	IObservableValue getRidgetObservable();
 
 	/**
 	 * Creates a default binding between the Ridget value and the specified

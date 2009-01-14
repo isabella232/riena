@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.StringManager;
@@ -366,30 +365,6 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(null);
 
 		assertEquals("B", getRidget().getSelection());
-	}
-
-	/**
-	 * Should be deleted when the deprecated method getSelectionObservable() is
-	 * removed.
-	 */
-	@SuppressWarnings("deprecation")
-	public void testGetSelectionObservable() {
-		ComboRidget ridget = getRidget();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
-		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
-		ridget.updateFromModel();
-
-		IObservableValue selectionObservable = getRidget().getSelectionObservable();
-
-		assertEquals(null, selectionObservable.getValue());
-
-		getWidget().select(1);
-
-		assertEquals("B", selectionObservable.getValue());
-
-		ridget.setUIControl(null);
-
-		assertEquals("B", selectionObservable.getValue());
 	}
 
 	public void testSetSelectionInt() {

@@ -27,6 +27,11 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 		valueBindingSupport.setMarkable(this);
 	}
 
+	/**
+	 * @return The observable value of the Ridget.
+	 */
+	abstract IObservableValue getRidgetObservable();
+
 	public void bindToModel(IObservableValue observableValue) {
 		valueBindingSupport.bindToModel(observableValue);
 	}

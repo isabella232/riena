@@ -78,11 +78,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		textValue = initialValue;
 	}
 
-	/**
-	 * @deprecated use BeansObservables.observeValue(ridget instance,
-	 *             ITextRidget.PROPERTY_TEXT);
-	 */
-	public IObservableValue getRidgetObservable() {
+	IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ITextRidget.PROPERTY_TEXT);
 	}
 

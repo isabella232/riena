@@ -92,21 +92,6 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	/**
-	 * Test method getSelectionObservable(). This test may be deleted when this
-	 * deprecated method is removed.
-	 */
-	@SuppressWarnings("deprecation")
-	public void testGetSelectionObservable() {
-		ISingleChoiceRidget ridget = getRidget();
-
-		assertNotNull(ridget.getSelectionObservable());
-
-		ridget.updateFromModel();
-
-		assertEquals(optionProvider.getSelectedOption(), ridget.getSelectionObservable().getValue());
-	}
-
-	/**
 	 * Test method updateFromModel().
 	 */
 	public void testUpdateFromModel() {

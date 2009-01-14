@@ -239,14 +239,6 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 		return result;
 	}
 
-	/**
-	 * @deprecated use BeansObservables.observeValue(this,
-	 *             IComboRidget.PROPERTY_SELECTION);
-	 */
-	public IObservableValue getSelectionObservable() {
-		return BeansObservables.observeValue(this, IComboRidget.PROPERTY_SELECTION);
-	}
-
 	public boolean isAddable() {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
@@ -254,10 +246,6 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
-	}
-
-	public boolean isEditable() {
-		throw new UnsupportedOperationException(); // TODO implement
 	}
 
 	public boolean isListMutable() {
@@ -269,10 +257,6 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 	}
 
 	public void setAddable(boolean addable) {
-		throw new UnsupportedOperationException(); // TODO implement
-	}
-
-	public void setEditable(boolean editable) {
 		throw new UnsupportedOperationException(); // TODO implement
 	}
 

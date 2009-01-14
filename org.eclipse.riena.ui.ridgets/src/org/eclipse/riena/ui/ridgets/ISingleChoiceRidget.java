@@ -19,15 +19,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
  * A single choice ridget that allows the selection of a single option.
  */
 public interface ISingleChoiceRidget extends IChoiceRidget {
-	/**
-	 * Return the observable value holding the selection.
-	 * 
-	 * @return the observable value.
-	 * 
-	 * @deprecated use BeansObservables.observeValue(this,
-	 *             IChoiceRidget.PROPERTY_SELECTION);
-	 */
-	IObservableValue getSelectionObservable();
 
 	/**
 	 * @param optionValues

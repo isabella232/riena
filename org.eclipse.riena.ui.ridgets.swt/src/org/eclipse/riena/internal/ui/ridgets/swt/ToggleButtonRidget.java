@@ -97,11 +97,7 @@ public class ToggleButtonRidget extends AbstractValueRidget implements IToggleBu
 		}
 	}
 
-	/**
-	 * @deprecated use BeansObservables.observeValue(ridget instance,
-	 *             IToggleButtonRidget.PROPERTY_SELECTED);
-	 */
-	public IObservableValue getRidgetObservable() {
+	IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
 	}
 

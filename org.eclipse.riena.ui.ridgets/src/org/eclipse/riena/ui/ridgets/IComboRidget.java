@@ -84,16 +84,6 @@ public interface IComboRidget extends IMarkableRidget {
 	IObservableList getObservableList();
 
 	/**
-	 * Return the observable value holding the selection.
-	 * 
-	 * @return the observable value.
-	 * 
-	 * @deprecated use BeansObservables.observeValue(this,
-	 *             IComboRidget.PROPERTY_SELECTION);
-	 */
-	IObservableValue getSelectionObservable();
-
-	/**
 	 * Return the current selection. Will return null if either nothing or the
 	 * "empty selection item" is selected.
 	 * 
@@ -144,30 +134,6 @@ public interface IComboRidget extends IMarkableRidget {
 	 *            The item that represents 'no selection'.
 	 */
 	void setEmptySelectionItem(Object emptySelectionItem);
-
-	/**
-	 * Return true if the receiver is editable. By default, a
-	 * <code>IComboRidget</code> is not editable.
-	 * 
-	 * @return true if the receiver is editable, otherwise false
-	 * @deprecated use isReadonly() instead
-	 */
-	boolean isEditable();
-
-	/**
-	 * Set the editability of the <code>IComboRidget</code> edit field. If the
-	 * edit field is editable arbitrary text can be entered into the entry field
-	 * - the text does need not to be an element of the
-	 * <code>IComboRidget</code> drop down list. Entering text not contained in
-	 * the <code>IComboRidget</code> drop down list will be added to the list if
-	 * and only if the <code>IComboRidget</code> is mutable
-	 * {@link IComboRidget#isListMutable()}.
-	 * 
-	 * @param editable
-	 *            true if the receiver is editable, otherwise false
-	 * @deprecated use setReadonly instead
-	 */
-	void setEditable(boolean editable);
 
 	/**
 	 * Return true if the receivers drop down list is mutable, ie items not yet
