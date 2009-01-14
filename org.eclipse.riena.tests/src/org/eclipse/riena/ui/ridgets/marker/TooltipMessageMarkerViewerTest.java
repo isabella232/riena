@@ -180,4 +180,52 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 
 	}
 
+	/**
+	 * Ensure a ridget's tooltip is preserved when adding it to the
+	 * tooltipMessageMarkerViewer
+	 */
+	public void testBug258540() {
+		TextRidget aRidget = new TextRidget();
+		Text aControl = new Text(shell, SWT.BORDER);
+		aRidget.setUIControl(aControl);
+		aRidget.setToolTipText("tooltip");
+
+		assertEquals("tooltip", aRidget.getToolTipText());
+		assertEquals("tooltip", aControl.getToolTipText());
+
+		tooltipMessageMarkerViewer.addRidget(aRidget);
+
+		assertEquals("tooltip", aRidget.getToolTipText());
+		assertEquals("tooltip", aControl.getToolTipText());
+	}
+
+	/**
+	 * Ensure a ridget's tooltip is preserved, when calling
+	 * ridget.setToolTipText(...) while the {@link TooltipMessageMarkerViewer}
+	 * is showing an error message.
+	 */
+	public void testBug258540_2() {
+		TextRidget aRidget = new TextRidget();
+		Text aControl = new Text(shell, SWT.BORDER);
+		aRidget.setUIControl(aControl);
+
+		tooltipMessageMarkerViewer.addRidget(aRidget);
+		aRidget.setToolTipText("tooltip");
+
+		assertEquals("tooltip", aRidget.getToolTipText());
+		assertEquals("tooltip", aControl.getToolTipText());
+
+		ErrorMessageMarker marker = new ErrorMessageMarker("errormessage");
+		aRidget.addMarker(marker);
+		aRidget.setToolTipText("tooltip2");
+
+		assertEquals("errormessage", aRidget.getToolTipText());
+		assertEquals("errormessage", aControl.getToolTipText());
+
+		aRidget.removeMarker(marker);
+
+		assertEquals("tooltip2", aRidget.getToolTipText());
+		assertEquals("tooltip2", aControl.getToolTipText());
+	}
+
 }

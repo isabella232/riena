@@ -18,8 +18,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 
 /**
  * Visualizes certain types of message markers by setting the tooltip of the
@@ -28,8 +30,8 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
-	private HashMap<IMarkableRidget, String> tooltipMessage = new LinkedHashMap<IMarkableRidget, String>();
-	private HashMap<IMarkableRidget, String> originalTooltipMessage = new LinkedHashMap<IMarkableRidget, String>();
+
+	private HashMap<IMarkableRidget, Tooltip> tooltips = new LinkedHashMap<IMarkableRidget, Tooltip>();
 
 	@Override
 	public void addRidget(IMarkableRidget markableRidget) {
@@ -38,37 +40,47 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
+	public void removeRidget(IMarkableRidget markableRidget) {
+		markableRidget.removePropertyChangeListener(markerPropertyChangeListener);
+		super.removeRidget(markableRidget);
+	}
+
+	// protected methods
+	////////////////////
+
+	@Override
 	protected void showMessages(IMarkableRidget markableRidget) {
 		Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
-		String message = constructMessage(messageMarker).trim();
+		String message = constructMessage(messageMarker);
 		// show the message only if there is something to show
+		String current = markableRidget.getToolTipText();
 		if (message.length() > 0 && isVisible()) {
-			showMessages(markableRidget, message);
+			if (!message.equals(current)) {
+				Tooltip tooltip = tooltips.get(markableRidget);
+				if (tooltip == null) {
+					tooltip = new Tooltip(current, message);
+					tooltips.put(markableRidget, tooltip);
+				} else {
+					tooltip.messageTooltip = message;
+				}
+				markableRidget.setToolTipText(message);
+			}
 		} else {
 			hideMessages(markableRidget);
 		}
 	}
 
-	private void showMessages(IMarkableRidget markableRidget, String message) {
-		if (tooltipMessage.get(markableRidget) == null) {
-			String tooltiptext = markableRidget.getToolTipText();
-			if (tooltiptext != null) {
-				if (!message.equals(tooltiptext.trim())) {
-					originalTooltipMessage.put(markableRidget, tooltiptext.trim());
-				}
-			} else {
-				originalTooltipMessage.put(markableRidget, null);
-			}
-		}
-		markableRidget.setToolTipText(message);
-		tooltipMessage.put(markableRidget, message);
-	}
-
 	@Override
 	protected void hideMessages(IMarkableRidget markableRidget) {
-		markableRidget.setToolTipText(originalTooltipMessage.get(markableRidget));
-		tooltipMessage.put(markableRidget, null);
+		if (tooltips.containsKey(markableRidget)) {
+			String tooltip = tooltips.get(markableRidget).originalTooltip;
+			markableRidget.setToolTipText(tooltip);
+			tooltips.remove(markableRidget);
+		}
 	}
+
+	// helping methods
+	//////////////////
 
 	private String constructMessage(Collection<IMessageMarker> messageMarker) {
 		StringWriter sw = new StringWriter();
@@ -87,15 +99,57 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		return sw.toString().trim();
 	}
 
-	private class MarkerPropertyChangeListener implements PropertyChangeListener {
+	// helping classes
+	//////////////////
+
+	private final class MarkerPropertyChangeListener implements PropertyChangeListener {
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(IMarkableRidget.PROPERTY_MARKER)
-					&& evt.getSource() instanceof IMarkableRidget) {
-				showMessages((IMarkableRidget) evt.getSource());
+			if (evt.getSource() instanceof IMarkableRidget) {
+				if (IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())) {
+					IMarkableRidget ridget = (IMarkableRidget) evt.getSource();
+					showMessages(ridget);
+				} else if (IRidget.PROPERTY_TOOLTIP.equals(evt.getPropertyName())) {
+					IMarkableRidget ridget = (IMarkableRidget) evt.getSource();
+					String newTooltip = (String) evt.getNewValue();
+					Tooltip tip = tooltips.get(ridget);
+					if (tip != null && !StringUtils.equals(newTooltip, tip.originalTooltip)) {
+						showMessages(ridget);
+						/*
+						 * If the newTooltip is not the messageTooltip, it is
+						 * new 'original' tooltip -> Update.
+						 */
+						if (!StringUtils.equals(newTooltip, tip.messageTooltip)) {
+							tip.originalTooltip = newTooltip;
+						}
+					}
+				}
 			}
 		}
+	}
 
+	/**
+	 * Holds two tooltip values (Strings): (a) the original tooltip of the
+	 * ridget and (b) the compute message tooltip
+	 */
+	private static final class Tooltip {
+		/**
+		 * Tooltip value to use when the 'message' tooltip is removed. May be
+		 * null.
+		 */
+		private String originalTooltip;
+		/** Tooltip value for the 'message' tooltip. */
+		private String messageTooltip;
+
+		Tooltip(String originalTooltip, String messageTooltip) {
+			this.originalTooltip = originalTooltip;
+			this.messageTooltip = messageTooltip;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("[%s,%s]", originalTooltip, messageTooltip); //$NON-NLS-1$
+		}
 	}
 
 }
