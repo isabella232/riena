@@ -18,10 +18,14 @@ public class ConfigurableThingMultipleDataSpecific {
 	private IExtData[] data;
 
 	public void update(IExtData[] data) {
+		// TODO warning suppression: Ignore FindBugs warning about internal
+		// representation being exposed: seems ok for testing
 		this.data = data;
 	}
 
 	public IExtData[] getExtData() {
+		// TODO warning suppression: Ignore FindBugs warning about internal
+		// representation being exposed: seems ok for testing
 		return data;
 	}
 

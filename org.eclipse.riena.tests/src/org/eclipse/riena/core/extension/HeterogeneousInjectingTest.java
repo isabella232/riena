@@ -32,6 +32,8 @@ public class HeterogeneousInjectingTest extends RienaTestCase {
 	//	}
 
 	public void update(IPreferencesDesc[] prefs) {
+		// TODO warning suppression: Ignore FindBugs warning about internal
+		// representation being exposed: seems ok for testing
 		this.prefs = prefs;
 	}
 
