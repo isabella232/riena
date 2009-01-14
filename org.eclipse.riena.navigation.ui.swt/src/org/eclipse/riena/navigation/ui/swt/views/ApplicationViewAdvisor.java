@@ -11,8 +11,11 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
@@ -64,9 +67,19 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.WorkbenchWindow;
+import org.osgi.service.log.LogService;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
+	private static final Logger LOGGER = Activator.getDefault().getLogger(ApplicationViewAdvisor.class);
+	/**
+	 * System property defining the initial width of the application window.
+	 */
+	private static final String PROPERTY_RIENA_APPLICATION_WIDTH = "riena.application.width"; //$NON-NLS-1$
+	/**
+	 * System property defining the minimum height of the application window.
+	 */
+	private static final String PROPERTY_RIENA_APPLICATION_HEIGHT = "riena.application.height"; //$NON-NLS-1$
 	/**
 	 * The default height of the status line.
 	 */
@@ -74,7 +87,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	/**
 	 * The default and the minimum size of the application.
 	 */
-	private static final Point APPLICATION_SIZE = new Point(800, 600);
+	private static final Point APPLICATION_MIN_SIZE = new Point(800, 600);
 	private static final int COOLBAR_TOP_MARGIN = 2;
 	public static final String SHELL_RIDGET_PROPERTY = "applicationWindow"; //$NON-NLS-1$
 
@@ -122,12 +135,46 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setTitle(controller.getNavigationNode().getLabel());
-		configurer.setInitialSize(APPLICATION_SIZE);
+		initApplicationSize(configurer);
 		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			// don't show the shell border (with the minimize, maximize and
 			// close buttons) of the operation system
 			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
 		}
+
+	}
+
+	/**
+	 * Reads the two properties for the initial width and the initial height of
+	 * the application.
+	 * 
+	 * @param configurer
+	 */
+	private void initApplicationSize(IWorkbenchWindowConfigurer configurer) {
+
+		int width = APPLICATION_MIN_SIZE.x;
+		String widthStrg = System.getProperty(PROPERTY_RIENA_APPLICATION_WIDTH);
+		if (!StringUtils.isEmpty(widthStrg)) {
+			width = Integer.parseInt(widthStrg);
+		}
+		if (width < APPLICATION_MIN_SIZE.x) {
+			width = APPLICATION_MIN_SIZE.x;
+			String message = "The initial width of the application is less than the minimum width!"; //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, message);
+		}
+
+		int height = APPLICATION_MIN_SIZE.y;
+		String heightStrg = System.getProperty(PROPERTY_RIENA_APPLICATION_HEIGHT);
+		if (!StringUtils.isEmpty(heightStrg)) {
+			height = Integer.parseInt(heightStrg);
+		}
+		if (height < APPLICATION_MIN_SIZE.y) {
+			height = APPLICATION_MIN_SIZE.y;
+			String message = "The initial height of the application is less than the minimum height!"; //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, message);
+		}
+
+		configurer.setInitialSize(new Point(width, height));
 
 	}
 
@@ -217,7 +264,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.addPaintListener(new ShellPaintListener());
 
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
-		shell.setMinimumSize(APPLICATION_SIZE);
+		shell.setMinimumSize(APPLICATION_MIN_SIZE);
 
 		// prepare shell for binding
 		addUIControl(shell, SHELL_RIDGET_PROPERTY);

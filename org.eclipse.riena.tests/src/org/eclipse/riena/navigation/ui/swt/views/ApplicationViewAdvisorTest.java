@@ -76,4 +76,27 @@ public class ApplicationViewAdvisorTest extends TestCase {
 
 	}
 
+	/**
+	 * Tests the <i>private</i> method <code>initApplicationSize</code>.
+	 */
+	public void testInitApplicationSize() {
+
+		System.setProperty("riena.application.width", "9000");
+		System.setProperty("riena.application.height", "8000");
+		EasyMock.reset(winConfig);
+		winConfig.setInitialSize(new Point(9000, 8000));
+		EasyMock.replay(winConfig);
+		ReflectionUtils.invokeHidden(advisor, "initApplicationSize", winConfig);
+		EasyMock.verify(winConfig);
+
+		System.setProperty("riena.application.width", "90");
+		System.setProperty("riena.application.height", "80");
+		EasyMock.reset(winConfig);
+		winConfig.setInitialSize(new Point(800, 600));
+		EasyMock.replay(winConfig);
+		ReflectionUtils.invokeHidden(advisor, "initApplicationSize", winConfig);
+		EasyMock.verify(winConfig);
+
+	}
+
 }
