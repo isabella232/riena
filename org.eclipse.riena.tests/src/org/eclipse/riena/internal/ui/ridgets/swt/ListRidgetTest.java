@@ -391,6 +391,9 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		assertFalse(ridget.hasMoveableColumns());
 
+		// TODO warning suppression: Ignore FindBugs warning about the
+		// UnsupportedOperationException being thrown since this is
+		// what the test is all about.
 		try {
 			ridget.setMoveableColumns(true);
 			fail();

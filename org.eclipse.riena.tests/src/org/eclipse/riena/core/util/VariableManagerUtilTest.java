@@ -20,6 +20,7 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
 /**
  * Test the <code>ConfigSymbolReplace</code> class.
  */
+@SuppressWarnings("restriction")
 @NonUITestCase
 public class VariableManagerUtilTest extends RienaTestCase {
 

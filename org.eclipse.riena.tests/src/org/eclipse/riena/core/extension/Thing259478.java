@@ -22,6 +22,8 @@ import org.eclipse.riena.core.util.PropertiesUtils;
  */
 public class Thing259478 implements IExecutableExtension {
 
+	// Ignoring Checkstyle warning about the field not being private:
+	// appears to be ok for testing.
 	public Map<String, String> properties;
 
 	public Thing259478() {

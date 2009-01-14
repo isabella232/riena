@@ -40,6 +40,7 @@ import org.osgi.framework.ServiceReference;
  * @author campo
  * 
  */
+@SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 
 	// Keep track of services and and corresponding service references.

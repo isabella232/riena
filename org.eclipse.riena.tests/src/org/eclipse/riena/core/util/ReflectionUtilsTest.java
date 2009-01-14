@@ -194,6 +194,10 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	public void testNewLazyInstanceByClass() {
+		// TODO warning suppression. Ignoring FindBugs problem about writing
+		// static field. This test class uses some bad practices to test the
+		// evil stuff done by the class ReflectionUtils that itself should be
+		// used only in other tests.
 		HaeshMaep.created = false;
 		Map<String, String> map = ReflectionUtils.newLazyInstance(Map.class, HaeshMaep.class);
 		assertFalse(HaeshMaep.created);
@@ -206,6 +210,10 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	public void testNewLazyInstanceByString() {
+		// TODO warning suppression. Ignoring FindBugs problem about writing
+		// static field. This test class uses some bad practices to test the
+		// evil stuff done by the class ReflectionUtils that itself should be
+		// used only in other tests.
 		HaeshMaep.created = false;
 		Map<String, String> map = ReflectionUtils.newLazyInstance(Map.class, HaeshMaep.class.getName());
 		assertFalse(HaeshMaep.created);
@@ -213,6 +221,8 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		assertTrue(HaeshMaep.created);
 	}
 
+	// Ignoring Checkstyle warning that this class should be final since it
+	// has a subclass (below).
 	private static class TestClass {
 
 		@SuppressWarnings("unused")
@@ -291,6 +301,8 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		}
 	}
 
+	// TODO warning suppression. Ignoring FindBugs problem about HaeshMaep
+	// being public. Making it package protected causes a test failure.
 	public static class HaeshMaep<K, V> extends HashMap<K, V> {
 
 		private static final long serialVersionUID = 1L;
@@ -301,6 +313,10 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		 */
 		public HaeshMaep() {
 			super();
+			// TODO warning suppression. Ignoring FindBugs problem about writing
+			// static field. This test class uses some bad practices to test the
+			// evil stuff done by the class ReflectionUtils that itself should be
+			// used only in other tests.
 			created = true;
 		}
 

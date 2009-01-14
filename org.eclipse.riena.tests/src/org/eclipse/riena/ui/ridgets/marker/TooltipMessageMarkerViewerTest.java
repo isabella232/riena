@@ -204,7 +204,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 	 * ridget.setToolTipText(...) while the {@link TooltipMessageMarkerViewer}
 	 * is showing an error message.
 	 */
-	public void testBug258540_2() {
+	public void testBug258540Snippet2() {
 		TextRidget aRidget = new TextRidget();
 		Text aControl = new Text(shell, SWT.BORDER);
 		aRidget.setUIControl(aControl);

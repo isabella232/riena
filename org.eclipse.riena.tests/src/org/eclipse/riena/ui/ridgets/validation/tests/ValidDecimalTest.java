@@ -11,7 +11,6 @@
 package org.eclipse.riena.ui.ridgets.validation.tests;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -415,23 +414,22 @@ public class ValidDecimalTest extends RienaTestCase {
 
 	}
 
-	// TODO: Tests for Macedonia (mk_MK) with surrounding brackets
-
-	public void _testPrintAvailableLocaleFormats() {
-		final double number = -1234.56;
-		for (final Locale locale : NumberFormat.getAvailableLocales()) {
-			if (locale.getCountry().length() != 0) {
-				System.out.print(locale.getDisplayName() + "(" + locale + "): ");
-				final NumberFormat format = DecimalFormat.getInstance(locale);
-				System.out.print('"' + format.format(number) + '"');
-				try {
-					System.out.println(" = [" + format.parse(format.format(number)) + ']');
-				} catch (ParseException e) {
-					System.out.println(" = [cannot reformat to Number]");
-				}
-			}
-		}
-	}
+	//  TODO: Tests for Macedonia (mk_MK) with surrounding brackets
+	//	public void testPrintAvailableLocaleFormats() {
+	//		final double number = -1234.56;
+	//		for (final Locale locale : NumberFormat.getAvailableLocales()) {
+	//			if (locale.getCountry().length() != 0) {
+	//				System.out.print(locale.getDisplayName() + "(" + locale + "): ");
+	//				final NumberFormat format = DecimalFormat.getInstance(locale);
+	//				System.out.print('"' + format.format(number) + '"');
+	//				try {
+	//					System.out.println(" = [" + format.parse(format.format(number)) + ']');
+	//				} catch (ParseException e) {
+	//					System.out.println(" = [cannot reformat to Number]");
+	//				}
+	//			}
+	//		}
+	//	}
 
 	/**
 	 * Tests the method {@code setLocal(String[])}.

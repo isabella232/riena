@@ -15,9 +15,14 @@ package org.eclipse.riena.core.extension;
  */
 public class LazyThing implements ILazyThing {
 
+	// Ignoring Checkstyle warning about the field not being private:
+	// appears to be ok for testing.
 	static boolean instantiated;
 
 	public LazyThing() {
+		// TODO warning suppression. Ignoring FindBugs problem about
+		// writing to static field. Since this is used only for testing
+		// manipulation of multiple instances is not an issue.
 		instantiated = true;
 	}
 
