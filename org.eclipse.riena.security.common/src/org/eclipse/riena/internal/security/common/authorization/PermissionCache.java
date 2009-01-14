@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.security.common.authorization.internal;
+package org.eclipse.riena.internal.security.common.authorization;
 
 import java.security.Permissions;
 import java.security.Principal;

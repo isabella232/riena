@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.security.common.session.internal;
+package org.eclipse.riena.internal.security.common.session;
 
 import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.common.session.Session;
