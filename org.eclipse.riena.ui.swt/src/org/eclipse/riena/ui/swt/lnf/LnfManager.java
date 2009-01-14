@@ -56,7 +56,7 @@ public final class LnfManager {
 
 	/**
 	 * Loads the look and feel specified by the given class name and passes it
-	 * to <code>setLnf(RienaDefaultLnf)<code>.
+	 * to <code>setLnf(RienaDefaultLnf)</code>.
 	 * 
 	 * @param lnfClassName
 	 *            - a string specifying the name of the class that implements
