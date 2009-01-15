@@ -24,6 +24,7 @@ import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
 import org.eclipse.riena.core.logging.PlatformLogCatcher;
 import org.eclipse.riena.core.logging.SysoLogListener;
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
 
@@ -159,10 +160,12 @@ public class LoggerMill {
 		}
 	}
 
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´listenerDefs´ is too expensive")
 	public void update(final ILogListenerDefinition[] listenerDefs) {
 		this.listenerDefs = listenerDefs;
 	}
 
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´catcherDefs´ is too expensive")
 	public void update(final ILogCatcherDefinition[] catcherDefs) {
 		this.catcherDefs = catcherDefs;
 	}
