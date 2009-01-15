@@ -51,17 +51,17 @@ public final class LogLevelMapper {
 	public static String getValue(int logLevel) {
 		switch (logLevel) {
 		case LogService.LOG_DEBUG:
-			return "debug";
+			return "debug"; //$NON-NLS-1$
 		case LogService.LOG_INFO:
-			return "info";
+			return "info"; //$NON-NLS-1$
 		case LogService.LOG_WARNING:
-			return "warn";
+			return "warn"; //$NON-NLS-1$
 		case LogService.LOG_ERROR:
-			return "error";
+			return "error"; //$NON-NLS-1$
 		case LogService.LOG_ERROR - 1:
-			return "none";
+			return "none"; //$NON-NLS-1$
 		default:
-			return "?";
+			return "?"; //$NON-NLS-1$
 		}
 	}
 
