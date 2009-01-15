@@ -26,14 +26,8 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -56,7 +50,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	private final DateVerifyListener verifyListener;
 	private final KeyListener keyListener;
 	private final FocusListener focusListener;
-	private final PaintListener paintListener;
+	// private final PaintListener paintListener;
 
 	private String pattern;
 	private ValidDate validDateRule;
@@ -68,7 +62,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		verifyListener = new DateVerifyListener();
 		keyListener = new DateKeyListener();
 		focusListener = new DateFocusListener();
-		paintListener = new DatePaintListener();
+		// paintListener = new DatePaintListener();
 		setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 	}
 
@@ -77,13 +71,13 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		control.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
 		control.addFocusListener(focusListener);
-		control.addPaintListener(paintListener);
+		// control.addPaintListener(paintListener);
 		super.addListeners(control);
 	}
 
 	@Override
 	protected final synchronized void removeListeners(Text control) {
-		control.removePaintListener(paintListener);
+		// control.removePaintListener(paintListener);
 		control.removeFocusListener(focusListener);
 		control.removeKeyListener(keyListener);
 		control.removeVerifyListener(verifyListener);
@@ -230,11 +224,10 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * those key strokes are:
 	 * <ol>
 	 * <ol>
-	 * <li>Left & Right arrow - will jump over separators and spaces</li>
-	 * <li>
+	 * <li>Left & Right arrow - will jump over separators and spaces</li> <li>
 	 * Delete / Backspace at a single separator - will jump to the next valid
-	 * location in the same direction</li>
-	 * <li>Shift - disables jumping over grouping separators when pressed down</li>
+	 * location in the same direction</li> <li>Shift - disables jumping over
+	 * grouping separators when pressed down</li>
 	 * </ol>
 	 */
 	private final class DateKeyListener extends KeyAdapter {
@@ -314,92 +307,93 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		}
 	}
 
-	/**
-	 * For proportional fonts (example: Arial, Helvetice, Verdana), this paint
-	 * listener will try to align separators by adding whitespace as necessary.
-	 * The goal to make ' . . ' appears to have the same width as '88.88.8888'
-	 * even with a proportional font.
-	 */
-	private static final class DatePaintListener implements PaintListener {
-
-		private Font font;
-		private int widthEight;
-		private int widthSpace;
-
-		public void paintControl(PaintEvent e) {
-			Text control = (Text) e.widget;
-			if (control.isFocusControl() || control.isDisposed()) {
-				return;
-			}
-			GC gc = e.gc;
-			updateWidths(gc);
-			if (widthEight == widthSpace) { // no padding necessary
-				return;
-			}
-			Point size = control.getSize();
-			Rectangle clientArea = control.getClientArea();
-			String text = getPaddedText(control.getText());
-			Point textExt = gc.stringExtent(text);
-			int delta = Math.max(0, 2 * (size.x - clientArea.width));
-			int x = size.x - delta - textExt.x;
-			gc.fillRectangle(0, 0, size.x, size.y);
-			gc.drawString(text, x, 1);
-		}
-
-		// helping methods
-		//////////////////
-
-		/**
-		 * Update the stored widths of the '8' and ' ' characters, if the font
-		 * has changed.
-		 */
-		private void updateWidths(GC gc) {
-			Font font = gc.getFont();
-			if (this.font != font) {
-				this.font = font;
-				widthEight = gc.getAdvanceWidth('8');
-				widthSpace = gc.getAdvanceWidth(' ');
-				// System.out.println("8= " + widthEight + " sp= " + widthSpace);
-			}
-		}
-
-		/**
-		 * Replace single space characters with several spaces in order to match
-		 * the width of a regular character.
-		 */
-		private String getPaddedText(String input) {
-			StringBuilder result = new StringBuilder(input.length());
-			for (int i = 0; i < input.length(); i++) {
-				char ch = input.charAt(i);
-				if (ch == ' ') {
-					int lookAhead = computeLookAhead(input, i);
-					int numChars = 1 + lookAhead;
-					int width = widthEight * numChars;
-					while (width >= widthSpace) {
-						width = width - widthSpace;
-						result.append(' ');
-					}
-					i = i + lookAhead;
-				} else {
-					result.append(ch);
-				}
-			}
-			return result.toString();
-		}
-
-		/**
-		 * Returns the number of space ' ' characters after the start position.
-		 */
-		private int computeLookAhead(String text, int start) {
-			int result = 0;
-			for (int i = start + 1; i < text.length(); i++) {
-				if (text.charAt(i) == ' ') {
-					result++;
-				} else {
-					return result;
-				}
-			}
-			return result;
-		}
-	}
+	// disabled for 1.0 - fixes bug 261291
+	//	/**
+	//	 * For proportional fonts (example: Arial, Helvetice, Verdana), this paint
+	//	 * listener will try to align separators by adding whitespace as necessary.
+	//	 * The goal to make ' . . ' appears to have the same width as '88.88.8888'
+	//	 * even with a proportional font.
+	//	 */
+	//	private static final class DatePaintListener implements PaintListener {
+	//
+	//		private Font font;
+	//		private int widthEight;
+	//		private int widthSpace;
+	//
+	//		public void paintControl(PaintEvent e) {
+	//			Text control = (Text) e.widget;
+	//			if (control.isFocusControl() || control.isDisposed()) {
+	//				return;
+	//			}
+	//			GC gc = e.gc;
+	//			updateWidths(gc);
+	//			if (widthEight == widthSpace) { // no padding necessary
+	//				return;
+	//			}
+	//			Point size = control.getSize();
+	//			Rectangle clientArea = control.getClientArea();
+	//			String text = getPaddedText(control.getText());
+	//			Point textExt = gc.stringExtent(text);
+	//			int delta = Math.max(0, 2 * (size.x - clientArea.width));
+	//			int x = size.x - delta - textExt.x;
+	//			gc.fillRectangle(0, 0, size.x, size.y);
+	//			gc.drawString(text, x, 1);
+	//		}
+	//
+	//		// helping methods
+	//		//////////////////
+	//
+	//		/**
+	//		 * Update the stored widths of the '8' and ' ' characters, if the font
+	//		 * has changed.
+	//		 */
+	//		private void updateWidths(GC gc) {
+	//			Font font = gc.getFont();
+	//			if (this.font != font) {
+	//				this.font = font;
+	//				widthEight = gc.getAdvanceWidth('8');
+	//				widthSpace = gc.getAdvanceWidth(' ');
+	//				// System.out.println("8= " + widthEight + " sp= " + widthSpace);
+	//			}
+	//		}
+	//
+	//		/**
+	//		 * Replace single space characters with several spaces in order to match
+	//		 * the width of a regular character.
+	//		 */
+	//		private String getPaddedText(String input) {
+	//			StringBuilder result = new StringBuilder(input.length());
+	//			for (int i = 0; i < input.length(); i++) {
+	//				char ch = input.charAt(i);
+	//				if (ch == ' ') {
+	//					int lookAhead = computeLookAhead(input, i);
+	//					int numChars = 1 + lookAhead;
+	//					int width = widthEight * numChars;
+	//					while (width >= widthSpace) {
+	//						width = width - widthSpace;
+	//						result.append(' ');
+	//					}
+	//					i = i + lookAhead;
+	//				} else {
+	//					result.append(ch);
+	//				}
+	//			}
+	//			return result.toString();
+	//		}
+	//
+	//		/**
+	//		 * Returns the number of space ' ' characters after the start position.
+	//		 */
+	//		private int computeLookAhead(String text, int start) {
+	//			int result = 0;
+	//			for (int i = start + 1; i < text.length(); i++) {
+	//				if (text.charAt(i) == ' ') {
+	//					result++;
+	//				} else {
+	//					return result;
+	//				}
+	//			}
+	//			return result;
+	//		}
+	//	}
 }
