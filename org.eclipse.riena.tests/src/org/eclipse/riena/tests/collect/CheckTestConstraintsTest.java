@@ -17,15 +17,23 @@ import junit.framework.TestCase;
 import org.eclipse.riena.internal.tests.Activator;
 
 /**
- * Check for all {@code TestCase}s that are not marked with any {@code
- * TestCollector} specific annotation.
+ * Check all {@code TestCase}s for any of our test case constraint violations.
  */
 @NonUITestCase
-public class CheckForUnmarkedTestsTest extends TestCase {
+public class CheckTestConstraintsTest extends TestCase {
 
 	public void testUnmarkedTests() {
 		List<Class<? extends TestCase>> unmarked = TestCollector.collectUnmarked(Activator.getDefault().getBundle(),
 				null);
 		assertEquals(unmarked.size() + " unmarked test(s) found: " + unmarked, 0, unmarked.size());
 	}
+
+	// FIXME: There are currently two test cases that violate this constraint.
+	// We should fix that and set the expected count to zero!
+	public void testBadlyNamedTests() {
+		List<Class<? extends TestCase>> badlyNamed = TestCollector.collectBadlyNamed(
+				Activator.getDefault().getBundle(), null);
+		assertEquals(badlyNamed.size() + " unmarked test(s) found: " + badlyNamed, 2, badlyNamed.size());
+	}
+
 }
