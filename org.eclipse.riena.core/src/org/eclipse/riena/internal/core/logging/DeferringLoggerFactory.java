@@ -22,10 +22,14 @@ import org.eclipse.riena.core.logging.LoggerProvider;
  * <i>real</i> logger is available. The collected log events will than be
  * delivered by the <i>real</i> logger within a worker thread.
  */
-public class DeferringLoggerFactory {
+public final class DeferringLoggerFactory {
 
 	private static Thread forwarder;
 	private static BlockingQueue<DeferredLogEvent> queue;
+
+	private DeferringLoggerFactory() {
+		// utility
+	}
 
 	public static Logger createLogger(final String name, final LoggerProvider loggerProvider) {
 		synchronized (DeferringLoggerFactory.class) {
