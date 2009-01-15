@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
@@ -128,6 +129,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		}
 	}
 
+	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´startups´ is too expensive")
 	public void update(IRienaStartupExtension[] startups) {
 		this.startups = startups;
 	}
