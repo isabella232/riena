@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * The view for the login dialog of the example.
+ * The view for the login splash dialog of the example.
  */
 public class LoginSplashView extends AbstractLoginSplashView {
 
