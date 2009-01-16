@@ -23,6 +23,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
+/**
+ * Riena base class for splash implementations.
+ */
 public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 
 	protected ILoginSplashViewDefinition loginSplashViewDefinition;
@@ -39,6 +42,13 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		initialzeLoginSplashViewDefinition();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.splash.AbstractSplashHandler#init(org.eclipse.swt.widgets
+	 * .Shell)
+	 */
 	@Override
 	public void init(final Shell splash) {
 		// Store the shell
@@ -59,6 +69,11 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		}
 	}
 
+	/**
+	 * @see ILoginSplashView
+	 * 
+	 * @return the result of the login.
+	 */
 	public int getResult() {
 		return loginView.getResult();
 	}
@@ -70,7 +85,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	private void doEventLoop() {
 		Shell splash = getSplash();
 		while (!splash.isDisposed()) {
-			if (splash.getDisplay().readAndDispatch() == false) {
+			if (!splash.getDisplay().readAndDispatch()) {
 				splash.getDisplay().sleep();
 			}
 		}
@@ -101,6 +116,11 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.splash.AbstractSplashHandler#dispose()
+	 */
 	@Override
 	public void dispose() {
 
