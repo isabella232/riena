@@ -77,10 +77,6 @@ public class CustomerSearchController extends SubModuleController {
 					public void callback() {
 						int selectionIndex = kunden.getSelectionIndex();
 						if (selectionIndex >= 0) {
-							CustomerLoader.setFirstName(searchResultContainer.getCustomerList().get(selectionIndex)
-									.getFirstName());
-							CustomerLoader.setLastName(searchResultContainer.getCustomerList().get(selectionIndex)
-									.getLastName());
 							getNavigationNode()
 									.navigate(
 											new NavigationNodeId(

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.client.customer.controllers;
 
+import org.eclipse.riena.demo.customer.common.CustomerRecordOverview;
+import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
@@ -18,10 +20,14 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  */
 public class CustomerPersonalDataController extends SubModuleController {
 
-	private Customer customer = new Customer(CustomerLoader.getFirstName(), CustomerLoader.getLastName());
+	private Customer customer;
 
 	@Override
 	public void configureRidgets() {
+
+		CustomerRecordOverview customerRecord = (CustomerRecordOverview) getNavigationNode().getContext(
+				NavigationArgument.CONTEXT_KEY_PARAMETER);
+		customer = new Customer(customerRecord.getFirstName(), customerRecord.getLastName());
 
 		((ITextRidget) getRidget("firstname")).bindToModel(customer, "firstName"); //$NON-NLS-1$ //$NON-NLS-2$
 		((ITextRidget) getRidget("lastname")).bindToModel(customer, "lastName"); //$NON-NLS-1$ //$NON-NLS-2$
