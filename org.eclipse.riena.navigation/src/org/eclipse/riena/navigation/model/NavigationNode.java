@@ -97,8 +97,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
 		context = null;
-		// TODO: scp How can we use IIconManager.DEFAULT_ICON
-		// icon = "0044";
 	}
 
 	/**
@@ -765,8 +763,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#activate(INavigationContext)
 	 */
 	public void activate(INavigationContext context) {
@@ -775,8 +771,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#onBeforeActivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onBeforeActivate(INavigationContext context) {
@@ -784,8 +778,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#onAfterActivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onAfterActivate(INavigationContext context) {
@@ -793,8 +785,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#deactivate(INavigationContext)
 	 */
 	public void deactivate(INavigationContext context) {
@@ -803,8 +793,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#onBeforeDeactivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onBeforeDeactivate(INavigationContext context) {
@@ -812,8 +800,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#onAfterDeactivate(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onAfterDeactivate(INavigationContext context) {
@@ -934,8 +920,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#dispose(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void dispose(INavigationContext context) {
@@ -944,8 +928,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#onBeforeDispose(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onBeforeDispose(INavigationContext context) {
@@ -953,8 +935,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * TODO: hide the method!
-	 * 
 	 * @see org.eclipse.riena.navigation.INavigationNode#onAfterDispose(org.eclipse.riena.navigation.INavigationContext)
 	 */
 	public void onAfterDispose(INavigationContext context) {

@@ -221,8 +221,6 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public void filterAdded(INavigationNode<?> source, IUIFilter filter) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -233,8 +231,6 @@ public class SimpleNavigationNodeAdapater implements ISimpleNavigationNodeListen
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public void filterRemoved(INavigationNode<?> source, IUIFilter filter) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

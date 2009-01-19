@@ -264,7 +264,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterAdded(IApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.filterAdded(source, filter);
@@ -273,7 +272,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.filterRemoved(source, filter);
@@ -510,7 +508,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.filterAdded(source, filter);
@@ -519,7 +516,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.filterRemoved(source, filter);
@@ -733,7 +729,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.filterAdded(source, filter);
@@ -742,7 +737,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.filterRemoved(source, filter);
@@ -966,7 +960,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterAdded(IModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			for (IModuleNodeListener next : getModuleNodeListeners()) {
 				next.filterAdded(source, filter);
@@ -975,7 +968,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterRemoved(IModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			for (IModuleNodeListener next : getModuleNodeListeners()) {
 				next.filterRemoved(source, filter);
@@ -1199,7 +1191,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterAdded(ISubModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.filterAdded(source, filter);
@@ -1208,7 +1199,6 @@ public class NavigationTreeObserver {
 
 		@Override
 		public void filterRemoved(ISubModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.filterRemoved(source, filter);

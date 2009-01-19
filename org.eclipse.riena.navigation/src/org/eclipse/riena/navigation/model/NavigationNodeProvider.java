@@ -165,7 +165,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 
 	public INavigationAssembler getNavigationAssembler(NavigationNodeId nodeId, NavigationArgument argument) {
 
-		// TODO should we cache the result?
 		if (nodeId != null && nodeId.getTypeId() != null) {
 			for (INavigationAssembler probe : getNavigationAssemblers()) {
 				if (probe.acceptsToBuildNode(nodeId, argument)) {
