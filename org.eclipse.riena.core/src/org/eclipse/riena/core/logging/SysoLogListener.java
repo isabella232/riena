@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.util.Date;
 
 import org.eclipse.equinox.log.ExtendedLogEntry;
+import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
@@ -24,27 +25,7 @@ public class SysoLogListener implements LogListener {
 		ExtendedLogEntry eEntry = (ExtendedLogEntry) entry;
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(new Date(eEntry.getTime()).toString()).append(' ');
-		String level;
-		boolean red = false;
-		switch (eEntry.getLevel()) {
-		case LogService.LOG_DEBUG:
-			level = "DEBUG"; //$NON-NLS-1$
-			break;
-		case LogService.LOG_WARNING:
-			level = "WARNING"; //$NON-NLS-1$
-			red = true;
-			break;
-		case LogService.LOG_ERROR:
-			level = "ERROR"; //$NON-NLS-1$
-			red = true;
-			break;
-		case LogService.LOG_INFO:
-			level = "INFO"; //$NON-NLS-1$
-			break;
-		default:
-			level = "CUSTOM(" + eEntry.getLevel() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-			break;
-		}
+		String level = LogLevelMapper.getValue(eEntry.getLevel());
 		buffer.append(level).append(' ');
 		buffer.append("[" + eEntry.getThreadName() + "] "); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append(eEntry.getLoggerName()).append(' ');
@@ -52,7 +33,8 @@ public class SysoLogListener implements LogListener {
 			buffer.append(eEntry.getContext()).append(' ');
 		}
 		buffer.append(entry.getMessage());
-		PrintStream stream = red ? System.err : System.out;
+		PrintStream stream = LogService.LOG_ERROR == eEntry.getLevel() || LogService.LOG_WARNING == eEntry.getLevel() ? System.err
+				: System.out;
 		stream.println(buffer.toString());
 		if (eEntry.getException() != null) {
 			eEntry.getException().printStackTrace(stream);
