@@ -13,9 +13,18 @@ package org.eclipse.riena.internal.core.logging;
 import org.osgi.service.log.LogService;
 
 /**
- *
+ * Map {@code LogService} log level ints to a string representation and vice
+ * versa.
  */
 public final class LogLevelMapper {
+
+	// Do not change the case!!! The code depends on upper case!
+	private static final String CUSTOM = "CUSTOM"; //$NON-NLS-1$
+	private static final String NONE = "NONE"; //$NON-NLS-1$
+	private static final String ERROR = "ERROR"; //$NON-NLS-1$
+	private static final String WARN = "WARNING"; //$NON-NLS-1$
+	private static final String INFO = "INFO"; //$NON-NLS-1$
+	private static final String DEBUG = "DEBUG"; //$NON-NLS-1$
 
 	private LogLevelMapper() {
 		// utility
@@ -28,16 +37,28 @@ public final class LogLevelMapper {
 	 * @return the log level value as defined by <code>LogService</code>
 	 */
 	public static int getValue(String logLevelString) {
-		if ("debug".equalsIgnoreCase(logLevelString)) { //$NON-NLS-1$
+		logLevelString = logLevelString.toUpperCase();
+		if (DEBUG.equals(logLevelString)) {
 			return LogService.LOG_DEBUG;
-		} else if ("info".equalsIgnoreCase(logLevelString)) { //$NON-NLS-1$
+		} else if (INFO.equals(logLevelString)) {
 			return LogService.LOG_INFO;
-		} else if ("warn".equalsIgnoreCase(logLevelString)) { //$NON-NLS-1$
+		} else if (WARN.equals(logLevelString)) {
 			return LogService.LOG_WARNING;
-		} else if ("error".equalsIgnoreCase(logLevelString)) { //$NON-NLS-1$
+		} else if (ERROR.equals(logLevelString)) {
 			return LogService.LOG_ERROR;
-		} else if ("none".equalsIgnoreCase(logLevelString)) { //$NON-NLS-1$
+		} else if (NONE.equals(logLevelString)) {
 			return LogService.LOG_ERROR - 1;
+		} else if (logLevelString.startsWith(CUSTOM)) {
+			int open = logLevelString.indexOf('(');
+			int close = logLevelString.indexOf(')');
+			if (open != -1 && close != -1 && open < close) {
+				String level = logLevelString.substring(open + 1, close).trim();
+				try {
+					return Integer.parseInt(level);
+				} catch (NumberFormatException e) {
+					return LogService.LOG_WARNING;
+				}
+			}
 		}
 		return LogService.LOG_WARNING;
 	}
@@ -51,17 +72,17 @@ public final class LogLevelMapper {
 	public static String getValue(int logLevel) {
 		switch (logLevel) {
 		case LogService.LOG_DEBUG:
-			return "debug"; //$NON-NLS-1$
+			return DEBUG;
 		case LogService.LOG_INFO:
-			return "info"; //$NON-NLS-1$
+			return INFO;
 		case LogService.LOG_WARNING:
-			return "warn"; //$NON-NLS-1$
+			return WARN;
 		case LogService.LOG_ERROR:
-			return "error"; //$NON-NLS-1$
+			return ERROR;
 		case LogService.LOG_ERROR - 1:
-			return "none"; //$NON-NLS-1$
+			return NONE;
 		default:
-			return "?"; //$NON-NLS-1$
+			return CUSTOM + '(' + logLevel + ')';
 		}
 	}
 
