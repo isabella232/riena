@@ -136,14 +136,13 @@ public class ExtensionInjector {
 
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
 		if (extensionRegistry == null) {
-			// TODO Is this an error for that we should throw an exception?
-			LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has not been created."); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_ERROR, "For some reason the extension registry has been gone!"); //$NON-NLS-1$
 		} else {
 			extensionRegistry.removeListener(injectorListener);
-
-			// cleanup
-			update(new Object[] { null });
 		}
+
+		// cleanup
+		update(new Object[] { null });
 		injectorListener = null;
 	}
 
