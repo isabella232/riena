@@ -10,16 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.logging;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.logging.LoggerProvider;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
 /**
@@ -60,12 +56,7 @@ public class DeferredLoggingForwarder extends Thread {
 			}
 			try {
 				Logger logger = Activator.getDefault().getLogger(logEvent.getLoggerName());
-				// TODO There is no guarantee that the next two logs get logged one after the other!!
-				StringBuilder bob = new StringBuilder("Defered log event occured on "); //$NON-NLS-1$
-				bob.append(new Date(logEvent.getTime())).append(" (").append(logEvent.getTime()); //$NON-NLS-1$
-				bob.append(" ms) in thread [").append(logEvent.getThreadName()).append("]:\n"); //$NON-NLS-1$ //$NON-NLS-2$
-				appendArgs(bob, logEvent.getArgs());
-				logger.log(getLevel(logEvent.getArgs()), bob.toString());
+				logger.log(logEvent.getLevel(), logEvent.toString());
 			} catch (Exception e) {
 				new ConsoleLogger(DeferredLoggingForwarder.class.getName()).log(LogService.LOG_ERROR,
 						"Could not deliver defered log message.", e); //$NON-NLS-1$
@@ -73,50 +64,4 @@ public class DeferredLoggingForwarder extends Thread {
 		}
 	}
 
-	/**
-	 * @param args
-	 * @return
-	 */
-	private int getLevel(final Object[] args) {
-		// This is a little bit brittle - we guess the log level from it's type
-		for (Object arg : args) {
-			if (arg instanceof Integer) {
-				return (Integer) arg;
-			}
-		}
-		return LogService.LOG_DEBUG;
-	}
-
-	private void appendArgs(StringBuilder bob, Object[] args) {
-		if (args == null) {
-			return;
-		}
-		for (Object arg : args) {
-			if (arg instanceof ServiceReference) {
-				ServiceReference ref = (ServiceReference) arg;
-				String bundleName = ref.getBundle() != null ? ref.getBundle().getSymbolicName() : null;
-				bob.append("ServiceReference( bundle=").append(bundleName).append(", properties=("); //$NON-NLS-1$ //$NON-NLS-2$
-				for (String key : ref.getPropertyKeys()) {
-					bob.append(key).append("=").append(ref.getProperty(key)).append(","); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-				bob.append(")"); //$NON-NLS-1$
-			} else if (arg instanceof String) {
-				bob.append("Message(").append((String) arg).append(')'); //$NON-NLS-1$
-			} else if (arg instanceof Integer) {
-				bob.append("LogLevel(").append((Integer) arg).append(')'); //$NON-NLS-1$
-			} else if (arg instanceof Throwable) {
-				Throwable throwable = (Throwable) arg;
-				bob.append("Throwable("); //$NON-NLS-1$
-				StringWriter stringWriter = new StringWriter();
-				PrintWriter writer = new PrintWriter(stringWriter);
-				throwable.printStackTrace(writer);
-				writer.close();
-				bob.append(stringWriter.toString()).append(')');
-			} else {
-				bob.append("Object(").append(arg).append(')'); //$NON-NLS-1$
-			}
-			bob.append(", "); //$NON-NLS-1$
-		}
-		bob.setLength(bob.length() - 2);
-	}
 }
