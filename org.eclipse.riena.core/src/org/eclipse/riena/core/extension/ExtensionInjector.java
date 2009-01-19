@@ -81,14 +81,10 @@ public class ExtensionInjector {
 		populateInterfaceBeans(true);
 
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();
-		if (extensionRegistry == null) {
-			// TODO Is this an error for that we should throw an exception?
-			LOGGER.log(LogService.LOG_ERROR,
-					"For some reason the extension registry has not been created. Tracking is not possible."); //$NON-NLS-1$
-		} else {
-			injectorListener = new InjectorListener();
-			extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
-		}
+		Assert.isLegal(extensionRegistry != null,
+				"For some reason the extension registry has not been created. Injecting extensions is not possible."); //$NON-NLS-1$
+		injectorListener = new InjectorListener();
+		extensionRegistry.addListener(injectorListener, extensionDesc.getExtensionPointId());
 		return this;
 	}
 

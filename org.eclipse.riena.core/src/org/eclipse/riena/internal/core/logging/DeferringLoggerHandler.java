@@ -15,7 +15,9 @@ import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.logging.LoggerProvider;
+import org.osgi.service.log.LogService;
 
 /**
  * A dynamic proxy that mimics a {@code Logger} that either logs to a
@@ -77,8 +79,8 @@ public class DeferringLoggerHandler implements InvocationHandler {
 		try {
 			queue.put(logEvent);
 		} catch (InterruptedException e) {
-			// TODO handle this
-			e.printStackTrace();
+			new ConsoleLogger(DeferringLoggerHandler.class.getName()).log(LogService.LOG_ERROR,
+					"Queueing log event failed: " + logEvent, e); //$NON-NLS-1$
 		}
 	}
 }
