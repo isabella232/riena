@@ -13,8 +13,10 @@ package org.eclipse.riena.internal.core;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -37,7 +39,11 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 	 * Throwable)
 	 */
 	public void handleException(Throwable exception) {
-		// TODO use our own exception handling!
+		IExceptionHandlerManager manager = ExceptionHandlerManagerAccessor.getExceptionHandlerManager();
+		if (manager != null) {
+			manager.handleException(exception, "Error activating bundels.", LOGGER); //$NON-NLS-1$
+			return;
+		}
 		LOGGER.log(LogService.LOG_ERROR, "Error activating bundels.", exception); //$NON-NLS-1$
 	}
 
@@ -54,7 +60,6 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		for (IRienaStartupExtension startup : startups) {
 			String[] bundleNames = PropertiesUtils.asArray(startup.getRequiredBundles());
 			for (String bundleName : bundleNames) {
-				// special bundle that we need! ->> TODO extension point for foreign bundles?!
 				if (StringUtils.isEmpty(bundleName)) {
 					continue;
 				}
