@@ -38,6 +38,14 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+import org.eclipse.riena.core.RienaLocations;
+import org.eclipse.riena.core.util.IOUtils;
+import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.Millis;
+import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.internal.monitor.client.Activator;
+import org.eclipse.riena.monitor.common.Collectible;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -47,13 +55,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.RienaLocations;
-import org.eclipse.riena.core.util.IOUtils;
-import org.eclipse.riena.core.util.Literal;
-import org.eclipse.riena.core.util.Millis;
-import org.eclipse.riena.core.util.PropertiesUtils;
-import org.eclipse.riena.internal.monitor.client.Activator;
-import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
 
 /**
@@ -97,7 +98,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SimpleStore.class);
-	private static final boolean TRACE = true;
+	private static final boolean TRACE = false;
 
 	public SimpleStore() throws CoreException {
 		this("simplestore", true); //$NON-NLS-1$
