@@ -41,8 +41,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	}
 
 	public synchronized void stop() {
-		// @TODO unregisterService changes the registeredServices collection,
-		// the for loop collapses with ConcurrentModificationException
+		// avoid ConcurrentModificationException by cloning ´iterable´!
 		IRemoteServiceRegistration[] arrayRS = registeredServices.values().toArray(
 				new IRemoteServiceRegistration[registeredServices.values().size()]);
 		for (IRemoteServiceRegistration serviceReg : arrayRS) {
