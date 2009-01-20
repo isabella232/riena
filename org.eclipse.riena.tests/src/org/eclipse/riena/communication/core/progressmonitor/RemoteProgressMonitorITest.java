@@ -66,7 +66,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	 */
 	public void testSendSimpleAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor,
+				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
@@ -77,7 +78,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	public void testSendLargeAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor,
+				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
@@ -88,7 +90,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	public void testReceiveSimpleAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor,
+				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = attachService.returnAttachmentForSize(15000);
 		int i = getSize(attachment);
@@ -99,7 +102,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	public void testReceiveLargeAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL);
+		registry.addProgressMonitor(attachService, monitor,
+				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = attachService.returnAttachmentForSize(15000000);
 		int i = getSize(attachment);

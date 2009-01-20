@@ -61,8 +61,8 @@ public abstract class RemoteCallProcess<T> extends UIProcess {
 
 	protected abstract T getService();
 
-	protected int getServiceMonitorType() {
-		return IRemoteProgressMonitorRegistry.MONITOR_ONE_CALL;
+	protected IRemoteProgressMonitorRegistry.RemovalPolicy getServiceMonitorType() {
+		return IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL;
 	}
 
 	@Override

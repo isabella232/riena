@@ -29,13 +29,16 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitorRegistry
-	 * #addProgressMonitor(java.lang.Object,
-	 * org.eclipse.riena.communication.core.progressmonitor.IProgressMonitor,
-	 * int)
+	 * @seeorg.eclipse.riena.communication.core.progressmonitor.
+	 * IRemoteProgressMonitorRegistry#addProgressMonitor(java.lang.Object,
+	 * org.eclipse
+	 * .riena.communication.core.progressmonitor.IRemoteProgressMonitor,
+	 * org.eclipse
+	 * .riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry
+	 * .RemovalPolicy)
 	 */
-	public void addProgressMonitor(Object callProxy, IRemoteProgressMonitor monitor, int monitorType) {
+	public void addProgressMonitor(Object callProxy, IRemoteProgressMonitor monitor,
+			IRemoteProgressMonitorRegistry.RemovalPolicy removalPolicy) {
 		// TODO very awful hack !!!!!
 		if (Proxy.isProxyClass(callProxy.getClass())) {
 			InvocationHandler invocationHandler = Proxy.getInvocationHandler(callProxy);
@@ -49,7 +52,7 @@ public class ProgressMonitorRegistryImpl implements IRemoteProgressMonitorRegist
 			remoteProgressMonitors.put(callProxy, pmList);
 		}
 		pmList.add(monitor);
-		// monitorType is ignored TODO
+		// TODO monitorType is ignored
 	}
 
 	/*

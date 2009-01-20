@@ -94,7 +94,7 @@ public class RemoteServiceProgressSubModuleController extends SubModuleControlle
 
 			// add monitor
 			remoteProgressMonitorRegistry.addProgressMonitor(remoteService, serviceProgress,
-					IRemoteProgressMonitorRegistry.MONITOR_MANY_CALLS);
+					IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ALL_CALLS);
 
 			remoteService.getInfo("foo"); //$NON-NLS-1$
 

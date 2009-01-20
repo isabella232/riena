@@ -11,41 +11,50 @@
 package org.eclipse.riena.communication.core.progressmonitor;
 
 /**
- * Interface for a registry that maintains the list of progressmonitors that are
- * interested in monitoring remote service progress
+ * Interface for a registry that maintains the list of progress monitors that
+ * are interested in monitoring remote service progress
  */
 public interface IRemoteProgressMonitorRegistry {
 
-	int MONITOR_ONE_CALL = 1;
-	int MONITOR_MANY_CALLS = 2;
+	enum RemovalPolicy {
+		/**
+		 * All progress monitors are removed after one call
+		 */
+		AFTER_ONE_CALL,
+
+		/**
+		 * All progress monitors are removed after all calls
+		 */
+		AFTER_ALL_CALLS
+	}
 
 	/**
-	 * Add a new progress Monitor for the specified remote Service proxy
+	 * Add a new progress monitor for the specified remote Service proxy
 	 * 
 	 * @param callProxy
 	 * @param monitor
-	 * @param monitorType
-	 *            can be MONITOR_ONE_CALL or MONITOR_MANY_CALLS, the former
-	 *            means all progressMonitors are removed after one call
+	 * @param removalPolicy
+	 *            can be AFTER_ONE_CALL or AFTER_ALL_CALLS, the former means all
+	 *            progressMonitors are removed after one call
 	 */
-	void addProgressMonitor(Object callProxy, IRemoteProgressMonitor monitor, int monitorType);
+	void addProgressMonitor(Object callProxy, IRemoteProgressMonitor monitor, RemovalPolicy removalPolicy);
 
 	/**
-	 * Removes a specific progressmonitor instance
+	 * Removes a specific progress monitor instance
 	 * 
 	 * @param monitor
 	 */
 	void removeProgressMonitor(IRemoteProgressMonitor monitor);
 
 	/**
-	 * Removes all progressMonitors for a specific proxy instance
+	 * Removes all progress monitors for a specific proxy instance
 	 * 
 	 * @param callProxy
 	 */
 	void removeAllProgressMonitors(Object callProxy);
 
 	/**
-	 * Gets a list object for all progressListener for a proxy
+	 * Gets a list object for all progress listeners for a proxy
 	 * 
 	 * @param callProxy
 	 * @return
