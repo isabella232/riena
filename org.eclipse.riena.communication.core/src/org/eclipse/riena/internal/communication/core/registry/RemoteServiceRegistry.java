@@ -17,13 +17,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
 import org.eclipse.riena.internal.communication.core.Activator;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
@@ -61,7 +65,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 	 */
 	public IRemoteServiceRegistration registerService(IRemoteServiceReference reference, BundleContext context) {
 
-		String url = reference.getDescription().getURL();
+		final String url = reference.getDescription().getURL();
 		synchronized (registeredServices) {
 			IRemoteServiceRegistration foundRemoteServiceReg = registeredServices.get(url);
 			if (foundRemoteServiceReg == null) {
@@ -71,6 +75,22 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 				props.put("service.protocol", reference.getDescription().getProtocol()); //$NON-NLS-1$
 				ServiceRegistration serviceRegistration = context.registerService(reference
 						.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
+				try {
+					Activator.getDefault().getContext().addServiceListener(new ServiceListener() {
+
+						public void serviceChanged(ServiceEvent event) {
+							if (event.getType() == ServiceEvent.UNREGISTERING) {
+								if (registeredServices.containsKey(url)) {
+									registeredServices.remove(url);
+								}
+								Activator.getDefault().getContext().removeServiceListener(this);
+							}
+						}
+					}, "(service.id=" + serviceRegistration.getReference().getProperty("service.id") + ")"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				} catch (InvalidSyntaxException e) {
+					// to nothing......
+					e.printStackTrace();
+				}
 				reference.setContext(context);
 				reference.setServiceRegistration(serviceRegistration);
 
@@ -107,11 +127,11 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 			// because the service gets unregistered automatically when the bundle, that created it, is
 			// stopped. the explicit call sometimes fails because that bundle is already stopped
 			// and so unregister fails with an IllegalStateException
-			//			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
-			//			serviceRegistration.unregister();
+			ServiceRegistration serviceRegistration = reference.getServiceRegistration();
 			String id = reference.getServiceInterfaceClassName();
 			registeredServices.remove(reference.getURL());
 			reference.dispose();
+			serviceRegistration.unregister();
 			LOGGER.log(LogService.LOG_DEBUG, "OSGi service removed id: " + id); //$NON-NLS-1$
 		}
 	}
@@ -139,5 +159,15 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 			}
 			return result;
 		}
+	}
+
+	/**
+	 * only meant for testcase that directly access the implementation
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public boolean hasServiceForUrl(String url) {
+		return (registeredServices.get(url) != null);
 	}
 }
