@@ -18,6 +18,7 @@ import org.eclipse.riena.navigation.IModuleNodeExtension;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
+import org.eclipse.riena.navigation.model.ExtensionPointFailure;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaDefinition;
 import org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry;
@@ -35,6 +36,28 @@ public class SwtExtensionWorkareaDefinitionRegistry implements IWorkareaDefiniti
 	}
 
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
+
+		if (getDefinition(id) != null) {
+			IWorkareaDefinition existingDefinition = getDefinition(id);
+			if (!existingDefinition.getControllerClass().equals(definition.getControllerClass())) {
+				throw new ExtensionPointFailure(
+						"Inconsistent workarea definition: a definition for submodules with typeId=\"" + id //$NON-NLS-1$
+								+ "\" already exists and it has a different controller (class " //$NON-NLS-1$
+								+ existingDefinition.getControllerClass().getSimpleName() + " instead of " //$NON-NLS-1$
+								+ definition.getControllerClass().getSimpleName() + ")."); //$NON-NLS-1$
+			}
+			if (!existingDefinition.getViewId().equals(definition.getViewId())) {
+				throw new ExtensionPointFailure(
+						"Inconsistent workarea definition: a definition for submodules with typeId=\"" + id //$NON-NLS-1$
+								+ "\" already exists and it has a different view (" + existingDefinition.getViewId() //$NON-NLS-1$
+								+ " instead of " + definition.getViewId() + ")."); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			if (existingDefinition.isViewShared() != definition.isViewShared()) {
+				throw new ExtensionPointFailure(
+						"Inconsistent workarea definition: a definition for submodules with typeId=\"" + id //$NON-NLS-1$
+								+ "\" already exists and it has a different shared value."); //$NON-NLS-1$
+			}
+		}
 		return workareas.put(id, definition);
 	}
 
