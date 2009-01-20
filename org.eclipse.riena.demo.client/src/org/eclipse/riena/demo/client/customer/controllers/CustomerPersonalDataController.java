@@ -36,7 +36,6 @@ public class CustomerPersonalDataController extends SubModuleController {
 
 	@Override
 	public void afterBind() {
-		// TODO Auto-generated method stub
 		super.afterBind();
 		((ITextRidget) getRidget("firstname")).updateFromModel(); //$NON-NLS-1$
 		((ITextRidget) getRidget("lastname")).updateFromModel(); //$NON-NLS-1$
@@ -44,8 +43,8 @@ public class CustomerPersonalDataController extends SubModuleController {
 
 	static class Customer {
 
-		String firstName;
-		String lastName;
+		private String firstName;
+		private String lastName;
 
 		Customer(String firstName, String lastName) {
 			this.firstName = firstName;

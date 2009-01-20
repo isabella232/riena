@@ -11,7 +11,7 @@
 package org.eclipse.riena.demo.customer.common;
 
 /**
- * TODO missing class comment
+ * Bean that contains the search result from the CustomerDemoService (search)
  * 
  * 
  */
