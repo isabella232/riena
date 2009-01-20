@@ -120,7 +120,7 @@ public class LoggerMill {
 		for (ILogListenerDefinition logListenerDef : listenerDefs) {
 			LogListener listener = logListenerDef.createLogListener();
 			if (listener == null) {
-				// FIXME error handling
+				// this can only happen, if the mandatory attribute is not defined, i.e. a schema violation
 				continue;
 			}
 			if (logListenerDef.isSynchronous()) {
