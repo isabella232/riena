@@ -10,29 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.workarea.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
-import org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry;
+import org.eclipse.riena.ui.workarea.spi.AbstractWorkareaDefinitionRegistry;
 
-class ExplicitWorkareaDefinitionRegistry implements IWorkareaDefinitionRegistry {
+final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitionRegistry {
 
-	private static final ExplicitWorkareaDefinitionRegistry instance = new ExplicitWorkareaDefinitionRegistry();
-
-	private Map<Object, IWorkareaDefinition> workareas = new HashMap<Object, IWorkareaDefinition>();
+	private static final ExplicitWorkareaDefinitionRegistry INSTANCE = new ExplicitWorkareaDefinitionRegistry();
 
 	static ExplicitWorkareaDefinitionRegistry getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	private ExplicitWorkareaDefinitionRegistry() {
-	}
-
-	public IWorkareaDefinition getDefinition(Object id) {
-
-		return workareas.get(id);
 	}
 
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
@@ -40,7 +30,7 @@ class ExplicitWorkareaDefinitionRegistry implements IWorkareaDefinitionRegistry 
 		if (id instanceof INavigationNode) {
 			return registerDefinition((INavigationNode<?>) id, definition);
 		} else {
-			return workareas.put(id, definition);
+			return super.register(id, definition);
 		}
 	}
 

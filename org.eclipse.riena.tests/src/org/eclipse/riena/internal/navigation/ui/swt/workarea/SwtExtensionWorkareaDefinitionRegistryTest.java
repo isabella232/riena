@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.workarea;
 
-import org.eclipse.riena.navigation.model.ExtensionPointFailure;
+import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
@@ -43,7 +43,6 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		workareaDefinition = new WorkareaDefinition(TestSubModuleController.class, TEST_VIEW_ID, TEST_IS_VIEW_SHARED);
 	}
 
-	@SuppressWarnings("restriction")
 	public void testRegisterDefinition() throws Exception {
 
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
@@ -51,7 +50,6 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		assertSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
 	}
 
-	@SuppressWarnings("restriction")
 	public void testRegisterSameDefinitionDifferentTypeId() throws Exception {
 
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
@@ -64,7 +62,6 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 		assertSame(otherWorkareaDefinition, workareaDefinitionRegistry.getDefinition(OTHER_TEST_TYPE_ID));
 	}
 
-	@SuppressWarnings("restriction")
 	public void testRegisterSameDefinitionSameTypeId() throws Exception {
 
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
@@ -73,11 +70,10 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 				TEST_VIEW_ID, TEST_IS_VIEW_SHARED);
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
 
-		assertSame(otherWorkareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
-		assertNotSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
+		assertSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
+		assertNotSame(otherWorkareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
 	}
 
-	@SuppressWarnings("restriction")
 	public void testRegisterDifferentDefinitionSameTypeId() throws Exception {
 
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
@@ -87,27 +83,27 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 			otherWorkareaDefinition = new WorkareaDefinition(OtherTestSubModuleController.class, TEST_VIEW_ID,
 					TEST_IS_VIEW_SHARED);
 			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
-			fail("ExtensionPointFailure expected");
-		} catch (ExtensionPointFailure expected) {
-			ok("ExtensionPointFailure expected");
+			fail("ApplicationModelFailure expected");
+		} catch (ApplicationModelFailure expected) {
+			ok("ApplicationModelFailure expected");
 		}
 
 		try {
 			otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class, OTHER_TEST_VIEW_ID,
 					TEST_IS_VIEW_SHARED);
 			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
-			fail("ExtensionPointFailure expected");
-		} catch (ExtensionPointFailure expected) {
-			ok("ExtensionPointFailure expected");
+			fail("ApplicationModelFailure expected");
+		} catch (ApplicationModelFailure expected) {
+			ok("ApplicationModelFailure expected");
 		}
 
 		try {
 			otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class, TEST_VIEW_ID,
 					OTHER_TEST_IS_VIEW_SHARED);
 			workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
-			fail("ExtensionPointFailure expected");
-		} catch (ExtensionPointFailure expected) {
-			ok("ExtensionPointFailure expected");
+			fail("ApplicationModelFailure expected");
+		} catch (ApplicationModelFailure expected) {
+			ok("ApplicationModelFailure expected");
 		}
 	}
 

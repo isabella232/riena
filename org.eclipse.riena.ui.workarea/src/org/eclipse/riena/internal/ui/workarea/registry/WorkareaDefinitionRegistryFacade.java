@@ -25,14 +25,14 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
-public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegistry, ServiceTrackerCustomizer {
+public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegistry, ServiceTrackerCustomizer {
 
-	private static final WorkareaDefinitionRegistryFacade instance = new WorkareaDefinitionRegistryFacade();
+	private static final WorkareaDefinitionRegistryFacade INSTANCE = new WorkareaDefinitionRegistryFacade();
 
 	private SortedSet<WorkareaDefinitionRegistryWithRank> contributedRegistries;
 
 	public static WorkareaDefinitionRegistryFacade getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	private WorkareaDefinitionRegistryFacade() {
@@ -197,8 +197,9 @@ public class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegi
 		 */
 		public int compareTo(WorkareaDefinitionRegistryWithRank other) {
 
-			if (this.getRanking() != other.getRanking())
+			if (this.getRanking() != other.getRanking()) {
 				return this.getRanking() > other.getRanking() ? -1 : 1;
+			}
 			return 0;
 		}
 

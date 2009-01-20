@@ -15,6 +15,16 @@ import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 public interface IWorkareaDefinitionRegistry {
 
 	IWorkareaDefinition getDefinition(Object id);
-	
+
+	/**
+	 * Registers the specified workarea definition with the specified typeId.
+	 * 
+	 * @param id
+	 *            The typeId.
+	 * @param definition
+	 *            A workarea definition.
+	 * @return The registered workarea definition or null, if the workarea
+	 *         definition could not be registered by this registry.
+	 */
 	IWorkareaDefinition register(Object id, IWorkareaDefinition definition);
 }

@@ -14,7 +14,7 @@ import org.eclipse.riena.internal.ui.workarea.registry.WorkareaDefinitionRegistr
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
-public class WorkareaManager {
+public final class WorkareaManager {
 
 	static private WorkareaManager instance = new WorkareaManager();
 
