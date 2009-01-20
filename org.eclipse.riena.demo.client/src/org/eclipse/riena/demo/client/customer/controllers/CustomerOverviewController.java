@@ -31,8 +31,8 @@ public class CustomerOverviewController extends SubModuleController {
 		overview = new OverviewTable();
 		CustomerRecordOverview cro = (CustomerRecordOverview) getNavigationNode().getContext(
 				NavigationArgument.CONTEXT_KEY_PARAMETER);
-		overview.addEntry(new OverviewEntry("Vorname", cro.getFirstName())); //$NON-NLS-1$
-		overview.addEntry(new OverviewEntry("Nachname", cro.getLastName())); //$NON-NLS-1$
+		overview.addEntry(new OverviewEntry("Firstname", cro.getFirstName())); //$NON-NLS-1$
+		overview.addEntry(new OverviewEntry("Lastname", cro.getLastName())); //$NON-NLS-1$
 
 		//getNavigationNode().getParent().setLabel(CustomerLoader.getFirstName()
 		// + " " + CustomerLoader.getLastName());

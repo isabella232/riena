@@ -307,7 +307,7 @@
                typeId="org.eclipse.riena.demo.client.kundensuche.group">
             <module
                   name="kundesuche"
-                  label="Kundensuche">
+                  label="Customersearch">
                <submodule
                      typeId="org.eclipse.riena.demo.client.kundensuche"
                      name="kundensuche"
@@ -329,28 +329,28 @@
                   typeId="org.eclipse.riena.demo.client.module.CustomerRecord">
                <submodule
                      controller="org.eclipse.riena.demo.client.customer.controllers.CustomerOverviewController"
-                     label="Übersicht"
+                     label="Overview"
                      shared="false"
                      typeId="customerRecordOverview"
                      view="org.eclipse.riena.demo.customerRecordOverview">
                </submodule>
                <submodule
                      controller="org.eclipse.riena.demo.client.customer.controllers.CustomerPersonalDataController"
-                     label="Personendaten"
+                     label="Personal data"
                      shared="false"
                      typeId="customerRecordPersonalData"
                      view="org.eclipse.riena.demo.customerRecordPersonalData">
                </submodule>
                <submodule
                      controller="org.eclipse.riena.demo.client.customer.controllers.CustomerAddressController"
-                     label="Adressdaten"
+                     label="Address data"
                      shared="false"
                      typeId="customerRecordAddress"
                      view="org.eclipse.riena.demo.customerRecordAddress">
                </submodule>
                <submodule
                      controller="org.eclipse.riena.demo.client.customer.controllers.CustomerContractController"
-                     label="Verträge"
+                     label="Contracts"
                      shared="false"
                      typeId="customerRecordContract"
                      view="org.eclipse.riena.demo.customerRecordContract">

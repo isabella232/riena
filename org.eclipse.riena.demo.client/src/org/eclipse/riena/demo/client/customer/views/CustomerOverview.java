@@ -12,6 +12,7 @@ package org.eclipse.riena.demo.client.customer.views;
 
 import org.eclipse.riena.demo.client.customer.controllers.CustomerOverviewController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -49,7 +50,7 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 		final Label label = new Label(container, SWT.NONE);
 		label.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		label.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
-		label.setText("Personendaten"); //$NON-NLS-1$
+		label.setText("Personal data"); //$NON-NLS-1$
 		label.setBounds(10, 29, 96, 13);
 
 		table = new Table(container, SWT.BORDER);
@@ -86,7 +87,7 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 		final Label label_1 = new Label(container, SWT.NONE);
 		label_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		label_1.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
-		label_1.setText("Wohnort"); //$NON-NLS-1$
+		label_1.setText("City"); //$NON-NLS-1$
 		label_1.setBounds(10, 131, 96, 13);
 
 		table_2 = new Table(container, SWT.BORDER);
@@ -100,7 +101,7 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 		final Label label_2 = new Label(container, SWT.NONE);
 		label_2.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		label_2.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
-		label_2.setText("Personen im Haushalt"); //$NON-NLS-1$
+		label_2.setText("Persons in Household"); //$NON-NLS-1$
 		label_2.setBounds(10, 232, 157, 13);
 
 		table_4 = new Table(container, SWT.BORDER);
@@ -165,7 +166,7 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 		final Label label_3 = new Label(container, SWT.NONE);
 		label_3.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		label_3.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD)); //$NON-NLS-1$
-		label_3.setText("Aktive Verträge"); //$NON-NLS-1$
+		label_3.setText("Aktiv Contracts"); //$NON-NLS-1$
 		label_3.setBounds(10, 356, 96, 13);
 
 		table_5 = new Table(container, SWT.BORDER);
@@ -234,7 +235,7 @@ public class CustomerOverview extends SubModuleView<CustomerOverviewController> 
 		new TableColumn(table_5, SWT.NONE);
 
 		final Button button = new Button(container, SWT.NONE);
-		button.setText("Speichern"); //$NON-NLS-1$
+		button.setText("Save"); //$NON-NLS-1$
 		button.setBounds(627, 481, 66, 23);
 	}
 

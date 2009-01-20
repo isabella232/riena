@@ -12,6 +12,7 @@ package org.eclipse.riena.demo.client.customer.views;
 
 import org.eclipse.riena.demo.client.customer.controllers.CustomerSearchController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -51,7 +52,7 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 		container.setBackground(SWTResourceManager.getColor(255, 255, 255));
 
 		suchName = new Text(container, SWT.BORDER);
-		suchName.setBounds(143, 15, 144, 20);
+		suchName.setBounds(146, 15, 144, 20);
 		addUIControl(suchName, "suchName"); //$NON-NLS-1$
 
 		final Label personLabel = new Label(container, SWT.NONE);
@@ -62,22 +63,22 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 
 		final Label nameLabel = new Label(container, SWT.NONE);
 		nameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		nameLabel.setText("Name"); //$NON-NLS-1$
-		nameLabel.setBounds(100, 18, 37, 13);
+		nameLabel.setText("Lastname"); //$NON-NLS-1$
+		nameLabel.setBounds(77, 15, 55, 13);
 
 		final Label vornameLabel = new Label(container, SWT.NONE);
 		vornameLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		vornameLabel.setText("Vorname"); //$NON-NLS-1$
-		vornameLabel.setBounds(309, 18, 50, 13);
+		vornameLabel.setText("Firstname"); //$NON-NLS-1$
+		vornameLabel.setBounds(306, 18, 50, 13);
 
 		suchVorname = new Text(container, SWT.BORDER);
-		suchVorname.setBounds(363, 15, 120, 20);
+		suchVorname.setBounds(360, 15, 120, 20);
 		addUIControl(suchVorname, "suchVorname"); //$NON-NLS-1$
 
 		final Button phonetischButton = new Button(container, SWT.CHECK);
 		phonetischButton.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		phonetischButton.setText("phonetisch"); //$NON-NLS-1$
-		phonetischButton.setBounds(506, 20, 85, 16);
+		phonetischButton.setText("phonetic"); //$NON-NLS-1$
+		phonetischButton.setBounds(503, 20, 85, 16);
 
 		final Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setBackground(SWTResourceManager.getColor(255, 255, 255));
@@ -86,29 +87,29 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 		final Label adresseLabel = new Label(container, SWT.NONE);
 		adresseLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		adresseLabel.setFont(new Font(Display.getCurrent(), new FontData("", 8, SWT.BOLD))); //$NON-NLS-1$
-		adresseLabel.setText("Adresse"); //$NON-NLS-1$
-		adresseLabel.setBounds(10, 64, 50, 13);
+		adresseLabel.setText("Addresse"); //$NON-NLS-1$
+		adresseLabel.setBounds(10, 64, 61, 13);
 
 		final Label label_1 = new Label(container, SWT.NONE);
 		label_1.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		label_1.setText("Straße"); //$NON-NLS-1$
+		label_1.setText("Street"); //$NON-NLS-1$
 		label_1.setBounds(100, 64, 37, 13);
 
 		final Label plzOrtLabel = new Label(container, SWT.NONE);
 		plzOrtLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		plzOrtLabel.setText("PLZ / Ort"); //$NON-NLS-1$
-		plzOrtLabel.setBounds(100, 98, 50, 13);
+		plzOrtLabel.setText("Zipcode / City"); //$NON-NLS-1$
+		plzOrtLabel.setBounds(65, 98, 68, 13);
 
 		suchStrasse = new Text(container, SWT.BORDER);
-		suchStrasse.setBounds(155, 62, 132, 20);
+		suchStrasse.setBounds(145, 60, 132, 20);
 		addUIControl(suchStrasse, "suchStrasse"); //$NON-NLS-1$
 
 		suchPlz = new Text(container, SWT.BORDER);
-		suchPlz.setBounds(156, 95, 50, 20);
+		suchPlz.setBounds(146, 93, 50, 20);
 		addUIControl(suchPlz, "suchPlz"); //$NON-NLS-1$
 
 		suchOrt = new Text(container, SWT.BORDER);
-		suchOrt.setBounds(212, 95, 120, 20);
+		suchOrt.setBounds(202, 93, 120, 20);
 		addUIControl(suchOrt, "suchOrt"); //$NON-NLS-1$
 
 		final Label label_2 = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -118,41 +119,36 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 		final Label kundenstatusLabel = new Label(container, SWT.NONE);
 		kundenstatusLabel.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		kundenstatusLabel.setFont(new Font(Display.getCurrent(), new FontData("", 8, SWT.BOLD))); //$NON-NLS-1$
-		kundenstatusLabel.setText("Kundenstatus"); //$NON-NLS-1$
-		kundenstatusLabel.setBounds(10, 145, 85, 13);
+		kundenstatusLabel.setText("Customerstatus"); //$NON-NLS-1$
+		kundenstatusLabel.setBounds(10, 145, 94, 13);
 
 		final Button suchKunde = new Button(container, SWT.CHECK);
 		suchKunde.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		suchKunde.setText("Kunde"); //$NON-NLS-1$
-		suchKunde.setBounds(100, 145, 50, 16);
+		suchKunde.setText("Customer"); //$NON-NLS-1$
+		suchKunde.setBounds(110, 145, 68, 16);
 
 		final Button suchInteressent = new Button(container, SWT.CHECK);
 		suchInteressent.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		suchInteressent.setText("Interessent"); //$NON-NLS-1$
-		suchInteressent.setBounds(153, 145, 77, 16);
-
-		final Button suchAltkunde = new Button(container, SWT.CHECK);
-		suchAltkunde.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		suchAltkunde.setText("Altkunde"); //$NON-NLS-1$
-		suchAltkunde.setBounds(236, 145, 85, 16);
+		suchInteressent.setText("Prospect"); //$NON-NLS-1$
+		suchInteressent.setBounds(180, 145, 77, 16);
 
 		final Label label_3 = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label_3.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		label_3.setBounds(0, 164, 695, 13);
 
 		final Button zurueckSetzen = new Button(container, SWT.NONE);
-		zurueckSetzen.setText("&Zurücksetzen"); //$NON-NLS-1$
+		zurueckSetzen.setText("&Reset"); //$NON-NLS-1$
 		zurueckSetzen.setBounds(522, 177, 85, 23);
 		addUIControl(zurueckSetzen, "reset"); //$NON-NLS-1$
 
 		final Button sucheStarten = new Button(container, SWT.NONE);
-		sucheStarten.setText("&Suchen"); //$NON-NLS-1$
+		sucheStarten.setText("&Search"); //$NON-NLS-1$
 		sucheStarten.setBounds(613, 177, 82, 23);
 		addUIControl(sucheStarten, "search"); //$NON-NLS-1$
 
 		final Label treffer = new Label(container, SWT.NONE);
 		treffer.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		treffer.setText("xx Treffer"); //$NON-NLS-1$
+		treffer.setText("xx Hits"); //$NON-NLS-1$
 		treffer.setBounds(627, 214, 68, 13);
 		addUIControl(treffer, "treffer"); //$NON-NLS-1$
 
@@ -194,12 +190,12 @@ public class CustomerSearchView extends SubModuleView<CustomerSearchController> 
 		newColumnTableColumn_9.setWidth(64);
 
 		final Button openCustomerButton = new Button(container, SWT.NONE);
-		openCustomerButton.setText("Öffnen Kunden"); //$NON-NLS-1$
+		openCustomerButton.setText("Open Customer"); //$NON-NLS-1$
 		openCustomerButton.setBounds(162, 477, 93, 23);
 		addUIControl(openCustomerButton, "openCustomer"); //$NON-NLS-1$
 
 		final Button newCustomerButton = new Button(container, SWT.NONE);
-		newCustomerButton.setText("Neuer Customer"); //$NON-NLS-1$
+		newCustomerButton.setText("New Customer"); //$NON-NLS-1$
 		newCustomerButton.setBounds(309, 477, 93, 23);
 		addUIControl(newCustomerButton, "newCustomer"); //$NON-NLS-1$
 
