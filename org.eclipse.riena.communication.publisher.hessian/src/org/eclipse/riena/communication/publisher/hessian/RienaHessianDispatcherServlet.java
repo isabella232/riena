@@ -22,6 +22,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -30,8 +31,6 @@ import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteS
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContextAccessor;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 import com.caucho.hessian.io.AbstractHessianOutput;
@@ -135,8 +134,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			throw new IOException("expected 'c' in hessian input at " + code); //$NON-NLS-1$
 		}
 		int major = inp.read();
-		// int minor = inp.read();
-		inp.read(); // TODO obsolete?? (replaced line above)
+		inp.read(); // read/skip the minor version - not used currently
 		if (major >= 2) {
 			out = new Hessian2Output(httpRes.getOutputStream());
 		} else {
