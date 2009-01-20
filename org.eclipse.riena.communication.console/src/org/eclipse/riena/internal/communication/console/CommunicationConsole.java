@@ -19,7 +19,9 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
+import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
 
+@SuppressWarnings("restriction")
 public class CommunicationConsole implements CommandProvider {
 	private IServicePublishBinder servicePublisher;
 	private IRemoteServiceRegistry serviceRegistry;
@@ -28,6 +30,7 @@ public class CommunicationConsole implements CommandProvider {
 		return "---riena communication---\n\tremotestatus - list all services"; //$NON-NLS-1$
 	}
 
+	@IgnoreCheckStyle("the _ is the pattern for console commands - do not change!!")
 	public void _remotestatus(CommandInterpreter ci) throws Exception {
 		printToPublishServices();
 		printPublishedServices();
