@@ -17,6 +17,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
+import org.eclipse.riena.tests.collect.NonUITestCase;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -25,6 +26,7 @@ import org.osgi.framework.ServiceRegistration;
 /**
  *
  */
+@NonUITestCase
 public class RemoteServiceFactoryTest extends RienaTestCase {
 
 	public RemoteServiceRegistry remoteServiceRegistry = null;
