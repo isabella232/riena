@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.Activator;
@@ -38,8 +36,6 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.osgi.service.log.LogService;
 
 /**
  * Default implementation for the navigation processor
@@ -231,11 +227,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument navigation) {
-		if (navigation != null && navigation.isNavigateAsync()) {
-			navigateAsync(sourceNode, targetId, navigation);
-		} else {
-			navigateSync(sourceNode, targetId, navigation);
-		}
+		// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
+		//		if (navigation != null && navigation.isNavigateAsync()) {
+		//			navigateAsync(sourceNode, targetId, navigation);
+		//		} else {
+		navigateSync(sourceNode, targetId, navigation);
+		//		}
 	}
 
 	/**
@@ -266,74 +263,74 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 
-	private void navigateAsync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
-
-	final NavigationArgument navigation) {
-
-		final boolean debug = LOGGER.isLoggable(LogService.LOG_DEBUG);
-
-		if (debug) {
-			LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " started..."); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		UIProcess p = new UIProcess("navigate", true, sourceNode) { //$NON-NLS-1$
-			private INavigationNode<?> targetNode;
-			private final long startTime = System.currentTimeMillis();
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.riena.ui.core.uiprocess.UIProcess#runJob(org.eclipse
-			 * .core.runtime.IProgressMonitor)
-			 */
-			@Override
-			public boolean runJob(IProgressMonitor monitor) {
-
-				targetNode = provideNode(sourceNode, targetId, navigation);
-
-				return true;
-			}
-
-			private void activateOrFlash(INavigationNode<?> activationNode) {
-
-				if (System.currentTimeMillis() - startTime < 200) {
-					activationNode.activate();
-				} else {
-					// TODO FLASHING but no activation
-				}
-			}
-
-			@Override
-			public void finalUpdateUI() {
-
-				if (targetNode != null) {
-					INavigationNode<?> activateNode = targetNode.findNode(targetId);
-					if (activateNode == null) {
-						activateNode = targetNode;
-					}
-
-					navigationMap.put(activateNode, sourceNode);
-					activateOrFlash(activateNode);
-				}
-
-				if (debug) {
-					LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " completed"); //$NON-NLS-1$//$NON-NLS-2$
-				}
-			}
-
-			@Override
-			protected int getTotalWork() {
-				return 10;
-			}
-		};
-
-		// TODO must be set?
-		p.setNote("sample uiProcess note"); //$NON-NLS-1$ 
-		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
-		p.start();
-	}
-
+	// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
+	//	private void navigateAsync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+	//
+	//	final NavigationArgument navigation) {
+	//
+	//		final boolean debug = LOGGER.isLoggable(LogService.LOG_DEBUG);
+	//
+	//		if (debug) {
+	//			LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " started..."); //$NON-NLS-1$ //$NON-NLS-2$
+	//		}
+	//
+	//		UIProcess p = new UIProcess("navigate", true, sourceNode) { //$NON-NLS-1$
+	//			private INavigationNode<?> targetNode;
+	//			private final long startTime = System.currentTimeMillis();
+	//
+	//			/*
+	//			 * (non-Javadoc)
+	//			 * 
+	//			 * @see
+	//			 * org.eclipse.riena.ui.core.uiprocess.UIProcess#runJob(org.eclipse
+	//			 * .core.runtime.IProgressMonitor)
+	//			 */
+	//			@Override
+	//			public boolean runJob(IProgressMonitor monitor) {
+	//
+	//				targetNode = provideNode(sourceNode, targetId, navigation);
+	//
+	//				return true;
+	//			}
+	//
+	//			private void activateOrFlash(INavigationNode<?> activationNode) {
+	//
+	//				if (System.currentTimeMillis() - startTime < 200) {
+	//					activationNode.activate();
+	//				} else {
+	//					// TODO FLASHING but no activation
+	//				}
+	//			}
+	//
+	//			@Override
+	//			public void finalUpdateUI() {
+	//
+	//				if (targetNode != null) {
+	//					INavigationNode<?> activateNode = targetNode.findNode(targetId);
+	//					if (activateNode == null) {
+	//						activateNode = targetNode;
+	//					}
+	//
+	//					navigationMap.put(activateNode, sourceNode);
+	//					activateOrFlash(activateNode);
+	//				}
+	//
+	//				if (debug) {
+	//					LOGGER.log(LogService.LOG_DEBUG, "async navigation to " + targetId + " completed"); //$NON-NLS-1$//$NON-NLS-2$
+	//				}
+	//			}
+	//
+	//			@Override
+	//			protected int getTotalWork() {
+	//				return 10;
+	//			}
+	//		};
+	//
+	//		// TODO must be set?
+	//		p.setNote("sample uiProcess note"); //$NON-NLS-1$ 
+	//		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
+	//		p.start();
+	//	}
 	private INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
 
@@ -341,7 +338,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	protected INavigationNodeProvider getNavigationNodeProvider() {
-		// TODO: handling if no service found ???
 		return NavigationNodeProviderAccessor.current().getNavigationNodeProvider();
 	}
 
@@ -864,10 +860,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
 	 */
 	public void historyBack() {
-		try {
-			if (getHistoryBackSize() == 0) {
-				return;
-			}
+		if (getHistoryBackSize() > 0) {
 			INavigationNode<?> current = histBack.pop();// skip self
 			fireBackHistoryChangedEvent();
 			histForward.push(current);
@@ -879,8 +872,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			if (node != null) {
 				activate(node);
 			}
-		} catch (EmptyStackException ex) {
-			// TODO: should we throw exception here?
 		}
 	}
 
@@ -903,16 +894,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
 	 */
 	public void historyForward() {
-		try {
+		if (getHistoryForwardSize() > 0) {
 			INavigationNode<?> current = histForward.pop();
 			fireForewardHistoryChangedEvent();
 			if (current != null) {
 				histBack.push(current);
+				if (histBack.size() > maxStacksize) {
+					histBack.remove(histBack.firstElement());
+				}
 				activate(current);
 				fireBackHistoryChangedEvent();
 			}
-		} catch (EmptyStackException ex) {
-			// TODO: should we throw exception here?
 		}
 	}
 

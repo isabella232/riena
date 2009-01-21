@@ -26,22 +26,24 @@ public class NavigationArgument {
 	private Object parameter;
 	private NavigationNodeId parentNodeId;
 	private INavigationArgumentListener argumentListener;
-	private boolean navigateAsync = false;
 
-	/**
-	 * @return the navigateAsync
-	 */
-	public boolean isNavigateAsync() {
-		return navigateAsync;
-	}
-
-	/**
-	 * @param navigateAsync
-	 *            the navigateAsync to set
-	 */
-	public void setNavigateAsync(boolean navigateAsync) {
-		this.navigateAsync = navigateAsync;
-	}
+	// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
+	//private boolean navigateAsync = false;
+	//
+	//	/**
+	//	 * @return the navigateAsync
+	//	 */
+	//	public boolean isNavigateAsync() {
+	//		return navigateAsync;
+	//	}
+	//
+	//	/**
+	//	 * @param navigateAsync
+	//	 *            the navigateAsync to set
+	//	 */
+	//	public void setNavigateAsync(boolean navigateAsync) {
+	//		this.navigateAsync = navigateAsync;
+	//	}
 
 	/**
 	 * @param parameter
