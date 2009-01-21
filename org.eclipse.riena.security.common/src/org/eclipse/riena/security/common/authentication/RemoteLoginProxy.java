@@ -92,7 +92,7 @@ public class RemoteLoginProxy {
 	public boolean logout() throws LoginException {
 		try {
 			authenticationService.logout();
-			subject.getPrincipals().clear(); // TODO only remove the principals for a particular session if possible
+			subject.getPrincipals().clear();
 		} catch (AuthenticationFailure e) {
 			throw new LoginException(e.getMessage());
 		}

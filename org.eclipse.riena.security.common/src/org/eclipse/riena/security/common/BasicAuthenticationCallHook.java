@@ -50,7 +50,7 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	 * .riena.communication.core.hooks.CallContext)
 	 */
 	public void afterCall(CallContext context) {
-		// TODO Auto-generated method stub
+		// no action necessary
 	}
 
 	/*
