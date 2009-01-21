@@ -75,7 +75,7 @@ public class SecurityCallHook implements ICallHook {
 		if (map == null) {
 			return;
 		}
-		String temp = (String) map.get(SSOID);
+		String temp = map.get(SSOID);
 		if (temp != null) {
 			sessionHolder.setSession(new Session(temp));
 		}

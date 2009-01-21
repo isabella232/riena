@@ -94,7 +94,7 @@ public abstract class AbstractMarker implements IMarker {
 	private void fireAttributesChanged() {
 		Iterator<IMarkerAttributeChangeListener> listenerIterator = attributeChangeListeners.iterator();
 		while (listenerIterator.hasNext()) {
-			IMarkerAttributeChangeListener listener = (IMarkerAttributeChangeListener) listenerIterator.next();
+			IMarkerAttributeChangeListener listener = listenerIterator.next();
 			listener.attributesChanged();
 		}
 	}

@@ -58,7 +58,7 @@ public final class VariableManagerUtil {
 		try {
 			variableManager.addVariables(variables);
 		} catch (CoreException e) {
-			final IValueVariable existingValue = variableManager.getValueVariable((String) key);
+			final IValueVariable existingValue = variableManager.getValueVariable(key);
 			if (existingValue.getValue().equals(value)) {
 				LOGGER.log(LogService.LOG_WARNING, "Already defined: (" + key + "," + value + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			} else {

@@ -37,6 +37,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 	/**
 	 * Binds and updates the ridgets.
 	 */
+	@Override
 	public void configureRidgets() {
 		String[] ids = { "StringNum", "Integer", "Long", "BigInteger", "StringDec", "Double", "Float", "BigDecimal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 				"Range", "MaxEight", "MinThree" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -80,8 +81,8 @@ public class TextNumericSubModuleController extends SubModuleController {
 	//////////////////
 
 	private void bind(DataBindingContext dbc, String id) {
-		IRidget inputRidget = (IRidget) getRidget("in" + id); //$NON-NLS-1$
-		IRidget outputRidget = (IRidget) getRidget("out" + id); //$NON-NLS-1$
+		IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
+		IRidget outputRidget = getRidget("out" + id); //$NON-NLS-1$
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));

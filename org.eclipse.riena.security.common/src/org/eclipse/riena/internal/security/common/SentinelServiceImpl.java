@@ -109,7 +109,7 @@ public class SentinelServiceImpl implements ISentinelService {
 		// iterate over the principals in the subject and try to find an entry in the PermissionCache
 		// add principals for which there are no permissions into the missingPrincipals ArrayList
 		for (Principal principal : principals) {
-			Permissions perms = (Permissions) thePermCache.getPermissions(principal);
+			Permissions perms = thePermCache.getPermissions(principal);
 			if (perms == null) {
 				missingPrincipals.add(principal);
 			} else {

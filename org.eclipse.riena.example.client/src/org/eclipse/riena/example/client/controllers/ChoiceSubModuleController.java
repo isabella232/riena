@@ -45,6 +45,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	 * 
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void configureRidgets() {
 		final CarConfig carConfig = new CarConfig();
@@ -178,11 +179,11 @@ public class ChoiceSubModuleController extends SubModuleController {
 			if (model != null) {
 				price += 100000;
 			}
-			price += ((long) options.size()) * 25000L;
+			price += options.size() * 25000L;
 			if (warranty == CarWarranties.EXTENDED) {
 				price += 10000;
 			}
-			price += ((long) plates.size()) * 200L;
+			price += plates.size() * 200L;
 			return price;
 		}
 	}
@@ -210,6 +211,7 @@ public class ChoiceSubModuleController extends SubModuleController {
 	private enum CarWarranties {
 		STANDARD, EXTENDED;
 
+		@Override
 		public String toString() {
 			char[] result = super.toString().toLowerCase().toCharArray();
 			result[0] = Character.toUpperCase(result[0]);

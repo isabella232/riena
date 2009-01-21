@@ -52,7 +52,7 @@ public class SoftCacheEntry<K, V> implements ICacheEntry<K, V> {
 	 * @see org.eclipse.riena.core.cache.internal.ICacheEntry#getValue()
 	 */
 	public V getValue() {
-		return (V) value.get();
+		return value.get();
 	}
 
 	/**
