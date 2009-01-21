@@ -54,7 +54,7 @@ public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 		ISubModuleNode sharedViewSm2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.sharedViewNotShared", "2"), "Node 2 (not shared)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(sharedViewSm2, SharedViewDemoSubModuleController.class,
-				SharedViewDemoSubModuleView.ID, false);
+				SharedViewDemoSubModuleView.ID + "NotShared", false);
 		sharedViewModule.addChild(sharedViewSm2);
 
 		ISubModuleNode sharedViewSm3 = new SubModuleNode(new NavigationNodeId(

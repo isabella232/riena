@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.viewprovider;
 
+import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -31,11 +32,11 @@ public class SwtViewProviderTest extends RienaTestCase {
 
 		super.setUp();
 		swtPresentationManager = new SwtViewProvider();
+		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
 	}
 
 	public void testGetSwtViewIdSharedView() throws Exception {
 
-		addPluginXml(SwtViewProviderTest.class, "SwtViewProviderTest.xml");
 		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
 		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
 
@@ -65,5 +66,19 @@ public class SwtViewProviderTest extends RienaTestCase {
 		SwtViewId swtViewId1Again = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1Again.getId());
 		assertEquals("1", swtViewId1Again.getSecondary());
+	}
+
+	public void testUnconsistentDefinitionWithAViewBothSharedAndNotShared() throws Exception {
+
+		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
+		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
+
+		swtPresentationManager.getSwtViewId(node1);
+		try {
+			swtPresentationManager.getSwtViewId(node2);
+			fail("ApplicationModelFailure expected");
+		} catch (ApplicationModelFailure expected) {
+			ok("ApplicationModelFailure expected");
+		}
 	}
 }

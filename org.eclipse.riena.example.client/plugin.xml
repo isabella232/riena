@@ -36,6 +36,11 @@
             name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView"
+            id="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleViewNotShared"
+            name="org.eclipse.riena.example.client.views.SharedViewDemoSubModuleViewNotShared">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
             id="org.eclipse.riena.example.client.views.RidgetsSubModuleView"
             name="org.eclipse.riena.example.client.views.RidgetsSubModuleView">

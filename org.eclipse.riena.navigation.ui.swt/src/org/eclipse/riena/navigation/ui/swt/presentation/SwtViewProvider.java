@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
@@ -90,7 +91,17 @@ public class SwtViewProvider {
 		if (viewId == null) {
 			throw new RuntimeException("viewId is null for nodeId " + submodule.getNodeId()); //$NON-NLS-1$
 		}
-		viewShared.put(viewId, def.isViewShared());
+
+		if (viewShared.get(viewId) != null) {
+			if (def.isViewShared() != viewShared.get(viewId)) {
+				throw new ApplicationModelFailure(
+						"Inconsistent view usage. The view with the id \"" //$NON-NLS-1$
+								+ viewId
+								+ "\" is already used with a different 'shared' state. A view must be defined in all workarea definitions as either shared or not shared."); //$NON-NLS-1$
+			}
+		} else {
+			viewShared.put(viewId, def.isViewShared());
+		}
 		if (def.isViewShared()) {
 			if (views.get(submodule) == null) {
 				viewCounter.put(viewId, 0);
