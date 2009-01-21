@@ -349,14 +349,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 		@Override
 		public void filterAdded(ISubModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			updateModuleView();
 		}
 
 		@Override
 		public void filterRemoved(ISubModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateModuleView();
 		}
@@ -406,14 +404,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 
 		@Override
 		public void filterAdded(IModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			updateModuleView();
 		}
 
 		@Override
 		public void filterRemoved(IModuleNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateModuleView();
 		}

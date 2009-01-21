@@ -124,7 +124,6 @@ public class MenuRidgetTest extends RienaTestCase {
 
 		@Override
 		public void checkUIControl(Object uiControl) {
-			// TODO Auto-generated method stub
 			super.checkUIControl(uiControl);
 		}
 

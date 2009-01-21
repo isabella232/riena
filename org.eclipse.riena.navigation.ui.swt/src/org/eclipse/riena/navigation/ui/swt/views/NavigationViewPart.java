@@ -123,14 +123,12 @@ public class NavigationViewPart extends ViewPart {
 
 		@Override
 		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			updateNavigationSize();
 		}
 
 		@Override
 		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateNavigationSize();
 		}
@@ -151,24 +149,20 @@ public class NavigationViewPart extends ViewPart {
 
 		@Override
 		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			updateNavigationSize();
 		}
 
 		@Override
 		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
-			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateNavigationSize();
 		}
 
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
-			// createModuleView
 			ModuleGroupView moduleGroupView = moduleGroupNodesToViews.get(source);
 			createModuleView(child, moduleGroupView);
-			// childAdded.activate();
 			updateNavigationSize();
 		}
 
