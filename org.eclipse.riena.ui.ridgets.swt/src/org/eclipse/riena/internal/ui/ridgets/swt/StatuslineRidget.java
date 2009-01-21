@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
@@ -19,6 +20,7 @@ import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineMessage;
 import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.graphics.Image;
 
@@ -29,7 +31,11 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 
 	private final static String LONG_EMPTY_STRING = "            "; //$NON-NLS-1$
 
+	private static Image missingImage;
+
 	private String message;
+	private String icon;
+	private Image image;
 	private IStatuslineNumberRidget statuslineNumberRidget;
 
 	/**
@@ -40,21 +46,38 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		message = LONG_EMPTY_STRING;
 	}
 
+	@Override
+	public Statusline getUIControl() {
+		return (Statusline) super.getUIControl();
+	}
+
+	@Override
+	public void setUIControl(Object uiControl) {
+		super.setUIControl(uiControl);
+		bindUIControl();
+	}
+
+	protected void bindUIControl() {
+		updateUIIcon();
+	}
+
 	/**
 	 * Returns the composite that displays the message in the status line.
 	 * 
 	 * @return message composite
 	 */
 	public final StatuslineMessage getStatuslineMessage() {
-		return ((Statusline) getUIControl()).getMessageComposite();
+		return getUIControl().getMessageComposite();
 	}
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#clear()
 	 */
 	public void clear() {
-		// TODO icon
 		setMessage(LONG_EMPTY_STRING);
+		this.icon = null;
+		this.image = null;
+		updateUIIcon();
 	}
 
 	/**
@@ -69,8 +92,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#getIcon()
 	 */
 	public String getIcon() {
-		// TODO Auto-generated method stub
-		return null;
+		return icon;
 	}
 
 	/**
@@ -125,19 +147,16 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		setMessage(message);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.IStatuslineRidget#setIcon(java.lang.String)
-	 */
 	public void setIcon(String icon) {
-		// TODO Auto-generated method stub
-
+		this.icon = icon;
+		this.image = null;
+		updateUIIcon();
 	}
 
 	private void setImage(Image image) {
-		getStatuslineMessage().setImage(image);
+		this.image = image;
+		this.icon = null;
+		updateUIIcon();
 	}
 
 	/**
@@ -175,6 +194,34 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		}
 
 		return null;
+	}
+
+	protected Image getManagedImage(String key) {
+		Image image = ImageUtil.getImage(key);
+		if (image == null) {
+			image = getMissingImage();
+		}
+		return image;
+	}
+
+	public final synchronized Image getMissingImage() {
+		if (missingImage == null) {
+			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
+		}
+		return missingImage;
+	}
+
+	private void updateUIIcon() {
+		Statusline control = getUIControl();
+		if (control != null) {
+			Image imageToSet = null;
+			if (icon != null) {
+				imageToSet = getManagedImage(icon);
+			} else {
+				imageToSet = image;
+			}
+			getStatuslineMessage().setImage(imageToSet);
+		}
 	}
 
 }

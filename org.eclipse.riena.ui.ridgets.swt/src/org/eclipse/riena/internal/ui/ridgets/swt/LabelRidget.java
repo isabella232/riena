@@ -40,6 +40,7 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 		setUIControl(label);
 	}
 
+	@Override
 	IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ILabelRidget.PROPERTY_TEXT);
 	}

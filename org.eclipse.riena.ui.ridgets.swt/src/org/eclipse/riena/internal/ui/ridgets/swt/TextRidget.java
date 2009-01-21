@@ -78,6 +78,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		textValue = initialValue;
 	}
 
+	@Override
 	IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, ITextRidget.PROPERTY_TEXT);
 	}
@@ -209,7 +210,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	public int getAlignment() {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
 	}
 
