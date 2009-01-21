@@ -87,8 +87,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		for (RemoteServiceDescription rsd : unpublishedServices) {
 			if (rsd.getProtocol().equals(protocol)) {
 				publish(rsd);
-				removedItems.add(rsd); // possibly concurrent
-				// modification exception
+				removedItems.add(rsd);
 			}
 		}
 		for (RemoteServiceDescription item : removedItems) {
