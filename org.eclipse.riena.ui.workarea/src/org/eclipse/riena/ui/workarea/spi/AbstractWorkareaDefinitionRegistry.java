@@ -25,6 +25,10 @@ public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDef
 	}
 
 	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
+		return internalRegister(id, definition);
+	}
+
+	protected IWorkareaDefinition internalRegister(Object id, IWorkareaDefinition definition) {
 		if (getDefinition(id) != null) {
 			IWorkareaDefinition existingDefinition = getDefinition(id);
 			if ((existingDefinition.getControllerClass() == null && definition.getControllerClass() != null)

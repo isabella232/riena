@@ -38,13 +38,9 @@ final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitio
 
 		// this may be specific - register with submodule
 		workareas.put(node, definition);
+
 		if (node.getNodeId() != null && node.getNodeId().getTypeId() != null) {
-			if (getDefinition(node.getNodeId().getTypeId()) == null) {
-				// if id is not registered yet register for all potential users
-				// TODO use method below?
-				workareas.put(node.getNodeId().getTypeId(), definition);
-			}
-			// TODO throw exception?
+			internalRegister(node.getNodeId().getTypeId(), definition);
 		}
 
 		return definition;
