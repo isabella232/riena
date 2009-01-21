@@ -82,12 +82,15 @@ public class SingleServicePublisher {
 
 		ServiceListener listener = new ServiceListener() {
 			public void serviceChanged(ServiceEvent event) {
-				if (event.getServiceReference().getProperty(Constants.OBJECTCLASS).equals(serviceName)) {
-					if (event.getType() == ServiceEvent.REGISTERED) {
-						publish(event.getServiceReference());
-					} else {
-						if (event.getType() == ServiceEvent.UNREGISTERING) {
-							unpublish(event.getServiceReference());
+				String[] serviceInterfaces = (String[]) event.getServiceReference().getProperty(Constants.OBJECTCLASS);
+				for (String serviceInterf : serviceInterfaces) {
+					if (serviceInterf.equals(serviceName)) {
+						if (event.getType() == ServiceEvent.REGISTERED) {
+							publish(event.getServiceReference());
+						} else {
+							if (event.getType() == ServiceEvent.UNREGISTERING) {
+								unpublish(event.getServiceReference());
+							}
 						}
 					}
 				}

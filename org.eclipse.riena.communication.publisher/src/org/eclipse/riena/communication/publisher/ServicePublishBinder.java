@@ -141,9 +141,6 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	}
 
 	private void publish(RemoteServiceDescription rsd) {
-		//		if (servicePublishers.size() == 0) {
-		//			return;
-		//		}
 		synchronized (rsDescs) {
 
 			ServiceHooksProxy handler = new ServiceHooksProxy(rsd.getService());
