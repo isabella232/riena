@@ -25,7 +25,7 @@ public final class Publish {
 		return new SingleServicePublisher(name);
 	}
 
-	public static SingleServicePublisher service(Class clazz) {
+	public static SingleServicePublisher service(Class<?> clazz) {
 		return new SingleServicePublisher(clazz.getName());
 	}
 

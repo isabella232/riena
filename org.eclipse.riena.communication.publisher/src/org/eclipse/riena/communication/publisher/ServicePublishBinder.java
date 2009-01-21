@@ -83,12 +83,16 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	}
 
 	private void checkUnpublishedServices(String protocol) {
+		List<RemoteServiceDescription> removedItems = new ArrayList<RemoteServiceDescription>();
 		for (RemoteServiceDescription rsd : unpublishedServices) {
 			if (rsd.getProtocol().equals(protocol)) {
 				publish(rsd);
-				unpublishedServices.remove(rsd); // possibly concurrent
+				removedItems.add(rsd); // possibly concurrent
 				// modification exception
 			}
+		}
+		for (RemoteServiceDescription item : removedItems) {
+			unpublishedServices.remove(item);
 		}
 
 	}
@@ -109,7 +113,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 
 	public void unpublish(ServiceReference serviceRef) {
 		for (RemoteServiceDescription rsd : rsDescs.values()) {
-			if (serviceRef == rsd.getServiceRef()) {
+			if (serviceRef.equals(rsd.getServiceRef())) {
 				IServicePublisher servicePublisher = servicePublishers.get(rsd.getProtocol());
 				if (servicePublisher != null) {
 					servicePublisher.unpublishService(rsd);
@@ -137,9 +141,9 @@ public class ServicePublishBinder implements IServicePublishBinder {
 	}
 
 	private void publish(RemoteServiceDescription rsd) {
-		if (servicePublishers.size() == 0) {
-			return;
-		}
+		//		if (servicePublishers.size() == 0) {
+		//			return;
+		//		}
 		synchronized (rsDescs) {
 
 			ServiceHooksProxy handler = new ServiceHooksProxy(rsd.getService());
