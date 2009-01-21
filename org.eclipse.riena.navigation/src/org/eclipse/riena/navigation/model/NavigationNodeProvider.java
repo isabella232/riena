@@ -117,7 +117,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 				}
 				parentNode.addChild(targetNode);
 			} else {
-				// TODO distinguish between assembly ID and typeID in error message (to help the user)
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
 		}
@@ -233,7 +232,6 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 
 		registerNavigationAssembler(assemblyId, assembler);
 
-		// TODO register for parent?
 		if (assembly.getSubApplicationNode() != null) {
 			register(assembly.getSubApplicationNode(), assembler, assembly);
 		}
