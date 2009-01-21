@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Riena Communication Console (Incubation)
 Bundle-SymbolicName: org.eclipse.riena.communication.console
-Bundle-Version: 1.0.0.RC1
+Bundle-Version: 1.0.0.RC2
 Bundle-Activator: org.eclipse.riena.internal.communication.console.Activator
 Import-Package: org.osgi.framework;version="1.4.0",
  org.osgi.service.log;version="1.3.0"
