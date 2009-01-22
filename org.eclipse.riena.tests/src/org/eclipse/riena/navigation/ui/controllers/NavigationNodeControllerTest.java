@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -43,11 +44,13 @@ public class NavigationNodeControllerTest extends TestCase {
 
 	private MyNavigationNodeContoller controller;
 	private SubModuleNode node;
+	private Shell shell;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		Display display = Display.getDefault();
+		shell = new Shell(display);
 		Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
@@ -61,6 +64,7 @@ public class NavigationNodeControllerTest extends TestCase {
 	protected void tearDown() throws Exception {
 		controller = null;
 		node = null;
+		SwtUtilities.disposeWidget(shell);
 	}
 
 	/**
@@ -90,7 +94,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 		node.addMarker(new HiddenMarker());
 		TextRidget ridget = new TextRidget();
-		ridget.setUIControl(new Text(new Shell(), 0));
+		ridget.setUIControl(new Text(shell, 0));
 		ridget.addMarker(new ErrorMarker());
 		controller.addRidget("4711", ridget);
 		controller.updateNavigationNodeMarkers();
@@ -119,10 +123,10 @@ public class NavigationNodeControllerTest extends TestCase {
 	public void testGetRidgetMarkers() {
 
 		LabelRidget ridget = new LabelRidget();
-		ridget.setUIControl(new Label(new Shell(), 0));
+		ridget.setUIControl(new Label(shell, 0));
 		controller.addRidget("4711", ridget);
 		LabelRidget ridget2 = new LabelRidget();
-		ridget2.setUIControl(new Label(new Shell(), 0));
+		ridget2.setUIControl(new Label(shell, 0));
 		controller.addRidget("0815", ridget2);
 
 		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
@@ -140,7 +144,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 		CompositeRidget compositeRidget = new CompositeRidget();
 		LabelRidget ridget3 = new LabelRidget();
-		ridget3.setUIControl(new Label(new Shell(), 0));
+		ridget3.setUIControl(new Label(shell, 0));
 		compositeRidget.addRidget("label3", ridget3);
 		controller.addRidget("comp", compositeRidget);
 		MandatoryMarker mandatoryMarker = new MandatoryMarker();
