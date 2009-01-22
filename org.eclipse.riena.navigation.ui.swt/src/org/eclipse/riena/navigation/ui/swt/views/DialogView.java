@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.riena.internal.navigation.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.RienaDialog;
 import org.eclipse.swt.events.DisposeEvent;
@@ -18,7 +19,6 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * base class for SWT dialogs.
@@ -78,18 +78,9 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 
 	private void initializeParent(Composite parent) {
 		if (parent == null) {
-			this.parent = getWorkbenchShell();
+			this.parent = RcpUtilities.getWorkbenchShell();
 		} else {
 			this.parent = parent;
-		}
-	}
-
-	private Shell getWorkbenchShell() {
-
-		if (PlatformUI.isWorkbenchRunning()) {
-			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		} else {
-			return null;
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.navigation.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.application.AbstractApplication;
@@ -207,12 +208,12 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	protected void prePerformLogin(IApplicationContext context) {
-		if (getWorkbenchShell() != null) {
+		if (RcpUtilities.getWorkbenchShell() != null) {
 			// To minimize the workbench and show the login dialog later, the workbench has be made first invisible and then minimized.
-			getWorkbenchShell().setVisible(false);
-			getWorkbenchShell().setMinimized(true);
+			RcpUtilities.getWorkbenchShell().setVisible(false);
+			RcpUtilities.getWorkbenchShell().setMinimized(true);
 			// Make workbench visible to be shown as minimized in the (windows) task bar.
-			getWorkbenchShell().setVisible(true);
+			RcpUtilities.getWorkbenchShell().setVisible(true);
 		}
 	}
 
@@ -220,7 +221,7 @@ public abstract class SwtApplication extends AbstractApplication {
 		if (!EXIT_OK.equals(result)) {
 			PlatformUI.getWorkbench().close();
 		} else {
-			getWorkbenchShell().setMinimized(false);
+			RcpUtilities.getWorkbenchShell().setMinimized(false);
 			loginNonActivityTimer.schedule();
 		}
 	}
@@ -331,13 +332,4 @@ public abstract class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	private Shell getWorkbenchShell() {
-
-		// TODO: copied from org.eclipse.riena.navigation.ui.swt.views.DialogView (implement only once)
-		if (PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		} else {
-			return null;
-		}
-	}
 }

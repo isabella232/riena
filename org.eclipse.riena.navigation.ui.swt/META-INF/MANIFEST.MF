@@ -22,10 +22,11 @@ Require-Bundle: org.eclipse.osgi.services;bundle-version="3.1.200",
  org.eclipse.riena.ui.workarea;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy 
 Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-internal:=true,
+ org.eclipse.riena.internal.navigation.ui.swt.utils,
  org.eclipse.riena.internal.navigation.ui.swt.workarea;x-internal:=true,
  org.eclipse.riena.navigation.ui.swt.application,
  org.eclipse.riena.navigation.ui.swt.binding,
- org.eclipse.riena.navigation.ui.swt.component;x-friends:="org.eclipse.riena.tests";x-internal:=true,
+ org.eclipse.riena.navigation.ui.swt.component;x-internal:=true;x-friends:="org.eclipse.riena.tests",
  org.eclipse.riena.navigation.ui.swt.lnf.renderer,
  org.eclipse.riena.navigation.ui.swt.login,
  org.eclipse.riena.navigation.ui.swt.presentation,
