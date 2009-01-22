@@ -285,48 +285,40 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	public boolean isFocusable() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean isVisible() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void requestFocus() {
-		// TODO Auto-generated method stub
-
+		// not focusable
 	}
 
 	public void setFocusable(boolean focusable) {
-		// TODO Auto-generated method stub
-
+		// not focusable
 	}
 
 	public void setToolTipText(String toolTipText) {
-		// TODO Auto-generated method stub
+		// TODO render a tooltip
 
 	}
 
 	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
-
+		// allways visible
 	}
 
 	public String getID() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isBlocked() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void setBlocked(boolean blocked) {
-		// TODO Auto-generated method stub
-
+		// Never blocked so far. Should there be blocking available in future?
 	}
 
 	/**
