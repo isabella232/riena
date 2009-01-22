@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ridgets Swt Plug-in (Incubation)
+Bundle-Name: Riena Ridgets Swt Plug-in
 Bundle-SymbolicName: org.eclipse.riena.ui.ridgets.swt;singleton:=true
-Bundle-Version: 1.0.0.RC2
+Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.riena.internal.ui.ridgets.swt.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.ridgets,
