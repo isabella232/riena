@@ -49,7 +49,7 @@ public abstract class AbstractApplication implements IApplication {
 
 	public Object start(IApplicationContext context) throws Exception {
 
-		Object result = initialzePerformLogin(context);
+		Object result = initializePerformLogin(context);
 		if (!EXIT_OK.equals(result)) {
 			return result;
 		}
@@ -182,9 +182,9 @@ public abstract class AbstractApplication implements IApplication {
 
 	abstract protected Object createView(IApplicationContext context, IApplicationNode pNode) throws Exception;
 
-	protected Object initialzePerformLogin(IApplicationContext context) throws Exception {
+	protected Object initializePerformLogin(IApplicationContext context) throws Exception {
 
-		initialzeLoginViewDefinition();
+		initializeLoginViewDefinition();
 
 		if (isDialogLogin(context)) {
 			return performLogin(context);
@@ -227,7 +227,7 @@ public abstract class AbstractApplication implements IApplication {
 		}
 	}
 
-	protected void initialzeLoginViewDefinition() {
+	protected void initializeLoginViewDefinition() {
 
 		Inject.extension(ILoginDialogViewDefinition.EP_TYPE).useType(ILoginDialogViewDefinition.class).into(this)
 				.andStart(Activator.getDefault().getContext());

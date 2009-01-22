@@ -279,7 +279,10 @@ public abstract class SwtApplication extends AbstractApplication {
 			return null;
 		}
 
-		// TODO: bugzilla request?!
+		// Use the splash handler of the workbench both for the login and for
+		// a later re-login after inactivity timeout. Unfortunately it is not
+		// accessible and an enhancement request to change that was rejected:
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=260736.
 		AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash"); //$NON-NLS-1$
 		if (loginSplashHandler instanceof AbstractLoginSplashHandler) {
 			return (AbstractLoginSplashHandler) loginSplashHandler;
@@ -299,9 +302,9 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected void initialzeLoginViewDefinition() {
+	protected void initializeLoginViewDefinition() {
 
-		super.initialzeLoginViewDefinition();
+		super.initializeLoginViewDefinition();
 
 		initialzeLoginSplashViewDefinition();
 	}
