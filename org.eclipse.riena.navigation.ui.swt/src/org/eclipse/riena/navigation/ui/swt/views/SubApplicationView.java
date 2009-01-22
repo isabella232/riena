@@ -225,8 +225,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	public void unbind() {
-		// TODO impl !!
-
+		if (getNavigationNode() != null && getNavigationNode().getNavigationNodeController() instanceof IController) {
+			IController controller = (IController) getNavigationNode().getNavigationNodeController();
+			binding.unbind(controller);
+			if (menuItemBindingManager != null) {
+				menuItemBindingManager.unbind(controller, getUIControls());
+			}
+		}
 	}
 
 	/**
