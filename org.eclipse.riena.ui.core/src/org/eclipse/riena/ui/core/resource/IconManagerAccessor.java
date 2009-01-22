@@ -33,9 +33,6 @@ public final class IconManagerAccessor {
 	 */
 	public static IIconManager fetchIconManager() {
 
-		// TODO: scp RegistryAccessor
-		// return RegistryAccessor.fetchRegistry().getService( ICON_MANAGER_ID,
-		// IIconManager.class );
 		if (manager == null) {
 			manager = new IconManager();
 		}

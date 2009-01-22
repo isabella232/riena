@@ -24,10 +24,11 @@ public final class SwtViewProviderAccessor {
 	}
 
 	public static SwtViewProvider getViewProvider() {
-		// TODO access the provider over a service
+
 		if (provider == null) {
 			provider = new SwtViewProvider();
 		}
+
 		return provider;
 	}
 
