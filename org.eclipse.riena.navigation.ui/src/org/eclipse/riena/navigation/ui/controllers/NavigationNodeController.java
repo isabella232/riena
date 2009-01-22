@@ -188,10 +188,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 	private void addRidgetMarkers(IRidget ridget, List<IMarker> combinedMarkers) {
 
-		if (ridget instanceof IMarkableRidget) {
-			// TODO: scp ridget.isShowing()
-			// if (ridget instanceof IMarkableRidget && ((IMarkableRidget)
-			// ridget).isShowing()) {
+		if (ridget instanceof IMarkableRidget && ((IMarkableRidget) ridget).isVisible()) {
 			addRidgetMarkers((IMarkableRidget) ridget, combinedMarkers);
 		} else if (ridget instanceof IRidgetContainer) {
 			addRidgetMarkers((IRidgetContainer) ridget, combinedMarkers);
