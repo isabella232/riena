@@ -162,6 +162,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOCUS_COLOR, new ColorLnfResource(166, 202, 240));
 
 		table.put(ILnfKeyConstants.STATUSLINE_BACKGROUND, getPrimaryBackground());
+		table.put(ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND, new ColorLnfResource(183, 216, 236));
 
 		table.put(ILnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
 

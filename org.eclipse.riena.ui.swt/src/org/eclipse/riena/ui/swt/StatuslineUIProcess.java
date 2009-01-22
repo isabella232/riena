@@ -30,7 +30,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -68,8 +67,6 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	private final Map<ProcessState, ILabelFormatter> stateValueMappers = new HashMap<ProcessState, ILabelFormatter>();
 
-	private Color listBackground;
-
 	/**
 	 * @param parent
 	 *            - the parent composite
@@ -78,7 +75,6 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	public StatuslineUIProcess(Composite parent, int style) {
 		super(parent, style);
 		initStateMappers();
-		listBackground = new Color(parent.getDisplay(), 183, 216, 236);
 		observeMoveAndResize(parent);
 	}
 
@@ -272,7 +268,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		@Override
 		protected Control createContents(Composite parent) {
-			parent.setBackground(listBackground);
+			parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 			popupContent = parent;
 			FormLayout layout = new FormLayout();
 			layout.marginLeft = 5;
@@ -560,7 +556,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		formData.height = 14;
 		formData.width = 160;
 		noProcessActiveLable = new Label(popupContent, SWT.NONE);
-		noProcessActiveLable.setBackground(listBackground);
+		noProcessActiveLable.setBackground(LnfManager.getLnf().getColor(
+				ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 		noProcessActiveLable.setText("No active process"); //$NON-NLS-1$
 		noProcessActiveLable.setLayoutData(formData);
 	}
@@ -579,7 +576,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		holder.progressBar.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
 		holder.progressBar.setMaximum(100);
 		holder.label = new Label(popupContent, SWT.NONE);
-		holder.label.setBackground(listBackground); //TODO get Color from lnf
+		holder.label
+				.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 		pido2controlHolder.put(pido.getKey(), holder);
 		return holder;
 	}
