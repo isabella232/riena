@@ -16,8 +16,6 @@ import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 
 /**
  * Keys of the look and feel of riena.
- * 
- * @TODO why does this CLASS has a name normally used for INTERFACES
  */
 public final class LnfKeyConstants {
 

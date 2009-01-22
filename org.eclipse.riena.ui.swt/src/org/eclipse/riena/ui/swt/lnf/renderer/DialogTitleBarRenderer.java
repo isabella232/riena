@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.graphics.Color;
@@ -28,17 +28,17 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	private final static int IMAGE_TITLE_GAP = 5;
 	private final static int BORDER_IMAGE_GAP = 5;
 
-	private String[] btnImageKeys = new String[] { ILnfKeyConstants.DIALOG_CLOSE_ICON,
-			ILnfKeyConstants.DIALOG_MAX_ICON, ILnfKeyConstants.DIALOG_MIN_ICON, ILnfKeyConstants.DIALOG_RESTORE_ICON };
-	private String[] btnHoverSelectedImageKeys = new String[] { ILnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON,
-			ILnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, ILnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON,
-			ILnfKeyConstants.DIALOG_RESTORE_HOVER_ICON };
-	private String[] btnHoverImageKeys = new String[] { ILnfKeyConstants.DIALOG_CLOSE_HOVER_ICON,
-			ILnfKeyConstants.DIALOG_MAX_HOVER_ICON, ILnfKeyConstants.DIALOG_MIN_HOVER_ICON,
-			ILnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON };
-	private String[] btnInactiveImageKeys = new String[] { ILnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON,
-			ILnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, ILnfKeyConstants.DIALOG_MIN_INACTIVE_ICON,
-			ILnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON };
+	private String[] btnImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_ICON, LnfKeyConstants.DIALOG_MAX_ICON,
+			LnfKeyConstants.DIALOG_MIN_ICON, LnfKeyConstants.DIALOG_RESTORE_ICON };
+	private String[] btnHoverSelectedImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_SELECTED_ICON,
+			LnfKeyConstants.DIALOG_MAX_HOVER_SELECTED_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_SELECTED_ICON,
+			LnfKeyConstants.DIALOG_RESTORE_HOVER_ICON };
+	private String[] btnHoverImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_HOVER_ICON,
+			LnfKeyConstants.DIALOG_MAX_HOVER_ICON, LnfKeyConstants.DIALOG_MIN_HOVER_ICON,
+			LnfKeyConstants.DIALOG_RESTORE_HOVER_SELECTED_ICON };
+	private String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.DIALOG_CLOSE_INACTIVE_ICON,
+			LnfKeyConstants.DIALOG_MAX_INACTIVE_ICON, LnfKeyConstants.DIALOG_MIN_INACTIVE_ICON,
+			LnfKeyConstants.DIALOG_RESTORE_INACTIVE_ICON };
 
 	@Override
 	protected String[] getBtnHoverImageKeys() {
@@ -63,27 +63,27 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	@Override
 	protected void paintBackground(GC gc) {
 
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR));
-		gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_END_COLOR));
+		gc.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_START_COLOR));
 		gc.fillGradientRectangle(3, 3, getBounds().width - 3, getBounds().height - 4, true);
 
 		// top and left
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_1));
 		gc.drawLine(0, 0, getBounds().width - 1, 0);
 		gc.drawLine(0, 0, 0, getHeight() - 1);
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_2));
 		gc.drawLine(1, 1, getBounds().width - 1, 1);
 		gc.drawLine(1, 1, 1, getHeight() - 2);
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_TOP_COLOR_3));
 		gc.drawLine(2, 2, getBounds().width - 1, 2);
 		gc.drawLine(2, 2, 2, getHeight() - 2);
 
 		// bottom and right
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_1));
 		gc.drawLine(0, getHeight() - 3, getBounds().width - 1, getHeight() - 3);
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_2));
 		gc.drawLine(1, getHeight() - 4, getBounds().width - 1, getHeight() - 4);
-		gc.setForeground(LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3));
+		gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_TITLEBAR_BACKGROUND_BOTTOM_COLOR_3));
 		gc.drawLine(2, getHeight() - 5, getBounds().width - 1, getHeight() - 5);
 		gc.drawLine(getBounds().width - 1, 0, getBounds().width - 1, getHeight() - 5);
 
@@ -92,7 +92,7 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	@Override
 	protected Rectangle paintTitle(GC gc) {
 
-		if (!LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.DIALOG_HIDE_OS_BORDER)) {
+		if (!LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER)) {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
@@ -101,13 +101,13 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		Color fgColor = LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_FOREGROUND);
+		Color fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_FOREGROUND);
 		if (!isActive()) {
-			fgColor = LnfManager.getLnf().getColor(ILnfKeyConstants.DIALOG_PASSIVE_FOREGROUND);
+			fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.DIALOG_PASSIVE_FOREGROUND);
 		}
 		gc.setForeground(fgColor);
 
-		Font font = LnfManager.getLnf().getFont(ILnfKeyConstants.DIALOG_FONT);
+		Font font = LnfManager.getLnf().getFont(LnfKeyConstants.DIALOG_FONT);
 		gc.setFont(font);
 
 		int textHeight = gc.getFontMetrics().getHeight();
@@ -130,7 +130,7 @@ public class DialogTitleBarRenderer extends AbstractTitleBarRenderer {
 	@Override
 	protected Rectangle paintImage(GC gc) {
 
-		if (!LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.DIALOG_HIDE_OS_BORDER)) {
+		if (!LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER)) {
 			return new Rectangle(0, 0, 0, 0);
 		}
 

@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.graphics.Color;
@@ -41,15 +41,15 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 		int height = getBounds().height - 2 * PADDING;
 
 		// top
-		Color topColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR);
+		Color topColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR);
 		gc.setForeground(topColor);
 		gc.drawLine(x + 1, y, x + width - 2, y);
-		Color startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR);
+		Color startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR);
 		gc.setForeground(startColor);
 		gc.drawLine(x, y + 1, x + width - 1, y + 1);
 
 		// left
-		Color endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR);
+		Color endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR);
 		gc.setBackground(endColor);
 		gc.fillGradientRectangle(x, y + 1, 2, height - 1, true);
 
@@ -59,7 +59,7 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 		// bottom
 		gc.setForeground(endColor);
 		gc.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
-		Color bottomColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR);
+		Color bottomColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR);
 		gc.setForeground(bottomColor);
 		gc.drawLine(x + 1, y + height, x + width - 2, y + height);
 

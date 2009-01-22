@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -101,7 +101,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	private Font getTitlebarFont() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Font font = lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
+		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
 		return font;
 	}
 
@@ -132,11 +132,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		// Background
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Color startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR);
-		Color endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR);
+		Color startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR);
+		Color endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR);
 		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
-			startColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR);
-			endColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR);
+			startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR);
+			endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR);
 		}
 		gc.setForeground(startColor);
 		gc.setBackground(endColor);
@@ -151,11 +151,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		// Border
-		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
+		Color borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
 		if (isActive() || flasherSupport.isProcessMarkerVisible()) {
-			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
+			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		} else if (!isEnabled()) {
-			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
+			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
 		// - top
@@ -216,9 +216,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Text
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
-			gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+			gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 			if (!isEnabled()) {
-				gc.setForeground(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND));
+				gc.setForeground(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND));
 			}
 			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			y = getBounds().y + y2;
@@ -290,7 +290,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 	protected HoverBorderRenderer getHoverBorderRenderer() {
 		return (HoverBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER);
+				LnfKeyConstants.SUB_MODULE_VIEW_HOVER_BORDER_RENDERER);
 	}
 
 	/**
@@ -357,15 +357,15 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		String key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON;
+		String key = LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON;
 		if (isEnabled()) {
 			if (isCloseButtonPressed()) {
-				key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON;
+				key = LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_SELECTED_ICON;
 			} else if (isCloseButtonHover()) {
-				key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON;
+				key = LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON;
 			}
 		} else {
-			key = ILnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON;
+			key = LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON;
 		}
 
 		Image closeImage = lnf.getImage(key);

@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -26,39 +26,39 @@ public class DialogBorderRenderer extends AbstractLnfRenderer {
 	private final static int BORDER_WIDTH = 2;
 
 	protected Boolean hideOsBorder() {
-		return LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.DIALOG_HIDE_OS_BORDER);
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
 	}
 
 	protected Color getInnerBorderColorBottom() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	protected Color getInnerBorderColorRight() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_INNER_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	protected Color getInnerBorderColorTop() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR);
 	}
 
 	protected Color getInnerBorderColorLeft() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_INNER_BORDER_TOP_LEFT_COLOR);
 	}
 
 	protected Color getBorderColorBottom() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	protected Color getBorderColorRight() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	protected Color getBorderColorTop() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR);
 	}
 
 	protected Color getBorderColorLeft() {
-		return getLnfColor(ILnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR);
 	}
 
 	protected Color getLnfColor(String key) {
