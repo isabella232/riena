@@ -24,18 +24,21 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.tests.collect.NonUITestCase;
+import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests of the class {@link NavigationNodeController}.
  */
-@NonUITestCase
+@UITestCase
 public class NavigationNodeControllerTest extends TestCase {
 
 	private MyNavigationNodeContoller controller;
@@ -87,6 +90,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 		node.addMarker(new HiddenMarker());
 		TextRidget ridget = new TextRidget();
+		ridget.setUIControl(new Text(new Shell(), 0));
 		ridget.addMarker(new ErrorMarker());
 		controller.addRidget("4711", ridget);
 		controller.updateNavigationNodeMarkers();
@@ -115,8 +119,10 @@ public class NavigationNodeControllerTest extends TestCase {
 	public void testGetRidgetMarkers() {
 
 		LabelRidget ridget = new LabelRidget();
+		ridget.setUIControl(new Label(new Shell(), 0));
 		controller.addRidget("4711", ridget);
 		LabelRidget ridget2 = new LabelRidget();
+		ridget2.setUIControl(new Label(new Shell(), 0));
 		controller.addRidget("0815", ridget2);
 
 		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
@@ -134,6 +140,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 		CompositeRidget compositeRidget = new CompositeRidget();
 		LabelRidget ridget3 = new LabelRidget();
+		ridget3.setUIControl(new Label(new Shell(), 0));
 		compositeRidget.addRidget("label3", ridget3);
 		controller.addRidget("comp", compositeRidget);
 		MandatoryMarker mandatoryMarker = new MandatoryMarker();
