@@ -30,7 +30,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.filter.IUIFilter;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -84,7 +84,7 @@ public class NavigationViewPart extends ViewPart {
 
 	private void initLayoutParts() {
 		bodyComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		bodyComposite.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.NAVIGATION_BACKGROUND));
+		bodyComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
 		bodyComposite.setLayout(new FormLayout());
 	}
 
@@ -288,7 +288,7 @@ public class NavigationViewPart extends ViewPart {
 	private ModuleGroupRenderer getModuleGroupRenderer() {
 
 		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.MODULE_GROUP_RENDERER);
+				LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupRenderer();
 		}
@@ -304,7 +304,7 @@ public class NavigationViewPart extends ViewPart {
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
 		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+				LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedBorderRenderer();
 		}

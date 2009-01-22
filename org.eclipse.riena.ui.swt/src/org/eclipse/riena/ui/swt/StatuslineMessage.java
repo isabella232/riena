@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
@@ -49,7 +49,7 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 		messageLabel = new CLabel(this, SWT.LEFT);
 		messageLabel.setText(" "); //$NON-NLS-1$
 		messageLabel.setImage(getPlaceholderImage());
-		messageLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		messageLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 
 	}
 
@@ -92,7 +92,7 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 	 * @return image
 	 */
 	private Image getPlaceholderImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSLINE_SPACER_ICON);
+		return LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_SPACER_ICON);
 	}
 
 	/**

@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -109,7 +109,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
 		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+				LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedBorderRenderer();
 		}

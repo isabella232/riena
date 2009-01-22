@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -221,7 +221,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 */
 	private SubApplicationSwitcherRenderer getRenderer() {
 		return (SubApplicationSwitcherRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER);
+				LnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER);
 	}
 
 	/**

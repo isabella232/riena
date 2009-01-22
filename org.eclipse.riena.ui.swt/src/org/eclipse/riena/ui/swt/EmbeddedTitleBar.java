@@ -15,7 +15,7 @@ import java.util.Collection;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.swt.SWT;
@@ -110,7 +110,7 @@ public class EmbeddedTitleBar extends Canvas {
 	protected EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
 		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
+				LnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedTitlebarRenderer();
 		}

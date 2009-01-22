@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -36,7 +36,7 @@ public class GrabCorner extends Composite {
 	public GrabCorner(Shell shell, int style) {
 
 		super(shell, style);
-		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.GRAB_CORNER_BACKGROUND));
+		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.GRAB_CORNER_BACKGROUND));
 		setData("sizeexecutor", "grabcorner"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		setLayoutData();
@@ -88,7 +88,7 @@ public class GrabCorner extends Composite {
 	 * @return true if shell is resizeable; otherwise false
 	 */
 	public static boolean isResizeable() {
-		return LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_RESIZEABLE);
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class GrabCorner extends Composite {
 	 * @return grab corner image
 	 */
 	private static Image getGrabCornerImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE);
+		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class GrabCorner extends Composite {
 	private static int getShellBorderWidth() {
 
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		if (borderRenderer != null) {
 			return borderRenderer.getBorderWidth();
 		} else {

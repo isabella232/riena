@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
@@ -89,15 +89,14 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Background
 		Color backgroundStartColor = lnf
-				.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR);
+				.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_START_COLOR);
 		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
-			backgroundStartColor = lnf
-					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR);
+			backgroundStartColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_START_COLOR);
 		}
 		gc.setForeground(backgroundStartColor);
-		Color backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR);
+		Color backgroundEndColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR);
 		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
-			backgroundEndColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR);
+			backgroundEndColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_ACTIVE_BACKGROUND_END_COLOR);
 		}
 		gc.setBackground(backgroundEndColor);
 		int x = getBounds().x + BORDER_LEFT_WIDTH - 1 - leftInset;
@@ -106,13 +105,13 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		int h = getHeight() - 1;
 		gc.fillGradientRectangle(x, y, w, h, true);
 
-		Color borderTopRightColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR);
-		Color borderBottomLeftColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
+		Color borderTopRightColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR);
+		Color borderBottomLeftColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
 		if (!isEnabled()) {
 			borderTopRightColor = lnf
-					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR);
+					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_TOP_RIGHT_COLOR);
 			borderBottomLeftColor = lnf
-					.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR);
+					.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR);
 		}
 		// Border
 		// - left
@@ -122,9 +121,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		int x2 = x;
 		int y2 = getBounds().y + getHeight() - 1;
 		gc.drawLine(x, y, x2, y2);
-		Color innerBorderColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
+		Color innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_BORDER_COLOR);
 		if (!isEnabled()) {
-			innerBorderColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
+			innerBorderColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_INNER_DISABLED_BORDER_COLOR);
 		}
 		if (!isActivated()) {
 			gc.setForeground(innerBorderColor);
@@ -198,9 +197,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 
 		// Text
-		Color foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND);
+		Color foreground = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FOREGROUND);
 		if (!isEnabled()) {
-			foreground = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
+			foreground = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_FOREGROUND);
 		}
 		gc.setForeground(foreground);
 		y = getBounds().y + BORDER_TOP_WIDTH + TEXT_TOP_INSET;
@@ -208,7 +207,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 		// Selection
 		if (isActivated() || flasherSupport.isProcessMarkerVisible()) {
-			Color selColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
+			Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			gc.setForeground(selColor);
 			gc.setBackground(selColor);
 			x = getBounds().x - leftInset;
@@ -239,7 +238,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private Color getSelectionStartColor() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		if ((selStartColor == null) || selStartColor.isDisposed()) {
-			Color selColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
+			Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			selStartColor = SwtUtilities.makeBrighter(selColor, 0.9f);
 		}
 		return selStartColor;
@@ -249,7 +248,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	private Color getSelectionEndColor() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 		if ((selEndColor == null) || selStartColor.isDisposed()) {
-			Color selColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
+			Color selColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR);
 			selEndColor = SwtUtilities.makeBrighter(selColor, 1.1f);
 		}
 		return selEndColor;
@@ -300,7 +299,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 */
 	private Font getTabFont() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Font font = lnf.getFont(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT);
+		Font font = lnf.getFont(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT);
 		return font;
 	}
 
@@ -323,7 +322,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	private Image getImage() {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		if (lnf.getBooleanSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON)) {
+		if (lnf.getBooleanSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON)) {
 			return image;
 		} else {
 			return null;

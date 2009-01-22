@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -48,7 +48,7 @@ public class ChoiceComposite extends Composite {
 		this.isMulti = multipleSelection;
 		this.orientation = SWT.VERTICAL;
 		applyOrientation();
-		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 	}
 
 	/**

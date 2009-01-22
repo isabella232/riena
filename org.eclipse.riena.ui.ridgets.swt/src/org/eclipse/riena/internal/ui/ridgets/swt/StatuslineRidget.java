@@ -18,7 +18,7 @@ import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineMessage;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -84,7 +84,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#error(java.lang.String)
 	 */
 	public void error(String message) {
-		setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSLINE_ERROR_ICON));
+		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_ERROR_ICON));
 		setMessage(message);
 	}
 
@@ -143,7 +143,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#info(java.lang.String)
 	 */
 	public void info(String message) {
-		setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSLINE_INFO_ICON));
+		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_INFO_ICON));
 		setMessage(message);
 	}
 
@@ -174,7 +174,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineRidget#warning(java.lang.String)
 	 */
 	public void warning(String message) {
-		setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.STATUSLINE_WARNING_ICON));
+		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_WARNING_ICON));
 		setMessage(message);
 	}
 

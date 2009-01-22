@@ -16,7 +16,7 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -37,7 +37,7 @@ public class FocusableSubModuleView extends SubModuleView<FocusableSubModuleCont
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
 		GridDataFactory fillFactory = GridDataFactory.fillDefaults();

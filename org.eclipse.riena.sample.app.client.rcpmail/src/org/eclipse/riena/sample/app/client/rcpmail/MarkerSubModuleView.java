@@ -15,7 +15,7 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -44,7 +44,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(2, false));
 
 		Group group1 = createMarkerOptionsGroup(parent);
@@ -179,7 +179,7 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 
 	private Composite createComposite(Group group) {
 		Composite composite = new Composite(group, SWT.NONE);
-		composite.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		composite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.fillDefaults().numColumns(5).equalWidth(false).spacing(10, 0).applyTo(composite);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 		return composite;

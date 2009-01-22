@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -24,47 +24,47 @@ public class ShellBorderRenderer extends DialogBorderRenderer {
 
 	@Override
 	protected Boolean hideOsBorder() {
-		return LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER);
+		return LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER);
 	}
 
 	@Override
 	protected Color getInnerBorderColorBottom() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	@Override
 	protected Color getInnerBorderColorRight() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	@Override
 	protected Color getInnerBorderColorTop() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
 	}
 
 	@Override
 	protected Color getInnerBorderColorLeft() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_INNER_BORDER_TOP_LEFT_COLOR);
 	}
 
 	@Override
 	protected Color getBorderColorBottom() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	@Override
 	protected Color getBorderColorRight() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_BORDER_BOTTOM_RIGHT_COLOR);
 	}
 
 	@Override
 	protected Color getBorderColorTop() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
 	}
 
 	@Override
 	protected Color getBorderColorLeft() {
-		return getLnfColor(ILnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
+		return getLnfColor(LnfKeyConstants.TITLELESS_SHELL_BORDER_TOP_LEFT_COLOR);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class ShellBorderRenderer extends DialogBorderRenderer {
 		int width = getBorderWidth();
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Integer padding = lnf.getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_PADDING);
+		Integer padding = lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING);
 		if (padding != null) {
 			width += padding;
 		}

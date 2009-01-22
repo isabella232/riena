@@ -16,7 +16,7 @@ import org.eclipse.riena.example.client.controllers.HelloDialogController;
 import org.eclipse.riena.navigation.ui.swt.views.DialogView;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -58,7 +58,7 @@ public class HelloDialogView extends DialogView {
 
 		super.buildView(parent);
 
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(1, false));
 
 		Group group1 = createChoiceGroup(parent);

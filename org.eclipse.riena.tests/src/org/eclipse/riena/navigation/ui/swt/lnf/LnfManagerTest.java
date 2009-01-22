@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
@@ -66,9 +66,9 @@ public class LnfManagerTest extends TestCase {
 	public void testDispose() throws Exception {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 		LnfManager.dispose();
-		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
 

@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -84,7 +84,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	 */
 	public static Integer getHorizontalLogoMargin() {
 
-		Integer margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN);
+		Integer margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN);
 		if (margin == null) {
 			margin = 0;
 		}
@@ -100,7 +100,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	 */
 	private Integer getVerticalLogoMargin() {
 
-		Integer margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN);
+		Integer margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN);
 		if (margin == null) {
 			margin = 0;
 		}
@@ -115,7 +115,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	 */
 	private int getHorizontalLogoPosition() {
 
-		Integer hPos = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION);
+		Integer hPos = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION);
 		if (hPos == null) {
 			hPos = SWT.LEFT;
 		}
@@ -130,7 +130,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	 */
 	private int getVerticalLogoPosition() {
 
-		Integer hPos = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION);
+		Integer hPos = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION);
 		if (hPos == null) {
 			hPos = SWT.TOP;
 		}
@@ -139,7 +139,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	}
 
 	private Image getLogoImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_LOGO);
+		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
 	}
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
@@ -74,7 +74,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * Initializes the status line.
 	 */
 	private void init() {
-		setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		uiControls = new ArrayList<Object>();
 		createContents();
 	}

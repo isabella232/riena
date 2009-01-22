@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -49,7 +49,7 @@ public class SharedViewDemoSubModuleView extends SubModuleView<SharedViewDemoSub
 	 */
 	@Override
 	public void basicCreatePartControl(Composite parent) {
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		final Label helloLabel = UIControlsFactory.createLabel(parent, "", SWT.CENTER); //$NON-NLS-1$
 
 		// layout

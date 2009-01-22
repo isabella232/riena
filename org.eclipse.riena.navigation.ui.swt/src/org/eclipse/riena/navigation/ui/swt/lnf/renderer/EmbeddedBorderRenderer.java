@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.SWT;
@@ -43,12 +43,12 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		// Border
-		Color borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
+		Color borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
 		if (isActive()) {
-			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
+			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
 		}
 		if (!isEnabled()) {
-			borderColor = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
+			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
 		}
 		gc.setForeground(borderColor);
 		// -outer

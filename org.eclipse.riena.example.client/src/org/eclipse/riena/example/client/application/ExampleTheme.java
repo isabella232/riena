@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.eclipse.riena.ui.swt.lnf.ColorLnfResource;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
@@ -32,24 +32,24 @@ public class ExampleTheme extends RienaDefaultTheme {
 	public void addCustomColors(Map<String, ILnfResource> table) {
 		super.addCustomColors(table);
 
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_FOREGROUND, getPrimaryForeground());
+		table.put(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, getPrimaryForeground());
 
-		table.put(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
+		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
 
-		table.put(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
+		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
 
 		table
-				.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(234, 231,
+				.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(234, 231,
 						158));
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(225, 220, 114));
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR,
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(225, 220, 114));
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR,
 				new ColorLnfResource(222, 224, 240));
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(186, 193, 225));
-		table.put(ILnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(151, 150, 180));
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(186, 193, 225));
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(151, 150, 180));
 
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_SELECTION_COLOR, new ColorLnfResource(null));
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_ITEM_FOCUS_COLOR, new ColorLnfResource(null));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_SELECTION_COLOR, new ColorLnfResource(null));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_FOCUS_COLOR, new ColorLnfResource(null));
 
 	}
 
@@ -62,15 +62,15 @@ public class ExampleTheme extends RienaDefaultTheme {
 		super.addCustomImages(table);
 
 		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/background.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
+		table.put(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/RIENA_Logo_RGB.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
+		table.put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
 
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath));
 		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
-		table.put(ILnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
+		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
 
 	}
 
@@ -82,7 +82,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomFonts(table);
 
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
+		table.put(LnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 
 	}
 
@@ -94,12 +94,12 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomSettings(table);
 
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 3);
-		table.put(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 3);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
 
-		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.LEFT);
-		table.put(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.LEFT);
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
 
 	}
 

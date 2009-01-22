@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
 import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
@@ -185,13 +185,13 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		initLayout();
 
 		statusLabel = new Label(this, SWT.NONE);
-		statusLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		statusLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 
 		openLabel = new Label(this, SWT.NONE);
-		openLabel.setImage(LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON));
+		openLabel.setImage(LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON));
 		openLabel.addMouseListener(new PopupController());
 		//		openLabel.setText("open"); //$NON-NLS-1$ TODO
-		openLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		openLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
@@ -200,7 +200,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
 		progressBar.setLayoutData(formData);
-		progressBar.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		progressBar.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		formData.left = new FormAttachment(statusLabel, 5);
 
 		// minimum value is allways 0
@@ -268,7 +268,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		@Override
 		protected Control createContents(Composite parent) {
-			parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
+			parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 			popupContent = parent;
 			FormLayout layout = new FormLayout();
 			layout.marginLeft = 5;
@@ -557,7 +557,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		formData.width = 160;
 		noProcessActiveLable = new Label(popupContent, SWT.NONE);
 		noProcessActiveLable.setBackground(LnfManager.getLnf().getColor(
-				ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
+				LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 		noProcessActiveLable.setText("No active process"); //$NON-NLS-1$
 		noProcessActiveLable.setLayoutData(formData);
 	}
@@ -573,11 +573,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		ControlHolder holder;
 		holder = new ControlHolder();
 		holder.progressBar = new ProgressBar(popupContent, SWT.NONE);
-		holder.progressBar.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		holder.progressBar.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		holder.progressBar.setMaximum(100);
 		holder.label = new Label(popupContent, SWT.NONE);
-		holder.label
-				.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
+		holder.label.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 		pido2controlHolder.put(pido.getKey(), holder);
 		return holder;
 	}

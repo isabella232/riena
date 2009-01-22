@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.swt.lnf.renderer;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageUtil;
@@ -118,11 +118,11 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 		@Override
 		protected void initFontDefaults() {
 			super.initFontDefaults();
-			getResourceTable().put(ILnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 12, SWT.NONE));
+			getResourceTable().put(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 12, SWT.NONE));
 		}
 
 		public void setHideOsBorder(boolean hide) {
-			getSettingTable().put(ILnfKeyConstants.DIALOG_HIDE_OS_BORDER, hide);
+			getSettingTable().put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hide);
 		}
 
 	}

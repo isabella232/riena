@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -53,19 +53,19 @@ public class ModuleToolTip extends DefaultToolTip {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		Integer delay = lnf.getIntegerSetting(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
+		Integer delay = lnf.getIntegerSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
 		if (delay != null) {
 			setPopupDelay(delay);
 		}
-		Color color = lnf.getColor(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND);
+		Color color = lnf.getColor(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND);
 		if (color != null) {
 			setForegroundColor(color);
 		}
-		color = lnf.getColor(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND);
+		color = lnf.getColor(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND);
 		if (color != null) {
 			setBackgroundColor(color);
 		}
-		Font font = lnf.getFont(ILnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
+		Font font = lnf.getFont(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
 		if (color != null) {
 			setFont(font);
 		}
@@ -144,7 +144,7 @@ public class ModuleToolTip extends DefaultToolTip {
 	private EmbeddedTitlebarRenderer getLnfTitlebarRenderer() {
 
 		EmbeddedTitlebarRenderer renderer = (EmbeddedTitlebarRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
+				LnfKeyConstants.SUB_MODULE_VIEW_TITLEBAR_RENDERER);
 		if (renderer == null) {
 			renderer = new EmbeddedTitlebarRenderer();
 		}

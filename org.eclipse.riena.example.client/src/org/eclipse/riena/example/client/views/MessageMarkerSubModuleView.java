@@ -16,7 +16,7 @@ import org.eclipse.riena.example.client.controllers.MessageMarkerSubModuleContro
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -33,7 +33,7 @@ public class MessageMarkerSubModuleView extends SubModuleView<MessageMarkerSubMo
 
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridLayoutFactory.swtDefaults().numColumns(2).margins(20, 20).spacing(10, 10).applyTo(parent);
 
 		GridDataFactory gdfSpanTwo = GridDataFactory.fillDefaults().span(2, 1);

@@ -13,7 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
@@ -55,11 +55,11 @@ public class ShellBorderRendererTest extends TestCase {
 	private static class MyLnf extends RienaDefaultLnf {
 
 		public void removePadding() {
-			getSettingTable().remove(ILnfKeyConstants.TITLELESS_SHELL_PADDING);
+			getSettingTable().remove(LnfKeyConstants.TITLELESS_SHELL_PADDING);
 		}
 
 		public void setPadding(Object padding) {
-			getSettingTable().put(ILnfKeyConstants.TITLELESS_SHELL_PADDING, padding);
+			getSettingTable().put(LnfKeyConstants.TITLELESS_SHELL_PADDING, padding);
 		}
 
 	}

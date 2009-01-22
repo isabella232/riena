@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.custom.CLabel;
@@ -52,19 +52,19 @@ public class SubModuleToolTip extends DefaultToolTip {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		Integer delay = lnf.getIntegerSetting(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY);
+		Integer delay = lnf.getIntegerSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY);
 		if (delay != null) {
 			setPopupDelay(delay);
 		}
-		Color color = lnf.getColor(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND);
+		Color color = lnf.getColor(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND);
 		if (color != null) {
 			setForegroundColor(color);
 		}
-		color = lnf.getColor(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND);
+		color = lnf.getColor(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND);
 		if (color != null) {
 			setBackgroundColor(color);
 		}
-		Font font = lnf.getFont(ILnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT);
+		Font font = lnf.getFont(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT);
 		if (font != null) {
 			setFont(font);
 		}

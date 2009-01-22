@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
@@ -73,7 +73,7 @@ public class RienaDialogDelegate {
 	 */
 	private void updateDialogStyle() {
 
-		boolean hide = LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.DIALOG_HIDE_OS_BORDER);
+		boolean hide = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
 		setHideOsBorder(hide);
 
 		int style = dialog.getShellStyle();
@@ -108,7 +108,7 @@ public class RienaDialogDelegate {
 		if (isHideOsBorder()) {
 			contentsComposite.addPaintListener(new DialogBorderPaintListener());
 			DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
-					ILnfKeyConstants.DIALOG_BORDER_RENDERER);
+					LnfKeyConstants.DIALOG_BORDER_RENDERER);
 			padding = borderRenderer.getBorderWidth();
 		}
 		contentsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -118,7 +118,7 @@ public class RienaDialogDelegate {
 		if (isHideOsBorder()) {
 			topComposite.addPaintListener(new DialogPaintListener());
 			DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
-					ILnfKeyConstants.DIALOG_RENDERER);
+					LnfKeyConstants.DIALOG_RENDERER);
 			titleBarHeight = titleBarRenderer.getHeight();
 			mouseListener = new DialogTitleBarMouseListener();
 			topComposite.addMouseListener(mouseListener);
@@ -195,7 +195,7 @@ public class RienaDialogDelegate {
 				final Rectangle dialogBounds = dialog.getBounds();
 				final Rectangle bounds = new Rectangle(0, 0, dialogBounds.width, dialogBounds.height);
 				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-						ILnfKeyConstants.DIALOG_BORDER_RENDERER);
+						LnfKeyConstants.DIALOG_BORDER_RENDERER);
 				borderRenderer.setBounds(bounds);
 				borderRenderer.paint(e.gc, null);
 
@@ -231,7 +231,7 @@ public class RienaDialogDelegate {
 
 				final Rectangle dialogBounds = control.getBounds();
 				final DialogTitleBarRenderer renderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
-						ILnfKeyConstants.DIALOG_RENDERER);
+						LnfKeyConstants.DIALOG_RENDERER);
 				renderer.setShell(control.getShell());
 				final Rectangle bounds = new Rectangle(0, 0, dialogBounds.width, renderer.getHeight());
 				renderer.setBounds(bounds);
@@ -249,7 +249,7 @@ public class RienaDialogDelegate {
 
 		@Override
 		protected AbstractTitleBarRenderer getTitleBarRenderer() {
-			return (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.DIALOG_RENDERER);
+			return (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_RENDERER);
 		}
 
 	}

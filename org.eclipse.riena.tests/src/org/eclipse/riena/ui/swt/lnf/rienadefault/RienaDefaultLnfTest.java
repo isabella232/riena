@@ -15,7 +15,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ILnfTheme;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -57,12 +57,12 @@ public class RienaDefaultLnfTest extends TestCase {
 
 		lnf.uninitialize();
 
-		assertNull(lnf.getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
-		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNull(lnf.getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 		lnf.initialize();
 
-		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
 
@@ -74,13 +74,13 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	public void testUninitialize() throws Exception {
 
-		Color color = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
+		Color color = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
 		assertNotNull(color);
 
 		lnf.uninitialize();
 
 		assertTrue(color.isDisposed());
-		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
 
 	}
 
@@ -93,8 +93,8 @@ public class RienaDefaultLnfTest extends TestCase {
 	public void testGetColor() throws Exception {
 
 		lnf.initialize();
-		assertNotNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
-		assertNull(lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
+		assertNotNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNull(lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertNull(lnf.getColor("dummy"));
 
 	}
@@ -108,8 +108,8 @@ public class RienaDefaultLnfTest extends TestCase {
 	public void testGetFont() throws Exception {
 
 		lnf.initialize();
-		assertNull(lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
-		assertNotNull(lnf.getFont(ILnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
+		assertNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND));
+		assertNotNull(lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
 		assertNull(lnf.getFont("dummy"));
 
 	}
@@ -137,7 +137,7 @@ public class RienaDefaultLnfTest extends TestCase {
 	 */
 	public void testSetTheme() throws Exception {
 
-		Color color = lnf.getColor(ILnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
+		Color color = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_FOREGROUND);
 		assertNotNull(color);
 
 		lnf.setTheme(new DummyTheme());

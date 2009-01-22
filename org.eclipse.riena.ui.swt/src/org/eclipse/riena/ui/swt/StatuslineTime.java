@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
@@ -57,7 +57,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	protected void createContents() {
 
 		timeLabel = new Label(this, SWT.LEFT);
-		timeLabel.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		timeLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		updateTime();
 
 	}

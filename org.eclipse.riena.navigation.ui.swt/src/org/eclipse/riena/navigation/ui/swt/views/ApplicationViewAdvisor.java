@@ -38,8 +38,8 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.AbstractTitleBarMouseListener;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -136,7 +136,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setTitle(controller.getNavigationNode().getLabel());
 		initApplicationSize(configurer);
-		if (LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+		if (LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			// don't show the shell border (with the minimize, maximize and
 			// close buttons) of the operation system
 			configurer.setShellStyle(SWT.NO_TRIM | SWT.DOUBLE_BUFFERED);
@@ -260,7 +260,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            - shell to initialize
 	 */
 	private void initShell(final Shell shell) {
-		shell.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
+		shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		shell.addPaintListener(new ShellPaintListener());
 
 		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
@@ -353,7 +353,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private int getSwitchterTopMargin() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
+		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
 
 	}
@@ -365,7 +365,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private int getSwitchterHeight() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
 		return margin;
 
 	}
@@ -388,12 +388,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// force result's background into logo and switcher
 		result.setBackgroundMode(SWT.INHERIT_FORCE);
 		// sets the background of the composite
-		Image image = LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
+		Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 		result.setBackgroundImage(image);
 
 		result.setLayout(new FormLayout());
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		int borderWidth = borderRenderer.getBorderWidth();
 		FormData data = new FormData();
 		data.top = new FormAttachment(parent, borderWidth);
@@ -465,7 +465,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private GrabCorner createGrabCorner(final Shell shell) {
 
-		if (GrabCorner.isResizeable() && LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+		if (GrabCorner.isResizeable() && LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			return new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
 		}
 
@@ -595,14 +595,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private int getCoolBarSeparatorPadding() {
 
 		ModuleGroupRenderer mgRenderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.MODULE_GROUP_RENDERER);
+				LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (mgRenderer == null) {
 			mgRenderer = new ModuleGroupRenderer();
 		}
 		int padding = mgRenderer.getModuleGroupPadding();
 
 		EmbeddedBorderRenderer borderRenderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+				LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
 		if (borderRenderer == null) {
 			borderRenderer = new EmbeddedBorderRenderer();
 		}
@@ -649,7 +649,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private int getShellPadding() {
 
 		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
 
 	}
@@ -660,7 +660,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return logo image
 	 */
 	private Image getLogoImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_LOGO);
+		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
 	}
 
 	/**
@@ -670,7 +670,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private int getHorizontalLogoPosition() {
 
-		Integer hPos = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION);
+		Integer hPos = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION);
 		if (hPos == null) {
 			hPos = SWT.LEFT;
 		}
@@ -685,7 +685,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private ShellRenderer getShellRenderer() {
 		ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.TITLELESS_SHELL_RENDERER);
+				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
 	}
 
@@ -718,9 +718,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellRenderer.getHeight());
 				shellRenderer.setBounds(bounds);
 				RienaDefaultLnf lnf = LnfManager.getLnf();
-				shellRenderer.setCloseable(lnf.getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE));
-				shellRenderer.setMaximizable(lnf.getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MAX));
-				shellRenderer.setMinimizable(lnf.getBooleanSetting(ILnfKeyConstants.TITLELESS_SHELL_SHOW_MIN));
+				shellRenderer.setCloseable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE));
+				shellRenderer.setMaximizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX));
+				shellRenderer.setMinimizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN));
 				shellRenderer.paint(e.gc, shell);
 
 			}
@@ -756,7 +756,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
 
 				ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
-						ILnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
+						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 				borderRenderer.setBounds(bounds);
 				borderRenderer.paint(e.gc, null);
 
@@ -789,7 +789,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			Composite logoComposite = (Composite) e.getSource();
 			Rectangle compositeBounds = logoComposite.getBounds();
 			ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
-					ILnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
+					LnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
 			renderer.setBounds(compositeBounds);
 			renderer.paint(e.gc, null);
 

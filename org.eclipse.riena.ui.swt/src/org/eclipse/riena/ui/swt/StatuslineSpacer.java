@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
@@ -42,7 +42,7 @@ public class StatuslineSpacer extends AbstractStatuslineComposite {
 	protected void createContents() {
 
 		separator = new Label(this, SWT.SEPARATOR | SWT.VERTICAL);
-		separator.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.STATUSLINE_BACKGROUND));
+		separator.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 	}
 
 	/**

@@ -26,7 +26,7 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.controller.IController;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -257,7 +257,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
 		public void paintControl(PaintEvent e) {
-			setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
+			setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 			getRenderer().setMarkers(getNavigationNode().getMarkers());
 			getRenderer().setItems(getAllVisibleModuleViews());
 			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
@@ -267,7 +267,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	}
 
 	private ModuleGroupRenderer getRenderer() {
-		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
+		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_RENDERER);
 	}
 
 	/**

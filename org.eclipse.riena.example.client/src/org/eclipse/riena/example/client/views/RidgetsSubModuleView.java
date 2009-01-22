@@ -12,7 +12,7 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -39,7 +39,7 @@ public class RidgetsSubModuleView extends SubModuleView<RidgetsSubModuleControll
 	@Override
 	protected void basicCreatePartControl(Composite parent) {
 
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new FormLayout());
 
 		createButtonGroup(parent);

@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
@@ -135,7 +135,7 @@ public class MenuCoolBarComposite extends Composite {
 	 * look-and-feel.
 	 */
 	private static Color getCoolbarBackground() {
-		return LnfManager.getLnf().getColor(ILnfKeyConstants.COOLBAR_BACKGROUND);
+		return LnfManager.getLnf().getColor(LnfKeyConstants.COOLBAR_BACKGROUND);
 	}
 
 	/**

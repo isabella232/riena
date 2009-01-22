@@ -14,7 +14,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
@@ -62,7 +62,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		// super.beforeCreatePartControl();
 
 		this.contentArea = parent;
-		contentArea.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		contentArea.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		contentArea.setLayout(new FormLayout());
 
 		Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$

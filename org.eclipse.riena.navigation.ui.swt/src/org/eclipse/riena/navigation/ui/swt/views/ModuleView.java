@@ -28,7 +28,7 @@ import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -114,7 +114,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		subModuleTree = new Tree(parent, SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
 		subModuleTree.setLinesVisible(false);
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		subModuleTree.setFont(lnf.getFont(ILnfKeyConstants.SUB_MODULE_ITEM_FONT));
+		subModuleTree.setFont(lnf.getFont(LnfKeyConstants.SUB_MODULE_ITEM_FONT));
 		binding.addUIControl(subModuleTree, "tree"); //$NON-NLS-1$
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
@@ -630,7 +630,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private ModuleGroupRenderer getMouduleGroupRenderer() {
 
 		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.MODULE_GROUP_RENDERER);
+				LnfKeyConstants.MODULE_GROUP_RENDERER);
 		if (renderer == null) {
 			renderer = new ModuleGroupRenderer();
 		}
@@ -646,7 +646,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private SubModuleTreeItemMarkerRenderer getTreeItemRenderer() {
 
 		SubModuleTreeItemMarkerRenderer renderer = (SubModuleTreeItemMarkerRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER);
+				LnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER);
 		if (renderer == null) {
 			renderer = new SubModuleTreeItemMarkerRenderer();
 		}

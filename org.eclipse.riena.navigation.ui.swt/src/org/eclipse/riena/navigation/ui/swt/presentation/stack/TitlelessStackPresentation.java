@@ -24,7 +24,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationViewAdvisor;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -320,7 +320,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private void createSubModuleViewArea() {
 
-		parent.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.SUB_MODULE_BACKGROUND));
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.addPaintListener(new PaintListener() {
 
 			/**
@@ -366,14 +366,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Returns the renderer of a module group.
 	 */
 	private static ModuleGroupRenderer getModuleGroupRenderer() {
-		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.MODULE_GROUP_RENDERER);
+		return (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.MODULE_GROUP_RENDERER);
 	}
 
 	/**
 	 * Returns the renderer of the sub module view
 	 */
 	private SubModuleViewRenderer getSubModuleViewRenderer() {
-		return (SubModuleViewRenderer) LnfManager.getLnf().getRenderer(ILnfKeyConstants.SUB_MODULE_VIEW_RENDERER);
+		return (SubModuleViewRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.SUB_MODULE_VIEW_RENDERER);
 	}
 
 	/**

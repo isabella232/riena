@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -32,25 +32,24 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	 */
 	private final static int TITLE_MARGIN = 5;
 
-	private String[] btnImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
+	private String[] btnImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MAX_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
 	private String[] btnHoverSelectedImageKeys = new String[] {
-			ILnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
-	private String[] btnHoverImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
-	private String[] btnInactiveImageKeys = new String[] { ILnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, ILnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
-			ILnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
+			LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON, LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
+	private String[] btnHoverImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
+	private String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
+			LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
 
 	@Override
 	protected void paintButton(GC gc, int btnIndex) {
 
-		if (!LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+		if (!LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			return;
 		}
 
@@ -61,7 +60,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	@Override
 	protected Rectangle paintTitle(GC gc) {
 
-		if (!LnfManager.getLnf().getBooleanSetting(ILnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+		if (!LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
@@ -70,13 +69,13 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		Color fgColor = LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_FOREGROUND);
+		Color fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND);
 		if (!isActive()) {
-			fgColor = LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND);
+			fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND);
 		}
 		gc.setForeground(fgColor);
 
-		Font font = LnfManager.getLnf().getFont(ILnfKeyConstants.TITLELESS_SHELL_FONT);
+		Font font = LnfManager.getLnf().getFont(LnfKeyConstants.TITLELESS_SHELL_FONT);
 		gc.setFont(font);
 
 		int textHeight = gc.getFontMetrics().getHeight();
@@ -120,7 +119,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	 */
 	private int getHorizontalLogoPosition() {
 
-		Integer hPos = LnfManager.getLnf().getIntegerSetting(ILnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_TEXT_POSITION);
+		Integer hPos = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_TEXT_POSITION);
 		if (hPos == null) {
 			hPos = SWT.LEFT;
 		}
@@ -129,7 +128,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	}
 
 	private Image getBackgroundImage() {
-		return LnfManager.getLnf().getImage(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
+		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 	}
 
 	@Override
@@ -154,7 +153,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 
 	@Override
 	protected void paintBackground(GC gc) {
-		gc.setBackground(LnfManager.getLnf().getColor(ILnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
+		gc.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		Image logo = getBackgroundImage();
 		if (logo != null) {
 			int y = logo.getImageData().height;

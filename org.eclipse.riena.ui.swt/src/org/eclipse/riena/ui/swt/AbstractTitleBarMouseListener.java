@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -322,7 +322,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 */
 	private void showHandCursor(Control control) {
 		if (handCursor == null) {
-			handCursor = createCursor(control, ILnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE);
+			handCursor = createCursor(control, LnfKeyConstants.TITLELESS_SHELL_HAND_IMAGE);
 		}
 		setCursor(control, handCursor);
 	}
@@ -334,7 +334,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	 */
 	private void showGrabCursor(Control control) {
 		if (grabCursor == null) {
-			grabCursor = createCursor(control, ILnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE);
+			grabCursor = createCursor(control, LnfKeyConstants.TITLELESS_SHELL_GRAB_IMAGE);
 		}
 		setCursor(control, grabCursor);
 

@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.ILnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.SWT;
@@ -60,7 +60,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		}
 
 		// line below tab items
-		Color bottomColor = lnf.getColor(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
+		Color bottomColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
 		gc.setForeground(bottomColor);
 		int x = 0;
 		int y = getBounds().height - 1;
@@ -70,7 +70,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		// all NOT active tab items
 		int xPosition = 0;
-		int position = lnf.getIntegerSetting(ILnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION);
+		int position = lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION);
 		if (position == SWT.LEFT) {
 			xPosition = 10;
 		} else if (position == SWT.RIGHT) {
@@ -176,8 +176,8 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 * @return renderer of tab
 	 */
 	private SubApplicationTabRenderer getRenderer() {
-		return (SubApplicationTabRenderer) LnfManager.getLnf().getRenderer(
-				ILnfKeyConstants.SUB_APPLICATION_TAB_RENDERER);
+		return (SubApplicationTabRenderer) LnfManager.getLnf()
+				.getRenderer(LnfKeyConstants.SUB_APPLICATION_TAB_RENDERER);
 	}
 
 }
