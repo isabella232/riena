@@ -171,20 +171,17 @@ public class Attachment {
 			if (type == Type.INPUTSTREAM) {
 				try {
 					InputStream input = dataSource.getInputStream();
-					if (input != null) {
+					if (input != null && input.markSupported()) {
 						input.reset();
 					}
 				} catch (IOException e) {
-					// TODO: null the dataSource if the inputstream does not work
-					// anyway ??
+					// do nothing
 				}
 			}
 		} catch (Throwable e) {
 			return new AttachmentSerialized(dataSource);
 		}
-		return new AttachmentSerialized(dataSource); // to feed the compiler,
-		// since it will never
-		// get here
+		return new AttachmentSerialized(dataSource);
 	}
 
 	/**
