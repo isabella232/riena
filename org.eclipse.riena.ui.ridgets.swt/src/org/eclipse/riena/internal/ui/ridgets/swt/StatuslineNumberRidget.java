@@ -46,7 +46,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 		if (this.number == null) {
 			numberString = ""; //$NON-NLS-1$
 		} else {
-			// TODO Numberformatter nutzen
+			// TODO use Numberformatter instead of toString()
 			numberString = number.toString();
 		}
 		if (getUIControl() != null) {
@@ -64,7 +64,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 		if (this.numberString == null) {
 			number = null;
 		} else {
-			// TODO Numberformatter nutzen
+			// TODO use Numberformatter instead of toString()
 			number = Integer.getInteger(numberString);
 		}
 		getUIControl().setNumber(numberString);
