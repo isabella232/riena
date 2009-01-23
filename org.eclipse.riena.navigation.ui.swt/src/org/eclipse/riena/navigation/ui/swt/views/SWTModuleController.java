@@ -23,11 +23,7 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 
 /**
- * Controller of a module.<br>
- * 
- * TODO The TreeRidget should be moved into the ModuleController. At the moment
- * the ModuleView or SCP doesn't bind with a tree ridget. So in the future this
- * class can be removed.
+ * Controller of a module.
  */
 public class SWTModuleController extends ModuleController {
 
