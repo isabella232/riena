@@ -20,7 +20,7 @@ public interface ILoginSplashView {
 	/**
 	 * Build and open the dialog using parent.
 	 */
-	public void build(Composite parent);
+	void build(Composite parent);
 
 	/**
 	 * Returns the result of the login operation. The following conventions have
