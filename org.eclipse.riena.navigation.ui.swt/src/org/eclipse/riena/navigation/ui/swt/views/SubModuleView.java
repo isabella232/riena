@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.InvocationTargetFailure;
-import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -72,7 +71,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	/** The title bar at the top of the view. May be null if running in RCP */
 	private EmbeddedTitleBar title;
-	private ListenerList<IComponentUpdateListener> updateListeners;
 
 	private Composite parentComposite;
 	private Composite contentComposite;
@@ -87,7 +85,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	public SubModuleView() {
 		binding = createBinding();
 		node2Controller = new HashMap<ISubModuleNode, C>();
-		updateListeners = new ListenerList<IComponentUpdateListener>(IComponentUpdateListener.class);
 	}
 
 	/**
@@ -336,7 +333,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	public void addUpdateListener(IComponentUpdateListener listener) {
-		updateListeners.add(listener);
+		throw new UnsupportedOperationException();
 	}
 
 	public void bind(SubModuleNode node) {

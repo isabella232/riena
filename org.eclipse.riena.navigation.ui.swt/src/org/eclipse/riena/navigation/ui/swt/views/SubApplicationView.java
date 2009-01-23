@@ -431,13 +431,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	public void addUpdateListener(IComponentUpdateListener listener) {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 
-	}
-
-	public int calculateBounds(int positionHint) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	public SubApplicationNode getNavigationNode() {

@@ -318,7 +318,9 @@ public class NavigationViewPart extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
+		if (bodyComposite != null) {
+			bodyComposite.setFocus();
+		}
 	}
 
 }
