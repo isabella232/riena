@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.Assert;
 /**
  * Bean that stores information about a single word (String).
  */
-public final class WordNode extends AbstractBean {
+public class WordNode extends AbstractBean {
 
 	private final WordNode parent;
 
@@ -34,7 +34,7 @@ public final class WordNode extends AbstractBean {
 		Assert.isNotNull(word);
 		this.parent = parent;
 		this.word = word;
-		this.children = new ArrayList<WordNode>();
+		children = new ArrayList<WordNode>();
 		if (parent != null) {
 			parent.addChild(this);
 		}
@@ -77,9 +77,9 @@ public final class WordNode extends AbstractBean {
 	}
 
 	public void setUpperCase(boolean isUppercase) {
-		boolean oldValue = this.isUpperCase;
-		this.isUpperCase = isUppercase;
-		firePropertyChanged("upperCase", oldValue, this.isUpperCase); //$NON-NLS-1$
+		boolean oldValue = isUpperCase;
+		isUpperCase = isUppercase;
+		firePropertyChanged("upperCase", oldValue, isUpperCase); //$NON-NLS-1$
 	}
 
 	public void setWord(String word) {

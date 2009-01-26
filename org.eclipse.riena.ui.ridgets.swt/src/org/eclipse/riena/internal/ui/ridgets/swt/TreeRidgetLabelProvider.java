@@ -44,6 +44,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 	private final TreeViewer viewer;
 	private final IObservableMap enablementAttribute;
+	private final IObservableMap imageAttribute;
 
 	/**
 	 * Creates a new instance.
@@ -72,36 +73,53 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 *            be {@code null} to enable all children
 	 */
 	public static TreeRidgetLabelProvider createLabelProvider(TreeViewer viewer, Class<?> treeElementClass,
-			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor) {
-		IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors, enablementAccessor);
-		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor);
+			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor, String imageAccessor) {
+		IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors, enablementAccessor,
+				imageAccessor);
+		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor, imageAccessor);
 	}
 
 	/**
-	 * Create an array of bean attribures that this label provides will observe.
+	 * Create an array of bean attributes that this label provides will observe.
 	 * If the observed attributes change the label provider will update the
 	 * appropriate element.
 	 */
 	private static IObservableMap[] createAttributeMap(Class<?> treeElementClass, IObservableSet knownElements,
-			String[] valueAccessors, String enablementAccessor) {
+			String[] valueAccessors, String enablementAccessor, String imageAccessor) {
 		IObservableMap[] result;
+		int length = valueAccessors.length;
 		if (enablementAccessor != null) {
-			// add the enablement attribute to the list of observed attributes for the label provider
-			String[] attributes = new String[valueAccessors.length + 1];
-			System.arraycopy(valueAccessors, 0, attributes, 0, attributes.length - 1);
-			attributes[attributes.length - 1] = enablementAccessor;
+			length++;
+		}
+		if (imageAccessor != null) {
+			length++;
+		}
+		if (length > valueAccessors.length) {
+			String[] attributes = new String[length];
+			System.arraycopy(valueAccessors, 0, attributes, 0, valueAccessors.length);
+			int index = valueAccessors.length;
+			if (enablementAccessor != null) {
+				// add the enablement attribute to the list of observed attributes for the label provider
+				attributes[index++] = enablementAccessor;
+			}
+			if (imageAccessor != null) {
+				attributes[index++] = imageAccessor;
+			}
 			result = BeansObservables.observeMaps(knownElements, treeElementClass, attributes);
 		} else {
 			result = BeansObservables.observeMaps(knownElements, treeElementClass, valueAccessors);
 		}
+
 		return result;
 	}
 
-	private TreeRidgetLabelProvider(TreeViewer viewer, IObservableMap[] attributeMap, String enablementAccessor) {
+	private TreeRidgetLabelProvider(TreeViewer viewer, IObservableMap[] attributeMap, String enablementAccessor,
+			String imageAccessor) {
 		super(attributeMap);
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);
 		enablementAttribute = findAttribute(attributeMap, enablementAccessor);
+		imageAttribute = findAttribute(attributeMap, imageAccessor);
 		this.viewer = viewer;
 	}
 
@@ -140,15 +158,15 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	// helping methods
 	// ////////////////
 
-	private IObservableMap findAttribute(IObservableMap[] attributeMap, String enablementAccessor) {
+	private IObservableMap findAttribute(IObservableMap[] attributeMap, String accessor) {
 		IObservableMap result = null;
-		if (enablementAccessor != null) {
+		if (accessor != null) {
 			for (int i = attributeMap.length - 1; result == null && i > -1; i--) {
 				IObservableMap attribute = attributeMap[i];
 				IBeanObservable beanObservable = (IBeanObservable) attribute;
 				PropertyDescriptor pd = beanObservable.getPropertyDescriptor();
 				String property = pd != null ? pd.getName() : null;
-				if (enablementAccessor.equals(property)) {
+				if (accessor.equals(property)) {
 					result = attribute;
 				}
 			}
@@ -156,13 +174,49 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		return result;
 	}
 
+	/**
+	 * Returns the image key for the given element. If the element is a folder,
+	 * the image key for an closed or open folder will be returned. If the
+	 * element is a leaf and the element has its own image key, the image key of
+	 * the element will be returned; otherwise the default image key of a leaf
+	 * will be returned.
+	 * 
+	 * @param element
+	 * @return image key
+	 */
 	private String getImageKey(Object element) {
-		String result = SharedImages.IMG_LEAF;
-		if (viewer.isExpandable(element)) {
-			boolean isExpanded = viewer.getExpandedState(element);
-			result = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
+
+		try {
+			if (viewer.isExpandable(element)) {
+
+				// folder
+				boolean isExpanded = viewer.getExpandedState(element);
+				if (isExpanded) {
+					return SharedImages.IMG_NODE_EXPANDED;
+				} else {
+					return SharedImages.IMG_NODE_COLLAPSED;
+				}
+
+			} else {
+
+				// leaf
+				if (imageAttribute != null) {
+					Object value = imageAttribute.get(element);
+					if (value != null) {
+						String key = (String) value;
+						if (Activator.getSharedImage(key) != null) {
+							return key;
+						}
+					}
+				}
+				return SharedImages.IMG_LEAF;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return SharedImages.IMG_LEAF;
 		}
-		return result;
+
 	}
 
 	// helping classes

@@ -86,8 +86,9 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
 		String enablementAccessor = null;
 		String visibilityAccessor = null;
+		String imageAccessor = null;
 		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
-				enablementAccessor, visibilityAccessor);
+				enablementAccessor, visibilityAccessor, imageAccessor);
 	}
 
 	// IGroupedTableRidget methods

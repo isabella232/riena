@@ -40,6 +40,8 @@ import org.eclipse.swt.widgets.TreeColumn;
 @UITestCase
 public class TreeRidgetLabelProviderTest extends TestCase {
 
+	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";
+	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
 	private static final String[] COLUMN_PROPERTIES = { "word", "upperCase" };
 
 	private Shell shell;
@@ -59,7 +61,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 		IObservableSet elements = createElements();
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, null);
+				COLUMN_PROPERTIES, null, null);
 
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
@@ -154,7 +156,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, createElements(),
-				COLUMN_PROPERTIES, "upperCase");
+				COLUMN_PROPERTIES, "upperCase", null);
 
 		wordNode.setUpperCase(true);
 		Color colorEnabled = labelProvider.getForeground(wordNode);
@@ -163,6 +165,42 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		wordNode.setUpperCase(false);
 		Color colorDisabled = labelProvider.getForeground(wordNode);
 		assertNotNull(colorDisabled);
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getImageKey(String)}.
+	 */
+	public void testGetImageKey() {
+
+		String key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", leaf);
+		assertEquals(SharedImages.IMG_LEAF, key);
+
+		viewer.collapseAll();
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", node);
+		assertEquals(SharedImages.IMG_NODE_COLLAPSED, key);
+
+		viewer.expandAll();
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", node);
+		assertEquals(SharedImages.IMG_NODE_EXPANDED, key);
+
+		IObservableSet elements = createElements();
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
+				COLUMN_PROPERTIES, null, "icon");
+
+		WordNodeWithIcon nodeWithIcon = new WordNodeWithIcon("node");
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon);
+		assertEquals(SharedImages.IMG_LEAF, key);
+
+		nodeWithIcon = new WordNodeWithIcon("node");
+		nodeWithIcon.setIcon("unkown");
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon);
+		assertEquals(SharedImages.IMG_LEAF, key);
+
+		nodeWithIcon = new WordNodeWithIcon("node");
+		nodeWithIcon.setIcon(ICON_ECLIPSE);
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon);
+		assertEquals(ICON_ECLIPSE, key);
+
 	}
 
 	// helping methods
@@ -218,6 +256,27 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// unused
 		}
+	}
+
+	private class WordNodeWithIcon extends WordNode {
+
+		private String icon;
+
+		/**
+		 * @param word
+		 */
+		public WordNodeWithIcon(String word) {
+			super(word);
+		}
+
+		public void setIcon(String icon) {
+			this.icon = icon;
+		}
+
+		public String getIcon() {
+			return icon;
+		}
+
 	}
 
 }

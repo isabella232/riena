@@ -109,6 +109,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private String[] columnHeaders;
 	private String enablementAccessor;
 	private String visibilityAccessor;
+	private String imageAccessor;
 	private boolean showRoots = true;
 
 	public TreeRidget() {
@@ -187,7 +188,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	protected void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String[] valueAccessors, String[] columnHeaders, String enablementAccessor,
-			String visibilityAccessor) {
+			String visibilityAccessor, String imageAccessor) {
 		Assert.isNotNull(treeRoots);
 		Assert.isLegal(treeRoots.length > 0, "treeRoots must have at least one entry"); //$NON-NLS-1$
 		Assert.isNotNull(treeElementClass);
@@ -218,6 +219,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 		this.enablementAccessor = enablementAccessor;
 		this.visibilityAccessor = visibilityAccessor;
+		this.imageAccessor = imageAccessor;
 
 		expansionStack.clear();
 		if (treeRoots.length == 1) {
@@ -265,16 +267,27 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		String[] columnHeaders = null;
 		String enablementAccessor = null;
 		String visibilityAccessor = null;
+		String imageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor, visibilityAccessor);
+				columnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
 	}
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor) {
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] columnHeaders = null;
+		String imageAccessor = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
-				columnHeaders, enablementAccessor, visibilityAccessor);
+				columnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
+	}
+
+	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
+			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor,
+			String imageAccessor) {
+		String[] myValueAccessors = new String[] { valueAccessor };
+		String[] columnHeaders = null;
+		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
+				columnHeaders, enablementAccessor, visibilityAccessor, imageAccessor);
 	}
 
 	/** @deprecated */
@@ -453,7 +466,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewer.setContentProvider(viewerCP);
 		// labels
 		ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP
-				.getKnownElements(), valueAccessors, enablementAccessor);
+				.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor);
 		viewer.setLabelProvider(viewerLP);
 		// input
 		if (showRoots) {
@@ -916,8 +929,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * element. Specifically:
 	 * <ul>
 	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
-	 * have any children beforehand</li> <li>if B gets removed to A we have to
-	 * refresh the icon of A, if B was the last child underneath A</li>
+	 * have any children beforehand</li>
+	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the
+	 * last child underneath A</li>
 	 * <ul>
 	 */
 	private final class TreeContentChangeListener implements ISetChangeListener {
