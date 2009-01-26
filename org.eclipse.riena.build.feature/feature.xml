@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.riena.build.feature"
-      label="Riena Feature solely used for build (Incubation)"
+      label="Riena Feature solely used for build"
       version="1.0.0.RC2"
       provider-name="Eclipse.org">
 
