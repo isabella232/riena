@@ -89,34 +89,12 @@ public abstract class AbstractApplication implements IApplication {
 		SortedSet<StartupSortable> startups = new TreeSet<StartupSortable>();
 
 		INavigationNodeProvider nnp = NavigationNodeProviderAccessor.current().getNavigationNodeProvider();
-		Integer sequence = null;
-		String id = null;
 		for (INavigationAssembler assembler : ((NavigationNodeProvider) nnp).getNavigationAssemblers()) {
-			sequence = getAutostartSequence(assembler.getAssembly());
+			Integer sequence = getAutostartSequence(assembler.getAssembly());
 			if (sequence != null) {
-				id = getTypeId(assembler.getAssembly().getSubApplicationNode());
-				if (id != null) {
-					startups.add(new StartupSortable(StartupLevel.SUBAPPLICATION, sequence, id));
-				} else {
-					id = getTypeId(assembler.getAssembly().getModuleGroupNode());
-					if (id != null) {
-						startups.add(new StartupSortable(StartupLevel.MODULEGROUP, sequence, id));
-					} else {
-						id = getTypeId(assembler.getAssembly().getModuleNode());
-						if (id != null) {
-							startups.add(new StartupSortable(StartupLevel.MODULE, sequence, id));
-						} else {
-							id = getTypeId(assembler.getAssembly().getSubModuleNode());
-							if (id != null) {
-								startups.add(new StartupSortable(StartupLevel.SUBMODULE, sequence, id));
-							} else {
-								id = assembler.getAssembly().getId();
-								if (id != null) {
-									startups.add(new StartupSortable(StartupLevel.CUSTOM, sequence, id));
-								}
-							}
-						}
-					}
+				StartupSortable startupSortable = createStartupSortable(assembler.getAssembly(), sequence);
+				if (startupSortable != null) {
+					startups.add(startupSortable);
 				}
 			}
 		}
@@ -126,6 +104,30 @@ public abstract class AbstractApplication implements IApplication {
 			LOGGER.log(LogService.LOG_INFO, String.format(message, startup.id, startup.level, startup.sequence));
 			applicationNode.create(new NavigationNodeId(startup.id));
 		}
+	}
+
+	private StartupSortable createStartupSortable(final INavigationAssemblyExtension assembly, final Integer sequence) {
+		String id = getTypeId(assembly.getSubApplicationNode());
+		if (id != null) {
+			return new StartupSortable(StartupLevel.SUBAPPLICATION, sequence, id);
+		}
+		id = getTypeId(assembly.getModuleGroupNode());
+		if (id != null) {
+			return new StartupSortable(StartupLevel.MODULEGROUP, sequence, id);
+		}
+		id = getTypeId(assembly.getModuleNode());
+		if (id != null) {
+			return new StartupSortable(StartupLevel.MODULE, sequence, id);
+		}
+		id = getTypeId(assembly.getSubModuleNode());
+		if (id != null) {
+			return new StartupSortable(StartupLevel.SUBMODULE, sequence, id);
+		}
+		id = assembly.getId();
+		if (id != null) {
+			return new StartupSortable(StartupLevel.CUSTOM, sequence, id);
+		}
+		return null;
 	}
 
 	protected void initializeNode(IApplicationNode model) {
@@ -258,9 +260,9 @@ public abstract class AbstractApplication implements IApplication {
 
 	static class StartupSortable implements Comparable<StartupSortable> {
 
-		public final StartupLevel level;
-		public final int sequence;
-		public final String id;
+		private final StartupLevel level;
+		private final int sequence;
+		private final String id;
 
 		public StartupSortable(StartupLevel level, Integer sequence, String id) {
 			this.level = level;
@@ -287,20 +289,26 @@ public abstract class AbstractApplication implements IApplication {
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj)
+			if (this == obj) {
 				return true;
-			if (obj == null)
+			}
+			if (obj == null) {
 				return false;
-			if (getClass() != obj.getClass())
+			}
+			if (getClass() != obj.getClass()) {
 				return false;
+			}
 			StartupSortable other = (StartupSortable) obj;
 			if (level == null) {
-				if (other.level != null)
+				if (other.level != null) {
 					return false;
-			} else if (!level.equals(other.level))
+				}
+			} else if (!level.equals(other.level)) {
 				return false;
-			if (sequence != other.sequence)
+			}
+			if (sequence != other.sequence) {
 				return false;
+			}
 			return true;
 		}
 
