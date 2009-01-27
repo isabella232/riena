@@ -49,13 +49,6 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 		super(SWTBindingPropertyLocator.getInstance(), mapper);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate
-	 * #addUIControl(java.lang.Object, java.lang.String)
-	 */
 	@Override
 	public void addUIControl(Object uiControl, String bindingId) {
 		super.addUIControl(uiControl, bindingId);
