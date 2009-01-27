@@ -170,7 +170,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	protected void bindUIControl() {
-		uiProcessControl.addCancelListener(cancelListener);
+		if (getUIControl() != null) {
+			uiProcessControl.addCancelListener(cancelListener);
+		}
 	}
 
 	public void setUIControl(Object uiControl) {

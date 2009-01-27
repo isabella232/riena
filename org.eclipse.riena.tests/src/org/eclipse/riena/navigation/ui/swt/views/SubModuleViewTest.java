@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
@@ -37,6 +39,9 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	private SubModuleView<SubModuleController> subModuleNodeView;
 	private SubModuleNode node;
+	private SubModuleNode anotherNode;
+	private SubModuleNode anotherNodeSameView;
+	private List<SubModuleNode> nodesBoundToView;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -50,6 +55,12 @@ public class SubModuleViewTest extends RienaTestCase {
 		subAppNode.addChild(mgNode);
 		IModuleNode parent = new ModuleNode(null, "TestModuleLabel");
 		mgNode.addChild(parent);
+
+		anotherNode = new SubModuleNode(new NavigationNodeId("testId2"), "TestSubModuleLabel2");
+		parent.addChild(anotherNode);
+		anotherNodeSameView = new SubModuleNode(new NavigationNodeId("testId"), "TestSubModuleLabel3");
+		parent.addChild(anotherNodeSameView);
+		nodesBoundToView = new ArrayList<SubModuleNode>();
 
 		subModuleNodeView = new TestView();
 		node = new SubModuleNode(new NavigationNodeId("testId"), "TestSubModuleLabel");
@@ -76,10 +87,32 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertSame(arrowCursor, parentComposite.getCursor());
 	}
 
+	public void testBindOnActivate() throws Exception {
+
+		nodesBoundToView.clear();
+
+		anotherNode.activate();
+
+		assertTrue(nodesBoundToView.isEmpty());
+
+		anotherNodeSameView.activate();
+
+		assertTrue(nodesBoundToView.isEmpty());
+
+		node.activate();
+		assertEquals(1, nodesBoundToView.size());
+		assertSame(node, nodesBoundToView.get(0));
+	}
+
 	private Cursor waitCursor;
 	private Cursor arrowCursor;
 
 	private class TestView extends SubModuleView<SubModuleController> {
+
+		@Override
+		public void bind(SubModuleNode node) {
+			nodesBoundToView.add(node);
+		}
 
 		@Override
 		protected Cursor createWaitCursor() {
@@ -96,10 +129,6 @@ public class SubModuleViewTest extends RienaTestCase {
 		@Override
 		public SubModuleNode getNavigationNode() {
 			return node;
-		}
-
-		@Override
-		protected void activate(ISubModuleNode source) {
 		}
 
 		@Override

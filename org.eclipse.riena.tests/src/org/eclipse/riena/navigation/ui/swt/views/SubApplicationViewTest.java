@@ -18,6 +18,9 @@ import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
+import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.model.NavigationProcessor;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -42,13 +45,18 @@ public class SubApplicationViewTest extends TestCase {
 
 	private Shell shell;
 	private SubApplicationView view;
+	private SubApplicationNode node;
 
 	@Override
 	protected void setUp() throws Exception {
-		view = new SubApplicationView();
+		view = new TestSubApplicationView();
 		shell = new Shell();
 		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(shell, ApplicationViewAdvisor.SHELL_RIDGET_PROPERTY);
+
+		node = new SubApplicationNode();
+		node.setNavigationProcessor(new NavigationProcessor());
+		view.bind(node);
 	}
 
 	@Override
@@ -250,6 +258,17 @@ public class SubApplicationViewTest extends TestCase {
 
 	}
 
+	public void testUnbind() throws Exception {
+
+		List<ModuleGroupNodeListener> listeners = ReflectionUtils.getHidden(node, "listeners");
+
+		assertEquals(1, listeners.size());
+
+		node.dispose();
+
+		assertTrue(listeners.isEmpty());
+	}
+
 	private static class MyContributionItem extends ContributionItem {
 	}
 
@@ -257,6 +276,15 @@ public class SubApplicationViewTest extends TestCase {
 
 		@Override
 		public void configureRidgets() {
+		}
+
+	}
+
+	private class TestSubApplicationView extends SubApplicationView {
+
+		@Override
+		public SubApplicationNode getNavigationNode() {
+			return node;
 		}
 
 	}

@@ -38,7 +38,7 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 		this.marker = marker;
 		INavigationNode<?> node = baseNode;
 		Set<Class<?>> markedTyped = new HashSet<Class<?>>();
-		while (node.isDeactivated()) {
+		while (node != null && node.isDeactivated()) {
 			if (!nodeTypeMarked(markedTyped, node.getClass())) {
 				addNavigationNodeMarker(node);
 				observeNodeActivity(node);
