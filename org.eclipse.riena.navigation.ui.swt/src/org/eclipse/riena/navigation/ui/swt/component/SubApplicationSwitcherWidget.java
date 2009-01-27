@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.listener.ApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
@@ -41,6 +42,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private TabSelector tabSelector;
 	private PaintDelegation paintDelegation;
 	private Control control;
+	private ApplicationListener applicationListener;
+	private SubApplicationListener subApplicationListener;
 
 	/**
 	 * Creates a new widget.
@@ -58,6 +61,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		control = this;
 		items = new ArrayList<SubApplicationItem>();
+		applicationListener = new ApplicationListener();
+		subApplicationListener = new SubApplicationListener();
 		registerItems(application);
 
 		addListeners();
@@ -185,33 +190,35 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 */
 	private void registerItems(IApplicationNode applicationModel) {
 
+		applicationModel.addListener(applicationListener);
+
 		List<ISubApplicationNode> subApps = applicationModel.getChildren();
 		for (ISubApplicationNode subApp : subApps) {
-			addListeners(subApp);
-			SubApplicationItem item = new SubApplicationItem(this, subApp);
-			item.setIcon(subApp.getIcon());
-			item.setLabel(subApp.getLabel());
-			getItems().add(item);
+			registerSubApplication(subApp);
 		}
 
 	}
 
-	/**
-	 * Adds a listener to the given sub-application.
-	 * 
-	 * @param subApp
-	 *            - node of sub-application
-	 */
-	private void addListeners(ISubApplicationNode subApp) {
+	private void registerSubApplication(ISubApplicationNode subApp) {
+		subApp.addListener(subApplicationListener);
+		SubApplicationItem item = new SubApplicationItem(this, subApp);
+		item.setIcon(subApp.getIcon());
+		item.setLabel(subApp.getLabel());
+		getItems().add(item);
+	}
 
-		subApp.addListener(new SubApplicationNodeListener() {
-			@Override
-			public void markersChanged(ISubApplicationNode source) {
-				super.markersChanged(source);
-				redraw();
+	private void unregisterSubApplication(ISubApplicationNode subApp) {
+		subApp.removeListener(subApplicationListener);
+		SubApplicationItem itemToRemove = null;
+		for (SubApplicationItem item : getItems()) {
+			if (item.getSubApplicationNode().equals(subApp)) {
+				itemToRemove = item;
+				break;
 			}
-		});
-
+		}
+		if (itemToRemove != null) {
+			getItems().remove(itemToRemove);
+		}
 	}
 
 	/**
@@ -231,6 +238,39 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	public void dispose() {
 		removeListeners();
 		super.dispose();
+	}
+
+	private final class SubApplicationListener extends SubApplicationNodeListener {
+
+		@Override
+		public void markersChanged(ISubApplicationNode source) {
+			redraw();
+		}
+
+		/**
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void disposed(ISubApplicationNode source) {
+			unregisterSubApplication(source);
+			redraw();
+		}
+	}
+
+	private final class ApplicationListener extends ApplicationNodeListener {
+
+		@Override
+		public void childRemoved(IApplicationNode source, ISubApplicationNode childRemoved) {
+			unregisterSubApplication(childRemoved);
+			redraw();
+		}
+
+		@Override
+		public void childAdded(IApplicationNode source, ISubApplicationNode childAdded) {
+			registerSubApplication(childAdded);
+			redraw();
+		}
+
 	}
 
 }

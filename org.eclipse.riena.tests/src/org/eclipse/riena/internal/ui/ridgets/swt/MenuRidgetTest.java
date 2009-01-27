@@ -49,12 +49,8 @@ public class MenuRidgetTest extends RienaTestCase {
 	public void testCheckUIControl() {
 
 		MyMenuRidget ridget = new MyMenuRidget();
-		try {
-			ridget.checkUIControl(null);
-			fail("BindingException was expected");
-		} catch (BindingException e) {
-			ok("BindingException was expected");
-		}
+		ridget.checkUIControl(null);
+		ok("no BindingException expected");
 
 		Menu menu = new Menu(shell);
 		MenuItem menuItem = new MenuItem(menu, SWT.NONE);

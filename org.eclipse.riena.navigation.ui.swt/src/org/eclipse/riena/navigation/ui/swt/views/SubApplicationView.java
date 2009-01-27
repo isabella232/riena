@@ -21,6 +21,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
+import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
@@ -67,6 +68,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	private AbstractViewBindingDelegate binding;
 	private SubApplicationController subApplicationController;
+	private SubApplicationListener subApplicationListener;
 	private SubApplicationNode subApplicationNode;
 	private List<Object> uiControls;
 	private static IBindingManager menuItemBindingManager;
@@ -114,6 +116,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 			bindMenuAndToolItems(controller);
 			controller.afterBind();
 		}
+
+		subApplicationListener = new SubApplicationListener();
+		getNavigationNode().addListener(subApplicationListener);
 	}
 
 	private void bindMenuAndToolItems(IController controller) {
@@ -225,11 +230,16 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	public void unbind() {
-		if (getNavigationNode() != null && getNavigationNode().getNavigationNodeController() instanceof IController) {
-			IController controller = (IController) getNavigationNode().getNavigationNodeController();
-			binding.unbind(controller);
-			if (menuItemBindingManager != null) {
-				menuItemBindingManager.unbind(controller, getUIControls());
+		if (getNavigationNode() != null) {
+
+			getNavigationNode().removeListener(subApplicationListener);
+
+			if (getNavigationNode().getNavigationNodeController() instanceof IController) {
+				IController controller = (IController) getNavigationNode().getNavigationNodeController();
+				binding.unbind(controller);
+				if (menuItemBindingManager != null) {
+					menuItemBindingManager.unbind(controller, getUIControls());
+				}
 			}
 		}
 	}
@@ -588,6 +598,15 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 
 	private List<Object> getUIControls() {
 		return uiControls;
+	}
+
+	private class SubApplicationListener extends SubApplicationNodeListener {
+
+		@Override
+		public void disposed(ISubApplicationNode source) {
+			unbind();
+		}
+
 	}
 
 }

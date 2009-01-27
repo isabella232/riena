@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -79,6 +83,17 @@ public class ModuleGroupViewTest extends TestCase {
 		y = view.calculateBounds(10);
 		assertEquals(10, y);
 
+	}
+
+	public void testUnbind() throws Exception {
+
+		List<ModuleGroupNodeListener> listeners = ReflectionUtils.getHidden(node, "listeners");
+
+		assertEquals(1, listeners.size());
+
+		node.dispose();
+
+		assertTrue(listeners.isEmpty());
 	}
 
 	private static class MyLnF extends RienaDefaultLnf {

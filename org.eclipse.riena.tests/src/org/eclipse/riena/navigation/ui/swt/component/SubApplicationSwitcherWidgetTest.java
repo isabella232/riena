@@ -157,4 +157,68 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	}
 
+	@SuppressWarnings("restriction")
+	public void testDisposeSubApplication() throws Exception {
+
+		IApplicationNode node = new ApplicationNode();
+		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		subNode1.setIcon("icon1");
+		node.addChild(subNode1);
+		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		subNode2.setIcon("icon2");
+		node.addChild(subNode2);
+		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
+		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+
+		subNode1.dispose();
+
+		assertEquals(1, items.size());
+
+		subNode2.dispose();
+
+		assertTrue(items.isEmpty());
+	}
+
+	@SuppressWarnings("restriction")
+	public void testRemoveSubApplication() throws Exception {
+
+		IApplicationNode node = new ApplicationNode();
+		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		subNode1.setIcon("icon1");
+		node.addChild(subNode1);
+		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		subNode2.setIcon("icon2");
+		node.addChild(subNode2);
+		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
+		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+
+		node.removeChild(subNode1);
+
+		assertEquals(1, items.size());
+
+		node.removeChild(subNode2);
+
+		assertTrue(items.isEmpty());
+	}
+
+	@SuppressWarnings("restriction")
+	public void testAddSubApplication() throws Exception {
+
+		IApplicationNode node = new ApplicationNode();
+		SubApplicationNode subNode1 = new SubApplicationNode("sub1");
+		subNode1.setIcon("icon1");
+		node.addChild(subNode1);
+		SubApplicationNode subNode2 = new SubApplicationNode("sub2");
+		subNode2.setIcon("icon2");
+		node.addChild(subNode2);
+		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
+		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+
+		SubApplicationNode subNode3 = new SubApplicationNode("sub3");
+		subNode2.setIcon("icon3");
+		node.addChild(subNode3);
+
+		assertEquals(3, items.size());
+	}
+
 }

@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -29,7 +26,6 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
@@ -56,9 +52,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(SubModuleView.class.getName());
 
-	private Map<ISubModuleNode, C> node2Controller;
 	private AbstractViewBindingDelegate binding;
-	private C currentController;
+	private SubModuleController currentController;
 
 	/**
 	 * This node is used when creating this ViewPart inside an RCP application.
@@ -84,7 +79,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	 */
 	public SubModuleView() {
 		binding = createBinding();
-		node2Controller = new HashMap<ISubModuleNode, C>();
 	}
 
 	/**
@@ -132,18 +126,21 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	/**
 	 * @return the controller
 	 */
-	public C getController() {
-		return node2Controller.get(getNavigationNode());
+	public SubModuleController getController() {
+
+		if (getNavigationNode() != null
+				&& getNavigationNode().getNavigationNodeController() instanceof SubModuleController) {
+			return (SubModuleController) getNavigationNode().getNavigationNodeController();
+		}
+		return null;
 	}
 
 	/**
-	 * @param controller
-	 *            the controller to set
+	 * @deprecated the controller is stored in the navigation node
+	 * @see INavigationNode#setNavigationNodeController(org.eclipse.riena.navigation.INavigationNodeController)
 	 */
 	public void setController(C controller) {
-		if (node2Controller.get(getNavigationNode()) == null) {
-			node2Controller.put(getNavigationNode(), controller);
-		}
+		// obsolete, the controller is stored in the node
 	}
 
 	@Override
@@ -151,11 +148,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		this.parentComposite = parent;
 		observeRoot();
 		C controller = createController(getNavigationNode());
-		setController(controller);
 		if (controller != null) {
 			setPartName(controller.getNavigationNode().getLabel());
 		}
-		Composite contentComposite = createContentComposite(parent);
+		contentComposite = createContentComposite(parent);
 		basicCreatePartControl(contentComposite);
 		createViewFacade();
 		doBinding();
@@ -201,8 +197,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			title.setLayoutData(formData);
 		}
 
-		contentComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		contentComposite.setBackground(bgColor);
+		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		composite.setBackground(bgColor);
 		FormData formData = new FormData();
 		if (title != null) {
 			formData.top = new FormAttachment(title, 0, 0);
@@ -212,13 +208,13 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		formData.left = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100);
 		formData.right = new FormAttachment(100);
-		contentComposite.setLayoutData(formData);
+		composite.setLayoutData(formData);
 
 		// initialize cursors
 		cursorWait = createWaitCursor();
 		cursorArrow = createArrowCursor();
 
-		return contentComposite;
+		return composite;
 	}
 
 	protected Cursor createArrowCursor() {
@@ -235,41 +231,43 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			node = node.getParent();
 		}
 		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new MySubModuleNodeListener());
+		navigationTreeObserver.addListener(new SubModuleNodesListener());
 		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
 		if (appNode != null) {
 			navigationTreeObserver.addListenerTo(appNode);
 		}
 	}
 
+	/**
+	 * Invoked whenever any submodule is activated.
+	 * 
+	 * @deprecated To do something whenever a submodule is activated a
+	 *             NavigationTreeObserver with an ISubModuleNodeListener may be
+	 *             used.
+	 */
 	protected void activate(ISubModuleNode source) {
-		SwtViewId id = SwtViewProviderAccessor.getViewProvider().getSwtViewId(source);
-		if (getViewSite().getId().equals(id.getId())) {
-			doBinding();
-		}
+		// deprecated
 	}
 
-	private final class MySubModuleNodeListener extends SubModuleNodeListener {
+	/**
+	 * A listener for all submodules in the navigation tree! Needed i.e. to
+	 * support shared views. When adding a method be sure to check the node.
+	 */
+	private final class SubModuleNodesListener extends SubModuleNodeListener {
 		@Override
 		public void activated(ISubModuleNode source) {
-			super.activated(source);
+			if (source.equals(getNavigationNode())) {
+				doBinding();
+			}
 			activate(source);
 		}
 
 		@Override
 		public void block(ISubModuleNode source, boolean block) {
-			super.block(source, block);
 			if (source.equals(getNavigationNode())) {
 				ControllerUtils.blockRidgets(getController().getRidgets(), block);
 				blockView(block);
 			}
-		}
-
-		@Override
-		public void afterActivated(ISubModuleNode source) {
-
-			super.afterActivated(source);
-
 		}
 
 	}
@@ -293,8 +291,8 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected void createViewFacade() {
-		if (!node2Controller.containsKey(getNavigationNode())) {
-			setController(createController(getNavigationNode()));
+		if (getController() == null) {
+			createController(getNavigationNode());
 		}
 		if (getController() != null) {
 			binding.injectRidgets(getController());
@@ -337,6 +335,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	public void bind(SubModuleNode node) {
+
 		if (currentController != getController()) {
 			if (currentController != null) {
 				if (currentController.getNavigationNode().isDisposed()) {
@@ -344,7 +343,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 				}
 				binding.unbind(currentController);
 			}
-			if ((getNavigationNode() != null) && (node2Controller.get(getNavigationNode()) == null)) {
+			if ((getNavigationNode() != null) && (getController() == null)) {
 				createViewFacade();
 			}
 			if (getController() != null) {
@@ -369,18 +368,10 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	public void unbind() {
-
-		SubModuleNode node = getNavigationNode();
-		if (node == null) {
-			return;
-		}
-
-		C controller = node2Controller.get(node);
+		SubModuleController controller = getController();
 		if (controller != null) {
 			binding.unbind(controller);
-			node2Controller.remove(node);
 		}
-
 	}
 
 	/**

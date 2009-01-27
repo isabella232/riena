@@ -189,6 +189,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		@Override
 		public void disposed(IModuleGroupNode source) {
 			super.disposed(source);
+			unbind();
 			dispose();
 		}
 
@@ -198,8 +199,13 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#calculateBounds(int)
 	 */
 	public int calculateBounds(int positionHint) {
+
+		if (isDisposed()) {
+			return 0;
+		}
+
 		Point p = new Point(0, 0);
-		if (this.getNavigationNode().isVisible()) {
+		if (getNavigationNode() != null && getNavigationNode().isVisible()) {
 			p = computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		}
 		FormData fd = new FormData();

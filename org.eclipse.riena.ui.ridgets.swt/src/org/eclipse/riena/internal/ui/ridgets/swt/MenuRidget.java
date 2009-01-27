@@ -37,7 +37,7 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	@Override
 	protected void checkUIControl(Object uiControl) {
 		assertType(uiControl, MenuItem.class);
-		if (!isMenu((MenuItem) uiControl)) {
+		if (uiControl != null && !isMenu((MenuItem) uiControl)) {
 			throw new BindingException("Menu item is not a cascade menu item!"); //$NON-NLS-1$
 		}
 	}
