@@ -135,14 +135,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		return null;
 	}
 
-	/**
-	 * @deprecated the controller is stored in the navigation node
-	 * @see INavigationNode#setNavigationNodeController(org.eclipse.riena.navigation.INavigationNodeController)
-	 */
-	public void setController(C controller) {
-		// obsolete, the controller is stored in the node
-	}
-
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parentComposite = parent;
@@ -239,17 +231,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	/**
-	 * Invoked whenever any submodule is activated.
-	 * 
-	 * @deprecated To do something whenever a submodule is activated a
-	 *             NavigationTreeObserver with an ISubModuleNodeListener may be
-	 *             used.
-	 */
-	protected void activate(ISubModuleNode source) {
-		// deprecated
-	}
-
-	/**
 	 * A listener for all submodules in the navigation tree! Needed i.e. to
 	 * support shared views. When adding a method be sure to check the node.
 	 */
@@ -259,7 +240,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			if (source.equals(getNavigationNode())) {
 				doBinding();
 			}
-			activate(source);
 		}
 
 		@Override
