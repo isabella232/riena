@@ -23,6 +23,18 @@ public class Person extends AbstractBean {
 	 */
 	public static final String PROPERTY_LASTNAME = "lastname"; //$NON-NLS-1$
 	/**
+	 * Property name of the number property ("number").
+	 */
+	public static final String PROPERTY_NUMBER = "number"; //$NON-NLS-1$
+	/**
+	 * Property name of the birthday property ("birthday").
+	 */
+	public static final String PROPERTY_BIRTHDAY = "birthday"; //$NON-NLS-1$
+	/**
+	 * Property name of the birthplace property ("birthplace").
+	 */
+	public static final String PROPERTY_BIRTHPLACE = "birthplace"; //$NON-NLS-1$
+	/**
 	 * Property name of the eye color property ("eyeColor").
 	 */
 	public static final String PROPERTY_EYE_COLOR = "eyeColor"; //$NON-NLS-1$
@@ -35,6 +47,7 @@ public class Person extends AbstractBean {
 	 */
 	public final static String FEMALE = "female"; //$NON-NLS-1$
 
+	private Integer number;
 	private String lastname;
 	private String firstname;
 	private String gender;
@@ -42,6 +55,8 @@ public class Person extends AbstractBean {
 	private boolean hasCat;
 	private boolean hasFish;
 	private String birthday;
+	private String birthplace;
+	private Address address;
 	private int eyeColor;
 
 	/**
@@ -55,8 +70,11 @@ public class Person extends AbstractBean {
 
 		this.lastname = lastname;
 		this.firstname = firstname;
+		number = 0;
 		birthday = ""; //$NON-NLS-1$
+		birthplace = ""; //$NON-NLS-1$
 		gender = MALE;
+		address = new Address();
 	}
 
 	/**
@@ -113,8 +131,8 @@ public class Person extends AbstractBean {
 	 * @param newEyeColor
 	 */
 	public void setEyeColor(int newEyeColor) {
-		int oldEyeColor = this.eyeColor;
-		this.eyeColor = newEyeColor;
+		int oldEyeColor = eyeColor;
+		eyeColor = newEyeColor;
 
 		firePropertyChanged(PROPERTY_EYE_COLOR, Integer.valueOf(oldEyeColor), Integer.valueOf(eyeColor));
 	}
@@ -173,7 +191,7 @@ public class Person extends AbstractBean {
 	 * @return Returns the hasDaughter.
 	 */
 	public boolean isHasDog() {
-		return this.hasDog;
+		return hasDog;
 	}
 
 	/**
@@ -188,7 +206,7 @@ public class Person extends AbstractBean {
 	 * @return Returns the hasSon.
 	 */
 	public boolean isHasCat() {
-		return this.hasCat;
+		return hasCat;
 	}
 
 	/**
@@ -203,7 +221,7 @@ public class Person extends AbstractBean {
 	 * @return Returns the hasFish.
 	 */
 	public boolean isHasFish() {
-		return this.hasFish;
+		return hasFish;
 	}
 
 	/**
@@ -281,6 +299,36 @@ public class Person extends AbstractBean {
 	 *            The birthday to set.
 	 */
 	public void setBirthday(String birthday) {
+		Object oldValue = this.birthday;
 		this.birthday = birthday;
+		firePropertyChanged(PROPERTY_BIRTHDAY, oldValue, birthday);
 	} // end method
+
+	public void setBirthplace(String birthplace) {
+		Object oldValue = this.birthplace;
+		this.birthplace = birthplace;
+		firePropertyChanged(PROPERTY_BIRTHPLACE, oldValue, birthplace);
+	}
+
+	public String getBirthplace() {
+		return birthplace;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setNumber(Integer number) {
+		Object oldValue = this.number;
+		this.number = number;
+		firePropertyChanged(PROPERTY_NUMBER, oldValue, number);
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
 }

@@ -218,6 +218,13 @@
             name="org.eclipse.riena.example.client.views.ExceptionTestView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
+            id="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
+            name="org.eclipse.riena.example.client.views.OnePersonSubModuleView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -803,6 +810,24 @@
           </modulegroup>
        </assembly>
     </extension>
+    
+    <extension
+          point="org.eclipse.riena.navigation.assemblies">
+      <assembly
+             autostartsequence="2"
+            id="org.eclipse.riena.example.onecustomer"
+            parentTypeId="module121">
+         <submodule
+               controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController"
+               icon="org.eclipse.riena.example.client:/icons/person.gif"
+               label="One Person"
+               shared="false"
+               typeId="onePersonSubModule"
+               view="org.eclipse.riena.example.client.views.OnePersonSubModuleView">
+         </submodule>
+      </assembly>
+    </extension>
+    
     <extension
           point="org.eclipse.riena.navigation.ui.loginDialogViewDefinition">
        <!--loginDialogViewDefinition

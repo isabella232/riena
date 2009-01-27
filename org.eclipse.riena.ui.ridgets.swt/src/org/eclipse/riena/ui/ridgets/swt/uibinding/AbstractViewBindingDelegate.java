@@ -47,12 +47,15 @@ public abstract class AbstractViewBindingDelegate {
 
 	/**
 	 * Adds the given control to the list of the controls that will be binded.
+	 * Note: Only widgets that are not already added are added to the list.
 	 * 
 	 * @param uiControl
 	 *            - control to bind
 	 */
 	public void addUIControl(Object uiControl) {
-		uiControls.add(uiControl);
+		if (!uiControls.contains(uiControl)) {
+			uiControls.add(uiControl);
+		}
 	}
 
 	/**
@@ -64,7 +67,7 @@ public abstract class AbstractViewBindingDelegate {
 	 *            - ID for binding
 	 */
 	public void addUIControl(Object uiControl, String bindingId) {
-		uiControls.add(uiControl);
+		addUIControl(uiControl);
 	}
 
 	/**

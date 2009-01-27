@@ -394,6 +394,12 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			getTree().redraw();
 		}
 
+		@Override
+		public void labelChanged(ISubModuleNode source) {
+			super.labelChanged(source);
+			getTree().redraw();
+		}
+
 	}
 
 	/**
@@ -442,6 +448,13 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			title.setMarkers(source.getMarkers());
 			title.redraw();
 		}
+
+		@Override
+		public void labelChanged(IModuleNode source) {
+			super.labelChanged(source);
+			updateModuleView();
+		}
+
 	}
 
 	/**

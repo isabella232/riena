@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.InvocationTargetFailure;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -32,6 +33,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 import org.eclipse.swt.SWT;
@@ -41,6 +43,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.service.log.LogService;
 
@@ -271,6 +274,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	}
 
 	protected void createViewFacade() {
+		addUIControls(getParentComposite());
 		if (getController() == null) {
 			createController(getNavigationNode());
 		}
@@ -390,4 +394,22 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 		return rcpSubModuleNode;
 	}
+
+	private void addUIControls(Composite composite) {
+
+		Control[] controls = composite.getChildren();
+		for (Control uiControl : controls) {
+
+			String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl);
+			if (!StringUtils.isEmpty(bindingProperty)) {
+				addUIControl(uiControl);
+			}
+			if (uiControl instanceof Composite) {
+				addUIControls((Composite) uiControl);
+			}
+
+		}
+
+	}
+
 }
