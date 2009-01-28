@@ -18,14 +18,12 @@ import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.logging.CommandProviderLogFilter;
 import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
 import org.eclipse.riena.core.logging.PlatformLogCatcher;
 import org.eclipse.riena.core.logging.SysoLogListener;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
-import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogListener;
 
 /**
@@ -48,34 +46,6 @@ public class LoggerMill {
 	private ILogCatcherDefinition[] catcherDefs;
 
 	private final AtomicReference<ExtendedLogService> logServiceRef = new AtomicReference<ExtendedLogService>(null);
-
-	/**
-	 * Create the logger mill.
-	 * 
-	 * @param context
-	 */
-	public LoggerMill(final BundleContext context) {
-		this(context, true);
-	}
-
-	/**
-	 * Configuration constructor.
-	 * 
-	 * @param context
-	 * @param autoConfig
-	 */
-	protected LoggerMill(final BundleContext context, final boolean autoConfig) {
-		// get log catchers
-		Inject.extension(ILogCatcherDefinition.EXTENSION_POINT).useType(ILogCatcherDefinition.class).into(this)
-				.andStart(context);
-
-		// get log listeners
-		Inject.extension(ILogListenerDefinition.EXTENSION_POINT).useType(ILogListenerDefinition.class).into(this)
-				.andStart(context);
-
-		Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(context);
-		Inject.service(ExtendedLogService.class).useRanking().into(this).andStart(context);
-	}
 
 	/**
 	 * Get the logger for the specified category.<br>

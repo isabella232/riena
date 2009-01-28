@@ -19,9 +19,8 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
-import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerDefinition;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
@@ -41,7 +40,6 @@ public class Activator extends RienaPlugin {
 
 	private ServiceRegistration loggerMillServiceReg;
 	private LoggerMill loggerMill;
-	private ExceptionHandlerManagerAccessor exceptionHandlerManagerAccessor;
 
 	// The shared instance
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
@@ -62,36 +60,17 @@ public class Activator extends RienaPlugin {
 		super.start(context);
 		Activator.plugin = this;
 		startLogging();
-		Logger logger = getLogger(Activator.class);
-
-		logStage(logger);
+		logStage(getLogger(Activator.class));
 		startStartupListener();
-
-		//		SimpleExceptionHandler handler = new SimpleExceptionHandler();
-		//		context.registerService(IExceptionHandler.class.getName(), handler, RienaConstants
-		//				.newDefaultServiceProperties());
-
-		// create simple exceptionhandler manager, inject all IExceptionHandler extensions and register it as service
-		SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
-		//		String handlerId = IExceptionHandler.class.getName();
-		//
-		//		Inject.service(handlerId).into(handlerManager).andStart(getContext());
-		Inject.extension(IExceptionHandlerDefinition.EXTENSION_POINT).into(handlerManager).andStart(context);
-
-		context.registerService(IExceptionHandlerManager.class.getName(), handlerManager, RienaConstants
-				.newDefaultServiceProperties());
-
-		// create some instance of ExceptionHandlerManagerAccessor and inject ONE ExceptionHandlerManger
-		this.exceptionHandlerManagerAccessor = new ExceptionHandlerManagerAccessor();
-		Inject.service(IExceptionHandlerManager.class).useRanking().into(exceptionHandlerManagerAccessor).andStart(
-				context);
+		startExceptionHandling();
 	}
 
 	/**
 	 * 
 	 */
 	private void startLogging() {
-		loggerMill = new LoggerMill(getContext());
+		loggerMill = new LoggerMill();
+		Wire.instance(loggerMill).andStart(getContext());
 		loggerMillServiceReg = getContext().registerService(LoggerMill.class.getName(), loggerMill,
 				RienaConstants.newDefaultServiceProperties());
 	}
@@ -113,6 +92,17 @@ public class Activator extends RienaPlugin {
 	private void startStartupListener() {
 		BundleListener bundleListener = new StartupBundleListener();
 		getContext().addBundleListener(bundleListener);
+	}
+
+	private void startExceptionHandling() {
+		SimpleExceptionHandlerManager handlerManager = new SimpleExceptionHandlerManager();
+		Wire.instance(handlerManager).andStart(getContext());
+		getContext().registerService(IExceptionHandlerManager.class.getName(), handlerManager,
+				RienaConstants.newDefaultServiceProperties());
+
+		// create instance of ExceptionHandlerManagerAccessor and inject ONE ExceptionHandlerManger
+		ExceptionHandlerManagerAccessor exceptionHandlerManagerAccessor = new ExceptionHandlerManagerAccessor();
+		Wire.instance(exceptionHandlerManagerAccessor).andStart(getContext());
 	}
 
 	/*
@@ -154,12 +144,10 @@ public class Activator extends RienaPlugin {
 			if (Activator.getDefault() == null) {
 				return;
 			}
-			if (event.getBundle() == Activator.getDefault().getContext().getBundle()
-					&& event.getType() == BundleEvent.STARTED) {
+			if (event.getBundle() == getContext().getBundle() && event.getType() == BundleEvent.STARTED) {
 				active = true;
 				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
-				Inject.extension("org.eclipse.riena.core.startups").into(safeRunnable).andStart( //$NON-NLS-1$
-						Activator.getDefault().getContext());
+				Wire.instance(safeRunnable).andStart(getContext());
 				SafeRunner.run(safeRunnable);
 			}
 		}
