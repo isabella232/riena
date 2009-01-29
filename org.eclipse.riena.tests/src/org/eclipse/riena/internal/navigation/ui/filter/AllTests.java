@@ -12,23 +12,19 @@ package org.eclipse.riena.internal.navigation.ui.filter;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
+import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
- * Tests all test cases within package:
- * <code>org.eclipse.riena.internal.navigation.ui.filter</code>
+ * Tests all test cases within this package.
  */
 @NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		suite.addTestSuite(AbstractUIFilterRuleNavigationMarkerTest.class);
-		suite.addTestSuite(MenuItemRidgetMatcherTest.class);
-		suite.addTestSuite(RidgetMatcherTest.class);
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 }
