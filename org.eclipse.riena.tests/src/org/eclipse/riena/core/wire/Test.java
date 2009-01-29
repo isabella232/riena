@@ -13,6 +13,7 @@ package org.eclipse.riena.core.wire;
 /**
  *
  */
+@WireWrap(TestWireWrap.class)
 public class Test implements ITest {
 
 	private Schtonk schtonk;

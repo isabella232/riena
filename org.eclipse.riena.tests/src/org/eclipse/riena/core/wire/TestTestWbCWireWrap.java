@@ -10,27 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import org.eclipse.riena.core.injector.Inject;
+import org.osgi.framework.BundleContext;
+
 /**
  *
  */
-@WireWrap(TestTestWireWrap.class)
-public class TestTest extends Test {
+public class TestTestWbCWireWrap implements IWireWrap {
 
-	private Stunk stunk;
-
-	public void bind(Stunk stunk) {
-		this.stunk = stunk;
-	}
-
-	public void unbind(Stunk stunk) {
-		this.stunk = stunk;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasStunk() {
-		return stunk != null;
+	public void wire(Object bean, BundleContext context) {
+		Inject.service(Stunk.class.getName()).into(bean).andStart(context);
 	}
 
 }

@@ -10,27 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
+
 /**
- *
+ * Tests all test cases within this package.
  */
-@WireWrap(TestTestWireWrap.class)
-public class TestTest extends Test {
+@NonGatherableTestCase("This is not a ´TestCase´!")
+public class AllTests extends TestCase {
 
-	private Stunk stunk;
-
-	public void bind(Stunk stunk) {
-		this.stunk = stunk;
-	}
-
-	public void unbind(Stunk stunk) {
-		this.stunk = stunk;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasStunk() {
-		return stunk != null;
+	public static Test suite() {
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage());
 	}
 
 }

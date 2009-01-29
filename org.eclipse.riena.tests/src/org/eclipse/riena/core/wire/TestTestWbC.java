@@ -14,7 +14,7 @@ package org.eclipse.riena.core.wire;
  *
  */
 @WireWrap(TestTestWireWrap.class)
-public class TestTest extends Test {
+public class TestTestWbC extends Test {
 
 	private Stunk stunk;
 
