@@ -14,14 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.util.Literal;
-import org.eclipse.riena.core.util.Millis;
-import org.eclipse.riena.core.util.PropertiesUtils;
-import org.eclipse.riena.internal.monitor.client.Activator;
-import org.eclipse.riena.monitor.common.Collectible;
-import org.eclipse.riena.monitor.common.IReceiver;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -30,6 +22,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.Millis;
+import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.internal.monitor.client.Activator;
+import org.eclipse.riena.monitor.common.Collectible;
+import org.eclipse.riena.monitor.common.IReceiver;
 
 /**
  * This simple sender implements {@code ISender} that uses riena´s (remote)
@@ -54,6 +53,7 @@ import org.eclipse.core.runtime.jobs.Job;
  * &lt;/extension&gt;
  * </pre>
  */
+@WireWrap(SimpleSenderWireWrap.class)
 public class SimpleSender implements ISender, IExecutableExtension {
 
 	private IStore store;
@@ -65,7 +65,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	private static final String RETRY_TIME = "retryTime"; //$NON-NLS-1$
 	private static final String RETRY_TIME_DEFAULT = "15 m"; //$NON-NLS-1$
 
-	private static final boolean TRACE = false;
+	private static final boolean TRACE = true;
 
 	/**
 	 * Creates the {@code SimpleSender}.
@@ -73,21 +73,8 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	 * @throws CoreException
 	 */
 	public SimpleSender() throws CoreException {
-		this(true);
 		// perform default initialization - maybe redone by the {@code IConfigurationElement.createExecutableExtension(String)}
 		setInitializationData(null, null, null);
-	}
-
-	/**
-	 * Constructor that should only be used while testing
-	 * 
-	 * @param autoConfig
-	 *            true perform configuration; otherwise do not configure
-	 */
-	public SimpleSender(boolean autoConfig) {
-		if (autoConfig) {
-			Inject.service(IReceiver.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
-		}
 	}
 
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)

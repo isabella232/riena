@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.core.wire.WireWrap;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.LogEntryTransferObject;
 import org.osgi.service.log.LogEntry;
@@ -30,12 +30,13 @@ import org.osgi.service.log.LogListener;
  * Collects logs that are delivered by the {@code
  * org.osgi.service.log.LogListener}.
  * <p>
- * TODO Configuration - threshold, ..
  */
+@WireWrap(LogServiceCollectorWireWrap.class)
 public class LogServiceCollector extends AbstractCollector implements IExecutableExtension {
 
 	private Range collectRange;
 	private Range triggerRange;
+	private ExtendedLogReaderService extendedLogReaderService;
 	private final LogListener logListener;
 
 	private static final String TRIGGER_RANGE = "triggerRange"; //$NON-NLS-1$
@@ -45,21 +46,7 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 	 * Default/Standard constructor
 	 */
 	public LogServiceCollector() {
-		this(true);
-	}
-
-	/**
-	 * Constructor that should only be used while testing
-	 * 
-	 * @param autoConfig
-	 *            true perform configuration; otherwise do not configure
-	 */
-	protected LogServiceCollector(boolean autoConfig) {
 		logListener = newLogListener();
-		if (autoConfig) {
-			Inject.service(ExtendedLogReaderService.class).useRanking().into(this).andStart(
-					Activator.getDefault().getContext());
-		}
 	}
 
 	/*
@@ -82,12 +69,39 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 		}
 	}
 
-	public void bind(ExtendedLogReaderService extendedLogReaderService) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.monitor.client.AbstractCollector#doStart()
+	 */
+	@Override
+	protected void doStart() {
+		if (extendedLogReaderService == null) {
+			return;
+		}
 		extendedLogReaderService.addLogListener(logListener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.monitor.client.AbstractCollector#doStop()
+	 */
+	@Override
+	protected void doStop() {
+		if (extendedLogReaderService == null) {
+			return;
+		}
+		extendedLogReaderService.removeLogListener(logListener);
+	}
+
+	public void bind(ExtendedLogReaderService extendedLogReaderService) {
+		this.extendedLogReaderService = extendedLogReaderService;
 	}
 
 	public void unbind(ExtendedLogReaderService extendedLogReaderService) {
 		extendedLogReaderService.removeLogListener(logListener);
+		this.extendedLogReaderService = null;
 	}
 
 	private LogListener newLogListener() {

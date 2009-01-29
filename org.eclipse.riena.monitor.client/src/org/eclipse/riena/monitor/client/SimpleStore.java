@@ -38,14 +38,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-import org.eclipse.riena.core.RienaLocations;
-import org.eclipse.riena.core.util.IOUtils;
-import org.eclipse.riena.core.util.Literal;
-import org.eclipse.riena.core.util.Millis;
-import org.eclipse.riena.core.util.PropertiesUtils;
-import org.eclipse.riena.internal.monitor.client.Activator;
-import org.eclipse.riena.monitor.common.Collectible;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -55,6 +47,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.RienaLocations;
+import org.eclipse.riena.core.util.IOUtils;
+import org.eclipse.riena.core.util.Literal;
+import org.eclipse.riena.core.util.Millis;
+import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.internal.monitor.client.Activator;
+import org.eclipse.riena.monitor.common.Collectible;
 import org.osgi.service.log.LogService;
 
 /**
@@ -98,33 +97,31 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SimpleStore.class);
-	private static final boolean TRACE = false;
+	private static final boolean TRACE = true;
 
 	public SimpleStore() throws CoreException {
-		this("simplestore", true); //$NON-NLS-1$
 		// perform default initialization
 		setInitializationData(null, null, null);
+		initStore("simplestore"); //$NON-NLS-1$
 	}
 
 	/**
-	 * @param autoConfig
+	 * @param storeFolderName
 	 */
-	private SimpleStore(final String storeFolderName, final boolean autoConfig) {
-		if (autoConfig) {
-			cleaner = new Cleaner();
-			storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
-			if (!storeFolder.isDirectory()) {
-				boolean directoryCreated = storeFolder.mkdirs();
-				Assert.isTrue(directoryCreated);
-			}
-			try {
-				encrypt = getCipher(Cipher.ENCRYPT_MODE);
-				decrypt = getCipher(Cipher.DECRYPT_MODE);
-			} catch (GeneralSecurityException e) {
-				throw new IllegalArgumentException("Could not generate keys for encryption.", e); //$NON-NLS-1$
-			}
-			LOGGER.log(LogService.LOG_DEBUG, "SimpleStore at " + storeFolder); //$NON-NLS-1$
+	private void initStore(final String storeFolderName) {
+		cleaner = new Cleaner();
+		storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
+		if (!storeFolder.isDirectory()) {
+			boolean directoryCreated = storeFolder.mkdirs();
+			Assert.isTrue(directoryCreated);
 		}
+		try {
+			encrypt = getCipher(Cipher.ENCRYPT_MODE);
+			decrypt = getCipher(Cipher.DECRYPT_MODE);
+		} catch (GeneralSecurityException e) {
+			throw new IllegalArgumentException("Could not generate keys for encryption.", e); //$NON-NLS-1$
+		}
+		LOGGER.log(LogService.LOG_DEBUG, "SimpleStore at " + storeFolder); //$NON-NLS-1$
 	}
 
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)

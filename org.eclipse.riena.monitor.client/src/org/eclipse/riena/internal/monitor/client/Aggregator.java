@@ -21,8 +21,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.core.wire.WireWrap;
 import org.eclipse.riena.monitor.client.Category;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
 import org.eclipse.riena.monitor.client.ICollector;
@@ -35,6 +36,7 @@ import org.osgi.service.log.LogService;
  * The {@code Aggregator} aggregates all collectibles from the collectors. Each
  * collectible may trigger the transmission of the collectibles.
  */
+@WireWrap(AggregatorWireWrap.class)
 public class Aggregator implements ICollectingAggregator {
 
 	private IStore store;
@@ -48,27 +50,9 @@ public class Aggregator implements ICollectingAggregator {
 	private static final Logger LOGGER = Activator.getDefault().getLogger(Aggregator.class);
 
 	public Aggregator() {
-		this(true);
-	}
-
-	/**
-	 * Constructor that should only be used while testing
-	 * 
-	 * @param autoConfig
-	 *            true perform configuration; otherwise do not configure
-	 */
-	protected Aggregator(boolean autoConfig) {
 		workSignal = new CountDownLatch(1);
 		workQueue = new LinkedBlockingQueue<Runnable>();
 		startWorker();
-		if (autoConfig) {
-			Inject
-					.extension("org.eclipse.riena.monitor.collectors").useType(ICollectorExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
-			Inject
-					.extension("org.eclipse.riena.monitor.store").expectingMinMax(0, 1).useType(IStoreExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
-			Inject
-					.extension("org.eclipse.riena.monitor.sender").expectingMinMax(0, 1).useType(ISenderExtension.class).into(this).andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
-		}
 	}
 
 	private void startWorker() {
@@ -127,6 +111,7 @@ public class Aggregator implements ICollectingAggregator {
 			ICollector collector = extension.createCollector();
 			collector.setCategory(category);
 			collector.setAggregator(this);
+			Wire.instance(collector).andStart(Activator.getDefault().getContext());
 			list.add(collector);
 		}
 		collectors = list.toArray(new ICollector[list.size()]);
@@ -142,6 +127,7 @@ public class Aggregator implements ICollectingAggregator {
 			return;
 		}
 		sender = senderExtension.createSender();
+		Wire.instance(sender).andStart(Activator.getDefault().getContext());
 		sender.setStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
@@ -155,6 +141,7 @@ public class Aggregator implements ICollectingAggregator {
 			return;
 		}
 		store = storeExtension.createStore();
+		Wire.instance(store).andStart(Activator.getDefault().getContext());
 	}
 
 	/*
