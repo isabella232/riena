@@ -23,6 +23,7 @@ import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
 import org.eclipse.riena.core.logging.PlatformLogCatcher;
 import org.eclipse.riena.core.logging.SysoLogListener;
+import org.eclipse.riena.core.wire.WireWrap;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.service.log.LogListener;
 
@@ -32,6 +33,7 @@ import org.osgi.service.log.LogListener;
  * For the curious: There are so many LoggerFactories out there. So, not another
  * one!
  */
+@WireWrap(LoggerMillWireWrap.class)
 public class LoggerMill {
 
 	/**

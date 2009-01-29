@@ -11,10 +11,12 @@
 package org.eclipse.riena.internal.core.exceptionmanager;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.wire.WireWrap;
 
 /**
  * returns the current ExceptionHandlerManger
  */
+@WireWrap(ExceptionHandlerManagerAccessorWireWrap.class)
 public class ExceptionHandlerManagerAccessor {
 
 	private static IExceptionHandlerManager exceptionHandlerManager;
