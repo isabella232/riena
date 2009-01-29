@@ -159,6 +159,7 @@ public class WirePuller {
 			}
 		}
 		Assert.isLegal(bean != null, "There is no bean but it should!"); //$NON-NLS-1$
+
 		wire(bean, bean.getClass(), wireWrap, wireWrapClass, context);
 		//		if (serviceRegististrationRequired) {
 		//			if (serviceNames.length == 0) {
@@ -208,6 +209,12 @@ public class WirePuller {
 	 */
 	@SuppressWarnings("unchecked")
 	private Class<? extends IWireWrap> getConventionWireWrapClass(Class<?> beanClass, BundleContext context) {
+		WireWrap wireWrapAnnotation = beanClass.getAnnotation(WireWrap.class);
+		// Does the bean have a wire-wrap annotation with a special wire-wrap class? Yes, use this class for wiring.
+		if (wireWrapAnnotation != null && wireWrapAnnotation.value() != WireWrap.UseDefaultWiring.class) {
+			return wireWrapAnnotation.value();
+		}
+		// Otherwise try to find the wire-wrap class by convention
 		String wireWrapClassName = beanClass.getName() + WIRE_WRAP_POSTFIX;
 		Class<?> assumedClass = null;
 		try {
