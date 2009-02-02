@@ -102,7 +102,7 @@ public class OnePersonSubModuleController extends SubModuleController {
 			if (!countries.contains(defCountry)) {
 				countries.add(defCountry);
 			}
-			//			countries = Arrays.asList(Locale.getISOCountries());
+			// countries = Arrays.asList(Locale.getISOCountries());
 		}
 
 		return countries;

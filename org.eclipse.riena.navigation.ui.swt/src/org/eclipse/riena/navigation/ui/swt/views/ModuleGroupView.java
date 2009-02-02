@@ -266,6 +266,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 			setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
 			getRenderer().setMarkers(getNavigationNode().getMarkers());
 			getRenderer().setItems(getAllVisibleModuleViews());
+			getRenderer().setActive(getNavigationNode().isActivated());
 			Point size = getRenderer().computeSize(e.gc, SWT.DEFAULT, SWT.DEFAULT);
 			getRenderer().setBounds(0, 0, size.x, size.y);
 			getRenderer().paint(e.gc, null);

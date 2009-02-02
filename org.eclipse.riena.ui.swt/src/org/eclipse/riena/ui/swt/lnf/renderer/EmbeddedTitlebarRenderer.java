@@ -40,7 +40,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private Control control;
 	private Image image;
 	private String title;
-	private Color edgeColor;
+	// private Color edgeColor;
 	private boolean active;
 	private boolean pressed;
 	private boolean hover;
@@ -67,7 +67,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	public void dispose() {
 		SwtUtilities.disposeResource(getImage());
-		SwtUtilities.disposeResource(edgeColor);
+		// SwtUtilities.disposeResource(edgeColor);
 		control = null;
 	}
 
@@ -159,39 +159,39 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 		gc.setForeground(borderColor);
 		// - top
-		x = getBounds().x + 1;
+		x = getBounds().x;
 		y = getBounds().y;
-		w = getWidth() - 2;
+		w = getWidth();
 		gc.drawLine(x, y, x + w, y);
 		// - bottom
 		y = getBounds().y + getHeight();
 		gc.drawLine(x, y, x + w, y);
 		// - left
 		x = getBounds().x;
-		y = getBounds().y + 1;
-		h = getHeight() - 2;
+		y = getBounds().y;
+		h = getHeight();
 		gc.drawLine(x, y, x, y + h);
 		// - right
 		x = getBounds().x + getWidth();
 		gc.drawLine(x, y, x, y + h);
 
-		// Edges
-		if ((edgeColor == null) || (edgeColor.isDisposed())) {
-			edgeColor = SwtUtilities.makeBrighter(borderColor, 1.15f);
-		}
-		gc.setForeground(edgeColor);
-		x = getBounds().x;
-		y = getBounds().y;
-		gc.drawPoint(x, y);
-		x = getBounds().x + getWidth();
-		y = getBounds().y;
-		gc.drawPoint(x, y);
-		x = getBounds().x;
-		y = getBounds().y + getHeight();
-		gc.drawPoint(x, y);
-		x = getBounds().x + getWidth();
-		y = getBounds().y + getHeight();
-		gc.drawPoint(x, y);
+		//		// Edges
+		//		if ((edgeColor == null) || (edgeColor.isDisposed())) {
+		//			edgeColor = SwtUtilities.makeBrighter(borderColor, 1.15f);
+		//		}
+		//		gc.setForeground(edgeColor);
+		//		x = getBounds().x;
+		//		y = getBounds().y;
+		//		gc.drawPoint(x, y);
+		//		x = getBounds().x + getWidth();
+		//		y = getBounds().y;
+		//		gc.drawPoint(x, y);
+		//		x = getBounds().x;
+		//		y = getBounds().y + getHeight();
+		//		gc.drawPoint(x, y);
+		//		x = getBounds().x + getWidth();
+		//		y = getBounds().y + getHeight();
+		//		gc.drawPoint(x, y);
 
 		// Close icon
 		Rectangle closeBounds = computeCloseButtonBounds();

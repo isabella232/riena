@@ -56,6 +56,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 		switch (vPos) {
 		case SWT.CENTER:
 			y = getBounds().height / 2 - logoHeight / 2;
+			y += vMargin;
 			break;
 		case SWT.BOTTOM:
 			y = getBounds().height - logoHeight - vMargin;

@@ -426,11 +426,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		Composite logoComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		FormData logoData = new FormData();
-		int topInset = 4;
-		int leftRightInset = 12;
+		int topInset = 0;
+		int leftRightInset = 0;
 		logoData.top = new FormAttachment(0, topInset);
 		int height = getSwitchterTopMargin() + getSwitchterHeight() - 1;
-		logoData.bottom = new FormAttachment(0, height);
+		logoData.bottom = new FormAttachment(0, height + 2);
 		Image logoImage = getLogoImage();
 		if (logoImage == null) {
 			return;

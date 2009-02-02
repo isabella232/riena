@@ -279,8 +279,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.LEFT);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.CENTER);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 5);
-		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 0);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_MARGIN, 17);
+		table.put(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 4);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_TEXT_POSITION, SWT.RIGHT);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true);
 		table.put(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);

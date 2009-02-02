@@ -58,6 +58,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		customerNumberLabel.setText("Customer Number"); //$NON-NLS-1$
 
 		customerNumberText = new Text(parent, SWT.BORDER);
+		customerNumberText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		customerNumberText.setData("type", "numeric"); //$NON-NLS-1$ //$NON-NLS-2$
 		customerNumberText.setData("binding_property", "customerNumber"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_customerNumberText = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -73,6 +74,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		lastNameLabel.setText("Last Name"); //$NON-NLS-1$
 
 		lastNameText = new Text(parent, SWT.BORDER);
+		lastNameText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		lastNameText.setData("binding_property", "lastName"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_lastNameText = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		lastNameText.setLayoutData(gd_lastNameText);
@@ -84,6 +86,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		firstNameLabel.setText("First Name"); //$NON-NLS-1$
 
 		firstNameText = new Text(parent, SWT.BORDER);
+		firstNameText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		firstNameText.setData("binding_property", "firstName"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_firstNameText = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		firstNameText.setLayoutData(gd_firstNameText);
@@ -96,6 +99,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		birthdayLabel.setText("Birthday"); //$NON-NLS-1$
 
 		birthdayText = new Text(parent, SWT.BORDER);
+		birthdayText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		birthdayText.setData("binding_property", "birthday"); //$NON-NLS-1$ //$NON-NLS-2$
 		birthdayText.setData("type", "date"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_birthdayText = new GridData(SWT.LEFT, SWT.CENTER, true, false);
@@ -109,6 +113,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		birthplaceLabel.setText("Birthplace"); //$NON-NLS-1$
 
 		BirthplaceText = new Text(parent, SWT.BORDER);
+		BirthplaceText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		BirthplaceText.setData("binding_property", "birthplace"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_birthplaceText = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		BirthplaceText.setLayoutData(gd_birthplaceText);
@@ -143,6 +148,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		streetAndNumberLabel.setText("Street and Number"); //$NON-NLS-1$
 
 		streetText = new Text(parent, SWT.BORDER);
+		streetText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		streetText.setData("binding_property", "street"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_streetText = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		streetText.setLayoutData(gd_streetText);
@@ -168,6 +174,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		postalCodeLabel.setText("Postal Code"); //$NON-NLS-1$
 
 		postalCodeText = new Text(parent, SWT.BORDER);
+		postalCodeText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		postalCodeText.setData("type", "numeric"); //$NON-NLS-1$ //$NON-NLS-2$
 		postalCodeText.setData("binding_property", "postalCode"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_postalCodeText = new GridData(SWT.LEFT, SWT.CENTER, true, false);
@@ -181,6 +188,7 @@ public class OnePersonSubModuleView extends SubModuleView<OnePersonSubModuleCont
 		townLabel.setText("Town"); //$NON-NLS-1$
 
 		townText = new Text(parent, SWT.BORDER);
+		townText.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		townText.setData("binding_property", "town"); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridData gd_townText = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		townText.setLayoutData(gd_townText);

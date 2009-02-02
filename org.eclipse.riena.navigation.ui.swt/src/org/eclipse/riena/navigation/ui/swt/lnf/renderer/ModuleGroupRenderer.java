@@ -31,6 +31,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private static final int MODULE_GROUP_PADDING = 1;
 	private static final int MODULE_WIDTH = 165;
 
+	private boolean active;
 	private List<ModuleView> items;
 
 	/**
@@ -51,7 +52,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 		borderRenderer.setMarkers(getMarkers());
 		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, size.y);
-		borderRenderer.setActive(true);
+		borderRenderer.setActive(isActive());
 		borderRenderer.paint(gc, null);
 
 	}
@@ -160,6 +161,14 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 */
 	public int getItemWidth() {
 		return MODULE_WIDTH;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }
