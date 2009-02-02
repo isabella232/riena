@@ -58,17 +58,8 @@ public class SwtViewProvider {
 	private SwtViewId createAndRegisterSwtViewId(INavigationNode<?> node) {
 
 		SwtViewId swtViewId = null;
-		String viewId = null;
 		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
-		if (def != null) {
-			viewId = (String) def.getViewId();
-		} else {
-			throw new RuntimeException("no work area definition for node " + node.getNodeId()); //$NON-NLS-1$
-		}
-
-		if (viewId == null) {
-			throw new RuntimeException("viewId is null for nodeId " + node.getNodeId()); //$NON-NLS-1$
-		}
+		String viewId = getViewId(node, def);
 
 		swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
 		views.put(node, swtViewId);
@@ -79,17 +70,8 @@ public class SwtViewProvider {
 	private SwtViewId createAndRegisterSwtViewId(ISubModuleNode submodule) {
 
 		SwtViewId swtViewId = null;
-		String viewId = null;
 		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(submodule);
-		if (def != null) {
-			viewId = (String) def.getViewId();
-		} else {
-			throw new RuntimeException("no work area definition for node " + submodule.getNodeId()); //$NON-NLS-1$
-		}
-
-		if (viewId == null) {
-			throw new RuntimeException("viewId is null for nodeId " + submodule.getNodeId()); //$NON-NLS-1$
-		}
+		String viewId = getViewId(submodule, def);
 
 		if (viewShared.get(viewId) != null) {
 			if (def.isViewShared() != viewShared.get(viewId)) {
@@ -122,6 +104,20 @@ public class SwtViewProvider {
 		}
 
 		return swtViewId;
+	}
+
+	private String getViewId(INavigationNode<?> node, IWorkareaDefinition def) {
+		if (def == null) {
+			throw new ApplicationModelFailure("no work area definition for node " + node.getNodeId()); //$NON-NLS-1$
+		}
+		Object viewId = def.getViewId();
+		if (viewId == null) {
+			throw new ApplicationModelFailure("viewId is null for nodeId " + node.getNodeId()); //$NON-NLS-1$
+		}
+		if (!(viewId instanceof String)) {
+			throw new ApplicationModelFailure("viewId is not a String for nodeId " + node.getNodeId()); //$NON-NLS-1$
+		}
+		return (String) viewId;
 	}
 
 	private String getNextSecondaryId(String pViewId) {
