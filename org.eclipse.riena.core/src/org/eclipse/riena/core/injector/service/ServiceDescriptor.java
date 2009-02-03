@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.service;
+package org.eclipse.riena.core.injector.service;
 
 import org.eclipse.core.runtime.Assert;
 

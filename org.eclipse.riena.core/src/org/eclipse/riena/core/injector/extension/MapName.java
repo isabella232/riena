@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.extension;
+package org.eclipse.riena.core.injector.extension;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,20 +16,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a <i>creator</i> method so that the returned instance is a proxy
- * instead of the real object. The real object will be created lazily on demand.<br>
- * <b>Note:</b> This requires that the executable extension object implements an
- * interface that is compatible to the return type of the <i>create</i> method.
+ * This annotation specifies the attribute or element name that the
+ * <i>getter</i> method is mapped to, e.g.
  * 
  * <pre>
  * 
- * @CreateLazy()
- * ISomething createSomething();
+ * @MapName("validation-policy")
+ * String getValidationPolicy();
  * 
- *                              </pre>
- * 
+ *                                          </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface CreateLazy {
+public @interface MapName {
+	String value();
 }

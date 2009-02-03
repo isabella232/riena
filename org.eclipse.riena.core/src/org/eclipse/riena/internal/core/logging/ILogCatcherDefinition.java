@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.logging;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.internal.core.Activator;
 

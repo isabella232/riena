@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 import org.osgi.framework.Bundle;
 
 /**

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.extension;
+package org.eclipse.riena.core.injector.extension;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

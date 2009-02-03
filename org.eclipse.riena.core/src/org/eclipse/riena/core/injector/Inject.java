@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector;
 
-import org.eclipse.riena.core.extension.ExtensionDescriptor;
-import org.eclipse.riena.core.service.ServiceDescriptor;
+import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
+import org.eclipse.riena.core.injector.service.ServiceDescriptor;
 
 /**
  * This class begins an injector definition.

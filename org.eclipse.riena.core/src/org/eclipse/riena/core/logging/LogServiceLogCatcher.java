@@ -12,7 +12,7 @@ package org.eclipse.riena.core.logging;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.service.ServiceInjector;
+import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;

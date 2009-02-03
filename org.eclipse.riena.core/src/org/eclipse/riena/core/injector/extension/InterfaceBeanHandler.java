@@ -8,9 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.extension;
+package org.eclipse.riena.core.injector.extension;
 
-import static org.eclipse.riena.core.extension.InterfaceBeanHandler.MethodKind.OTHER;
+import static org.eclipse.riena.core.injector.extension.InterfaceBeanHandler.MethodKind.OTHER;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.extension;
+package org.eclipse.riena.core.injector.extension;
 
 import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;

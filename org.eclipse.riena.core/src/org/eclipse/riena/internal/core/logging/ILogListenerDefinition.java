@@ -11,8 +11,8 @@
 package org.eclipse.riena.internal.core.logging;
 
 import org.eclipse.equinox.log.LogFilter;
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogListener;
 
