@@ -11,26 +11,27 @@
 package org.eclipse.riena.internal.core.exceptionmanager;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.util.ServiceAccessor;
 import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.internal.core.Activator;
 
 /**
  * returns the current ExceptionHandlerManger
  */
 @WireWrap(ExceptionHandlerManagerAccessorWireWrap.class)
-public class ExceptionHandlerManagerAccessor {
+public class ExceptionHandlerManagerAccessor extends ServiceAccessor<IExceptionHandlerManager> {
 
-	private static IExceptionHandlerManager exceptionHandlerManager;
+	private final static ExceptionHandlerManagerAccessor EXCEPTION_HANDLER_MANAGER_ACCESSOR = new ExceptionHandlerManagerAccessor();
 
-	public void bind(IExceptionHandlerManager exceptionHandlerManagerParm) {
-		exceptionHandlerManager = exceptionHandlerManagerParm;
-	}
-
-	public void unbind(IExceptionHandlerManager exceptionHandlerManagerParm) {
-		exceptionHandlerManager = null;
+	/**
+	 * @param context
+	 */
+	public ExceptionHandlerManagerAccessor() {
+		super(Activator.getDefault().getContext());
 	}
 
 	public static IExceptionHandlerManager getExceptionHandlerManager() {
-		return exceptionHandlerManager;
+		return EXCEPTION_HANDLER_MANAGER_ACCESSOR.getService();
 	}
 
 }

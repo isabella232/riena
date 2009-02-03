@@ -20,7 +20,6 @@ import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
@@ -99,10 +98,6 @@ public class Activator extends RienaPlugin {
 		Wire.instance(handlerManager).andStart(getContext());
 		getContext().registerService(IExceptionHandlerManager.class.getName(), handlerManager,
 				RienaConstants.newDefaultServiceProperties());
-
-		// create instance of ExceptionHandlerManagerAccessor and inject ONE ExceptionHandlerManger
-		ExceptionHandlerManagerAccessor exceptionHandlerManagerAccessor = new ExceptionHandlerManagerAccessor();
-		Wire.instance(exceptionHandlerManagerAccessor).andStart(getContext());
 	}
 
 	/*
