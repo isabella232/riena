@@ -10,30 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import org.osgi.framework.BundleContext;
+
 /**
  *
  */
-@WireWrap(TestWireWrap.class)
-public class Test implements ITest {
+public class TestWireWrapMock implements IWireWrap {
 
-	private Schtonk schtonk;
-
-	public void bind(Schtonk schtonk) {
-		this.schtonk = schtonk;
+	public void wire(Object bean, BundleContext context) {
+		((Test) bean).bind(new SchtonkSchtonk());
 	}
 
-	public void unbind(Schtonk schtonk) {
-		this.schtonk = schtonk;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasSchtonk() {
-		return schtonk != null;
-	}
-
-	public boolean isSchtonkSchtonk() {
-		return schtonk instanceof SchtonkSchtonk;
-	}
 }

@@ -13,27 +13,6 @@ package org.eclipse.riena.core.wire;
 /**
  *
  */
-@WireWrap(TestWireWrap.class)
-public class Test implements ITest {
+public class SchtonkSchtonk extends Schtonk {
 
-	private Schtonk schtonk;
-
-	public void bind(Schtonk schtonk) {
-		this.schtonk = schtonk;
-	}
-
-	public void unbind(Schtonk schtonk) {
-		this.schtonk = schtonk;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasSchtonk() {
-		return schtonk != null;
-	}
-
-	public boolean isSchtonkSchtonk() {
-		return schtonk instanceof SchtonkSchtonk;
-	}
 }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
@@ -70,27 +69,4 @@ public class WireByConventionTest extends RienaTestCase {
 		assertTrue(testNoTest.hasSchtonk());
 	}
 
-	public void testWiringBeanClassName() {
-		TestWbC test = (TestWbC) Wire.type(TestWbC.class.getName()).andStart(context);
-		assertTrue(test.hasSchtonk());
-	}
-
-	public void testWiringBeanClass() {
-		TestWbC test = (TestWbC) Wire.type(TestWbC.class).andStart(context);
-		assertTrue(test.hasSchtonk());
-	}
-
-	public void testWiringWithWireWrapClass() {
-		TestWbC test = (TestWbC) Wire.type(TestWbC.class).withWireWrap(TestWireWrap.class).andStart(context);
-		assertTrue(test.hasSchtonk());
-	}
-
-	public void testWiringWithWireWrapInstance() {
-		TestWbC test = (TestWbC) Wire.type(TestWbC.class).withWireWrap(new IWireWrap() {
-			public void wire(Object bean, BundleContext context) {
-				Inject.service(Schtonk.class).into(bean).andStart(context);
-			}
-		}).andStart(context);
-		assertTrue(test.hasSchtonk());
-	}
 }
