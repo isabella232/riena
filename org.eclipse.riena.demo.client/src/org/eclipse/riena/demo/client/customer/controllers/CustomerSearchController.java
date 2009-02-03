@@ -13,13 +13,11 @@ package org.eclipse.riena.demo.client.customer.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.demo.client.customer.model.SearchResultContainer;
 import org.eclipse.riena.demo.customer.common.CustomerRecordOverview;
 import org.eclipse.riena.demo.customer.common.CustomerSearchBean;
 import org.eclipse.riena.demo.customer.common.CustomerSearchResult;
 import org.eclipse.riena.demo.customer.common.ICustomerDemoService;
-import org.eclipse.riena.internal.demo.customer.client.Activator;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -48,9 +46,6 @@ public class CustomerSearchController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		Inject.service(ICustomerDemoService.class).into(this).andStart(
-				Activator.getDefault().getBundle().getBundleContext());
-
 		ITextRidget suchName = (ITextRidget) getRidget("suchName"); //$NON-NLS-1$
 		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);

@@ -35,7 +35,7 @@ public class RulesProviderTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		provider = new RulesProvider(false);
+		provider = new RulesProvider();
 	}
 
 	@Override
