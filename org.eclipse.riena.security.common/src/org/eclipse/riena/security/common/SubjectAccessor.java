@@ -12,56 +12,37 @@ package org.eclipse.riena.security.common;
 
 import javax.security.auth.Subject;
 
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.ServiceAccessor;
+import org.eclipse.riena.core.wire.WireWrap;
 import org.eclipse.riena.internal.security.common.Activator;
 
 /**
  * A convenient class to access the current Subject from the
  * SubjectHolderService
  */
-public final class SubjectAccessor {
+@WireWrap(SubjectAccessorWireWrap.class)
+public final class SubjectAccessor extends ServiceAccessor<ISubjectHolderService> {
 
-	private ISubjectHolderService subjectHolderService;
-	private static SubjectAccessor myself;
+	private final static SubjectAccessor SUBJECT_ACCESSOR = new SubjectAccessor();
 
 	private SubjectAccessor() {
-		super();
-		Inject.service(ISubjectHolderService.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		super(Activator.getDefault().getContext());
 	}
 
 	public static Subject getSubject() {
-		return getInstance().getCurrentSubject();
+		return SUBJECT_ACCESSOR.getCurrentSubject();
 	}
 
 	public static void setSubject(Subject subject) {
-		getInstance().setCurrentSubject(subject);
+		SUBJECT_ACCESSOR.setCurrentSubject(subject);
 	}
 
-	/**
-	 * @return
-	 */
-	private static SubjectAccessor getInstance() {
-		if (myself == null) {
-			myself = new SubjectAccessor();
-		}
-		return myself;
+	private Subject getCurrentSubject() {
+		return getService().fetchSubjectHolder().getSubject();
 	}
 
-	public void bind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = subjectHolderService;
-	}
-
-	public void unbind(ISubjectHolderService subjectHolderService) {
-		this.subjectHolderService = null;
-	}
-
-	public Subject getCurrentSubject() {
-		return subjectHolderService.fetchSubjectHolder().getSubject();
-	}
-
-	public void setCurrentSubject(Subject subject) {
-		subjectHolderService.fetchSubjectHolder().setSubject(subject);
+	private void setCurrentSubject(Subject subject) {
+		getService().fetchSubjectHolder().setSubject(subject);
 	}
 
 }
