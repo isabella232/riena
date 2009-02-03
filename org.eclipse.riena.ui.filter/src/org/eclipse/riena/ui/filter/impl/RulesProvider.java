@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.WireWrap;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
@@ -18,34 +18,19 @@ import org.eclipse.riena.ui.filter.extension.IRuleMapperExtension;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerNavigationMapper;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerRidgetMapper;
 import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidgetMapper;
-import org.eclipse.riena.ui.internal.Activator;
 
 /**
  * This class provides the correct rule for a given marker type.
  */
+@WireWrap(RulesProviderWireWrap.class)
 public class RulesProvider {
 
-	private static final String EP_RULEMAPPER = "org.eclipse.riena.filter.rulemapper"; //$NON-NLS-1$
 	private IRuleMapperExtension[] data;
 
 	/**
-	 * Creates a new instance of {@code RulesProvider} and perform
-	 * configuration.
+	 * Creates a new instance of {@code RulesProvider}.
 	 */
 	public RulesProvider() {
-		this(true);
-	}
-
-	/**
-	 * Constructor that should only be used while testing.
-	 * 
-	 * @param autoConfig
-	 *            - true perform configuration; otherwise do not configure
-	 */
-	public RulesProvider(boolean autoConfig) {
-		if (autoConfig) {
-			Inject.extension(EP_RULEMAPPER).into(this).andStart(Activator.getDefault().getContext());
-		}
 	}
 
 	/**
