@@ -88,7 +88,7 @@ public abstract class AbstractApplication implements IApplication {
 
 		SortedSet<StartupSortable> startups = new TreeSet<StartupSortable>();
 
-		INavigationNodeProvider nnp = NavigationNodeProviderAccessor.current().getNavigationNodeProvider();
+		INavigationNodeProvider nnp = NavigationNodeProviderAccessor.getNavigationNodeProvider();
 		for (INavigationAssembler assembler : ((NavigationNodeProvider) nnp).getNavigationAssemblers()) {
 			Integer sequence = getAutostartSequence(assembler.getAssembly());
 			if (sequence != null) {

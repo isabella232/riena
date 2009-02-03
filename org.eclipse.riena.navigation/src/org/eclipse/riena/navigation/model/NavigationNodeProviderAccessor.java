@@ -10,52 +10,40 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.ServiceAccessor;
+import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 
 /**
  *
  */
-public final class NavigationNodeProviderAccessor {
-	private static NavigationNodeProviderAccessor psa = null;
-	private INavigationNodeProvider service = null;
+@WireWrap(NavigationNodeProviderAccessorWireWrap.class)
+public final class NavigationNodeProviderAccessor extends ServiceAccessor<INavigationNodeProvider> {
+
+	private final static NavigationNodeProviderAccessor NNPA = new NavigationNodeProviderAccessor();
 
 	/**
 	 * Default Constructor
 	 */
 	private NavigationNodeProviderAccessor() {
-		Inject.service(INavigationNodeProvider.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		super(Activator.getDefault().getContext(), new ServiceAccessor.IBindHook<INavigationNodeProvider>() {
+
+			public void onBind(INavigationNodeProvider service) {
+				Nop.reason("No interest!"); //$NON-NLS-1$
+			}
+
+			public void onUnbind(INavigationNodeProvider service) {
+				// TODO Is this a good idea to let the clean-up be done here! Shouldn´t the service cleaned-up when it is going done? 
+				service.cleanUp();
+			}
+		});
 
 	}
 
-	static public NavigationNodeProviderAccessor current() {
-		if (psa == null) {
-			return initNavigationNodeProviderAccessor();
-		}
-		return psa;
-	}
-
-	static private NavigationNodeProviderAccessor initNavigationNodeProviderAccessor() {
-		psa = new NavigationNodeProviderAccessor();
-
-		return psa;
-	}
-
-	public INavigationNodeProvider getNavigationNodeProvider() {
-
-		return service;
-
-	}
-
-	public void bind(INavigationNodeProvider s) {
-		service = s;
-	}
-
-	public void unbind(INavigationNodeProvider dep) {
-		service.cleanUp();
-		service = null;
+	public static INavigationNodeProvider getNavigationNodeProvider() {
+		return NNPA.getService();
 	}
 
 }
