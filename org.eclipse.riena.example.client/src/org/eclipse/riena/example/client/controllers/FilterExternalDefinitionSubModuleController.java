@@ -60,7 +60,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doAddFilters() {
 
-		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
+		IUIFilterContainer container = UIFilterProviderAccessor.getFilterProvider().provideFilter(
 				"rienaExample.offline"); //$NON-NLS-1$
 		IUIFilter filter = container.getFilter();
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
@@ -78,7 +78,7 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void doRemoveFilters() {
 
-		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
+		IUIFilterContainer container = UIFilterProviderAccessor.getFilterProvider().provideFilter(
 				"rienaExample.offline"); //$NON-NLS-1$
 		IUIFilter filter = container.getFilter();
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();

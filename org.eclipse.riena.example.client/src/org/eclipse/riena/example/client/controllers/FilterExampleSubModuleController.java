@@ -122,8 +122,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 		IToggleButtonRidget menuToolAction = (IToggleButtonRidget) getRidget(buttonRidgetId);
 
 		IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-		IUIFilterContainer container = UIFilterProviderAccessor.current().getUIFilterProvider().provideFilter(
-				filterId.toString());
+		IUIFilterContainer container = UIFilterProviderAccessor.getFilterProvider().provideFilter(filterId.toString());
 		IUIFilter filter = container.getFilter();
 		Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		for (String targetNodeId : targetNodeIds) {
