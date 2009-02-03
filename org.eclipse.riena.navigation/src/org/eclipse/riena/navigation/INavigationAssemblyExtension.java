@@ -11,8 +11,8 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 import org.osgi.framework.Bundle;
 
 /**

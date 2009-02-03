@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Descriptor of a renderer.

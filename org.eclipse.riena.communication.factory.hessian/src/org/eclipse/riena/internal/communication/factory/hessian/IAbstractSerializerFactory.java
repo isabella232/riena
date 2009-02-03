@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 import com.caucho.hessian.io.AbstractSerializerFactory;
 

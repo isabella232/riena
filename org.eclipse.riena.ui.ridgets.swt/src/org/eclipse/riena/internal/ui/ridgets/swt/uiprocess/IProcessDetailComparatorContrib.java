@@ -12,8 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt.uiprocess;
 
 import java.util.Comparator;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Interface for extension proxies for {@link ProcessDetail} - Comparators

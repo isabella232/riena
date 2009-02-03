@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.login;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
  * The definition for the login dialog view.

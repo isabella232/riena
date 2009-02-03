@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.ssl;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.osgi.framework.Bundle;
 
