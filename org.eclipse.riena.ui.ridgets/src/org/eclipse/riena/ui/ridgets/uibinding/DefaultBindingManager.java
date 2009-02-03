@@ -15,6 +15,8 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -69,6 +71,7 @@ public class DefaultBindingManager implements IBindingManager {
 			}
 		}
 
+		Wire.instance(ridgetContainer).andStart(Activator.getDefault().getContext());
 		ridgetContainer.configureRidgets();
 
 	}

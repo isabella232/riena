@@ -15,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.sample.app.client.Activator;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -50,7 +48,6 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 		super(navigationNode);
 		searchResult = new ResultContainer();
 		sample = new Customer();
-		Inject.service(ICustomerSearch.class.getName()).into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	public void bind(ICustomerSearch service) {
