@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.eclipse.riena.core.wire.Wire;
 import org.osgi.framework.BundleContext;
 
@@ -47,7 +45,7 @@ public abstract class ServiceAccessor<S> {
 	private S service;
 	private final BundleContext context;
 	private final IBindHook<S> bindHook;
-	private final AtomicBoolean initialized = new AtomicBoolean();
+	private boolean initialized;
 
 	public ServiceAccessor(BundleContext context) {
 		this(context, null);
@@ -58,9 +56,10 @@ public abstract class ServiceAccessor<S> {
 		this.bindHook = bindHook;
 	}
 
-	public S getService() {
-		if (!initialized.getAndSet(true)) {
+	public synchronized S getService() {
+		if (!initialized) {
 			initialize();
+			initialized = true;
 		}
 		return service;
 	}
