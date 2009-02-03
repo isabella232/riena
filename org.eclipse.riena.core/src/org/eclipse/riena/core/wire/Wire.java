@@ -23,30 +23,6 @@ public final class Wire {
 	}
 
 	/**
-	 * Wire the given {@code beanClass} class. The effect of wiring a class is,
-	 * that an instance of this class will be created upon the wiring will be
-	 * done.
-	 * 
-	 * @param beanClass
-	 * @return
-	 */
-	public static WirePuller type(Class<?> beanClass) {
-		return new WirePuller(beanClass);
-	}
-
-	/**
-	 * Wire the given {@code beanClassNam} class given as a string. The effect
-	 * of wiring a class is, that an instance of this class will be created upon
-	 * the wiring will be done.
-	 * 
-	 * @param beanClassName
-	 * @return
-	 */
-	public static WirePuller type(String beanClassName) {
-		return new WirePuller(beanClassName);
-	}
-
-	/**
 	 * Wire the given {@code bean} instance.
 	 * 
 	 * @param test
