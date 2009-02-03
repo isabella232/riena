@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.internal.ui.filter.Activator;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
@@ -28,35 +30,14 @@ import org.eclipse.riena.ui.filter.extension.IRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.extension.IRuleMarkerRidget;
 import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidget;
 import org.eclipse.riena.ui.filter.extension.IUIFilterExtension;
-import org.eclipse.riena.ui.internal.Activator;
 
 /**
  * 
  */
+@WireWrap(UIFilterProviderWireWrap.class)
 public class UIFilterProvider implements IUIFilterProvider {
 
-	private static final String EP_UIFILTER = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
 	private IUIFilterExtension[] data;
-
-	/**
-	 * Creates a new instance of {@code UIFilterProvider} and perform
-	 * configuration.
-	 */
-	public UIFilterProvider() {
-		this(true);
-	}
-
-	/**
-	 * Constructor that should only be used while testing
-	 * 
-	 * @param autoConfig
-	 *            - true perform configuration; otherwise do not configure
-	 */
-	public UIFilterProvider(boolean autoConfig) {
-		if (autoConfig) {
-			Inject.extension(EP_UIFILTER).into(this).andStart(Activator.getDefault().getContext());
-		}
-	}
 
 	/**
 	 * Returns the extension for the given ID.
@@ -87,7 +68,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 		Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
 
-		RulesProvider rulesProvider = new RulesProvider();
+		RulesProvider rulesProvider = newRulesProvider();
 
 		// rules for marker/ridget
 		for (IRuleMarkerRidget ruleExtension : filterExtension.getRuleMarkerRidgets()) {
@@ -153,7 +134,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 */
 	private IUIFilterRuleValidator createRuleValidatorRidget(IRuleValidatorRidget ruleExtension) {
 
-		RulesProvider rulesProvider = new RulesProvider();
+		RulesProvider rulesProvider = newRulesProvider();
 		IUIFilterRuleValidatorRidget rule = rulesProvider.getRuleValidatorRidget();
 		if (rule != null) {
 			rule.setId(ruleExtension.getRidgetId());
@@ -186,4 +167,9 @@ public class UIFilterProvider implements IUIFilterProvider {
 		return data;
 	}
 
+	private RulesProvider newRulesProvider() {
+		RulesProvider rulesProvider = new RulesProvider();
+		Wire.instance(rulesProvider).andStart(Activator.getDefault().getContext());
+		return rulesProvider;
+	}
 }

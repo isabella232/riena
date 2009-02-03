@@ -10,28 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
-import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.IWireWrap;
 import org.eclipse.riena.internal.ui.filter.Activator;
-import org.eclipse.riena.ui.filter.IUIFilterProvider;
+import org.osgi.framework.BundleContext;
 
 /**
- *
+ * Wire the {@code UIFilterProvider}
  */
-@WireWrap(UIFilterProviderAccessorWireWrap.class)
-public final class UIFilterProviderAccessor extends ServiceAccessor<UIFilterProvider> {
+public class UIFilterProviderWireWrap implements IWireWrap {
 
-	private final static UIFilterProviderAccessor FILTER_PROVIDER_ACCESSOR = new UIFilterProviderAccessor();
+	private static final String EP_UIFILTER = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
 
-	/**
-	 * Default Constructor
-	 */
-	private UIFilterProviderAccessor() {
-		super(Activator.getDefault().getContext());
-	}
-
-	static public IUIFilterProvider getFilterProvider() {
-		return FILTER_PROVIDER_ACCESSOR.getService();
+	public void wire(Object bean, BundleContext context) {
+		Inject.extension(EP_UIFILTER).into(bean).andStart(Activator.getDefault().getContext());
 	}
 
 }
