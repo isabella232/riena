@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.filter.extension;
 
 import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
  * The rule to add a validator to a ridget.

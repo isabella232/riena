@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.extension;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
-import org.eclipse.riena.core.extension.MapName;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Interface for a UIFiltere extension that defines how to create a filter with

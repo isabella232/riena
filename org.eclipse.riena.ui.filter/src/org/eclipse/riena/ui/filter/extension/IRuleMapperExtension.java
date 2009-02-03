@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.extension;
 
-import org.eclipse.riena.core.extension.ExtensionInterface;
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
  * Mappers for all rules.
