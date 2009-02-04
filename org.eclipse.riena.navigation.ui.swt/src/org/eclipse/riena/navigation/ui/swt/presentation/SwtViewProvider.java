@@ -55,6 +55,10 @@ public class SwtViewProvider {
 		return swtViewId;
 	}
 
+	public void unregisterSwtViewId(INavigationNode<?> node) {
+		views.remove(node);
+	}
+
 	private SwtViewId createAndRegisterSwtViewId(INavigationNode<?> node) {
 
 		SwtViewId swtViewId = null;

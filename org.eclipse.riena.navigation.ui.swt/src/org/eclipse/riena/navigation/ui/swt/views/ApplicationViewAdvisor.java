@@ -31,6 +31,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -60,12 +61,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.WorkbenchWindow;
 import org.osgi.service.log.LogService;
 
@@ -342,6 +345,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			} catch (WorkbenchException e) {
 				e.printStackTrace();
 			}
+		}
+
+		/**
+		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void disposed(ISubApplicationNode source) {
+			SwtViewProvider viewProvider = SwtViewProviderAccessor.getViewProvider();
+			String id = viewProvider.getSwtViewId(source).getId();
+			IPerspectiveDescriptor perspDesc = WorkbenchPlugin.getDefault().getPerspectiveRegistry()
+					.findPerspectiveWithId(id);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false,
+					false);
+			viewProvider.unregisterSwtViewId(source);
 		}
 	}
 

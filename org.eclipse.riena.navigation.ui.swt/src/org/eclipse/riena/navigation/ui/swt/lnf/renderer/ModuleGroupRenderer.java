@@ -92,6 +92,9 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			h = getModuleGroupPadding();
 			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
 				ModuleView moduleView = iterator.next();
+				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
+					break;
+				}
 				moduleView.updateModuleView();
 				h += moduleView.getBounds().height;
 				if (iterator.hasNext()) {
