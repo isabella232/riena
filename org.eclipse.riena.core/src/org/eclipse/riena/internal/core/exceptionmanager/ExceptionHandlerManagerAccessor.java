@@ -19,14 +19,14 @@ import org.eclipse.riena.internal.core.Activator;
  * returns the current ExceptionHandlerManger
  */
 @WireWrap(ExceptionHandlerManagerAccessorWireWrap.class)
-public class ExceptionHandlerManagerAccessor extends ServiceAccessor<IExceptionHandlerManager> {
+public final class ExceptionHandlerManagerAccessor extends ServiceAccessor<IExceptionHandlerManager> {
 
 	private final static ExceptionHandlerManagerAccessor EXCEPTION_HANDLER_MANAGER_ACCESSOR = new ExceptionHandlerManagerAccessor();
 
 	/**
 	 * @param context
 	 */
-	public ExceptionHandlerManagerAccessor() {
+	private ExceptionHandlerManagerAccessor() {
 		super(Activator.getDefault().getContext());
 	}
 
