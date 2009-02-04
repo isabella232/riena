@@ -125,7 +125,7 @@ public final class TestCollector {
 	}
 
 	/**
-	 * Collect all unmarked {@code TestCase}e within the given bundle.
+	 * Collect all unmarked {@code TestCase}s within the given bundle.
 	 * 
 	 * @param bundle
 	 *            bundle to collect all {@code TestCase}s
