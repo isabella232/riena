@@ -142,7 +142,8 @@ public class ExtensionInjector {
 		}
 
 		// cleanup
-		update(new Object[] { null });
+		Object emptyExtensions = isArray ? Array.newInstance(componentType, 0) : null;
+		update(new Object[] { emptyExtensions });
 		injectorListener = null;
 	}
 
