@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.example.client;
 
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.ProxyAlreadyRegisteredFailure;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.monitor.common.IReceiver;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
@@ -31,20 +30,17 @@ public class Activator extends RienaPlugin {
 	// The shared instance
 	private static Activator plugin;
 
-	private IRemoteServiceRegistration collectibleReceiverReg;
-	private IRemoteServiceRegistration authenticationService;
-
 	/**
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		collectibleReceiverReg = new RemoteServiceFactory().createAndRegisterProxy(IReceiver.class,
-				"http://localhost:8080/hessian/CollectibleReceiverWS", PROTOCOL_HESSIAN, context); //$NON-NLS-1$
+		Register.remoteProxy(IReceiver.class).usingUrl("http://localhost:8080/hessian/CollectibleReceiverWS")
+				.withProtocol("hessian").andStart(context);
 		try {
-			authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-					"http://localhost:8080/hessian/AuthenticationService", PROTOCOL_HESSIAN, context); //$NON-NLS-1$
+			Register.remoteProxy(IAuthenticationService.class).usingUrl(
+					"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(context);
 		} catch (ProxyAlreadyRegisteredFailure e) {
 			// do nothing, can happen if some other bundle registered this service
 		}
@@ -55,8 +51,6 @@ public class Activator extends RienaPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		collectibleReceiverReg.unregister();
-		authenticationService.unregister();
 		super.stop(context);
 	}
 

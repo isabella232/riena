@@ -16,11 +16,12 @@ import java.security.SecureRandom;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.attachment.Attachment;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.ManualTestCase;
+
 import org.osgi.framework.BundleContext;
 
 /**
@@ -40,8 +41,9 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	 */
 	public void setUp() throws Exception {
 		super.setUp();
-		regAttachmentService = new RemoteServiceFactory().createAndRegisterProxy(IAttachmentService.class,
-				"http://localhost:8080/hessian/AttachmentService", "hessian", Activator.getDefault().getContext());
+		regAttachmentService = Register.remoteProxy(IAttachmentService.class).usingUrl(
+				"http://localhost:8080/hessian/AttachmentService").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
 		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
 		BundleContext context = Activator.getDefault().getContext();
@@ -66,8 +68,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	 */
 	public void testSendSimpleAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor,
-				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		registry
+				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
@@ -78,8 +80,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	public void testSendLargeAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor,
-				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		registry
+				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = generateLargeAttachment(15000000);
 		int i = attachService.sendAttachmentAndReturnSize(attachment);
@@ -90,8 +92,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	public void testReceiveSimpleAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor,
-				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		registry
+				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = attachService.returnAttachmentForSize(15000);
 		int i = getSize(attachment);
@@ -102,8 +104,8 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 	public void testReceiveLargeAttachmentProgress() throws Exception {
 		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry.addProgressMonitor(attachService, monitor,
-				IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		registry
+				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
 		Attachment attachment = attachService.returnAttachmentForSize(15000000);
 		int i = getSize(attachment);

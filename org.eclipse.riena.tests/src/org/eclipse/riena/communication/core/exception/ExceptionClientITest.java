@@ -12,16 +12,17 @@ package org.eclipse.riena.communication.core.exception;
 
 import java.io.IOException;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.exception.Failure;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -38,8 +39,9 @@ public class ExceptionClientITest extends RienaTestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		regExceptionService = new RemoteServiceFactory().createAndRegisterProxy(IExceptionService.class,
-				"http://localhost:8080/hessian/ExceptionService", "hessian", Activator.getDefault().getContext());
+		regExceptionService = Register.remoteProxy(IExceptionService.class).usingUrl(
+				"http://localhost:8080/hessian/ExceptionService").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
 		exceptionService = (IExceptionService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IExceptionService.class.getName()));
 	}

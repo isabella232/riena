@@ -11,8 +11,9 @@
 package org.eclipse.riena.internal.communication.sample.pingpong.client.config;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.communication.sample.pingpong.common.IPingPong;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -42,13 +43,9 @@ public class Activator implements BundleActivator {
 	 * this as "remote" OSGi Service
 	 */
 	public void start(BundleContext context) throws Exception {
-		// register hessian proxy for nyote remote service
-		RemoteServiceFactory rsf = new RemoteServiceFactory();
-		Class<?> serviceInterface = IPingPong.class;
-		String url = "http://${riena.hostname}/hessian/PingPongWS"; //$NON-NLS-1$
-		String protocol = "hessian"; //$NON-NLS-1$
-
-		pingPongReg = rsf.createAndRegisterProxy(serviceInterface, url, protocol, context);
+		// register hessian proxy for riena remote service
+		pingPongReg = Register.remoteProxy(IPingPong.class).usingUrl("http://${riena.hostname}/hessian/PingPongWS")
+				.withProtocol("hessian").andStart(context);
 	}
 
 	/**

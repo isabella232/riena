@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.sample.app.client;
 
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
+
 import org.osgi.framework.BundleContext;
 
 /**
@@ -27,9 +27,6 @@ public class Activator extends AbstractRienaUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-
-	private IRemoteServiceRegistration helloWorldServiceReg;
-	private IRemoteServiceRegistration customerSearchService;
 
 	/**
 	 * The constructor
@@ -45,11 +42,12 @@ public class Activator extends AbstractRienaUIPlugin {
 		plugin = this;
 
 		// register hessian proxy for riena remote service
-		helloWorldServiceReg = new RemoteServiceFactory().createAndRegisterProxy(IHelloWorldService.class,
-				"http://localhost:8080/hessian/HelloWorldServiceWS", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		Register
+				.remoteProxy(IHelloWorldService.class)
+				.usingUrl("http://localhost:8080/hessian/HelloWorldServiceWS").withProtocol("hessian").andStart(context); //$NON-NLS-1$ //$NON-NLS-2$
 
-		customerSearchService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		Register.remoteProxy(ICustomerSearch.class)
+				.usingUrl("http://localhost:8080/hessian/CustomerSearchWS").withProtocol("hessian").andStart(context); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -58,15 +56,6 @@ public class Activator extends AbstractRienaUIPlugin {
 		super.stop(context);
 		plugin = null;
 
-		if (helloWorldServiceReg != null) {
-			helloWorldServiceReg.unregister();
-			helloWorldServiceReg = null;
-		}
-
-		if (customerSearchService != null) {
-			customerSearchService.unregister();
-			customerSearchService = null;
-		}
 	}
 
 	/**

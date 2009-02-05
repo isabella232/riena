@@ -21,7 +21,7 @@ import java.security.SecureRandom;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
@@ -49,8 +49,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void setUp() throws Exception {
 		super.setUp();
-		regAttachmentService = new RemoteServiceFactory().createAndRegisterProxy(IAttachmentService.class,
-				"http://localhost:8080/hessian/AttachmentService", "hessian", Activator.getDefault().getContext());
+		regAttachmentService = Register.remoteProxy(IAttachmentService.class).usingUrl(
+				"http://localhost:8080/hessian/AttachmentService").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
 		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
 				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
 	}

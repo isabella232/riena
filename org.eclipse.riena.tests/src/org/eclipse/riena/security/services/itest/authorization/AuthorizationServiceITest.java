@@ -13,10 +13,8 @@ package org.eclipse.riena.security.services.itest.authorization;
 import java.net.URL;
 import java.security.AccessControlException;
 
-import org.eclipse.equinox.security.auth.ILoginContext;
-import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.model.Customer;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
@@ -26,6 +24,9 @@ import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.session.ISessionHolderService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
+
+import org.eclipse.equinox.security.auth.ILoginContext;
+import org.eclipse.equinox.security.auth.LoginContextFactory;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -46,12 +47,15 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
-		authenticationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthenticationService.class,
-				"http://localhost:8080/hessian/AuthenticationService", "hessian", Activator.getDefault().getContext());
-		authorizationService = new RemoteServiceFactory().createAndRegisterProxy(IAuthorizationService.class,
-				"http://localhost:8080/hessian/AuthorizationService", "hessian", Activator.getDefault().getContext());
-		customerService = new RemoteServiceFactory().createAndRegisterProxy(ICustomerSearch.class,
-				"http://localhost:8080/hessian/CustomerSearchWS", "hessian", Activator.getDefault().getContext());
+		authenticationService = Register.remoteProxy(IAuthenticationService.class).usingUrl(
+				"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
+		authorizationService = Register.remoteProxy(IAuthorizationService.class).usingUrl(
+				"http://localhost:8080/hessian/AuthorizationService").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
+		customerService = Register.remoteProxy(ICustomerSearch.class).usingUrl(
+				"http://localhost:8080/hessian/CustomerSearchWS").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
 	}
 
 	@Override

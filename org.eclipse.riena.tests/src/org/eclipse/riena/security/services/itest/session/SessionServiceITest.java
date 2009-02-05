@@ -12,13 +12,15 @@ package org.eclipse.riena.security.services.itest.session;
 
 import java.security.Principal;
 
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.eclipse.riena.security.common.session.Session;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
+
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -37,6 +39,7 @@ public class SessionServiceITest extends RienaTestCase {
 	private final static int THREAD_5 = 5;
 	private final static int THREAD_20 = 20;
 	private final static int THREAD_100 = 100;
+	private IRemoteServiceRegistration sessionService;
 
 	/*
 	 * @see TestCase#setUp()
@@ -48,8 +51,9 @@ public class SessionServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
-		new RemoteServiceFactory().createAndRegisterProxy(ISessionService.class,
-				"http://localhost:8080/hessian/SessionService", "hessian", Activator.getDefault().getContext());
+		sessionService = Register.remoteProxy(ISessionService.class).usingUrl(
+				"http://localhost:8080/hessian/SessionService").withProtocol("hessian").andStart(
+				Activator.getDefault().getContext());
 	}
 
 	/*
@@ -57,6 +61,7 @@ public class SessionServiceITest extends RienaTestCase {
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		sessionService.unregister();
 	}
 
 	/**

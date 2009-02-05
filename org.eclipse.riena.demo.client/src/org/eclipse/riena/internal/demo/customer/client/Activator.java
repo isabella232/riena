@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.demo.customer.client;
 
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.riena.communication.core.factory.RemoteServiceFactory;
+import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.demo.customer.common.ICustomerDemoService;
+
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -42,8 +43,8 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		new RemoteServiceFactory().createAndRegisterProxy(ICustomerDemoService.class, "http://localhost:8080/hessian" //$NON-NLS-1$
-				+ ICustomerDemoService.WS_ID, "hessian", context); //$NON-NLS-1$
+		Register.remoteProxy(ICustomerDemoService.class).usingUrl("http://localhost:8080/hessian" //$NON-NLS-1$
+				+ ICustomerDemoService.WS_ID).withProtocol("hessian").andStart(context); //$NON-NLS-1$
 	}
 
 	/*
