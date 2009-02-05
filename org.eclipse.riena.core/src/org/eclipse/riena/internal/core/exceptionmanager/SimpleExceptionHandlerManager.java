@@ -16,14 +16,14 @@ import java.util.List;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogService;
 
 /**
  * 
  */
-@WireWrap(SimpleExceptionHandlerManagerWireWrap.class)
+@WireWith(SimpleExceptionHandlerManagerWiring.class)
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	private List<ExceptionHandlerEntry> handlers;

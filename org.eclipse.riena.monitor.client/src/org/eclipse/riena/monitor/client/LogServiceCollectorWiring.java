@@ -8,20 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.exceptionmanager;
+package org.eclipse.riena.monitor.client;
 
-import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
+import org.eclipse.riena.core.wire.AbstractWiring;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@code ExceptionHandlerManagerAccessor}.
+ * Wire the {@code LogServiceCollector}.
  */
-public class ExceptionHandlerManagerAccessorWireWrap implements IWireWrap {
+public class LogServiceCollectorWiring extends AbstractWiring {
 
 	public void wire(Object bean, BundleContext context) {
-		Inject.service(IExceptionHandlerManager.class).useRanking().into(bean).andStart(context);
+		Inject.service(ExtendedLogReaderService.class).useRanking().into(bean).andStart(context);
 	}
 
 }

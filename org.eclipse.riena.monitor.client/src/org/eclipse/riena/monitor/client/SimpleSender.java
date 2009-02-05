@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.eclipse.riena.monitor.common.IReceiver;
@@ -53,7 +53,7 @@ import org.eclipse.riena.monitor.common.IReceiver;
  * &lt;/extension&gt;
  * </pre>
  */
-@WireWrap(SimpleSenderWireWrap.class)
+@WireWith(SimpleSenderWiring.class)
 public class SimpleSender implements ISender, IExecutableExtension {
 
 	private IStore store;

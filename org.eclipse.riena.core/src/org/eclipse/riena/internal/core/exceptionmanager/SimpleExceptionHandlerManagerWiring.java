@@ -8,26 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.client.customer.controllers;
+package org.eclipse.riena.internal.core.exceptionmanager;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
-import org.eclipse.riena.demo.customer.common.ICustomerDemoService;
+import org.eclipse.riena.core.wire.AbstractWiring;
 import org.osgi.framework.BundleContext;
 
 /**
- *
+ * Wire the {@code SimpleExceptionHandlerManager}.
  */
-public class CustomerSearchControllerWireWrap implements IWireWrap {
+public class SimpleExceptionHandlerManagerWiring extends AbstractWiring {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.core.wire.IWireWrap#wire(java.lang.Object,
-	 * org.osgi.framework.BundleContext)
-	 */
 	public void wire(Object bean, BundleContext context) {
-		Inject.service(ICustomerDemoService.class).into(bean).andStart(context);
+		Inject.extension(IExceptionHandlerDefinition.EXTENSION_POINT).into(bean).andStart(context);
 	}
 
 }

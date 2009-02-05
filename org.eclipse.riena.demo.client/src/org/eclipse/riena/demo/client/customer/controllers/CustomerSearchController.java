@@ -13,6 +13,7 @@ package org.eclipse.riena.demo.client.customer.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.demo.client.customer.model.SearchResultContainer;
 import org.eclipse.riena.demo.customer.common.CustomerRecordOverview;
 import org.eclipse.riena.demo.customer.common.CustomerSearchBean;
@@ -31,6 +32,7 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 /**
  * customer search view controller
  */
+@WireWith(CustomerSearchControllerWiring.class)
 public class CustomerSearchController extends SubModuleController {
 	private CustomerSearchBean customerSearchBean = new CustomerSearchBean();
 	private CustomerSearchResult ergebnis;

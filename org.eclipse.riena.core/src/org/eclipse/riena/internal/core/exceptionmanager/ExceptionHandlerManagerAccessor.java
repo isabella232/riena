@@ -12,13 +12,13 @@ package org.eclipse.riena.internal.core.exceptionmanager;
 
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
  * returns the current ExceptionHandlerManger
  */
-@WireWrap(ExceptionHandlerManagerAccessorWireWrap.class)
+@WireWith(ExceptionHandlerManagerAccessorWiring.class)
 public final class ExceptionHandlerManagerAccessor extends ServiceAccessor<IExceptionHandlerManager> {
 
 	private final static ExceptionHandlerManagerAccessor EXCEPTION_HANDLER_MANAGER_ACCESSOR = new ExceptionHandlerManagerAccessor();

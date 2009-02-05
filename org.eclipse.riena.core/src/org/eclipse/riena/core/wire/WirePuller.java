@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.internal.core.ignore.Nop;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -22,9 +23,12 @@ import org.osgi.framework.BundleContext;
 public class WirePuller {
 
 	private Object bean;
+	private BundleContext context;
+	private List<IWiring> wirings;
+	private State state = State.PENDING;
 
 	// Only for unit testing of classes using accessors
-	private static Map<Class<?>, Class<? extends IWireWrap>> wireWrapMocks;
+	private static Map<Class<?>, Class<? extends IWiring>> wireWrapMocks;
 
 	// This is the post-fix for the wire wrap class when created by convention 
 	private static final String WIRE_WRAP_POSTFIX = "WireWrap"; //$NON-NLS-1$
@@ -43,31 +47,63 @@ public class WirePuller {
 	 * @param context
 	 * @return the bean
 	 */
-	public Object andStart(BundleContext context) {
-		wire(bean, bean.getClass(), context);
-		return bean;
+	public WirePuller andStart(BundleContext context) {
+		Assert.isLegal(context != null, "context must be given."); //$NON-NLS-1$
+		Assert.isLegal(state == State.PENDING, "state must be pending."); //$NON-NLS-1$
+		wire(bean.getClass(), context);
+		state = State.STARTED;
+		this.context = context;
+		return this;
 	}
 
-	private void wire(Object bean, Class<?> beanClass, BundleContext context) {
-		IWireWrap wireWrap;
-		Class<? extends IWireWrap> wireWrapClass;
+	/**
+	 * Stop the wiring.
+	 */
+	public void stop() {
+		if (state != State.STARTED) {
+			return;
+		}
+		if (wirings != null) {
+			for (IWiring wiring : wirings) {
+				wiring.unwire(bean, context);
+			}
+		}
+		state = State.STOPPED;
+	}
 
+	private void wire(Class<?> beanClass, BundleContext context) {
 		if (beanClass == null || beanClass == Object.class) {
 			return;
 		}
-		wireWrapClass = getWireWrapClass(beanClass, context);
-		wireWrap = getWireWrap(wireWrapClass);
-		wire(bean, beanClass.getSuperclass(), context);
-		if (wireWrap != null) {
-			wireWrap.wire(bean, context);
+		Class<? extends IWiring> wireWrapClass = getWireWrapClass(beanClass, context);
+		IWiring wiring = getWireWrap(wireWrapClass);
+		add(wiring);
+		wire(beanClass.getSuperclass(), context);
+		if (wiring != null) {
+			wiring.wire(bean, context);
 		}
+	}
+
+	/**
+	 * Collect the wirings.
+	 * 
+	 * @param wiring
+	 */
+	private void add(IWiring wiring) {
+		if (wiring == null) {
+			return;
+		}
+		if (wirings == null) {
+			wirings = new ArrayList<IWiring>(2);
+		}
+		wirings.add(wiring);
 	}
 
 	/**
 	 * @param context
 	 * @return
 	 */
-	private IWireWrap getWireWrap(Class<? extends IWireWrap> wireWrapClass) {
+	private IWiring getWireWrap(Class<? extends IWiring> wireWrapClass) {
 		if (wireWrapClass == null) {
 			return null;
 		}
@@ -84,47 +120,32 @@ public class WirePuller {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private Class<? extends IWireWrap> getWireWrapClass(Class<?> beanClass, BundleContext context) {
+	private Class<? extends IWiring> getWireWrapClass(Class<?> beanClass, BundleContext context) {
 		// If mocks are defined, we use them instead of the regular mechanism.
 		if (wireWrapMocks != null) {
 			return wireWrapMocks.get(beanClass);
 		}
-		WireWrap wireWrapAnnotation = beanClass.getAnnotation(WireWrap.class);
-		// Does the bean have a wire-wrap annotation with a special wire-wrap class? Yes, use this class for wiring.
-		if (wireWrapAnnotation != null && wireWrapAnnotation.value() != WireWrap.UseDefaultWiring.class) {
+		WireWith wireWrapAnnotation = beanClass.getAnnotation(WireWith.class);
+		// Does the bean have a wiring annotation? Yes, use this class for wiring.
+		if (wireWrapAnnotation != null) {
 			return wireWrapAnnotation.value();
-		}
-		// Otherwise try to find the wire-wrap class by convention
-		String wireWrapClassName = beanClass.getName() + WIRE_WRAP_POSTFIX;
-		Class<?> assumedClass = null;
-		try {
-			assumedClass = Class.forName(wireWrapClassName, true, bean.getClass().getClassLoader());
-			Assert.isLegal(IWireWrap.class.isAssignableFrom(assumedClass), "Found wire wrap " + assumedClass //$NON-NLS-1$
-					+ " is not of type " + IWireWrap.class); //$NON-NLS-1$
-			return (Class<? extends IWireWrap>) assumedClass;
-		} catch (ClassNotFoundException e) {
-			Nop.reason("Fall through, attempt to load class with bundle class loader"); //$NON-NLS-1$
-		}
-		try {
-			assumedClass = context.getBundle().loadClass(wireWrapClassName);
-			Assert.isLegal(IWireWrap.class.isAssignableFrom(assumedClass), "Found wire wrap " + assumedClass //$NON-NLS-1$
-					+ " is not of type " + IWireWrap.class); //$NON-NLS-1$
-			return (Class<? extends IWireWrap>) assumedClass;
-		} catch (ClassNotFoundException e) {
-			Nop.reason("Fall through, maybe this class has no convention wire wrap class, because of generic usage."); //$NON-NLS-1$
 		}
 		return null;
 	}
 
 	/**
 	 * For testing purposes it is sometimes necessary to change the default
-	 * behavior for retrieving the wire-wrap classes. With this method it is
+	 * behavior for retrieving the wiring classes. With this method it is
 	 * possible to define a map that tells the {@codeWirePuller} how to find the
-	 * wire-wrap classes.
+	 * wiring classes.
 	 * 
 	 * @param wireWrapMocks
 	 */
-	public static void injectWireMocks(Map<Class<?>, Class<? extends IWireWrap>> wireWrapMocks) {
+	public static void injectWireMocks(Map<Class<?>, Class<? extends IWiring>> wireWrapMocks) {
 		WirePuller.wireWrapMocks = wireWrapMocks;
+	}
+
+	private enum State {
+		STARTED, STOPPED, PENDING
 	}
 }

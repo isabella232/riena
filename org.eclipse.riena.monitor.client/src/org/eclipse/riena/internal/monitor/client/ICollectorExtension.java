@@ -20,6 +20,8 @@ import org.eclipse.riena.monitor.client.ICollector;
 @ExtensionInterface
 public interface ICollectorExtension {
 
+	String ID = "org.eclipse.riena.monitor.collectors"; //$NON-NLS-1$
+
 	String getCategory();
 
 	@MapName("class")

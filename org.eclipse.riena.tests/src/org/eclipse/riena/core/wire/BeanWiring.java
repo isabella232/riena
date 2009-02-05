@@ -10,25 +10,23 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import org.eclipse.riena.core.injector.Inject;
+import org.osgi.framework.BundleContext;
+
 /**
  *
  */
-public class TestWbC implements ITest {
+public class BeanWiring extends AbstractWiring {
 
-	private Schtonk schtonk;
-
-	public void bind(Schtonk schtonk) {
-		this.schtonk = schtonk;
+	@Override
+	public void wire(Object bean, BundleContext context) {
+		Inject.service(Schtonk.class.getName()).into(bean).andStart(context);
+		SequenceUtil.add(BeanWiring.class);
 	}
 
-	public void unbind(Schtonk schtonk) {
-		this.schtonk = schtonk;
+	@Override
+	public void unwire(Object bean, BundleContext context) {
+		SequenceUtil.add(BeanWiring.class);
 	}
 
-	/**
-	 * @return
-	 */
-	public boolean hasSchtonk() {
-		return schtonk != null;
-	}
 }

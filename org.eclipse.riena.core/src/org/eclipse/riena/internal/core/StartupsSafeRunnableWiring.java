@@ -8,32 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.wire;
+package org.eclipse.riena.internal.core;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.AbstractWiring;
+import org.osgi.framework.BundleContext;
 
 /**
- *
+ * Wire the {@code StartupsSafeRunnable}.
  */
-@WireWrap(TestWireWrap.class)
-public class Test implements ITest {
+public class StartupsSafeRunnableWiring extends AbstractWiring {
 
-	private Schtonk schtonk;
-
-	public void bind(Schtonk schtonk) {
-		this.schtonk = schtonk;
+	public void wire(Object bean, BundleContext context) {
+		Inject.extension("org.eclipse.riena.core.startups").into(bean).andStart(context); //$NON-NLS-1$
 	}
 
-	public void unbind(Schtonk schtonk) {
-		this.schtonk = schtonk;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasSchtonk() {
-		return schtonk != null;
-	}
-
-	public boolean isSchtonkSchtonk() {
-		return schtonk instanceof SchtonkSchtonk;
-	}
 }

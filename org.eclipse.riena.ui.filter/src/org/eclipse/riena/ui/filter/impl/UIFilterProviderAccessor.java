@@ -11,14 +11,14 @@
 package org.eclipse.riena.ui.filter.impl;
 
 import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.ui.filter.Activator;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
 
 /**
  *
  */
-@WireWrap(UIFilterProviderAccessorWireWrap.class)
+@WireWith(UIFilterProviderAccessorWiring.class)
 public final class UIFilterProviderAccessor extends ServiceAccessor<UIFilterProvider> {
 
 	private final static UIFilterProviderAccessor FILTER_PROVIDER_ACCESSOR = new UIFilterProviderAccessor();

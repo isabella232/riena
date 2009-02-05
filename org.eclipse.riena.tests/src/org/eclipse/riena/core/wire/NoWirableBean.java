@@ -8,20 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.sample.app.client.helloworld.controllers;
-
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
-import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
-import org.osgi.framework.BundleContext;
+package org.eclipse.riena.core.wire;
 
 /**
  *
  */
-public class CustomerSearchSubModuleControllerWireWrap implements IWireWrap {
-
-	public void wire(Object bean, BundleContext context) {
-		Inject.service(ICustomerSearch.class.getName()).into(bean).andStart(context);
-	}
+public class NoWirableBean extends Bean {
 
 }

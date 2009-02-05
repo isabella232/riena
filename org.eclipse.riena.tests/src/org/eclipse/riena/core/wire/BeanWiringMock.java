@@ -13,15 +13,12 @@ package org.eclipse.riena.core.wire;
 import org.osgi.framework.BundleContext;
 
 /**
- * Define the wiring needs for a bean.
+ *
  */
-public interface IWireWrap {
+public class BeanWiringMock extends AbstractWiring {
 
-	/**
-	 * Wire the given bean.
-	 * 
-	 * @param bean
-	 * @param context
-	 */
-	void wire(Object bean, BundleContext context);
+	public void wire(Object bean, BundleContext context) {
+		((Bean) bean).bind(new SchtonkSchtonk());
+	}
+
 }

@@ -8,19 +8,22 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.exceptionmanager;
+package org.eclipse.riena.ui.filter.impl;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
+import org.eclipse.riena.core.wire.AbstractWiring;
+import org.eclipse.riena.internal.ui.filter.Activator;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@code SimpleExceptionHandlerManager}.
+ * Wire the {@code UIFilterProvider}
  */
-public class SimpleExceptionHandlerManagerWireWrap implements IWireWrap {
+public class UIFilterProviderWiring extends AbstractWiring {
+
+	private static final String EP_UIFILTER = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
 
 	public void wire(Object bean, BundleContext context) {
-		Inject.extension(IExceptionHandlerDefinition.EXTENSION_POINT).into(bean).andStart(context);
+		Inject.extension(EP_UIFILTER).into(bean).andStart(Activator.getDefault().getContext());
 	}
 
 }

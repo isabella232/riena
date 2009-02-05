@@ -8,20 +8,27 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.monitor.client;
+package org.eclipse.riena.core.wire;
 
-import org.eclipse.equinox.log.ExtendedLogReaderService;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
-import org.osgi.framework.BundleContext;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Wire the {@code LogServiceCollector}.
+ * Marks a class that needs <i>wiring</i>.
  */
-public class LogServiceCollectorWireWrap implements IWireWrap {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Inherited
+public @interface WireWith {
 
-	public void wire(Object bean, BundleContext context) {
-		Inject.service(ExtendedLogReaderService.class).useRanking().into(bean).andStart(context);
-	}
+	/**
+	 * Attach the wiring class.
+	 * 
+	 * @return
+	 */
+	Class<? extends IWiring> value();
 
 }

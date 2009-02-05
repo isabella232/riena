@@ -8,19 +8,19 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core;
+package org.eclipse.riena.security.common;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
+import org.eclipse.riena.core.wire.AbstractWiring;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@code StartupsSafeRunnable}.
+ * Wire the {@code SubjectAccessor}.
  */
-public class StartupsSafeRunnableWireWrap implements IWireWrap {
+public class SubjectAccessorWiring extends AbstractWiring {
 
 	public void wire(Object bean, BundleContext context) {
-		Inject.extension("org.eclipse.riena.core.startups").into(bean).andStart(context); //$NON-NLS-1$
+		Inject.service(ISubjectHolderService.class).useRanking().into(bean).andStart(context);
 	}
 
 }

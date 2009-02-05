@@ -8,20 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter.impl;
+package org.eclipse.riena.demo.client.customer.controllers;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
-import org.eclipse.riena.ui.filter.IUIFilterProvider;
+import org.eclipse.riena.core.wire.AbstractWiring;
+import org.eclipse.riena.demo.customer.common.ICustomerDemoService;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@code UIFilterProviderAccessor}
+ * Wire the {@code CustomerSearchController}.
  */
-public class UIFilterProviderAccessorWireWrap implements IWireWrap {
+public class CustomerSearchControllerWiring extends AbstractWiring {
 
 	public void wire(Object bean, BundleContext context) {
-		Inject.service(IUIFilterProvider.class).useRanking().into(bean).andStart(context);
+		Inject.service(ICustomerDemoService.class).into(bean).andStart(context);
 	}
 
 }

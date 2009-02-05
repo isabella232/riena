@@ -16,7 +16,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.Bundle;
@@ -27,7 +27,7 @@ import org.osgi.service.log.LogService;
 /**
  * Execute the startup actions
  */
-@WireWrap(StartupsSafeRunnableWireWrap.class)
+@WireWith(StartupsSafeRunnableWiring.class)
 public class StartupsSafeRunnable implements ISafeRunnable {
 
 	private IRienaStartupExtension[] startups;

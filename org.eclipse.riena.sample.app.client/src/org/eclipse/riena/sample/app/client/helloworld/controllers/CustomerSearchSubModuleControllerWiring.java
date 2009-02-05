@@ -8,22 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.filter.impl;
+package org.eclipse.riena.sample.app.client.helloworld.controllers;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
-import org.eclipse.riena.internal.ui.filter.Activator;
+import org.eclipse.riena.core.wire.AbstractWiring;
+import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@code UIFilterProvider}
+ *
  */
-public class UIFilterProviderWireWrap implements IWireWrap {
-
-	private static final String EP_UIFILTER = "org.eclipse.riena.filter.uifilter"; //$NON-NLS-1$
+public class CustomerSearchSubModuleControllerWiring extends AbstractWiring {
 
 	public void wire(Object bean, BundleContext context) {
-		Inject.extension(EP_UIFILTER).into(bean).andStart(Activator.getDefault().getContext());
+		Inject.service(ICustomerSearch.class.getName()).into(bean).andStart(context);
 	}
 
 }

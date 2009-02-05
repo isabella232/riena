@@ -20,6 +20,8 @@ import org.eclipse.riena.monitor.client.IStore;
 @ExtensionInterface
 public interface IStoreExtension {
 
+	String ID = "org.eclipse.riena.monitor.store"; //$NON-NLS-1$
+
 	String getName();
 
 	@MapName("class")

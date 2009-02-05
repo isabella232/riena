@@ -20,6 +20,8 @@ import org.eclipse.riena.monitor.client.ISender;
 @ExtensionInterface
 public interface ISenderExtension {
 
+	String ID = "org.eclipse.riena.monitor.sender"; //$NON-NLS-1$
+
 	String getName();
 
 	@MapName("class")

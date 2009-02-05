@@ -54,31 +54,40 @@ public class WireTest extends RienaTestCase {
 	}
 
 	public void testWiringBean() {
-		Test test = new Test();
-		Wire.instance(test).andStart(context);
-		assertTrue(test.hasSchtonk());
+		Bean bean = new Bean();
+		WirePuller puller = Wire.instance(bean).andStart(context);
+		assertTrue(bean.hasSchtonk());
+		puller.stop();
 	}
 
-	public void testWiringDeeply1() {
-		TestTest testTest = new TestTest();
-		Wire.instance(testTest).andStart(context);
-		assertTrue(testTest.hasSchtonk());
-		assertTrue(testTest.hasStunk());
+	@SuppressWarnings("unchecked")
+	public void testWiringDeeplyAndCheckSequenceConstraint() {
+		BeanOnBean beanOnBean = new BeanOnBean();
+		SequenceUtil.init();
+		WirePuller puller = Wire.instance(beanOnBean).andStart(context);
+		SequenceUtil.assertExpected(BeanWiring.class, BeanOnBeanWiring.class);
+		assertTrue(beanOnBean.hasSchtonk());
+		assertTrue(beanOnBean.hasStunk());
+		SequenceUtil.init();
+		puller.stop();
+		SequenceUtil.assertExpected(BeanOnBeanWiring.class, BeanWiring.class);
 	}
 
-	public void testWiringDeeply2() {
-		TestNoTest testNoTest = new TestNoTest();
-		Wire.instance(testNoTest).andStart(context);
-		assertTrue(testNoTest.hasSchtonk());
+	public void testWiringDeeply() {
+		NoWirableBean noWirableBean = new NoWirableBean();
+		WirePuller puller = Wire.instance(noWirableBean).andStart(context);
+		assertTrue(noWirableBean.hasSchtonk());
+		puller.stop();
 	}
 
 	public void testWireMocking() {
-		Map<Class<?>, Class<? extends IWireWrap>> wireWrapMocks = new HashMap<Class<?>, Class<? extends IWireWrap>>();
-		wireWrapMocks.put(Test.class, TestWireWrapMock.class);
+		Map<Class<?>, Class<? extends IWiring>> wireWrapMocks = new HashMap<Class<?>, Class<? extends IWiring>>();
+		wireWrapMocks.put(Bean.class, BeanWiringMock.class);
 		WirePuller.injectWireMocks(wireWrapMocks);
-		Test test = new Test();
-		Wire.instance(test).andStart(context);
-		assertTrue(test.isSchtonkSchtonk());
+		Bean bean = new Bean();
+		WirePuller puller = Wire.instance(bean).andStart(context);
+		assertTrue(bean.isSchtonkSchtonk());
+		puller.stop();
 
 		WirePuller.injectWireMocks(null);
 	}

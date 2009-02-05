@@ -11,14 +11,14 @@
 package org.eclipse.riena.ui.filter.impl;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
+import org.eclipse.riena.core.wire.AbstractWiring;
 import org.eclipse.riena.internal.ui.filter.Activator;
 import org.osgi.framework.BundleContext;
 
 /**
  * Wire the {@code RulesProvider}.
  */
-public class RulesProviderWireWrap implements IWireWrap {
+public class RulesProviderWiring extends AbstractWiring {
 
 	private static final String EP_RULEMAPPER = "org.eclipse.riena.filter.rulemapper"; //$NON-NLS-1$
 

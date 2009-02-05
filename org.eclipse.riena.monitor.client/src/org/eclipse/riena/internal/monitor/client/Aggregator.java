@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.monitor.client.Category;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
 import org.eclipse.riena.monitor.client.ICollector;
@@ -36,7 +36,7 @@ import org.osgi.service.log.LogService;
  * The {@code Aggregator} aggregates all collectibles from the collectors. Each
  * collectible may trigger the transmission of the collectibles.
  */
-@WireWrap(AggregatorWireWrap.class)
+@WireWith(AggregatorWiring.class)
 public class Aggregator implements ICollectingAggregator {
 
 	private IStore store;

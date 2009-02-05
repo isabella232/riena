@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -27,6 +28,7 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
+@WireWith(CustomerSearchSubModuleControllerWiring.class)
 public class CustomerSearchSubModuleController extends SubModuleController {
 
 	private ICustomerSearch service;

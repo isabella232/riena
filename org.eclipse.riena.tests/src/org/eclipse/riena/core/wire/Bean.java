@@ -13,24 +13,27 @@ package org.eclipse.riena.core.wire;
 /**
  *
  */
-@WireWrap(TestTestWireWrap.class)
-public class TestTestWbC extends Test {
+@WireWith(BeanWiring.class)
+public class Bean implements IBean {
 
-	private Stunk stunk;
+	private Schtonk schtonk;
 
-	public void bind(Stunk stunk) {
-		this.stunk = stunk;
+	public void bind(Schtonk schtonk) {
+		this.schtonk = schtonk;
 	}
 
-	public void unbind(Stunk stunk) {
-		this.stunk = stunk;
+	public void unbind(Schtonk schtonk) {
+		this.schtonk = schtonk;
 	}
 
 	/**
 	 * @return
 	 */
-	public boolean hasStunk() {
-		return stunk != null;
+	public boolean hasSchtonk() {
+		return schtonk != null;
 	}
 
+	public boolean isSchtonkSchtonk() {
+		return schtonk instanceof SchtonkSchtonk;
+	}
 }

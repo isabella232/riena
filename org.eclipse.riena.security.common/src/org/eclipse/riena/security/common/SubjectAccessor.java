@@ -13,14 +13,14 @@ package org.eclipse.riena.security.common;
 import javax.security.auth.Subject;
 
 import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.security.common.Activator;
 
 /**
  * A convenient class to access the current Subject from the
  * SubjectHolderService
  */
-@WireWrap(SubjectAccessorWireWrap.class)
+@WireWith(SubjectAccessorWiring.class)
 public final class SubjectAccessor extends ServiceAccessor<ISubjectHolderService> {
 
 	private final static SubjectAccessor SUBJECT_ACCESSOR = new SubjectAccessor();

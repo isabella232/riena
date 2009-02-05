@@ -10,16 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.osgi.framework.BundleContext;
-
 /**
  *
  */
-public class TestWbCWireWrap implements IWireWrap {
-
-	public void wire(Object bean, BundleContext context) {
-		Inject.service(Schtonk.class.getName()).into(bean).andStart(context);
-	}
-
+public interface IBean {
+	boolean hasSchtonk();
 }

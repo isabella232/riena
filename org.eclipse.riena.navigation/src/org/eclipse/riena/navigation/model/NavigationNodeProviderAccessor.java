@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.util.ServiceAccessor;
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
 /**
  *
  */
-@WireWrap(NavigationNodeProviderAccessorWireWrap.class)
+@WireWith(NavigationNodeProviderAccessorWiring.class)
 public final class NavigationNodeProviderAccessor extends ServiceAccessor<INavigationNodeProvider> {
 
 	private final static NavigationNodeProviderAccessor NNPA = new NavigationNodeProviderAccessor();

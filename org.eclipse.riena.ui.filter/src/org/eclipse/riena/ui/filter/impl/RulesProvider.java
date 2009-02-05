@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.filter.impl;
 
-import org.eclipse.riena.core.wire.WireWrap;
+import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerNavigation;
 import org.eclipse.riena.ui.filter.IUIFilterRuleMarkerRidget;
 import org.eclipse.riena.ui.filter.IUIFilterRuleValidatorRidget;
@@ -22,7 +22,7 @@ import org.eclipse.riena.ui.filter.extension.IRuleValidatorRidgetMapper;
 /**
  * This class provides the correct rule for a given marker type.
  */
-@WireWrap(RulesProviderWireWrap.class)
+@WireWith(RulesProviderWiring.class)
 public class RulesProvider {
 
 	private IRuleMapperExtension[] data;

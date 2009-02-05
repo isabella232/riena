@@ -8,29 +8,20 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.wire;
+package org.eclipse.riena.monitor.client;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.AbstractWiring;
+import org.eclipse.riena.monitor.common.IReceiver;
+import org.osgi.framework.BundleContext;
 
 /**
- *
+ * Wire the {@code SimpleSender}.
  */
-@WireWrap(TestTestWireWrap.class)
-public class TestTest extends Test {
+public class SimpleSenderWiring extends AbstractWiring {
 
-	private Stunk stunk;
-
-	public void bind(Stunk stunk) {
-		this.stunk = stunk;
-	}
-
-	public void unbind(Stunk stunk) {
-		this.stunk = stunk;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasStunk() {
-		return stunk != null;
+	public void wire(Object bean, BundleContext context) {
+		Inject.service(IReceiver.class).useRanking().into(bean).andStart(context);
 	}
 
 }

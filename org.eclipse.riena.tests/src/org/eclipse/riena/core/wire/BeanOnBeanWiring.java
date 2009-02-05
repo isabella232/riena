@@ -8,20 +8,25 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.model;
+package org.eclipse.riena.core.wire;
 
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.wire.IWireWrap;
-import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@codeNavigationNodeProviderAccessor}.
+ *
  */
-public class NavigationNodeProviderAccessorWireWrap implements IWireWrap {
+public class BeanOnBeanWiring extends AbstractWiring {
 
+	@Override
 	public void wire(Object bean, BundleContext context) {
-		Inject.service(INavigationNodeProvider.class).useRanking().into(bean).andStart(context);
+		Inject.service(Stunk.class.getName()).into(bean).andStart(context);
+		SequenceUtil.add(BeanOnBeanWiring.class);
+	}
+
+	@Override
+	public void unwire(Object bean, BundleContext context) {
+		SequenceUtil.add(BeanOnBeanWiring.class);
 	}
 
 }

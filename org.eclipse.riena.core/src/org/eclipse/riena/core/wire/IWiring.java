@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
-import org.eclipse.riena.core.injector.Inject;
 import org.osgi.framework.BundleContext;
 
 /**
- *
+ * Define the wiring needs for a bean.
  */
-public class TestTestWireWrap implements IWireWrap {
+public interface IWiring {
 
-	public void wire(Object bean, BundleContext context) {
-		Inject.service(Stunk.class.getName()).into(bean).andStart(context);
-	}
+	/**
+	 * Wire the given bean.
+	 * 
+	 * @param bean
+	 * @param context
+	 */
+	void wire(Object bean, BundleContext context);
 
+	void unwire(Object bean, BundleContext context);
 }
