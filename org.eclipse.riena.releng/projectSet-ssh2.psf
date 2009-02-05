@@ -58,5 +58,6 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.demo.common,org.eclipse.riena.demo.common"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.demo.server,org.eclipse.riena.demo.server"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature.sdk,org.eclipse.riena.build.feature.sdk"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.updatesite,org.eclipse.riena.build.updatesite"/>
 </provider>
 </psf>
