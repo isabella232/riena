@@ -17,6 +17,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.CompositeTableRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DateTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.DecimalTextRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
@@ -51,6 +52,7 @@ import org.eclipse.riena.ui.swt.StatuslineNumber;
 import org.eclipse.riena.ui.swt.StatuslineUIProcess;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Label;
@@ -106,6 +108,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		addMapping(StatuslineUIProcess.class, StatuslineUIProcessRidget.class);
 		addMapping(EmbeddedTitleBar.class, EmbeddedTitleBarRidget.class);
 		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
+		addMapping(CompositeTable.class, CompositeTableRidget.class);
 	}
 
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
