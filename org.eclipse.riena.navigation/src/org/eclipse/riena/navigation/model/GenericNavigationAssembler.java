@@ -17,6 +17,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.navigation.IAssemblerProvider;
 import org.eclipse.riena.navigation.IForEachExtension;
@@ -36,11 +40,6 @@ import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 
-import org.apache.commons.beanutils.PropertyUtilsBean;
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-
 /**
  * The GenericNavigationAssembler can handle the hierarchical definition of
  * navigation assemblies as defined by the extension point
@@ -49,7 +48,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
  * variables:
  * <ul>
  * <li>riena.navigation.nodeid
- * <li>riena.navigation.paramenter
+ * <li>riena.navigation.parameter
  * </ul>
  * These variables reference the NavigationNodeId and
  * NavigationArgument.getParameter() objects, resp. The user is required to
@@ -447,10 +446,10 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 	}
 
 	protected NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template,
-			INodeExtension nodeExtendion, NavigationArgument navigationArgument) {
+			INodeExtension nodeExtension, NavigationArgument navigationArgument) {
 
-		String typeId = nodeExtendion.getTypeId();
-		String instanceId = nodeExtendion.getInstanceId() == null ? template.getInstanceId() : nodeExtendion
+		String typeId = nodeExtension.getTypeId();
+		String instanceId = nodeExtension.getInstanceId() == null ? template.getInstanceId() : nodeExtension
 				.getInstanceId();
 
 		return new NavigationNodeId(typeId, instanceId);
