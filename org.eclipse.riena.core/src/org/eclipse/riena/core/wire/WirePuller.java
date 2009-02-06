@@ -28,10 +28,7 @@ public class WirePuller {
 	private State state = State.PENDING;
 
 	// Only for unit testing of classes using accessors
-	private static Map<Class<?>, Class<? extends IWiring>> wireWrapMocks;
-
-	// This is the post-fix for the wire wrap class when created by convention 
-	private static final String WIRE_WRAP_POSTFIX = "WireWrap"; //$NON-NLS-1$
+	private static Map<Class<?>, Class<? extends IWiring>> wiringMocks;
 
 	/**
 	 * @param bean
@@ -75,8 +72,8 @@ public class WirePuller {
 		if (beanClass == null || beanClass == Object.class) {
 			return;
 		}
-		Class<? extends IWiring> wireWrapClass = getWireWrapClass(beanClass, context);
-		IWiring wiring = getWireWrap(wireWrapClass);
+		Class<? extends IWiring> wiringClass = getWiringClass(beanClass, context);
+		IWiring wiring = getWiring(wiringClass);
 		add(wiring);
 		wire(beanClass.getSuperclass(), context);
 		if (wiring != null) {
@@ -103,32 +100,31 @@ public class WirePuller {
 	 * @param context
 	 * @return
 	 */
-	private IWiring getWireWrap(Class<? extends IWiring> wireWrapClass) {
-		if (wireWrapClass == null) {
+	private IWiring getWiring(Class<? extends IWiring> wiringClass) {
+		if (wiringClass == null) {
 			return null;
 		}
 		try {
-			return wireWrapClass.newInstance();
+			return wiringClass.newInstance();
 		} catch (InstantiationException e) {
-			throw new IllegalStateException("Could not create instance of wire wrap " + wireWrapClass, e); //$NON-NLS-1$
+			throw new IllegalStateException("Could not create instance of wiring " + wiringClass, e); //$NON-NLS-1$
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Could not create instance of wire wrap " + wireWrapClass, e); //$NON-NLS-1$
+			throw new IllegalStateException("Could not create instance of wiring " + wiringClass, e); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private Class<? extends IWiring> getWireWrapClass(Class<?> beanClass, BundleContext context) {
+	private Class<? extends IWiring> getWiringClass(Class<?> beanClass, BundleContext context) {
 		// If mocks are defined, we use them instead of the regular mechanism.
-		if (wireWrapMocks != null) {
-			return wireWrapMocks.get(beanClass);
+		if (wiringMocks != null) {
+			return wiringMocks.get(beanClass);
 		}
-		WireWith wireWrapAnnotation = beanClass.getAnnotation(WireWith.class);
+		WireWith wiringAnnotation = beanClass.getAnnotation(WireWith.class);
 		// Does the bean have a wiring annotation? Yes, use this class for wiring.
-		if (wireWrapAnnotation != null) {
-			return wireWrapAnnotation.value();
+		if (wiringAnnotation != null) {
+			return wiringAnnotation.value();
 		}
 		return null;
 	}
@@ -139,10 +135,10 @@ public class WirePuller {
 	 * possible to define a map that tells the {@codeWirePuller} how to find the
 	 * wiring classes.
 	 * 
-	 * @param wireWrapMocks
+	 * @param wiringMocks
 	 */
-	public static void injectWireMocks(Map<Class<?>, Class<? extends IWiring>> wireWrapMocks) {
-		WirePuller.wireWrapMocks = wireWrapMocks;
+	public static void injectWiringMocks(Map<Class<?>, Class<? extends IWiring>> wiringMocks) {
+		WirePuller.wiringMocks = wiringMocks;
 	}
 
 	private enum State {
