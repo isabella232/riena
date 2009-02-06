@@ -92,7 +92,7 @@ public interface INavigationAssemblyExtension {
 
 	/**
 	 * @return The id of the assembly to be included. If this value is not null
-	 *         all other attributse or elements must be null.
+	 *         all other attributes or elements must be null.
 	 */
 	String getRef();
 }
