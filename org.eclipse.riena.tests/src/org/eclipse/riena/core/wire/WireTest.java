@@ -81,14 +81,14 @@ public class WireTest extends RienaTestCase {
 	}
 
 	public void testWireMocking() {
-		Map<Class<?>, Class<? extends IWiring>> wireWrapMocks = new HashMap<Class<?>, Class<? extends IWiring>>();
-		wireWrapMocks.put(Bean.class, BeanWiringMock.class);
-		WirePuller.injectWireMocks(wireWrapMocks);
+		Map<Class<?>, Class<? extends IWiring>> wiringMocks = new HashMap<Class<?>, Class<? extends IWiring>>();
+		wiringMocks.put(Bean.class, BeanWiringMock.class);
+		WirePuller.injectWiringMocks(wiringMocks);
 		Bean bean = new Bean();
 		WirePuller puller = Wire.instance(bean).andStart(context);
 		assertTrue(bean.isSchtonkSchtonk());
 		puller.stop();
 
-		WirePuller.injectWireMocks(null);
+		WirePuller.injectWiringMocks(null);
 	}
 }
