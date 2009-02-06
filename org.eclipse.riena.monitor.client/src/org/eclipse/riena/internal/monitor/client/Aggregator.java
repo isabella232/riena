@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.core.wire.WirePuller;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.monitor.client.Category;
 import org.eclipse.riena.monitor.client.ICollectingAggregator;
@@ -40,8 +41,11 @@ import org.osgi.service.log.LogService;
 public class Aggregator implements ICollectingAggregator {
 
 	private IStore store;
+	private WirePuller storeWiring;
 	private ISender sender;
+	private WirePuller senderWiring;
 	private ICollector[] collectors;
+	private List<WirePuller> collectorWirings;
 	private boolean started;
 	private final BlockingQueue<Runnable> workQueue;
 	private final Map<String, Category> categories = new HashMap<String, Category>();
@@ -90,19 +94,16 @@ public class Aggregator implements ICollectingAggregator {
 		if (!started) {
 			return;
 		}
-		for (ICollector collector : Iter.able(collectors)) {
-			collector.stop();
-		}
-		sender.stop();
-		store.close();
+		stopCollectors();
+		stopSender();
+		stopStore();
 		started = false;
 	}
 
 	public synchronized void update(final ICollectorExtension[] collectorExtensions) {
-		for (ICollector collector : Iter.able(this.collectors)) {
-			collector.stop();
-		}
+		stopCollectors();
 		List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
+		collectorWirings = new ArrayList<WirePuller>(collectorExtensions.length);
 		for (ICollectorExtension extension : collectorExtensions) {
 			Assert.isLegal(!categories.containsKey(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
 					+ " is defined twice. Categories must be unique."); //$NON-NLS-1$
@@ -111,37 +112,61 @@ public class Aggregator implements ICollectingAggregator {
 			ICollector collector = extension.createCollector();
 			collector.setCategory(category);
 			collector.setAggregator(this);
-			Wire.instance(collector).andStart(Activator.getDefault().getContext());
+			collectorWirings.add(Wire.instance(collector).andStart(Activator.getDefault().getContext()));
 			list.add(collector);
 		}
 		collectors = list.toArray(new ICollector[list.size()]);
 		// TODO if we were really dynamic aware we should start them here
 	}
 
-	public void update(final ISenderExtension senderExtension) throws CoreException {
-		if (sender != null) {
-			sender.stop();
+	private void stopCollectors() {
+		for (ICollector collector : Iter.able(collectors)) {
+			collector.stop();
 		}
-		sender = null;
+		for (WirePuller wirings : Iter.able(collectorWirings)) {
+			wirings.stop();
+		}
+	}
+
+	public void update(final ISenderExtension senderExtension) throws CoreException {
+		stopSender();
 		if (senderExtension == null) {
 			return;
 		}
 		sender = senderExtension.createSender();
-		Wire.instance(sender).andStart(Activator.getDefault().getContext());
+		senderWiring = Wire.instance(sender).andStart(Activator.getDefault().getContext());
 		sender.setStore(store);
 		// TODO if we were really dynamic aware we should start it here
 	}
 
-	public void update(final IStoreExtension storeExtension) throws CoreException {
-		if (store != null) {
-			store.flush();
+	private void stopSender() {
+		if (sender != null) {
+			sender.stop();
+			sender = null;
 		}
-		store = null;
+		if (senderWiring != null) {
+			senderWiring.stop();
+			senderWiring = null;
+		}
+	}
+
+	public void update(final IStoreExtension storeExtension) throws CoreException {
+		stopStore();
 		if (storeExtension == null) {
 			return;
 		}
 		store = storeExtension.createStore();
-		Wire.instance(store).andStart(Activator.getDefault().getContext());
+		storeWiring = Wire.instance(store).andStart(Activator.getDefault().getContext());
+	}
+
+	private void stopStore() {
+		if (store != null) {
+			store.flush();
+			store = null;
+		}
+		if (storeWiring != null) {
+			storeWiring.stop();
+		}
 	}
 
 	/*
