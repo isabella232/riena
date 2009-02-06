@@ -283,10 +283,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return menu manager
 	 */
 	private MenuManager getMenuManager() {
-
-		WorkbenchWindow workbenchWindow = (WorkbenchWindow) getWindowConfigurer().getWindow();
-		return workbenchWindow.getMenuManager();
-
+		return ((WorkbenchWindow) getWindowConfigurer().getWindow()).getMenuManager();
 	}
 
 	private static class MyApplicationNodeListener extends ApplicationNodeListener {
@@ -298,9 +295,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
 				navi.updateNavigationSize();
 			} catch (PartInitException e) {
-				e.printStackTrace();
+				throw new UIViewFailure(e.getMessage(), e);
 			}
-
 		}
 
 		private IWorkbenchPage getActivePage() {
@@ -315,11 +311,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
 				navi.updateNavigationSize();
 			} catch (PartInitException e) {
-				e.printStackTrace();
+				throw new UIViewFailure(e.getMessage(), e);
 			}
-
 		}
-
 	}
 
 	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
@@ -343,7 +337,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 						SwtViewProviderAccessor.getViewProvider().getSwtViewId(source).getId(),
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 			} catch (WorkbenchException e) {
-				e.printStackTrace();
+				throw new UIViewFailure(e.getMessage(), e);
 			}
 		}
 
