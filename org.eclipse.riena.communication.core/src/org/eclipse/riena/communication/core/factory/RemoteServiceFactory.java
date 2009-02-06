@@ -201,7 +201,7 @@ public class RemoteServiceFactory {
 	public IRemoteServiceReference createProxy(RemoteServiceDescription rsd) {
 		// BundleContext context = Activator.getDefault().getContext();
 		if (!RienaStatus.isActive()) {
-			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This will probably not work."); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This may probably not work."); //$NON-NLS-1$
 		}
 
 		try {
