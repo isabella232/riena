@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
  * could look like this:
  * 
  * <pre>
- * &#064;WireWrap(UIFilterProviderAccessorWireWrap.class)
+ * &#064;WireWith(UIFilterProviderAccessorWiring.class)
  * public final class UIFilterProviderAccessor extends ServiceAccessor&lt;UIFilterProvider&gt; {
  * 
  * 	private final static UIFilterProviderAccessor FILTER_PROVIDER_ACCESSOR = new UIFilterProviderAccessor();
@@ -36,7 +36,7 @@ import org.osgi.framework.BundleContext;
  * </pre>
  * 
  * Each {@code ServiceAccessor} will attempt to wire itself. See {@code Wire}.<br>
- * If a <code>accessor</code> needs specific handling of bound and unboud
+ * If a <code>accessor</code> needs specific handling of bound and unbound
  * services it can define a {@code IBindHook} and pass it to the to the {@code
  * ServiceAccessor} super class via its constructor.
  */
