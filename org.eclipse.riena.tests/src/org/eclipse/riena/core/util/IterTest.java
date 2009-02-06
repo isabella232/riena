@@ -12,8 +12,10 @@ package org.eclipse.riena.core.util;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -131,6 +133,32 @@ public class IterTest extends RienaTestCase {
 	public void testNullEnumeration() {
 		String result = "";
 		for (Object o : Iter.able((Enumeration<Object>) null)) {
+			result = result + o;
+		}
+		assertEquals("", result);
+	}
+
+	/**
+	 * Nomen est omen!
+	 */
+	public void testCollection() {
+		List<String> strings = new ArrayList<String>();
+		strings.add("1");
+		strings.add("2");
+		String result = "";
+		for (Object o : Iter.able(strings)) {
+			result = result + o;
+		}
+		assertEquals("12", result);
+	}
+
+	/**
+	 * Nomen est omen!
+	 */
+	public void testNullCollection() {
+		List<String> strings = null;
+		String result = "";
+		for (Object o : Iter.able(strings)) {
 			result = result + o;
 		}
 		assertEquals("", result);
