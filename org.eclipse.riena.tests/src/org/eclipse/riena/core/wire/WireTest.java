@@ -73,9 +73,12 @@ public class WireTest extends RienaTestCase {
 		SequenceUtil.assertExpected(BeanOnBeanWiring.class, BeanWiring.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testWiringDeeply() {
 		NoWirableBean noWirableBean = new NoWirableBean();
+		SequenceUtil.init();
 		WirePuller puller = Wire.instance(noWirableBean).andStart(context);
+		SequenceUtil.assertExpected(BeanWiring.class);
 		assertTrue(noWirableBean.hasSchtonk());
 		puller.stop();
 	}
