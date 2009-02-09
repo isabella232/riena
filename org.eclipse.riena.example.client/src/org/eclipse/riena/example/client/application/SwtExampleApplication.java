@@ -71,7 +71,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Riena Navigation Example"); //$NON-NLS-1$ //$NON-NLS-2$
-		applicationNode.setIcon(getIconPath(ExampleIcons.ICON_APPLICATION));
+		applicationNode.setIcon(ExampleIcons.ICON_APPLICATION);
 
 		// Navigation SubApplication
 		applicationNode.create(new NavigationNodeId("org.eclipse.riena.example.navigation.subapplication")); //$NON-NLS-1$
@@ -80,7 +80,7 @@ public class SwtExampleApplication extends SwtApplication {
 
 		// Playground SubApplication
 		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
-		subApplication.setIcon(getIconPath(ExampleIcons.ICON_SAMPLE));
+		subApplication.setIcon(ExampleIcons.ICON_SAMPLE);
 		//		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.2", false); //$NON-NLS-1$
 

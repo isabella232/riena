@@ -27,7 +27,6 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
 
 /**
  * The controller for the login dialog of the example.
@@ -63,7 +62,7 @@ public class LoginDialogController extends AbstractWindowController {
 		super.configureRidgets();
 
 		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
-		getWindowRidget().setIcon(getIconPath(ExampleIcons.ICON_SAMPLE));
+		getWindowRidget().setIcon(ExampleIcons.ICON_SAMPLE);
 
 		final ITextRidget user = (ITextRidget) getRidget(RIDGET_ID_USER);
 		user.setMandatory(true);
@@ -156,9 +155,5 @@ public class LoginDialogController extends AbstractWindowController {
 		messageLoginException.setTitle("Login exception"); //$NON-NLS-1$
 		messageLoginException.setText(e.getMessage()); //$NON-NLS-1
 		messageLoginException.show();
-	}
-
-	private String getIconPath(String subPath) {
-		return ImageUtil.getImagePath(Activator.getDefault().getBundle(), subPath);
 	}
 }

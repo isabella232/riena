@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -82,7 +82,7 @@ public class Activator extends AbstractRienaUIPlugin {
 		}
 		Image image = sharedImages.get(imageKey);
 		if (image == null) {
-			image = ImageUtil.getImage(imageKey);
+			image = ImageStore.getInstance().getImage(imageKey);
 		}
 		return image;
 	}

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Resource;
 
@@ -42,7 +42,7 @@ public class ImageLnfResource extends AbstractLnfResource {
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfResource#createResource()
 	 */
 	public Resource createResource() {
-		return ImageUtil.getImage(imagePath);
+		return ImageStore.getInstance().getImage(imagePath);
 	}
 
 }

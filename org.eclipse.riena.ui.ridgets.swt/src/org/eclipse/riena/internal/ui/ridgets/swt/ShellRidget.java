@@ -18,7 +18,7 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
@@ -152,7 +152,7 @@ public class ShellRidget extends AbstractRidget implements IWindowRidget {
 	}
 
 	protected Image getManagedImage(String key) {
-		Image image = ImageUtil.getImage(key);
+		Image image = ImageStore.getInstance().getImage(key);
 		if (image == null) {
 			image = getMissingImage();
 		}

@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -317,7 +317,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
-		setImage(ImageUtil.getImage(icon));
+		setImage(ImageStore.getInstance().getImage(icon));
 	}
 
 	private Image getImage() {

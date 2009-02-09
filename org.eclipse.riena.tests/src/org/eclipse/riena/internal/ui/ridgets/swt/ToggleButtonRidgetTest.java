@@ -19,6 +19,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -246,7 +247,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setIcon("nonsense");
 
-		Image missingImage = ReflectionUtils.invokeHidden(ridget, "getMissingImage", new Object[] {});
+		Image missingImage = ImageStore.getInstance().getMissingImage();
 		assertEquals("nonsense", ridget.getIcon());
 		assertEquals(missingImage, control.getImage());
 

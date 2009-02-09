@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.example.client.controllers.SharedViewDemoSubModuleController;
 import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -29,7 +30,7 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
-public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
+public class SharedViewsNodeBuilder extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 
@@ -42,7 +43,7 @@ public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 				new NavigationNodeId("org.eclipse.riena.example.sharedViews")); //$NON-NLS-1$
 
 		IModuleNode sharedViewModule = new ModuleNode(null, "Shared View Demo"); //$NON-NLS-1$
-		sharedViewModule.setIcon(createIconPath(ExampleIcons.ICON_SAMPLE));
+		sharedViewModule.setIcon(ExampleIcons.ICON_SAMPLE);
 		moduleGroup.addChild(sharedViewModule);
 
 		ISubModuleNode sharedViewSm1 = new SubModuleNode(new NavigationNodeId(
@@ -54,7 +55,7 @@ public class SharedViewsNodeBuilder extends NavigationNodeBuilder {
 		ISubModuleNode sharedViewSm2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.sharedViewNotShared", "2"), "Node 2 (not shared)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		WorkareaManager.getInstance().registerDefinition(sharedViewSm2, SharedViewDemoSubModuleController.class,
-				SharedViewDemoSubModuleView.ID + "NotShared", false);
+				SharedViewDemoSubModuleView.ID + "NotShared", false); //$NON-NLS-1$
 		sharedViewModule.addChild(sharedViewSm2);
 
 		ISubModuleNode sharedViewSm3 = new SubModuleNode(new NavigationNodeId(

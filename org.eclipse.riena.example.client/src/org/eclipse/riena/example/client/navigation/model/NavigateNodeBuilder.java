@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.example.client.views.NavigateSubModuleView;
+import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -32,7 +33,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class NavigateNodeBuilder extends NavigationNodeBuilder {
+public class NavigateNodeBuilder extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 
@@ -46,7 +47,7 @@ public class NavigateNodeBuilder extends NavigationNodeBuilder {
 		moduleGroup.setPresentWithSingleModule(false);
 
 		IModuleNode module = new ModuleNode(null, "Navigate"); //$NON-NLS-1$
-		module.setIcon(createIconPath(ExampleIcons.ICON_GREEN_LED));
+		module.setIcon(ExampleIcons.ICON_GREEN_LED);
 		moduleGroup.addChild(module);
 
 		ISubModuleNode subModule = new SubModuleNode(

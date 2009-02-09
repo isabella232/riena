@@ -44,7 +44,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -266,7 +266,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		shell.addPaintListener(new ShellPaintListener());
 
-		shell.setImage(ImageUtil.getImage(controller.getNavigationNode().getIcon()));
+		String iconName = controller.getNavigationNode().getIcon();
+		shell.setImage(ImageStore.getInstance().getImage(iconName));
 		shell.setMinimumSize(APPLICATION_MIN_SIZE);
 
 		// prepare shell for binding

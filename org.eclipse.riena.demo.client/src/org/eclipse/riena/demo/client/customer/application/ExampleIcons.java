@@ -16,17 +16,17 @@ public final class ExampleIcons {
 		// Constants class
 	}
 
-	public static final String ICON_FILE = "/icons/file.gif"; //$NON-NLS-1$
+	public static final String ICON_FILE = "file.gif"; //$NON-NLS-1$
 
-	public static final String ICON_APPLICATION = "/icons/0457_a_a00.png"; //$NON-NLS-1$
+	public static final String ICON_APPLICATION = "0457_a_a00.png"; //$NON-NLS-1$
 
-	public static final String ICON_HOMEFOLDER = "/icons/HomeFolder.gif"; //$NON-NLS-1$
+	public static final String ICON_HOMEFOLDER = "HomeFolder.gif"; //$NON-NLS-1$
 
-	public static final String ICON_GREEN_LED = "/icons/ledlightgreen.png"; //$NON-NLS-1$
+	public static final String ICON_GREEN_LED = "ledlightgreen.png"; //$NON-NLS-1$
 
-	public static final String ICON_RED_LED = "/icons/ledred.png"; //$NON-NLS-1$
+	public static final String ICON_RED_LED = "ledred.png"; //$NON-NLS-1$
 
-	public static final String ICON_SAMPLE = "/icons/sample.gif"; //$NON-NLS-1$
+	public static final String ICON_SAMPLE = "sample.gif"; //$NON-NLS-1$
 
-	public static final String ICON_LINK = "/icons/link.png"; //$NON-NLS-1$
+	public static final String ICON_LINK = "link.png"; //$NON-NLS-1$
 }

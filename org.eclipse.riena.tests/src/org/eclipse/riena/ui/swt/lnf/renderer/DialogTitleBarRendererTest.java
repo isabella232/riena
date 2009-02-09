@@ -16,7 +16,7 @@ import org.eclipse.riena.ui.swt.lnf.FontLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -30,8 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 @UITestCase
 public class DialogTitleBarRendererTest extends RienaTestCase {
 
-	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";
-	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
+	private final static String ICON_ECLIPSE = "eclipse.gif";
 
 	private OpenDialogTitleBarRenderer renderer;
 	private Shell shell;
@@ -90,7 +89,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 		DialogLnf lnf = new DialogLnf();
 		LnfManager.setLnf(lnf);
 		lnf.setHideOsBorder(true);
-		Image image = ImageUtil.getImage(ICON_ECLIPSE);
+		Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
 		shell.setImage(image);
 
 		Rectangle bounds = renderer.paintImage(gc);

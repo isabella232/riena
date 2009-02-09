@@ -27,7 +27,7 @@ import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewDefinition;
 import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -89,10 +89,6 @@ public abstract class SwtApplication extends AbstractApplication {
 	}
 
 	protected abstract Bundle getBundle();
-
-	protected String getIconPath(String subPath) {
-		return ImageUtil.getImagePath(getBundle(), subPath);
-	}
 
 	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
 			final IApplicationContext context) {
@@ -264,14 +260,14 @@ public abstract class SwtApplication extends AbstractApplication {
 		return loginSplashHandler.getResult();
 	}
 
-	private void initilizeShellBackgroundImage(Shell shell, String fullPath) {
-		Image bi = ImageUtil.getImage(fullPath);
+	private void initilizeShellBackgroundImage(Shell shell, String imageName) {
+		Image bi = ImageStore.getInstance().getImage(imageName);
 		shell.setSize(bi.getImageData().width, bi.getImageData().height);
 		shell.setBackgroundImage(bi);
 	}
 
 	private String getBackgroundImagePath(IApplicationContext context) {
-		return ImageUtil.getImagePath(context.getBrandingBundle(), "splash.bmp"); //$NON-NLS-1$
+		return "splash.bmp"; //$NON-NLS-1$
 	}
 
 	private AbstractLoginSplashHandler getLoginSplashHandler() {

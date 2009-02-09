@@ -16,7 +16,7 @@ import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -30,8 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 @UITestCase
 public class AbstractTitleBarRendererTest extends RienaTestCase {
 
-	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";
-	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
+	private final static String ICON_ECLIPSE = "eclipse.gif";
 
 	private TitleBarRenderer renderer;
 	private GC gc;
@@ -87,7 +86,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	 */
 	public void testPaintButton() {
 
-		Image image = ImageUtil.getImage(ICON_ECLIPSE);
+		Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
 		ImageData imageData = image.getImageData();
 
 		LnfManager.setLnf(new TitleBarLnf());

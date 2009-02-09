@@ -40,8 +40,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 @UITestCase
 public class TreeRidgetLabelProviderTest extends TestCase {
 
-	private final static String PLUGIN_ID = "org.eclipse.riena.tests:";
-	private final static String ICON_ECLIPSE = PLUGIN_ID + "/icons/eclipse.gif";
+	private final static String ICON_ECLIPSE = "eclipse.gif";
 	private static final String[] COLUMN_PROPERTIES = { "word", "upperCase" };
 
 	private Shell shell;

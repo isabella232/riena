@@ -482,7 +482,7 @@
                   icon="org.eclipse.riena.example.client:/icons/ledred.png">
                <submodule
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
-                     icon="org.eclipse.riena.example.client:/icons/ledlightgreen.png"
+                     icon="ledlightgreen.png"
                      label="Demo1"
                      name="uiProcess_1"
                      typeId="org.eclipse.riena.example.uiProcess_1"
@@ -503,7 +503,7 @@
                      typeId="org.eclipse.riena.example.remoteProgress"
                      name="org.eclipse.riena.example.remoteProgress"
                      label="service call progress"
-                     icon="org.eclipse.riena.example.client:/icons/ledlightgreen.png"
+                     icon="ledlightgreen.png"
                      view="org.eclipse.riena.example.client.views.RemoteServiceProgressSubModuleView"
                      controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
             </module>
@@ -824,7 +824,7 @@
             parentTypeId="module121">
          <submodule
                controller="org.eclipse.riena.example.client.controllers.OnePersonSubModuleController"
-               icon="org.eclipse.riena.example.client:/icons/person.gif"
+               icon="person.gif"
                label="One Person"
                shared="false"
                typeId="onePersonSubModule"
@@ -879,6 +879,12 @@
              nonActivityDuration="0"
              viewClass="org.eclipse.riena.example.client.views.LoginSplashView">
        </loginSplashViewDefinition>
+    </extension>
+    <extension
+          point="org.eclipse.riena.ui.swt.imagepath">
+       <path
+             path="icons">
+       </path>
     </extension>
    
 </plugin>

@@ -28,47 +28,41 @@ import org.eclipse.swt.widgets.Display;
  */
 public class RienaDefaultTheme implements ILnfTheme {
 
-	private static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
-	private static final String PATH_ICONS = "org.eclipse.riena.ui.swt:" + PATH_SEPARATOR + "icons"; //$NON-NLS-1$ //$NON-NLS-2$
-	private static final String IMAGE_FOLDER = PATH_ICONS + PATH_SEPARATOR + "node_expanded.gif"; //$NON-NLS-1$
-	private static final String IMAGE_FOLDER_CLOSED = PATH_ICONS + PATH_SEPARATOR + "node_collapsed.gif"; //$NON-NLS-1$
-	private static final String IMAGE_EMPTY_DOCUMENT = PATH_ICONS + PATH_SEPARATOR + "no_format.gif"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE = PATH_ICONS + PATH_SEPARATOR + "closeModule.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_HOVER = PATH_ICONS + PATH_SEPARATOR + "closeModule_hover.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR
-			+ "closeModule_hover_selected.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_INACTIVE = PATH_ICONS + PATH_SEPARATOR + "closeModule_inactive.png"; //$NON-NLS-1$
-	private static final String IMAGE_BACKGROUND = PATH_ICONS + PATH_SEPARATOR + "background.png"; //$NON-NLS-1$
-	private static final String IMAGE_LOGO = PATH_ICONS + PATH_SEPARATOR + "RIENA_Logo_RGB.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE = PATH_ICONS + PATH_SEPARATOR + "mb_close.gif"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_close_hover.gif"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR
-			+ "mb_close_hover_selected.gif"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_INACTIVE = PATH_ICONS + PATH_SEPARATOR + "mb_close_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MAX = PATH_ICONS + PATH_SEPARATOR + "mb_max.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MAX_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_max_hover.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MAX_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR + "mb_max_hover_selected.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MAX_INACTIVE = PATH_ICONS + PATH_SEPARATOR + "mb_max_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MIN = PATH_ICONS + PATH_SEPARATOR + "mb_min.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MIN_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_min_hover.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MIN_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR + "mb_min_hover_selected.gif"; //$NON-NLS-1$
-	private static final String IMAGE_MIN_INACTIVE = PATH_ICONS + PATH_SEPARATOR + "mb_min_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_RESTORE = PATH_ICONS + PATH_SEPARATOR + "mb_restore.gif"; //$NON-NLS-1$
-	private static final String IMAGE_RESTORE_HOVER = PATH_ICONS + PATH_SEPARATOR + "mb_restore_hover.gif"; //$NON-NLS-1$
-	private static final String IMAGE_RESTORE_HOVER_SELECTED = PATH_ICONS + PATH_SEPARATOR
-			+ "mb_restore_hover_selected.gif"; //$NON-NLS-1$
-	private static final String IMAGE_RESTORE_INACTIVE_ICON = PATH_ICONS + PATH_SEPARATOR + "mb_restore_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_HAND = PATH_ICONS + PATH_SEPARATOR + "hand.png"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB = PATH_ICONS + PATH_SEPARATOR + "grab.png"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB_CORNER = PATH_ICONS + PATH_SEPARATOR + "grabCorner.png"; //$NON-NLS-1$
-	private static final String IMAGE_SPACER = PATH_ICONS + PATH_SEPARATOR + "spacer.png"; //$NON-NLS-1$
-	private static final String IMAGE_ERROR = PATH_ICONS + PATH_SEPARATOR + "statusline_error.gif"; //$NON-NLS-1$
-	private static final String IMAGE_WARNING = PATH_ICONS + PATH_SEPARATOR + "statusline_warning.gif"; //$NON-NLS-1$
-	private static final String IMAGE_INFO = PATH_ICONS + PATH_SEPARATOR + "statusline_info.gif"; //$NON-NLS-1$
-	private static final String IMAGE_ERROR_MARKER = PATH_ICONS + PATH_SEPARATOR + "errorMarker.png"; //$NON-NLS-1$
-	private static final String IMAGE_MANDATORY_MARKER = PATH_ICONS + PATH_SEPARATOR + "mandatoryMarker.png"; //$NON-NLS-1$
-	private static final String IMAGE_PROCESS_FINISHED_MARKER = PATH_ICONS + PATH_SEPARATOR
-			+ "processFinishedMarker.png"; //$NON-NLS-1$
+	private static final String IMAGE_FOLDER = "node_expanded.gif"; //$NON-NLS-1$
+	private static final String IMAGE_FOLDER_CLOSED = "node_collapsed.gif"; //$NON-NLS-1$
+	private static final String IMAGE_EMPTY_DOCUMENT = "no_format.gif"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE = "closeModule.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER = "closeModule_hover.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = "closeModule_hover_selected.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_INACTIVE = "closeModule_inactive.png"; //$NON-NLS-1$
+	private static final String IMAGE_BACKGROUND = "background.png"; //$NON-NLS-1$
+	private static final String IMAGE_LOGO = "RIENA_Logo_RGB.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE = "mb_close.gif"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_HOVER = "mb_close_hover.gif"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_HOVER_SELECTED = "mb_close_hover_selected.gif"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_INACTIVE = "mb_close_inactive.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MAX = "mb_max.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MAX_HOVER = "mb_max_hover.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MAX_HOVER_SELECTED = "mb_max_hover_selected.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MAX_INACTIVE = "mb_max_inactive.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MIN = "mb_min.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MIN_HOVER = "mb_min_hover.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MIN_HOVER_SELECTED = "mb_min_hover_selected.gif"; //$NON-NLS-1$
+	private static final String IMAGE_MIN_INACTIVE = "mb_min_inactive.gif"; //$NON-NLS-1$
+	private static final String IMAGE_RESTORE = "mb_restore.gif"; //$NON-NLS-1$
+	private static final String IMAGE_RESTORE_HOVER = "mb_restore_hover.gif"; //$NON-NLS-1$
+	private static final String IMAGE_RESTORE_HOVER_SELECTED = "mb_restore_hover_selected.gif"; //$NON-NLS-1$
+	private static final String IMAGE_RESTORE_INACTIVE_ICON = "mb_restore_inactive.gif"; //$NON-NLS-1$
+	private static final String IMAGE_HAND = "hand.png"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB = "grab.png"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB_CORNER = "grabCorner.png"; //$NON-NLS-1$
+	private static final String IMAGE_SPACER = "spacer.png"; //$NON-NLS-1$
+	private static final String IMAGE_ERROR = "statusline_error.gif"; //$NON-NLS-1$
+	private static final String IMAGE_WARNING = "statusline_warning.gif"; //$NON-NLS-1$
+	private static final String IMAGE_INFO = "statusline_info.gif"; //$NON-NLS-1$
+	private static final String IMAGE_ERROR_MARKER = "errorMarker.png"; //$NON-NLS-1$
+	private static final String IMAGE_MANDATORY_MARKER = "mandatoryMarker.png"; //$NON-NLS-1$
+	private static final String IMAGE_PROCESS_FINISHED_MARKER = "processFinishedMarker.png"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;

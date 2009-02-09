@@ -1,0 +1,32 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 compeople AG and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    compeople AG - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.riena.ui.swt.utils;
+
+/**
+ *
+ */
+public enum ImageFileExtension {
+
+	PNG("png"), //$NON-NLS-1$
+	GIF("gif"), //$NON-NLS-1$
+	JPG("jpg"); //$NON-NLS-1$
+
+	private String fileNameExtension;
+
+	private ImageFileExtension(String fileNameExtension) {
+		this.fileNameExtension = fileNameExtension;
+	}
+
+	String getStateNameExtension() {
+		return fileNameExtension;
+	}
+
+}

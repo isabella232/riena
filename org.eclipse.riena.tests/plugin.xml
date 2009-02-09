@@ -37,4 +37,10 @@
             configName="Remote">
       </callbackHandlerMapping>
    </extension>
+   <extension
+         point="org.eclipse.riena.ui.swt.imagepath">
+      <path
+            path="icons">
+      </path>
+   </extension>
 </plugin>

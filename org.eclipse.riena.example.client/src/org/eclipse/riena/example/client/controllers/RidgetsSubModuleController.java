@@ -21,10 +21,9 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public class RidgetsSubModuleController extends SubModuleController {
 
-	private final static String PLUGIN_ID = "org.eclipse.riena.example.client:"; //$NON-NLS-1$
-	private final static String ICON_SAMPLE = PLUGIN_ID + "/icons/sample.gif"; //$NON-NLS-1$
-	private final static String ICON_RED = PLUGIN_ID + "/icons/ledred.png"; //$NON-NLS-1$
-	private final static String ICON_GREEN = PLUGIN_ID + "/icons/ledlightgreen.png"; //$NON-NLS-1$
+	private final static String ICON_SAMPLE = "sample.gif"; //$NON-NLS-1$
+	private final static String ICON_RED = "ledred.png"; //$NON-NLS-1$
+	private final static String ICON_GREEN = "ledlightgreen.png"; //$NON-NLS-1$
 
 	private RidgetsModel model;
 

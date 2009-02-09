@@ -60,14 +60,14 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		super.addCustomImages(table);
 
-		String imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/background.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String imagePath = "exampleBackground.png"; //$NON-NLS-1$ 
 		table.put(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
-		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/RIENA_Logo_RGB.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		imagePath = "exampleRIENA_Logo_RGB.png"; //$NON-NLS-1$ 
 		table.put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
 
-		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/ledred.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		imagePath = "ledred.png"; //$NON-NLS-1$ 
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath));
-		imagePath = "org.eclipse.riena.example.client" + ":" + "/icons/folder_favorite.png"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		imagePath = "folder_favorite.png"; //$NON-NLS-1$ 
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
 

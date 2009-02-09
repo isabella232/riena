@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -26,7 +25,7 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.ImageUtil;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Widget;
@@ -222,18 +221,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	protected Image getManagedImage(String key) {
-		Image image = ImageUtil.getImage(key);
+		Image image = ImageStore.getInstance().getImage(key);
 		if (image == null) {
-			image = getMissingImage();
+			image = ImageStore.getInstance().getMissingImage();
 		}
 		return image;
-	}
-
-	public final synchronized Image getMissingImage() {
-		if (missingImage == null) {
-			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
-		}
-		return missingImage;
 	}
 
 	/**
