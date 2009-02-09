@@ -53,7 +53,9 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase() {
 		super();
-		this.context = Activator.getDefault().getContext();
+		if (Activator.getDefault() != null) { // running as pde junit test
+			this.context = Activator.getDefault().getContext();
+		}
 	}
 
 	/**
@@ -61,7 +63,9 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase(String name) {
 		super(name);
-		this.context = Activator.getDefault().getContext();
+		if (Activator.getDefault() != null) { // running as pde junit test
+			this.context = Activator.getDefault().getContext();
+		}
 	}
 
 	/**
