@@ -12,9 +12,11 @@ package org.eclipse.riena.communication.core.attachment;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
+import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.tests.collect.ManualTestCase;
 import org.eclipse.riena.tests.collect.NonGatherableTestCase;
+import org.eclipse.riena.tests.collect.TestCollector;
 
 /**
  * 
@@ -22,9 +24,9 @@ import org.eclipse.riena.tests.collect.NonGatherableTestCase;
 @NonGatherableTestCase("This is not a ´TestCase´!")
 public class AllManualTests extends TestCase {
 
+	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllManualTests.class.getName());
-		suite.addTestSuite(AttachmentClientITest.class);
-		return suite;
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllTests.class.getPackage(),
+				ManualTestCase.class);
 	}
 }
