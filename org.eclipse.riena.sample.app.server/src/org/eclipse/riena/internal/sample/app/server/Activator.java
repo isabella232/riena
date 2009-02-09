@@ -17,6 +17,7 @@ import org.eclipse.riena.communication.publisher.Publish;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.monitor.common.IReceiver;
 import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
+import org.eclipse.riena.sample.app.common.calendar.ITestGregorianCalendar;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
@@ -69,6 +70,7 @@ public class Activator extends RienaPlugin {
 		startHelloWorldService(context);
 		startCollectibleReceiver(context);
 		startAttachmentService(context);
+		startTestGregorianCalendar(context);
 		context.registerService(IExceptionService.class.getName(), new ExceptionService(), null);
 		Publish.service(IExceptionService.class.getName()).usingPath("/ExceptionService").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(context); // stops automatically when bundle stops
@@ -154,6 +156,12 @@ public class Activator extends RienaPlugin {
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PATH, "/CollectibleReceiverWS"); //$NON-NLS-1$
 
 		regCollectibleReceiver = context.registerService(IReceiver.class.getName(), monitoringReceiver, properties);
+	}
+
+	private void startTestGregorianCalendar(BundleContext context) {
+		context.registerService(ITestGregorianCalendar.class.getName(), new TestGregorianCalendar(), null);
+		Publish.service(ITestGregorianCalendar.class).usingPath("/TestGregorianCalendarWS").withProtocol(
+				REMOTE_PROTOCOL_HESSIAN).andStart(context);
 	}
 
 	public void stopHelloWorldService() {
