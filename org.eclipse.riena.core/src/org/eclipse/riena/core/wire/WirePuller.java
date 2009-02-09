@@ -16,6 +16,9 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
+import org.osgi.framework.SynchronousBundleListener;
 
 /**
  * The {@code WirePuler} is responsible for the wiring of a bean.
@@ -26,6 +29,7 @@ public class WirePuller {
 	private BundleContext context;
 	private List<IWiring> wirings;
 	private State state = State.PENDING;
+	private BundleListener bundleStoppingListener;
 
 	// Only for unit testing of classes using accessors
 	private static Map<Class<?>, Class<? extends IWiring>> wiringMocks;
@@ -44,22 +48,25 @@ public class WirePuller {
 	 * @param context
 	 * @return the bean
 	 */
-	public WirePuller andStart(BundleContext context) {
+	public WirePuller andStart(final BundleContext context) {
 		Assert.isLegal(context != null, "context must be given."); //$NON-NLS-1$
 		Assert.isLegal(state == State.PENDING, "state must be pending."); //$NON-NLS-1$
-		wire(bean.getClass(), context);
-		state = State.STARTED;
 		this.context = context;
+		wire(bean.getClass());
+		state = State.STARTED;
+		bundleStoppingListener = new BundleStoppingListener();
+		context.addBundleListener(bundleStoppingListener);
 		return this;
 	}
 
 	/**
 	 * Stop the wiring.
 	 */
-	public void stop() {
+	public synchronized void stop() {
 		if (state != State.STARTED) {
 			return;
 		}
+		context.removeBundleListener(bundleStoppingListener);
 		if (wirings != null) {
 			for (IWiring wiring : wirings) {
 				wiring.unwire(bean, context);
@@ -68,14 +75,14 @@ public class WirePuller {
 		state = State.STOPPED;
 	}
 
-	private void wire(Class<?> beanClass, BundleContext context) {
+	private void wire(Class<?> beanClass) {
 		if (beanClass == null || beanClass == Object.class) {
 			return;
 		}
-		Class<? extends IWiring> wiringClass = getWiringClass(beanClass, context);
+		Class<? extends IWiring> wiringClass = getWiringClass(beanClass);
 		IWiring wiring = getWiring(wiringClass);
-		add(wiring);
-		wire(beanClass.getSuperclass(), context);
+		addIfNotNull(wiring);
+		wire(beanClass.getSuperclass());
 		if (wiring != null) {
 			wiring.wire(bean, context);
 		}
@@ -86,7 +93,7 @@ public class WirePuller {
 	 * 
 	 * @param wiring
 	 */
-	private void add(IWiring wiring) {
+	private void addIfNotNull(IWiring wiring) {
 		if (wiring == null) {
 			return;
 		}
@@ -116,7 +123,7 @@ public class WirePuller {
 	/**
 	 * @return
 	 */
-	private Class<? extends IWiring> getWiringClass(Class<?> beanClass, BundleContext context) {
+	private Class<? extends IWiring> getWiringClass(Class<?> beanClass) {
 		// If mocks are defined, we use them instead of the regular mechanism.
 		if (wiringMocks != null) {
 			return wiringMocks.get(beanClass);
@@ -127,6 +134,20 @@ public class WirePuller {
 			return wiringAnnotation.value();
 		}
 		return null;
+	}
+
+	/**
+	 * Stops this wire-puller if the owning bundle is stopping.
+	 */
+	private class BundleStoppingListener implements SynchronousBundleListener {
+		public void bundleChanged(BundleEvent event) {
+			if (event.getBundle() != context.getBundle()) {
+				return;
+			}
+			if (event.getType() == BundleEvent.STOPPING) {
+				stop();
+			}
+		}
 	}
 
 	/**
