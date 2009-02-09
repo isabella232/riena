@@ -31,7 +31,7 @@
 	</extension>
 	
 	<extension
-		id="org.eclipse.riena.communication.hessian.StacktraceElementSerializerFactory"
+		id="org.eclipse.riena.communication.hessian.GregorianCalendarSerializerFactory"
 		point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
 		<factory
 			implementation="org.eclipse.riena.internal.communication.factory.hessian.GregorianCalendarSerializerFactory">
