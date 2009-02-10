@@ -88,7 +88,7 @@ public class ImageStore {
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
 	public final Image getImage(String imageName, ImageState state) {
-		return getImage(imageName, ImageState.NORMAL, ImageFileExtension.PNG);
+		return getImage(imageName, state, ImageFileExtension.PNG);
 	}
 
 	/**
@@ -125,11 +125,16 @@ public class ImageStore {
 			return null;
 		}
 
-		String fullName = imageName + state.getStateNameExtension();
-		// scaling
+		String fullName = imageName;
+		if (state != null) {
+			fullName += state.getStateNameExtension();
+		}
+		// scaling ?!?
 
 		if (imageName.indexOf('.') < 0) {
-			fullName += "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
+			if (fileExtension != null) {
+				fullName += "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
+			}
 		}
 
 		return fullName;
