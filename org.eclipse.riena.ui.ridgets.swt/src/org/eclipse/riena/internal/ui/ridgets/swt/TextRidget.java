@@ -163,7 +163,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		textValue = text;
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
-		IStatus onEdit = checkOnEditRules(text);
+		IStatus onEdit = checkOnEditRules(textValue);
 		validationRulesCheckedMarkFlash(onEdit);
 		if (onEdit.isOK()) {
 			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
@@ -172,9 +172,18 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	public synchronized boolean revalidate() {
 		Text control = getUIControl();
-		String text = control != null ? control.getText() : textValue;
-		textValue = null; // textValue != text in order to propage prop. change
-		setText(text);
+		if (control != null) {
+			textValue = control.getText();
+		}
+		forceTextToControl(textValue);
+		disableMandatoryMarkers(isNotEmpty(textValue));
+		IStatus onEdit = checkOnEditRules(textValue);
+		IStatus onUpdate = checkOnUpdateRules(textValue);
+		IStatus status = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
+		validationRulesCheckedMarkFlash(status);
+		if (status.isOK()) {
+			getValueBindingSupport().updateFromTarget();
+		}
 		return !isErrorMarked();
 	}
 
@@ -190,8 +199,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		super.updateFromModel();
 		IStatus onEdit = checkOnEditRules(textValue);
 		IStatus onUpdate = checkOnUpdateRules(textValue);
-		IStatus joinedStatus = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
-		validationRulesCheckedMarkFlash(joinedStatus);
+		IStatus status = ValidationRuleStatus.join(new IStatus[] { onEdit, onUpdate });
+		validationRulesCheckedMarkFlash(status);
 	}
 
 	public synchronized boolean isDirectWriting() {
@@ -294,8 +303,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	/*
-	 * This method is called from setText() / updateFromModel() to update the
-	 * validation state of the ridget. Text typed by the user triggers a
+	 * This method is called from setText() / updateFromModel() which update the
+	 * validation state of the ridget programmatically. The method downgrades
+	 * block_with_flash to allow_with_message since the update happens
+	 * non-interactively. When the user is typing, you should invoke
 	 * validationRulesChecked(status) call directly - see event listeners below.
 	 */
 	private void validationRulesCheckedMarkFlash(IStatus status) {
