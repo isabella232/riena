@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import junit.framework.TestCase;
@@ -151,10 +152,10 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetForeground() {
-		WordNode wordNode = new WordNode("test");
-
+		IObservableSet elements = createElements();
+		WordNode wordNode = leaf;
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
-		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, createElements(),
+		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
 				COLUMN_PROPERTIES, "upperCase", null);
 
 		wordNode.setUpperCase(true);
@@ -182,22 +183,23 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", node);
 		assertEquals(SharedImages.IMG_NODE_EXPANDED, key);
 
-		IObservableSet elements = createElements();
+		WordNodeWithIcon nodeWithIcon1 = new WordNodeWithIcon("node");
+		WordNodeWithIcon nodeWithIcon2 = new WordNodeWithIcon("node");
+		WordNodeWithIcon nodeWithIcon3 = new WordNodeWithIcon("node");
+		IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon1,
+				nodeWithIcon2, nodeWithIcon3 }), WordNode.class);
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
 				COLUMN_PROPERTIES, null, "icon");
 
-		WordNodeWithIcon nodeWithIcon = new WordNodeWithIcon("node");
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon);
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon1);
 		assertEquals(SharedImages.IMG_LEAF, key);
 
-		nodeWithIcon = new WordNodeWithIcon("node");
-		nodeWithIcon.setIcon("unkown");
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon);
+		nodeWithIcon2.setIcon("unkown");
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon2);
 		assertEquals(SharedImages.IMG_LEAF, key);
 
-		nodeWithIcon = new WordNodeWithIcon("node");
-		nodeWithIcon.setIcon(ICON_ECLIPSE);
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon);
+		nodeWithIcon3.setIcon(ICON_ECLIPSE);
+		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon3);
 		assertEquals(ICON_ECLIPSE, key);
 
 	}
