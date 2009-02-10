@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.tests.base;
 
+import java.beans.PropertyChangeListener;
+
 public class TestSingleSelectionBean {
 
 	/** Key for the single selection property ("selection"). */
@@ -23,6 +25,20 @@ public class TestSingleSelectionBean {
 
 	public void setSelection(Object selection) {
 		this.selection = selection;
+	}
+
+	/**
+	 * unused
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		// unused
+	}
+
+	/**
+	 * unused
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		// unused
 	}
 
 }
