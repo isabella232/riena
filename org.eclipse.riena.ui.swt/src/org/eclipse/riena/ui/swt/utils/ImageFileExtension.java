@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.swt.utils;
 
 /**
- *
+ * File extensions of image (file) names.
  */
 public enum ImageFileExtension {
 
@@ -25,7 +25,12 @@ public enum ImageFileExtension {
 		this.fileNameExtension = fileNameExtension;
 	}
 
-	String getStateNameExtension() {
+	/**
+	 * Returns file name extension.
+	 * 
+	 * @return extension of file name.
+	 */
+	String getFileNameExtension() {
 		return fileNameExtension;
 	}
 

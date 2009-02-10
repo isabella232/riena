@@ -31,12 +31,12 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_FOLDER = "node_expanded.gif"; //$NON-NLS-1$
 	private static final String IMAGE_FOLDER_CLOSED = "node_collapsed.gif"; //$NON-NLS-1$
 	private static final String IMAGE_EMPTY_DOCUMENT = "no_format.gif"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE = "closeModule.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_HOVER = "closeModule_hover.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = "closeModule_hover_selected.png"; //$NON-NLS-1$
-	private static final String IMAGE_CLOSE_MODULE_INACTIVE = "closeModule_inactive.png"; //$NON-NLS-1$
-	private static final String IMAGE_BACKGROUND = "background.png"; //$NON-NLS-1$
-	private static final String IMAGE_LOGO = "RIENA_Logo_RGB.png"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE = "closeModule"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER = "closeModule_hover"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = "closeModule_hover_selected"; //$NON-NLS-1$
+	private static final String IMAGE_CLOSE_MODULE_INACTIVE = "closeModule_inactive"; //$NON-NLS-1$
+	private static final String IMAGE_BACKGROUND = "background"; //$NON-NLS-1$
+	private static final String IMAGE_LOGO = "RIENA_Logo_RGB"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE = "mb_close.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_HOVER = "mb_close_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_HOVER_SELECTED = "mb_close_hover_selected.gif"; //$NON-NLS-1$
@@ -53,16 +53,16 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_RESTORE_HOVER = "mb_restore_hover.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_HOVER_SELECTED = "mb_restore_hover_selected.gif"; //$NON-NLS-1$
 	private static final String IMAGE_RESTORE_INACTIVE_ICON = "mb_restore_inactive.gif"; //$NON-NLS-1$
-	private static final String IMAGE_HAND = "hand.png"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB = "grab.png"; //$NON-NLS-1$
-	private static final String IMAGE_GRAB_CORNER = "grabCorner.png"; //$NON-NLS-1$
-	private static final String IMAGE_SPACER = "spacer.png"; //$NON-NLS-1$
+	private static final String IMAGE_HAND = "hand"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB = "grab"; //$NON-NLS-1$
+	private static final String IMAGE_GRAB_CORNER = "grabCorner"; //$NON-NLS-1$
+	private static final String IMAGE_SPACER = "spacer"; //$NON-NLS-1$
 	private static final String IMAGE_ERROR = "statusline_error.gif"; //$NON-NLS-1$
 	private static final String IMAGE_WARNING = "statusline_warning.gif"; //$NON-NLS-1$
 	private static final String IMAGE_INFO = "statusline_info.gif"; //$NON-NLS-1$
-	private static final String IMAGE_ERROR_MARKER = "errorMarker.png"; //$NON-NLS-1$
-	private static final String IMAGE_MANDATORY_MARKER = "mandatoryMarker.png"; //$NON-NLS-1$
-	private static final String IMAGE_PROCESS_FINISHED_MARKER = "processFinishedMarker.png"; //$NON-NLS-1$
+	private static final String IMAGE_ERROR_MARKER = "errorMarker"; //$NON-NLS-1$
+	private static final String IMAGE_MANDATORY_MARKER = "mandatoryMarker"; //$NON-NLS-1$
+	private static final String IMAGE_PROCESS_FINISHED_MARKER = "processFinishedMarker"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;

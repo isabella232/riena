@@ -12,6 +12,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IToolItemRidget;
+import org.eclipse.riena.ui.swt.utils.ImageState;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.ToolItem;
 
 /**
@@ -55,6 +58,29 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	@Override
 	AbstractItemProperties createProperties() {
 		return new ToolItemProperties(this);
+	}
+
+	/**
+	 * Updates (sets) the icon of the tool item and also the <i>hot/hover</i>
+	 * icon (image).
+	 * 
+	 * @return {@code true} if icon (image) of control was set; otherwise
+	 *         {@code false} .
+	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget#updateUIIcon()
+	 */
+	@Override
+	protected boolean updateUIIcon() {
+
+		boolean newImage = super.updateUIIcon();
+		if (newImage) {
+			ToolItem control = getUIControl();
+			if (getIcon() != null) {
+				Image image = ImageStore.getInstance().getImage(getIcon(), ImageState.HOVER);
+				control.setHotImage(image);
+			}
+		}
+
+		return newImage;
 	}
 
 }

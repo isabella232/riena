@@ -155,9 +155,12 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	}
 
 	/**
-	 * Updates (sets) the icon of the menu item.
+	 * Updates (sets) the icon of the item.
+	 * 
+	 * @return {@code true} if image of control was set; otherwise {@code false}
+	 *         .
 	 */
-	private void updateUIIcon() {
+	protected boolean updateUIIcon() {
 		Item control = getUIControl();
 		if (control != null) {
 			Image image = null;
@@ -166,8 +169,10 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 			}
 			if ((image != null) || useRidgetIcon) {
 				control.setImage(image);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	/**

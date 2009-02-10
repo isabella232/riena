@@ -11,7 +11,8 @@
 package org.eclipse.riena.ui.swt.utils;
 
 /**
- *
+ * The states of images are used to extend the name of an image. There extension
+ * are added to the name of an image.
  */
 public enum ImageState {
 
@@ -32,6 +33,11 @@ public enum ImageState {
 		this.stateNameExtension = stateNameExtension;
 	}
 
+	/**
+	 * Returns the extension that will be added to an image name.
+	 * 
+	 * @return extension for state
+	 */
 	String getStateNameExtension() {
 		return stateNameExtension;
 	}

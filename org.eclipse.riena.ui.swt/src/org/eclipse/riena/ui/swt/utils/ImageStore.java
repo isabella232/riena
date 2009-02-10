@@ -21,7 +21,10 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * 
+ * The ImageStore returns the images for given names. The images are loaded form
+ * and cached. The ImageStore extends the images name, if a state (@see
+ * {@link ImageState}) like pressed of hover is given. If the image name has no
+ * file extension, the extension ".png" will be added.
  */
 public class ImageStore {
 
@@ -35,6 +38,11 @@ public class ImageStore {
 		// TODO
 	}
 
+	/**
+	 * Returns an instance (always the same) of this class.
+	 * 
+	 * @return instance of {@code ImageStore}
+	 */
 	public static ImageStore getInstance() {
 		if (store == null) {
 			store = new ImageStore();
@@ -45,23 +53,72 @@ public class ImageStore {
 		return store;
 	}
 
+	/**
+	 * Returns the image for the given image name.
+	 * 
+	 * @param imageName
+	 *            - name (ID) of the image
+	 * @return image or {@code null} if no image exists for the given name.
+	 */
 	public final Image getImage(String imageName) {
 		return getImage(imageName, ImageState.NORMAL);
 	}
 
+	/**
+	 * Returns the image for the given image name and with the given file
+	 * extension.
+	 * 
+	 * @param imageName
+	 *            - name (ID) of the image
+	 * @param fileExtension
+	 *            - extension of the image file (@see ImageFileExtension)
+	 * @return image or {@code null} if no image exists for the given name.
+	 */
 	public final Image getImage(String imageName, ImageFileExtension fileExtension) {
 		return getImage(imageName, ImageState.NORMAL, fileExtension);
 	}
 
+	/**
+	 * Returns the image for the given image name and given state.
+	 * 
+	 * @param imageName
+	 *            - name (ID) of the image
+	 * @param state
+	 *            - state of the image (@see ImageState)
+	 * @return image or {@code null} if no image exists for the given name.
+	 */
 	public final Image getImage(String imageName, ImageState state) {
 		return getImage(imageName, ImageState.NORMAL, ImageFileExtension.PNG);
 	}
 
+	/**
+	 * Returns the image for the given image name, given state and with the
+	 * given file extension.
+	 * 
+	 * @param imageName
+	 *            - name (ID) of the image
+	 * @param state
+	 *            - state of the image (@see ImageState)
+	 * @param fileExtension
+	 *            - extension of the image file (@see ImageFileExtension)
+	 * @return image or {@code null} if no image exists for the given name.
+	 */
 	public final Image getImage(String imageName, ImageState state, ImageFileExtension fileExtension) {
 		String fullName = getFullName(imageName, state, fileExtension);
 		return loadImage(fullName);
 	}
 
+	/**
+	 * Returns the full name of the image.
+	 * 
+	 * @param imageName
+	 *            - name (ID) of the image
+	 * @param state
+	 *            - state of the image (@see ImageState)
+	 * @param fileExtension
+	 *            - extension of the image file (@see ImageFileExtension)
+	 * @return full name of the image (file name).
+	 */
 	private String getFullName(String imageName, ImageState state, ImageFileExtension fileExtension) {
 
 		if (StringUtils.isEmpty(imageName)) {
@@ -72,13 +129,22 @@ public class ImageStore {
 		// scaling
 
 		if (imageName.indexOf('.') < 0) {
-			fullName += "." + fileExtension; //$NON-NLS-1$
+			fullName += "." + fileExtension.getFileNameExtension(); //$NON-NLS-1$
 		}
 
 		return fullName;
 
 	}
 
+	/**
+	 * Returns the image for the given name. If the image isn't cached, the
+	 * image is loaded form the resources and stores in the cache of the {@code
+	 * ImageStore}.
+	 * 
+	 * @param fullName
+	 *            - full name of the image (file name)
+	 * @return image or {@code null} if no image exists for the given name.
+	 */
 	private synchronized Image loadImage(String fullName) {
 
 		if (StringUtils.isEmpty(fullName)) {
@@ -105,6 +171,15 @@ public class ImageStore {
 
 	}
 
+	/**
+	 * Returns a descriptor of the image for the given name. The file of the
+	 * image is searched in every given bundle + icon path. The icon paths are
+	 * define via extension points.
+	 * 
+	 * @param fullName
+	 *            - full name of the image (file name)
+	 * @return image descriptor or {@code null} if file does not exists.
+	 */
 	private ImageDescriptor getImageDescriptor(String fullName) {
 
 		for (IImagePathExtension iconPath : iconPathes) {
@@ -119,6 +194,11 @@ public class ImageStore {
 
 	}
 
+	/**
+	 * Returns the missing image.
+	 * 
+	 * @return missing image
+	 */
 	public final synchronized Image getMissingImage() {
 		if (missingImage == null) {
 			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
