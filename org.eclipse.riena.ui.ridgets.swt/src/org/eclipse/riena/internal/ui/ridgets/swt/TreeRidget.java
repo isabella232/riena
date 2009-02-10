@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.map.IMapChangeListener;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.map.MapChangeEvent;
@@ -39,6 +39,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.databinding.viewers.TreeStructureAdvisor;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -85,9 +86,17 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private final SelectionListener selectionTypeEnforcer;
 	private final DoubleClickForwarder doubleClickForwarder;
 	private final Queue<ExpansionCommand> expansionStack;
-
 	private ListenerList<IActionListener> doubleClickListeners;
+
 	private DataBindingContext dbc;
+	/*
+	 * Binds the viewer's multiple selection to the multiple selection
+	 * observable. This binding hsa to be disposed when the ridget is set to
+	 * output-only, to avoid updating the model. It has to be recreated when the
+	 * ridget is set to not-output-only.
+	 */
+	private Binding viewerMSB;
+
 	private TreeViewer viewer;
 	/* keeps the last legal selection when in 'output only' mode */
 	private TreeItem[] savedSelection;
@@ -124,6 +133,11 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				saveSelection();
+				if (isOutputOnly()) {
+					disposeMultipleSelectionBinding();
+				} else {
+					createMultipleSelectionBinding();
+				}
 			}
 		});
 	}
@@ -156,6 +170,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			expansionStack.add(cmd);
 		}
 		if (dbc != null) {
+			disposeMultipleSelectionBinding();
 			dbc.dispose();
 			dbc = null;
 		}
@@ -485,8 +500,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * Initialize databinding related to selection handling (single/multi).
 	 */
 	private void bindToSelection() {
-		StructuredSelection currentSelection = new StructuredSelection(getSelection());
-
 		dbc = new DataBindingContext();
 		// viewer to single selection binding
 		IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
@@ -494,12 +507,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		// viewer to multi selection binding
-		IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
-				viewer, Object.class, this);
-		dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
-
-		viewer.setSelection(currentSelection);
+		viewerMSB = null;
+		if (!isOutputOnly()) {
+			createMultipleSelectionBinding();
+		}
 		saveSelection();
 	}
 
@@ -509,12 +520,30 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		Assert.isLegal(columnCount == valueAccessors.length, message);
 	}
 
+	private void createMultipleSelectionBinding() {
+		if (viewerMSB == null && dbc != null && viewer != null) {
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			viewer.setSelection(currentSelection);
+		}
+	}
+
 	private IObservableMap createObservableAttribute(TreeRidgetContentProvider viewerCP, String accessor) {
 		IObservableMap result = null;
 		if (accessor != null) {
 			result = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass, accessor);
 		}
 		return result;
+	}
+
+	private void disposeMultipleSelectionBinding() {
+		if (viewerMSB != null) { // implies dbc != null
+			viewerMSB.dispose();
+			dbc.removeBinding(viewerMSB);
+			viewerMSB = null;
+		}
 	}
 
 	/**
@@ -929,9 +958,8 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * element. Specifically:
 	 * <ul>
 	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
-	 * have any children beforehand</li>
-	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the
-	 * last child underneath A</li>
+	 * have any children beforehand</li> <li>if B gets removed to A we have to
+	 * refresh the icon of A, if B was the last child underneath A</li>
 	 * <ul>
 	 */
 	private final class TreeContentChangeListener implements ISetChangeListener {

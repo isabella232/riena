@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -24,6 +25,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -59,9 +61,17 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
 	private final ColumnSortListener sortListener;
-
 	private ListenerList<IActionListener> doubleClickListeners;
+
 	private DataBindingContext dbc;
+	/*
+	 * Binds the viewer's multiple selection to the multiple selection
+	 * observable. This binding hsa to be disposed when the ridget is set to
+	 * output-only, to avoid updating the model. It has to be recreated when the
+	 * ridget is set to not-output-only.
+	 */
+	private Binding viewerMSB;
+
 	private TableViewer viewer;
 	private String[] columnHeaders;
 	private IObservableList rowObservables;
@@ -86,6 +96,15 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				applyEraseListener();
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (isOutputOnly()) {
+					disposeMultipleSelectionBinding();
+				} else {
+					createMultipleSelectionBinding();
+				}
 			}
 		});
 	}
@@ -114,8 +133,6 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 			viewer.setInput(rowObservables);
 
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-
 			dbc = new DataBindingContext();
 			// viewer to single selection binding
 			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
@@ -123,12 +140,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 			// viewer to to multi selection binding
-			IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
-					viewer, Object.class, this);
-			dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
-
-			viewer.setSelection(currentSelection);
+			viewerMSB = null;
+			if (!isOutputOnly()) {
+				createMultipleSelectionBinding();
+			}
 
 			for (TableColumn column : control.getColumns()) {
 				column.addSelectionListener(sortListener);
@@ -141,6 +156,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	@Override
 	protected void unbindUIControl() {
 		if (dbc != null) {
+			disposeMultipleSelectionBinding();
 			dbc.dispose();
 			dbc = null;
 		}
@@ -174,7 +190,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		doubleClickListeners.add(listener);
 	}
 
-	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
+	public void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		if (columnHeaders != null) {
 			String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
@@ -183,7 +199,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		unbindUIControl();
 
 		this.rowBeanClass = rowBeanClass;
-		rowObservables = listObservableValue;
+		rowObservables = rowBeansObservable;
 		renderingMethods = new String[columnPropertyNames.length];
 		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);
 
@@ -431,6 +447,24 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
 		Assert.isLegal(-1 < columnIndex, msg);
 		Assert.isLegal(columnIndex < range, msg);
+	}
+
+	private void createMultipleSelectionBinding() {
+		if (viewerMSB == null && dbc != null && viewer != null) {
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			viewer.setSelection(currentSelection);
+		}
+	}
+
+	private void disposeMultipleSelectionBinding() {
+		if (viewerMSB != null) { // implies dbc != null
+			viewerMSB.dispose();
+			dbc.removeBinding(viewerMSB);
+			viewerMSB = null;
+		}
 	}
 
 	// helping classes

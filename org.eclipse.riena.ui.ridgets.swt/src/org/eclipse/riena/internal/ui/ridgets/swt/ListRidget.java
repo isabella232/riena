@@ -27,6 +27,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -63,6 +64,12 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 
 	private DataBindingContext dbc;
 	private Binding viewerSSB;
+	/*
+	 * Binds the viewer's multiple selection to the multiple selection
+	 * observable. This binding hsa to be disposed when the ridget is set to
+	 * output-only, to avoid updating the model. It has to be recreated when the
+	 * ridget is set to not-output-only.
+	 */
 	private Binding viewerMSB;
 
 	private ListViewer viewer;
@@ -93,6 +100,15 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 			public void propertyChange(PropertyChangeEvent evt) {
 				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
 				updateEnabled(isEnabled);
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (isOutputOnly()) {
+					disposeMultipleSelectionBinding();
+				} else {
+					createMultipleSelectionBinding();
+				}
 			}
 		});
 	}
@@ -315,31 +331,43 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	// helping methods
 	// ////////////////
 
-	private void createSelectionBindings() {
-		StructuredSelection currentSelection = new StructuredSelection(getSelection());
+	private void createMultipleSelectionBinding() {
+		if (viewerMSB == null && dbc != null && viewer != null) {
+			StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
+			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
+					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
+			viewer.setSelection(currentSelection);
+		}
+	}
 
+	private void disposeMultipleSelectionBinding() {
+		if (viewerMSB != null) { // implies dbc != null
+			viewerMSB.dispose();
+			dbc.removeBinding(viewerMSB);
+			viewerMSB = null;
+		}
+	}
+
+	private void createSelectionBindings() {
 		dbc = new DataBindingContext();
 		// viewer to single selection binding
 		IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
 		viewerSSB = dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		// viewer to to multi selection binding
-		IObservableList viewerSelections = new OutputAwareMultipleSelectionObservableList(dbc.getValidationRealm(),
-				viewer, Object.class, this);
-		viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
-				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
-
-		viewer.setSelection(currentSelection);
+		// viewer to multiple selection binding
+		viewerMSB = null;
+		if (!isOutputOnly()) {
+			createMultipleSelectionBinding();
+		}
 	}
 
 	private void disposeSelectionBindings() {
 		if (viewerSSB != null && !viewerSSB.isDisposed()) {
 			viewerSSB.dispose();
 		}
-		if (viewerMSB != null && !viewerMSB.isDisposed()) {
-			viewerMSB.dispose();
-		}
+		disposeMultipleSelectionBinding();
 	}
 
 	private boolean hasInput() {
