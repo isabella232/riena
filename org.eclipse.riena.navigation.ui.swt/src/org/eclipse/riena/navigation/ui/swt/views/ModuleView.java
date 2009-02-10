@@ -164,23 +164,27 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private boolean clipSubModuleText(GC gc, TreeItem item) {
 
 		boolean clipped = false;
-
 		Rectangle treeBounds = getTree().getBounds();
 		Rectangle itemBounds = item.getBounds();
 		int maxWidth = treeBounds.width - itemBounds.x - 5;
-		INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
-		String longText = ""; //$NON-NLS-1$
-		if (subModule != null) {
-			longText = subModule.getLabel();
-		} else {
-			longText = item.getText();
+		String longText = getItemText(item);
+		if (longText != null) {
+			String text = SwtUtilities.clipText(gc, longText, maxWidth);
+			item.setText(text);
+			clipped = !longText.equals(text);
 		}
-		String text = SwtUtilities.clipText(gc, longText, maxWidth);
-		item.setText(text);
 
-		clipped = !longText.equals(text);
 		return clipped;
+	}
 
+	private String getItemText(TreeItem item) {
+
+		INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
+		if (subModule != null) {
+			return subModule.getLabel();
+		} else {
+			return item.getText();
+		}
 	}
 
 	/**
