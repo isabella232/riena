@@ -33,6 +33,7 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
 	 */
+	@Override
 	public void configureRidgets() {
 
 		ILabelRidget labelFacade = (ILabelRidget) getRidget("labelFacade"); //$NON-NLS-1$
