@@ -33,7 +33,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * Binds the table to the model data.
 	 * 
 	 * @param rowBeansObservable
-	 *            An observable list with a list of beans.
+	 *            An observable list of beans.
 	 * @param rowBeanClass
 	 *            The class of the beans in the list.
 	 * @param columnPropertyNames
