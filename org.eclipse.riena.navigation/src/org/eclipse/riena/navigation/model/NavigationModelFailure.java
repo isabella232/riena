@@ -25,4 +25,16 @@ public class NavigationModelFailure extends Failure {
 	public NavigationModelFailure(String msg) {
 		super(msg);
 	}
+
+	/**
+	 * constructor.
+	 * 
+	 * @param cause
+	 *            exception which has caused this Failure.
+	 * @param msg
+	 *            message text or message code.
+	 */
+	public NavigationModelFailure(String msg, Throwable cause) {
+		super(msg, cause);
+	}
 }

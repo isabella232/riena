@@ -362,7 +362,7 @@ public class GenericNavigationAssembler implements IGenericNavigationAssembler {
 					}
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				throw new NavigationModelFailure(ex.getMessage(), ex);
 			}
 		}
 	}
