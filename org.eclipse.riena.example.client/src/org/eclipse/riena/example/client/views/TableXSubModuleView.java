@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -19,8 +20,10 @@ import org.eclipse.riena.example.client.controllers.TableXSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -43,13 +46,12 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 		public Header(Composite parent, int style) {
 			super(parent, style);
 			setWeights(new int[] { 100, 100, 100 });
-			setColumnText(new String[] { "Name", "Gender", "Pet" });
+			setColumnText(new String[] { "Name", "Gender", "Pet" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
 	public static class Row extends Composite implements IComplexComponent {
-		private Text txtFirst;
-		private Text txtLast;
+		private final List<Object> controls = new ArrayList<Object>();
 
 		public Row(Composite parent, int style) {
 			super(parent, style);
@@ -60,28 +62,30 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 		}
 
 		public List<Object> getUIControls() {
-			return Arrays.asList(new Object[] { txtFirst, txtLast });
+			return Collections.unmodifiableList(controls);
 		}
 
-		private final void createColumnName() {
-			Composite cell = createCell();
-			txtFirst = UIControlsFactory.createText(cell);
-			txtLast = UIControlsFactory.createText(cell);
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtFirst);
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtLast);
+		private void addUIControl(Object uiControl, String bindingId) {
+			controls.add(uiControl);
+			SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
 		}
 
-		private final void createColumnGender() {
+		private void createColumnName() {
 			Composite cell = createCell();
-			UIControlsFactory.createButtonRadio(cell).setText("Male");
-			UIControlsFactory.createButtonRadio(cell).setText("Female");
+			createText(cell, "first"); //$NON-NLS-1$
+			createText(cell, "last"); //$NON-NLS-1$
 		}
 
-		private final void createColumnPet() {
+		private void createColumnGender() {
 			Composite cell = createCell();
-			UIControlsFactory.createButtonCheck(cell).setText("Cat");
-			UIControlsFactory.createButtonCheck(cell).setText("Dog");
-			UIControlsFactory.createButtonCheck(cell).setText("Fish");
+			ChoiceComposite gender = new ChoiceComposite(cell, SWT.NONE, false);
+			addUIControl(gender, "gender"); //$NON-NLS-1$
+		}
+
+		private void createColumnPet() {
+			Composite cell = createCell();
+			ChoiceComposite pet = new ChoiceComposite(cell, SWT.NONE, true);
+			addUIControl(pet, "pets"); //$NON-NLS-1$
 		}
 
 		private Composite createCell() {
@@ -89,6 +93,12 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 			GridLayoutFactory.swtDefaults().numColumns(1).applyTo(cell);
 			cell.setBackground(cell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 			return cell;
+		}
+
+		private void createText(Composite parent, String bindingId) {
+			Text txtFirst = UIControlsFactory.createText(parent);
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtFirst);
+			addUIControl(txtFirst, bindingId);
 		}
 
 	}
@@ -100,8 +110,6 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 
 		Group group1 = createTableGroup(parent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(group1);
-
-		addMapping(TableXSubModuleView.Row.class, TableXSubModuleController.RowRidget.class);
 	}
 
 	// helping methods
@@ -117,7 +125,6 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
 		table.setRunTime(true);
-		table.setNumRowsInCollection(100);
 
 		addUIControl(table, "table"); //$NON-NLS-1$
 

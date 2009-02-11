@@ -30,18 +30,25 @@ public final class PersonFactory {
 
 		Person person = new Person("Doe", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
+		person.setHasDog(true);
 		newList.add(person);
 
 		person = new Person("Jackson", "Janet"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
+		person.setGender(Person.FEMALE);
+		person.setHasCat(true);
 		newList.add(person);
 
 		person = new Person("Jackson", "Jermaine"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
+		person.setHasFish(true);
 		newList.add(person);
 
 		person = new Person("Jackson", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
+		person.setHasDog(true);
+		person.setHasCat(true);
+		person.setHasFish(true);
 		newList.add(person);
 
 		person = new Person("JJ Jr. Shabadoo", "Joey"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -54,6 +61,7 @@ public final class PersonFactory {
 
 		person = new Person("Johnson", "Jane"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
+		person.setGender(Person.FEMALE);
 		newList.add(person);
 
 		person = new Person("Zappa", "Frank"); //$NON-NLS-1$ //$NON-NLS-2$

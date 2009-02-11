@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.beans.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.runtime.Assert;
+
 /**
  * List element of the list held by the <code>PersonManager</code>
  */
@@ -39,6 +44,15 @@ public class Person extends AbstractBean {
 	 */
 	public static final String PROPERTY_EYE_COLOR = "eyeColor"; //$NON-NLS-1$
 	/**
+	 * Property name of the gender property ("{@value} ").
+	 */
+	public static final String PROPERTY_GENDER = "gender"; //$NON-NLS-1$
+	/**
+	 * Property name of the pets property ("{@value} ").
+	 */
+	public static final String PROPERTY_PETS = "pets"; //$NON-NLS-1$
+
+	/**
 	 * Constant for <code>MALE</code> gender value ("male").
 	 */
 	public final static String MALE = "male"; //$NON-NLS-1$
@@ -46,6 +60,13 @@ public class Person extends AbstractBean {
 	 * Constant for <code>FEMALE</code> gender value ("female").
 	 */
 	public final static String FEMALE = "female"; //$NON-NLS-1$
+
+	/**
+	 * Types of Pets a person can have.
+	 */
+	public static enum Pets {
+		CAT, DOG, FISH
+	}
 
 	private Integer number;
 	private String lastname;
@@ -184,7 +205,12 @@ public class Person extends AbstractBean {
 	 * @param gender
 	 */
 	public void setGender(String gender) {
-		this.gender = gender;
+		Assert.isLegal(MALE.equals(gender) || FEMALE.equals(gender));
+		if (gender != this.gender) {
+			String oldValue = this.gender;
+			this.gender = gender;
+			firePropertyChanged(PROPERTY_GENDER, oldValue, this.gender);
+		}
 	}
 
 	/**
@@ -199,7 +225,10 @@ public class Person extends AbstractBean {
 	 *            The hasDog to set.
 	 */
 	public void setHasDog(boolean hasDog) {
-		this.hasDog = hasDog;
+		if (this.hasDog != hasDog) {
+			this.hasDog = hasDog;
+			firePropertyChanged(PROPERTY_PETS, null, getPets());
+		}
 	}
 
 	/**
@@ -214,7 +243,10 @@ public class Person extends AbstractBean {
 	 *            The hasCat to set.
 	 */
 	public void setHasCat(boolean hasCat) {
-		this.hasCat = hasCat;
+		if (this.hasCat != hasCat) {
+			this.hasCat = hasCat;
+			firePropertyChanged(PROPERTY_PETS, null, getPets());
+		}
 	}
 
 	/**
@@ -229,7 +261,31 @@ public class Person extends AbstractBean {
 	 *            The hasFish to set.
 	 */
 	public void setHasFish(boolean hasFish) {
-		this.hasFish = hasFish;
+		if (this.hasFish != hasFish) {
+			this.hasFish = hasFish;
+			firePropertyChanged(PROPERTY_PETS, null, getPets());
+		}
+	}
+
+	public List<Pets> getPets() {
+		List<Pets> result = new ArrayList<Pets>();
+		if (hasCat) {
+			result.add(Pets.CAT);
+		}
+		if (hasDog) {
+			result.add(Pets.DOG);
+		}
+		if (hasFish) {
+			result.add(Pets.FISH);
+		}
+		return result;
+	}
+
+	public void setPets(List<Pets> pets) {
+		setHasCat(pets.contains(Pets.CAT));
+		setHasDog(pets.contains(Pets.DOG));
+		setHasFish(pets.contains(Pets.FISH));
+		firePropertyChanged(PROPERTY_PETS, null, getPets());
 	}
 
 	/**
