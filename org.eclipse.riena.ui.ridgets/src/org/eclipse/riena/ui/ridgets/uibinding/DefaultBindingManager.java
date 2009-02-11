@@ -70,10 +70,11 @@ public class DefaultBindingManager implements IBindingManager {
 				}
 			}
 		}
-
-		Wire.instance(ridgetContainer).andStart(Activator.getDefault().getContext());
+		if (Activator.getDefault() != null) {
+			// TODO This unveils a weakness of the wiring stuff because the dependency (to the wiring) is just moved the ridget containers to here :-(
+			Wire.instance(ridgetContainer).andStart(Activator.getDefault().getContext());
+		}
 		ridgetContainer.configureRidgets();
-
 	}
 
 	/**
