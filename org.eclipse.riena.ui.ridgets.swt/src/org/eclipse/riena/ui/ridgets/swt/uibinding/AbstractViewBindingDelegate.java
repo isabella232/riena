@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.swt.uibinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
@@ -124,15 +123,5 @@ public abstract class AbstractViewBindingDelegate {
 	 */
 	public void addSpecialMapping(String controlName, Class<? extends Object> ridgetClazz) {
 		mapper.addSpecialMapping(controlName, ridgetClazz);
-	}
-
-	/**
-	 * TODO [ev] temp
-	 * 
-	 * @param controlClazz
-	 * @param ridgetClazz
-	 */
-	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
-		mapper.addMapping(controlClazz, ridgetClazz);
 	}
 }
