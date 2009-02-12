@@ -39,6 +39,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
@@ -231,7 +232,8 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 								// silently revert UI change
 								updateSelection(getUIControl());
 							} else {
-								SingleChoiceRidget.this.setSelection(data);
+								// this is a workaround to make composite table aware of focus changes, Bug #264627
+								fireFocusIn(button.getParent());
 							}
 						}
 					}
@@ -248,6 +250,13 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 				child.dispose();
 			}
 		}
+	}
+
+	private void fireFocusIn(Control control) {
+		Event event = new Event();
+		event.type = SWT.FocusIn;
+		event.widget = control;
+		control.notifyListeners(SWT.FocusIn, event);
 	}
 
 	private boolean hasInput() {

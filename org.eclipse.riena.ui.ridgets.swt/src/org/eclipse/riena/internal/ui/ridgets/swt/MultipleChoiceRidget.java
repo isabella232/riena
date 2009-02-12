@@ -37,6 +37,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
@@ -249,6 +250,8 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 								selectionObservable.remove(data);
 								firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 							}
+							// this is a workaround to make composite table aware of focus changes, Bug #264627
+							fireFocusIn(button.getParent());
 						}
 					}
 				});
@@ -264,6 +267,13 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				child.dispose();
 			}
 		}
+	}
+
+	private void fireFocusIn(Control control) {
+		Event event = new Event();
+		event.type = SWT.FocusIn;
+		event.widget = control;
+		control.notifyListeners(SWT.FocusIn, event);
 	}
 
 	private boolean hasInput() {
