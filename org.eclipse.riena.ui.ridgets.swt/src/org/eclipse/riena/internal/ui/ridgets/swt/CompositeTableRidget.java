@@ -13,6 +13,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.logging.ConsoleLogger;
@@ -26,7 +28,6 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowContentProvider;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowFocusListener;
@@ -60,6 +61,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 	private Class<? extends Object> rowRidgetClass;
 
 	public CompositeTableRidget() {
+		Assert.isLegal(!SelectionType.MULTI.equals(getSelectionType()));
 		rowToRidgetMapper = new CTRowToRidgetMapper();
 		selectionSynchronizer = new SelectionSynchronizer();
 	}
@@ -79,6 +81,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 			control.addRowConstructionListener(rowToRidgetMapper);
 			control.addRowContentProvider(rowToRidgetMapper);
 			control.addRowFocusListener(selectionSynchronizer);
+			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
 		}
 
 	}
@@ -87,6 +90,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 	protected void unbindUIControl() {
 		CompositeTable control = getUIControl();
 		if (control != null) {
+			getSingleSelectionObservable().removeValueChangeListener(selectionSynchronizer);
 			control.removeRowFocusListener(selectionSynchronizer);
 			control.removeRowContentProvider(rowToRidgetMapper);
 			control.removeRowConstructionListener(rowToRidgetMapper);
@@ -130,25 +134,27 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 		super.updateFromModel();
 		CompositeTable control = getUIControl();
 		if (control != null && rowObservables != null) {
-			Point selection = control.getSelection();
-			control.setNumRowsInCollection(rowObservables.size());
-			control.refreshAllRows();
-			if (selection != null && !selection.equals(control.getSelection())) {
-				control.setSelection(selection);
+			control.setRedraw(false);
+			try {
+				control.setNumRowsInCollection(rowObservables.size());
+				control.refreshAllRows();
+				updateSelection(true);
+			} finally {
+				control.setRedraw(true);
 			}
 		}
 	}
 
 	@Override
 	public int getSelectionIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		Object selection = getSingleSelectionObservable().getValue();
+		return indexOfOption(selection);
 	}
 
 	@Override
 	public int[] getSelectionIndices() {
-		// TODO Auto-generated method stub
-		return null;
+		int index = getSelectionIndex();
+		return index == -1 ? new int[0] : new int[] { index };
 	}
 
 	@Override
@@ -158,8 +164,11 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 
 	@Override
 	public int indexOfOption(Object option) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = -1;
+		if (option != null && rowObservables != null) {
+			result = rowObservables.indexOf(option);
+		}
+		return result;
 	}
 
 	@Override
@@ -167,8 +176,46 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 		return true;
 	}
 
+	@Override
+	public void setSelectionType(SelectionType selectionType) {
+		if (SelectionType.MULTI.equals(selectionType)) {
+			throw new IllegalArgumentException("SelectionType.MULTI is not supported by the UI-control"); //$NON-NLS-1$
+		}
+		super.setSelectionType(selectionType);
+	}
+
 	// helping methods
 	//////////////////
+
+	/**
+	 * Re-applies ridget selection to control (if selection exists), otherwise
+	 * clears ridget selection
+	 * 
+	 * @param canClear
+	 *            true, if it's ok to clear the selection
+	 */
+	private void updateSelection(boolean canClear) {
+		CompositeTable control = getUIControl();
+		if (control != null) {
+			Object selection = getSingleSelectionObservable().getValue();
+			int index = indexOfOption(selection);
+			if (index > -1) {
+				int row = index - control.getTopRow();
+				control.setSelection(0, row);
+			} else {
+				if (selection != null && canClear) {
+					// if the selection has been deleted, selected another row
+					// because otherwise composite table still things the
+					// deleted row is selected
+					if (rowObservables != null && rowObservables.size() > 0) {
+						setSelection(0);
+					} else {
+						clearSelection();
+					}
+				}
+			}
+		}
+	}
 
 	// helping classes
 	//////////////////
@@ -209,11 +256,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 		}
 
 		public void refresh(CompositeTable table, int index, Control row) {
-			Object rowBean = rowObservables.get(index);
-			Assert.isLegal(rowBeanClass.isAssignableFrom(rowBean.getClass()));
-			IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
-			rowRidget.setData(rowBean);
-			rowRidget.configureRidgets();
+			if (rowObservables != null) {
+				Object rowBean = rowObservables.get(index);
+				Assert.isLegal(rowBeanClass.isAssignableFrom(rowBean.getClass()));
+				IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
+				rowRidget.setData(rowBean);
+				rowRidget.configureRidgets();
+			}
 		}
 
 		private IRidget createRidget(Object control) throws ReflectionFailure {
@@ -224,23 +273,47 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 
 	/**
 	 * Updates the selection in a CompositeTable control, when the value of the
-	 * (single selection) observable changes.
+	 * (single selection) observable changes and vice versa.
 	 */
-	private final class SelectionSynchronizer implements IRowFocusListener {
+	private final class SelectionSynchronizer implements IRowFocusListener, IValueChangeListener {
+
+		private boolean isArriving = false;
+		private boolean isSelecting = false;
 
 		public void arrive(CompositeTable sender, int currentObjectOffset, Control newRow) {
-			//			System.out.println("arrive: " + currentObjectOffset);
-			//			System.out.println(getSingleSelectionObservable().getValue());
+			if (isSelecting) {
+				return;
+			}
+			isArriving = true;
+			try {
+				int selectionIndex = indexOfOption(getSingleSelectionObservable().getValue());
+				if (currentObjectOffset != selectionIndex) {
+					setSelection(currentObjectOffset);
+				}
+			} finally {
+				isArriving = false;
+			}
 		}
 
 		public void depart(CompositeTable sender, int currentObjectOffset, Control row) {
-			//			System.out.println("depart: " + currentObjectOffset);
+			// unused
 		}
 
 		public boolean requestRowChange(CompositeTable sender, int currentObjectOffset, Control row) {
 			return true;
 		}
 
+		public void handleValueChange(ValueChangeEvent event) {
+			if (isArriving) {
+				return;
+			}
+			isSelecting = true;
+			try {
+				updateSelection(false);
+			} finally {
+				isSelecting = false;
+			}
+		}
 	}
 
 }

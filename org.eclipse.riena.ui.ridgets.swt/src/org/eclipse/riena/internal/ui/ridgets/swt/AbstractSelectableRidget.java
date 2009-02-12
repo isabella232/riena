@@ -145,7 +145,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		setSelection(list);
 	}
 
-	public final void setSelectionType(SelectionType selectionType) {
+	public void setSelectionType(SelectionType selectionType) {
 		Assert.isNotNull(selectionType, "selectionType cannot be null"); //$NON-NLS-1$
 		if (SelectionType.NONE.equals(selectionType)) {
 			throw new IllegalArgumentException("SelectionType.NONE is not supported by the UI-control"); //$NON-NLS-1$

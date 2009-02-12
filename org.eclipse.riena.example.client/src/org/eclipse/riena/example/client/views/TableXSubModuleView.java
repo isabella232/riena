@@ -122,6 +122,7 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 		CompositeTable table = new CompositeTable(group, SWT.BORDER);
 		new Header(table, SWT.NONE);
 		new Row(table, SWT.NONE);
+		table.setInsertHint("Press 'Add' to add more rows..."); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
 		table.setRunTime(true);
