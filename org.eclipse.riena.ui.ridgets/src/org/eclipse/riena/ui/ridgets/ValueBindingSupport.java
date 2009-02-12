@@ -194,6 +194,15 @@ public class ValueBindingSupport implements IValidationCallback {
 			}
 		}
 
+		if (modelBinding != null) {
+			// MUST dispose previous binding, otherwise code like this:
+			// ridget.bind(modelA);
+			// ridget.bind(modelB);
+			// causes the ridget to be bound to two models and ui changes are
+			// synched with both! 
+			modelBinding.dispose();
+			getContext().removeBinding(modelBinding);
+		}
 		modelBinding = getContext().bindValue(targetOV, modelOV, uiControlToModelStrategy, modelToUIControlStrategy);
 		AggregateValidationStatus validationStatus = new AggregateValidationStatus(getContext().getBindings(),
 				AggregateValidationStatus.MAX_SEVERITY);
