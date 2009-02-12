@@ -22,6 +22,7 @@ import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
@@ -40,7 +41,7 @@ import org.osgi.service.log.LogService;
  * instance of an arbitrary composite in each row.
  */
 // TODO [ev] tests
-public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
+public class CompositeTableRidget extends AbstractSelectableIndexedRidget implements ICompositeTableRidget {
 
 	private final static Logger LOGGER;
 
@@ -102,20 +103,6 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 		return rowObservables;
 	}
 
-	/**
-	 * Bind the composite table to the given model data and specify which
-	 * composite to use for the rows.
-	 * 
-	 * @param rowBeansObservables
-	 *            An observable list of beans (non-null).
-	 * @param rowBeanClass
-	 *            The class of the beans in the list
-	 * @param rowRidgetClass
-	 *            A class (extending Composite) which will be instantiated for
-	 *            each row. It must provide a public constructor with these
-	 *            parameters: {@code Composite parent, int style}.
-	 */
-	// TODO [ev] this javadoc is SWT specific
 	public void bindToModel(IObservableList rowBeansObservables, Class<? extends Object> rowBeanClass,
 			Class<? extends Object> rowRidgetClass) {
 		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
