@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
@@ -37,36 +38,36 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
  */
 public class TableXSubModuleController extends SubModuleController {
 
-	public static class RowRidget extends AbstractCompositeRidget {
-		private Person rowBean;
+	public static class RowRidget extends AbstractCompositeRidget implements IRowRidget {
+		private Person rowData;
 
 		private static String[] GENDER = { Person.FEMALE, Person.MALE };
 
-		public void setBean(Person rowBean) {
-			this.rowBean = rowBean;
+		public void setData(Object rowData) {
+			this.rowData = (Person) rowData;
 		}
 
 		@Override
 		public void configureRidgets() {
 			ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
-			txtFirst.bindToModel(rowBean, Person.PROPERTY_FIRSTNAME);
+			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
 			ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
-			txtLast.bindToModel(rowBean, Person.PROPERTY_LASTNAME);
+			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
 			ISingleChoiceRidget gender = (ISingleChoiceRidget) getRidget("gender"); //$NON-NLS-1$
-			gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, rowBean, Person.PROPERTY_GENDER);
+			gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, rowData, Person.PROPERTY_GENDER);
 			gender.updateFromModel();
 
 			IMultipleChoiceRidget pets = (IMultipleChoiceRidget) getRidget("pets"); //$NON-NLS-1$
-			pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, rowBean, Person.PROPERTY_PETS);
+			pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, rowData, Person.PROPERTY_PETS);
 			pets.updateFromModel();
 		}
 	}
 
-	private List<Person> input = PersonFactory.createPersonList();
+	private List<Person> input = PersonFactory.createPersonListABC();
 
 	public TableXSubModuleController() {
 		this(null);
@@ -80,6 +81,7 @@ public class TableXSubModuleController extends SubModuleController {
 		final CompositeTableRidget table = (CompositeTableRidget) getRidget("table"); //$NON-NLS-1$
 		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
 		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonDump = (IActionRidget) getRidget("buttonDump"); //$NON-NLS-1$
 
 		table.bindToModel(new WritableList(input, Person.class), Person.class, RowRidget.class);
 
@@ -103,6 +105,16 @@ public class TableXSubModuleController extends SubModuleController {
 				Person person = (Person) table.getSingleSelectionObservable().getValue();
 				input.remove(person);
 				table.updateFromModel();
+			}
+		});
+
+		buttonDump.setText("&Console dump"); //$NON-NLS-1$
+		buttonDump.addListener(new IActionListener() {
+			public void callback() {
+				System.out.println("\nPersons:"); //$NON-NLS-1$
+				for (Person p : input) {
+					System.out.println(p);
+				}
 			}
 		});
 

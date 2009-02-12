@@ -14,12 +14,14 @@ import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
@@ -27,21 +29,39 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowContentProvider;
+import org.eclipse.swt.nebula.widgets.compositetable.IRowFocusListener;
+import org.eclipse.swt.nebula.widgets.compositetable.RowConstructionListener;
 import org.eclipse.swt.widgets.Control;
+import org.osgi.service.log.LogService;
 
 /**
- * TODO [ev] docs
+ * A ridget for nebula's {@link CompositeTable} - this is a table with an
+ * instance of an arbitrary composite in each row.
  */
+// TODO [ev] tests
 public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 
-	private final IRowContentProvider rowContentProvider;
+	private final static Logger LOGGER;
+
+	static {
+		String loggerName = CompositeTableRidget.class.getName();
+		if (Activator.getDefault() != null) {
+			LOGGER = Activator.getDefault().getLogger(loggerName);
+		} else {
+			LOGGER = new ConsoleLogger(loggerName);
+		}
+	}
+
+	private final CTRowToRidgetMapper rowToRidgetMapper;
+	private final SelectionSynchronizer selectionSynchronizer;
 
 	private IObservableList rowObservables;
 	private Class<? extends Object> rowBeanClass;
 	private Class<? extends Object> rowRidgetClass;
 
 	public CompositeTableRidget() {
-		rowContentProvider = new CTRowContentProvider();
+		rowToRidgetMapper = new CTRowToRidgetMapper();
+		selectionSynchronizer = new SelectionSynchronizer();
 	}
 
 	@Override
@@ -56,7 +76,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 			if (rowObservables != null) {
 				control.setNumRowsInCollection(rowObservables.size());
 			}
-			control.addRowContentProvider(rowContentProvider);
+			control.addRowConstructionListener(rowToRidgetMapper);
+			control.addRowContentProvider(rowToRidgetMapper);
+			control.addRowFocusListener(selectionSynchronizer);
 		}
 
 	}
@@ -65,7 +87,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 	protected void unbindUIControl() {
 		CompositeTable control = getUIControl();
 		if (control != null) {
-			control.removeRowContentProvider(rowContentProvider);
+			control.removeRowFocusListener(selectionSynchronizer);
+			control.removeRowContentProvider(rowToRidgetMapper);
+			control.removeRowConstructionListener(rowToRidgetMapper);
 		}
 	}
 
@@ -74,8 +98,24 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 		return rowObservables;
 	}
 
+	/**
+	 * Bind the composite table to the given model data and specify which
+	 * composite to use for the rows.
+	 * 
+	 * @param rowBeansObservables
+	 *            An observable list of beans (non-null).
+	 * @param rowBeanClass
+	 *            The class of the beans in the list
+	 * @param rowRidgetClass
+	 *            A class (extending Composite) which will be instantiated for
+	 *            each row. It must provide a public constructor with these
+	 *            parameters: {@code Composite parent, int style}.
+	 */
+	// TODO [ev] this javadoc is SWT specific
 	public void bindToModel(IObservableList rowBeansObservables, Class<? extends Object> rowBeanClass,
 			Class<? extends Object> rowRidgetClass) {
+		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
+
 		unbindUIControl();
 
 		rowObservables = rowBeansObservables;
@@ -85,11 +125,6 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 		bindUIControl();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.AbstractRidget#updateFromModel()
-	 */
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
@@ -138,17 +173,22 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 	// helping classes
 	//////////////////
 
-	private final class CTRowContentProvider implements IRowContentProvider {
+	/**
+	 * Binds and configures Ridgets to a Row control.
+	 */
+	private final class CTRowToRidgetMapper extends RowConstructionListener implements IRowContentProvider {
 
 		private final IControlRidgetMapper<Object> mapper = new DefaultSwtControlRidgetMapper();
 
-		public void refresh(CompositeTable table, int index, Control row) {
-			Object bean = rowObservables.get(index);
-			Assert.isLegal(rowBeanClass.isAssignableFrom(bean.getClass()));
-			IComplexComponent rowControl = (IComplexComponent) row;
-			IRidgetContainer rowRidget = (IRidgetContainer) ReflectionUtils
-					.newInstance(rowRidgetClass, (Object[]) null);
-			ReflectionUtils.invoke(rowRidget, "setBean", bean);
+		@Override
+		public void headerConstructed(Control newHeader) {
+			// unused
+		}
+
+		@Override
+		public void rowConstructed(Control newRow) {
+			IComplexComponent rowControl = (IComplexComponent) newRow;
+			IRowRidget rowRidget = (IRowRidget) ReflectionUtils.newInstance(rowRidgetClass, (Object[]) null);
 			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 			for (Object control : rowControl.getUIControls()) {
 				String bindingProperty = locator.locateBindingProperty(control);
@@ -157,12 +197,22 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 					ridget.setUIControl(control);
 					rowRidget.addRidget(bindingProperty, ridget);
 				} else {
-					// TODO [ev] log this
-					System.err.println(String.format("widget without binding property: %s : %s", rowControl.getClass(),
-							control));
+					String message = String.format("widget without binding property: %s : %s", rowControl.getClass(), //$NON-NLS-1$
+							control);
+					LOGGER.log(LogService.LOG_WARNING, message);
 				}
 			}
-			Wire.instance(rowRidget).andStart(Activator.getDefault().getContext()); // TODO [ev] why?
+			if (Activator.getDefault() != null) {
+				Wire.instance(rowRidget).andStart(Activator.getDefault().getContext());
+			}
+			newRow.setData("rowRidget", rowRidget); //$NON-NLS-1$
+		}
+
+		public void refresh(CompositeTable table, int index, Control row) {
+			Object rowBean = rowObservables.get(index);
+			Assert.isLegal(rowBeanClass.isAssignableFrom(rowBean.getClass()));
+			IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
+			rowRidget.setData(rowBean);
 			rowRidget.configureRidgets();
 		}
 
@@ -170,6 +220,27 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget {
 			Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
 			return ReflectionUtils.newInstance(ridgetClass);
 		}
+	}
+
+	/**
+	 * Updates the selection in a CompositeTable control, when the value of the
+	 * (single selection) observable changes.
+	 */
+	private final class SelectionSynchronizer implements IRowFocusListener {
+
+		public void arrive(CompositeTable sender, int currentObjectOffset, Control newRow) {
+			//			System.out.println("arrive: " + currentObjectOffset);
+			//			System.out.println(getSingleSelectionObservable().getValue());
+		}
+
+		public void depart(CompositeTable sender, int currentObjectOffset, Control row) {
+			//			System.out.println("depart: " + currentObjectOffset);
+		}
+
+		public boolean requestRowChange(CompositeTable sender, int currentObjectOffset, Control row) {
+			return true;
+		}
+
 	}
 
 }

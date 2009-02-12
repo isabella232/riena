@@ -136,7 +136,7 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 
 	private Composite createButtonComposite(Group group) {
 		Composite buttonComposite = UIControlsFactory.createComposite(group);
-		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
+		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(false).applyTo(buttonComposite);
 
 		Button buttonAdd = UIControlsFactory.createButton(buttonComposite);
 		int widthHint = UIControlsFactory.getWidthHint(buttonAdd);
@@ -146,6 +146,9 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 
 		Button buttonDelete = UIControlsFactory.createButton(buttonComposite);
 		addUIControl(buttonDelete, "buttonDelete"); //$NON-NLS-1$
+
+		Button buttonDump = UIControlsFactory.createButton(buttonComposite);
+		addUIControl(buttonDump, "buttonDump"); //$NON-NLS-1$
 
 		return buttonComposite;
 	}

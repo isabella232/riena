@@ -70,4 +70,52 @@ public final class PersonFactory {
 
 		return newList;
 	}
+
+	public static List<Person> createPersonListABC() {
+		List<Person> newList = new ArrayList<Person>();
+
+		Person person = new Person("AAA", "AAA"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setEyeColor(1);
+		person.setHasDog(true);
+		newList.add(person);
+
+		person = new Person("BBB", "BBB"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setEyeColor(1);
+		person.setGender(Person.FEMALE);
+		person.setHasCat(true);
+		newList.add(person);
+
+		person = new Person("CCC", "CCC"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setEyeColor(1);
+		person.setHasFish(true);
+		newList.add(person);
+
+		person = new Person("DDD", "DDD"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setGender(Person.FEMALE);
+		person.setEyeColor(3);
+		person.setHasDog(true);
+		person.setHasCat(true);
+		person.setHasFish(true);
+		newList.add(person);
+
+		person = new Person("EEE", "EEE"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setEyeColor(3);
+		newList.add(person);
+
+		person = new Person("FFF", "FFF"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setGender(Person.FEMALE);
+		person.setEyeColor(2);
+		newList.add(person);
+
+		person = new Person("GGG", "GGG"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setEyeColor(3);
+		newList.add(person);
+
+		person = new Person("HHH", "HHH"); //$NON-NLS-1$ //$NON-NLS-2$
+		person.setGender(Person.FEMALE);
+		person.setEyeColor(2);
+		newList.add(person);
+
+		return newList;
+	}
 }
