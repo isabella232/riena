@@ -288,47 +288,6 @@ public class Person extends AbstractBean {
 		firePropertyChanged(PROPERTY_PETS, null, getPets());
 	}
 
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof Person)) {
-			return false;
-		}
-
-		Person p = (Person) obj;
-
-		return equalsFirstname(p) && equalsLastname(p);
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return toString().hashCode();
-	}
-
-	private boolean equalsFirstname(Person person) {
-		if (firstname == null) {
-			return person.firstname == firstname;
-		} else {
-			return firstname.equals(person.firstname);
-		}
-	}
-
-	private boolean equalsLastname(Person person) {
-		if (lastname == null) {
-			return lastname == person.lastname;
-		} else {
-			return lastname.equals(person.lastname);
-		}
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return lastname + ", " + firstname; //$NON-NLS-1$
