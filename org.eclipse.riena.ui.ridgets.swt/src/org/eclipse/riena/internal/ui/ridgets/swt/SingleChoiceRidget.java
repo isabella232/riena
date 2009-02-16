@@ -233,6 +233,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 								updateSelection(getUIControl());
 							} else {
 								// this is a workaround to make composite table aware of focus changes, Bug #264627
+								SingleChoiceRidget.this.setSelection(data);
 								fireFocusIn(button.getParent());
 							}
 						}
