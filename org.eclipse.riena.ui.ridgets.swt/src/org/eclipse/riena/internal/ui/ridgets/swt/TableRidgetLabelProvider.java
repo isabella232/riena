@@ -12,7 +12,14 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
+import org.eclipse.jface.viewers.IColorProvider;
+import org.eclipse.jface.viewers.IFontProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ITableColorProvider;
+import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -21,9 +28,11 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @see TableRidget
  */
-public class TableRidgetLabelProvider extends ObservableMapLabelProvider {
+public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider,
+		ITableFontProvider {
 
 	private final IObservableMap[] attributeMap;
+	private final Object[] labelProviders;
 
 	/**
 	 * Create a new instance
@@ -34,9 +43,15 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 	 *            a non-null {@link IObservableMap} instance
 	 */
 	public TableRidgetLabelProvider(IObservableMap[] attributeMap) {
+		this(attributeMap, new Object[attributeMap.length]);
+	}
+
+	public TableRidgetLabelProvider(IObservableMap[] attributeMap, Object[] labelProviders) {
 		super(attributeMap);
 		this.attributeMap = new IObservableMap[attributeMap.length];
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
+		this.labelProviders = new Object[labelProviders.length];
+		System.arraycopy(labelProviders, 0, this.labelProviders, 0, this.labelProviders.length);
 	}
 
 	@Override
@@ -54,6 +69,39 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider {
 			}
 		}
 		return super.getColumnImage(element, columnIndex);
+	}
+
+	@Override
+	public String getColumnText(Object element, int columnIndex) {
+		if (this.labelProviders[columnIndex] instanceof ILabelProvider) {
+			ILabelProvider labelProvider = ((ILabelProvider) this.labelProviders[columnIndex]);
+			return labelProvider.getText(element);
+		}
+		return super.getColumnText(element, columnIndex);
+	}
+
+	public Color getForeground(Object element, int columnIndex) {
+		if (this.labelProviders[columnIndex] instanceof IColorProvider) {
+			IColorProvider colorProvider = ((IColorProvider) this.labelProviders[columnIndex]);
+			return colorProvider.getForeground(element);
+		}
+		return null;
+	}
+
+	public Color getBackground(Object element, int columnIndex) {
+		if (this.labelProviders[columnIndex] instanceof IColorProvider) {
+			IColorProvider colorProvider = ((IColorProvider) this.labelProviders[columnIndex]);
+			return colorProvider.getBackground(element);
+		}
+		return null;
+	}
+
+	public Font getFont(Object element, int columnIndex) {
+		if (this.labelProviders[columnIndex] instanceof IFontProvider) {
+			IFontProvider fontProvider = ((IFontProvider) this.labelProviders[columnIndex]);
+			return fontProvider.getFont(element);
+		}
+		return null;
 	}
 
 	/**

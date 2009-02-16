@@ -82,6 +82,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private int sortedColumn;
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
+	private final Map<Integer, Object> labelProviderMap;
 
 	private boolean moveableColumns;
 
@@ -93,6 +94,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
+		labelProviderMap = new HashMap<Integer, Object>();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				applyEraseListener();
@@ -123,7 +125,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					renderingMethods);
-			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap));
+			Object[] labelProviders = getLabelProviders(attrMap.length);
+			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, labelProviders));
 			viewer.setContentProvider(viewerCP);
 
 			applyColumnsMoveable(control);
@@ -378,6 +381,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return true;
 	}
 
+	/**
+	 * This method is provisional. Do not use yet.
+	 */
+	// TODO [ev] discuss this
+	public void setLabelProvider(int columnIndex, Object labelProvider) {
+		checkColumnRange(columnIndex);
+		Integer key = Integer.valueOf(columnIndex);
+		labelProviderMap.put(key, labelProvider);
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -465,6 +478,18 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			dbc.removeBinding(viewerMSB);
 			viewerMSB = null;
 		}
+	}
+
+	private Object[] getLabelProviders(int numColumns) {
+		Assert.isLegal(numColumns >= 0);
+		Object[] result = new Object[numColumns];
+		for (int i = 0; i < numColumns; i++) {
+			Object labelProvider = labelProviderMap.get(Integer.valueOf(i));
+			if (labelProvider != null) {
+				result[i] = labelProvider;
+			}
+		}
+		return result;
 	}
 
 	// helping classes
