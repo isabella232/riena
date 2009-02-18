@@ -25,6 +25,8 @@ import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
+import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
@@ -34,13 +36,13 @@ import org.eclipse.swt.nebula.widgets.compositetable.IRowContentProvider;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowFocusListener;
 import org.eclipse.swt.nebula.widgets.compositetable.RowConstructionListener;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.osgi.service.log.LogService;
 
 /**
  * A ridget for nebula's {@link CompositeTable} - this is a table with an
  * instance of an arbitrary composite in each row.
  */
-// TODO [ev] tests
 public class CompositeTableRidget extends AbstractSelectableIndexedRidget implements ICompositeTableRidget {
 
 	private final static Logger LOGGER;
@@ -65,6 +67,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		Assert.isLegal(!SelectionType.MULTI.equals(getSelectionType()));
 		rowToRidgetMapper = new CTRowToRidgetMapper();
 		selectionSynchronizer = new SelectionSynchronizer();
+		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
+			public void handleValueChange(ValueChangeEvent event) {
+				Object value = event.getObservableValue().getValue();
+				getMultiSelectionObservable().clear();
+				if (value != null) {
+					getMultiSelectionObservable().add(value);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -76,15 +87,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	protected void bindUIControl() {
 		CompositeTable control = getUIControl();
 		if (control != null) {
-			if (rowObservables != null) {
-				control.setNumRowsInCollection(rowObservables.size());
-			}
 			control.addRowConstructionListener(rowToRidgetMapper);
 			control.addRowContentProvider(rowToRidgetMapper);
+			if (rowObservables != null) {
+				control.setNumRowsInCollection(rowObservables.size());
+				updateSelection(false);
+			}
 			control.addRowFocusListener(selectionSynchronizer);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
 		}
-
 	}
 
 	@Override
@@ -123,6 +134,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		if (control != null && rowObservables != null) {
 			control.setRedraw(false);
 			try {
+				if (rowObservables instanceof IUnboundPropertyObservable) {
+					((UnboundPropertyWritableList) rowObservables).updateFromBean();
+				}
 				control.setNumRowsInCollection(rowObservables.size());
 				control.refreshAllRows();
 				updateSelection(true);
@@ -171,8 +185,35 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		super.setSelectionType(selectionType);
 	}
 
+	@Override
+	public void setSelection(List<?> newSelection) {
+		readAndDispatch();
+		super.setSelection(newSelection);
+		readAndDispatch();
+	}
+
 	// helping methods
 	//////////////////
+
+	/**
+	 * CompositeTable.setSelection(x,y) is asynchronous. This means that: - we
+	 * have to fully process the event-queue before, to avoid pending events
+	 * adding selection changes after our call, via asyncexec(op)). - we have to
+	 * fully process the event-queue afterwards, to make sure the selection is
+	 * appliied to the widget.
+	 * <p>
+	 * Typically this method will be called before AND after
+	 * ct.setSelection(x,y);
+	 */
+	private void readAndDispatch() {
+		CompositeTable control = getUIControl();
+		if (control != null) {
+			Display display = control.getDisplay();
+			while (display.readAndDispatch()) {
+				// keep working
+			}
+		}
+	}
 
 	/**
 	 * Re-applies ridget selection to control (if selection exists), otherwise
@@ -188,7 +229,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			int index = indexOfOption(selection);
 			if (index > -1) {
 				int row = index - control.getTopRow();
+				readAndDispatch();
 				control.setSelection(0, row);
+				readAndDispatch();
 			} else {
 				if (selection != null && canClear) {
 					// if the selection has been deleted, selected another row

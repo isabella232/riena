@@ -28,6 +28,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(AbstractItemPropertiesTest.class);
 		suite.addTestSuite(ActionRidgetTest.class);
 		suite.addTestSuite(ComboRidgetTest.class);
+		suite.addTestSuite(CompositeTableRidgetTest.class);
 		suite.addTestSuite(ChoiceCompositeTest.class);
 		suite.addTestSuite(DateTextRidgetTest.class);
 		suite.addTestSuite(DecimalTextRidgetTest.class);

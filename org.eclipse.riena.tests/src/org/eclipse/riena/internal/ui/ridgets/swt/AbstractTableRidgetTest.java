@@ -47,8 +47,8 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	protected Person person2;
 	protected Person person3;
 
-	private TestSingleSelectionBean singleSelectionBean;
-	private TestMultiSelectionBean multiSelectionBean;
+	protected TestSingleSelectionBean singleSelectionBean;
+	protected TestMultiSelectionBean multiSelectionBean;
 
 	@Override
 	public void setUp() throws Exception {
@@ -85,22 +85,32 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.getSelection().size() > 0);
 		assertTrue(getUIControlSelectedRowCount() > 0);
+		assertEquals(person1, ridget.getSingleSelectionObservable().getValue());
+		assertEquals(1, ridget.getMultiSelectionObservable().size());
 
 		ridget.clearSelection();
 
 		assertEquals(0, ridget.getSelection().size());
 		assertEquals(0, getUIControlSelectedRowCount());
+		assertNull(ridget.getSingleSelectionObservable().getValue());
+		assertEquals(0, ridget.getMultiSelectionObservable().size());
 
-		ridget.setSelectionType(SelectionType.MULTI);
-		ridget.setSelection(Arrays.asList(new Person[] { person1, person2 }));
+		if (supportsMulti()) {
+			ridget.setSelectionType(SelectionType.MULTI);
+			ridget.setSelection(Arrays.asList(new Person[] { person1, person2 }));
 
-		assertTrue(ridget.getSelection().size() > 0);
-		assertTrue(getUIControlSelectedRowCount() > 0);
+			assertTrue(ridget.getSelection().size() > 0);
+			assertTrue(getUIControlSelectedRowCount() > 0);
+			assertNotNull(ridget.getSingleSelectionObservable().getValue());
+			assertEquals(2, ridget.getMultiSelectionObservable().size());
 
-		ridget.clearSelection();
+			ridget.clearSelection();
 
-		assertEquals(0, ridget.getSelection().size());
-		assertEquals(0, getUIControlSelectedRowCount());
+			assertEquals(0, ridget.getSelection().size());
+			assertEquals(0, getUIControlSelectedRowCount());
+			assertNull(ridget.getSingleSelectionObservable().getValue());
+			assertEquals(0, ridget.getMultiSelectionObservable().size());
+		}
 	}
 
 	public void testGetSelection() {
@@ -109,12 +119,14 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(ridget.getSelection());
 		assertTrue(ridget.getSelection().isEmpty());
 
-		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
-		ridget.setSelection(new int[] { 1, 2 });
+		if (supportsMulti()) {
+			ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
+			ridget.setSelection(new int[] { 1, 2 });
 
-		assertEquals(2, ridget.getSelection().size());
-		assertEquals(getRowValue(1), ridget.getSelection().get(0));
-		assertEquals(getRowValue(2), ridget.getSelection().get(1));
+			assertEquals(2, ridget.getSelection().size());
+			assertEquals(getRowValue(1), ridget.getSelection().get(0));
+			assertEquals(getRowValue(2), ridget.getSelection().get(1));
+		}
 	}
 
 	public void testGetSelectionIndex() {
@@ -141,15 +153,17 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(0, ridget.getSelectionIndices().length);
 
-		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
-		java.util.List<Object> selBeans = new ArrayList<Object>(2);
-		selBeans.add(getRowValue(0));
-		selBeans.add(getRowValue(1));
-		ridget.setSelection(selBeans);
+		if (supportsMulti()) {
+			ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
+			java.util.List<Object> selBeans = new ArrayList<Object>(2);
+			selBeans.add(getRowValue(0));
+			selBeans.add(getRowValue(1));
+			ridget.setSelection(selBeans);
 
-		assertEquals(2, ridget.getSelectionIndices().length);
-		assertEquals(0, ridget.getSelectionIndices()[0]);
-		assertEquals(1, ridget.getSelectionIndices()[1]);
+			assertEquals(2, ridget.getSelectionIndices().length);
+			assertEquals(0, ridget.getSelectionIndices()[0]);
+			assertEquals(1, ridget.getSelectionIndices()[1]);
+		}
 
 		ridget.setSelection(2);
 
@@ -223,16 +237,18 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
 
-		ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
-		ridget.setSelection(new int[] { 1, 2 });
+		if (supportsMulti()) {
+			ridget.setSelectionType(ISelectableRidget.SelectionType.MULTI);
+			ridget.setSelection(new int[] { 1, 2 });
 
-		assertEquals(2, getUIControlSelectedRowCount());
-		assertEquals(1, getSelectedRows()[0]);
-		assertEquals(2, getSelectedRows()[1]);
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(2, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
+			assertEquals(2, getUIControlSelectedRowCount());
+			assertEquals(1, getSelectedRows()[0]);
+			assertEquals(2, getSelectedRows()[1]);
+			assertEquals(getRowValue(1), singleSelectionBean.getSelection());
+			assertEquals(2, multiSelectionBean.getSelectionList().size());
+			assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
+			assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
+		}
 
 		ridget.setSelection(new int[] {});
 
@@ -264,34 +280,36 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, multiSelectionBean.getSelectionList().size());
 		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
 
-		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
-		java.util.List<Object> selBeans2 = new ArrayList<Object>(2);
-		selBeans2.add(getRowValue(0));
-		selBeans2.add(getRowValue(1));
-		ridget.setSelection(selBeans2);
+		if (supportsMulti()) {
+			ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
+			java.util.List<Object> selBeans2 = new ArrayList<Object>(2);
+			selBeans2.add(getRowValue(0));
+			selBeans2.add(getRowValue(1));
+			ridget.setSelection(selBeans2);
 
-		assertEquals(2, getUIControlSelectedRowCount());
-		assertEquals(0, getSelectedRows()[0]);
-		assertEquals(1, getSelectedRows()[1]);
-		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
-		assertEquals(2, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(1));
+			assertEquals(2, getUIControlSelectedRowCount());
+			assertEquals(0, getSelectedRows()[0]);
+			assertEquals(1, getSelectedRows()[1]);
+			assertEquals(getRowValue(0), singleSelectionBean.getSelection());
+			assertEquals(2, multiSelectionBean.getSelectionList().size());
+			assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
+			assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(1));
 
-		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
-		java.util.List<Object> selBeans3 = new ArrayList<Object>(1);
-		selBeans3.add(new Object());
-		ridget.setSelection(selBeans3);
+			ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
+			java.util.List<Object> selBeans3 = new ArrayList<Object>(1);
+			selBeans3.add(new Object());
+			ridget.setSelection(selBeans3);
 
-		assertEquals(0, getUIControlSelectedRowCount());
-		assertNull(singleSelectionBean.getSelection());
-		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
+			assertEquals(0, getUIControlSelectedRowCount());
+			assertNull(singleSelectionBean.getSelection());
+			assertTrue(multiSelectionBean.getSelectionList().isEmpty());
 
-		try {
-			ridget.setSelection((List<?>) null);
-			fail();
-		} catch (RuntimeException e) {
-			ok();
+			try {
+				ridget.setSelection((List<?>) null);
+				fail();
+			} catch (RuntimeException e) {
+				ok();
+			}
 		}
 	}
 
@@ -358,6 +376,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateMultiSelectionCustomBinding() {
+		if (!supportsMulti()) {
+			return;
+		}
 		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
@@ -391,6 +412,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateMultiSelectionFromControl() {
+		if (!supportsMulti()) {
+			return;
+		}
 		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
@@ -414,6 +438,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateMultiSelectionFromModel() {
+		if (!supportsMulti()) {
+			return;
+		}
 		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
@@ -444,6 +471,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateMultiSelectionFromModelWhenUnbound() {
+		if (!supportsMulti()) {
+			return;
+		}
 		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
@@ -476,6 +506,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateMultiSelectionFromRidgetOnRebind() {
+		if (!supportsMulti()) {
+			return;
+		}
 		ISelectableIndexedRidget ridget = getRidget();
 
 		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
@@ -556,8 +589,8 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	public void testUpdateSingleSelectionFromModelWhenUnbound() {
 		ISelectableIndexedRidget ridget = getRidget();
 
-		setUIControlRowSelectionInterval(1, 1);
-		singleSelectionBean.setSelection(getRowValue(0));
+		setUIControlRowSelectionInterval(1, 1); // select row 1 in widget
+		singleSelectionBean.setSelection(getRowValue(0)); // select row 0 in bean; does not update selection
 
 		assertEquals(1, getUIControlSelectedRowCount());
 		assertEquals(1, getUIControlSelectedRow());
@@ -566,8 +599,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
 
 		ridget.setUIControl(null); // unbind
-		ridget.updateSingleSelectionFromModel();
+		ridget.updateSingleSelectionFromModel(); // update selection from bean
 		ridget.setUIControl(getWidget()); // rebind
+		UITestHelper.readAndDispatch(getWidget());
 
 		assertEquals(1, getUIControlSelectedRowCount());
 		assertEquals(0, getUIControlSelectedRow());
@@ -654,6 +688,9 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSelectionEventsSelectionTypeMulti() {
+		if (!supportsMulti()) {
+			return;
+		}
 		ISelectableIndexedRidget ridget = getRidget();
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -800,6 +837,11 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	abstract protected void setUIControlRowSelection(int[] indices);
 
 	abstract protected void setUIControlRowSelectionInterval(int start, int end);
+
+	/**
+	 * Returns true if this ridget supports multiple selection, false otherwise.
+	 */
+	abstract protected boolean supportsMulti();
 
 	/**
 	 * fires a selection event manually - control.setXXX does not fire events

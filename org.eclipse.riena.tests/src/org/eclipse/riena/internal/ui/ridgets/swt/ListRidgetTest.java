@@ -707,6 +707,11 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		fireSelectionEvent();
 	}
 
+	@Override
+	protected boolean supportsMulti() {
+		return true;
+	}
+
 	// helping classes
 	// ////////////////
 
