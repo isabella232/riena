@@ -157,7 +157,6 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	}
 
-	@SuppressWarnings("restriction")
 	public void testDisposeSubApplication() throws Exception {
 
 		IApplicationNode node = new ApplicationNode();
@@ -179,7 +178,6 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 		assertTrue(items.isEmpty());
 	}
 
-	@SuppressWarnings("restriction")
 	public void testRemoveSubApplication() throws Exception {
 
 		IApplicationNode node = new ApplicationNode();
@@ -201,7 +199,6 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 		assertTrue(items.isEmpty());
 	}
 
-	@SuppressWarnings("restriction")
 	public void testAddSubApplication() throws Exception {
 
 		IApplicationNode node = new ApplicationNode();
