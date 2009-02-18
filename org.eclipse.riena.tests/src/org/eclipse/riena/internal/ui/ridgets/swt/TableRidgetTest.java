@@ -11,7 +11,6 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -22,6 +21,7 @@ import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.tests.UITestHelper;
@@ -320,7 +320,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		Table control = getWidget();
 
 		// sorts from a to z
-		Comparator<Object> comparator = new StringComparator();
+		Comparator<Object> comparator = new TypedComparator<String>();
 
 		try {
 			ridget.setComparator(-1, comparator);
@@ -383,7 +383,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
 
 		assertEquals(-1, ridget.getSortedColumn());
 
@@ -395,7 +395,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		ridget.setComparator(1, new StringComparator());
+		ridget.setComparator(1, new TypedComparator<String>());
 		ridget.setSortedColumn(1);
 
 		assertEquals(1, ridget.getSortedColumn());
@@ -431,7 +431,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			assertFalse(ridget.isColumnSortable(i));
 
 			// columns are sortable by default, when they have a comparator
-			ridget.setComparator(i, new StringComparator());
+			ridget.setComparator(i, new TypedComparator<String>());
 
 			assertTrue(ridget.isColumnSortable(i));
 
@@ -460,7 +460,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(-1, ridget.getSortedColumn());
 		assertFalse(ridget.isSortedAscending());
 
-		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
 		ridget.setSortedColumn(0);
 
 		assertTrue(ridget.isSortedAscending());
@@ -575,9 +575,9 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		Table table = getWidget();
 
 		ridget.setColumnSortable(0, true);
-		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
 		ridget.setColumnSortable(1, true);
-		ridget.setComparator(1, new StringComparator());
+		ridget.setComparator(1, new TypedComparator<String>());
 
 		ridget.setSortedColumn(-1);
 
@@ -777,21 +777,6 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	@Override
 	protected boolean supportsMulti() {
 		return true;
-	}
-
-	// helping classes
-	// ////////////////
-
-	/**
-	 * Compares two strings.
-	 */
-	@SuppressWarnings("serial")
-	private static final class StringComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
 	}
 
 }

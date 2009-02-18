@@ -11,10 +11,10 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -231,7 +231,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		Tree control = getWidget();
 
 		// sorts from a to z
-		Comparator<Object> comparator = new StringComparator();
+		Comparator<Object> comparator = new TypedComparator<String>();
 
 		try {
 			ridget.setComparator(-1, comparator);
@@ -284,7 +284,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
 
 		assertEquals(-1, ridget.getSortedColumn());
 
@@ -296,7 +296,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		ridget.setComparator(1, new StringComparator());
+		ridget.setComparator(1, new TypedComparator<String>());
 		ridget.setSortedColumn(1);
 
 		assertEquals(1, ridget.getSortedColumn());
@@ -332,7 +332,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 			assertFalse(ridget.isColumnSortable(i));
 
 			// columns are sortable by default, when they have a comparator
-			ridget.setComparator(i, new StringComparator());
+			ridget.setComparator(i, new TypedComparator<String>());
 
 			assertTrue(ridget.isColumnSortable(i));
 
@@ -361,7 +361,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(-1, ridget.getSortedColumn());
 		assertFalse(ridget.isSortedAscending());
 
-		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
 		ridget.setSortedColumn(0);
 
 		assertTrue(ridget.isSortedAscending());
@@ -479,9 +479,9 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		Tree tree = getWidget();
 
 		ridget.setColumnSortable(0, true);
-		ridget.setComparator(0, new StringComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
 		ridget.setColumnSortable(1, true);
-		ridget.setComparator(1, new StringComparator());
+		ridget.setComparator(1, new TypedComparator<String>());
 
 		ridget.setSortedColumn(-1);
 
@@ -522,8 +522,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		new WordNode(root, "BCAA");
 		ridget.bindToModel(new Object[] { root }, WordNode.class, "children", "parent",
 				new String[] { "word", "ACount" }, null);
-		ridget.setComparator(0, new StringComparator());
-		ridget.setComparator(1, new IntegerComparator());
+		ridget.setComparator(0, new TypedComparator<String>());
+		ridget.setComparator(1, new TypedComparator<Integer>());
 		ridget.expandAll();
 
 		assertEquals("ZA", control.getItem(0).getItem(0).getText());
@@ -682,30 +682,6 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 	// helping classes
 	// ////////////////
-
-	/**
-	 * Compares two strings.
-	 */
-	@SuppressWarnings("serial")
-	private static final class StringComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
-	}
-
-	/**
-	 * Comparets two Integers.
-	 */
-	@SuppressWarnings("serial")
-	private static final class IntegerComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			Integer i1 = (Integer) o1;
-			Integer i2 = (Integer) o2;
-			return i1.compareTo(i2);
-		}
-	}
 
 	/**
 	 * Wraps a {@link Person} to make it compatible with the
