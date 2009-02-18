@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import java.io.Serializable;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -21,6 +19,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.views.TreeSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -66,8 +65,8 @@ public class TreeTableSubModuleController extends SubModuleController {
 		tree.bindToModel(roots, WordNode.class, "children", "parent", columnPropertyNames, columnHeaders); //$NON-NLS-1$ //$NON-NLS-2$
 		tree.expand(roots[0]);
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		tree.setComparator(0, new StringComparator());
-		tree.setComparator(1, new StringComparator());
+		tree.setComparator(0, new TypedComparator<String>());
+		tree.setComparator(1, new TypedComparator<String>());
 		tree.setColumnSortable(2, false);
 	}
 
@@ -248,20 +247,5 @@ public class TreeTableSubModuleController extends SubModuleController {
 		new WordNode(groupE, "Enemy"); //$NON-NLS-1$
 
 		return new WordNode[] { groupA, groupB, groupC, groupD, groupE };
-	}
-
-	// helping classes
-	// ////////////////
-
-	/**
-	 * Compares two strings.
-	 */
-	@SuppressWarnings("serial")
-	private static final class StringComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
 	}
 }

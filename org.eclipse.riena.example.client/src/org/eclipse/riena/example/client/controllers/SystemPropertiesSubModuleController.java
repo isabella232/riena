@@ -12,9 +12,7 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +20,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.riena.beans.common.AbstractBean;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.example.client.views.SystemPropertiesSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -75,8 +74,8 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 				"key", "value" }, new String[] { "Key", "Value" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		tableProperties.updateFromModel();
 		tableProperties.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		tableProperties.setComparator(0, new StringComparator());
-		tableProperties.setComparator(1, new StringComparator());
+		tableProperties.setComparator(0, new TypedComparator<String>());
+		tableProperties.setComparator(1, new TypedComparator<String>());
 		tableProperties.setMoveableColumns(true);
 		if (!properties.isEmpty()) {
 			tableProperties.setSelection(0);
@@ -193,18 +192,6 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 		public void update() {
 			bean.setKey(tempKey);
 			bean.setValue(tempValue);
-		}
-	}
-
-	/**
-	 * Compares two strings.
-	 */
-	@SuppressWarnings("serial")
-	private static final class StringComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
 		}
 	}
 

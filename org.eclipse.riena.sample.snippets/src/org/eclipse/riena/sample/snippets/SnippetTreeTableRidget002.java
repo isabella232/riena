@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.snippets;
 
-import java.util.Comparator;
-
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
@@ -42,8 +41,8 @@ public class SnippetTreeTableRidget002 {
 		treeTableRidget.bindToModel(roots, WordNode.class, "children", "parent", //$NON-NLS-1$//$NON-NLS-2$
 				columnValues, columnHeaders);
 
-		treeTableRidget.setComparator(0, new StringComparator());
-		treeTableRidget.setComparator(1, new IntegerComparator());
+		treeTableRidget.setComparator(0, new TypedComparator<String>());
+		treeTableRidget.setComparator(1, new TypedComparator<Integer>());
 	}
 
 	/**
@@ -96,21 +95,4 @@ public class SnippetTreeTableRidget002 {
 
 		return new WordNode[] { root };
 	}
-
-	private static final class StringComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
-	}
-
-	private static final class IntegerComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			Integer i1 = (Integer) o1;
-			Integer i2 = (Integer) o2;
-			return i1.compareTo(i2);
-		}
-	}
-
 }

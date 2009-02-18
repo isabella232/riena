@@ -11,13 +11,13 @@
 package org.eclipse.riena.sample.snippets;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.riena.beans.common.AbstractBean;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
@@ -52,9 +52,9 @@ public class SnippetTableRidget002 {
 		List<MyNode> input = createInput();
 		tableRidget
 				.bindToModel(new WritableList(input, MyNode.class), MyNode.class, columnPropertyNames, columnHeaders);
-		tableRidget.setComparator(0, new StringComparator());
+		tableRidget.setComparator(0, new TypedComparator<String>());
 		tableRidget.setColumnSortable(1, false);
-		tableRidget.setComparator(2, new IntegerComparator());
+		tableRidget.setComparator(2, new TypedComparator<Integer>());
 		tableRidget.updateFromModel();
 
 	}
@@ -119,21 +119,4 @@ public class SnippetTableRidget002 {
 		}
 
 	}
-
-	private static final class StringComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
-	}
-
-	private static final class IntegerComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			Integer i1 = (Integer) o1;
-			Integer i2 = (Integer) o2;
-			return i1.compareTo(i2);
-		}
-	}
-
 }

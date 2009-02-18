@@ -12,12 +12,11 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.Serializable;
-import java.util.Comparator;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.PersonManager;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -60,7 +59,7 @@ public class ListSubModuleController extends SubModuleController {
 
 		final ITableRidget listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		listPersons.setComparator(0, new StringComparator());
+		listPersons.setComparator(0, new TypedComparator<String>());
 		listPersons.setSortedColumn(0);
 		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		listPersons.updateFromModel();
@@ -130,18 +129,4 @@ public class ListSubModuleController extends SubModuleController {
 		});
 	}
 
-	// helping classes
-	// ////////////////
-
-	/**
-	 * Compares two strings.
-	 */
-	@SuppressWarnings("serial")
-	private static final class StringComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
-	}
 }
