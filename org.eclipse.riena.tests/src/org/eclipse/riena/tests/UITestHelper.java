@@ -38,7 +38,8 @@ public final class UITestHelper {
 
 	public static void readAndDispatch(Widget control) {
 		Display display = control.getDisplay();
-		while (!display.readAndDispatch()) {
+		while (display.readAndDispatch()) {
+			// keep going
 		}
 	}
 
