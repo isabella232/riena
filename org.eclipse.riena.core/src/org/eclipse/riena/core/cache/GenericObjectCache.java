@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.cache.internal.ICacheEntry;
-import org.eclipse.riena.core.cache.internal.SoftCacheEntry;
 import org.eclipse.riena.internal.core.Activator;
+import org.eclipse.riena.internal.core.cache.ICacheEntry;
+import org.eclipse.riena.internal.core.cache.SoftCacheEntry;
 import org.osgi.service.log.LogService;
 
 /**

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.cache.internal;
+package org.eclipse.riena.internal.core.cache;
 
 /**
  * A simple cache entry that is store in GenericObjectCache

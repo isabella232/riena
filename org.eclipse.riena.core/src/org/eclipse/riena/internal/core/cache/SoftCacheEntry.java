@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.core.cache.internal;
+package org.eclipse.riena.internal.core.cache;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -49,21 +49,21 @@ public class SoftCacheEntry<K, V> implements ICacheEntry<K, V> {
 	}
 
 	/**
-	 * @see org.eclipse.riena.core.cache.internal.ICacheEntry#getValue()
+	 * @see org.eclipse.riena.internal.core.cache.ICacheEntry#getValue()
 	 */
 	public V getValue() {
 		return value.get();
 	}
 
 	/**
-	 * @see org.eclipse.riena.core.cache.internal.ICacheEntry#getKey()
+	 * @see org.eclipse.riena.internal.core.cache.ICacheEntry#getKey()
 	 */
 	public K getKey() {
 		return key;
 	}
 
 	/**
-	 * @see org.eclipse.riena.core.cache.internal.ICacheEntry#getTimestamp()
+	 * @see org.eclipse.riena.internal.core.cache.ICacheEntry#getTimestamp()
 	 */
 	public long getTimestamp() {
 		return timestamp;
