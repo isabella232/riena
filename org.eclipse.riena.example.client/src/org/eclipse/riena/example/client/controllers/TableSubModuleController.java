@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -23,6 +21,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -66,8 +65,8 @@ public class TableSubModuleController extends SubModuleController {
 		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
-		table.setComparator(0, new StringComparator());
-		table.setComparator(1, new StringComparator());
+		table.setComparator(0, new TypedComparator<String>());
+		table.setComparator(1, new TypedComparator<Boolean>());
 		table.setColumnSortable(2, false);
 		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		table.setSelection(0);
@@ -175,18 +174,4 @@ public class TableSubModuleController extends SubModuleController {
 		return result;
 	}
 
-	// helping classes
-	// ////////////////
-
-	/**
-	 * Compares two strings.
-	 */
-	@SuppressWarnings("serial")
-	private static final class StringComparator implements Comparator<Object>, Serializable {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
-			return s1.compareTo(s2);
-		}
-	}
 }
