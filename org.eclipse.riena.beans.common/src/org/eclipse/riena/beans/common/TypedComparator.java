@@ -23,11 +23,15 @@ import java.util.Comparator;
  * new TypedComparator&lt;Boolean&gt;();
  * </pre>
  */
-public class TypedComparator<T extends Comparable<T>> implements Comparator<T> {
+public class TypedComparator<T extends Comparable<T>> implements Comparator<Object> {
 
 	private static final long serialVersionUID = 1L;
 
-	public int compare(T o1, T o2) {
-		return o1.compareTo(o2);
+	public int compare(Object o1, Object o2) {
+		// casting is necessary because we want to implement Comparator<Object>,
+		// not Comparator<T>
+		T t1 = (T) o1;
+		T t2 = (T) o2;
+		return t1.compareTo(t2);
 	}
 }
