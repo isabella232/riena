@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.observable.map.IObservableMap;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -35,7 +36,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	private final Object[] labelProviders;
 
 	/**
-	 * Create a new instance
+	 * Create a new instance.
 	 * 
 	 * @param viewer
 	 *            a non-null {@link TreeViewer} instance
@@ -46,8 +47,26 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		this(attributeMap, new Object[attributeMap.length]);
 	}
 
+	/**
+	 * Create a new instance
+	 * 
+	 * @param viewer
+	 *            a non-null {@link TreeViewer} instance
+	 * @param attributeMap
+	 *            a non-null {@link IObservableMap} instance
+	 * @param labelProviders
+	 *            an array of objects that implement one or more of
+	 *            {@link ILabelProvider}, {@link IColorProvider},
+	 *            {@link IFontProvider} or null. The array must have the same
+	 *            number of entries as attributeMap, however individual entries
+	 *            can be null.
+	 * @throws RuntimeException
+	 *             if attributeMap and labelProviders have not the same number
+	 *             of entries
+	 */
 	public TableRidgetLabelProvider(IObservableMap[] attributeMap, Object[] labelProviders) {
 		super(attributeMap);
+		Assert.isLegal(attributeMap.length == labelProviders.length);
 		this.attributeMap = new IObservableMap[attributeMap.length];
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
 		this.labelProviders = new Object[labelProviders.length];
@@ -73,33 +92,41 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
-		if (this.labelProviders[columnIndex] instanceof ILabelProvider) {
-			ILabelProvider labelProvider = ((ILabelProvider) this.labelProviders[columnIndex]);
-			return labelProvider.getText(element);
+		if (columnIndex < labelProviders.length) {
+			Object labelProvider = this.labelProviders[columnIndex];
+			if (labelProvider instanceof ILabelProvider) {
+				return ((ILabelProvider) labelProvider).getText(element);
+			}
 		}
 		return super.getColumnText(element, columnIndex);
 	}
 
 	public Color getForeground(Object element, int columnIndex) {
-		if (this.labelProviders[columnIndex] instanceof IColorProvider) {
-			IColorProvider colorProvider = ((IColorProvider) this.labelProviders[columnIndex]);
-			return colorProvider.getForeground(element);
+		if (columnIndex < labelProviders.length) {
+			Object colorProvider = this.labelProviders[columnIndex];
+			if (colorProvider instanceof IColorProvider) {
+				return ((IColorProvider) colorProvider).getForeground(element);
+			}
 		}
 		return null;
 	}
 
 	public Color getBackground(Object element, int columnIndex) {
-		if (this.labelProviders[columnIndex] instanceof IColorProvider) {
-			IColorProvider colorProvider = ((IColorProvider) this.labelProviders[columnIndex]);
-			return colorProvider.getBackground(element);
+		if (columnIndex < labelProviders.length) {
+			Object colorProvider = this.labelProviders[columnIndex];
+			if (colorProvider instanceof IColorProvider) {
+				return ((IColorProvider) colorProvider).getBackground(element);
+			}
 		}
 		return null;
 	}
 
 	public Font getFont(Object element, int columnIndex) {
-		if (this.labelProviders[columnIndex] instanceof IFontProvider) {
-			IFontProvider fontProvider = ((IFontProvider) this.labelProviders[columnIndex]);
-			return fontProvider.getFont(element);
+		if (columnIndex < labelProviders.length) {
+			Object fontProvider = this.labelProviders[columnIndex];
+			if (fontProvider instanceof IFontProvider) {
+				return ((IFontProvider) fontProvider).getFont(element);
+			}
 		}
 		return null;
 	}
