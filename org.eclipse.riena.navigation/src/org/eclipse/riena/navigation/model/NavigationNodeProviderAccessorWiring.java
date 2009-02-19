@@ -12,20 +12,16 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
-import org.eclipse.riena.navigation.model.NavigationNodeProviderAccessor.INavigationNodeProviderExtension;
 import org.osgi.framework.BundleContext;
 
 /**
- * Wire the {@codeNavigationNodeProviderAccessor}.
+ * Wire the {@code NavigationNodeProviderAccessor}.
  */
 public class NavigationNodeProviderAccessorWiring extends AbstractWiring {
 
 	private static final String EXTENSION_POINT_ID = "org.eclipse.riena.navigation.navigationNodeProvider"; //$NON-NLS-1$
 
 	public void wire(Object bean, BundleContext context) {
-		Inject.extension(EXTENSION_POINT_ID).useType(INavigationNodeProviderExtension.class).into(bean).andStart(
-				context);
-		NavigationNodeProviderAccessor accessor = (NavigationNodeProviderAccessor) bean;
-		accessor.bind(accessor.getConfiguredNavigationNodeProvider());
+		Inject.extension(EXTENSION_POINT_ID).into(bean).andStart(context);
 	}
 }

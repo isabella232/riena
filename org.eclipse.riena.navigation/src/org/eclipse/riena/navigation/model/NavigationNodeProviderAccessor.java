@@ -11,17 +11,18 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
-import org.eclipse.riena.core.util.ServiceAccessor;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 
 /**
- *
+ * Get convenient access to the configured {@code INavigationNodeProvider}.
  */
 @WireWith(NavigationNodeProviderAccessorWiring.class)
-public final class NavigationNodeProviderAccessor extends ServiceAccessor<INavigationNodeProvider> {
+public final class NavigationNodeProviderAccessor {
 
+	private static boolean initialized;
 	private final static NavigationNodeProviderAccessor NNPA = new NavigationNodeProviderAccessor();
 
 	private INavigationNodeProvider provider;
@@ -30,20 +31,23 @@ public final class NavigationNodeProviderAccessor extends ServiceAccessor<INavig
 	 * Default Constructor
 	 */
 	private NavigationNodeProviderAccessor() {
-		super(Activator.getDefault().getContext());
-	}
-
-	/**
-	 * Return the INavigationNodeProvider configured via extensions.
-	 * 
-	 * @return An INavigationNodeProvider.
-	 */
-	INavigationNodeProvider getConfiguredNavigationNodeProvider() {
-		return provider;
+		//	utility
 	}
 
 	public static INavigationNodeProvider getNavigationNodeProvider() {
-		return NNPA.getService();
+		return NNPA.getProvider();
+	}
+
+	private synchronized INavigationNodeProvider getProvider() {
+		if (!initialized) {
+			initialize();
+			initialized = true;
+		}
+		return provider;
+	}
+
+	private void initialize() {
+		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	/**
@@ -60,6 +64,9 @@ public final class NavigationNodeProviderAccessor extends ServiceAccessor<INavig
 	 */
 	public void update(INavigationNodeProviderExtension[] availableExtensions) {
 
+		if (provider != null) {
+			provider.cleanUp();
+		}
 		INavigationNodeProviderExtension found = null;
 		int maxPriority = Integer.MIN_VALUE;
 
