@@ -144,6 +144,7 @@ public class Activator extends RienaPlugin {
 				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
 				Wire.instance(safeRunnable).andStart(getContext());
 				SafeRunner.run(safeRunnable);
+				getContext().removeBundleListener(this);
 			}
 		}
 	}
