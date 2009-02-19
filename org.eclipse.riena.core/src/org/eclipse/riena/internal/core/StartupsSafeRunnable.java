@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
@@ -20,8 +24,10 @@ import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.service.log.LogService;
 
 /**
@@ -101,18 +107,8 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 				start(bundle);
 			} else if (bundle.getState() == Bundle.STARTING
 					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
-				try {
-					bundle.start();
-					LOGGER.log(LogService.LOG_INFO, "Startup <<lazy>>: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (BundleException be) {
-					LOGGER.log(LogService.LOG_WARNING, "Startup <<lazy>>: '" + bundle.getSymbolicName() //$NON-NLS-1$
-							+ "' failed but may succeed (bundle state is in transition):\n\t\t" + be.getMessage() //$NON-NLS-1$
-							+ (be.getCause() != null ? " cause: " + be.getCause() : "")); //$NON-NLS-1$ //$NON-NLS-2$
-				} catch (RuntimeException rte) {
-					LOGGER.log(LogService.LOG_ERROR, "Startup <<lazy>>:: '" + bundle.getSymbolicName() //$NON-NLS-1$
-							+ "' failed with exception.", rte); //$NON-NLS-1$
-				}
-
+				new BundleActivationWaiter(bundle).waitFor();
+				LOGGER.log(LogService.LOG_INFO, "Startup <<lazy>>: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
 			} else if (bundle.getState() == Bundle.INSTALLED) {
 				LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
 						+ "' failed. Startup extension is set but is only in state INSTALLED (not RESOLVED)."); //$NON-NLS-1$
@@ -128,7 +124,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			return;
 		}
 		try {
-			bundle.start();
+			bundle.start(Bundle.START_TRANSIENT);
 			LOGGER.log(LogService.LOG_INFO, "Startup: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (RuntimeException rte) {
 			LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
@@ -141,4 +137,38 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		this.startups = startups;
 	}
 
+	private final class BundleActivationWaiter implements SynchronousBundleListener {
+		private final Bundle bundle;
+		private final CountDownLatch latch = new CountDownLatch(1);
+
+		private BundleActivationWaiter(Bundle bundle) {
+			Assert.isTrue(bundle != null, "bundle must not be null."); //$NON-NLS-1$
+			this.bundle = bundle;
+		}
+
+		private void waitFor() {
+			Activator.getDefault().getBundle().getBundleContext().addBundleListener(this);
+			if (bundle.getState() == Bundle.ACTIVE) {
+				return;
+			}
+			try {
+				if (!latch.await(1, TimeUnit.SECONDS)) {
+					LOGGER.log(LogService.LOG_DEBUG, "Waiting for bundle " + bundle.getSymbolicName() //$NON-NLS-1$
+							+ " elapsed timeout."); //$NON-NLS-1$
+				}
+			} catch (InterruptedException e) {
+				LOGGER.log(LogService.LOG_WARNING, "Waiting for bundle " + bundle.getSymbolicName() //$NON-NLS-1$
+						+ " got interruped.", e); //$NON-NLS-1$
+			} finally {
+				Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
+			}
+		}
+
+		public void bundleChanged(BundleEvent event) {
+			if (event.getType() == BundleEvent.STARTED && event.getBundle() == bundle) {
+				latch.countDown();
+			}
+		}
+
+	}
 }
