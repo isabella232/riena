@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation;
 
-import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
-import org.eclipse.riena.navigation.INavigationNodeProvider;
-import org.eclipse.riena.navigation.model.NavigationNodeProvider;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -26,7 +23,6 @@ public class Activator extends RienaPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	private INavigationNodeProvider service1 = null;
 
 	/**
 	 * The constructor
@@ -44,11 +40,6 @@ public class Activator extends RienaPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-
-		service1 = new NavigationNodeProvider();
-
-		context.registerService(INavigationNodeProvider.class.getName(), service1, RienaConstants
-				.newDefaultServiceProperties());
 	}
 
 	/*
@@ -60,10 +51,6 @@ public class Activator extends RienaPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		Activator.plugin = null;
-		if (service1 != null) {
-			service1.cleanUp();
-			service1 = null;
-		}
 		super.stop(context);
 	}
 

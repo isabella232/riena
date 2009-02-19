@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.util.ServiceAccessor;
 import org.eclipse.riena.core.wire.WireWith;
-import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 
@@ -24,26 +24,67 @@ public final class NavigationNodeProviderAccessor extends ServiceAccessor<INavig
 
 	private final static NavigationNodeProviderAccessor NNPA = new NavigationNodeProviderAccessor();
 
+	private INavigationNodeProvider provider;
+
 	/**
 	 * Default Constructor
 	 */
 	private NavigationNodeProviderAccessor() {
-		super(Activator.getDefault().getContext(), new ServiceAccessor.IBindHook<INavigationNodeProvider>() {
+		super(Activator.getDefault().getContext());
+	}
 
-			public void onBind(INavigationNodeProvider service) {
-				Nop.reason("No interest!"); //$NON-NLS-1$
-			}
-
-			public void onUnbind(INavigationNodeProvider service) {
-				// TODO Is this a good idea to let the clean-up be done here! Shouldn´t the service cleaned-up when it is going done? 
-				service.cleanUp();
-			}
-		});
-
+	/**
+	 * Return the INavigationNodeProvider configured via extensions.
+	 * 
+	 * @return An INavigationNodeProvider.
+	 */
+	INavigationNodeProvider getConfiguredNavigationNodeProvider() {
+		return provider;
 	}
 
 	public static INavigationNodeProvider getNavigationNodeProvider() {
 		return NNPA.getService();
+	}
+
+	/**
+	 * Configure the navigation node provider to be used. If there is more than
+	 * one implementation we take the one having the highest priority according
+	 * to attribute 'priority'. If the priority is not specified it is assumed
+	 * to be zero (the default value). All implementations sharing the same
+	 * priority are considered equivalent and an arbitrary one is chosen.
+	 * 
+	 * @param availableExtensions
+	 *            Array containing all currently available navigation node
+	 *            provider implementations. This may change over time as plugins
+	 *            are activated or deactivated
+	 */
+	public void update(INavigationNodeProviderExtension[] availableExtensions) {
+
+		INavigationNodeProviderExtension found = null;
+		int maxPriority = Integer.MIN_VALUE;
+
+		provider = null;
+		for (INavigationNodeProviderExtension probe : availableExtensions) {
+			int p = probe.getPriority();
+			if (found == null || p > maxPriority) {
+				found = probe;
+				maxPriority = p;
+			}
+		}
+
+		if (found != null) {
+			provider = found.createClass();
+		}
+	}
+
+	@ExtensionInterface
+	public interface INavigationNodeProviderExtension {
+
+		String getId();
+
+		int getPriority();
+
+		INavigationNodeProvider createClass();
 	}
 
 }
