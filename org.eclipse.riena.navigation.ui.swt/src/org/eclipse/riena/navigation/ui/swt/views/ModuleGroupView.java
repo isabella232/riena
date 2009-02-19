@@ -51,11 +51,13 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	private PaintDelegation paintDelegation;
 	private List<IComponentUpdateListener> updateListeners;
 	private Map<ModuleNode, ModuleView> registeredModuleViews;
+	private List<INavigationNode<?>> disposingNodes;
 
 	public ModuleGroupView(Composite parent, int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		updateListeners = new ArrayList<IComponentUpdateListener>();
 		registeredModuleViews = new LinkedHashMap<ModuleNode, ModuleView>();
+		disposingNodes = new ArrayList<INavigationNode<?>>();
 		setData(getClass().getName());
 	}
 
@@ -133,8 +135,20 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		}
 
 		@Override
+		public void beforeDisposed(IModuleNode source) {
+			disposingNodes.add(source);
+		}
+
+		@Override
+		public void disposed(IModuleNode source) {
+			disposingNodes.remove(source);
+		}
+
+		@Override
 		public void childRemoved(IModuleNode source, ISubModuleNode child) {
-			super.childRemoved(source, child);
+			if (disposingNodes.contains(source)) {
+				return;
+			}
 			fireUpdated(child);
 		}
 
@@ -170,6 +184,11 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		}
 
 		@Override
+		public void beforeDisposed(IModuleGroupNode source) {
+			disposingNodes.add(source);
+		}
+
+		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
 			fireUpdated(child);
 		}
@@ -177,6 +196,9 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		@Override
 		public void childRemoved(IModuleGroupNode source, IModuleNode child) {
 			unregisterModuleView(child);
+			if (disposingNodes.contains(source)) {
+				return;
+			}
 			fireUpdated(child);
 		}
 
@@ -189,6 +211,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		@Override
 		public void disposed(IModuleGroupNode source) {
 			super.disposed(source);
+			disposingNodes.remove(source);
 			unbind();
 			dispose();
 		}
@@ -199,9 +222,8 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#calculateBounds(int)
 	 */
 	public int calculateBounds(int positionHint) {
-
 		if (isDisposed()) {
-			return 0;
+			return positionHint;
 		}
 
 		Point p = new Point(0, 0);
@@ -231,29 +253,6 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 		gc.dispose();
 		return size;
 	}
-
-	//
-	// /**
-	// * Returns the module at the given point.
-	// *
-	// * @param point
-	// * - point over module item
-	// * @return module item; or null, if not item was found
-	// */
-	// public ModuleView getItem(Point point) {
-	//
-	// for (ModuleView moduleView : getAllModuleViews()) {
-	// if (moduleView.getBounds() == null) {
-	// continue;
-	// }
-	// if (moduleView.getBounds().contains(point)) {
-	// return moduleView;
-	// }
-	// }
-	//
-	// return null;
-	//
-	// }
 
 	private class PaintDelegation implements PaintListener {
 
@@ -323,6 +322,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<IC
 	private class ModuleViewObserver implements IComponentUpdateListener {
 
 		public void update(INavigationNode<?> node) {
+
 			fireUpdated(node);
 		}
 

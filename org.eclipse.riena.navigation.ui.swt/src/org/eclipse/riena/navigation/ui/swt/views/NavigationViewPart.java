@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,14 +40,16 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class NavigationViewPart extends ViewPart {
+public class NavigationViewPart extends ViewPart implements IModuleNavigationComponentProvider {
 
 	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.navigationViewPart"; //$NON-NLS-1$
 
 	private IViewFactory viewFactory;
 	private Composite parent;
-	private Composite bodyComposite;
-
+	private Composite scrolledComposite;
+	private ScrollingSupport scrollingSupport;
+	private List<ModuleGroupView> moduleGroupViews = new ArrayList<ModuleGroupView>();
+	private Composite navigationMainComposite;
 	private NavigationTreeObserver navigationTreeObserver;
 	private Map<INavigationNode<?>, ModuleGroupView> moduleGroupNodesToViews;
 	private Map<INavigationNode<?>, ModuleView> moduleNodesToViews;
@@ -68,7 +71,7 @@ public class NavigationViewPart extends ViewPart {
 		setPartProperty(TitlelessStackPresentation.PROPERTY_NAVIGATION, String.valueOf(Boolean.TRUE));
 	}
 
-	private ISubApplicationNode getSubApplicationNode() {
+	public ISubApplicationNode getSubApplicationNode() {
 		String perspectiveID = getViewSite().getPage().getPerspective().getId();
 		return SwtViewProviderAccessor.getViewProvider().getNavigationNode(perspectiveID, ISubApplicationNode.class);
 	}
@@ -83,9 +86,28 @@ public class NavigationViewPart extends ViewPart {
 	}
 
 	private void initLayoutParts() {
-		bodyComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		bodyComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
-		bodyComposite.setLayout(new FormLayout());
+		// configure layout
+		parent.setLayout(new FormLayout());
+		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
+
+		navigationMainComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		navigationMainComposite.setLayout(new FormLayout());
+		navigationMainComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
+
+		scrolledComposite = new Composite(navigationMainComposite, SWT.DOUBLE_BUFFERED);
+
+		scrolledComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
+		scrolledComposite.setLayout(new FormLayout());
+
+		scrollingSupport = new ScrollingSupport(parent, SWT.NONE, this);
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(0, 0);
+		formData.bottom = new FormAttachment(100, -15);
+		navigationMainComposite.setLayoutData(formData);
+
+		formData = new FormData();
+		formData.top = new FormAttachment(navigationMainComposite, 0);
+		scrollingSupport.getScrollComposite().setLayoutData(formData);
 	}
 
 	private void buildNavigationViewHierarchy() {
@@ -129,6 +151,7 @@ public class NavigationViewPart extends ViewPart {
 
 		@Override
 		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateNavigationSize();
 		}
@@ -149,20 +172,24 @@ public class NavigationViewPart extends ViewPart {
 
 		@Override
 		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
 			super.filterAdded(source, filter);
 			updateNavigationSize();
 		}
 
 		@Override
 		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
+			// TODO Auto-generated method stub
 			super.filterRemoved(source, filter);
 			updateNavigationSize();
 		}
 
 		@Override
 		public void childAdded(IModuleGroupNode source, IModuleNode child) {
-			ModuleGroupView moduleGroupView = moduleGroupNodesToViews.get(source);
+			// createModuleView
+			ModuleGroupView moduleGroupView = getModuleGroupViewForNode(source);
 			createModuleView(child, moduleGroupView);
+			// childAdded.activate();
 			updateNavigationSize();
 		}
 
@@ -181,9 +208,13 @@ public class NavigationViewPart extends ViewPart {
 		}
 	}
 
+	public ModuleGroupView getModuleGroupViewForNode(IModuleGroupNode source) {
+		return moduleGroupNodesToViews.get(source);
+	}
+
 	private void createModuleGroupView(IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView werden direkt in das bodyComposite gerendert
-		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(bodyComposite);
+		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
 
@@ -195,13 +226,13 @@ public class NavigationViewPart extends ViewPart {
 
 		moduleGroupView.setLayout(new FormLayout());
 		Composite moduleGroupBody = new Composite(moduleGroupView, SWT.NONE);
-		FormData layoutData = new FormData();
+		FormData formData = new FormData();
 		int padding = getModuleGroupPadding();
-		layoutData.top = new FormAttachment(0, padding);
-		layoutData.left = new FormAttachment(0, padding);
-		layoutData.bottom = new FormAttachment(100, -padding);
-		layoutData.right = new FormAttachment(100, -padding);
-		moduleGroupBody.setLayoutData(layoutData);
+		formData.top = new FormAttachment(0, padding);
+		formData.left = new FormAttachment(0, padding);
+		formData.bottom = new FormAttachment(100, -padding);
+		formData.right = new FormAttachment(100, -padding);
+		moduleGroupBody.setLayoutData(formData);
 
 		// now it's time for the module views
 		for (IModuleNode moduleNode : moduleGroupNode.getChildren()) {
@@ -213,11 +244,10 @@ public class NavigationViewPart extends ViewPart {
 	private final class ModuleGroupViewObserver implements IComponentUpdateListener {
 
 		public void update(INavigationNode<?> node) {
+
 			updateNavigationSize();
 		}
 	}
-
-	private List<ModuleGroupView> moduleGroupViews = new ArrayList<ModuleGroupView>();
 
 	/**
 	 * Adds the give view to the list of the module views that are belonging to
@@ -258,7 +288,6 @@ public class NavigationViewPart extends ViewPart {
 	}
 
 	private void createModuleView(IModuleNode moduleNode, ModuleGroupView moduleGroupView) {
-
 		Composite moduleGroupBody = (Composite) moduleGroupView.getChildren()[0];
 		FormLayout layout = new FormLayout();
 		moduleGroupBody.setLayout(layout);
@@ -272,18 +301,36 @@ public class NavigationViewPart extends ViewPart {
 	}
 
 	public void updateNavigationSize() {
-		int yPos = 0;
-		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
-			yPos = moduleGroupView.calculateBounds(yPos);
+		calculateBounds();
+		scrolledComposite.layout();
+		navigationMainComposite.layout();
+		scrollingSupport.scroll();
+	}
+
+	public IModuleGroupNode getActiveModuleGroupNode() {
+		IModuleGroupNode active = null;
+		Iterator<IModuleGroupNode> it = getSubApplicationNode().getChildren().iterator();
+		while (active == null && it.hasNext()) {
+			active = it.next();
+			if (!active.isActivated()) {
+				active = null;
+			}
 		}
-		bodyComposite.layout();
-		bodyComposite.redraw();
+		return active;
+	}
+
+	public int calculateBounds() {
+		int yPosition = 0;
+		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
+			yPosition = moduleGroupView.calculateBounds(yPosition);
+		}
+		return yPosition;
 	}
 
 	/**
 	 * Returns the renderer of the module group.
 	 * 
-	 * @return
+	 * @return - the renderer instance
 	 */
 	private ModuleGroupRenderer getModuleGroupRenderer() {
 
@@ -299,7 +346,7 @@ public class NavigationViewPart extends ViewPart {
 	/**
 	 * Returns the renderer of the module group.
 	 * 
-	 * @return
+	 * @return - the renderer instance
 	 */
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
@@ -318,9 +365,15 @@ public class NavigationViewPart extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		if (bodyComposite != null) {
-			bodyComposite.setFocus();
-		}
+		// TODO Auto-generated method stub
+	}
+
+	public Composite getNavigationComponent() {
+		return navigationMainComposite;
+	}
+
+	public Composite getScrolledComponent() {
+		return scrolledComposite;
 	}
 
 }

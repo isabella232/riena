@@ -63,6 +63,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 	private static final String IMAGE_ERROR_MARKER = "errorMarker"; //$NON-NLS-1$
 	private static final String IMAGE_MANDATORY_MARKER = "mandatoryMarker"; //$NON-NLS-1$
 	private static final String IMAGE_PROCESS_FINISHED_MARKER = "processFinishedMarker"; //$NON-NLS-1$
+	private static final String IMAGE_SCROLL_UP = "arrowUp.gif"; //$NON-NLS-1$
+	private static final String IMAGE_SCROLL_DOWN = "arrowDown.gif"; //$NON-NLS-1$
 	private FontLnfResource primaryFont;
 	private ColorLnfResource primaryBackground;
 	private ColorLnfResource primaryForeground;
@@ -260,6 +262,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.STATUSLINE_ERROR_ICON, new ImageLnfResource(IMAGE_ERROR));
 		table.put(LnfKeyConstants.STATUSLINE_WARNING_ICON, new ImageLnfResource(IMAGE_WARNING));
 		table.put(LnfKeyConstants.STATUSLINE_INFO_ICON, new ImageLnfResource(IMAGE_INFO));
+
+		table.put(LnfKeyConstants.NAVIGATION_SCROLL_UP_ICON, new ImageLnfResource(IMAGE_SCROLL_UP));
+		table.put(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));
 
 	}
 
