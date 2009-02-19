@@ -62,6 +62,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	private ModuleTitleBar title;
 	private NavigationTreeObserver navigationTreeObserver;
 	private ListenerList<IComponentUpdateListener> updateListeners;
+	//performace tweaking
+	private boolean cachedActivityState = true;
+	private boolean treeDirty = true;
 
 	public ModuleView(Composite parent) {
 		this.parent = parent;
@@ -214,6 +217,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		getTree().addListener(SWT.Selection, new Listener() {
 
 			public void handleEvent(Event event) {
+				treeDirty = true;
 				TreeItem[] selection = getTree().getSelection();
 				if (selection[0].getData() instanceof ISubModuleNode) {
 					ISubModuleNode activeSubModule = (ISubModuleNode) selection[0].getData();
@@ -235,6 +239,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		getTree().addListener(SWT.Expand, new Listener() {
 
 			public void handleEvent(Event event) {
+				treeDirty = true;
 				handleExpandCollapse(event, true);
 			}
 
@@ -243,6 +248,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		getTree().addListener(SWT.Collapse, new Listener() {
 
 			public void handleEvent(Event event) {
+				treeDirty = true;
 				handleExpandCollapse(event, false);
 			}
 
@@ -672,10 +678,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	}
 
 	public void updateModuleView() {
-
-		boolean active = false;
+		boolean currentActiveState = false;
 		if (getNavigationNode() != null) {
-			active = getNavigationNode().isActivated();
+			currentActiveState = getNavigationNode().isActivated();
 		}
 
 		if (!SwtUtilities.isDisposed(title)) {
@@ -683,7 +688,9 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		}
 
 		if (!SwtUtilities.isDisposed(getBody())) {
-			getBody().setVisible(active);
+			if (getBody().isVisible() != currentActiveState) {
+				getBody().setVisible(currentActiveState);
+			}
 			int height = getOpenHeight();
 			if (getBody().getSize().y != height) {
 				FormData formData = new FormData();
@@ -695,8 +702,13 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			}
 		}
 
-		getParent().layout();
-		title.setWindowActive(active);
+		// Performance: Only layout if the activity of the ModuleNode or the tree inside has changed
+		if (currentActiveState != cachedActivityState || treeDirty) {
+			getParent().layout();
+			cachedActivityState = currentActiveState;
+			treeDirty = false;
+		}
+		title.setWindowActive(currentActiveState);
 
 	}
 
