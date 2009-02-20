@@ -155,27 +155,28 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		/**
 		 * Wait for bundle getting started.
 		 * 
-		 * @return false if waiting ended with a timeout; otherwise true
+		 * @return false if waiting ended with a timeout or {@code
+		 *         InterruptedException}; otherwise true
 		 */
 		private boolean waitFor() {
-			Activator.getDefault().getBundle().getBundleContext().addBundleListener(this);
-			if (bundle.getState() == Bundle.ACTIVE) {
-				return true;
-			}
-			boolean started = true;
 			try {
+				Activator.getDefault().getBundle().getBundleContext().addBundleListener(this);
+				if (bundle.getState() == Bundle.ACTIVE) {
+					return true;
+				}
 				if (!latch.await(1, TimeUnit.SECONDS)) {
 					LOGGER.log(LogService.LOG_DEBUG, "Waiting for bundle " + bundle.getSymbolicName() //$NON-NLS-1$
 							+ " elapsed timeout."); //$NON-NLS-1$
-					started = false;
+					return false;
 				}
 			} catch (InterruptedException e) {
 				LOGGER.log(LogService.LOG_WARNING, "Waiting for bundle " + bundle.getSymbolicName() //$NON-NLS-1$
 						+ " got interruped.", e); //$NON-NLS-1$
+				return false;
 			} finally {
 				Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
 			}
-			return started;
+			return true;
 		}
 
 		public void bundleChanged(BundleEvent event) {
