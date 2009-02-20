@@ -24,6 +24,7 @@
          point="org.eclipse.riena.core.logging.catchers">
          <!-- This is examplary!
          <logCatcher name="Platform" class="org.eclipse.riena.core.logging.PlatformLogCatcher"/>
+         <logCatcher name="Java" class="org.eclipse.riena.core.logging.JavaLogCatcher"/>
          -->
    </extension>
    <extension
