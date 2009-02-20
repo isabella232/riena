@@ -107,7 +107,9 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 				start(bundle);
 			} else if (bundle.getState() == Bundle.STARTING
 					&& Constants.ACTIVATION_LAZY.equals(bundle.getHeaders().get(Constants.BUNDLE_ACTIVATIONPOLICY))) {
-				new BundleActivationWaiter(bundle).waitFor();
+				if (!new BundleActivationWaiter(bundle).waitFor()) {
+					start(bundle);
+				}
 				LOGGER.log(LogService.LOG_INFO, "Startup <<lazy>>: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
 			} else if (bundle.getState() == Bundle.INSTALLED) {
 				LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
@@ -124,7 +126,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			return;
 		}
 		try {
-			bundle.start(Bundle.START_TRANSIENT);
+			bundle.start();
 			LOGGER.log(LogService.LOG_INFO, "Startup: '" + bundle.getSymbolicName() + "' succesful."); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (RuntimeException rte) {
 			LOGGER.log(LogService.LOG_ERROR, "Startup: '" + bundle.getSymbolicName() //$NON-NLS-1$
@@ -137,6 +139,10 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 		this.startups = startups;
 	}
 
+	/**
+	 * This helper allows waiting for bundle until it gets activated or a
+	 * timeout occurred while waiting.
+	 */
 	private final class BundleActivationWaiter implements SynchronousBundleListener {
 		private final Bundle bundle;
 		private final CountDownLatch latch = new CountDownLatch(1);
@@ -146,15 +152,22 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			this.bundle = bundle;
 		}
 
-		private void waitFor() {
+		/**
+		 * Wait for bundle getting started.
+		 * 
+		 * @return false if waiting ended with a timeout; otherwise true
+		 */
+		private boolean waitFor() {
 			Activator.getDefault().getBundle().getBundleContext().addBundleListener(this);
 			if (bundle.getState() == Bundle.ACTIVE) {
-				return;
+				return true;
 			}
+			boolean started = true;
 			try {
 				if (!latch.await(1, TimeUnit.SECONDS)) {
 					LOGGER.log(LogService.LOG_DEBUG, "Waiting for bundle " + bundle.getSymbolicName() //$NON-NLS-1$
 							+ " elapsed timeout."); //$NON-NLS-1$
+					started = false;
 				}
 			} catch (InterruptedException e) {
 				LOGGER.log(LogService.LOG_WARNING, "Waiting for bundle " + bundle.getSymbolicName() //$NON-NLS-1$
@@ -162,6 +175,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			} finally {
 				Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
 			}
+			return started;
 		}
 
 		public void bundleChanged(BundleEvent event) {
