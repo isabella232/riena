@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.controllers;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -67,7 +68,7 @@ public class TableXSubModuleController extends SubModuleController {
 		}
 	}
 
-	private List<Person> input = PersonFactory.createPersonListABC();
+	private List<Person> input = PersonFactory.createPersonList();
 
 	public TableXSubModuleController() {
 		this(null);
@@ -84,6 +85,25 @@ public class TableXSubModuleController extends SubModuleController {
 		final IActionRidget buttonDump = (IActionRidget) getRidget("buttonDump"); //$NON-NLS-1$
 
 		table.bindToModel(new WritableList(input, Person.class), Person.class, RowRidget.class);
+		table.setComparator(0, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				Person p1 = (Person) o1;
+				Person p2 = (Person) o2;
+				int result = p1.getLastname().compareTo(p2.getLastname());
+				if (result == 0) {
+					result = p1.getFirstname().compareTo(p2.getFirstname());
+				}
+				return result;
+			}
+		});
+		table.setComparator(1, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				Person p1 = (Person) o1;
+				Person p2 = (Person) o2;
+				return p1.getGender().compareTo(p2.getGender());
+			}
+		});
+		table.setSortedColumn(0);
 
 		buttonAdd.setText("&Add"); //$NON-NLS-1$
 		buttonAdd.addListener(new IActionListener() {

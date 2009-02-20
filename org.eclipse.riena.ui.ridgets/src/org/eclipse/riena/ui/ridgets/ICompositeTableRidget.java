@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import java.util.Comparator;
+
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.riena.ui.common.ISortableByColumn;
 
 /**
  * Ridget for a complex table.
  */
-// TODO [ev] extends ITableRidget instead?
-// TODO [ev] sorting
-public interface ICompositeTableRidget extends ISelectableIndexedRidget { // , ISortableByColumn {
+public interface ICompositeTableRidget extends ISelectableIndexedRidget, ISortableByColumn {
 
 	/**
 	 * Bind the composite table to the given model data and specify which
@@ -36,4 +37,16 @@ public interface ICompositeTableRidget extends ISelectableIndexedRidget { // , I
 	void bindToModel(IObservableList rowBeansObservables, Class<? extends Object> rowBeanClass,
 			Class<? extends Object> rowRidgetClass);
 
+	/**
+	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
+	 * 
+	 * @param columnIndex
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
+	 *            numColumns )
+	 * @param comparator
+	 *            a Comparator instance; may be null
+	 * @throws RuntimeException
+	 *             if columnIndex is out of range
+	 */
+	void setComparator(int columnIndex, Comparator<Object> comparator);
 }

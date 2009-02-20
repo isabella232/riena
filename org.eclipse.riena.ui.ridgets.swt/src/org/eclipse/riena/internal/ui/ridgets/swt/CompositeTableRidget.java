@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
@@ -22,6 +26,7 @@ import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
@@ -31,12 +36,20 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowContentProvider;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowFocusListener;
 import org.eclipse.swt.nebula.widgets.compositetable.RowConstructionListener;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.osgi.service.log.LogService;
 
 /**
@@ -58,15 +71,42 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	private final CTRowToRidgetMapper rowToRidgetMapper;
 	private final SelectionSynchronizer selectionSynchronizer;
+	private final Map<Integer, Boolean> sortableColumnsMap;
+	private final Map<Integer, Comparator<Object>> comparatorMap;
+	private final SelectionListener sortListener;
 
+	/**
+	 * An observable list supplied via bindToModel(...). May be null.
+	 */
 	private IObservableList rowObservables;
+	/**
+	 * A copy of rowObservables as an array. This is used to feed the rows /
+	 * rowRidgets in the table. The array will be re-ordered if sorting is
+	 * applied. Never null.
+	 */
+	private Object[] rowValues;
+	/**
+	 * A copy of the <b>unsorted</b> rowValues. It provides the ability to
+	 * restore the unnsorted state of rowValues. This array is null if rowValues
+	 * is unsorted.
+	 */
+	private Object[] rowValuesUnsorted;
 	private Class<? extends Object> rowBeanClass;
 	private Class<? extends Object> rowRidgetClass;
+
+	private boolean isSortedAscending;
+	private int sortedColumn;
 
 	public CompositeTableRidget() {
 		Assert.isLegal(!SelectionType.MULTI.equals(getSelectionType()));
 		rowToRidgetMapper = new CTRowToRidgetMapper();
 		selectionSynchronizer = new SelectionSynchronizer();
+		sortableColumnsMap = new HashMap<Integer, Boolean>();
+		comparatorMap = new HashMap<Integer, Comparator<Object>>();
+		sortListener = new ColumnSortListener();
+		rowValues = new Object[0];
+		isSortedAscending = true;
+		sortedColumn = -1;
 		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(ValueChangeEvent event) {
 				Object value = event.getObservableValue().getValue();
@@ -89,12 +129,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		if (control != null) {
 			control.addRowConstructionListener(rowToRidgetMapper);
 			control.addRowContentProvider(rowToRidgetMapper);
-			if (rowObservables != null) {
-				control.setNumRowsInCollection(rowObservables.size());
-				updateSelection(false);
-			}
+			updateRows(control);
+			updateSelection(false);
 			control.addRowFocusListener(selectionSynchronizer);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
+			if (getHeaderTable() != null) {
+				for (TableColumn column : getHeaderTable().getColumns()) {
+					column.addSelectionListener(sortListener);
+				}
+			}
 		}
 	}
 
@@ -102,6 +145,11 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	protected void unbindUIControl() {
 		CompositeTable control = getUIControl();
 		if (control != null) {
+			if (getHeaderTable() != null) {
+				for (TableColumn column : getHeaderTable().getColumns()) {
+					column.removeSelectionListener(sortListener);
+				}
+			}
 			getSingleSelectionObservable().removeValueChangeListener(selectionSynchronizer);
 			control.removeRowFocusListener(selectionSynchronizer);
 			control.removeRowContentProvider(rowToRidgetMapper);
@@ -137,8 +185,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				if (rowObservables instanceof IUnboundPropertyObservable) {
 					((UnboundPropertyWritableList) rowObservables).updateFromBean();
 				}
-				control.setNumRowsInCollection(rowObservables.size());
-				control.refreshAllRows();
+				updateRows(control);
 				updateSelection(true);
 			} finally {
 				control.setRedraw(true);
@@ -192,8 +239,184 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		readAndDispatch();
 	}
 
+	public void setComparator(int columnIndex, Comparator<Object> comparator) {
+		checkColumnRange(columnIndex);
+		Integer key = Integer.valueOf(columnIndex);
+		if (comparator != null) {
+			comparatorMap.put(key, comparator);
+		} else {
+			comparatorMap.remove(key);
+		}
+		if (columnIndex == sortedColumn) {
+			applyComparator();
+		}
+	}
+
+	// methods of ISortableByColumn
+	///////////////////////////////
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: there is no API to query the sorted column on
+	 * CompositeTable. The returned value is computed with information held in
+	 * the ridget.
+	 */
+	public int getSortedColumn() {
+		int result = -1;
+		Integer key = Integer.valueOf(sortedColumn);
+		if (getUIControl() != null && comparatorMap.containsKey(key)) {
+			result = sortedColumn;
+		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation notes: to have columns that are sortable by the user, the
+	 * CompositeTable bound to this ridget must have an
+	 * {@link AbstractNativeHeader}. In any other case this method will return
+	 * false.
+	 */
+	public boolean isColumnSortable(int columnIndex) {
+		checkColumnRange(columnIndex);
+		boolean result = false;
+		if (getHeaderTable() != null) {
+			Integer key = Integer.valueOf(columnIndex);
+			Boolean sortable = sortableColumnsMap.get(columnIndex);
+			if (sortable == null || Boolean.TRUE.equals(sortable)) {
+				result = comparatorMap.get(key) != null;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: there is no API to query the sorted column on
+	 * CompositeTable. The returned value is computed with information held in
+	 * the ridget.
+	 */
+	public boolean isSortedAscending() {
+		boolean result = false;
+		if (getSortedColumn() != -1) {
+			result = isSortedAscending;
+		}
+		return result;
+	}
+
+	public void setColumnSortable(int columnIndex, boolean sortable) {
+		checkColumnRange(columnIndex);
+		Integer key = Integer.valueOf(columnIndex);
+		Boolean newValue = Boolean.valueOf(sortable);
+		Boolean oldValue = sortableColumnsMap.put(key, newValue);
+		if (oldValue == null) {
+			oldValue = Boolean.TRUE;
+		}
+		if (!newValue.equals(oldValue)) {
+			firePropertyChange(ISortableByColumn.PROPERTY_COLUMN_SORTABILITY, null, columnIndex);
+		}
+	}
+
+	public void setSortedAscending(boolean ascending) {
+		if (isSortedAscending != ascending) {
+			boolean oldSortedAscending = isSortedAscending;
+			isSortedAscending = ascending;
+			applyComparator();
+			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
+		}
+	}
+
+	public void setSortedColumn(int columnIndex) {
+		if (columnIndex != -1) {
+			checkColumnRange(columnIndex);
+		}
+		if (sortedColumn != columnIndex) {
+			int oldSortedColumn = sortedColumn;
+			sortedColumn = columnIndex;
+			applyComparator();
+			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
+		}
+	}
+
 	// helping methods
 	//////////////////
+
+	private void applyComparator() {
+		CompositeTable control = getUIControl();
+		if (control != null) {
+			Comparator<Object> comparator = null;
+			if (sortedColumn != -1) {
+				Integer key = Integer.valueOf(sortedColumn);
+				comparator = comparatorMap.get(key);
+			}
+			if (comparator != null) {
+				setSortColumnOnHeader(sortedColumn);
+				int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
+				setSortDirectionOnHeader(direction);
+				if (rowValuesUnsorted == null) {
+					rowValuesUnsorted = new Object[rowValues.length];
+					System.arraycopy(rowValues, 0, rowValuesUnsorted, 0, rowValuesUnsorted.length);
+				}
+				SortableComparator sortableComparator = new SortableComparator(this, comparator);
+				Arrays.sort(rowValues, sortableComparator);
+				control.refreshAllRows();
+			} else {
+				setSortColumnOnHeader(sortedColumn);
+				setSortDirectionOnHeader(SWT.NONE);
+				if (rowValuesUnsorted != null) {
+					Assert.isLegal(rowValuesUnsorted.length == rowValues.length);
+					System.arraycopy(rowValuesUnsorted, 0, rowValues, 0, rowValues.length);
+					rowValuesUnsorted = null;
+					control.refreshAllRows();
+				}
+			}
+		}
+	}
+
+	private void checkColumnRange(int columnIndex) {
+		Assert.isLegal(-1 < columnIndex, "columnIndex out of range: " + columnIndex); //$NON-NLS-1$
+	}
+
+	private Table getHeaderTable() {
+		Table result = null;
+		CompositeTable control = getUIControl();
+		if (control != null) {
+			/*
+			 * CompositeTable does not have API for gettting the 'header' table.
+			 * We rely on implementation details: start with TableComposite ->
+			 * child[2] is the InternalComposite (with child 0+1 being the
+			 * header and row prototypes) -> child[0] is the content composite
+			 * (with child 1+2 being composites for the scroll bars) -> child[0]
+			 * is the header composite - hopefully AbstractNativeHeader ->
+			 * child[0] is the Table which is used as the 'native header'
+			 * widget.
+			 */
+			Control[] tcChildren = control.getChildren();
+			if (tcChildren.length > 2 && tcChildren[2] instanceof Composite) {
+				Composite intComposite = (Composite) tcChildren[2];
+				Control[] intChildren = intComposite.getChildren();
+				if (intChildren.length > 0 && intChildren[0] instanceof Composite) {
+					Composite contComposite = (Composite) intChildren[0];
+					Control[] contChildren = contComposite.getChildren();
+					if (contChildren.length > 0 && contChildren[0] instanceof Composite) {
+						Composite tableComp = (Composite) contChildren[0];
+						Control[] tableChildren = tableComp.getChildren();
+						if (tableChildren.length > 0 && tableChildren[0] instanceof AbstractNativeHeader) {
+							AbstractNativeHeader header = (AbstractNativeHeader) tableChildren[0];
+							Control[] headerChildren = header.getChildren();
+							if (headerChildren.length > 0 && headerChildren[0] instanceof Table) {
+								result = (Table) headerChildren[0];
+							}
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * CompositeTable.setSelection(x,y) is asynchronous. This means that: - we
@@ -215,6 +438,48 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
+	private int rowIndexOfOption(Object element) {
+		int result = -1;
+		for (int i = 0; result == -1 && i < rowValues.length; i++) {
+			if (rowValues[i] == element) {
+				result = i;
+			}
+		}
+		return result;
+	}
+
+	private void setSortDirectionOnHeader(int direction) {
+		Table headerTable = getHeaderTable();
+		if (headerTable != null) {
+			headerTable.setSortDirection(direction);
+			headerTable.redraw();
+		}
+	}
+
+	private void setSortColumnOnHeader(int columnIndex) {
+		Table headerTable = getHeaderTable();
+		if (headerTable != null) {
+			if (columnIndex == -1) {
+				headerTable.setSortColumn(null);
+			} else {
+				TableColumn column = headerTable.getColumn(columnIndex);
+				headerTable.setSortColumn(column);
+				headerTable.redraw();
+			}
+		}
+	}
+
+	private void updateRows(CompositeTable control) {
+		if (rowObservables != null) {
+			rowValues = rowObservables.toArray();
+		} else {
+			rowValues = new Object[0];
+		}
+		rowValuesUnsorted = null;
+		control.setNumRowsInCollection(rowValues.length);
+		applyComparator();
+	}
+
 	/**
 	 * Re-applies ridget selection to control (if selection exists), otherwise
 	 * clears ridget selection
@@ -226,7 +491,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		CompositeTable control = getUIControl();
 		if (control != null) {
 			Object selection = getSingleSelectionObservable().getValue();
-			int index = indexOfOption(selection);
+			int index = rowIndexOfOption(selection);
 			if (index > -1) {
 				int row = index - control.getTopRow();
 				readAndDispatch();
@@ -286,8 +551,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 
 		public void refresh(CompositeTable table, int index, Control row) {
-			if (rowObservables != null) {
-				Object rowBean = rowObservables.get(index);
+			if (index < rowValues.length) {
+				Object rowBean = rowValues[index];
 				Assert.isLegal(rowBeanClass.isAssignableFrom(rowBean.getClass()));
 				IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
 				rowRidget.setData(rowBean);
@@ -316,7 +581,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			}
 			isArriving = true;
 			try {
-				int selectionIndex = indexOfOption(getSingleSelectionObservable().getValue());
+				int selectionIndex = rowIndexOfOption(getSingleSelectionObservable().getValue());
 				if (currentObjectOffset != selectionIndex) {
 					setSelection(currentObjectOffset);
 				}
@@ -343,6 +608,32 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			} finally {
 				isSelecting = false;
 			}
+		}
+	}
+
+	/**
+	 * Selection listener for table headers that changes the sort order of a
+	 * column according to the information stored in the ridget.
+	 */
+	private final class ColumnSortListener extends SelectionAdapter {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			TableColumn column = (TableColumn) e.widget;
+			int columnIndex = column.getParent().indexOf(column);
+			int direction = column.getParent().getSortDirection();
+			if (columnIndex == sortedColumn) {
+				if (direction == SWT.UP) {
+					setSortedAscending(false);
+				} else if (direction == SWT.DOWN) {
+					setSortedColumn(-1);
+				}
+			} else if (isColumnSortable(columnIndex)) {
+				setSortedColumn(columnIndex);
+				if (direction == SWT.NONE) {
+					setSortedAscending(true);
+				}
+			}
+			column.getParent().showSelection();
 		}
 	}
 
