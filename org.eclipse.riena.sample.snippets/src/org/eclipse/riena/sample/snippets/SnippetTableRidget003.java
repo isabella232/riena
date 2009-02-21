@@ -34,7 +34,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 /**
- * Demonstrates binding a table ridget to a model.
+ * Demonstrates using a custom {@link LabelProvider} to provide date-formatting,
+ * background- and foreground colors for a column.
  */
 public class SnippetTableRidget003 {
 
@@ -113,7 +114,8 @@ public class SnippetTableRidget003 {
 	//////////////////
 
 	/**
-	 * Provides formatted date strings and custom background / foreground colors.
+	 * Provides formatted date strings and custom background / foreground
+	 * colors.
 	 */
 	private static final class DateColumnLabelProvider extends LabelProvider implements IColorProvider {
 		private DateToStringConverter converter = new DateToStringConverter("MM/dd/yyyy"); //$NON-NLS-1$
