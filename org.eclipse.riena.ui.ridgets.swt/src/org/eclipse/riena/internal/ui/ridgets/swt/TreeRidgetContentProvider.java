@@ -96,6 +96,7 @@ public final class TreeRidgetContentProvider extends ObservableListTreeContentPr
 				if (evt.getPropertyName().toUpperCase().endsWith(accessor)) {
 					fakeRoot.refresh();
 					viewer.refresh(fakeRoot);
+					viewer.update(fakeRoot.toArray(), null);
 				}
 			}
 		};
