@@ -107,7 +107,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 				return 10;
 			}
 		};
-		p.setNote("samlpe uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
+		p.setNote("sample uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
 		p.setTitle("sample uiProcess"); //$NON-NLS-1$
 		p.start();
 
