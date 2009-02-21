@@ -250,8 +250,10 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 								selectionObservable.remove(data);
 								firePropertyChange(PROPERTY_SELECTION, oldSelection, selectionObservable);
 							}
-							// this is a workaround to make composite table aware of focus changes, Bug #264627
-							fireFocusIn(button.getParent());
+							if (!button.isDisposed()) {
+								// this is a workaround to make composite table aware of focus changes, Bug #264627
+								fireFocusIn(button.getParent());
+							}
 						}
 					}
 				});
