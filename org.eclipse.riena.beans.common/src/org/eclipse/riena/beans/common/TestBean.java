@@ -11,7 +11,7 @@
 package org.eclipse.riena.beans.common;
 
 /**
- * A simple bean.
+ * A simple POJO, that wrapping a value.
  */
 public class TestBean {
 
