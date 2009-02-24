@@ -176,7 +176,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 			} finally {
 				Activator activator = Activator.getDefault();
 				if (activator != null) {
-					Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
+					activator.getBundle().getBundleContext().removeBundleListener(this);
 				}
 			}
 			return true;
