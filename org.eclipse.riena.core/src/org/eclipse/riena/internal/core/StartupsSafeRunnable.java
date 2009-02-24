@@ -174,7 +174,10 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 						+ " got interruped.", e); //$NON-NLS-1$
 				return false;
 			} finally {
-				Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
+				Activator activator = Activator.getDefault();
+				if (activator != null) {
+					Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
+				}
 			}
 			return true;
 		}
