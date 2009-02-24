@@ -180,6 +180,11 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 		doubleClickListeners.add(listener);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: the ListRidget ignoeres columnHeaders.
+	 */
 	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 
@@ -414,7 +419,7 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	/**
 	 * Enforces selection in the control:
 	 * <ul>
-	 * <li>disallows selection changes when the ridget is "output only"</li>
+	 * <li>disallows selection changes when the ridget is "output only"</li> 
 	 * <li>disallows multiple selection is the selection type of the ridget is
 	 * {@link ISelectableRidget.SelectionType#SINGLE}</li>
 	 * </ul>
