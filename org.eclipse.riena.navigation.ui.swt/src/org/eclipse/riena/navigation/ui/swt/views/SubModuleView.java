@@ -149,6 +149,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		}
 		contentComposite = createContentComposite(parent);
 		basicCreatePartControl(contentComposite);
+		LNF_UPDATER.updateUIControls(getParentComposite());
 		createViewFacade();
 		doBinding();
 	}
@@ -276,7 +277,6 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	protected void createViewFacade() {
 		addUIControls(getParentComposite());
-		LNF_UPDATER.updateUIControls(getParentComposite());
 		if (getController() == null) {
 			createController(getNavigationNode());
 		}
