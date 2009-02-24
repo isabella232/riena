@@ -36,7 +36,7 @@ public class SnippetListRidget001 {
 		org.eclipse.swt.widgets.List list = UIControlsFactory.createList(shell, false, true);
 
 		ITableRidget listRidget = (ITableRidget) SwtRidgetFactory.createRidget(list);
-		String[] columnPropertyNames = { "english", "german", "french", "spain", "italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		String[] columnPropertyNames = { "english" }; //$NON-NLS-1$
 		List<MyNode> input = createInput();
 		listRidget.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listRidget.bindToModel(new WritableList(input, MyNode.class), MyNode.class, columnPropertyNames, null);
