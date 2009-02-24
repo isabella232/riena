@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.TreeItem;
 public class ModuleView implements INavigationNodeView<SWTModuleController, ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
+	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();
 
 	private AbstractViewBindingDelegate binding;
 	private Composite parent;
@@ -96,6 +97,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		updateModuleView();
 
 		createBodyContent(body);
+		LNF_UPDATER.updateUIControls(body);
 
 	}
 

@@ -54,6 +54,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 		INavigationNodeView<SWTModuleController, SubModuleNode> {
 
 	private final static Logger LOGGER = Activator.getDefault().getLogger(SubModuleView.class.getName());
+	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
 	private AbstractViewBindingDelegate binding;
 	private SubModuleController currentController;
@@ -275,6 +276,7 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 	protected void createViewFacade() {
 		addUIControls(getParentComposite());
+		LNF_UPDATER.updateUIControls(getParentComposite());
 		if (getController() == null) {
 			createController(getNavigationNode());
 		}
@@ -339,6 +341,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 				title.setWindowActive(currentController.isActivated());
 			}
 		}
+
+		LNF_UPDATER.updateUIControlsAfterBind(getParentComposite());
+
 	}
 
 	public SubModuleNode getNavigationNode() {

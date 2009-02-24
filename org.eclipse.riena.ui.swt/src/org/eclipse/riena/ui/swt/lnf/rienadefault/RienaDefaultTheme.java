@@ -157,6 +157,40 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		table.put(LnfKeyConstants.GRAB_CORNER_BACKGROUND, getPrimaryBackground());
 
+		// Standard SWT controls
+		table.put("Button.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$
+
+		table.put("Combo.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Combo.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("Composite.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Composite.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("DateTime.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		table.put("DateTime.foreground", getPrimaryForeground()); // no effect //$NON-NLS-1$
+
+		table.put("Group.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Group.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("Label.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Label.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("List.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		table.put("List.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("Slider.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		table.put("Slider.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("Table.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Table.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("Text.background", new ColorLnfResource(null)); //$NON-NLS-1$
+		table.put("Text.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		table.put("Tree.background", getPrimaryBackground()); //$NON-NLS-1$
+		table.put("Tree.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
 		table.put("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
 		table.put("lightGray", new ColorLnfResource(192, 192, 192)); //$NON-NLS-1$
 		table.put("gray", new ColorLnfResource(128, 128, 128)); //$NON-NLS-1$
@@ -190,6 +224,29 @@ public class RienaDefaultTheme implements ILnfTheme {
 		table.put(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
 		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, getPrimaryFont());
+
+		// Standard SWT controls
+		table.put("Button.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Combo.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Composite.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("DateTime.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Group.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Label.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("List.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Slider.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Table.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Text.font", getPrimaryFont()); //$NON-NLS-1$
+
+		table.put("Tree.font", getPrimaryFont()); //$NON-NLS-1$
 
 	}
 
@@ -325,7 +382,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 				return data[0];
 			}
 		}
-		return new FontData("Arial", 10, SWT.NORMAL); //$NON-NLS-1$
+		return new FontData("Arial Narrow", 10, SWT.NORMAL); //$NON-NLS-1$
 	}
 
 	/**

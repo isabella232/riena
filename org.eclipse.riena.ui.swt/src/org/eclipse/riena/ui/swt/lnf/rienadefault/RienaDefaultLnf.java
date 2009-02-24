@@ -182,7 +182,7 @@ public class RienaDefaultLnf {
 	 * @return the resource to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	private Resource getResource(String key) {
+	public Resource getResource(String key) {
 		ILnfResource value = getResourceTable().get(key);
 		if (value != null) {
 			return value.getResource();

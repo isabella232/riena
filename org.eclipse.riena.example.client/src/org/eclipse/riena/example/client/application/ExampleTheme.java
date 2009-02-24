@@ -50,6 +50,8 @@ public class ExampleTheme extends RienaDefaultTheme {
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_SELECTION_COLOR, new ColorLnfResource(null));
 		table.put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_FOCUS_COLOR, new ColorLnfResource(null));
 
+		table.put("Text.background", new ColorLnfResource(255, 255, 235)); //$NON-NLS-1$
+
 	}
 
 	/**
@@ -83,6 +85,16 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 		table.put(LnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 
+		table.put(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
+
+		table.put(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
+
+		table.put(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
+
+		table.put(LnfKeyConstants.SUB_MODULE_ITEM_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
+
+		table.put(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
+
 	}
 
 	/**
@@ -104,7 +116,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 	@Override
 	protected ColorLnfResource getPrimaryForeground() {
-		return new ColorLnfResource(0, 0, 0);
+		return new ColorLnfResource(64, 0, 64);
 	}
 
 	@Override
@@ -114,7 +126,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 
 	@Override
 	protected FontLnfResource getPrimaryFont() {
-		return new FontLnfResource("Arial", 11, SWT.BOLD); //$NON-NLS-1$
+		return new FontLnfResource("Arial", 9, SWT.NORMAL); //$NON-NLS-1$
 	}
 
 	@Override
