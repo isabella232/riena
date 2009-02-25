@@ -13,12 +13,14 @@ package org.eclipse.riena.ui.swt.utils;
 import java.io.File;
 import java.net.URL;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
+import org.osgi.service.log.LogService;
 
 /**
  * The ImageStore returns the images for given names. The images are loaded form
@@ -26,8 +28,9 @@ import org.eclipse.swt.graphics.Image;
  * {@link ImageState}) like pressed of hover is given. If the image name has no
  * file extension, the extension ".png" will be added.
  */
-public class ImageStore {
+public final class ImageStore {
 
+	private static final Logger LOGGER = Activator.getDefault().getLogger(ImageStore.class);
 	private static final String IMAGE_PATH_EXTENSION_ID = "org.eclipse.riena.ui.swt.imagepath"; //$NON-NLS-1$
 
 	private static ImageStore store;
@@ -35,7 +38,7 @@ public class ImageStore {
 	private IImagePathExtension[] iconPathes;
 
 	private ImageStore() {
-		// TODO
+		// utility class
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class ImageStore {
 	 *            - name (ID) of the image
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public final Image getImage(String imageName) {
+	public Image getImage(String imageName) {
 		return getImage(imageName, ImageState.NORMAL);
 	}
 
@@ -74,7 +77,7 @@ public class ImageStore {
 	 *            - extension of the image file (@see ImageFileExtension)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public final Image getImage(String imageName, ImageFileExtension fileExtension) {
+	public Image getImage(String imageName, ImageFileExtension fileExtension) {
 		return getImage(imageName, ImageState.NORMAL, fileExtension);
 	}
 
@@ -87,7 +90,7 @@ public class ImageStore {
 	 *            - state of the image (@see ImageState)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public final Image getImage(String imageName, ImageState state) {
+	public Image getImage(String imageName, ImageState state) {
 		return getImage(imageName, state, ImageFileExtension.PNG);
 	}
 
@@ -103,7 +106,7 @@ public class ImageStore {
 	 *            - extension of the image file (@see ImageFileExtension)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public final Image getImage(String imageName, ImageState state, ImageFileExtension fileExtension) {
+	public Image getImage(String imageName, ImageState state, ImageFileExtension fileExtension) {
 		String fullName = getFullName(imageName, state, fileExtension);
 		return loadImage(fullName);
 	}
@@ -192,9 +195,13 @@ public class ImageStore {
 			URL url = iconPath.getContributingBundle().getResource(fullPath);
 			if (url != null) {
 				return ImageDescriptor.createFromURL(url);
+			} else {
+				LOGGER.log(LogService.LOG_DEBUG, "Image resource \"" + fullPath + "\" not found in bundle \"" //$NON-NLS-1$ //$NON-NLS-2$
+						+ iconPath.getContributingBundle().getSymbolicName() + "\""); //$NON-NLS-1$
 			}
 		}
 
+		LOGGER.log(LogService.LOG_WARNING, "Image resource \"" + fullName + "\" not found!"); //$NON-NLS-1$ //$NON-NLS-2$
 		return null;
 
 	}
@@ -204,7 +211,7 @@ public class ImageStore {
 	 * 
 	 * @return missing image
 	 */
-	public final synchronized Image getMissingImage() {
+	public synchronized Image getMissingImage() {
 		if (missingImage == null) {
 			missingImage = ImageDescriptor.getMissingImageDescriptor().createImage();
 		}
