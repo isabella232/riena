@@ -78,9 +78,11 @@ public final class SwtUtilities {
 	 * @return width of text
 	 */
 	public static int calcTextWidth(final GC gc, final String text) {
-
-		return calcTextWidth(gc, new StringBuffer(text));
-
+		int result = 0;
+		if (text != null) {
+			result = calcTextWidth(gc, new StringBuffer(text));
+		}
+		return result;
 	}
 
 	/**
