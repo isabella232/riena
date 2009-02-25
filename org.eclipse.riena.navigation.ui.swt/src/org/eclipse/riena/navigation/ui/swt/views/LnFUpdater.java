@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.util.ReflectionFailure;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -40,11 +42,12 @@ public class LnFUpdater {
 	private final static Logger LOGGER = Activator.getDefault().getLogger(LnFUpdater.class.getName());
 
 	/**
-	 * System property defining if properties of views are update.
+	 * System property defining if properties of views are updated.
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
 
 	private final static Map<Class<? extends Control>, PropertyDescriptor[]> CONTROL_PROPERTIES = new Hashtable<Class<? extends Control>, PropertyDescriptor[]>();
+	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new Hashtable<Class<? extends Control>, Map<String, Object>>();
 	private final static List<Class<? extends Control>> CONTROLS_AFTER_BIND = new ArrayList<Class<? extends Control>>();
 
 	/**
@@ -168,7 +171,9 @@ public class LnFUpdater {
 		Class<? extends Control> controlClass = control.getClass();
 		PropertyDescriptor[] properties = getProperties(controlClass);
 		for (PropertyDescriptor property : properties) {
-			// System.out.println(controlClass.getSimpleName() + "." + property.getName());
+			if (hasNoDefaultValue(control, property)) {
+				continue;
+			}
 			Object newValue = getLnfValue(controlClass, property);
 			if (newValue == null) {
 				continue;
@@ -191,6 +196,105 @@ public class LnFUpdater {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(controlClass, property), e);
 			}
 		}
+
+	}
+
+	/**
+	 * Compares the default value of the UI control and the current value of the
+	 * given property.
+	 * 
+	 * @param control
+	 *            - UI control
+	 * @param property
+	 *            - property
+	 * @return {@code true} if the current value of the property isn't equals
+	 *         the default value; otherwise {@code false}.
+	 */
+	private boolean hasNoDefaultValue(Control control, PropertyDescriptor property) {
+
+		Method getter = property.getReadMethod();
+		if (getter != null) {
+			Object defaultValue = getDefaultPropertyValue(control, property);
+			Object currentValue = getPropertyValue(control, property);
+			if (defaultValue != null) {
+				if (!defaultValue.equals(currentValue)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Returns the default value of the given property of the given UI control.
+	 * 
+	 * @param control
+	 *            - UI control
+	 * @param property
+	 *            - property
+	 * @return default value
+	 */
+	private Object getDefaultPropertyValue(Control control, PropertyDescriptor property) {
+
+		Class<? extends Control> controlClass = control.getClass();
+		if (!DEFAULT_PROPERTY_VALUES.containsKey(controlClass)) {
+			Control defaultControl = null;
+			try {
+				defaultControl = ReflectionUtils.newInstance(controlClass, control.getParent(), control.getStyle());
+			} catch (ReflectionFailure failure) {
+				LOGGER.log(LogService.LOG_ERROR, "Cannot create an instance of \"" + controlClass.getName() + "\"", //$NON-NLS-1$ //$NON-NLS-2$
+						failure);
+				defaultControl = null;
+			}
+			if (defaultControl != null) {
+				PropertyDescriptor[] properties = getProperties(controlClass);
+				Map<String, Object> defaults = new Hashtable<String, Object>(properties.length);
+				for (PropertyDescriptor defaultProperty : properties) {
+					Object value = getPropertyValue(defaultControl, defaultProperty);
+					if (value != null) {
+						defaults.put(defaultProperty.getName(), value);
+					}
+				}
+				defaultControl.dispose();
+				DEFAULT_PROPERTY_VALUES.put(controlClass, defaults);
+			}
+		}
+
+		Map<String, Object> defaultValues = DEFAULT_PROPERTY_VALUES.get(controlClass);
+		if (defaultValues == null) {
+			return null;
+		}
+		return defaultValues.get(property.getName());
+
+	}
+
+	/**
+	 * Returns the value of the given property of the given UI control.
+	 * 
+	 * @param control
+	 *            - UI control
+	 * @param property
+	 *            - property
+	 * @return value of the property or {@code null} if the property cannot
+	 *         read.
+	 */
+	private Object getPropertyValue(Control control, PropertyDescriptor property) {
+
+		Method getter = property.getReadMethod();
+		if (getter != null) {
+			try {
+				return ReflectionUtils.invokeHidden(control, property.getReadMethod().getName());
+			} catch (ReflectionFailure failure) {
+				String message = "Cannot get the value of the property \"" + property.getName() + "\" of the class \"" //$NON-NLS-1$ //$NON-NLS-2$
+						+ control.getClass().getName() + "\"."; //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, message, failure);
+				return null;
+			}
+		}
+
+		return null;
 
 	}
 

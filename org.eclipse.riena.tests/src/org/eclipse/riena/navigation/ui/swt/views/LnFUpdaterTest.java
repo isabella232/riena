@@ -157,6 +157,58 @@ public class LnFUpdaterTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Tests the <i>private</i> method {@code getDefaultPropertyValue}.
+	 * 
+	 * @throws IntrospectionException
+	 *             - handled by jUnit
+	 */
+	public void testGetDefaultPropertyValue() throws IntrospectionException {
+
+		Label label = new Label(shell, SWT.NONE);
+		PropertyDescriptor foregroundProperty = new PropertyDescriptor("foreground", Label.class);
+		Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getDefaultPropertyValue", label, foregroundProperty);
+		assertEquals(label.getForeground(), value);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getPropertyValue}.
+	 * 
+	 * @throws IntrospectionException
+	 *             - handled by jUnit
+	 */
+	public void testGetPropertyValue() throws IntrospectionException {
+
+		Label label = new Label(shell, SWT.NONE);
+		label.setAlignment(SWT.RIGHT);
+		PropertyDescriptor property = new PropertyDescriptor("alignment", Label.class);
+		Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getPropertyValue", label, property);
+		assertEquals(SWT.RIGHT, value);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code hasNoDefaultValue}.
+	 * 
+	 * @throws IntrospectionException
+	 * 
+	 * @throws IntrospectionException
+	 *             - handled by jUnit
+	 */
+	public void testHasNoDefaultValue() throws IntrospectionException {
+
+		Label label = new Label(shell, SWT.NONE);
+		PropertyDescriptor property = new PropertyDescriptor("text", Label.class);
+		Boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property);
+		assertFalse(ret);
+
+		label.setText("Hello!");
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property);
+		assertTrue(ret);
+
+	}
+
 	private PropertyDescriptor getForegroundProperty() throws IntrospectionException {
 
 		BeanInfo beanInfo = Introspector.getBeanInfo(Label.class);
