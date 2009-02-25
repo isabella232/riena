@@ -47,32 +47,33 @@ public final class SnippetLabelRidget001 {
 			dateTimeRidget.bindToModel(BeansObservables.observeValue(dateBean, "time")); //$NON-NLS-1$
 
 			final Timer t = new Timer();
-			t.schedule(new TimerTask() {
-
-				@Override
-				public void run() {
-					Display.getDefault().asyncExec(new Runnable() {
-
-						public void run() {
-							try {
-								dateBean.update(); // update bean to the current value for date & time
-								dateTimeRidget.updateFromModel(); // update Ridget from bean
-							} catch (SWTException e) {
-								t.cancel();
+			try {
+				TimerTask task = new TimerTask() {
+					@Override
+					public void run() {
+						Display.getDefault().asyncExec(new Runnable() {
+							public void run() {
+								try {
+									dateBean.update(); // update bean to the current value for date & time
+									dateTimeRidget.updateFromModel(); // update Ridget from bean
+								} catch (SWTException e) {
+									t.cancel();
+								}
 							}
-						}
+						});
+					}
+				};
+				t.schedule(task, new Date(), 1000);
 
-					});
+				shell.setSize(300, 100);
+				shell.open();
+				while (!shell.isDisposed()) {
+					if (!display.readAndDispatch()) {
+						display.sleep();
+					}
 				}
-
-			}, new Date(), 1000);
-
-			shell.setSize(300, 100);
-			shell.open();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
+			} finally {
+				t.cancel();
 			}
 		} finally {
 			display.dispose();
