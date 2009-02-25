@@ -12,6 +12,18 @@
       </application>
    </extension>
    <extension
+         id="example_product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.riena.example.client.application"
+            name="Riena Example">
+         <property
+               name="appName"
+               value="Riena Example">
+         </property>
+      </product>
+   </extension>
+   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.eclipse.riena.navigation.ui.swt.views.SubApplicationView"
@@ -595,18 +607,6 @@
             assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
             parentTypeId="playground">
       </assembly>
-   </extension>
-   <extension
-         id="example_product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.riena.example.client.application"
-            name="Riena Example">
-         <property
-               name="appName"
-               value="Riena Example">
-         </property>
-      </product>
    </extension>
    <extension
          point="org.eclipse.riena.filter.uifilter">
