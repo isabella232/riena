@@ -15,88 +15,34 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.security.auth.Subject;
 
 public abstract class AbstractHooksProxy implements InvocationHandler {
 
-	private Object proxiedInstance;
-	private HashMap<String, List<Method>> methodTable = new HashMap<String, List<Method>>();
+	private final Object proxiedInstance;
+	private final AtomicReference<Map<MethodKey, Method>> methodTableRef;
 
 	public AbstractHooksProxy(Object proxiedInstance) {
 		this.proxiedInstance = proxiedInstance;
-
-		Method[] methods = proxiedInstance.getClass().getMethods();
-
-		for (Method method : methods) {
-
-			Class<?>[] param = method.getParameterTypes();
-			String computedMethodName = computeMethodName(method, param.length);
-			List<Method> mList = methodTable.get(computedMethodName);
-			if (mList == null) {
-				mList = new ArrayList<Method>();
-				methodTable.put(computedMethodName, mList);
-			}
-			mList.add(method);
-		}
+		this.methodTableRef = new AtomicReference<Map<MethodKey, Method>>();
 	}
 
-	private String computeMethodName(Method method, int paramSize) {
-		return method.getName() + "__" + paramSize; //$NON-NLS-1$
-	}
-
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		// Class<?>[] clazzParm;
-		// if (args == null) {
-		// clazzParm = new Class[0];
-		// } else {
-		// clazzParm = new Class[args.length];
-		// for (int i = 0; i < args.length; i++) {
-		// clazzParm[i] = args[i].getClass();
-		// }
-		// }
-
-		String computedMethodName;
-		if (args != null) {
-			computedMethodName = computeMethodName(method, args.length);
-		} else {
-			computedMethodName = computeMethodName(method, 0);
-		}
-		List<Method> mList = methodTable.get(computedMethodName);
-		Method proxyMethod = null;
-		if (mList.size() == 1) {
-			proxyMethod = mList.get(0);
-		} else {
-			for (Method tmpMethod : mList) {
-				Class<?>[] paramTypes = tmpMethod.getParameterTypes();
-				int i = 0;
-				boolean found = true;
-				for (Class<?> param : paramTypes) {
-					if (!param.isAssignableFrom(args[i].getClass())) {
-						found = false;
-						break;
-					}
-				}
-				if (found) {
-					proxyMethod = tmpMethod;
-					break;
-				}
-			}
-		}
-		if (proxyMethod == null) {
-			throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args)); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+	public Object invoke(Object proxy, final Method method, final Object[] args) throws Throwable {
 		Subject subject = getSubject();
 		if (subject == null) {
-			return proxyMethod.invoke(proxiedInstance, args);
+			return invoke(method, args);
 		} else {
-			MySecurityAction myAction = new MySecurityAction(proxyMethod, proxiedInstance, args);
 			try {
-				Subject.doAsPrivileged(subject, myAction, null);
+				return Subject.doAsPrivileged(subject, new PrivilegedExceptionAction<Object>() {
+					public Object run() throws Exception {
+						return invoke(method, args);
+					}
+				}, null);
 			} catch (PrivilegedActionException pae) {
 				Throwable cause = pae.getCause();
 				if (cause instanceof InvocationTargetException) {
@@ -104,7 +50,34 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 				}
 				throw cause;
 			}
-			return myAction.getResult();
+		}
+	}
+
+	private Object invoke(final Method method, final Object[] args) throws NoSuchMethodException,
+			InvocationTargetException, IllegalAccessException {
+		Method proxyMethod;
+		Map<MethodKey, Method> methodTable = methodTableRef.get();
+		if (methodTable == null) {
+			proxyMethod = method;
+		} else {
+			proxyMethod = methodTable.get(new MethodKey(method));
+			if (proxyMethod == null) {
+				throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args)); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
+		try {
+			return proxyMethod.invoke(proxiedInstance, args);
+		} catch (IllegalArgumentException e) {
+			if (methodTable != null) {
+				throw new NoSuchMethodException(proxiedInstance + " " + method.getName() + "," + Arrays.toString(args)); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			Method[] methods = proxiedInstance.getClass().getMethods();
+			Map<MethodKey, Method> tempMethodTable = new HashMap<MethodKey, Method>(methods.length);
+			for (Method keyMethod : methods) {
+				tempMethodTable.put(new MethodKey(keyMethod), keyMethod);
+			}
+			methodTableRef.compareAndSet(null, tempMethodTable);
+			return invoke(method, args);
 		}
 	}
 
@@ -114,27 +87,58 @@ public abstract class AbstractHooksProxy implements InvocationHandler {
 
 	public abstract Subject getSubject();
 
-}
+	/**
+	 * The {@code MethodKey} is an object that can be used as a key for {@code
+	 * Method}s in {@code Map}s that does not consider the methods declaring
+	 * class.
+	 */
+	private static final class MethodKey {
 
-class MySecurityAction implements PrivilegedExceptionAction<Object> {
+		private final Method method;
+		private final Class<?>[] params;
 
-	private Method proxyMethod;
-	private Object proxiedInstance;
-	private Object[] args;
-	private Object result;
+		public MethodKey(final Method method) {
+			this.method = method;
+			this.params = method.getParameterTypes();
+		}
 
-	MySecurityAction(Method proxyMethod, Object proxiedInstance, Object[] args) {
-		this.proxyMethod = proxyMethod;
-		this.proxiedInstance = proxiedInstance;
-		this.args = args;
+		/**
+		 * Compares this <code>MethodKey</code> against the specified object.
+		 * Returns true if the objects are the same. Two <code>MethodKeys</code>
+		 * are the same if there containing method have the same name and formal
+		 * parameter types and return type.
+		 */
+		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof MethodKey)) {
+				return false;
+			}
+			MethodKey other = (MethodKey) obj;
+			if (!method.getName().equals(other.method.getName())) {
+				return false;
+			}
+			if (!method.getReturnType().equals(other.method.getReturnType())) {
+				return false;
+			}
+			if (params.length != other.params.length) {
+				return false;
+			}
+			for (int i = 0; i < params.length; i++) {
+				if (params[i] != other.params[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/**
+		 * Returns a hash-code for this <code>Method</code>. The hash-code is
+		 * computed as the hash-code of the method's name and the number of
+		 * arguments.
+		 */
+		public int hashCode() {
+			return method.getName().hashCode() + 31 * params.length;
+		}
+
 	}
 
-	public Object run() throws Exception {
-		result = proxyMethod.invoke(proxiedInstance, args);
-		return result;
-	}
-
-	public Object getResult() {
-		return result;
-	}
 }
