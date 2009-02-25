@@ -33,6 +33,21 @@ public class ChoiceComposite extends Composite {
 	/**
 	 * Create a new ChoiceComposite instance given its parent and style value.
 	 * The default orientation is <tt>SWT.VERTICAL</tt> (see also
+	 * {@link #setOrientation(int)}). Multiple selection is allowed (=check
+	 * boxes).
+	 * 
+	 * @param parent
+	 *            the parent Composite (non-null)
+	 * @param style
+	 *            the SWT style of the Composite
+	 */
+	public ChoiceComposite(Composite parent, int style) {
+		this(parent, style, true);
+	}
+
+	/**
+	 * Create a new ChoiceComposite instance given its parent and style value.
+	 * The default orientation is <tt>SWT.VERTICAL</tt> (see also
 	 * {@link #setOrientation(int)}).
 	 * 
 	 * @param parent
