@@ -33,11 +33,13 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -82,7 +84,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private int sortedColumn;
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
-	private final Map<Integer, Object> labelProviderMap;
+	private final Map<Integer, IColumnFormatter> formatterMap;
 
 	private boolean moveableColumns;
 
@@ -94,7 +96,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
-		labelProviderMap = new HashMap<Integer, Object>();
+		formatterMap = new HashMap<Integer, IColumnFormatter>();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				applyEraseListener();
@@ -125,8 +127,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					renderingMethods);
-			Object[] labelProviders = getLabelProviders(attrMap.length);
-			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, labelProviders));
+			IColumnFormatter[] columnFormatters = getColumnFormatters(attrMap.length);
+			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, columnFormatters));
 			viewer.setContentProvider(viewerCP);
 
 			applyColumnsMoveable(control);
@@ -381,14 +383,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return true;
 	}
 
-	/**
-	 * This method is provisional. Do not use yet.
-	 */
-	// TODO [ev] discuss this
-	public void setLabelProvider(int columnIndex, Object labelProvider) {
+	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
 		checkColumnRange(columnIndex);
+		if (formatter != null) {
+			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
+		}
 		Integer key = Integer.valueOf(columnIndex);
-		labelProviderMap.put(key, labelProvider);
+		formatterMap.put(key, formatter);
 	}
 
 	// helping methods
@@ -480,13 +481,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private Object[] getLabelProviders(int numColumns) {
+	private IColumnFormatter[] getColumnFormatters(int numColumns) {
 		Assert.isLegal(numColumns >= 0);
-		Object[] result = new Object[numColumns];
+		IColumnFormatter[] result = new IColumnFormatter[numColumns];
 		for (int i = 0; i < numColumns; i++) {
-			Object labelProvider = labelProviderMap.get(Integer.valueOf(i));
-			if (labelProvider != null) {
-				result[i] = labelProvider;
+			IColumnFormatter columnFormatter = formatterMap.get(Integer.valueOf(i));
+			if (columnFormatter != null) {
+				result[i] = columnFormatter;
 			}
 		}
 		return result;

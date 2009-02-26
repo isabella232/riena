@@ -115,6 +115,22 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void setComparator(int columnIndex, Comparator<Object> comparator);
 
 	/**
+	 * Set the {@link ColumnFormatter} to be used for the column at columnIndex.
+	 * <p>
+	 * Note: changing column formatters on a table ridget that is already bound
+	 * to a model, requires calling {@link #updateFromModel()} to apply the new
+	 * format.
+	 * 
+	 * @param columnIndex
+	 *            a columnIndex in the allowed range ( 0 &lt;= columnIndex &lt;
+	 *            numColumns )
+	 * @param formatter
+	 *            an IColumnFormatter instance; null removes the previously used
+	 *            formatter from the selected column
+	 */
+	void setColumnFormatter(int columnIndex, IColumnFormatter formatter);
+
+	/**
 	 * Return true, if this table allows columns to be re-arranged by the user.
 	 * The default value is false.
 	 */

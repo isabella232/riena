@@ -19,15 +19,12 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.riena.beans.common.AbstractBean;
-import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
+import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -38,9 +35,6 @@ import org.eclipse.swt.widgets.TableColumn;
  * background- and foreground colors for a column.
  */
 public class SnippetTableRidget003 {
-
-	private static Color fgColor;
-	private static Color bgColor;
 
 	public SnippetTableRidget003(Shell shell) {
 		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
@@ -60,7 +54,12 @@ public class SnippetTableRidget003 {
 		String[] columnPropertyNames = { "description", "date" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] columnHeaders = { "Description", "Date" }; //$NON-NLS-1$ //$NON-NLS-2$
 		List<Holiday> input = createInput();
-		((TableRidget) tableRidget).setLabelProvider(1, new DateColumnLabelProvider());
+		tableRidget.setColumnFormatter(1, new DateColumnFormatter("MM/dd/yyyy") { //$NON-NLS-1$
+					@Override
+					protected Date getDate(Object element) {
+						return ((Holiday) element).getDate();
+					}
+				});
 		tableRidget.bindToModel(new WritableList(input, Holiday.class), Holiday.class, columnPropertyNames,
 				columnHeaders);
 		tableRidget.updateFromModel();
@@ -71,8 +70,6 @@ public class SnippetTableRidget003 {
 	 */
 	public static void main(String[] args) {
 		Display display = Display.getDefault();
-		fgColor = display.getSystemColor(SWT.COLOR_RED);
-		bgColor = display.getSystemColor(SWT.COLOR_GRAY);
 		try {
 			final Shell shell = new Shell();
 			new SnippetTableRidget003(shell);
@@ -112,29 +109,6 @@ public class SnippetTableRidget003 {
 
 	// helping classes
 	//////////////////
-
-	/**
-	 * Provides formatted date strings and custom background / foreground
-	 * colors.
-	 */
-	private static final class DateColumnLabelProvider extends LabelProvider implements IColorProvider {
-		private DateToStringConverter converter = new DateToStringConverter("MM/dd/yyyy"); //$NON-NLS-1$
-
-		@Override
-		public String getText(Object element) {
-			Holiday holiday = (Holiday) element;
-			String result = (String) converter.convert(holiday.getDate());
-			return result;
-		}
-
-		public Color getBackground(Object element) {
-			return bgColor;
-		}
-
-		public Color getForeground(Object element) {
-			return fgColor;
-		}
-	}
 
 	/**
 	 * Holiday bean with a description and a date.

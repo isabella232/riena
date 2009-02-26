@@ -37,6 +37,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -331,6 +332,16 @@ public class ListRidget extends AbstractSelectableIndexedRidget implements ITabl
 	 */
 	public final void setMoveableColumns(boolean moveableColumns) {
 		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
+	}
+
+	/**
+	 * This method is not supported by this ridget.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             this is not supported by this ridget
+	 */
+	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+		throw new UnsupportedOperationException();
 	}
 
 	// helping methods
