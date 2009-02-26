@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -63,8 +63,8 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() throws Exception {
-		TextBean model = new TextBean();
-		IObservableValue modelOV = BeansObservables.observeValue(model, "text1");
+		TextPojo model = new TextPojo();
+		IObservableValue modelOV = PojoObservables.observeValue(model, "text1");
 		ITextRidget ridget = getRidget();
 		ridget.bindToModel(modelOV);
 
@@ -79,8 +79,8 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals("", ridget.getText());
 
-		TextBean model = new TextBean();
-		IObservableValue modelOV = BeansObservables.observeValue(model, "text2");
+		TextPojo model = new TextPojo();
+		IObservableValue modelOV = PojoObservables.observeValue(model, "text2");
 		ridget.bindToModel(modelOV);
 
 		assertEquals("", ridget.getText());
@@ -93,8 +93,8 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToModelIObservableValue() throws Exception {
 		ITextRidget ridget = getRidget();
 
-		TextBean model = new TextBean();
-		IObservableValue modelOV = BeansObservables.observeValue(model, "text1");
+		TextPojo model = new TextPojo();
+		IObservableValue modelOV = PojoObservables.observeValue(model, "text1");
 		ridget.bindToModel(modelOV);
 
 		assertEquals("", ridget.getText());
@@ -107,7 +107,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToModelPropertyName() throws Exception {
 		ITextRidget ridget = getRidget();
 
-		TextBean model = new TextBean();
+		TextPojo model = new TextPojo();
 		ridget.bindToModel(model, "text2");
 
 		assertEquals("", ridget.getText());
@@ -120,7 +120,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	public void testUpdateFromModel() throws Exception {
 		ITextRidget ridget = getRidget();
 
-		TextBean model = new TextBean();
+		TextPojo model = new TextPojo();
 		ridget.bindToModel(model, "text2");
 		String newText = "second";
 		model.setText2(newText);
@@ -168,11 +168,11 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * POJO-Bean with two strings.
 	 */
-	private static class TextBean {
+	private static class TextPojo {
 		private String text1;
 		private String text2;
 
-		public TextBean() {
+		public TextPojo() {
 			text1 = "one";
 			text2 = "two";
 		}

@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
@@ -41,10 +41,10 @@ public final class SnippetLabelRidget001 {
 			Label dateTimeWidget = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(dateTimeWidget);
 
-			final DateBean dateBean = new DateBean();
+			final DatePojo datePojo = new DatePojo();
 
 			final ILabelRidget dateTimeRidget = (ILabelRidget) SwtRidgetFactory.createRidget(dateTimeWidget);
-			dateTimeRidget.bindToModel(BeansObservables.observeValue(dateBean, "time")); //$NON-NLS-1$
+			dateTimeRidget.bindToModel(PojoObservables.observeValue(datePojo, "time")); //$NON-NLS-1$
 
 			final Timer t = new Timer();
 			try {
@@ -54,7 +54,7 @@ public final class SnippetLabelRidget001 {
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								try {
-									dateBean.update(); // update bean to the current value for date & time
+									datePojo.update(); // update bean to the current value for date & time
 									dateTimeRidget.updateFromModel(); // update Ridget from bean
 								} catch (SWTException e) {
 									t.cancel();
@@ -80,11 +80,11 @@ public final class SnippetLabelRidget001 {
 		}
 	}
 
-	private static class DateBean {
+	private static class DatePojo {
 
 		private Date time;
 
-		DateBean() {
+		DatePojo() {
 			update();
 		}
 

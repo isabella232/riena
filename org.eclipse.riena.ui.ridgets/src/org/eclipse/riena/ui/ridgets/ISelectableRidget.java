@@ -75,15 +75,15 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void bindSingleSelectionToModel(IObservableValue observableValue);
 
 	/**
-	 * Binds an bean property to the single selection.
+	 * Binds an object property to the single selection.
 	 * 
 	 * @see #getSingleSelectionObservable()
-	 * @param bean
-	 *            The bean holding the single selection model property.
+	 * @param pojo
+	 *            The pojo holding the single selection model property.
 	 * @param propertyName
 	 *            The name of the single selection model property.
 	 */
-	void bindSingleSelectionToModel(Object bean, String propertyName);
+	void bindSingleSelectionToModel(Object pojo, String propertyName);
 
 	/**
 	 * Updates the single selection from the single selection model.
@@ -111,16 +111,16 @@ public interface ISelectableRidget extends IMarkableRidget {
 	void bindMultiSelectionToModel(IObservableList observableList);
 
 	/**
-	 * Binds an bean property to the multiple selection. The property must be a
-	 * Collection.
+	 * Binds an object property to the multiple selection. The property must be
+	 * a Collection.
 	 * 
 	 * @see #getMultiSelectionObservable()
-	 * @param bean
-	 *            The bean holding the multiple selection model property.
+	 * @param pojo
+	 *            The pojo holding the multiple selection model property.
 	 * @param propertyName
 	 *            The name of the multiple selection model property.
 	 */
-	void bindMultiSelectionToModel(Object bean, String propertyName);
+	void bindMultiSelectionToModel(Object pojo, String propertyName);
 
 	/**
 	 * Updates the multiple selection from the multiple selection model.

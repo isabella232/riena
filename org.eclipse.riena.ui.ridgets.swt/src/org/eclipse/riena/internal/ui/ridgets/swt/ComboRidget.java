@@ -18,7 +18,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -191,7 +191,7 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 		}
 	}
 
-	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass,
+	public void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowValueClass,
 			String renderingMethod, IObservableValue selectionObservableValue) {
 		unbindUIControl();
 
@@ -202,16 +202,16 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
-			String renderingMethod, Object selectionBean, String selectionPropertyName) {
-		IObservableList listObservableValue = new UnboundPropertyWritableList(listBean, listPropertyName);
-		IObservableValue selectionObservableValue = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
+			String renderingMethod, Object selectionPojo, String selectionPropertyName) {
+		IObservableList listObservableValue = new UnboundPropertyWritableList(listPojo, listPropertyName);
+		IObservableValue selectionObservableValue = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
 
-		bindToModel(listObservableValue, rowBeanClass, renderingMethod, selectionObservableValue);
+		bindToModel(listObservableValue, rowValueClass, renderingMethod, selectionObservableValue);
 	}
 
-	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
-			String renderingMethod, Object selectionBean, String selectionPropertyName, IComboEntryFactory entryFactory) {
+	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
+			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory) {
 		throw new UnsupportedOperationException(); // TODO implement
 
 	}

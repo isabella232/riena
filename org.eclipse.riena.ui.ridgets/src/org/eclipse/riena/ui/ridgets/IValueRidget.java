@@ -38,12 +38,12 @@ public interface IValueRidget extends IRidget {
 	 * 
 	 * @see #updateFromModel()
 	 * 
-	 * @param bean
-	 *            The bean holding the model value.
+	 * @param pojo
+	 *            The pojo holding the model value.
 	 * @param propertyName
 	 *            Name of the bean property holding the model value.
 	 */
-	void bindToModel(Object bean, String propertyName);
+	void bindToModel(Object pojo, String propertyName);
 
 	/**
 	 * @return The converter used when updating from the model to the

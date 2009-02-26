@@ -19,7 +19,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -105,23 +105,23 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(Object listBean, String listPropertyName, Object selectionBean, String selectionPropertyName) {
-		Assert.isNotNull(listBean, "listBean"); //$NON-NLS-1$
+	public void bindToModel(Object listPojo, String listPropertyName, Object selectionPojo, String selectionPropertyName) {
+		Assert.isNotNull(listPojo, "listPojo"); //$NON-NLS-1$
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
-		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
+		Assert.isNotNull(selectionPojo, "selectionPojo"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = new UnboundPropertyWritableList(listBean, listPropertyName);
-		IObservableValue selectionValue = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableList optionValues = new UnboundPropertyWritableList(listPojo, listPropertyName);
+		IObservableValue selectionValue = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionBean,
+	public void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionPojo,
 			String selectionPropertyName) {
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
-		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
+		Assert.isNotNull(selectionPojo, "selectionPojo"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
 		IObservableList list = new UnboundPropertyWritableList(new ListBean(optionValues), ListBean.PROPERTY_VALUES);
-		IObservableValue selection = BeansObservables.observeValue(selectionBean, selectionPropertyName);
+		IObservableValue selection = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
 		bindToModel(list, optionLabels, selection);
 	}
 

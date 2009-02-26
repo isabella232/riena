@@ -21,7 +21,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.ListBinding;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Diffs;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -69,8 +69,8 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 						UpdateListStrategy.POLICY_ON_REQUEST));
 	}
 
-	public final void bindMultiSelectionToModel(Object bean, String propertyName) {
-		IObservableList observableList = new UnboundPropertyWritableList(bean, propertyName);
+	public final void bindMultiSelectionToModel(Object pojo, String propertyName) {
+		IObservableList observableList = new UnboundPropertyWritableList(pojo, propertyName);
 		bindMultiSelectionToModel(observableList);
 	}
 
@@ -84,8 +84,8 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 						UpdateValueStrategy.POLICY_ON_REQUEST));
 	}
 
-	public final void bindSingleSelectionToModel(Object bean, String propertyName) {
-		IObservableValue observableValue = BeansObservables.observeValue(bean, propertyName);
+	public final void bindSingleSelectionToModel(Object pojo, String propertyName) {
+		IObservableValue observableValue = PojoObservables.observeValue(pojo, propertyName);
 		bindSingleSelectionToModel(observableValue);
 	}
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
@@ -52,7 +52,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		realm = new DefaultRealm();
 
 		bean = new TestBean();
-		model = BeansObservables.observeValue(bean, TestBean.PROPERTY);
+		model = PojoObservables.observeValue(bean, TestBean.PROPERTY);
 		target = new WritableValue();
 
 		valueBindingSupport = new ValueBindingSupport(target, model);

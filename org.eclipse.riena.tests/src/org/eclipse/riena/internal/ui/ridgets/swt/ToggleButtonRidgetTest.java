@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
@@ -85,8 +86,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetSelected() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
 		Button button = getWidget();
-		BooleanTestBean model = new BooleanTestBean();
-		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
+		BooleanTestPojo model = new BooleanTestPojo();
+		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 
 		ridget.setSelected(true);
@@ -103,9 +104,9 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testIsSelected() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
 
-		BooleanTestBean model = new BooleanTestBean();
+		BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
+		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 		ridget.updateFromModel();
 
@@ -115,9 +116,9 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToModelIObservableValue() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
 
-		BooleanTestBean model = new BooleanTestBean();
+		BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		IObservableValue modelOV = BeansObservables.observeValue(model, "selected");
+		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
@@ -133,7 +134,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToModelPropertyName() throws Exception {
 		IToggleButtonRidget ridget = getRidget();
 
-		BooleanTestBean model = new BooleanTestBean();
+		BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
 		ridget.bindToModel(model, "selected");
 
@@ -151,7 +152,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		IToggleButtonRidget ridget = getRidget();
 		Button button = getWidget();
 
-		BooleanTestBean model = new BooleanTestBean();
+		BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
 		ridget.bindToModel(model, "selected");
 		ridget.updateFromModel();
@@ -369,7 +370,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
 		IToggleButtonRidget ridget = getRidget();
 		Button control = getWidget();
-		BooleanTestBean model = new BooleanTestBean();
+		BooleanTestPojo model = new BooleanTestPojo();
 		ridget.bindToModel(model, "selected");
 
 		ridget.setSelected(false);
@@ -403,7 +404,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
 		IToggleButtonRidget ridget = getRidget();
 		Button control = getWidget();
-		BooleanTestBean model = new BooleanTestBean();
+		BooleanTestPojo model = new BooleanTestPojo();
 		ridget.bindToModel(model, "selected");
 		ridget.setEnabled(false);
 
@@ -519,7 +520,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * POJO-Bean with only one boolean.
 	 */
-	private static class BooleanTestBean {
+	private static class BooleanTestPojo {
 
 		private boolean selected;
 

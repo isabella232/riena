@@ -29,28 +29,28 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	void bindToModel(IObservableList optionValues, IObservableValue selectionValue);
 
 	/**
-	 * @param listBean
+	 * @param listPojo
 	 *            An object holding the list of options.
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param selectionBean
+	 * @param selectionPojo
 	 *            An object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 */
-	void bindToModel(Object listBean, String listPropertyName, Object selectionBean, String selectionPropertyName);
+	void bindToModel(Object listPojo, String listPropertyName, Object selectionPojo, String selectionPropertyName);
 
 	/**
 	 * @param optionValues
 	 *            The list of values to provide as choice list.
 	 * @param optionLabels
 	 *            The list of labels to present the choice list.
-	 * @param selectionBean
+	 * @param selectionPojo
 	 *            An object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 */
-	void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionBean,
+	void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionPojo,
 			String selectionPropertyName);
 
 	/**

@@ -26,55 +26,58 @@ public interface IComboRidget extends IMarkableRidget {
 
 	/**
 	 * @param listObservableValue
-	 *            An observable list with a list of beans.
-	 * @param rowBeanClass
-	 *            The class of the beans in the list.
+	 *            An observable list of objects.
+	 * @param rowValueClass
+	 *            The class of the values in the list.
 	 * @param renderingMethod
-	 *            The method used to render the beans in the list of the combo
-	 *            box (null for {@code toString()}).
+	 *            A method of rowValueClass that returns the value to display
+	 *            for each entry of the combo box combo box (null for {@code
+	 *            toString()}).
 	 * @param selectionObservableValue
 	 *            A non-null observable value holding the selection.
 	 */
-	void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowBeanClass, String renderingMethod,
-			IObservableValue selectionObservableValue);
+	void bindToModel(IObservableList listObservableValue, Class<? extends Object> rowValueClass,
+			String renderingMethod, IObservableValue selectionObservableValue);
 
 	/**
-	 * @param listBean
-	 *            An object holding the list of beans.
+	 * @param listPojo
+	 *            An object holding a list of values (objects).
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param rowBeanClass
-	 *            The class of the beans in the list.
+	 * @param rowValueClass
+	 *            The class of the values in the list.
 	 * @param renderingMethod
-	 *            The method used to render the beans in the list of the combo
-	 *            box (null for {@code toString()}).
-	 * @param selectionBean
+	 *            A method of rowValueClass that returns the value to display
+	 *            for each entry of the combo box combo box (null for {@code
+	 *            toString()}).
+	 * @param selectionPojo
 	 *            A non-null object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection (non-null).
 	 */
-	void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
-			String renderingMethod, Object selectionBean, String selectionPropertyName);
+	void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
+			String renderingMethod, Object selectionPojo, String selectionPropertyName);
 
 	/**
-	 * @param listBean
-	 *            An object holding the list of beans.
+	 * @param listPojo
+	 *            An object holding a list of values (objects).
 	 * @param listPropertyName
 	 *            The property name to access the list.
-	 * @param rowBeanClass
-	 *            The class of the beans in the list.
+	 * @param rowValueClass
+	 *            The class of the values in the list.
 	 * @param renderingMethod
-	 *            The method used to render the beans in the list of the combo
-	 *            box.
-	 * @param selectionBean
-	 *            An object holding the selection.
+	 *            A method of rowValueClass that returns the value to display
+	 *            for each entry of the combo box combo box (null for {@code
+	 *            toString()}).
+	 * @param selectionPojo
+	 *            A non-null object holding the selection.
 	 * @param selectionPropertyName
 	 *            The property name to access the selection.
 	 * @param entryFactory
 	 *            Factory for creating new entries for this ComboBox
 	 */
-	void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
-			String renderingMethod, Object selectionBean, String selectionPropertyName, IComboEntryFactory entryFactory);
+	void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
+			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory);
 
 	/**
 	 * Return the observable list holding the list.

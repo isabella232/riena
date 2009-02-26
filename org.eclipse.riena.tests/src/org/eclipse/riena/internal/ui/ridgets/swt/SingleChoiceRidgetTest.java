@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.tests.UITestHelper;
@@ -321,13 +321,13 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ISingleChoiceRidget ridget = getRidget();
 
 		try {
-			ridget.bindToModel(null, BeansObservables.observeValue(optionProvider, "selectedOption"));
+			ridget.bindToModel(null, PojoObservables.observeValue(optionProvider, "selectedOption"));
 			fail();
 		} catch (RuntimeException rex) {
 			ok();
 		}
 		try {
-			ridget.bindToModel(BeansObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
+			ridget.bindToModel(PojoObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
 			fail();
 		} catch (RuntimeException rex) {
 			ok();

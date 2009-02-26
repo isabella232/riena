@@ -17,7 +17,7 @@ import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -165,8 +165,8 @@ public class ValueBindingSupport implements IValidationCallback {
 	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
 	 *      java.lang.String)
 	 */
-	public void bindToModel(Object bean, String propertyName) {
-		modelOV = BeansObservables.observeValue(bean, propertyName);
+	public void bindToModel(Object pojo, String propertyName) {
+		modelOV = PojoObservables.observeValue(pojo, propertyName);
 		rebindToModel();
 	}
 

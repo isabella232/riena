@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationDisabledMarker;
 import org.eclipse.riena.internal.navigation.ui.filter.UIFilterRuleNavigationHiddenMarker;
@@ -146,7 +146,7 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 		model.setSelectedFilterTypeValue(null);
 		if (typeValues != null) {
 			typeValues.bindToModel(new WritableList(Arrays.asList(model.getSelectedType().getArgs()), Object.class),
-					FilterModel.class, null, BeansObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
+					FilterModel.class, null, PojoObservables.observeValue(model, "selectedFilterTypeValue")); //$NON-NLS-1$
 			typeValues.updateFromModel();
 		}
 		if (add != null) {
