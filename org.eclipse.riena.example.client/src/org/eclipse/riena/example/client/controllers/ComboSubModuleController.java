@@ -13,6 +13,7 @@ package org.eclipse.riena.example.client.controllers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
@@ -83,7 +84,8 @@ public class ComboSubModuleController extends SubModuleController {
 
 		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				value.setPerson(manager.getSelectedPerson());
+				Person selectedPerson = (Person) evt.getNewValue();
+				value.setPerson(selectedPerson);
 				textFirst.updateFromModel();
 				textLast.updateFromModel();
 			}
