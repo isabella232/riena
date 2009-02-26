@@ -18,6 +18,7 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
@@ -64,13 +65,36 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	}
 
 	/**
+	 * Test creating an hidden instance #1
+	 * */
+	public void testNewInstanceHidden1() {
+		try {
+			// This does not work
+			ReflectionUtils.newInstance(ReflectionUtilsHiddenConstructor.class, "something");
+			fail("That should not work!");
+		} catch (ReflectionFailure f) {
+			Nop.reason("Expected!");
+		}
+		Object o = ReflectionUtils.newInstanceHidden(ReflectionUtilsHiddenConstructor.class, "something");
+		assertEquals("something", o.toString());
+	}
+
+	/**
+	 * Test creating an hidden instance #2
+	 * */
+	public void testNewInstanceHidden2() {
+		Object o = ReflectionUtils.newInstanceHidden(ReflectionUtilsHiddenConstructor.class.getName(), "anything");
+		assertEquals("anything", o.toString());
+	}
+
+	/**
 	 * Nomen est omen!
 	 * 
 	 * @throws MalformedURLException
 	 * 
 	 * @throws Throwable
 	 */
-	public void testInvokeHiddenInstance() throws MalformedURLException {
+	public void testInvokeHidden() throws MalformedURLException {
 
 		URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
 		URL url = new URL("file:c:\\");
@@ -84,7 +108,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 * 
 	 * @throws Throwable
 	 */
-	public void testInvokeHiddenInstanceWithMalformedURLException() {
+	public void testInvokeHiddenWithMalformedURLException() {
 
 		Object object = new Thrower();
 		try {
@@ -99,7 +123,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 	 * Tests the method {@code invokeHidden} with primitive and no-primitive
 	 * types as arguments,
 	 */
-	public void testInvokeHidden() {
+	public void testInvokeHiddenWithPrimitves() {
 
 		ReflectionUtils.invokeHidden(TestClass.class, "setIntegerObject", 1);
 		Integer outInteger = ReflectionUtils.invokeHidden(TestClass.class, "getIntegerObject");
