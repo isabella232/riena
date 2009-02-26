@@ -106,13 +106,15 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertEquals("no", labelProvider.getColumnText(elementA, 1));
 		assertEquals("yes", labelProvider.getColumnText(elementB, 1));
 
-		labelProvider.setFormatters(new IColumnFormatter[] { null, null });
+		Object arg2 = new IColumnFormatter[] { null, null };
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg2);
 
 		assertEquals("false", labelProvider.getColumnText(elementA, 1));
 		assertEquals("true", labelProvider.getColumnText(elementB, 1));
 
 		try {
-			labelProvider.setFormatters(new IColumnFormatter[] { null, null, null });
+			Object arg3 = new IColumnFormatter[] { null, null, null };
+			ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg3);
 			fail();
 		} catch (RuntimeException rex) {
 			// ok
