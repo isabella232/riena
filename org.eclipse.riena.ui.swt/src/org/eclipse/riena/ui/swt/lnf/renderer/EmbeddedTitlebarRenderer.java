@@ -441,6 +441,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	public String getClippedText(GC gc, String text) {
 
+		if (StringUtils.isEmpty(text)) {
+			return text;
+		}
 		Rectangle textBounds = computeTextBounds(gc);
 		int maxWidth = textBounds.width;
 		if (isCloseable()) {

@@ -15,6 +15,7 @@ import java.util.Collection;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
@@ -287,6 +288,9 @@ public class EmbeddedTitleBar extends Canvas {
 		GC gc = new GC(this);
 		String clippedText = titlebarRenderer.getClippedText(gc, title);
 		gc.dispose();
+		if (StringUtils.isEmpty(title)) {
+			return false;
+		}
 
 		return !title.equals(clippedText);
 

@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class DialogView extends AbstractControlledView<AbstractWindowController> {
 
+	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
+
 	private Composite parent;
 	protected Dialog dialog;
 
@@ -97,7 +99,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 		// Do nothing by default
 	}
 
-	private class ControlledRienaDialog extends RienaDialog {
+	private final class ControlledRienaDialog extends RienaDialog {
 
 		private boolean closing;
 
@@ -136,6 +138,7 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 			super.create();
 
 			createAndBindController();
+			LNF_UPDATER.updateUIControlsAfterBind(getShell());
 
 			getShell().addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
@@ -150,7 +153,9 @@ public abstract class DialogView extends AbstractControlledView<AbstractWindowCo
 
 		@Override
 		protected Control createDialogArea(Composite parent) {
-			return buildView(parent);
+			Control dlgContente = buildView(parent);
+			LNF_UPDATER.updateUIControls(parent);
+			return dlgContente;
 		}
 
 	}

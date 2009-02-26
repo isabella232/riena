@@ -29,6 +29,7 @@ import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.osgi.service.log.LogService;
@@ -95,12 +96,26 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * Updates the properties of all children of the given composite.
+	 * Updates the properties of all children of the given composite and updates
+	 * the layout of the given parent.
 	 * 
 	 * @param parent
 	 *            - composite which children are updated.
 	 */
 	public void updateUIControlsAfterBind(Composite parent) {
+
+		updateAfterBind(parent);
+		parent.layout();
+
+	}
+
+	/**
+	 * Updates the properties of all children of the given composite.
+	 * 
+	 * @param parent
+	 *            - composite which children are updated.
+	 */
+	private void updateAfterBind(Composite parent) {
 
 		if (!checkPropertyUpdateView()) {
 			return;
@@ -242,7 +257,8 @@ public class LnFUpdater {
 		if (!DEFAULT_PROPERTY_VALUES.containsKey(controlClass)) {
 			Control defaultControl = null;
 			try {
-				defaultControl = ReflectionUtils.newInstance(controlClass, control.getParent(), control.getStyle());
+				defaultControl = ReflectionUtils.newInstanceHidden(controlClass, control.getParent(), control
+						.getStyle());
 			} catch (ReflectionFailure failure) {
 				LOGGER.log(LogService.LOG_ERROR, "Cannot create an instance of \"" + controlClass.getName() + "\"", //$NON-NLS-1$ //$NON-NLS-2$
 						failure);
@@ -287,6 +303,10 @@ public class LnFUpdater {
 			try {
 				return ReflectionUtils.invokeHidden(control, property.getReadMethod().getName());
 			} catch (ReflectionFailure failure) {
+				// TODO This is a workaround of a nebula "bug"
+				if (control.getClass().getName().equals(CompositeTable.class.getName())) {
+					return null;
+				}
 				String message = "Cannot get the value of the property \"" + property.getName() + "\" of the class \"" //$NON-NLS-1$ //$NON-NLS-2$
 						+ control.getClass().getName() + "\"."; //$NON-NLS-1$
 				LOGGER.log(LogService.LOG_ERROR, message, failure);
