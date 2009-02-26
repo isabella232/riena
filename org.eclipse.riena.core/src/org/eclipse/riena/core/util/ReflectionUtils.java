@@ -54,7 +54,30 @@ public final class ReflectionUtils {
 		Assert.isNotNull(className, "className must be given!"); //$NON-NLS-1$
 
 		try {
-			return (T) newInstance(loadClass(className), args);
+			return (T) newInstance(false, loadClass(className), args);
+		} catch (Exception e) {
+			throw new ReflectionFailure("Error creating instance for " + className + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
+					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Create a new instance of type ´className´ by invoking the constructor
+	 * with the given list of arguments.
+	 * 
+	 * @param className
+	 *            the type of new instance.
+	 * @param args
+	 *            the arguments for the constructor.
+	 * @return the new instance.
+	 * @pre className != null
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T newInstanceHidden(String className, Object... args) {
+		Assert.isNotNull(className, "className must be given!"); //$NON-NLS-1$
+
+		try {
+			return (T) newInstance(true, loadClass(className), args);
 		} catch (Exception e) {
 			throw new ReflectionFailure("Error creating instance for " + className + " with parameters " //$NON-NLS-1$ //$NON-NLS-2$
 					+ Arrays.asList(args) + "!", e); //$NON-NLS-1$
@@ -73,6 +96,38 @@ public final class ReflectionUtils {
 	 * @pre clazz != null
 	 */
 	public static <T> T newInstance(Class<T> clazz, Object... args) {
+		return newInstance(false, clazz, args);
+	}
+
+	/**
+	 * Create a new instance of type ´clazz´ by invoking the constructor with
+	 * the given list of arguments.
+	 * 
+	 * @param clazz
+	 *            the type of new instance.
+	 * @param args
+	 *            the arguments for the constructor.
+	 * @return the new instance.
+	 * @pre clazz != null
+	 */
+	public static <T> T newInstanceHidden(Class<T> clazz, Object... args) {
+		return newInstance(true, clazz, args);
+	}
+
+	/**
+	 * Create a new instance of type ´clazz´ by invoking the constructor with
+	 * the given list of arguments.
+	 * 
+	 * @param open
+	 *            if true it is tried to make it accessible.
+	 * @param clazz
+	 *            the type of new instance.
+	 * @param args
+	 *            the arguments for the constructor.
+	 * @return the new instance.
+	 * @pre clazz != null
+	 */
+	private static <T> T newInstance(boolean open, Class<T> clazz, Object... args) {
 		Assert.isNotNull(clazz, "clazz must be given!"); //$NON-NLS-1$
 
 		try {
@@ -81,6 +136,9 @@ public final class ReflectionUtils {
 			if (constructor == null) {
 				clazzes = classesFromObjects(args);
 				constructor = findMatchingConstructor(clazz, clazzes);
+			}
+			if (open) {
+				constructor.setAccessible(true);
 			}
 			return constructor.newInstance(args);
 		} catch (Throwable t) {
