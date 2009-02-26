@@ -762,7 +762,6 @@
    </extension>
    
    <!-- To activate client monitoring for the example client simply uncomment this. -->
-   <!--
    <extension point="org.eclipse.riena.monitor.collectors">
       <collector
             category="LogCollector"
@@ -789,7 +788,7 @@
             class="org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m">
       </sender>
 	</extension>
-	-->
+	
     <!-- -->
     <extension
            point="org.eclipse.riena.core.exception.handlers">
