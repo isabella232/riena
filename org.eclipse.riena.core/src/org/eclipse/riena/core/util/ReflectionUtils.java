@@ -100,8 +100,8 @@ public final class ReflectionUtils {
 	}
 
 	/**
-	 * Create a new instance of type ´clazz´ by invoking the constructor with
-	 * the given list of arguments.
+	 * Create a new instance of type ´clazz´ by invoking the ´private´
+	 * constructor with the given list of arguments.
 	 * 
 	 * @param clazz
 	 *            the type of new instance.
@@ -119,7 +119,7 @@ public final class ReflectionUtils {
 	 * the given list of arguments.
 	 * 
 	 * @param open
-	 *            if true it is tried to make it accessible.
+	 *            if true it is tried to make the constructor accessible.
 	 * @param clazz
 	 *            the type of new instance.
 	 * @param args
@@ -132,10 +132,10 @@ public final class ReflectionUtils {
 
 		try {
 			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
-			Constructor<T> constructor = findMatchingConstructor(clazz, clazzes);
+			Constructor<T> constructor = findMatchingConstructor(open, clazz, clazzes);
 			if (constructor == null) {
 				clazzes = classesFromObjects(args);
-				constructor = findMatchingConstructor(clazz, clazzes);
+				constructor = findMatchingConstructor(open, clazz, clazzes);
 			}
 			if (open) {
 				constructor.setAccessible(true);
@@ -322,10 +322,10 @@ public final class ReflectionUtils {
 		Class<?> clazz = getClass(instance);
 		while (clazz != null) {
 			Class<?>[] clazzes = classesPrimitiveFromObjects(args);
-			Method method = findMatchingMethod(clazz, methodName, clazzes);
+			Method method = findMatchingMethod(open, clazz, methodName, clazzes);
 			if (method == null) {
 				clazzes = classesFromObjects(args);
-				method = findMatchingMethod(clazz, methodName, clazzes);
+				method = findMatchingMethod(open, clazz, methodName, clazzes);
 			}
 			if (method != null) {
 				if (open) {
@@ -472,15 +472,15 @@ public final class ReflectionUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> Constructor<T> findMatchingConstructor(Class<T> clazz, Class<?>[] clazzes) {
+	private static <T> Constructor<T> findMatchingConstructor(boolean open, Class<T> clazz, Class<?>[] clazzes) {
 		assert clazz != null;
 
 		try {
 			if (clazzes == null) {
-				return clazz.getConstructor();
+				return open ? clazz.getDeclaredConstructor() : clazz.getConstructor();
 			}
 
-			Constructor[] constructors = clazz.getConstructors();
+			Constructor[] constructors = open ? clazz.getDeclaredConstructors() : clazz.getConstructors();
 			for (Constructor constructor : constructors) {
 				Class<?>[] expectedParameterTypes = constructor.getParameterTypes();
 				if (expectedParameterTypes.length == clazzes.length) {
@@ -501,7 +501,7 @@ public final class ReflectionUtils {
 		}
 	}
 
-	private static Method findMatchingMethod(Class<?> clazz, String name, Class<?>[] clazzes) {
+	private static Method findMatchingMethod(boolean open, Class<?> clazz, String name, Class<?>[] clazzes) {
 		assert clazz != null;
 		assert name != null;
 
@@ -510,7 +510,7 @@ public final class ReflectionUtils {
 				return clazz.getDeclaredMethod(name);
 			}
 
-			Method[] methods = clazz.getDeclaredMethods();
+			Method[] methods = open ? clazz.getDeclaredMethods() : clazz.getMethods();
 			for (Method method : methods) {
 				if (method.getName().equals(name)) {
 					Class<?>[] expectedParameterTypes = method.getParameterTypes();
