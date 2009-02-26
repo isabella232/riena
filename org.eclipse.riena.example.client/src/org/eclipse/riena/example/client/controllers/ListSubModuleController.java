@@ -13,6 +13,10 @@ package org.eclipse.riena.example.client.controllers;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.ComputedValue;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -23,6 +27,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -127,6 +132,21 @@ public class ListSubModuleController extends SubModuleController {
 				listPersons.updateFromModel();
 			}
 		});
+
+		final IObservableValue viewerSelection = listPersons.getSingleSelectionObservable();
+		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
+			@Override
+			protected Object calculate() {
+				return Boolean.valueOf(viewerSelection.getValue() != null);
+			}
+		};
+		DataBindingContext dbc = new DataBindingContext();
+		bindEnablementToValue(dbc, buttonRemove, hasSelection);
+		bindEnablementToValue(dbc, buttonSave, hasSelection);
+	}
+
+	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
+		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
 }
