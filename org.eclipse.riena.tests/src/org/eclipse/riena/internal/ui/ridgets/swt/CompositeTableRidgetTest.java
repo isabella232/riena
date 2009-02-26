@@ -213,7 +213,6 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		ridget.setComparator(1, comparatorLast);
 		ridget.setSortedColumn(1);
 		UITestHelper.readAndDispatch(control);
-		printRows(control);
 
 		assertEquals("Doe", getLastNameFromRow(control, 0));
 		assertEquals("Zappa", getLastNameFromRow(control, lastItemIndex));
@@ -222,15 +221,6 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 		assertEquals("Zappa", getLastNameFromRow(control, 0));
 		assertEquals("Doe", getLastNameFromRow(control, lastItemIndex));
-	}
-
-	// TODO [ev] ex
-	private void printRows(CompositeTable control) {
-		Object[] rowControls = control.getRowControls();
-		for (int i = 0; i < rowControls.length; i++) {
-			System.out.println(((Row) rowControls[i]).toString());
-		}
-		System.out.println("");
 	}
 
 	public void testGetSortedColumn() {
@@ -510,6 +500,14 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		}
 		return result;
 	}
+
+	//	private void printRows(CompositeTable control) {
+	//		Object[] rowControls = control.getRowControls();
+	//		for (int i = 0; i < rowControls.length; i++) {
+	//			System.out.println(((Row) rowControls[i]).toString());
+	//		}
+	//		System.out.println("");
+	//	}
 
 	/**
 	 * Not supported.
