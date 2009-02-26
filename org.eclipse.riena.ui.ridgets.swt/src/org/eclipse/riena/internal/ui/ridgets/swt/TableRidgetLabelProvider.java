@@ -76,11 +76,14 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
-		// TODO [ev] formatter
 		if (columnIndex < attributeMap.length) {
-			Object result = attributeMap[columnIndex].get(element);
-			if (result instanceof Boolean) {
-				String key = ((Boolean) result).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
+			IColumnFormatter formatter = this.formatters[columnIndex];
+			if (formatter != null) {
+				return (Image) formatter.getImage(element);
+			}
+			Object value = attributeMap[columnIndex].get(element);
+			if (value instanceof Boolean) {
+				String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
 				return Activator.getSharedImage(key);
 			}
 		}
