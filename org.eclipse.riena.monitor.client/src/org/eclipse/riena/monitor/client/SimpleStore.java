@@ -97,7 +97,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
 
 	private static final Logger LOGGER = Activator.getDefault().getLogger(SimpleStore.class);
-	private static final boolean TRACE = true;
+	private static final boolean TRACE = Boolean.getBoolean("riena.monitor.trace"); //$NON-NLS-1$
 
 	public SimpleStore() throws CoreException {
 		// perform default initialization

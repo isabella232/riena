@@ -65,7 +65,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	private static final String RETRY_TIME = "retryTime"; //$NON-NLS-1$
 	private static final String RETRY_TIME_DEFAULT = "15 m"; //$NON-NLS-1$
 
-	private static final boolean TRACE = true;
+	private static final boolean TRACE = Boolean.getBoolean("riena.monitor.trace"); //$NON-NLS-1$
 
 	/**
 	 * Creates the {@code SimpleSender}.
