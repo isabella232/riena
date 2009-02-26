@@ -88,7 +88,7 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertEquals(null, labelProvider.getColumnText(elementA, 99));
 	}
 
-	public void testGetColumnWithFormatter() {
+	public void testGetColumnTextWithFormatter() {
 		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatter);
 
 		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0));
@@ -98,6 +98,25 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertEquals("yes", labelProvider.getColumnText(elementB, 1));
 
 		assertEquals(null, labelProvider.getColumnText(elementA, 99));
+	}
+
+	public void testSetFormatters() {
+		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatter);
+
+		assertEquals("no", labelProvider.getColumnText(elementA, 1));
+		assertEquals("yes", labelProvider.getColumnText(elementB, 1));
+
+		labelProvider.setFormatters(new IColumnFormatter[] { null, null });
+
+		assertEquals("false", labelProvider.getColumnText(elementA, 1));
+		assertEquals("true", labelProvider.getColumnText(elementB, 1));
+
+		try {
+			labelProvider.setFormatters(new IColumnFormatter[] { null, null, null });
+			fail();
+		} catch (RuntimeException rex) {
+			// ok
+		}
 	}
 
 	public void testGetImage() {

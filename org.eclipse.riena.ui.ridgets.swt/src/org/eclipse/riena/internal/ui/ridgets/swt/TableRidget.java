@@ -235,6 +235,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				if (rowObservables instanceof IUnboundPropertyObservable) {
 					((UnboundPropertyWritableList) rowObservables).updateFromBean();
 				}
+				TableRidgetLabelProvider labelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
+				IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
+				labelProvider.setFormatters(formatters);
 				viewer.refresh(true);
 			} finally {
 				viewer.setSelection(currentSelection);

@@ -31,7 +31,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		ITableFontProvider {
 
 	private final IObservableMap[] attributeMap;
-	private final IColumnFormatter[] formatters;
+	private IColumnFormatter[] formatters;
 
 	/**
 	 * Create a new instance.
@@ -144,6 +144,19 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 			return attributeMap[columnIndex].get(element);
 		}
 		return null;
+	}
+
+	// helping methods
+	//////////////////
+
+	int getColumnCount() {
+		return this.formatters.length;
+	}
+
+	void setFormatters(IColumnFormatter[] formatters) {
+		Assert.isLegal(this.attributeMap.length == formatters.length);
+		this.formatters = new IColumnFormatter[formatters.length];
+		System.arraycopy(formatters, 0, this.formatters, 0, this.formatters.length);
 	}
 
 }
