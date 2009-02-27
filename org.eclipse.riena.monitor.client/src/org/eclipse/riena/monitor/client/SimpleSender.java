@@ -223,7 +223,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 					throw new RuntimeException("Retry sending later because receiver rejected it."); //$NON-NLS-1$
 				}
 			} catch (Throwable t) {
-				trace("sending failed with: " + t); //$NON-NLS-1$
+				trace("sending failed with: " + t, t); //$NON-NLS-1$
 				trace("retrying in " + retryTime + " milli seconds"); //$NON-NLS-1$ //$NON-NLS-2$
 				retrying = true;
 				schedule(retryTime);
@@ -235,6 +235,13 @@ public class SimpleSender implements ISender, IExecutableExtension {
 	private static void trace(String line) {
 		if (TRACE) {
 			System.out.println(line);
+		}
+	}
+
+	private static void trace(String line, Throwable t) {
+		if (TRACE) {
+			System.out.println(line);
+			t.printStackTrace();
 		}
 	}
 }

@@ -363,7 +363,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			objectos = new ObjectOutputStream(gzipos);
 			objectos.writeObject(collectible);
 		} catch (IOException e) {
-			trace("Error storing collectible: " + e.getMessage()); //$NON-NLS-1$
+			trace("Error storing collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
 			}
@@ -489,6 +489,13 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static void trace(String line) {
 		if (TRACE) {
 			System.out.println(line);
+		}
+	}
+
+	private static void trace(String line, Throwable t) {
+		if (TRACE) {
+			System.out.println(line);
+			t.printStackTrace();
 		}
 	}
 
