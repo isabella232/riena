@@ -88,7 +88,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * behind the detail fields.Its always an instance of the bean class of the
 	 * master model.
 	 * 
-	 * @return
+	 * @return an Object instance; never null.
 	 */
 	E createWorkingCopyObject();
 
@@ -105,13 +105,15 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * instance.
 	 * 
 	 * 
-	 * @param from
-	 *            the source bean
-	 * @param to
-	 *            the target bean
-	 * @return returns the target bean
+	 * @param source
+	 *            The source bean. If null, a fresh instance obtained from
+	 *            {@link #createWorkingCopyObject()} will be used as the source.
+	 * @param target
+	 *            The target bean. If null, a fresh instance obtained from
+	 *            {@link #createWorkingCopyObject()} will be used as the target
+	 * @return returns the target bean; never null.
 	 */
-	E copyBean(E from, E to);
+	E copyBean(E source, E target);
 
 	/**
 	 * Updates all details from the model. Typically an implementation calls
@@ -138,7 +140,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * model behind the detail fields.Its always an instance of the bean class
 	 * of the master model.
 	 * 
-	 * @return
+	 * @return an Object; never null.
 	 */
 	E getWorkingCopy();
 
