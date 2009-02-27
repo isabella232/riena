@@ -41,10 +41,12 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.swt.MasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.Statusline;
@@ -109,6 +111,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		addMapping(EmbeddedTitleBar.class, EmbeddedTitleBarRidget.class);
 		addMapping(ModuleTitleBar.class, ModuleTitleBarRidget.class);
 		addMapping(CompositeTable.class, CompositeTableRidget.class);
+		addMapping(MasterDetailsComposite.class, MasterDetailsRidget.class);
 	}
 
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
@@ -257,7 +260,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		 */
 		public boolean isMatching(Class<? extends Object> controlClazz) {
 			if (getControlStyle() == IGNORE_SWT_STYLE && condition == null) {
-				return (controlClazz == getControlClazz());
+				return getControlClazz().isAssignableFrom(controlClazz);
 			} else {
 				return false;
 			}
