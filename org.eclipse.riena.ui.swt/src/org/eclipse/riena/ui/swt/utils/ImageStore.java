@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
-import java.io.File;
 import java.net.URL;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.swt.Activator;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.service.log.LogService;
 
@@ -191,7 +191,7 @@ public final class ImageStore {
 	private ImageDescriptor getImageDescriptor(String fullName) {
 
 		for (IImagePathExtension iconPath : iconPathes) {
-			String fullPath = iconPath.getPath() + File.separator + fullName;
+			String fullPath = iconPath.getPath() + '/' + fullName;
 			URL url = iconPath.getContributingBundle().getResource(fullPath);
 			if (url != null) {
 				return ImageDescriptor.createFromURL(url);
