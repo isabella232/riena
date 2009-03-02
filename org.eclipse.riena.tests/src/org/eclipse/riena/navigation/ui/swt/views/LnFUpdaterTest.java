@@ -28,8 +28,10 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests of the class {@link LnFUpdater}.
@@ -192,8 +194,6 @@ public class LnFUpdaterTest extends RienaTestCase {
 	 * Tests the <i>private</i> method {@code hasNoDefaultValue}.
 	 * 
 	 * @throws IntrospectionException
-	 * 
-	 * @throws IntrospectionException
 	 *             - handled by jUnit
 	 */
 	public void testHasNoDefaultValue() throws IntrospectionException {
@@ -206,6 +206,47 @@ public class LnFUpdaterTest extends RienaTestCase {
 		label.setText("Hello!");
 		ret = ReflectionUtils.invokeHidden(lnFUpdater, "hasNoDefaultValue", label, property);
 		assertTrue(ret);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getSimpleClassName}.
+	 */
+	public void testGetSimpleClassName() {
+
+		Class<? extends Control> controlClass = Label.class;
+		String className = ReflectionUtils.invokeHidden(lnFUpdater, "getSimpleClassName", controlClass);
+		assertEquals(Label.class.getSimpleName(), className);
+
+		Control innerControl = new Composite(shell, SWT.NONE) {
+			@Override
+			public boolean setFocus() {
+				return true;
+			}
+		};
+
+		controlClass = innerControl.getClass();
+		className = ReflectionUtils.invokeHidden(lnFUpdater, "getSimpleClassName", controlClass);
+		assertEquals(Composite.class.getSimpleName(), className);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code checkLnfKeys}.
+	 */
+	public void testCheckLnfKeys() {
+
+		ILnfTheme oldTheme = LnfManager.getLnf().getTheme();
+		MyTheme myTheme = new MyTheme();
+		LnfManager.getLnf().setTheme(myTheme);
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", Label.class);
+		LnfManager.getLnf().setTheme(oldTheme);
+		assertTrue(ret);
+
+		LnfManager.getLnf().setTheme(myTheme);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", Text.class);
+		LnfManager.getLnf().setTheme(oldTheme);
+		assertFalse(ret);
 
 	}
 

@@ -40,7 +40,7 @@ public class RienaDefaultLnf {
 	private ILnfTheme theme;
 	private boolean initialized;
 
-	protected Map<String, ILnfResource> getResourceTable() {
+	public Map<String, ILnfResource> getResourceTable() {
 		return resourceTable;
 	}
 

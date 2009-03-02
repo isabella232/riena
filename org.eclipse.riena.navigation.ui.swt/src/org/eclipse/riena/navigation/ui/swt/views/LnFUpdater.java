@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -184,6 +186,9 @@ public class LnFUpdater {
 	private void updateUIControl(Control control) {
 
 		Class<? extends Control> controlClass = control.getClass();
+		if (!checkLnfKeys(controlClass)) {
+			return;
+		}
 		PropertyDescriptor[] properties = getProperties(controlClass);
 		for (PropertyDescriptor property : properties) {
 			if (hasNoDefaultValue(control, property)) {
@@ -211,6 +216,56 @@ public class LnFUpdater {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(controlClass, property), e);
 			}
 		}
+
+	}
+
+	/**
+	 * Checks if some key for the given control class exists in the current
+	 * Look&Feel.
+	 * 
+	 * @param controlClass
+	 *            - class of the UI control
+	 * @return {@code true} if latest one key exists; otherwise {@code false}
+	 */
+	private boolean checkLnfKeys(Class<? extends Control> controlClass) {
+
+		String className = getSimpleClassName(controlClass);
+		if (StringUtils.isEmpty(className)) {
+			return false;
+		}
+
+		Set<String> keys = LnfManager.getLnf().getResourceTable().keySet();
+		for (String key : keys) {
+			if (key.startsWith(className)) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Returns the simple name of a class.<br>
+	 * For anonymous classes the name of the super class is returned.
+	 * 
+	 * @param controlClass
+	 *            - clas of the UI control
+	 * @return simple name of the class
+	 */
+	@SuppressWarnings("unchecked")
+	private String getSimpleClassName(Class<? extends Control> controlClass) {
+
+		if (StringUtils.isEmpty(controlClass.getSimpleName())) {
+			if (Control.class.isAssignableFrom(controlClass.getSuperclass())) {
+				Class<? extends Control> superClass = (Class<? extends Control>) controlClass.getSuperclass();
+				return getSimpleClassName(superClass);
+			} else {
+				return null;
+			}
+		}
+
+		return controlClass.getSimpleName();
 
 	}
 
@@ -377,7 +432,7 @@ public class LnFUpdater {
 	private Object getLnfValue(Class<? extends Control> controlClass, PropertyDescriptor property) {
 
 		RienaDefaultLnf lnf = LnfManager.getLnf();
-		String controlName = controlClass.getSimpleName();
+		String controlName = getSimpleClassName(controlClass);
 		String lnfKey = controlName + "." + property.getName(); //$NON-NLS-1$
 		return lnf.getResource(lnfKey);
 
