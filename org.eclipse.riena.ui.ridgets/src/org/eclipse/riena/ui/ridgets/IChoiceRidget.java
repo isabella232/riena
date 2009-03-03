@@ -23,10 +23,10 @@ public interface IChoiceRidget extends IMarkableRidget {
 	/**
 	 * Property name of the selection property.
 	 * 
-	 * @see SingleChoiceSwingRidget.getSelection()
-	 * @see SingleChoiceSwingRidget.setSelection(Object selection)
-	 * @see MultipleChoiceSwingRidget.getSelection()
-	 * @see MultipleChoiceSwingRidget.setSelection(List selection)
+	 * @see SingleChoiceRidget.getSelection()
+	 * @see SingleChoiceRidget.setSelection(Object selection)
+	 * @see MultipleChoiceRidget.getSelection()
+	 * @see MultipleChoiceRidget.setSelection(List selection)
 	 */
 	String PROPERTY_SELECTION = "selection"; //$NON-NLS-1$
 

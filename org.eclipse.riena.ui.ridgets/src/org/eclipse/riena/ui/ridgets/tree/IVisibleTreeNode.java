@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * Defines the requirements for an object that can be used as a tree node inside
- * a <code>TreeSwingAdapter</code> and may be visible or invisible.
+ * a <code>TreeRidget</code> and may be visible or invisible.
  */
 public interface IVisibleTreeNode extends Serializable {
 

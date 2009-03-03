@@ -35,9 +35,6 @@ public abstract class AbstractControlledView<C extends IController> {
 		binding = createBinding();
 	}
 
-	/**
-	 * @see de.compeople.scp.ui.swing.views.IControlledView#initialize(org.eclipse.riena.ui.ridgets.controller.IController)
-	 */
 	public void initialize(C controller) {
 		binding.injectRidgets(controller);
 	}
@@ -51,9 +48,6 @@ public abstract class AbstractControlledView<C extends IController> {
 		return new DefaultSwtBindingDelegate();
 	}
 
-	/**
-	 * @see de.compeople.scp.ui.swing.views.IControlledView#bind(org.eclipse.riena.ui.ridgets.controller.IController)
-	 */
 	public void bind(C controller) {
 
 		if (getController() != null) {
@@ -66,9 +60,6 @@ public abstract class AbstractControlledView<C extends IController> {
 		}
 	}
 
-	/**
-	 * @see de.compeople.scp.ui.swing.views.IControlledView#unbind(org.eclipse.riena.ui.ridgets.controller.IController)
-	 */
 	public void unbind(C controller) {
 		binding.unbind(controller);
 		setController(null);

@@ -304,8 +304,6 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(selection1.toString(), getSelectedString(control));
 
-		// ComboBoxSwingRidget.RidgetBasedComboBoxModel.temporaryItem
-		// will be set
 		control.select(2);
 		manager.setSelectedPerson(selection2);
 
