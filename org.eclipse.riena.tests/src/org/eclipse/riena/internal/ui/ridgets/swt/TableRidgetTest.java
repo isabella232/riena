@@ -26,9 +26,11 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -716,6 +718,50 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		ridget.setOutputOnly(false);
 
 		assertEquals(-1, ridget.getSelectionIndex());
+	}
+
+	public void testSetColumnFormatter() {
+		TableRidget ridget = getRidget();
+		Table table = getWidget();
+		IColumnFormatter formatter = new ColumnFormatter() { //$NON-NLS-1$
+			@Override
+			public String getText(Object element) {
+				Person person = (Person) element;
+				return person.getLastname().toUpperCase();
+			}
+		};
+		final String lastName = person1.getLastname();
+		final String LASTNAME = lastName.toUpperCase();
+
+		try {
+			ridget.setColumnFormatter(-1, formatter);
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		try {
+			ridget.setColumnFormatter(99, formatter);
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		ridget.setColumnFormatter(1, formatter);
+
+		assertEquals(lastName, table.getItem(0).getText(1));
+
+		ridget.updateFromModel();
+
+		assertEquals(LASTNAME, table.getItem(0).getText(1));
+
+		ridget.setColumnFormatter(1, null);
+
+		assertEquals(LASTNAME, table.getItem(0).getText(1));
+
+		ridget.updateFromModel();
+
+		assertEquals(lastName, table.getItem(0).getText(1));
 	}
 
 	// helping methods
