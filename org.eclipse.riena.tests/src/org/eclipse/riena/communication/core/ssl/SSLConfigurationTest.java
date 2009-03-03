@@ -13,6 +13,9 @@ package org.eclipse.riena.communication.core.ssl;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.communication.core.ssl.ISSLProperties;
+import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
@@ -28,24 +31,20 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testZeroConfiguration() throws BundleException {
 		printTestName();
-		startBundle("org.eclipse.riena.communication.core");
 
-		SSLConfiguration config = getService(SSLConfiguration.class);
+		SSLConfiguration config = new SSLConfiguration();
 		assertEquals("SSLConfiguration: null, null", config.toString());
-
-		stopBundle("org.eclipse.riena.communication.core");
 	}
 
 	public void testOneConfiguration() throws BundleException {
 		printTestName();
 		addPluginXml(SSLConfigurationTest.class, "plugin.xml");
-		startBundle("org.eclipse.riena.communication.core");
 
-		SSLConfiguration config = getService(SSLConfiguration.class);
+		SSLConfiguration config = new SSLConfiguration();
+		Wire.instance(config).andStart(getContext());
 		assertEquals("SSLConfiguration: TLSv1, #jre-cacerts#", config.toString());
 
 		removeExtension("org.eclipse.riena.communication.core.ssl.test");
-		stopBundle("org.eclipse.riena.communication.core");
 	}
 
 	public void testLocateKeystoreJreCacerts() {
