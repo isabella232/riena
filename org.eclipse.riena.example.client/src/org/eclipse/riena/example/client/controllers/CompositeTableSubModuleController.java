@@ -21,7 +21,7 @@ import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
-import org.eclipse.riena.example.client.views.TableXSubModuleView;
+import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
@@ -35,9 +35,9 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
- * Controller for the {@link TableXSubModuleView} example.
+ * Controller for the {@link CompositeTableSubModuleView} example.
  */
-public class TableXSubModuleController extends SubModuleController {
+public class CompositeTableSubModuleController extends SubModuleController {
 
 	public static class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;
@@ -70,11 +70,11 @@ public class TableXSubModuleController extends SubModuleController {
 
 	private List<Person> input = PersonFactory.createPersonList();
 
-	public TableXSubModuleController() {
+	public CompositeTableSubModuleController() {
 		this(null);
 	}
 
-	public TableXSubModuleController(ISubModuleNode navigationNode) {
+	public CompositeTableSubModuleController(ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 

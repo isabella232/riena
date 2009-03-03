@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.TableXSubModuleController;
+import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -38,9 +38,9 @@ import org.eclipse.swt.widgets.Text;
 /**
  * SWT {@link ITableRidget} sample with complex table rows.
  */
-public class TableXSubModuleView extends SubModuleView<TableXSubModuleController> {
+public class CompositeTableSubModuleView extends SubModuleView<CompositeTableSubModuleController> {
 
-	public static final String ID = TableXSubModuleView.class.getName();
+	public static final String ID = CompositeTableSubModuleView.class.getName();
 
 	private static class Header extends AbstractNativeHeader {
 		public Header(Composite parent, int style) {
@@ -116,7 +116,7 @@ public class TableXSubModuleView extends SubModuleView<TableXSubModuleController
 	// ////////////////
 
 	private Group createTableGroup(Composite parent) {
-		Group group = UIControlsFactory.createGroup(parent, "&TableX:"); //$NON-NLS-1$
+		Group group = UIControlsFactory.createGroup(parent, "Composite Table:"); //$NON-NLS-1$
 		GridLayoutFactory.fillDefaults().margins(20, 20).numColumns(1).applyTo(group);
 
 		CompositeTable table = new CompositeTable(group, SWT.BORDER);
