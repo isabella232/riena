@@ -18,8 +18,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Provides formatting options for a single column. Can be used with
- * column-based ridgets (ITableRidget, ITreeTableRidget).
+ * SWT-specific implementation of IColumnFormatter. This class provides
+ * formatting options for a single column. Can be used with column-based ridgets
+ * (ITableRidget, ITreeTableRidget).
  * <p>
  * The class follows the adapter pattern and provides a default implementation
  * for all methods. Implementor should only override the formatting methods that
