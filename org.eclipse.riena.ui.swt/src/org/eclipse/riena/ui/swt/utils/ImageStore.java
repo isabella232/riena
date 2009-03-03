@@ -12,13 +12,12 @@ package org.eclipse.riena.ui.swt.utils;
 
 import java.net.URL;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.util.StringUtils;
-import org.eclipse.riena.internal.ui.swt.Activator;
-
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.service.log.LogService;
 
@@ -195,9 +194,6 @@ public final class ImageStore {
 			URL url = iconPath.getContributingBundle().getResource(fullPath);
 			if (url != null) {
 				return ImageDescriptor.createFromURL(url);
-			} else {
-				LOGGER.log(LogService.LOG_DEBUG, "Image resource \"" + fullPath + "\" not found in bundle \"" //$NON-NLS-1$ //$NON-NLS-2$
-						+ iconPath.getContributingBundle().getSymbolicName() + "\""); //$NON-NLS-1$
 			}
 		}
 

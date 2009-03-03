@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -97,7 +98,11 @@ public class GrabCorner extends Composite {
 	 * @return grab corner image
 	 */
 	private static Image getGrabCornerImage() {
-		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE);
+		Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE);
+		if (image == null) {
+			image = ImageStore.getInstance().getMissingImage();
+		}
+		return image;
 	}
 
 	/**
@@ -126,7 +131,9 @@ public class GrabCorner extends Composite {
 
 			GC gc = e.gc;
 			Image grabCornerImage = getGrabCornerImage();
-			gc.drawImage(grabCornerImage, 0, 0);
+			if (grabCornerImage != null) {
+				gc.drawImage(grabCornerImage, 0, 0);
+			}
 
 		}
 

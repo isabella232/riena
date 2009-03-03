@@ -26,9 +26,6 @@ import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.core.resource.IIconManager;
-import org.eclipse.riena.ui.core.resource.IconManagerAccessor;
-import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -226,18 +223,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	protected void updateIcon(IWindowRidget windowRidget) {
-
 		if (windowRidget == null) {
 			return;
 		}
-
 		String nodeIcon = getNavigationNode().getIcon();
-		if (nodeIcon != null) {
-			IIconManager iconManager = IconManagerAccessor.fetchIconManager();
-			if (!iconManager.hasExtension(nodeIcon)) {
-				nodeIcon = iconManager.getIconID(nodeIcon, IconSize.A);
-			}
-		}
 		windowRidget.setIcon(nodeIcon);
 	}
 

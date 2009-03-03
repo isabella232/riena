@@ -496,7 +496,7 @@
             <module
                   name="uiProcesses"
                   label="UIProcess"
-                  icon="org.eclipse.riena.example.client:/icons/ledred.png">
+                  icon="ledred.png">
                <submodule
                      controller="org.eclipse.riena.example.client.controllers.UIProcessDemoSubModuleController"
                      icon="ledlightgreen.png"
@@ -515,7 +515,7 @@
             <module
                   name="remoteProgress"
                   label="service call progress"
-                  icon="org.eclipse.riena.example.client:/icons/ledred.png">
+                  icon="ledred.png">
                <submodule
                      typeId="org.eclipse.riena.example.remoteProgress"
                      name="org.eclipse.riena.example.remoteProgress"
