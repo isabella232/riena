@@ -15,15 +15,13 @@ import java.util.Hashtable;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
 import org.eclipse.riena.communication.core.progressmonitor.ProgressMonitorRegistryImpl;
-import org.eclipse.riena.communication.core.ssl.ISSLProperties;
-import org.eclipse.riena.communication.core.ssl.SSLConfiguration;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.injector.extension.ExtensionInjector;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.communication.core.proxyselector.ProxySelectorConfiguration;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
+import org.eclipse.riena.internal.communication.core.ssl.SSLConfiguration;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -39,8 +37,9 @@ public class Activator extends RienaActivator {
 	private RemoteServiceRegistry serviceRegistry;
 	private ServiceRegistration regServiceRegistry;
 
-	private ServiceReference sslConfigServiceReference;
-	private ExtensionInjector sslInjector;
+	private SSLConfiguration sslConfiguration;
+
+	private ProxySelectorConfiguration proxySelectorConfiguration;
 
 	// The shared instance
 	private static Activator plugin;
@@ -57,29 +56,28 @@ public class Activator extends RienaActivator {
 				properties);
 
 		// SSL configuration
-		context.registerService(SSLConfiguration.class.getName(), new SSLConfiguration(), RienaConstants
-				.newDefaultServiceProperties());
-		sslConfigServiceReference = context.getServiceReference(SSLConfiguration.class.getName());
-		SSLConfiguration config = (SSLConfiguration) context.getService(sslConfigServiceReference);
-		if (config != null) {
-			sslInjector = Inject.extension(ISSLProperties.EXTENSION_POINT_ID).expectingMinMax(0, 1).into(config)
-					.update("configure"); //$NON-NLS-1$
-			sslInjector.andStart(context);
-		}
+		configureSSL();
+
+		// ProxySelector configuration
+		configureProxySelector();
 
 		context
 				.registerService(IRemoteProgressMonitorRegistry.class.getName(), new ProgressMonitorRegistryImpl(),
 						null);
 	}
 
+	private void configureSSL() {
+		sslConfiguration = new SSLConfiguration();
+		Wire.instance(sslConfiguration).andStart(getContext());
+	}
+
+	private void configureProxySelector() {
+		proxySelectorConfiguration = new ProxySelectorConfiguration();
+		Wire.instance(proxySelectorConfiguration).andStart(getContext());
+	}
+
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		if (sslInjector != null) {
-			sslInjector.stop();
-		}
-		if (sslConfigServiceReference != null) {
-			context.ungetService(sslConfigServiceReference);
-		}
 
 		regServiceRegistry.unregister();
 		regServiceRegistry = null;
