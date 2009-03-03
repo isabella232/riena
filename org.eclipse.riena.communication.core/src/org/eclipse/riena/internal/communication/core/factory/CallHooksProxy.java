@@ -64,11 +64,11 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				Throwable cause = e.getTargetException();
 				while (cause.getCause() != null) {
 					if (cause.getCause() instanceof RemoteFailure) {
-						throw new RemoteFailure(null, cause.getCause());
+						throw cause.getCause();
 					}
 					cause = cause.getCause();
 				}
-				throw new RemoteFailure("", e.getTargetException()); //$NON-NLS-1$
+				throw new RemoteFailure("Error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
 			}
 			// if runtime exception throw it anyway
 			if (e.getTargetException() instanceof RuntimeException) {
@@ -81,7 +81,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				}
 			}
 			// otherwise throw a remote failure
-			throw new RemoteFailure("error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
+			throw new RemoteFailure("Error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
 			// throw e.getTargetException();
 		} finally {
 			context.getMessageContext().fireEndCall();
