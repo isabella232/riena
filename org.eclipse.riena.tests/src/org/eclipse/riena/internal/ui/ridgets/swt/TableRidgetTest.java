@@ -723,7 +723,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	public void testSetColumnFormatter() {
 		TableRidget ridget = getRidget();
 		Table table = getWidget();
-		IColumnFormatter formatter = new ColumnFormatter() { //$NON-NLS-1$
+		IColumnFormatter formatter = new ColumnFormatter() {
 			@Override
 			public String getText(Object element) {
 				Person person = (Person) element;
