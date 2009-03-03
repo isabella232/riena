@@ -25,8 +25,8 @@ Export-Package: org.eclipse.riena.communication.core,
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: com.caucho.hessian
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.net;bundle-version="1.2.0";resolution:=optional,
  com.caucho.hessian,
  org.eclipse.riena.core,
- org.eclipse.equinox.log;bundle-version="1.1.0",
- org.eclipse.core.net;bundle-version="1.2.0"
+ org.eclipse.equinox.log;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
