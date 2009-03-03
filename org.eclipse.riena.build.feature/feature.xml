@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.riena.build.feature"
-      label="Riena Feature solely used for build"
+      label="Riena Feature that contains all component from the Riena project"
       version="1.1.0.M5"
       provider-name="Eclipse.org">
 
