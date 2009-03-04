@@ -288,7 +288,7 @@ public class ExtensionInjector {
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e.getTargetException()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
