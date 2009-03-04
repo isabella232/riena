@@ -27,10 +27,12 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.internal.core.ignore.Nop;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.BundleReference;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -53,9 +55,7 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase() {
 		super();
-		if (Activator.getDefault() != null) { // running as pde junit test
-			this.context = Activator.getDefault().getContext();
-		}
+		initContext();
 	}
 
 	/**
@@ -63,8 +63,15 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase(String name) {
 		super(name);
-		if (Activator.getDefault() != null) { // running as pde junit test
-			this.context = Activator.getDefault().getContext();
+		initContext();
+	}
+
+	private void initContext() {
+		try {
+			BundleReference ref = FrameworkUtil.getBundleReference(getClass());
+			context = ref.getBundle().getBundleContext();
+		} catch (Throwable t) {
+			Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
 		}
 	}
 
@@ -131,6 +138,7 @@ public abstract class RienaTestCase extends TestCase {
 	 * 
 	 * @return
 	 */
+	@Deprecated
 	protected void setContext(BundleContext context) {
 		this.context = context;
 	}
