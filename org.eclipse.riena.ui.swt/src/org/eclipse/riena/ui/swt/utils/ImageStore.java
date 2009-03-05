@@ -16,6 +16,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.swt.graphics.Image;
@@ -29,12 +30,20 @@ import org.osgi.service.log.LogService;
  */
 public final class ImageStore {
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(ImageStore.class);
+	private static final Logger LOGGER;
 	private static final String IMAGE_PATH_EXTENSION_ID = "org.eclipse.riena.ui.swt.imagepath"; //$NON-NLS-1$
 
 	private static ImageStore store;
 	private static Image missingImage;
 	private IImagePathExtension[] iconPathes;
+
+	static {
+		if (Activator.getDefault() != null) {
+			LOGGER = Activator.getDefault().getLogger(ImageStore.class);
+		} else {
+			LOGGER = new ConsoleLogger(ImageStore.class.getName());
+		}
+	}
 
 	private ImageStore() {
 		// utility class
