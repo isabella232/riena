@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -67,7 +67,7 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(MenuItemRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

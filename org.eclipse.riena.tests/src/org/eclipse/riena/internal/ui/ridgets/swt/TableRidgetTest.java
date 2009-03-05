@@ -31,7 +31,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -78,7 +78,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	// /////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(TableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

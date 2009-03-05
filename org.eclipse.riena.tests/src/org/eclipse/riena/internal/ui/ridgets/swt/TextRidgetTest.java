@@ -14,7 +14,7 @@ import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -49,7 +49,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(TextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

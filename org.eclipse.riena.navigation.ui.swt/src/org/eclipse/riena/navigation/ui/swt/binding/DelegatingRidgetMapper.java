@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.swt.widgets.Widget;
 
@@ -23,11 +23,11 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
-	private DefaultSwtControlRidgetMapper delegate;
+	private SwtControlRidgetMapper delegate;
 
 	private Map<Class<? extends Object>, Class<? extends IRidget>> mappings;
 
-	public DelegatingRidgetMapper(DefaultSwtControlRidgetMapper delegate) {
+	public DelegatingRidgetMapper(SwtControlRidgetMapper delegate) {
 		this.delegate = delegate;
 		this.mappings = new HashMap<Class<? extends Object>, Class<? extends IRidget>>();
 	}

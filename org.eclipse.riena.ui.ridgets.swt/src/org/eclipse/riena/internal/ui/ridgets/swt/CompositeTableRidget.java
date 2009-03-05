@@ -32,7 +32,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -520,7 +520,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	private final class CTRowToRidgetMapper extends RowConstructionListener implements IRowContentProvider {
 
-		private final IControlRidgetMapper<Object> mapper = DefaultSwtControlRidgetMapper.getInstance();
+		private final IControlRidgetMapper<Object> mapper = SwtControlRidgetMapper.getInstance();
 
 		@Override
 		public void headerConstructed(Control newHeader) {

@@ -23,7 +23,7 @@ import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -70,7 +70,7 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(ComboRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
@@ -82,7 +82,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		uiControls = new ArrayList<Object>();
 		if (menuItemBindingManager == null) {
 			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(),
-					DefaultSwtControlRidgetMapper.getInstance());
+					SwtControlRidgetMapper.getInstance());
 		}
 	}
 
@@ -92,7 +92,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	protected AbstractViewBindingDelegate createBinding() {
-		DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(DefaultSwtControlRidgetMapper.getInstance());
+		DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(SwtControlRidgetMapper.getInstance());
 		addMappings(ridgetMapper);
 		return new InjectSwtViewBindingDelegate(ridgetMapper);
 	}

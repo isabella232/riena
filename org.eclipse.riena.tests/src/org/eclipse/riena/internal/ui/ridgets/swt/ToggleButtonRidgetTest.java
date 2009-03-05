@@ -19,7 +19,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -61,7 +61,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testRidgetMapping() {
 		Shell shell = getShell();
 
-		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
 		Button buttonToggle = new Button(shell, SWT.TOGGLE);
 		assertSame(ToggleButtonRidget.class, mapper.getRidgetClass(buttonToggle));

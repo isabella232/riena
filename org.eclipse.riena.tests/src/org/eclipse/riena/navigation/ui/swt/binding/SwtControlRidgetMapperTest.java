@@ -21,8 +21,8 @@ import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper.Mapping;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper.Mapping;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -31,28 +31,28 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tests of the class <code>DefaultSwtControlRidgetMapper</code>
+ * Tests of the class <code>SwtControlRidgetMapper</code>
  */
 @UITestCase
-public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
+public class SwtControlRidgetMapperTest extends RienaTestCase {
 
-	private DefaultSwtControlRidgetMapper mapper;
+	private SwtControlRidgetMapper mapper;
 	private Shell shell;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		mapper = DefaultSwtControlRidgetMapper.getInstance();
+		mapper = SwtControlRidgetMapper.getInstance();
 		shell = new Shell();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 
-		// Create new instance of DefaultSwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(DefaultSwtControlRidgetMapper.class, "INSTANCE", ReflectionUtils.newInstanceHidden(
-				DefaultSwtControlRidgetMapper.class, new Object[0]));
+		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
+		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "INSTANCE", ReflectionUtils.newInstanceHidden(
+				SwtControlRidgetMapper.class, new Object[0]));
 		mapper = null;
 		shell.dispose();
 		shell = null;
@@ -105,7 +105,7 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 
 	/**
 	 * Tests the method
-	 * {@link DefaultSwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)}
+	 * {@link SwtControlRidgetMapper#addMapping(Class, Class, IMappingCondition)}
 	 * .
 	 */
 	public void testAddMappingWithCondition() {

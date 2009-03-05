@@ -17,7 +17,7 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
@@ -58,7 +58,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
+		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

@@ -16,7 +16,7 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
 /**
- * Tests of the class <code>DefaultSwtControlRidgetMapper</code>
+ * Tests of the class <code>SwtControlRidgetMapper</code>
  */
 @NonUITestCase
 public class ApplicationNodeManagerTest extends TestCase {

@@ -18,7 +18,7 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
@@ -39,7 +39,7 @@ public final class SwtRidgetFactory {
 	}
 
 	private static final IBindingManager DUMMY_BINDING_MAN = new DefaultBindingManager(
-			new DummyBindingPropertyLocator(), DefaultSwtControlRidgetMapper.getInstance());
+			new DummyBindingPropertyLocator(), SwtControlRidgetMapper.getInstance());
 
 	private static final DummyContainer CONTAINER = new DummyContainer();
 
