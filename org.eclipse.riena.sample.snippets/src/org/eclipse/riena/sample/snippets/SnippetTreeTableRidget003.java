@@ -15,6 +15,7 @@ import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -39,14 +40,15 @@ public class SnippetTreeTableRidget003 {
 		String[] columnValues = new String[] { "word", "upperCase" }; //$NON-NLS-1$//$NON-NLS-2$
 		String[] columnHeaders = new String[] { "Word", "Uppercase" }; //$NON-NLS-1$//$NON-NLS-2$
 		treeTableRidget.setGroupingEnabled(true);
+		treeTableRidget.setRootsVisible(false);
 		treeTableRidget.setColumnFormatter(0, new ColumnFormatter() {
 			@Override
-			public String getText(Object element) {
+			public Color getForeground(Object element) {
 				String word = ((WordNode) element).getWord();
-				if ("b".equalsIgnoreCase(word.substring(0, 1))) { //$NON-NLS-1$
-					return reverse(word);
+				if ('B' == word.charAt(0)) {
+					return shell.getDisplay().getSystemColor(SWT.COLOR_RED);
 				}
-				return null; // use default text
+				return null; // use default foreground
 			}
 		});
 		treeTableRidget.setColumnFormatter(1, new ColumnFormatter() {
@@ -60,6 +62,7 @@ public class SnippetTreeTableRidget003 {
 		});
 		treeTableRidget.bindToModel(roots, WordNode.class, "children", "parent", //$NON-NLS-1$//$NON-NLS-2$
 				columnValues, columnHeaders);
+		treeTableRidget.expandAll();
 	}
 
 	/**
@@ -89,39 +92,15 @@ public class SnippetTreeTableRidget003 {
 		WordNode bTowns = new WordNode(root, "B"); //$NON-NLS-1$
 		new WordNode(bTowns, "Boring"); //$NON-NLS-1$
 		new WordNode(bTowns, "Buchanan"); //$NON-NLS-1$
-		new WordNode(bTowns, "Beaverton").setUpperCase(true); //$NON-NLS-1$
-		new WordNode(bTowns, "Bend"); //$NON-NLS-1$
-		new WordNode(bTowns, "Black Butte Ranch"); //$NON-NLS-1$
-		new WordNode(bTowns, "Baker City"); //$NON-NLS-1$
-		new WordNode(bTowns, "Bay City"); //$NON-NLS-1$
-		new WordNode(bTowns, "Bridgeport"); //$NON-NLS-1$
 
 		WordNode cTowns = new WordNode(root, "C"); //$NON-NLS-1$
-		new WordNode(cTowns, "Cedar Mill"); //$NON-NLS-1$
+		new WordNode(cTowns, "Cedar Mill").setUpperCase(true); //$NON-NLS-1$
 		new WordNode(cTowns, "Crater Lake"); //$NON-NLS-1$
-		new WordNode(cTowns, "Coos Bay"); //$NON-NLS-1$
-		new WordNode(cTowns, "Corvallis"); //$NON-NLS-1$
-		new WordNode(cTowns, "Cannon Beach"); //$NON-NLS-1$
 
 		WordNode dTowns = new WordNode(root, "D"); //$NON-NLS-1$
 		new WordNode(dTowns, "Dunes City"); //$NON-NLS-1$
 		new WordNode(dTowns, "Damascus"); //$NON-NLS-1$
-		new WordNode(dTowns, "Diamond Lake"); //$NON-NLS-1$
-		new WordNode(dTowns, "Dallas"); //$NON-NLS-1$
-		new WordNode(dTowns, "Depoe Bay"); //$NON-NLS-1$
 
 		return new WordNode[] { root };
-	}
-
-	private String reverse(String s) {
-		char[] chars = s.toCharArray();
-		int length = chars.length;
-		for (int i = 0, j = length / 2; i < j; i++) {
-			char swap = chars[i];
-			int endIndex = length - i - 1;
-			chars[i] = chars[endIndex];
-			chars[endIndex] = swap;
-		}
-		return String.valueOf(chars);
 	}
 }
