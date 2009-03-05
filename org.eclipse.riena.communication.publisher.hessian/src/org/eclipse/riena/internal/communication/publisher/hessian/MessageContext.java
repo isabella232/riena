@@ -61,4 +61,8 @@ public class MessageContext implements IServiceMessageContext {
 		httpRes.addHeader(name, value);
 	}
 
+	public HttpServletRequest getServletRequest() {
+		return httpReq;
+	}
+
 }

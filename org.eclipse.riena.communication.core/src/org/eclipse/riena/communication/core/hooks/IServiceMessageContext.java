@@ -13,6 +13,8 @@ package org.eclipse.riena.communication.core.hooks;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IServiceMessageContext {
 
 	Map<String, List<String>> listRequestHeaders();
@@ -20,5 +22,7 @@ public interface IServiceMessageContext {
 	List<String> getRequestHeaderValue(String name);
 
 	void addResponseHeader(String name, String value);
+
+	HttpServletRequest getServletRequest();
 
 }
