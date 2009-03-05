@@ -106,6 +106,10 @@ public class LnFUpdater {
 	 */
 	public void updateUIControlsAfterBind(Composite parent) {
 
+		if (!checkPropertyUpdateView()) {
+			return;
+		}
+
 		updateAfterBind(parent);
 		parent.layout();
 
@@ -118,10 +122,6 @@ public class LnFUpdater {
 	 *            - composite which children are updated.
 	 */
 	private void updateAfterBind(Composite parent) {
-
-		if (!checkPropertyUpdateView()) {
-			return;
-		}
 
 		Control[] controls = parent.getChildren();
 		for (Control uiControl : controls) {
