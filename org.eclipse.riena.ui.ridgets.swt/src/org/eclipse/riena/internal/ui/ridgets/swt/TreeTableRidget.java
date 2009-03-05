@@ -17,8 +17,10 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,6 +44,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 	private int sortedColumn;
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
+	private final Map<Integer, IColumnFormatter> formatterMap;
 
 	private boolean isGroupingEnabled;
 
@@ -52,6 +55,7 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
+		formatterMap = new HashMap<Integer, IColumnFormatter>();
 	}
 
 	@Override
@@ -77,6 +81,19 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			}
 			control.removeListener(SWT.EraseItem, groupedTableListener);
 		}
+	}
+
+	@Override
+	protected IColumnFormatter[] getColumnFormatters(int numColumns) {
+		Assert.isLegal(numColumns >= 0);
+		IColumnFormatter[] result = new IColumnFormatter[numColumns];
+		for (int i = 0; i < numColumns; i++) {
+			IColumnFormatter columnFormatter = formatterMap.get(Integer.valueOf(i));
+			if (columnFormatter != null) {
+				result[i] = columnFormatter;
+			}
+		}
+		return result;
 	}
 
 	// ITreeTableRidget methods
@@ -188,6 +205,15 @@ public class TreeTableRidget extends TreeRidget implements ITreeTableRidget, IGr
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
 		}
+	}
+
+	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+		checkColumnRange(columnIndex);
+		if (formatter != null) {
+			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
+		}
+		Integer key = Integer.valueOf(columnIndex);
+		formatterMap.put(key, formatter);
 	}
 
 	// helping methods

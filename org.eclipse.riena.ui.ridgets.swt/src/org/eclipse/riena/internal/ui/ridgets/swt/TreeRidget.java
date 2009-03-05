@@ -55,6 +55,7 @@ import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -252,6 +253,16 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		return viewer;
 	}
 
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param numColumns
+	 * @return
+	 */
+	protected IColumnFormatter[] getColumnFormatters(int numColumns) {
+		return new IColumnFormatter[numColumns];
+	}
+
 	// public methods
 	// ///////////////
 
@@ -416,6 +427,10 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 					viewer.setInput(fakeRoot);
 				}
 				viewer.setExpandedElements(expandedElements);
+				// update column specific formatters
+				TreeRidgetLabelProvider labelProvider = (TreeRidgetLabelProvider) viewer.getLabelProvider();
+				IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
+				labelProvider.setFormatters(formatters);
 				// update expanded/collapsed icons
 				viewer.refresh();
 				viewer.setSelection(new StructuredSelection(selection));
@@ -480,8 +495,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewerCP, structureAdvisor));
 		viewer.setContentProvider(viewerCP);
 		// labels
+		IColumnFormatter[] formatters = getColumnFormatters(valueAccessors.length);
 		ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP
-				.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor);
+				.getKnownElements(), valueAccessors, enablementAccessor, imageAccessor, formatters);
 		viewer.setLabelProvider(viewerLP);
 		// input
 		if (showRoots) {

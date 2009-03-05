@@ -127,8 +127,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
 					renderingMethods);
-			IColumnFormatter[] columnFormatters = getColumnFormatters(attrMap.length);
-			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, columnFormatters));
+			IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
+			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));
 			viewer.setContentProvider(viewerCP);
 
 			applyColumnsMoveable(control);

@@ -19,10 +19,12 @@ import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.swt.SWT;
@@ -632,6 +634,50 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setOutputOnly(false);
 
 		assertEquals(0, ridget.getSelection().size());
+	}
+
+	public void testSetColumnFormatter() {
+		ITreeTableRidget ridget = getRidget();
+		Tree tree = getWidget();
+		IColumnFormatter formatter = new ColumnFormatter() {
+			@Override
+			public String getText(Object element) {
+				PersonNode node = (PersonNode) element;
+				return node.getLastname().toUpperCase();
+			}
+		};
+		final String lastName = node1.getLastname();
+		final String LASTNAME = lastName.toUpperCase();
+
+		try {
+			ridget.setColumnFormatter(-1, formatter);
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		try {
+			ridget.setColumnFormatter(99, formatter);
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		ridget.setColumnFormatter(1, formatter);
+
+		assertEquals(lastName, tree.getItem(0).getText(1));
+
+		ridget.updateFromModel();
+
+		assertEquals(LASTNAME, tree.getItem(0).getText(1));
+
+		ridget.setColumnFormatter(1, null);
+
+		assertEquals(LASTNAME, tree.getItem(0).getText(1));
+
+		ridget.updateFromModel();
+
+		assertEquals(lastName, tree.getItem(0).getText(1));
 	}
 
 	// helping methods

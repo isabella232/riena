@@ -34,18 +34,6 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	private IColumnFormatter[] formatters;
 
 	/**
-	 * Create a new instance.
-	 * 
-	 * @param viewer
-	 *            a non-null {@link TreeViewer} instance
-	 * @param attributeMap
-	 *            a non-null {@link IObservableMap} instance
-	 */
-	public TableRidgetLabelProvider(IObservableMap[] attributeMap) {
-		this(attributeMap, new IColumnFormatter[attributeMap.length]);
-	}
-
-	/**
 	 * Create a new instance
 	 * 
 	 * @param viewer
@@ -61,8 +49,13 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 *             of entries
 	 */
 	public TableRidgetLabelProvider(IObservableMap[] attributeMap, IColumnFormatter[] formatters) {
+		this(attributeMap, formatters, attributeMap.length);
+	}
+
+	protected TableRidgetLabelProvider(IObservableMap[] attributeMap, IColumnFormatter[] formatters, int numColumns) {
 		super(attributeMap);
-		Assert.isLegal(attributeMap.length == formatters.length);
+		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
+				formatters.length));
 		this.attributeMap = new IObservableMap[attributeMap.length];
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
 		this.formatters = new IColumnFormatter[formatters.length];
@@ -76,29 +69,37 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
+		Image result = null;
 		if (columnIndex < attributeMap.length) {
 			IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
-				return (Image) formatter.getImage(element);
+				result = (Image) formatter.getImage(element);
 			}
-			Object value = attributeMap[columnIndex].get(element);
-			if (value instanceof Boolean) {
-				String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED : SharedImages.IMG_UNCHECKED;
-				return Activator.getSharedImage(key);
+			if (result == null) {
+				Object value = attributeMap[columnIndex].get(element);
+				if (value instanceof Boolean) {
+					String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED
+							: SharedImages.IMG_UNCHECKED;
+					result = Activator.getSharedImage(key);
+				}
 			}
 		}
-		return super.getColumnImage(element, columnIndex);
+		return result;
 	}
 
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
+		String result = null;
 		if (columnIndex < formatters.length) {
 			IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
-				return formatter.getText(element);
+				result = formatter.getText(element);
 			}
 		}
-		return super.getColumnText(element, columnIndex);
+		if (result == null) {
+			result = super.getColumnText(element, columnIndex);
+		}
+		return result;
 	}
 
 	public Color getForeground(Object element, int columnIndex) {
@@ -144,6 +145,13 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 			return attributeMap[columnIndex].get(element);
 		}
 		return null;
+	}
+
+	// protected methods
+	////////////////////
+
+	protected IColumnFormatter getFormatter(int columnIndex) {
+		return columnIndex < formatters.length ? formatters[columnIndex] : null;
 	}
 
 	// helping methods

@@ -26,8 +26,11 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -49,19 +52,32 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	private TreeRidgetLabelProvider labelProvider;
 	private WordNode node;
 	private WordNode leaf;
+	private WordNode alpha;
+	private Color colorA;
+	private Color colorB;
+	private Font fontA;
+	private Font fontB;
+	private IColumnFormatter[] formatters;
+	private IColumnFormatter[] noFormatters;
 
 	@Override
 	protected void setUp() throws Exception {
 		Display display = Display.getDefault();
 		Realm realm = SWTObservables.getRealm(display);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
+		colorA = display.getSystemColor(SWT.COLOR_RED);
+		colorB = display.getSystemColor(SWT.COLOR_GREEN);
+		fontA = new Font(display, "Arial", 12, SWT.NORMAL);
+		fontB = new Font(display, "Courier", 12, SWT.NORMAL);
 
-		Shell aShell = new Shell(display);
-		viewer = new TreeViewer(createTree(aShell));
+		shell = new Shell(display);
+		viewer = new TreeViewer(createTree(shell));
 
 		IObservableSet elements = createElements();
+		formatters = new IColumnFormatter[] { new TestColumnFormatter(), null };
+		noFormatters = new IColumnFormatter[COLUMN_PROPERTIES.length];
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, null, null);
+				COLUMN_PROPERTIES, null, null, noFormatters);
 
 		viewer.setContentProvider(new FTTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
@@ -70,10 +86,9 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		if (shell != null) {
-			shell.dispose();
-			shell = null;
-		}
+		shell.dispose();
+		fontA.dispose();
+		fontB.dispose();
 	}
 
 	public void testGetText() {
@@ -88,11 +103,10 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertEquals("false", labelProvider.getColumnText(node, 1));
 		assertEquals("true", labelProvider.getColumnText(leaf, 1));
 
-		assertEquals(null, labelProvider.getColumnText(node, 99));
+		assertNull(labelProvider.getColumnText(node, 99));
 	}
 
 	public void testGetImage() {
-
 		viewer.collapseAll();
 
 		Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
@@ -148,7 +162,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 		assertNotSame(siChecked, siUnchecked);
 
-		assertEquals(null, labelProvider.getColumnImage(node, 99));
+		assertNull(labelProvider.getColumnImage(node, 99));
 	}
 
 	public void testGetForeground() {
@@ -156,7 +170,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		WordNode wordNode = leaf;
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
-				COLUMN_PROPERTIES, "upperCase", null);
+				COLUMN_PROPERTIES, "upperCase", null, noFormatters);
 
 		wordNode.setUpperCase(true);
 		Color colorEnabled = labelProvider.getForeground(wordNode);
@@ -171,7 +185,6 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	 * Tests the <i>private</i> method {@code getImageKey(String)}.
 	 */
 	public void testGetImageKey() {
-
 		String key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", leaf);
 		assertEquals(SharedImages.IMG_LEAF, key);
 
@@ -189,7 +202,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon1,
 				nodeWithIcon2, nodeWithIcon3 }), WordNode.class);
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
-				COLUMN_PROPERTIES, null, "icon");
+				COLUMN_PROPERTIES, null, "icon", noFormatters);
 
 		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon1);
 		assertEquals(SharedImages.IMG_LEAF, key);
@@ -198,10 +211,85 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon2);
 		assertEquals(SharedImages.IMG_LEAF, key);
 
-		nodeWithIcon3.setIcon(ICON_ECLIPSE);
-		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon3);
-		assertEquals(ICON_ECLIPSE, key);
+		// skip this, if not running as a plug-in junit test
+		if (Activator.getDefault() != null) {
+			nodeWithIcon3.setIcon(ICON_ECLIPSE);
+			key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", nodeWithIcon3);
+			assertEquals(ICON_ECLIPSE, key);
+		}
+	}
 
+	public void testGetColumnTextWithFormatter() {
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters);
+
+		assertEquals("no", labelProvider.getColumnText(node, 0));
+		assertEquals("yes", labelProvider.getColumnText(leaf, 0));
+		assertEquals("Alpha", labelProvider.getColumnText(alpha, 0));
+
+		assertEquals("false", labelProvider.getColumnText(node, 1));
+		assertEquals("true", labelProvider.getColumnText(leaf, 1));
+		assertEquals("false", labelProvider.getColumnText(alpha, 1));
+
+		assertNull(labelProvider.getColumnText(node, 99));
+	}
+
+	public void testGetColumnImageWithFormatter() {
+		IColumnFormatter[] formatters2 = new IColumnFormatter[] { new TestColumnFormatter(), new TestColumnFormatter() };
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters2);
+		Image siNode = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		Image siError = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+
+		assertSame(siNode, labelProvider.getColumnImage(node, 0));
+		assertSame(siError, labelProvider.getColumnImage(leaf, 0));
+		assertSame(siLeaf, labelProvider.getColumnImage(alpha, 0));
+
+		assertSame(siUnchecked, labelProvider.getColumnImage(alpha, 1));
+
+		assertNull(labelProvider.getColumnImage(node, 99));
+	}
+
+	public void testGetForegroundWithFormatter() {
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters);
+
+		assertSame(colorA, labelProvider.getForeground(node, 0));
+		assertSame(colorB, labelProvider.getForeground(leaf, 0));
+		assertNull(labelProvider.getForeground(alpha, 0));
+
+		assertNull(labelProvider.getForeground(node, 1));
+		assertNull(labelProvider.getForeground(leaf, 1));
+		assertNull(labelProvider.getForeground(alpha, 1));
+
+		assertNull(labelProvider.getForeground(node, 99));
+	}
+
+	public void testGetBackgroundWithFormatter() {
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters);
+
+		assertSame(colorA, labelProvider.getBackground(node, 0));
+		assertSame(colorB, labelProvider.getBackground(leaf, 0));
+		assertNull(labelProvider.getBackground(alpha, 0));
+
+		assertNull(labelProvider.getBackground(node, 1));
+		assertNull(labelProvider.getBackground(leaf, 1));
+		assertNull(labelProvider.getBackground(alpha, 1));
+
+		assertNull(labelProvider.getBackground(node, 99));
+	}
+
+	public void testGetFontWithFormatter() {
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters);
+
+		assertSame(fontA, labelProvider.getFont(node, 0));
+		assertSame(fontB, labelProvider.getFont(leaf, 0));
+		assertNull(labelProvider.getFont(alpha, 0));
+
+		assertNull(labelProvider.getFont(node, 1));
+		assertNull(labelProvider.getFont(leaf, 1));
+		assertNull(labelProvider.getFont(alpha, 1));
+
+		assertNull(labelProvider.getFont(node, 99));
 	}
 
 	// helping methods
@@ -210,12 +298,12 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	private IObservableSet createElements() {
 		Collection<WordNode> collection = new ArrayList<WordNode>();
 		node = new WordNode("Node");
-		new WordNode(node, "Alpha");
-		new WordNode(node, "Bravo");
+		alpha = new WordNode(node, "Alpha");
 		leaf = new WordNode("Leaf");
 		leaf.setUpperCase(true);
 		collection.add(node);
 		collection.add(leaf);
+		collection.add(alpha);
 		IObservableSet elements = new WritableSet(Realm.getDefault(), collection, WordNode.class);
 		return elements;
 	}
@@ -260,12 +348,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	}
 
 	private class WordNodeWithIcon extends WordNode {
-
 		private String icon;
 
-		/**
-		 * @param word
-		 */
 		public WordNodeWithIcon(String word) {
 			super(word);
 		}
@@ -277,7 +361,62 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		public String getIcon() {
 			return icon;
 		}
+	}
 
+	private final class TestColumnFormatter extends ColumnFormatter {
+		@Override
+		public String getText(Object element) {
+			if (element == leaf || element == node) {
+				WordNode wordNode = (WordNode) element;
+				return wordNode.isUpperCase() ? "yes" : "no";
+			}
+			return null;
+		}
+
+		@Override
+		public Image getImage(Object element) {
+			String word = ((WordNode) element).getWord();
+			if ("Leaf".equalsIgnoreCase(word)) {
+				return Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+			}
+			return null;
+		}
+
+		@Override
+		public Color getForeground(Object element) {
+			String word = ((WordNode) element).getWord();
+			if ("Node".equalsIgnoreCase(word)) {
+				return colorA;
+			}
+			if ("Leaf".equalsIgnoreCase(word)) {
+				return colorB;
+			}
+			return null;
+		}
+
+		@Override
+		public Color getBackground(Object element) {
+			String word = ((WordNode) element).getWord();
+			if ("Node".equalsIgnoreCase(word)) {
+				return colorA;
+			}
+			if ("Leaf".equalsIgnoreCase(word)) {
+				return colorB;
+			}
+			return null;
+		}
+
+		@Override
+		public Font getFont(Object element) {
+			String word = ((WordNode) element).getWord();
+			if ("Node".equalsIgnoreCase(word)) {
+				return fontA;
+			}
+			if ("Leaf".equalsIgnoreCase(word)) {
+				return fontB;
+			}
+			return null;
+		}
 	}
 
 }

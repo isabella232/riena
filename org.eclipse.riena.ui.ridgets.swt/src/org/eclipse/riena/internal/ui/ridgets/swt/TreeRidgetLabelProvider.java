@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
@@ -73,10 +74,12 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	 *            be {@code null} to enable all children
 	 */
 	public static TreeRidgetLabelProvider createLabelProvider(TreeViewer viewer, Class<?> treeElementClass,
-			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor, String imageAccessor) {
+			IObservableSet knownElements, String[] valueAccessors, String enablementAccessor, String imageAccessor,
+			IColumnFormatter[] formatters) {
 		IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors, enablementAccessor,
 				imageAccessor);
-		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor, imageAccessor);
+		int numColumns = valueAccessors.length;
+		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor, imageAccessor, formatters, numColumns);
 	}
 
 	/**
@@ -114,8 +117,8 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	}
 
 	private TreeRidgetLabelProvider(TreeViewer viewer, IObservableMap[] attributeMap, String enablementAccessor,
-			String imageAccessor) {
-		super(attributeMap);
+			String imageAccessor, IColumnFormatter[] formatters, int numColumns) {
+		super(attributeMap, formatters, numColumns);
 		viewer.getTree().removeTreeListener(LISTENER);
 		viewer.getTree().addTreeListener(LISTENER);
 		enablementAttribute = findAttribute(attributeMap, enablementAccessor);
@@ -131,10 +134,27 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
+		Image result = null;
 		if (columnIndex == 0) {
-			return getImage(element);
+			// tree column 0 is special, because it contains the node & leaf icons
+			// a. use the icon from formatter, if present
+			// b. if formatter returns null (=don't care) or no formatter present,
+			//    use the standard node / leaf icons
+			// c. no automatic checkbox (=boolean) icons for column 0
+			IColumnFormatter formatter = getFormatter(columnIndex);
+			if (formatter != null) {
+				result = (Image) formatter.getImage(element);
+			}
+			if (result == null) {
+				result = getImage(element);
+			}
+		} else {
+			// other columns: 
+			// a. use icon from formatter, if present
+			// b. use automatic checkbox icons for boolean values
+			result = super.getColumnImage(element, columnIndex);
 		}
-		return super.getColumnImage(element, columnIndex);
+		return result;
 	}
 
 	// IColorProvider methods
