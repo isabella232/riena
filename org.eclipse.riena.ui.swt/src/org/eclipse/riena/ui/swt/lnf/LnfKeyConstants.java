@@ -87,11 +87,6 @@ public final class LnfKeyConstants {
 	public static final String MODULE_ITEM_TOOLTIP_BACKGROUND = "ModuleItemToolTip.background"; //$NON-NLS-1$
 	public static final String MODULE_ITEM_TOOLTIP_FOREGROUND = "ModuleItemToolTip.foreground"; //$NON-NLS-1$
 
-	public static final String SUB_MODULE_TREE_ITEM_BACKGROUND = "subModuleTreeItem.background"; //$NON-NLS-1$
-	public static final String SUB_MODULE_TREE_ITEM_FOREGROUND = "subModuleTreeItem.foreground"; //$NON-NLS-1$
-	public static final String SUB_MODULE_TREE_ITEM_SELECTION_COLOR = "subModuleTreeItem.selectionColor"; //$NON-NLS-1$
-	public static final String SUB_MODULE_TREE_ITEM_FOCUS_COLOR = "subModuleTreeItem.focusColor"; //$NON-NLS-1$
-
 	public static final String STATUSLINE_BACKGROUND = "statusline.background"; //$NON-NLS-1$
 	public static final String STATUSLINE_UI_PROCESS_LIST_BACKGROUND = "statusline.uiProcessListBackground"; //$NON-NLS-1$
 
