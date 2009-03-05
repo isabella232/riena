@@ -69,10 +69,10 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Default implementation of {@link IControlRidgetMapper} for SWT.
  */
-public class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
+public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
 	private static final int IGNORE_SWT_STYLE = -99;
-	private static SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
+	private static final SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
 
 	private List<Mapping> mappings;
 
