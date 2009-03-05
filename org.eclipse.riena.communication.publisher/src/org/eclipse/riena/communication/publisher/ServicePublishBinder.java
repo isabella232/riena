@@ -145,7 +145,6 @@ public class ServicePublishBinder implements IServicePublishBinder {
 			ServiceHooksProxy handler = new ServiceHooksProxy(rsd.getService());
 			Object service = Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(), new Class[] { rsd
 					.getServiceInterfaceClass() }, handler);
-			rsd.setService(service);
 			handler.setRemoteServiceDescription(rsd);
 			RemoteServiceDescription rsDescFound = rsDescs.get(rsd.getProtocol() + "::" + rsd.getPath()); //$NON-NLS-1$
 			if (rsDescFound != null) {
@@ -166,6 +165,7 @@ public class ServicePublishBinder implements IServicePublishBinder {
 				unpublishedServices.add(rsd);
 				return;
 			}
+			rsd.setService(service);
 			String url = null;
 			try {
 				url = servicePublisher.publishService(rsd);
