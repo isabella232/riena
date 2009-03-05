@@ -33,6 +33,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
@@ -198,11 +199,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	protected final synchronized void addListeners(Text control) {
-		control.addVerifyListener(verifyListener);
-		control.addModifyListener(modifyListener);
-		control.addKeyListener(keyListener);
-		control.addFocusListener(focusListener);
+	protected final synchronized void addListeners(Control control) {
+		Text text = (Text) control;
+		text.addModifyListener(modifyListener);
+		text.addVerifyListener(verifyListener);
+		text.addKeyListener(keyListener);
+		text.addFocusListener(focusListener);
 		super.addListeners(control);
 	}
 
@@ -220,11 +222,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	protected final synchronized void removeListeners(Text control) {
-		control.removeFocusListener(focusListener);
-		control.removeKeyListener(keyListener);
-		control.removeModifyListener(modifyListener);
-		control.removeVerifyListener(verifyListener);
+	protected final synchronized void removeListeners(Control control) {
+		Text text = (Text) control;
+		text.removeModifyListener(modifyListener);
+		text.removeVerifyListener(verifyListener);
+		text.removeFocusListener(focusListener);
+		text.removeKeyListener(keyListener);
 		super.removeListeners(control);
 	}
 
@@ -311,13 +314,17 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	public synchronized void updateFromModel() {
 		super.updateFromModel();
 		if (isDecimal()) {
-			beautifyText(getUIControl());
+			beautifyText(getTextWidget());
 		}
 
 	}
 
 	// helping methods
 	//////////////////
+
+	private Text getTextWidget() {
+		return (Text) super.getUIControl();
+	}
 
 	private void beautifyText(Text control) {
 		if (control != null) {
@@ -582,15 +589,17 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * those key strokes are:
 	 * <ol>
 	 * <ol>
-	 * <li>Left & Right arrow - will jump over grouping separators</li> <li>
+	 * <li>Left & Right arrow - will jump over grouping separators</li>
+	 * <li>
 	 * Shift - ddisables jumping over grouping separators when pressed down</li>
 	 * <li>Decimal separator - will cause the cursor to jump over the decimal
-	 * separator if directly to the right of it. Otherwise ignored</li> <li>
+	 * separator if directly to the right of it. Otherwise ignored</li>
+	 * <li>
 	 * minus ('-') - for signed widgets, it adds the '-' character to the left
-	 * of the widget. Otherwise ignored</li> <li>CR ('\r') - for decimal
-	 * ridgets, it will pad the fractional digits by adding '0's until the
-	 * maximum number of fractional digits is reached (as specified by the
-	 * ridgets precision value)
+	 * of the widget. Otherwise ignored</li>
+	 * <li>CR ('\r') - for decimal ridgets, it will pad the fractional digits by
+	 * adding '0's until the maximum number of fractional digits is reached (as
+	 * specified by the ridgets precision value)
 	 * </ol>
 	 */
 	private final class NumericKeyListener extends KeyAdapter {

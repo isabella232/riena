@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Table;
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
  */
-public final class MarkerSupport extends AbstractMarkerSupport {
+public class MarkerSupport extends AbstractMarkerSupport {
 
 	static {
 		// avoid inlining HIDE_DISABLED_RIDGET_CONTENT
@@ -69,10 +69,7 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		super.handleMarkerAttributesChanged();
 	}
 
-	// helping methods
-	// ////////////////
-
-	private void addError(Control control) {
+	protected void addError(Control control) {
 		if (errorDecoration == null) {
 			errorDecoration = new ControlDecoration(control, SWT.LEFT | SWT.TOP);
 			// setMargin has to be before setImage!
@@ -86,6 +83,15 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		}
 		errorDecoration.show();
 	}
+
+	protected void clearError(Control control) {
+		if (errorDecoration != null) {
+			errorDecoration.hide();
+		}
+	}
+
+	// helping methods
+	// ////////////////
 
 	private void addMandatory(Control control) {
 		if (preMandatoryBg == null) {
@@ -109,12 +115,6 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 		}
 		if (control instanceof Button) {
 			control.setVisible(false);
-		}
-	}
-
-	private void clearError() {
-		if (errorDecoration != null) {
-			errorDecoration.hide();
 		}
 	}
 
@@ -164,10 +164,10 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 			if (!(control instanceof Button && ridget.isOutputOnly())) {
 				addError(control);
 			} else {
-				clearError();
+				clearError(control);
 			}
 		} else {
-			clearError();
+			clearError(control);
 		}
 	}
 
@@ -206,11 +206,12 @@ public final class MarkerSupport extends AbstractMarkerSupport {
 	/**
 	 * Precedence of visibility and marker states for a ridget:
 	 * <ol>
-	 * <li>ridget is hidden - no decorations are not shown</li> <li>disabled on
-	 * - all other states not shown on the ridget</li> <li>output on - output
-	 * decoration is shown</li> <li>mandatory on - mandatory decoration is shown
-	 * </li> <li>error on - error decoration is shown</li> <li>negative on -
-	 * negative decoration is shown</li>
+	 * <li>ridget is hidden - no decorations are not shown</li>
+	 * <li>disabled on - all other states not shown on the ridget</li>
+	 * <li>output on - output decoration is shown</li>
+	 * <li>mandatory on - mandatory decoration is shown</li>
+	 * <li>error on - error decoration is shown</li>
+	 * <li>negative on - negative decoration is shown</li>
 	 * <ol>
 	 */
 	private void updateUIControl() {

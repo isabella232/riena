@@ -34,6 +34,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
@@ -44,10 +45,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	private final FocusListener focusListener;
-	private final KeyListener crKeyListener;
-	private final ModifyListener modifyListener;
-	private final ValidationListener verifyListener;
+	protected final FocusListener focusListener;
+	protected final KeyListener crKeyListener;
+	protected final ModifyListener modifyListener;
+	protected final ValidationListener verifyListener;
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 
@@ -64,12 +65,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				Text control = getUIControl();
-				if (control != null && !control.isDisposed()) {
-					control.setEditable(isOutputOnly() ? false : true);
-				}
+				updateEditable();
 			}
+
 		});
+	}
+
+	protected void updateEditable() {
+		Text control = getTextWidget();
+		if (control != null && !control.isDisposed()) {
+			control.setEditable(isOutputOnly() ? false : true);
+		}
 	}
 
 	protected TextRidget(String initialValue) {
@@ -94,18 +100,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	@Override
 	protected final synchronized void bindUIControl() {
-		Text control = getUIControl();
+		Control control = getUIControl();
 		if (control != null) {
-			control.setText(textValue);
-			control.setSelection(0, 0); // move cursor to 0
-			control.setEditable(isOutputOnly() ? false : true);
+			setUiText(textValue);
+			updateEditable();
 			addListeners(control);
 		}
 	}
 
 	@Override
 	protected final synchronized void unbindUIControl() {
-		Text control = getUIControl();
+		Control control = getUIControl();
 		if (control != null) {
 			removeListeners(control);
 		}
@@ -113,34 +118,35 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	/**
 	 * Template method for adding listeners to the control. Will be called
-	 * automatically. Children can overide but must call super.
+	 * automatically. Children can override but must call super.
 	 * 
 	 * @param control
 	 *            a Text instance (never null)
 	 */
-	protected synchronized void addListeners(Text control) {
-		control.addKeyListener(crKeyListener);
-		control.addFocusListener(focusListener);
-		control.addModifyListener(modifyListener);
-		control.addVerifyListener(verifyListener);
+	protected synchronized void addListeners(Control control) {
+		Text text = (Text) control;
+		text.addKeyListener(crKeyListener);
+		text.addFocusListener(focusListener);
+		text.addModifyListener(modifyListener);
+		text.addVerifyListener(verifyListener);
 	}
 
 	/**
 	 * Template method for removing listeners from the control. Will be called
-	 * automatically. Children can overide but must call super.
+	 * automatically. Children can override but must call super.
 	 * 
 	 * @param control
 	 *            a Text instance (never null)
 	 */
-	protected synchronized void removeListeners(Text control) {
-		control.removeKeyListener(crKeyListener);
-		control.removeFocusListener(focusListener);
-		control.removeModifyListener(modifyListener);
-		control.removeVerifyListener(verifyListener);
+	protected synchronized void removeListeners(Control control) {
+		Text text = (Text) control;
+		text.removeKeyListener(crKeyListener);
+		text.removeFocusListener(focusListener);
+		text.removeModifyListener(modifyListener);
+		text.removeVerifyListener(verifyListener);
 	}
 
-	@Override
-	public Text getUIControl() {
+	private Text getTextWidget() {
 		return (Text) super.getUIControl();
 	}
 
@@ -171,9 +177,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	public synchronized boolean revalidate() {
-		Text control = getUIControl();
-		if (control != null) {
-			textValue = control.getText();
+		if (getUIControl() != null) {
+			textValue = getUiText();
 		}
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
@@ -250,15 +255,14 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	private synchronized void forceTextToControl(String newValue) {
-		Text control = getUIControl();
+		Control control = getUIControl();
 		if (control != null) {
 			Listener[] listeners = control.getListeners(SWT.Verify);
 			for (Listener listener : listeners) {
 				control.removeListener(SWT.Verify, listener);
 			}
 			boolean hideValue = !isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT;
-			control.setText(hideValue ? EMPTY_STRING : newValue);
-			control.setSelection(0, 0);
+			setUiText(hideValue ? EMPTY_STRING : newValue);
 			for (Listener listener : listeners) {
 				control.addListener(SWT.Verify, listener);
 			}
@@ -285,9 +289,18 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return theStatus;
 	}
 
+	protected String getUiText() {
+		return getTextWidget().getText();
+	}
+
+	protected void setUiText(String text) {
+		getTextWidget().setText(text);
+		getTextWidget().setSelection(0, 0);
+	}
+
 	private synchronized void updateTextValue() {
 		String oldValue = textValue;
-		String newValue = getUIControl().getText();
+		String newValue = getUiText();
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
 			if (checkOnEditRules(newValue).isOK()) {
@@ -339,16 +352,20 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private final class FocusManager implements FocusListener {
 		public void focusGained(FocusEvent e) {
 			if (isFocusable()) {
-				Text text = (Text) e.getSource();
-				// if not multi line text field
-				if ((text.getStyle() & SWT.MULTI) == 0) {
-					text.selectAll();
-				}
+				selectAll();
 			}
 		}
 
 		public void focusLost(FocusEvent e) {
 			updateTextValue();
+		}
+	}
+
+	protected void selectAll() {
+		Text text = getTextWidget();
+		// if not multi line text field
+		if ((text.getStyle() & SWT.MULTI) == 0) {
+			text.selectAll();
 		}
 	}
 
@@ -358,7 +375,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private final class SyncModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
 			updateTextValueWhenDirectWriting();
-			String text = ((Text) e.widget).getText();
+			String text = getUiText();
 			disableMandatoryMarkers(isNotEmpty(text));
 		}
 	}
@@ -387,8 +404,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 
 		private String getText(VerifyEvent e) {
-			Text widget = (Text) e.widget;
-			String oldText = widget.getText();
+			String oldText = getUiText();
 			String newText;
 			// deletion
 			if (e.keyCode == 127 || e.keyCode == 8) {

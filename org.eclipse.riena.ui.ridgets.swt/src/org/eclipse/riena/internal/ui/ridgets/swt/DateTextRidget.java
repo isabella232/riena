@@ -28,6 +28,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -67,8 +68,9 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected final synchronized void addListeners(Text control) {
-		control.addVerifyListener(verifyListener);
+	protected final synchronized void addListeners(Control control) {
+		Text text = (Text) control;
+		text.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
 		control.addFocusListener(focusListener);
 		// control.addPaintListener(paintListener);
@@ -76,11 +78,12 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected final synchronized void removeListeners(Text control) {
+	protected final synchronized void removeListeners(Control control) {
+		Text text = (Text) control;
 		// control.removePaintListener(paintListener);
 		control.removeFocusListener(focusListener);
 		control.removeKeyListener(keyListener);
-		control.removeVerifyListener(verifyListener);
+		text.removeVerifyListener(verifyListener);
 		super.removeListeners(control);
 	}
 
@@ -224,10 +227,11 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * those key strokes are:
 	 * <ol>
 	 * <ol>
-	 * <li>Left & Right arrow - will jump over separators and spaces</li> <li>
+	 * <li>Left & Right arrow - will jump over separators and spaces</li>
+	 * <li>
 	 * Delete / Backspace at a single separator - will jump to the next valid
-	 * location in the same direction</li> <li>Shift - disables jumping over
-	 * grouping separators when pressed down</li>
+	 * location in the same direction</li>
+	 * <li>Shift - disables jumping over grouping separators when pressed down</li>
 	 * </ol>
 	 */
 	private final class DateKeyListener extends KeyAdapter {
