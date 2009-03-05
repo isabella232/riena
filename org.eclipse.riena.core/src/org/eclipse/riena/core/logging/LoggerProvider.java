@@ -33,7 +33,7 @@ public class LoggerProvider {
 	public synchronized void start() throws Exception {
 		if (openCount++ == 0) {
 			if (loggerMillTracker == null) {
-				// This needs to be done lazy to avoid initialization problems.
+				// This needs to be done lazily to avoid initialization problems.
 				loggerMillTracker = new ServiceTracker(Activator.getDefault().getContext(), LoggerMill.class.getName(),
 						null);
 			}
