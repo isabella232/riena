@@ -124,6 +124,10 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		addMapping(MasterDetailsComposite.class, MasterDetailsRidget.class);
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#addMapping(java.lang.Class,
+	 *      java.lang.Class)
+	 */
 	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
 		Mapping mapping = new Mapping(controlClazz, ridgetClazz);
 		mappings.add(mapping);
@@ -176,6 +180,9 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		mappings.add(mapping);
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Class)
+	 */
 	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
 		for (Mapping mapping : mappings) {
 			if (mapping.isMatching(controlClazz)) {
@@ -185,6 +192,9 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		throw new BindingException("No ridget found for " + controlClazz.getSimpleName()); //$NON-NLS-1$
 	}
 
+	/**
+	 * @see org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper#getRidgetClass(java.lang.Object)
+	 */
 	public Class<? extends IRidget> getRidgetClass(Object control) {
 		// first look for matching mappings with style or condition
 		// TODO: to optimize avoid double iteration over mappings
