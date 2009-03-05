@@ -84,7 +84,7 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	/**
 	 * TODO [ev] docs
 	 */
-	protected final void addUIContol(Object uiControl, String bindingId) {
+	protected final void addUIControl(Object uiControl, String bindingId) {
 		Assert.isNotNull(uiControl);
 		Assert.isNotNull(bindingId);
 		controls.add(uiControl);
@@ -126,7 +126,7 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		int wHint = 200;
 		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
 		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(compTable);
-		addUIContol(table, "mdTable"); //$NON-NLS-1$
+		addUIControl(table, "mdTable"); //$NON-NLS-1$
 
 		Composite compButton = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().applyTo(compButton);
@@ -138,12 +138,12 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		compButton.setLayout(buttonLayout);
 		Button btnAdd = new Button(compButton, SWT.PUSH);
 		btnAdd.setText("Add");
-		addUIContol(btnAdd, "mdAddButton"); //$NON-NLS-1$
+		addUIControl(btnAdd, "mdAddButton"); //$NON-NLS-1$
 		Button btnRemove = new Button(compButton, SWT.PUSH);
 		btnRemove.setText("Remove");
-		addUIContol(btnRemove, "mdRemoveButton"); //$NON-NLS-1$
+		addUIControl(btnRemove, "mdRemoveButton"); //$NON-NLS-1$
 		Button btnUpdate = new Button(compButton, SWT.PUSH);
 		btnUpdate.setText("Update");
-		addUIContol(btnUpdate, "mdUpdateButton"); //$NON-NLS-1$
+		addUIControl(btnUpdate, "mdUpdateButton"); //$NON-NLS-1$
 	}
 }

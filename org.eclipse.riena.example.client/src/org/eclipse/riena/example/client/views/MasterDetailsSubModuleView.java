@@ -57,22 +57,22 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 				UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
 				Text txtFirst = UIControlsFactory.createText(parent);
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(txtFirst);
-				addUIContol(txtFirst, "first"); //$NON-NLS-1$
+				addUIControl(txtFirst, "first"); //$NON-NLS-1$
 
 				UIControlsFactory.createLabel(parent, "Last Name:"); //$NON-NLS-1$
 				Text txtLast = UIControlsFactory.createText(parent);
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(txtLast);
-				addUIContol(txtLast, "last"); //$NON-NLS-1$
+				addUIControl(txtLast, "last"); //$NON-NLS-1$
 
 				UIControlsFactory.createLabel(parent, "Gender:"); //$NON-NLS-1$
 				ChoiceComposite ccGender = new ChoiceComposite(parent, SWT.NONE, false);
 				ccGender.setOrientation(SWT.HORIZONTAL);
-				addUIContol(ccGender, "gender"); //$NON-NLS-1$
+				addUIControl(ccGender, "gender"); //$NON-NLS-1$
 
 				UIControlsFactory.createLabel(parent, "Pets:"); //$NON-NLS-1$
 				ChoiceComposite ccPets = new ChoiceComposite(parent, SWT.NONE, true);
 				ccPets.setOrientation(SWT.HORIZONTAL);
-				addUIContol(ccPets, "pets"); //$NON-NLS-1$
+				addUIControl(ccPets, "pets"); //$NON-NLS-1$
 			}
 		};
 		addUIControl(mdComposite, "master"); //$NON-NLS-1$

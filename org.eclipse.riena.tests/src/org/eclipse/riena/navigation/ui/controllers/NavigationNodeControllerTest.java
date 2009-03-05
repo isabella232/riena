@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
 @UITestCase
 public class NavigationNodeControllerTest extends TestCase {
 
-	private MyNavigationNodeContoller controller;
+	private MyNavigationNodeController controller;
 	private SubModuleNode node;
 	private Shell shell;
 
@@ -57,7 +57,7 @@ public class NavigationNodeControllerTest extends TestCase {
 
 		node = new SubModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		controller = new MyNavigationNodeContoller(node);
+		controller = new MyNavigationNodeController(node);
 	}
 
 	@Override
@@ -156,9 +156,9 @@ public class NavigationNodeControllerTest extends TestCase {
 
 	}
 
-	private static class MyNavigationNodeContoller extends SubModuleController {
+	private static class MyNavigationNodeController extends SubModuleController {
 
-		public MyNavigationNodeContoller(ISubModuleNode navigationNode) {
+		public MyNavigationNodeController(ISubModuleNode navigationNode) {
 			super(navigationNode);
 		}
 
