@@ -47,6 +47,7 @@ public abstract class RienaTestCase extends TestCase {
 
 	// Keep track of services and and corresponding service references.
 	private Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
+	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;
 	private boolean print;
 
@@ -114,34 +115,24 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Return the bundle context.
+	 * Return the bundle context. <br>
+	 * <b>Note: </b>This method must not be called from a constructor of a test
+	 * case!
 	 * 
 	 * @return
 	 */
 	protected BundleContext getContext() {
 		if (context == null) {
-			initContext();
+			try {
+				BundleReference ref = FrameworkUtil.getBundleReference(getClass());
+				context = ref.getBundle().getBundleContext();
+			} catch (Throwable t) {
+				System.out.println("getContext() failed with " + t.getMessage());
+				t.printStackTrace();
+				Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
+			}
 		}
 		return context;
-	}
-
-	private void initContext() {
-		try {
-			BundleReference ref = FrameworkUtil.getBundleReference(getClass());
-			context = ref.getBundle().getBundleContext();
-		} catch (Throwable t) {
-			Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
-		}
-	}
-
-	/**
-	 * Set the bundle context.
-	 * 
-	 * @return
-	 */
-	@Deprecated
-	protected void setContext(BundleContext context) {
-		this.context = context;
 	}
 
 	/**
