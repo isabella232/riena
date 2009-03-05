@@ -55,7 +55,6 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase() {
 		super();
-		initContext();
 	}
 
 	/**
@@ -63,16 +62,6 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	public RienaTestCase(String name) {
 		super(name);
-		initContext();
-	}
-
-	private void initContext() {
-		try {
-			BundleReference ref = FrameworkUtil.getBundleReference(getClass());
-			context = ref.getBundle().getBundleContext();
-		} catch (Throwable t) {
-			Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
-		}
 	}
 
 	/**
@@ -116,7 +105,7 @@ public abstract class RienaTestCase extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		for (ServiceReference reference : services.values()) {
-			context.ungetService(reference);
+			getContext().ungetService(reference);
 		}
 
 		services.clear();
@@ -130,7 +119,19 @@ public abstract class RienaTestCase extends TestCase {
 	 * @return
 	 */
 	protected BundleContext getContext() {
+		if (context == null) {
+			initContext();
+		}
 		return context;
+	}
+
+	private void initContext() {
+		try {
+			BundleReference ref = FrameworkUtil.getBundleReference(getClass());
+			context = ref.getBundle().getBundleContext();
+		} catch (Throwable t) {
+			Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
+		}
 	}
 
 	/**
@@ -201,7 +202,7 @@ public abstract class RienaTestCase extends TestCase {
 	protected void addPluginXml(Class<?> forLoad, String pluginResource) {
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
-		IContributor contributor = ContributorFactoryOSGi.createContributor(context.getBundle());
+		IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
 		RegistryEventListener listener = new RegistryEventListener();
 		registry.addListener(listener);
 		boolean success = registry.addContribution(inputStream, contributor, false, null, null,
@@ -254,11 +255,11 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	protected <T> T getService(Class<T> serviceClass) {
-		ServiceReference reference = context.getServiceReference(serviceClass.getName());
+		ServiceReference reference = getContext().getServiceReference(serviceClass.getName());
 		if (reference == null) {
 			return null;
 		}
-		Object service = context.getService(reference);
+		Object service = getContext().getService(reference);
 		if (service == null) {
 			return null;
 		}
@@ -276,7 +277,7 @@ public abstract class RienaTestCase extends TestCase {
 		if (reference == null) {
 			return;
 		}
-		context.ungetService(reference);
+		getContext().ungetService(reference);
 	}
 
 	/**
@@ -375,7 +376,7 @@ public abstract class RienaTestCase extends TestCase {
 		Pattern inlcude = Pattern.compile(includePattern);
 		Pattern exclude = Pattern.compile(excludePattern);
 
-		Bundle[] bundles = context.getBundles();
+		Bundle[] bundles = getContext().getBundles();
 		for (Bundle bundle : bundles) {
 			if (inlcude.matcher(bundle.getSymbolicName()).matches()
 					&& !(exclude.matcher(bundle.getSymbolicName()).matches())) {
