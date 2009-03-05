@@ -62,7 +62,7 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(LabelRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

@@ -61,7 +61,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	public void testRidgetMapping() {
 		Shell shell = getShell();
 
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 
 		Button buttonToggle = new Button(shell, SWT.TOGGLE);
 		assertSame(ToggleButtonRidget.class, mapper.getRidgetClass(buttonToggle));

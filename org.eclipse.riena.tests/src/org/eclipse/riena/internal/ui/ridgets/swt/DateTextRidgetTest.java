@@ -57,7 +57,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(DateTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

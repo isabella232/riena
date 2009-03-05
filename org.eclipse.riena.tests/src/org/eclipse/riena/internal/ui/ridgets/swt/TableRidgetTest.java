@@ -78,7 +78,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	// /////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(TableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

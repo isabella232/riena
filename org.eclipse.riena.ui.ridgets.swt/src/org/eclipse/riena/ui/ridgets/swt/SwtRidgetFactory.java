@@ -39,7 +39,7 @@ public final class SwtRidgetFactory {
 	}
 
 	private static final IBindingManager DUMMY_BINDING_MAN = new DefaultBindingManager(
-			new DummyBindingPropertyLocator(), new DefaultSwtControlRidgetMapper());
+			new DummyBindingPropertyLocator(), DefaultSwtControlRidgetMapper.getInstance());
 
 	private static final DummyContainer CONTAINER = new DummyContainer();
 

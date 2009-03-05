@@ -67,7 +67,7 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(MenuItemRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

@@ -58,7 +58,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

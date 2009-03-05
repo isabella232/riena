@@ -41,7 +41,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 
 	public DefaultSwtBindingDelegate() {
-		this(new DefaultSwtControlRidgetMapper());
+		this(DefaultSwtControlRidgetMapper.getInstance());
 	}
 
 	@SuppressWarnings("unchecked")

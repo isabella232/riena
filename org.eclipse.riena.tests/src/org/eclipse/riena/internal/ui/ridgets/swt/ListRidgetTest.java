@@ -68,7 +68,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	// /////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(ListRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

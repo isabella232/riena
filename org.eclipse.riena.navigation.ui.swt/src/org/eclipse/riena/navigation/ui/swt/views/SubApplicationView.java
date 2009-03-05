@@ -82,7 +82,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 		uiControls = new ArrayList<Object>();
 		if (menuItemBindingManager == null) {
 			menuItemBindingManager = createMenuItemBindingManager(SWTBindingPropertyLocator.getInstance(),
-					new DefaultSwtControlRidgetMapper());
+					DefaultSwtControlRidgetMapper.getInstance());
 		}
 	}
 
@@ -92,7 +92,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationCon
 	}
 
 	protected AbstractViewBindingDelegate createBinding() {
-		DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(new DefaultSwtControlRidgetMapper());
+		DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(DefaultSwtControlRidgetMapper.getInstance());
 		addMappings(ridgetMapper);
 		return new InjectSwtViewBindingDelegate(ridgetMapper);
 	}

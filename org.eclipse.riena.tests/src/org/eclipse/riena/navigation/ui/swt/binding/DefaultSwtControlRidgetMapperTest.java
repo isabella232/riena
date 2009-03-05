@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.ui.swt.binding;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
@@ -42,12 +43,16 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		mapper = new DefaultSwtControlRidgetMapper();
+		mapper = DefaultSwtControlRidgetMapper.getInstance();
 		shell = new Shell();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
+
+		// Create new instance of DefaultSwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
+		ReflectionUtils.setHidden(DefaultSwtControlRidgetMapper.class, "INSTANCE", ReflectionUtils.newInstanceHidden(
+				DefaultSwtControlRidgetMapper.class, new Object[0]));
 		mapper = null;
 		shell.dispose();
 		shell = null;
@@ -83,8 +88,8 @@ public class DefaultSwtControlRidgetMapperTest extends RienaTestCase {
 	 */
 	public void testAddMappingSwtStyle() throws Exception {
 
-		mapper.addMapping(MockComposite.class, MockRidget2.class, SWT.BORDER);
 		mapper.addMapping(MockComposite.class, MockRidget.class);
+		mapper.addMapping(MockComposite.class, MockRidget2.class, SWT.BORDER);
 
 		Class<? extends IRidget> ridget = mapper.getRidgetClass(MockComposite.class);
 		assertNotNull(ridget);

@@ -520,7 +520,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	private final class CTRowToRidgetMapper extends RowConstructionListener implements IRowContentProvider {
 
-		private final IControlRidgetMapper<Object> mapper = new DefaultSwtControlRidgetMapper();
+		private final IControlRidgetMapper<Object> mapper = DefaultSwtControlRidgetMapper.getInstance();
 
 		@Override
 		public void headerConstructed(Control newHeader) {

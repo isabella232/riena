@@ -91,7 +91,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(CompositeTableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

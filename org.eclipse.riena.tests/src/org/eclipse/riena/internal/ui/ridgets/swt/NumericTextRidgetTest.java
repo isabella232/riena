@@ -76,7 +76,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 	@Override
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(NumericTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

@@ -79,7 +79,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	// ////////////////
 
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(TreeRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 

@@ -71,13 +71,23 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
-	private final static int IGNORE_SWT_STYLE = -99;
+	private static final int IGNORE_SWT_STYLE = -99;
+	private static DefaultSwtControlRidgetMapper INSTANCE = new DefaultSwtControlRidgetMapper();
 
 	private List<Mapping> mappings;
 
-	public DefaultSwtControlRidgetMapper() {
+	private DefaultSwtControlRidgetMapper() {
 		mappings = new ArrayList<Mapping>();
 		initDefaultMappings();
+	}
+
+	/**
+	 * Answer the singleton <code>DefaultSwtControlRidgetMapper</code>
+	 * 
+	 * @return the DefaultSwtControlRidgetMapper singleton
+	 */
+	public static DefaultSwtControlRidgetMapper getInstance() {
+		return INSTANCE;
 	}
 
 	/**
@@ -176,8 +186,16 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 	}
 
 	public Class<? extends IRidget> getRidgetClass(Object control) {
+		// first look for matching mappings with style or condition
+		// TODO: to optimize avoid double iteration over mappings
 		for (Mapping mapping : mappings) {
-			if (mapping.isMatching(control)) {
+			if ((!mapping.isControlStyleIgnore() || mapping.hasCondition()) && mapping.isMatching(control)) {
+				return mapping.getRidgetClazz();
+			}
+		}
+		// then look for matching mappings without style and condition
+		for (Mapping mapping : mappings) {
+			if (mapping.isControlStyleIgnore() && !mapping.hasCondition() && mapping.isMatching(control)) {
 				return mapping.getRidgetClazz();
 			}
 		}
@@ -259,7 +277,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		 * @return true, if the control matches; otherwise false
 		 */
 		public boolean isMatching(Class<? extends Object> controlClazz) {
-			if (getControlStyle() == IGNORE_SWT_STYLE && condition == null) {
+			if (isControlStyleIgnore() && condition == null) {
 				return getControlClazz().isAssignableFrom(controlClazz);
 			} else {
 				return false;
@@ -280,7 +298,7 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 			if (condition != null && !condition.isMatch(control)) {
 				return false;
 			}
-			if (control instanceof Widget && getControlStyle() != IGNORE_SWT_STYLE) {
+			if (control instanceof Widget && !isControlStyleIgnore()) {
 				if ((((Widget) control).getStyle() & getControlStyle()) != getControlStyle()) {
 					return false;
 				}
@@ -296,6 +314,14 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		// helping methods
 		// ////////////////
 
+		private boolean isControlStyleIgnore() {
+			return getControlStyle() == IGNORE_SWT_STYLE;
+		}
+
+		private boolean hasCondition() {
+			return getCondition() != null;
+		}
+
 		private Class<?> getControlClazz() {
 			return controlClazz;
 		}
@@ -307,7 +333,5 @@ public class DefaultSwtControlRidgetMapper implements IControlRidgetMapper<Objec
 		public IMappingCondition getCondition() {
 			return condition;
 		}
-
 	}
-
 }

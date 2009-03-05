@@ -78,7 +78,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test that the control is mapped to the expected ridget.
 	 */
 	public void testRidgetMapping() {
-		DefaultSwtControlRidgetMapper mapper = new DefaultSwtControlRidgetMapper();
+		DefaultSwtControlRidgetMapper mapper = DefaultSwtControlRidgetMapper.getInstance();
 		assertSame(SingleChoiceRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
