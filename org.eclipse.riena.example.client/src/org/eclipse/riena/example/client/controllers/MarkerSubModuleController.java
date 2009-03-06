@@ -24,13 +24,16 @@ import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.views.TextSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -89,6 +92,10 @@ public class MarkerSubModuleController extends SubModuleController {
 		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		tablePersons.updateFromModel();
 
+		final ICompositeTableRidget compTable = (ICompositeTableRidget) getRidget("compTable"); //$NON-NLS-1$
+		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
+		compTable.bindToModel(input, Person.class, RowRidget.class);
+
 		final ITreeRidget treePersons = (ITreeRidget) getRidget("treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
@@ -113,7 +120,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
 		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, choiceType,
-				choiceFlavor, listPersons, tablePersons, treePersons, treeWCols, buttonToggle, buttonPush,
+				choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols, buttonToggle, buttonPush,
 				buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
@@ -137,6 +144,7 @@ public class MarkerSubModuleController extends SubModuleController {
 					choiceFlavor.setSelection(null);
 					listPersons.setSelection((Object) null);
 					tablePersons.setSelection((Object) null);
+					compTable.clearSelection();
 					treePersons.setSelection((Object) null);
 					treeWCols.setSelection((Object) null);
 					buttonToggle.setSelected(false);
@@ -242,7 +250,27 @@ public class MarkerSubModuleController extends SubModuleController {
 		public IStatus validate(Object value) {
 			return ValidationRuleStatus.error(false, "", this); //$NON-NLS-1$
 		}
+	}
 
+	/**
+	 * A row ridget with two text ridgets for use with
+	 * {@link ICompositeTableRidget}.
+	 */
+	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
+		private Person rowData;
+
+		public void setData(Object rowData) {
+			this.rowData = (Person) rowData;
+		}
+
+		public void configureRidgets() {
+			ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
+			txtLast.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
+			txtLast.updateFromModel();
+			ITextRidget txtFirst = (ITextRidget) getRidget("txtFirst"); //$NON-NLS-1$
+			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
+			txtFirst.updateFromModel();
+		}
 	}
 
 }
