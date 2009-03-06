@@ -72,7 +72,7 @@ import org.eclipse.swt.widgets.Widget;
 public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
 	private static final int IGNORE_SWT_STYLE = -99;
-	private static final SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
+	private static SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
 
 	private List<Mapping> mappings;
 
