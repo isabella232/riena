@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
@@ -40,6 +43,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.IRowContentProvider;
@@ -116,6 +120,16 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				}
 			}
 		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				refreshRowStyles();
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				refreshRowStyles();
+			}
+		});
 	}
 
 	@Override
@@ -138,6 +152,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 					column.addSelectionListener(sortListener);
 				}
 			}
+			refreshRowStyles();
 		}
 	}
 
@@ -438,6 +453,37 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
+	private void refreshRowStyle(Control rowControl, boolean isEnabled, boolean isOutput, Color bgColor) {
+		rowControl.setBackground(bgColor);
+		rowControl.setVisible(isEnabled);
+		rowControl.setEnabled(isEnabled && !isOutput);
+	}
+
+	private void refreshRowStyles() {
+		CompositeTable table = getUIControl();
+		boolean enabled = isEnabled();
+		boolean output = isOutputOnly();
+		if (table != null) {
+			// update each row
+			for (Control rowControl : table.getRowControls()) {
+				Color bgColor = table.getBackground();
+				refreshRowStyle(rowControl, enabled, output, bgColor);
+			}
+			// Updates the color of contentPane (=composite that holds the rows). 
+			//
+			// This is a clever trick: MarkerSupport manipulates
+			// the bgColor of the CompositeTable, we manipualte the bgColor
+			// of the internal contentPane - this way we don't get in each
+			// other's way. By using the color for table when enabled we make
+			// sure that we apply the 'right' color from MarkerSupport. 
+			Control[] children = table.getChildren();
+			Control contentPane = children[children.length - 1];
+			Display display = table.getDisplay();
+			Color cpBgColor = enabled ? table.getBackground() : display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+			contentPane.setBackground(cpBgColor);
+		}
+	}
+
 	private int rowIndexOfOption(Object element) {
 		int result = -1;
 		for (int i = 0; result == -1 && i < rowValues.length; i++) {
@@ -557,6 +603,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
 				rowRidget.setData(rowBean);
 				rowRidget.configureRidgets();
+				refreshRowStyle(row, isEnabled(), isOutputOnly(), table.getBackground());
 			}
 		}
 
