@@ -58,7 +58,7 @@ import org.eclipse.swt.widgets.TableColumn;
  */
 public class TableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
-	private static final Listener eraseListener = new EraseListener();
+	private static final Listener ERASE_LISTENER = new EraseListener();
 
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener doubleClickForwarder;
@@ -172,7 +172,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
-			control.removeListener(SWT.EraseItem, eraseListener);
+			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
 		}
 		viewer = null;
 	}
@@ -430,9 +430,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private void applyEraseListener() {
 		if (viewer != null) {
 			Control control = viewer.getControl();
-			control.removeListener(SWT.EraseItem, eraseListener);
+			control.removeListener(SWT.EraseItem, ERASE_LISTENER);
 			if (!isEnabled() && MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {
-				control.addListener(SWT.EraseItem, eraseListener);
+				control.addListener(SWT.EraseItem, ERASE_LISTENER);
 			}
 		}
 	}
