@@ -127,8 +127,6 @@ public abstract class RienaTestCase extends TestCase {
 				BundleReference ref = FrameworkUtil.getBundleReference(getClass());
 				context = ref.getBundle().getBundleContext();
 			} catch (Throwable t) {
-				System.out.println("getContext() failed with " + t.getMessage());
-				t.printStackTrace();
 				Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
 			}
 		}
