@@ -1136,16 +1136,18 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Test that null is not allowed in {@code setText(string)}.
+	 * Test that setText(null) clears the ridget (i.e. equiv. to setText("")).
 	 */
 	public void testSetTextNull() {
 		ITextRidget ridget = getRidget();
-		try {
-			ridget.setText(null);
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
+
+		ridget.setText("huhu");
+
+		assertNotNull(ridget.getText());
+
+		ridget.setText(null);
+
+		assertEquals("", ridget.getText());
 	}
 
 	public void testDisabledHasNoTextFromRidget() {

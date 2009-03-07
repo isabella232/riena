@@ -164,9 +164,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * the model as well.
 	 */
 	public synchronized void setText(String text) {
-		Assert.isNotNull(text);
+		// Assert.isNotNull(text);
 		String oldValue = textValue;
-		textValue = text;
+		textValue = text != null ? text : ""; //$NON-NLS-1$
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
 		IStatus onEdit = checkOnEditRules(textValue);
