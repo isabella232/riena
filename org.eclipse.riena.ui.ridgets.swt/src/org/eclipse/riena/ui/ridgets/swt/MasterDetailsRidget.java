@@ -31,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -253,7 +254,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				TableColumn column = new TableColumn(tableWidget, SWT.NONE);
 				layout.setColumnData(column, new ColumnWeightData(10));
 			}
-			tableWidget.getParent().setLayout(layout);
+			Composite tableComposite = tableWidget.getParent();
+			tableComposite.setLayout(layout);
+			tableComposite.layout(true);
 		}
 	}
 
