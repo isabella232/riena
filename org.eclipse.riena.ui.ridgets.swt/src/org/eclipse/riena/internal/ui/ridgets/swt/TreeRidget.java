@@ -51,6 +51,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -960,7 +961,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			String loggerName = TreeRidget.class.getName();
 			Logger logger;
 			if (Activator.getDefault() != null) {
-				logger = Activator.getDefault().getLogger(loggerName);
+				logger = Log4r.getLogger(Activator.getDefault(), loggerName);
 			} else {
 				logger = new ConsoleLogger(loggerName);
 			}

@@ -23,6 +23,7 @@ import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -67,7 +68,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	static {
 		String loggerName = CompositeTableRidget.class.getName();
 		if (Activator.getDefault() != null) {
-			LOGGER = Activator.getDefault().getLogger(loggerName);
+			LOGGER = Log4r.getLogger(Activator.getDefault(), loggerName);
 		} else {
 			LOGGER = new ConsoleLogger(loggerName);
 		}

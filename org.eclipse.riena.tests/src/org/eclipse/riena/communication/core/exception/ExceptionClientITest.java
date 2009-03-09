@@ -12,17 +12,17 @@ package org.eclipse.riena.communication.core.exception;
 
 import java.io.IOException;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.ExceptionFailure;
 import org.eclipse.riena.core.exception.Failure;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.IntegrationTestCase;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**
@@ -35,7 +35,7 @@ public class ExceptionClientITest extends RienaTestCase {
 	private IExceptionService exceptionService;
 	private IRemoteServiceRegistration regExceptionService;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ExceptionClientITest.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExceptionClientITest.class);
 
 	protected void setUp() throws Exception {
 		super.setUp();

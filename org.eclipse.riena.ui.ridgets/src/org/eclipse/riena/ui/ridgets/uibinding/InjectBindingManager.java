@@ -18,6 +18,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.beans.common.BeanPropertyAccessor;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -33,7 +34,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	// cache for PropertyDescriptors
 	private Map<String, PropertyDescriptor> binding2PropertyDesc;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(InjectBindingManager.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), InjectBindingManager.class);
 
 	/**
 	 * Creates the managers of all bindings of a view.

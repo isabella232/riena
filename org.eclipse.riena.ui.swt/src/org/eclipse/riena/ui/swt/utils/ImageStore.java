@@ -15,6 +15,7 @@ import java.net.URL;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.StringUtils;
@@ -39,7 +40,7 @@ public final class ImageStore {
 
 	static {
 		if (Activator.getDefault() != null) {
-			LOGGER = Activator.getDefault().getLogger(ImageStore.class);
+			LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 		} else {
 			LOGGER = new ConsoleLogger(ImageStore.class.getName());
 		}
