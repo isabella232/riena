@@ -32,6 +32,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.ValueDiff;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
@@ -89,7 +90,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		bindSingleSelectionToModel(observableValue);
 	}
 
-	public final void clearSelection() {
+	public void clearSelection() {
 		singleSelectionObservable.setValue(null);
 	}
 

@@ -16,6 +16,20 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.TypedComparator;
@@ -34,19 +48,6 @@ import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * Tests of the class {@link CompositeTableRidget}.
@@ -93,6 +94,33 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	public void testRidgetMapping() {
 		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(CompositeTableRidget.class, mapper.getRidgetClass(getWidget()));
+	}
+
+	@Override
+	public void testClearSelection() {
+		// Overrides the original test, because clear selection is not supported.
+		// Remove when Bug 267713 gets fixed.
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
+		return;
+	}
+
+	@Override
+	public void testGetSelectionIndex() {
+		// Overrides the original test, because clear selection is not supported.
+		// Remove when Bug 267713 gets fixed.
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
+
+		ISelectableIndexedRidget ridget = getRidget();
+
+		assertEquals(-1, ridget.getSelectionIndex());
+
+		ridget.setSelection(1);
+
+		assertEquals(1, ridget.getSelectionIndex());
+
+		ridget.setSelection(new int[] { 2, 0 });
+
+		assertEquals(2, ridget.getSelectionIndex());
 	}
 
 	@Override

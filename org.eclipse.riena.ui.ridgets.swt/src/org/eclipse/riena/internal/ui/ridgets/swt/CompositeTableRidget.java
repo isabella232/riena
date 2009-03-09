@@ -349,6 +349,16 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
+	/**
+	 * Currently not supported.
+	 * <p>
+	 * See <a href="https://bugs.eclipse.org/267713">Bug 267713</a> for details.
+	 */
+	@Override
+	public final void clearSelection() {
+		throw new UnsupportedOperationException("not supported");
+	}
+
 	// helping methods
 	//////////////////
 
@@ -541,6 +551,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 					// if the selection has been deleted, selected another row
 					// because otherwise composite table still things the
 					// deleted row is selected
+					// Need to revisit this when addressing Bug 267713
+					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
 					if (rowObservables != null && rowObservables.size() > 0) {
 						setSelection(0);
 					} else {
