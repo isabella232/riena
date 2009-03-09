@@ -12,7 +12,6 @@ package org.eclipse.riena.internal.core.logging;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
@@ -47,7 +46,7 @@ public class LoggerMill {
 	private ILogListenerDefinition[] listenerDefs;
 	private ILogCatcherDefinition[] catcherDefs;
 
-	private final AtomicReference<ExtendedLogService> logServiceRef = new AtomicReference<ExtendedLogService>(null);
+	private ExtendedLogService logService = null;
 
 	/**
 	 * Get the logger for the specified category.<br>
@@ -59,7 +58,9 @@ public class LoggerMill {
 	 * @return
 	 */
 	public Logger getLogger(String category) {
-		return isReady() ? logServiceRef.get().getLogger(category) : null;
+		synchronized (this) {
+			return isReady() ? logService.getLogger(category) : null;
+		}
 	}
 
 	/**
@@ -68,7 +69,9 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void bind(ExtendedLogService logService) {
-		logServiceRef.set(logService);
+		synchronized (this) {
+			this.logService = logService;
+		}
 	}
 
 	/**
@@ -77,7 +80,9 @@ public class LoggerMill {
 	 * @param logService
 	 */
 	public void unbind(ExtendedLogService logService) {
-		logServiceRef.set(null);
+		synchronized (this) {
+			this.logService = null;
+		}
 	}
 
 	/**
@@ -86,7 +91,8 @@ public class LoggerMill {
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
-		if (listenerDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
+		final boolean isDefaultLogging = Boolean.getBoolean(RIENA_DEFAULT_LOGGING);
+		if (listenerDefs.length == 0 && isDefaultLogging) {
 			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
 		}
 		for (ILogListenerDefinition logListenerDef : listenerDefs) {
@@ -106,7 +112,7 @@ public class LoggerMill {
 				logReaderService.addLogListener(listener, filter);
 			}
 		}
-		if (catcherDefs.length == 0 && Boolean.getBoolean(RIENA_DEFAULT_LOGGING)) {
+		if (catcherDefs.length == 0 && isDefaultLogging) {
 			catcherDefs = new ILogCatcherDefinition[] { new PlatformLogCatcherDefinition(),
 					new LogServiceLogCatcherDefinition() };
 		}
@@ -143,7 +149,9 @@ public class LoggerMill {
 	}
 
 	public boolean isReady() {
-		return logServiceRef.get() != null;
+		synchronized (this) {
+			return logService != null;
+		}
 	}
 
 	/**
