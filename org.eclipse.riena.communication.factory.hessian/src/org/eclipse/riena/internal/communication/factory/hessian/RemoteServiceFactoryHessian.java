@@ -25,7 +25,7 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.WireWith;
 
 /**
  * This is a Hessian based implementation of {@link IRemoteServiceFactory}.
@@ -40,6 +40,7 @@ import org.eclipse.riena.core.injector.Inject;
  * @author Christian Campo
  * 
  */
+@WireWith(RemoteServiceFactoryHessianWiring.class)
 public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 	private IRemoteProgressMonitorRegistry remoteProgressMonitorRegistry;
 	private final ICallMessageContextAccessor messageContextAccessor;
@@ -52,10 +53,6 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		messageContextAccessor = new CallMsgCtxAcc();
 		rienaHessianProxyFactory = new RienaHessianProxyFactory();
 		rienaHessianProxyFactory.setCallMessageContextAccessor(messageContextAccessor);
-
-		// inject progressmonitor registry into THIS
-		Inject.service(IRemoteProgressMonitorRegistry.class.getName()).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
 	}
 
 	/*
