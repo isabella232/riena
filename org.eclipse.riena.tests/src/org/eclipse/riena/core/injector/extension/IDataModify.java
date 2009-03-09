@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 @ExtensionInterface
 public interface IDataModify {

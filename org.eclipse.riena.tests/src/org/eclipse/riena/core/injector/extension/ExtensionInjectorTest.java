@@ -17,7 +17,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;

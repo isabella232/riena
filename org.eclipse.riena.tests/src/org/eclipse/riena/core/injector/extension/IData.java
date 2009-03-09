@@ -11,10 +11,6 @@
 package org.eclipse.riena.core.injector.extension;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.riena.core.injector.extension.CreateLazy;
-import org.eclipse.riena.core.injector.extension.ExtensionInterface;
-import org.eclipse.riena.core.injector.extension.MapContent;
-import org.eclipse.riena.core.injector.extension.MapName;
 import org.osgi.framework.Bundle;
 
 @ExtensionInterface
