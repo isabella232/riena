@@ -12,10 +12,11 @@ package org.eclipse.riena.internal.communication.publisher.hessian;
 
 import java.util.Hashtable;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
+
+import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
@@ -44,6 +45,8 @@ public class Activator extends RienaActivator {
 
 		logger = getLogger(Activator.class);
 		logger.log(LogService.LOG_INFO, "start hessian support on server"); //$NON-NLS-1$
+
+		Thread.currentThread().sleep(1000);
 
 		publisher = new HessianRemoteServicePublisher();
 		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
