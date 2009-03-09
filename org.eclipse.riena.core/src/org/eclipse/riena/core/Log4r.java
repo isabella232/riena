@@ -22,7 +22,7 @@ import org.eclipse.riena.internal.core.logging.LoggerMill;
  * <b>Note: </b> The recommended pattern for classes within bundles where their
  * activator is an instance of {@code IRienaActivator} is: <br>
  * <code>
- * 	private final static Logger LOGGER = Log.getLogger(Activator.getDefault(), This.class);
+ * 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), This.class);
  * </code>
  */
 public final class Log4r {
