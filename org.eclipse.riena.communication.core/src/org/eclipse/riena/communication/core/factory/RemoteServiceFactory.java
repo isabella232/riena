@@ -21,9 +21,11 @@ import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
 import org.osgi.framework.BundleContext;
@@ -61,7 +63,7 @@ import org.osgi.service.log.LogService;
 public class RemoteServiceFactory {
 
 	private static IRemoteServiceRegistry registry;
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteServiceFactory.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
 	private static HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
 
 	/**
@@ -96,7 +98,9 @@ public class RemoteServiceFactory {
 	public void update(IRemoteServiceFactoryProperties[] factories) {
 		remoteServiceFactoryImplementations = new HashMap<String, IRemoteServiceFactory>();
 		for (IRemoteServiceFactoryProperties factory : factories) {
-			remoteServiceFactoryImplementations.put(factory.getProtocol(), factory.createRemoteServiceFactory());
+			IRemoteServiceFactory remoteServiceFactory = factory.createRemoteServiceFactory();
+			Wire.instance(remoteServiceFactory).andStart(Activator.getDefault().getContext());
+			remoteServiceFactoryImplementations.put(factory.getProtocol(), remoteServiceFactory);
 		}
 	}
 
