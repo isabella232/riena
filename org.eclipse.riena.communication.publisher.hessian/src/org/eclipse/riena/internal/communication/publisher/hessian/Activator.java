@@ -46,8 +46,6 @@ public class Activator extends RienaActivator {
 		logger = getLogger(Activator.class);
 		logger.log(LogService.LOG_INFO, "start hessian support on server"); //$NON-NLS-1$
 
-		Thread.currentThread().sleep(1000);
-
 		publisher = new HessianRemoteServicePublisher();
 		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put(IServicePublisher.PROP_PROTOCOL, publisher.getProtocol());
