@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
-import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.Activator;
@@ -37,6 +36,8 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+
+import org.eclipse.equinox.log.Logger;
 
 /**
  * Default implementation for the navigation processor
@@ -918,7 +919,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, histForward.size()));
 		for (INavigationHistoryListener listener : navigationListener) {
-			listener.backHistoryChanged(event);
+			listener.forwardHistoryChanged(event);
 		}
 	}
 
