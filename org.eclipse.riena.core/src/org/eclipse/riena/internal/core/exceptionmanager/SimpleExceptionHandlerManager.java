@@ -13,13 +13,15 @@ package org.eclipse.riena.internal.core.exceptionmanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.service.log.LogService;
 
 /**
  * 

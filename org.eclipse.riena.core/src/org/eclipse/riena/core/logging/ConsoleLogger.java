@@ -19,10 +19,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.eclipse.equinox.log.LogFilter;
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.LogFilter;
+import org.eclipse.equinox.log.Logger;
 
 /**
  * The ConsoleLogger simply writes all logs to System.out/.err.<br>

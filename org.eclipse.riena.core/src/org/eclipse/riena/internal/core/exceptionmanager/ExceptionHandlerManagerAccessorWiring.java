@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.exceptionmanager;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wire the {@code ExceptionHandlerManagerAccessor}.

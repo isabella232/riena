@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import org.osgi.util.tracker.ServiceTracker;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.logging.DeferringLoggerFactory;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The {@code LoggerProvider} is responsible for tracking the {@code LoggerMill}

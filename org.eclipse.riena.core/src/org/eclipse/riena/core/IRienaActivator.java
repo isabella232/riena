@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
-import org.eclipse.equinox.log.Logger;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.equinox.log.Logger;
 
 /**
  * The {@code IRienaActivator} defines the contract for riena based activators.

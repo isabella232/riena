@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
-import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.logging.LoggerProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.logging.LoggerProvider;
 
 /**
  * Abstract base class for riena activators.<br>

@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-import org.eclipse.core.runtime.Assert;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.core.runtime.Assert;
 
 /**
  * ExtensionDescriptor and ExtensionInjector simplify locating configuration

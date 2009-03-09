@@ -13,10 +13,13 @@ package org.eclipse.riena.internal.core.logging;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.service.log.LogListener;
+
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.logging.CommandProviderLogFilter;
 import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
@@ -24,7 +27,6 @@ import org.eclipse.riena.core.logging.PlatformLogCatcher;
 import org.eclipse.riena.core.logging.SysoLogListener;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
-import org.osgi.service.log.LogListener;
 
 /**
  * The {@code LoggerMill} is responsible for delivering ready to use {@code

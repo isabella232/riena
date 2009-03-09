@@ -29,6 +29,16 @@ import org.apache.log4j.Priority;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.log4j.xml.Log4jEntityResolver;
 import org.apache.log4j.xml.SAXErrorHandler;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import org.osgi.framework.Bundle;
+import org.osgi.service.log.LogEntry;
+import org.osgi.service.log.LogListener;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
@@ -37,16 +47,9 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.ExtendedLogEntry;
+
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.framework.Bundle;
-import org.osgi.service.log.LogEntry;
-import org.osgi.service.log.LogListener;
-import org.osgi.service.log.LogService;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * The <code>Log4LogListener</code> reroutes all logging within Riena into the

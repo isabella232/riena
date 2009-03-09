@@ -13,11 +13,13 @@ package org.eclipse.riena.core.logging;
 import java.io.PrintStream;
 import java.util.Date;
 
-import org.eclipse.equinox.log.ExtendedLogEntry;
-import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.ExtendedLogEntry;
+
+import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 
 public class SysoLogListener implements LogListener {
 

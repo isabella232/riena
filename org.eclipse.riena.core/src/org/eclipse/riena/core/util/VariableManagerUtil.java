@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.service.log.LogService;
 
 /**
  * The <code>VariableManagerUtil</code> is lightweight wrapper for the

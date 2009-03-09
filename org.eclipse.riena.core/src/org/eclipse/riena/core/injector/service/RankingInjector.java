@@ -13,8 +13,9 @@ package org.eclipse.riena.core.injector.service;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.osgi.framework.ServiceReference;
+
+import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
  * The specialized ranking implementation.

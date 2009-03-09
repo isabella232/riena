@@ -10,17 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import org.osgi.framework.Bundle;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.equinox.log.LogFilter;
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
+
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
 import org.eclipse.riena.internal.core.logging.LogLevelMapper;
-import org.osgi.framework.Bundle;
-import org.osgi.service.log.LogService;
 
 /**
  * A log filter where the log level threshold can be set thru its command

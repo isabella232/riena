@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import org.osgi.service.log.LogEntry;
+import org.osgi.service.log.LogListener;
+import org.osgi.service.log.LogReaderService;
+
 import org.eclipse.equinox.log.ExtendedLogReaderService;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.service.log.LogEntry;
-import org.osgi.service.log.LogListener;
-import org.osgi.service.log.LogReaderService;
 
 /**
  *

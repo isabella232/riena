@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
-import org.eclipse.riena.core.wire.Wire;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.core.wire.Wire;
 
 /**
  * The {@code ServiceAccessor} can be used to define <code>Accessor</code>s for

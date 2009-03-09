@@ -17,10 +17,11 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.ignore.Nop;
-import org.osgi.service.log.LogService;
 
 /**
  * The {@code JavaLogCatcher} can attach to the Java logging and route the log

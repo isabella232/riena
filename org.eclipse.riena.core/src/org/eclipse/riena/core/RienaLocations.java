@@ -12,11 +12,13 @@ package org.eclipse.riena.core;
 
 import java.io.File;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.service.datalocation.Location;
+
 import org.eclipse.riena.core.util.StringUtils;
-import org.osgi.framework.Bundle;
 
 /**
  * Riena locations.

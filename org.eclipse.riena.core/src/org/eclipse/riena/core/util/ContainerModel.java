@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.core.Activator;
 
 /**
  * This class can be used by other to find out whether the container we are

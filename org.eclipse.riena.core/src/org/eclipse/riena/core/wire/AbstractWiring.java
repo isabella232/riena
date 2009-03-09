@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
-import org.eclipse.riena.internal.core.ignore.Nop;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.internal.core.ignore.Nop;
 
 /**
  * The {@code AbstractWiring} simplifies

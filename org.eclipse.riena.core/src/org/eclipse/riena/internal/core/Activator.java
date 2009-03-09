@@ -10,12 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
@@ -23,11 +30,6 @@ import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.BundleListener;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.log.LogService;
 
 public class Activator extends RienaPlugin {
 

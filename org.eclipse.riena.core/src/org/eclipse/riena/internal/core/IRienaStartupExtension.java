@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
-import org.osgi.framework.Bundle;
 
 /**
  * This extension interface defines all startup actions should be performed

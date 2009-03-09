@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.logging;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 import org.eclipse.equinox.log.ExtendedLogService;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.wire.AbstractWiring;
-import org.osgi.framework.BundleContext;
 
 /**
  * Wires the {@codeLoggerMill}.

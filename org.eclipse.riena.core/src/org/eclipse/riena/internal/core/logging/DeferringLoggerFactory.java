@@ -15,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.logging.LoggerProvider;
 
 /**

@@ -10,9 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.util.PropertiesUtils;
@@ -20,10 +26,6 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.core.exceptionmanager.ExceptionHandlerManagerAccessor;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.Constants;
-import org.osgi.service.log.LogService;
 
 /**
  * Execute the startup actions

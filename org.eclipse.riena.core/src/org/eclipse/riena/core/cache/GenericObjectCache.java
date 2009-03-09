@@ -15,12 +15,14 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.cache.ICacheEntry;
 import org.eclipse.riena.internal.core.cache.SoftCacheEntry;
-import org.osgi.service.log.LogService;
 
 /**
  * Class implements a generic object cache.

@@ -16,6 +16,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -23,10 +26,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.log.LogService;
 
 /**
  * This is the extension injector.<br>

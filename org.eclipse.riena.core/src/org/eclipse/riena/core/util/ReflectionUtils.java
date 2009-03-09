@@ -18,10 +18,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
-import org.osgi.framework.Bundle;
 
 /**
  * The <code>ReflectionUtils</code> class is a collection of useful helpers when

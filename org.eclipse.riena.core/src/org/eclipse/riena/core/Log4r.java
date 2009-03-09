@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import org.osgi.framework.ServiceReference;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.internal.core.logging.LoggerMill;
-import org.osgi.framework.ServiceReference;
 
 /**
  * Gets a logger ({@code Logger}) from the {@code IRienaActivator}. <br>

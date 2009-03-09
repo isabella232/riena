@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
-import org.eclipse.equinox.log.LogFilter;
-import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 import org.osgi.framework.Bundle;
+
+import org.eclipse.equinox.log.LogFilter;
+
+import org.eclipse.riena.internal.core.logging.LogLevelMapper;
 
 /**
  * This {@code LogFilter} gets its threshold log level from a system property.

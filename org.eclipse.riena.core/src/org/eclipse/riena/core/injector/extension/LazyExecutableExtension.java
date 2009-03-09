@@ -14,9 +14,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.osgi.framework.Bundle;
+
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.osgi.framework.Bundle;
 
 /**
  * An invocation handler that lazily creates an executable extension on demand.

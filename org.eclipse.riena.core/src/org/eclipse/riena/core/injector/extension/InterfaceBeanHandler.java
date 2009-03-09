@@ -20,16 +20,18 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.osgi.framework.Bundle;
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.framework.Bundle;
-import org.osgi.service.log.LogService;
 
 /**
  * InvocationHandler for proxies that map to configuration elements.

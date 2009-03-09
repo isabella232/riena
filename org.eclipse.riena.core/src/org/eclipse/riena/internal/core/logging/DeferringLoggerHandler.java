@@ -14,10 +14,12 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.logging.LoggerProvider;
-import org.osgi.service.log.LogService;
 
 /**
  * A dynamic proxy that mimics a {@code Logger} that either logs to a

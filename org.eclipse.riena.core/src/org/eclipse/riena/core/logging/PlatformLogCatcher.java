@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.core.logging;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.service.log.LogService;
 
 /**
  * The <code>PlatformLogCatcher</code> can attach to the <code>Platform</code>

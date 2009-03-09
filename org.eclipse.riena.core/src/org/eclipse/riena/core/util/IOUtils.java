@@ -17,11 +17,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
-import org.osgi.service.log.LogService;
 
 /**
  * A collection of i/o utilities.
