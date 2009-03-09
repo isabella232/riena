@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
  * and <code>super.stop()</code> within their <code>start()</code> and
  * <code>stop()</stop> methods.
  */
-public abstract class RienaActivator implements BundleActivator {
+public abstract class RienaActivator implements BundleActivator, IRienaActivator {
 
 	private BundleContext context;
 	private final LoggerProvider loggerProvider = new LoggerProvider();
