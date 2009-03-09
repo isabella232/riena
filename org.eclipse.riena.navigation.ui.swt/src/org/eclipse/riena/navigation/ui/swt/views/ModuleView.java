@@ -32,6 +32,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -704,12 +705,14 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 			}
 		}
 
+		// TODO performance activation disabled because UIFilter didnt work anymore properly, hidden submodule nodes didnt get visible because of redraw problems
+		getParent().layout();
 		// Performance: Only layout if the activity of the ModuleNode or the tree inside has changed
-		if (currentActiveState != cachedActivityState || treeDirty) {
-			getParent().layout();
-			cachedActivityState = currentActiveState;
-			treeDirty = false;
-		}
+		//		if (currentActiveState != cachedActivityState || treeDirty) {
+		//			getParent().layout();
+		//			cachedActivityState = currentActiveState;
+		//			treeDirty = false;
+		//		}
 		title.setWindowActive(currentActiveState);
 
 	}
