@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -62,7 +63,7 @@ public abstract class ServiceInjector {
 		INITIAL, STARTING, STARTED, STOPPING, STOPPED
 	};
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ServiceInjector.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ServiceInjector.class);
 
 	/**
 	 * Constructor for the <code>injectInto()</code> of

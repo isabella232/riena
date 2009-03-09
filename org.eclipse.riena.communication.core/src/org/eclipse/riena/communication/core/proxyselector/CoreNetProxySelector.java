@@ -25,6 +25,7 @@ import org.eclipse.core.internal.net.ProxyManager;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.osgi.service.log.LogService;
@@ -39,7 +40,7 @@ public class CoreNetProxySelector extends ProxySelector {
 
 	private static final List<Proxy> DIRECT_PROXY = Literal.list(Proxy.NO_PROXY);
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(CoreNetProxySelector.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CoreNetProxySelector.class);
 
 	@SuppressWarnings("restriction")
 	public CoreNetProxySelector() {

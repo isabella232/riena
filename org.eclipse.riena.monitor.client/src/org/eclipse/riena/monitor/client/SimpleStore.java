@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaLocations;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Literal;
@@ -96,7 +97,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CLEANUP_DELAY = "cleanupDelay"; //$NON-NLS-1$
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(SimpleStore.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleStore.class);
 	private static final boolean TRACE = Boolean.getBoolean("riena.monitor.trace"); //$NON-NLS-1$
 
 	public SimpleStore() throws CoreException {

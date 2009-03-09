@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.cache.ICacheEntry;
 import org.eclipse.riena.internal.core.cache.SimpleCacheEntry;
@@ -27,7 +28,7 @@ import org.osgi.service.log.LogService;
  */
 public class LRUCache<K, V> implements IGenericObjectCache<K, V> {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), GenericObjectCache.class);
 	private LinkedHashMap<K, ICacheEntry<K, V>> lruMap = null;
 	private long timeout;
 	/** minimum count of entries to keep * */

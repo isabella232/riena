@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -74,7 +75,7 @@ import org.osgi.service.log.LogService;
 
 public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(ApplicationViewAdvisor.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ApplicationViewAdvisor.class);
 	/**
 	 * System property defining the initial width of the application window.
 	 */

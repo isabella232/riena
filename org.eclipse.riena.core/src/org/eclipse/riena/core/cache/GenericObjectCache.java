@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.cache.ICacheEntry;
 import org.eclipse.riena.internal.core.cache.SoftCacheEntry;
@@ -42,7 +43,7 @@ public class GenericObjectCache<K, V> implements IGenericObjectCache<K, V> {
 	private int statTimeout;
 	private static int statDisplayCount;
 	private String name = "Cache : "; //$NON-NLS-1$
-	private final static Logger LOGGER = Activator.getDefault().getLogger(GenericObjectCache.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), GenericObjectCache.class);
 
 	/**
 	 * Constructor.

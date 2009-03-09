@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.objecttransaction.Activator;
 import org.eclipse.riena.objecttransaction.IObjectId;
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
@@ -78,7 +79,7 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	private boolean strictModus = false;
 	private boolean allowRegister = true;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(ObjectTransactionImpl.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ObjectTransactionImpl.class);
 
 	/**
 	 * constructor that creates a new objectTransaction

@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IAssemblerProvider;
@@ -40,7 +41,7 @@ import org.osgi.service.log.LogService;
  */
 public class NavigationNodeProvider implements INavigationNodeProvider, IAssemblerProvider {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(NavigationNodeProvider.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationNodeProvider.class);
 	private static Random random = null;
 
 	private Map<String, INavigationAssembler> assemblyId2AssemblerCache = new HashMap<String, INavigationAssembler>();

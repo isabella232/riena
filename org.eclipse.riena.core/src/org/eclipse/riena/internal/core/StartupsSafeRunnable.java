@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.core;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.util.StringUtils;
@@ -32,7 +33,7 @@ public class StartupsSafeRunnable implements ISafeRunnable {
 
 	private IRienaStartupExtension[] startups;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(StartupsSafeRunnable.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), StartupsSafeRunnable.class);
 
 	/*
 	 * (non-Javadoc)

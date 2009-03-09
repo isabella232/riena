@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
 import org.eclipse.riena.security.common.ISubjectHolderService;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
@@ -60,7 +61,7 @@ public class SecurityServiceHook implements IServiceHook {
 	// HashMap<String, Boolean>();
 	private boolean requiresSSOIDbyDefault = false;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(SecurityServiceHook.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SecurityServiceHook.class);
 
 	/**
 	 * 

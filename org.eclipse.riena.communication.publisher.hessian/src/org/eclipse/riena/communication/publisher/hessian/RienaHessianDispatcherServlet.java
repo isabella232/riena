@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
@@ -49,7 +50,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 	private SerializerFactory serializerFactory = null;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianDispatcherServlet.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaHessianDispatcherServlet.class);
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {

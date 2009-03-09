@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
@@ -87,7 +88,7 @@ public final class ContainerModel {
 				}
 			}
 		}
-		Activator.getDefault().getLogger(ContainerModel.class).log(LogService.LOG_INFO,
+		Log4r.getLogger(Activator.getDefault(), ContainerModel.class).log(LogService.LOG_INFO,
 				"!!! Riena is running in " + containerType + " mode !!!"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

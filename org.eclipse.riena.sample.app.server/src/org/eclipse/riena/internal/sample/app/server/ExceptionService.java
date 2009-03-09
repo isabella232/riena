@@ -14,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.util.Calendar;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.osgi.service.log.LogService;
 
@@ -30,7 +31,7 @@ import org.osgi.service.log.LogService;
  * 
  */
 public class ExceptionService implements IExceptionService {
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ExceptionService.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExceptionService.class);
 
 	/*
 	 * (non-Javadoc)

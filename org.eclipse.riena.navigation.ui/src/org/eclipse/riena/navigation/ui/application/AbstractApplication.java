@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
@@ -43,7 +44,7 @@ import org.osgi.service.log.LogService;
  */
 public abstract class AbstractApplication implements IApplication {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(AbstractApplication.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractApplication.class);
 	protected ILoginDialogViewDefinition loginDialogViewDefinition;
 
 	public Object start(IApplicationContext context) throws Exception {

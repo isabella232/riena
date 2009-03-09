@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.core.logging;
 import java.util.concurrent.BlockingQueue;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.logging.LoggerProvider;
 import org.eclipse.riena.internal.core.Activator;
@@ -55,7 +56,7 @@ public class DeferredLoggingForwarder extends Thread {
 				}
 			}
 			try {
-				Logger logger = Activator.getDefault().getLogger(logEvent.getLoggerName());
+				Logger logger = Log4r.getLogger(Activator.getDefault(), logEvent.getLoggerName());
 				logger.log(logEvent.getLevel(), logEvent.toString());
 			} catch (Exception e) {
 				new ConsoleLogger(DeferredLoggingForwarder.class.getName()).log(LogService.LOG_ERROR,

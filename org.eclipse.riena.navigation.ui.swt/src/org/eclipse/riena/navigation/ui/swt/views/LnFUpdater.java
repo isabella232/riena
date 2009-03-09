@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
@@ -42,7 +43,7 @@ import org.osgi.service.log.LogService;
  */
 public class LnFUpdater {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(LnFUpdater.class.getName());
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class.getName());
 
 	/**
 	 * System property defining if properties of views are updated.

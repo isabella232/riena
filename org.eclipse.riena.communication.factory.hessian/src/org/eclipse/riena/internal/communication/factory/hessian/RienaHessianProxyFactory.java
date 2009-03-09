@@ -23,6 +23,7 @@ import java.util.Map;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.osgi.service.log.LogService;
@@ -38,7 +39,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	private ICallMessageContextAccessor mca;
 
 	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RienaHessianProxyFactory.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaHessianProxyFactory.class);
 
 	public RienaHessianProxyFactory() {
 		super();

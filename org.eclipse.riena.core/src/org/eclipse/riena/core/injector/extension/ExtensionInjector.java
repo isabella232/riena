@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
@@ -47,7 +48,7 @@ public class ExtensionInjector {
 	private Class<?> componentType;
 
 	private final static String DEFAULT_UPDATE_METHOD_NAME = "update"; //$NON-NLS-1$
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ExtensionInjector.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExtensionInjector.class);
 
 	/**
 	 * @param extensionDesc

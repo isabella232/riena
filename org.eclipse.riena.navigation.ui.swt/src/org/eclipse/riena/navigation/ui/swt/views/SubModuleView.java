@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
@@ -53,7 +54,7 @@ import org.osgi.service.log.LogService;
 public abstract class SubModuleView<C extends SubModuleController> extends ViewPart implements
 		INavigationNodeView<SWTModuleController, SubModuleNode> {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(SubModuleView.class.getName());
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class.getName());
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
 	private AbstractViewBindingDelegate binding;

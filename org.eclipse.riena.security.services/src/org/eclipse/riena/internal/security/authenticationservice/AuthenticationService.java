@@ -48,7 +48,7 @@ public class AuthenticationService implements IAuthenticationService {
 	public static final String VERSION_ID = "$Id$"; //$NON-NLS-1$
 
 	// private Properties properties;
-	//	private final static Logger LOGGER = Activator.getDefault().getLogger(AuthenticationService.class);
+	//	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AuthenticationService.class);
 
 	// private IAuthenticationModule authenticationModule;
 	private ISessionService sessionService;

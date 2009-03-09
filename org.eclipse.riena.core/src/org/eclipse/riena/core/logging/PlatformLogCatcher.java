@@ -13,6 +13,7 @@ package org.eclipse.riena.core.logging;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogService;
 
@@ -62,7 +63,7 @@ public class PlatformLogCatcher implements ILogListener, ILogCatcher {
 		bob.append(status.getMessage()).append(", Code: "); //$NON-NLS-1$
 		bob.append(status.getCode()).append(", Plugin: "); //$NON-NLS-1$
 		bob.append(status.getPlugin());
-		Activator.getDefault().getLogger("Bundle " + plugin).log(logLevel, bob.toString(), status.getException()); //$NON-NLS-1$
+		Log4r.getLogger(Activator.getDefault(), "Bundle " + plugin).log(logLevel, bob.toString(), status.getException()); //$NON-NLS-1$
 	}
 
 }

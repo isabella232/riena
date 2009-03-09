@@ -23,6 +23,7 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
 import org.osgi.service.log.LogService;
@@ -33,7 +34,7 @@ import org.osgi.service.log.LogService;
  */
 public class RemoteLoginModule implements LoginModule {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(RemoteLoginModule.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteLoginModule.class);
 
 	private CallbackHandler callbackHandler;
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.wire.WireWith;
@@ -27,7 +28,7 @@ import org.osgi.service.log.LogService;
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	private List<ExceptionHandlerEntry> handlers;
-	private final static Logger LOGGER = Activator.getDefault().getLogger(SimpleExceptionHandlerManager.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
 	public void update(IExceptionHandlerDefinition[] exceptionHandlerDefinitions) {
 		handlers = new ArrayList<ExceptionHandlerEntry>();

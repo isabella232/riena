@@ -19,6 +19,7 @@ import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogService;
 
@@ -27,7 +28,7 @@ import org.osgi.service.log.LogService;
  */
 public final class IOUtils {
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(IOUtils.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), IOUtils.class);
 
 	private IOUtils() {
 		// utility

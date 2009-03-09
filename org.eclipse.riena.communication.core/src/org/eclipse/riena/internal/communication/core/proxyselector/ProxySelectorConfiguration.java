@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.osgi.service.log.LogService;
@@ -29,7 +30,7 @@ public class ProxySelectorConfiguration {
 
 	private final ProxySelector previousProxySlector = ProxySelector.getDefault();
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(ProxySelectorConfiguration.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ProxySelectorConfiguration.class);
 
 	public void configure(IProxySelectorExtension[] proxySelectorExtensions) {
 		if (proxySelectorExtensions == null || proxySelectorExtensions.length == 0) {

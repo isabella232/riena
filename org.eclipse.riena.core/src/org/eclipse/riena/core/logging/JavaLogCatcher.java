@@ -17,6 +17,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.eclipse.riena.internal.core.ignore.Nop;
 import org.osgi.service.log.LogService;
@@ -86,7 +87,7 @@ public class JavaLogCatcher implements ILogCatcher {
 			}
 
 			// find equinox logger
-			org.eclipse.equinox.log.Logger logger = Activator.getDefault().getLogger(record.getLoggerName());
+			org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(), record.getLoggerName());
 
 			if (!logger.isLoggable(equinoxLoglevel)) {
 				return;

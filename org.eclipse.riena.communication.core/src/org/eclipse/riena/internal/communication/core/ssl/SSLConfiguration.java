@@ -29,6 +29,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.communication.core.Activator;
@@ -56,7 +57,7 @@ public class SSLConfiguration {
 	private static final String JRE_CACERTS_MARKER = "#jre-cacerts#"; //$NON-NLS-1$
 	private static final String HTTPS_PROTOCOLS_PROPERTY_KEY = "https.protocols"; //$NON-NLS-1$
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(SSLConfiguration.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SSLConfiguration.class);
 
 	public void configure(ISSLProperties properties) {
 		if (configured && properties == null) {

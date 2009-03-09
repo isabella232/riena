@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-import static org.eclipse.riena.core.injector.extension.InterfaceBeanHandler.MethodKind.OTHER;
+import static org.eclipse.riena.core.injector.extension.InterfaceBeanHandler.MethodKind.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogService;
@@ -40,7 +41,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 	private final boolean symbolReplace;
 	private final Map<Method, Result> resolved;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(InterfaceBeanHandler.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), InterfaceBeanHandler.class);
 
 	InterfaceBeanHandler(final Class<?> interfaceType, final boolean symbolReplace,
 			final IConfigurationElement configurationElement) {

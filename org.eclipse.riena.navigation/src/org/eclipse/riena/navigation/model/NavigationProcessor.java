@@ -21,6 +21,7 @@ import java.util.Stack;
 import java.util.Vector;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -42,7 +43,7 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(NavigationProcessor.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
 	private static int maxStacksize = 20;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();

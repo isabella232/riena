@@ -25,6 +25,7 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.security.simpleservices.Activator;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 import org.osgi.service.log.LogService;
@@ -43,7 +44,7 @@ public class SampleLoginModule implements LoginModule {
 
 	private Properties accounts;
 
-	private static final Logger LOGGER = Activator.getDefault().getLogger(SampleLoginModule.class);
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SampleLoginModule.class);
 
 	/*
 	 * (non-Javadoc)

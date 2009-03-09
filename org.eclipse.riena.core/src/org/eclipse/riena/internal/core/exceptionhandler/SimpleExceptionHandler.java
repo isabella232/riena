@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.exceptionhandler;
 
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.exception.IExceptionHandler;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager.Action;
-
-import org.eclipse.equinox.log.Logger;
 import org.osgi.service.log.LogService;
 
 /**

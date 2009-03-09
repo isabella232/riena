@@ -22,6 +22,7 @@ import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContext;
 import org.eclipse.riena.communication.core.hooks.IServiceMessageContextAccessor;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
+import org.eclipse.riena.core.Log4r;
 import org.osgi.service.log.LogService;
 
 /**
@@ -44,7 +45,7 @@ public class HessianRemoteServicePublisher implements IServicePublisher {
 
 	private HashMap<String, RemoteServiceDescription> webServiceDescriptions;
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(HessianRemoteServicePublisher.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), HessianRemoteServicePublisher.class);
 	private final static String PORT = System.getProperty("org.eclipse.equinox.http.jetty.http.port"); // get the jetty PORT //$NON-NLS-1$
 
 	public HessianRemoteServicePublisher() {

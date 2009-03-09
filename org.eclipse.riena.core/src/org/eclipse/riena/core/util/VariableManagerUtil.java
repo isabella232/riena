@@ -15,6 +15,7 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.core.Activator;
 import org.osgi.service.log.LogService;
 
@@ -24,7 +25,7 @@ import org.osgi.service.log.LogService;
  */
 public final class VariableManagerUtil {
 
-	private final static Logger LOGGER = Activator.getDefault().getLogger(VariableManagerUtil.class);
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), VariableManagerUtil.class);
 
 	private VariableManagerUtil() {
 		// utility

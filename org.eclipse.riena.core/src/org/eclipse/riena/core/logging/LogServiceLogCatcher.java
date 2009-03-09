@@ -11,6 +11,7 @@
 package org.eclipse.riena.core.logging;
 
 import org.eclipse.equinox.log.ExtendedLogReaderService;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.internal.core.Activator;
@@ -68,7 +69,7 @@ public class LogServiceLogCatcher implements ILogCatcher, LogListener {
 	 * org.osgi.service.log.LogListener#logged(org.osgi.service.log.LogEntry)
 	 */
 	public void logged(LogEntry entry) {
-		Activator.getDefault().getLogger("Bundle " + entry.getBundle()).log(entry.getServiceReference(), //$NON-NLS-1$
+		Log4r.getLogger(Activator.getDefault(), "Bundle " + entry.getBundle()).log(entry.getServiceReference(), //$NON-NLS-1$
 				entry.getLevel(), entry.getMessage(), entry.getException());
 	}
 }
