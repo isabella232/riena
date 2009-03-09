@@ -12,16 +12,17 @@ package org.eclipse.riena.ui.swt.utils;
 
 import java.net.URL;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.swt.Activator;
-import org.eclipse.swt.graphics.Image;
-import org.osgi.service.log.LogService;
 
 /**
  * The ImageStore returns the images for given names. The images are loaded form
@@ -31,20 +32,12 @@ import org.osgi.service.log.LogService;
  */
 public final class ImageStore {
 
-	private static final Logger LOGGER;
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 	private static final String IMAGE_PATH_EXTENSION_ID = "org.eclipse.riena.ui.swt.imagepath"; //$NON-NLS-1$
 
 	private static ImageStore store;
 	private static Image missingImage;
 	private IImagePathExtension[] iconPathes;
-
-	static {
-		if (Activator.getDefault() != null) {
-			LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
-		} else {
-			LOGGER = new ConsoleLogger(ImageStore.class.getName());
-		}
-	}
 
 	private ImageStore() {
 		// utility class

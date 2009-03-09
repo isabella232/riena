@@ -18,28 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.core.util.ReflectionFailure;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.common.ISortableByColumn;
-import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IRowRidget;
-import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
-import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,7 +40,23 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.osgi.service.log.LogService;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.ReflectionFailure;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.common.ISortableByColumn;
+import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
+import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
+import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * A ridget for nebula's {@link CompositeTable} - this is a table with an
@@ -63,16 +64,7 @@ import org.osgi.service.log.LogService;
  */
 public class CompositeTableRidget extends AbstractSelectableIndexedRidget implements ICompositeTableRidget {
 
-	private final static Logger LOGGER;
-
-	static {
-		String loggerName = CompositeTableRidget.class.getName();
-		if (Activator.getDefault() != null) {
-			LOGGER = Log4r.getLogger(Activator.getDefault(), loggerName);
-		} else {
-			LOGGER = new ConsoleLogger(loggerName);
-		}
-	}
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CompositeTableRidget.class.getName());
 
 	private final CTRowToRidgetMapper rowToRidgetMapper;
 	private final SelectionSynchronizer selectionSynchronizer;
