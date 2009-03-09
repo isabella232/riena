@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.tests;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -131,6 +133,18 @@ public abstract class RienaTestCase extends TestCase {
 			}
 		}
 		return context;
+	}
+
+	/**
+	 * Get the file (from src-folder) for the resource within the same directory
+	 * this unit test is in.
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	protected File getFile(String resource) {
+		URL url = getClass().getResource(resource);
+		return new File(new File(new File("").getAbsolutePath(), "src"), url.getFile());
 	}
 
 	/**
