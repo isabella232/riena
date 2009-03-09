@@ -10,11 +10,5 @@
       </servlet>
    </extension>
 
-	<extension
-        point="org.eclipse.riena.core.startups">
-      <startup 
-      	activateSelf="true">
-      </startup>
-   </extension>
 
 </plugin>
