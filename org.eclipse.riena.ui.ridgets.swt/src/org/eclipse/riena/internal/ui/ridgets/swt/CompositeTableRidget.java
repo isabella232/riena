@@ -64,7 +64,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class CompositeTableRidget extends AbstractSelectableIndexedRidget implements ICompositeTableRidget {
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CompositeTableRidget.class.getName());
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CompositeTableRidget.class);
 
 	private final CTRowToRidgetMapper rowToRidgetMapper;
 	private final SelectionSynchronizer selectionSynchronizer;

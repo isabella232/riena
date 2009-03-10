@@ -23,7 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -32,10 +38,6 @@ import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.osgi.service.log.LogService;
 
 /**
  * This class updates the properties of the UI controls according the settings
@@ -43,7 +45,7 @@ import org.osgi.service.log.LogService;
  */
 public class LnFUpdater {
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class.getName());
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), LnFUpdater.class);
 
 	/**
 	 * System property defining if properties of views are updated.
