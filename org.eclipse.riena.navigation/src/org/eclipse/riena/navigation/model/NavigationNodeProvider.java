@@ -17,7 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.navigation.Activator;
@@ -33,7 +36,6 @@ import org.eclipse.riena.navigation.ISubApplicationNodeExtension;
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.osgi.service.log.LogService;
 
 /**
  * This class provides service methods to get information provided by
@@ -95,6 +97,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 	@SuppressWarnings("unchecked")
 	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
 			NavigationArgument argument) {
+
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
@@ -103,25 +106,29 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 
 			INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
 			if (assembler != null) {
-				prepareNavigationNodeBuilder(targetId, assembler);
+				INavigationNode parentNode = provideNodeHook(sourceNode, getParentTypeId(argument, assembler), null);
+				prepareNavigationNodeBuilder(targetId, assembler, parentNode);
 				targetNode = assembler.buildNode(targetId, argument);
-				INavigationNode parentNode = null;
-				if (argument != null && argument.getParentNodeId() != null) {
-					parentNode = provideNodeHook(sourceNode, argument.getParentNodeId(), null);
-				} else {
-					String parentTypeId = assembler.getAssembly().getParentTypeId();
-					if (parentTypeId == null || parentTypeId.length() == 0) {
-						throw new ExtensionPointFailure("parentTypeId cannot be null or blank for assembly ID=" //$NON-NLS-1$
-								+ assembler.getAssembly().getId());
-					}
-					parentNode = provideNodeHook(sourceNode, new NavigationNodeId(parentTypeId), null);
-				}
 				parentNode.addChild(targetNode);
 			} else {
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
 		}
+
 		return targetNode;
+	}
+
+	private NavigationNodeId getParentTypeId(NavigationArgument argument, INavigationAssembler assembler) {
+		if (argument != null && argument.getParentNodeId() != null) {
+			return argument.getParentNodeId();
+		} else {
+			String parentTypeId = assembler.getAssembly().getParentTypeId();
+			if (parentTypeId == null || parentTypeId.length() == 0) {
+				throw new ExtensionPointFailure("parentTypeId cannot be null or blank for assembly ID=" //$NON-NLS-1$
+						+ assembler.getAssembly().getId());
+			}
+			return new NavigationNodeId(parentTypeId);
+		}
 	}
 
 	protected GenericNavigationAssembler createDefaultAssembler() {
@@ -144,8 +151,10 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 	 * 
 	 * @param targetId
 	 * @param assembler
+	 * @param parentNode
 	 */
-	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationAssembler assembler) {
+	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationAssembler assembler,
+			INavigationNode<?> parentNode) {
 		if (assembler instanceof IGenericNavigationAssembler) {
 			((IGenericNavigationAssembler) assembler).setAssemblerProvider(this);
 		}
