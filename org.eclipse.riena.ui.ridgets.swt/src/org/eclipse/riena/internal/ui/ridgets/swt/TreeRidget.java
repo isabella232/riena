@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
@@ -51,16 +53,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.logging.ConsoleLogger;
-import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -76,7 +68,16 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
-import org.osgi.service.log.LogService;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.tree.IObservableTreeModel;
 
 /**
  * Ridget for SWT {@link Tree} widgets.
@@ -958,13 +959,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 
 		private void log(String message, Exception exc) {
-			String loggerName = TreeRidget.class.getName();
-			Logger logger;
-			if (Activator.getDefault() != null) {
-				logger = Log4r.getLogger(Activator.getDefault(), loggerName);
-			} else {
-				logger = new ConsoleLogger(loggerName);
-			}
+			Logger logger = Log4r.getLogger(Activator.getDefault(), TreeRidget.class);
 			logger.log(LogService.LOG_ERROR, message, exc);
 		}
 	}
@@ -975,8 +970,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * element. Specifically:
 	 * <ul>
 	 * <li>if B gets added to A we have to refresh the icon of A, if A did not
-	 * have any children beforehand</li> <li>if B gets removed to A we have to
-	 * refresh the icon of A, if B was the last child underneath A</li>
+	 * have any children beforehand</li>
+	 * <li>if B gets removed to A we have to refresh the icon of A, if B was the
+	 * last child underneath A</li>
 	 * <ul>
 	 */
 	private final class TreeContentChangeListener implements ISetChangeListener {
