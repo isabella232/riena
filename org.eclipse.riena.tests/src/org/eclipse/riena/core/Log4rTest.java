@@ -27,6 +27,7 @@ public class Log4rTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		assertNotNull("Test must be a plugin unit test.", Activator.getDefault());
+		System.clearProperty(LoggerMill.RIENA_DEFAULT_LOGGING);
 	}
 
 	public void testWithContext() {
@@ -36,18 +37,24 @@ public class Log4rTest extends RienaTestCase {
 		assertFalse("NullLogger".equals(logger.getClass().getSimpleName()));
 	}
 
-	public void testWithOutContextNoRienaDeffaultLogging() {
+	public void testWithOutContextNoRienaDefaultLogging() {
+		Logger logger = Log4r.getLogger(null, Log4rTest.class);
+		assertNotNull(logger);
+		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
+	}
+
+	public void testWithOutContextWithRienaDefaultLoggingFalse() {
+		System.setProperty(LoggerMill.RIENA_DEFAULT_LOGGING, Boolean.FALSE.toString());
 		Logger logger = Log4r.getLogger(null, Log4rTest.class);
 		assertNotNull(logger);
 		assertTrue("NullLogger".equals(logger.getClass().getSimpleName()));
 	}
 
-	public void testWithOutContextWithRienaDeffaultLogging() {
+	public void testWithOutContextWithRienaDefaultLoggingTrue() {
 		System.setProperty(LoggerMill.RIENA_DEFAULT_LOGGING, Boolean.TRUE.toString());
 		Logger logger = Log4r.getLogger(null, Log4rTest.class);
 		assertNotNull(logger);
 		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
-		System.setProperty(LoggerMill.RIENA_DEFAULT_LOGGING, Boolean.FALSE.toString());
 	}
 
 	public void testWithContextByName() {
@@ -57,17 +64,24 @@ public class Log4rTest extends RienaTestCase {
 		assertFalse("NullLogger".equals(logger.getClass().getSimpleName()));
 	}
 
-	public void testWithOutContextNoRienaDeffaultLoggingByName() {
+	public void testWithOutContextNoRienaDefaultLoggingByName() {
+		Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
+		assertNotNull(logger);
+		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
+	}
+
+	public void testWithOutContextWithRienaDefaultLoggingFalseByName() {
+		System.setProperty(LoggerMill.RIENA_DEFAULT_LOGGING, Boolean.FALSE.toString());
 		Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
 		assertNotNull(logger);
 		assertTrue("NullLogger".equals(logger.getClass().getSimpleName()));
 	}
 
-	public void testWithOutContextWithRienaDeffaultLoggingByName() {
+	public void testWithOutContextWithRienaDefaultLoggingTrueByName() {
 		System.setProperty(LoggerMill.RIENA_DEFAULT_LOGGING, Boolean.TRUE.toString());
 		Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
 		assertNotNull(logger);
 		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
-		System.setProperty(LoggerMill.RIENA_DEFAULT_LOGGING, Boolean.FALSE.toString());
 	}
+
 }
