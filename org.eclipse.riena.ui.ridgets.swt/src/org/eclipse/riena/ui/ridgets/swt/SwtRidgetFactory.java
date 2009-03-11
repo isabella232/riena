@@ -16,14 +16,16 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * Factory creating ridgets for SWT controls.
@@ -64,8 +66,17 @@ public final class SwtRidgetFactory {
 	// ////////////////
 
 	private static final class DummyBindingPropertyLocator implements IBindingPropertyLocator {
+
+		private static final SWTBindingPropertyLocator delegate = SWTBindingPropertyLocator.getInstance();
+
+		/*
+		 * Find the binding property in the uiControl. If none is available
+		 * return 'dummy', since in that case we use the DummyContainer which
+		 * does not need an id (see DummyContainer#getRidget(...)).
+		 */
 		public String locateBindingProperty(Object uiControl) {
-			return "dummy"; //$NON-NLS-1$
+			String bindingProp = delegate.locateBindingProperty(uiControl);
+			return bindingProp != null ? bindingProp : "dummy"; //$NON-NLS-1$
 		}
 	}
 
