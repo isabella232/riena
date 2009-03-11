@@ -462,8 +462,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests that the combo control becomes visible after toggling
-	 * ridget.setVisible().
+	 * Tests that a control becomes visible after toggling ridget.setVisible().
 	 */
 	public void testBug257484() {
 		Widget theWidget = getWidget();
