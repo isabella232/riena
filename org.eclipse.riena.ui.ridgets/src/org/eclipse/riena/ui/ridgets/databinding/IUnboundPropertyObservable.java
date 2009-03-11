@@ -11,11 +11,14 @@
 package org.eclipse.riena.ui.ridgets.databinding;
 
 import org.eclipse.core.databinding.observable.IObservable;
+import org.eclipse.core.databinding.observable.list.IObservableList;
 
 /**
  * Extends IObservable to add some support for objects that do not conform to
  * the JavaBean specification for bound properties. Changes of the properties of
  * such objects cannot be detected by adding PropertyChangeListeners.
+ * 
+ * @deprecated use {@link IObservableList} or {@link IObservable}
  */
 public interface IUnboundPropertyObservable extends IObservable {
 
