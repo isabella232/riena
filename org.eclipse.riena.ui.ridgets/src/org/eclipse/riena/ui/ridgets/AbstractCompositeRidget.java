@@ -68,6 +68,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 		this.uiControl = (IComplexComponent) uiControl;
 		updateVisible();
+		updateToolTipText();
 	}
 
 	public void addRidget(String id, IRidget ridget) {
@@ -107,7 +108,6 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		for (Iterator<? extends IRidget> iterator = r.iterator(); iterator.hasNext();) {
 			IRidget object = iterator.next();
 			object.setFocusable(focusable);
-
 		}
 	}
 
@@ -166,6 +166,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * in an appropriate way.
 	 */
 	protected void updateVisible() {
+		// this java.awt.Component is an artefact of our swing legacy
+		// and could be removed when swing support is no longer needed
 		if (uiControl != null && uiControl instanceof Component) {
 			((Component) uiControl).setVisible(this.visible);
 		}
