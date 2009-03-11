@@ -20,6 +20,11 @@ import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -30,10 +35,6 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 
 /**
  * TODO [ev] docs
@@ -48,6 +49,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
 
+	// TODO [ev] Make API
 	public void setDelegate(IMasterDetailsDelegate delegate) {
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once");
 		Assert.isLegal(delegate != null, "delegate cannot be null");
@@ -221,8 +223,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		MasterDetailsComposite control = getUIControl();
 		if (control != null && rowObservables != null) {
 			prepareTable(control);
-			ITableRidget tableRidvget = getTableRidget();
-			tableRidvget.bindToModel(rowObservables, rowBeanClass, renderingMethods, columnHeaders);
+			ITableRidget tableRidget = getTableRidget();
+			tableRidget.bindToModel(rowObservables, rowBeanClass, renderingMethods, columnHeaders);
 		}
 	}
 

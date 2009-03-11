@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * This composite contains a table (the "master") of n columns, as well as add,
@@ -38,7 +39,25 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  * 
  * @see IMasterDetailsRidget
  */
+// TODO [ev] rename to AbstractMasterDetailsComposite?
 public abstract class MasterDetailsComposite extends Composite implements IComplexComponent {
+
+	/**
+	 * Binding id of the table control {@value} .
+	 */
+	public static final String BIND_ID_TABLE = "mdTable"; //$NON-NLS-1$
+	/**
+	 * Binding id of the add button {@value} .
+	 */
+	public static final String BIND_ID_ADD = "mdAddButton"; //$NON-NLS-1$
+	/**
+	 * Binding id of the remove button {@value} .
+	 */
+	public static final String BIND_ID_REMOVE = "mdRemoveButton"; //$NON-NLS-1$
+	/**
+	 * Binding id of the update button {@value} .
+	 */
+	public static final String BIND_ID_UPDATE = "mdUpdateButton"; //$NON-NLS-1$
 
 	private final List<Object> controls = new ArrayList<Object>();
 	private Table table;
@@ -59,11 +78,11 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 
 		setLayout(new GridLayout(1, false));
 		if (orientation == SWT.TOP) {
-			createDetails(createComposite(SWT.NONE));
+			createDetails(createComposite(getDetailsStyle()));
 		}
-		createMaster(createComposite(SWT.NONE));
+		createMaster(createComposite(getMasterStyle()));
 		if (orientation == SWT.BOTTOM) {
-			createDetails(createComposite(SWT.NONE));
+			createDetails(createComposite(getDetailsStyle()));
 		}
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 	}
@@ -97,6 +116,28 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	 */
 	protected abstract void createDetails(Composite parent);
 
+	/**
+	 * Returns the style bits for the 'details' composite. Subclasses may
+	 * override, but has to return a value that is supported by
+	 * {@link Composite}.
+	 * 
+	 * @return {@code SWT.NONE}
+	 */
+	protected int getDetailsStyle() {
+		return SWT.NONE;
+	}
+
+	/**
+	 * Returns the style bits for the 'master' composite. Subclasses may
+	 * override, but has to return a value that is supported by
+	 * {@link Composite}.
+	 * 
+	 * @return {@code SWT.NONE}
+	 */
+	protected int getMasterStyle() {
+		return SWT.NONE;
+	}
+
 	// helping methods
 	//////////////////
 
@@ -110,27 +151,9 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		throw new IllegalArgumentException("unsupported orientation: " + orientation); //$NON-NLS-1$
 	}
 
-	private Composite createComposite(int style) {
-		Composite result = new Composite(this, style);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(result);
-		return result;
-	}
-
 	// TODO [ev] make protected for more flexibility
-	private void createMaster(Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
-
-		Composite compTable = new Composite(parent, SWT.NONE);
-		compTable.setLayout(new TableColumnLayout());
-		table = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		int wHint = 200;
-		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
-		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(compTable);
-		addUIControl(table, "mdTable"); //$NON-NLS-1$
-
-		Composite compButton = new Composite(parent, SWT.NONE);
+	private void createButtons(Composite parent) {
+		Composite compButton = UIControlsFactory.createComposite(parent);
 		GridDataFactory.fillDefaults().applyTo(compButton);
 		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 		buttonLayout.marginTop = 0;
@@ -138,14 +161,37 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		buttonLayout.marginRight = 0;
 		buttonLayout.fill = true;
 		compButton.setLayout(buttonLayout);
-		Button btnAdd = new Button(compButton, SWT.PUSH);
-		btnAdd.setText("Add");
-		addUIControl(btnAdd, "mdAddButton"); //$NON-NLS-1$
-		Button btnRemove = new Button(compButton, SWT.PUSH);
-		btnRemove.setText("Remove");
-		addUIControl(btnRemove, "mdRemoveButton"); //$NON-NLS-1$
-		Button btnUpdate = new Button(compButton, SWT.PUSH);
-		btnUpdate.setText("Update");
-		addUIControl(btnUpdate, "mdUpdateButton"); //$NON-NLS-1$
+		Button btnAdd = UIControlsFactory.createButton(compButton, "Add"); //$NON-NLS-1$
+		addUIControl(btnAdd, BIND_ID_ADD);
+		Button btnRemove = UIControlsFactory.createButton(compButton, "Remove"); //$NON-NLS-1$
+		addUIControl(btnRemove, BIND_ID_REMOVE);
+		Button btnUpdate = UIControlsFactory.createButton(compButton, "Update"); //$NON-NLS-1$
+		addUIControl(btnUpdate, BIND_ID_UPDATE);
+	}
+
+	private Composite createComposite(int style) {
+		Composite result = UIControlsFactory.createComposite(this, style);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(result);
+		return result;
+	}
+
+	// TODO [ev] make protected for more flexibility
+	private void createMaster(Composite parent) {
+		parent.setLayout(new GridLayout(2, false));
+		createTable(parent);
+		createButtons(parent);
+	}
+
+	// TODO [ev] make protected for more flexibility
+	private void createTable(Composite parent) {
+		Composite compTable = UIControlsFactory.createComposite(parent);
+		compTable.setLayout(new TableColumnLayout());
+		table = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		int wHint = 200;
+		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
+		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(compTable);
+		addUIControl(table, BIND_ID_TABLE);
 	}
 }

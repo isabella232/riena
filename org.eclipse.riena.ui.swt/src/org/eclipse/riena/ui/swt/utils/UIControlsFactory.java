@@ -13,9 +13,6 @@ package org.eclipse.riena.ui.swt.utils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.riena.ui.swt.MessageBox;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -30,6 +27,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.ui.swt.MessageBox;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * TODO [ev] docs + method docs
@@ -111,6 +112,12 @@ public final class UIControlsFactory {
 		return new Button(parent, SWT.PUSH);
 	}
 
+	public static Button createButton(Composite parent, String caption) {
+		Button result = new Button(parent, SWT.PUSH);
+		result.setText(caption);
+		return result;
+	}
+
 	public static Button createButtonToggle(Composite parent) {
 		return new Button(parent, SWT.TOGGLE);
 	}
@@ -132,7 +139,11 @@ public final class UIControlsFactory {
 	}
 
 	public static Composite createComposite(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
+		return createComposite(parent, SWT.NONE);
+	}
+
+	public static Composite createComposite(Composite parent, int style) {
+		Composite composite = new Composite(parent, style);
 		composite.setBackground(SHARED_BG_COLOR);
 		return composite;
 	}
