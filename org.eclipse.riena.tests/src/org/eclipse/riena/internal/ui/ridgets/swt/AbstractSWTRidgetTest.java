@@ -145,10 +145,10 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 	public void testIsVisible() {
 		shell.open();
 		ridget.setVisible(false);
-		assertFalse(ridget.isVisible());
+		assertFalse("Fails for " + ridget, ridget.isVisible());
 
 		ridget.setVisible(true);
-		assertTrue(ridget.isVisible());
+		assertTrue("Fails for " + ridget, ridget.isVisible());
 	}
 
 	public void testGetToolTip() {
@@ -160,18 +160,18 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 
 		ridget.setUIControl(null);
 
-		assertEquals(null, ridget.getToolTipText());
+		assertEquals("Fails for " + ridget, null, ridget.getToolTipText());
 
 		ridget.setToolTipText("foo");
 
-		assertEquals("foo", ridget.getToolTipText());
+		assertEquals("Fails for " + ridget, "foo", ridget.getToolTipText());
 
 		Control aControl = (Control) getWidget();
 		aControl.setToolTipText(null);
 		ridget.setUIControl(aControl);
 
-		assertEquals("foo", ridget.getToolTipText());
-		assertEquals("foo", ((Control) ridget.getUIControl()).getToolTipText());
+		assertEquals("Fails for " + ridget, "foo", ridget.getToolTipText());
+		assertEquals("Fails for " + ridget, "foo", ((Control) ridget.getUIControl()).getToolTipText());
 	}
 
 	public void testGetFocusable() {
@@ -183,15 +183,15 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 
 		IRidget aRidget = getRidget();
 
-		assertTrue(aRidget.isFocusable());
+		assertTrue("Fails for " + aRidget, aRidget.isFocusable());
 
 		aRidget.setFocusable(false);
 
-		assertFalse(aRidget.isFocusable());
+		assertFalse("Fails for " + aRidget, aRidget.isFocusable());
 
 		aRidget.setFocusable(true);
 
-		assertTrue(aRidget.isFocusable());
+		assertTrue("Fails for " + aRidget, aRidget.isFocusable());
 	}
 
 	public void testSetFocusable() {
@@ -211,20 +211,20 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 			aRidget.setFocusable(false);
 			otherControl.setFocus();
 
-			assertTrue(otherControl.isFocusControl());
+			assertTrue("Fails for " + otherControl, otherControl.isFocusControl());
 
 			UITestHelper.sendString(otherControl.getDisplay(), "\t");
 
 			System.out.println("#########testSetFocusable###" + this.getClass() + "##"
 					+ this.getClass().getSuperclass());
-			assertFalse(aControl.isFocusControl());
+			assertFalse("Fails for " + aControl, aControl.isFocusControl());
 
 			aRidget.setFocusable(true);
 
 			otherControl.setFocus();
 			UITestHelper.sendString(otherControl.getDisplay(), "\t");
 
-			assertTrue(aControl.isFocusControl());
+			assertTrue("Fails for " + aControl, aControl.isFocusControl());
 		}
 	}
 
@@ -238,10 +238,10 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		Control aControl = (Control) getWidget();
 		aControl.setFocus();
 		if (aControl.isFocusControl()) { // skip if control cannot receive focus
-			assertTrue(otherControl.setFocus());
+			assertTrue("Fails for " + otherControl, otherControl.setFocus());
 
-			assertFalse(aControl.isFocusControl());
-			assertFalse(ridget.hasFocus());
+			assertFalse("Fails for " + aControl, aControl.isFocusControl());
+			assertFalse("Fails for " + ridget, ridget.hasFocus());
 
 			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
 			final List<FocusEvent> focusLostEvents = new ArrayList<FocusEvent>();
@@ -258,27 +258,27 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 
 			ridget.requestFocus();
 
-			assertTrue(aControl.isFocusControl());
-			assertTrue(ridget.hasFocus());
-			assertEquals(1, focusGainedEvents.size());
-			assertEquals(ridget, focusGainedEvents.get(0).getNewFocusOwner());
-			assertEquals(0, focusLostEvents.size());
+			assertTrue("Fails for " + aControl, aControl.isFocusControl());
+			assertTrue("Fails for " + ridget, ridget.hasFocus());
+			assertEquals("Fails for " + ridget, 1, focusGainedEvents.size());
+			assertEquals("Fails for " + ridget, ridget, focusGainedEvents.get(0).getNewFocusOwner());
+			assertEquals("Fails for " + ridget, 0, focusLostEvents.size());
 
-			assertTrue(otherControl.setFocus());
+			assertTrue("Fails for " + otherControl, otherControl.setFocus());
 
-			assertFalse(aControl.isFocusControl());
-			assertFalse(ridget.hasFocus());
-			assertEquals(1, focusGainedEvents.size());
-			assertEquals(1, focusLostEvents.size());
-			assertEquals(ridget, focusLostEvents.get(0).getOldFocusOwner());
+			assertFalse("Fails for " + aControl, aControl.isFocusControl());
+			assertFalse("Fails for " + ridget, ridget.hasFocus());
+			assertEquals("Fails for " + ridget, 1, focusGainedEvents.size());
+			assertEquals("Fails for " + ridget, 1, focusLostEvents.size());
+			assertEquals("Fails for " + ridget, ridget, focusLostEvents.get(0).getOldFocusOwner());
 
 			ridget.removeFocusListener(focusListener);
 
 			ridget.requestFocus();
-			assertTrue(otherControl.setFocus());
+			assertTrue("Fails for " + otherControl, otherControl.setFocus());
 
-			assertEquals(1, focusGainedEvents.size());
-			assertEquals(1, focusLostEvents.size());
+			assertEquals("Fails for " + ridget, 1, focusGainedEvents.size());
+			assertEquals("Fails for " + ridget, 1, focusLostEvents.size());
 		}
 	}
 
@@ -310,8 +310,8 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		HashSet<IMarker> after = new HashSet<IMarker>(before);
 		after.add(marker);
 
-		assertTrue(markableRidget.isEnabled());
-		assertEquals(before.size() + 1, after.size());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
+		assertEquals("Fails for " + markableRidget, before.size() + 1, after.size());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_MARKER, before, after);
 		markableRidget.addMarker(marker);
@@ -338,7 +338,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		expectNoPropertyChangeEvent();
 		markableRidget.setEnabled(true);
@@ -366,7 +366,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_ENABLED, Boolean.TRUE, Boolean.FALSE);
 		markableRidget.addMarker(marker);
@@ -395,15 +395,15 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
 		markableRidget.setUIControl(null);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		markableRidget.setEnabled(false);
 
-		assertFalse(markableRidget.isEnabled());
+		assertFalse("Fails for " + markableRidget, markableRidget.isEnabled());
 
 		markableRidget.setEnabled(true);
 
-		assertTrue(markableRidget.isEnabled());
+		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
 	}
 
 	public void testFiresOutputPropertyUsingSetter() {
@@ -414,7 +414,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
-		assertFalse(markableRidget.isOutputOnly());
+		assertFalse("Fails for " + markableRidget, markableRidget.isOutputOnly());
 
 		expectNoPropertyChangeEvent();
 		markableRidget.setOutputOnly(false);
@@ -442,7 +442,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
-		assertFalse(markableRidget.isOutputOnly());
+		assertFalse("Fails for " + markableRidget, markableRidget.isOutputOnly());
 
 		expectPropertyChangeEvent(IMarkableRidget.PROPERTY_OUTPUT_ONLY, Boolean.FALSE, Boolean.TRUE);
 		markableRidget.addMarker(marker);
@@ -474,18 +474,18 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 		IRidget theRidget = getRidget();
 		Control control = (Control) theWidget;
 
-		assertTrue(theRidget.isVisible());
-		assertTrue(control.isVisible());
+		assertTrue("Fails for " + theRidget, theRidget.isVisible());
+		assertTrue("Fails for " + control, control.isVisible());
 
 		theRidget.setVisible(false);
 
-		assertFalse(theRidget.isVisible());
-		assertFalse(control.isVisible());
+		assertFalse("Fails for " + theRidget, theRidget.isVisible());
+		assertFalse("Fails for " + control, control.isVisible());
 
 		theRidget.setVisible(true);
 
-		assertTrue(theRidget.isVisible());
-		assertTrue(control.isVisible());
+		assertTrue("Fails for " + theRidget, theRidget.isVisible());
+		assertTrue("Fails for " + control, control.isVisible());
 	}
 
 	// helping methods
