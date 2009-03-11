@@ -53,9 +53,7 @@ public final class UITestHelper {
 	 */
 	public static void sendKeyAction(Display display, int keyCode) {
 		EventSender sender = new EventSender(display, keyCode);
-		Thread thread = new Thread(sender);
-		thread.start();
-		waitAndDispatch(display, thread);
+		send(display, sender);
 	}
 
 	/**
@@ -68,7 +66,15 @@ public final class UITestHelper {
 	 */
 	public static void sendString(Display display, String message) {
 		EventSender sender = new EventSender(display, message);
-		Thread thread = new Thread(sender);
+		send(display, sender);
+	}
+
+	private static void send(Display display, Runnable runnable) {
+		Thread thread = new Thread(runnable);
+		Shell activeShell = display.getActiveShell();
+		if (activeShell != null) {
+			activeShell.forceActive();
+		}
 		thread.start();
 		waitAndDispatch(display, thread);
 	}
@@ -128,10 +134,10 @@ public final class UITestHelper {
 			event.type = SWT.KeyDown;
 			event.keyCode = keyCode;
 			doSleep(MS_LONG_WAIT);
-			display.post(event);
+			post(event);
 			doSleep(MS_LONG_WAIT);
 			event.type = SWT.KeyUp;
-			display.post(event);
+			post(event);
 			doSleep(MS_LONG_WAIT);
 		}
 
@@ -140,10 +146,10 @@ public final class UITestHelper {
 			event.type = SWT.KeyDown;
 			event.character = ch;
 			doSleep(MS_LONG_WAIT);
-			display.post(event);
+			post(event);
 			doSleep(MS_LONG_WAIT);
 			event.type = SWT.KeyUp;
-			display.post(event);
+			post(event);
 			doSleep(MS_LONG_WAIT);
 		}
 
@@ -151,8 +157,12 @@ public final class UITestHelper {
 			Event event = new Event();
 			event.keyCode = SWT.SHIFT;
 			event.type = keyDown ? SWT.KeyDown : SWT.KeyUp;
-			display.post(event);
+			post(event);
 			doSleep(MS_SHORT_WAIT);
+		}
+
+		private boolean post(final Event event) {
+			return display.post(event);
 		}
 
 		private void doSleep(int millis) {
