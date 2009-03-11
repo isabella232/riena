@@ -17,17 +17,18 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * This composite contains a table (the "master") of n columns, as well as add,
@@ -115,6 +116,7 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		return result;
 	}
 
+	// TODO [ev] make protected for more flexibility
 	private void createMaster(Composite parent) {
 		parent.setLayout(new GridLayout(2, false));
 
