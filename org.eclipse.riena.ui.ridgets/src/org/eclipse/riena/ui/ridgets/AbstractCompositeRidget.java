@@ -28,7 +28,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	private IComplexComponent uiControl;
 	private Map<String, IRidget> ridgets;
 	private PropertyChangeListener propertyChangeListener;
-	protected boolean visible;
+	private boolean visible;
 	private String toolTip = null;
 	private boolean blocked;
 
@@ -104,14 +104,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void setFocusable(boolean focusable) {
-		Collection<? extends IRidget> r = getRidgets();
-		for (Iterator<? extends IRidget> iterator = r.iterator(); iterator.hasNext();) {
-			IRidget object = iterator.next();
-			object.setFocusable(focusable);
+		for (IRidget ridget : getRidgets()) {
+			ridget.setFocusable(focusable);
 		}
 	}
 
 	public boolean isFocusable() {
+		for (IRidget ridget : getRidgets()) {
+			if (ridget.isFocusable()) {
+				return true;
+			}
+		}
 		return false;
 	}
 

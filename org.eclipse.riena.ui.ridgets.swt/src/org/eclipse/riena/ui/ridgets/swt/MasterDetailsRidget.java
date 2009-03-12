@@ -209,6 +209,25 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		delegate.updateDetails(this);
 	}
 
+	// protected methods
+	///////////////////
+
+	@Override
+	protected final void updateToolTipText() {
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			control.setToolTipText(getToolTipText());
+		}
+	}
+
+	@Override
+	protected final void updateVisible() {
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			control.setVisible(isVisible());
+		}
+	}
+
 	// helping methods
 	//////////////////
 
@@ -229,19 +248,19 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	private ITableRidget getTableRidget() {
-		return (ITableRidget) getRidget("mdTable"); //$NON-NLS-1$
+		return (ITableRidget) getRidget(MasterDetailsComposite.BIND_ID_TABLE);
 	}
 
 	private IActionRidget getAddButtonRidget() {
-		return (IActionRidget) getRidget("mdAddButton"); //$NON-NLS-1$
+		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_ADD);
 	}
 
 	private IActionRidget getRemoveButtonRidget() {
-		return (IActionRidget) getRidget("mdRemoveButton"); //$NON-NLS-1$
+		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_REMOVE);
 	}
 
 	private IActionRidget getUpdateButtonRidget() {
-		return (IActionRidget) getRidget("mdUpdateButton"); //$NON-NLS-1$
+		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_UPDATE);
 	}
 
 	private void prepareTable(MasterDetailsComposite control) {
