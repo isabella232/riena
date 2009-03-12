@@ -215,8 +215,11 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 
 			System.out.println("#########testSetFocusable###" + this.getClass() + "##"
 					+ this.getClass().getSuperclass());
-			UITestHelper.sendString(otherControl.getDisplay(), "\t");
-
+			try {
+				UITestHelper.sendString(otherControl.getDisplay(), "\t");
+			} catch (Throwable t) {
+				throw new RuntimeException("Actual test class: " + getClass() + " failed!", t);
+			}
 			assertFalse("Fails for " + aControl, aControl.isFocusControl());
 
 			aRidget.setFocusable(true);
