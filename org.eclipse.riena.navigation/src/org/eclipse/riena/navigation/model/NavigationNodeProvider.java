@@ -107,7 +107,7 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 			INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
 			if (assembler != null) {
 				INavigationNode parentNode = provideNodeHook(sourceNode, getParentTypeId(argument, assembler), null);
-				prepareNavigationNodeBuilder(targetId, assembler, parentNode);
+				prepareNavigationAssembler(targetId, assembler, parentNode);
 				targetNode = assembler.buildNode(targetId, argument);
 				parentNode.addChild(targetNode);
 			} else {
@@ -147,13 +147,13 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 	}
 
 	/**
-	 * Used to prepare the NavigationNodeBuilder in a application specific way.
+	 * Used to prepare the assembler in a application specific way.
 	 * 
 	 * @param targetId
 	 * @param assembler
 	 * @param parentNode
 	 */
-	protected void prepareNavigationNodeBuilder(NavigationNodeId targetId, INavigationAssembler assembler,
+	protected void prepareNavigationAssembler(NavigationNodeId targetId, INavigationAssembler assembler,
 			INavigationNode<?> parentNode) {
 		if (assembler instanceof IGenericNavigationAssembler) {
 			((IGenericNavigationAssembler) assembler).setAssemblerProvider(this);
