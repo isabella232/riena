@@ -177,7 +177,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 	public void testGetFocusable() {
 
 		if (!(getWidget() instanceof Control)) {
-			// only Control supports tool tips
+			// only Control supports focus
 			return;
 		}
 
