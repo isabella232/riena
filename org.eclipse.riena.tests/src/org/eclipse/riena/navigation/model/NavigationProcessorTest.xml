@@ -5,12 +5,12 @@
          point="org.eclipse.riena.navigation.assemblies">
       <assembly
             id="org.eclipse.riena.navigation.model.test.secondSubApplication"
-            assembler="org.eclipse.riena.navigation.model.TestSecondSubApplicationNodeBuilder"
+            assembler="org.eclipse.riena.navigation.model.TestSecondSubApplicationNodeAssembler"
             parentTypeId="org.eclipse.riena.navigation.model.test.application">
       </assembly>
       <assembly
             id="org.eclipse.riena.navigation.model.test.secondModuleGroup"
-            assembler="org.eclipse.riena.navigation.model.TestSecondModuleGroupNodeBuilder"
+            assembler="org.eclipse.riena.navigation.model.TestSecondModuleGroupNodeAssembler"
             parentTypeId="org.eclipse.riena.navigation.model.test.secondSubApplication">
       </assembly>
    </extension> 

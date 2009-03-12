@@ -15,13 +15,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
-import org.eclipse.riena.example.client.controllers.ListSubModuleController;
-import org.eclipse.riena.example.client.views.ComboSubModuleView;
-import org.eclipse.riena.example.client.views.ListSubModuleView;
+import org.eclipse.riena.example.client.application.ExampleIcons;
+import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
+import org.eclipse.riena.example.client.views.NavigateSubModuleView;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class ComboAndListNodeBuilder extends AbstractNavigationAssembler {
+public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 
@@ -41,23 +41,22 @@ public class ComboAndListNodeBuilder extends AbstractNavigationAssembler {
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public IModuleGroupNode buildNode(NavigationNodeId presentationId, NavigationArgument navigationArgument) {
+	public INavigationNode<?> buildNode(NavigationNodeId nodeId, NavigationArgument navigationArgument) {
 
-		IModuleGroupNode node = new ModuleGroupNode(presentationId);
-		IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList"), "Combo&List"); //$NON-NLS-1$ //$NON-NLS-2$
-		node.addChild(module);
+		IModuleGroupNode moduleGroup = new ModuleGroupNode(nodeId);
+		moduleGroup.setPresentWithSingleModule(false);
 
-		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
-		WorkareaManager.getInstance().registerDefinition(subModule, ComboSubModuleController.class,
-				ComboSubModuleView.ID, false);
+		IModuleNode module = new ModuleNode(null, "Navigate"); //$NON-NLS-1$
+		module.setIcon(ExampleIcons.ICON_GREEN_LED);
+		moduleGroup.addChild(module);
+
+		ISubModuleNode subModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.navigate.form"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
+		WorkareaManager.getInstance().registerDefinition(subModule, NavigateSubModuleController.class,
+				NavigateSubModuleView.ID, false);
+
 		module.addChild(subModule);
-
-		subModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list"), "List"); //$NON-NLS-1$ //$NON-NLS-2$
-		WorkareaManager.getInstance().registerDefinition(subModule, ListSubModuleController.class,
-				ListSubModuleView.ID, false);
-		module.addChild(subModule);
-		return node;
+		return moduleGroup;
 	}
 
 	/**
@@ -66,10 +65,8 @@ public class ComboAndListNodeBuilder extends AbstractNavigationAssembler {
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 
 		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.comboAndList", //$NON-NLS-1$
-					"org.eclipse.riena.example.combo", //$NON-NLS-1$
-					"org.eclipse.riena.example.list" //$NON-NLS-1$
-			));
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.navigate.form" //$NON-NLS-1$
+					));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}
 

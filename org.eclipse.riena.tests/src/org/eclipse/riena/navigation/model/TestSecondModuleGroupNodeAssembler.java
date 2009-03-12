@@ -19,7 +19,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 
-public class TestSecondModuleGroupNodeBuilder implements INavigationAssembler {
+public class TestSecondModuleGroupNodeAssembler implements INavigationAssembler {
 
 	private INavigationAssemblyExtension assembly;
 

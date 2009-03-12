@@ -473,17 +473,17 @@
          point="org.eclipse.riena.navigation.assemblies">
       <assembly
             id="org.eclipse.riena.example.navigation.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.NavigationSubApplicationNodeAssembler"
             parentTypeId="application">
       </assembly>
       <assembly
             id="org.eclipse.riena.example.navigate.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeAssembler"
             parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
       <assembly
             id="org.eclipse.riena.example.sharedViews"
-            assembler="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.SharedViewsNodeAssembler"
             parentTypeId="playground">
       </assembly>
       <assembly
@@ -529,7 +529,7 @@
       </assembly>
       <assembly
             id="org.eclipse.riena.example.playground"
-            assembler="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.PlaygroundNodeAssembler"
             parentTypeId="playground">
       </assembly>
       <assembly
@@ -599,12 +599,12 @@
       </assembly>
       <assembly
             id="org.eclipse.riena.example.navigate.comboAndList"
-            assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.ComboAndListNodeAssembler"
             parentTypeId="org.eclipse.riena.example.navigation.subapplication">
       </assembly>
       <assembly
             id="org.eclipse.riena.example.navigate.tableTextAndTree.assembly"
-            assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeBuilder"
+            assembler="org.eclipse.riena.example.client.navigation.model.TableTextAndTreeNodeAssembler"
             parentTypeId="playground">
       </assembly>
    </extension>

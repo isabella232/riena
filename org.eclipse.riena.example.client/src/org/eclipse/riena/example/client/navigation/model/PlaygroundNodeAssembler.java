@@ -73,7 +73,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class PlaygroundNodeBuilder extends AbstractNavigationAssembler {
+public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 

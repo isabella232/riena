@@ -36,8 +36,8 @@ public class NavigationNodeId {
 
 	/**
 	 * Returns the type of a node. Nodes of the same type are created using the
-	 * same node builder. Sub module nodes of the same type use the same type of
-	 * view. Both is configured using extensions (NavigationNodeType and
+	 * same node assembler. Sub module nodes of the same type use the same type
+	 * of view. Both is configured using extensions (NavigationNodeType and
 	 * SubModuleType). This typeId is used to find the right extension.
 	 * 
 	 * @see INavigationAssembler

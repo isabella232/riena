@@ -23,7 +23,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
-public class OrderSubApplicationNodeBuilder extends NavigationNodeBuilder {
+public class OrderSubApplicationNodeAssembler extends NavigationNodeAssembler {
 
 	private Set<String> knownTargetIds = null;
 

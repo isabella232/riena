@@ -36,7 +36,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 /**
  *
  */
-public class TableTextAndTreeNodeBuilder implements INavigationAssembler {
+public class TableTextAndTreeNodeAssembler implements INavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 	private INavigationAssemblyExtension assembly;
@@ -55,7 +55,7 @@ public class TableTextAndTreeNodeBuilder implements INavigationAssembler {
 		assembly = nodeDefinition;
 	}
 
-	public TableTextAndTreeNodeBuilder() {
+	public TableTextAndTreeNodeAssembler() {
 		super();
 	}
 

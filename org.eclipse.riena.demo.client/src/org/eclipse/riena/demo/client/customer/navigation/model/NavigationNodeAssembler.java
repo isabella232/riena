@@ -16,7 +16,7 @@ import org.eclipse.riena.navigation.INavigationAssembler;
 
 import org.osgi.framework.Bundle;
 
-public abstract class NavigationNodeBuilder extends AbstractNavigationAssembler implements INavigationAssembler {
+public abstract class NavigationNodeAssembler extends AbstractNavigationAssembler implements INavigationAssembler {
 
 	protected String createIconPath(String subPath) {
 		Bundle bundle = Activator.getDefault().getBundle();

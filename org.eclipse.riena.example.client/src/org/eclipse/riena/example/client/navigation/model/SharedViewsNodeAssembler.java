@@ -30,7 +30,7 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
-public class SharedViewsNodeBuilder extends AbstractNavigationAssembler {
+public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 

@@ -8,39 +8,39 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.model;
+package org.eclipse.riena.demo.client.customer.navigation.model;
 
-import org.eclipse.riena.navigation.INavigationAssembler;
-import org.eclipse.riena.navigation.INavigationAssemblyExtension;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.riena.demo.client.customer.application.ExampleIcons;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.model.SubApplicationNode;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
-public class TestSecondSubApplicationNodeBuilder implements INavigationAssembler {
+public class PimSubApplicationNodeAssembler extends NavigationNodeAssembler {
 
-	private INavigationAssemblyExtension assembly;
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#getAssembly()
-	 */
-	public INavigationAssemblyExtension getAssembly() {
-		return assembly;
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#setAssembly(org.eclipse.riena.navigation.INavigationAssemblyExtension)
-	 */
-	public void setAssembly(INavigationAssemblyExtension nodeDefinition) {
-		assembly = nodeDefinition;
-	}
+	private Set<String> knownTargetIds = null;
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
 	public INavigationNode<?> buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId);
+
+		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId, "Mail"); //$NON-NLS-1$
+		subApplication.setIcon(createIconPath(ExampleIcons.ICON_APPLICATION));
+		WorkareaManager.getInstance().registerDefinition(subApplication, "pim"); //$NON-NLS-1$
+		// subApplication.setSelected(true);
+
+		// getNavigationNode().navigate(new
+		// NavigationNodeId("org.eclipse.riena.example.client.CustomerRecord"));
+
 		return subApplication;
 	}
 
@@ -49,10 +49,12 @@ public class TestSecondSubApplicationNodeBuilder implements INavigationAssembler
 	 */
 	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
 
-		return nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubApplication");
-	}
+		if (knownTargetIds == null) {
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.demo.client.customer.mail" //$NON-NLS-1$
+					));
+			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
+		}
 
-	public String getParentNodeId() {
-		return "application";
+		return knownTargetIds.contains(nodeId.getTypeId());
 	}
 }

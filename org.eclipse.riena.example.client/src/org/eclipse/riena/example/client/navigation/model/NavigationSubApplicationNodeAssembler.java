@@ -34,7 +34,7 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
-public class NavigationSubApplicationNodeBuilder extends AbstractNavigationAssembler {
+public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 

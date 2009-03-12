@@ -293,7 +293,7 @@
                id="org.eclipse.riena.demo.client.customer.mail"
                name="pim subApp"
                autostartsequence="200"
-               assembler="org.eclipse.riena.demo.client.customer.navigation.model.PimSubApplicationNodeBuilder"
+               assembler="org.eclipse.riena.demo.client.customer.navigation.model.PimSubApplicationNodeAssembler"
                parentTypeId="application">
          </assembly>
       
@@ -362,7 +362,7 @@
             id="org.eclipse.riena.demo.client.customer.order"
             name="order subapp"
             autostartsequence="300"
-            assembler="org.eclipse.riena.demo.client.customer.navigation.model.OrderSubApplicationNodeBuilder"
+            assembler="org.eclipse.riena.demo.client.customer.navigation.model.OrderSubApplicationNodeAssembler"
             parentTypeId="application">
       </assembly>
      </extension>
