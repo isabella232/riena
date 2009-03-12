@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.factory;
 
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
-
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.osgi.framework.BundleContext;
 
 /**

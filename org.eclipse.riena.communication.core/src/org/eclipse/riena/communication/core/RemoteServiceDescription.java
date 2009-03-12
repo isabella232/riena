@@ -20,7 +20,6 @@ import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
-
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 

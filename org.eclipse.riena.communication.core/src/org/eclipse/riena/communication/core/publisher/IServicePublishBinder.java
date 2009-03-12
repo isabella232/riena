@@ -11,7 +11,6 @@
 package org.eclipse.riena.communication.core.publisher;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
-
 import org.osgi.framework.ServiceReference;
 
 /**

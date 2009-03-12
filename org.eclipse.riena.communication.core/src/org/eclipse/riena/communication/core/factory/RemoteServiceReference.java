@@ -12,7 +12,6 @@ package org.eclipse.riena.communication.core.factory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 

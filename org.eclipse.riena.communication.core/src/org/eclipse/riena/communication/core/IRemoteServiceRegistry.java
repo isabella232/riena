@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
-
 import org.osgi.framework.BundleContext;
 
 /**
