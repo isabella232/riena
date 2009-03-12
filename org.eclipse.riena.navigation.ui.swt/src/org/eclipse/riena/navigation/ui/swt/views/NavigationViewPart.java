@@ -16,6 +16,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.part.ViewPart;
+
+import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -30,15 +39,11 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupViewDesc;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleViewDesc;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 public class NavigationViewPart extends ViewPart implements IModuleNavigationComponentProvider {
 
@@ -60,9 +65,16 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleNodesToViews = new HashMap<INavigationNode<?>, ModuleView>();
 	}
 
+	@SuppressWarnings("restriction")
 	protected IViewFactory getViewFactory() {
 		if (viewFactory == null) {
 			viewFactory = new NavigationViewFactory();
+			Inject
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingExactly(1).useType(IModuleViewDesc.class).into( //$NON-NLS-1$
+							viewFactory).andStart(Activator.getDefault().getContext());
+			Inject
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingExactly(1).useType(IModuleGroupViewDesc.class).into( //$NON-NLS-1$
+							viewFactory).andStart(Activator.getDefault().getContext());
 		}
 		return viewFactory;
 	}
@@ -213,7 +225,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	private void createModuleGroupView(IModuleGroupNode moduleGroupNode) {
-		// ModuleGroupView werden direkt in das bodyComposite gerendert
+		// ModuleGroupView are directly rendered into the bodyComposite
 		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());

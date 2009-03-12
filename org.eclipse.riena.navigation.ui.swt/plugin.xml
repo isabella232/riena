@@ -2,6 +2,8 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition" name="loginSplashViewDefinition" schema="schema/org.eclipse.riena.navigation.ui.swt.loginSplashViewDefinition.exsd"/>
+   <extension-point id="org.eclipse.riena.navigation.ui.swt.moduleView" name="moduleView Definition" schema="schema/org.eclipse.riena.navigation.ui.swt.moduleView.exsd"/>
+   <extension-point id="org.eclipse.riena.navigation.ui.swt.moduleGroupView" name="moduleGroup View" schema="schema/org..eclipse.riena.navigation.ui.swt.moduleGroupView.exsd"/>
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -72,5 +74,5 @@
             lnfkey="SubModuleTreeItemMarker.renderer">
       </renderer>
    </extension>
-   
+  
 </plugin>
