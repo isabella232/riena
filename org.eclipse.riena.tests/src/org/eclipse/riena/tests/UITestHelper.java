@@ -71,10 +71,10 @@ public final class UITestHelper {
 
 	private static void send(Display display, Runnable runnable) {
 		Thread thread = new Thread(runnable);
-		//		Shell activeShell = display.getActiveShell();
-		//		if (activeShell != null) {
-		//			activeShell.forceActive();
-		//		}
+		Shell activeShell = display.getActiveShell();
+		if (activeShell != null) {
+			activeShell.forceActive();
+		}
 		thread.start();
 		waitAndDispatch(display, thread);
 	}
