@@ -17,6 +17,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +31,8 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.IObservable;
+import org.eclipse.core.databinding.observable.Observables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.map.IMapChangeListener;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
@@ -291,6 +294,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor) {
+		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] columnHeaders = null;
 		String enablementAccessor = null;
@@ -302,6 +306,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor) {
+		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] columnHeaders = null;
 		String imageAccessor = null;
@@ -312,6 +317,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor,
 			String imageAccessor) {
+		Assert.isNotNull(valueAccessor);
 		String[] myValueAccessors = new String[] { valueAccessor };
 		String[] columnHeaders = null;
 		this.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, myValueAccessors,
@@ -486,16 +492,32 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	private void bindToViewer(final Tree control) {
 		viewer = new TreeViewer(control);
 		// content
-		Realm realm = SWTObservables.getRealm(Display.getDefault());
-		// how to create a list of children from a given object (expansion)
-		IObservableFactory listFactory = BeansObservables.listFactory(realm, childrenAccessor, treeElementClass);
+		final Realm realm = SWTObservables.getRealm(Display.getDefault());
+		// how to obtain an observable list of children from a given object (expansion)
+		IObservableFactory listFactory = new IObservableFactory() {
+			public IObservable createObservable(Object target) {
+				if (target instanceof Object[]) {
+					return Observables.staticObservableList(realm, Arrays.asList((Object[]) target));
+				}
+				if (target instanceof FakeRoot) {
+					return BeansObservables.observeList(realm, ((FakeRoot) target).getRoot(), childrenAccessor,
+							treeElementClass);
+				}
+				return BeansObservables.observeList(realm, target, childrenAccessor, treeElementClass);
+			}
+		};
 		// how to get the parent from a give object
 		TreeStructureAdvisor structureAdvisor = new GenericTreeStructureAdvisor(parentAccessor, treeElementClass);
+
 		// how to create the content/structure for the tree
-		TreeRidgetContentProvider viewerCP = new TreeRidgetContentProvider(viewer, listFactory, structureAdvisor);
+		ObservableListTreeContentProvider viewerCP = new TreeRidgetContentProvider(listFactory, structureAdvisor);
+		// replace above with this:
+		//		ObservableListTreeContentProvider viewerCP = new ObservableListTreeContentProvider(listFactory,
+		//				structureAdvisor);
+
 		// refresh icons on addition / removal
-		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewerCP, structureAdvisor));
 		viewer.setContentProvider(viewerCP);
+		viewerCP.getKnownElements().addSetChangeListener(new TreeContentChangeListener(viewer, structureAdvisor));
 		// labels
 		IColumnFormatter[] formatters = getColumnFormatters(valueAccessors.length);
 		ILabelProvider viewerLP = TreeRidgetLabelProvider.createLabelProvider(viewer, treeElementClass, viewerCP
@@ -548,7 +570,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		}
 	}
 
-	private IObservableMap createObservableAttribute(TreeRidgetContentProvider viewerCP, String accessor) {
+	private IObservableMap createObservableAttribute(ObservableListTreeContentProvider viewerCP, String accessor) {
 		IObservableMap result = null;
 		if (accessor != null) {
 			result = BeansObservables.observeMap(viewerCP.getKnownElements(), treeElementClass, accessor);
@@ -859,7 +881,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 */
 	static final class FakeRoot extends ArrayList<Object> {
 		private static final long serialVersionUID = 1L;
-		private final String childrenAccessor;
 		private final String accessor;
 		private final Object root0;
 
@@ -867,23 +888,13 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			Assert.isNotNull(root0);
 			Assert.isNotNull(childrenAccessor);
 			this.root0 = root0;
-			this.childrenAccessor = childrenAccessor;
 			this.accessor = "get" + capitalize(childrenAccessor); //$NON-NLS-1$
-			refresh();
-		}
-
-		void refresh() {
-			List<Object> rootChildren = ReflectionUtils.invoke(root0, accessor);
 			clear();
-			addAll(rootChildren);
+			addAll(ReflectionUtils.<List<Object>> invoke(root0, accessor));
 		}
 
 		Object getRoot() {
 			return root0;
-		}
-
-		String getChildrenAccessor() {
-			return childrenAccessor;
 		}
 
 		private String capitalize(String name) {
@@ -893,7 +904,6 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 			}
 			return result;
 		}
-
 	}
 
 	/**
@@ -975,40 +985,43 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * last child underneath A</li>
 	 * <ul>
 	 */
-	private final class TreeContentChangeListener implements ISetChangeListener {
+	private static final class TreeContentChangeListener implements ISetChangeListener {
 
+		private final TreeViewer viewer;
 		private final TreeRidgetContentProvider viewerCP;
 		private final TreeStructureAdvisor structureAdvisor;
 
-		private TreeContentChangeListener(TreeRidgetContentProvider viewerCP, TreeStructureAdvisor structureAdvisor) {
-			Assert.isNotNull(viewerCP);
+		private TreeContentChangeListener(TreeViewer viewer, TreeStructureAdvisor structureAdvisor) {
 			Assert.isNotNull(structureAdvisor);
 			this.structureAdvisor = structureAdvisor;
-			this.viewerCP = viewerCP;
+			this.viewer = viewer;
+			Assert.isNotNull(viewer.getContentProvider());
+			this.viewerCP = (TreeRidgetContentProvider) viewer.getContentProvider();
 		}
 
 		/**
 		 * Updates the icons of the parent elements on addition / removal
 		 */
 		public void handleSetChange(SetChangeEvent event) {
-			if (viewerCP.hasInput()) { // continue only when viewer has input
-				Set<Object> parents = new HashSet<Object>();
-				for (Object element : event.diff.getAdditions()) {
-					Object parent = structureAdvisor.getParent(element);
-					if (parent != null) {
-						parents.add(parent);
-					}
+			if (viewer.getLabelProvider(0) == null || !viewerCP.hasInput()) {
+				return;
+			}
+			Set<Object> parents = new HashSet<Object>();
+			for (Object element : event.diff.getAdditions()) {
+				Object parent = structureAdvisor.getParent(element);
+				if (parent != null) {
+					parents.add(parent);
 				}
-				for (Object element : event.diff.getRemovals()) {
-					Object parent = structureAdvisor.getParent(element);
-					if (parent != null) {
-						parents.add(parent);
-					}
+			}
+			for (Object element : event.diff.getRemovals()) {
+				Object parent = structureAdvisor.getParent(element);
+				if (parent != null) {
+					parents.add(parent);
 				}
-				for (Object parent : parents) {
-					if (!viewer.isBusy()) {
-						viewer.update(parent, null);
-					}
+			}
+			for (Object parent : parents) {
+				if (!viewer.isBusy()) {
+					viewer.update(parent, null);
 				}
 			}
 		}

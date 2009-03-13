@@ -12,6 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+
 import org.eclipse.riena.tests.FTActionListener;
 import org.eclipse.riena.tests.TreeUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -19,12 +26,6 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
 import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Tests for the {@link TreeRidget}.
@@ -373,6 +374,24 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
 
 		assertEquals(1, listener1.getCount());
+	}
+
+	public void testBug266042() {
+		ITreeRidget ridget = getRidget();
+		Tree control = getWidget();
+		TreeNode root1 = new TreeNode("r1");
+		new TreeNode(root1, "r1.a");
+		new TreeNode(root1, "r1.b");
+		TreeNode root2 = new TreeNode("r2");
+		new TreeNode(root2, "r2.a");
+		new TreeNode(root2, "r2.b");
+
+		ridget.bindToModel(new Object[] { root1, root2 }, TreeNode.class, ITreeNode.PROPERTY_CHILDREN,
+				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
+
+		assertEquals(2, TreeUtils.getItemCount(control));
+		assertEquals("r1", control.getItem(0).getText());
+		assertEquals("r2", control.getItem(1).getText());
 	}
 
 	// helping methods
