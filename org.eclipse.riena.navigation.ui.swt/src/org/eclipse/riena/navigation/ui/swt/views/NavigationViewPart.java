@@ -65,15 +65,14 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleNodesToViews = new HashMap<INavigationNode<?>, ModuleView>();
 	}
 
-	@SuppressWarnings("restriction")
 	protected IViewFactory getViewFactory() {
 		if (viewFactory == null) {
 			viewFactory = new NavigationViewFactory();
 			Inject
-					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingExactly(1).useType(IModuleViewDesc.class).into( //$NON-NLS-1$
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleViewDesc.class).into( //$NON-NLS-1$
 							viewFactory).andStart(Activator.getDefault().getContext());
 			Inject
-					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingExactly(1).useType(IModuleGroupViewDesc.class).into( //$NON-NLS-1$
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupViewDesc.class).into( //$NON-NLS-1$
 							viewFactory).andStart(Activator.getDefault().getContext());
 		}
 		return viewFactory;
