@@ -16,11 +16,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.communication.core.Activator;
-import org.osgi.service.log.LogService;
 
 /**
  * Configure the {@code ProxySelector} used by the {@code UrlConnection}.
@@ -50,7 +52,7 @@ public class ProxySelectorConfiguration {
 			ProxySelector proxySelector = extension.createProxySelector();
 			LOGGER.log(LogService.LOG_DEBUG, "  - " + extension.getName() + " with order=" + extension.getOrder() //$NON-NLS-1$ //$NON-NLS-2$
 					+ " implemented by " + proxySelector.getClass().getName()); //$NON-NLS-1$
-			proxySelectors.add(extension.createProxySelector());
+			proxySelectors.add(proxySelector);
 		}
 		ProxySelector.setDefault(new CompoundProxySelector(proxySelectors));
 	}
