@@ -14,7 +14,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 /**
- *
+ * Little helper.
  */
 public final class TestUtil {
 
