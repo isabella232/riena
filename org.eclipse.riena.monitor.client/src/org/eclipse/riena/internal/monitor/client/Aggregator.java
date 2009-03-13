@@ -18,9 +18,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.wire.Wire;
@@ -32,7 +35,6 @@ import org.eclipse.riena.monitor.client.ICollector;
 import org.eclipse.riena.monitor.client.ISender;
 import org.eclipse.riena.monitor.client.IStore;
 import org.eclipse.riena.monitor.common.Collectible;
-import org.osgi.service.log.LogService;
 
 /**
  * The {@code Aggregator} aggregates all collectibles from the collectors. Each
@@ -47,6 +49,7 @@ public class Aggregator implements ICollectingAggregator {
 	private WirePuller senderWiring;
 	private ICollector[] collectors;
 	private List<WirePuller> collectorWirings;
+	private boolean workerStop;
 	private boolean started;
 	private final BlockingQueue<Runnable> workQueue;
 	private final Map<String, Category> categories = new HashMap<String, Category>();
@@ -87,6 +90,7 @@ public class Aggregator implements ICollectingAggregator {
 		for (ICollector collector : Iter.able(collectors)) {
 			collector.start();
 		}
+		workerStop = false;
 		started = true;
 		workSignal.countDown();
 	}
@@ -95,6 +99,7 @@ public class Aggregator implements ICollectingAggregator {
 		if (!started) {
 			return;
 		}
+		stopWorker();
 		stopCollectors();
 		stopSender();
 		stopStore();
@@ -120,7 +125,12 @@ public class Aggregator implements ICollectingAggregator {
 		// TODO if we were really dynamic aware we should start them here
 	}
 
+	private void stopWorker() {
+		workerStop = true;
+	}
+
 	private void stopCollectors() {
+
 		for (ICollector collector : Iter.able(collectors)) {
 			collector.stop();
 		}
@@ -178,11 +188,7 @@ public class Aggregator implements ICollectingAggregator {
 	 * .riena.monitor.common.Collectible)
 	 */
 	public synchronized void collect(final Collectible<?> collectible) {
-		boolean elementAdded = workQueue.offer(new Runnable() {
-			public void run() {
-				store.collect(collectible);
-			}
-		});
+		boolean elementAdded = workQueue.offer(new CollectTask(store, collectible));
 		Assert.isTrue(elementAdded);
 	}
 
@@ -194,12 +200,7 @@ public class Aggregator implements ICollectingAggregator {
 	 * .String)
 	 */
 	public synchronized void triggerTransfer(final String category) {
-		boolean elementAdded = workQueue.offer(new Runnable() {
-			public void run() {
-				store.prepareTransferables(category);
-				sender.triggerTransfer(category);
-			}
-		});
+		boolean elementAdded = workQueue.offer(new TriggerTransferTask(store, sender, category));
 		Assert.isTrue(elementAdded);
 	}
 
@@ -218,7 +219,7 @@ public class Aggregator implements ICollectingAggregator {
 				return;
 			}
 
-			while (true) {
+			while (!workerStop) {
 				try {
 					Runnable runnable = workQueue.take();
 					runnable.run();
@@ -227,6 +228,37 @@ public class Aggregator implements ICollectingAggregator {
 					break;
 				}
 			}
+		}
+	}
+
+	private class CollectTask implements Runnable {
+		private final IStore store;
+		private final Collectible<?> collectible;
+
+		public CollectTask(final IStore store, final Collectible<?> collectible) {
+			this.store = store;
+			this.collectible = collectible;
+		}
+
+		public void run() {
+			store.collect(collectible);
+		}
+	}
+
+	private class TriggerTransferTask implements Runnable {
+		private final IStore store;
+		private final ISender sender;
+		private final String category;
+
+		public TriggerTransferTask(final IStore store, final ISender sender, final String category) {
+			this.store = store;
+			this.sender = sender;
+			this.category = category;
+		}
+
+		public void run() {
+			store.prepareTransferables(category);
+			sender.triggerTransfer(category);
 		}
 	}
 }
