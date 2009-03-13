@@ -86,9 +86,7 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		ridget = null;
-		widget.dispose();
 		widget = null;
-		otherControl.dispose();
 		otherControl = null;
 		shell.dispose();
 		shell = null;
