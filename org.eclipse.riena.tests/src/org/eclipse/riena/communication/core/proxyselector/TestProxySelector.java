@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * A simple mock for testing the {@code CompoundProxySelector}
  */
 public class TestProxySelector extends ProxySelector {
 
@@ -39,6 +39,7 @@ public class TestProxySelector extends ProxySelector {
 	public List<Proxy> select(URI uri) {
 		List<Proxy> result = new ArrayList<Proxy>();
 		result.add(proxy);
+		result.add(Proxy.NO_PROXY);
 		return result;
 	}
 
