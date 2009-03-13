@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.proxyselector;
 
+import java.io.IOException;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
@@ -27,6 +28,18 @@ import org.eclipse.riena.tests.collect.NonUITestCase;
  */
 @NonUITestCase
 public class CompoundProxySelectorTest extends RienaTestCase {
+
+	private static URI uri;
+	private final static Proxy PROXY_1 = TestUtil.newProxy("test1.de");
+	private final static Proxy PROXY_2 = TestUtil.newProxy("test2.de");
+
+	static {
+		try {
+			uri = new URI("http://www.eclipse.org");
+		} catch (URISyntaxException e) {
+			fail();
+		}
+	}
 
 	@SuppressWarnings("restriction")
 	public void testNullSelectors() {
@@ -50,43 +63,47 @@ public class CompoundProxySelectorTest extends RienaTestCase {
 	}
 
 	@SuppressWarnings("restriction")
-	public void testSelectWithOneSelector() throws URISyntaxException {
+	public void testSelectWithOneSelector() {
 		List<ProxySelector> selectors = new ArrayList<ProxySelector>();
-		Proxy proxy = TestUtil.newProxy("test.de");
-		selectors.add(new TestProxySelector(proxy));
+		selectors.add(new TestProxySelector(PROXY_1));
 		CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
-		List<Proxy> proxies = compoundPS.select(new URI("http://www.eclipse.org"));
-		assertEquals(proxy, proxies.get(0));
+		List<Proxy> proxies = compoundPS.select(uri);
+		assertEquals(PROXY_1, proxies.get(0));
 		assertEquals(Proxy.NO_PROXY, proxies.get(1));
 	}
 
 	@SuppressWarnings("restriction")
-	public void testSelectWithTwoSelectors() throws URISyntaxException {
+	public void testSelectWithTwoSelectors() {
 		List<ProxySelector> selectors = new ArrayList<ProxySelector>();
-		Proxy proxy1 = TestUtil.newProxy("test.de");
-		selectors.add(new TestProxySelector(proxy1));
-		Proxy proxy2 = TestUtil.newProxy("test.de");
-		selectors.add(new TestProxySelector(proxy2));
+		selectors.add(new TestProxySelector(PROXY_1));
+		selectors.add(new TestProxySelector(PROXY_2));
 		CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
-		List<Proxy> proxies = compoundPS.select(new URI("http://www.eclipse.org"));
-		assertEquals(proxy1, proxies.get(0));
-		assertEquals(proxy2, proxies.get(1));
+		List<Proxy> proxies = compoundPS.select(uri);
+		assertEquals(PROXY_1, proxies.get(0));
+		assertEquals(PROXY_2, proxies.get(1));
 		assertEquals(Proxy.NO_PROXY, proxies.get(2));
 	}
 
 	@SuppressWarnings("restriction")
-	public void testConnectFailedWithTwoSelectors() throws URISyntaxException {
+	public void testConnectFailedWithTwoSelectors() {
 		List<ProxySelector> selectors = new ArrayList<ProxySelector>();
-		Proxy proxy1 = TestUtil.newProxy("test.de");
-		TestProxySelector selector1 = new TestProxySelector(proxy1);
+		TestProxySelector selector1 = new TestProxySelector(PROXY_1);
 		selectors.add(selector1);
-		Proxy proxy2 = TestUtil.newProxy("test.de");
-		TestProxySelector selector2 = new TestProxySelector(proxy2);
+		TestProxySelector selector2 = new TestProxySelector(PROXY_2);
 		selectors.add(selector2);
 		CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
-		URI uri = new URI("http://www.eclipse.org");
-		compoundPS.connectFailed(uri, null, null);
+		List<Proxy> proxies = compoundPS.select(uri);
+		assertEquals(3, proxies.size());
+		assertEquals(PROXY_1, proxies.get(0));
+		assertEquals(PROXY_2, proxies.get(1));
+		assertEquals(Proxy.NO_PROXY, proxies.get(2));
+		compoundPS.connectFailed(uri, PROXY_1.address(), new IOException());
 		assertEquals(uri, selector1.getFailedURI());
 		assertEquals(uri, selector2.getFailedURI());
+		proxies = compoundPS.select(uri);
+		assertEquals(3, proxies.size());
+		assertEquals(PROXY_2, proxies.get(0));
+		assertEquals(PROXY_1, proxies.get(1));
+		assertEquals(Proxy.NO_PROXY, proxies.get(2));
 	}
 }
