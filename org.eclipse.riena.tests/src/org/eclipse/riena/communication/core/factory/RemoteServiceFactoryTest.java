@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.factory;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
+
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.core.injector.Inject;
@@ -19,17 +23,13 @@ import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
-
 /**
  *
  */
 @NonUITestCase
 public class RemoteServiceFactoryTest extends RienaTestCase {
 
-	public RemoteServiceRegistry remoteServiceRegistry = null;
+	private RemoteServiceRegistry remoteServiceRegistry = null;
 
 	/*
 	 * (non-Javadoc)
@@ -125,7 +125,7 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 			createAndRegisterProxy.unregister();
 			fail("unregister of proxy for dead context should not be possible");
 		} catch (IllegalStateException e) {
-			// expected exception
+			ok("expected exception");
 		}
 		ServiceReference serviceReference = Activator.getDefault().getContext().getServiceReference(
 				IRSFTest.class.getName());
