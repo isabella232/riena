@@ -267,8 +267,9 @@ public class ExtensionInjector {
 		try {
 			final Object[] beans = ExtensionMapper.map(symbolReplace, extensionDesc, componentType, nonSpecific);
 			if (!matchesExtensionPointConstraint(beans.length)) {
-				LOGGER.log(LogService.LOG_ERROR,
-						"Number of extensions does not fullfil the extension point's constraints."); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, "Number of extensions " + beans.length //$NON-NLS-1$
+						+ " does not fullfil the extension point's " + extensionDesc.getExtensionPointId() //$NON-NLS-1$
+						+ " constraints."); //$NON-NLS-1$
 			}
 			if (isArray) {
 				update(new Object[] { beans });
@@ -287,11 +288,12 @@ public class ExtensionInjector {
 		try {
 			updateMethod.invoke(target, params);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (InvocationTargetException e) {
-			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " fails.", e.getTargetException()); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalStateException("Calling 'bind' method " + updateMethod + " failed.", e //$NON-NLS-1$ //$NON-NLS-2$
+					.getTargetException());
 		}
 	}
 
