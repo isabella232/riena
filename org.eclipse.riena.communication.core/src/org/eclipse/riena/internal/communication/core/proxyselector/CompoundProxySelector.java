@@ -16,9 +16,13 @@ import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
+
 
 /**
  * The {@code CompoundProxySelector} gathers all the proxies from the given
@@ -27,6 +31,7 @@ import org.eclipse.core.runtime.Assert;
 public class CompoundProxySelector extends ProxySelector {
 
 	private final List<ProxySelector> proxySelectors;
+	private final Set<Proxy> failedProxies = Collections.synchronizedSet(new LinkedHashSet<Proxy>());
 
 	/**
 	 * The
@@ -44,20 +49,33 @@ public class CompoundProxySelector extends ProxySelector {
 		List<Proxy> result = new ArrayList<Proxy>();
 		for (ProxySelector proxySelector : proxySelectors) {
 			List<Proxy> proxies = proxySelector.select(uri);
-			if (proxies != null && proxies.size() != 0) {
-				result.addAll(proxies);
+			if (proxies == null || proxies.size() == 0) {
+				continue;
 			}
+			// we do not copy NO_PROXY entries because a NO_PROXY stops the loop 
+			// within {@code java.net.SocksSocketImpl.connect(SocketAddress, int)}
+			// instead we add a final NO_PROXY to the end of the list (see below)
+			for (Proxy proxy : proxies) {
+				if (proxy != Proxy.NO_PROXY && !result.contains(proxy)) {
+					result.add(proxy);
+				}
+			}
+
 		}
-		if (!result.contains(Proxy.NO_PROXY)) {
-			result.add(Proxy.NO_PROXY);
-		}
+		// in case we have ´failed proxies´ we move them towards the end of the list
+		ProxySelectorUtils.resort(result, failedProxies);
+		// add a final NO_PROXY
+		result.add(Proxy.NO_PROXY);
 		return result;
 	}
 
 	@Override
 	public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-		// currently delegate to all - and hope the ´real´ proxy selectors can deal 
-		// with proxy addresses that have not been delivered by them.
+		// we ´resort´ the resulted proxy list by moving the failed proxies to the end of the list (see select) ... 
+		Proxy failed = ProxySelectorUtils.createProxy(uri.getScheme(), sa);
+		failedProxies.add(failed);
+		// ... and additionally delegate it to all proxy selectors  so that they can do their job.
+		// This assumes that they can deal with failed proxies they have not delivered.
 		for (ProxySelector proxySelector : proxySelectors) {
 			proxySelector.connectFailed(uri, sa, ioe);
 		}
