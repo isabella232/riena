@@ -20,25 +20,25 @@ import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.internal.net.ProxyData;
 import org.eclipse.core.internal.net.ProxyManager;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.internal.communication.core.Activator;
-import org.osgi.service.log.LogService;
+import org.eclipse.riena.internal.communication.core.proxyselector.ProxySelectorUtils;
 
 /**
- * This {@code ProxySelector} utilize the {@code ProxyManager}.<br>
+ * This {@code ProxySelector} utilizes the {@code ProxyManager}.<br>
  * <b>Note:</b> When using this {@code ProxySelector} do not forget to add the
  * optional required bundle org.eclipse.core.net and the accompanying
  * os-specific fragment bundle.
  */
 public class CoreNetProxySelector extends ProxySelector {
-
-	private static final List<Proxy> DIRECT_PROXY = Literal.list(Proxy.NO_PROXY);
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CoreNetProxySelector.class);
 
@@ -54,7 +54,7 @@ public class CoreNetProxySelector extends ProxySelector {
 		Assert.isLegal(uri != null, "uri must not be null."); //$NON-NLS-1$
 		IProxyData[] proxyDatas = ProxyManager.getProxyManager().select(uri);
 		if (proxyDatas == null || proxyDatas.length == 0) {
-			return DIRECT_PROXY;
+			return ProxySelectorUtils.NO_PROXY_LIST;
 		}
 		List<Proxy> proxies = new ArrayList<Proxy>(proxyDatas.length);
 		for (IProxyData proxyData : proxyDatas) {
