@@ -11,20 +11,21 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.core.util.ListenerList;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+
+import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 
 /**
  * This class notifies a collection of action {@link IActionListener} when a
  * widget is selected.
  */
-class ActionObserver extends SelectionAdapter {
+public class ActionObserver extends SelectionAdapter {
 
 	private ListenerList<IActionListener> actionListeners;
 
-	ActionObserver() {
+	public ActionObserver() {
 		super();
 	}
 
@@ -42,7 +43,7 @@ class ActionObserver extends SelectionAdapter {
 	 * @throws RuntimeException
 	 *             if IActionListener is null
 	 */
-	void addListener(IActionListener listener) {
+	public void addListener(IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (actionListeners == null) {
 			actionListeners = new ListenerList<IActionListener>(IActionListener.class);
@@ -50,7 +51,7 @@ class ActionObserver extends SelectionAdapter {
 		actionListeners.add(listener);
 	}
 
-	void removeListener(IActionListener listener) {
+	public void removeListener(IActionListener listener) {
 		if (actionListeners != null) {
 			actionListeners.remove(listener);
 		}
