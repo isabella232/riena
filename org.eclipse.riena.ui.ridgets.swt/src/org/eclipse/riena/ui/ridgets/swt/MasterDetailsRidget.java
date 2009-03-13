@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -37,7 +38,7 @@ import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
- * TODO [ev] docs
+ * A ridget for the {@link MasterDetailsComposite}.
  */
 public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget<Object> {
 
@@ -51,8 +52,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	// TODO [ev] Make API
 	public void setDelegate(IMasterDetailsDelegate delegate) {
-		Assert.isLegal(this.delegate == null, "setDelegate can only be called once");
-		Assert.isLegal(delegate != null, "delegate cannot be null");
+		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
+		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
 		delegate.configureRidgets(this);
 	}
@@ -66,6 +67,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	public void setUIControl(Object uiControl) {
 		System.out.println("MasterDetailsRidget.setUIControl()");
 		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
+		unbindUIControl();
 		super.setUIControl(uiControl);
 		bindUIControl();
 	}
@@ -74,7 +76,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			String[] columnPropertyNames, String[] columnHeaders) {
 		System.out.println("MasterDetailsRidget.bindToModel()");
 
-		// unbindUIControl();
+		unbindUIControl();
 
 		this.rowBeanClass = rowBeanClass;
 		rowObservables = rowBeansObservable;
@@ -101,21 +103,15 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	public final void configureRidgets() {
 		System.out.println("MasterDetailsRidget.configureRidgets()");
 
-		final ITableRidget tableRidget = getTableRidget();
 		getAddButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				getTableRidget().clearSelection();
 				clearDetails();
 				getUpdateButtonRidget().setEnabled(true);
 			}
 		});
 		getRemoveButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				Object selection = getMasterSelection();
-				Assert.isNotNull(selection);
-				rowObservables.remove(selection);
-				getTableRidget().clearSelection();
-				clearDetails();
+				removeSelection();
 			}
 		});
 		getUpdateButtonRidget().addListener(new IActionListener() {
@@ -124,7 +120,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			}
 		});
 
-		final IObservableValue viewerSelection = tableRidget.getSingleSelectionObservable();
+		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
 		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
 			@Override
 			protected Object calculate() {
@@ -144,14 +140,19 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public void addToMaster() {
+		assertIsBoundToModel();
 		Object newValue = delegate.createWorkingCopyObject();
 		copyBean(getWorkingCopy(), newValue);
 		rowObservables.add(newValue);
 		getTableRidget().setSelection((Object) newValue);
-		getUIControl().getTable().showSelection();
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			control.getTable().showSelection();
+		}
 	}
 
 	public void clearDetails() {
+		getTableRidget().clearSelection();
 		copyBean(null, getWorkingCopy());
 		updateDetails();
 	}
@@ -187,12 +188,31 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		return true;
 	}
 
-	public void selectionChanged(Object newSelection) {
-		// TODO Auto-generated method stub
+	/**
+	 * Not supported. TODO [ev] describe alternative
+	 * 
+	 * @throws UnsupportedOperationException
+	 * 
+	 * @deprecated
+	 */
+	// TODO [ev] remove from interface?
+	public final void selectionChanged(Object newSelection) {
+		throw new UnsupportedOperationException("unsupported"); //$NON-NLS-1$
 	}
 
 	public void setSelection(Object newSelection, boolean triggerChanged) {
-		// TODO Auto-generated method stub
+		getTableRidget().setSelection(newSelection);
+	}
+
+	/**
+	 * Non API. Public for testing only.
+	 */
+	public void removeSelection() {
+		assertIsBoundToModel();
+		Object selection = getMasterSelection();
+		Assert.isNotNull(selection);
+		rowObservables.remove(selection);
+		clearDetails();
 	}
 
 	public final Object createWorkingCopyObject() {
@@ -207,6 +227,15 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		Object selection = getMasterSelection();
 		copyBean(selection, getWorkingCopy());
 		delegate.updateDetails(this);
+	}
+
+	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+		ITableRidget tableRidget = getTableRidget();
+		if (tableRidget != null) {
+			tableRidget.updateFromModel();
+		}
 	}
 
 	// protected methods
@@ -231,6 +260,12 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	// helping methods
 	//////////////////
 
+	private void assertIsBoundToModel() {
+		if (rowObservables == null) {
+			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
+		}
+	}
+
 	private void bindEnablementToValue(DataBindingContext dbc, IMarkableRidget ridget, IObservableValue value) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(value);
@@ -244,6 +279,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			prepareTable(control);
 			ITableRidget tableRidget = getTableRidget();
 			tableRidget.bindToModel(rowObservables, rowBeanClass, renderingMethods, columnHeaders);
+			tableRidget.setUIControl(control.getTable());
+		}
+	}
+
+	private void unbindUIControl() {
+		if (getTableRidget() != null) {
+			getTableRidget().setUIControl(null);
 		}
 	}
 

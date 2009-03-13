@@ -18,10 +18,12 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.AbstractBean;
+import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -42,18 +44,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	private static final IBindingManager BINDING_MAN = new DefaultBindingManager(SWTBindingPropertyLocator
 			.getInstance(), SwtControlRidgetMapper.getInstance());
+	private final String[] columnProperties = { MDBean.PROPERTY_COLUMN_1, MDBean.PROPERTY_COLUMN_2 };
+	private final String[] columnHeaders = { "TestColumn1Header", "TestColumn2Header" };
+
 	private List<MDBean> input;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		input = createInput();
-		String[] columnProperties = { MDBean.PROPERTY_COLUMN_1, MDBean.PROPERTY_COLUMN_2 };
-		String[] columnHeaders = { "TestColumn1Header", "TestColumn2Header" };
 		MasterDetailsRidget ridget = (MasterDetailsRidget) getRidget();
-		BINDING_MAN.injectRidgets(ridget, getWidget().getUIControls());
+		List<Object> uiControls = getWidget().getUIControls();
+		BINDING_MAN.injectRidgets(ridget, uiControls);
+		BINDING_MAN.bind(ridget, uiControls);
 		ridget.setDelegate(new MDDelegate());
-		ridget.bindToModel(new WritableList(input, MDBean.class), MDBean.class, columnProperties, columnHeaders);
+		getShell().setSize(300, 300);
 	}
 
 	@Override
@@ -67,13 +72,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected MasterDetailsComposite getWidget() {
-		return (MasterDetailsComposite) super.getWidget();
+	protected MDWidget getWidget() {
+		return (MDWidget) super.getWidget();
 	}
 
 	@Override
-	protected IMasterDetailsRidget<?> getRidget() {
-		return (IMasterDetailsRidget<?>) super.getRidget();
+	protected MasterDetailsRidget getRidget() {
+		return (MasterDetailsRidget) super.getRidget();
 	}
 
 	// test methods
@@ -84,14 +89,215 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(MasterDetailsRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
+	public void testBindToModel() {
+		IMasterDetailsRidget<?> ridget = getRidget();
+		MasterDetailsComposite composite = getWidget();
+		Table table = composite.getTable();
+
+		assertEquals(0, table.getItemCount());
+
+		bindToModel();
+
+		// TODO [ev] 264325 - enable this after adding seperation into TableRidget
+		// assertEquals(0, table.getItemCount());
+
+		ridget.updateFromModel();
+
+		assertEquals(2, table.getColumnCount());
+		assertEquals(3, table.getItemCount());
+		assertEquals("TestColumn1Header", table.getColumn(0).getText());
+		assertEquals("TestColumn2Header", table.getColumn(1).getText());
+		assertContent(table, 3);
+	}
+
+	public void testSetUIControl() {
+		IMasterDetailsRidget<?> ridget = getRidget();
+		Table table = getWidget().getTable();
+		MasterDetailsComposite mdComposite2 = (MasterDetailsComposite) createWidget(getShell());
+		Table table2 = mdComposite2.getTable();
+
+		assertEquals(0, table.getItemCount());
+
+		bindToModel();
+		ridget.updateFromModel();
+
+		assertEquals(3, table.getItemCount());
+
+		ridget.setUIControl(mdComposite2);
+		input.remove(0);
+		ridget.updateFromModel();
+
+		assertEquals(3, table.getItemCount());
+		assertEquals(2, table2.getItemCount());
+
+		ridget.setUIControl(null);
+		input.remove(0);
+		ridget.updateFromModel();
+
+		assertEquals(3, table.getItemCount());
+		assertEquals(2, table2.getItemCount());
+
+		try {
+			ridget.setUIControl(new Table(getShell(), SWT.MULTI));
+			fail();
+		} catch (RuntimeException rex) {
+			ok("does not allow SWT.MULTI");
+		}
+	}
+
+	public void testAddBean() {
+		IMasterDetailsRidget<?> ridget = getRidget();
+		MDWidget widget = getWidget();
+		Table table = widget.getTable();
+
+		bindToModel();
+		ridget.updateFromModel();
+
+		assertContent(table, 3);
+		assertEquals(3, input.size());
+
+		ridget.clearDetails();
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		widget.txtColumn2.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "B\r");
+		ridget.copyFromDetailsToMaster();
+
+		assertEquals(4, input.size());
+		assertContent(table, 3);
+		assertEquals("A", input.get(3).getColumn1());
+		assertEquals("B", input.get(3).getColumn2());
+	}
+
+	public void testDeleteBean() {
+		MasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+		Table table = widget.getTable();
+
+		bindToModel();
+		ridget.updateFromModel();
+
+		assertContent(table, 3);
+		assertEquals(3, input.size());
+
+		MDBean toDelete = input.get(1);
+		ridget.setSelection(toDelete, true);
+		ridget.removeSelection();
+
+		assertEquals(2, input.size());
+		assertFalse(input.contains(toDelete));
+	}
+
+	public void testModifyBean() {
+		IMasterDetailsRidget<Object> ridget = getRidget();
+		MDWidget widget = getWidget();
+		Table table = widget.getTable();
+
+		bindToModel();
+		ridget.updateFromModel();
+
+		assertContent(table, 3);
+		assertEquals(3, input.size());
+
+		ridget.setSelection(input.get(1), false);
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		widget.txtColumn2.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "B\r");
+		ridget.copyFromDetailsToMaster();
+
+		assertEquals(3, input.size());
+		assertEquals("A", input.get(1).getColumn1());
+		assertEquals("B", input.get(1).getColumn2());
+	}
+
+	public void testAddToMaster() {
+
+	}
+
+	public void testClearDetails() {
+
+	}
+
+	public void testCopyFromDetailsToMaster() {
+
+	}
+
+	public void testCopyFromMasterToDetails() {
+
+	}
+
+	public void testGetMasterSelection() {
+
+	}
+
+	public void testGetWorkingCopy() {
+
+	}
+
+	public void testIsDetailsChanged() {
+
+	}
+
+	public void isInputValid() {
+
+	}
+
+	public void testSetSelection() {
+
+	}
+
+	public void testSetSelectionFiresEvents() {
+
+	}
+
+	public void testSetSelectionRevealsSelection() {
+
+	}
+
+	public void testCreateWorkingCopyObject() {
+
+	}
+
+	public void testCopyBean() {
+
+	}
+
+	public void testUpdateDetails() {
+
+	}
+
+	public void testUpdateShowsDialogWhenRulesFail() {
+		// warning case ??
+		// error case
+	}
+
+	public void testModifyiedDetailsShowWarningOnChangeSelection() {
+
+	}
+
 	// helping methods
 	//////////////////
 
+	private void assertContent(Table table, int items) {
+		for (int i = 0; i < items; i++) {
+			String label0 = String.format("TestR%dC1", i);
+			String label1 = String.format("TestR%dC2", i);
+			assertEquals(label0, table.getItem(i).getText(0));
+			assertEquals(label1, table.getItem(i).getText(1));
+		}
+	}
+
+	private void bindToModel() {
+		WritableList list = new WritableList(input, MDBean.class);
+		getRidget().bindToModel(list, MDBean.class, columnProperties, columnHeaders);
+	}
+
 	private List<MDBean> createInput() {
 		List<MDBean> result = new ArrayList<MDBean>();
+		result.add(new MDBean("TestR0C1", "TestR0C2"));
 		result.add(new MDBean("TestR1C1", "TestR1C2"));
-		result.add(new MDBean("TestR2C1", "TestR1C2"));
-		result.add(new MDBean("TestR3C1", "TestR1C2"));
+		result.add(new MDBean("TestR2C1", "TestR2C2"));
 		return result;
 	}
 
@@ -129,12 +335,20 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		public void setColumn2(String column2) {
 			firePropertyChanged("column2", this.column2, this.column2 = column2);
 		}
+
+		@Override
+		public String toString() {
+			return String.format("[%s, %s]", column1, column2);
+		}
 	}
 
 	/**
 	 * A MasterDetailsComposite with a details area containing two text fields.
 	 */
 	private static final class MDWidget extends MasterDetailsComposite {
+
+		private Text txtColumn1;
+		private Text txtColumn2;
 
 		public MDWidget(Composite parent, int style) {
 			super(parent, style, SWT.BOTTOM);
@@ -145,11 +359,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
 			GridDataFactory hFill = GridDataFactory.fillDefaults().grab(true, false);
 
-			Text txtColumn1 = UIControlsFactory.createText(parent);
+			txtColumn1 = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtColumn1);
 			addUIControl(txtColumn1, "txtColumn1");
 
-			Text txtColumn2 = UIControlsFactory.createText(parent);
+			txtColumn2 = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtColumn2);
 			addUIControl(txtColumn2, "txtColumn2");
 		}
@@ -168,7 +382,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			txtColumn1.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_1);
 			txtColumn1.updateFromModel();
 
-			ITextRidget txtColumn2 = (ITextRidget) container.getRidget("txtColumn1");
+			ITextRidget txtColumn2 = (ITextRidget) container.getRidget("txtColumn2");
 			txtColumn2.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_2);
 			txtColumn2.updateFromModel();
 		}
