@@ -18,10 +18,6 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.riena.ui.core.marker.NegativeMarker;
-import org.eclipse.riena.ui.ridgets.INumericTextRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -36,6 +32,11 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Ridget for a 'numeric' SWT <code>Text</code> widget.
@@ -292,13 +293,16 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * <li>DE - valid text: "1.234,56" or "1234,56"</li>
 	 * <li>US - valid text: "1,234.56" or "1234.56"</li>
 	 * </ul>
+	 * <p>
+	 * Passing a null value is equivalent to {@code setText("0")}.
 	 * 
 	 * @see DecimalFormatSymbols#getDecimalSeparator()
 	 */
 	@Override
 	public final synchronized void setText(String text) {
-		checkNumber(text);
-		super.setText(group(ungroup(text), isGrouping, isDecimal()));
+		String value = text != null ? text : "0"; //$NON-NLS-1$
+		checkNumber(value);
+		super.setText(group(ungroup(value), isGrouping, isDecimal()));
 	}
 
 	@Override

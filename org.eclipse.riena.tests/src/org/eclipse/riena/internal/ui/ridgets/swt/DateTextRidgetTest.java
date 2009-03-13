@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -17,11 +23,6 @@ import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the class {@link DateTextRidget}.
@@ -151,13 +152,6 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("  .  .    ", ridget.getText());
 
 		try {
-			ridget.setText(null);
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
-
-		try {
 			ridget.setText("abc");
 			fail();
 		} catch (RuntimeException rex) {
@@ -184,6 +178,23 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		} catch (RuntimeException rex) {
 			ok();
 		}
+	}
+
+	/**
+	 * Tests that setText(null) clears the ridget (i.e. results in an empty
+	 * pattern with just the separators)
+	 */
+	public void testSetTextNull() {
+		IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+
+		ridget.setText("01.10.2008");
+
+		assertEquals("01.10.2008", ridget.getText());
+
+		ridget.setText(null);
+
+		assertEquals("  .  .    ", ridget.getText());
 	}
 
 	public void testSetFormatAfterSetText() {

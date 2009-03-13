@@ -17,6 +17,13 @@ import java.util.Iterator;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
@@ -39,12 +46,6 @@ import org.eclipse.riena.ui.ridgets.validation.ValidEmailAddress;
 import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
 import org.eclipse.riena.ui.ridgets.validation.ValidationFailure;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the class {@link TextRidget}.
@@ -1133,21 +1134,6 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertEquals("bar", control.getText());
 		assertEquals("bar", ridget.getText());
-	}
-
-	/**
-	 * Test that setText(null) clears the ridget (i.e. equiv. to setText("")).
-	 */
-	public void testSetTextNull() {
-		ITextRidget ridget = getRidget();
-
-		ridget.setText("huhu");
-
-		assertNotNull(ridget.getText());
-
-		ridget.setText(null);
-
-		assertEquals("", ridget.getText());
 	}
 
 	public void testDisabledHasNoTextFromRidget() {

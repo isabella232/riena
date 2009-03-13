@@ -18,12 +18,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
-import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -37,6 +31,13 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
+import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.ridgets.validation.ValidatorCollection;
 
 /**
  * Ridget for an SWT <code>Text</code> widget.
@@ -162,6 +163,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * validation the error marker will be set and the text will <b>not</b> be
 	 * copied into the model. If validation passes the text will be copied into
 	 * the model as well.
+	 * <p>
+	 * Passing a null value is equivalent to {@code setText("")}.
 	 */
 	public synchronized void setText(String text) {
 		// Assert.isNotNull(text);

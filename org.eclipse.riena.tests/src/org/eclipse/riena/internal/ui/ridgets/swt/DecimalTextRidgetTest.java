@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.beans.common.DoubleBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.tests.TestUtils;
@@ -17,14 +24,9 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the class {@link DecimalTextRidget}.
@@ -105,6 +107,21 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(lastText, control.getText());
 			assertEquals(lastText, ridget.getText());
 		}
+	}
+
+	/**
+	 * Test that setText(null) clears the number (equiv. to setText("0")).
+	 */
+	public void testSetTextNull() {
+		ITextRidget ridget = getRidget();
+
+		ridget.setText(localize("42,2"));
+
+		assertEquals(localize("42,2"), ridget.getText());
+
+		ridget.setText(null);
+
+		assertEquals("0", ridget.getText());
 	}
 
 	public void testDeleteDecimalSeparator() {

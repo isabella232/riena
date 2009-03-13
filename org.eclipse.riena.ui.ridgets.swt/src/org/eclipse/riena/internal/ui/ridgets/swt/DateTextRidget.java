@@ -12,14 +12,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.regex.Pattern;
 
-import org.eclipse.riena.ui.core.marker.ValidationTime;
-import org.eclipse.riena.ui.ridgets.IDateTextRidget;
-import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
-import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
-import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
-import org.eclipse.riena.ui.ridgets.validation.ValidDate;
-import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -30,6 +22,15 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
+import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
+import org.eclipse.riena.ui.ridgets.databinding.StringToDateConverter;
+import org.eclipse.riena.ui.ridgets.validation.ValidDate;
+import org.eclipse.riena.ui.ridgets.validation.ValidIntermediateDate;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Ridget for a 'date/time/date time' SWT <code>Text</code> widget. The desired
@@ -131,11 +132,13 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 	private String checkAndFormatValue(String text) {
 		SegmentedString ss = new SegmentedString(pattern);
-		if (!ss.isValidPartialMatch(text)) {
-			String msg = String.format("'%s' is no partial match for '%s'", text, pattern); //$NON-NLS-1$
-			throw new IllegalArgumentException(msg);
+		if (text != null) {
+			if (!ss.isValidPartialMatch(text)) {
+				String msg = String.format("'%s' is no partial match for '%s'", text, pattern); //$NON-NLS-1$
+				throw new IllegalArgumentException(msg);
+			}
+			ss.insert(0, text);
 		}
-		ss.insert(0, text);
 		return ss.toString();
 	}
 

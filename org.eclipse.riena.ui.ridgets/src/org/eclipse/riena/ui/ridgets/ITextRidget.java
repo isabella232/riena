@@ -55,7 +55,8 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	 * 
 	 * @see #setDirectWriting(boolean)
 	 * @param text
-	 *            The new text.
+	 *            The new text value. Passing a null value will 'clear' the text
+	 *            - what that means is implementation specific.
 	 */
 	void setText(String text);
 

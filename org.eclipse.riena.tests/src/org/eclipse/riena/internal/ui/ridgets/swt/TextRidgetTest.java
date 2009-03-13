@@ -12,14 +12,15 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
  * Tests for the class {@link TextRidget}.
@@ -72,6 +73,21 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("first", ridget.getText());
 		assertEquals("first", model.getText1());
 		assertEquals("first", getWidget().getText());
+	}
+
+	/**
+	 * Tests that setText(null) clears the ridget (i.e. resuls in "")
+	 */
+	public void testSetTextNull() {
+		ITextRidget ridget = getRidget();
+
+		ridget.setText("huhu");
+
+		assertTrue(ridget.getText().length() > 0);
+
+		ridget.setText(null);
+
+		assertEquals("", ridget.getText());
 	}
 
 	public void testGetText() throws Exception {
