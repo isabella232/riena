@@ -90,7 +90,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModel() {
-		IMasterDetailsRidget<?> ridget = getRidget();
+		IMasterDetailsRidget ridget = getRidget();
 		MasterDetailsComposite composite = getWidget();
 		Table table = composite.getTable();
 
@@ -111,7 +111,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUIControl() {
-		IMasterDetailsRidget<?> ridget = getRidget();
+		IMasterDetailsRidget ridget = getRidget();
 		Table table = getWidget().getTable();
 		MasterDetailsComposite mdComposite2 = (MasterDetailsComposite) createWidget(getShell());
 		Table table2 = mdComposite2.getTable();
@@ -146,7 +146,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddBean() {
-		IMasterDetailsRidget<?> ridget = getRidget();
+		IMasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
 
@@ -181,7 +181,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(3, input.size());
 
 		MDBean toDelete = input.get(1);
-		ridget.setSelection(toDelete, true);
+		ridget.setSelection(toDelete);
 		ridget.removeSelection();
 
 		assertEquals(2, input.size());
@@ -189,7 +189,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testModifyBean() {
-		IMasterDetailsRidget<Object> ridget = getRidget();
+		IMasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
 
@@ -199,7 +199,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertContent(table, 3);
 		assertEquals(3, input.size());
 
-		ridget.setSelection(input.get(1), false);
+		ridget.setSelection(input.get(1));
 		widget.txtColumn1.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "A\r");
 		widget.txtColumn2.setFocus();
@@ -375,7 +375,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private static final class MDDelegate implements IMasterDetailsDelegate {
 
-		private final MDBean workingCopy = createWorkingCopyObject();
+		private final MDBean workingCopy = createWorkingCopy();
 
 		public void configureRidgets(IRidgetContainer container) {
 			ITextRidget txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
@@ -388,14 +388,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public Object copyBean(Object source, Object target) {
-			MDBean from = source == null ? createWorkingCopyObject() : (MDBean) source;
-			MDBean to = target == null ? createWorkingCopyObject() : (MDBean) target;
+			MDBean from = source == null ? createWorkingCopy() : (MDBean) source;
+			MDBean to = target == null ? createWorkingCopy() : (MDBean) target;
 			to.setColumn1(from.getColumn1());
 			to.setColumn2(from.getColumn2());
 			return to;
 		}
 
-		public MDBean createWorkingCopyObject() {
+		public MDBean createWorkingCopy() {
 			return new MDBean("", "");
 		}
 

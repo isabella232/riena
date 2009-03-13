@@ -13,19 +13,31 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 
 /**
- * An implementation of this interface offers the user a ridget which allows to
- * edit a couple of details from beans which represent the bean entries of a
- * table. It is a complex ridget which is composed of IActionRidgets to add and
- * delete table entries and to take over changes on existing table entries.
- * Further on we have a table (the master) an a couple of ridgets which
- * represent the details of the master
+ * A ridget with two areas. The master area shows a table of objects, from which
+ * one can be selected. The details are allows the user to edit some details of
+ * the currently selected object/row.
+ * <p>
+ * This ridget is an {@link IComplexRidget} an {@link ITableRidget} to show the
+ * available objects and several {@link IActionRidget}s to add, delete, update
+ * the row elements.
+ * <p>
+ * The UI of the details area is created by implementing an
+ * MasterDetailComposite. The binding between UI and ridgets is done by
+ * implementing an {@link IMasterDetailsDelegate} and introducing it to this
+ * ridget via {@link #setDelegate(IMasterDetailsDelegate)}.
  * 
  * @author Erich Achilles
  */
-/**
- * 
- */
-public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
+public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
+
+	/**
+	 * Provide this ridget with an {@link IMasterDetailsDelegate} instance,
+	 * which will manage the content of details area.
+	 * 
+	 * @param delegate
+	 *            an {@link IMasterDetailsDelegate}; never null
+	 */
+	void setDelegate(IMasterDetailsDelegate delegate);
 
 	/**
 	 * Binds the table to the model data.
@@ -84,13 +96,13 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	void clearDetails();
 
 	/**
-	 * Creates a workingCopyObject. The workingCopyObject represents the model
-	 * behind the detail fields.Its always an instance of the bean class of the
+	 * Creates a workingCopy. The workingCopy object represents the model behind
+	 * the detail fields. It is always an instance of the bean class of the
 	 * master model.
 	 * 
 	 * @return an Object instance; never null.
 	 */
-	E createWorkingCopyObject();
+	Object createWorkingCopy();
 
 	/**
 	 * States whether the input is valid. For example checks if a textfield
@@ -113,7 +125,7 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 *            {@link #createWorkingCopyObject()} will be used as the target
 	 * @return returns the target bean; never null.
 	 */
-	E copyBean(E source, E target);
+	Object copyBean(Object source, Object target);
 
 	/**
 	 * Updates all details from the model. Typically an implementation calls
@@ -128,12 +140,13 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	void addToMaster();
 
 	/**
-	 * Returns a bean which represents the content of the bean behind the
-	 * selected row of the master.
+	 * Returns the currently object corresponding to the currently selected row
+	 * in the ridget.
 	 * 
-	 * @return the actual selecetion of the master
+	 * @return the actual selection in the ridget or null (if nothing is
+	 *         selected)
 	 */
-	E getMasterSelection();
+	Object getSelection();
 
 	/**
 	 * Returns the workingCopy object. The workingCopyObject represents the
@@ -142,25 +155,17 @@ public interface IMasterDetailsRidget<E> extends IRidget, IComplexRidget {
 	 * 
 	 * @return an Object; never null.
 	 */
-	E getWorkingCopy();
+	Object getWorkingCopy();
 
 	/**
-	 * Set the new selection exactly like interactive selection change.
+	 * Set the new selection. This behaves exactly like an interactive selection
+	 * change (i.e. the user selecting another bean).
 	 * 
 	 * @param newSelection
-	 *            the newly selected bean of the master
-	 * @param triggerChanged
-	 *            if true, a selection changes should be triggered
+	 *            the newly selected bean of the master, or null to clear the
+	 *            selection
 	 */
-	void setSelection(final E newSelection, boolean triggerChanged);
-
-	/**
-	 * This method is called by the Master Detail ridget when the selection is
-	 * changed. Overload this method to react on selection changed.
-	 * 
-	 * @param newSelection
-	 */
-	void selectionChanged(E newSelection);
+	void setSelection(final Object newSelection);
 
 	/**
 	 * Copies the content of the actually selected master bean to the detail

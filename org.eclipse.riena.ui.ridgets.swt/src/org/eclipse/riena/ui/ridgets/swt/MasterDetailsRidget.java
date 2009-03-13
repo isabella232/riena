@@ -40,7 +40,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 /**
  * A ridget for the {@link MasterDetailsComposite}.
  */
-public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget<Object> {
+public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
 	private String[] columnHeaders;
 	private IObservableList rowObservables;
@@ -50,7 +50,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
 
-	// TODO [ev] Make API
 	public void setDelegate(IMasterDetailsDelegate delegate) {
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
@@ -141,7 +140,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void addToMaster() {
 		assertIsBoundToModel();
-		Object newValue = delegate.createWorkingCopyObject();
+		Object newValue = delegate.createWorkingCopy();
 		copyBean(getWorkingCopy(), newValue);
 		rowObservables.add(newValue);
 		getTableRidget().setSelection((Object) newValue);
@@ -158,7 +157,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public boolean copyFromDetailsToMaster() {
-		Object selection = getMasterSelection();
+		Object selection = getSelection();
 		if (selection != null) {
 			copyBean(getWorkingCopy(), selection);
 		} else {
@@ -169,10 +168,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void copyFromMasterToDetails() {
 		updateDetails();
-	}
-
-	public Object getMasterSelection() {
-		return getTableRidget().getSingleSelectionObservable().getValue();
 	}
 
 	public Object getWorkingCopy() {
@@ -188,19 +183,11 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		return true;
 	}
 
-	/**
-	 * Not supported. TODO [ev] describe alternative
-	 * 
-	 * @throws UnsupportedOperationException
-	 * 
-	 * @deprecated
-	 */
-	// TODO [ev] remove from interface?
-	public final void selectionChanged(Object newSelection) {
-		throw new UnsupportedOperationException("unsupported"); //$NON-NLS-1$
+	public Object getSelection() {
+		return getTableRidget().getSingleSelectionObservable().getValue();
 	}
 
-	public void setSelection(Object newSelection, boolean triggerChanged) {
+	public void setSelection(Object newSelection) {
 		getTableRidget().setSelection(newSelection);
 	}
 
@@ -209,14 +196,14 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	 */
 	public void removeSelection() {
 		assertIsBoundToModel();
-		Object selection = getMasterSelection();
+		Object selection = getSelection();
 		Assert.isNotNull(selection);
 		rowObservables.remove(selection);
 		clearDetails();
 	}
 
-	public final Object createWorkingCopyObject() {
-		return delegate.createWorkingCopyObject();
+	public final Object createWorkingCopy() {
+		return delegate.createWorkingCopy();
 	}
 
 	public final Object copyBean(final Object source, final Object target) {
@@ -224,7 +211,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public final void updateDetails() {
-		Object selection = getMasterSelection();
+		Object selection = getSelection();
 		copyBean(selection, getWorkingCopy());
 		delegate.updateDetails(this);
 	}

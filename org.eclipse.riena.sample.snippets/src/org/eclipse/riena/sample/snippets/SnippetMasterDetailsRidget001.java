@@ -27,7 +27,6 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.MasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -74,7 +73,7 @@ public class SnippetMasterDetailsRidget001 {
 	 */
 	private static final class PersonDelegate implements IMasterDetailsDelegate {
 
-		private final Person workingCopy = createWorkingCopyObject();
+		private final Person workingCopy = createWorkingCopy();
 
 		public void configureRidgets(IRidgetContainer container) {
 			ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
@@ -87,14 +86,14 @@ public class SnippetMasterDetailsRidget001 {
 		}
 
 		public Person copyBean(Object source, Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopyObject();
-			Person to = target != null ? (Person) target : createWorkingCopyObject();
+			Person from = source != null ? (Person) source : createWorkingCopy();
+			Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			return to;
 		}
 
-		public Person createWorkingCopyObject() {
+		public Person createWorkingCopy() {
 			return new Person("", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
@@ -116,8 +115,8 @@ public class SnippetMasterDetailsRidget001 {
 
 		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
 
-		IMasterDetailsRidget<?> ridget = (IMasterDetailsRidget<?>) SwtRidgetFactory.createRidget(details);
-		((MasterDetailsRidget) ridget).setDelegate(new PersonDelegate());
+		IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
+		ridget.setDelegate(new PersonDelegate());
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		String[] properties = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME };
 		String[] headers = { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
