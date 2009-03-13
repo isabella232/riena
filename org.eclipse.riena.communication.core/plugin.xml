@@ -12,6 +12,11 @@
             name="Core.Net ProxySelector"
             class="org.eclipse.riena.communication.core.proxyselector.CoreNetProxySelector">
       </proxyselector>
+      <proxyselector
+            order="50"
+            name="Manual ProxySelector"
+            class="org.eclipse.riena.communication.core.proxyselector.ManualProxySelector: http=secret-proxy:42">
+      </proxyselector>
    </extension>
    -->
 </plugin>
