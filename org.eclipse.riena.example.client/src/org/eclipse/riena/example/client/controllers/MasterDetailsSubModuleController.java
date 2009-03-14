@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
@@ -25,7 +26,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.MasterDetailsRidget;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -42,11 +42,10 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 
 		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
 
-		private final Person workingCopy = createWorkingCopyObject();
+		private final Person workingCopy = createWorkingCopy();
 
 		public void configureRidgets(IRidgetContainer container) {
 			System.out.println("PersonDelegate.configureRidgets()");
-
 			ITextRidget txtFirst = (ITextRidget) container.getRidget("first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
@@ -67,13 +66,13 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			pets.updateFromModel();
 		}
 
-		public Person createWorkingCopyObject() {
+		public Person createWorkingCopy() {
 			return new Person("", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		public Person copyBean(final Object source, final Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopyObject();
-			Person to = target != null ? (Person) target : createWorkingCopyObject();
+			Person from = source != null ? (Person) source : createWorkingCopy();
+			Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			to.setGender(from.getGender());
@@ -102,7 +101,7 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		MasterDetailsRidget master = (MasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
+		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
 		master.setDelegate(new PersonDelegate());
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
