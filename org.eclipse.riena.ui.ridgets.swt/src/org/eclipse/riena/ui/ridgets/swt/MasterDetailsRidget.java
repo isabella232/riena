@@ -23,6 +23,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -33,19 +34,20 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * A ridget for the {@link MasterDetailsComposite}.
  */
 public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
-	private String[] columnHeaders;
 	private IObservableList rowObservables;
 	private Class<? extends Object> rowBeanClass;
-	private String[] renderingMethods;
+	private int numColumns;
 
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
@@ -79,15 +81,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 		this.rowBeanClass = rowBeanClass;
 		rowObservables = rowBeansObservable;
-		renderingMethods = new String[columnPropertyNames.length];
-		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);
-
-		if (columnHeaders != null) {
-			this.columnHeaders = new String[columnHeaders.length];
-			System.arraycopy(columnHeaders, 0, this.columnHeaders, 0, this.columnHeaders.length);
-		} else {
-			this.columnHeaders = null;
-		}
+		numColumns = columnPropertyNames.length;
+		getTableRidget().bindToModel(rowObservables, rowBeanClass, columnPropertyNames, columnHeaders);
 
 		bindUIControl();
 	}
@@ -175,7 +170,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public boolean isDetailsChanged() {
-		// TODO Auto-generated method stub
+		// TODO [ev] Auto-generated method stub
 		return false;
 	}
 
@@ -261,18 +256,20 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	private void bindUIControl() {
 		System.out.println("MasterDetailsRidget.bindUIControl()");
-		MasterDetailsComposite control = getUIControl();
-		if (control != null && rowObservables != null) {
-			prepareTable(control);
-			ITableRidget tableRidget = getTableRidget();
-			tableRidget.bindToModel(rowObservables, rowBeanClass, renderingMethods, columnHeaders);
-			tableRidget.setUIControl(control.getTable());
+		MasterDetailsComposite mdComposite = getUIControl();
+		if (mdComposite != null && rowObservables != null) {
+			prepareTable(mdComposite);
+			for (Object element : mdComposite.getUIControls()) {
+				Control control = (Control) element;
+				String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(control);
+				getRidget(bindingProperty).setUIControl(control);
+			}
 		}
 	}
 
 	private void unbindUIControl() {
-		if (getTableRidget() != null) {
-			getTableRidget().setUIControl(null);
+		for (IRidget ridget : getRidgets()) {
+			ridget.setUIControl(null);
 		}
 	}
 
@@ -293,7 +290,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	private void prepareTable(MasterDetailsComposite control) {
-		int numColumns = renderingMethods.length;
 		Table tableWidget = control.getTable();
 		if (tableWidget.getColumnCount() != numColumns) {
 			for (TableColumn column : tableWidget.getColumns()) {

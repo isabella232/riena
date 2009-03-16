@@ -96,7 +96,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(0, table.getItemCount());
 
-		bindToModel();
+		bindToModel(false);
 
 		// TODO [ev] 264325 - enable this after adding seperation into TableRidget
 		// assertEquals(0, table.getItemCount());
@@ -118,8 +118,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(0, table.getItemCount());
 
-		bindToModel();
-		ridget.updateFromModel();
+		bindToModel(true);
 
 		assertEquals(3, table.getItemCount());
 
@@ -150,8 +149,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
 
-		bindToModel();
-		ridget.updateFromModel();
+		bindToModel(true);
 
 		assertContent(table, 3);
 		assertEquals(3, input.size());
@@ -174,8 +172,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
 
-		bindToModel();
-		ridget.updateFromModel();
+		bindToModel(true);
 
 		assertContent(table, 3);
 		assertEquals(3, input.size());
@@ -193,8 +190,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
 
-		bindToModel();
-		ridget.updateFromModel();
+		bindToModel(true);
 
 		assertContent(table, 3);
 		assertEquals(3, input.size());
@@ -212,50 +208,180 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddToMaster() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
 
+		try {
+			ridget.addToMaster();
+			fail();
+		} catch (RuntimeException rex) {
+			ok();
+		}
+
+		bindToModel(true);
+		ridget.setSelection(input.get(0));
+
+		int oldSize = input.size();
+
+		ridget.addToMaster();
+
+		assertEquals(oldSize + 1, input.size());
+		MDBean newEntry = input.get(oldSize);
+		assertEquals("TestR0C1", newEntry.column1);
+		assertEquals("TestR0C2", newEntry.column2);
 	}
 
 	public void testClearDetails() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
 
+		bindToModel(true);
+		ridget.setSelection(input.get(0));
+
+		assertFalse(widget.txtColumn1.getText().isEmpty());
+		assertFalse(widget.txtColumn2.getText().isEmpty());
+
+		ridget.clearDetails();
+
+		assertTrue(widget.txtColumn1.getText().isEmpty());
+		assertTrue(widget.txtColumn2.getText().isEmpty());
 	}
 
-	public void testCopyFromDetailsToMaster() {
-
-	}
+	// see #testAddBean(); and #testModifyBean();
+	// public void testCopyFromDetailsToMaster() {
+	// }
 
 	public void testCopyFromMasterToDetails() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
 
-	}
+		bindToModel(true);
+		ridget.setSelection(input.get(1));
+		widget.txtColumn1.setText("");
+		widget.txtColumn2.setText("");
 
-	public void testGetMasterSelection() {
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
 
+		ridget.copyFromMasterToDetails();
+
+		assertEquals("TestR1C1", widget.txtColumn1.getText());
+		assertEquals("TestR1C2", widget.txtColumn2.getText());
 	}
 
 	public void testGetWorkingCopy() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
 
+		MDBean wc1 = (MDBean) ridget.getWorkingCopy();
+		MDBean wc2 = (MDBean) ridget.getWorkingCopy();
+		assertNotNull(wc1);
+		assertSame(wc1, wc2);
+
+		bindToModel(true);
+		ridget.setSelection(input.get(0));
+
+		assertEquals("TestR0C1", wc1.column1);
+		assertEquals("TestR0C2", wc1.column2);
 	}
 
 	public void testIsDetailsChanged() {
-
+		// TODO [ev] Auto-generated method stub
 	}
 
-	public void isInputValid() {
-
+	public void testIsInputValid() {
+		// TODO [ev] Auto-generated method stub
 	}
 
 	public void testSetSelection() {
+		IMasterDetailsRidget ridget = getRidget();
+		bindToModel(true);
 
+		assertEquals(null, ridget.getSelection());
+
+		ridget.setSelection(input.get(0));
+
+		assertEquals(input.get(0), ridget.getSelection());
+
+		ridget.setSelection(null);
+
+		assertEquals(null, ridget.getSelection());
+	}
+
+	public void testSetSelectionUpdatesUI() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
+
+		bindToModel(true);
+		ridget.setSelection(input.get(1));
+
+		assertEquals(1, widget.getTable().getSelectionCount());
+		assertEquals("TestR1C1", widget.txtColumn1.getText());
+		assertEquals("TestR1C2", widget.txtColumn2.getText());
+
+		ridget.setSelection(null);
+
+		assertEquals(0, widget.getTable().getSelectionCount());
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
 	}
 
 	public void testSetSelectionFiresEvents() {
-
+		//		IMasterDetailsRidget ridget = getRidget();
+		//		MDBean item0 = input.get(0);
+		//		MDBean item1 = input.get(1);
+		//
+		//		bindToModel(true);
+		//
+		//		expectPropertyChangeEvent(IMasterDetailsRidget.PROPERTY_SELECTION, null, item0);
+		//		ridget.setSelection(item0);
+		//		verifyPropertyChangeEvents();
+		//
+		//		expectNoPropertyChangeEvent();
+		//		ridget.setSelection(item0);
+		//		verifyPropertyChangeEvents();
+		//
+		//		expectPropertyChangeEvent(IMasterDetailsRidget.PROPERTY_SELECTION, item0, item1);
+		//		ridget.setSelection(item1);
+		//		verifyPropertyChangeEvents();
+		//
+		//		expectPropertyChangeEvent(IMasterDetailsRidget.PROPERTY_SELECTION, item1, null);
+		//		ridget.setSelection(null);
+		//		verifyPropertyChangeEvents();
 	}
 
 	public void testSetSelectionRevealsSelection() {
 
 	}
 
-	public void testCreateWorkingCopyObject() {
+	public void testUpdateFromModelPreservesSelection() {
+
+	}
+
+	public void testUpdateFromModelRemovesSelection() {
+
+	}
+
+	public void testUpdateSelectionFromRidgetOnRebind() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = (MDWidget) createWidget(getShell());
+
+		ridget.setUIControl(null);
+		bindToModel(true);
+		ridget.setSelection(input.get(0));
+
+		assertEquals(0, widget.getTable().getSelectionCount());
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
+
+		ridget.setUIControl(widget);
+
+		assertEquals(1, widget.getTable().getSelectionCount());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C2", widget.txtColumn2.getText());
+	}
+
+	public void testCreateWorkingCopy() {
 
 	}
 
@@ -272,7 +398,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		// error case
 	}
 
-	public void testModifyiedDetailsShowWarningOnChangeSelection() {
+	public void testModifiedDetailsShowWarningOnChangeSelection() {
 
 	}
 
@@ -288,9 +414,12 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
-	private void bindToModel() {
+	private void bindToModel(boolean withUpdate) {
 		WritableList list = new WritableList(input, MDBean.class);
 		getRidget().bindToModel(list, MDBean.class, columnProperties, columnHeaders);
+		if (withUpdate) {
+			getRidget().updateFromModel();
+		}
 	}
 
 	private List<MDBean> createInput() {
