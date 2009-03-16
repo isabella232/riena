@@ -21,6 +21,12 @@ import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+
 import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IContributor;
@@ -29,13 +35,8 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
+
 import org.eclipse.riena.internal.core.ignore.Nop;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.BundleReference;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 
 /**
  * Base class for test cases.<br>
@@ -126,8 +127,8 @@ public abstract class RienaTestCase extends TestCase {
 	protected BundleContext getContext() {
 		if (context == null) {
 			try {
-				BundleReference ref = FrameworkUtil.getBundleReference(getClass());
-				context = ref.getBundle().getBundleContext();
+				Bundle bundle = FrameworkUtil.getBundle(getClass());
+				context = bundle.getBundleContext();
 			} catch (Throwable t) {
 				Nop.reason("We don´t care. Maybe it is not running as a plugin test.");
 			}
