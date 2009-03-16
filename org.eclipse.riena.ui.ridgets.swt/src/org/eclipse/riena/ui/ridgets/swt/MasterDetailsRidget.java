@@ -184,6 +184,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void setSelection(Object newSelection) {
 		getTableRidget().setSelection(newSelection);
+		MasterDetailsComposite control = getUIControl();
+		if (control != null) {
+			control.getTable().showSelection();
+		}
 	}
 
 	/**
@@ -205,6 +209,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		return delegate.copyBean(source, target);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Implementation note: this first updates the delegate's working copy from
+	 * the current selection (which may rightfully be null) and then invokes
+	 * {@link IMasterDetailsDelegate}{@link #updateDetails()}.
+	 */
 	public final void updateDetails() {
 		Object selection = getSelection();
 		copyBean(selection, getWorkingCopy());

@@ -52,7 +52,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		input = createInput();
+		input = createInput(3);
 		MasterDetailsRidget ridget = (MasterDetailsRidget) getRidget();
 		List<Object> uiControls = getWidget().getUIControls();
 		BINDING_MAN.injectRidgets(ridget, uiControls);
@@ -209,7 +209,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testAddToMaster() {
 		IMasterDetailsRidget ridget = getRidget();
-		MDWidget widget = getWidget();
 
 		try {
 			ridget.addToMaster();
@@ -271,7 +270,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testGetWorkingCopy() {
 		IMasterDetailsRidget ridget = getRidget();
-		MDWidget widget = getWidget();
 
 		MDBean wc1 = (MDBean) ridget.getWorkingCopy();
 		MDBean wc2 = (MDBean) ridget.getWorkingCopy();
@@ -351,20 +349,53 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSelectionRevealsSelection() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = getWidget();
 
+		input = createInput(42);
+		bindToModel(true);
+
+		assertEquals(0, widget.getTable().getTopIndex());
+
+		ridget.setSelection(input.get(30));
+
+		// topIndex > 0 means we scrolled to reveal row 30
+		assertTrue(widget.getTable().getTopIndex() > 0);
 	}
 
 	public void testUpdateFromModelPreservesSelection() {
+		IMasterDetailsRidget ridget = getRidget();
+		bindToModel(true);
+		MDBean item2 = input.get(2);
 
+		ridget.setSelection(item2);
+
+		assertSame(item2, ridget.getSelection());
+
+		input.remove(input.get(1));
+		ridget.updateFromModel();
+
+		assertSame(item2, ridget.getSelection());
 	}
 
 	public void testUpdateFromModelRemovesSelection() {
+		IMasterDetailsRidget ridget = getRidget();
+		bindToModel(true);
+		MDBean item2 = input.get(2);
 
+		ridget.setSelection(item2);
+
+		assertSame(item2, ridget.getSelection());
+
+		input.remove(input.get(2));
+		ridget.updateFromModel();
+
+		assertNull(ridget.getSelection());
 	}
 
 	public void testUpdateSelectionFromRidgetOnRebind() {
 		IMasterDetailsRidget ridget = getRidget();
-		MDWidget widget = (MDWidget) createWidget(getShell());
+		MDWidget widget = getWidget();
 
 		ridget.setUIControl(null);
 		bindToModel(true);
@@ -374,32 +405,74 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("", widget.txtColumn1.getText());
 		assertEquals("", widget.txtColumn2.getText());
 
-		ridget.setUIControl(widget);
+		MDWidget widget2 = (MDWidget) createWidget(getShell());
+		ridget.setUIControl(widget2);
 
-		assertEquals(1, widget.getTable().getSelectionCount());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
-		assertEquals("TestR0C2", widget.txtColumn2.getText());
+		assertEquals(1, widget2.getTable().getSelectionCount());
+		assertEquals("TestR0C1", widget2.txtColumn1.getText());
+		assertEquals("TestR0C2", widget2.txtColumn2.getText());
 	}
 
 	public void testCreateWorkingCopy() {
+		IMasterDetailsRidget ridget = getRidget();
 
+		MDBean wc1 = (MDBean) ridget.createWorkingCopy();
+		MDBean wc2 = (MDBean) ridget.createWorkingCopy();
+
+		assertNotSame(wc1, wc2);
 	}
 
 	public void testCopyBean() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDBean source = new MDBean("sourceA", "sourceB");
+		MDBean target = new MDBean("targetA", "targetB");
 
+		MDBean result1 = (MDBean) ridget.copyBean(source, null);
+
+		assertNotSame(source, result1);
+		assertNotSame(target, result1);
+		assertEquals("sourceA", result1.column1);
+		assertEquals("sourceB", result1.column2);
+
+		MDBean result2 = (MDBean) ridget.copyBean(source, target);
+
+		assertSame(target, result2);
+		assertEquals("sourceA", result2.column1);
+		assertEquals("sourceB", result2.column2);
+
+		MDBean result3 = (MDBean) ridget.copyBean(null, target);
+
+		assertSame(target, result3);
+		assertEquals("", result3.column1);
+		assertEquals("", result3.column2);
 	}
 
 	public void testUpdateDetails() {
+		IMasterDetailsRidget ridget = getRidget();
+		MDWidget widget = (MDWidget) getWidget();
+		bindToModel(true);
 
+		assertNull(ridget.getSelection());
+
+		widget.txtColumn1.setText("a");
+		widget.txtColumn1.setText("b");
+		// update widget with data from current selection.
+		ridget.updateDetails();
+
+		UITestHelper.readAndDispatch(widget);
+
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
 	}
 
 	public void testUpdateShowsDialogWhenRulesFail() {
 		// warning case ??
 		// error case
+		// TODO [ev] Auto-generated method stub
 	}
 
 	public void testModifiedDetailsShowWarningOnChangeSelection() {
-
+		// TODO [ev] Auto-generated method stub
 	}
 
 	// helping methods
@@ -422,11 +495,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
-	private List<MDBean> createInput() {
+	private List<MDBean> createInput(int numItems) {
 		List<MDBean> result = new ArrayList<MDBean>();
-		result.add(new MDBean("TestR0C1", "TestR0C2"));
-		result.add(new MDBean("TestR1C1", "TestR1C2"));
-		result.add(new MDBean("TestR2C1", "TestR2C2"));
+		for (int i = 0; i < numItems; i++) {
+			String c1 = String.format("TestR%dC1", i);
+			String c2 = String.format("TestR%dC2", i);
+			result.add(new MDBean(c1, c2));
+		}
 		return result;
 	}
 
