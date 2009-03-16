@@ -231,7 +231,7 @@ public class Aggregator implements ICollectingAggregator {
 		}
 	}
 
-	private class CollectTask implements Runnable {
+	private static final class CollectTask implements Runnable {
 		private final IStore store;
 		private final Collectible<?> collectible;
 
@@ -245,7 +245,7 @@ public class Aggregator implements ICollectingAggregator {
 		}
 	}
 
-	private class TriggerTransferTask implements Runnable {
+	private static final class TriggerTransferTask implements Runnable {
 		private final IStore store;
 		private final ISender sender;
 		private final String category;
