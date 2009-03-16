@@ -43,11 +43,11 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.ridgets,org.eclipse.riena.ui.ridgets"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.ridgets.swt,org.eclipse.riena.ui.ridgets.swt"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.swt,org.eclipse.riena.ui.swt"/>
-<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/eclipse,org.eclipse.core.variables,org.eclipse.core.variables,v20080731"/>
+<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/eclipse,org.eclipse.core.variables,org.eclipse.core.variables,v20090302-1500"/>
 <project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/tools,org.eclipse.orbit/org.easymock,org.easymock,v2_3"/>
 <project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/tools,org.eclipse.orbit/org.apache.commons.beanutils,org.apache.commons.beanutils,v1_7_0"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.filter,org.eclipse.riena.ui.filter"/>
-<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/rt,org.eclipse.equinox/security/bundles/org.eclipse.equinox.security,org.eclipse.equinox.security,v20080722-0430"/>
+<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/rt,org.eclipse.equinox/security/bundles/org.eclipse.equinox.security,org.eclipse.equinox.security,v20090306-1900"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.documents,org.eclipse.riena.documents"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.ui.workarea,org.eclipse.riena.ui.workarea"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.monitor.client,org.eclipse.riena.monitor.client"/>
@@ -58,7 +58,8 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.demo.server,org.eclipse.riena.demo.server"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature.sdk,org.eclipse.riena.build.feature.sdk"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.updatesite,org.eclipse.riena.build.updatesite"/>
-<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/rt,org.eclipse.equinox/incubator/compendium/bundles/org.eclipse.equinox.log,org.eclipse.equinox.log,v20090108"/>
+<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/rt,org.eclipse.equinox/incubator/compendium/bundles/org.eclipse.equinox.log,org.eclipse.equinox.log,v20090223-1400"/>
 <project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/technology,org.eclipse.swt.nebula/org.eclipse.nebula.widgets.compositetable,org.eclipse.nebula.widgets.compositetable"/>
+<project reference="1.0,:pserver:dev.eclipse.org:/cvsroot/tools,org.eclipse.orbit/org.apache.commons.collections,org.apache.commons.collections,v3_2"/>
 </provider>
 </psf>
