@@ -15,6 +15,19 @@ import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Widget;
+
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CompositeTableRidget;
@@ -53,18 +66,6 @@ import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
 import org.eclipse.riena.ui.swt.StatuslineUIProcess;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * Default implementation of {@link IControlRidgetMapper} for SWT.
@@ -72,9 +73,9 @@ import org.eclipse.swt.widgets.Widget;
 public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
 	private static final int IGNORE_SWT_STYLE = -99;
-	private static SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
+	private static final SwtControlRidgetMapper INSTANCE = new SwtControlRidgetMapper();
 
-	private List<Mapping> mappings;
+	private final List<Mapping> mappings;
 
 	private SwtControlRidgetMapper() {
 		mappings = new ArrayList<Mapping>();
