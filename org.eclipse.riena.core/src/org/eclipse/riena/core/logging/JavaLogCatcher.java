@@ -31,6 +31,7 @@ public class JavaLogCatcher implements ILogCatcher {
 
 	private Handler javaLogginghandler;
 	private Logger rootLogger;
+	private Level rootLevel;
 
 	/*
 	 * (non-Javadoc)
@@ -40,6 +41,10 @@ public class JavaLogCatcher implements ILogCatcher {
 	public void attach() {
 		LogManager.getLogManager().reset();
 		rootLogger = Logger.getLogger(""); //$NON-NLS-1$
+		rootLevel = rootLogger.getLevel();
+		// we want it all, we want it all, we want it now
+		// filtering is done by the equinox logger
+		rootLogger.setLevel(Level.ALL);
 		javaLogginghandler = new JavaLoggingHandler();
 		rootLogger.addHandler(javaLogginghandler);
 	}
@@ -54,6 +59,7 @@ public class JavaLogCatcher implements ILogCatcher {
 			return;
 		}
 		rootLogger.removeHandler(javaLogginghandler);
+		rootLogger.setLevel(rootLevel);
 	}
 
 	/**
@@ -87,7 +93,7 @@ public class JavaLogCatcher implements ILogCatcher {
 				equinoxLoglevel = LogService.LOG_DEBUG;
 			}
 
-			// find equinox logger
+			// find corresponding equinox logger
 			org.eclipse.equinox.log.Logger logger = Log4r.getLogger(Activator.getDefault(), record.getLoggerName());
 
 			if (!logger.isLoggable(equinoxLoglevel)) {
