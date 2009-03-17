@@ -41,7 +41,7 @@ public class SwtExampleApplication extends SwtApplication {
 		String lnfClassName = System.getProperty("riena.lnf", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		if (!StringUtils.isEmpty(lnfClassName)) {
 			try {
-				Class lnfClass = this.getBundle().loadClass(lnfClassName);
+				Class lnfClass = SwtExampleApplication.class.getClassLoader().loadClass(lnfClassName);
 				RienaDefaultLnf lnf;
 				lnf = (RienaDefaultLnf) lnfClass.newInstance();
 				LnfManager.setLnf(lnf);

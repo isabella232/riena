@@ -30,3 +30,4 @@ Export-Package: com.swtdesigner;x-internal:=true,
  org.eclipse.riena.internal.example.client;x-internal:=true,
  org.eclipse.riena.internal.example.client.beans;x-internal:=true,
  org.eclipse.riena.internal.example.client.security.authentication;x-internal:=true
+Eclipse-BuddyPolicy: registered
