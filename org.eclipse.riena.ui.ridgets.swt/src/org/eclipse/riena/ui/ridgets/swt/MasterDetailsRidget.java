@@ -65,7 +65,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	@Override
 	public void setUIControl(Object uiControl) {
-		System.out.println("MasterDetailsRidget.setUIControl()");
 		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
 		unbindUIControl();
 		super.setUIControl(uiControl);
@@ -74,8 +73,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		System.out.println("MasterDetailsRidget.bindToModel()");
-
 		unbindUIControl();
 
 		rowObservables = rowBeansObservable;
@@ -93,8 +90,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	@Override
 	public final void configureRidgets() {
-		System.out.println("MasterDetailsRidget.configureRidgets()");
-
 		getAddButtonRidget().addListener(new IActionListener() {
 			public void callback() {
 				clearDetails();
@@ -264,7 +259,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	private void bindUIControl() {
-		System.out.println("MasterDetailsRidget.bindUIControl()");
 		MasterDetailsComposite mdComposite = getUIControl();
 		if (mdComposite != null && rowObservables != null) {
 			prepareTable(mdComposite);

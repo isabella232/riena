@@ -45,7 +45,6 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		private final Person workingCopy = createWorkingCopy();
 
 		public void configureRidgets(IRidgetContainer container) {
-			System.out.println("PersonDelegate.configureRidgets()");
 			ITextRidget txtFirst = (ITextRidget) container.getRidget("first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
@@ -85,7 +84,6 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		}
 
 		public void updateDetails(IRidgetContainer container) {
-			System.out.println("PersonDelegate.updateDetails()");
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
 			}
