@@ -147,26 +147,36 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddBean() {
-		IMasterDetailsRidget ridget = getRidget();
+		MasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
-		Table table = widget.getTable();
 
 		bindToModel(true);
+		int oldSize = input.size();
 
-		assertContent(table, 3);
-		assertEquals(3, input.size());
+		ridget.setSelection(input.get(0));
 
-		ridget.clearDetails();
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C2", widget.txtColumn2.getText());
+
+		ridget.handleAdd();
+
+		assertEquals(oldSize, input.size());
+		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn2.getText());
+
 		widget.txtColumn1.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "A\r");
 		widget.txtColumn2.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "B\r");
-		ridget.copyFromDetailsToMaster();
 
-		assertEquals(4, input.size());
-		assertContent(table, 3);
-		assertEquals("A", input.get(3).getColumn1());
-		assertEquals("B", input.get(3).getColumn2());
+		ridget.handleUpdate();
+
+		MDBean newEntry = input.get(oldSize);
+		assertEquals(oldSize + 1, input.size());
+		assertEquals("A", newEntry.column1);
+		assertEquals("B", newEntry.column2);
+
+		assertEquals(newEntry, ridget.getSelection());
 	}
 
 	public void testDeleteBean() {
@@ -181,14 +191,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		MDBean toDelete = input.get(1);
 		ridget.setSelection(toDelete);
-		ridget.removeSelection();
+		ridget.handleRemove();
 
 		assertEquals(2, input.size());
 		assertFalse(input.contains(toDelete));
 	}
 
 	public void testModifyBean() {
-		IMasterDetailsRidget ridget = getRidget();
+		MasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
 		Table table = widget.getTable();
 
@@ -202,88 +212,65 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(widget.getDisplay(), "A\r");
 		widget.txtColumn2.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "B\r");
-		ridget.copyFromDetailsToMaster();
+		ridget.handleUpdate();
 
 		assertEquals(3, input.size());
 		assertEquals("A", input.get(1).getColumn1());
 		assertEquals("B", input.get(1).getColumn2());
 	}
 
-	public void testAddToMaster() {
-		IMasterDetailsRidget ridget = getRidget();
-
-		try {
-			ridget.addToMaster();
-			fail();
-		} catch (RuntimeException rex) {
-			ok();
-		}
-
-		bindToModel(true);
-		ridget.setSelection(input.get(0));
-
-		int oldSize = input.size();
-
-		ridget.addToMaster();
-
-		assertEquals(oldSize + 1, input.size());
-		MDBean newEntry = input.get(oldSize);
-		assertEquals("TestR0C1", newEntry.column1);
-		assertEquals("TestR0C2", newEntry.column2);
-	}
-
-	public void testClearDetails() {
-		IMasterDetailsRidget ridget = getRidget();
-		MDWidget widget = getWidget();
-
-		bindToModel(true);
-		ridget.setSelection(input.get(0));
-
-		assertFalse(widget.txtColumn1.getText().isEmpty());
-		assertFalse(widget.txtColumn2.getText().isEmpty());
-
-		ridget.clearDetails();
-
-		assertTrue(widget.txtColumn1.getText().isEmpty());
-		assertTrue(widget.txtColumn2.getText().isEmpty());
-	}
+	//	public void testClearDetails() {
+	//		IMasterDetailsRidget ridget = getRidget();
+	//		MDWidget widget = getWidget();
+	//
+	//		bindToModel(true);
+	//		ridget.setSelection(input.get(0));
+	//
+	//		assertFalse(widget.txtColumn1.getText().isEmpty());
+	//		assertFalse(widget.txtColumn2.getText().isEmpty());
+	//
+	//		ridget.clearDetails();
+	//
+	//		assertTrue(widget.txtColumn1.getText().isEmpty());
+	//		assertTrue(widget.txtColumn2.getText().isEmpty());
+	//	}
 
 	// see #testAddBean(); and #testModifyBean();
 	// public void testCopyFromDetailsToMaster() {
 	// }
 
-	public void testCopyFromMasterToDetails() {
-		IMasterDetailsRidget ridget = getRidget();
-		MDWidget widget = getWidget();
+	//	public void testCopyFromMasterToDetails() {
+	//		IMasterDetailsRidget ridget = getRidget();
+	//		MDWidget widget = getWidget();
+	//
+	//		bindToModel(true);
+	//		ridget.setSelection(input.get(1));
+	//		widget.txtColumn1.setText("");
+	//		widget.txtColumn2.setText("");
+	//
+	//		assertEquals("", widget.txtColumn1.getText());
+	//		assertEquals("", widget.txtColumn2.getText());
+	//
+	//		ridget.copyFromMasterToDetails();
+	//
+	//		assertEquals("TestR1C1", widget.txtColumn1.getText());
+	//		assertEquals("TestR1C2", widget.txtColumn2.getText());
+	//	}
 
-		bindToModel(true);
-		ridget.setSelection(input.get(1));
-		widget.txtColumn1.setText("");
-		widget.txtColumn2.setText("");
-
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
-
-		ridget.copyFromMasterToDetails();
-
-		assertEquals("TestR1C1", widget.txtColumn1.getText());
-		assertEquals("TestR1C2", widget.txtColumn2.getText());
-	}
-
-	public void testGetWorkingCopy() {
-		IMasterDetailsRidget ridget = getRidget();
-
-		MDBean wc1 = (MDBean) ridget.getWorkingCopy();
-		MDBean wc2 = (MDBean) ridget.getWorkingCopy();
-		assertNotNull(wc1);
-		assertSame(wc1, wc2);
-
-		bindToModel(true);
-		ridget.setSelection(input.get(0));
-
-		assertEquals("TestR0C1", wc1.column1);
-		assertEquals("TestR0C2", wc1.column2);
-	}
+	//	public void testGetWorkingCopy() {
+	//		IMasterDetailsRidget ridget = getRidget();
+	//
+	//		MDBean wc1 = (MDBean) ridget.getWorkingCopy();
+	//		MDBean wc2 = (MDBean) ridget.getWorkingCopy();
+	//		assertNotNull(wc1);
+	//		assertSame(wc1, wc2);
+	//
+	//		bindToModel(true);
+	//		ridget.setSelection(input.get(0));
+	//
+	//		assertEquals("TestR0C1", wc1.column1);
+	//		assertEquals("TestR0C2", wc1.column2);
+	//	}
 
 	public void testIsDetailsChanged() {
 		// TODO [ev] Auto-generated method stub
@@ -414,57 +401,55 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("TestR0C2", widget2.txtColumn2.getText());
 	}
 
-	public void testCreateWorkingCopy() {
-		IMasterDetailsRidget ridget = getRidget();
+	//	public void testCreateWorkingCopy() {
+	//		IMasterDetailsRidget ridget = getRidget();
+	//
+	//		MDBean wc1 = (MDBean) ridget.createWorkingCopy();
+	//		MDBean wc2 = (MDBean) ridget.createWorkingCopy();
+	//
+	//		assertNotSame(wc1, wc2);
+	//	}
 
-		MDBean wc1 = (MDBean) ridget.createWorkingCopy();
-		MDBean wc2 = (MDBean) ridget.createWorkingCopy();
+	//	public void testCopyBean() {
+	//		IMasterDetailsRidget ridget = getRidget();
+	//		MDBean source = new MDBean("sourceA", "sourceB");
+	//		MDBean target = new MDBean("targetA", "targetB");
+	//
+	//		MDBean result1 = (MDBean) ridget.copyBean(source, null);
+	//
+	//		assertNotSame(source, result1);
+	//		assertNotSame(target, result1);
+	//		assertEquals("sourceA", result1.column1);
+	//		assertEquals("sourceB", result1.column2);
+	//
+	//		MDBean result2 = (MDBean) ridget.copyBean(source, target);
+	//
+	//		assertSame(target, result2);
+	//		assertEquals("sourceA", result2.column1);
+	//		assertEquals("sourceB", result2.column2);
+	//
+	//		MDBean result3 = (MDBean) ridget.copyBean(null, target);
+	//
+	//		assertSame(target, result3);
+	//		assertEquals("", result3.column1);
+	//		assertEquals("", result3.column2);
+	//	}
 
-		assertNotSame(wc1, wc2);
-	}
-
-	public void testCopyBean() {
-		IMasterDetailsRidget ridget = getRidget();
-		MDBean source = new MDBean("sourceA", "sourceB");
-		MDBean target = new MDBean("targetA", "targetB");
-
-		MDBean result1 = (MDBean) ridget.copyBean(source, null);
-
-		assertNotSame(source, result1);
-		assertNotSame(target, result1);
-		assertEquals("sourceA", result1.column1);
-		assertEquals("sourceB", result1.column2);
-
-		MDBean result2 = (MDBean) ridget.copyBean(source, target);
-
-		assertSame(target, result2);
-		assertEquals("sourceA", result2.column1);
-		assertEquals("sourceB", result2.column2);
-
-		MDBean result3 = (MDBean) ridget.copyBean(null, target);
-
-		assertSame(target, result3);
-		assertEquals("", result3.column1);
-		assertEquals("", result3.column2);
-	}
-
-	public void testUpdateDetails() {
-		IMasterDetailsRidget ridget = getRidget();
-		MDWidget widget = (MDWidget) getWidget();
-		bindToModel(true);
-
-		assertNull(ridget.getSelection());
-
-		widget.txtColumn1.setText("a");
-		widget.txtColumn1.setText("b");
-		// update widget with data from current selection.
-		ridget.updateDetails();
-
-		UITestHelper.readAndDispatch(widget);
-
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
-	}
+	//	public void testUpdateDetails() {
+	//		IMasterDetailsRidget ridget = getRidget();
+	//		MDWidget widget = (MDWidget) getWidget();
+	//		bindToModel(true);
+	//
+	//		assertNull(ridget.getSelection());
+	//
+	//		widget.txtColumn1.setText("a");
+	//		widget.txtColumn1.setText("b");
+	//		// update widget with data from current selection.
+	//		ridget.updateDetails();
+	//
+	//		assertEquals("", widget.txtColumn1.getText());
+	//		assertEquals("", widget.txtColumn2.getText());
+	//	}
 
 	public void testUpdateShowsDialogWhenRulesFail() {
 		// warning case ??

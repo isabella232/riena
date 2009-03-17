@@ -51,6 +51,11 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
 
+	/*
+	 * The object we are currently editing; null if not editing
+	 */
+	private Object editable;
+
 	public void setDelegate(IMasterDetailsDelegate delegate) {
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
@@ -92,74 +97,36 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	public final void configureRidgets() {
 		getAddButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				clearDetails();
-				getUpdateButtonRidget().setEnabled(true);
+				handleAdd();
 			}
 		});
 		getRemoveButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				removeSelection();
+				handleRemove();
 			}
 		});
 		getUpdateButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				copyFromDetailsToMaster();
+				handleUpdate();
 			}
 		});
+		getUpdateButtonRidget().setEnabled(editable != null);
 
 		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
-		IObservableValue hasSelection = new ComputedValue(Boolean.TYPE) {
-			@Override
-			protected Object calculate() {
-				return Boolean.valueOf(viewerSelection.getValue() != null);
-			}
-		};
 		viewerSelection.addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(ValueChangeEvent event) {
-				updateDetails();
+				handleSelectionChange(event.getObservableValue().getValue());
 			}
 		});
 
 		Assert.isLegal(dbc == null);
 		dbc = new DataBindingContext();
-		bindEnablementToValue(dbc, getRemoveButtonRidget(), hasSelection);
-		bindEnablementToValue(dbc, getUpdateButtonRidget(), hasSelection);
-	}
-
-	public void addToMaster() {
-		assertIsBoundToModel();
-		Object newValue = delegate.createWorkingCopy();
-		copyBean(getWorkingCopy(), newValue);
-		rowObservables.add(newValue);
-		getTableRidget().setSelection((Object) newValue);
-		MasterDetailsComposite control = getUIControl();
-		if (control != null) {
-			control.getTable().showSelection();
-		}
-	}
-
-	public void clearDetails() {
-		getTableRidget().clearSelection();
-		copyBean(null, getWorkingCopy());
-		updateDetails();
-	}
-
-	public boolean copyFromDetailsToMaster() {
-		Object selection = getSelection();
-		if (selection != null) {
-			copyBean(getWorkingCopy(), selection);
-		} else {
-			addToMaster();
-		}
-		return true;
-	}
-
-	public void copyFromMasterToDetails() {
-		updateDetails();
-	}
-
-	public Object getWorkingCopy() {
-		return delegate.getWorkingCopy();
+		bindEnablementToValue(dbc, getRemoveButtonRidget(), new ComputedValue(Boolean.TYPE) {
+			@Override
+			protected Object calculate() {
+				return Boolean.valueOf(viewerSelection.getValue() != null);
+			}
+		});
 	}
 
 	public boolean isDetailsChanged() {
@@ -168,6 +135,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public boolean isInputValid() {
+		// TODO [ev] Auto-generated method stub
 		return true;
 	}
 
@@ -183,38 +151,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		}
 	}
 
-	/**
-	 * Non API. Public for testing only.
-	 */
-	public void removeSelection() {
-		assertIsBoundToModel();
-		Object selection = getSelection();
-		Assert.isNotNull(selection);
-		rowObservables.remove(selection);
-		clearDetails();
-	}
-
-	public final Object createWorkingCopy() {
-		return delegate.createWorkingCopy();
-	}
-
-	public final Object copyBean(final Object source, final Object target) {
-		return delegate.copyBean(source, target);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Implementation note: this first updates the delegate's working copy from
-	 * the current selection (which may rightfully be null) and then invokes
-	 * {@link IMasterDetailsDelegate}{@link #updateDetails()}.
-	 */
-	public final void updateDetails() {
-		Object selection = getSelection();
-		copyBean(selection, getWorkingCopy());
-		delegate.updateDetails(this);
-	}
-
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
@@ -225,7 +161,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	// protected methods
-	///////////////////
+	//////////////////
 
 	@Override
 	protected final void updateToolTipText() {
@@ -270,6 +206,12 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		}
 	}
 
+	private void clearSelection() {
+		updateDetails(delegate.createWorkingCopy());
+		editable = null;
+		getUpdateButtonRidget().setEnabled(false);
+	}
+
 	private void unbindUIControl() {
 		for (IRidget ridget : getRidgets()) {
 			ridget.setUIControl(null);
@@ -306,6 +248,57 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			Composite tableComposite = tableWidget.getParent();
 			tableComposite.setLayout(layout);
 			tableComposite.layout(true);
+		}
+	}
+
+	private void updateDetails(Object bean) {
+		Assert.isNotNull(bean);
+		delegate.copyBean(bean, delegate.getWorkingCopy());
+		delegate.updateDetails(this);
+	}
+
+	/**
+	 * Non API; public for testing only.
+	 */
+	public void handleAdd() {
+		getTableRidget().clearSelection();
+		editable = delegate.createWorkingCopy();
+		updateDetails(editable);
+		getUpdateButtonRidget().setEnabled(true);
+	}
+
+	/**
+	 * Non API; public for testing only.
+	 */
+	public void handleRemove() {
+		assertIsBoundToModel();
+		Object selection = getSelection();
+		Assert.isNotNull(selection);
+		rowObservables.remove(selection);
+		getTableRidget().clearSelection();
+		clearSelection();
+	}
+
+	/**
+	 * Non API; public for testing only.
+	 */
+	public void handleUpdate() {
+		assertIsBoundToModel();
+		Assert.isNotNull(editable);
+		delegate.copyBean(delegate.getWorkingCopy(), editable);
+		if (!rowObservables.contains(editable)) {
+			rowObservables.add(editable);
+			setSelection(editable);
+		}
+	}
+
+	private void handleSelectionChange(Object newSelection) {
+		if (newSelection != null) {
+			editable = newSelection;
+			updateDetails(editable);
+			getUpdateButtonRidget().setEnabled(true);
+		} else {
+			clearSelection();
 		}
 	}
 
