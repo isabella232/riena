@@ -147,8 +147,24 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		text.removeVerifyListener(verifyListener);
 	}
 
-	private Text getTextWidget() {
-		return (Text) super.getUIControl();
+	protected String getUIText() {
+		// getTextWidget() may return null
+		return getTextWidget().getText();
+	}
+
+	protected void setUIText(String text) {
+		// getTextWidget() may return null
+		getTextWidget().setText(text);
+		getTextWidget().setSelection(0, 0);
+	}
+
+	protected void selectAll() {
+		// getTextWidget() may return null
+		Text text = getTextWidget();
+		// if not multi line text field
+		if ((text.getStyle() & SWT.MULTI) == 0) {
+			text.selectAll();
+		}
 	}
 
 	public synchronized String getText() {
@@ -276,6 +292,10 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return textValue;
 	}
 
+	private Text getTextWidget() {
+		return (Text) super.getUIControl();
+	}
+
 	/**
 	 * Returns the given status object, without the ERROR_BLOCK_WITH_FLASH
 	 * status code.
@@ -290,15 +310,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			theStatus = status;
 		}
 		return theStatus;
-	}
-
-	protected String getUIText() {
-		return getTextWidget().getText();
-	}
-
-	protected void setUIText(String text) {
-		getTextWidget().setText(text);
-		getTextWidget().setSelection(0, 0);
 	}
 
 	private synchronized void updateTextValue() {
@@ -361,14 +372,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 		public void focusLost(FocusEvent e) {
 			updateTextValue();
-		}
-	}
-
-	protected void selectAll() {
-		Text text = getTextWidget();
-		// if not multi line text field
-		if ((text.getStyle() & SWT.MULTI) == 0) {
-			text.selectAll();
 		}
 	}
 
