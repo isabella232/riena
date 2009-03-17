@@ -388,8 +388,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
-		//		checkColumnRange(columnIndex); TODO cannot check here because the uicontrol is usually not bound at this point
-		Assert.isNotNull(formatter, "column formatter cannot be null"); //$NON-NLS-1$
+		checkColumnRange(columnIndex);
 		if (formatter != null) {
 			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
 		}
@@ -461,11 +460,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	private void checkColumnRange(int columnIndex) {
-		Table table = getUIControl(); // table may be null if unbound
-		int range = table.getColumnCount();
-		String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
-		Assert.isLegal(-1 < columnIndex, msg);
-		Assert.isLegal(columnIndex < range, msg);
+		Table table = getUIControl();
+		if (table != null) {
+			int range = table.getColumnCount();
+			String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
+			Assert.isLegal(-1 < columnIndex, msg);
+			Assert.isLegal(columnIndex < range, msg);
+		}
 	}
 
 	private void createMultipleSelectionBinding() {
