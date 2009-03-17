@@ -181,7 +181,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	public synchronized boolean revalidate() {
 		if (getUIControl() != null) {
-			textValue = getUiText();
+			textValue = getUIText();
 		}
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
@@ -292,7 +292,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return theStatus;
 	}
 
-	protected String getUiText() {
+	protected String getUIText() {
 		return getTextWidget().getText();
 	}
 
@@ -303,7 +303,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	private synchronized void updateTextValue() {
 		String oldValue = textValue;
-		String newValue = getUiText();
+		String newValue = getUIText();
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
 			if (checkOnEditRules(newValue).isOK()) {
@@ -378,7 +378,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private final class SyncModifyListener implements ModifyListener {
 		public void modifyText(ModifyEvent e) {
 			updateTextValueWhenDirectWriting();
-			String text = getUiText();
+			String text = getUIText();
 			disableMandatoryMarkers(isNotEmpty(text));
 		}
 	}
@@ -407,7 +407,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 
 		private String getText(VerifyEvent e) {
-			String oldText = getUiText();
+			String oldText = getUIText();
 			String newText;
 			// deletion
 			if (e.keyCode == 127 || e.keyCode == 8) {
