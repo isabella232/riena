@@ -31,7 +31,6 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.MasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
@@ -124,14 +123,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(3, table.getItemCount());
 
-		ridget.setUIControl(mdComposite2);
+		bindUIControl(ridget, mdComposite2);
 		input.remove(0);
 		ridget.updateFromModel();
 
 		assertEquals(3, table.getItemCount());
 		assertEquals(2, table2.getItemCount());
 
-		ridget.setUIControl(null);
+		unbindUIControl(ridget, mdComposite2);
 		input.remove(0);
 		ridget.updateFromModel();
 
@@ -387,7 +386,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		IMasterDetailsRidget ridget = getRidget();
 		MDWidget widget = getWidget();
 
-		ridget.setUIControl(null);
+		unbindUIControl(ridget, widget);
 		bindToModel(true);
 		ridget.setSelection(input.get(0));
 
@@ -396,7 +395,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("", widget.txtColumn2.getText());
 
 		MDWidget widget2 = (MDWidget) createWidget(getShell());
-		ridget.setUIControl(widget2);
+		bindUIControl(ridget, widget2);
 
 		assertEquals(1, widget2.getTable().getSelectionCount());
 		assertEquals("TestR0C1", widget2.txtColumn1.getText());
@@ -491,6 +490,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	private void bindUIControl(IMasterDetailsRidget ridget, MasterDetailsComposite control) {
+		ridget.setUIControl(control);
+		BINDING_MAN.bind(ridget, control.getUIControls());
+	}
+
 	private List<MDBean> createInput(int numItems) {
 		List<MDBean> result = new ArrayList<MDBean>();
 		for (int i = 0; i < numItems; i++) {
@@ -499,6 +503,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			result.add(new MDBean(c1, c2));
 		}
 		return result;
+	}
+
+	private void unbindUIControl(IMasterDetailsRidget ridget, MasterDetailsComposite control) {
+		ridget.setUIControl(null);
+		BINDING_MAN.unbind(ridget, control.getUIControls());
 	}
 
 	// helping classes

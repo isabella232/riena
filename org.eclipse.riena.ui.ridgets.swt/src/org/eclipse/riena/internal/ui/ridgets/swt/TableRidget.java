@@ -86,8 +86,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<Object>> comparatorMap;
 	private final Map<Integer, IColumnFormatter> formatterMap;
-
 	private boolean moveableColumns;
+
+	private ITableRidgetDelegate delegate;
 
 	public TableRidget() {
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
@@ -123,6 +124,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	protected void bindUIControl() {
 		final Table control = getUIControl();
 		if (control != null && rowObservables != null) {
+			if (delegate != null) {
+				delegate.prepareTable(control, renderingMethods.length);
+			}
 			checkColumns(control);
 			viewer = new TableViewer(control);
 			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
@@ -396,6 +400,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		formatterMap.put(key, formatter);
 	}
 
+	/**
+	 * Non API.
+	 */
+	void setDelegate(ITableRidgetDelegate delegate) {
+		this.delegate = delegate;
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -593,6 +604,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			column.getParent().showSelection();
 		}
+	}
+
+	/**
+	 * Non-API.
+	 */
+	public static interface ITableRidgetDelegate {
+		public void prepareTable(Table control, int numColumns);
 	}
 
 }

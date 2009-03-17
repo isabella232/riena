@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.swt;
+package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -26,23 +26,20 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget.ITableRidgetDelegate;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * A ridget for the {@link MasterDetailsComposite}.
@@ -50,7 +47,6 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
 	private IObservableList rowObservables;
-	private int numColumns;
 
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
@@ -71,7 +67,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 					return;
 				}
-				// TODO [ev] quire the delagate - there's an ordering bug in the text ridget
+				// TODO [ev] query the delegate - there's an ordering bug in the text ridget
 				// that prevents this from working
 				// boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
 				// getUpdateButtonRidget().setEnabled(isChanged);
@@ -95,20 +91,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	@Override
 	public void setUIControl(Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
-		unbindUIControl();
 		super.setUIControl(uiControl);
-		bindUIControl();
 	}
 
 	public void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		unbindUIControl();
-
 		rowObservables = rowBeansObservable;
-		numColumns = columnPropertyNames.length;
 		getTableRidget().bindToModel(rowObservables, rowBeanClass, columnPropertyNames, columnHeaders);
-
-		bindUIControl();
 	}
 
 	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
@@ -119,6 +108,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	@Override
 	public final void configureRidgets() {
+		((TableRidget) getTableRidget()).setDelegate(new TablePreparer());
+
 		getAddButtonRidget().addListener(new IActionListener() {
 			public void callback() {
 				handleAdd();
@@ -218,28 +209,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
-	private void bindUIControl() {
-		MasterDetailsComposite mdComposite = getUIControl();
-		if (mdComposite != null && rowObservables != null) {
-			prepareTable(mdComposite);
-			for (Object element : mdComposite.getUIControls()) {
-				Control control = (Control) element;
-				String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(control);
-				getRidget(bindingProperty).setUIControl(control);
-			}
-		}
-	}
-
 	private void clearSelection() {
 		updateDetails(delegate.createWorkingCopy());
 		editable = null;
 		getUpdateButtonRidget().setEnabled(false);
-	}
-
-	private void unbindUIControl() {
-		for (IRidget ridget : getRidgets()) {
-			ridget.setUIControl(null);
-		}
 	}
 
 	private ITableRidget getTableRidget() {
@@ -256,23 +229,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	private IActionRidget getUpdateButtonRidget() {
 		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_UPDATE);
-	}
-
-	private void prepareTable(MasterDetailsComposite control) {
-		Table tableWidget = control.getTable();
-		if (tableWidget.getColumnCount() != numColumns) {
-			for (TableColumn column : tableWidget.getColumns()) {
-				column.dispose();
-			}
-			TableColumnLayout layout = new TableColumnLayout();
-			for (int i = 0; i < numColumns; i++) {
-				TableColumn column = new TableColumn(tableWidget, SWT.NONE);
-				layout.setColumnData(column, new ColumnWeightData(10));
-			}
-			Composite tableComposite = tableWidget.getParent();
-			tableComposite.setLayout(layout);
-			tableComposite.layout(true);
-		}
 	}
 
 	private void updateDetails(Object bean) {
@@ -326,6 +282,28 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			getUpdateButtonRidget().setEnabled(false);
 		} else {
 			clearSelection();
+		}
+	}
+
+	// helping classes
+	//////////////////
+
+	private static final class TablePreparer implements ITableRidgetDelegate {
+		public void prepareTable(Table control, int expectedCols) {
+			int actualCols = control.getColumnCount() == 0 ? 1 : control.getColumnCount();
+			if (actualCols != expectedCols) {
+				for (TableColumn column : control.getColumns()) {
+					column.dispose();
+				}
+				TableColumnLayout layout = new TableColumnLayout();
+				for (int i = 0; i < expectedCols; i++) {
+					TableColumn column = new TableColumn(control, SWT.NONE);
+					layout.setColumnData(column, new ColumnWeightData(10));
+				}
+				Composite tableComposite = control.getParent();
+				tableComposite.setLayout(layout);
+				tableComposite.layout(true);
+			}
 		}
 	}
 
