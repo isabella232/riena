@@ -128,8 +128,8 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	Object copyBean(Object source, Object target);
 
 	/**
-	 * Updates all details from the model. Typically an implementation calls
-	 * updateFromModel for every given detail ridget.
+	 * Updates the data shown in the 'details' area, based on the current
+	 * selected object in the 'master' area.
 	 */
 	void updateDetails();
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -325,27 +327,26 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSelectionFiresEvents() {
+		// TODO [ev] see Bug 268897
 		//		IMasterDetailsRidget ridget = getRidget();
 		//		MDBean item0 = input.get(0);
 		//		MDBean item1 = input.get(1);
+		//		FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		//
 		//		bindToModel(true);
+		//		ridget.addPropertyChangeListener(IMasterDetailsRidget.PROPERTY_SELECTION, listener);
 		//
-		//		expectPropertyChangeEvent(IMasterDetailsRidget.PROPERTY_SELECTION, null, item0);
 		//		ridget.setSelection(item0);
-		//		verifyPropertyChangeEvents();
+		//		assertPropertyChangeEvent(1, null, item0, listener);
 		//
-		//		expectNoPropertyChangeEvent();
 		//		ridget.setSelection(item0);
-		//		verifyPropertyChangeEvents();
+		//		assertEquals(1, listener.count);
 		//
-		//		expectPropertyChangeEvent(IMasterDetailsRidget.PROPERTY_SELECTION, item0, item1);
 		//		ridget.setSelection(item1);
-		//		verifyPropertyChangeEvents();
+		//		assertPropertyChangeEvent(2, item0, item1, listener);
 		//
-		//		expectPropertyChangeEvent(IMasterDetailsRidget.PROPERTY_SELECTION, item1, null);
 		//		ridget.setSelection(null);
-		//		verifyPropertyChangeEvents();
+		//		assertPropertyChangeEvent(3, item1, null, listener);
 	}
 
 	public void testSetSelectionRevealsSelection() {
@@ -487,6 +488,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	private void assertPropertyChangeEvent(int count, Object oldValue, Object newValue,
+			FTPropertyChangeListener listener) {
+		assertEquals(count, listener.count);
+		assertEquals("selection", listener.event.getPropertyName());
+		assertEquals(oldValue, listener.event.getOldValue());
+		assertEquals(newValue, listener.event.getNewValue());
+	}
+
 	private void bindToModel(boolean withUpdate) {
 		WritableList list = new WritableList(input, MDBean.class);
 		getRidget().bindToModel(list, MDBean.class, columnProperties, columnHeaders);
@@ -612,6 +621,20 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 				ridget.updateFromModel();
 			}
 		}
-
 	}
+
+	/**
+	 * PropertyChangeListener stub used for testing.
+	 */
+	private static final class FTPropertyChangeListener implements PropertyChangeListener {
+
+		int count;
+		PropertyChangeEvent event;
+
+		public void propertyChange(PropertyChangeEvent event) {
+			count++;
+			this.event = event;
+		}
+	}
+
 }

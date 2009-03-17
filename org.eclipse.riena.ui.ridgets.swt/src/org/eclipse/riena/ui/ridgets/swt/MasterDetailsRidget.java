@@ -46,7 +46,6 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public class MasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
 	private IObservableList rowObservables;
-	private Class<? extends Object> rowBeanClass;
 	private int numColumns;
 
 	private IMasterDetailsDelegate delegate;
@@ -79,7 +78,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 		unbindUIControl();
 
-		this.rowBeanClass = rowBeanClass;
 		rowObservables = rowBeansObservable;
 		numColumns = columnPropertyNames.length;
 		getTableRidget().bindToModel(rowObservables, rowBeanClass, columnPropertyNames, columnHeaders);
