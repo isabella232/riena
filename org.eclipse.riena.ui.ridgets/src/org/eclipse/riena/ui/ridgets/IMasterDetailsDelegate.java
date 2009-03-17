@@ -11,6 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
+ * <b>This is work in progress and will change.</b>
+ * <p>
  * Delegate for {@link IMasterDetailsRidget}, responsible for driving the
  * details area:
  * <ul>

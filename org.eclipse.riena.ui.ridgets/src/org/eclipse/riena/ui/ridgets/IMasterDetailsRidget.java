@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.ridgets;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 
 /**
+ * <b>This is work in progress and will change.</b>
+ * <p>
  * A ridget with two areas. The master area shows a table of objects, from which
  * one can be selected. The details are allows the user to edit some details of
  * the currently selected object/row.
