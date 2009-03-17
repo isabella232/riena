@@ -304,6 +304,23 @@ public class RienaDefaultLnf {
 	}
 
 	/**
+	 * Returns the String value of the setting for the given key
+	 * 
+	 * @param key
+	 *            - key whose associated setting is to be returned.
+	 * @return the setting to which this setting maps the specified key, or
+	 *         <code>null</code> if the map contains no mapping for this key.
+	 */
+	public String getStringSetting(String key) {
+		Object value = getSetting(key);
+		if (value instanceof String) {
+			return (String) value;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Loads the theme specified by the given class name.
 	 * 
 	 * @param themeClassName
