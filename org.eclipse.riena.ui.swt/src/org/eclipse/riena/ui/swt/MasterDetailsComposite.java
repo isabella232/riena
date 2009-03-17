@@ -60,7 +60,9 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	public static final String BIND_ID_UPDATE = "mdUpdateButton"; //$NON-NLS-1$
 
 	private final List<Object> controls = new ArrayList<Object>();
+
 	private Table table;
+	private Composite details;
 
 	/**
 	 * TODO [ev] docs
@@ -78,17 +80,23 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 
 		setLayout(new GridLayout(1, false));
 		if (orientation == SWT.TOP) {
-			createDetails(createComposite(getDetailsStyle()));
+			details = createComposite(getDetailsStyle());
+			createDetails(details);
 		}
 		createMaster(createComposite(getMasterStyle()));
 		if (orientation == SWT.BOTTOM) {
-			createDetails(createComposite(getDetailsStyle()));
+			details = createComposite(getDetailsStyle());
+			createDetails(details);
 		}
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 	}
 
 	public final Table getTable() {
 		return table;
+	}
+
+	public final Composite getDetails() {
+		return details;
 	}
 
 	// protected methods

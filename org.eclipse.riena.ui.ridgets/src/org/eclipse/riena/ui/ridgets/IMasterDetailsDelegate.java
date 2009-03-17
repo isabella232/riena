@@ -11,8 +11,6 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * <b>This is work in progress and will change.</b>
- * <p>
  * Delegate for {@link IMasterDetailsRidget}, responsible for driving the
  * details area:
  * <ul>
@@ -79,13 +77,48 @@ public interface IMasterDetailsDelegate {
 	 */
 	Object getWorkingCopy();
 
-	//	/**
-	//	 * States whether the input is valid. For example checks if a textfield
-	//	 * should contain digits or not.
-	//	 * 
-	//	 * @return true if input is valid
-	//	 */
-	//	boolean isInputValid();
+	/**
+	 * Returns true, if there there is a difference between the two beans, with
+	 * respect to the data that is editable in the details area. Returns false
+	 * is both beans are the equal, with respect to that data.
+	 * <p>
+	 * The return value determines the enablement state of the 'update' button
+	 * in the {@link IMasterDetailsRidget}.
+	 * <p>
+	 * The minimal recommended implementation of this method is:
+	 * 
+	 * <pre>
+	 * public boolean isChanged(Object source, Object target) {
+	 * 	return true;
+	 * }
+	 * 
+	 * </pre>
+	 * 
+	 * @param source
+	 *            the source bean; never null. Holds the original values
+	 * @param target
+	 *            the target bean; never null. Holds the latest values from the
+	 *            detail area.
+	 */
+	boolean isChanged(Object source, Object target);
+
+	/**
+	 * Returns true, if the data in details area (i.e. working copy) is valid.
+	 * <p>
+	 * The minimal recommended implementation of this method is:
+	 * 
+	 * <pre>
+	 * public boolean isValid() {
+	 * 	return true;
+	 * }
+	 * </pre>
+	 * 
+	 * @param container
+	 *            an IRidgetContainer container that holds the ridgets available
+	 *            to the delegate. Invoke {@code container#getRidget(String id)}
+	 *            to obtain a reference to a ridget with that id. Never null.
+	 */
+	boolean isValid(IRidgetContainer container);
 
 	/**
 	 * Updates all details from the model.

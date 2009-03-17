@@ -160,6 +160,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.handleAdd();
 
+		assertTrue(widget.txtColumn1.isFocusControl());
+
 		assertEquals(oldSize, input.size());
 		assertEquals("", widget.txtColumn1.getText());
 		assertEquals("", widget.txtColumn2.getText());
@@ -599,6 +601,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		public MDBean getWorkingCopy() {
 			return workingCopy;
+		}
+
+		public boolean isChanged(Object source, Object target) {
+			return true;
+		}
+
+		public boolean isValid(IRidgetContainer container) {
+			return true;
 		}
 
 		public void updateDetails(IRidgetContainer container) {

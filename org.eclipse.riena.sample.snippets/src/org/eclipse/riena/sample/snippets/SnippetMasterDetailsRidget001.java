@@ -101,6 +101,17 @@ public class SnippetMasterDetailsRidget001 {
 			return workingCopy;
 		}
 
+		public boolean isChanged(Object source, Object target) {
+			Person p1 = (Person) source;
+			Person p2 = (Person) target;
+			boolean equal = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname());
+			return !equal;
+		}
+
+		public boolean isValid(IRidgetContainer container) {
+			return true;
+		}
+
 		public void updateDetails(IRidgetContainer container) {
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();

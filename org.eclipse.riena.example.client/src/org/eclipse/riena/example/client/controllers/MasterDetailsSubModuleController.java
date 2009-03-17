@@ -89,10 +89,14 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			}
 		}
 
-		//		@Override
-		//		public boolean isInputValid() {
-		//			// TODO [ev] dissalow cat and dog
-		//		}
+		public boolean isChanged(Object source, Object target) {
+			return true;
+		}
+
+		public boolean isValid(IRidgetContainer container) {
+			// TODO [ev] dissalow cat and dog
+			return true;
+		}
 	}
 
 	private List<Person> input = PersonFactory.createPersonList();
