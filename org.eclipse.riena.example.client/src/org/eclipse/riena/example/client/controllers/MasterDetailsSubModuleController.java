@@ -102,7 +102,7 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 	private List<Person> input = PersonFactory.createPersonList();
 
 	@Override
-	public void configureRidgets() {
+	public void afterBind() {
 		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
 		master.setDelegate(new PersonDelegate());
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
