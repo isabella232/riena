@@ -389,6 +389,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
 		//		checkColumnRange(columnIndex); TODO cannot check here because the uicontrol is usually not bound at this point
+		Assert.isNotNull(formatter, "column formatter cannot be null"); //$NON-NLS-1$
 		if (formatter != null) {
 			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
 		}
