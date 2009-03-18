@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.beans.Beans;
+
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
@@ -145,16 +147,22 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parentComposite = parent;
-		observeRoot();
-		C controller = createController(getNavigationNode());
-		if (controller != null) {
-			setPartName(controller.getNavigationNode().getLabel());
+		if (!Beans.isDesignTime()) {
+			observeRoot();
+			C controller = createController(getNavigationNode());
+			if (controller != null) {
+				setPartName(controller.getNavigationNode().getLabel());
+			}
+			contentComposite = createContentComposite(parent);
+		} else {
+			contentComposite = parent;
 		}
-		contentComposite = createContentComposite(parent);
 		basicCreatePartControl(contentComposite);
 		LNF_UPDATER.updateUIControls(getParentComposite());
-		createViewFacade();
-		doBinding();
+		if (!Beans.isDesignTime()) {
+			createViewFacade();
+			doBinding();
+		}
 	}
 
 	protected Composite getParentComposite() {
