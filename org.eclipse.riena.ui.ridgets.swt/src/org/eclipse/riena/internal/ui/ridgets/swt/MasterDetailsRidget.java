@@ -24,10 +24,12 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -127,7 +129,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		});
 		getApplyButtonRidget().addListener(new IActionListener() {
 			public void callback() {
-				handleUpdate();
+				if (canApply()) {
+					handleApply();
+				}
 			}
 		});
 
@@ -207,6 +211,17 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		dbc.bindValue(BeansObservables.observeValue(ridget, IMarkableRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
+	private boolean canApply() {
+		String result = delegate.isValid(this);
+		if (result != null) {
+			Shell shell = getUIControl().getShell();
+			String title = "Apply failed. ";
+			String message = title + result;
+			MessageDialog.openWarning(shell, title, message);
+		}
+		return result == null;
+	}
+
 	private void clearSelection() {
 		updateDetails(delegate.createWorkingCopy());
 		editable = null;
@@ -277,7 +292,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	/**
 	 * Non API; public for testing only.
 	 */
-	public void handleUpdate() {
+	public void handleApply() {
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
 		delegate.copyBean(delegate.getWorkingCopy(), editable);

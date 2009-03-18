@@ -22,12 +22,14 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -48,18 +50,19 @@ public class SnippetMasterDetailsRidget001 {
 
 		@Override
 		protected void createDetails(Composite parent) {
-			GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).equalWidth(false).applyTo(parent);
+			GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).spacing(10, 10).equalWidth(false).applyTo(
+					parent);
 			GridDataFactory hFill = GridDataFactory.fillDefaults().grab(true, false);
-
-			UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
-			Text txtFirst = UIControlsFactory.createText(parent);
-			hFill.applyTo(txtFirst);
-			addUIControl(txtFirst, "txtFirst"); //$NON-NLS-1$
 
 			UIControlsFactory.createLabel(parent, "Last Name:"); //$NON-NLS-1$
 			Text txtLast = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtLast);
 			addUIControl(txtLast, "txtLast"); //$NON-NLS-1$
+
+			UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
+			Text txtFirst = UIControlsFactory.createText(parent);
+			hFill.applyTo(txtFirst);
+			addUIControl(txtFirst, "txtFirst"); //$NON-NLS-1$
 		}
 
 		@Override
@@ -76,13 +79,14 @@ public class SnippetMasterDetailsRidget001 {
 		private final Person workingCopy = createWorkingCopy();
 
 		public void configureRidgets(IRidgetContainer container) {
+			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
+			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
+			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
+			txtLast.updateFromModel();
+
 			ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
-
-			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
-			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
-			txtLast.updateFromModel();
 		}
 
 		public Person copyBean(Object source, Object target) {
@@ -108,8 +112,12 @@ public class SnippetMasterDetailsRidget001 {
 			return !equal;
 		}
 
-		public boolean isValid(IRidgetContainer container) {
-			return true;
+		public String isValid(IRidgetContainer container) {
+			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
+			if (txtLast.isErrorMarked()) {
+				return "'Last Name' is not valid."; //$NON-NLS-1$
+			}
+			return null;
 		}
 
 		public void updateDetails(IRidgetContainer container) {
@@ -129,8 +137,8 @@ public class SnippetMasterDetailsRidget001 {
 		IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
 		ridget.setDelegate(new PersonDelegate());
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
-		String[] properties = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME };
-		String[] headers = { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
+		String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.bindToModel(input, Person.class, properties, headers);
 
 		shell.pack();

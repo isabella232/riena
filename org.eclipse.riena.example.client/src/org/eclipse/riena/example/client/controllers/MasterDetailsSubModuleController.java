@@ -19,7 +19,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -27,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -54,6 +55,7 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 
 			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
 			txtLast.setMandatory(true);
+			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
@@ -99,22 +101,12 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			return !equals;
 		}
 
-		public boolean isValid(IRidgetContainer container) {
-			for (IRidget ridget : container.getRidgets()) {
-				if (ridget instanceof IMarkableRidget) {
-					IMarkableRidget mr = (IMarkableRidget) ridget;
-					if (mr.isMandatory()) {
-						System.out.println("mandatory");
-						return false;
-					}
-					if (mr.isErrorMarked()) {
-						System.out.println("error");
-						return false;
-					}
-				}
+		public String isValid(IRidgetContainer container) {
+			ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
+			if (txtLast.isErrorMarked()) {
+				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
-			// TODO [ev] dissalow cat and dog
-			return true;
+			return null;
 		}
 	}
 

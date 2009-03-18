@@ -12,6 +12,12 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
@@ -20,11 +26,6 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -52,7 +53,7 @@ public class MasterDetailsSubModuleView extends SubModuleView<MasterDetailsSubMo
 
 		MasterDetailsComposite mdComposite = new MasterDetailsComposite(result, SWT.NONE, SWT.BOTTOM) {
 			protected void createDetails(Composite parent) {
-				GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(parent);
+				GridLayoutFactory.fillDefaults().numColumns(2).spacing(10, 10).equalWidth(false).applyTo(parent);
 
 				UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
 				Text txtFirst = UIControlsFactory.createText(parent);

@@ -103,13 +103,13 @@ public interface IMasterDetailsDelegate {
 	boolean isChanged(Object source, Object target);
 
 	/**
-	 * Returns true, if the data in details area (i.e. working copy) is valid.
+	 * Returns null, if the data in details area (i.e. working copy) is valid.
 	 * <p>
 	 * The minimal recommended implementation of this method is:
 	 * 
 	 * <pre>
-	 * public boolean isValid() {
-	 * 	return true;
+	 * public String isValid() {
+	 * 	return null;
 	 * }
 	 * </pre>
 	 * 
@@ -117,8 +117,10 @@ public interface IMasterDetailsDelegate {
 	 *            an IRidgetContainer container that holds the ridgets available
 	 *            to the delegate. Invoke {@code container#getRidget(String id)}
 	 *            to obtain a reference to a ridget with that id. Never null.
+	 * @return null if the data is valid; an error message if the data is
+	 *         invalid
 	 */
-	boolean isValid(IRidgetContainer container);
+	String isValid(IRidgetContainer container);
 
 	/**
 	 * Updates all details from the model.

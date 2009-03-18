@@ -170,7 +170,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		widget.txtColumn2.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "B\r");
 
-		ridget.handleUpdate();
+		ridget.handleApply();
 
 		MDBean newEntry = input.get(oldSize);
 		assertEquals(oldSize + 1, input.size());
@@ -213,7 +213,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(widget.getDisplay(), "A\r");
 		widget.txtColumn2.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "B\r");
-		ridget.handleUpdate();
+		ridget.handleApply();
 
 		assertEquals(3, input.size());
 		assertEquals("A", input.get(1).getColumn1());
@@ -616,8 +616,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			return true;
 		}
 
-		public boolean isValid(IRidgetContainer container) {
-			return true;
+		public String isValid(IRidgetContainer container) {
+			return null;
 		}
 
 		public void updateDetails(IRidgetContainer container) {
