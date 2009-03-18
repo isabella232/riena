@@ -19,6 +19,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -36,9 +37,10 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 public class MasterDetailsSubModuleController extends SubModuleController {
 
 	/**
-	 * TODO [ev] javadoc
+	 * Setup the ridgets for editing a person (text ridgets for name, single
+	 * choice ridget for gender, multiple choice ridgets for pets).
 	 */
-	public static final class PersonDelegate implements IMasterDetailsDelegate {
+	private static final class PersonDelegate implements IMasterDetailsDelegate {
 
 		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
 
@@ -90,10 +92,27 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		}
 
 		public boolean isChanged(Object source, Object target) {
-			return true;
+			Person p1 = (Person) source;
+			Person p2 = (Person) target;
+			boolean equals = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname())
+					&& p1.getGender().equals(p2.getGender()) && p1.getPets().equals(p2.getPets());
+			return !equals;
 		}
 
 		public boolean isValid(IRidgetContainer container) {
+			for (IRidget ridget : container.getRidgets()) {
+				if (ridget instanceof IMarkableRidget) {
+					IMarkableRidget mr = (IMarkableRidget) ridget;
+					if (mr.isMandatory()) {
+						System.out.println("mandatory");
+						return false;
+					}
+					if (mr.isErrorMarked()) {
+						System.out.println("error");
+						return false;
+					}
+				}
+			}
 			// TODO [ev] dissalow cat and dog
 			return true;
 		}
