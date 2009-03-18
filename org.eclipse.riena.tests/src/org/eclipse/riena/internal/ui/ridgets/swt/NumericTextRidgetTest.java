@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -365,7 +366,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("0", ridget.getText());
 		assertEquals(Integer.valueOf(0), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "0", "47");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "0", "47"),
+				new PropertyChangeEvent(ridget, "textAfter", "0", "47"));
 
 		UITestHelper.sendString(display, "\r");
 		UITestHelper.readAndDispatch(control);
@@ -384,7 +386,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "47", "471");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "47", "471"),
+				new PropertyChangeEvent(ridget, "textAfter", "47", "471"));
 
 		UITestHelper.sendString(display, "\t");
 
@@ -416,7 +419,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("4", ridget.getText());
 		assertEquals(Integer.valueOf(4), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "4", "47");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "4", "47"),
+				new PropertyChangeEvent(ridget, "textAfter", "4", "47"));
 
 		UITestHelper.sendString(display, "7");
 
@@ -425,7 +429,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(47), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "47", "471");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "47", "471"),
+				new PropertyChangeEvent(ridget, "textAfter", "47", "471"));
 
 		UITestHelper.sendString(display, "1");
 
@@ -434,7 +439,9 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf(471), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "471", localize("4.711"));
+		expectPropertyChangeEvents(
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "471", localize("4.711")),
+				new PropertyChangeEvent(ridget, "textAfter", "471", localize("4.711")));
 
 		UITestHelper.sendString(display, "1");
 
@@ -443,7 +450,9 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals(localize("4.711"), ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, localize("4.711"), "471");
+		expectPropertyChangeEvents(
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, localize("4.711"), "471"),
+				new PropertyChangeEvent(ridget, "textAfter", localize("4.711"), "471"));
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
 		UITestHelper.sendString(display, "\b");
@@ -453,7 +462,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("471", ridget.getText());
 		assertEquals(Integer.valueOf("471"), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "471", "47");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "471", "47"),
+				new PropertyChangeEvent(ridget, "textAfter", "471", "47"));
 
 		UITestHelper.sendString(display, String.valueOf(SWT.DEL));
 
@@ -471,7 +481,8 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertEquals("47", ridget.getText());
 		assertEquals(Integer.valueOf(4711), bean.getValue());
 
-		expectPropertyChangeEvent(ITextRidget.PROPERTY_TEXT, "47", "4");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "47", "4"),
+				new PropertyChangeEvent(ridget, "textAfter", "47", "4"));
 
 		UITestHelper.sendString(display, "\b");
 

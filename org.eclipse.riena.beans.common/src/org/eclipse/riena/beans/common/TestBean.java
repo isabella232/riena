@@ -21,6 +21,7 @@ public class TestBean {
 	public static final String PROPERTY = "property"; //$NON-NLS-1$
 
 	private Object property;
+	private int setCount;
 
 	/**
 	 * @return The property.
@@ -36,6 +37,14 @@ public class TestBean {
 	 *            The new property value.
 	 */
 	public void setProperty(Object property) {
+		setCount++;
 		this.property = property;
+	}
+
+	/**
+	 * Returns the number of calls to {@code setProperty(...)}.
+	 */
+	public int getSetCount() {
+		return setCount;
 	}
 }
