@@ -137,8 +137,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		});
 
 		detailRidgets = getDetailRidgets();
-		setDetailsEnabled(false);
-		getApplyButtonRidget().setEnabled(false);
+		setEnabled(false, false);
 
 		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
 		viewerSelection.addValueChangeListener(new IValueChangeListener() {
@@ -226,7 +225,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private void clearSelection() {
 		updateDetails(delegate.createWorkingCopy());
 		editable = null;
-		getApplyButtonRidget().setEnabled(false);
 	}
 
 	private ITableRidget getTableRidget() {
@@ -259,6 +257,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		return result;
 	}
 
+	private void setEnabled(boolean applyEnabled, boolean detailsEnabled) {
+		getApplyButtonRidget().setEnabled(applyEnabled);
+		for (IMarkableRidget ridget : detailRidgets) {
+			ridget.setEnabled(detailsEnabled);
+		}
+	}
+
 	private void updateDetails(Object bean) {
 		Assert.isNotNull(bean);
 		delegate.copyBean(bean, delegate.getWorkingCopy());
@@ -272,8 +277,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		getTableRidget().clearSelection();
 		editable = delegate.createWorkingCopy();
 		updateDetails(editable);
-		getApplyButtonRidget().setEnabled(false);
-		setDetailsEnabled(true);
+		setEnabled(false, true);
 		getUIControl().getDetails().setFocus();
 	}
 
@@ -287,7 +291,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		rowObservables.remove(selection);
 		getTableRidget().clearSelection();
 		clearSelection();
-		setDetailsEnabled(false);
+		setEnabled(false, false);
 	}
 
 	/**
@@ -310,17 +314,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		if (newSelection != null) { // selection changed
 			editable = newSelection;
 			updateDetails(editable);
-			getApplyButtonRidget().setEnabled(false);
-			setDetailsEnabled(true);
+			setEnabled(false, true);
 		} else { // nothing selected
 			clearSelection();
-			setDetailsEnabled(false);
-		}
-	}
-
-	public void setDetailsEnabled(boolean isEnabled) {
-		for (IMarkableRidget ridget : detailRidgets) {
-			ridget.setEnabled(isEnabled);
+			setEnabled(false, false);
 		}
 	}
 
