@@ -14,6 +14,7 @@ import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -102,7 +103,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#bindUIControl
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl
 	 *      ()
 	 */
 	@Override
@@ -114,7 +115,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
 	 *      (java.lang.Object)
 	 */
 	@Override
@@ -123,7 +124,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#unbindUIControl
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#unbindUIControl
 	 *      ()
 	 */
 	@Override

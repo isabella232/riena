@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Default implementation of an {@link ISelectableRidget}. This ridget than can

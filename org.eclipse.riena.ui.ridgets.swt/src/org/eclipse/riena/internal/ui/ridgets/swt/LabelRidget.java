@@ -15,6 +15,8 @@ import java.net.URL;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 

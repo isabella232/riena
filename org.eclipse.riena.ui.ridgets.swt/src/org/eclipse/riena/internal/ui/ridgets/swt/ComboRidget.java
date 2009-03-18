@@ -36,6 +36,8 @@ import org.eclipse.riena.ui.common.IComboEntryFactory;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 

@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.riena.ui.ridgets.IValueRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Abstract implementation of an {@link IValueRidget} for SWT.

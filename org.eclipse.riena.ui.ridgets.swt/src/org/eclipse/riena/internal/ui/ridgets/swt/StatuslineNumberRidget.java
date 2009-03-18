@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
 
 /**
@@ -71,7 +72,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#getUIControl()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#getUIControl()
 	 */
 	@Override
 	public StatuslineNumber getUIControl() {
@@ -79,7 +80,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
 	 *      (java.lang.Object)
 	 */
 	@Override
@@ -88,7 +89,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#bindUIControl
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl
 	 *      ()
 	 */
 	@Override
@@ -97,7 +98,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	}
 
 	/**
-	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidget#unbindUIControl()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#unbindUIControl()
 	 */
 	@Override
 	protected void unbindUIControl() {
