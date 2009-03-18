@@ -12,6 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -36,7 +38,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
@@ -56,22 +58,25 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	 */
 	private Object editable;
 
+	/*
+	 * Markable ridgets from the details area.
+	 */
+	private List<IMarkableRidget> detailRidgets;
+
 	public MasterDetailsRidget() {
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				// ignore these events
-				if (delegate == null || editable == null
-						|| ISelectableRidget.PROPERTY_SELECTION.equals(evt.getPropertyName())
+				if (delegate == null
+						|| editable == null
+						// ignore these events:
 						|| IMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())
 						|| IMarkableRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(evt.getPropertyName())) {
 					return;
 				}
-				// TODO [ev] query the delegate - there's an ordering bug in the text ridget
-				// that prevents this from working
-				// boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
-				// getUpdateButtonRidget().setEnabled(isChanged);
-				getUpdateButtonRidget().setEnabled(true);
+				boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
+				// System.out.println(isChanged + " : " + evt.getPropertyName() + " " + evt.getNewValue());
+				getUpdateButtonRidget().setEnabled(isChanged);
 			}
 		});
 	}
@@ -125,6 +130,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				handleUpdate();
 			}
 		});
+
+		detailRidgets = getDetailRidgets();
+		setDetailsEnabled(false);
 		getUpdateButtonRidget().setEnabled(false);
 
 		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
@@ -142,16 +150,6 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				return Boolean.valueOf(viewerSelection.getValue() != null);
 			}
 		});
-	}
-
-	public boolean isDetailsChanged() {
-		// TODO [ev] Auto-generated method stub
-		return false;
-	}
-
-	public boolean isInputValid() {
-		// TODO [ev] Auto-generated method stub
-		return true;
 	}
 
 	public Object getSelection() {
@@ -231,6 +229,20 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_UPDATE);
 	}
 
+	private List<IMarkableRidget> getDetailRidgets() {
+		List<IMarkableRidget> result = new ArrayList<IMarkableRidget>();
+		for (IRidget ridget : getRidgets()) {
+			if (ridget instanceof IMarkableRidget) {
+				result.add((IMarkableRidget) ridget);
+			}
+		}
+		result.remove(getAddButtonRidget());
+		result.remove(getRemoveButtonRidget());
+		result.remove(getUpdateButtonRidget());
+		result.remove(getTableRidget());
+		return result;
+	}
+
 	private void updateDetails(Object bean) {
 		Assert.isNotNull(bean);
 		delegate.copyBean(bean, delegate.getWorkingCopy());
@@ -245,6 +257,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		editable = delegate.createWorkingCopy();
 		updateDetails(editable);
 		getUpdateButtonRidget().setEnabled(false);
+		setDetailsEnabled(true);
 		getUIControl().getDetails().setFocus();
 	}
 
@@ -258,6 +271,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		rowObservables.remove(selection);
 		getTableRidget().clearSelection();
 		clearSelection();
+		setDetailsEnabled(false);
 	}
 
 	/**
@@ -267,7 +281,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
 		delegate.copyBean(delegate.getWorkingCopy(), editable);
-		if (!rowObservables.contains(editable)) { // add
+		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
 			setSelection(editable);
 		} else { // update
@@ -276,12 +290,20 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	private void handleSelectionChange(Object newSelection) {
-		if (newSelection != null) {
+		if (newSelection != null) { // selection changed
 			editable = newSelection;
 			updateDetails(editable);
 			getUpdateButtonRidget().setEnabled(false);
-		} else {
+			setDetailsEnabled(true);
+		} else { // nothing selected
 			clearSelection();
+			setDetailsEnabled(false);
+		}
+	}
+
+	public void setDetailsEnabled(boolean isEnabled) {
+		for (IMarkableRidget ridget : detailRidgets) {
+			ridget.setEnabled(isEnabled);
 		}
 	}
 
