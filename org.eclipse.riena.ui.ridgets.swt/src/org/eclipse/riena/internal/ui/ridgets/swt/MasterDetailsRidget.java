@@ -76,7 +76,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				}
 				boolean isChanged = delegate.isChanged(editable, delegate.getWorkingCopy());
 				// System.out.println(isChanged + " : " + evt.getPropertyName() + " " + evt.getNewValue());
-				getUpdateButtonRidget().setEnabled(isChanged);
+				getApplyButtonRidget().setEnabled(isChanged);
 			}
 		});
 	}
@@ -115,7 +115,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	public final void configureRidgets() {
 		((TableRidget) getTableRidget()).setDelegate(new TablePreparer());
 
-		getAddButtonRidget().addListener(new IActionListener() {
+		getNewButtonRidget().addListener(new IActionListener() {
 			public void callback() {
 				handleAdd();
 			}
@@ -125,7 +125,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				handleRemove();
 			}
 		});
-		getUpdateButtonRidget().addListener(new IActionListener() {
+		getApplyButtonRidget().addListener(new IActionListener() {
 			public void callback() {
 				handleUpdate();
 			}
@@ -133,7 +133,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 		detailRidgets = getDetailRidgets();
 		setDetailsEnabled(false);
-		getUpdateButtonRidget().setEnabled(false);
+		getApplyButtonRidget().setEnabled(false);
 
 		final IObservableValue viewerSelection = getTableRidget().getSingleSelectionObservable();
 		viewerSelection.addValueChangeListener(new IValueChangeListener() {
@@ -210,23 +210,23 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	private void clearSelection() {
 		updateDetails(delegate.createWorkingCopy());
 		editable = null;
-		getUpdateButtonRidget().setEnabled(false);
+		getApplyButtonRidget().setEnabled(false);
 	}
 
 	private ITableRidget getTableRidget() {
 		return (ITableRidget) getRidget(MasterDetailsComposite.BIND_ID_TABLE);
 	}
 
-	private IActionRidget getAddButtonRidget() {
-		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_ADD);
+	private IActionRidget getNewButtonRidget() {
+		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_NEW);
 	}
 
 	private IActionRidget getRemoveButtonRidget() {
 		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_REMOVE);
 	}
 
-	private IActionRidget getUpdateButtonRidget() {
-		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_UPDATE);
+	private IActionRidget getApplyButtonRidget() {
+		return (IActionRidget) getRidget(MasterDetailsComposite.BIND_ID_APPLY);
 	}
 
 	private List<IMarkableRidget> getDetailRidgets() {
@@ -236,9 +236,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 				result.add((IMarkableRidget) ridget);
 			}
 		}
-		result.remove(getAddButtonRidget());
+		result.remove(getNewButtonRidget());
 		result.remove(getRemoveButtonRidget());
-		result.remove(getUpdateButtonRidget());
+		result.remove(getApplyButtonRidget());
 		result.remove(getTableRidget());
 		return result;
 	}
@@ -256,7 +256,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		getTableRidget().clearSelection();
 		editable = delegate.createWorkingCopy();
 		updateDetails(editable);
-		getUpdateButtonRidget().setEnabled(false);
+		getApplyButtonRidget().setEnabled(false);
 		setDetailsEnabled(true);
 		getUIControl().getDetails().setFocus();
 	}
@@ -287,14 +287,14 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		} else { // update
 			getTableRidget().updateFromModel();
 		}
-		getUpdateButtonRidget().setEnabled(false);
+		getApplyButtonRidget().setEnabled(false);
 	}
 
 	private void handleSelectionChange(Object newSelection) {
 		if (newSelection != null) { // selection changed
 			editable = newSelection;
 			updateDetails(editable);
-			getUpdateButtonRidget().setEnabled(false);
+			getApplyButtonRidget().setEnabled(false);
 			setDetailsEnabled(true);
 		} else { // nothing selected
 			clearSelection();

@@ -39,7 +39,6 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * 
  * @see IMasterDetailsRidget
  */
-// TODO [ev] rename to AbstractMasterDetailsComposite?
 public abstract class MasterDetailsComposite extends Composite implements IComplexComponent {
 
 	/**
@@ -47,17 +46,17 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	 */
 	public static final String BIND_ID_TABLE = "mdTable"; //$NON-NLS-1$
 	/**
-	 * Binding id of the add button {@value} .
+	 * Binding id of the new button {@value} .
 	 */
-	public static final String BIND_ID_ADD = "mdAddButton"; //$NON-NLS-1$
+	public static final String BIND_ID_NEW = "mdNewButton"; //$NON-NLS-1$
 	/**
 	 * Binding id of the remove button {@value} .
 	 */
 	public static final String BIND_ID_REMOVE = "mdRemoveButton"; //$NON-NLS-1$
 	/**
-	 * Binding id of the update button {@value} .
+	 * Binding id of the apply button {@value} .
 	 */
-	public static final String BIND_ID_UPDATE = "mdUpdateButton"; //$NON-NLS-1$
+	public static final String BIND_ID_APPLY = "mdApplyButton"; //$NON-NLS-1$
 
 	private final List<Object> controls = new ArrayList<Object>();
 
@@ -169,12 +168,12 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		buttonLayout.marginRight = 0;
 		buttonLayout.fill = true;
 		compButton.setLayout(buttonLayout);
-		Button btnAdd = UIControlsFactory.createButton(compButton, "Add"); //$NON-NLS-1$
-		addUIControl(btnAdd, BIND_ID_ADD);
+		Button btnAdd = UIControlsFactory.createButton(compButton, "New"); //$NON-NLS-1$
+		addUIControl(btnAdd, BIND_ID_NEW);
 		Button btnRemove = UIControlsFactory.createButton(compButton, "Remove"); //$NON-NLS-1$
 		addUIControl(btnRemove, BIND_ID_REMOVE);
-		Button btnUpdate = UIControlsFactory.createButton(compButton, "Update"); //$NON-NLS-1$
-		addUIControl(btnUpdate, BIND_ID_UPDATE);
+		Button btnUpdate = UIControlsFactory.createButton(compButton, "Apply"); //$NON-NLS-1$
+		addUIControl(btnUpdate, BIND_ID_APPLY);
 	}
 
 	private Composite createComposite(int style) {
