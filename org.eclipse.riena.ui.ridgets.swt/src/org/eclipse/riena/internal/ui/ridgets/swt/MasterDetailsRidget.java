@@ -285,8 +285,9 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 			rowObservables.add(editable);
 			setSelection(editable);
 		} else { // update
-			getUpdateButtonRidget().setEnabled(false);
+			getTableRidget().updateFromModel();
 		}
+		getUpdateButtonRidget().setEnabled(false);
 	}
 
 	private void handleSelectionChange(Object newSelection) {
