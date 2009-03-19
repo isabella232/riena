@@ -307,7 +307,10 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		} else { // update
 			getTableRidget().updateFromModel();
 		}
-		getApplyButtonRidget().setEnabled(false);
+		setEnabled(false, false);
+		Table table = getUIControl().getTable();
+		table.select(table.getSelectionIndex());
+		table.setFocus();
 	}
 
 	private void handleSelectionChange(Object newSelection) {
