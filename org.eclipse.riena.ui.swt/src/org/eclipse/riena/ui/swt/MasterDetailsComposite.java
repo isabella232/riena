@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -82,18 +83,31 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
 		}
-		createMaster(createComposite(getMasterStyle()));
+		Composite master = createComposite(getMasterStyle());
+		createMaster(master);
 		if (orientation == SWT.BOTTOM) {
 			details = createComposite(getDetailsStyle());
 			createDetails(details);
 		}
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		// master.setBackground(master.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+		// details.setBackground(details.getDisplay().getSystemColor(SWT.COLOR_RED));
 	}
 
+	/**
+	 * Returns the Table control of the 'master' area/
+	 * 
+	 * @return a Table; never null
+	 */
 	public final Table getTable() {
 		return table;
 	}
 
+	/**
+	 * Returns the 'details' composite.
+	 * 
+	 * @return a Composite; never null
+	 */
 	public final Composite getDetails() {
 		return details;
 	}
@@ -119,9 +133,103 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	}
 
 	/**
+	 * Creates the 'New' Button. Subclasses may override.
+	 * 
+	 * @param compButton
+	 *            the parent composite; never null
+	 * 
+	 * @return a Button or null. If this returns null you are responsible for
+	 *         adding a button with the binding id {@link #BIND_ID_NEW} to this
+	 *         composite elsewhere.
+	 */
+	protected Button createButtonNew(Composite compButton) {
+		return UIControlsFactory.createButton(compButton, "New"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates the 'Remove' Button. Subclasses may override.
+	 * 
+	 * @param compButton
+	 *            the parent composite; never null
+	 * 
+	 * @return a Button or null. If this returns null you are responsible for
+	 *         adding a button with the binding id {@link #BIND_ID_REMOVE} to
+	 *         this composite elsewhere.
+	 */
+	protected Button createButtonRemove(Composite compButton) {
+		return UIControlsFactory.createButton(compButton, "Remove"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates the 'Apply' Button. Subclasses may override.
+	 * 
+	 * @param compButton
+	 *            the parent composite; never null
+	 * 
+	 * @return a Button or null. If this returns null you are responsible for
+	 *         adding a button with the binding id {@link #BIND_ID_APPLY} to
+	 *         this control elsewhere.
+	 */
+	protected Button createButtonApply(Composite compButton) {
+		return UIControlsFactory.createButton(compButton, "Apply"); //$NON-NLS-1$
+	}
+
+	/**
 	 * TODO [ev] docs
+	 * 
+	 * @param parent
+	 */
+	protected void createButtons(Composite parent) {
+		Composite compButton = UIControlsFactory.createComposite(parent);
+		// compButton.setBackground(compButton.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+		GridDataFactory.fillDefaults().applyTo(compButton);
+		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
+		buttonLayout.marginTop = 0;
+		buttonLayout.marginLeft = 0;
+		buttonLayout.marginRight = 0;
+		buttonLayout.fill = true;
+		compButton.setLayout(buttonLayout);
+		Button btnNew = createButtonNew(compButton);
+		if (btnNew != null) {
+			addUIControl(btnNew, BIND_ID_NEW);
+		}
+		Button btnRemove = createButtonRemove(compButton);
+		if (btnRemove != null) {
+			addUIControl(btnRemove, BIND_ID_REMOVE);
+		}
+		Button btnApply = createButtonApply(compButton);
+		if (btnApply != null) {
+			addUIControl(btnApply, BIND_ID_APPLY);
+		}
+	}
+
+	/**
+	 * Subclasses must implement this method to create the details area.
 	 */
 	protected abstract void createDetails(Composite parent);
+
+	/**
+	 * Creates the table used by this control. Subclasses may ovverride.
+	 * 
+	 * @param compTable
+	 *            a parent composite of the table; never null. It already has a
+	 *            TableColumnLayout. Do not change the layout.
+	 * @param layout
+	 *            the TableColumnLayout for this table; never null. Add
+	 *            information about the columns as necessary.
+	 * @return a Table; never null; must have SWT.SINGLE enabled. If the
+	 *         returned table has too few or too many columns, the columns will
+	 *         be re-created. If you care about the specific
+	 *         configuration/layout of the table columns, as many columns a
+	 *         needed by the ridget
+	 * @see {@code IMasterDetailsRidget#bindToModel(...)}
+	 */
+	protected Table createTable(Composite compTable, TableColumnLayout layout) {
+		Table result = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		result.setHeaderVisible(true);
+		result.setLinesVisible(true);
+		return result;
+	}
 
 	/**
 	 * Returns the style bits for the 'details' composite. Subclasses may
@@ -158,47 +266,27 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 		throw new IllegalArgumentException("unsupported orientation: " + orientation); //$NON-NLS-1$
 	}
 
-	// TODO [ev] make protected for more flexibility
-	private void createButtons(Composite parent) {
-		Composite compButton = UIControlsFactory.createComposite(parent);
-		GridDataFactory.fillDefaults().applyTo(compButton);
-		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
-		buttonLayout.marginTop = 0;
-		buttonLayout.marginLeft = 0;
-		buttonLayout.marginRight = 0;
-		buttonLayout.fill = true;
-		compButton.setLayout(buttonLayout);
-		Button btnAdd = UIControlsFactory.createButton(compButton, "New"); //$NON-NLS-1$
-		addUIControl(btnAdd, BIND_ID_NEW);
-		Button btnRemove = UIControlsFactory.createButton(compButton, "Remove"); //$NON-NLS-1$
-		addUIControl(btnRemove, BIND_ID_REMOVE);
-		Button btnUpdate = UIControlsFactory.createButton(compButton, "Apply"); //$NON-NLS-1$
-		addUIControl(btnUpdate, BIND_ID_APPLY);
-	}
-
 	private Composite createComposite(int style) {
 		Composite result = UIControlsFactory.createComposite(this, style);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(result);
 		return result;
 	}
 
-	// TODO [ev] make protected for more flexibility
 	private void createMaster(Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
-		createTable(parent);
+		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(parent);
+		createTableComposite(parent);
 		createButtons(parent);
 	}
 
-	// TODO [ev] make protected for more flexibility
-	private void createTable(Composite parent) {
+	private void createTableComposite(Composite parent) {
 		Composite compTable = UIControlsFactory.createComposite(parent);
-		compTable.setLayout(new TableColumnLayout());
-		table = new Table(compTable, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		TableColumnLayout layout = new TableColumnLayout();
+		compTable.setLayout(layout);
+		table = createTable(compTable, layout);
 		int wHint = 200;
 		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
 		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(compTable);
 		addUIControl(table, BIND_ID_TABLE);
 	}
+
 }
