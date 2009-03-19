@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,67 +218,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("B", input.get(1).getColumn2());
 	}
 
-	//	public void testClearDetails() {
-	//		IMasterDetailsRidget ridget = getRidget();
-	//		MDWidget widget = getWidget();
-	//
-	//		bindToModel(true);
-	//		ridget.setSelection(input.get(0));
-	//
-	//		assertFalse(widget.txtColumn1.getText().isEmpty());
-	//		assertFalse(widget.txtColumn2.getText().isEmpty());
-	//
-	//		ridget.clearDetails();
-	//
-	//		assertTrue(widget.txtColumn1.getText().isEmpty());
-	//		assertTrue(widget.txtColumn2.getText().isEmpty());
-	//	}
-
-	// see #testAddBean(); and #testModifyBean();
-	// public void testCopyFromDetailsToMaster() {
-	// }
-
-	//	public void testCopyFromMasterToDetails() {
-	//		IMasterDetailsRidget ridget = getRidget();
-	//		MDWidget widget = getWidget();
-	//
-	//		bindToModel(true);
-	//		ridget.setSelection(input.get(1));
-	//		widget.txtColumn1.setText("");
-	//		widget.txtColumn2.setText("");
-	//
-	//		assertEquals("", widget.txtColumn1.getText());
-	//		assertEquals("", widget.txtColumn2.getText());
-	//
-	//		ridget.copyFromMasterToDetails();
-	//
-	//		assertEquals("TestR1C1", widget.txtColumn1.getText());
-	//		assertEquals("TestR1C2", widget.txtColumn2.getText());
-	//	}
-
-	//	public void testGetWorkingCopy() {
-	//		IMasterDetailsRidget ridget = getRidget();
-	//
-	//		MDBean wc1 = (MDBean) ridget.getWorkingCopy();
-	//		MDBean wc2 = (MDBean) ridget.getWorkingCopy();
-	//		assertNotNull(wc1);
-	//		assertSame(wc1, wc2);
-	//
-	//		bindToModel(true);
-	//		ridget.setSelection(input.get(0));
-	//
-	//		assertEquals("TestR0C1", wc1.column1);
-	//		assertEquals("TestR0C2", wc1.column2);
-	//	}
-
-	public void testIsDetailsChanged() {
-		// TODO [ev] Auto-generated method stub
-	}
-
-	public void testIsInputValid() {
-		// TODO [ev] Auto-generated method stub
-	}
-
 	public void testSetSelection() {
 		IMasterDetailsRidget ridget = getRidget();
 		bindToModel(true);
@@ -312,29 +249,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, widget.getTable().getSelectionCount());
 		assertEquals("", widget.txtColumn1.getText());
 		assertEquals("", widget.txtColumn2.getText());
-	}
-
-	public void testSetSelectionFiresEvents() {
-		// TODO [ev] see Bug 268897
-		//		IMasterDetailsRidget ridget = getRidget();
-		//		MDBean item0 = input.get(0);
-		//		MDBean item1 = input.get(1);
-		//		FTPropertyChangeListener listener = new FTPropertyChangeListener();
-		//
-		//		bindToModel(true);
-		//		ridget.addPropertyChangeListener(IMasterDetailsRidget.PROPERTY_SELECTION, listener);
-		//
-		//		ridget.setSelection(item0);
-		//		assertPropertyChangeEvent(1, null, item0, listener);
-		//
-		//		ridget.setSelection(item0);
-		//		assertEquals(1, listener.count);
-		//
-		//		ridget.setSelection(item1);
-		//		assertPropertyChangeEvent(2, item0, item1, listener);
-		//
-		//		ridget.setSelection(null);
-		//		assertPropertyChangeEvent(3, item1, null, listener);
 	}
 
 	public void testSetSelectionRevealsSelection() {
@@ -402,66 +316,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("TestR0C2", widget2.txtColumn2.getText());
 	}
 
-	//	public void testCreateWorkingCopy() {
-	//		IMasterDetailsRidget ridget = getRidget();
-	//
-	//		MDBean wc1 = (MDBean) ridget.createWorkingCopy();
-	//		MDBean wc2 = (MDBean) ridget.createWorkingCopy();
-	//
-	//		assertNotSame(wc1, wc2);
-	//	}
-
-	//	public void testCopyBean() {
-	//		IMasterDetailsRidget ridget = getRidget();
-	//		MDBean source = new MDBean("sourceA", "sourceB");
-	//		MDBean target = new MDBean("targetA", "targetB");
-	//
-	//		MDBean result1 = (MDBean) ridget.copyBean(source, null);
-	//
-	//		assertNotSame(source, result1);
-	//		assertNotSame(target, result1);
-	//		assertEquals("sourceA", result1.column1);
-	//		assertEquals("sourceB", result1.column2);
-	//
-	//		MDBean result2 = (MDBean) ridget.copyBean(source, target);
-	//
-	//		assertSame(target, result2);
-	//		assertEquals("sourceA", result2.column1);
-	//		assertEquals("sourceB", result2.column2);
-	//
-	//		MDBean result3 = (MDBean) ridget.copyBean(null, target);
-	//
-	//		assertSame(target, result3);
-	//		assertEquals("", result3.column1);
-	//		assertEquals("", result3.column2);
-	//	}
-
-	//	public void testUpdateDetails() {
-	//		IMasterDetailsRidget ridget = getRidget();
-	//		MDWidget widget = (MDWidget) getWidget();
-	//		bindToModel(true);
-	//
-	//		assertNull(ridget.getSelection());
-	//
-	//		widget.txtColumn1.setText("a");
-	//		widget.txtColumn1.setText("b");
-	//		// update widget with data from current selection.
-	//		ridget.updateDetails();
-	//
-	//		assertEquals("", widget.txtColumn1.getText());
-	//		assertEquals("", widget.txtColumn2.getText());
-	//	}
-
-	public void testUpdateShowsDialogWhenRulesFail() {
-		// warning case ??
-		// error case
-		// TODO [ev] Auto-generated method stub
-	}
-
-	public void testModifiedDetailsShowWarningOnChangeSelection() {
-		// TODO [ev] Auto-generated method stub
-	}
-
 	// helping methods
 	//////////////////
 
@@ -472,14 +326,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(label0, table.getItem(i).getText(0));
 			assertEquals(label1, table.getItem(i).getText(1));
 		}
-	}
-
-	private void assertPropertyChangeEvent(int count, Object oldValue, Object newValue,
-			FTPropertyChangeListener listener) {
-		assertEquals(count, listener.count);
-		assertEquals("selection", listener.event.getPropertyName());
-		assertEquals(oldValue, listener.event.getOldValue());
-		assertEquals(newValue, listener.event.getNewValue());
 	}
 
 	private void bindToModel(boolean withUpdate) {
@@ -624,20 +470,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			for (IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
 			}
-		}
-	}
-
-	/**
-	 * PropertyChangeListener stub used for testing.
-	 */
-	private static final class FTPropertyChangeListener implements PropertyChangeListener {
-
-		int count;
-		PropertyChangeEvent event;
-
-		public void propertyChange(PropertyChangeEvent event) {
-			count++;
-			this.event = event;
 		}
 	}
 

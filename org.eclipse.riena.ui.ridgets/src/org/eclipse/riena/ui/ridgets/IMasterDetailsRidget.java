@@ -81,64 +81,6 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void bindToModel(Object rowBeansBean, String rowBeansPropertyName, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] headerNames);
 
-	//	/**
-	//	 * Should return true if one of the details of this Master Detail construct
-	//	 * has changed
-	//	 * 
-	//	 * @return true if some detail changed
-	//	 */
-	//	boolean isDetailsChanged();
-	//
-	//	/**
-	//	 * Clears the detail ridgets, that is, empty textfields, uncheck checkboxes
-	//	 * and so on.
-	//	 */
-	//	void clearDetails();
-	//
-	//	/**
-	//	 * Creates a workingCopy. The workingCopy object represents the model behind
-	//	 * the detail fields. It is always an instance of the bean class of the
-	//	 * master model.
-	//	 * 
-	//	 * @return an Object instance; never null.
-	//	 */
-	//	Object createWorkingCopy();
-	//
-	//	/**
-	//	 * States whether the input is valid. For example checks if a textfield
-	//	 * should contain digits or not.
-	//	 * 
-	//	 * @return true if input is valid
-	//	 */
-	//	boolean isInputValid();
-	//
-	//	/**
-	//	 * Copies the content of one given bean instance into another given bean
-	//	 * instance.
-	//	 * 
-	//	 * 
-	//	 * @param source
-	//	 *            The source bean. If null, a fresh instance obtained from
-	//	 *            {@link #createWorkingCopyObject()} will be used as the source.
-	//	 * @param target
-	//	 *            The target bean. If null, a fresh instance obtained from
-	//	 *            {@link #createWorkingCopyObject()} will be used as the target
-	//	 * @return returns the target bean; never null.
-	//	 */
-	//	Object copyBean(Object source, Object target);
-	//
-	//	/**
-	//	 * Updates the data shown in the 'details' area, based on the current
-	//	 * selected object in the 'master' area.
-	//	 */
-	//	void updateDetails();
-	//
-	//	/**
-	//	 * Adds a new bean instance which represents the actual content of the
-	//	 * details to the master model.
-	//	 */
-	//	void addToMaster();
-
 	/**
 	 * Returns the currently object corresponding to the currently selected row
 	 * in the ridget.
@@ -147,15 +89,6 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *         selected)
 	 */
 	Object getSelection();
-
-	//	/**
-	//	 * Returns the workingCopy object. The workingCopyObject represents the
-	//	 * model behind the detail fields.Its always an instance of the bean class
-	//	 * of the master model.
-	//	 * 
-	//	 * @return an Object; never null.
-	//	 */
-	//	Object getWorkingCopy();
 
 	/**
 	 * Set the new selection. This behaves exactly like an interactive selection
@@ -166,18 +99,4 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *            selection
 	 */
 	void setSelection(final Object newSelection);
-
-	//	/**
-	//	 * Copies the content of the actually selected master bean to the detail
-	//	 * fields.
-	//	 */
-	//	void copyFromMasterToDetails();
-	//
-	//	/**
-	//	 * Copies the content of the details into the bean behind the actual
-	//	 * selected row of the master. If nothing is selected, a new bean is added
-	//	 * to the master model.
-	//	 */
-	//	boolean copyFromDetailsToMaster();
-
 }
