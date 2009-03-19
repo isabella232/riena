@@ -260,10 +260,18 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Returns the column formatters for this ridget. Each entry in the array
+	 * corresponds to a column (i.e. 0 for the 1st column, 1 for the 2nd, etc).
+	 * If a column has no formatter associated, the array entry will be null.
+	 * The array has the length {@code numColumns}.
+	 * <p>
+	 * Implementation note: This ridget does not support columns, so this array
+	 * will be filled with null entries. Subclasses that support column
+	 * formatters must override to return an appropriate array.
 	 * 
 	 * @param numColumns
-	 * @return
+	 *            return the number of columns, an integer >= 0.
+	 * @return an array of IColumnFormatter, never null
 	 */
 	protected IColumnFormatter[] getColumnFormatters(int numColumns) {
 		return new IColumnFormatter[numColumns];
