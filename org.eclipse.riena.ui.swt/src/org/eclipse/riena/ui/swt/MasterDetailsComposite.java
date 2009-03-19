@@ -19,6 +19,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -65,14 +66,31 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	private Composite details;
 
 	/**
-	 * TODO [ev] docs
+	 * Create an instance of MasterDetailsComposite with the details area at the
+	 * bottom.
+	 * 
+	 * @param parent
+	 *            the parent Composite; not null
+	 * @param style
+	 *            the style bits; values are restricted to those supported by
+	 *            {@link Composite}
 	 */
 	public MasterDetailsComposite(Composite parent, int style) {
 		this(parent, style, SWT.BOTTOM);
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Create an instance of MasterDetailsComposite with the details area at the
+	 * top or bottom.
+	 * 
+	 * @param parent
+	 *            the parent Composite; not null
+	 * @param style
+	 *            the style bits; values are restricted to those supported by
+	 *            {@link Composite}
+	 * @param orientation
+	 *            SWT.TOP or SWT.BOTTOM, to create the details area at the top
+	 *            or bottom part of the composite
 	 */
 	public MasterDetailsComposite(Composite parent, int style, int orientation) {
 		super(parent, style);
@@ -115,15 +133,20 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	// protected methods
 	////////////////////
 
-	/**
-	 * TODO [ev] docs
-	 */
 	public final List<Object> getUIControls() {
 		return Collections.unmodifiableList(controls);
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Add a control to the list of 'bound' controls. These controls will be
+	 * bound to ridgets by the framework.
+	 * 
+	 * @param uiControl
+	 *            the UI control to bind; never null
+	 * @param bindingId
+	 *            a non-empty non-null bindind id for the control. Must be
+	 *            unique within this composite
+	 * @see #getUIControls()
 	 */
 	protected final void addUIControl(Object uiControl, String bindingId) {
 		Assert.isNotNull(uiControl);
@@ -175,32 +198,41 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Create the composite containing the buttons. Subclasses may override.
+	 * <p>
+	 * Implementation note: it is appropriate to return null and create the
+	 * Buttons somewhere else. In that case the methods createButtonNew,
+	 * createButtonRemove, createButtonApply will not be called (unless you call
+	 * them) and you are responsible to add three buttons widgets with the ids:
+	 * BIND_ID_NEW, BIND_ID_REMOVE, BIND_ID_APPLY, by invoking
+	 * {@link #addUIControl(Object, String)}.
 	 * 
 	 * @param parent
+	 * @return a Composite or null
 	 */
-	protected void createButtons(Composite parent) {
-		Composite compButton = UIControlsFactory.createComposite(parent);
-		// compButton.setBackground(compButton.getDisplay().getSystemColor(SWT.COLOR_GREEN));
-		GridDataFactory.fillDefaults().applyTo(compButton);
+	protected Composite createButtons(Composite parent) {
+		Composite result = UIControlsFactory.createComposite(parent);
+		// result.setBackground(compButton.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+		GridDataFactory.fillDefaults().applyTo(result);
 		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 		buttonLayout.marginTop = 0;
 		buttonLayout.marginLeft = 0;
 		buttonLayout.marginRight = 0;
 		buttonLayout.fill = true;
-		compButton.setLayout(buttonLayout);
-		Button btnNew = createButtonNew(compButton);
+		result.setLayout(buttonLayout);
+		Button btnNew = createButtonNew(result);
 		if (btnNew != null) {
 			addUIControl(btnNew, BIND_ID_NEW);
 		}
-		Button btnRemove = createButtonRemove(compButton);
+		Button btnRemove = createButtonRemove(result);
 		if (btnRemove != null) {
 			addUIControl(btnRemove, BIND_ID_REMOVE);
 		}
-		Button btnApply = createButtonApply(compButton);
+		Button btnApply = createButtonApply(result);
 		if (btnApply != null) {
 			addUIControl(btnApply, BIND_ID_APPLY);
 		}
+		return result;
 	}
 
 	/**
@@ -274,19 +306,23 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 
 	private void createMaster(Composite parent) {
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(parent);
-		createTableComposite(parent);
-		createButtons(parent);
+		Composite compTable = createTableComposite(parent);
+		Composite compButton = createButtons(parent);
+		if (compButton == null) {
+			((GridData) compTable.getLayoutData()).horizontalSpan = 2;
+		}
 	}
 
-	private void createTableComposite(Composite parent) {
-		Composite compTable = UIControlsFactory.createComposite(parent);
+	private Composite createTableComposite(Composite parent) {
+		Composite result = UIControlsFactory.createComposite(parent);
 		TableColumnLayout layout = new TableColumnLayout();
-		compTable.setLayout(layout);
-		table = createTable(compTable, layout);
+		result.setLayout(layout);
+		table = createTable(result, layout);
 		int wHint = 200;
 		int hHint = (table.getItemHeight() * 8) + table.getHeaderHeight();
-		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(compTable);
+		GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(result);
 		addUIControl(table, BIND_ID_TABLE);
+		return result;
 	}
 
 }
