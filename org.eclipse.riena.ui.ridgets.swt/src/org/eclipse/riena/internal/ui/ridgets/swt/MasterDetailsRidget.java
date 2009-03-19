@@ -215,8 +215,8 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		String result = delegate.isValid(this);
 		if (result != null) {
 			Shell shell = getUIControl().getShell();
-			String title = "Apply failed. ";
-			String message = title + result;
+			String title = Messages.MasterDetailsRidget_dialogTitle_applyFailed;
+			String message = title + " " + result; //$NON-NLS-1$
 			MessageDialog.openWarning(shell, title, message);
 		}
 		return result == null;

@@ -166,7 +166,7 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	 *         composite elsewhere.
 	 */
 	protected Button createButtonNew(Composite compButton) {
-		return UIControlsFactory.createButton(compButton, "New"); //$NON-NLS-1$
+		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonNew);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	 *         this composite elsewhere.
 	 */
 	protected Button createButtonRemove(Composite compButton) {
-		return UIControlsFactory.createButton(compButton, "Remove"); //$NON-NLS-1$
+		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonRemove);
 	}
 
 	/**
@@ -194,7 +194,7 @@ public abstract class MasterDetailsComposite extends Composite implements ICompl
 	 *         this control elsewhere.
 	 */
 	protected Button createButtonApply(Composite compButton) {
-		return UIControlsFactory.createButton(compButton, "Apply"); //$NON-NLS-1$
+		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonApply);
 	}
 
 	/**
