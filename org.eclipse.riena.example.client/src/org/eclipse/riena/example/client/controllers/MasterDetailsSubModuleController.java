@@ -20,6 +20,7 @@ import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
@@ -28,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -60,13 +62,17 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			txtLast.updateFromModel();
 
 			ISingleChoiceRidget gender = (ISingleChoiceRidget) container.getRidget("gender"); //$NON-NLS-1$
-			gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
-			gender.updateFromModel();
+			if (gender != null) {
+				gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, workingCopy, Person.PROPERTY_GENDER);
+				gender.updateFromModel();
+			}
 
 			IMultipleChoiceRidget pets = (IMultipleChoiceRidget) container.getRidget("pets"); //$NON-NLS-1$
-			pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
-					Person.PROPERTY_PETS);
-			pets.updateFromModel();
+			if (pets != null) {
+				pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, workingCopy,
+						Person.PROPERTY_PETS);
+				pets.updateFromModel();
+			}
 		}
 
 		public Person createWorkingCopy() {
@@ -114,12 +120,33 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
-		master.setDelegate(new PersonDelegate());
 		String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
-		master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
-		master.updateFromModel();
+
+		IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("master"); //$NON-NLS-1$
+		if (master != null) {
+			master.setDelegate(new PersonDelegate());
+			master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
+			master.updateFromModel();
+		}
+
+		IMasterDetailsRidget master2 = (IMasterDetailsRidget) getRidget("master2"); //$NON-NLS-1$
+		if (master2 != null) {
+			master2.setDelegate(new PersonDelegate());
+			master2.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
+			master2.updateFromModel();
+
+			IActionRidget actionApply = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_APPLY);
+			actionApply.setIcon("apply_h.png"); //$NON-NLS-1$
+
+			IActionRidget actionNew = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_NEW);
+			actionNew.setText(""); //$NON-NLS-1$
+			actionNew.setIcon("new_h.png"); //$NON-NLS-1$
+
+			IActionRidget actionRemove = (IActionRidget) master2.getRidget(MasterDetailsComposite.BIND_ID_REMOVE);
+			actionRemove.setText(""); //$NON-NLS-1$
+			actionRemove.setIcon("remove_h.png"); //$NON-NLS-1$
+		}
 	}
 
 }

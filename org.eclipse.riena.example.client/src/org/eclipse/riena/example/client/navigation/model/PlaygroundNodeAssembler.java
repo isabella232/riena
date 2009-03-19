@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
+import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.DialogSubModuleController;
 import org.eclipse.riena.example.client.controllers.FocusableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
@@ -29,7 +30,6 @@ import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
 import org.eclipse.riena.example.client.controllers.StatuslineSubModuleController;
 import org.eclipse.riena.example.client.controllers.SystemPropertiesSubModuleController;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
-import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextDateSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextNumericSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextSubModuleController;
@@ -45,6 +45,7 @@ import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
+import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2;
 import org.eclipse.riena.example.client.views.MessageBoxSubModuleView;
 import org.eclipse.riena.example.client.views.MessageMarkerSubModuleView;
 import org.eclipse.riena.example.client.views.NoControllerSubModuleView;
@@ -113,8 +114,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		ISubModuleNode tablexSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.compositetable"), "Composite Table"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(tablexSubModule, CompositeTableSubModuleController.class, CompositeTableSubModuleView.ID,
-				false);
+		workarea.registerDefinition(tablexSubModule, CompositeTableSubModuleController.class,
+				CompositeTableSubModuleView.ID, false);
 		playgroundModule.addChild(tablexSubModule);
 
 		ISubModuleNode dialogSubModule = new SubModuleNode(
@@ -142,6 +143,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(mdSubModule, MasterDetailsSubModuleController.class, MasterDetailsSubModuleView.ID,
 				false);
 		playgroundModule.addChild(mdSubModule);
+
+		ISubModuleNode mdSubModule2 = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.masterdetails2"), "Master/Details II"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController.class,
+				MasterDetailsSubModuleView2.ID, false);
+		playgroundModule.addChild(mdSubModule2);
 
 		ISubModuleNode messageBoxSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.messageBox"), "Message Box"); //$NON-NLS-1$ //$NON-NLS-2$
