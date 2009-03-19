@@ -11,16 +11,28 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * TODO [ev] docs
+ * An {@link IComplexRidget} describing a row for the
+ * {@link ICompositeTableRidget}.
  * <p>
- * Implemementors should subclass {@link AbstractCompositeRidget}
+ * The ICompositeTableRidget manages a list of composites, one for each row. It
+ * will also create a matching IRowRidget for each row. The developer has to
+ * provide the row composite and the row ridget. See
+ * SnippetCompositeTableRidgetNNN for examples.
+ * <p>
+ * Implemementors should subclass {@link AbstractCompositeRidget} and provide a
+ * zero argument public constructor.
  * 
+ * @see ICompositeTableRidget
  * @see AbstractCompositeRidget
+ * @see IComplexRidget
  */
 public interface IRowRidget extends IComplexRidget {
 
 	/**
 	 * Injects the data for this row.
+	 * <p>
+	 * This method will be called before {@link #configureRidgets()}, so that
+	 * the data is available at that time.
 	 * 
 	 * @param rowData
 	 *            an object with the data for this row

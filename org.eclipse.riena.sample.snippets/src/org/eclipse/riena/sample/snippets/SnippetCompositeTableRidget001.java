@@ -15,15 +15,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.riena.beans.common.Person;
-import org.eclipse.riena.beans.common.PersonFactory;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
-import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
-import org.eclipse.riena.ui.ridgets.IRowRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
@@ -33,6 +24,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonFactory;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
+import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
+import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * A composite table ridget with a row of text fields.
@@ -96,7 +97,7 @@ public class SnippetCompositeTableRidget001 {
 	/**
 	 * Row for a {@link ICompositeTableRidget}.
 	 * <p>
-	 * Implementation note: class must be public and have a zero-argument publuc
+	 * Implementation note: class must be public and have a zero-argument public
 	 * constructor. Instances will be created by reflection.
 	 */
 	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
