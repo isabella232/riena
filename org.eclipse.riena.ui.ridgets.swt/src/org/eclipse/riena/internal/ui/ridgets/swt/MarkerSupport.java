@@ -14,10 +14,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.Iterator;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.core.marker.NegativeMarker;
-import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -27,6 +23,12 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
+
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
@@ -113,7 +115,7 @@ public class MarkerSupport extends AbstractMarkerSupport {
 			preOutputBg = control.getBackground();
 			control.setBackground(color);
 		}
-		if (control instanceof Button) {
+		if (isButton(control)) {
 			control.setVisible(false);
 		}
 	}
@@ -137,7 +139,7 @@ public class MarkerSupport extends AbstractMarkerSupport {
 			control.setBackground(preOutputBg);
 			preOutputBg = null;
 		}
-		if (control instanceof Button) {
+		if (isButton(control)) {
 			control.setVisible(ridget.isVisible());
 		}
 	}
@@ -161,7 +163,7 @@ public class MarkerSupport extends AbstractMarkerSupport {
 
 	private void updateError(Control control) {
 		if (ridget.isErrorMarked() && ridget.isEnabled() && ridget.isVisible()) {
-			if (!(control instanceof Button && ridget.isOutputOnly())) {
+			if (!(isButton(control) && ridget.isOutputOnly())) {
 				addError(control);
 			} else {
 				clearError(control);
@@ -249,6 +251,10 @@ public class MarkerSupport extends AbstractMarkerSupport {
 	 */
 	private boolean skipRedrawForBug258176(Control control) {
 		return (control instanceof Combo) || (control instanceof Table) || (control instanceof List);
+	}
+
+	private boolean isButton(Control control) {
+		return control instanceof Button || ridget instanceof AbstractActionRidget;
 	}
 
 }
