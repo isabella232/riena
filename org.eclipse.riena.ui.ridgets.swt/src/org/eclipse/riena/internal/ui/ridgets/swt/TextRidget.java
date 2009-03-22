@@ -96,6 +96,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		AbstractSWTRidget.assertType(uiControl, Text.class);
 	}
 
+	/**
+	 * Returns true, if the input to this method is considered 'non empty',
+	 * false otherwise.
+	 * <p>
+	 * Subclasses may override, to provide their own notion what is considered
+	 * to be an 'non empty' String value.
+	 * 
+	 * @param input
+	 *            a String; never null
+	 * @return false if the input is considered 'empty', true otherwise
+	 */
 	protected boolean isNotEmpty(String input) {
 		return input.length() > 0;
 	}

@@ -37,7 +37,7 @@ public interface IDateTextRidget extends ITextRidget {
 	 * java.util.Date in the model.
 	 * 
 	 * @param datePattern
-	 *            The date pattern.
+	 *            The date pattern; never null
 	 */
 	void setFormat(String datePattern);
 
