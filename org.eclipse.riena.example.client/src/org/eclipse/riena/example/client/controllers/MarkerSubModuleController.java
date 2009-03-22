@@ -17,6 +17,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TestBean;
@@ -29,10 +30,12 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
@@ -58,8 +61,18 @@ public class MarkerSubModuleController extends SubModuleController {
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
 		final IDecimalTextRidget textPrice = (IDecimalTextRidget) getRidget("textPrice"); //$NON-NLS-1$
-		textPrice.setSigned(true);
+		textPrice.setSigned(false);
+		textPrice.setGrouping(true);
 		textPrice.setText(Double.toString(-29.99));
+
+		final INumericTextRidget textAmount = (INumericTextRidget) getRidget("textAmount"); //$NON-NLS-1$
+		textAmount.setSigned(false);
+		textAmount.setGrouping(true);
+		textAmount.setText("1001"); //$NON-NLS-1$
+
+		final IDateTextRidget textDate = (IDateTextRidget) getRidget("textDate"); //$NON-NLS-1$
+		textDate.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		textDate.setText(null);
 
 		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
 		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -119,9 +132,9 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
 
-		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, comboAge, choiceType,
-				choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols, buttonToggle, buttonPush,
-				buttonRadioA, buttonRadioB, buttonCheck };
+		final IMarkableRidget[] markables = new IMarkableRidget[] { textName, textPrice, textAmount, textDate,
+				comboAge, choiceType, choiceFlavor, listPersons, tablePersons, compTable, treePersons, treeWCols,
+				buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
 
 		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
@@ -139,6 +152,8 @@ public class MarkerSubModuleController extends SubModuleController {
 				if (isMandatory) {
 					textName.setText(""); //$NON-NLS-1$
 					textPrice.setText(""); //$NON-NLS-1$
+					textAmount.setText(null);
+					textDate.setText(null);
 					comboAge.setSelection("<none>"); //$NON-NLS-1$
 					choiceType.setSelection(null);
 					choiceFlavor.setSelection(null);
@@ -171,9 +186,13 @@ public class MarkerSubModuleController extends SubModuleController {
 				if (isError) {
 					textName.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
 					textPrice.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
+					textAmount.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
+					textDate.addValidationRule(alwaysWrong, ValidationTime.ON_UI_CONTROL_EDIT);
 				} else {
 					textName.removeValidationRule(alwaysWrong);
 					textPrice.removeValidationRule(alwaysWrong);
+					textAmount.removeValidationRule(alwaysWrong);
+					textDate.removeValidationRule(alwaysWrong);
 				}
 			}
 		});

@@ -14,15 +14,6 @@ import java.util.Arrays;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
@@ -40,6 +31,16 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+
+import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Example for various marker types.
@@ -112,6 +113,16 @@ public class MarkerSubModuleView extends SubModuleView<MarkerSubModuleController
 		Text textPrice = UIControlsFactory.createTextDecimal(group);
 		hFillFactory.applyTo(textPrice);
 		addUIControl(textPrice, "textPrice"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(group, "Amount:"); //$NON-NLS-1$
+		Text textAmount = UIControlsFactory.createTextNumeric(group);
+		hFillFactory.applyTo(textAmount);
+		addUIControl(textAmount, "textAmount"); //$NON-NLS-1$
+
+		UIControlsFactory.createLabel(group, "Production Date:"); //$NON-NLS-1$
+		Text textDate = UIControlsFactory.createTextDate(group);
+		hFillFactory.applyTo(textDate);
+		addUIControl(textDate, "textDate"); //$NON-NLS-1$
 
 		UIControlsFactory.createLabel(group, "Age:"); //$NON-NLS-1$
 		final Combo comboAge = UIControlsFactory.createCombo(group);
