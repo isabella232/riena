@@ -178,7 +178,7 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		ridget.setText(null);
 
-		assertEquals("0", ridget.getText());
+		assertEquals("", ridget.getText());
 	}
 
 	@Override
@@ -1108,6 +1108,23 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		assertText("-1.23^4", "\b", "-12^4");
 		assertText("-1^.234", "\b", "-^234");
 		assertText("-1.234.56^7", "\b", "-123.45^7");
+	}
+
+	public void testMandatoryMarker() {
+		INumericTextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+
+		ridget.setText("123");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
+
+		ridget.setText(null);
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setMandatory(false);
+
+		TestUtils.assertMandatoryMarker(ridget, 0, false);
 	}
 
 	// helping methods

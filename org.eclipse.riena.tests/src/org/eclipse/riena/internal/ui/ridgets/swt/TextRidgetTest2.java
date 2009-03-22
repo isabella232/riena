@@ -29,6 +29,7 @@ import org.eclipse.riena.beans.common.DateBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.tests.TestUtils;
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -1304,6 +1305,23 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(1, bean.getSetCount());
 		assertEquals(1, listener1.count);
 		assertEquals(1, listener2.count);
+	}
+
+	public void testMandatoryMarker() {
+		ITextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+
+		ridget.setText("abc");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
+
+		ridget.setText(null);
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setMandatory(false);
+
+		TestUtils.assertMandatoryMarker(ridget, 0, false);
 	}
 
 	// helping methods

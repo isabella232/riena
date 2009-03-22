@@ -11,6 +11,8 @@
 package org.eclipse.riena.tests;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 
 import junit.framework.Assert;
@@ -19,6 +21,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+
 /**
  * Utility class for tests.
  */
@@ -26,6 +31,27 @@ public final class TestUtils {
 
 	private TestUtils() {
 		// utility class
+	}
+
+	/**
+	 * Asserts that the given ridget has {@code expectedCount} mandatory markers
+	 * with the given {@code disabledState}.
+	 * 
+	 * @param ridget
+	 *            never null
+	 * @param expectedCount
+	 *            the expected count of markers
+	 * @param disabledState
+	 *            the expected disabled state value
+	 */
+	public static void assertMandatoryMarker(IMarkableRidget ridget, int expectedCount, boolean disabledState) {
+		Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+		Assert.assertEquals(expectedCount, markers.size());
+		Iterator<MandatoryMarker> iter = markers.iterator();
+		while (iter.hasNext()) {
+			boolean isDisabled = iter.next().isDisabled();
+			Assert.assertEquals(disabledState, isDisabled);
+		}
 	}
 
 	/**
@@ -104,6 +130,9 @@ public final class TestUtils {
 		checkCaret(control, after);
 	}
 
+	/**
+	 * Returns true if the Arab locale ("ar_AE") is available.
+	 */
 	public static boolean isArabLocaleAvailable() {
 		Locale arabLocale = new Locale("ar", "AE");
 		for (Locale availableLocale : Locale.getAvailableLocales()) {

@@ -284,6 +284,24 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertText("      ^", "00\t", "    00");
 	}
 
+	public void testMandatoryMarker() {
+		IDateTextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+
+		ridget.setText("31.10.2008");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
+
+		ridget.setText(null);
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setMandatory(false);
+
+		TestUtils.assertMandatoryMarker(ridget, 0, false);
+	}
+
 	// helping methods
 	//////////////////
 

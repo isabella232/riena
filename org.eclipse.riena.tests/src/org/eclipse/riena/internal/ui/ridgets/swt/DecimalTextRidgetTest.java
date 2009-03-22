@@ -121,7 +121,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setText(null);
 
-		assertEquals("0", ridget.getText());
+		assertEquals("", ridget.getText());
 	}
 
 	public void testDeleteDecimalSeparator() {
@@ -544,7 +544,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0"), bean.getValue());
 	}
 
-	public void testMandatoryMarker() {
+	public void testMandatoryMarkerFromUI() {
 		IDecimalTextRidget ridget = getRidget();
 		ridget.setDirectWriting(true);
 		Text control = getWidget();
@@ -566,6 +566,23 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isMandatory());
 		assertFalse(ridget.isDisableMandatoryMarker());
+	}
+
+	public void testMandatoryMarker() {
+		IDecimalTextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+
+		ridget.setText(localize("12,34"));
+
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
+
+		ridget.setText(null);
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setMandatory(false);
+
+		TestUtils.assertMandatoryMarker(ridget, 0, false);
 	}
 
 	public void testDisabledMarker() {

@@ -295,13 +295,13 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * <li>US - valid text: "1,234.56" or "1234.56"</li>
 	 * </ul>
 	 * <p>
-	 * Passing a null value is equivalent to {@code setText("0")}.
+	 * Passing a null value is equivalent to {@code setText("")}.
 	 * 
 	 * @see DecimalFormatSymbols#getDecimalSeparator()
 	 */
 	@Override
 	public final synchronized void setText(String text) {
-		String value = text != null ? text : "0"; //$NON-NLS-1$
+		String value = text != null ? text : ""; //$NON-NLS-1$
 		checkNumber(value);
 		super.setText(group(ungroup(value), isGrouping, isDecimal()));
 	}

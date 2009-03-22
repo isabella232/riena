@@ -88,6 +88,16 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		super.removeListeners(control);
 	}
 
+	@Override
+	protected boolean isNotEmpty(String input) {
+		boolean result = false;
+		if (pattern != null) {
+			String emptyString = new SegmentedString(pattern).toString();
+			result = !emptyString.equals(input);
+		}
+		return result;
+	}
+
 	public final void setFormat(String datePattern) {
 		removeValidationRule(validDateRule);
 		removeValidationRule(validIntermediateDateRule);
