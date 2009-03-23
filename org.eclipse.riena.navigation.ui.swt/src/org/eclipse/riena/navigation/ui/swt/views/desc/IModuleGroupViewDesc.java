@@ -14,7 +14,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
 
 /**
- * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleView
+ * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleGroupView
  */
 @ExtensionInterface
 public interface IModuleGroupViewDesc {
