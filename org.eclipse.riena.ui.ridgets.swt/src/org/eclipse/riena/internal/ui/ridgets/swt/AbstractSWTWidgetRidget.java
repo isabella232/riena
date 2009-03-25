@@ -14,6 +14,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Widget;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -27,15 +30,12 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * Ridget for an SWT widget.
  */
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IMarkableRidget {
 
-	private static Image missingImage;
 	private Widget uiControl;
 	private String toolTip = null;
 	private boolean blocked;
@@ -68,7 +68,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	/*
 	 * Do not override. Template Method Pattern: Subclasses may implement {@code
 	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
-	 * the the control when it is bound/unbound, for example to add/remove
+	 * the control when it is bound/unbound, for example to add/remove
 	 * listeners.
 	 */
 	public final void setUIControl(Object uiControl) {
