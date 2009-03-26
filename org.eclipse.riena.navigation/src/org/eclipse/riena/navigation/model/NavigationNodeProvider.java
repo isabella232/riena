@@ -106,7 +106,11 @@ public class NavigationNodeProvider implements INavigationNodeProvider, IAssembl
 
 			INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
 			if (assembler != null) {
-				INavigationNode parentNode = provideNodeHook(sourceNode, getParentTypeId(argument, assembler), null);
+				NavigationNodeId parentTypeId = getParentTypeId(argument, assembler);
+				// Call of findNode() on the result of method provideNodeHook() fixes problem for the case when the result 
+				// is not the node with typeId parentTypeId but one of the nodes parents (i.e. when the nodes assembler also 
+				// builds some of its parent nodes). 
+				INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null), parentTypeId);
 				prepareNavigationAssembler(targetId, assembler, parentNode);
 				targetNode = assembler.buildNode(targetId, argument);
 				parentNode.addChild(targetNode);
