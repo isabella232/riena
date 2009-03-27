@@ -11,11 +11,6 @@
 package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.riena.example.client.controllers.ListSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -23,6 +18,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.example.client.controllers.ListSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * SWT {@link IListRidget} sample.
@@ -46,7 +47,7 @@ public class ListSubModuleView extends SubModuleView<ListSubModuleController> {
 	// helping methods
 	// ////////////////
 
-	private Group createListGroup(Composite parent) {
+	protected Group createListGroup(Composite parent) {
 		Group group = UIControlsFactory.createGroup(parent, "&Persons:"); //$NON-NLS-1$
 		group.setLayout(new GridLayout(2, true));
 
@@ -79,6 +80,7 @@ public class ListSubModuleView extends SubModuleView<ListSubModuleController> {
 
 		UIControlsFactory.createLabel(group, "&First Name:"); //$NON-NLS-1$
 		Text textFirst = UIControlsFactory.createText(group);
+
 		fillFactory.applyTo(textFirst);
 		addUIControl(textFirst, "textFirst"); //$NON-NLS-1$
 

@@ -43,6 +43,7 @@ import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.DialogSubModuleView;
 import org.eclipse.riena.example.client.views.FocusableSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
+import org.eclipse.riena.example.client.views.ListUsingTableSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2;
@@ -132,6 +133,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		ISubModuleNode listSubModule = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.example.list"), "List"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(listSubModule, ListSubModuleController.class, ListSubModuleView.ID, false);
 		playgroundModule.addChild(listSubModule);
+
+		ISubModuleNode listUsingTableSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.listUsingTable"), "List (using Table)"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(listUsingTableSubModule, ListSubModuleController.class,
+				ListUsingTableSubModuleView.ID, false);
+		playgroundModule.addChild(listUsingTableSubModule);
 
 		ISubModuleNode markerSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$

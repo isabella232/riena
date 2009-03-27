@@ -17,6 +17,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.PersonManager;
@@ -66,7 +67,7 @@ public class ListSubModuleController extends SubModuleController {
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new TypedComparator<String>());
 		listPersons.setSortedColumn(0);
-		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, new String[] { "" }); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		listPersons.bindToModel(manager, "persons", Person.class, new String[] { "listEntry" }, null); //$NON-NLS-1$//$NON-NLS-2$
 		listPersons.updateFromModel();
 
 		listPersons.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);

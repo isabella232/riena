@@ -78,6 +78,11 @@
             name="org.eclipse.riena.example.client.views.ListSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView"
+            id="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView"
+            name="org.eclipse.riena.example.client.views.ListUsingTableSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.TextSubModuleView"
             id="org.eclipse.riena.example.client.views.TextSubModuleView"
             name="org.eclipse.riena.example.client.views.TextSubModuleView">
