@@ -19,7 +19,8 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
 /**
- *
+ * An abstract Ridget for buttons that does not depend on the class
+ * org.eclipse.swt.widgets.Button. May be used for Ridgets for custom buttons.
  */
 public abstract class AbstractActionRidget extends AbstractSWTRidget implements IActionRidget {
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
