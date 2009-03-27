@@ -8,24 +8,24 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.ridgets.swt;
 
 import java.util.Comparator;
 
-import org.eclipse.riena.ui.common.ISortableByColumn;
-
 import org.eclipse.core.runtime.Assert;
+
+import org.eclipse.riena.ui.common.ISortableByColumn;
 
 /**
  * Changes the result of the given <tt>comparator</tt> according to the
  * <tt>sortedAscending</tt> setting in the ridget.
  */
-final class SortableComparator implements Comparator<Object> {
+public final class SortableComparator implements Comparator<Object> {
 
 	private final ISortableByColumn ridget;
 	private final Comparator<Object> orgComparator;
 
-	SortableComparator(ISortableByColumn ridget, Comparator<Object> comparator) {
+	public SortableComparator(ISortableByColumn ridget, Comparator<Object> comparator) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(comparator);
 		this.ridget = ridget;
@@ -37,7 +37,7 @@ final class SortableComparator implements Comparator<Object> {
 		return ridget.isSortedAscending() ? result : result * -1;
 	}
 
-	int getSortedColumn() {
+	public int getSortedColumn() {
 		return ridget.getSortedColumn();
 	}
 }

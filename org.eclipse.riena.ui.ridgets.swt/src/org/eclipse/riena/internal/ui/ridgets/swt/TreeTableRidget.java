@@ -21,6 +21,8 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

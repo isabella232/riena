@@ -15,6 +15,8 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 
+import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
+
 /**
  * This comparator uses the values of the column the table is sorted by.
  */
