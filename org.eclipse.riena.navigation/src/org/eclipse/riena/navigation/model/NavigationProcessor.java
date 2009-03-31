@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.navigation.Activator;
@@ -37,15 +39,13 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 
-import org.eclipse.equinox.log.Logger;
-
 /**
  * Default implementation for the navigation processor
  */
 public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
-	private static int maxStacksize = 20;
+	private static int maxStacksize = 40;
 	private Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
 	private Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
@@ -61,7 +61,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				// if toActivate is module, module group or sub application
 				// the same sub module will be activated on activation of
 				// the toActivate, in any case there is nothing to do
-				buildHistory(toActivate);
 			} else {
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
 					return;
@@ -79,7 +78,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				if (allowsDeactivate(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
 						deactivate(navigationContext);
-						buildHistory(toActivate);
 						activate(navigationContext);
 					}
 				}
@@ -815,6 +813,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		for (INavigationNode<?> next : parent.getChildren()) {
 			if (next.equals(child)) {
 				next.setSelected(true);
+				if (next.isActivated()) {//remember only active subModule nodes
+					//We have a new selected child. Remember in history.
+					buildHistory(next);
+				}
 			} else {
 				next.setSelected(false);
 			}
@@ -917,7 +919,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (navigationListener.size() == 0) {
 			return;
 		}
-		INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0, histForward.size()));
+		INavigationHistoryEvent event = new NavigationHistoryEvent(histForward.subList(0, histForward.size()));
 		for (INavigationHistoryListener listener : navigationListener) {
 			listener.forwardHistoryChanged(event);
 		}
@@ -931,6 +933,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public int getHistoryBackSize() {
 		return histBack.size() - 1;
+	}
+
+	/**
+	 * Answers the currently selected navigation node in the NavigationTree
+	 * 
+	 * @return the currently selected SubModuleNode in the NavigationTree or
+	 *         null
+	 */
+	public INavigationNode<?> getSelectedNode() {
+		//always the top most histback item is the currently selected
+		return histBack.peek();
 	}
 
 	/**
@@ -977,6 +990,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public synchronized void addNavigationHistoryListener(INavigationHistoryListener listener) {
 		if (!navigationListener.contains(listener)) {
 			navigationListener.add(listener);
+			INavigationHistoryEvent event = new NavigationHistoryEvent(histBack.subList(0,
+					(histBack.size() > 0 ? histBack.size() - 1 : 0)));
+			listener.backHistoryChanged(event);
+			event = new NavigationHistoryEvent(histForward.subList(0, histForward.size()));
+			listener.forwardHistoryChanged(event);
 		}
 	}
 
