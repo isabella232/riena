@@ -68,6 +68,7 @@ public class CustomerSearchController extends SubModuleController {
 		final SearchResultContainer searchResultContainer = new SearchResultContainer();
 		kunden.bindToModel(searchResultContainer,
 				"customerList", CustomerRecordOverview.class, propertyNames, columnNames); //$NON-NLS-1$
+		kunden.updateFromModel();
 
 		((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() { //$NON-NLS-1$
 

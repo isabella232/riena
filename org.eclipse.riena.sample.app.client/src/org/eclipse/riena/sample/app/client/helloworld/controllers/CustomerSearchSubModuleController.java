@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.value.WritableValue;
+
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
@@ -95,6 +96,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 				Customer.PROPERTY_FIRST_NAME, Customer.PROPERTY_PHONE_BUSINESS };
 		tableRidget.bindToModel(searchResult, "list", Customer.class, columnProperties, new String[] { "Number", //$NON-NLS-1$ //$NON-NLS-2$
 				"Lastname", "Firstname", "phone" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		tableRidget.updateFromModel();
 
 		tableSelection = new WritableValue();
 		tableRidget.bindSingleSelectionToModel(tableSelection);

@@ -40,6 +40,7 @@ public class CustomerOverviewController extends SubModuleController {
 
 		String[] propertyNames = { "key", "value" }; //$NON-NLS-1$ //$NON-NLS-2$
 		kunden.bindToModel(overview, "entries", OverviewEntry.class, propertyNames, null); //$NON-NLS-1$
+		kunden.updateFromModel();
 
 	}
 
