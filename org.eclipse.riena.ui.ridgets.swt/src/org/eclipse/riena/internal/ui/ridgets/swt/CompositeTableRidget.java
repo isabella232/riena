@@ -51,8 +51,6 @@ import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
-import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -75,13 +73,14 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private final SelectionListener sortListener;
 
 	/**
-	 * An observable list supplied via bindToModel(...). May be null.
+	 * An observable list supplied via bindToModel(...). May be null. May change
+	 * at any time.
 	 */
-	private IObservableList rowObservables;
+	private IObservableList modelObservables;
 	/**
 	 * A copy of rowObservables as an array. This is used to feed the rows /
-	 * rowRidgets in the table. The array will be re-ordered if sorting is
-	 * applied. Never null.
+	 * rowRidgets in the table. Will be updated when #updateFromModel() is
+	 * called. The array will be re-ordered if sorting is applied. Never null.
 	 */
 	private Object[] rowValues;
 	/**
@@ -103,8 +102,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
 		sortListener = new ColumnSortListener();
-		rowValues = new Object[0];
 		isSortedAscending = true;
+		rowValues = new Object[0];
 		sortedColumn = -1;
 		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(ValueChangeEvent event) {
@@ -138,7 +137,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		if (control != null) {
 			control.addRowConstructionListener(rowToRidgetMapper);
 			control.addRowContentProvider(rowToRidgetMapper);
-			updateRows(control);
+			updateControl(control);
 			updateSelection(false);
 			control.addRowFocusListener(selectionSynchronizer);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
@@ -169,7 +168,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	@Override
 	protected List<?> getRowObservables() {
-		return rowObservables;
+		return modelObservables != null ? Arrays.asList(rowValues) : null;
 	}
 
 	public void bindToModel(IObservableList rowBeansObservables, Class<? extends Object> rowBeanClass,
@@ -178,7 +177,9 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 		unbindUIControl();
 
-		rowObservables = rowBeansObservables;
+		modelObservables = rowBeansObservables;
+		rowValues = new Object[0];
+		rowValuesUnsorted = null;
 		this.rowBeanClass = rowBeanClass;
 		this.rowRidgetClass = rowRidgetClass;
 
@@ -189,18 +190,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	public void updateFromModel() {
 		super.updateFromModel();
 		CompositeTable control = getUIControl();
-		if (control != null && rowObservables != null) {
-			control.setRedraw(false);
-			try {
-				if (rowObservables instanceof IUnboundPropertyObservable) {
-					((UnboundPropertyWritableList) rowObservables).updateFromBean();
-				}
-				updateRows(control);
-				updateSelection(true);
-			} finally {
-				control.setRedraw(true);
-			}
+		if (modelObservables != null) {
+			rowValues = modelObservables.toArray();
+		} else {
+			rowValues = new Object[0];
 		}
+		rowValuesUnsorted = null;
+		updateControl(control);
 	}
 
 	@Override
@@ -223,8 +219,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	@Override
 	public int indexOfOption(Object option) {
 		int result = -1;
-		if (option != null && rowObservables != null) {
-			result = rowObservables.indexOf(option);
+		if (option != null) {
+			result = rowIndexOfOption(option);
 		}
 		return result;
 	}
@@ -520,15 +516,17 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
-	private void updateRows(CompositeTable control) {
-		if (rowObservables != null) {
-			rowValues = rowObservables.toArray();
-		} else {
-			rowValues = new Object[0];
+	private void updateControl(CompositeTable control) {
+		if (control != null) {
+			control.setRedraw(false);
+			try {
+				control.setNumRowsInCollection(rowValues.length);
+				applyComparator();
+				updateSelection(true);
+			} finally {
+				control.setRedraw(true);
+			}
 		}
-		rowValuesUnsorted = null;
-		control.setNumRowsInCollection(rowValues.length);
-		applyComparator();
 	}
 
 	/**
@@ -555,7 +553,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 					// deleted row is selected
 					// Need to revisit this when addressing Bug 267713
 					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
-					if (rowObservables != null && rowObservables.size() > 0) {
+					if (rowValues.length > 0) {
 						setSelection(0);
 					} else {
 						clearSelection();

@@ -108,6 +108,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		final ICompositeTableRidget compTable = (ICompositeTableRidget) getRidget("compTable"); //$NON-NLS-1$
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		compTable.bindToModel(input, Person.class, RowRidget.class);
+		compTable.updateFromModel();
 
 		final ITreeRidget treePersons = (ITreeRidget) getRidget("treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);

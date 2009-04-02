@@ -23,7 +23,6 @@ import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Diffs;
-import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListDiff;
 import org.eclipse.core.databinding.observable.list.ListDiffEntry;
@@ -34,8 +33,6 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
-import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
@@ -72,7 +69,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	public final void bindMultiSelectionToModel(Object pojo, String propertyName) {
-		IObservableList observableList = new UnboundPropertyWritableList(pojo, propertyName);
+		IObservableList observableList = PojoObservables.observeList(pojo, propertyName);
 		bindMultiSelectionToModel(observableList);
 	}
 
@@ -159,20 +156,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 
 	public final void updateMultiSelectionFromModel() {
 		if (multiSelectionBinding != null) {
-			IObservable model = multiSelectionBinding.getModel();
-			if (model instanceof IUnboundPropertyObservable) {
-				((UnboundPropertyWritableList) model).updateFromBean();
-			}
 			multiSelectionBinding.updateModelToTarget();
 		}
 	}
 
 	public final void updateSingleSelectionFromModel() {
 		if (singleSelectionBinding != null) {
-			IObservable model = singleSelectionBinding.getModel();
-			if (model instanceof IUnboundPropertyObservable) {
-				((UnboundPropertyWritableList) model).updateFromBean();
-			}
 			singleSelectionBinding.updateModelToTarget();
 		}
 	}

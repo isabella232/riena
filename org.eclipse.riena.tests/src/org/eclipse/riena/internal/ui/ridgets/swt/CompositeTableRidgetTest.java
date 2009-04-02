@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -31,7 +32,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.Person;
-import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.UITestHelper;
@@ -44,7 +44,6 @@ import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -84,7 +83,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected void bindRidgetToModel() {
-		IObservableList rowObservables = new UnboundPropertyWritableList(manager, "persons");
+		IObservableList rowObservables = BeansObservables.observeList(manager, "persons");
 		getRidget().bindToModel(rowObservables, Person.class, RowRidget.class);
 	}
 
@@ -99,7 +98,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	@Override
 	public void testClearSelection() {
 		// Overrides the original test, because clear selection is not supported.
-		// Remove when Bug 267713 gets fixed.
+		// TODO [ev] Fill out when Bug 267713 gets fixed.
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
 		return;
 	}
@@ -107,7 +106,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	@Override
 	public void testGetSelectionIndex() {
 		// Overrides the original test, because clear selection is not supported.
-		// Remove when Bug 267713 gets fixed.
+		// TODO [ev] Revisit when Bug 267713 gets fixed.
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=267713
 
 		ISelectableIndexedRidget ridget = getRidget();
@@ -178,7 +177,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testContainsOption() {
-		ISelectableRidget ridget = getRidget();
+		ICompositeTableRidget ridget = getRidget();
 
 		assertTrue(ridget.containsOption(person1));
 		assertTrue(ridget.containsOption(person2));
@@ -187,12 +186,17 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		assertFalse(ridget.containsOption(null));
 		assertFalse(ridget.containsOption(new Person("", "")));
 
-		java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
-		PersonManager manager = new PersonManager(persons);
-		IObservableList rowObservables = new UnboundPropertyWritableList(manager, "persons");
-		getRidget().bindToModel(rowObservables, Person.class, RowRidget.class);
+		manager.getPersons().remove(person1);
+		manager.getPersons().remove(person2);
+
+		assertTrue(ridget.containsOption(person1));
+		assertTrue(ridget.containsOption(person2));
+		assertTrue(ridget.containsOption(person3));
+
+		ridget.updateFromModel();
 
 		assertFalse(ridget.containsOption(person1));
+		assertFalse(ridget.containsOption(person2));
 		assertTrue(ridget.containsOption(person3));
 	}
 
@@ -489,6 +493,19 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		assertTrue(ridget.isSortedAscending());
 	}
 
+	public void testBindsNeedsUpdateFromModel() {
+		ICompositeTableRidget ridget = new CompositeTableRidget();
+
+		IObservableList rowObservables = BeansObservables.observeList(manager, "persons");
+		ridget.bindToModel(rowObservables, Person.class, RowRidget.class);
+
+		assertEquals(0, ridget.getOptionCount());
+
+		ridget.updateFromModel();
+
+		assertEquals(rowObservables.size(), ridget.getOptionCount());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -547,15 +564,13 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected Object getRowValue(int i) {
-		// return getRidget().getRowObservables().get(i);
-		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		List<?> rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		return rowObservables.get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
-		// IObservableList rowObservables = getRidget().getRowObservables();
-		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		List<?> rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		Object[] elements = getRidget().getMultiSelectionObservable().toArray();
 		int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {

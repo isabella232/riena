@@ -131,6 +131,7 @@ public class SnippetCompositeTableRidget001 {
 		ICompositeTableRidget ridget = (ICompositeTableRidget) SwtRidgetFactory.createRidget(table);
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		ridget.bindToModel(input, Person.class, RowRidget.class);
+		ridget.updateFromModel();
 
 		shell.setSize(400, 160);
 		shell.open();

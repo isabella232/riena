@@ -134,6 +134,7 @@ public class SnippetCompositeTableRidget002 {
 		ICompositeTableRidget ridget = (ICompositeTableRidget) SwtRidgetFactory.createRidget(table);
 		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		ridget.bindToModel(input, Person.class, RowRidget.class);
+		ridget.updateFromModel();
 
 		// Step 2: install comparators
 		ridget.setComparator(0, new FirstNameComparator());

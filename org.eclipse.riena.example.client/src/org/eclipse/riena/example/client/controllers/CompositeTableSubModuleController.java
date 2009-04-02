@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
@@ -85,6 +86,7 @@ public class CompositeTableSubModuleController extends SubModuleController {
 		final IActionRidget buttonDump = (IActionRidget) getRidget("buttonDump"); //$NON-NLS-1$
 
 		table.bindToModel(new WritableList(input, Person.class), Person.class, RowRidget.class);
+		table.updateFromModel();
 		table.setComparator(0, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
 				Person p1 = (Person) o1;
