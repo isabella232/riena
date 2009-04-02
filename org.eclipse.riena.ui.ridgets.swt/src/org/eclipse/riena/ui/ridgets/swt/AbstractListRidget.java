@@ -71,12 +71,17 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * ridget is set to not-output-only.
 	 */
 	private Binding viewerMSB;
-
-	protected Class<?> rowBeanClass;
+	private Class<?> rowBeanClass;
+	/*
+	 * Data we received in bindToModel(...). May change without our doing.
+	 */
 	private IObservableList modelObservables;
-	// TODO [ev] make private?
-	protected IObservableList viewerObservables;
-	protected String renderingMethod;
+	/*
+	 * Data the viewer is bound to. It is updated from modelObservables on
+	 * updateFromModel().
+	 */
+	private IObservableList viewerObservables;
+	private String renderingMethod;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -261,6 +266,10 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 
 	protected boolean hasViewer() {
 		return getViewer() != null;
+	}
+
+	protected boolean hasViewerModel() {
+		return viewerObservables != null;
 	}
 
 	protected void refreshViewer() {

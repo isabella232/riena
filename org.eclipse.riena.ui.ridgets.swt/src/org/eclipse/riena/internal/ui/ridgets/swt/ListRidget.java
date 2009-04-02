@@ -62,7 +62,7 @@ public class ListRidget extends AbstractListRidget {
 		final List control = getUIControl();
 		if (control != null) {
 			viewer = new ListViewer(control);
-			if (viewerObservables != null) {
+			if (hasViewerModel()) {
 				configureViewer(viewer);
 			}
 
