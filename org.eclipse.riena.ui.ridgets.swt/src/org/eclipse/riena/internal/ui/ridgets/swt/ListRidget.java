@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -61,12 +60,11 @@ public class ListRidget extends AbstractListRidget {
 	@Override
 	protected void bindUIControl() {
 		final List control = getUIControl();
-		if (control != null && rowObservables != null) {
+		if (control != null) {
 			viewer = new ListViewer(control);
-			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
-			viewer.setLabelProvider(new ListLabelProvider(viewerCP.getKnownElements(), rowBeanClass, renderingMethod));
-			viewer.setContentProvider(viewerCP);
-			viewer.setInput(rowObservables);
+			if (viewerObservables != null) {
+				configureViewer(viewer);
+			}
 
 			updateComparator();
 			updateEnabled(isEnabled());
@@ -96,8 +94,9 @@ public class ListRidget extends AbstractListRidget {
 	protected void updateEnabled(boolean isEnabled) {
 		final String savedBackgroundKey = "oldbg"; //$NON-NLS-1$
 		if (isEnabled) {
-			if (isBound() && rowObservables != null) {
+			if (hasViewer()) {
 				refreshViewer();
+				disposeSelectionBindings();
 				createSelectionBindings();
 				List list = viewer.getList();
 				list.setBackground((Color) list.getData(savedBackgroundKey));
@@ -105,7 +104,7 @@ public class ListRidget extends AbstractListRidget {
 			}
 		} else {
 			disposeSelectionBindings();
-			if (isBound()) {
+			if (hasViewer()) {
 				refreshViewer();
 				List list = viewer.getList();
 				if (MarkerSupport.HIDE_DISABLED_RIDGET_CONTENT) {

@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Widget;
 
@@ -63,6 +67,32 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			throw new BindingException("uiControl of  must be a " + expectedClassName + " but was a " //$NON-NLS-1$ //$NON-NLS-2$
 					+ controlClassName);
 		}
+	}
+
+	// TODO [ev] docs
+	public static boolean isBean(Class<?> clazz) {
+		boolean result;
+		try {
+			// next line throws NoSuchMethodException, if no matching method found
+			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
+			result = true; // have bean
+		} catch (NoSuchMethodException e) {
+			result = false; // have pojo
+		}
+		return result;
+	}
+
+	// TODO [ev] docs
+	public static IObservableList observeList(Object pojoOrBean, String property) {
+		IObservableList result;
+		try {
+			Class<? extends Object> clazz = pojoOrBean.getClass();
+			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
+			result = BeansObservables.observeList(pojoOrBean, property); // have bean
+		} catch (NoSuchMethodException noMethod) {
+			result = PojoObservables.observeList(pojoOrBean, property); // have pojo
+		}
+		return result;
 	}
 
 	/*

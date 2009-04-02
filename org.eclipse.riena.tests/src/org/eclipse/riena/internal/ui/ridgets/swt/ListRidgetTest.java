@@ -12,10 +12,18 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.List;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.TypedComparator;
@@ -28,11 +36,6 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.List;
 
 /**
  * Tests of the class {@link ListRidget}.
@@ -121,7 +124,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 
 		java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
 		PersonManager manager = new PersonManager(persons);
-		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname" }, new String[] { "" });
+		ridget.bindToModel(manager, "persons", Person.class, new String[] { "firstname" }, new String[] { "" });
+		ridget.updateFromModel();
 
 		assertFalse(ridget.containsOption(person1));
 		assertTrue(ridget.containsOption(person3));
@@ -304,6 +308,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		ListRidget ridget = getRidget();
 
 		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname" }, new String[] { "" });
+		ridget.updateFromModel();
 		int lastItemIndex = control.getItemCount() - 1;
 
 		assertEquals(-1, ridget.getSortedColumn());
