@@ -18,12 +18,14 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.tests.UITestHelper;
@@ -33,8 +35,6 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
 import org.eclipse.riena.ui.tests.base.TestMultiSelectionBean;
 import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
 
 /**
  * Tests for the class {@link AbstractSelectableRidget} and
@@ -349,28 +349,28 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setSelection(0);
 			fail();
-		} catch (BindingException bex) {
+		} catch (RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setSelection(new int[] { 0 });
 			fail();
-		} catch (BindingException bex) {
+		} catch (RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setSelection((Object) null);
 			fail();
-		} catch (BindingException bex) {
+		} catch (RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setSelection(Collections.EMPTY_LIST);
 			fail();
-		} catch (BindingException bex) {
+		} catch (RuntimeException rex) {
 			ok();
 		}
 	}
