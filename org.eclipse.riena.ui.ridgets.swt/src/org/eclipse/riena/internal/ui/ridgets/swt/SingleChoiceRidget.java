@@ -27,13 +27,6 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.beans.common.ListBean;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -41,6 +34,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
@@ -111,7 +109,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPojo, "selectionPojo"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = new UnboundPropertyWritableList(listPojo, listPropertyName);
+		IObservableList optionValues = PojoObservables.observeList(listPojo, listPropertyName);
 		IObservableValue selectionValue = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValue);
 	}
@@ -121,7 +119,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPojo, "selectionPojo"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList list = new UnboundPropertyWritableList(new ListBean(optionValues), ListBean.PROPERTY_VALUES);
+		IObservableList list = new WritableList(optionValues, null);
 		IObservableValue selection = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
 		bindToModel(list, optionLabels, selection);
 	}
@@ -130,9 +128,6 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
-		if (optionsBinding.getModel() instanceof IUnboundPropertyObservable) {
-			((IUnboundPropertyObservable) optionsBinding.getModel()).updateFromBean();
-		}
 		optionsBinding.updateModelToTarget();
 		Object oldSelection = selectionObservable.getValue();
 		selectionBinding.updateModelToTarget();

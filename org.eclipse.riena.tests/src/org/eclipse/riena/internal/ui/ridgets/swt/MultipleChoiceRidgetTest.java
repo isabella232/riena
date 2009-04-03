@@ -19,6 +19,13 @@ import java.util.List;
 
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IChoiceRidget;
@@ -28,12 +35,6 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests for the class {@link MultipleChoiceRidget}.
@@ -108,16 +109,25 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 	public void testUpdateFromModel() throws Exception {
 		IMultipleChoiceRidget ridget = getRidget();
 		ChoiceComposite control = getWidget();
-
 		optionProvider.setOptions(Arrays.asList("a", "b", "c", "d"));
 		optionProvider.setSelectedOptions(Arrays.asList("c", "d"));
+
 		ridget.updateFromModel();
 
-		assertEquals(optionProvider.getOptions().size(), ridget.getObservableList().size());
+		int oldSize = optionProvider.getOptions().size();
+		assertEquals(oldSize, ridget.getObservableList().size());
 		assertTrue(ridget.getObservableList().containsAll(optionProvider.getOptions()));
 		assertEquals(optionProvider.getSelectedOptions().size(), ridget.getObservableSelectionList().size());
 		assertTrue(optionProvider.getSelectedOptions().containsAll(ridget.getObservableSelectionList()));
 		assertEquals(optionProvider.getSelectedOptions(), getSelectedControlValues(control));
+
+		optionProvider.remove(0);
+
+		assertEquals(oldSize, ridget.getObservableList().size());
+
+		ridget.updateFromModel();
+
+		assertEquals(oldSize - 1, ridget.getObservableList().size());
 	}
 
 	/**
@@ -725,10 +735,10 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 
 	private static final class OptionProvider {
 
-		private List<String> options = Arrays.asList("Option A", "Option B", "Option C", "Option D", "Option E",
-				"Option F");
-		private List<String> optionLabels = Arrays.asList("Option label A", "Option label B", "Option label C",
-				"Option label D", "Option label E", "Option label F");
+		private List<String> options = new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C",
+				"Option D", "Option E", "Option F"));
+		private List<String> optionLabels = new ArrayList<String>(Arrays.asList("Option label A", "Option label B",
+				"Option label C", "Option label D", "Option label E", "Option label F"));
 		private List<String> selectedOptions = Arrays.asList(options.get(0), options.get(1));
 
 		public List<String> getOptions() {
@@ -740,7 +750,7 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 
 		public void setOptions(List<String> options) {
-			this.options = options;
+			this.options = new ArrayList<String>(options);
 			optionLabels = null;
 			selectedOptions = new ArrayList<String>();
 		}
@@ -752,6 +762,13 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		public List<String> getOptionLabels() {
 			return optionLabels;
 		}
+
+		public void remove(int index) {
+			options.remove(index);
+			if (optionLabels != null) {
+				optionLabels.remove(index);
+			}
+		}
 	}
 
 	private static final class TestPropertyChangeListener implements PropertyChangeListener {
@@ -760,6 +777,6 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		public void propertyChange(PropertyChangeEvent evt) {
 			eventCounter++;
 		}
-	};
+	}
 
 }

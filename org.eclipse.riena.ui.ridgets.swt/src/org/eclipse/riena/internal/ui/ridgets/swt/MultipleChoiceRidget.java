@@ -20,18 +20,12 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.riena.beans.common.ListBean;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,6 +33,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+
+import org.eclipse.riena.beans.common.ListBean;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
@@ -107,8 +107,8 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionValues = new UnboundPropertyWritableList(listBean, listPropertyName);
-		IObservableList selectionValues = new UnboundPropertyWritableList(selectionBean, selectionPropertyName);
+		IObservableList optionValues = PojoObservables.observeList(listBean, listPropertyName);
+		IObservableList selectionValues = PojoObservables.observeList(selectionBean, selectionPropertyName);
 		bindToModel(optionValues, null, selectionValues);
 	}
 
@@ -117,9 +117,8 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionBean, "selectionBean"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList optionList = new UnboundPropertyWritableList(new ListBean(optionValues),
-				ListBean.PROPERTY_VALUES);
-		IObservableList selectionList = new UnboundPropertyWritableList(selectionBean, selectionPropertyName);
+		IObservableList optionList = PojoObservables.observeList(new ListBean(optionValues), ListBean.PROPERTY_VALUES);
+		IObservableList selectionList = PojoObservables.observeList(selectionBean, selectionPropertyName);
 		bindToModel(optionList, optionLabels, selectionList);
 	}
 
@@ -127,13 +126,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
-		if (optionsBinding.getModel() instanceof IUnboundPropertyObservable) {
-			((IUnboundPropertyObservable) optionsBinding.getModel()).updateFromBean();
-		}
 		optionsBinding.updateModelToTarget();
-		if (selectionBinding.getModel() instanceof IUnboundPropertyObservable) {
-			((IUnboundPropertyObservable) selectionBinding.getModel()).updateFromBean();
-		}
 		List<?> oldSelection = new ArrayList<Object>(selectionObservable);
 		selectionBinding.updateModelToTarget();
 		ChoiceComposite control = getUIControl();
