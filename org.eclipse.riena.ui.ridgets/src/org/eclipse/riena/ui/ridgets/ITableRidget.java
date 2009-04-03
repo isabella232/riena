@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+
 import org.eclipse.riena.ui.common.ISortableByColumn;
 
 /**
@@ -58,7 +59,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @param rowBeansBean
 	 *            A bean that has a property with a list of beans.
 	 * @param rowBeansPropertyName
-	 *            The name of the property with the list on beans.
+	 *            Property for accessing the list of beans.
 	 * @param rowBeanClass
 	 *            The class of the beans in the list.
 	 * @param columnPropertyNames

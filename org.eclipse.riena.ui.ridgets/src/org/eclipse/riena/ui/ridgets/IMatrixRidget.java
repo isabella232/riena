@@ -44,7 +44,7 @@ public interface IMatrixRidget extends IRidget {
 	 * @param rowBeansBean
 	 *            A bean that has a property with a list of beans.
 	 * @param rowBeansPropertyName
-	 *            The name of the property with the list on beans.
+	 *            Property for accessing the list of beans.
 	 * @param rowBeanClass
 	 *            The class of the beans in the list.
 	 * @param columnPropertyNames
