@@ -140,6 +140,7 @@ public class SnippetMasterDetailsRidget001 {
 		String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
 		String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.bindToModel(input, Person.class, properties, headers);
+		ridget.updateFromModel();
 
 		shell.pack();
 		shell.open();
