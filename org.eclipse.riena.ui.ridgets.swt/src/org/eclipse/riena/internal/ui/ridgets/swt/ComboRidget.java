@@ -18,6 +18,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -31,15 +32,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.common.IComboEntryFactory;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Combo;
 
 /**
  * Ridget for {@link Combo} widgets.
@@ -172,13 +172,6 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 	public void updateFromModel() {
 		assertIsBoundToModel();
 		super.updateFromModel();
-		// "internal" bindings may be null when we are unbound (no control).
-		// Therefore we need to check against null
-		if (listBindingInternal != null) {
-			if (listBindingInternal.getModel() instanceof UnboundPropertyWritableList) {
-				((UnboundPropertyWritableList) listBindingInternal.getModel()).updateFromBean();
-			}
-		}
 		// disable the selection binding, because updating the combo items
 		// causes the selection to change temporarily
 		selectionValidator.enableBinding(false);
@@ -206,16 +199,19 @@ public class ComboRidget extends AbstractSWTRidget implements IComboRidget {
 
 	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
 			String renderingMethod, Object selectionPojo, String selectionPropertyName) {
-		IObservableList listObservableValue = new UnboundPropertyWritableList(listPojo, listPropertyName);
+		IObservableList listObservableValue;
+		if (AbstractSWTWidgetRidget.isBean(rowValueClass)) {
+			listObservableValue = BeansObservables.observeList(listPojo, listPropertyName);
+		} else {
+			listObservableValue = PojoObservables.observeList(listPojo, listPropertyName);
+		}
 		IObservableValue selectionObservableValue = PojoObservables.observeValue(selectionPojo, selectionPropertyName);
-
 		bindToModel(listObservableValue, rowValueClass, renderingMethod, selectionObservableValue);
 	}
 
 	public void bindToModel(Object listPojo, String listPropertyName, Class<? extends Object> rowValueClass,
 			String renderingMethod, Object selectionPojo, String selectionPropertyName, IComboEntryFactory entryFactory) {
-		throw new UnsupportedOperationException(); // TODO implement
-
+		throw new UnsupportedOperationException();
 	}
 
 	public Object getEmptySelectionItem() {
