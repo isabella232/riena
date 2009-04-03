@@ -200,7 +200,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		doubleClickListeners.add(listener);
 	}
 
-	public void bindToModel(IObservableList rowValue, Class<? extends Object> rowBeanClass,
+	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		if (columnHeaders != null) {
 			String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
@@ -208,8 +208,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 		unbindUIControl();
 
-		this.rowBeanClass = rowBeanClass;
-		modelObservables = rowValue;
+		rowBeanClass = rowClass;
+		modelObservables = rowObservables;
 		viewerObservables = null;
 		renderingMethods = new String[columnPropertyNames.length];
 		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);
@@ -224,15 +224,15 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		IObservableList listObservableValue;
-		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
-			listObservableValue = BeansObservables.observeList(listBean, listPropertyName);
+		IObservableList rowValues;
+		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
+			rowValues = BeansObservables.observeList(listHolder, listPropertyName);
 		} else {
-			listObservableValue = PojoObservables.observeList(listBean, listPropertyName);
+			rowValues = PojoObservables.observeList(listHolder, listPropertyName);
 		}
-		bindToModel(listObservableValue, rowBeanClass, columnPropertyNames, columnHeaders);
+		bindToModel(rowValues, rowClass, columnPropertyNames, columnHeaders);
 	}
 
 	@Override

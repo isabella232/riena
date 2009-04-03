@@ -151,12 +151,12 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * <p>
 	 * Implementation note: the ListRidget ignoeres columnHeaders.
 	 */
-	public void bindToModel(IObservableList rowValues, Class<? extends Object> rowBeanClass,
-			String[] columnPropertyNames, String[] columnHeaders) {
+	public void bindToModel(IObservableList rowValues, Class<? extends Object> rowClass, String[] columnPropertyNames,
+			String[] columnHeaders) {
 
 		unbindUIControl();
 
-		this.rowBeanClass = rowBeanClass;
+		rowBeanClass = rowClass;
 		modelObservables = rowValues;
 		viewerObservables = null;
 		renderingMethod = columnPropertyNames[0];
@@ -164,10 +164,15 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		IObservableList rowValues = PojoObservables.observeList(listBean, listPropertyName);
-		bindToModel(rowValues, rowBeanClass, columnPropertyNames, columnHeaders);
+		IObservableList rowValues;
+		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
+			rowValues = BeansObservables.observeList(listHolder, listPropertyName);
+		} else {
+			rowValues = PojoObservables.observeList(listHolder, listPropertyName);
+		}
+		bindToModel(rowValues, rowClass, columnPropertyNames, columnHeaders);
 	}
 
 	@Override
