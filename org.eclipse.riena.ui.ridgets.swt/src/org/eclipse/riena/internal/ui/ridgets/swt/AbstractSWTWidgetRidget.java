@@ -15,9 +15,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.beans.PojoObservables;
-import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Widget;
 
@@ -69,7 +66,16 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	// TODO [ev] docs
+	/**
+	 * Return true if an instance of the given {@code clazz} is a bean, false
+	 * otherwise.
+	 * <p>
+	 * Implementation note: currently an instance is assumed to be a bean, if it
+	 * has an addPropertyListener(PropertyChangeListener) method.
+	 * 
+	 * @param clazz
+	 *            a non-null class value
+	 */
 	public static boolean isBean(Class<?> clazz) {
 		boolean result;
 		try {
@@ -78,19 +84,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			result = true; // have bean
 		} catch (NoSuchMethodException e) {
 			result = false; // have pojo
-		}
-		return result;
-	}
-
-	// TODO [ev] docs
-	public static IObservableList observeList(Object pojoOrBean, String property) {
-		IObservableList result;
-		try {
-			Class<? extends Object> clazz = pojoOrBean.getClass();
-			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
-			result = BeansObservables.observeList(pojoOrBean, property); // have bean
-		} catch (NoSuchMethodException noMethod) {
-			result = PojoObservables.observeList(pojoOrBean, property); // have pojo
 		}
 		return result;
 	}
