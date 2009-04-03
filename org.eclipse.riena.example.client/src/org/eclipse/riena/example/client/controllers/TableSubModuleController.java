@@ -21,6 +21,9 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
@@ -31,8 +34,6 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Controller for the {@link TableSubModuleView} example.
@@ -65,6 +66,7 @@ public class TableSubModuleController extends SubModuleController {
 		String[] columnPropertyNames = { "word", "upperCase", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String[] columnHeaders = { "Word", "Uppercase", "A Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
+		table.updateFromModel();
 		table.setComparator(0, new TypedComparator<String>());
 		table.setComparator(1, new TypedComparator<Boolean>());
 		table.setColumnSortable(2, false);
