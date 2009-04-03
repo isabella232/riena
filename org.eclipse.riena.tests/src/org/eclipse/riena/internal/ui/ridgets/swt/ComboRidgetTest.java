@@ -17,6 +17,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.core.databinding.BindingException;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.StringManager;
@@ -24,10 +29,6 @@ import org.eclipse.riena.tests.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Tests of the class {@link ComboRidget}.
@@ -288,15 +289,39 @@ public class ComboRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 	}
 
-	public void testUpdateSelection() {
-		manager.setSelectedPerson(selection1);
-
+	public void testUpdateFromModel() {
 		ComboRidget ridget = getRidget();
 		Combo control = getWidget();
 
+		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+
+		assertEquals(0, control.getItemCount());
+
+		ridget.updateFromModel();
+
+		int oldSize = manager.getPersons().size();
+		assertEquals(oldSize, control.getItemCount());
+
+		// remove 1 person
+		manager.getPersons().remove(manager.getPersons().iterator().next());
+
+		assertEquals(oldSize, control.getItemCount());
+
+		ridget.updateFromModel();
+
+		assertEquals(oldSize - 1, control.getItemCount());
+	}
+
+	public void testUpdateSelection() {
+		ComboRidget ridget = getRidget();
+		Combo control = getWidget();
+		manager.setSelectedPerson(selection1);
+
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, control.getItemCount());
+
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
+
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, control.getItemCount());
 
