@@ -12,8 +12,10 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.databinding.Binding;
@@ -21,7 +23,9 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
@@ -50,8 +54,6 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.databinding.IUnboundPropertyObservable;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
@@ -79,7 +81,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private TableViewer viewer;
 	private String[] columnHeaders;
-	private IObservableList rowObservables;
+	/*
+	 * Data we received in bindToModel(...). May change without our doing.
+	 */
+	private IObservableList modelObservables;
+	/*
+	 * Data the viewer is bound to. It is updated from modelObservables on
+	 * updateFromModel().
+	 */
+	private IObservableList viewerObservables;
+
 	private Class<?> rowBeanClass;
 	private String[] renderingMethods;
 
@@ -125,25 +136,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	@Override
 	protected void bindUIControl() {
 		final Table control = getUIControl();
-		if (control != null && rowObservables != null) {
-			if (delegate != null) {
-				delegate.prepareTable(control, renderingMethods.length);
-			}
-			checkColumns(control);
+		if (control != null) {
 			viewer = new TableViewer(control);
-			final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
-			IObservableMap[] attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass,
-					renderingMethods);
-			IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
-			viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));
-			viewer.setContentProvider(viewerCP);
-
-			applyColumnsMoveable(control);
-			applyTableColumnHeaders(control);
-			applyComparator();
-			applyEraseListener();
-
-			viewer.setInput(rowObservables);
+			configureControl(control);
+			if (viewerObservables != null) {
+				configureViewer(viewer);
+			}
 
 			dbc = new DataBindingContext();
 			// viewer to single selection binding
@@ -186,7 +184,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	@Override
 	protected java.util.List<?> getRowObservables() {
-		return rowObservables;
+		return viewerObservables;
 	}
 
 	@Override
@@ -202,7 +200,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		doubleClickListeners.add(listener);
 	}
 
-	public void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
+	public void bindToModel(IObservableList rowValue, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
 		if (columnHeaders != null) {
 			String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
@@ -211,7 +209,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		unbindUIControl();
 
 		this.rowBeanClass = rowBeanClass;
-		rowObservables = rowBeansObservable;
+		modelObservables = rowValue;
+		viewerObservables = null;
 		renderingMethods = new String[columnPropertyNames.length];
 		System.arraycopy(columnPropertyNames, 0, renderingMethods, 0, renderingMethods.length);
 
@@ -227,34 +226,34 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		IObservableList listObservableValue = new UnboundPropertyWritableList(listBean, listPropertyName);
+		IObservableList listObservableValue;
+		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
+			listObservableValue = BeansObservables.observeList(listBean, listPropertyName);
+		} else {
+			listObservableValue = PojoObservables.observeList(listBean, listPropertyName);
+		}
 		bindToModel(listObservableValue, rowBeanClass, columnPropertyNames, columnHeaders);
 	}
 
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
+		if (modelObservables != null) {
+			List<Object> copy = new ArrayList<Object>(modelObservables);
+			viewerObservables = new WritableList(copy, rowBeanClass);
+		}
 		if (viewer != null) {
-			// prevent flicker during update
-			viewer.getControl().setRedraw(false);
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-			try {
-				if (rowObservables instanceof IUnboundPropertyObservable) {
-					((UnboundPropertyWritableList) rowObservables).updateFromBean();
-				}
-				TableRidgetLabelProvider labelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
-				IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
-				labelProvider.setFormatters(formatters);
-				viewer.refresh(true);
-			} finally {
-				viewer.setSelection(currentSelection);
-				viewer.getControl().setRedraw(true);
+			if (!isViewerConfigured()) {
+				configureControl(viewer.getTable());
+				configureViewer(viewer);
+			} else {
+				refreshViewer(viewer);
 			}
 		}
 	}
 
 	public IObservableList getObservableList() {
-		return rowObservables;
+		return viewerObservables;
 	}
 
 	public void removeDoubleClickListener(IActionListener listener) {
@@ -492,6 +491,33 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
+	private void configureControl(Table control) {
+		if (renderingMethods != null) {
+			if (delegate != null) {
+				delegate.prepareTable(control, renderingMethods.length);
+			}
+			checkColumns(control);
+		}
+		applyColumnsMoveable(control);
+		applyTableColumnHeaders(control);
+		applyComparator();
+		applyEraseListener();
+	}
+
+	private void configureViewer(TableViewer viewer) {
+		ObservableListContentProvider viewerCP = new ObservableListContentProvider();
+		IObservableMap[] attrMap;
+		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
+			attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, renderingMethods);
+		} else {
+			attrMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, renderingMethods);
+		}
+		IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
+		viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));
+		viewer.setContentProvider(viewerCP);
+		viewer.setInput(viewerObservables);
+	}
+
 	private void disposeMultipleSelectionBinding() {
 		if (viewerMSB != null) { // implies dbc != null
 			viewerMSB.dispose();
@@ -510,6 +536,24 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 		}
 		return result;
+	}
+
+	private boolean isViewerConfigured() {
+		return viewer.getLabelProvider() instanceof TableRidgetLabelProvider;
+	}
+
+	private void refreshViewer(TableViewer viewer) {
+		viewer.getControl().setRedraw(false); // prevent flicker during update
+		StructuredSelection currentSelection = new StructuredSelection(getSelection());
+		try {
+			TableRidgetLabelProvider labelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
+			IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
+			labelProvider.setFormatters(formatters);
+			viewer.setInput(viewerObservables);
+		} finally {
+			viewer.setSelection(currentSelection);
+			viewer.getControl().setRedraw(true);
+		}
 	}
 
 	// helping classes
