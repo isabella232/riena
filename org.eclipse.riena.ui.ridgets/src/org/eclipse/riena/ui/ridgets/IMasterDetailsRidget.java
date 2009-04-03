@@ -42,10 +42,10 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	/**
 	 * Binds the table to the model data.
 	 * 
-	 * @param rowBeansObservable
-	 *            An observable list with a list of beans.
-	 * @param rowBeanClass
-	 *            The class of the beans in the list.
+	 * @param rowObservables
+	 *            An observable list of objects (non-null).
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
 	 *            The property names of the properties of the beans to be
 	 *            displayed in the columns. A non-null String array.
@@ -59,16 +59,16 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *             columnHeaders does not match the number of
 	 *             columnPropertyNames
 	 */
-	void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
-			String[] columnPropertyNames, String[] columnHeaders);
+	void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass, String[] columnPropertyNames,
+			String[] columnHeaders);
 
 	/**
-	 * @param rowBeansBean
-	 *            A bean that has a property with a list of beans.
-	 * @param rowBeansPropertyName
+	 * @param listHolder
+	 *            An object that has a property with a list of objects.
+	 * @param listPropertyName
 	 *            Property for accessing the list of beans.
-	 * @param rowBeanClass
-	 *            The class of the beans in the list.
+	 * @param rowClass
+	 *            Property for accessing the list of objects.
 	 * @param columnPropertyNames
 	 *            The property names of the properties of the beans to be
 	 *            displayed in the columns.
@@ -78,7 +78,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *            Individual array entries may be null, which will show an empty
 	 *            title in the header of that column.
 	 */
-	void bindToModel(Object rowBeansBean, String rowBeansPropertyName, Class<? extends Object> rowBeanClass,
+	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] headerNames);
 
 	/**

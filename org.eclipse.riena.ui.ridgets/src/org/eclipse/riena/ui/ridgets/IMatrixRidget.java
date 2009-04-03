@@ -25,27 +25,27 @@ public interface IMatrixRidget extends IRidget {
 	/**
 	 * Binds the matrix to the model data.
 	 * 
-	 * @param rowBeansObservable
-	 *            An observable list with a list of beans.
-	 * @param rowBeanClass
-	 *            The class of the beans in the list.
+	 * @param rowObservables
+	 *            An observable list of objects (non-null).
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param columnPropertyNames
 	 *            The property names of the properties of the beans to be
 	 *            displayed in the columns.
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the header.
 	 */
-	void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
-			String[] columnPropertyNames, String[] columnHeaders);
+	void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass, String[] columnPropertyNames,
+			String[] columnHeaders);
 
 	/**
 	 * Binds the matrix to the model data.
 	 * 
-	 * @param rowBeansBean
-	 *            A bean that has a property with a list of beans.
-	 * @param rowBeansPropertyName
-	 *            Property for accessing the list of beans.
-	 * @param rowBeanClass
+	 * @param listHolder
+	 *            An object that has a property with a list of objects.
+	 * @param listPropertyName
+	 *            Property for accessing the list of objects.
+	 * @param rowClass
 	 *            The class of the beans in the list.
 	 * @param columnPropertyNames
 	 *            The property names of the properties of the beans to be
@@ -53,7 +53,7 @@ public interface IMatrixRidget extends IRidget {
 	 * @param columnHeaders
 	 *            The titles of the columns to be displayed in the header.
 	 */
-	void bindToModel(Object rowBeansBean, String rowBeansPropertyName, Class<? extends Object> rowBeanClass,
+	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders);
 
 	/**
