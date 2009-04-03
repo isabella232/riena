@@ -20,6 +20,8 @@ import java.util.Map;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
@@ -171,19 +173,30 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		return modelObservables != null ? Arrays.asList(rowValues) : null;
 	}
 
-	public void bindToModel(IObservableList rowBeansObservables, Class<? extends Object> rowBeanClass,
+	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
 			Class<? extends Object> rowRidgetClass) {
 		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
 
 		unbindUIControl();
 
-		modelObservables = rowBeansObservables;
+		modelObservables = rowObservables;
 		rowValues = new Object[0];
 		rowValuesUnsorted = null;
-		this.rowBeanClass = rowBeanClass;
+		this.rowBeanClass = rowClass;
 		this.rowRidgetClass = rowRidgetClass;
 
 		bindUIControl();
+	}
+
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
+			Class<? extends Object> rowRidgetClass) {
+		IObservableList rowBeansObservables;
+		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
+			rowBeansObservables = BeansObservables.observeList(listHolder, listPropertyName);
+		} else {
+			rowBeansObservables = PojoObservables.observeList(listHolder, listPropertyName);
+		}
+		bindToModel(rowBeansObservables, rowBeanClass, rowRidgetClass);
 	}
 
 	@Override

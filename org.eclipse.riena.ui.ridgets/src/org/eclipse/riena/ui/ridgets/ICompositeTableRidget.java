@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 import java.util.Comparator;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
+
 import org.eclipse.riena.ui.common.ISortableByColumn;
 
 /**
@@ -24,17 +25,36 @@ public interface ICompositeTableRidget extends ISelectableIndexedRidget, ISortab
 	 * Bind the composite table to the given model data and specify which
 	 * composite to use for the rows.
 	 * 
-	 * @param rowBeansObservables
-	 *            An observable list of beans (non-null).
-	 * @param rowBeanClass
-	 *            The class of the beans in the list
+	 * @param rowObservables
+	 *            An observable list of objects (non-null).
+	 * @param rowClass
+	 *            The class of the objects in the list.
 	 * @param rowRidgetClass
 	 *            A class (extending Composite) which will be instantiated for
 	 *            each row. It must provide a public constructor with these
 	 *            parameters: {@code Composite parent, int style}.
 	 */
 	// TODO [ev] this javadoc is SWT specific
-	void bindToModel(IObservableList rowBeansObservables, Class<? extends Object> rowBeanClass,
+	void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
+			Class<? extends Object> rowRidgetClass);
+
+	/**
+	 * Bind the composite table to the given model data and specify which
+	 * composite to use for the rows.
+	 * 
+	 * @param listHolder
+	 *            An object that has a property with a list of objects.
+	 * @param listPropertyName
+	 *            Property for accessing the list of objects.
+	 * @param rowClass
+	 *            The class of the beans in the list.
+	 * @param rowRidgetClass
+	 *            A class (extending Composite) which will be instantiated for
+	 *            each row. It must provide a public constructor with these
+	 *            parameters: {@code Composite parent, int style}.
+	 */
+	// TODO [ev] this javadoc is SWT specific
+	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			Class<? extends Object> rowRidgetClass);
 
 	/**
