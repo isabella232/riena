@@ -44,6 +44,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionListener;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.internal.ui.ridgets.swt.OutputAwareValidator;
@@ -194,7 +195,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 		String[] propertyNames = new String[] { renderingMethod };
 		IObservableMap[] attributeMap;
-		if (isBean(rowBeanClass)) {
+		if (AbstractSWTWidgetRidget.isBean(rowBeanClass)) {
 			attributeMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, propertyNames);
 		} else {
 			attributeMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowBeanClass, propertyNames);
