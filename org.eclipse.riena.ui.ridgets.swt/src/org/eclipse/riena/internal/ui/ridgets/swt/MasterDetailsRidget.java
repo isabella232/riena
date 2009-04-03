@@ -102,16 +102,16 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		super.setUIControl(uiControl);
 	}
 
-	public void bindToModel(IObservableList rowBeansObservable, Class<? extends Object> rowBeanClass,
+	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] columnHeaders) {
-		rowObservables = rowBeansObservable;
-		getTableRidget().bindToModel(rowObservables, rowBeanClass, columnPropertyNames, columnHeaders);
+		this.rowObservables = rowObservables;
+		getTableRidget().bindToModel(this.rowObservables, rowClass, columnPropertyNames, columnHeaders);
 	}
 
-	public void bindToModel(Object listBean, String listPropertyName, Class<? extends Object> rowBeanClass,
+	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] headerNames) {
-		IObservableList listObservableValue = new UnboundPropertyWritableList(listBean, listPropertyName);
-		bindToModel(listObservableValue, rowBeanClass, columnPropertyNames, headerNames);
+		IObservableList listObservableValue = new UnboundPropertyWritableList(listHolder, listPropertyName);
+		bindToModel(listObservableValue, rowClass, columnPropertyNames, headerNames);
 	}
 
 	@Override
@@ -161,6 +161,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 	}
 
 	public void setSelection(Object newSelection) {
+		// TODO [ev] this is affected by Bug 271080
 		getTableRidget().setSelection(newSelection);
 		MasterDetailsComposite control = getUIControl();
 		if (control != null) {
@@ -303,6 +304,7 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 		delegate.copyBean(delegate.getWorkingCopy(), editable);
 		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
+			getTableRidget().updateFromModel();
 			setSelection(editable);
 		} else { // update
 			getTableRidget().updateFromModel();
