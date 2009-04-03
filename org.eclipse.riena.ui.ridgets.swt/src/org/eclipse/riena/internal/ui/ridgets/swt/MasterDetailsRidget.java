@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -42,7 +43,6 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -110,8 +110,13 @@ public class MasterDetailsRidget extends AbstractCompositeRidget implements IMas
 
 	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String[] columnPropertyNames, String[] headerNames) {
-		IObservableList listObservableValue = new UnboundPropertyWritableList(listHolder, listPropertyName);
-		bindToModel(listObservableValue, rowClass, columnPropertyNames, headerNames);
+		IObservableList rowObservables;
+		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
+			rowObservables = BeansObservables.observeList(listHolder, listPropertyName);
+		} else {
+			rowObservables = PojoObservables.observeList(listHolder, listPropertyName);
+		}
+		bindToModel(rowObservables, rowClass, columnPropertyNames, headerNames);
 	}
 
 	@Override

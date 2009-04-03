@@ -276,6 +276,9 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(item2, ridget.getSelection());
 
 		input.remove(input.get(1));
+
+		assertSame(item2, ridget.getSelection());
+
 		ridget.updateFromModel();
 
 		assertSame(item2, ridget.getSelection());
@@ -291,6 +294,9 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(item2, ridget.getSelection());
 
 		input.remove(input.get(2));
+
+		assertSame(item2, ridget.getSelection());
+
 		ridget.updateFromModel();
 
 		assertNull(ridget.getSelection());
