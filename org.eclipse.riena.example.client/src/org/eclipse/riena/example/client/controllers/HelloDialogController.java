@@ -17,8 +17,10 @@ import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -28,7 +30,6 @@ import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
-import org.eclipse.riena.ui.ridgets.databinding.UnboundPropertyWritableList;
 
 /**
  * The controller for the hello dialog of the dialog example.
@@ -75,8 +76,8 @@ public class HelloDialogController extends AbstractWindowController {
 		compositeCarWarranty.updateFromModel();
 
 		final IMultipleChoiceRidget compositeCarPlates = (IMultipleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
-		compositeCarPlates.bindToModel(toList(carPlates), new UnboundPropertyWritableList(carConfig,
-				CarConfig.PROP_PLATES));
+		compositeCarPlates
+				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
