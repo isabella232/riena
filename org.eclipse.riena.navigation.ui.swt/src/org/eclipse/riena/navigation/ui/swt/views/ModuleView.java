@@ -396,7 +396,19 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		 */
 		@Override
 		public void activated(ISubModuleNode source) {
+
+			// fix for bug 269221
+			updateExpanded(source);
+
 			resize();
+		}
+
+		private void updateExpanded(ISubModuleNode node) {
+			final INavigationNode<?> nodeParent = node.getParent();
+			if (nodeParent instanceof ISubModuleNode) {
+				nodeParent.setExpanded(true);
+				updateExpanded((ISubModuleNode) nodeParent);
+			}
 		}
 
 		/**
@@ -653,7 +665,7 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 	 * 
 	 * @return renderer
 	 */
-	private ModuleGroupRenderer getMouduleGroupRenderer() {
+	private ModuleGroupRenderer getModuleGroupRenderer() {
 
 		ModuleGroupRenderer renderer = (ModuleGroupRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.MODULE_GROUP_RENDERER);
@@ -731,10 +743,10 @@ public class ModuleView implements INavigationNodeView<SWTModuleController, Modu
 		if (index == 0) {
 			formData.top = new FormAttachment(0, 0);
 		} else if (index < 0) {
-			formData.top = new FormAttachment(children[children.length - 1], getMouduleGroupRenderer()
+			formData.top = new FormAttachment(children[children.length - 1], getModuleGroupRenderer()
 					.getModuleModuleGap());
 		} else {
-			formData.top = new FormAttachment(children[index - 1], getMouduleGroupRenderer().getModuleModuleGap());
+			formData.top = new FormAttachment(children[index - 1], getModuleGroupRenderer().getModuleModuleGap());
 		}
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
