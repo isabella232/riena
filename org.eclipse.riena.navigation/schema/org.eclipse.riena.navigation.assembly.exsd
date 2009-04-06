@@ -89,6 +89,9 @@
                <documentation>
                   contains the description of this navigation node for the PDE
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="autostartsequence" type="string">
@@ -124,6 +127,9 @@
                <documentation>
                   description for PDE
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -145,6 +151,9 @@
                <documentation>
                   text to be displayed in subapplication handle
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="icon" type="string">
@@ -152,6 +161,9 @@
                <documentation>
                   
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="view" type="string">
@@ -180,6 +192,9 @@
                <documentation>
                   description for the PDE
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -212,6 +227,9 @@
                <documentation>
                   description for the PDE
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="label" type="string">
@@ -219,6 +237,9 @@
                <documentation>
                   label to be displayed in navigation tree
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -240,6 +261,9 @@
                <documentation>
                   id of icon to be displayed in navigation tree
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="unclosable" type="boolean" use="default" value="false">
@@ -266,6 +290,9 @@
                <documentation>
                   description for the PDE
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="label" type="string">
@@ -273,6 +300,9 @@
                <documentation>
                   label to be displayed in navigation tree
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="typeId" type="string">
@@ -321,6 +351,9 @@
                <documentation>
                   id of icon to be displayed in navigation tree
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
