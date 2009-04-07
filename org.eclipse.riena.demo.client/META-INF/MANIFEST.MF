@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Demo Client Plug-in 
 Bundle-SymbolicName: org.eclipse.riena.demo.client;singleton:=true
 Bundle-Version: 1.1.0.M6
-Bundle-Activator: org.eclipse.riena.internal.demo.customer.client.Activator
+Bundle-Activator: org.eclipse.riena.internal.demo.client.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.client;bundle-version="1.0.0",
  org.eclipse.jface.databinding;bundle-version="1.2.0",
@@ -11,11 +11,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.demo.common;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: com.swtdesigner;x-internal:=true,
- org.eclipse.riena.demo.client.customer.application,
- org.eclipse.riena.demo.client.customer.controllers,
- org.eclipse.riena.demo.client.customer.model,
- org.eclipse.riena.demo.client.customer.navigation.model,
- org.eclipse.riena.demo.client.customer.views,
- org.eclipse.riena.demo.client.handler,
- org.eclipse.riena.internal.demo.customer.client;x-internal:=true
