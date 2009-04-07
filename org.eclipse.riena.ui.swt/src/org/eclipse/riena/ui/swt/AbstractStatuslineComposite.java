@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Composite of the status line.
@@ -21,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class AbstractStatuslineComposite extends Composite {
 
 	private static final int LEFT_RIGHT_MARGIN = 5;
-	private static final int TOP_BOTTOM_MARGIN = 5;
+	private static final int TOP_BOTTOM_MARGIN = 0;
 
 	/**
 	 * @param parent

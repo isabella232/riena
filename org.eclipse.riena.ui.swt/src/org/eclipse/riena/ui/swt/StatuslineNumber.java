@@ -10,19 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * Represents a label of the status line that displays a number (7-digit).
  */
 public class StatuslineNumber extends AbstractStatuslineComposite {
 
-	private Label numberLabel;
+	private CLabel numberLabel;
 
 	/**
 	 * Creates a new instance of <code>StatuslineNumber</code>.
@@ -43,7 +44,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	@Override
 	protected void createContents() {
 
-		numberLabel = new Label(this, SWT.LEFT);
+		numberLabel = new CLabel(this, SWT.LEFT);
 		numberLabel.setText("0000000"); //$NON-NLS-1$
 		numberLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 

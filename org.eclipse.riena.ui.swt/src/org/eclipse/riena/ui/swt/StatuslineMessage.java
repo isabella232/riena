@@ -10,20 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
 /**
  * Represents a label of the status line that displays a message.
  */
 public class StatuslineMessage extends AbstractStatuslineComposite {
-
-	private static final int TOP_MARGIN = 3;
 
 	private CLabel messageLabel;
 
@@ -93,14 +92,6 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 	 */
 	private Image getPlaceholderImage() {
 		return LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_SPACER_ICON);
-	}
-
-	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#getTopMargin()
-	 */
-	@Override
-	protected int getTopMargin() {
-		return TOP_MARGIN;
 	}
 
 }

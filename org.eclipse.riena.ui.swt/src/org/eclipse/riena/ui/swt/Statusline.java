@@ -13,11 +13,6 @@ package org.eclipse.riena.ui.swt;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -25,6 +20,12 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
+
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * Status line.
@@ -75,6 +76,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 */
 	private void init() {
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
+		setBackground(LnfManager.getLnf().getColor("red"));
 		uiControls = new ArrayList<Object>();
 		createContents();
 	}

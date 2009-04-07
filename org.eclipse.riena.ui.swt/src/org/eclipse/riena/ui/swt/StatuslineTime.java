@@ -15,12 +15,13 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * Represents a label of the status line that displays the current time.
@@ -29,7 +30,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 
 	protected SimpleDateFormat format;
 	private Date date;
-	private Label timeLabel;
+	private CLabel timeLabel;
 	private Timer timer;
 
 	/**
@@ -56,7 +57,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	@Override
 	protected void createContents() {
 
-		timeLabel = new Label(this, SWT.LEFT);
+		timeLabel = new CLabel(this, SWT.LEFT);
 		timeLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		updateTime();
 

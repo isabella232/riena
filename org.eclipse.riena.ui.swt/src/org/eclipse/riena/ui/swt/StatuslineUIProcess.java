@@ -19,11 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
-import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -41,6 +36,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
+import org.eclipse.riena.ui.swt.uiprocess.ProgressInfoDataObject;
+
 /**
  * The {@link StatuslineUIProcess} shows info about all currently running
  * {@link UIProcess}´s in the {@link Statusline}
@@ -57,7 +58,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 */
 	public static final int PROGRESS_MAX_VALUE = 100;
 
-	// the base progressbar rendererd inside the statusline
+	// the base progress bar rendered inside the status line
 	private ProgressBar progressBar;
 
 	// the window containing the info table
