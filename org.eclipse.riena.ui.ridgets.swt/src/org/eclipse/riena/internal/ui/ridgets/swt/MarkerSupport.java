@@ -36,7 +36,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
 public class MarkerSupport extends AbstractMarkerSupport {
 
 	private static final String PRE_MANDATORY_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preMandatoryBackground"; //$NON-NLS-1$
-	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preoutputBackground"; //$NON-NLS-1$
+	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preOutputBackground"; //$NON-NLS-1$
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
 
 	static {
