@@ -675,10 +675,17 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	/**
 	 * Returns the image of the logo.
 	 * 
-	 * @return logo image
+	 * @return logo image or the default missing image, if the logo image of the
+	 *         L&F wasn't found.
 	 */
 	private Image getLogoImage() {
-		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+		if (logoImage == null) {
+			String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, message);
+			logoImage = ImageStore.getInstance().getMissingImage();
+		}
+		return logoImage;
 	}
 
 	/**

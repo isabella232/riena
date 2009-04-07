@@ -13,22 +13,32 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 
 /**
  * Tests of the class <code>ApplicationViewAdvisor</code>.
  */
 @UITestCase
 public class ApplicationViewAdvisorTest extends TestCase {
+
+	private final static String ICON_ECLIPSE = "eclipse.gif";
 
 	private ApplicationViewAdvisor advisor;
 	private IWorkbenchWindowConfigurer winConfig;
@@ -96,6 +106,46 @@ public class ApplicationViewAdvisorTest extends TestCase {
 		EasyMock.replay(winConfig);
 		ReflectionUtils.invokeHidden(advisor, "initApplicationSize", winConfig);
 		EasyMock.verify(winConfig);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getLogoImage()}.
+	 */
+	public void testGetLogoImage() {
+
+		MyLnf lnf = new MyLnf();
+		LnfManager.setLnf(lnf);
+		lnf.initialize();
+
+		Image eclipseImage = ImageStore.getInstance().getImage(ICON_ECLIPSE);
+		lnf.setLogo(ICON_ECLIPSE);
+		Image logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
+		assertNotNull(logoImage);
+		assertEquals(eclipseImage.getImageData().width, logoImage.getImageData().width);
+		assertEquals(eclipseImage.getImageData().height, logoImage.getImageData().height);
+
+		Image missingImage = ImageStore.getInstance().getMissingImage();
+		lnf.setLogo(ICON_ECLIPSE + "4711");
+		logoImage = ReflectionUtils.invokeHidden(advisor, "getLogoImage");
+		assertNotNull(logoImage);
+		assertEquals(missingImage.getImageData().width, logoImage.getImageData().width);
+		assertEquals(missingImage.getImageData().height, logoImage.getImageData().height);
+
+	}
+
+	/**
+	 * Look and Feel where it is possible to change the image of the logo.
+	 */
+	private static class MyLnf extends RienaDefaultLnf {
+
+		public void removeLogo() {
+			getResourceTable().remove(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+		}
+
+		public void setLogo(String logo) {
+			getResourceTable().put(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(logo));
+		}
 
 	}
 

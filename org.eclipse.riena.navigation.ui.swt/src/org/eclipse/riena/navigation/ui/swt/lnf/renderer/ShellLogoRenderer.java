@@ -10,17 +10,26 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.lnf.renderer;
 
-import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
+
 /**
- * 
+ * This class renders the logo of the application at the correct position.
  */
 public class ShellLogoRenderer extends AbstractLnfRenderer {
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ShellLogoRenderer.class);
 
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
@@ -139,8 +148,20 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 
 	}
 
+	/**
+	 * Returns the image of the logo.
+	 * 
+	 * @return logo image or the default missing image, if the logo image of the
+	 *         L&F wasn't found.
+	 */
 	private Image getLogoImage() {
-		return LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
+		if (logoImage == null) {
+			String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_WARNING, message);
+			logoImage = ImageStore.getInstance().getMissingImage();
+		}
+		return logoImage;
 	}
 
 }
