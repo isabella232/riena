@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
@@ -31,6 +32,7 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
@@ -154,10 +156,19 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		if (configurationElement.getAttribute(name) == null && configurationElement.getChildren(name).length == 0) {
 			return Result.CACHED_NULL;
 		}
+		final boolean wire = !(method.isAnnotationPresent(DoNotWireExecutable.class) || Boolean
+				.getBoolean(ExtensionInjector.RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY));
 		if (method.isAnnotationPresent(CreateLazy.class)) {
-			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, name));
+			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, name, wire));
 		}
-		return Result.noCache(configurationElement.createExecutableExtension(name));
+		Object result = configurationElement.createExecutableExtension(name);
+		if (wire) {
+			// Try wiring the created executable extension
+			Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
+			BundleContext context = bundle != null ? bundle.getBundleContext() : Activator.getDefault().getContext();
+			Wire.instance(result).andStart(context);
+		}
+		return Result.noCache(result);
 	}
 
 	/*

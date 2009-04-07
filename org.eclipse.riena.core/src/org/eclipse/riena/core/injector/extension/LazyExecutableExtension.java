@@ -15,9 +15,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IConfigurationElement;
+
+import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.core.Activator;
 
 /**
  * An invocation handler that lazily creates an executable extension on demand.
@@ -26,14 +30,16 @@ final class LazyExecutableExtension implements InvocationHandler {
 
 	private final IConfigurationElement configurationElement;
 	private final String name;
+	private final boolean wire;
 	private volatile Object delegate;
 
 	/**
 	 * @param configurationElement
 	 * @param name
+	 * @param wire
 	 * @return
 	 */
-	static Object newInstance(final IConfigurationElement configurationElement, final String name) {
+	static Object newInstance(final IConfigurationElement configurationElement, final String name, boolean wire) {
 		final String className = configurationElement.getAttribute(name);
 		if (className == null) {
 			return null;
@@ -51,16 +57,17 @@ final class LazyExecutableExtension implements InvocationHandler {
 						+ configurationElement.getName() + " does not have any interfaces, but they are required."); //$NON-NLS-1$
 			}
 			return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new LazyExecutableExtension(
-					configurationElement, name));
+					configurationElement, name, wire));
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("Could not load class " + className + " from bundle " //$NON-NLS-1$ //$NON-NLS-2$
 					+ bundle.getSymbolicName(), e);
 		}
 	}
 
-	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String name) {
+	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String name, boolean wire) {
 		this.configurationElement = configurationElement;
 		this.name = name;
+		this.wire = wire;
 	}
 
 	/*
@@ -73,6 +80,13 @@ final class LazyExecutableExtension implements InvocationHandler {
 		synchronized (this) {
 			if (delegate == null) {
 				delegate = configurationElement.createExecutableExtension(name);
+				if (wire) {
+					// Try wiring the created executable extension
+					final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
+					final BundleContext context = bundle != null ? bundle.getBundleContext() : Activator.getDefault()
+							.getContext();
+					Wire.instance(delegate).andStart(context);
+				}
 			}
 		}
 		return method.invoke(delegate, args);

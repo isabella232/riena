@@ -36,6 +36,12 @@ import org.eclipse.riena.internal.core.Activator;
  */
 public class ExtensionInjector {
 
+	/**
+	 * When this system property is set to {@code true} than the {@code
+	 * ExtensionInjector} will not wire created executable extension.
+	 */
+	public static final String RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY = "riena.extensions.donotwire"; //$NON-NLS-1$
+
 	private final ExtensionDescriptor extensionDesc;
 	private final Object target;
 
