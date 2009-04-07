@@ -536,49 +536,44 @@ public final class ReflectionUtils {
 	}
 
 	private static Class<? extends Object>[] classesPrimitiveFromObjects(Object[] objects) {
-		Class<?>[] clazzes = null;
-		if (objects != null) {
-			clazzes = new Class<?>[objects.length];
-			for (int i = 0; i < objects.length; i++) {
-				Class<?> argClass = Object.class;
-				if (objects[i] != null) {
-					argClass = objects[i].getClass();
-					if (argClass == Integer.class) {
-						argClass = int.class;
-					} else if (argClass == Long.class) {
-						argClass = long.class;
-					} else if (argClass == Short.class) {
-						argClass = short.class;
-					} else if (argClass == Boolean.class) {
-						argClass = boolean.class;
-					} else if (argClass == Byte.class) {
-						argClass = byte.class;
-					} else if (argClass == Float.class) {
-						argClass = float.class;
-					} else if (argClass == Double.class) {
-						argClass = double.class;
-					} else if (argClass == Character.class) {
-						argClass = char.class;
-					}
+		if (objects == null) {
+			return null;
+		}
+		Class<?>[] clazzes = new Class<?>[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			Class<?> argClass = Object.class;
+			if (objects[i] != null) {
+				argClass = objects[i].getClass();
+				if (argClass == Integer.class) {
+					argClass = int.class;
+				} else if (argClass == Long.class) {
+					argClass = long.class;
+				} else if (argClass == Short.class) {
+					argClass = short.class;
+				} else if (argClass == Boolean.class) {
+					argClass = boolean.class;
+				} else if (argClass == Byte.class) {
+					argClass = byte.class;
+				} else if (argClass == Float.class) {
+					argClass = float.class;
+				} else if (argClass == Double.class) {
+					argClass = double.class;
+				} else if (argClass == Character.class) {
+					argClass = char.class;
 				}
-				clazzes[i] = argClass;
 			}
+			clazzes[i] = argClass;
 		}
 		return clazzes;
 	}
 
 	private static Class<? extends Object>[] classesFromObjects(Object[] objects) {
-		Class<?>[] clazzes = null;
-		if (objects != null) {
-			clazzes = new Class<?>[objects.length];
-			for (int i = 0; i < objects.length; i++) {
-				if (objects[i] != null) {
-					Class<?> argClass = objects[i].getClass();
-					clazzes[i] = argClass;
-				} else {
-					clazzes[i] = Object.class;
-				}
-			}
+		if (objects == null) {
+			return null;
+		}
+		Class<?>[] clazzes = new Class<?>[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			clazzes[i] = objects[i] == null ? Object.class : objects[i].getClass();
 		}
 		return clazzes;
 	}
@@ -586,7 +581,7 @@ public final class ReflectionUtils {
 	private static Class<?> getClass(Object instance) {
 		assert instance != null;
 
-		return (instance instanceof Class) ? (Class<?>) instance : instance.getClass();
+		return (instance instanceof Class<?>) ? (Class<?>) instance : instance.getClass();
 	}
 
 	private static Field getDeepField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
