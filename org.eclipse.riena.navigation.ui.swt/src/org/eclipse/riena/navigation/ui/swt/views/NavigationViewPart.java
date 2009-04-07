@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -51,6 +53,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	private IViewFactory viewFactory;
 	private Composite parent;
+	private ResizeListener resizeListener;
 	private Composite scrolledComposite;
 	private ScrollingSupport scrollingSupport;
 	private List<ModuleGroupView> moduleGroupViews = new ArrayList<ModuleGroupView>();
@@ -100,6 +103,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		// configure layout
 		parent.setLayout(new FormLayout());
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
+		resizeListener = new ResizeListener();
+		parent.addControlListener(resizeListener);
 
 		navigationMainComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		navigationMainComposite.setLayout(new FormLayout());
@@ -121,6 +126,18 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		scrollingSupport.getScrollComposite().setLayoutData(formData);
 	}
 
+	/**
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+
+		if (parent != null && resizeListener != null) {
+			parent.removeControlListener(resizeListener);
+		}
+	}
+
 	private void buildNavigationViewHierarchy() {
 		// get the root of the SubApplication
 		ISubApplicationNode subApplicationNode = getSubApplicationNode();
@@ -135,6 +152,17 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		navigationTreeObserver.addListener(new SubApplicationListener());
 		navigationTreeObserver.addListener(new ModuleGroupListener());
 		navigationTreeObserver.addListenerTo(getSubApplicationNode());
+	}
+
+	/**
+	 * Update the size of the navigation area when the application is resized
+	 * (fix for bug 270620).
+	 */
+	private final class ResizeListener extends ControlAdapter {
+		public void controlResized(ControlEvent e) {
+			updateNavigationSize();
+			parent.layout();
+		}
 	}
 
 	/**
