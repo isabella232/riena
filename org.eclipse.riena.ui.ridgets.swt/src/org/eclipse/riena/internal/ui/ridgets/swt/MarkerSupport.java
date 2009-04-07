@@ -35,6 +35,10 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
  */
 public class MarkerSupport extends AbstractMarkerSupport {
 
+	private static final String PRE_MANDATORY_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preMandatoryBackground"; //$NON-NLS-1$
+	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preoutputBackground"; //$NON-NLS-1$
+	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
+
 	static {
 		// avoid inlining HIDE_DISABLED_RIDGET_CONTENT
 		String value = System.getProperty("HIDE_DISABLED_RIDGET_CONTENT"); //$NON-NLS-1$
@@ -51,9 +55,6 @@ public class MarkerSupport extends AbstractMarkerSupport {
 	 */
 	public static final boolean HIDE_DISABLED_RIDGET_CONTENT;
 
-	private Color preOutputBg;
-	private Color preMandatoryBg;
-	private Color preNegativeFg;
 	private ControlDecoration errorDecoration;
 
 	public MarkerSupport(IMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
@@ -96,23 +97,23 @@ public class MarkerSupport extends AbstractMarkerSupport {
 	// ////////////////
 
 	private void addMandatory(Control control) {
-		if (preMandatoryBg == null) {
-			preMandatoryBg = control.getBackground();
+		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
+			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
 			Color color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
 			control.setBackground(color);
 		}
 	}
 
 	private void addNegative(Control control) {
-		if (preNegativeFg == null) {
-			preNegativeFg = control.getForeground();
+		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
+			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
 			control.setForeground(control.getDisplay().getSystemColor(SWT.COLOR_RED));
 		}
 	}
 
 	private void addOutput(Control control, Color color) {
-		if (preOutputBg == null) {
-			preOutputBg = control.getBackground();
+		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
+			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
 			control.setBackground(color);
 		}
 		if (isButton(control)) {
@@ -121,23 +122,23 @@ public class MarkerSupport extends AbstractMarkerSupport {
 	}
 
 	private void clearMandatory(Control control) {
-		if (preMandatoryBg != null) {
-			control.setBackground(preMandatoryBg);
-			preMandatoryBg = null;
+		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
+			control.setBackground((Color) control.getData(PRE_MANDATORY_BACKGROUND_KEY));
+			control.setData(PRE_MANDATORY_BACKGROUND_KEY, null);
 		}
 	}
 
 	private void clearNegative(Control control) {
-		if (preNegativeFg != null) {
-			control.setForeground(preNegativeFg);
-			preNegativeFg = null;
+		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) != null) {
+			control.setForeground((Color) control.getData(PRE_NEGATIVE_FOREGROUND_KEY));
+			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, null);
 		}
 	}
 
 	private void clearOutput(Control control) {
-		if (preOutputBg != null) {
-			control.setBackground(preOutputBg);
-			preOutputBg = null;
+		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
+			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
+			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
 		}
 		if (isButton(control)) {
 			control.setVisible(ridget.isVisible());
