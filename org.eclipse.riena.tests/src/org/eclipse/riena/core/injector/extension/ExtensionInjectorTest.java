@@ -14,17 +14,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.osgi.framework.InvalidSyntaxException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.NonUITestCase;
-import org.osgi.framework.InvalidSyntaxException;
 
 /**
- * 
+ * Test the {@code ExtensionInjector}.
  */
 @NonUITestCase
 public class ExtensionInjectorTest extends RienaTestCase {
