@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
-
 /**
  * Adapter for a status line.
  */
@@ -39,17 +38,6 @@ public interface IStatuslineRidget extends IComplexRidget {
 	void clear();
 
 	/**
-	 * @return The icon.
-	 */
-	String getIcon();
-
-	/**
-	 * @param pIcon
-	 *            The icon to set.
-	 */
-	void setIcon(String pIcon);
-
-	/**
 	 * @return The message.
 	 */
 	String getMessage();
@@ -74,4 +62,5 @@ public interface IStatuslineRidget extends IComplexRidget {
 	 * @return the statuslineNumer
 	 */
 	IStatuslineNumberRidget getStatuslineNumberRidget();
+
 }

@@ -113,7 +113,8 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private void resetStatuslineMessage() {
 		if (getStatusLine() != null) {
 			if (statuslineMessage != null && statuslineMessage.equals(getStatusLine().getMessage())) {
-				this.getStatusLine().setMessage(originalStatuslineMessage);
+				getStatusLine().clear();
+				getStatusLine().setMessage(originalStatuslineMessage);
 			}
 			statuslineMessage = null;
 		}

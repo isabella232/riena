@@ -12,11 +12,6 @@ package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -27,6 +22,12 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.example.client.controllers.CustomerDetailSubModuleController;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSubModuleController> {
 
@@ -119,7 +120,7 @@ public class CustomerDetailSubModuleView extends SubModuleView<CustomerDetailSub
 		fd.left = new FormAttachment(nameLabel, 0, SWT.LEFT);
 		birthdayLabel.setLayoutData(fd);
 
-		DateTime birthdayText = new DateTime(contentArea, SWT.BORDER | SWT.SINGLE);
+		DateTime birthdayText = new DateTime(contentArea, SWT.BORDER | SWT.DROP_DOWN);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(nameText, 0, SWT.LEFT);
