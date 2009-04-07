@@ -20,11 +20,9 @@ import java.lang.annotation.Target;
  * content,e.g.
  * 
  * <pre>
- * 
- * @MapContent()
+ * &#064;MapContent()
  * String getValue();
- * 
- *                          </pre>
+ * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

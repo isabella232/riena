@@ -20,10 +20,8 @@ import java.lang.annotation.Target;
  * replacement should be performed, e.g.
  * 
  * <pre>
- * 
  * &#064;DoNotReplaceSymbols()
  * String getValue();
- * 
  * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)

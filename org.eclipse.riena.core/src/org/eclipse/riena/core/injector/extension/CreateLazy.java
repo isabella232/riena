@@ -22,11 +22,9 @@ import java.lang.annotation.Target;
  * interface that is compatible to the return type of the <i>create</i> method.
  * 
  * <pre>
- * 
- * @CreateLazy()
+ * &#064;CreateLazy()
  * ISomething createSomething();
- * 
- *                              </pre>
+ * </pre>
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
