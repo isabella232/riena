@@ -133,7 +133,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	public void dispose() {
 		super.dispose();
 
-		if (parent != null && resizeListener != null) {
+		if (parent != null && !parent.isDisposed() && resizeListener != null) {
 			parent.removeControlListener(resizeListener);
 		}
 	}
