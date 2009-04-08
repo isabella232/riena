@@ -58,8 +58,7 @@ public class LoggerMill {
 	 * @return whether to use default logging or not
 	 */
 	public static boolean useDefaultLogging() {
-		String useDefaultLogging = System.getProperty(RIENA_DEFAULT_LOGGING, Boolean.TRUE.toString());
-		return useDefaultLogging.equalsIgnoreCase(Boolean.TRUE.toString());
+		return Boolean.parseBoolean(System.getProperty(RIENA_DEFAULT_LOGGING, Boolean.TRUE.toString()));
 	}
 
 	/**
