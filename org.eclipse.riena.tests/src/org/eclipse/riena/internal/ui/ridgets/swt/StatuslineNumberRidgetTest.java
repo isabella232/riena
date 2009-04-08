@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 
 /**
  *
@@ -80,10 +81,10 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 	 * 
 	 * @return label
 	 */
-	private Label getLabel() {
+	private CLabel getLabel() {
 		StatuslineNumber statuslineNumber = getWidget();
 		Control[] controls = statuslineNumber.getChildren();
-		return (Label) controls[0];
+		return (CLabel) controls[0];
 	}
 
 	/**

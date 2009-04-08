@@ -13,16 +13,18 @@ package org.eclipse.riena.ui.ridgets.marker;
 import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests for the {@code StatuslineMessageMarkerViewer}.
@@ -103,6 +105,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testErrorMessage);
 		statuslineRidget.setMessage(EMPTY_STATUSLINE_MESSAGE);
+		statuslineRidget.clear();
 		EasyMock.replay(statuslineRidget);
 
 		text2.setFocus();
@@ -146,6 +149,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testErrorMessage);
 		statuslineRidget.setMessage(testMessageBySomebodyElse);
+		statuslineRidget.clear();
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.removeMarker(errorMessageMarker1);
@@ -165,6 +169,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(anotherTestErrorMessage);
 		statuslineRidget.setMessage(testMessageBySomebodyElse);
+		statuslineRidget.clear();
 		EasyMock.replay(statuslineRidget);
 
 		text2.setFocus();
@@ -192,6 +197,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testErrorMessage);
 		statuslineRidget.setMessage(EMPTY_STATUSLINE_MESSAGE);
+		statuslineRidget.clear();
 		EasyMock.replay(statuslineRidget);
 
 		statuslineMessageMarkerViewer.removeRidget(ridget1);
@@ -223,6 +229,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(messageDifferentType);
 		statuslineRidget.setMessage(EMPTY_STATUSLINE_MESSAGE);
+		statuslineRidget.clear();
 		EasyMock.replay(statuslineRidget);
 
 		statuslineMessageMarkerViewer.removeMarkerType(MessageMarker.class);
@@ -257,6 +264,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.reset(statuslineRidget);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testErrorMessage);
+		statuslineRidget.clear();
 		statuslineRidget.setMessage(EMPTY_STATUSLINE_MESSAGE);
 		EasyMock.replay(statuslineRidget);
 
@@ -309,6 +317,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testErrorMessage2);
 		statuslineRidget.setMessage(EMPTY_STATUSLINE_MESSAGE);
+		statuslineRidget.clear();
 		EasyMock.replay(statuslineRidget);
 
 		ridget1.removeMarker(marker2);

@@ -18,13 +18,14 @@ import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@link StatuslineTime}.
@@ -61,7 +62,7 @@ public class StatuslineTimeTest extends TestCase {
 
 		Control[] controls = statusTime.getChildren();
 		assertEquals(1, controls.length);
-		assertTrue(controls[0] instanceof Label);
+		assertTrue(controls[0] instanceof CLabel);
 
 	}
 
@@ -80,7 +81,7 @@ public class StatuslineTimeTest extends TestCase {
 
 		ReflectionUtils.invokeHidden(statusTime, "updateTime");
 		Control[] controls = statusTime.getChildren();
-		Label label = (Label) controls[0];
+		CLabel label = (CLabel) controls[0];
 		String timeString = label.getText();
 
 		SimpleDateFormat format = ReflectionUtils.invokeHidden(statusTime, "getFormat");

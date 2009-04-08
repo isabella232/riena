@@ -12,12 +12,13 @@ package org.eclipse.riena.ui.swt;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class {@link StatuslineNumber}.
@@ -54,8 +55,8 @@ public class StatuslineNumberTest extends TestCase {
 
 		Control[] controls = statusNumber.getChildren();
 		assertEquals(1, controls.length);
-		assertTrue(controls[0] instanceof Label);
-		Label label = (Label) controls[0];
+		assertTrue(controls[0] instanceof CLabel);
+		CLabel label = (CLabel) controls[0];
 		assertEquals("0000000", label.getText());
 
 	}
@@ -68,7 +69,7 @@ public class StatuslineNumberTest extends TestCase {
 		statusNumber.setNumber("4711-a");
 
 		Control[] controls = statusNumber.getChildren();
-		Label label = (Label) controls[0];
+		CLabel label = (CLabel) controls[0];
 		assertEquals("4711-a", label.getText());
 
 		statusNumber.setNumber(null);
@@ -85,7 +86,7 @@ public class StatuslineNumberTest extends TestCase {
 		statusNumber.setNumber(12);
 
 		Control[] controls = statusNumber.getChildren();
-		Label label = (Label) controls[0];
+		CLabel label = (CLabel) controls[0];
 		assertEquals("0000012", label.getText());
 
 		statusNumber.setNumber(0);
