@@ -17,6 +17,10 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
@@ -25,16 +29,13 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Tests of the class {@link NavigationNodeController}.
@@ -122,11 +123,11 @@ public class NavigationNodeControllerTest extends TestCase {
 	 */
 	public void testGetRidgetMarkers() {
 
-		LabelRidget ridget = new LabelRidget();
-		ridget.setUIControl(new Label(shell, 0));
+		TextRidget ridget = new TextRidget();
+		ridget.setUIControl(new Text(shell, 0));
 		controller.addRidget("4711", ridget);
-		LabelRidget ridget2 = new LabelRidget();
-		ridget2.setUIControl(new Label(shell, 0));
+		TextRidget ridget2 = new TextRidget();
+		ridget2.setUIControl(new Text(shell, 0));
 		controller.addRidget("0815", ridget2);
 
 		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
@@ -143,8 +144,8 @@ public class NavigationNodeControllerTest extends TestCase {
 		assertTrue(markers.contains(outputMarker));
 
 		CompositeRidget compositeRidget = new CompositeRidget();
-		LabelRidget ridget3 = new LabelRidget();
-		ridget3.setUIControl(new Label(shell, 0));
+		TextRidget ridget3 = new TextRidget();
+		ridget3.setUIControl(new Text(shell, 0));
 		compositeRidget.addRidget("label3", ridget3);
 		controller.addRidget("comp", compositeRidget);
 		MandatoryMarker mandatoryMarker = new MandatoryMarker();
@@ -154,6 +155,57 @@ public class NavigationNodeControllerTest extends TestCase {
 		assertEquals(3, markers.size());
 		assertTrue(markers.contains(mandatoryMarker));
 
+	}
+
+	/**
+	 * Test for bug 269131.
+	 */
+	public void testHiddenAndDisabledMarkersBlockAllRidgetMarkers() throws Exception {
+
+		TextRidget ridget = new TextRidget();
+		ridget.setUIControl(new Text(shell, 0));
+		controller.addRidget("4711", ridget);
+		TextRidget ridget2 = new TextRidget();
+		ridget2.setUIControl(new Text(shell, 0));
+		controller.addRidget("0815", ridget2);
+
+		IMarker errorMarker = new ErrorMarker();
+		IMarker mandatoryMarker = new MandatoryMarker();
+		IMarker hiddenMarker = new HiddenMarker();
+		IMarker disabledMarker = new DisabledMarker();
+
+		ridget.addMarker(errorMarker);
+		ridget.addMarker(mandatoryMarker);
+
+		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
+		assertEquals(2, markers.size());
+		assertTrue(markers.contains(errorMarker));
+		assertTrue(markers.contains(mandatoryMarker));
+
+		ridget.addMarker(hiddenMarker);
+
+		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
+		assertTrue(markers.isEmpty());
+
+		ridget2.addMarker(errorMarker);
+		ridget2.addMarker(mandatoryMarker);
+
+		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
+		assertEquals(2, markers.size());
+		assertTrue(markers.contains(errorMarker));
+		assertTrue(markers.contains(mandatoryMarker));
+
+		ridget2.addMarker(disabledMarker);
+
+		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
+		assertTrue(markers.isEmpty());
+
+		ridget.removeMarker(hiddenMarker);
+
+		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
+		assertEquals(2, markers.size());
+		assertTrue(markers.contains(errorMarker));
+		assertTrue(markers.contains(mandatoryMarker));
 	}
 
 	private static class MyNavigationNodeController extends SubModuleController {

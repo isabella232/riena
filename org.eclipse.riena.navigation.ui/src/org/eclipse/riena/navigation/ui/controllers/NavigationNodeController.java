@@ -185,7 +185,8 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 	private void addRidgetMarkers(IRidget ridget, List<IMarker> combinedMarkers) {
 
-		if (ridget instanceof IMarkableRidget && ((IMarkableRidget) ridget).isVisible()) {
+		if (ridget instanceof IMarkableRidget && ((IMarkableRidget) ridget).isVisible()
+				&& ((IMarkableRidget) ridget).isEnabled()) {
 			addRidgetMarkers((IMarkableRidget) ridget, combinedMarkers);
 		} else if (ridget instanceof IRidgetContainer) {
 			addRidgetMarkers((IRidgetContainer) ridget, combinedMarkers);
