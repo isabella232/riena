@@ -39,6 +39,22 @@
 	</extension>
 	
 	<extension
+		id="org.eclipse.riena.communication.hessian.PermissionsSerializerFactory"
+		point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
+		<factory
+			implementation="org.eclipse.riena.internal.communication.factory.hessian.PermissionsSerializerFactory">
+		</factory>
+	</extension>
+
+	<extension
+		id="org.eclipse.riena.communication.hessian.JavaPermissionSerializerFactory"
+		point="org.eclipse.riena.communication.hessian.AbstractSerializerFactory">
+		<factory
+			implementation="org.eclipse.riena.internal.communication.factory.hessian.JavaPermissionSerializerFactory">
+		</factory>
+	</extension>
+
+	<extension
 		point="org.eclipse.riena.communication.core.remoteservicefactory">
 		<factory
 			protocol="hessian"
