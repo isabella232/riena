@@ -25,7 +25,8 @@ import org.eclipse.riena.tests.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
- * Test for the MarkerSupport in a shared view.
+ * Test for the MarkerSupport in a shared view. When a view is shared several
+ * Ridgets share the same widget.
  */
 @UITestCase
 public class TextRidgetSharedViewTest extends RienaTestCase {
