@@ -11,14 +11,19 @@
 package org.eclipse.riena.navigation.ui.swt.views.desc;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
-import org.eclipse.riena.navigation.ui.swt.views.ModuleView;
+import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
+import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
 
 /**
- * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleView
+ * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleGroupView
  */
 @ExtensionInterface
-public interface IModuleViewDesc {
+public interface IModuleGroupDesc {
 
-	Class<ModuleView> getModuleView();
+	Class<ModuleGroupView> getView();
+
+	Class<ModuleGroupController> getController();
+
+	String getName();
 
 }

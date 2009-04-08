@@ -6,7 +6,8 @@
    		 id="org.eclipse.riena.test.navigationModuleView"
          point="org.eclipse.riena.navigation.ui.swt.moduleView">
       <module
-            view="org.eclipse.riena.navigation.ui.swt.views.TestModuleView">
+            view="org.eclipse.riena.navigation.ui.swt.views.TestModuleView"
+            controller="org.eclipse.riena.navigation.ui.swt.views.TestModuleController">
       </module>
    </extension>
 
@@ -14,7 +15,8 @@
    		 id="org.eclipse.riena.test.navigationModuleGroupView"
          point="org.eclipse.riena.navigation.ui.swt.moduleGroupView">
       <moduleGroup
-            view="org.eclipse.riena.navigation.ui.swt.views.TestModuleGroupView">
+            view="org.eclipse.riena.navigation.ui.swt.views.TestModuleGroupView"
+            controller="org.eclipse.riena.navigation.ui.swt.views.TestModuleGroupController">
       </moduleGroup>
    </extension>
    

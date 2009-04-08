@@ -36,13 +36,12 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupViewDesc;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleViewDesc;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -72,10 +71,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		if (viewFactory == null) {
 			viewFactory = new NavigationViewFactory();
 			Inject
-					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleViewDesc.class).into( //$NON-NLS-1$
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleDesc.class).into( //$NON-NLS-1$
 							viewFactory).andStart(Activator.getDefault().getContext());
 			Inject
-					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupViewDesc.class).into( //$NON-NLS-1$
+					.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupDesc.class).into( //$NON-NLS-1$
 							viewFactory).andStart(Activator.getDefault().getContext());
 		}
 		return viewFactory;
@@ -260,7 +259,9 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		registerModuleGroupView(moduleGroupView);
 		// create controller. the controller is implicit registered as
 		// presentation in the node
-		new ModuleGroupController(moduleGroupNode);
+		// now the ModuleGroupController can be replaced by your own implementation
+		getViewFactory().createModuleGroupController(moduleGroupNode);
+		//new ModuleGroupController(moduleGroupNode);
 		moduleGroupView.bind((ModuleGroupNode) moduleGroupNode);
 
 		moduleGroupView.setLayout(new FormLayout());
@@ -333,7 +334,9 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 		ModuleView moduleView = viewFactory.createModuleView(moduleGroupBody);
 		moduleNodesToViews.put(moduleNode, moduleView);
-		new SWTModuleController(moduleNode);
+		// now the SWTModuleController implementation can be replaced by your own implementation
+		getViewFactory().createModuleController(moduleNode);
+		//		new SWTModuleController(moduleNode);
 		moduleView.bind((ModuleNode) moduleNode);
 		// the size of the module group depends on the module views
 		moduleGroupView.registerModuleView(moduleView);

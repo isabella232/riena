@@ -12,6 +12,11 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.navigation.IModuleGroupNode;
+import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ModuleController;
+import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
+
 /**
  * Factory to create (sub-)views of the navigation view.
  */
@@ -27,6 +32,14 @@ public interface IViewFactory {
 	ModuleView createModuleView(Composite parent);
 
 	/**
+	 * Creates a ModuleController for a Module in the Navigation
+	 * 
+	 * @param moduleNode
+	 * @return
+	 */
+	ModuleController createModuleController(IModuleNode moduleNode);
+
+	/**
 	 * Creates a view for a module group.
 	 * 
 	 * @param parent
@@ -34,5 +47,13 @@ public interface IViewFactory {
 	 * @return view of module group
 	 */
 	ModuleGroupView createModuleGroupView(Composite parent);
+
+	/**
+	 * Creates a ModuleGroupController for the ModuleGroup in the Navigation
+	 * 
+	 * @param moduleGroupNode
+	 * @return
+	 */
+	ModuleGroupController createModuleGroupController(IModuleGroupNode moduleGroupNode);
 
 }

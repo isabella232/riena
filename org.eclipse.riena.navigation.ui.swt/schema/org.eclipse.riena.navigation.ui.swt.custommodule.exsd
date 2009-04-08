@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="moduleView"/>
+            <element ref="module"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,15 +47,25 @@
       </complexType>
    </element>
 
-   <element name="moduleView">
+   <element name="module">
       <complexType>
-         <attribute name="moduleView" type="string" use="required">
+         <attribute name="view" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn="org.eclipse.riena.navigation.ui.swt.views.ModuleView:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="controller" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.riena.navigation.ui.controllers.ModuleController:"/>
                </appinfo>
             </annotation>
          </attribute>

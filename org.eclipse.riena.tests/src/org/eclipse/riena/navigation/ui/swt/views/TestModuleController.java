@@ -8,17 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views.desc;
+package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.core.injector.extension.ExtensionInterface;
-import org.eclipse.riena.navigation.ui.swt.views.ModuleGroupView;
+import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 
 /**
- * interfaces for injecting org.eclipse.riena.navigation.ui.swt.moduleGroupView
+ *
  */
-@ExtensionInterface
-public interface IModuleGroupViewDesc {
+public class TestModuleController extends ModuleController {
 
-	Class<ModuleGroupView> getModuleGroupView();
+	public TestModuleController(IModuleNode navigationNode) {
+		super(navigationNode);
+	}
 
 }

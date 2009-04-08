@@ -264,8 +264,9 @@
                name="customer search module group"
                typeId="riena.demo.client.customersearch.group">
             <module
+                  label="Customersearch"
                   name="customer search module"
-                  label="Customersearch">
+                  unclosable="true">
                <submodule
                      typeId="riena.demo.client.customersearch"
                      name="customersearch"

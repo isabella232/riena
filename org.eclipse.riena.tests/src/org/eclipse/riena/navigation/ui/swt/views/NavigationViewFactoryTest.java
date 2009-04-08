@@ -14,8 +14,12 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.tests.Activator;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupViewDesc;
-import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleViewDesc;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
+import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ModuleController;
+import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleDesc;
+import org.eclipse.riena.navigation.ui.swt.views.desc.IModuleGroupDesc;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
 
@@ -42,10 +46,10 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 	public void testNormalWithInjectionBehaviour() {
 		NavigationViewFactory viewFactory = new NavigationViewFactory();
 		Inject
-				.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleViewDesc.class).into( //$NON-NLS-1$
+				.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleDesc.class).into( //$NON-NLS-1$
 						viewFactory).andStart(Activator.getDefault().getContext());
 		Inject
-				.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupViewDesc.class).into( //$NON-NLS-1$
+				.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupDesc.class).into( //$NON-NLS-1$
 						viewFactory).andStart(Activator.getDefault().getContext());
 
 		ModuleView moduleView = viewFactory.createModuleView(new Shell());
@@ -63,10 +67,10 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 		NavigationViewFactory viewFactory = new NavigationViewFactory();
 		this.addPluginXml(this.getClass(), "pluginXmlNavigationViewFactory.xml");
 		Inject
-				.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleViewDesc.class).into( //$NON-NLS-1$
+				.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleDesc.class).into( //$NON-NLS-1$
 						viewFactory).andStart(Activator.getDefault().getContext());
 		Inject
-				.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupViewDesc.class).into( //$NON-NLS-1$
+				.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupDesc.class).into( //$NON-NLS-1$
 						viewFactory).andStart(Activator.getDefault().getContext());
 
 		ModuleView moduleView = viewFactory.createModuleView(new Shell());
@@ -74,12 +78,52 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 		assertTrue(moduleView instanceof ModuleView);
 		assertTrue(moduleView.getClass() == TestModuleView.class);
 
+		ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
+		assertTrue(moduleController instanceof ModuleController);
+		assertTrue(moduleController.getClass() == SWTModuleController.class);
+
 		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
 		assertTrue(moduleGroupView instanceof ModuleGroupView);
 		assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
+
+		ModuleGroupController moduleGroupController = viewFactory.createModuleGroupController(new ModuleGroupNode());
+		assertTrue(moduleGroupController instanceof ModuleGroupController);
+		assertTrue(moduleGroupController.getClass() == ModuleGroupController.class);
+
 		this.removeExtension("org.eclipse.riena.test.navigationModuleView");
 		this.removeExtension("org.eclipse.riena.test.navigationModuleGroupView");
+	}
 
+	public void testConfiguredNavigationViewFactorySecond() {
+		NavigationViewFactory viewFactory = new NavigationViewFactory();
+		this.addPluginXml(this.getClass(), "pluginXmlNavigationViewFactoryWithController.xml");
+		Inject
+				.extension("org.eclipse.riena.navigation.ui.swt.moduleView").expectingMinMax(0, 1).useType(IModuleDesc.class).into( //$NON-NLS-1$
+						viewFactory).andStart(Activator.getDefault().getContext());
+		Inject
+				.extension("org.eclipse.riena.navigation.ui.swt.moduleGroupView").expectingMinMax(0, 1).useType(IModuleGroupDesc.class).into( //$NON-NLS-1$
+						viewFactory).andStart(Activator.getDefault().getContext());
+
+		ModuleView moduleView = viewFactory.createModuleView(new Shell());
+
+		assertTrue(moduleView instanceof ModuleView);
+		assertTrue(moduleView.getClass() == TestModuleView.class);
+
+		ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
+		assertTrue(moduleController instanceof ModuleController);
+		assertTrue(moduleController.getClass() == TestModuleController.class);
+
+		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+
+		assertTrue(moduleGroupView instanceof ModuleGroupView);
+		assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
+
+		ModuleGroupController moduleGroupController = viewFactory.createModuleGroupController(new ModuleGroupNode());
+		assertTrue(moduleGroupController instanceof ModuleGroupController);
+		assertTrue(moduleGroupController.getClass() == TestModuleGroupController.class);
+
+		this.removeExtension("org.eclipse.riena.test.navigationModuleView");
+		this.removeExtension("org.eclipse.riena.test.navigationModuleGroupView");
 	}
 }
