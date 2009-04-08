@@ -38,8 +38,9 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 public class LoggerMill {
 
 	/**
-	 * When set to true and no loggers have been defined than a default logging
-	 * setup will be used.
+	 * When set explicitly to {@code false} no default logging will be used.
+	 * Otherwise if no loggers have been defined than a default logging setup
+	 * will be used.
 	 */
 	public static final String RIENA_DEFAULT_LOGGING = "riena.defaultlogging"; //$NON-NLS-1$
 
@@ -49,6 +50,17 @@ public class LoggerMill {
 	private ILogCatcherDefinition[] catcherDefs;
 
 	private ExtendedLogService logService = null;
+
+	/**
+	 * Retrieves whether to use default logging or not depending on the system
+	 * property {@code RIENA_DEFAULT_LOGGING}.
+	 * 
+	 * @return whether to use default logging or not
+	 */
+	public static boolean useDefaultLogging() {
+		String useDefaultLogging = System.getProperty(RIENA_DEFAULT_LOGGING, Boolean.TRUE.toString());
+		return useDefaultLogging.equalsIgnoreCase(Boolean.TRUE.toString());
+	}
 
 	/**
 	 * Get the logger for the specified category.<br>
@@ -93,8 +105,8 @@ public class LoggerMill {
 	 * @param logReaderService
 	 */
 	public void bind(ExtendedLogReaderService logReaderService) {
-		final boolean isDefaultLogging = Boolean.getBoolean(RIENA_DEFAULT_LOGGING);
-		if (listenerDefs.length == 0 && isDefaultLogging) {
+		final boolean useDefaultLogging = LoggerMill.useDefaultLogging();
+		if (listenerDefs.length == 0 && useDefaultLogging) {
 			listenerDefs = new ILogListenerDefinition[] { new SysoLogListenerDefinition() };
 		}
 		for (ILogListenerDefinition logListenerDef : listenerDefs) {
@@ -114,7 +126,7 @@ public class LoggerMill {
 				logReaderService.addLogListener(listener, filter);
 			}
 		}
-		if (catcherDefs.length == 0 && isDefaultLogging) {
+		if (catcherDefs.length == 0 && useDefaultLogging) {
 			catcherDefs = new ILogCatcherDefinition[] { new PlatformLogCatcherDefinition(),
 					new LogServiceLogCatcherDefinition() };
 		}
