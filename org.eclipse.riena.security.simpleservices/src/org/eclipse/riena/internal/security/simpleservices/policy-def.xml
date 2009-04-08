@@ -26,6 +26,16 @@
 	</principal>
 	<principal
 		class="org.eclipse.riena.security.common.authentication.SimplePrincipal"
+		name="stefan">
+		<permission class="org.eclipse.riena.sample.app.common.model.CustomersPermission"
+			name="riena.sample.A" action="find"/>
+		<permission class="org.eclipse.riena.sample.app.common.model.CustomersPermission"
+			name="riena.sample.B" action="create"/>
+		<permission class="java.io.FilePermission" name="*.tmp"
+			action="write" />
+	</principal>
+	<principal
+		class="org.eclipse.riena.security.common.authentication.SimplePrincipal"
 		name="testuser1">
 		<permission class="java.io.FilePermission" name="*.tmp"
 			action="read" />
