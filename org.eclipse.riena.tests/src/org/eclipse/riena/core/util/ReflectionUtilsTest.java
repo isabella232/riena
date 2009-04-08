@@ -101,6 +101,11 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		ReflectionUtils.invokeHidden(sysloader, "addURL", url);
 	}
 
+	public void testInvokeWithNull() {
+		String str = "Hello";
+		assertFalse((Boolean) ReflectionUtils.invoke(str, "equals", new Object[] { null }));
+	}
+
 	/**
 	 * Nomen est omen!
 	 * 
