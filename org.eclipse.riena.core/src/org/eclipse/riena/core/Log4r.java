@@ -77,9 +77,7 @@ public final class Log4r {
 
 	// use ConsoleLogger unless the system property specifies otherwise
 	private static Logger getEmergencyLogger(String className) {
-		boolean useNullLogger = System.getProperty(LoggerMill.RIENA_DEFAULT_LOGGING) != null
-				&& !Boolean.getBoolean(LoggerMill.RIENA_DEFAULT_LOGGING);
-		return useNullLogger ? new NullLogger() : new ConsoleLogger(className);
+		return LoggerMill.useDefaultLogging() ? new ConsoleLogger(className) : new NullLogger();
 	}
 
 	private static class NullLogger implements Logger {
