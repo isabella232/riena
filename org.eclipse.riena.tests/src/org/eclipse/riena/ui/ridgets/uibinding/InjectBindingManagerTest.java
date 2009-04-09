@@ -16,6 +16,11 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.tests.collect.UITestCase;
@@ -24,10 +29,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Tests of the class <code>DefaultBindingManager</code>.
@@ -101,6 +102,29 @@ public class InjectBindingManagerTest extends TestCase {
 
 		IRidget ridget1 = ReflectionUtils.invokeHidden(manager, "getRidget", "label1", ridgetContainer);
 		assertSame(ridget, ridget1);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code createMethodeNameProperty(String)}
+	 * .
+	 */
+	public void testCreateMethodeNameProperty() {
+
+		String prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "");
+		assertEquals("", prop);
+
+		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "hello");
+		assertEquals("hello", prop);
+
+		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "hello.world");
+		assertEquals("helloWorld", prop);
+
+		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", "ab.cd.ef.");
+		assertEquals("abCdEf", prop);
+
+		prop = ReflectionUtils.invokeHidden(manager, "createMethodeNameProperty", ".ab.cd.ef.");
+		assertEquals("AbCdEf", prop);
 
 	}
 

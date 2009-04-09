@@ -13,6 +13,16 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -25,11 +35,8 @@ import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.tests.RienaTestCase;
 import org.eclipse.riena.tests.collect.UITestCase;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests for the SubModuleNodeView.
@@ -87,6 +94,38 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertSame(arrowCursor, parentComposite.getCursor());
 	}
 
+	/**
+	 * Tests the <i>private</i> method {@code
+	 * isChildOfComplexComponent(Control)}.
+	 */
+	public void testIsChildOfComplexComponent() {
+
+		subModuleNodeView = new TestView();
+
+		Shell shell = new Shell();
+		Label label = new Label(shell, SWT.NONE);
+		boolean ret = ReflectionUtils.invokeHidden(subModuleNodeView, "isChildOfComplexComponent", label);
+		assertFalse(ret);
+
+		TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
+		Text text = new Text(complexComponent, SWT.NONE);
+		ret = ReflectionUtils.invokeHidden(subModuleNodeView, "isChildOfComplexComponent", text);
+		assertTrue(ret);
+
+		Composite composite = new Composite(shell, SWT.NONE);
+		Combo combo = new Combo(composite, SWT.NONE);
+		ret = ReflectionUtils.invokeHidden(subModuleNodeView, "isChildOfComplexComponent", combo);
+		assertFalse(ret);
+
+		Composite composite2 = new Composite(complexComponent, SWT.NONE);
+		Button button = new Button(composite2, SWT.NONE);
+		ret = ReflectionUtils.invokeHidden(subModuleNodeView, "isChildOfComplexComponent", button);
+		assertTrue(ret);
+
+		SwtUtilities.disposeWidget(shell);
+
+	}
+
 	public void testBindOnActivate() throws Exception {
 
 		nodesBoundToView.clear();
@@ -134,6 +173,18 @@ public class SubModuleViewTest extends RienaTestCase {
 		@Override
 		protected void basicCreatePartControl(Composite parent) {
 		}
+	}
+
+	private class TestComplexComponent extends Composite implements IComplexComponent {
+
+		public TestComplexComponent(Composite parent, int style) {
+			super(parent, style);
+		}
+
+		public List<Object> getUIControls() {
+			return null;
+		}
+
 	}
 
 }

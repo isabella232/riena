@@ -102,7 +102,7 @@ public class NavigationSubModuleController extends SubModuleController {
 	}
 
 	private void showStatusLineMessage(String text) {
-		getApplicationController().getStatuslineRidget().setMessage(text);
+		getApplicationController().getStatusline().setMessage(text);
 	}
 
 	private <N extends INavigationNode<?>> N getParentNodeOfType(INavigationNode<?> node, Class<N> clazz) {

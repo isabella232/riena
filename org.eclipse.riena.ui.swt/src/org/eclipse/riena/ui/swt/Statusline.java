@@ -35,8 +35,8 @@ public class Statusline extends Composite implements IComplexComponent {
 	/**
 	 * 
 	 */
-	private final static String NUMBER_NAME = "statuslineNumberRidget"; //$NON-NLS-1$
-	private static final String UIPROCES_NAME = "statuslineUIProcessRidget"; //$NON-NLS-1$
+	private final static String NUMBER_NAME = "numberRidget"; //$NON-NLS-1$
+	private static final String UIPROCES_NAME = "UIProcessRidget"; //$NON-NLS-1$
 	private List<Object> uiControls;
 	private StatuslineMessage message;
 	private Class<? extends Control> spacer;

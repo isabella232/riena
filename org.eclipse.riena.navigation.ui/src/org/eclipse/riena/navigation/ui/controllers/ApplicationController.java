@@ -42,11 +42,10 @@ public class ApplicationController extends NavigationNodeController<IApplication
 		});
 	}
 
-	boolean done = false;
-
+	private boolean done = false;
 	private NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
-	public IStatuslineRidget getStatuslineRidget() {
+	public IStatuslineRidget getStatusline() {
 		if (!done) {
 			if (statuslineRidget.getStatuslineUIProcessRidget() != null) {
 				statuslineRidget.getStatuslineUIProcessRidget().setContextLocator(contextUpdater);
@@ -60,7 +59,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	 * @param statuslineRidget
 	 *            the statuslineRidget to set
 	 */
-	public void setStatuslineRidget(IStatuslineRidget statuslineRidget) {
+	public void setStatusline(IStatuslineRidget statuslineRidget) {
 		this.statuslineRidget = statuslineRidget;
 	}
 

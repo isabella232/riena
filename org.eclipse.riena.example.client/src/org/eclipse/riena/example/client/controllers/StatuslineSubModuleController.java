@@ -109,7 +109,7 @@ public class StatuslineSubModuleController extends SubModuleController {
 	}
 
 	private IStatuslineRidget getStatusLine() {
-		return getApplicationController().getStatuslineRidget();
+		return getApplicationController().getStatusline();
 	}
 
 	/**

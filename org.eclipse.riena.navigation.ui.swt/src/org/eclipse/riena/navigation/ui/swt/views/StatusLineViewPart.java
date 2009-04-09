@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.part.ViewPart;
+
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 /**
  *
@@ -33,7 +34,7 @@ public class StatusLineViewPart extends ViewPart {
 	public void createPartControl(Composite parent) {
 		setPartProperty(TitlelessStackPresentation.PROPERTY_STATUSLINE, String.valueOf(Boolean.TRUE));
 		Statusline statusLine = new Statusline(parent, SWT.None, StatuslineSpacer.class);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(statusLine, "statuslineRidget"); //$NON-NLS-1$
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(statusLine, "statusline"); //$NON-NLS-1$
 	}
 
 	/**

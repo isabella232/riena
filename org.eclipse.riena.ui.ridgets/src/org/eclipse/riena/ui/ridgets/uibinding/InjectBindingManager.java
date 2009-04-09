@@ -16,15 +16,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.beans.common.BeanPropertyAccessor;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionFailure;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
-import org.osgi.service.log.LogService;
 
 /**
  * This class manages the binding between UI-control and ridget.
@@ -68,6 +72,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	}
 
 	private void injectIntoController(IRidget ridget, IRidgetContainer controller, String bindingProperty) {
+		bindingProperty = createMethodeNameProperty(bindingProperty);
 		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
 		if (desc == null) {
 			throw new UnsupportedOperationException("Property '" + bindingProperty + "' unkown"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -84,6 +89,7 @@ public class InjectBindingManager extends DefaultBindingManager {
 	}
 
 	private PropertyDescriptor createPropertyDescriptor(String bindingProperty, IRidgetContainer ridgetContainer) {
+		bindingProperty = createMethodeNameProperty(bindingProperty);
 		try {
 			PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(ridgetContainer, bindingProperty);
 			binding2PropertyDesc.put(bindingProperty, desc);
@@ -102,6 +108,43 @@ public class InjectBindingManager extends DefaultBindingManager {
 			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
 		}
 		return null;
+	}
+
+	/**
+	 * Creates from the given binding property a correct property of a
+	 * (setter/getter) method name. Dots a removed and every letter after a dot
+	 * is converted to uppercase.
+	 * 
+	 * @param bindingProperty
+	 *            - binding property
+	 * @return property of method name
+	 */
+	private String createMethodeNameProperty(String bindingProperty) {
+
+		if (StringUtils.isEmpty(bindingProperty)) {
+			return bindingProperty;
+		}
+		if (!bindingProperty.contains(IBindingPropertyLocator.SEPARATOR)) {
+			return bindingProperty;
+		}
+
+		StringBuilder methodProperty = new StringBuilder();
+		char[] propChars = bindingProperty.toCharArray();
+		boolean pervWasDot = false;
+		for (int i = 0; i < propChars.length; i++) {
+			if (propChars[i] == '.') {
+				pervWasDot = true;
+				continue;
+			}
+			if (pervWasDot) {
+				propChars[i] = Character.toUpperCase(propChars[i]);
+			}
+			methodProperty.append(propChars[i]);
+			pervWasDot = false;
+		}
+
+		return methodProperty.toString();
+
 	}
 
 	/**

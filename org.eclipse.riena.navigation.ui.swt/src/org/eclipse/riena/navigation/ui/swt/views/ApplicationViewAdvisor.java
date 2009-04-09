@@ -259,7 +259,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 		fd.bottom = new FormAttachment(100, -5);
 		statusLine.setLayoutData(fd);
-		addUIControl(statusLine, "statuslineRidget"); //$NON-NLS-1$
+		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
 	}
 
 	/**

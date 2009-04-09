@@ -12,6 +12,7 @@ package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.example.client.views.ValidationSubModuleView;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -131,7 +132,7 @@ public class ValidationSubModuleController extends SubModuleController {
 		txtEmail.bindToModel(getTextValue(lblEmail));
 		txtEmail.setText("elmer@foo.bar"); //$NON-NLS-1$
 
-		IStatuslineRidget statuslineRidget = getApplicationController().getStatuslineRidget();
+		IStatuslineRidget statuslineRidget = getApplicationController().getStatusline();
 		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
 				statuslineRidget);
 		statuslineMessageMarkerViewer.addRidget(txtNumbersOnly);

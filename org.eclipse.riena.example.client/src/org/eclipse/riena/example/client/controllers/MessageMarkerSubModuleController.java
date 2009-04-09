@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.example.client.views.MessageMarkerSubModuleView;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
@@ -72,7 +73,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		// Show error messages in the status line
 		IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
 		ApplicationController applicationController = (ApplicationController) application.getNavigationNodeController();
-		IStatuslineRidget statuslineRidget = applicationController.getStatuslineRidget();
+		IStatuslineRidget statuslineRidget = applicationController.getStatusline();
 		StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
 				statuslineRidget);
 		statuslineMessageMarkerViewer.addRidget(alwaysMarked);

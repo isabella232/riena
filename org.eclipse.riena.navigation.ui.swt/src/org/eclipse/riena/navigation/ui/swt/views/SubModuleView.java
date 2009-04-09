@@ -43,6 +43,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ControllerUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProviderAccessor;
+import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -418,6 +419,9 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 
 			String bindingProperty = SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl);
 			if (!StringUtils.isEmpty(bindingProperty)) {
+				if (isChildOfComplexComponent(uiControl)) {
+					continue;
+				}
 				addUIControl(uiControl);
 			}
 			if (uiControl instanceof Composite) {
@@ -425,6 +429,18 @@ public abstract class SubModuleView<C extends SubModuleController> extends ViewP
 			}
 
 		}
+
+	}
+
+	private boolean isChildOfComplexComponent(Control uiControl) {
+
+		if (uiControl.getParent() == null) {
+			return false;
+		}
+		if (uiControl.getParent() instanceof IComplexComponent) {
+			return true;
+		}
+		return isChildOfComplexComponent(uiControl.getParent());
 
 	}
 

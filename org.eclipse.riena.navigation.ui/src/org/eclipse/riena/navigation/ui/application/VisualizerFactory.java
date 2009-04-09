@@ -29,7 +29,7 @@ public class VisualizerFactory implements IProgressVisualizerLocator {
 		if (context != null && INavigationNode.class.isAssignableFrom(context.getClass())) {
 			INavigationNode node = INavigationNode.class.cast(context);
 			aVisualizer.addObserver(((ApplicationController) node.getParentOfType(IApplicationNode.class)
-					.getNavigationNodeController()).getStatuslineRidget().getStatuslineUIProcessRidget());
+					.getNavigationNodeController()).getStatusline().getStatuslineUIProcessRidget());
 			ISubApplicationNode subApp = (ISubApplicationNode) node.getParentOfType(ISubApplicationNode.class);
 			if (subApp == null && context instanceof ISubApplicationNode) {
 				subApp = (ISubApplicationNode) context;

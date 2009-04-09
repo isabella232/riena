@@ -14,14 +14,15 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.tests.collect.UITestCase;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.tests.collect.UITestCase;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@link Statusline}.
@@ -125,8 +126,7 @@ public class StatuslineTest extends TestCase {
 				}
 				number = true;
 				StatuslineNumber statuslineNumber = (StatuslineNumber) uiControl;
-				assertEquals("statuslineNumberRidget", statuslineNumber
-						.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+				assertEquals("numberRidget", statuslineNumber.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 			}
 		}
 		assertTrue(number);
