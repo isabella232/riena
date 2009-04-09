@@ -12,6 +12,9 @@ package org.eclipse.riena.monitor.client;
 
 import java.util.Map;
 
+import org.osgi.service.log.LogEntry;
+import org.osgi.service.log.LogListener;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -19,12 +22,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
+
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.core.wire.WireWith;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.LogEntryTransferObject;
-import org.osgi.service.log.LogEntry;
-import org.osgi.service.log.LogListener;
 
 /**
  * Collects logs that are delivered by the {@code
