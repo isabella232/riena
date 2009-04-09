@@ -11,14 +11,19 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.BindingException;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Tests of the class {@code EmbeddedTitleBarRidget}.
@@ -128,6 +133,17 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 		}
 		SwtUtilities.disposeWidget(label);
 
+	}
+
+	/**
+	 * Tests that markers that are irrelavant for this type of Ridget do not
+	 * change the widget.
+	 */
+	public void testUnsupportedMarkersIgnored() {
+		assertMarkerIgnored(new ErrorMarker());
+		assertMarkerIgnored(new MandatoryMarker());
+		assertMarkerIgnored(new OutputMarker());
+		assertMarkerIgnored(new NegativeMarker());
 	}
 
 }

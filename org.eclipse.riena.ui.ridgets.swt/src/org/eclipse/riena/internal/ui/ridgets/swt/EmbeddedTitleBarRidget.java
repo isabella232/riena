@@ -10,15 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * Ridget for {@link EmbeddedTitleBar}.
@@ -53,6 +55,11 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	public EmbeddedTitleBarRidget(EmbeddedTitleBar window) {
 		this();
 		setUIControl(window);
+	}
+
+	@Override
+	protected AbstractMarkerSupport createMarkerSupport() {
+		return new BasicMarkerSupport(this, propertyChangeSupport);
 	}
 
 	/**
@@ -103,8 +110,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl
-	 *      ()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl ()
 	 */
 	@Override
 	protected void bindUIControl() {

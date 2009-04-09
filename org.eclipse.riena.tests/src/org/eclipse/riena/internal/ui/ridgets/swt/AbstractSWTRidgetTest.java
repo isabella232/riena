@@ -21,6 +21,7 @@ import org.easymock.EasyMock;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -487,6 +488,27 @@ public abstract class AbstractSWTRidgetTest extends RienaTestCase {
 
 	private PropertyChangeEvent createArgumentMatcher(PropertyChangeEvent propertyChangeEvent) {
 		return PropertyChangeEventEquals.eqPropertyChangeEvent(propertyChangeEvent);
+	}
+
+	protected void assertMarkerIgnored(IMarker marker) {
+		AbstractSWTWidgetRidget ridgetImpl = (AbstractSWTWidgetRidget) getRidget();
+		Control control = (Control) getWidget();
+		Color originalForegroundColor = control.getForeground();
+		Color originalBackgroundColor = control.getBackground();
+
+		ridgetImpl.addMarker(marker);
+
+		assertTrue(control.isVisible());
+		assertTrue(control.isEnabled());
+		assertEquals(originalForegroundColor, control.getForeground());
+		assertEquals(originalBackgroundColor, control.getBackground());
+
+		ridgetImpl.removeMarker(marker);
+
+		assertTrue(control.isVisible());
+		assertTrue(control.isEnabled());
+		assertEquals(originalForegroundColor, control.getForeground());
+		assertEquals(originalBackgroundColor, control.getBackground());
 	}
 
 }

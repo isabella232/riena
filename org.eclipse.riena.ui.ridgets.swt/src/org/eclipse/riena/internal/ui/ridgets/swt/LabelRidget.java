@@ -14,11 +14,12 @@ import java.net.URL;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
+
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for an SWT {@link Label} widget.
@@ -40,6 +41,11 @@ public class LabelRidget extends AbstractValueRidget implements ILabelRidget {
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
 		setUIControl(label);
+	}
+
+	@Override
+	protected AbstractMarkerSupport createMarkerSupport() {
+		return new BasicMarkerSupport(this, propertyChangeSupport);
 	}
 
 	@Override

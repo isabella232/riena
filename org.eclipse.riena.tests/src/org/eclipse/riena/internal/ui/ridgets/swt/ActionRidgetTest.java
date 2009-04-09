@@ -18,6 +18,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
@@ -233,61 +237,14 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that control is hidden when the ActionRidget is "output only".
+	 * Tests that markers that are irrelavant for this type of Ridget do not
+	 * change the widget.
 	 */
-	public void testOutputRidgetNotVisible() {
-		IActionRidget ridget = getRidget();
-		Button control = getWidget();
-
-		assertFalse(ridget.isOutputOnly());
-		assertTrue(control.isVisible());
-
-		ridget.setOutputOnly(true);
-
-		assertTrue(ridget.isOutputOnly());
-		assertFalse(control.isVisible());
-
-		ridget.setOutputOnly(false);
-
-		assertFalse(ridget.isOutputOnly());
-		assertTrue(control.isVisible());
-
-		ridget.setOutputOnly(true);
-		ridget.setVisible(true);
-
-		assertTrue(ridget.isOutputOnly());
-		assertTrue(ridget.isVisible());
-		assertFalse(control.isVisible());
-
-		ridget.setVisible(false);
-		ridget.setOutputOnly(false);
-
-		assertFalse(ridget.isOutputOnly());
-		assertFalse(ridget.isVisible());
-		assertFalse(control.isVisible());
-
-		ridget.setVisible(true);
-		ridget.setOutputOnly(false);
-
-		assertFalse(ridget.isOutputOnly());
-		assertTrue(ridget.isVisible());
-		assertTrue(control.isVisible());
-
-		ridget.setVisible(false);
-		ridget.setOutputOnly(true);
-
-		assertTrue(ridget.isOutputOnly());
-		assertFalse(ridget.isVisible());
-		assertFalse(control.isVisible());
-
-		ridget.setVisible(true);
-		ridget.setOutputOnly(true);
-		ridget.setVisible(false);
-		ridget.setVisible(true);
-
-		assertTrue(ridget.isOutputOnly());
-		assertTrue(ridget.isVisible());
-		assertFalse(control.isVisible());
+	public void testUnsupportedMarkersIgnored() {
+		assertMarkerIgnored(new ErrorMarker());
+		assertMarkerIgnored(new MandatoryMarker());
+		assertMarkerIgnored(new OutputMarker());
+		assertMarkerIgnored(new NegativeMarker());
 	}
 
 	// helping methods

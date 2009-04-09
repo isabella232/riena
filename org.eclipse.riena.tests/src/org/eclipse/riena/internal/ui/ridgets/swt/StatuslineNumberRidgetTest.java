@@ -15,6 +15,10 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
@@ -105,6 +109,17 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 		getRidget().setNumberString("0815-12");
 		assertEquals("0815-12", getLabel().getText());
 
+	}
+
+	/**
+	 * Tests that markers that are irrelavant for this type of Ridget do not
+	 * change the widget.
+	 */
+	public void testUnsupportedMarkersIgnored() {
+		assertMarkerIgnored(new ErrorMarker());
+		assertMarkerIgnored(new MandatoryMarker());
+		assertMarkerIgnored(new OutputMarker());
+		assertMarkerIgnored(new NegativeMarker());
 	}
 
 }

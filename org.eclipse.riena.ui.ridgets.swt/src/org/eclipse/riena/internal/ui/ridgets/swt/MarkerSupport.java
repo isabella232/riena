@@ -19,21 +19,17 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
-import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractActionRidget;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
  */
-public class MarkerSupport extends AbstractMarkerSupport {
+public class MarkerSupport extends BasicMarkerSupport {
 
 	private static final String PRE_MANDATORY_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preMandatoryBackground"; //$NON-NLS-1$
 	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preOutputBackground"; //$NON-NLS-1$
@@ -59,17 +55,6 @@ public class MarkerSupport extends AbstractMarkerSupport {
 
 	public MarkerSupport(IMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
-	}
-
-	@Override
-	public void updateMarkers() {
-		updateUIControl();
-	}
-
-	@Override
-	protected void handleMarkerAttributesChanged() {
-		updateUIControl();
-		super.handleMarkerAttributesChanged();
 	}
 
 	protected void addError(Control control) {
@@ -154,14 +139,6 @@ public class MarkerSupport extends AbstractMarkerSupport {
 		return result;
 	}
 
-	private void updateVisible(Control control) {
-		control.setVisible(ridget.isVisible());
-	}
-
-	private void updateDisabled(Control control) {
-		control.setEnabled(ridget.isEnabled());
-	}
-
 	private void updateError(Control control) {
 		if (ridget.isErrorMarked() && ridget.isEnabled() && ridget.isVisible()) {
 			if (!(isButton(control) && ridget.isOutputOnly())) {
@@ -217,41 +194,14 @@ public class MarkerSupport extends AbstractMarkerSupport {
 	 * <li>negative on - negative decoration is shown</li>
 	 * <ol>
 	 */
-	private void updateUIControl() {
-		Control control = (Control) ridget.getUIControl();
-		if (control != null) {
-			stopRedraw(control);
-			try {
-				updateVisible(control);
-				updateDisabled(control);
-				updateOutput(control);
-				updateMandatory(control);
-				updateError(control);
-				updateNegative(control);
-			} finally {
-				startRedraw(control);
-			}
-		}
-	}
-
-	private void startRedraw(Control control) {
-		if (!skipRedrawForBug258176(control)) {
-			control.setRedraw(true);
-			control.redraw();
-		}
-	}
-
-	private void stopRedraw(Control control) {
-		if (!skipRedrawForBug258176(control)) {
-			control.setRedraw(false);
-		}
-	}
-
-	/**
-	 * These controls are affected by bug 258176 in SWT.
-	 */
-	private boolean skipRedrawForBug258176(Control control) {
-		return (control instanceof Combo) || (control instanceof Table) || (control instanceof List);
+	@Override
+	protected void updateUIControl(Control control) {
+		updateVisible(control);
+		updateDisabled(control);
+		updateOutput(control);
+		updateMandatory(control);
+		updateError(control);
+		updateNegative(control);
 	}
 
 	private boolean isButton(Control control) {

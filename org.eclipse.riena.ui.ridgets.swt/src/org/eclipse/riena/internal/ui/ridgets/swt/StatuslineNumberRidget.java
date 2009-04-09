@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
@@ -22,6 +23,11 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 
 	private Integer number;
 	private String numberString;
+
+	@Override
+	protected AbstractMarkerSupport createMarkerSupport() {
+		return new BasicMarkerSupport(this, propertyChangeSupport);
+	}
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#getNumber()
@@ -89,8 +95,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	}
 
 	/**
-	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl
-	 *      ()
+	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#bindUIControl ()
 	 */
 	@Override
 	protected void bindUIControl() {

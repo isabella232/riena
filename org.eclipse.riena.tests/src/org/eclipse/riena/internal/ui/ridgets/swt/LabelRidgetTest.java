@@ -15,14 +15,19 @@ import java.net.URL;
 
 import org.eclipse.core.databinding.observable.value.AbstractObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.riena.beans.common.TestBean;
-import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.ui.ridgets.ILabelRidget;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+
+import org.eclipse.riena.beans.common.TestBean;
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
  * Tests for the {@link LabelRidget}.
@@ -355,6 +360,17 @@ public class LabelRidgetTest extends AbstractSWTRidgetTest {
 		ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", (URL) null, (URL) null);
 		assertFalse(ret);
 
+	}
+
+	/**
+	 * Tests that markers that are irrelavant for this type of Ridget do not
+	 * change the widget.
+	 */
+	public void testUnsupportedMarkersIgnored() {
+		assertMarkerIgnored(new ErrorMarker());
+		assertMarkerIgnored(new MandatoryMarker());
+		assertMarkerIgnored(new OutputMarker());
+		assertMarkerIgnored(new NegativeMarker());
 	}
 
 }

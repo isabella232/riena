@@ -15,6 +15,8 @@ import java.beans.EventHandler;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
+import org.eclipse.riena.internal.ui.ridgets.swt.BasicMarkerSupport;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 
@@ -35,6 +37,11 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		actionObserver = new ActionObserver();
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
+	}
+
+	@Override
+	protected AbstractMarkerSupport createMarkerSupport() {
+		return new BasicMarkerSupport(this, propertyChangeSupport);
 	}
 
 	/**
