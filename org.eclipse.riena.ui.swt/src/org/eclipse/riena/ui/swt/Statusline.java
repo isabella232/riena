@@ -76,7 +76,6 @@ public class Statusline extends Composite implements IComplexComponent {
 	 */
 	private void init() {
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
-		setBackground(LnfManager.getLnf().getColor("red"));
 		uiControls = new ArrayList<Object>();
 		createContents();
 	}
